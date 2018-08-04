@@ -3,10 +3,16 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "chai-as-promised": "^7.1.1",
+        "eslint": "4.19.1",
+        "eslint-plugin-import": "^2.13.0",
+        "ethereum-waffle": "^0.1.8",
         "web3": "^1.0.0-beta.34"
     },
     "scripts": {
-        "test": "mocha --require babel-register test -t 10000"
+        "test": "mocha --require babel-register test -t 10000",
+        "lint": "eslint lib test && solium -d contracts",
+        "build": "waffle"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

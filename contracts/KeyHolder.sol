@@ -1,6 +1,7 @@
 pragma solidity ^0.4.22;
 
-import './ERC725.sol';
+import "./ERC725.sol";
+
 
 contract KeyHolder is ERC725 {
 
@@ -59,7 +60,7 @@ contract KeyHolder is ERC725 {
     {
         require(keys[_key].key != _key, "Key already exists"); // Key should not already exist
         if (msg.sender != address(this)) {
-          require(keyHasPurpose(keccak256(msg.sender), 1), "Sender does not have management key"); // Sender has MANAGEMENT_KEY
+            require(keyHasPurpose(keccak256(msg.sender), 1), "Sender does not have management key"); // Sender has MANAGEMENT_KEY
         }
 
         keys[_key].key = _key;
@@ -83,6 +84,7 @@ contract KeyHolder is ERC725 {
 
         if (_approve == true) {
             executions[_id].approved = true;
+            // solium-disable-next-line security/no-low-level-calls
             success = executions[_id].to.call(executions[_id].data, 0);
             if (success) {
                 executions[_id].executed = true;
@@ -149,7 +151,9 @@ contract KeyHolder is ERC725 {
         returns(bool result)
     {
         bool isThere;
-        if (keys[_key].key == 0) return false;
+        if (keys[_key].key == 0) {
+            return false;
+        }
         isThere = keys[_key].purpose <= _purpose;
         return isThere;
     }
