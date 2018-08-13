@@ -1457,8 +1457,8 @@ commander@^2.11.0, commander@^2.8.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
 
 commander@^2.9.0:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.0.tgz#9d07b25e2a6f198b76d8b756a0e8a9604a6a1a60"
+  version "2.17.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
 commander@~2.8.1:
   version "2.8.1"
@@ -2137,9 +2137,9 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.8.tgz#3dbc636473b3ed0cdccbc7717a9bf860e9e35e65"
+ethereum-waffle@^0.1.15:
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.15.tgz#4c10159f933d456be47ba6b8ed174899a91af66c"
   dependencies:
     ethers "^3.0.26"
     solc-js "^0.4.20-browser.1"
