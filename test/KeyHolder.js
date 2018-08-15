@@ -25,8 +25,7 @@ describe('Identity', async () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet, otherWallet] = await getWallets(provider);
-    [, anotherWallet] = await getWallets(provider);
+    [wallet, otherWallet, anotherWallet] = await getWallets(provider);
     managementKey = addressToBytes32(wallet.address);
     unknownKey = otherWallet.address;
     actionKey = addressToBytes32(anotherWallet.address);
