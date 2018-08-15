@@ -2137,9 +2137,9 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^0.1.17:
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.17.tgz#b923810f457d05393bab7f96e10a69a5d91c2f5e"
+ethereum-waffle@^0.1.18:
+  version "0.1.18"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.18.tgz#83be104eca486041fb09728df59105d12d671130"
   dependencies:
     ethers "^3.0.26"
     solc-js "^0.4.20-browser.1"

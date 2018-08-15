@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../build/KeyHolder';
-import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import addressToBytes32 from './helpers/utils';
 import {utils} from 'ethers';
 
@@ -22,6 +22,7 @@ describe('Identity', async () => {
   const MANAGEMENT_KEY = 1;
   const ACTION_KEY = 2;
   const ECDSA_TYPE = 1;
+  const newKey = utils.hexlify(utils.randomBytes(32));
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -88,7 +89,6 @@ describe('Identity', async () => {
     });
 
     it('should add key', async () => {
-      const newKey = utils.hexlify(utils.randomBytes(32));
       await identity.addKey(newKey, 1, 1);
       const {key} = await identity.getKey(newKey);
       expect(key).to.eq(newKey);
@@ -97,11 +97,10 @@ describe('Identity', async () => {
     it('should not allow an existing key to be added', async () => {
       await expect(identity.addKey(acctSha3, 1, 1)).to.be.reverted;
     });
-
+    */
     it('should not allow sender without MANAGEMENT_KEY to addKey', async () => {
-      const identityWithOtherWallet = new Contract(identity.address, KeyHolder.interface, otherWallet);
-      const newKey = utils.hexlify(utils.randomBytes(32));
-      await expect(identityWithOtherWallet.addKey(newKey, 1, 1)).to.be.reverted;
-    }); */
+      const fromOtherWallet = contractWithWallet(identity, otherWallet);
+      await expect(fromOtherWallet.addKey(newKey, 1, 1)).to.be.reverted;
+    });
   });
 });
