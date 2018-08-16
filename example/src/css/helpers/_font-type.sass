@@ -1,12 +1,3 @@
-// Mixin for font-type
-
-// font-family:
-// $font-backend-sans: 'Open Sans', Arial, sans-serif
-// $font-icon: FontAwesome
-
-// For normal weight - $weight: 400
-// For bold weight - $weight: 700
-
 =font($size: null, $line-height: null, $letter-spacing: null, $weight: null, $family: null, $style: null)
 	@if $size and $family and $line-height
 		font: $style $weight #{$size}/#{$line-height} $family
