@@ -1,0 +1,35 @@
+.login-view
+  padding: 200px 0 80px
+
+.login-view-text
+  margin-bottom: 30px
+
+.login-method
+  font-size: 22px
+  font-weight: 700
+  color: #aaaaaa
+
+.login-method.active
+  display: inline-block
+  position: relative
+  padding-right: 30px
+  color: #000000
+
+.login-method.active::after
+  content: ''
+  position: absolute
+  top: 50%
+  right: 0
+  width: 20px
+  height: 20px
+  transform: translateY(-50%)
+  background: url('../img/check-mark.svg') no-repeat center
+  background-size: contain
+
+.id-selector
+  display: flex
+  align-items: center
+  margin: 25px 0 30px
+
+.id-selector .dropdown
+  margin-left: 13px
