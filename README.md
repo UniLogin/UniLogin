@@ -9,3 +9,37 @@ This is work in progress. Planned functionality for first release include:
 - multi factor authentication via multisignature
 - univeral login
 - ether less transactions via relayer
+
+## Example usage
+
+To create new identity:
+```js
+const sdk = new EthereumIdentitySDK();
+const (privateKey, identity) = await sdk.create('alex.ethereum.eth');
+```
+
+To use existing identity:
+```js
+const sdk = new EthereumIdentitySDK();
+const identity = await sdk.at('alex.ethereum.eth');
+```
+
+To add a key to identity:
+```js
+await identity.addKey(newKey, privateKey);
+```
+
+To execute transaction:
+```js
+const transaction = {
+  to: "0x88a5C2c290d9919e46F883EB62F7b8Dd9d0CC45b",
+  data: "0x",
+  value: ethers.utils.parseEther("1.0"),
+};
+const transactionId = await identity.execute(transaction, privateKey);
+```
+
+To confirm transaction
+```js
+await identity.confirm(transactionId)
+```
