@@ -23,10 +23,9 @@ contract ERC725 {
     }
     
     function getKey(bytes32 _key) public view returns(uint256 purpose, uint256 keyType, bytes32 key);
-    /*function getKeyPurpose(bytes32 _key) public view returns(uint256 purpose);
-    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys);*/
+    function getKeyPurpose(bytes32 _key) public view returns(uint256 purpose);
+    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys);
     function addKey(bytes32 _key, uint256 _purpose, uint256 _keyType) public returns (bool success);
-    /*function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId);
-    function approve(uint256 _id, bool _approve) public returns (bool success);
-    */
+    function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId);
+    //function approve(uint256 _id, bool _approve) public returns (bool success);
 }
