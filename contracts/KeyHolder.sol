@@ -52,11 +52,7 @@ contract KeyHolder is ERC725 {
     }
 
     function keyHasPurpose(bytes32 _key, uint256 _purpose) public view returns(bool result) {
-        bool exists = false;
-        if (keys[_key].purpose == _purpose) {
-            exists = true;
-        }
-        return exists;
+        return keys[_key].purpose == _purpose;
     }
 
     function removeKey(bytes32 _key, uint256 _purpose) public returns(bool success) {

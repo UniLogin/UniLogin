@@ -3,6 +3,7 @@ dist
 .idea
 data
 /build/
+/dist/
 yarn-error.log
 nodePrivateKey.json
 registryContractAddress.json

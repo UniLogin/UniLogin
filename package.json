@@ -2,17 +2,22 @@
     "name": "IdentitySdk",
     "version": "0.1.0",
     "private": true,
+    "license": "MIT",
+    "main": "dist/sdk/sdk.js",
+    "build": "babel lib --out-dir dist",
     "dependencies": {
         "chai-as-promised": "^7.1.1",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
-        "ethereum-waffle": "^0.1.15",
+        "ethereum-waffle": "^0.1.18",
         "web3": "^1.0.0-beta.34"
     },
     "scripts": {
-        "test": "mocha --require babel-register test -t 10000",
+        "test": "mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint lib test && solium -d contracts",
-        "build": "waffle"
+        "build:contracts": "waffle",
+        "build:sdk": "babel lib --out-dir dist",
+        "build": "yarn build:contracts && yarn build:sdk"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
