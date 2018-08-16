@@ -37,8 +37,8 @@ contract KeyHolder is ERC725 {
     }   */
 
     function addKey(bytes32 _key, uint256 _purpose, uint256 _type) public returns(bool success) {
-        require(keys[_key].key != _key);
-        require(keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY));
+        require(keys[_key].key != _key, "Key already added");
+        require(keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Sender not permissioned");
 
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
