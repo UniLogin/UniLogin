@@ -1,9 +1,10 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import KeyHolder from '../build/KeyHolder';
+import KeyHolder from '../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import addressToBytes32 from './helpers/utils';
+import addressToBytes32 from '../helpers/utils';
 import {utils} from 'ethers';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/index';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -19,9 +20,6 @@ describe('Identity', async () => {
   let managementKey;
   let unknownKey;
   let actionKey;
-  const MANAGEMENT_KEY = 1;
-  const ACTION_KEY = 2;
-  const ECDSA_TYPE = 1;
   const newKey = utils.hexlify(utils.randomBytes(32));
 
   beforeEach(async () => {
