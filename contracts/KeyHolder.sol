@@ -30,8 +30,8 @@ contract KeyHolder is ERC725 {
 
     function getKey(bytes32 _key) public view returns(uint256 purpose, uint256 keyType, bytes32 key) {
         return (keys[_key].purpose, keys[_key].keyType, keys[_key].key);
-    }   
-    
+    }
+
   /*  function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys) {
         return keysByPurpose[_purpose];
     }   */
@@ -47,7 +47,7 @@ contract KeyHolder is ERC725 {
         keysByPurpose[_purpose].push(_key);
 
         emit KeyAdded(keys[_key].key,  keys[_key].purpose, keys[_key].keyType);
-        
+
         return true;
     }
 
@@ -59,11 +59,11 @@ contract KeyHolder is ERC725 {
         //require(keyHasPurpose(bytes32(msg.sender), ACTION_KEY) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY));
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose, keys[_key].keyType);
-        
+
         delete keys[_key];
 
-        for(uint i=0; i < keysByPurpose[_purpose].length; i++) {
-            if(keysByPurpose[_purpose][i] == _key) {
+        for (uint i = 0; i < keysByPurpose[_purpose].length; i++) {
+            if (keysByPurpose[_purpose][i] == _key) {
                 keysByPurpose[_purpose][i] = keysByPurpose[_purpose][keysByPurpose[_purpose].length - 1];
                 delete keysByPurpose[_purpose][keysByPurpose[_purpose].length - 1];
                 keysByPurpose[_purpose].length--;
