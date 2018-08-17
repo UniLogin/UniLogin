@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class CollapsibleView extends Component {
-  render() { 
-    return ( 
+  render() {
+    return (
       <div className="accordion">
-        <div className={`accordion-btn ${this.props.isExpanded ? 'expanded' : ''}`}>
-          <img className="accordion-btn-ico" src={this.props.icon} alt="icon"/>
-          <button onClick={(e) => this.props.toggleAccordion(e)}>
+        <div
+          className={`accordion-btn ${this.props.isExpanded ? 'expanded' : ''}`}
+        >
+          <img className="accordion-btn-ico" src={this.props.icon} alt="icon" />
+          <button onClick={e => this.props.toggleAccordion(e)}>
             <h2 className="accordion-title">{this.props.title}</h2>
             <p className="accordion-subtitle">{this.props.subtitle}</p>
           </button>
         </div>
-        <div className="accordion-content">
-          {this.props.children}
-        </div>
+        <div className="accordion-content">{this.props.children}</div>
       </div>
     );
   }
 }
+
+CollapsibleView.propTypes = {
+  isExpanded: PropTypes.bool,
+  toggleAccordion: PropTypes.func,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  icon: PropTypes.string,
+  children: PropTypes.node
+};
+
 export default CollapsibleView;

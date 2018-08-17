@@ -4,6 +4,7 @@ import UserInfo from './UserInfo';
 import Requests from './Requests';
 import LogoutBtn from './LogoutBtn';
 import PendingAuthorizationsView from '../views/PendingAuthorizationsView';
+import PropTypes from 'prop-types';
 
 class PendingAuthorizations extends Component {
   render() {
@@ -11,13 +12,17 @@ class PendingAuthorizations extends Component {
       <div>
         <HeaderView>
           <UserInfo />
-          <Requests setView={this.props.setView}/>
-          <LogoutBtn setView={this.props.setView}/>
+          <Requests setView={this.props.setView} />
+          <LogoutBtn setView={this.props.setView} />
         </HeaderView>
-        <PendingAuthorizationsView setView={this.props.setView}/>
+        <PendingAuthorizationsView setView={this.props.setView} />
       </div>
     );
   }
 }
+
+PendingAuthorizations.propTypes = {
+  setView: PropTypes.func
+};
 
 export default PendingAuthorizations;

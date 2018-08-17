@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Collapsible from './Collapsible';
 import SettingsIco from '../img/settings.svg';
-import SettingsAccordionView from "../views/SettingsAccordionView";
+import SettingsAccordionView from '../views/SettingsAccordionView';
 
 class SettingsAccordion extends Component {
   render() {

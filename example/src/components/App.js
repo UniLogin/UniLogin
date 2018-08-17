@@ -1,9 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ContentContainer from './ContentContainer';
-import {EventEmitter} from 'fbemitter';
-import Backup from './Backup';
+import { EventEmitter } from 'fbemitter';
 import Modals from './Modals';
-import Account from './Account';
 
 class App extends Component {
   constructor(props) {
@@ -11,15 +9,14 @@ class App extends Component {
     this.emitter = new EventEmitter();
   }
 
-  render() { 
+  render() {
     return (
       <div>
-        <ContentContainer emitter={this.emitter}/>
-        <Modals emitter={this.emitter}/>
+        <ContentContainer emitter={this.emitter} />
+        <Modals emitter={this.emitter} />
       </div>
     );
   }
 }
- 
 
 export default App;
