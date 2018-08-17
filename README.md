@@ -11,6 +11,10 @@ This is work in progress. Planned functionality for first release include:
 - ether less transactions via relayer
 
 ## Example usage
+Getting strated:
+```js
+import EthereumIdentitySDK from 'EthereumIdentitySDK';
+```
 
 To create new identity:
 ```js
@@ -34,7 +38,7 @@ To execute transaction:
 const transaction = {
   to: "0x88a5C2c290d9919e46F883EB62F7b8Dd9d0CC45b",
   data: "0x",
-  value: ethers.utils.parseEther("1.0"),
+  value: "1000000000",
 };
 const transactionId = await identity.execute(transaction, privateKey);
 ```
@@ -51,8 +55,36 @@ await identity.subscribe('eventType')
 
 Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`.
 
-To ubsubscribe to an event:
+To unsubscribe to an event:
 ```js
 await identity.unsubscribe('eventType',)
 ```
 
+## Relayer
+To start relayer programmatically:
+```js
+import {Relayer} from 'EthereumIdentitySDK';
+const privateKey = "0x.....";
+const relayer = new Relayer({privateKey});
+relayer.start();
+```
+
+To stop relayer:
+```js
+relayer.stop();
+```
+
+To start relayer from command line:
+```sh
+npx start-relayer [config-file]
+```
+
+Where config file is a JSON file in the following format:
+```js
+{
+  privateKey: '0x123...123',
+  port: 3311
+}
+```
+
+Default port is `3311`, `privateKey` is the only required field.
