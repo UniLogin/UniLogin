@@ -36,7 +36,7 @@ contract KeyHolder is ERC725 {
         return keys[_key].purpose;
     }
 
-    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys) {
+    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[]) {
         return keysByPurpose[_purpose];
     }
 
@@ -60,7 +60,9 @@ contract KeyHolder is ERC725 {
     }
 
     function removeKey(bytes32 _key, uint256 _purpose) public returns(bool success) {
-        require(keyHasPurpose(bytes32(msg.sender), ACTION_KEY) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY));
+        bool isActionKey = keyHasPurpose(bytes32(msg.sender), ACTION_KEY);
+        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
+        require(isActionKey || isManagementKey, "Invalid key");
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose, keys[_key].keyType);
 
@@ -78,7 +80,9 @@ contract KeyHolder is ERC725 {
     }
 
     function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId) {
-        require(keyHasPurpose(bytes32(msg.sender), ACTION_KEY) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY));
+        bool isActionKey = keyHasPurpose(bytes32(msg.sender), ACTION_KEY);
+        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
+        require(isActionKey || isManagementKey, "Invalid key");
 
         executions[executionNonce].to = _to;
         executions[executionNonce].value = _value;

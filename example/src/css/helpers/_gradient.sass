@@ -1,0 +1,11 @@
+=linear-gradient($direction, $from_color, $to_color)
+  background-image: linear-gradient($direction, $from_color, $to_color)
+
+=linear-gradient-direction($direction, $color1, $opacity1, $color2, $opacity2, $color3, $opacity3)
+  @if $direction == top
+    background-image: linear-gradient(linear, left top, left bottom, color-stop($opacity1, rgba($color1, 0)), color-stop($opacity2, rgba($color2, 1)), color-stop($opacity3, rgba($color3, 1)))
+  @else
+    background-image: linear-gradient(linear, left top, right top, color-stop($opacity1, rgba($color1, 0)), color-stop($opacity2, rgba($color2, 1)), color-stop($opacity3, rgba($color3, 1)))
+
+=stripes-gradient($color1, $size1: 10px, $color2: #fff, $size2: $size1 * 2, $angle: 135deg)
+  background: repeating-linear-gradient($angle, $color1, $color1 $size1, $color2 $size1, $color2 $size2)

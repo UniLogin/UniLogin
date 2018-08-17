@@ -20,7 +20,7 @@ const (privateKey, identity) = await sdk.create('alex.ethereum.eth');
 
 To use existing identity:
 ```js
-const sdk = new EthereumIdentitySDK();
+const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://etherscan.io/{yourapikey}');
 const identity = await sdk.at('alex.ethereum.eth');
 ```
 
@@ -43,3 +43,16 @@ To confirm transaction
 ```js
 await identity.confirm(transactionId)
 ```
+
+To subscribe to an event:
+```js
+await identity.subscribe('eventType')
+```
+
+Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`.
+
+To ubsubscribe to an event:
+```js
+await identity.unsubscribe('eventType',)
+```
+
