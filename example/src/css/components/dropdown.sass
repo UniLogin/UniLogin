@@ -1,0 +1,37 @@
+.dropdown
+  position: relative
+  
+.dropdown-btn
+  position: relative
+  padding-right: 15px
+  font-size: 24px
+  font-weight: 700
+  color: #ca0019
+
+.dropdown-btn::after
+  content: ''
+  position: absolute
+  top: 50%
+  right: 0
+  width: 10px
+  height: 10px
+  transform: translateY(-50%)
+  background: url('../img/triangle.svg') center no-repeat
+  background-size: contain
+
+.dropdown-content
+  position: absolute
+  top: -6px
+  left: -8px
+  width: 250px
+  background: #EFEFEF
+  padding: 8px
+  border-radius: 3px
+
+.dropdown-content-item
+  font-size: 24px
+  font-weight: 700
+  color: #ca0019
+
+.dropdown-content-item + .dropdown-content-item
+  margin-top: 20px
