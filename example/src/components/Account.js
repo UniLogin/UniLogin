@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import HeaderView from '../views/HeaderView';
 import BackToAppBtn from './BackToAppBtn';
-import Collapsible from './Collapsible';
-
 import ProfileIdentity from './ProfileIdentity';
 import ManageDevicesAccordion from './ManageDevicesAccordion';
 import BackupCodeAccordionView from '../views/BackupCodeAccordionView';
 import TrustedFriendsAccordionView from '../views/TrustedFriendsAccordionView';
 import SettingsAccordion from './SettingsAccordion';
+import PropTypes from 'prop-types';
 
 class Account extends Component {
   render() {
@@ -16,6 +15,7 @@ class Account extends Component {
         <HeaderView>
           <BackToAppBtn setView={this.props.setView} />
         </HeaderView>
+
         <div className="container">
           <ProfileIdentity type="identityAccount" />
           <hr className="separator" />
@@ -32,5 +32,9 @@ class Account extends Component {
     );
   }
 }
+Account.propTypes = {
+  emitter: PropTypes.obj,
+  setView: PropTypes.func
+};
 
 export default Account;

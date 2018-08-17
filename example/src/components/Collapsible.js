@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import CollapsibleView from '../views/CollapsibleView';
+import PropTypes from 'prop-types';
 
 class Collapsible extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isExpanded: false
-    }
+    };
   }
-  
+
   toggleAccordion() {
     this.setState({
       isExpanded: !this.state.isExpanded
-    })
+    });
   }
-  
-  render() { 
-    
+
+  render() {
     return (
       <CollapsibleView
         title={this.props.title}
@@ -30,5 +30,12 @@ class Collapsible extends Component {
     );
   }
 }
- 
+
+Collapsible.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  icon: PropTypes.string,
+  children: PropTypes.node
+};
+
 export default Collapsible;

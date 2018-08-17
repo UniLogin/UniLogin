@@ -12,7 +12,8 @@
   },
   "scripts": {
     "dev": "parcel --no-cache ./src/index.html",
-    "build-dist": "parcel build ./src/index.html"
+    "build-dist": "parcel build ./src/index.html",
+    "lint": "eslint src/**/*.js src/**/*.jsx"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -29,6 +30,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-react": "^7.10.0",
     "node-sass": "^4.9.0",
-    "parcel-bundler": "^1.9.4"
+    "parcel-bundler": "^1.9.4",
+    "prettier-eslint": "^8.8.2"
   }
 }

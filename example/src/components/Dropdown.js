@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import DropdownView from '../views/DropdownView';
+import PropTypes from 'prop-types';
 
 class Dropdown extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       isListOpen: false,
       content: this.props.dropdownContent,
       title: this.props.title || 'Select item'
@@ -13,24 +14,24 @@ class Dropdown extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.title != this.state.title) {
-      this.props.returnValue(this.state.title)      
+      this.props.returnValue(this.state.title);
     }
   }
-  
+
   handleItemClick(e) {
     this.setState({
       isListOpen: false,
       title: e.target.textContent
-    })
-  }
-  
-  openList(){
-    this.setState({
-      isListOpen: true
-    })
+    });
   }
 
-  render() {    
+  openList() {
+    this.setState({
+      isListOpen: true
+    });
+  }
+
+  render() {
     return (
       <DropdownView
         openList={this.openList.bind(this)}
@@ -42,5 +43,11 @@ class Dropdown extends Component {
     );
   }
 }
+
+Dropdown.propTypes = {
+  dropdownContent: PropTypes.array,
+  title: PropTypes.string,
+  returnValue: PropTypes.func
+};
 
 export default Dropdown;

@@ -3,13 +3,14 @@ import IdentityExistingIndicator from '../views/IdentityExistingIndicator';
 import TextBox from '../views/TextBox';
 import Button from './Button';
 import Dropdown from './Dropdown';
+import PropTypes from 'prop-types';
 
 const suffixes = [
   '.universal-id.eth',
   '.mylogin.eth',
   '.popularapp.eth',
   '.eth'
-]
+];
 
 class IdentitySelector extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class IdentitySelector extends Component {
   }
 
   updatePrefix(event) {
-    const identity = `${e.target.value}${this.state.suffix}`;
+    const identity = `${event.target.value}${this.state.suffix}`;
     this.setState({
       prefix: event.target.value,
       identity,
@@ -47,9 +48,12 @@ class IdentitySelector extends Component {
   render() {
     return (
       <div>
-        <IdentityExistingIndicator exist={this.state.identityExist}/>
+        <IdentityExistingIndicator exist={this.state.identityExist} />
         <div className="id-selector">
-          <TextBox placeholder="type an username" onChange={(e) => this.updatePrefix(e)}/>
+          <TextBox
+            placeholder="type an username"
+            onChange={e => this.updatePrefix(e)}
+          />
           <Dropdown
             returnValue={this.updateSuffix.bind(this)}
             title={suffixes[0]}
@@ -61,5 +65,9 @@ class IdentitySelector extends Component {
     );
   }
 }
+
+IdentitySelector.propTypes = {
+  setView: PropTypes.func
+};
 
 export default IdentitySelector;
