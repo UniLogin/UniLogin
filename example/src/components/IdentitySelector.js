@@ -36,7 +36,7 @@ class IdentitySelector extends Component {
   }
 
   updateSuffix(value) {
-    const identity = `${this.state.prefix}${e.target.value}`;
+    const identity = `${this.state.prefix}${value}`;
     this.setState({
       suffix: value,
       identity,
@@ -45,9 +45,11 @@ class IdentitySelector extends Component {
   }
   
   render() {
+    console.log(this.state.identityExist);
+    
     return (
       <div>
-        <IdentityExistingIndicator exist={this.state.exist}/>
+        <IdentityExistingIndicator exist={this.state.identityExist}/>
         <div className="id-selector">
           <TextBox placeholder="type an username" onChange={(e) => this.updatePrefix(e)}/>
           <Dropdown

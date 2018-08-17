@@ -15,12 +15,6 @@ class LoginView extends Component {
             <input className="input login-view-input" type="text" placeholder="type an username"/>
             <div className="dropdown">
               <button className="dropdown-btn">.universal-id.eth</button>
-              {/* <ul className="dropdown-content">
-                <li className="dropdown-content-item">.universal-id.eth</li>
-                <li className="dropdown-content-item">.mylogin.eth</li>
-                <li className="dropdown-content-item">.popularapp.eth</li>
-                <li className="dropdown-content-item">.eth</li>
-              </ul> */}
             </div>
           </div>
           <button onClick={() => this.props.setView('CreatingID')} className="btn fullwidth">Next</button>
