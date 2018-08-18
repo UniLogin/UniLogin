@@ -181,7 +181,7 @@ describe('Identity', async () => {
   describe('Approve with 1 key needed', async () => {
     const id = 0;
     it('should add approval successfully', async () => {
-      await identity.execute(to, value, data);      
+      await identity.execute(to, value, data);
       await identity.approve(id);
       const execution = await identity.getExecutionApprovals(id);
       expect(execution[0]).to.eq(utils.hexlify(managementKey));
@@ -216,13 +216,13 @@ describe('Identity', async () => {
     });
 
     it('success call function', async () => {
-      await identity.execute(to, value, functionData); 
+      await identity.execute(to, value, functionData);
       await identity.approve(id);
       const wasCalled = await mochaContract.getWasCalledValue();
       expect(wasCalled).to.be.true;
     });
     it('Should emit Executed event', async () => {
-      await identity.execute(to, value, functionData); 
+      await identity.execute(to, value, functionData);
       await expect(identity.approve(id)).to
         .emit(identity, 'Executed')
         .withArgs(id, to, value, functionData);
@@ -231,7 +231,7 @@ describe('Identity', async () => {
     xit('emit ExecutionFailed');
   });
 
-  describe('Approve with 2 keys needed', () => { 
+  describe('Approve with 2 keys needed', () => {
     xit('Execute transfer');
     xit('Execute call on self');
     xit('Execute call');

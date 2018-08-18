@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import AppMainScreenView from '../views/MainScreenView';
 import HeaderView from '../views/HeaderView';
-import UserInfo from './UserInfo';
 import Requests from './Requests';
 import AccountLink from './AccountLink';
+import ProfileIdentity from './ProfileIdentity';
 
 class AppMainScreen extends Component {
   
@@ -11,9 +11,9 @@ class AppMainScreen extends Component {
     return (
       <div>
         <HeaderView>
-          <UserInfo />
-          <Requests setView={this.props.setView}/>
-          <AccountLink setView={this.props.setView}/>
+          <ProfileIdentity type="identityHeader" />
+          <Requests setView={this.props.setView} />
+          <AccountLink setView={this.props.setView} />
         </HeaderView>
         <AppMainScreenView />
       </div>

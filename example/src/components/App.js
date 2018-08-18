@@ -3,6 +3,7 @@ import ContentContainer from './ContentContainer';
 import {EventEmitter} from 'fbemitter';
 import Backup from './Backup';
 import Modals from './Modals';
+import Account from './Account';
 
 class App extends Component {
   constructor(props) {

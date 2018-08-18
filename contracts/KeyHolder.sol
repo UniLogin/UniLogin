@@ -37,7 +37,7 @@ contract KeyHolder is ERC725 {
         require(isActionKey || isManagementKey, "Invalid key");
         _;
     }
-    
+
     modifier onlyUnusedKey(uint256 executionId) {
         for (uint i = 0; i < executions[executionId].approvals.length; i++) {
             require(executions[executionId].approvals[i] != bytes32(msg.sender), "Key already used.");
@@ -126,7 +126,7 @@ contract KeyHolder is ERC725 {
         success = (executions[executionId].approvals.length == neededApprovals);
         if (success) {
             return doExecute(executionId);
-        } 
+        }
     }
 
     function doExecute(uint256 executionId) private returns (bool success) {

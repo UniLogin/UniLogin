@@ -18,8 +18,8 @@ contract ERC725 {
     event Approved(uint256 indexed executionId, bool approved);
 
     struct Key {
-        uint256 purpose; 
-        uint256 keyType; 
+        uint256 purpose;
+        uint256 keyType;
         bytes32 key;
     }
 
