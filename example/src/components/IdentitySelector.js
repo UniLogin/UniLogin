@@ -14,7 +14,7 @@ const suffixes = [
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       prefix: '',
       suffix: suffixes[0],
       identity: '',
@@ -26,28 +26,28 @@ class IdentitySelector extends Component {
     return identity === 'alex.universal-id.eth';
   }
 
-  updatePrefix(e) {    
+  updatePrefix(event) {
     const identity = `${e.target.value}${this.state.suffix}`;
     this.setState({
-      prefix: e.target.value,
+      prefix: event.target.value,
       identity,
       identityExist: this.identityExist(identity)
     });
   }
 
   updateSuffix(value) {
-    const identity = `${this.state.prefix}${e.target.value}`;
+    const identity = `${this.state.prefix}${value}`;
     this.setState({
       suffix: value,
       identity,
       identityExist: this.identityExist(identity)
     });
   }
-  
+
   render() {
     return (
       <div>
-        <IdentityExistingIndicator exist={this.state.exist}/>
+        <IdentityExistingIndicator exist={this.state.identityExist}/>
         <div className="id-selector">
           <TextBox placeholder="type an username" onChange={(e) => this.updatePrefix(e)}/>
           <Dropdown
