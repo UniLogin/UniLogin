@@ -130,6 +130,7 @@ contract KeyHolder is ERC725 {
     }
 
     function doExecute(uint256 executionId) private returns (bool success) {
+        /* solium-disable-next-line security/no-low-level-calls */
         success = executions[executionId].to.call(executions[executionId].data);
         if (success) {
             emit Executed(executionId, executions[executionId].to, executions[executionId].value, executions[executionId].data);

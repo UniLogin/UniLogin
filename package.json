@@ -9,7 +9,7 @@
         "chai-as-promised": "^7.1.1",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
-        "ethereum-waffle": "^0.1.18",
+        "ethereum-waffle": "^0.1.20",
         "express": "^4.16.3",
         "web3": "^1.0.0-beta.34"
     },
@@ -29,8 +29,11 @@
         "babel-polyfill": "^6.26.0",
         "babel-preset-env": "^1.7.0",
         "babel-preset-stage-0": "^6.24.1",
+        "body-parser": "^1.18.3",
         "chai": "^4.1.2",
         "chai-http": "^4.0.0",
-        "ganache-core": "^2.1.5"
+        "chai-string": "^1.4.0",
+        "ganache-core": "^2.1.5",
+        "node-fetch": "^2.2.0"
     }
 }

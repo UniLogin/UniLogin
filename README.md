@@ -19,7 +19,7 @@ import EthereumIdentitySDK from 'EthereumIdentitySDK';
 To create new identity:
 ```js
 const sdk = new EthereumIdentitySDK();
-const (privateKey, identity) = await sdk.create('alex.ethereum.eth');
+const privateKey = await sdk.create('alex.ethereum.eth');
 ```
 
 To use existing identity:
@@ -63,9 +63,9 @@ await identity.unsubscribe('eventType',)
 ## Relayer
 To start relayer programmatically:
 ```js
-import {Relayer} from 'EthereumIdentitySDK';
+import Relayer from '../../lib/relayer/relayer';
 const privateKey = "0x.....";
-const relayer = new Relayer({privateKey});
+const relayer = new Relayer('https://etherscan.io/{yourapikey}', privateKey);
 relayer.start();
 ```
 
