@@ -1077,7 +1077,7 @@ body-parser@1.18.2:
     raw-body "2.3.2"
     type-is "~1.6.15"
 
-body-parser@^1.16.0:
+body-parser@^1.16.0, body-parser@^1.18.3:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.3.tgz#5b292198ffdd553b3a0f20ded0592b956955c8b4"
   dependencies:
@@ -1311,6 +1311,10 @@ chai-http@^4.0.0:
     methods "^1.1.2"
     qs "^6.5.1"
     superagent "^3.7.0"
+
+chai-string@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/chai-string/-/chai-string-1.4.0.tgz#359140c051d36a4e4b1a5fc6b910152f438a8d49"
 
 chai@^3.5.0:
   version "3.5.0"
@@ -2155,9 +2159,9 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^0.1.18:
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.18.tgz#83be104eca486041fb09728df59105d12d671130"
+ethereum-waffle@^0.1.20:
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.20.tgz#d5518c09e507c7970f63a6efd897b6c448c167d8"
   dependencies:
     ethers "^3.0.26"
     solc-js "^0.4.20-browser.1"
@@ -3757,6 +3761,10 @@ negotiator@0.6.1:
 node-fetch@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
+
+node-fetch@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.2.0.tgz#4ee79bde909262f9775f731e3656d0db55ced5b5"
 
 node-fetch@~1.7.1:
   version "1.7.3"

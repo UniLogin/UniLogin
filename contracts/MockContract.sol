@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24;
 
-contract MochaContract {
+
+contract MockContract {
     bool public wasCalled;
 
     constructor() public {
@@ -13,9 +14,5 @@ contract MochaContract {
 
     function callMe() public {
         wasCalled = true;
-    }
-
-    function getWasCalledValue() public view returns(bool) {
-        return wasCalled;
     }
 }

@@ -1,25 +1,25 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../build/KeyHolder';
-import MochaContract from '../../build/MochaContract';
+import MockContract from '../../build/MockContract';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import addressToBytes32 from '../helpers/utils';
+import addressToBytes32 from '../../lib/utils/utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/index';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/sdk';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 const {expect} = chai;
 
-describe('Identity', async () => {
+describe('Contract - yarn test -Identity', async () => {
   let provider;
   let wallet;
   let otherWallet;
   let anotherWallet;
 
   let identity;
-  let mochaContract;
+  let mockContract;
 
   let managementKey;
   let unknownKey;
@@ -210,17 +210,18 @@ describe('Identity', async () => {
     let to;
     let functionData;
     beforeEach(async () => {
-      mochaContract = await deployContract(wallet, MochaContract);
-      functionData = mochaContract.interface.functions.callMe().data;
-      to = mochaContract.address;
+      mockContract = await deployContract(wallet, MockContract);
+      functionData = mockContract.interface.functions.callMe().data;
+      to = mockContract.address;
     });
 
     it('success call function', async () => {
       await identity.execute(to, value, functionData);
       await identity.approve(id);
-      const wasCalled = await mochaContract.getWasCalledValue();
+      const wasCalled = await mockContract.wasCalled();
       expect(wasCalled).to.be.true;
     });
+
     it('Should emit Executed event', async () => {
       await identity.execute(to, value, functionData);
       await expect(identity.approve(id)).to
