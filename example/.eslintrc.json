@@ -34,5 +34,8 @@
             "error",
             "always"
         ]
+    },
+    "globals": {
+        "module": false
     }
 }

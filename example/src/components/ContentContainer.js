@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Login from './Login';
 import CreatingId from './CreatingId';
 import ApproveConnectionView from '../views/ApproveConnectionView';
-import GreetingView from '../views/GreetingView';
+import Greeting from './Greeting';
 import Account from './Account';
 import MainScreen from './MainScreen';
 import PendingAuthorizations from './PendingAuthorizations';
@@ -19,24 +19,33 @@ class ContentContainer extends Component {
     };
   }
 
+  componentDidMount() {
+    const {emitter} = this.props.services;
+    this.subscription = emitter.addListener('setView', this.setView.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.subscription.remove();
+  }
+
   setView(view) {
-    this.setState({ view });
+    this.setState({view});
   }
 
   render() {
     if (this.state.view === 'Login') {
-      return <Login setView={this.setView.bind(this)} />;
+      return <Login services={this.props.services}/>;
     } else if (this.state.view === 'CreatingID') {
-      return <CreatingId setView={this.setView.bind(this)} />;
+      return <CreatingId identityService={this.props.services.identityService}/>;
     } else if (this.state.view === 'ApproveConnection') {
       return <ApproveConnectionView setView={this.setView.bind(this)} />;
     } else if (this.state.view === 'Greeting') {
-      return <GreetingView setView={this.setView.bind(this)} />;
+      return <Greeting identityService={this.props.services.identityService}/>;
     } else if (this.state.view === 'Account') {
       return (
         <Account
           setView={this.setView.bind(this)}
-          emitter={this.props.emitter}
+          emitter={this.props.services.emitter}
         />
       );
     } else if (this.state.view === 'MainScreen') {
@@ -52,7 +61,9 @@ class ContentContainer extends Component {
     }
   }
 }
+
 ContentContainer.propTypes = {
-  emitter: PropTypes.object
+  services: PropTypes.object
 };
+
 export default ContentContainer;

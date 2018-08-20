@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 class LoginView extends Component {
-  render() { 
-    return ( 
+  render() {
+    return (
       <div className="login-view">
         <div className="container">
           <h1 className="main-title">Universal Logins</h1>
@@ -17,11 +17,11 @@ class LoginView extends Component {
               <button className="dropdown-btn">.universal-id.eth</button>
             </div>
           </div>
-          <button onClick={() => this.props.setView('CreatingID')} className="btn fullwidth">Next</button>
+          <button className="btn fullwidth">Next</button>
         </div>
       </div>
-     );
+    );
   }
 }
- 
+
 export default LoginView;

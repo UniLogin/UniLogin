@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 
 class CreatingId extends Component {
   render() {
-    return <CreatingIdView setView={this.props.setView} />;
+    const {identity} = this.props.identityService;
+    return (<CreatingIdView identityName={identity.name}/>);
   }
 }
 CreatingId.propTypes = {
-  setView: PropTypes.func
+  identityService: PropTypes.object
 };
+
 export default CreatingId;
