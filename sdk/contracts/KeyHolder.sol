@@ -38,6 +38,12 @@ contract KeyHolder is ERC725 {
         _;
     }
 
+    modifier onlyManagementKeyOrThisContract() {
+        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
+        require(isManagementKey || msg.sender == address(this), "Sender not permissioned");
+        _;
+    }
+
     modifier onlyUnusedKey(uint256 executionId) {
         for (uint i = 0; i < executions[executionId].approvals.length; i++) {
             require(executions[executionId].approvals[i] != bytes32(msg.sender), "Key already used.");
@@ -57,13 +63,16 @@ contract KeyHolder is ERC725 {
         return keysByPurpose[_purpose];
     }
 
-    function getExecutionApprovals(uint executionId) public view returns(bytes32[]) {
-        return executions[executionId].approvals;
+    function getExecutionApprovals(uint id) public view returns(bytes32[]) {
+        return executions[id].approvals;
     }
 
-    function addKey(bytes32 _key, uint256 _purpose, uint256 _type) public returns(bool success) {
+    function keyHasPurpose(bytes32 _key, uint256 _purpose) public view returns(bool result) {
+        return keys[_key].purpose == _purpose;
+    }
+
+    function addKey(bytes32 _key, uint256 _purpose, uint256 _type) public onlyManagementKeyOrThisContract returns(bool success) {
         require(keys[_key].key != _key, "Key already added");
-        require(keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Sender not permissioned");
 
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
@@ -76,14 +85,7 @@ contract KeyHolder is ERC725 {
         return true;
     }
 
-    function keyHasPurpose(bytes32 _key, uint256 _purpose) public view returns(bool result) {
-        return keys[_key].purpose == _purpose;
-    }
-
-    function removeKey(bytes32 _key, uint256 _purpose) public returns(bool success) {
-        bool isActionKey = keyHasPurpose(bytes32(msg.sender), ACTION_KEY);
-        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
-        require(isActionKey || isManagementKey, "Invalid key");
+    function removeKey(bytes32 _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose, keys[_key].keyType);
 
@@ -115,27 +117,31 @@ contract KeyHolder is ERC725 {
 
         emit ExecutionRequested(executionNonce, _to, _value, _data);
 
+        if (executions[executionNonce].approvals.length == neededApprovals) {
+            doExecute(executionNonce);
+        }
+
         executionNonce++;
         return executionNonce - 1;
     }
 
-    function approve(uint256 executionId) public onlyManagementOrActionKeys onlyUnusedKey(executionId) returns(bool success) {
-        require(executions[executionId].to != address(0), "Invalid execution Id");
+    function approve(uint256 id) public onlyManagementOrActionKeys onlyUnusedKey(id) returns(bool shouldExecute) {
+        require(executions[id].to != address(0), "Invalid execution Id");
 
-        executions[executionId].approvals.push(bytes32(msg.sender));
-        success = (executions[executionId].approvals.length == neededApprovals);
-        if (success) {
-            return doExecute(executionId);
+        executions[id].approvals.push(bytes32(msg.sender));
+        if (executions[id].approvals.length == neededApprovals) {
+            return doExecute(id);
         }
+        return false;
     }
 
-    function doExecute(uint256 executionId) private returns (bool success) {
-        /* solium-disable-next-line security/no-low-level-calls */
-        success = executions[executionId].to.call(executions[executionId].data);
+    function doExecute(uint256 id) private returns (bool success) {
+        /* solium-disable-next-line security/no-call-value */
+        success = executions[id].to.call.value(executions[id].value)(executions[id].data);
         if (success) {
-            emit Executed(executionId, executions[executionId].to, executions[executionId].value, executions[executionId].data);
+            emit Executed(id, executions[id].to, executions[id].value, executions[id].data);
         } else {
-            emit ExecutionFailed(executionId, executions[executionId].to, executions[executionId].value, executions[executionId].data);
+            emit ExecutionFailed(id, executions[id].to, executions[id].value, executions[id].data);
         }
     }
 }

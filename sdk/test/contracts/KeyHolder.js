@@ -28,7 +28,16 @@ describe('Contract - yarn test -Identity', async () => {
   const neededApprovals = 1;
   let to;
   const value = 0;
-  const data = utils.hexlify(utils.randomBytes(32));
+  const id = 0;
+  const amount = '1000000000000000000';
+  const data = utils.hexlify(0);
+  let beforeSendBalance;
+
+
+  let addKeyData;
+  let removeKeyData;
+  let fromOtherWallet;
+
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
@@ -41,8 +50,11 @@ describe('Contract - yarn test -Identity', async () => {
     unknownKey = addressToBytes32(otherWallet.address);
     actionKey = addressToBytes32(anotherWallet.address);
 
-    to = otherWallet.address;
     identity = await deployContract(wallet, KeyHolder, [managementKey, neededApprovals]);
+    fromOtherWallet = await contractWithWallet(identity, otherWallet);
+    to = identity.address;
+    mockContract = await deployContract(wallet, MockContract);
+    beforeSendBalance = await wallet.getBalance();
   });
 
   describe('Create', async () => {
@@ -85,7 +97,6 @@ describe('Contract - yarn test -Identity', async () => {
     });
 
     it('should not allow to add new key without MANAGEMENT_KEY', async () => {
-      const fromOtherWallet = await contractWithWallet(identity, otherWallet);
       await expect(fromOtherWallet.addKey(unknownKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
     });
   });
@@ -137,80 +148,250 @@ describe('Contract - yarn test -Identity', async () => {
       await identity.removeKey(actionKey, ACTION_KEY);
       expect(await isActionKey()).to.be.false;
       const actualActionKeys = await identity.getKeysByPurpose(ACTION_KEY);
-      expect(actualActionKeys[0] !== utils.hexlify(actionKey));
+      expect(actualActionKeys[0]).not.to.eq(utils.hexlify(actionKey));
     });
 
     it('should not allow to remove key without MANAGEMENT_KEY or ACTION_KEY', async () => {
-      const fromOtherWallet = await contractWithWallet(identity, otherWallet);
       await addActionKey();
-      expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.true;
+      expect(await isActionKey()).to.be.true;
       await expect(fromOtherWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
     });
   });
 
   describe('Execute', async () => {
+    beforeEach(async () => {
+      addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
+      removeKeyData = identity.interface.functions.removeKey(actionKey, ACTION_KEY).data;
+    });
+
     it('should emit ExecutionRequested event correctly', async () => {
-      const id = 0;
-      await expect(identity.execute(to, value, data)).to
+      await expect(identity.execute(to, value, addKeyData)).to
         .emit(identity, 'ExecutionRequested')
-        .withArgs(id, to, value, data);
+        .withArgs(id, to, value, addKeyData);
     });
 
     it('should add executions successfully', async () => {
       const firstNonce = await identity.executionNonce();
-      await identity.execute(to, value, data);
+      await identity.execute(to, value, addKeyData);
       const actualNonce = await identity.executionNonce();
       expect(firstNonce < actualNonce);
       const execution = await identity.executions(firstNonce);
       expect(execution[0]).to.eq(to);
       expect(execution[1]).to.eq(value);
-      expect(execution[2]).to.eq(data);
+      expect(execution[2]).to.eq(addKeyData);
     });
 
-    it('should not allow to add execution without MANAGEMENT_KEY or ACTION_KEY', async () => {
-      const fromOtherWallet = await contractWithWallet(identity, otherWallet);
+    it('should not allow to add execution with unknown key', async () => {
       await expect(fromOtherWallet.addKey(unknownKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
     });
 
-    it('Fails execute on self if not manangment key', async () => {
-      const fromOtherWallet = await contractWithWallet(identity, otherWallet);
-      await expect(fromOtherWallet.execute(identity.address, value, data)).to.be.reverted;
+    describe('On self execute', async () => {
+      let to;
+      let newActionKey;
+      beforeEach(async () => {
+        to = identity.address;
+        newActionKey = addressToBytes32(fromOtherWallet.address);
+      });
+
+      it('Execute addKey on self with management key', async () => {
+        await expect(identity.execute(to, value, addKeyData)).to
+          .emit(identity, 'ExecutionRequested')
+          .withArgs(id, to, value, addKeyData);
+      });
+      it('Fails execute addKey on self with action key', async () => {
+        await identity.addKey(newActionKey, ACTION_KEY, ECDSA_TYPE);
+        expect(await identity.keyHasPurpose(newActionKey, ACTION_KEY)).to.be.true;
+        await expect(fromOtherWallet.execute(to, value, addKeyData)).to.be.reverted;
+      });
+      it('Fails execute addKey on self with unknown key', async () => {
+        expect(await identity.keyHasPurpose(newActionKey, ACTION_KEY)).to.be.false;
+        await expect(fromOtherWallet.execute(to, value, addKeyData)).to.be.reverted;
+      });
+      it('Execute removeKey on self if with management key', async () => {
+        await expect(identity.execute(to, value, removeKeyData)).to
+          .emit(identity, 'ExecutionRequested')
+          .withArgs(id, to, value, removeKeyData);
+      });
+      it('Fails execute removeKey on self with action key', async () => {
+        await identity.addKey(newActionKey, ACTION_KEY, ECDSA_TYPE);
+        expect(await identity.keyHasPurpose(newActionKey, ACTION_KEY)).to.be.true;
+        await expect(fromOtherWallet.execute(to, value, removeKeyData)).to.be.reverted;
+      });
+      it('Fails execute removeKey on self with unknown key', async () => {
+        expect(await identity.keyHasPurpose(newActionKey, ACTION_KEY)).to.be.false;
+        expect(await identity.keyHasPurpose(newActionKey, MANAGEMENT_KEY)).to.be.false;
+        await expect(fromOtherWallet.execute(to, value, removeKeyData)).to.be.reverted;
+      });
     });
   });
 
   describe('Approve with 1 key needed', async () => {
-    const id = 0;
+    let to;
+    beforeEach(async () => {
+      to = identity.address;
+      addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
+    });
     it('should add approval successfully', async () => {
-      await identity.execute(to, value, data);
+      await identity.execute(to, value, addKeyData);
       await identity.approve(id);
-      const execution = await identity.getExecutionApprovals(id);
-      expect(execution[0]).to.eq(utils.hexlify(managementKey));
+      const approvals = await identity.getExecutionApprovals(id);
+      expect(approvals[0]).to.eq(utils.hexlify(managementKey));
     });
 
     it('should emit Executed event successfully', async () => {
-      await identity.execute(to, value, data);
+      await identity.execute(to, value, addKeyData);
       await expect(identity.approve(id)).to
         .emit(identity, 'Executed')
-        .withArgs(id, to, value, data);
+        .withArgs(id, to, value, addKeyData);
+      expect(await isActionKey()).to.be.true;
     });
 
-    it('should not allow to confirm without MANAGEMENT_KEY or ACTION_KEY', async () => {
-      await identity.execute(to, value, data);
-      const fromOtherWallet = await contractWithWallet(identity, otherWallet);
+    it('should not allow to approve with unknown key', async () => {
+      await identity.execute(to, value, addKeyData);
       await expect(fromOtherWallet.approve(id)).to.be.reverted;
     });
 
-    it('should not allow to confirm non-existent execution', async () => {
+    it('should not allow to approve non-existent execution', async () => {
       await expect(identity.approve(id)).to.be.reverted;
+    });
+
+    it('Execute transfer', async () => {
+      await identity.execute(otherWallet.address, amount, addKeyData);
+      await identity.approve(id);
+      const afterSend = await wallet.getBalance();
+      expect(beforeSendBalance).not.to.eq(afterSend);
+    });
+  });
+
+  describe('Approve with 2 keys needed', () => {
+    const needed2Approvals = 2;
+    let identity2Approvals;
+    let functionData;
+    beforeEach(async () => {
+      identity2Approvals = await deployContract(wallet, KeyHolder, [managementKey, needed2Approvals]);
+      addKeyData = identity2Approvals.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
+      functionData = mockContract.interface.functions.callMe().data;
+      fromOtherWallet = await contractWithWallet(identity2Approvals, otherWallet);  
+    });
+    describe('Two management keys', async () => {
+      beforeEach(async () => {
+        await identity2Approvals.addKey(addressToBytes32(otherWallet.address), MANAGEMENT_KEY, ECDSA_TYPE);
+      });
+
+      it('Execute transfer', async () => {
+        await identity2Approvals.execute(otherWallet.address, amount, addKeyData);
+        await identity2Approvals.approve(id);
+        await fromOtherWallet.approve(id);
+        const afterSend = await wallet.getBalance();
+        expect(beforeSendBalance).not.to.eq(afterSend);
+      });
+
+      it('Execute call on self', async () => {
+        const to = identity2Approvals.address;
+        await identity2Approvals.execute(to, value, addKeyData);
+        await fromOtherWallet.approve(id);
+        expect(await identity2Approvals.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
+        await identity2Approvals.approve(id);
+        expect(await identity2Approvals.keyHasPurpose(actionKey, ACTION_KEY)).to.be.true;
+      });
+
+      it('Execute call', async () => {
+        const to = mockContract.address;
+        await identity2Approvals.execute(to, value, functionData);
+        await identity2Approvals.approve(id);
+        await fromOtherWallet.approve(id);
+        const wasCalled = await mockContract.wasCalled();
+        expect(wasCalled).to.be.true;
+      });
+
+      it('Will not execute with not enough approvals', async () => {        
+        const to = identity2Approvals.address;
+        await identity2Approvals.execute(to, value, addKeyData);
+        await identity2Approvals.approve(id);
+        expect(await isActionKey()).to.be.false;
+      });
+    });
+
+    describe('One management, one action key', async () => {
+      beforeEach(async () => {
+        await identity2Approvals.addKey(addressToBytes32(otherWallet.address), ACTION_KEY, ECDSA_TYPE);
+      });
+
+      it('Will execute on self with action key approval', async () => {
+        const to = identity2Approvals.address;
+        await identity2Approvals.execute(to, value, addKeyData);
+        await identity2Approvals.approve(id);
+        await expect(fromOtherWallet.approve(id)).to
+          .emit(identity2Approvals, 'Executed')
+          .withArgs(id, to, value, addKeyData);
+      });
+
+      it('Execute call', async () => {
+        const to = mockContract.address;
+        await identity2Approvals.execute(to, value, functionData);
+        await identity2Approvals.approve(id);
+        await fromOtherWallet.approve(id);
+        expect(await mockContract.wasCalled()).to.be.true;
+      });
+
+      it('Will not execute with not enough confirmations', async () => {
+        const to = identity2Approvals.address;
+        await identity2Approvals.execute(to, value, addKeyData);
+        await identity2Approvals.approve(id);
+        expect(await isActionKey()).to.be.false;
+      });
+    });    
+  });
+
+  describe('Approve with 0 keys needed', () => {
+    const needed0Approvals = 0;
+    let identity0Approvals;
+    let to;
+    let functionData;
+    let fromOtherWallet;
+
+    beforeEach(async () => {
+      identity0Approvals = await deployContract(wallet, KeyHolder, [managementKey, needed0Approvals]);
+      addKeyData = identity0Approvals.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
+      to = identity0Approvals.address;
+      functionData = mockContract.interface.functions.callMe().data;
+      fromOtherWallet = await contractWithWallet(identity0Approvals, otherWallet);
+    });
+
+    it('Execute transfer', async () => {
+      await identity0Approvals.execute(otherWallet.address, amount, data);
+      const afterSend = await wallet.getBalance();
+      expect(beforeSendBalance).not.to.eq(afterSend);
+    });
+
+    it('Execute call on self', async () => {
+      await identity0Approvals.execute(to, value, addKeyData);
+      expect(await identity0Approvals.keyHasPurpose(actionKey, ACTION_KEY)).to.be.true;
+    });
+
+    it('Execute call', async () => {
+      await identity0Approvals.execute(mockContract.address, value, functionData);
+      expect(await mockContract.wasCalled()).to.be.true;
+    });
+
+    it('Will not execute with unknown key', async () => {
+      await expect(fromOtherWallet.execute(mockContract.address, value, functionData)).to.be.reverted;
+    });
+
+    it('Will not execute on self with unknow key', async () => {
+      await expect(fromOtherWallet.execute(to, value, addKeyData)).to.be.reverted;
+    });
+
+    it('Will not execute on self with action key', async () => {
+      await identity0Approvals.addKey(addressToBytes32(otherWallet.address), ACTION_KEY, ECDSA_TYPE);
+      await expect(fromOtherWallet.execute(to, value, addKeyData)).to.be.reverted;
     });
   });
 
   describe('Do execute', async () => {
-    const id = 0;
     let to;
     let functionData;
     beforeEach(async () => {
-      mockContract = await deployContract(wallet, MockContract);
       functionData = mockContract.interface.functions.callMe().data;
       to = mockContract.address;
     });
@@ -228,20 +409,12 @@ describe('Contract - yarn test -Identity', async () => {
         .emit(identity, 'Executed')
         .withArgs(id, to, value, functionData);
     });
-    xit('no external calls');
-    xit('emit ExecutionFailed');
-  });
-
-  describe('Approve with 2 keys needed', () => {
-    xit('Execute transfer');
-    xit('Execute call on self');
-    xit('Execute call');
-    xit('Will not execute with not enough confirmations');
-  });
-  xdescribe('Approve with 3 keys needed', () => {
-    xit('Will not execute with not enough confirmations');
-    xit('Execute transfer');
-    xit('Execute call on self');
-    xit('Execute call');
+    
+    it('emit ExecutionFailed', async () => {
+      await identity.execute(to, amount, functionData);
+      await expect(identity.approve(id)).to
+        .emit(identity, 'ExecutionFailed')
+        .withArgs(id, to, amount, functionData);
+    });
   });
 });
