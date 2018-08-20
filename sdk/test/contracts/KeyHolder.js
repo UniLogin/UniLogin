@@ -215,6 +215,10 @@ describe.only('Contract - yarn test -Identity', async () => {
       await identity.approve(id);
       expect(await isActionKey()).to.be.false;
     });
+
+    it('Should not allow to remove key with invalid purpose', async () => {
+      await expect(identity.removeKey(actionWalletKey, MANAGEMENT_KEY)).to.be.reverted;
+    });
   });
 
   describe('Execute', async () => {
