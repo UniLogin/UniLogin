@@ -14,10 +14,8 @@ class GreetingView extends Component {
           <div className="row">
             <img className="user-avatar" src={UserIco} alt="Avatar" />
             <div>
-              <p className="user-id">bobby.universal-id.eth</p>
-              <p className="wallet-address">
-                0xcee7a4d8be1c30623adc6185b6cdbcba19fac166
-              </p>
+              <p className="user-id">{this.props.identity.name}</p>
+              <p className="wallet-address">{this.props.identity.address}</p>
             </div>
           </div>
           <hr className="separator" />
@@ -64,10 +62,7 @@ class GreetingView extends Component {
               </p>
             </div>
           </div>
-          <button
-            onClick={() => this.props.setView('MainScreen')}
-            className="btn fullwidth start-btn"
-          >
+          <button className="btn fullwidth start-btn">
             Start using App
           </button>
         </div>
@@ -77,7 +72,7 @@ class GreetingView extends Component {
 }
 
 GreetingView.propTypes = {
-  setView: PropTypes.func
+  identity: PropTypes.object
 };
 
 export default GreetingView;

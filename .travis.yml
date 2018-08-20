@@ -6,6 +6,4 @@ node_js:
 install:
   - yarn install
 script:
-  - yarn build
-  - yarn test
-  - yarn lint
+  - script/travis.sh

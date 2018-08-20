@@ -34,6 +34,7 @@ class IdentitySelector extends Component {
       identity,
       identityExist: this.identityExist(identity)
     });
+    this.props.onChange(identity);
   }
 
   updateSuffix(value) {
@@ -43,6 +44,7 @@ class IdentitySelector extends Component {
       identity,
       identityExist: this.identityExist(identity)
     });
+    this.props.onChange(identity);
   }
 
   render() {
@@ -60,14 +62,15 @@ class IdentitySelector extends Component {
             dropdownContent={suffixes}
           />
         </div>
-        <Button onClick={() => this.props.setView('CreatingID')}>Next</Button>
+        <Button onClick={this.props.onNextClick.bind(this) }>Next</Button>
       </div>
     );
   }
 }
 
 IdentitySelector.propTypes = {
-  setView: PropTypes.func
+  onChange: PropTypes.func,
+  onNextClick: PropTypes.func
 };
 
 export default IdentitySelector;

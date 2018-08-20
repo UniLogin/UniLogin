@@ -1,5 +1,5 @@
 {
-    "name": "IdentitySdk",
+    "name": "ethereum-identity-sdk",
     "version": "0.1.0",
     "private": true,
     "license": "MIT",
@@ -18,7 +18,9 @@
         "lint": "eslint lib test && solium -d contracts",
         "build:contracts": "waffle",
         "build:sdk": "babel lib --out-dir dist",
-        "build": "yarn build:contracts && yarn build:sdk"
+        "build": "yarn build:contracts && yarn build:sdk",
+        "relayer:start": "babel-node scripts/relayer.js",
+        "ganache:start": "babel-node scripts/ganache.js"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -33,7 +35,8 @@
         "chai": "^4.1.2",
         "chai-http": "^4.0.0",
         "chai-string": "^1.4.0",
-        "ganache-core": "^2.1.5",
+        "cors": "^2.8.4",
+        "ganache-core": "^2.2.1",
         "node-fetch": "^2.2.0"
     }
 }

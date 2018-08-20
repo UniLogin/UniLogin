@@ -5,10 +5,10 @@
 Ethereum Identity SDK is composed of smart contracts and js lib and relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#725](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
 
 This is work in progress. Planned functionality for first release include:
-- creating and managing identities
-- multi factor authentication via multisignature
-- univeral login
-- ether less transactions via relayer
+- Creating and managing identities
+- Multi-factor authentication
+- Universal login
+- Ether less transactions via relayer
 
 ## Example usage
 Getting strated:
@@ -88,3 +88,19 @@ Where config file is a JSON file in the following format:
 ```
 
 Default port is `3311`, `privateKey` is the only required field.
+
+## Running example on dev environment
+Before running example one need to start dev blockchain (from `sdk` directory):
+```sh
+yarn ganache
+```
+
+and from new terminal (from `sdk` directory):
+```sh
+yarn relayer
+```
+
+then to run example (from `example` directory):
+```
+yarn dev
+```
