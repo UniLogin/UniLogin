@@ -16,9 +16,9 @@ describe('SDK - Identity', async () => {
   let sdk;
 
   before(async () => {
-    relayer = new Relayer(createMockProvider(), defaultAccounts[9].secretKey);
-    await relayer.start();
     provider = createMockProvider();
+    relayer = new Relayer(provider, defaultAccounts[9].secretKey);
+    await relayer.start();
     sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
   });
 
