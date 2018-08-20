@@ -6,7 +6,7 @@ import "./ERC725.sol";
 contract KeyHolder is ERC725 {
 
     uint256 public executionNonce;
-    uint256 neededApprovals;
+    uint256 requiredApprovals;
     struct Execution {
         address to;
         uint256 value;
@@ -19,12 +19,12 @@ contract KeyHolder is ERC725 {
     mapping (uint256 => Execution) public executions;
 
 
-    constructor(bytes32 _key, uint256 _neededApprovals) public {
+    constructor(bytes32 _key) public {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         keys[_key].keyType = ECDSA_TYPE;
 
-        neededApprovals = _neededApprovals;
+        requiredApprovals = 1;
 
         keysByPurpose[MANAGEMENT_KEY].push(_key);
 
@@ -71,6 +71,15 @@ contract KeyHolder is ERC725 {
         return keys[_key].purpose == _purpose;
     }
 
+    function() public payable {
+
+    }
+
+    function setRequiredApprovals(uint _requiredApprovals) public onlyManagementKeyOrThisContract {
+        require(keysByPurpose[MANAGEMENT_KEY].length >= _requiredApprovals, "Not enough management keys");
+        requiredApprovals = _requiredApprovals;
+    }
+
     function addKey(bytes32 _key, uint256 _purpose, uint256 _type) public onlyManagementKeyOrThisContract returns(bool success) {
         require(keys[_key].key != _key, "Key already added");
 
@@ -86,6 +95,7 @@ contract KeyHolder is ERC725 {
     }
 
     function removeKey(bytes32 _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
+        require(keys[_key].purpose != MANAGEMENT_KEY || keysByPurpose[MANAGEMENT_KEY].length > requiredApprovals, "Can not remove management key");
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose, keys[_key].keyType);
 
@@ -102,13 +112,9 @@ contract KeyHolder is ERC725 {
         return true;
     }
 
-    function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId) {
+    function execute(address _to, uint256 _value, bytes _data) public onlyManagementOrActionKeys returns (uint256 executionId) {
         require(_to != address(0), "Invalid to address");
         require(_to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
-
-        bool isActionKey = keyHasPurpose(bytes32(msg.sender), ACTION_KEY);
-        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
-        require(isActionKey || isManagementKey, "Invalid key");
 
         executions[executionNonce].to = _to;
         executions[executionNonce].value = _value;
@@ -117,7 +123,7 @@ contract KeyHolder is ERC725 {
 
         emit ExecutionRequested(executionNonce, _to, _value, _data);
 
-        if (executions[executionNonce].approvals.length == neededApprovals) {
+        if (executions[executionNonce].approvals.length == requiredApprovals) {
             doExecute(executionNonce);
         }
 
@@ -127,9 +133,10 @@ contract KeyHolder is ERC725 {
 
     function approve(uint256 id) public onlyManagementOrActionKeys onlyUnusedKey(id) returns(bool shouldExecute) {
         require(executions[id].to != address(0), "Invalid execution Id");
+        require(executions[id].to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
 
         executions[id].approvals.push(bytes32(msg.sender));
-        if (executions[id].approvals.length == neededApprovals) {
+        if (executions[id].approvals.length == requiredApprovals) {
             return doExecute(id);
         }
         return false;
@@ -142,6 +149,6 @@ contract KeyHolder is ERC725 {
             emit Executed(id, executions[id].to, executions[id].value, executions[id].data);
         } else {
             emit ExecutionFailed(id, executions[id].to, executions[id].value, executions[id].data);
-        }
+        }   
     }
 }
