@@ -4,6 +4,7 @@ import ethers from 'ethers';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../lib/relayer/services/IdentityService';
 import {MANAGEMENT_KEY} from '../../lib/sdk/sdk';
+import {waitForContractDeploy} from '../../lib/utils/utils';
 
 chai.use(require('chai-string'));
 
@@ -22,18 +23,18 @@ describe('Relayer - IdentityService', async () => {
   });
 
   describe('create identity', async () => {
-    let identityContractAddress;
+    let contract;
 
     before(async () => {
-      identityContractAddress = await identityService.create(managementKey.address);
+      const transaction = await identityService.create(managementKey.address);
+      contract = await waitForContractDeploy(provider, Identity, transaction.hash);
     });
 
     it('returns contract address', async () => {
-      expect(identityContractAddress).to.be.properAddress;
+      expect(contract.address).to.be.properAddress;
     });
 
     it('is initialized with management key', async () => {
-      const contract = new ethers.Contract(identityContractAddress, Identity.interface, provider);
       const managementKeys = await contract.getKeysByPurpose(MANAGEMENT_KEY);
       const expectedKey = managementKey.address.slice(2).toLowerCase();
       expect(managementKeys).to.have.lengthOf(1);

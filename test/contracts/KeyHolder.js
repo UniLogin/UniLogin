@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../build/KeyHolder';
 import MockContract from '../../build/MockContract';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import addressToBytes32 from '../../lib/utils/utils';
+import {addressToBytes32} from '../../lib/utils/utils';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/sdk';
 
