@@ -104,3 +104,7 @@ then to run example (from `example` directory):
 ```
 yarn dev
 ```
+
+## License
+
+Ethereum Identity SDK  is released under the [MIT License](https://opensource.org/licenses/MIT).
