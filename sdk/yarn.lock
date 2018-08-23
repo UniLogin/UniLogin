@@ -1453,8 +1453,8 @@ color-name@1.1.1:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.1.tgz#4b1415304cf50028ea81643643bd82ea05803689"
 
 colors@^1.1.2:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/colors/-/colors-1.3.1.tgz#4accdb89cf2cabc7f982771925e9468784f32f3d"
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/colors/-/colors-1.3.2.tgz#2df8ff573dfbf255af562f8ce7181d6b971a359b"
 
 combined-stream@1.0.6, combined-stream@~1.0.5:
   version "1.0.6"
@@ -2166,9 +2166,9 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^0.1.20:
-  version "0.1.20"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.20.tgz#d5518c09e507c7970f63a6efd897b6c448c167d8"
+ethereum-waffle@^0.1.21:
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.21.tgz#c7c6682d5d5197b9b53eda3479c5e46b274eddf3"
   dependencies:
     ethers "^3.0.26"
     solc-js "^0.4.20-browser.1"

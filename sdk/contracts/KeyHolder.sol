@@ -96,6 +96,7 @@ contract KeyHolder is ERC725 {
 
     function removeKey(bytes32 _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
         require(keys[_key].purpose != MANAGEMENT_KEY || keysByPurpose[MANAGEMENT_KEY].length > requiredApprovals, "Can not remove management key");
+        require(keys[_key].purpose == _purpose, "Invalid key");
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose, keys[_key].keyType);
 
