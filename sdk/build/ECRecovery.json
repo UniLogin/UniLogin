@@ -1,0 +1,267 @@
+{
+  "assembly": {
+    ".code": [
+      {
+        "begin": 301,
+        "end": 1959,
+        "name": "PUSH #[$]",
+        "value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "begin": 301,
+        "end": 1959,
+        "name": "PUSH [$]",
+        "value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "begin": 132,
+        "end": 134,
+        "name": "PUSH",
+        "value": "B"
+      },
+      {
+        "begin": 166,
+        "end": 173,
+        "name": "DUP3"
+      },
+      {
+        "begin": 155,
+        "end": 164,
+        "name": "DUP3"
+      },
+      {
+        "begin": 146,
+        "end": 153,
+        "name": "DUP3"
+      },
+      {
+        "begin": 137,
+        "end": 174,
+        "name": "CODECOPY"
+      },
+      {
+        "begin": 252,
+        "end": 259,
+        "name": "DUP1"
+      },
+      {
+        "begin": 246,
+        "end": 260,
+        "name": "MLOAD"
+      },
+      {
+        "begin": 243,
+        "end": 244,
+        "name": "PUSH",
+        "value": "0"
+      },
+      {
+        "begin": 238,
+        "end": 261,
+        "name": "BYTE"
+      },
+      {
+        "begin": 232,
+        "end": 236,
+        "name": "PUSH",
+        "value": "73"
+      },
+      {
+        "begin": 229,
+        "end": 262,
+        "name": "EQ"
+      },
+      {
+        "begin": 270,
+        "end": 271,
+        "name": "PUSH",
+        "value": "0"
+      },
+      {
+        "begin": 265,
+        "end": 285,
+        "name": "DUP2"
+      },
+      {
+        "begin": 265,
+        "end": 285,
+        "name": "EQ"
+      },
+      {
+        "begin": 265,
+        "end": 285,
+        "name": "PUSH [tag]",
+        "value": "2"
+      },
+      {
+        "begin": 265,
+        "end": 285,
+        "name": "JUMPI"
+      },
+      {
+        "begin": 222,
+        "end": 285,
+        "name": "PUSH [tag]",
+        "value": "1"
+      },
+      {
+        "begin": 222,
+        "end": 285,
+        "name": "JUMP"
+      },
+      {
+        "begin": 265,
+        "end": 285,
+        "name": "tag",
+        "value": "2"
+      },
+      {
+        "begin": 265,
+        "end": 285,
+        "name": "JUMPDEST"
+      },
+      {
+        "begin": 274,
+        "end": 283,
+        "name": "INVALID"
+      },
+      {
+        "begin": 222,
+        "end": 285,
+        "name": "tag",
+        "value": "1"
+      },
+      {
+        "begin": 222,
+        "end": 285,
+        "name": "JUMPDEST"
+      },
+      {
+        "begin": 222,
+        "end": 285,
+        "name": "POP"
+      },
+      {
+        "begin": 298,
+        "end": 307,
+        "name": "ADDRESS"
+      },
+      {
+        "begin": 295,
+        "end": 296,
+        "name": "PUSH",
+        "value": "0"
+      },
+      {
+        "begin": 288,
+        "end": 308,
+        "name": "MSTORE"
+      },
+      {
+        "begin": 328,
+        "end": 332,
+        "name": "PUSH",
+        "value": "73"
+      },
+      {
+        "begin": 319,
+        "end": 326,
+        "name": "DUP2"
+      },
+      {
+        "begin": 311,
+        "end": 333,
+        "name": "MSTORE8"
+      },
+      {
+        "begin": 352,
+        "end": 359,
+        "name": "DUP3"
+      },
+      {
+        "begin": 343,
+        "end": 350,
+        "name": "DUP2"
+      },
+      {
+        "begin": 336,
+        "end": 360,
+        "name": "RETURN"
+      }
+    ],
+    ".data": {
+      "0": {
+        ".auxdata": "a165627a7a72305820d19060762a5c3eaf8b695800f5f7dc43dddef14ac3a0f3d8675cc5b6c47640280029",
+        ".code": [
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "PUSHDEPLOYADDRESS"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "ADDRESS"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "EQ"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "PUSH",
+            "value": "80"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "PUSH",
+            "value": "40"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "MSTORE"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "PUSH",
+            "value": "0"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "DUP1"
+          },
+          {
+            "begin": 301,
+            "end": 1959,
+            "name": "REVERT"
+          }
+        ]
+      }
+    }
+  },
+  "bytecode": "604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820d19060762a5c3eaf8b695800f5f7dc43dddef14ac3a0f3d8675cc5b6c47640280029",
+  "functionHashes": {},
+  "gasEstimates": {
+    "creation": [
+      116,
+      15200
+    ],
+    "external": {},
+    "internal": {
+      "recover(bytes32,bytes memory)": null,
+      "toEthSignedMessageHash(bytes32)": null
+    }
+  },
+  "interface": "[]",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{},\"title\":\"Elliptic curve signature operations\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"openzeppelin-solidity/contracts/ECRecovery.sol\":\"ECRecovery\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"openzeppelin-solidity/contracts/ECRecovery.sol\":{\"keccak256\":\"0xbdc784d7e9821c2e40a7a878b6ceb0336b9c54257894d965d39d5c9c36343c66\",\"urls\":[\"bzzr://6c5c9048aa3e23e5c68d8f3b9d07a222d53a3772dffbb2ed8e275583911a207e\"]}},\"version\":1}",
+  "opcodes": "PUSH1 0x4C PUSH1 0x2C PUSH1 0xB DUP3 DUP3 DUP3 CODECOPY DUP1 MLOAD PUSH1 0x0 BYTE PUSH1 0x73 EQ PUSH1 0x0 DUP2 EQ PUSH1 0x1C JUMPI PUSH1 0x1E JUMP JUMPDEST INVALID JUMPDEST POP ADDRESS PUSH1 0x0 MSTORE PUSH1 0x73 DUP2 MSTORE8 DUP3 DUP2 RETURN STOP PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT STOP LOG1 PUSH6 0x627A7A723058 KECCAK256 0xd1 SWAP1 PUSH1 0x76 0x2a 0x5c RETURNDATACOPY 0xaf DUP12 PUSH10 0x5800F5F7DC43DDDEF14A 0xc3 LOG0 RETURN 0xd8 PUSH8 0x5CC5B6C476402800 0x29 ",
+  "runtimeBytecode": "73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820d19060762a5c3eaf8b695800f5f7dc43dddef14ac3a0f3d8675cc5b6c47640280029",
+  "srcmap": "301:1658:4:-;;132:2:-1;166:7;155:9;146:7;137:37;252:7;246:14;243:1;238:23;232:4;229:33;270:1;265:20;;;;222:63;;265:20;274:9;222:63;;298:9;295:1;288:20;328:4;319:7;311:22;352:7;343;336:24",
+  "srcmapRuntime": "301:1658:4:-;;;;;;;;"
+}

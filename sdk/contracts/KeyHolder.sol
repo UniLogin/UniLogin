@@ -1,9 +1,11 @@
 pragma solidity ^0.4.24;
 
 import "./ERC725.sol";
+import "openzeppelin-solidity/contracts/ECRecovery.sol";
 
 
 contract KeyHolder is ERC725 {
+    using ECRecovery for bytes32;
 
     uint256 public executionNonce;
     uint256 requiredApprovals;
@@ -31,9 +33,13 @@ contract KeyHolder is ERC725 {
         emit KeyAdded(keys[_key].key,  keys[_key].purpose, keys[_key].keyType);
     }
 
-    modifier onlyManagementOrActionKeys() {
-        bool isActionKey = keyHasPurpose(bytes32(msg.sender), ACTION_KEY);
-        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
+    function() public payable {
+
+    }
+
+    modifier onlyManagementOrActionKeys(bytes32 sender) {
+        bool isActionKey = keyHasPurpose(sender, ACTION_KEY);
+        bool isManagementKey = keyHasPurpose(sender, MANAGEMENT_KEY);
         require(isActionKey || isManagementKey, "Invalid key");
         _;
     }
@@ -44,11 +50,16 @@ contract KeyHolder is ERC725 {
         _;
     }
 
-    modifier onlyUnusedKey(uint256 executionId) {
+    modifier onlyUnusedKey(uint256 executionId, bytes32 sender) {
         for (uint i = 0; i < executions[executionId].approvals.length; i++) {
-            require(executions[executionId].approvals[i] != bytes32(msg.sender), "Key already used.");
+            require(executions[executionId].approvals[i] != sender, "Key already used.");
         }
         _;
+    }
+
+    function getSigner(address _to, uint256 _value, bytes _data, bytes _messageSignature) public pure returns (bytes32) {
+        bytes32 messageHash = keccak256(abi.encodePacked(_to, _value, _data));
+        return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
     }
 
     function getKey(bytes32 _key) public view returns(uint256 purpose, uint256 keyType, bytes32 key) {
@@ -69,10 +80,6 @@ contract KeyHolder is ERC725 {
 
     function keyHasPurpose(bytes32 _key, uint256 _purpose) public view returns(bool result) {
         return keys[_key].purpose == _purpose;
-    }
-
-    function() public payable {
-
     }
 
     function setRequiredApprovals(uint _requiredApprovals) public onlyManagementKeyOrThisContract {
@@ -113,10 +120,60 @@ contract KeyHolder is ERC725 {
         return true;
     }
 
-    function execute(address _to, uint256 _value, bytes _data) public onlyManagementOrActionKeys returns (uint256 executionId) {
-        require(_to != address(0), "Invalid to address");
+    function execute(address _to, uint256 _value, bytes _data) 
+        public 
+        onlyManagementOrActionKeys(bytes32(msg.sender)) 
+        returns(uint256 executionId) 
+    {
         require(_to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
+        return addExecution(_to, _value, _data);
+    }
 
+    function executeSigned(address _to, uint256 _value, bytes _data, bytes _messageSignature) 
+        public 
+        onlyManagementOrActionKeys(getSigner(_to, _value, _data, _messageSignature)) 
+        returns(uint256 executionId) 
+    {
+        bytes32 signer = getSigner(_to, _value, _data, _messageSignature);
+        require(_to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
+
+        return addExecution(_to, _value, _data);
+    }
+
+    function approve(uint256 id) 
+        public 
+        onlyManagementOrActionKeys(bytes32(msg.sender)) 
+        onlyUnusedKey(id, bytes32(msg.sender)) 
+        returns(bool shouldExecute) 
+    {
+        require(executions[id].to != address(0), "Invalid execution id");
+        require(executions[id].to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
+
+        executions[id].approvals.push(bytes32(msg.sender));
+        if (executions[id].approvals.length == requiredApprovals) {
+            return doExecute(id);
+        }
+        return false;
+    }
+
+    function approveSigned(uint256 id, bytes _messageSignature) 
+        public 
+        onlyManagementOrActionKeys(getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature)) 
+        onlyUnusedKey(id, getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature)) 
+        returns(bool shouldExecute) 
+    {
+        require(executions[id].to != address(0), "Invalid execution id");
+        require(executions[id].to != address(this) || keyHasPurpose(getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature), MANAGEMENT_KEY), "Management key required for actions on identity");
+
+        executions[id].approvals.push(bytes32(msg.sender));
+        if (executions[id].approvals.length == requiredApprovals) {
+            return doExecute(id);
+        }
+        return false;
+    }
+
+    function addExecution(address _to, uint256 _value, bytes _data) private returns(uint256 executionId) {
+        require(_to != address(0), "Invalid 'to' address");
         executions[executionNonce].to = _to;
         executions[executionNonce].value = _value;
         executions[executionNonce].data = _data;
@@ -127,20 +184,8 @@ contract KeyHolder is ERC725 {
         if (executions[executionNonce].approvals.length == requiredApprovals) {
             doExecute(executionNonce);
         }
-
         executionNonce++;
         return executionNonce - 1;
-    }
-
-    function approve(uint256 id) public onlyManagementOrActionKeys onlyUnusedKey(id) returns(bool shouldExecute) {
-        require(executions[id].to != address(0), "Invalid execution Id");
-        require(executions[id].to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
-
-        executions[id].approvals.push(bytes32(msg.sender));
-        if (executions[id].approvals.length == requiredApprovals) {
-            return doExecute(id);
-        }
-        return false;
     }
 
     function doExecute(uint256 id) private returns (bool success) {
