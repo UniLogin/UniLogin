@@ -3,8 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../build/KeyHolder';
 import MockContract from '../../build/MockContract';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import {addressToBytes32} from '../../lib/utils/utils';
-import {messageSignature} from '../../lib/utils/tools';
+import {addressToBytes32, messageSignature} from '../../lib/utils/utils';
 import {utils, Wallet} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/sdk';
 
@@ -118,7 +117,7 @@ describe.only('Key holder: executions', async () => {
       await fromManagementWallet.approve(id);
       const afterSecondApproveTargetBalance = await targetWallet.getBalance();
       expect(afterSecondApproveTargetBalance).to.eq(afterFirstApproveTargetBalance);
-    }); 
+    });
 
     describe('On self execute', async () => {
       it('Execute addKey on self with management key', async () => {
@@ -181,7 +180,7 @@ describe.only('Key holder: executions', async () => {
     it('Should not allow to add execution with incorrect amount', async () => {
       await expect(identity.executeSigned(toTarget, 4, data, signature)).to.be.reverted;
     });
-    
+
     it('Should not allow to add execution with incorrect data', async () => {
       await expect(identity.executeSigned(toTarget, amount, ['0x16'], signature)).to.be.reverted;
     });
@@ -243,7 +242,7 @@ describe.only('Key holder: executions', async () => {
         .emit(identity, 'Executed')
         .withArgs(id, to, value, functionData);
     });
-    
+
     it('Should emit ExecutionFailed', async () => {
       await identity.execute(to, amount, functionData);
       await expect(identity.approve(id)).to

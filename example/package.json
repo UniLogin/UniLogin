@@ -12,8 +12,8 @@
     "ethereum-identity-sdk": "file:../sdk"
   },
   "scripts": {
-    "dev": "parcel --no-cache ./src/index.html",
-    "build-dist": "parcel build ./src/index.html",
+    "start": "parcel --no-cache ./src/index.html",
+    "build": "parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx"
   },
   "devDependencies": {

@@ -7,13 +7,21 @@ import ProfileIdentity from './ProfileIdentity';
 import PropTypes from 'prop-types';
 
 class AppMainScreen extends Component {
+
+  setView(view) {
+    const {emitter} = this.props.services;
+    emitter.emit('setView', view);
+  }
+
   render() {
     return (
       <div>
         <HeaderView>
-          <ProfileIdentity type="identityHeader" />
-          <Requests setView={this.props.setView} />
-          <AccountLink setView={this.props.setView} />
+          <ProfileIdentity
+            type="identityHeader"
+            identityService={this.props.services.identityService}/>
+          <Requests setView={this.setView.bind(this)} />
+          <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
         <AppMainScreenView />
       </div>
@@ -22,7 +30,7 @@ class AppMainScreen extends Component {
 }
 
 AppMainScreen.propTypes = {
-  setView: PropTypes.func
+  services: PropTypes.object
 };
 
 export default AppMainScreen;

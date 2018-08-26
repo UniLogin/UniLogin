@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {messageSignature} from '../../lib/utils/tools';
+import {messageSignature} from '../../lib/utils/utils';
 import {utils, Wallet} from 'ethers';
 
 chai.use(chaiAsPromised);
@@ -11,7 +11,7 @@ const {expect} = chai;
 
 describe('Tools test', async () => {
   let provider;
-  let wallet; 
+  let wallet;
   const value = utils.parseEther('0.1');
   const data = utils.hexlify(0);
   before(async () => {

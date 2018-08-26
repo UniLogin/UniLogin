@@ -62,7 +62,7 @@ class GreetingView extends Component {
               </p>
             </div>
           </div>
-          <button className="btn fullwidth start-btn">
+          <button className="btn fullwidth start-btn" onClick={this.props.onStartClick.bind(this)}>
             Start using App
           </button>
         </div>
@@ -72,7 +72,8 @@ class GreetingView extends Component {
 }
 
 GreetingView.propTypes = {
-  identity: PropTypes.object
+  identity: PropTypes.object,
+  onStartClick: PropTypes.func
 };
 
 export default GreetingView;
