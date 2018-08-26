@@ -34,30 +34,25 @@ class ContentContainer extends Component {
 
   render() {
     if (this.state.view === 'Login') {
-      return <Login services={this.props.services}/>;
+      return <Login services={this.props.services} />;
     } else if (this.state.view === 'CreatingID') {
       return <CreatingId identityService={this.props.services.identityService}/>;
-    } else if (this.state.view === 'ApproveConnection') {
-      return <ApproveConnectionView setView={this.setView.bind(this)} />;
     } else if (this.state.view === 'Greeting') {
       return <Greeting identityService={this.props.services.identityService}/>;
-    } else if (this.state.view === 'Account') {
-      return (
-        <Account
-          setView={this.setView.bind(this)}
-          emitter={this.props.services.emitter}
-        />
-      );
     } else if (this.state.view === 'MainScreen') {
-      return <MainScreen setView={this.setView.bind(this)} />;
+      return <MainScreen services={this.props.services}/>;
+    } else if (this.state.view === 'Account') {
+      return (<Account identityService={this.props.services.identityService}/>);
+    } else if (this.state.view === 'ApproveConnection') {
+      return <ApproveConnectionView setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'PendingAuthorizations') {
-      return <PendingAuthorizations setView={this.setView.bind(this)} />;
+      return <PendingAuthorizations setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Backup') {
-      return <Backup setView={this.setView.bind(this)} />;
+      return <Backup setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Trusted') {
-      return <Trusted setView={this.setView.bind(this)} />;
+      return <Trusted setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Example') {
-      return <Example setView={this.setView.bind(this)} />;
+      return <Example setView={this.setView.bind(this)}/>;
     }
   }
 }

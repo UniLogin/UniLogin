@@ -3,10 +3,15 @@ import GreetingView from '../views/GreetingView';
 import PropTypes from 'prop-types';
 
 class Greeting extends Component {
+
+  showMainScreen() {
+    this.props.identityService.emitter.emit('setView', 'MainScreen');
+  }
+
   render() {
     const {identity} = this.props.identityService;
     return (
-      <GreetingView identity={identity}/>
+      <GreetingView identity={identity} onStartClick={this.showMainScreen.bind(this)}/>
     );
   }
 }

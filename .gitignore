@@ -3,6 +3,7 @@ dist
 .idea
 data
 /build/
+/sdk/build/
 /dist/
 yarn-error.log
 nodePrivateKey.json

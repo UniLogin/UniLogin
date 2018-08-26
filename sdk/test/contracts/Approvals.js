@@ -3,8 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../build/KeyHolder';
 import MockContract from '../../build/MockContract';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import {addressToBytes32} from '../../lib/utils/utils';
-import {messageSignature} from '../../lib/utils/tools';
+import {addressToBytes32, messageSignature} from '../../lib/utils/utils';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/sdk';
 
@@ -84,31 +83,31 @@ describe.only('Key holder: approvals', async () => {
     beforeEach(async () => {
       await identity.setRequiredApprovals(required0Approvals);
     });
-    
+
     it('Execute transfer', async () => {
       await identity.execute(toTarget, amount, data);
       const targetBalanceAfterSend = await targetWallet.getBalance();
       expect(targetBalanceAfterSend).to.eq(amount.add(targetBalance));
     });
-    
+
     it('Execute call on self', async () => {
       await identity.execute(to, value, addKeyData);
       expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.true;
     });
-    
+
     it('Execute call', async () => {
       await identity.execute(toMock, value, functionData);
       expect(await mockContract.wasCalled()).to.be.true;
     });
-    
+
     it('Will not execute with unknown key', async () => {
       await expect(unknownWallet.execute(toMock, value, functionData)).to.be.reverted;
     });
-    
+
     it('Will not execute on self with unknown key', async () => {
       await expect(unknownWallet.execute(to, value, addKeyData)).to.be.reverted;
     });
-    
+
     it('Will not execute on self with action key', async () => {
       await expect(actionWallet.execute(to, value, addKeyData)).to.be.reverted;
     });
@@ -121,7 +120,7 @@ describe.only('Key holder: approvals', async () => {
       const approvals = await identity.getExecutionApprovals(id);
       expect(approvals[0]).to.eq(utils.hexlify(managementKey));
     });
-    
+
     it('Should emit Executed event successfully', async () => {
       await identity.execute(to, value, addKeyData);
       await expect(identity.approve(id)).to
@@ -129,24 +128,24 @@ describe.only('Key holder: approvals', async () => {
         .withArgs(id, to, value, addKeyData);
       expect(await isActionKey()).to.be.true;
     });
-    
+
     it('Should not allow to approve with unknown key', async () => {
       await identity.execute(to, value, addKeyData);
       await expect(unknownWallet.approve(id)).to.be.reverted;
     });
-    
+
     it('Should not allow to approve on self with action key', async () => {
       await identity.execute(to, value, addKeyData);
       await expect(actionWallet.approve(id)).to.be.reverted;
     });
-    
+
     it('Should not allow to approve non-existent execution', async () => {
       await expect(identity.approve(id)).to.be.reverted;
     });
-    
+
     it('Execute transfer', async () => {
       await identity.execute(toTarget, amount, data);
-      await identity.approve(id);      
+      await identity.approve(id);
       targetBalanceAfterSend = await targetWallet.getBalance();
       expect(targetBalanceAfterSend).not.to.eq(targetBalance);
       expect(targetBalanceAfterSend).to.eq(amount.add(targetBalance));
@@ -192,7 +191,7 @@ describe.only('Key holder: approvals', async () => {
         expect(wasCalled).to.be.true;
       });
 
-      it('Will not execute with not enough approvals', async () => { 
+      it('Will not execute with not enough approvals', async () => {
         await identity.approve(addKeyExecutionId);
         expect(await isActionKey()).to.be.false;
       });
@@ -222,12 +221,12 @@ describe.only('Key holder: approvals', async () => {
         await actionWallet.approve(id);
         expect(await targetWallet.getBalance()).not.to.eq(targetBalance);
       });
-    });  
+    });
   });
 
   describe('Approve signed', async () => {
     it('Execute transfer', async () => {
-      signature = messageSignature(wallet, toTarget, amount, data); 
+      signature = messageSignature(wallet, toTarget, amount, data);
       await identity.executeSigned(toTarget, amount, data, signature);
       expect(await targetWallet.getBalance()).to.eq(targetBalance);
       await identity.approveSigned(id, signature);

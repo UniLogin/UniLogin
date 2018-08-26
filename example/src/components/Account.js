@@ -9,21 +9,33 @@ import SettingsAccordion from './SettingsAccordion';
 import PropTypes from 'prop-types';
 
 class Account extends Component {
+  constructor(props) {
+    super(props);
+    this.emitter = this.props.identityService.emitter;
+  }
+
+  setView(view) {
+    this.emitter.emit('setView', view);
+  }
+
+
   render() {
     return (
       <div>
         <HeaderView>
-          <BackToAppBtn setView={this.props.setView} />
+          <BackToAppBtn setView={this.setView.bind(this)} />
         </HeaderView>
 
         <div className="container">
-          <ProfileIdentity type="identityAccount" />
+          <ProfileIdentity
+            type="identityAccount"
+            identityService={this.props.identityService}/>
           <hr className="separator" />
-          <ManageDevicesAccordion emitter={this.props.emitter} />
+          <ManageDevicesAccordion emitter={this.props.identityService.emitter} />
           <hr className="separator" />
-          <BackupCodeAccordionView setView={this.props.setView} />
+          <BackupCodeAccordionView setView={this.setView.bind(this)} />
           <hr className="separator" />
-          <TrustedFriendsAccordionView setView={this.props.setView} />
+          <TrustedFriendsAccordionView setView={this.setView.bind(this)} />
           <hr className="separator" />
           <SettingsAccordion />
           <hr className="separator" />
@@ -33,8 +45,7 @@ class Account extends Component {
   }
 }
 Account.propTypes = {
-  emitter: PropTypes.obj,
-  setView: PropTypes.func
+  identityService: PropTypes.obj
 };
 
 export default Account;
