@@ -7,7 +7,7 @@ class IdentityService {
     this.wallet = wallet;
     this.abi = Identity.interface;
   }
-  
+
   async create(managementKey) {
     const overrideOptions = {gasLimit: 4000000};
     const key = addressToBytes32(managementKey);

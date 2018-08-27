@@ -1,7 +1,8 @@
 import ethers from 'ethers';
 import Relayer from '../lib/relayer/relayer';
-import {jsonRpcUrl, privateKey} from '../config/relayer';
 
-const provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
-const relayer = new Relayer(provider, privateKey);
+require('dotenv').config();
+const config = require('../config/relayer');
+const provider = new ethers.providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
+const relayer = new Relayer(provider, config);
 relayer.start();

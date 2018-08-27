@@ -8,6 +8,7 @@ import Identity from '../../build/Identity';
 chai.use(chaiHttp);
 
 const {expect} = chai;
+const privateKey = defaultAccounts[9].secretKey;
 
 describe('Relayer - Identity routes', async () => {
   let relayer;
@@ -15,14 +16,16 @@ describe('Relayer - Identity routes', async () => {
 
   before(async () => {
     provider = createMockProvider();
-    relayer = new Relayer(provider, defaultAccounts[9].secretKey);
+    relayer = new Relayer(provider, {privateKey});
     relayer.start();
   });
 
   it('create', async () => {
     const result = await chai.request(relayer.server)
       .post('/identity')
-      .send({managementKey: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'});
+      .send({
+        managementKey: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+      });
     const {transaction} = result.body;
     const contract = await waitForContractDeploy(provider, Identity, transaction.hash);
     expect(contract.address).to.be.properAddress;

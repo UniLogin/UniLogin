@@ -5,10 +5,13 @@ import bodyParser from 'body-parser';
 import ethers from 'ethers';
 import cors from 'cors';
 
+const defaultPort = 3311;
+
 class Relayer {
-  constructor(provider, privateKey, port = 3311) {
-    this.wallet = new ethers.Wallet(privateKey, provider);
-    this.port = port;
+  constructor(provider, config) {
+    this.wallet = new ethers.Wallet(config.privateKey, provider);
+    this.port = config.port || defaultPort;
+    this.config = config;
   }
 
   start() {

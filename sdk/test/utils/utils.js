@@ -19,7 +19,7 @@ describe('Tools test', async () => {
     [wallet] = await getWallets(provider);
   });
 
-  it('Should return corect message signature', async () => {
+  it('Should return correct message signature', async () => {
     const signature = await messageSignature(wallet, wallet.address, value, data);
     const message = utils.arrayify(utils.solidityKeccak256(['address', 'uint256', 'bytes'],[wallet.address, value, data]));
     expect(Wallet.verifyMessage(message, signature)).to.eq(wallet.address);

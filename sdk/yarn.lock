@@ -1812,6 +1812,10 @@ dom-walk@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
 
+dotenv@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.0.0.tgz#24e37c041741c5f4b25324958ebbc34bca965935"
+
 drbg.js@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/drbg.js/-/drbg.js-1.0.1.tgz#3e36b6c42b37043823cdbc332d58f31e2445480b"
@@ -2166,9 +2170,9 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^0.1.21:
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.23.tgz#3cfa440d6ea8e39fec4b8e43ad5169586f6e7bf8"
+ethereum-waffle@^0.1.24:
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.1.24.tgz#03d2b3fdbffc7ce954459cc1df98f0b25fc92c67"
   dependencies:
     ethers "^3.0.26"
     solc-js "^0.4.20-browser.1"
