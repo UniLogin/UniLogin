@@ -7,9 +7,9 @@
     "build": "babel lib --out-dir dist",
     "dependencies": {
         "chai-as-promised": "^7.1.1",
+        "dotenv": "^6.0.0",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
-        "ethereum-waffle": "^0.1.21",
         "express": "^4.16.3",
         "openzeppelin-solidity": "^1.12.0",
         "web3": "^1.0.0-beta.34"
@@ -21,7 +21,8 @@
         "build:sdk": "babel lib --out-dir dist",
         "build": "yarn build:contracts && yarn build:sdk",
         "relayer:start": "babel-node scripts/relayer.js",
-        "ganache:start": "babel-node scripts/ganache.js"
+        "ganache:start": "babel-node scripts/ganache.js",
+        "ens:deploy": "babel-node scripts/deployENS.js"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -37,6 +38,7 @@
         "chai-http": "^4.0.0",
         "chai-string": "^1.4.0",
         "cors": "^2.8.4",
+        "ethereum-waffle": "^0.1.24",
         "ganache-core": "^2.2.1",
         "node-fetch": "^2.2.0",
         "solium": "^1.1.8"

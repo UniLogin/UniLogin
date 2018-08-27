@@ -11,13 +11,14 @@ const {expect} = chai;
 const RELAYER_URL = 'http://127.0.0.1:3311';
 
 describe('SDK - Identity', async () => {
+  const privateKey = defaultAccounts[9].secretKey;
   let provider;
   let relayer;
   let sdk;
 
   before(async () => {
     provider = createMockProvider();
-    relayer = new Relayer(provider, defaultAccounts[9].secretKey);
+    relayer = new Relayer(provider, {privateKey});
     await relayer.start();
     sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
   });

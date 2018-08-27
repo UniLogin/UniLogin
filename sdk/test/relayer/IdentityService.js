@@ -19,7 +19,7 @@ describe('Relayer - IdentityService', async () => {
 
   before(async () => {
     provider = createMockProvider();
-    [managementKey, otherWallet] = await getWallets(provider);    
+    [managementKey, otherWallet] = await getWallets(provider);
     const wallet = new ethers.Wallet(defaultAccounts[0].secretKey, provider);
     identityService = new IdentityService(wallet);
   });
@@ -29,7 +29,7 @@ describe('Relayer - IdentityService', async () => {
 
     before(async () => {
       const transaction = await identityService.create(managementKey.address);
-      contract = await waitForContractDeploy(managementKey, Identity, transaction.hash, managementKey);
+      contract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
       await contract.setRequiredApprovals(0);
     });
 
@@ -55,13 +55,16 @@ describe('Relayer - IdentityService', async () => {
         expectedBalance = (await otherWallet.getBalance()).add(value);
       });
 
-      it('execute signed message', async () => {              
+      it('execute signed message', async () => {
         const to = otherWallet.address;
         const signature = messageSignature(managementKey, to, value, data);
         await identityService.executeSigned(contract.address, {to, value, data, signature});
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
     });
+
+    xit('has ENS name reserved', async () => {
+      expect(await provider.resolveName('john.test.eth')).to.eq(contract.address);
+    });
   });
 });
-

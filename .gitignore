@@ -10,3 +10,4 @@ nodePrivateKey.json
 registryContractAddress.json
 /config/dev.json
 /example/node_modules
+/sdk/.env
