@@ -163,7 +163,7 @@ contract KeyHolder is ERC725 {
         returns(bool shouldExecute)
     {
         require(executions[id].to != address(0), "Invalid execution id");
-        address signer = getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature);
+        bytes32 signer = getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature);
         require(executions[id].to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
         executions[id].approvals.push(bytes32(msg.sender));
