@@ -5,19 +5,24 @@ import ethers from 'ethers';
 class IdentityService {
   constructor(wallet) {
     this.wallet = wallet;
+    this.abi = Identity.interface;
   }
-
+  
   async create(managementKey) {
+    const overrideOptions = {gasLimit: 4000000};
     const key = addressToBytes32(managementKey);
     const bytecode = `0x${Identity.bytecode}`;
-    const abi = Identity.interface;
-    const args = [key, 1];
-    const deployTransaction = ethers.Contract.getDeployTransaction(bytecode, abi, ...args);
+    const args = [key];
+    const deployTransaction = {
+      ...overrideOptions,
+      ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
+    };
     return this.wallet.sendTransaction(deployTransaction);
   }
 
-  execute() {
-    return {result: 'ok'};
+  async executeSigned(contractAddress, message) {
+    const contract = new ethers.Contract(contractAddress, this.abi, this.wallet);
+    return await contract.executeSigned(message.to, message.value, message.data, message.signature);
   }
 }
 

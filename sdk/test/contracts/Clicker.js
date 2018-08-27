@@ -9,7 +9,7 @@ chai.use(solidity);
 
 const {expect} = chai;
 
-describe.only('Clicker', async () => { 
+describe('Clicker', async () => { 
   let provider;
   let wallet;
   let clicker;
@@ -61,7 +61,7 @@ describe.only('Clicker', async () => {
 
     it('should not allow to click more than 10 times', async () => {
       await clicker.initiate();
-      for (let i = 0; i < 10; i++) {
+      for (let counter = 0; counter < 10; counter++) {
         await clicker.click();
       }
       await expect(clicker.click()).to.be.reverted;

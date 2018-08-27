@@ -44,9 +44,6 @@ describe('Key holder: approvals', async () => {
   const data = utils.hexlify(0);
   let targetBalance;
   let targetBalanceAfterSend;
-  const required0Approvals = 0;
-  const required2Approvals = 2;
-
   let addKeyData;
 
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
@@ -83,7 +80,7 @@ describe('Key holder: approvals', async () => {
 
   describe('Approve with 0 keys needed', () => {
     beforeEach(async () => {
-      await identity.setRequiredApprovals(required0Approvals);
+      await identity.setRequiredApprovals(0);
     });
 
     it('Execute transfer', async () => {
@@ -157,10 +154,11 @@ describe('Key holder: approvals', async () => {
   describe('Approve with 2 keys needed', () => {
     const addKeyExecutionId = 0;
     const callMockExecutionId = 1;
+
     beforeEach(async () => {
+      await identity.setRequiredApprovals(2);
       await identity.execute(to, value, addKeyData);
       await identity.execute(toMock, value, functionData);
-      await identity.setRequiredApprovals(required2Approvals);
     });
 
     it('Will not approve with used key', async () => {
@@ -228,7 +226,7 @@ describe('Key holder: approvals', async () => {
 
   describe('Approve signed with 0 keys needed', async () => {
     beforeEach(async () => {
-      await identity.setRequiredApprovals(required0Approvals);
+      await identity.setRequiredApprovals(0);
     });
 
     it('Execute transfer', async () => {
@@ -336,7 +334,7 @@ describe('Key holder: approvals', async () => {
     let callOnSelfSignature;
     let callSignature;
     beforeEach(async () => {
-      await identity.setRequiredApprovals(required2Approvals);
+      await identity.setRequiredApprovals(2);
 
       transferSignature = messageSignature(wallet, toTarget, amount, data);
       callOnSelfSignature = messageSignature(wallet, to, value, addKeyData);
