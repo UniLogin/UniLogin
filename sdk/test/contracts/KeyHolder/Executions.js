@@ -1,11 +1,11 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import KeyHolder from '../../build/KeyHolder';
-import MockContract from '../../build/MockContract';
+import KeyHolder from '../../../build/KeyHolder';
+import MockContract from '../../../build/MockContract';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import {addressToBytes32, messageSignature} from '../../lib/utils/utils';
+import {addressToBytes32, messageSignature} from '../../../lib/utils/utils';
 import {utils, Wallet} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/sdk';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/sdk/sdk';
 
 
 chai.use(chaiAsPromised);
@@ -13,7 +13,7 @@ chai.use(solidity);
 
 const {expect} = chai;
 
-describe.only('Key holder: executions', async () => {
+describe('Key holder: executions', async () => {
   let provider;
   let wallet;
   let targetWallet;

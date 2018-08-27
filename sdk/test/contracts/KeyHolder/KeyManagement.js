@@ -1,10 +1,10 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import KeyHolder from '../../build/KeyHolder';
+import KeyHolder from '../../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import {addressToBytes32} from '../../lib/utils/utils';
+import {addressToBytes32} from '../../../lib/utils/utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/sdk/sdk';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/sdk/sdk';
 
 
 chai.use(chaiAsPromised);
@@ -16,9 +16,7 @@ describe('Key holder: key management', async () => {
   let provider;
   let wallet;
   let anotherWallet;
-  let secondWallet;
-  let thirdWallet;
-  let fourthWallet;
+  let managementWallet;
 
   let identity;
   let unknownWallet;
@@ -26,6 +24,9 @@ describe('Key holder: key management', async () => {
 
   let managementWalletKey;
   let unknownWalletKey;
+
+  let fromActionWallet;
+  let fromUnknownWallet;
 
   let managementKey;
   let actionKey;
@@ -42,18 +43,18 @@ describe('Key holder: key management', async () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet, secondWallet, thirdWallet, fourthWallet, anotherWallet] = await getWallets(provider);
+    [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet] = await getWallets(provider);
 
     managementKey = addressToBytes32(wallet.address);
-    managementWalletKey = addressToBytes32(secondWallet.address);
-    actionWalletKey = addressToBytes32(thirdWallet.address);
-    unknownWalletKey = addressToBytes32(fourthWallet.address);
+    managementWalletKey = addressToBytes32(managementWallet.address);
+    actionWalletKey = addressToBytes32(actionWallet.address);
+    unknownWalletKey = addressToBytes32(unknownWallet.address);
     actionKey = addressToBytes32(anotherWallet.address);
 
     identity = await deployContract(wallet, KeyHolder, [managementKey]);
 
-    actionWallet = await contractWithWallet(identity, thirdWallet);
-    unknownWallet = await contractWithWallet(identity, fourthWallet);
+    fromActionWallet = await contractWithWallet(identity, actionWallet);
+    fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
 
     to = identity.address;
 
@@ -112,7 +113,7 @@ describe('Key holder: key management', async () => {
     });
 
     it('Should not allow to add new key with unknown key', async () => {
-      await expect(unknownWallet.addKey(unknownWalletKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
+      await expect(fromUnknownWallet.addKey(unknownWalletKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
     });
 
     it('Should allow to add key by execute', async () => {
@@ -123,7 +124,7 @@ describe('Key holder: key management', async () => {
     });
 
     it('Should not allow to add key with action key', async () => {
-      await expect(actionWallet.addKey(unknownWalletKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
+      await expect(fromActionWallet.addKey(unknownWalletKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
     });
   });
 
@@ -154,6 +155,7 @@ describe('Key holder: key management', async () => {
     beforeEach(async () => {
       await addActionKey();
     });
+
     it('Should remove key successfully', async () => {
       expect(await isActionKey()).to.be.true;
       await identity.removeKey(actionKey, ACTION_KEY);
@@ -179,11 +181,11 @@ describe('Key holder: key management', async () => {
 
     it('Should not allow to remove key with unknown key', async () => {
       expect(await isActionKey()).to.be.true;
-      await expect(unknownWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
+      await expect(fromUnknownWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
     });
 
     it('Should not allow to remove key with action key', async () => {
-      await expect(actionWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
+      await expect(fromActionWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
     });
 
     it('Should not allow to remove last management key', async () => {
