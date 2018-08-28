@@ -1,6 +1,7 @@
 import Identity from '../../../build/Identity';
 import {addressToBytes32} from '../../utils/utils';
 import ethers from 'ethers';
+import defaultDeployOptions from '../../../config/defaultDeployOptions';
 
 class IdentityService {
   constructor(wallet) {
@@ -8,12 +9,12 @@ class IdentityService {
     this.abi = Identity.interface;
   }
 
-  async create(managementKey) {
-    const overrideOptions = {gasLimit: 4000000};
+  async create(managementKey, overrideOptions = {}) {
     const key = addressToBytes32(managementKey);
     const bytecode = `0x${Identity.bytecode}`;
     const args = [key];
     const deployTransaction = {
+      ...defaultDeployOptions,
       ...overrideOptions,
       ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
     };

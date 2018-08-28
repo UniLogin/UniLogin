@@ -57,8 +57,13 @@ contract KeyHolder is ERC725 {
         _;
     }
 
-    function getSigner(address _to, uint256 _value, bytes _data, bytes _messageSignature) public pure returns (bytes32) {
+    function getSignerForExecutions(address _to, uint256 _value, bytes _data, bytes _messageSignature) public pure returns (bytes32) {
         bytes32 messageHash = keccak256(abi.encodePacked(_to, _value, _data));
+        return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
+    }
+
+    function getSignerForApprovals(uint256 _id, bytes _messageSignature) public pure returns(bytes32) {
+        bytes32 messageHash = keccak256(abi.encodePacked((_id)));
         return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
     }
 
@@ -131,44 +136,44 @@ contract KeyHolder is ERC725 {
 
     function executeSigned(address _to, uint256 _value, bytes _data, bytes _messageSignature)
         public
-        onlyManagementOrActionKeys(getSigner(_to, _value, _data, _messageSignature))
+        onlyManagementOrActionKeys(getSignerForExecutions(_to, _value, _data, _messageSignature))
         returns(uint256 executionId)
     {
-        bytes32 signer = getSigner(_to, _value, _data, _messageSignature);
+        bytes32 signer = getSignerForExecutions(_to, _value, _data, _messageSignature);
         require(_to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
         return addExecution(_to, _value, _data);
     }
 
-    function approve(uint256 id)
+    function approve(uint256 _id)
         public
         onlyManagementOrActionKeys(bytes32(msg.sender))
-        onlyUnusedKey(id, bytes32(msg.sender))
+        onlyUnusedKey(_id, bytes32(msg.sender))
         returns(bool shouldExecute)
     {
-        require(executions[id].to != address(0), "Invalid execution id");
-        require(executions[id].to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
+        require(executions[_id].to != address(0), "Invalid execution id");
+        require(executions[_id].to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
 
-        executions[id].approvals.push(bytes32(msg.sender));
-        if (executions[id].approvals.length == requiredApprovals) {
-            return doExecute(id);
+        executions[_id].approvals.push(bytes32(msg.sender));
+        if (executions[_id].approvals.length == requiredApprovals) {
+            return doExecute(_id);
         }
         return false;
     }
 
-    function approveSigned(uint256 id, bytes _messageSignature)
+    function approveSigned(uint256 _id, bytes _messageSignature)
         public
-        onlyManagementOrActionKeys(getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature))
-        onlyUnusedKey(id, getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature))
+        onlyManagementOrActionKeys(getSignerForApprovals(_id, _messageSignature))
+        onlyUnusedKey(_id, getSignerForApprovals(_id, _messageSignature))
         returns(bool shouldExecute)
     {
-        require(executions[id].to != address(0), "Invalid execution id");
-        bytes32 signer = getSigner(executions[id].to, executions[id].value, executions[id].data, _messageSignature);
-        require(executions[id].to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
+        require(executions[_id].to != address(0), "Invalid execution id");
+        bytes32 signer = getSignerForApprovals(_id, _messageSignature);
+        require(executions[_id].to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
-        executions[id].approvals.push(bytes32(msg.sender));
-        if (executions[id].approvals.length == requiredApprovals) {
-            return doExecute(id);
+        executions[_id].approvals.push(bytes32(msg.sender));
+        if (executions[_id].approvals.length == requiredApprovals) {
+            return doExecute(_id);
         }
         return false;
     }
@@ -189,13 +194,13 @@ contract KeyHolder is ERC725 {
         return executionNonce - 1;
     }
 
-    function doExecute(uint256 id) private returns (bool success) {
+    function doExecute(uint256 _id) private returns (bool success) {
         /* solium-disable-next-line security/no-call-value */
-        success = executions[id].to.call.value(executions[id].value)(executions[id].data);
+        success = executions[_id].to.call.value(executions[_id].value)(executions[_id].data);
         if (success) {
-            emit Executed(id, executions[id].to, executions[id].value, executions[id].data);
+            emit Executed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         } else {
-            emit ExecutionFailed(id, executions[id].to, executions[id].value, executions[id].data);
+            emit ExecutionFailed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         }
     }
 }
