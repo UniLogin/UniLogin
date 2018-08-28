@@ -35,11 +35,8 @@ describe('Key holder: executions', async () => {
   let actionWalletKey;
   let functionData;
 
-  let to;
-  let toMock;
-  let toTarget;
-  const value = 0;
-  const id = 0;
+  let mockContractAddress;
+  let targetAddress;
   const amount = utils.parseEther('0.1');
   const data = utils.hexlify(0);
   let targetBalance;
@@ -63,9 +60,8 @@ describe('Key holder: executions', async () => {
     fromActionWallet = await contractWithWallet(identity, actionWallet);
     fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
 
-    to = identity.address;
-    toMock = mockContract.address;
-    toTarget = targetWallet.address;
+    mockContractAddress = mockContract.address;
+    targetAddress = targetWallet.address;
 
     targetBalance = await targetWallet.getBalance();
 
@@ -80,72 +76,72 @@ describe('Key holder: executions', async () => {
 
   describe('Execute', async () => {
     it('Should emit ExecutionRequested event correctly', async () => {
-      await expect(identity.execute(toMock, value, functionData)).to
+      await expect(identity.execute(mockContractAddress, 0, functionData)).to
         .emit(identity, 'ExecutionRequested')
-        .withArgs(id, toMock, value, functionData);
+        .withArgs(0, mockContractAddress, 0, functionData);
     });
 
     it('Should add executions successfully', async () => {
       const firstNonce = await identity.executionNonce();
-      await identity.execute(toMock, value, functionData);
+      await identity.execute(mockContractAddress, 0, functionData);
       const actualNonce = await identity.executionNonce();
       expect(firstNonce).not.to.eq(actualNonce);
       const execution = await identity.executions(firstNonce);
-      expect(execution[0]).to.eq(toMock);
-      expect(execution[1]).to.eq(value);
+      expect(execution[0]).to.eq(mockContractAddress);
+      expect(execution[1]).to.eq(0);
       expect(execution[2]).to.eq(functionData);
     });
 
     it('Should not allow to add execution with unknown key', async () => {
-      await expect(fromUnknownWallet.execute(toMock, value, functionData)).to.be.reverted;
+      await expect(fromUnknownWallet.execute(mockContractAddress, 0, functionData)).to.be.reverted;
     });
 
     it('Should allow to add execution with action key', async () => {
-      await expect(fromActionWallet.execute(toMock, value, functionData)).to
+      await expect(fromActionWallet.execute(mockContractAddress, 0, functionData)).to
         .emit(identity, 'ExecutionRequested')
-        .withArgs(id, toMock, value, functionData);
+        .withArgs(0, mockContractAddress, 0, functionData);
     });
 
     it('Can not execute twice even when requiredConfirmation increased', async () => {
-      await identity.execute(toTarget, amount, data);
+      await identity.execute(targetAddress, amount, data);
       expect(await targetWallet.getBalance()).to.be.eq(targetBalance);
 
-      await identity.approve(id);
+      await identity.approve(0);
       const afterFirstApproveTargetBalance = await targetWallet.getBalance();
       expect(afterFirstApproveTargetBalance).not.to.eq(targetBalance);
 
-      await fromManagementWallet.approve(id);
+      await fromManagementWallet.approve(0);
       const afterSecondApproveTargetBalance = await targetWallet.getBalance();
       expect(afterSecondApproveTargetBalance).to.eq(afterFirstApproveTargetBalance);
     });
 
     describe('On self execute', async () => {
       it('Execute addKey on self with management key', async () => {
-        await expect(identity.execute(to, value, addKeyData)).to
+        await expect(identity.execute(identity.address, 0, addKeyData)).to
           .emit(identity, 'ExecutionRequested')
-          .withArgs(id, to, value, addKeyData);
+          .withArgs(0, identity.address, 0, addKeyData);
       });
 
       it('Fails execute addKey on self with action key', async () => {
-        await expect(fromActionWallet.execute(to, value, addKeyData)).to.be.reverted;
+        await expect(fromActionWallet.execute(identity.address, 0, addKeyData)).to.be.reverted;
       });
 
       it('Fails execute addKey on self with unknown key', async () => {
-        await expect(fromUnknownWallet.execute(to, value, addKeyData)).to.be.reverted;
+        await expect(fromUnknownWallet.execute(identity.address, 0, addKeyData)).to.be.reverted;
       });
 
       it('Execute removeKey on self if with management key', async () => {
-        await expect(identity.execute(to, value, removeKeyData)).to
+        await expect(identity.execute(identity.address, 0, removeKeyData)).to
           .emit(identity, 'ExecutionRequested')
-          .withArgs(id, to, value, removeKeyData);
+          .withArgs(0, identity.address, 0, removeKeyData);
       });
 
       it('Fails execute removeKey on self with action key', async () => {
-        await expect(fromActionWallet.execute(to, value, removeKeyData)).to.be.reverted;
+        await expect(fromActionWallet.execute(identity.address, 0, removeKeyData)).to.be.reverted;
       });
 
       it('Fails execute removeKey on self with unknown key', async () => {
-        await expect(fromUnknownWallet.execute(to, value, removeKeyData)).to.be.reverted;
+        await expect(fromUnknownWallet.execute(identity.address, 0, removeKeyData)).to.be.reverted;
       });
     });
   });
@@ -153,24 +149,24 @@ describe('Key holder: executions', async () => {
   describe('Execute signed', async () => {
     let signature;
     beforeEach(async () => {
-      signature = messageSignature(wallet, toTarget, amount, data);
+      signature = messageSignature(wallet, targetAddress, amount, data);
     });
 
-    it('Get signer work correctly', async () => {
-      const message = utils.arrayify(utils.solidityKeccak256(['address', 'uint256', 'bytes'],[toTarget, amount, data]));
+    it('Get signer for executions work correctly', async () => {
+      const message = utils.arrayify(utils.solidityKeccak256(['address', 'uint256', 'bytes'],[targetAddress, amount, data]));
       const correctSigner = utils.hexlify(addressToBytes32(Wallet.verifyMessage(message, signature)));
-      expect(await identity.getSigner(toTarget, amount, data, signature)).to.eq(correctSigner);
+      expect(await identity.getSignerForExecutions(targetAddress, amount, data, signature)).to.eq(correctSigner);
     });
 
     it('Should allow to add execution with valid message signature', async () => {
-      await expect(identity.executeSigned(toTarget, amount, data, signature)).to
+      await expect(identity.executeSigned(targetAddress, amount, data, signature)).to
         .emit(identity, 'ExecutionRequested');
-      const execution = await identity.executions(id);
-      expect(execution[0]).to.eq(toTarget);
+      const execution = await identity.executions(0);
+      expect(execution[0]).to.eq(targetAddress);
     });
 
     it('Should not allow to add execution with invalid message signature', async () => {
-      await expect(identity.executeSigned(toTarget, amount, data, signature + 1)).to.be.reverted;
+      await expect(identity.executeSigned(targetAddress, amount, data, signature + 1)).to.be.reverted;
     });
 
     it('Should not allow to add execution with incorrect target address', async () => {
@@ -178,36 +174,36 @@ describe('Key holder: executions', async () => {
     });
 
     it('Should not allow to add execution with incorrect amount', async () => {
-      await expect(identity.executeSigned(toTarget, 4, data, signature)).to.be.reverted;
+      await expect(identity.executeSigned(targetAddress, 4, data, signature)).to.be.reverted;
     });
 
     it('Should not allow to add execution with incorrect data', async () => {
-      await expect(identity.executeSigned(toTarget, amount, ['0x16'], signature)).to.be.reverted;
+      await expect(identity.executeSigned(targetAddress, amount, ['0x16'], signature)).to.be.reverted;
     });
 
     it('Should allow to add execution unknown sender', async () => {
-      await fromUnknownWallet.executeSigned(toTarget, amount, data, signature);
-      const execution = await identity.executions(id);
-      expect(execution[0]).to.eq(toTarget);
+      await fromUnknownWallet.executeSigned(targetAddress, amount, data, signature);
+      const execution = await identity.executions(0);
+      expect(execution[0]).to.eq(targetAddress);
     });
 
     it('Should allow to add execution signed by action key', async () => {
-      signature = messageSignature(actionWallet, toTarget, amount, data);
-      await fromUnknownWallet.executeSigned(toTarget, amount, data, signature);
-      const execution = await identity.executions(id);
-      expect(execution[0]).to.eq(toTarget);
+      signature = messageSignature(actionWallet, targetAddress, amount, data);
+      await fromUnknownWallet.executeSigned(targetAddress, amount, data, signature);
+      const execution = await identity.executions(0);
+      expect(execution[0]).to.eq(targetAddress);
     });
 
     it('Should not allow to add execution signed by unknown key', async () => {
-      signature = messageSignature(unknownWallet, toTarget, amount, data);
-      await expect(fromUnknownWallet.executeSigned(toTarget, amount, data, signature)).to.be.reverted;
+      signature = messageSignature(unknownWallet, targetAddress, amount, data);
+      await expect(fromUnknownWallet.executeSigned(targetAddress, amount, data, signature)).to.be.reverted;
     });
 
     describe('On self execute signed', async () => {
       it('Should allow to add execution on self signed by management key', async () => {
         signature = messageSignature(wallet, identity.address, amount, data);
         await identity.executeSigned(identity.address, amount, data, signature);
-        const execution = await identity.executions(id);
+        const execution = await identity.executions(0);
         expect(execution[0]).to.eq(identity.address);
       });
 
@@ -223,31 +219,25 @@ describe('Key holder: executions', async () => {
     });
   });
   describe('Do execute', async () => {
-    let functionData;
-    beforeEach(async () => {
-      functionData = mockContract.interface.functions.callMe().data;
-      to = mockContract.address;
-    });
-
     it('Success call function', async () => {
-      await identity.execute(to, value, functionData);
-      await identity.approve(id);
+      await identity.execute(mockContractAddress, 0, functionData);
+      await identity.approve(0);
       const wasCalled = await mockContract.wasCalled();
       expect(wasCalled).to.be.true;
     });
 
     it('Should emit Executed event', async () => {
-      await identity.execute(to, value, functionData);
-      await expect(identity.approve(id)).to
+      await identity.execute(mockContractAddress, 0, functionData);
+      await expect(identity.approve(0)).to
         .emit(identity, 'Executed')
-        .withArgs(id, to, value, functionData);
+        .withArgs(0, mockContractAddress, 0, functionData);
     });
 
     it('Should emit ExecutionFailed', async () => {
-      await identity.execute(to, amount, functionData);
-      await expect(identity.approve(id)).to
+      await identity.execute(mockContractAddress, amount, functionData);
+      await expect(identity.approve(0)).to
         .emit(identity, 'ExecutionFailed')
-        .withArgs(id, to, amount, functionData);
+        .withArgs(0, mockContractAddress, amount, functionData);
     });
   });
 });

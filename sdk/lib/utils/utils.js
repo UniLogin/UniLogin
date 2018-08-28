@@ -24,4 +24,11 @@ const  messageSignature = (wallet, to, amount, data) =>
       [to, amount, data])
     ));
 
-export {addressToBytes32, waitForContractDeploy, messageSignature};
+const messageSignatureForApprovals = (wallet, id) => 
+  wallet.signMessage(
+    utils.arrayify(utils.solidityKeccak256(
+      ['uint256'],
+      [id])
+    ));
+
+export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals};
