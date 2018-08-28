@@ -1,11 +1,11 @@
 import chai from 'chai';
-import Identity from '../../build/Identity';
+import Identity from '../../../build/Identity';
 import ethers, {utils} from 'ethers';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
-import IdentityService from '../../lib/relayer/services/IdentityService';
-import {MANAGEMENT_KEY} from '../../lib/sdk/sdk';
-import {waitForContractDeploy, messageSignature} from '../../lib/utils/utils';
-import ENSBuilder from '../../lib/utils/ensBuilder';
+import IdentityService from '../../../lib/relayer/services/IdentityService';
+import {MANAGEMENT_KEY} from '../../../lib/sdk/sdk';
+import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
+import ENSBuilder from '../../../lib/utils/ensBuilder';
 
 chai.use(require('chai-string'));
 

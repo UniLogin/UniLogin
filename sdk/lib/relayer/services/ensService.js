@@ -1,5 +1,5 @@
 import ethers, {utils} from 'ethers';
-import TestRegistrar from '../../../build/TestRegistrar';
+import FIFSRegistrar from '../../../build/FIFSRegistrar';
 import PublicResolver from '../../../build/PublicResolver';
 import ENS from '../../../build/ENS';
 
@@ -24,7 +24,7 @@ class ENSService {
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
 
     const wallet = new ethers.Wallet(privateKey, this.provider);
-    const registrar = new ethers.Contract(registrarAddress, TestRegistrar.interface, wallet);
+    const registrar = new ethers.Contract(registrarAddress, FIFSRegistrar.interface, wallet);
     const resolver = new ethers.Contract(resolverAddress, PublicResolver.interface, wallet);
     const ens = new ethers.Contract(this.ensAddress, ENS.interface, wallet);
 
