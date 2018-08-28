@@ -1,6 +1,6 @@
 import chai from 'chai';
-import ENSBuilder from '../../lib/utils/ensBuilder';
-import ENSService from '../../lib/relayer/services/ensService';
+import ENSBuilder from '../../../lib/utils/ensBuilder';
+import ENSService from '../../../lib/relayer/services/ensService';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 
 chai.use(require('chai-string'));

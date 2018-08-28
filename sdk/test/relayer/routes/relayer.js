@@ -1,10 +1,10 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import Relayer from '../../lib/relayer/relayer';
+import IdentityService from '../../../lib/relayer/services/IdentityService';
+import Relayer from '../../../lib/relayer/relayer';
 import {createMockProvider, defaultAccounts, getWallets} from 'ethereum-waffle';
-import {waitForContractDeploy, messageSignature} from '../../lib/utils/utils';
-import Identity from '../../build/Identity';
-import IdentityService from '../../lib/relayer/services/IdentityService';
+import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
+import Identity from '../../../build/Identity';
 
 chai.use(chaiHttp);
 
@@ -37,7 +37,7 @@ describe('Relayer - Identity routes', async () => {
     const contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
     expect(contract.address).to.be.properAddress;
   });
-  
+
   describe('Execute', async () => {
     let expectedBalance;
     before(async () => {
@@ -54,7 +54,7 @@ describe('Relayer - Identity routes', async () => {
         .post('/identity/execution')
         .send({
           contractAddress: contract.address,
-          to: otherWallet.address, 
+          to: otherWallet.address,
           value: 10,
           data: '0x0',
           signature: transferSignature
@@ -62,7 +62,7 @@ describe('Relayer - Identity routes', async () => {
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
     });
   });
-  
+
   after(async () => {
     relayer.stop();
   });
