@@ -1,7 +1,7 @@
 import chai from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {providers} from 'ethers';
 import ENSBuilder from '../../lib/utils/ensBuilder';
+import {withENS} from '../../lib/utils/utils';
 
 const {expect} = chai;
 
@@ -18,17 +18,12 @@ describe('ENS Builder', async () => {
   it('bootstrap and register name', async () => {
     const builder = new ENSBuilder(deployer);
     const expectedAddress = wallet.address;
-    await builder.bootstrapENS();
+    await builder.bootstrap();
     await builder.registerTLD('eth');
     await builder.registerDomain('mylogin', 'eth');
     await builder.registerAddress('alex', 'mylogin.eth', expectedAddress);
 
-    const chainOptions = {
-      chainId: 0,
-      ensAddress: builder.ens.address
-    };
-    // eslint-disable-next-line no-underscore-dangle
-    const providerWithEns = new providers.Web3Provider(provider._web3Provider, chainOptions);
+    const providerWithEns = withENS(provider, builder.ens.address);
     expect(await providerWithEns.resolveName('alex.mylogin.eth')).to.eq(expectedAddress);
   });
 });

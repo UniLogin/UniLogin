@@ -3,10 +3,9 @@ import {getWallets} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
 import fs from 'fs';
 import ENSBuilder from '../lib/utils/ensBuilder';
+import {defaultAccounts} from 'ethereum-waffle';
 
 const {jsonRpcUrl, ensRegistrars} = config;
-
-
 
 /* eslint-disable no-console */
 class ENSDeployer {
@@ -29,13 +28,15 @@ class ENSDeployer {
 
   async deployDomains() {
     const builder = new ENSBuilder(this.deployer);
-    await builder.bootstrapENS();
+    await builder.bootstrap();
     this.variables.ENS_ADDRESS = builder.ens.address;
     await builder.registerTLD('eth');
     for (const domain of Object.keys(ensRegistrars)) {
       const [label, tld] = domain.split('.');
       await builder.registerDomain(label, tld);
-      this.variables[`ENS_REGISTRAR${this.count}`] = builder.registrars['mylogin.eth'].address;
+      this.variables[`ENS_REGISTRAR${this.count}_ADDRESS`] = builder.registrars['mylogin.eth'].address;
+      this.variables[`ENS_REGISTRAR${this.count}_PRIVATE_KEY`] = this.deployerPrivateKey;
+      this.variables[`ENS_RESOLVER${this.count}_ADDRESS`] = builder.resolver.address;
       this.count += 1;
     }
   }
@@ -44,6 +45,7 @@ class ENSDeployer {
     this.provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
     this.wallets = await getWallets(this.provider);
     this.deployer = this.wallets[this.wallets.length - 1];
+    this.deployerPrivateKey = defaultAccounts[defaultAccounts.length - 1].secretKey;
     console.log(`Deploying from: ${this.deployer.address}`);
     await this.deployDomains();
     this.save('.env');

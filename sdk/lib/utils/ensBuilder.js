@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {addressToBytes32} from './utils';
+import {addressToBytes32, withENS} from './utils';
 import {deployContract} from 'ethereum-waffle';
 import ENSRegistry from '../../build/ENSRegistry';
 import PublicResolver from '../../build/PublicResolver';
@@ -13,7 +13,7 @@ class ENSBuilder {
     this.registrars = [];
   }
 
-  async bootstrapENS() {
+  async bootstrap() {
     const emptyNode = addressToBytes32('0x0');
     this.ens = await deployContract(this.deployer, ENSRegistry, []);
     this.adminRegistrar = await deployContract(this.deployer, TestRegistrar, [this.ens.address, emptyNode]);
@@ -47,6 +47,13 @@ class ENSBuilder {
     await this.registrars[domain].register(hashLabel, this.deployer.address);
     await this.ens.setResolver(node, this.resolver.address);
     await this.resolver.setAddr(node, address);
+  }
+
+  async bootstrapWith(label, domain) {
+    await this.bootstrap();
+    await this.registerTLD(domain);
+    await this.registerDomain(label, domain);
+    return withENS(this.deployer.provider, this.ens.address);
   }
 }
 
