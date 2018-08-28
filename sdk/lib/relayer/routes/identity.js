@@ -9,11 +9,12 @@ export const create = (identityService) => async (req, res) => {
     .send(JSON.stringify({transaction}));
 };
 
-export const execute = (identityService) => async (req, res) => {
-  const content = identityService.execute();
+export const executeSigned = (identityService) => async (req, res) => {
+  const {contractAddress, ...message} = req.body;
+  const transaction = await identityService.executeSigned(contractAddress, message);
   res.status(201)
     .type('json')
-    .send(JSON.stringify(content));
+    .send(JSON.stringify({transaction}));
 };
 
 export default (identityService) => {
@@ -22,8 +23,8 @@ export default (identityService) => {
   router.post('/',
     asyncMiddleware(create(identityService)));
 
-  router.post('/execute',
-    asyncMiddleware(execute(identityService)));
+  router.post('/executeSigned',
+    asyncMiddleware(executeSigned(identityService)));
 
   return router;
 };
