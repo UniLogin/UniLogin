@@ -95,6 +95,12 @@ Before running example one need to start dev blockchain (from `sdk` directory):
 yarn ganache:start
 ```
 
+Before running relayer, deploy mock ens infrastructure (from `sdk` directory):
+```sh
+yarn ens:deploy
+```
+
+
 and from new terminal (from `sdk` directory):
 ```sh
 yarn relayer:start

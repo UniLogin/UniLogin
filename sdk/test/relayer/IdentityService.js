@@ -5,6 +5,7 @@ import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../lib/relayer/services/IdentityService';
 import {MANAGEMENT_KEY} from '../../lib/sdk/sdk';
 import {waitForContractDeploy, messageSignature} from '../../lib/utils/utils';
+import ENSBuilder from '../../lib/utils/ensBuilder';
 
 chai.use(require('chai-string'));
 
@@ -14,14 +15,20 @@ describe('Relayer - IdentityService', async () => {
   let identityService;
   let managementKey;
   let provider;
+  let providerWithEns;
   let otherWallet;
+  let ensDeployer;
+  let ensBuilder;
   const data = utils.hexlify(0);
 
   before(async () => {
     provider = createMockProvider();
-    [managementKey, otherWallet] = await getWallets(provider);
+    [managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     const wallet = new ethers.Wallet(defaultAccounts[0].secretKey, provider);
     identityService = new IdentityService(wallet);
+
+    ensBuilder = new ENSBuilder(ensDeployer);
+    providerWithEns = await ensBuilder.bootstrapWith('test', 'eth');
   });
 
   describe('IdentityService', async () => {
@@ -31,6 +38,7 @@ describe('Relayer - IdentityService', async () => {
       const transaction = await identityService.create(managementKey.address);
       contract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
       await contract.setRequiredApprovals(0);
+      await ensBuilder.registerAddress('john', 'test.eth', contract.address);
     });
 
     describe('Create', async () => {
@@ -43,6 +51,10 @@ describe('Relayer - IdentityService', async () => {
         const expectedKey = managementKey.address.slice(2).toLowerCase();
         expect(managementKeys).to.have.lengthOf(1);
         expect(managementKeys[0]).to.endsWith(expectedKey);
+      });
+
+      it('has ENS name reserved', async () => {
+        expect(await providerWithEns.resolveName('john.test.eth')).to.eq(contract.address);
       });
     });
 
@@ -61,10 +73,6 @@ describe('Relayer - IdentityService', async () => {
         await identityService.executeSigned(contract.address, {to, value, data, signature});
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
-    });
-
-    xit('has ENS name reserved', async () => {
-      expect(await provider.resolveName('john.test.eth')).to.eq(contract.address);
     });
   });
 });
