@@ -102,19 +102,6 @@ describe('Key holder: executions', async () => {
         .withArgs(0, mockContractAddress, 0, functionData);
     });
 
-    it('Can not execute twice even when requiredConfirmation increased', async () => {
-      await identity.execute(targetAddress, amount, data);
-      expect(await targetWallet.getBalance()).to.be.eq(targetBalance);
-
-      await identity.approve(0);
-      const afterFirstApproveTargetBalance = await targetWallet.getBalance();
-      expect(afterFirstApproveTargetBalance).not.to.eq(targetBalance);
-
-      await fromManagementWallet.approve(0);
-      const afterSecondApproveTargetBalance = await targetWallet.getBalance();
-      expect(afterSecondApproveTargetBalance).to.eq(afterFirstApproveTargetBalance);
-    });
-
     describe('On self execute', async () => {
       it('Execute addKey on self with management key', async () => {
         await expect(identity.execute(identity.address, 0, addKeyData)).to
@@ -227,15 +214,13 @@ describe('Key holder: executions', async () => {
     });
 
     it('Should emit Executed event', async () => {
-      await identity.execute(mockContractAddress, 0, functionData);
-      await expect(identity.approve(0)).to
+      await expect(identity.execute(mockContractAddress, 0, functionData)).to
         .emit(identity, 'Executed')
         .withArgs(0, mockContractAddress, 0, functionData);
     });
 
     it('Should emit ExecutionFailed', async () => {
-      await identity.execute(mockContractAddress, amount, functionData);
-      await expect(identity.approve(0)).to
+      await expect(identity.execute(mockContractAddress, amount, functionData)).to
         .emit(identity, 'ExecutionFailed')
         .withArgs(0, mockContractAddress, amount, functionData);
     });

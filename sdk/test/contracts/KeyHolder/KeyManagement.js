@@ -36,7 +36,6 @@ describe('Key holder: key management', async () => {
   const value = 0;
   const id = 0;
   const amount = utils.parseEther('0.1');
-  const required2Approvals = 2;
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
@@ -85,10 +84,9 @@ describe('Key holder: key management', async () => {
     });
 
     it('Should not allow to set required approvals greater than management keys nonce', async () => {
-      const required3Approvals = 3;
       const managementKeysNonce = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      expect(managementKeysNonce.length).to.lt(required3Approvals);
-      await expect(identity.setRequiredApprovals(required3Approvals)).to.be.reverted;
+      expect(managementKeysNonce.length).to.lt(3);
+      await expect(identity.setRequiredApprovals(3)).to.be.reverted;
     });
   });
 
@@ -194,15 +192,9 @@ describe('Key holder: key management', async () => {
       await expect(identity.removeKey(managementKey, MANAGEMENT_KEY)).to.be.reverted;
     });
 
-    it('Should not allow to remove management key, when their amount equals reguired approvals', async () => {
-      await identity.setRequiredApprovals(required2Approvals);
-      await expect(identity.removeKey(managementWalletKey, MANAGEMENT_KEY)).to.be.reverted;
-    });
-
     it('Should allow to remove key by execute', async () => {
       const removeKeyData = identity.interface.functions.removeKey(actionKey, ACTION_KEY).data;
       await identity.execute(to, value, removeKeyData);
-      await identity.approve(id);
       expect(await isActionKey()).to.be.false;
     });
 

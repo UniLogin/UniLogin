@@ -76,10 +76,6 @@ describe('Key holder: approvals', async () => {
   });
 
   describe('Approve with 0 keys needed', () => {
-    beforeEach(async () => {
-      await identity.setRequiredApprovals(0);
-    });
-
     it('Execute transfer', async () => {
       await identity.execute(targetAddress, amount, data);
       const targetBalanceAfterSend = await targetWallet.getBalance();
@@ -110,6 +106,9 @@ describe('Key holder: approvals', async () => {
   });
 
   describe('Approve with 1 key needed', async () => {
+    beforeEach(async () => {
+      await identity.setRequiredApprovals(1);
+    });
     it('Should add approval successfully', async () => {
       await identity.execute(identity.address, 0, addKeyData);
       await identity.approve(0);
@@ -145,6 +144,19 @@ describe('Key holder: approvals', async () => {
       targetBalanceAfterSend = await targetWallet.getBalance();
       expect(targetBalanceAfterSend).not.to.eq(targetBalance);
       expect(targetBalanceAfterSend).to.eq(amount.add(targetBalance));
+    });
+    
+    it('Can not execute twice even when requiredConfirmation increased', async () => {
+      await identity.execute(targetAddress, amount, data);
+      expect(await targetWallet.getBalance()).to.be.eq(targetBalance);
+
+      await identity.approve(0);
+      const afterFirstApproveTargetBalance = await targetWallet.getBalance();
+      expect(afterFirstApproveTargetBalance).not.to.eq(targetBalance);
+
+      await fromManagementWallet.approve(0);
+      const afterSecondApproveTargetBalance = await targetWallet.getBalance();
+      expect(afterSecondApproveTargetBalance).to.eq(afterFirstApproveTargetBalance);
     });
   });
 
@@ -217,10 +229,6 @@ describe('Key holder: approvals', async () => {
   });
 
   describe('Approve signed with 0 keys needed', async () => {
-    beforeEach(async () => {
-      await identity.setRequiredApprovals(0);
-    });
-
     it('Execute transfer', async () => {
       signature = messageSignature(wallet, targetAddress, amount, data);
       await identity.executeSigned(targetAddress, amount, data, signature);
@@ -264,6 +272,7 @@ describe('Key holder: approvals', async () => {
 
   describe('Approve signed with 1 key needed', async () => {
     beforeEach(async () => {
+      await identity.setRequiredApprovals(1);
       signature = messageSignature(wallet, mockContractAddress, 0, functionData);
       await identity.executeSigned(mockContractAddress, 0, functionData, signature);
     });
