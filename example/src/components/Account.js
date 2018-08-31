@@ -20,7 +20,7 @@ class Account extends Component {
 
   render() {
     return (
-      <div>
+      <div className="account">
         <HeaderView>
           <BackToAppBtn setView={this.setView.bind(this)} />
         </HeaderView>
