@@ -30,6 +30,7 @@ class ContentContainer extends Component {
 
   setView(view) {
     this.setState({view});
+    window.scrollTo(0, 0);
   }
 
   render() {
