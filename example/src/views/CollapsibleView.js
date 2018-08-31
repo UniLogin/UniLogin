@@ -8,7 +8,7 @@ class CollapsibleView extends Component {
         <div
           className={`accordion-btn ${this.props.isExpanded ? 'expanded' : ''}`}
         >
-          <img className="accordion-btn-ico" src={this.props.icon} alt="icon" />
+          <span className={`accordion-btn-ico ${this.props.icon}`}></span>
           <button onClick={e => this.props.toggleAccordion(e)}>
             <h2 className="accordion-title">{this.props.title}</h2>
             <p className="accordion-subtitle">{this.props.subtitle}</p>

@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import UserIco from '../img/user.svg';
-import CheckmarkIco from '../img/check-mark-dark.svg';
-import PhoneIco from '../img/smartphone.svg';
-import BackupIco from '../img/printer.svg';
-import GroupIco from '../img/users.svg';
 import PropTypes from 'prop-types';
 
 class GreetingView extends Component {
@@ -20,7 +16,7 @@ class GreetingView extends Component {
           </div>
           <hr className="separator" />
           <div className="row">
-            <img className="checkmark-ico" src={CheckmarkIco} alt="Checkmark" />
+            <span className="checkmark-ico icon-check"></span>
             <div>
               <p>You created a new account</p>
               <p>Recieved 10 clicks</p>
@@ -28,7 +24,7 @@ class GreetingView extends Component {
           </div>
           <hr className="separator" />
           <div className="row">
-            <img className="bonus-ico" src={PhoneIco} alt="Phone" />
+            <span className="bonus-ico icon-smartphone"></span>
             <div>
               <p>Add a second device to increase security</p>
               <p>
@@ -40,7 +36,7 @@ class GreetingView extends Component {
           </div>
           <hr className="separator" />
           <div className="row">
-            <img className="bonus-ico" src={BackupIco} alt="Group" />
+            <span className="icon-printer bonus-ico"></span>
             <div>
               <p>Save a backup code</p>
               <p>
@@ -52,7 +48,7 @@ class GreetingView extends Component {
           </div>
           <hr className="separator" />
           <div className="row">
-            <img className="bonus-ico" src={GroupIco} alt="Group" />
+            <span className="icon-users bonus-ico"></span>
             <div>
               <p>Set up 5 trusted friends to recover</p>
               <p>

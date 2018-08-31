@@ -18,7 +18,6 @@ class Account extends Component {
     this.emitter.emit('setView', view);
   }
 
-
   render() {
     return (
       <div>
