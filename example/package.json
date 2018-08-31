@@ -5,11 +5,12 @@
   "license": "MIT",
   "dependencies": {
     "components": "^0.1.0",
+    "ethereum-identity-sdk": "file:../sdk",
+    "ethers": "^3.0.27",
     "fbemitter": "^2.1.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "ethereum-identity-sdk": "file:../sdk"
+    "react-dom": "^16.4.1"
   },
   "scripts": {
     "start": "parcel --no-cache ./src/index.html",

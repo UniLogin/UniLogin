@@ -1,5 +1,4 @@
 import React from 'react';
-import InfoIco from '../img/info.svg';
 import PropTypes from 'prop-types';
 
 const ProfileIdentityAccount = props => (
@@ -9,7 +8,7 @@ const ProfileIdentityAccount = props => (
       <p className="user-id">{props.userId}</p>
       <p className="wallet-address">{props.address}</p>
     </div>
-    <img className="information-ico" src={InfoIco} alt="Info" />
+    <span className="information-ico icon-info"></span>
   </div>
 );
 

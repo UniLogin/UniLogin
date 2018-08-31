@@ -10,7 +10,7 @@ class ManageDevicesAccordionView extends Component {
           <p className="device-status">{item.name}</p>
           <button
             onClick={() => this.props.confirmAction()}
-            className="device-btn"
+            className="device-btn icon-minus-circle"
           />
         </li>
       );

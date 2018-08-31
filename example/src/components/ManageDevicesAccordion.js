@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Collapsible from './Collapsible';
-import PhoneIco from '../img/smartphone.svg';
 import ManageDevicesAccordionView from '../views/ManageDevicesAccordionView';
 import PropTypes from 'prop-types';
 
@@ -29,7 +28,7 @@ class ManageDevices extends Component {
       <Collapsible
         title="Manage devices"
         subtitle="You currently have 3 authorized devices"
-        icon={PhoneIco}
+        icon="icon-smartphone"
       >
         <ManageDevicesAccordionView
           devices={devices}

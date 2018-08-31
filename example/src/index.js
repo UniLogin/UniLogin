@@ -6,6 +6,7 @@ require('babel-polyfill');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+require('./css/icomoon.css');
 require('./css/main.sass');
 
 ReactDOM.render(<App />, document.getElementById('app'));

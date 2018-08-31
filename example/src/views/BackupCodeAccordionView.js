@@ -1,13 +1,12 @@
 import React from 'react';
 import Collapsible from '../components/Collapsible';
-import BackupIco from '../img/printer.svg';
 import PropTypes from 'prop-types';
 
 const BackupCodeAccordionView = props => (
   <Collapsible
     title="Backup code"
     subtitle="You have saved this"
-    icon={BackupIco}
+    icon="icon-printer"
   >
     <p className="advice-text">
       If you lose all your devices you may not have other ways to recover your

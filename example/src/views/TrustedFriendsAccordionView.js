@@ -1,13 +1,12 @@
 import React from 'react';
 import Collapsible from '../components/Collapsible';
-import GroupIco from '../img/users.svg';
 import PropTypes from 'prop-types';
 
 const TrustedFriendsView = props => (
   <Collapsible
     title="Trusted friends recovery"
     subtitle="You have 5 friends configured"
-    icon={GroupIco}
+    icon="icon-users"
   >
     <p className="advice-text">
       If you lose all your means of recovery, you can appoint a number of other
