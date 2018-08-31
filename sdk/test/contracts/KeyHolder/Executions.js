@@ -24,7 +24,6 @@ describe('Key holder: executions', async () => {
 
   let identity;
   let mockContract;
-  let fromManagementWallet;
   let fromUnknownWallet;
   let fromActionWallet;
 
@@ -39,7 +38,7 @@ describe('Key holder: executions', async () => {
   let targetAddress;
   const amount = utils.parseEther('0.1');
   const data = utils.hexlify(0);
-  let targetBalance;
+
 
   let addKeyData;
   let removeKeyData;
@@ -56,14 +55,12 @@ describe('Key holder: executions', async () => {
     identity = await deployContract(wallet, KeyHolder, [managementKey]);
     mockContract = await deployContract(wallet, MockContract);
 
-    fromManagementWallet = await contractWithWallet(identity, managementWallet);
     fromActionWallet = await contractWithWallet(identity, actionWallet);
     fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
 
     mockContractAddress = mockContract.address;
     targetAddress = targetWallet.address;
 
-    targetBalance = await targetWallet.getBalance();
 
     await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
     await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
