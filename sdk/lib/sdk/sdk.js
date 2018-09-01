@@ -15,13 +15,13 @@ class EthereumIdentitySDK {
     this.relayerUrl = relayerUrl;
   }
 
-  async create() {
+  async create(ensName) {
     const privateKey = this.generatePrivateKey();
     const wallet = new ethers.Wallet(privateKey, this.provider);
     const managementKey = wallet.address;
     const url = `${this.relayerUrl}/identity`;
     const method = 'POST';
-    const body = JSON.stringify({managementKey});
+    const body = JSON.stringify({managementKey, ensName});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
@@ -58,7 +58,7 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  getExecutionNonce(emittedEvents) {  
+  getExecutionNonce(emittedEvents) {
     const [eventTopic] = new Interface(Identity.interface).events.ExecutionRequested.topics;
     for (const event of emittedEvents) {
       if (event.topics[0] === eventTopic) {

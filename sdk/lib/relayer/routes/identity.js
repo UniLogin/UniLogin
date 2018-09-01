@@ -2,8 +2,8 @@ import express from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 
 export const create = (identityService) => async (req, res) => {
-  const {managementKey} = req.body;
-  const transaction = await identityService.create(managementKey);
+  const {managementKey, ensName} = req.body;
+  const transaction = await identityService.create(managementKey, ensName);
   res.status(201)
     .type('json')
     .send(JSON.stringify({transaction}));

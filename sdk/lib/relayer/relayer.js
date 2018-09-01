@@ -1,6 +1,7 @@
 import express from 'express';
 import IdentityRouter from './routes/identity';
 import IdentityService from './services/IdentityService';
+import ENSService from './services/ensService';
 import bodyParser from 'body-parser';
 import ethers from 'ethers';
 import cors from 'cors';
@@ -20,7 +21,8 @@ class Relayer {
       origin : '*',
       credentials: true
     }));
-    this.identityService = new IdentityService(this.wallet);
+    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
+    this.identityService = new IdentityService(this.wallet, this.ensService);
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));
     this.server = this.app.listen(this.port);
