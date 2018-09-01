@@ -10,6 +10,7 @@
         "dotenv": "^6.0.0",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
+        "ethereum-waffle": "^0.2.0",
         "express": "^4.16.3",
         "openzeppelin-solidity": "^1.12.0",
         "web3": "^1.0.0-beta.34"
@@ -38,7 +39,6 @@
         "chai-http": "^4.0.0",
         "chai-string": "^1.4.0",
         "cors": "^2.8.4",
-        "ethereum-waffle": "^0.1.24",
         "ganache-core": "^2.2.1",
         "node-fetch": "^2.2.0",
         "solium": "^1.1.8"

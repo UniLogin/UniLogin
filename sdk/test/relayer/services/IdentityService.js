@@ -5,40 +5,36 @@ import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../../lib/relayer/services/IdentityService';
 import {MANAGEMENT_KEY} from '../../../lib/sdk/sdk';
 import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
-import ENSBuilder from '../../../lib/utils/ensBuilder';
-
+import buildEnsService from '../../helpers/buildEnsService';
 chai.use(require('chai-string'));
 
 const {expect} = chai;
 
 describe('Relayer - IdentityService', async () => {
   let identityService;
+  let ensService;
   let managementKey;
   let provider;
-  let providerWithEns;
   let otherWallet;
   let ensDeployer;
-  let ensBuilder;
   const data = utils.hexlify(0);
+
 
   before(async () => {
     provider = createMockProvider();
     [managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     const wallet = new ethers.Wallet(defaultAccounts[0].secretKey, provider);
-    identityService = new IdentityService(wallet);
-
-    ensBuilder = new ENSBuilder(ensDeployer);
-    providerWithEns = await ensBuilder.bootstrapWith('test', 'eth');
+    [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
+    identityService = new IdentityService(wallet, ensService);
   });
 
   describe('IdentityService', async () => {
     let contract;
 
     before(async () => {
-      const transaction = await identityService.create(managementKey.address);
+      const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
       contract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
       await contract.setRequiredApprovals(0);
-      await ensBuilder.registerAddress('john', 'test.eth', contract.address);
     });
 
     describe('Create', async () => {
@@ -54,7 +50,7 @@ describe('Relayer - IdentityService', async () => {
       });
 
       it('has ENS name reserved', async () => {
-        expect(await providerWithEns.resolveName('john.test.eth')).to.eq(contract.address);
+        expect(await provider.resolveName('alex.mylogin.eth')).to.eq(contract.address);
       });
     });
 

@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import EthereumIdentitySDK from '../../lib/sdk/sdk';
-import Relayer from '../../lib/relayer/relayer';
-import {createMockProvider, defaultAccounts, getWallets} from 'ethereum-waffle';
+import RelayerUnderTest from '../helpers/relayerUnderTest';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {utils} from 'ethers';
 
 chai.use(chaiAsPromised);
@@ -12,7 +12,6 @@ const {expect} = chai;
 const RELAYER_URL = 'http://127.0.0.1:3311';
 
 describe('SDK - Identity', async () => {
-  const privateKey = defaultAccounts[9].secretKey;
   let provider;
   let relayer;
   let sdk;
@@ -22,7 +21,7 @@ describe('SDK - Identity', async () => {
   before(async () => {
     provider = createMockProvider();
     [otherWallet, sponsor] = await getWallets(provider);
-    relayer = new Relayer(provider, {privateKey});
+    relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
   });
@@ -32,7 +31,7 @@ describe('SDK - Identity', async () => {
     let identityAddress;
 
     before(async () => {
-      [privateKey, identityAddress] = await sdk.create('alex.ethereum.eth');
+      [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
       sponsor.send(identityAddress, 10000);
     });
 
@@ -41,14 +40,13 @@ describe('SDK - Identity', async () => {
       expect(identityAddress).to.be.properAddress;
     });
 
-    xit('should throw exception if invalid request (no private key)', async () => {
+    it('should register ENS name', async () => {
+      expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
     });
 
-    xit('should deploy contract', async () => {
+    xit('should throw exception if invalid ENS name', async () => {
     });
 
-    xit('should register ENS name', async () => {
-    });
 
     describe('Execute signed message', async () => {
       let expectedBalance;
@@ -65,7 +63,7 @@ describe('SDK - Identity', async () => {
         nonce = await sdk.execute(identityAddress, message, privateKey);
       });
 
-      it('Should execute signed message', async () => {      
+      it('Should execute signed message', async () => {
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 

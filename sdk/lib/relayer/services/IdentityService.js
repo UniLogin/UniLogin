@@ -4,15 +4,17 @@ import ethers from 'ethers';
 import defaultDeployOptions from '../../../config/defaultDeployOptions';
 
 class IdentityService {
-  constructor(wallet) {
+  constructor(wallet, ensService) {
     this.wallet = wallet;
     this.abi = Identity.interface;
+    this.ensService = ensService;
   }
 
-  async create(managementKey, overrideOptions = {}) {
+  async create(managementKey, ensName, overrideOptions = {}) {
     const key = addressToBytes32(managementKey);
     const bytecode = `0x${Identity.bytecode}`;
-    const args = [key];
+    const ensArgs = this.ensService.argsFor(ensName);
+    const args = [key, ...ensArgs];
     const deployTransaction = {
       ...defaultDeployOptions,
       ...overrideOptions,
