@@ -44,9 +44,9 @@ describe('SDK - Identity', async () => {
       expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
     });
 
-    xit('should throw exception if invalid ENS name', async () => {
-    });
+    xit('should throw InvalidENS exception if invalid ENS name', async () => {
 
+    });
 
     describe('Execute signed message', async () => {
       let expectedBalance;

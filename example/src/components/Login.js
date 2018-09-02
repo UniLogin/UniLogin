@@ -24,6 +24,7 @@ class Login extends Component {
   }
 
   render() {
+    const {ensDomains} = this.props.services.config;
     return (
       <div className="login-view">
         <div className="container">
@@ -32,7 +33,11 @@ class Login extends Component {
             This is an example app for implementing ERC1077&1078 in Ethereum.
             You can use this example to build your own app.
           </p>
-          <IdentitySelector onNextClick={() => this.onNextClick()} onChange={this.onChange.bind(this)}/>
+          <IdentitySelector
+            onNextClick={() => this.onNextClick()}
+            onChange={this.onChange.bind(this)}
+            ensDomains={ensDomains}
+          />
         </div>
       </div>
     );

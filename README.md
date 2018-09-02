@@ -100,7 +100,6 @@ Before running relayer, deploy mock ens infrastructure (from `sdk` directory):
 yarn ens:deploy
 ```
 
-
 and from new terminal (from `sdk` directory):
 ```sh
 yarn relayer:start
