@@ -6,8 +6,7 @@ class IdentityService {
   }
 
   async createIdentity(name) {
-    this.identity = {name};
-    this.emitter.emit('creatingIdentity', this.identity);
+    this.emitter.emit('creatingIdentity', {name});
     let [privateKey, address] = await this.sdk.create(name);
     this.identity = {
       name,

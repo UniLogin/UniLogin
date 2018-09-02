@@ -20,10 +20,13 @@ class ENSService {
   }
 
   argsFor(ensName) {
+    console.log(ensName);
     const [label, domain] = this.get2ndLevelDomainForm(ensName);
+    console.log([label, domain]);
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${domain}`);
     const registrarConfig = this.findRegistrar(ensName);
+    console.log(registrarConfig);
     const {resolverAddress} = registrarConfig;
     const {registrarAddress} = registrarConfig;
     return [hashLabel, node, this.ensAddress, registrarAddress, resolverAddress];

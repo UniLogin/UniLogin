@@ -22,7 +22,7 @@ module.exports = Object.freeze({
     'popularapp.eth': {
       resolverAddress: process.env.ENS_RESOLVER3_ADDRESS,
       registrarAddress: process.env.ENS_REGISTRAR3_ADDRESS,
-      privteKey: process.env.ENS_REGISTRAR2_PRIVATE_KEY
+      privteKey: process.env.ENS_REGISTRAR3_PRIVATE_KEY
     }
   }
 });

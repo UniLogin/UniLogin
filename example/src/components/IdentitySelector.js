@@ -5,19 +5,12 @@ import Button from './Button';
 import Dropdown from './Dropdown';
 import PropTypes from 'prop-types';
 
-const suffixes = [
-  '.universal-id.eth',
-  '.mylogin.eth',
-  '.popularapp.eth',
-  '.eth'
-];
-
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
       prefix: '',
-      suffix: suffixes[0],
+      suffix: this.props.ensDomains[0],
       identity: '',
       identityExist: false
     };
@@ -28,7 +21,7 @@ class IdentitySelector extends Component {
   }
 
   updatePrefix(event) {
-    const identity = `${event.target.value}${this.state.suffix}`;
+    const identity = `${event.target.value}.${this.state.suffix}`;
     this.setState({
       prefix: event.target.value,
       identity,
@@ -38,7 +31,7 @@ class IdentitySelector extends Component {
   }
 
   updateSuffix(value) {
-    const identity = `${this.state.prefix}${value}`;
+    const identity = `${this.state.prefix}.${value}`;
     this.setState({
       suffix: value,
       identity,
@@ -58,8 +51,8 @@ class IdentitySelector extends Component {
           />
           <Dropdown
             returnValue={this.updateSuffix.bind(this)}
-            title={suffixes[0]}
-            dropdownContent={suffixes}
+            title={this.props.ensDomains[0]}
+            dropdownContent={this.props.ensDomains}
           />
         </div>
         <Button onClick={this.props.onNextClick.bind(this) }>Next</Button>
@@ -70,7 +63,8 @@ class IdentitySelector extends Component {
 
 IdentitySelector.propTypes = {
   onChange: PropTypes.func,
-  onNextClick: PropTypes.func
+  onNextClick: PropTypes.func,
+  ensDomains: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default IdentitySelector;
