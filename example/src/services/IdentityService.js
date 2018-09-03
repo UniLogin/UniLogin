@@ -15,6 +15,10 @@ class IdentityService {
     };
     this.emitter.emit('identityCreated', this.identity);
   }
+
+  async execute(message) {
+    await this.sdk.execute(this.identity.address, message, this.identity.privateKey);
+  }
 }
 
 export default IdentityService;

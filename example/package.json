@@ -14,13 +14,20 @@
   },
   "scripts": {
     "start": "parcel --no-cache ./src/index.html",
-    "build": "parcel build ./src/index.html",
-    "lint": "eslint src/**/*.js src/**/*.jsx"
+    "web:build": "parcel build ./src/index.html",
+    "lint": "eslint src/**/*.js src/**/*.jsx",
+    "contracts:build": "waffle",
+    "contracts:deploy": "babel-node scripts/deployContracts.js",
+    "build": "yarn contracts:build && yarn web:build"
   },
   "devDependencies": {
+    "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.26.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -33,6 +40,8 @@
     "eslint-plugin-react": "^7.10.0",
     "node-sass": "^4.9.0",
     "parcel-bundler": "^1.9.4",
-    "prettier-eslint": "^8.8.2"
+    "prettier-eslint": "^8.8.2",
+    "ganache-core": "^2.2.1",
+    "ethereum-waffle": "^0.2.0"
   }
 }

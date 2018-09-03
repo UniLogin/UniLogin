@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-class AppMainScreenView extends Component {
+class MainScreenView extends Component {
   render() {
     return (
       <div className="main-screen">
         <div className="container text-center">
-          <p>You have <span className="bold">10 clicks</span> left</p>
-          <button className="btn main-screen-btn">click here</button>
+          <p>You have <span className="bold">{this.props.clicksLeft} clicks</span> left</p>
+          <button className="btn main-screen-btn" onClick={this.props.onClickerClick}>click here</button>
           <p className="click-cost">Costs 1 click</p>
-          <p className="last-click-text">Last time someone pressed this button was <span className="bold">115 second ago</span></p>
+          <p className="last-click-text">Last time someone pressed this button was <span className="bold">{this.props.lastClick} second ago</span></p>
           <hr className="separator"/>
           <div className="click-history">
             <p className="click-history-item">a few minutes ago <span className="bold">alice.universal.eth</span> pressed at 32 seconds</p>
@@ -21,4 +22,10 @@ class AppMainScreenView extends Component {
   }
 }
 
-export default AppMainScreenView;
+MainScreenView.propTypes = {
+  clicksLeft: PropTypes.number,
+  lastClick: PropTypes.string,
+  onClickerClick: PropTypes.func,
+};
+
+export default MainScreenView;
