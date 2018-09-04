@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class MainScreenView extends Component {
+
+  renderEvent(event) {
+    return (
+      <p className="click-history-item">{event.pressTime} ago <span className="bold">{event.address}</span> pressed at {event.score} seconds</p>
+    );
+  }
   render() {
     return (
       <div className="main-screen">
@@ -9,13 +15,10 @@ class MainScreenView extends Component {
           <p>You have <span className="bold">{this.props.clicksLeft} clicks</span> left</p>
           <button className="btn main-screen-btn" onClick={this.props.onClickerClick}>click here</button>
           <p className="click-cost">Costs 1 click</p>
-          <p className="last-click-text">Last time someone pressed this button was <span className="bold">{this.props.lastClick} second ago</span></p>
-          <hr className="separator"/>
           <div className="click-history">
-            <p className="click-history-item">a few minutes ago <span className="bold">alice.universal.eth</span> pressed at 32 seconds</p>
-            <p className="click-history-item">6 minutes ago <span className="bold">tom.universal.eth</span> pressed at 4 minutes</p>
-            <p className="click-history-item">10 minutes ago <span className="bold">tom.universal.eth</span> pressed at 20 seconds</p>
+            { this.props.events.map(this.renderEvent.bind(this)) }
           </div>
+          <hr className="separator"/>
         </div>
       </div>
     );
@@ -24,8 +27,9 @@ class MainScreenView extends Component {
 
 MainScreenView.propTypes = {
   clicksLeft: PropTypes.number,
-  lastClick: PropTypes.string,
+  lastClick: PropTypes.number,
   onClickerClick: PropTypes.func,
+  events: PropTypes.array,
 };
 
 export default MainScreenView;

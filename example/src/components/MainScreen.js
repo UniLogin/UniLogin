@@ -10,7 +10,9 @@ class MainScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {lastClick: 20};
+    const {clickerService} = this.props.services;
+    this.clickerService = clickerService;
+    this.state = {lastClick: 20, lastPresser: 'nobody', events: []}; 
   }
 
   setView(view) {
@@ -19,8 +21,7 @@ class MainScreen extends Component {
   }
 
   async onClickerClick() {
-    const {clickerService} = this.props.services;
-    await clickerService.click();
+    await this.clickerService.click();
     this.setState({lastClick: 0});
   }
 
@@ -28,11 +29,12 @@ class MainScreen extends Component {
     setTimeout(this.update.bind(this), 0);
   }
 
+
   async update() {
-    const {clickerService} = this.props.services;
-    const lastClick = parseInt(await clickerService.getLastClick());
-    const timeDiff = Math.floor(Date.now()/1000 - lastClick);
-    this.setState({lastClick: timeDiff});
+    const pressers = await this.clickerService.getPressEvents();
+    this.setState({
+      lastClick: pressers[0].pressTime, 
+      events: pressers});
     setTimeout(this.update.bind(this), 1000);
   }
 
@@ -46,7 +48,7 @@ class MainScreen extends Component {
           <Requests setView={this.setView.bind(this)} />
           <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
-        <MainScreenView clicksLeft={7} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick}/>
+        <MainScreenView clicksLeft={7} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />
       </div>
     );
   }
