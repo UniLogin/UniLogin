@@ -11,7 +11,7 @@ class ClickerService {
   }
 
   async click() {
-    const message = { 
+    const message = {
       to: this.clickerContractAddress,
       value: 0,
       data: this.clickerContract.interface.functions.press().data
@@ -32,9 +32,10 @@ class ClickerService {
     for (const event of events) {
       const eventArguments = this.event.parse(this.event.topics, event.data);
       pressers.push({
-        address: eventArguments.presser, 
-        pressTime: this.getTimeDistanceInWords(Date.now()/1000,parseInt(eventArguments.pressTime)), 
-        score: parseInt(eventArguments.score)
+        address: eventArguments.presser,
+        pressTime: this.getTimeDistanceInWords(Date.now()/1000,parseInt(eventArguments.pressTime)),
+        score: parseInt(eventArguments.score),
+        key: eventArguments.data
       });
     }
     return pressers.reverse();

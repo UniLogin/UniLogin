@@ -4,7 +4,7 @@ import ethers from 'ethers';
 import config from '../../config/config';
 import IdentityService from './IdentityService';
 import ClickerService from './ClickerService';
-import {clickerContractAddress} from '../../config/addresses';
+import {clickerContractAddress} from '../../config/config';
 
 class Services {
   constructor() {
