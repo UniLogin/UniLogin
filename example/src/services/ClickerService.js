@@ -1,4 +1,4 @@
-import ethers from 'ethers';
+import ethers, {Interface} from 'ethers';
 import Clicker from '../../build/Clicker';
 
 class ClickerService {
@@ -7,6 +7,7 @@ class ClickerService {
     this.clickerContractAddress = clickerContractAddress;
     this.provider = provider;
     this.clickerContract = new ethers.Contract(this.clickerContractAddress, Clicker.interface, this.provider);
+    this.event = new Interface(Clicker.interface).events.ButtonPress;
   }
 
   async click() {
@@ -18,9 +19,31 @@ class ClickerService {
     await this.identityService.execute(message);
   }
 
-
   async getLastClick() {
     return await this.clickerContract.lastPressed();
+  }
+
+  getTimeDistanceInWords(timeA, timeB) {
+    return Math.floor(timeA - timeB);
+  }
+
+  getEventsFromLogs(events) {
+    let pressers = [];
+    for (const event of events) {
+      const eventArguments = this.event.parse(this.event.topics, event.data);
+      pressers.push({
+        address: eventArguments.presser, 
+        pressTime: this.getTimeDistanceInWords(Date.now()/1000,parseInt(eventArguments.pressTime)), 
+        score: parseInt(eventArguments.score)
+      });
+    }
+    return pressers.reverse();
+  }
+
+  async getPressEvents() {
+    const filter = {fromBlock: 0, address: this.clickerContractAddress, topics: [this.event.topics]};
+    const events = await this.provider.getLogs(filter);
+    return this.getEventsFromLogs(events);
   }
 }
 
