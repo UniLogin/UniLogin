@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import ethers, {utils, Interface} from 'ethers';
 import {waitForContractDeploy, messageSignature} from '../../lib/utils/utils';
 import Identity from '../../build/Identity';
+import {getWallets} from 'ethereum-waffle';
 
 const MANAGEMENT_KEY = 1;
 const ACTION_KEY = 2;
@@ -26,9 +27,15 @@ class EthereumIdentitySDK {
     const responseJson = await response.json();
     if (response.status === 201) {
       const contract = await waitForContractDeploy(this.provider, Identity, responseJson.transaction.hash);
+      this.send(contract.address);
       return [privateKey, contract.address];
     }
     throw new Error(`${response.status}`);
+  }
+
+  async send(contractAddress) {
+    const [sponsor] = await getWallets(this.provider);
+    sponsor.send(contractAddress, 10000);
   }
 
   addKey() {

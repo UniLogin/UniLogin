@@ -12,3 +12,5 @@ registryContractAddress.json
 /sdk/.env
 /example/node_modules
 /example/dist
+/example/build
+/example/config/addresses.js
