@@ -90,23 +90,25 @@ Where config file is a JSON file in the following format:
 Default port is `3311`, `privateKey` is the only required field.
 
 ## Running example on dev environment
-Before running example one need to start dev blockchain (from `sdk` directory):
+Start with building all three projects (`relayer`, `sdk` and `example`). From the main project directory run:
+```sh
+./script/build.sh
+```
+
+Before running example one need to start mock blockchain. Run from `relayer` directory following command:
 ```sh
 yarn ganache:start
 ```
 
-Before running relayer, deploy mock ens infrastructure (from `sdk` directory):
+than deploy ens contracts and start relayer, from new console in `relayer` directory type:
 ```sh
 yarn ens:deploy
-```
-
-and from new terminal (from `sdk` directory):
-```sh
 yarn relayer:start
 ```
 
-then to run example (from `example` directory):
+than deploy contracts for example application and run application (from new console in `example` directory):
 ```
+yarn contracts:deploy
 yarn start
 ```
 

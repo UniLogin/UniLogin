@@ -5,7 +5,7 @@ class MainScreenView extends Component {
 
   renderEvent(event) {
     return (
-      <p className="click-history-item">{event.pressTime} ago <span className="bold">{event.address}</span> pressed at {event.score} seconds</p>
+      <p className="click-history-item" key={event.key}>{event.pressTime} ago <span className="bold">{event.address}</span> pressed at {event.score} seconds</p>
     );
   }
   render() {

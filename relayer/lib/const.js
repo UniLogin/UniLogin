@@ -1,0 +1,5 @@
+const MANAGEMENT_KEY = 1;
+const ACTION_KEY = 2;
+const ECDSA_TYPE = 3;
+
+export {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE};
