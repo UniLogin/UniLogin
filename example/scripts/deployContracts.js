@@ -11,12 +11,9 @@ class ContractsDelpoyer {
 
   save(filename, _variables) {
     const variables = Object.entries(_variables)
-      .map(([key, value]) => `  ${key}: '${value}'`)
-      .join(',\n');
-
-    const content = `module.exports = Object.freeze({\n${variables}\n});`; 
-
-    fs.writeFile(filename, content, (err) => {
+      .map(([key, value]) => `  ${key}='${value}'`)
+      .join('\n');
+    fs.writeFile(filename, variables, (err) => {
       if (err) {
         return console.error(err);
       }
@@ -31,8 +28,8 @@ class ContractsDelpoyer {
     this.deployerPrivateKey = defaultAccounts[defaultAccounts.length - 1].secretKey;
     const contract = await deployContract(this.deployer, Clicker);
     const variables = {};
-    variables.clickerContractAddress = contract.address;
-    this.save('./config/addresses.js', variables);
+    variables.CLICKER_CONTRACT_ADDRESS = contract.address;
+    this.save('./.env', variables);
   }
 }
 
