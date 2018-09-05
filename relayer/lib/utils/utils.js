@@ -1,4 +1,9 @@
 import ethers, {providers, utils} from 'ethers';
+import ENS from '../../build/ENS';
+import PublicResolver from '../../build/PublicResolver';
+
+const {namehash} = utils;
+
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
@@ -37,4 +42,12 @@ const withENS = (provider, ensAddress) => {
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS};
+const lookupAddress = async (provider, address) => {
+  const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
+  const ens = new ethers.Contract(provider.ensAddress, ENS.interface, provider);
+  const resolver = await ens.resolver(node);
+  const contract = new ethers.Contract(resolver, PublicResolver.interface, provider);
+  return await contract.name(node);
+};
+
+export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress};

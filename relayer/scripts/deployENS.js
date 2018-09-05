@@ -1,9 +1,8 @@
 import config from '../lib/config/relayer';
-import {getWallets} from 'ethereum-waffle';
-import ethers, {utils} from 'ethers';
+import {getWallets, defaultAccounts} from 'ethereum-waffle';
+import ethers from 'ethers';
 import fs from 'fs';
 import ENSBuilder from '../lib/utils/ensBuilder';
-import {defaultAccounts} from 'ethereum-waffle';
 
 const {jsonRpcUrl, ensRegistrars} = config;
 
@@ -31,10 +30,11 @@ class ENSDeployer {
     await builder.bootstrap();
     this.variables.ENS_ADDRESS = builder.ens.address;
     await builder.registerTLD('eth');
+    await builder.registerReverseRegistrar();
     for (const domain of Object.keys(ensRegistrars)) {
       const [label, tld] = domain.split('.');
       await builder.registerDomain(label, tld);
-      this.variables[`ENS_REGISTRAR${this.count}_ADDRESS`] = builder.registrars['mylogin.eth'].address;
+      this.variables[`ENS_REGISTRAR${this.count}_ADDRESS`] = builder.registrars[domain].address;
       this.variables[`ENS_REGISTRAR${this.count}_PRIVATE_KEY`] = this.deployerPrivateKey;
       this.variables[`ENS_RESOLVER${this.count}_ADDRESS`] = builder.resolver.address;
       this.count += 1;
