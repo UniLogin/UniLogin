@@ -35,7 +35,7 @@ class ClickerService {
         address: eventArguments.presser,
         pressTime: this.getTimeDistanceInWords(Date.now()/1000,parseInt(eventArguments.pressTime)),
         score: parseInt(eventArguments.score),
-        key: eventArguments.data
+        key: event.data
       });
     }
     return pressers.reverse();

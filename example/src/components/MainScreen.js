@@ -36,6 +36,10 @@ class MainScreen extends Component {
 
   async update() {
     const pressers = await this.clickerService.getPressEvents();
+    if (pressers.length == this.state.events.length) {
+      setTimeout(this.update.bind(this), 1000);
+      return;
+    }
     if (pressers.length > 0) {
       this.setState({
         lastClick: pressers[0].pressTime,

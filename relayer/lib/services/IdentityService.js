@@ -17,7 +17,7 @@ class IdentityService {
     const ensArgs = this.ensService.argsFor(ensName);
     const args = [key, ...ensArgs];
     const deployTransaction = {
-      value: utils.parseEther('7'),
+      value: utils.parseEther('0.1'),
       ...defaultDeployOptions,
       ...overrideOptions,
       ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
