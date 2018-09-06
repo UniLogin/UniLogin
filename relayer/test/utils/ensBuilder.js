@@ -1,7 +1,7 @@
 import chai from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import ENSBuilder from '../../lib/utils/ensBuilder';
-import {withENS} from '../../lib/utils/utils';
+import {withENS, lookupAddress} from '../../lib/utils/utils';
 
 const {expect} = chai;
 
@@ -20,10 +20,16 @@ describe('ENS Builder', async () => {
     const expectedAddress = wallet.address;
     await builder.bootstrap();
     await builder.registerTLD('eth');
+    await builder.registerReverseRegistrar();
     await builder.registerDomain('mylogin', 'eth');
     await builder.registerAddress('alex', 'mylogin.eth', expectedAddress);
-
     const providerWithEns = withENS(provider, builder.ens.address);
     expect(await providerWithEns.resolveName('alex.mylogin.eth')).to.eq(expectedAddress);
+
+    const reverseRegistrar = builder.registrars['addr.reverse'];
+    await reverseRegistrar.setName('alex.mylogin.eth');
+    
+    const {address} = builder.deployer;
+    expect(await lookupAddress(providerWithEns, address)).to.eq('alex.mylogin.eth');
   });
 });

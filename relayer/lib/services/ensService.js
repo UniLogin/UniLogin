@@ -26,7 +26,7 @@ class ENSService {
     const registrarConfig = this.findRegistrar(ensName);
     const {resolverAddress} = registrarConfig;
     const {registrarAddress} = registrarConfig;
-    return [hashLabel, node, this.ensAddress, registrarAddress, resolverAddress];
+    return [hashLabel, ensName, node, this.ensAddress, registrarAddress, resolverAddress];
   }
 }
 
