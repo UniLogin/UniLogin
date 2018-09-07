@@ -2,12 +2,13 @@ import ethers, {Interface} from 'ethers';
 import Clicker from '../../build/Clicker';
 
 class ClickerService {
-  constructor(identityService, clickerContractAddress, provider) {
+  constructor(identityService, clickerContractAddress, provider, ensService) {
     this.identityService = identityService;
     this.clickerContractAddress = clickerContractAddress;
     this.provider = provider;
     this.clickerContract = new ethers.Contract(this.clickerContractAddress, Clicker.interface, this.provider);
     this.event = new Interface(Clicker.interface).events.ButtonPress;
+    this.ensService = ensService;
   }
 
   async click() {
@@ -27,12 +28,16 @@ class ClickerService {
     return Math.floor(timeA - timeB);
   }
 
-  getEventsFromLogs(events) {
+  async getEnsName(address) {
+    return await this.ensService.getEnsName(address);
+  }
+
+  async getEventsFromLogs(events) {
     let pressers = [];
     for (const event of events) {
       const eventArguments = this.event.parse(this.event.topics, event.data);
       pressers.push({
-        address: eventArguments.presser,
+        address: await this.getEnsName(eventArguments.presser),
         pressTime: this.getTimeDistanceInWords(Date.now()/1000,parseInt(eventArguments.pressTime)),
         score: parseInt(eventArguments.score),
         key: event.data
