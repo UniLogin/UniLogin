@@ -10,28 +10,27 @@ This is work in progress. Planned functionality for first release include:
 - Universal login
 - Ether less transactions via relayer
 
-## Example usage
-Getting strated:
+## JS SDK, example usage:
+
+### Getting strated
+
+To create identity:
 ```js
 import EthereumIdentitySDK from 'EthereumIdentitySDK';
+const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://etherscan.io/{yourapikey}');
 ```
 
 To create new identity:
 ```js
-const sdk = new EthereumIdentitySDK();
-const privateKey = await sdk.create('alex.ethereum.eth');
+const [privateKey, identityAddress]  = await sdk.create('alex.ethereum.eth');
 ```
 
-To use existing identity:
+To reconnect to existing identity, with a private key:
 ```js
-const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://etherscan.io/{yourapikey}');
-const identity = await sdk.at('alex.ethereum.eth');
+const identityAddress = await sdk.at('alex.ethereum.eth', privateKey);
 ```
 
-To add a key to identity:
-```js
-await identity.addKey(newKey, privateKey);
-```
+### Transaction execution 
 
 To execute transaction:
 ```js
@@ -45,19 +44,32 @@ const transactionId = await identity.execute(transaction, privateKey);
 
 To confirm transaction
 ```js
-await identity.confirm(transactionId)
+await identity.confirm(transactionId, privateKey)
 ```
+
+### Events
 
 To subscribe to an event:
 ```js
-await identity.subscribe('eventType')
+const callback(event) = {};
+await identity.subscribe('eventType', callback)
 ```
 
 Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`.
 
 To unsubscribe to an event:
 ```js
-await identity.unsubscribe('eventType',)
+await identity.unsubscribe('eventType', callback)
+```
+
+### Key management
+Generate and request a new key to be added to an existing identity:
+```js 
+const [privateKey, identityAddress]  = await sdk.connect('alex.ethereum.eth');
+```
+
+Confirmation of adding a key
+```js
 ```
 
 ## Relayer
