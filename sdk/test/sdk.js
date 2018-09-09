@@ -50,6 +50,12 @@ describe('SDK - Identity', async () => {
 
     });
 
+    it('should return ens config', async () => {
+      const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
+      const response = await sdk.getRelayerConfig();
+      expect(response.config.ensAddress).to.eq(expectedEnsAddress);
+    });
+
     describe('Execute signed message', async () => {
       let expectedBalance;
       let nonce;

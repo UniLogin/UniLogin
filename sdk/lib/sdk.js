@@ -43,6 +43,18 @@ class EthereumIdentitySDK {
     return ethers.Wallet.createRandom().privateKey;
   }
 
+  async getRelayerConfig() {
+    const url = `${this.relayerUrl}/config`;
+    const method = 'GET';
+    // eslint-disable-next-line no-undef
+    const response = await fetch(url, {headers, method});
+    const responseJson = await response.json();
+    if (response.status === 200) {
+      return responseJson;
+    }
+    throw new Error(`${response.status}`);
+  }
+
   async execute(contractAddress, message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';

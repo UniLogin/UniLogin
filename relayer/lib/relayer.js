@@ -1,5 +1,6 @@
 import express from 'express';
 import IdentityRouter from './routes/identity';
+import ConfigRouter from './routes/config';
 import IdentityService from './services/IdentityService';
 import ENSService from './services/ensService';
 import bodyParser from 'body-parser';
@@ -25,6 +26,7 @@ class Relayer {
     this.identityService = new IdentityService(this.wallet, this.ensService);
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));
+    this.app.use('/config', ConfigRouter(this.config.chainSpec));
     this.server = this.app.listen(this.port);
   }
 
