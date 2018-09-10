@@ -14,7 +14,7 @@ This is work in progress. Planned functionality for first release include:
 
 ### Getting strated
 
-To create identity:
+To create SDK instance:
 ```js
 import EthereumIdentitySDK from 'EthereumIdentitySDK';
 const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://etherscan.io/{yourapikey}');
