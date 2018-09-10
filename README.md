@@ -24,23 +24,39 @@ To create new identity:
 ```js
 const [privateKey, identityAddress]  = await sdk.create('alex.ethereum.eth');
 ```
+`create` function  takes a single parameter:
+* ENS name. The name needs to be a non-existing subdomain in ENS domain supported by relayer.
+
+The function will return a pair:
+* `privateKey` - a private key that should be stored on given device as securely as possible
+* `identityAddress` - address of new identity contract
 
 To reconnect to existing identity, with a private key:
 ```js
-const identityAddress = await sdk.at('alex.ethereum.eth', privateKey);
+const identityAddress = await sdk.at('alex.ethereum.eth');
 ```
+
+The call will return the address of the identity contract for later use.
 
 ### Transaction execution 
 
-To execute transaction:
+To execute a message/transaction:
 ```js
-const transaction = {
+const message = {
   to: "0x88a5C2c290d9919e46F883EB62F7b8Dd9d0CC45b",
   data: "0x",
   value: "1000000000",
 };
-const transactionId = await identity.execute(transaction, privateKey);
+const transactionId = await sdk.execute(identityAddress, message, privateKey);
 ```
+
+The function takes three arguments:
+* `identityAddress` - address of that identity that requests execution
+* `message` - a message, in the same format as ethereum transaction, to be executed by the relayer
+* `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to identity
+
+The function will return one result:
+* `transactionId` (also called `nonce`) - a id of execution, might be used to confirm excution
 
 To confirm transaction
 ```js
@@ -55,7 +71,7 @@ const callback(event) = {};
 await identity.subscribe('eventType', callback)
 ```
 
-Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`.
+Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`, `KeyAdditionRequested`.
 
 To unsubscribe to an event:
 ```js
@@ -63,13 +79,32 @@ await identity.unsubscribe('eventType', callback)
 ```
 
 ### Key management
+To add a key:
+```js
+const transactionId = await sdk.addKey(identityAddress, publicKey, privateKey);
+```
+
 Generate and request a new key to be added to an existing identity:
 ```js 
 const [privateKey, identityAddress]  = await sdk.connect('alex.ethereum.eth');
 ```
+This function will generate a new private key and send a request to relayer to add a key to identity. The request needs to be confirmed from public key connected to identity at hand.
 
-Confirmation of adding a key
+The function takes one parameter:
+* `ensName` - ENS name of an existing identity
+
+and return:
+* `privateKey` - newly generated private key to be stored on a local device in a most secure way possible
+* `identityAddress` - address of identity pointed to by given ENS name
+
+The function will throw:
+* `InvalidIdentity` - if Identity does not exist (i.e. ENS Name does not resolve or resolves to a non-identity address)
+
+Confirmation connection (when request event occurs):
 ```js
+await identity.subscribe('ConnectionRequested', (event) => {
+  identity.addKey(event.key, privateKey);
+});
 ```
 
 ## Relayer
