@@ -59,7 +59,7 @@ class MainScreen extends Component {
           <ProfileIdentity
             type="identityHeader"
             identityService={this.props.services.identityService}/>
-          <Requests setView={this.setView.bind(this)} />
+          <Requests setView={this.setView.bind(this)} authorisationService = {this.props.services.authorisationService} identityService={this.props.services.identityService}/>
           <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
         <MainScreenView clicksLeft={7} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />

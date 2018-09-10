@@ -9,14 +9,36 @@ class Login extends Component {
     this.state = {
       identity: ''
     };
+    const {identityService} = this.props.services;
+    this.identityService = identityService;
+  }
+
+  async identityExist(identity) {    
+    return await this.identityService.identityExist(identity);
+  }
+
+  async update() {    
+    const {emitter} = this.props.services;
+    const pendingAuthorisations = await this.props.services.authorisationService.getPendingAuthorisations(this.state.identity.address);
+    if (typeof(pendingAuthorisations) !== 'undefined') {
+      emitter.emit('setView', 'MainScreen');
+    } else {
+      setTimeout(this.update.bind(this), 1500);
+    }
   }
 
   async onNextClick() {
     const {emitter} = this.props.services;
-    const {identityService} = this.props.services;
-    emitter.emit('setView', 'CreatingID');
-    await identityService.createIdentity(this.state.identity);
-    emitter.emit('setView', 'Greeting');
+    const {authorisationService} = this.props.services;
+    if (await this.identityExist(this.state.identity)) {
+      emitter.emit('setView', 'ApproveConnection');
+      await authorisationService.requestAuthorisation(this.identityService.identity.address);
+      setTimeout(this.update.bind(this), 3000);
+    } else {
+      emitter.emit('setView', 'CreatingID');
+      await this.identityService.createIdentity(this.state.identity);
+      emitter.emit('setView', 'Greeting');
+    }
   }
 
   onChange(identity) {
@@ -37,6 +59,7 @@ class Login extends Component {
             onNextClick={() => this.onNextClick()}
             onChange={this.onChange.bind(this)}
             ensDomains={ensDomains}
+            identityExist = {this.identityExist.bind(this)}
           />
         </div>
       </div>

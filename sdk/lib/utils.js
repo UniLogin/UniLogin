@@ -1,5 +1,8 @@
 import ethers, {utils} from 'ethers';
 
+const addressToBytes32 = (address) =>
+  utils.padZeros(utils.arrayify(address), 32);
+
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -21,4 +24,4 @@ const messageSignature = (wallet, to, amount, data) =>
       [to, amount, data])
     ));
 
-export {waitForContractDeploy, messageSignature};
+export {waitForContractDeploy, messageSignature, addressToBytes32, sleep};
