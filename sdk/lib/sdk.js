@@ -4,8 +4,8 @@ import Identity from '../abi/Identity';
 import ENS from '../abi/ENS';
 import PublicResolver from '../abi/PublicResolver';
 import {EventEmitter} from 'fbemitter';
-import RelayerObeserver from './observers/RelayerObserver';
-import {diffIndexAuthorisationsArray} from './utils/authorisationUtils';
+import RelayerObserver from './observers/RelayerObserver';
+
 
 const {namehash} = utils;
 
@@ -21,12 +21,10 @@ class EthereumIdentitySDK {
     this.relayerUrl = relayerUrl;
     this.pendingAuthorisationsIndexes = {};
     this.emitters = {};
-    this.pendingAuthorisationsIndexes = {};
     this.index = 0;
     this.step = 1000;
     this.state = 'stop';
-
-    this.relayerObeserver = new RelayerObeserver();
+    this.relayerObserver = new RelayerObserver(relayerUrl, provider);
   }
 
   async create(ensName) {
@@ -160,57 +158,24 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async subscribe(eventType, identityAddress, callback) {
-    const emitter = this.emitters[identityAddress] || new EventEmitter();
-    this.emitters[identityAddress] = emitter;
-    emitter.addListener(eventType, callback);
-    this.pendingAuthorisationsIndexes[identityAddress] = [];
+  subscribe(eventType, identityAddress, callback) {
+    this.relayerObserver.subscribe(eventType, identityAddress, callback);
   }
 
-  async start() {
-    if (this.state === 'stop') {
-      this.state = 'running';
-      this.loop();
-    }
-  }
-
-  async loop() {
-    if (this.state === 'stop') {
-      return;
-    }
-    await this.checkAuthorisationRequests();
-    if (this.state === 'stopping') {
-      this.state = 'stop';
-    } else {
-      setTimeout(this.loop.bind(this), this.step);
-    }
+  start() {
+    this.relayerObserver.start();
   }
 
   async checkAuthorisationRequests() {
-    for (const identityAddress of Object.keys(this.emitters)) {
-      const emitter = this.emitters[identityAddress];
-      const authorisations = await this.getPendingAuthorisations(identityAddress);
-      const diffIndexes = diffIndexAuthorisationsArray(this.pendingAuthorisationsIndexes[identityAddress], authorisations);
-      this.pendingAuthorisationsIndexes[identityAddress] = this.pendingAuthorisationsIndexes[identityAddress].concat(diffIndexes);
-      for (const index of diffIndexes) {
-        for (const authorisation of authorisations) {
-          if (authorisation.index === index) {
-            emitter.emit('AuthorisationsChanged', authorisation);
-          }
-        }
-      }
-    }
+    this.relayerObserver.checkAuthorisationRequests();
   }
 
   stop() {
-    this.state = 'stop';
+    this.relayerObserver.stop();
   }
 
   async finalizeAndStop() {
-    this.state = 'stopping';
-    do {
-      await sleep(this.step);
-    } while (this.state !== 'stop');
+    return this.relayerObserver.finalizeAndStop();
   }
 }
 
