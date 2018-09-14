@@ -1,4 +1,4 @@
-import {diffIndexAuthorisationsArray, getSortedIndexArray} from '../lib/authorisationUtils';
+import {diffIndexAuthorisationsArray, getSortedIndexArray} from '../lib/utils/authorisationUtils';
 import chai from 'chai';
 const {expect} = chai;
 
@@ -11,7 +11,7 @@ describe('Authorisation utils', () => {
   it('should return array of indexes', async () => {
     expect(getSortedIndexArray(array)).to.deep.include(100, 19);
   });
-  
+
   it('should return diff array', async () => {
     expect(diffIndexAuthorisationsArray(array1, array2)).to.deep.eq([19, 100]);
   });

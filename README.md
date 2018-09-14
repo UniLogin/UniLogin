@@ -22,7 +22,7 @@ const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://ethe
 
 To create new identity:
 ```js
-const [privateKey, identityAddress]  = await sdk.create('alex.ethereum.eth');
+const [firstPrivateKey, identityAddress]  = await sdk.create('alex.ethereum.eth');
 ```
 `create` function  takes a single parameter:
 * ENS name. The name needs to be a non-existing subdomain in ENS domain supported by relayer.
@@ -38,7 +38,7 @@ const identityAddress = await sdk.at('alex.ethereum.eth');
 
 The call will return the address of the identity contract for later use.
 
-### Transaction execution 
+### Transaction execution
 
 To execute a message/transaction:
 ```js
@@ -60,7 +60,7 @@ The function will return one result:
 
 To confirm transaction
 ```js
-await identity.confirm(transactionId, privateKey)
+await sdk.confirm(identityAddress, transactionId, privateKey)
 ```
 
 ### Events
@@ -68,14 +68,14 @@ await identity.confirm(transactionId, privateKey)
 To subscribe to an event:
 ```js
 const callback(event) = {};
-await identity.subscribe('eventType', callback)
+await sdk.subscribe(identityAddress, 'eventType', callback)
 ```
 
-Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`, `KeyAdditionRequested`.
+Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`, `ConnectionRequested`.
 
 To unsubscribe to an event:
 ```js
-await identity.unsubscribe('eventType', callback)
+await sdk.unsubscribe(identityAddress, 'eventType', callback)
 ```
 
 ### Key management
@@ -84,8 +84,13 @@ To add a key:
 const transactionId = await sdk.addKey(identityAddress, publicKey, privateKey);
 ```
 
+To remove a key:
+```js
+const transactionId = await sdk.removeKey(identityAddress, publicKey, privateKey);
+```
+
 Generate and request a new key to be added to an existing identity:
-```js 
+```js
 const [privateKey, identityAddress]  = await sdk.connect('alex.ethereum.eth');
 ```
 This function will generate a new private key and send a request to relayer to add a key to identity. The request needs to be confirmed from public key connected to identity at hand.
@@ -103,7 +108,7 @@ The function will throw:
 Confirmation connection (when request event occurs):
 ```js
 await identity.subscribe('ConnectionRequested', (event) => {
-  identity.addKey(event.key, privateKey);
+  identity.addKey(event.key, firstPrivateKey);
 });
 ```
 

@@ -1,10 +1,11 @@
 import ethers, {utils, Interface} from 'ethers';
-import {addressToBytes32, waitForContractDeploy, messageSignature, sleep} from './utils';
+import {addressToBytes32, waitForContractDeploy, messageSignature, sleep} from './utils/utils';
 import Identity from '../abi/Identity';
 import ENS from '../abi/ENS';
 import PublicResolver from '../abi/PublicResolver';
 import {EventEmitter} from 'fbemitter';
-import {diffIndexAuthorisationsArray} from './authorisationUtils';
+import RelayerObeserver from './observers/RelayerObserver';
+import {diffIndexAuthorisationsArray} from './utils/authorisationUtils';
 
 const {namehash} = utils;
 
@@ -24,6 +25,8 @@ class EthereumIdentitySDK {
     this.index = 0;
     this.step = 1000;
     this.state = 'stop';
+
+    this.relayerObeserver = new RelayerObeserver();
   }
 
   async create(ensName) {
@@ -168,7 +171,7 @@ class EthereumIdentitySDK {
     if (this.state === 'stop') {
       this.state = 'running';
       this.loop();
-    }    
+    }
   }
 
   async loop() {
@@ -177,7 +180,7 @@ class EthereumIdentitySDK {
     }
     await this.checkAuthorisationRequests();
     if (this.state === 'stopping') {
-      this.state = 'stop';      
+      this.state = 'stop';
     } else {
       setTimeout(this.loop.bind(this), this.step);
     }
@@ -191,7 +194,7 @@ class EthereumIdentitySDK {
       this.pendingAuthorisationsIndexes[identityAddress] = this.pendingAuthorisationsIndexes[identityAddress].concat(diffIndexes);
       for (const index of diffIndexes) {
         for (const authorisation of authorisations) {
-          if (authorisation.index === index) { 
+          if (authorisation.index === index) {
             emitter.emit('AuthorisationsChanged', authorisation);
           }
         }
@@ -199,13 +202,13 @@ class EthereumIdentitySDK {
     }
   }
 
-  stop() { 
+  stop() {
     this.state = 'stop';
   }
 
-  async finalizeAndStop() { 
+  async finalizeAndStop() {
     this.state = 'stopping';
-    do { 
+    do {
       await sleep(this.step);
     } while (this.state !== 'stop');
   }
