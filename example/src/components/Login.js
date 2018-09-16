@@ -9,14 +9,25 @@ class Login extends Component {
     this.state = {
       identity: ''
     };
+    this.identityService = this.props.services.identityService;
+    this.sdk = this.props.services.sdk;
+  }
+
+  async identityExist(identity) {
+    return await this.identityService.identityExist(identity);
   }
 
   async onNextClick() {
     const {emitter} = this.props.services;
-    const {identityService} = this.props.services;
-    emitter.emit('setView', 'CreatingID');
-    await identityService.createIdentity(this.state.identity);
-    emitter.emit('setView', 'Greeting');
+    if (await this.identityExist(this.state.identity)) {
+      emitter.emit('setView', 'ApproveConnection');
+      await this.sdk.connect(this.identityService.identity.address);
+      //TODO: Move to the next screen when done
+    } else {
+      emitter.emit('setView', 'CreatingID');
+      await this.identityService.createIdentity(this.state.identity);
+      emitter.emit('setView', 'Greeting');
+    }
   }
 
   onChange(identity) {
@@ -37,6 +48,7 @@ class Login extends Component {
             onNextClick={() => this.onNextClick()}
             onChange={this.onChange.bind(this)}
             ensDomains={ensDomains}
+            identityExist = {this.identityExist.bind(this)}
           />
         </div>
       </div>

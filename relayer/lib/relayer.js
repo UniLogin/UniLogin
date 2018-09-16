@@ -1,11 +1,13 @@
 import express from 'express';
 import IdentityRouter from './routes/identity';
 import ConfigRouter from './routes/config';
+import RequestAuthorisationRouter from './routes/authorisation';
 import IdentityService from './services/IdentityService';
 import ENSService from './services/ensService';
 import bodyParser from 'body-parser';
 import ethers from 'ethers';
 import cors from 'cors';
+import AuthorisationService from './services/authorisationService';
 
 const defaultPort = 3311;
 
@@ -24,9 +26,11 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
     this.identityService = new IdentityService(this.wallet, this.ensService);
+    this.authorisationService = new AuthorisationService();
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
+    this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.server = this.app.listen(this.port);
   }
 

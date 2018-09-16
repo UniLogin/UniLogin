@@ -9,6 +9,7 @@ const BackToAppBtn = props => (
     <span className="back-to-app-text">Back to App</span>
   </button>
 );
+
 BackToAppBtn.propTypes = {
   setView: PropTypes.func
 };

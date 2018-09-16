@@ -19,6 +19,14 @@ class IdentityService {
   async execute(message) {
     await this.sdk.execute(this.identity.address, message, this.identity.privateKey);
   }
+
+  async identityExist(identity) {
+    const identityAddress = await this.sdk.identityExist(identity);
+    if (identityAddress) {
+      this.identity = {name: identity, address: identityAddress};
+      return true;
+    }
+  }
 }
 
 export default IdentityService;

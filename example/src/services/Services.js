@@ -6,6 +6,7 @@ import IdentityService from './IdentityService';
 import ClickerService from './ClickerService';
 import EnsService from './EnsService';
 import {clickerContractAddress} from '../../config/config';
+import AuthorisationService from './AuthorisationService';
 
 class Services {
   constructor() {
@@ -16,6 +17,15 @@ class Services {
     this.ensService = new EnsService(this.sdk, this.provider);
     this.identityService = new IdentityService(this.sdk, this.emitter);
     this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService);
+    this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
+  }
+
+  start() {
+    this.sdk.start();
+  }
+
+  stop() {
+    this.sdk.stop();
   }
 }
 

@@ -16,27 +16,19 @@ class IdentitySelector extends Component {
     };
   }
 
-  identityExist(identity) {
-    return identity === 'alex.universal-id.eth';
-  }
-
-  updatePrefix(event) {
-    const identity = `${event.target.value}.${this.state.suffix}`;
-    this.setState({
-      prefix: event.target.value,
-      identity,
-      identityExist: this.identityExist(identity)
-    });
+  async updatePrefix(event) {
+    const prefix = event.target.value;
+    const identity = `${prefix}.${this.state.suffix}`;
+    const identityExist = !!(await this.props.identityExist(identity));
+    this.setState({prefix, identity, identityExist});
     this.props.onChange(identity);
   }
 
-  updateSuffix(value) {
-    const identity = `${this.state.prefix}.${value}`;
-    this.setState({
-      suffix: value,
-      identity,
-      identityExist: this.identityExist(identity)
-    });
+  async updateSuffix(value) {
+    const suffix = value;
+    const identity = `${this.state.prefix}.${suffix}`;
+    const identityExist = !!(await this.props.identityExist(identity));
+    this.setState({suffix, identity, identityExist});
     this.props.onChange(identity);
   }
 
@@ -64,7 +56,9 @@ class IdentitySelector extends Component {
 IdentitySelector.propTypes = {
   onChange: PropTypes.func,
   onNextClick: PropTypes.func,
-  ensDomains: PropTypes.arrayOf(PropTypes.string)
+  ensDomains: PropTypes.arrayOf(PropTypes.string),
+  services: PropTypes.object, 
+  identityExist: PropTypes.func
 };
 
 export default IdentitySelector;

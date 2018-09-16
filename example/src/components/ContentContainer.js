@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import Login from './Login';
 import CreatingId from './CreatingId';
-import ApproveConnectionView from '../views/ApproveConnectionView';
+import ApproveConnection from './ApproveConnection';
 import Greeting from './Greeting';
 import Account from './Account';
 import MainScreen from './MainScreen';
 import PendingAuthorizations from './PendingAuthorizations';
 import Backup from './Backup';
 import Trusted from './Trusted';
-import Example from './Example';
 import PropTypes from 'prop-types';
 
 class ContentContainer extends Component {
@@ -45,15 +44,13 @@ class ContentContainer extends Component {
     } else if (this.state.view === 'Account') {
       return (<Account identityService={this.props.services.identityService}/>);
     } else if (this.state.view === 'ApproveConnection') {
-      return <ApproveConnectionView setView={this.setView.bind(this)}/>;
+      return <ApproveConnection services={this.props.services}/>;
     } else if (this.state.view === 'PendingAuthorizations') {
-      return <PendingAuthorizations setView={this.setView.bind(this)}/>;
+      return <PendingAuthorizations services = {this.props.services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Backup') {
       return <Backup setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Trusted') {
       return <Trusted setView={this.setView.bind(this)}/>;
-    } else if (this.state.view === 'Example') {
-      return <Example setView={this.setView.bind(this)}/>;
     }
   }
 }

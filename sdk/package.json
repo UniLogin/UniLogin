@@ -4,12 +4,14 @@
   "main": "dist/sdk.js",
   "license": "MIT",
   "dependencies": {
+    "deep-equal": "^1.0.1",
     "ethers": "^3.0.27"
   },
   "scripts": {
     "dist:build": "babel lib --out-dir dist",
     "lint": "eslint lib test",
-    "test": "mocha --recursive --require babel-register test -t 10000"
+    "test": "mocha --recursive --require babel-register test -t 10000",
+    "clean": "rm -fr ./node_modules && rm -fr ./dist"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -23,8 +25,11 @@
     "eslint-plugin-import": "^2.14.0",
     "ethereum-identity-sdk-relayer": "../relayer",
     "ethereum-waffle": "^0.2.0",
+    "fbemitter": "^2.1.1",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
-    "node-fetch": "^2.2.0"
+    "node-fetch": "^2.2.0",
+    "sinon": "^6.3.1",
+    "sinon-chai": "^3.2.0"
   }
 }

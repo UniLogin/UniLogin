@@ -1,11 +1,14 @@
 import fetch from 'node-fetch';
 import chai from 'chai';
+import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../lib/sdk';
 import {RelayerUnderTest} from 'ethereum-identity-sdk-relayer';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {utils} from 'ethers';
+import ethers, {utils} from 'ethers';
+import Identity from '../abi/Identity';
 
 chai.use(solidity);
+chai.use(sinonChai);
 
 const {expect} = chai;
 
@@ -25,6 +28,7 @@ describe('SDK - Identity', async () => {
     [otherWallet, sponsor] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
+    ({provider} = relayer);
     sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
   });
 
@@ -75,12 +79,58 @@ describe('SDK - Identity', async () => {
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 
-      it('Should return 0 as first nonce', async () => {
+      it('Should return 0 as first nonce', () => {
         expect(nonce).to.eq(0);
       });
 
       it('Should return 1 as second nonce', async () => {
         expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(1);
+      });
+    });
+
+    describe('Add key', async () => {
+      it('should return execution nonce', async () => {
+        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey)).to.eq(2);
+      });
+    });
+
+    describe('Identity Exists', async () => {
+      it('should return correct bytecode', async () => {
+        const address = await sdk.resolveName('alex.mylogin.eth');
+        expect(Identity.runtimeBytecode.slice(0, 14666)).to.eq((await provider.getCode(address)).slice(2, 14668));
+      });
+
+      it('shoul return false if no resolver address', async () => {
+        expect(await sdk.resolveName('no-such-login.mylogin.eth')).to.be.false;
+      });
+
+      it('should get correct address', async () => {
+        expect(await sdk.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
+      });
+
+      it('should return identity address if identity exist', async () => {
+        expect(await sdk.identityExist('alex.mylogin.eth')).to.eq(identityAddress);
+      });
+
+      it('should return false if identity doesn`t exist', async () => {
+        expect(await sdk.identityExist('no-such-login.mylogin.eth')).to.be.false;
+      });
+
+      describe('Authorisation', async () => {
+        it('no pending authorisations', async () => {
+          expect(await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress)).to.deep.eq([]);
+        });
+
+        it('should return pending authorisations', async () => {
+          const privateKey = await sdk.connect(identityAddress);
+          const wallet = new ethers.Wallet(privateKey);
+          const response = await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress);
+          expect(response[0]).to.deep.include({key: wallet.address, label: ''});
+        });
+
+        it('should return private key', async () => {
+          expect(await sdk.connect(identityAddress)).to.be.properPrivateKey;
+        });
       });
     });
   });
