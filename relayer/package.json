@@ -22,7 +22,8 @@
         "dist:build": "babel lib --out-dir dist",
         "relayer:start": "babel-node scripts/relayer.js",
         "ganache:start": "babel-node scripts/ganache.js",
-        "ens:deploy": "babel-node scripts/deployENS.js"
+        "ens:deploy": "babel-node scripts/deployENS.js",
+        "clean": "rm -fr ./node_modules && rm -fr ./build && rm -fr ./dist"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

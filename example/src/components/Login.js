@@ -9,31 +9,20 @@ class Login extends Component {
     this.state = {
       identity: ''
     };
-    const {identityService} = this.props.services;
-    this.identityService = identityService;
+    this.identityService = this.props.services.identityService;
+    this.sdk = this.props.services.sdk;
   }
 
-  async identityExist(identity) {    
+  async identityExist(identity) {
     return await this.identityService.identityExist(identity);
-  }
-
-  async update() {    
-    const {emitter} = this.props.services;
-    const pendingAuthorisations = await this.props.services.authorisationService.getPendingAuthorisations(this.state.identity.address);
-    if (typeof(pendingAuthorisations) !== 'undefined') {
-      emitter.emit('setView', 'MainScreen');
-    } else {
-      setTimeout(this.update.bind(this), 1500);
-    }
   }
 
   async onNextClick() {
     const {emitter} = this.props.services;
-    const {authorisationService} = this.props.services;
     if (await this.identityExist(this.state.identity)) {
       emitter.emit('setView', 'ApproveConnection');
-      await authorisationService.requestAuthorisation(this.identityService.identity.address);
-      setTimeout(this.update.bind(this), 3000);
+      await this.sdk.connect(this.identityService.identity.address);
+      //TODO: Move to the next screen when done
     } else {
       emitter.emit('setView', 'CreatingID');
       await this.identityService.createIdentity(this.state.identity);

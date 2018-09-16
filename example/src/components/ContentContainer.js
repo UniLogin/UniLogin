@@ -8,7 +8,6 @@ import MainScreen from './MainScreen';
 import PendingAuthorizations from './PendingAuthorizations';
 import Backup from './Backup';
 import Trusted from './Trusted';
-import Example from './Example';
 import PropTypes from 'prop-types';
 
 class ContentContainer extends Component {
@@ -52,8 +51,6 @@ class ContentContainer extends Component {
       return <Backup setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Trusted') {
       return <Trusted setView={this.setView.bind(this)}/>;
-    } else if (this.state.view === 'Example') {
-      return <Example setView={this.setView.bind(this)}/>;
     }
   }
 }

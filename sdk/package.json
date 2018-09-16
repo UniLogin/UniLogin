@@ -4,12 +4,14 @@
   "main": "dist/sdk.js",
   "license": "MIT",
   "dependencies": {
+    "deep-equal": "^1.0.1",
     "ethers": "^3.0.27"
   },
   "scripts": {
     "dist:build": "babel lib --out-dir dist",
     "lint": "eslint lib test",
-    "test": "mocha --recursive --require babel-register test -t 10000"
+    "test": "mocha --recursive --require babel-register test -t 10000",
+    "clean": "rm -fr ./node_modules && rm -fr ./dist"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

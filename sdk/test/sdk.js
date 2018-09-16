@@ -30,7 +30,6 @@ describe('SDK - Identity', async () => {
     await relayer.start();
     ({provider} = relayer);
     sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
-    sdk.step = 50;
   });
 
   describe('Create', async () => {
@@ -60,7 +59,7 @@ describe('SDK - Identity', async () => {
       const response = await sdk.getRelayerConfig();
       expect(response.config.ensAddress).to.eq(expectedEnsAddress);
     });
-   
+
     describe('Execute signed message', async () => {
       let expectedBalance;
       let nonce;
@@ -97,16 +96,16 @@ describe('SDK - Identity', async () => {
 
     describe('Identity Exists', async () => {
       it('should return correct bytecode', async () => {
-        const address = await sdk.getAddress('alex.mylogin.eth');
+        const address = await sdk.resolveName('alex.mylogin.eth');
         expect(Identity.runtimeBytecode.slice(0, 14666)).to.eq((await provider.getCode(address)).slice(2, 14668));
       });
 
       it('shoul return false if no resolver address', async () => {
-        expect(await sdk.getAddress('no-such-login.mylogin.eth')).to.be.false;
+        expect(await sdk.resolveName('no-such-login.mylogin.eth')).to.be.false;
       });
 
       it('should get correct address', async () => {
-        expect(await sdk.getAddress('alex.mylogin.eth')).to.eq(identityAddress);
+        expect(await sdk.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
       });
 
       it('should return identity address if identity exist', async () => {
@@ -119,18 +118,18 @@ describe('SDK - Identity', async () => {
 
       describe('Authorisation', async () => {
         it('no pending authorisations', async () => {
-          expect(await sdk.getPendingAuthorisations(identityAddress)).to.deep.eq([]);
+          expect(await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress)).to.deep.eq([]);
         });
 
         it('should return pending authorisations', async () => {
-          const privateKey = await sdk.requestAuthorisation(identityAddress);
+          const privateKey = await sdk.connect(identityAddress);
           const wallet = new ethers.Wallet(privateKey);
-          const response = await sdk.getPendingAuthorisations(identityAddress);
+          const response = await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress);
           expect(response[0]).to.deep.include({key: wallet.address, label: ''});
         });
 
         it('should return private key', async () => {
-          expect(await sdk.requestAuthorisation(identityAddress)).to.be.properPrivateKey;
+          expect(await sdk.connect(identityAddress)).to.be.properPrivateKey;
         });
       });
     });

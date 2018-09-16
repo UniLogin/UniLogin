@@ -1,9 +1,7 @@
-rm -fr ./relayer/node_modules
-rm -fr ./relayer/build
-rm -fr ./relayer/dist
-rm -fr ./sdk/node_modules
-rm -fr ./sdk/dist
-rm -fr ./example/node_modules
-rm -fr ./example/.cache
-rm -fr ./example/build
-rm -fr ./example/dist
+#!/bin/bash
+cd relayer &&
+yarn clean &&
+cd ../sdk &&
+yarn clean &&
+cd ../example &&
+yarn clean

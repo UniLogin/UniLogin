@@ -1,70 +1,55 @@
 import ObserverBase from './ObserverBase';
-import {diffIndexAuthorisationsArray} from '../utils/authorisationUtils';
+import {EventEmitter} from 'fbemitter';
+import {headers, fetch} from '../utils/http';
+import deepEqual from 'deep-equal';
+
 
 class RelayerObserver extends ObserverBase {
-  constructor(relayerUrl, provider) {
+  constructor(relayerUrl) {
     super();
-    this.provider = provider;
     this.relayerUrl = relayerUrl;
-    this.pendingAuthorisationsIndexes = {};
+    this.lastAuthorisations = {};
     this.emitters = {};
-    this.pendingAuthorisationsIndexes = {};
-    this.index = 0;
-    this.step = 1000;
-    this.state = 'stop';
   }
 
   subscribe(eventType, identityAddress, callback) {
     const emitter = this.emitters[identityAddress] || new EventEmitter();
     this.emitters[identityAddress] = emitter;
     emitter.addListener(eventType, callback);
-    this.pendingAuthorisationsIndexes[identityAddress] = [];
   }
 
-  start() {
-    if (this.state === 'stop') {
-      this.state = 'running';
-      this.loop();
-    }
+  async tick() {
+    return this.checkAuthorisationRequests();
   }
 
-  loop() {
-    if (this.state === 'stop') {
-      return;
-    }
-    await this.checkAuthorisationRequests();
-    if (this.state === 'stopping') {
-      this.state = 'stop';
-    } else {
-      setTimeout(this.loop.bind(this), this.step);
+  async checkAuthorisationsChangedFor(identityAddress) {
+    const emitter = this.emitters[identityAddress];
+    const authorisations = await this.fetchPendingAuthorisations(identityAddress);
+    if (!deepEqual(authorisations, this.lastAuthorisations)) {
+      this.lastAuthorisations = authorisations;
+      emitter.emit('AuthorisationsChanged', authorisations);
     }
   }
 
   async checkAuthorisationRequests() {
     for (const identityAddress of Object.keys(this.emitters)) {
-      const emitter = this.emitters[identityAddress];
-      const authorisations = await this.getPendingAuthorisations(identityAddress);
-      const diffIndexes = diffIndexAuthorisationsArray(this.pendingAuthorisationsIndexes[identityAddress], authorisations);
-      this.pendingAuthorisationsIndexes[identityAddress] = this.pendingAuthorisationsIndexes[identityAddress].concat(diffIndexes);
-      for (const index of diffIndexes) {
-        for (const authorisation of authorisations) {
-          if (authorisation.index === index) {
-            emitter.emit('AuthorisationsChanged', authorisation);
-          }
-        }
-      }
+      await this.checkAuthorisationsChangedFor(identityAddress);
     }
   }
 
-  stop() {
-    this.state = 'stop';
+  authorisationUrl(identityAddress) {
+    return `${this.relayerUrl}/authorisation/${identityAddress}`;
   }
 
-  async finalizeAndStop() {
-    this.state = 'stopping';
-    do {
-      await sleep(this.step);
-    } while (this.state !== 'stop');
+  async fetchPendingAuthorisations(identityAddress) {
+    const url = this.authorisationUrl(identityAddress);
+    const method = 'GET';
+    const response = await fetch(url, {headers, method});
+    const responseJson = await response.json();
+    if (response.status === 200) {
+      return responseJson.response;
+    }
+    throw new Error(`${response.status}`);
   }
 }
 

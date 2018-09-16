@@ -1,3 +1,4 @@
+#!/bin/bash
 cd relayer &&
 yarn lint &&
 cd ../sdk &&

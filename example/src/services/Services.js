@@ -17,7 +17,15 @@ class Services {
     this.ensService = new EnsService(this.sdk, this.provider);
     this.identityService = new IdentityService(this.sdk, this.emitter);
     this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService);
-    this.authorisationService = new AuthorisationService(this.sdk);
+    this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
+  }
+
+  start() {
+    this.sdk.start();
+  }
+
+  stop() {
+    this.sdk.stop();
   }
 }
 

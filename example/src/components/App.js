@@ -9,6 +9,14 @@ class App extends Component {
     this.services = new Services();
   }
 
+  componentDidMount() {
+    this.services.start();
+  }
+
+  componentWillUnmount() {
+    this.services.stop();
+  }
+
   render() {
     return (
       <div>

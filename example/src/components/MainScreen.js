@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MainScreenView from '../views/MainScreenView';
 import HeaderView from '../views/HeaderView';
-import Requests from './Requests';
+import RequestsBadge from './RequestsBadge';
 import AccountLink from './AccountLink';
 import ProfileIdentity from './ProfileIdentity';
 import PropTypes from 'prop-types';
@@ -59,7 +59,7 @@ class MainScreen extends Component {
           <ProfileIdentity
             type="identityHeader"
             identityService={this.props.services.identityService}/>
-          <Requests setView={this.setView.bind(this)} authorisationService = {this.props.services.authorisationService} identityService={this.props.services.identityService}/>
+          <RequestsBadge setView={this.setView.bind(this)} services={this.props.services}/>
           <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
         <MainScreenView clicksLeft={7} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />

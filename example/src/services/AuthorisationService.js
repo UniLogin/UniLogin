@@ -1,19 +1,14 @@
 class AuthorisationService {
-  constructor(sdk, emitter) {
+  constructor(sdk) {
     this.sdk = sdk;
-    this.emitter = emitter;
+    this.pendingAuthorisations = [];
   }
 
-  async requestAuthorisation(identityAddress) {
-    this.privateKey = await this.sdk.requestAuthorisation(identityAddress);
-  }
-
-  async getPendingAuthorisations(identityAddress) {
-    return await this.sdk.getPendingAuthorisations(identityAddress);
-  }
-
-  async subscribe(eventType, identityAddress) {
-    await this.sdk.subscribe(identityAddress, eventType);
+  subscribe(identityAddress, callback) {
+    this.sdk.subscribe('AuthorisationsChanged', identityAddress, (authorisations) => {
+      this.pendingAuthorisations = authorisations;
+      callback(authorisations);
+    });
   }
 }
 

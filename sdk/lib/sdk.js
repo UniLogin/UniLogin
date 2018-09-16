@@ -1,30 +1,21 @@
 import ethers, {utils, Interface} from 'ethers';
-import {addressToBytes32, waitForContractDeploy, messageSignature, sleep} from './utils/utils';
+import {addressToBytes32, waitForContractDeploy, messageSignature} from './utils/utils';
+import {resolveName, codeEqual} from './utils/ethereum';
 import Identity from '../abi/Identity';
-import ENS from '../abi/ENS';
-import PublicResolver from '../abi/PublicResolver';
-import {EventEmitter} from 'fbemitter';
 import RelayerObserver from './observers/RelayerObserver';
-
-
-const {namehash} = utils;
+import BlockchainObserver from './observers/BlockchainObserver';
+import {headers, fetch} from './utils/http';
 
 const MANAGEMENT_KEY = 1;
 const ACTION_KEY = 2;
 const ECDSA_TYPE = 1;
 
-const headers = {'Content-Type': 'application/json; charset=utf-8'};
-
 class EthereumIdentitySDK {
   constructor(relayerUrl, provider) {
     this.provider = provider;
     this.relayerUrl = relayerUrl;
-    this.pendingAuthorisationsIndexes = {};
-    this.emitters = {};
-    this.index = 0;
-    this.step = 1000;
-    this.state = 'stop';
-    this.relayerObserver = new RelayerObserver(relayerUrl, provider);
+    this.relayerObserver = new RelayerObserver(relayerUrl);
+    this.blockchainObserver = new BlockchainObserver(provider);
   }
 
   async create(ensName) {
@@ -34,7 +25,6 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity`;
     const method = 'POST';
     const body = JSON.stringify({managementKey, ensName});
-    // eslint-disable-next-line no-undef
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
@@ -66,7 +56,6 @@ class EthereumIdentitySDK {
   async getRelayerConfig() {
     const url = `${this.relayerUrl}/config`;
     const method = 'GET';
-    // eslint-disable-next-line no-undef
     const response = await fetch(url, {headers, method});
     const responseJson = await response.json();
     if (response.status === 200) {
@@ -75,13 +64,13 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
+
   async execute(contractAddress, message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
     const signature = messageSignature(wallet, message.to, message.value, message.data);
     const body = JSON.stringify({...message, contractAddress, signature});
-    // eslint-disable-next-line no-undef
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
@@ -102,43 +91,26 @@ class EthereumIdentitySDK {
   }
 
   async identityExist(identity) {
-    const identityAddress = await this.getAddress(identity);
-    if (identityAddress && this.codeEqual(Identity.runtimeBytecode, await this.getCode(identityAddress))) {
+    const identityAddress = await this.resolveName(identity);
+    if (identityAddress && codeEqual(Identity.runtimeBytecode, await this.provider.getCode(identityAddress))) {
       return identityAddress;
     }
     return false;
+  }cd
+
+  async resolveName(identity) {
+    this.config = this.config || (await this.getRelayerConfig()).config;
+    const {ensAddress} = this.config;
+    return resolveName(this.provider, ensAddress, identity);
   }
 
-  codeEqual(runtimeBytecode, liveBytecode) {
-    // TODO: verify if it is working
-    const compareLength = runtimeBytecode.length - 68;
-    return runtimeBytecode.slice(0, compareLength) === liveBytecode.slice(2, compareLength + 2);
-  }
-
-  async getAddress(identity) {
-    const node = namehash(identity);
-    const {ensAddress} = (await this.getRelayerConfig()).config;
-    this.ensContract = new ethers.Contract(ensAddress, ENS.interface, this.provider);
-    const resolverAddress = await this.ensContract.resolver(node);
-    if (resolverAddress !== '0x0000000000000000000000000000000000000000') {
-      this.resolverContract = new ethers.Contract(resolverAddress, PublicResolver.interface, this.provider);
-      return await this.resolverContract.addr(node);
-    }
-    return false;
-  }
-
-  async getCode(address) {
-    return await this.provider.getCode(address);
-  }
-
-  async requestAuthorisation(identityAddress, label = '') {
+  async connect(identityAddress, label = '') {
     const privateKey = this.generatePrivateKey();
     const wallet = new ethers.Wallet(privateKey, this.provider);
     const key = wallet.address;
     const url = `${this.relayerUrl}/authorisation`;
     const method = 'POST';
     const body = JSON.stringify({identityAddress, key, label});
-    // eslint-disable-next-line no-undef
     const response = await fetch(url, {headers, method, body});
     if (response.status === 201) {
       return privateKey;
@@ -146,16 +118,8 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async getPendingAuthorisations(identityAddress) {
-    const url = `${this.relayerUrl}/authorisation/${identityAddress}`;
-    const method = 'GET';
-    // eslint-disable-next-line no-undef
-    const response = await fetch(url, {headers, method});
-    const responseJson = await response.json();
-    if (response.status === 200) {
-      return responseJson.response;
-    }
-    throw new Error(`${response.status}`);
+  async fetchPendingAuthorisations(identityAddress) {
+    return this.relayerObserver.fetchPendingAuthorisations(identityAddress);
   }
 
   subscribe(eventType, identityAddress, callback) {
@@ -164,10 +128,6 @@ class EthereumIdentitySDK {
 
   start() {
     this.relayerObserver.start();
-  }
-
-  async checkAuthorisationRequests() {
-    this.relayerObserver.checkAuthorisationRequests();
   }
 
   stop() {
