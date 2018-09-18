@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import AuthorisationService from '../../../lib/services/authorisationService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
@@ -7,8 +7,6 @@ import Identity from '../../../build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 
 chai.use(require('chai-string'));
-
-const {expect} = chai;
 
 describe('Authorisation Service', async () => {
   let authorisationService;

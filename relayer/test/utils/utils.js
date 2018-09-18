@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {messageSignature} from '../../lib/utils/utils';
@@ -6,8 +6,6 @@ import {utils, Wallet} from 'ethers';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
-
-const {expect} = chai;
 
 describe('Tools test', async () => {
   let provider;

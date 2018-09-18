@@ -1,11 +1,9 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
 import {createMockProvider} from 'ethereum-waffle';
 
 chai.use(chaiHttp);
-
-const {expect} = chai;
 
 describe('Relayer - Config routes', async () => {
   let relayer;

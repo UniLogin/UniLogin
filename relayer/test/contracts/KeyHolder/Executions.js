@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../../build/KeyHolder';
 import MockContract from '../../../build/MockContract';
@@ -7,11 +7,8 @@ import {addressToBytes32, messageSignature} from '../../../lib/utils/utils';
 import {utils, Wallet} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/const';
 
-
 chai.use(chaiAsPromised);
 chai.use(solidity);
-
-const {expect} = chai;
 
 describe('Key holder: executions', async () => {
   let provider;

@@ -1,16 +1,14 @@
 import fetch from 'node-fetch';
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'ethereum-identity-sdk-relayer';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {createMockProvider, solidity} from 'ethereum-waffle';
 import ethers from 'ethers';
 
 chai.use(solidity);
 chai.use(sinonChai);
-
-const {expect} = chai;
 
 const RELAYER_URL = 'http://127.0.0.1:3311';
 
@@ -20,13 +18,11 @@ describe('SDK: RelayerObserver', async () => {
   let provider;
   let relayer;
   let sdk;
-  let sponsor;
   let identityAddress;
   let relayerObserver;
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [sponsor] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     ({provider} = relayer);
@@ -34,7 +30,6 @@ describe('SDK: RelayerObserver', async () => {
     ({relayerObserver} = sdk);
     relayerObserver.step = 50;
     [, identityAddress] = await sdk.create('alex.mylogin.eth');
-    sponsor.send(identityAddress, 10000);
   });
 
 

@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ENSRegistered from '../../build/ENSRegistered';
 import ENSBuilder from '../../lib/utils/ensBuilder';
@@ -8,8 +8,6 @@ import {lookupAddress} from '../../lib/utils/utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
-
-const {expect} = chai;
 
 const domain = 'mylogin.eth';
 const label = 'alex';

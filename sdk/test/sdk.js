@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../lib/sdk';
 import {RelayerUnderTest} from 'ethereum-identity-sdk-relayer';
@@ -9,8 +9,6 @@ import Identity from '../abi/Identity';
 
 chai.use(solidity);
 chai.use(sinonChai);
-
-const {expect} = chai;
 
 const RELAYER_URL = 'http://127.0.0.1:3311';
 

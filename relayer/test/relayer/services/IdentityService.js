@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import Identity from '../../../build/Identity';
 import ethers, {utils} from 'ethers';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
@@ -7,8 +7,6 @@ import {MANAGEMENT_KEY} from '../../../lib/const';
 import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
 import buildEnsService from '../../helpers/buildEnsService';
 chai.use(require('chai-string'));
-
-const {expect} = chai;
 
 describe('Relayer - IdentityService', async () => {
   let identityService;
