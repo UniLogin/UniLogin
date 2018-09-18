@@ -1,43 +1,67 @@
 import fetch from 'node-fetch';
-import chai from 'chai';
+import chai, {expect} from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'ethereum-identity-sdk-relayer';
-import {createMockProvider, solidity} from 'ethereum-waffle';
-chai.use(solidity);
+import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
+import {Wallet} from 'ethers';
 
+chai.use(solidity);
+chai.use(sinonChai);
 
 const RELAYER_URL = 'http://127.0.0.1:3311';
 
 global.fetch = fetch;
 
-describe('SDK: RelayerObserver', async () => {
+describe('SDK: BlockchainObserver', async () => {
   let provider;
   let relayer;
   let sdk;
   let blockchainObserver;
+  let privateKey;
+  let identityAddress;
+  let wallet;
 
-  beforeEach(async () => {
+  before(async () => {
     provider = createMockProvider();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
+    [wallet] = await getWallets(provider);
     await relayer.start();
     ({provider} = relayer);
     sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 50;
-    // [, identityAddress] = await sdk.create('alex.mylogin.eth');
-    // sponsor.send(identityAddress, 10000);
+    [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
+    await sdk.start();
   });
 
-
-  it('reports an KeyAdded event', async () => {
-
+  it('subscribe: should emit AddKey on construction', async () => {
+    const {address} = new Wallet(privateKey);
+    const callback = sinon.spy();
+    await blockchainObserver.subscribe('KeyAdded', identityAddress, callback);
+    await blockchainObserver.fetchEvents(identityAddress);
+    expect(callback).to.have.been.calledWith({address, keyType: 1, purpose: 1});
   });
 
-  xit('reports just events for given address an event', async () => {
+  it('subscribe: should emit AddKey on addKey', async () => {
+    const callback = sinon.spy();
+    await blockchainObserver.subscribe('KeyAdded', identityAddress, callback);
+    await sdk.addKey(identityAddress, wallet.address, privateKey);
+    await blockchainObserver.fetchEvents(identityAddress);
+    expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
   });
 
+  it('subscribe: should emit RemoveKey on removeKey', async () => {
+    const callback = sinon.spy();
+    await blockchainObserver.subscribe('KeyRemoved', identityAddress, callback);
+    await sdk.removeKey(identityAddress, wallet.address, privateKey);
+    await blockchainObserver.fetchEvents(identityAddress);
+    expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
+  });
 
-  afterEach(async () => {
+  after(async () => {
     await relayer.stop();
+    sdk.stop();
   });
 });

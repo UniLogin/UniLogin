@@ -71,7 +71,7 @@ const callback(event) = {};
 await sdk.subscribe(identityAddress, 'eventType', callback)
 ```
 
-Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`, `ConnectionRequested`.
+Possible event names are: `KeyAdded`, `KeyRemoved`, `ConnectionRequested`.
 
 To unsubscribe to an event:
 ```js

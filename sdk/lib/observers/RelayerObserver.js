@@ -1,5 +1,4 @@
 import ObserverBase from './ObserverBase';
-import {EventEmitter} from 'fbemitter';
 import {headers, fetch} from '../utils/http';
 import deepEqual from 'deep-equal';
 
@@ -9,13 +8,6 @@ class RelayerObserver extends ObserverBase {
     super();
     this.relayerUrl = relayerUrl;
     this.lastAuthorisations = {};
-    this.emitters = {};
-  }
-
-  subscribe(eventType, identityAddress, callback) {
-    const emitter = this.emitters[identityAddress] || new EventEmitter();
-    this.emitters[identityAddress] = emitter;
-    emitter.addListener(eventType, callback);
   }
 
   async tick() {

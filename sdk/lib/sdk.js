@@ -45,8 +45,15 @@ class EthereumIdentitySDK {
     return await this.execute(to, message, privateKey);
   }
 
-  removeKey() {
-    throw new Error('not yet implemented');
+  async removeKey(to, address, privateKey) {
+    const key = addressToBytes32(address);
+    const {data} = new Interface(Identity.interface).functions.removeKey(key, MANAGEMENT_KEY);
+    const message = {
+      to,
+      value: 0,
+      data
+    };
+    return await this.execute(to, message, privateKey);
   }
 
   generatePrivateKey() {
@@ -126,12 +133,14 @@ class EthereumIdentitySDK {
     this.relayerObserver.subscribe(eventType, identityAddress, callback);
   }
 
-  start() {
+  async start() {
     this.relayerObserver.start();
+    await this.blockchainObserver.start();
   }
 
   stop() {
     this.relayerObserver.stop();
+    this.blockchainObserver.stop();
   }
 
   async finalizeAndStop() {
