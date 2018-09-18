@@ -2,9 +2,9 @@
 
 # Ethereum IdentitySDK
 
-Ethereum Identity SDK is composed of smart contracts and js lib and relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#725](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
+Ethereum Identity SDK is composed of smart contracts, a js lib, and a relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#735](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
 
-This is work in progress. Planned functionality for first release include:
+This is a work in progress. Planned functionality for first release include:
 - Creating and managing identities
 - Multi-factor authentication
 - Universal login
@@ -12,15 +12,15 @@ This is work in progress. Planned functionality for first release include:
 
 ## JS SDK, example usage:
 
-### Getting strated
+### Getting Started
 
-To create SDK instance:
+To create a SDK instance:
 ```js
 import EthereumIdentitySDK from 'EthereumIdentitySDK';
 const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://etherscan.io/{yourapikey}');
 ```
 
-To create new identity:
+To create a new identity:
 ```js
 const [firstPrivateKey, identityAddress]  = await sdk.create('alex.ethereum.eth');
 ```
@@ -56,7 +56,7 @@ The function takes three arguments:
 * `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to identity
 
 The function will return one result:
-* `transactionId` (also called `nonce`) - a id of execution, might be used to confirm excution
+* `transactionId` (also called `nonce`) - an id of execution, might be used to confirm excution
 
 To confirm transaction
 ```js
@@ -98,8 +98,8 @@ This function will generate a new private key and send a request to relayer to a
 The function takes one parameter:
 * `ensName` - ENS name of an existing identity
 
-and return:
-* `privateKey` - newly generated private key to be stored on a local device in a most secure way possible
+and returns:
+* `privateKey` - newly generated private key to be stored on a local device in the most secure way possible
 * `identityAddress` - address of identity pointed to by given ENS name
 
 The function will throw:
@@ -147,18 +147,18 @@ Start with building all three projects (`relayer`, `sdk` and `example`). From th
 ./script/build.sh
 ```
 
-Before running example one need to start mock blockchain. Run from `relayer` directory following command:
+Before running the example, first you must start a mock blockchain. From the `relayer` directory run the following command:
 ```sh
 yarn ganache:start
 ```
 
-than deploy ens contracts and start relayer, from new console in `relayer` directory type:
+then deploy ens contracts and start relayer, from new console in the `relayer` directory type:
 ```sh
 yarn ens:deploy
 yarn relayer:start
 ```
 
-than deploy contracts for example application and run application (from new console in `example` directory):
+then deploy contracts for the example application and run the application (from new console in the `example` directory):
 ```
 yarn contracts:deploy
 yarn start
