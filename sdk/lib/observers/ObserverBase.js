@@ -1,12 +1,20 @@
 import {sleep} from '../utils/utils';
+import {EventEmitter} from 'fbemitter';
 
 class ObserverBase {
   constructor() {
     this.state = 'stop';
     this.step = 1000;
+    this.emitters = {};
   }
 
-  start() {
+  subscribe(eventType, identityAddress, callback) {
+    const emitter = this.emitters[identityAddress] || new EventEmitter();
+    this.emitters[identityAddress] = emitter;
+    emitter.addListener(eventType, callback);
+  }
+
+  async start() {
     if (this.state === 'stop') {
       this.state = 'running';
       this.loop();
@@ -24,7 +32,6 @@ class ObserverBase {
       setTimeout(this.loop.bind(this), this.step);
     }
   }
-
 
   stop() {
     this.state = 'stop';
