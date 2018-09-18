@@ -1,9 +1,7 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import ENSService from '../../../lib/services/ensService';
 
 chai.use(require('chai-string'));
-
-const {expect} = chai;
 
 describe('Relayer - ENSService', async () => {
   let ensRegistrars;

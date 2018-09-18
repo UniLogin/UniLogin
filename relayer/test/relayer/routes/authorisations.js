@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
@@ -6,8 +6,6 @@ import {waitForContractDeploy} from '../../../lib/utils/utils';
 import Identity from '../../../build/Identity';
 
 chai.use(chaiHttp);
-
-const {expect} = chai;
 
 describe('Relayer - Authorisation routes', async () => {
   let relayer;

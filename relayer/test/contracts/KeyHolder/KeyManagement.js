@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
@@ -9,8 +9,6 @@ import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/const';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
-
-const {expect} = chai;
 
 describe('Key holder: key management', async () => {
   let provider;
