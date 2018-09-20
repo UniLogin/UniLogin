@@ -1,5 +1,5 @@
 {
-    "name": "ethereum-identity-sdk-relayer",
+    "name": "universal-login-relayer",
     "version": "0.1.0",
     "private": true,
     "license": "MIT",
@@ -10,7 +10,7 @@
         "dotenv": "^6.0.0",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
-        "ethereum-waffle": "^0.2.0",
+        "ethereum-waffle": "^0.2.3",
         "express": "^4.16.3",
         "openzeppelin-solidity": "^1.12.0",
         "web3": "^1.0.0-beta.34"
@@ -18,7 +18,7 @@
     "scripts": {
         "test": "mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint lib test && solium -d contracts",
-        "contracts:build": "waffle",
+        "contracts:build": "waffle .waffle.json",
         "dist:build": "babel lib --out-dir dist",
         "relayer:start": "babel-node scripts/relayer.js",
         "ganache:start": "babel-node scripts/ganache.js",
@@ -28,7 +28,7 @@
     "devDependencies": {
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
-        "babel-eslint": "^8.2.6",
+        "babel-eslint": "^9.0.0",
         "babel-plugin-transform-builtin-extend": "^1.1.2",
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-polyfill": "^6.26.0",

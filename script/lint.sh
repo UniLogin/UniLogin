@@ -1,7 +1,7 @@
 #!/bin/bash
-cd relayer &&
+cd universal-login-relayer &&
 yarn lint &&
-cd ../sdk &&
+cd ../universal-login-sdk &&
 yarn lint &&
-cd ../example &&
+cd ../universal-login-example &&
 yarn lint
