@@ -3,7 +3,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../../lib/sdk';
-import {RelayerUnderTest} from 'ethereum-identity-sdk-relayer';
+import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, solidity} from 'ethereum-waffle';
 import ethers from 'ethers';
 

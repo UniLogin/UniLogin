@@ -1,14 +1,12 @@
 #!/bin/bash
 # Run from main dir
-cd relayer &&
-yarn &&
+yarn
+cd universal-login-relayer &&
 yarn contracts:build &&
 yarn dist:build &&
-cd ../sdk &&
-yarn &&
+cd ../universal-login-sdk &&
 yarn dist:build &&
-cd ../example &&
-yarn &&
+cd ../universal-login-example &&
 yarn contracts:build &&
 yarn build &&
 cd ..

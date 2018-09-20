@@ -1,5 +1,5 @@
 import {EventEmitter} from 'fbemitter';
-import EthereumIdentitySDK from 'ethereum-identity-sdk';
+import EthereumIdentitySDK from 'universal-login-sdk';
 import ethers from 'ethers';
 import config from '../../config/config';
 import IdentityService from './IdentityService';

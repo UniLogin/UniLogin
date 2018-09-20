@@ -1,5 +1,5 @@
 #!/bin/bash
-cd relayer &&
+cd universal-login-relayer &&
 yarn test &&
-cd ../sdk &&
+cd ../universal-login-sdk &&
 yarn test

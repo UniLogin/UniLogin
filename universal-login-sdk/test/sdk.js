@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../lib/sdk';
-import {RelayerUnderTest} from 'ethereum-identity-sdk-relayer';
+import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
 import Identity from '../abi/Identity';

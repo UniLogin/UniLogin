@@ -1,6 +1,6 @@
 #!/bin/bash
-cd sdk
+cd universal-login-sdk
 yarn dist:build
-cd ../example
-yarn remove ethereum-identity-sdk
-yarn add file:./../sdk
+cd ../universal-login-example
+yarn remove universal-login-sdk
+yarn add universal-login-sdk
