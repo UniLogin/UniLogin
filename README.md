@@ -2,62 +2,114 @@
 
 # Ethereum IdentitySDK
 
-Ethereum Identity SDK is composed of smart contracts and js lib and relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#725](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
+Ethereum Identity SDK is composed of smart contracts, a js lib, and a relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#735](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
 
-This is work in progress. Planned functionality for first release include:
+This is a work in progress. Planned functionality for first release include:
 - Creating and managing identities
 - Multi-factor authentication
 - Universal login
 - Ether less transactions via relayer
 
-## Example usage
-Getting strated:
+## JS SDK, example usage:
+
+### Getting Started
+
+To create a SDK instance:
 ```js
 import EthereumIdentitySDK from 'EthereumIdentitySDK';
-```
-
-To create new identity:
-```js
-const sdk = new EthereumIdentitySDK();
-const privateKey = await sdk.create('alex.ethereum.eth');
-```
-
-To use existing identity:
-```js
 const sdk = new EthereumIdentitySDK('https://relayer.ethworks.io', 'https://etherscan.io/{yourapikey}');
-const identity = await sdk.at('alex.ethereum.eth');
 ```
 
-To add a key to identity:
+To create a new identity:
 ```js
-await identity.addKey(newKey, privateKey);
+const [firstPrivateKey, identityAddress]  = await sdk.create('alex.ethereum.eth');
+```
+`create` function  takes a single parameter:
+* ENS name. The name needs to be a non-existing subdomain in ENS domain supported by relayer.
+
+The function will return a pair:
+* `privateKey` - a private key that should be stored on given device as securely as possible
+* `identityAddress` - address of new identity contract
+
+To reconnect to existing identity, with a private key:
+```js
+const identityAddress = await sdk.at('alex.ethereum.eth');
 ```
 
-To execute transaction:
+The call will return the address of the identity contract for later use.
+
+### Transaction execution
+
+To execute a message/transaction:
 ```js
-const transaction = {
+const message = {
   to: "0x88a5C2c290d9919e46F883EB62F7b8Dd9d0CC45b",
   data: "0x",
   value: "1000000000",
 };
-const transactionId = await identity.execute(transaction, privateKey);
+const transactionId = await sdk.execute(identityAddress, message, privateKey);
 ```
+
+The function takes three arguments:
+* `identityAddress` - address of that identity that requests execution
+* `message` - a message, in the same format as ethereum transaction, to be executed by the relayer
+* `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to identity
+
+The function will return one result:
+* `transactionId` (also called `nonce`) - an id of execution, might be used to confirm excution
 
 To confirm transaction
 ```js
-await identity.confirm(transactionId)
+await sdk.confirm(identityAddress, transactionId, privateKey)
 ```
+
+### Events
 
 To subscribe to an event:
 ```js
-await identity.subscribe('eventType')
+const callback(event) = {};
+await sdk.subscribe(identityAddress, 'eventType', callback)
 ```
 
-Possible event names are: `KeyAdded`, `KeyRemoved`, `ExecutionRequested`, `Executed`, `Approved`.
+Possible event names are: `KeyAdded`, `KeyRemoved`, `ConnectionRequested`.
 
 To unsubscribe to an event:
 ```js
-await identity.unsubscribe('eventType',)
+await sdk.unsubscribe(identityAddress, 'eventType', callback)
+```
+
+### Key management
+To add a key:
+```js
+const transactionId = await sdk.addKey(identityAddress, publicKey, privateKey);
+```
+
+To remove a key:
+```js
+const transactionId = await sdk.removeKey(identityAddress, publicKey, privateKey);
+```
+
+Generate and request a new key to be added to an existing identity:
+```js
+const [privateKey, identityAddress]  = await sdk.connect('alex.ethereum.eth');
+```
+This function will generate a new private key and send a request to relayer to add a key to identity. The request needs to be confirmed from public key connected to identity at hand.
+
+The function takes one parameter:
+* `ensName` - ENS name of an existing identity
+
+and returns:
+* `privateKey` - newly generated private key to be stored on a local device in the most secure way possible
+* `identityAddress` - address of identity pointed to by given ENS name
+
+The function will throw:
+* `InvalidIdentity` - if Identity does not exist (i.e. ENS Name does not resolve or resolves to a non-identity address)
+
+Confirmation connection (when request event occurs):
+```js
+await identity.subscribe('ConnectionRequested', (event) => {
+  identity.addKey(event.key, firstPrivateKey);
+});
 ```
 
 ## Relayer
@@ -90,24 +142,25 @@ Where config file is a JSON file in the following format:
 Default port is `3311`, `privateKey` is the only required field.
 
 ## Running example on dev environment
-Before running example one need to start dev blockchain (from `sdk` directory):
+Start with building all three projects (`universal-login-relayer`, `universal-login-sdk` and `universal-login-example`). From the main project directory run:
+```sh
+./script/build.sh
+```
+
+Before running the example, first you must start a mock blockchain. From the `universal-login-relayer` directory run the following command:
 ```sh
 yarn ganache:start
 ```
 
-Before running relayer, deploy mock ens infrastructure (from `sdk` directory):
+then deploy ens contracts and start relayer, from new console in the `universal-login-relayer` directory type:
 ```sh
 yarn ens:deploy
-```
-
-
-and from new terminal (from `sdk` directory):
-```sh
 yarn relayer:start
 ```
 
-then to run example (from `example` directory):
+then deploy contracts for the example application and run the application (from new console in the `universal-login-example` directory):
 ```
+yarn contracts:deploy
 yarn start
 ```
 

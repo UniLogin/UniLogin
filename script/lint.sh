@@ -1,7 +1,7 @@
 #!/bin/bash
 cd universal-login-relayer &&
-yarn clean &&
+yarn lint &&
 cd ../universal-login-sdk &&
-yarn clean &&
+yarn lint &&
 cd ../universal-login-example &&
-yarn clean
+yarn lint
