@@ -5,33 +5,33 @@ class MainScreenView extends Component {
 
   renderEvent(event) {
     return (
-      <p className="click-history-item" key={event.key}>
-        {event.pressTime} seconds ago{" "}
-        <span className="bold">{event.address}</span> pressed at {event.score}{" "} seconds
+      <p className='click-history-item' key={event.key}>
+        {event.pressTime} seconds ago{' '}
+        <span className='bold'>{event.address}</span> pressed at {event.score}{' '} seconds
       </p>
     );
   }
 
   render() {
     return (
-      <div className="main-screen">
-        <div className="container text-center">
+      <div className='main-screen'>
+        <div className='container text-center'>
           <p>
-            You have{" "}
-            <span className="bold">{this.props.clicksLeft} clicks</span> left
+            You have{' '}
+            <span className='bold'>{this.props.clicksLeft} clicks</span> left
           </p>
           <button
-            className="btn main-screen-btn"
+            className='btn main-screen-btn'
             onClick={this.props.onClickerClick}
           >
             click here
           </button>
 
-          <p className="click-cost">Costs 1 click</p>
-          <div className="click-history">
+          <p className='click-cost'>Costs 1 click</p>
+          <div className='click-history'>
             { this.props.events.map(this.renderEvent.bind(this)) }
           </div>
-          <hr className="separator"/>
+          <hr className='separator'/>
         </div>
       </div>
     );
