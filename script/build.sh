@@ -3,9 +3,9 @@
 yarn
 cd universal-login-relayer &&
 yarn contracts:build &&
-yarn dist:build &&
+yarn build &&
 cd ../universal-login-sdk &&
-yarn dist:build &&
+yarn build &&
 cd ../universal-login-example &&
 yarn contracts:build &&
 yarn build &&
