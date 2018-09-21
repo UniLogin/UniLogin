@@ -142,23 +142,23 @@ Where config file is a JSON file in the following format:
 Default port is `3311`, `privateKey` is the only required field.
 
 ## Running example on dev environment
-Start with building all three projects (`relayer`, `sdk` and `example`). From the main project directory run:
+Start with building all three projects (`universal-login-relayer`, `universal-login-sdk` and `universal-login-example`). From the main project directory run:
 ```sh
 ./script/build.sh
 ```
 
-Before running the example, first you must start a mock blockchain. From the `relayer` directory run the following command:
+Before running the example, first you must start a mock blockchain. From the `universal-login-example` directory run the following command:
 ```sh
 yarn ganache:start
 ```
 
-then deploy ens contracts and start relayer, from new console in the `relayer` directory type:
+then deploy ens contracts and start relayer, from new console in the `universal-login-example` directory type:
 ```sh
 yarn ens:deploy
 yarn relayer:start
 ```
 
-then deploy contracts for the example application and run the application (from new console in the `example` directory):
+then deploy contracts for the example application and run the application (from new console in the `universal-login-example` directory):
 ```
 yarn contracts:deploy
 yarn start
