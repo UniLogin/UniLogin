@@ -147,12 +147,12 @@ Start with building all three projects (`universal-login-relayer`, `universal-lo
 ./script/build.sh
 ```
 
-Before running the example, first you must start a mock blockchain. From the `universal-login-example` directory run the following command:
+Before running the example, first you must start a mock blockchain. From the `universal-login-relayer` directory run the following command:
 ```sh
 yarn ganache:start
 ```
 
-then deploy ens contracts and start relayer, from new console in the `universal-login-example` directory type:
+then deploy ens contracts and start relayer, from new console in the `universal-login-relayer` directory type:
 ```sh
 yarn ens:deploy
 yarn relayer:start

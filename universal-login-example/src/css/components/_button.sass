@@ -6,9 +6,15 @@
   font-size: 22px
   text-transform: uppercase
   background: #CA0019
+  transition: transform 0.25s ease-in-out, background 0.5s ease-in-out
 
 .btn:hover
     background: darken(red, 15%)
+    transform: translate3d(0, -1px, 0)
+
+.btn:active
+    background: darken(red, 20%)
+    transform: translate3d(0, 3px, 0)
 
 .btn-alt
   height: 65px
@@ -18,11 +24,11 @@
   font-weight: 700
   margin-bottom: 20px
   font-size: 20px
-  
+
 .btn-alt .click-cost
   font-weight: 300
   font-style: italic
-  
+
 .cancel-btn
   margin-top: 50px
 
