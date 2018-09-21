@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -9,10 +8,6 @@ import ethers from 'ethers';
 
 chai.use(solidity);
 chai.use(sinonChai);
-
-const RELAYER_URL = 'http://127.0.0.1:3311';
-
-global.fetch = fetch;
 
 describe('SDK: RelayerObserver', async () => {
   let provider;
@@ -26,12 +21,11 @@ describe('SDK: RelayerObserver', async () => {
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     ({provider} = relayer);
-    sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
+    sdk = new EthereumIdentitySDK(relayer.url(), provider);
     ({relayerObserver} = sdk);
     relayerObserver.step = 50;
     [, identityAddress] = await sdk.create('alex.mylogin.eth');
   });
-
 
   it('should not emit events if no connection requests', async () => {
     const callback = sinon.spy();

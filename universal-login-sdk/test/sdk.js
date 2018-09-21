@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../lib/sdk';
@@ -9,10 +8,6 @@ import Identity from '../abi/Identity';
 
 chai.use(solidity);
 chai.use(sinonChai);
-
-const RELAYER_URL = 'http://127.0.0.1:3311';
-
-global.fetch = fetch;
 
 describe('SDK - Identity', async () => {
   let provider;
@@ -27,7 +22,7 @@ describe('SDK - Identity', async () => {
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     ({provider} = relayer);
-    sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
+    sdk = new EthereumIdentitySDK(relayer.url(), provider);
   });
 
   describe('Create', async () => {
