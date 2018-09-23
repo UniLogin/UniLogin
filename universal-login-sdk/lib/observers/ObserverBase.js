@@ -11,7 +11,7 @@ class ObserverBase {
   subscribe(eventType, identityAddress, callback) {
     const emitter = this.emitters[identityAddress] || new EventEmitter();
     this.emitters[identityAddress] = emitter;
-    emitter.addListener(eventType, callback);
+    return emitter.addListener(eventType, callback);
   }
 
   async start() {

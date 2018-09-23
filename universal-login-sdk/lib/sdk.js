@@ -130,11 +130,16 @@ class EthereumIdentitySDK {
   }
 
   subscribe(eventType, identityAddress, callback) {
-    this.relayerObserver.subscribe(eventType, identityAddress, callback);
+    if (['AuthorisationsChanged'].includes(eventType)) {
+      return this.relayerObserver.subscribe(eventType, identityAddress, callback);
+    } else if (['KeyAdded', 'KeyRemoved'].includes(eventType)) {
+      return this.blockchainObserver.subscribe(eventType, identityAddress, callback);
+    }
+    throw `Unknown event type: ${eventType}`;
   }
 
   async start() {
-    this.relayerObserver.start();
+    await this.relayerObserver.start();
     await this.blockchainObserver.start();
   }
 
@@ -144,7 +149,8 @@ class EthereumIdentitySDK {
   }
 
   async finalizeAndStop() {
-    return this.relayerObserver.finalizeAndStop();
+    await this.relayerObserver.finalizeAndStop();
+    await this.blockchainObserver.finalizeAndStop();
   }
 }
 
