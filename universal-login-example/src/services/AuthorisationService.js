@@ -5,7 +5,7 @@ class AuthorisationService {
   }
 
   subscribe(identityAddress, callback) {
-    this.sdk.subscribe('AuthorisationsChanged', identityAddress, (authorisations) => {
+    return this.sdk.subscribe('AuthorisationsChanged', identityAddress, (authorisations) => {
       this.pendingAuthorisations = authorisations;
       callback(authorisations);
     });

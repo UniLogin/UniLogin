@@ -21,8 +21,7 @@ class Login extends Component {
     const {emitter} = this.props.services;
     if (await this.identityExist(this.state.identity)) {
       emitter.emit('setView', 'ApproveConnection');
-      await this.sdk.connect(this.identityService.identity.address);
-      //TODO: Move to the next screen when done
+      await this.identityService.connect();
     } else {
       emitter.emit('setView', 'CreatingID');
       await this.identityService.createIdentity(this.state.identity);

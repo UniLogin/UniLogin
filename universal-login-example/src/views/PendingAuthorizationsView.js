@@ -15,7 +15,7 @@ class PendingAuthorizationsView extends Component {
     return (
       <div className="pending-authorizations">
         <h1 className="main-title">Pending Authorizations</h1>
-        <div className="container">          
+        <div className="container">
           <div className="container">
             { this.props.authorisations.map(this.renderEvent.bind(this)) }
           </div>

@@ -19,23 +19,23 @@ class PendingAuthorizations extends Component {
   componentDidMount() {
     const {address} = this.identityService.identity;
     this.setState({authorisations: this.authorisationService.pendingAuthorisations});
-    this.authorisationService.subscribe(address, this.onAuthorisationChanged.bind(this));
+    this.subscription = this.authorisationService.subscribe(address, this.onAuthorisationChanged.bind(this));
   }
 
   componentWillUnmount() {
-    //TODO: Unsubscribe
+    this.subscription.remove();
   }
 
   onAuthorisationChanged(authorisations) {
     this.setState({authorisations});
   }
 
-  onAcceptClick(publicKey) {
+  async onAcceptClick(publicKey) {
     const {identityService} = this.props.services;
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
-    sdk.addKey(to, publicKey, privateKey);
+    await sdk.addKey(to, publicKey, privateKey);
   }
 
   render() {
