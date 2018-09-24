@@ -16,6 +16,12 @@ class AuthorisationService {
   getPendingAuthorisations(identityAddress) {
     return this.pendingAuthorisations[identityAddress] || [];
   }
+
+  removeRequest(identityAddress, key) {
+    const lowKey = key.toLowerCase();
+    this.pendingAuthorisations[identityAddress] = this.pendingAuthorisations[identityAddress] || [];
+    this.pendingAuthorisations[identityAddress] = this.pendingAuthorisations[identityAddress].filter((element) => element.key.toLowerCase() !== lowKey);
+  }
 }
 
 export default AuthorisationService;

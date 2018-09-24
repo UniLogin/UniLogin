@@ -1,6 +1,6 @@
 .idea
 yarn-error.log
-node_modules
+/node_modules
 /universal-login-sdk/dist/
 /universal-login-sdk/node_modules/
 /universal-login-sdk/yarn-error.log
