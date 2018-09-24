@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../lib/sdk';
@@ -10,11 +9,7 @@ import Identity from '../abi/Identity';
 chai.use(solidity);
 chai.use(sinonChai);
 
-const RELAYER_URL = 'http://127.0.0.1:3311';
-
-global.fetch = fetch;
-
-describe('SDK - Identity', async () => {
+describe('SDK - integration', async () => {
   let provider;
   let relayer;
   let sdk;
@@ -27,7 +22,7 @@ describe('SDK - Identity', async () => {
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     ({provider} = relayer);
-    sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
+    sdk = new EthereumIdentitySDK(relayer.url(), provider);
   });
 
   describe('Create', async () => {
@@ -39,23 +34,23 @@ describe('SDK - Identity', async () => {
       sponsor.send(identityAddress, 10000);
     });
 
-    it('should return proper private key and address', async () => {
-      expect(privateKey).to.be.properPrivateKey;
-      expect(identityAddress).to.be.properAddress;
-    });
+    describe('Initalization', () => {
+      it('should return proper private key and address', async () => {
+        expect(privateKey).to.be.properPrivateKey;
+        expect(identityAddress).to.be.properAddress;
+      });
 
-    it('should register ENS name', async () => {
-      expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
-    });
+      it('should register ENS name', async () => {
+        expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
+      });
 
-    xit('should throw InvalidENS exception if invalid ENS name', async () => {
+      it('should return ens config', async () => {
+        const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
+        const response = await sdk.getRelayerConfig();
+        expect(response.config.ensAddress).to.eq(expectedEnsAddress);
+      });
 
-    });
-
-    it('should return ens config', async () => {
-      const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
-      const response = await sdk.getRelayerConfig();
-      expect(response.config.ensAddress).to.eq(expectedEnsAddress);
+      xit('should throw InvalidENS exception if invalid ENS name');
     });
 
     describe('Execute signed message', async () => {

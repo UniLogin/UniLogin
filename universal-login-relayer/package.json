@@ -20,7 +20,7 @@
         "test": "mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint lib test && solium -d contracts",
         "contracts:build": "waffle .waffle.json",
-        "dist:build": "babel lib --out-dir dist",
+        "build": "babel lib --out-dir dist",
         "relayer:start": "babel-node scripts/relayer.js",
         "ganache:start": "babel-node scripts/ganache.js",
         "ens:deploy": "babel-node scripts/deployENS.js",

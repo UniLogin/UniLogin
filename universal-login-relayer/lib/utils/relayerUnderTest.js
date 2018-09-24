@@ -3,7 +3,12 @@ import {defaultAccounts, getWallets} from 'ethereum-waffle';
 import ENSBuilder from '../utils/ensBuilder';
 
 class RelayerUnderTest extends Relayer {
+  url() {
+    return `http://127.0.0.1:${this.port}`;
+  }
+
   static async createPreconfigured(provider) {
+    const port = 33111;
     const [deployerWallet] = (await getWallets(provider)).slice(-2);
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
     const defaultDomain = 'mylogin.eth';
@@ -12,6 +17,7 @@ class RelayerUnderTest extends Relayer {
     const providerWithENS = await ensBuilder.bootstrapWith(label, tld);
     const config = {
       ...this.config,
+      port,
       privateKey,
       chainSpec: {
         ensAddress: ensBuilder.ens.address,

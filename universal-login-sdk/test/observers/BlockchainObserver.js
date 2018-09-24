@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -9,10 +8,6 @@ import {Wallet} from 'ethers';
 
 chai.use(solidity);
 chai.use(sinonChai);
-
-const RELAYER_URL = 'http://127.0.0.1:3311';
-
-global.fetch = fetch;
 
 describe('SDK: BlockchainObserver', async () => {
   let provider;
@@ -29,7 +24,7 @@ describe('SDK: BlockchainObserver', async () => {
     [wallet] = await getWallets(provider);
     await relayer.start();
     ({provider} = relayer);
-    sdk = new EthereumIdentitySDK(RELAYER_URL, provider);
+    sdk = new EthereumIdentitySDK(relayer.url(), provider);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 50;
     [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
