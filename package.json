@@ -9,9 +9,10 @@
     "chalk": "^2.0.1"
   },
   "workspaces": [
-    "universal-login-example",
+    "universal-login-contracts",
     "universal-login-relayer",
-    "universal-login-sdk"
+    "universal-login-sdk",
+    "universal-login-example"
   ],
   "dependencies": {
     "wsrun": "^2.2.1"

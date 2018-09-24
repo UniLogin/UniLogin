@@ -4,7 +4,7 @@ import KeyHolder from '../../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import {addressToBytes32} from '../../../lib/utils/utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/const';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/consts';
 
 
 chai.use(chaiAsPromised);

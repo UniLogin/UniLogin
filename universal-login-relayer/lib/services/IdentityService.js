@@ -1,4 +1,4 @@
-import Identity from '../../build/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 import {addressToBytes32} from '../utils/utils';
 import ethers, {utils, Interface} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';

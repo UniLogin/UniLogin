@@ -3,7 +3,7 @@ import AuthorisationService from '../../../lib/services/authorisationService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
 import buildEnsService from '../../helpers/buildEnsService';
-import Identity from '../../../build/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 
 chai.use(require('chai-string'));

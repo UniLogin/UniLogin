@@ -1,6 +1,6 @@
 import {utils, Interface} from 'ethers';
 import ObserverBase from './ObserverBase';
-import Identity from '../../abi/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 
 class BlockchainObserver extends ObserverBase {
   constructor(provider) {

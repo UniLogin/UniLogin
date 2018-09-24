@@ -1,6 +1,6 @@
 import ethers, {utils} from 'ethers';
-import ENS from '../../abi/ENS';
-import PublicResolver from '../../abi/PublicResolver';
+import ENS from 'universal-login-contracts/build/ENS';
+import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 
 const resolveName = async (provider, ensAddress, ensName) => {
   const node = utils.namehash(ensName);

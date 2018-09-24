@@ -4,7 +4,7 @@ import EthereumIdentitySDK from '../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
-import Identity from '../abi/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 
 chai.use(solidity);
 chai.use(sinonChai);

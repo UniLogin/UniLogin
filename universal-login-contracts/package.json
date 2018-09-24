@@ -1,25 +1,17 @@
 {
-    "name": "universal-login-relayer",
+    "name": "universal-login-contracts",
     "version": "0.1.0",
     "private": true,
     "license": "MIT",
-    "main": "build/index.js",
+    "main": "index.js",
     "build": "babel lib --out-dir dist",
     "dependencies": {
-        "universal-login-contracts": "^0.1.0",
-        "dotenv": "^6.0.0",
-        "ethereum-waffle": "^0.2.3",
-        "express": "^4.16.3",
-        "openzeppelin-solidity": "^1.12.0",
-        "web3": "^1.0.0-beta.34"
     },
     "scripts": {
         "test": "mocha --recursive --require babel-register test -t 10000",
-        "lint": "eslint lib test",
-        "build": "babel lib --out-dir build",
-        "relayer:start": "babel-node scripts/relayer.js",
-        "ganache:start": "babel-node scripts/ganache.js",
-        "ens:deploy": "babel-node scripts/deployENS.js",
+        "lint": "eslint test && solium -d contracts",
+        "build": "waffle .waffle.json",
+        "deploy": "babel-node scripts/deployENS.js",
         "clean": "rm -fr ./node_modules && rm -fr ./build"
     },
     "devDependencies": {
@@ -31,17 +23,14 @@
         "babel-polyfill": "^6.26.0",
         "babel-preset-env": "^1.7.0",
         "babel-preset-stage-0": "^6.24.1",
-        "body-parser": "^1.18.3",
         "chai": "^4.1.2",
         "chai-as-promised": "^7.1.1",
-        "chai-http": "^4.0.0",
-        "chai-string": "^1.4.0",
-        "cors": "^2.8.4",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
+        "ethereum-waffle": "^0.2.3",
         "ganache-core": "^2.2.1",
         "mocha": "^5.2.0",
-        "node-fetch": "^2.2.0",
+        "openzeppelin-solidity": "^1.12.0",
         "solium": "^1.1.8"
     }
 }
