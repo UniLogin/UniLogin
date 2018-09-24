@@ -1,5 +1,5 @@
-const config = require('../config/config');
-import {getWallets, defaultAccounts, deployContract} from 'ethereum-waffle';
+import config from '../config/config';
+import {getWallets, deployContract} from 'ethereum-waffle';
 import ethers from 'ethers';
 import fs from 'fs';
 import Clicker from '../build/Clicker';
@@ -25,7 +25,6 @@ class ContractsDelpoyer {
     this.provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
     this.wallets = await getWallets(this.provider);
     this.deployer = this.wallets[this.wallets.length - 1];
-    this.deployerPrivateKey = defaultAccounts[defaultAccounts.length - 1].secretKey;
     const contract = await deployContract(this.deployer, Clicker);
     const variables = {};
     variables.CLICKER_CONTRACT_ADDRESS = contract.address;

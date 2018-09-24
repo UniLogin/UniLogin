@@ -1,6 +1,9 @@
 .idea
 yarn-error.log
 /node_modules
+/universal-login-contracts/build/
+/universal-login-contracts/node_modules
+/universal-login-contracts/yarn-error.log
 /universal-login-sdk/dist/
 /universal-login-sdk/node_modules/
 /universal-login-sdk/yarn-error.log
@@ -15,4 +18,3 @@ yarn-error.log
 /universal-login-example/.cache
 /universal-login-example/node_modules
 /universal-login-example/yarn-error.log
-/universal-login-example/config/addresses.js

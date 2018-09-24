@@ -1,10 +1,10 @@
 import {utils} from 'ethers';
 import {addressToBytes32, withENS} from './utils';
 import {deployContract} from 'ethereum-waffle';
-import ENSRegistry from 'universal-login-contracts/build/ENSRegistry';
-import PublicResolver from 'universal-login-contracts/build/PublicResolver';
-import FIFSRegistrar from 'universal-login-contracts/build/FIFSRegistrar';
-import ReverseRegistrar from 'universal-login-contracts/build/ReverseRegistrar';
+import ENSRegistry from '../../build/ENSRegistry';
+import PublicResolver from '../../build/PublicResolver';
+import FIFSRegistrar from '../../build/FIFSRegistrar';
+import ReverseRegistrar from '../../build/ReverseRegistrar';
 
 const {namehash} = utils;
 

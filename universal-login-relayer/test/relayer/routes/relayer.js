@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
-import Identity from '../../../build/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 
 chai.use(chaiHttp);
 

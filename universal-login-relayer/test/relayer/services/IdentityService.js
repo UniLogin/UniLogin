@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
-import Identity from '../../../build/Identity';
 import ethers, {utils, Interface} from 'ethers';
+import Identity from 'universal-login-contracts/build/Identity';
+import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
-import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from '../../../lib/const';
 import {waitForContractDeploy, messageSignature, addressToBytes32} from '../../../lib/utils/utils';
 import buildEnsService from '../../helpers/buildEnsService';
 import AuthorisationService from '../../../lib/services/authorisationService';
@@ -68,11 +68,11 @@ describe('Relayer - IdentityService', async () => {
         it('execute signed message', async () => {
           const to = otherWallet.address;
           const signature = messageSignature(managementKey, to, value, data);
-          
+
           await identityService.executeSigned(contract.address, {to, value, data, signature});
           expect(await otherWallet.getBalance()).to.eq(expectedBalance);
         });
-  
+
         it('execute add key', async () => {
           const newKeyAddress = addressToBytes32(otherWallet.address);
           const {data} = new Interface(Identity.interface).functions.addKey(newKeyAddress, ACTION_KEY, ECDSA_TYPE);
@@ -89,12 +89,12 @@ describe('Relayer - IdentityService', async () => {
           before(async () => {
             const request = {identityAddress: contract.address, key: otherWallet.address, label: 'label'};
             await authorisationService.addRequest(request);
-            
+
             const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(otherWallet.address), MANAGEMENT_KEY, ECDSA_TYPE);
             const signature = messageSignature(managementKey, contract.address, 0, data);
             message =  {to: contract.address, value: 0, data, signature};
           });
-  
+
           it('should remove request from pending authorisations if addKey', async () => {
             await identityService.executeSigned(contract.address, message);
             expect(await authorisationService.getPendingAuthorisations(contract.address)).to.deep.eq([]);
