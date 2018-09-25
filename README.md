@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/EthWorks/EthereumIdentitySDK.svg?branch=master)](https://travis-ci.com/EthWorks/EthereumIdentitySDK)
+[![Build Status](https://travis-ci.com/EthWorks/UniversalLoginSDK.svg?branch=master)](https://travis-ci.com/EthWorks/UniversalLoginSDK)
 
 # Ethereum IdentitySDK
 
