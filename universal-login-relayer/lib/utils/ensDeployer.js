@@ -2,7 +2,7 @@ import fs from 'fs';
 import ethers from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
 import {jsonRpcUrl, ensRegistrars} from '../config/relayer';
-import ENSBuilder from '../utils/ensBuilder';
+import ENSBuilder from 'ens-builder';
 
 
 class ENSDeployer {

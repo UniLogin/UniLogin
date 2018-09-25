@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {messageSignature} from '../../lib/utils/utils';
+import {messageSignature} from './utils';
 import {utils, Wallet} from 'ethers';
 
 chai.use(chaiAsPromised);
