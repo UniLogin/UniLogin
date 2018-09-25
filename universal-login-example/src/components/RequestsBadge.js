@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 class RequestsBadge extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      requests: 0
-    };
     this.identityService = this.props.services.identityService;
     this.authorisationService = this.props.services.authorisationService;
+    this.state = { requests: this.authorisationService.pendingAuthorisations.length };
   }
 
   componentDidMount() {
