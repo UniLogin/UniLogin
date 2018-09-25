@@ -5,9 +5,20 @@ class PendingAuthorizationsView extends Component {
 
   renderEvent(authorisation) {
     return (<div>
-      <p className="pending-authorizations-text" key={authorisation.key}>Have you requested to log from this address <span className="bold">{authorisation.key}</span> this {authorisation.label}</p>
-      <button className="btn-alt fullwidth" onClick={() => this.props.onAcceptClick(authorisation.key)}>ACCEPT REQUEST <br/><span className="click-cost">costs 1 click</span></button>
-      <button className="btn fullwidth" onClick={() => this.props.onDenyClick(authorisation.key)}>Deny request</button>
+      <p className="pending-authorizations-text" key={authorisation.key}>
+        Have you requested to log into this app from a <span className="bold">{authorisation.label.name}</span> browser 
+        <span className="bold">{authorisation.label.os}</span>, 
+        from the IP {authorisation.label.ipAddress} ({authorisation.label.city}) 
+        at <span className="bold">{authorisation.label.time}</span>, 
+        from this address <span className="bold">{authorisation.key} </span>
+      </p>
+      <button className="btn-alt fullwidth" onClick={() => this.props.onAcceptClick(authorisation.key)}>
+        ACCEPT REQUEST <br/>
+        <span className="click-cost">costs 1 click</span>
+      </button>
+      <button className="btn fullwidth" onClick={() => this.props.onDenyClick(authorisation.key)} >
+          Deny request
+      </button>
     </div>);
   }
 

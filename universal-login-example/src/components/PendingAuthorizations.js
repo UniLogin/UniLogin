@@ -53,7 +53,12 @@ class PendingAuthorizations extends Component {
           <RequestsBadge setView={this.props.setView} services={this.props.services}/>
           <BackBtn setView={this.props.setView} />
         </HeaderView>
-        <PendingAuthorizationsView setView={this.props.setView} authorisations={this.state.authorisations} onAcceptClick={this.onAcceptClick.bind(this)} onDenyClick={this.onDenyClick.bind(this)}/>
+        <PendingAuthorizationsView 
+          setView={this.props.setView} 
+          authorisations={this.state.authorisations} 
+          onAcceptClick={this.onAcceptClick.bind(this)}
+          onDenyClick={this.onDenyClick.bind(this)}
+        />
       </div>
     );
   }
