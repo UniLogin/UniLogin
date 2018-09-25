@@ -6,11 +6,12 @@
     "main": "build/index.js",
     "build": "babel lib --out-dir dist",
     "dependencies": {
-        "universal-login-contracts": "^0.1.0",
         "dotenv": "^6.0.0",
+        "ens-builder": "^1.1.0",
         "ethereum-waffle": "^0.2.3",
         "express": "^4.16.3",
         "openzeppelin-solidity": "^1.12.0",
+        "universal-login-contracts": "^0.1.0",
         "web3": "^1.0.0-beta.34"
     },
     "scripts": {

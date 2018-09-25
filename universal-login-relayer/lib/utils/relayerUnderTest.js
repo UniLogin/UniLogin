@@ -1,6 +1,7 @@
 import Relayer from '../relayer';
 import {defaultAccounts, getWallets} from 'ethereum-waffle';
-import ENSBuilder from '../utils/ensBuilder';
+import ENSBuilder from 'ens-builder';
+import {withENS} from '../utils/utils';
 
 class RelayerUnderTest extends Relayer {
   url() {
@@ -14,7 +15,8 @@ class RelayerUnderTest extends Relayer {
     const defaultDomain = 'mylogin.eth';
     const ensBuilder = new ENSBuilder(deployerWallet);
     const [label, tld] = defaultDomain.split('.');
-    const providerWithENS = await ensBuilder.bootstrapWith(label, tld);
+    const ensAddress = await ensBuilder.bootstrapWith(label, tld);
+    const providerWithENS = withENS(provider, ensAddress);
     const config = {
       ...this.config,
       port,

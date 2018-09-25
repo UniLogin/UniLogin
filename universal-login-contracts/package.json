@@ -6,6 +6,7 @@
     "main": "index.js",
     "build": "babel lib --out-dir dist",
     "dependencies": {
+        "ens-builder": "^1.1.0"
     },
     "scripts": {
         "test": "mocha --recursive --require babel-register test -t 10000",
