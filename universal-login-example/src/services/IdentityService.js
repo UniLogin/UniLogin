@@ -7,8 +7,8 @@ class IdentityService {
     this.identity = {};
   }
 
-  async connect() {
-    this.privateKey = await this.sdk.connect(this.identity.address);
+  async connect(label) {
+    this.privateKey = await this.sdk.connect(this.identity.address, label);
     const {address} = new Wallet(this.privateKey);
     this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
       if (event.address == address) {
