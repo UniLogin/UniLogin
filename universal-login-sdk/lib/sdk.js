@@ -121,6 +121,17 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
+  async denyRequest(identityAddress, publicKey) {
+    const url = `${this.relayerUrl}/authorisation/${identityAddress}`;
+    const method = 'POST';
+    const body = JSON.stringify({identityAddress, key: publicKey});
+    const response = await fetch(url, {headers, method, body});
+    if (response.status === 201) {
+      return publicKey;
+    }
+    throw new Error(`${response.status}`);
+  }
+
   async fetchPendingAuthorisations(identityAddress) {
     return this.relayerObserver.fetchPendingAuthorisations(identityAddress);
   }

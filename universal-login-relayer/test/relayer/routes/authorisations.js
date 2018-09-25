@@ -52,4 +52,13 @@ describe('Relayer - Authorisation routes', async () => {
     expect(result.status).to.eq(200);
     expect(result.body.response).to.deep.eq([]);
   });
+
+  it('response status should be 201 when deny request', async () => {
+    const result = await chai.request(relayer.server)
+      .post(`/authorisation/${contract.address}`)      
+      .send({
+        key: wallet.address
+      });
+    expect(result.status).to.eq(201);
+  });
 });

@@ -124,6 +124,13 @@ describe('SDK - integration', async () => {
         it('should return private key', async () => {
           expect(await sdk.connect(identityAddress)).to.be.properPrivateKey;
         });
+
+        it('should return public key when deny request', async () => {
+          const privateKey = await sdk.connect(identityAddress);
+          const wallet = new ethers.Wallet(privateKey);
+          const response = await sdk.denyRequest(identityAddress, wallet.address);
+          expect(response).to.eq(wallet.address);
+        });
       });
     });
   });
