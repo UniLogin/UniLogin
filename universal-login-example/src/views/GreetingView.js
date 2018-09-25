@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import UserIco from '../img/user.svg';
 import PropTypes from 'prop-types';
+import Blockies from 'react-blockies';
 
 class GreetingView extends Component {
   render() {
@@ -8,7 +8,7 @@ class GreetingView extends Component {
       <div className="greeting-view">
         <div className="container">
           <div className="row">
-            <img className="user-avatar" src={UserIco} alt="Avatar" />
+            <Blockies seed={this.props.identity.address} size={16}/>
             <div>
               <p className="user-id">{this.props.identity.name}</p>
               <p className="wallet-address">{this.props.identity.address}</p>
