@@ -17,6 +17,15 @@ export const getPending = (authorisationService) => async (req, res) => {
     .send(JSON.stringify({response}));
 };
 
+export const denyRequest = (authorisationService) => async (req, res) => {
+  const {identityAddress} = req.params;
+  const {key} = req.body;
+  const response = await authorisationService.removeRequest(identityAddress, key);
+  res.status(201)
+    .type('json')
+    .send(JSON.stringify({response}));
+};
+
 export default (authorisationService) => {
   const router = new express.Router();
 
@@ -25,6 +34,9 @@ export default (authorisationService) => {
 
   router.get('/:identityAddress', 
     asyncMiddleware(getPending(authorisationService)));
+
+  router.post('/:identityAddress', 
+    asyncMiddleware(denyRequest(authorisationService)));
 
   return router;
 };
