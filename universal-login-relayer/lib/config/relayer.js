@@ -1,4 +1,4 @@
-import {defaultAccounts} from 'ethereum-waffle';
+const {defaultAccounts} = require('ethereum-waffle');
 
 module.exports = Object.freeze({
   jsonRpcUrl: 'http://localhost:18545',

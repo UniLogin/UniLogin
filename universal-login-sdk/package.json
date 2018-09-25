@@ -5,7 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "ethers": "^3.0.27"
+    "ethers": "^3.0.27",
+    "universal-login-contracts": "0.1.0"
+
   },
   "scripts": {
     "build": "babel lib --out-dir dist",

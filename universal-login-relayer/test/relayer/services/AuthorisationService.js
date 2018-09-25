@@ -3,7 +3,7 @@ import AuthorisationService from '../../../lib/services/authorisationService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
 import buildEnsService from '../../helpers/buildEnsService';
-import Identity from '../../../build/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 
 chai.use(require('chai-string'));
@@ -20,7 +20,7 @@ describe('Authorisation Service', async () => {
   let otherWallet;
   let request;
 
-  before(async () => {
+  beforeEach(async () => {
     provider = createMockProvider();
     [wallet, managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
@@ -75,6 +75,29 @@ describe('Authorisation Service', async () => {
       expect(pendingAuthorisations[0].index).to.eq(0);
       expect(pendingAuthorisations[1].index).to.eq(1);
       expect(pendingAuthorisations[2].index).to.eq(2);
+    });
+  });
+
+  describe('Pending authorisations', async () => {
+    it('should remove request from pending authorisations', async () => {
+      const {key} = request;
+      await authorisationService.removeRequest(identityContract.address, key);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([]);
+    });
+
+    it('2 pending authorisations', async () => {
+      const {key} = request;
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: ' '});
+      await authorisationService.removeRequest(identityContract.address, key);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key: managementKey.address, label: ' ', index: 1}]);
+    });
+
+    it('should remove correct pending authorisations', async () => {
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: ' '});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: ensDeployer.address, label: ' '});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: wallet.address, label: ' '});
+      await authorisationService.removeRequest(identityContract.address, ensDeployer.address);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.not.include([{key: ensDeployer.address, label: ' ', index: 2}]);
     });
   });
 });

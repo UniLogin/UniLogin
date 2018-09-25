@@ -37,5 +37,11 @@
     },
     "globals": {
         "module": false
+    },
+    "settings": {
+        "react": {
+          "version": "16.4.1"
+
+        }
     }
 }

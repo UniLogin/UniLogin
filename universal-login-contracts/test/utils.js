@@ -1,6 +1,6 @@
 import ethers, {providers, utils} from 'ethers';
-import ENS from 'universal-login-contracts/build/ENS';
-import PublicResolver from 'universal-login-contracts/build/PublicResolver';
+import ENS from '../build/ENS';
+import PublicResolver from '../build/PublicResolver';
 
 const {namehash} = utils;
 

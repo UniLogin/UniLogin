@@ -1,14 +1,11 @@
 import ethers, {utils, Interface} from 'ethers';
+import Identity from 'universal-login-contracts/build/Identity';
+import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, messageSignature} from './utils/utils';
 import {resolveName, codeEqual} from './utils/ethereum';
-import Identity from '../abi/Identity';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
-
-const MANAGEMENT_KEY = 1;
-const ACTION_KEY = 2;
-const ECDSA_TYPE = 1;
 
 class EthereumIdentitySDK {
   constructor(relayerUrl, provider) {
@@ -71,7 +68,6 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-
   async execute(contractAddress, message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
@@ -103,7 +99,7 @@ class EthereumIdentitySDK {
       return identityAddress;
     }
     return false;
-  }cd
+  }
 
   async resolveName(identity) {
     this.config = this.config || (await this.getRelayerConfig()).config;
@@ -121,6 +117,17 @@ class EthereumIdentitySDK {
     const response = await fetch(url, {headers, method, body});
     if (response.status === 201) {
       return privateKey;
+    }
+    throw new Error(`${response.status}`);
+  }
+
+  async denyRequest(identityAddress, publicKey) {
+    const url = `${this.relayerUrl}/authorisation/${identityAddress}`;
+    const method = 'POST';
+    const body = JSON.stringify({identityAddress, key: publicKey});
+    const response = await fetch(url, {headers, method, body});
+    if (response.status === 201) {
+      return publicKey;
     }
     throw new Error(`${response.status}`);
   }

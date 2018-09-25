@@ -1,10 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ENSRegistered from '../../build/ENSRegistered';
-import ENSBuilder from '../../lib/utils/ensBuilder';
+import ENSBuilder from 'ens-builder';
 import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {utils} from 'ethers';
-import {lookupAddress} from '../../lib/utils/utils';
+import {lookupAddress, withENS} from '../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -25,7 +25,8 @@ describe('Identity contract', async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     ensBuilder = new ENSBuilder(wallet);
-    provider = await ensBuilder.bootstrapWith('mylogin', 'eth');
+    const ensAddress = await ensBuilder.bootstrapWith('mylogin', 'eth');
+    provider = withENS(provider, ensAddress);
     const registrar = ensBuilder.registrars[domain].address;
     const args = [hashLabel, name, node, ensBuilder.ens.address, registrar, ensBuilder.resolver.address];
     identity = await deployContract(wallet, ENSRegistered, args);

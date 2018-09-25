@@ -1,0 +1,12 @@
+const MANAGEMENT_KEY = 1;
+const ACTION_KEY = 2;
+const CLAIM_KEY = 3;
+const ENCRYPTION_KEY = 4;
+
+const ECDSA_TYPE = 1;
+const RSA_TYPE = 2;
+
+module.exports = {
+  MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, ECDSA_TYPE, RSA_TYPE
+};
+

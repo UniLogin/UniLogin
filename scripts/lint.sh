@@ -1,5 +1,7 @@
 #!/bin/bash
-cd universal-login-relayer &&
+cd universal-login-contracts &&
+yarn lint &&
+cd ../universal-login-relayer &&
 yarn lint &&
 cd ../universal-login-sdk &&
 yarn lint &&

@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
-import Identity from '../../../build/Identity';
+import Identity from 'universal-login-contracts/build/Identity';
 
 chai.use(chaiHttp);
 
@@ -51,5 +51,14 @@ describe('Relayer - Authorisation routes', async () => {
       .get(`/authorisation/${otherWallet.address}`);
     expect(result.status).to.eq(200);
     expect(result.body.response).to.deep.eq([]);
+  });
+
+  it('response status should be 201 when deny request', async () => {
+    const result = await chai.request(relayer.server)
+      .post(`/authorisation/${contract.address}`)      
+      .send({
+        key: wallet.address
+      });
+    expect(result.status).to.eq(201);
   });
 });
