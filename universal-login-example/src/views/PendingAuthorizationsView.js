@@ -12,6 +12,13 @@ class PendingAuthorizationsView extends Component {
   }
 
   render() {
+    if (this.props.authorisations.length === 0) {
+      return (
+        <div className="pending-authorizations">
+          <h1 className="main-title">No pending authorizations</h1>
+        </div>
+      );
+    }
     return (
       <div className="pending-authorizations">
         <h1 className="main-title">Pending Authorizations</h1>
