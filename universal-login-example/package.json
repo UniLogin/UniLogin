@@ -12,6 +12,7 @@
     "fbemitter": "^2.1.1",
     "iplocation": "^5.0.1",
     "moment": "^2.22.2",
+    "openzeppelin-solidity": "^1.12.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-blockies": "^1.3.0",
@@ -25,7 +26,7 @@
     "build": "parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js",
     "clean": "rm -fr ./node_modules &&rm -fr ./cache && rm -fr ./build && rm -fr ./dist",
-    "contracts:build": "waffle",
+    "contracts:build": "waffle .waffle.json",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
     "dev:start": "babel-node scripts/dev-start.js"
   },

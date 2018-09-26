@@ -4,6 +4,7 @@ import Ganache from 'ganache-core';
 import {defaultAccounts, getWallets, deployContract} from 'ethereum-waffle';
 import Relayer, {ENSDeployer} from 'universal-login-relayer';
 import Clicker from '../build/Clicker';
+import Token from '../build/Token';
 import {promisify} from 'util';
 
 
@@ -98,8 +99,10 @@ class Deployer {
   }
 
   async deployContracts() {
-    const contract = await deployContract(this.deployer, Clicker);
-    this.env['CLICKER_CONTRACT_ADDRESS'] = contract.address;
+    const clickerContract = await deployContract(this.deployer, Clicker);
+    const tokenContract = await deployContract(this.deployer, Token);
+    this.env['CLICKER_CONTRACT_ADDRESS'] = clickerContract.address;
+    this.env['TOKEN_CONTRACT_ADDRESS'] = tokenContract.address;
   }
 
   runWebServer() {
@@ -128,7 +131,7 @@ class Deployer {
     await this.deployENS();
     console.log('Starting relayer...');
     await this.startRelayer();
-    console.log('Deploying clicker...');
+    console.log('Deploying contracts...');
     await this.deployContracts();
     console.log('Starting example app web server...');
     this.runWebServer();
