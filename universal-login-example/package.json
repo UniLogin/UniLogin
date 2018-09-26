@@ -25,6 +25,7 @@
     "start": "parcel --no-cache ./src/index.html",
     "build": "parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js",
+    "test": "mocha --recursive --require babel-register test -t 10000",
     "clean": "rm -fr ./node_modules &&rm -fr ./cache && rm -fr ./build && rm -fr ./dist",
     "contracts:build": "waffle .waffle.json",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
