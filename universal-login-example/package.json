@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "components": "^0.1.0",
+    "date-fns": "^1.29.0",
     "detect-browser": "^3.0.1",
     "ethereum-waffle": "^0.2.3",
     "ethers": "^3.0.27",
