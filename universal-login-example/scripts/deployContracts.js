@@ -3,6 +3,7 @@ import {getWallets, deployContract} from 'ethereum-waffle';
 import ethers from 'ethers';
 import fs from 'fs';
 import Clicker from '../build/Clicker';
+import Token from '../build/Token';
 
 const {jsonRpcUrl} = config;
 
@@ -25,9 +26,11 @@ class ContractsDelpoyer {
     this.provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
     this.wallets = await getWallets(this.provider);
     this.deployer = this.wallets[this.wallets.length - 1];
-    const contract = await deployContract(this.deployer, Clicker);
+    const clickerContract = await deployContract(this.deployer, Clicker);
+    const tokenContract = await deployContract(this.deployer, Token);
     const variables = {};
-    variables.CLICKER_CONTRACT_ADDRESS = contract.address;
+    variables.CLICKER_CONTRACT_ADDRESS = clickerContract.address;
+    variables.TOKEN_CONTRACT_ADDRESS = tokenContract.address;
     this.save('./.env', variables);
   }
 }

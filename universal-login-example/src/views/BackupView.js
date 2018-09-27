@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import UserIco from '../img/user.svg';
 import PropTypes from 'prop-types';
+import Blockies from 'react-blockies';
 
 class BackupView extends Component {
   render() {
@@ -9,7 +9,7 @@ class BackupView extends Component {
         <div className="container">
           <h1 className="main-title">BACKUP CODES</h1>
           <div className="row align-items-center">
-            <img className="user-avatar" src={UserIco} alt="Avatar" />
+            <Blockies seed="alex" size={16}/>
             <div>
               <p className="user-id">bobby.universal-id.eth</p>
               <p className="wallet-address">

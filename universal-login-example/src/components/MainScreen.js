@@ -33,13 +33,15 @@ class MainScreen extends Component {
     clearTimeout(this.timeout);
   }
 
-
   async update() {
+    const {tokenService} = await this.props.services;
+    const {identityService} = this.props.services;
+    const {address} = identityService.identity;
+    const balance = await tokenService.getBalance(address);
+    const clicksLeft = parseInt(balance);
+    this.setState({clicksLeft: clicksLeft});
+
     const pressers = await this.clickerService.getPressEvents();
-    if (pressers.length == this.state.events.length) {
-      setTimeout(this.update.bind(this), 1000);
-      return;
-    }
     if (pressers.length > 0) {
       this.setState({
         lastClick: pressers[0].pressTime,
@@ -62,7 +64,7 @@ class MainScreen extends Component {
           <RequestsBadge setView={this.setView.bind(this)} services={this.props.services}/>
           <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
-        <MainScreenView clicksLeft={7} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />
+        <MainScreenView clicksLeft={this.state.clicksLeft} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />
       </div>
     );
   }

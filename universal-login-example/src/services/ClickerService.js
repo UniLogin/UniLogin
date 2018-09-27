@@ -1,5 +1,6 @@
 import ethers, {Interface} from 'ethers';
 import Clicker from '../../build/Clicker';
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 class ClickerService {
   constructor(identityService, clickerContractAddress, provider, ensService) {
@@ -24,8 +25,9 @@ class ClickerService {
     return await this.clickerContract.lastPressed();
   }
 
-  getTimeDistanceInWords(timeA, timeB) {
-    return Math.floor(timeA - timeB);
+  getTimeDistanceInWords(time) {
+    const date = new Date(time*1000);
+    return distanceInWordsToNow(date, {includeSeconds: true});
   }
 
   async getEnsName(address) {
@@ -38,7 +40,7 @@ class ClickerService {
       const eventArguments = this.event.parse(this.event.topics, event.data);
       pressers.push({
         address: await this.getEnsName(eventArguments.presser),
-        pressTime: this.getTimeDistanceInWords(Date.now()/1000,parseInt(eventArguments.pressTime)),
+        pressTime: this.getTimeDistanceInWords(parseInt(eventArguments.pressTime)),
         score: parseInt(eventArguments.score),
         key: event.data
       });
