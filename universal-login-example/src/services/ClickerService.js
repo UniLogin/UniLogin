@@ -3,13 +3,14 @@ import Clicker from '../../build/Clicker';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 class ClickerService {
-  constructor(identityService, clickerContractAddress, provider, ensService) {
+  constructor(identityService, clickerContractAddress, provider, ensService, tokenService) {
     this.identityService = identityService;
     this.clickerContractAddress = clickerContractAddress;
     this.provider = provider;
     this.clickerContract = new ethers.Contract(this.clickerContractAddress, Clicker.interface, this.provider);
     this.event = new Interface(Clicker.interface).events.ButtonPress;
     this.ensService = ensService;
+    this.tokenService = tokenService;
   }
 
   async click() {

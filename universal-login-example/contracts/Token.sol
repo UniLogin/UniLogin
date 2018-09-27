@@ -15,8 +15,9 @@ contract Token is StandardToken {
         Transfer(0x0, msg.sender, INITIAL_SUPPLY);
     }
 
-    function drip() public {
+    function drip(address _serviceContract) public {
         totalSupply_ += 20;
         balances[msg.sender] += 20;
+        approve(_serviceContract, 20);
     }
 }

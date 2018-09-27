@@ -26,8 +26,8 @@ class ContractsDelpoyer {
     this.provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
     this.wallets = await getWallets(this.provider);
     this.deployer = this.wallets[this.wallets.length - 1];
-    const clickerContract = await deployContract(this.deployer, Clicker);
     const tokenContract = await deployContract(this.deployer, Token);
+    const clickerContract = await deployContract(this.deployer, Clicker, [tokenContract.address]);
     const variables = {};
     variables.CLICKER_CONTRACT_ADDRESS = clickerContract.address;
     variables.TOKEN_CONTRACT_ADDRESS = tokenContract.address;

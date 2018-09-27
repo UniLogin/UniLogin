@@ -17,8 +17,8 @@ class Services {
     this.sdk = new EthereumIdentitySDK(this.config.relayerUrl, this.provider);
     this.ensService = new EnsService(this.sdk, this.provider);
     this.tokenService = new TokenService(tokenContractAddress, this.provider);
-    this.identityService = new IdentityService(this.sdk, this.emitter, tokenContractAddress, this.tokenService);
-    this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService);
+    this.identityService = new IdentityService(this.sdk, this.emitter, tokenContractAddress, this.tokenService, clickerContractAddress);
+    this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService, this.tokenService);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
   }
 

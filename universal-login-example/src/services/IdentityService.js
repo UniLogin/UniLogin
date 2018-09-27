@@ -3,12 +3,12 @@ import {Interface} from 'ethers';
 import Token from '../../build/Token';
 
 class IdentityService {
-  constructor(sdk, emitter, tokenContractAddress, tokenService = []) {
+  constructor(sdk, emitter, tokenContractAddress, tokenService = [], clickerContractAddress) {
     this.sdk = sdk;
     this.emitter = emitter;
     this.identity = {};
     this.tokenContractAddress = tokenContractAddress;
-    this.tokenDripFunction = new Interface(Token.interface).functions.drip().data;
+    this.tokenDripFunction = new Interface(Token.interface).functions.drip(clickerContractAddress).data;
     this.tokenService = tokenService;
   }
 
