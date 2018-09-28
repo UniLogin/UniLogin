@@ -6,7 +6,6 @@ const TextBox = props => (
     className="input"
     onChange={props.onChange}
     type="text"
-    pattern="[0-9a-z\.]"
     placeholder={props.placeholder}
   />
 );

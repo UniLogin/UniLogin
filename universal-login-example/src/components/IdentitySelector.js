@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import IdentityExistingIndicator from "../views/IdentityExistingIndicator";
-import TextBox from "../views/TextBox";
-import Button from "./Button";
-import Dropdown from "./Dropdown";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import IdentityExistingIndicator from '../views/IdentityExistingIndicator';
+import TextBox from '../views/TextBox';
+import Button from './Button';
+import Dropdown from './Dropdown';
+import PropTypes from 'prop-types';
 
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      prefix: "",
+      prefix: '',
       suffix: this.props.ensDomains[0],
-      identity: "",
+      identity: '',
       identityExist: false
     };
   }
@@ -22,7 +22,7 @@ class IdentitySelector extends Component {
         <li className="active">
           <span className="identity">{this.state.identity}</span>
           <button onClick={this.props.onNextClick.bind(this)}>
-            {this.state.identityExist ? " connect" : " create"}
+            {this.state.identityExist ? ' connect' : ' create'}
           </button>
         </li>
         <li>
@@ -31,14 +31,14 @@ class IdentitySelector extends Component {
             .alternatedomain.eth
           </span>
           <button> create new</button>
-        </li>{" "}
+        </li>{' '}
         <li>
           <span className="identity">
             {this.state.prefix}
             .popularapp.eth
           </span>
           <button> connect </button>
-        </li>{" "}
+        </li>{' '}
         <li>
           <span className="identity">
             {this.state.prefix}
@@ -48,13 +48,14 @@ class IdentitySelector extends Component {
         </li>
       </ul>
     ) : (
-      ""
+      ''
     );
   }
 
   async updatePrefix(event) {
+    // event.target.value = event.target.value.toLowerCase().replace(' ', '');
     const prefix = event.target.value;
-    const identity = `${prefix}.${this.state.suffix}`;
+    const identity = `event.target.value. ${prefix}.${this.state.suffix}`;
     const identityExist = !!(await this.props.identityExist(identity));
     this.setState({ prefix, identity, identityExist });
     this.props.onChange(identity);
