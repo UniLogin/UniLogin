@@ -31,11 +31,7 @@ class GreetingView extends Component {
             <span className="bonus-ico icon-smartphone" />
             <div>
               <p>Add a second device to increase security</p>
-              <p>
-                You
-                {"'"}
-                ll get 5 extra clicks
-              </p>
+              <p>You&#39;ll get 5 extra clicks</p>
             </div>
           </div>
           <hr className="separator" />
@@ -43,11 +39,7 @@ class GreetingView extends Component {
             <span className="icon-printer bonus-ico" />
             <div>
               <p>Save a backup code</p>
-              <p>
-                You
-                {"'"}
-                ll get 10 extra clicks
-              </p>
+              <p>You&#39;ll get 10 extra clicks</p>
             </div>
           </div>
           <hr className="separator" />
@@ -55,11 +47,7 @@ class GreetingView extends Component {
             <span className="icon-users bonus-ico" />
             <div>
               <p>Set up 5 trusted friends to recover</p>
-              <p>
-                You
-                {"'"}
-                ll get 15 extra clicks
-              </p>
+              <p>You&#39;ll get 15 extra clicks</p>
             </div>
           </div>
           <button
