@@ -1,4 +1,4 @@
-import ethers, {Interface} from 'ethers';
+import ethers, { Interface } from 'ethers';
 import Clicker from '../../build/Clicker';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
@@ -7,7 +7,11 @@ class ClickerService {
     this.identityService = identityService;
     this.clickerContractAddress = clickerContractAddress;
     this.provider = provider;
-    this.clickerContract = new ethers.Contract(this.clickerContractAddress, Clicker.interface, this.provider);
+    this.clickerContract = new ethers.Contract(
+      this.clickerContractAddress,
+      Clicker.interface,
+      this.provider
+    );
     this.event = new Interface(Clicker.interface).events.ButtonPress;
     this.ensService = ensService;
   }
@@ -26,8 +30,8 @@ class ClickerService {
   }
 
   getTimeDistanceInWords(time) {
-    const date = new Date(time*1000);
-    return distanceInWordsToNow(date, {includeSeconds: true});
+    const date = new Date(time * 1000);
+    return distanceInWordsToNow(date, { includeSeconds: true });
   }
 
   async getEnsName(address) {
@@ -39,8 +43,11 @@ class ClickerService {
     for (const event of events) {
       const eventArguments = this.event.parse(this.event.topics, event.data);
       pressers.push({
-        address: await this.getEnsName(eventArguments.presser),
-        pressTime: this.getTimeDistanceInWords(parseInt(eventArguments.pressTime)),
+        address: eventArguments.presser,
+        name: await this.getEnsName(eventArguments.presser),
+        pressTime: this.getTimeDistanceInWords(
+          parseInt(eventArguments.pressTime)
+        ),
         score: parseInt(eventArguments.score),
         key: event.data
       });
@@ -49,7 +56,11 @@ class ClickerService {
   }
 
   async getPressEvents() {
-    const filter = {fromBlock: 0, address: this.clickerContractAddress, topics: [this.event.topics]};
+    const filter = {
+      fromBlock: 0,
+      address: this.clickerContractAddress,
+      topics: [this.event.topics]
+    };
     const events = await this.provider.getLogs(filter);
     return this.getEventsFromLogs(events);
   }

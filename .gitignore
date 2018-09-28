@@ -19,3 +19,4 @@ yarn-error.log
 /universal-login-example/.cache
 /universal-login-example/node_modules
 /universal-login-example/yarn-error.log
+sdk/*

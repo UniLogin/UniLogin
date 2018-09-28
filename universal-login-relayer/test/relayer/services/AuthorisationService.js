@@ -5,6 +5,7 @@ import IdentityService from '../../../lib/services/IdentityService';
 import buildEnsService from '../../helpers/buildEnsService';
 import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
+import {EventEmitter} from 'fbemitter';
 
 chai.use(require('chai-string'));
 
@@ -19,13 +20,15 @@ describe('Authorisation Service', async () => {
   let identityContract;
   let otherWallet;
   let request;
+  let hooks;
 
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet, managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
-    identityService = new IdentityService(wallet, ensService);
+    hooks = new EventEmitter();
     authorisationService = new AuthorisationService();
+    identityService = new IdentityService(wallet, ensService, authorisationService, hooks);
     const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
     identityContract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
     request = {

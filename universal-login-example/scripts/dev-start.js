@@ -2,10 +2,11 @@ import { spawn } from 'child_process';
 import ethers from 'ethers';
 import Ganache from 'ganache-core';
 import {defaultAccounts, getWallets, deployContract} from 'ethereum-waffle';
-import Relayer, {ENSDeployer} from 'universal-login-relayer';
+import {ENSDeployer} from 'universal-login-relayer';
 import Clicker from '../build/Clicker';
 import Token from '../build/Token';
 import {promisify} from 'util';
+import TokenGrantingRelayer from '../src/TokenGrantingRelayer';
 
 
 const chainSpec = {
@@ -94,15 +95,18 @@ class Deployer {
   }
 
   startRelayer() {
-    const relayer = new Relayer(this.provider, this.config);
-    relayer.start();
+    this.relayer = new TokenGrantingRelayer(this.provider, this.config, this.deployerPrivateKey, this.tokenContract.address);
+    this.relayer.start();
   }
 
-  async deployContracts() {
+  async deployTokenContract() {
+    this.tokenContract = await deployContract(this.deployer, Token);
+    this.env['TOKEN_CONTRACT_ADDRESS'] = this.tokenContract.address;
+  }
+
+  async deployClickerContract() {
     const clickerContract = await deployContract(this.deployer, Clicker);
-    const tokenContract = await deployContract(this.deployer, Token);
     this.env['CLICKER_CONTRACT_ADDRESS'] = clickerContract.address;
-    this.env['TOKEN_CONTRACT_ADDRESS'] = tokenContract.address;
   }
 
   runWebServer() {
@@ -129,10 +133,14 @@ class Deployer {
     await this.startGanache();
     console.log('Deploying ENS contracts...');
     await this.deployENS();
+    console.log('Deploying token contract...');
+    await this.deployTokenContract();
     console.log('Starting relayer...');
     await this.startRelayer();
-    console.log('Deploying contracts...');
-    await this.deployContracts();
+    console.log('Deploying clicker contract...');
+    await this.deployClickerContract();
+    console.log('Preparing relayer...');
+    await this.relayer.addHooks();
     console.log('Starting example app web server...');
     this.runWebServer();
   }
