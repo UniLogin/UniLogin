@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import IdentityExistingIndicator from "../views/IdentityExistingIndicator";
-import TextBox from "../views/TextBox";
-import Button from "./Button";
-import Dropdown from "./Dropdown";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import IdentityExistingIndicator from '../views/IdentityExistingIndicator';
+import TextBox from '../views/TextBox';
+import Button from './Button';
+import Dropdown from './Dropdown';
+import PropTypes from 'prop-types';
 
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      prefix: "",
+      prefix: '',
       suffix: this.props.ensDomains[0],
-      identity: "",
+      identity: '',
       identityExist: false
     };
   }
@@ -21,8 +21,8 @@ class IdentitySelector extends Component {
       <ul className="loginHover">
         <li className="active">
           <span className="identity">{this.state.identity}</span>
-          <button onClick={this.props.onNextClick.bind(this)}>
-            {this.state.identityExist ? " connect" : " create"}
+          <button onClick={this.props.onNextClick.bind(this)} type="submit">
+            {this.state.identityExist ? ' connect' : ' create'}
           </button>
         </li>
         <li>
@@ -31,14 +31,14 @@ class IdentitySelector extends Component {
             .alternatedomain.eth
           </span>
           <button> create new</button>
-        </li>{" "}
+        </li>{' '}
         <li>
           <span className="identity">
             {this.state.prefix}
             .popularapp.eth
           </span>
           <button> connect </button>
-        </li>{" "}
+        </li>{' '}
         <li>
           <span className="identity">
             {this.state.prefix}
@@ -46,15 +46,25 @@ class IdentitySelector extends Component {
           </span>
           <button> create new</button>
         </li>
+        <li className={this.state.identityExist ? 'visible' : 'hidden'}>
+          <span className="identity">{this.state.identity}</span>
+          <button>Recover identity</button>
+        </li>
       </ul>
     ) : (
-      ""
+      ''
     );
   }
 
   async updatePrefix(event) {
-    const prefix = event.target.value;
-    const identity = `${prefix}.${this.state.suffix}`;
+    const inputText = event.target.value.toLowerCase().replace(/[ @]/, '');
+    event.target.value = inputText;
+    const prefix = inputText;
+    const identity = !!inputText.match(/\.eth$/)
+      ? inputText
+      : !!inputText.match(/\./)
+        ? `${prefix}.eth`
+        : `${prefix}.${this.state.suffix}`;
     const identityExist = !!(await this.props.identityExist(identity));
     this.setState({ prefix, identity, identityExist });
     this.props.onChange(identity);
@@ -78,8 +88,6 @@ class IdentitySelector extends Component {
             onChange={e => this.updatePrefix(e)}
           />
         </div>
-        <br />
-
         {this.renderConnectHover()}
       </div>
     );
