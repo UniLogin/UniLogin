@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class DropdownView extends Component {
   renderContent() {
@@ -20,7 +20,7 @@ class DropdownView extends Component {
     return (
       <div className="dropdown">
         <button onClick={() => this.props.openList()} className="dropdown-btn">
-          {this.props.title}
+          .{this.props.title}
         </button>
         {this.props.isListOpen ? (
           <ul className="dropdown-content">{this.renderContent()}</ul>
