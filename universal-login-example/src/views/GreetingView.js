@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Blockies from "react-blockies";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Blockies from 'react-blockies';
 
 class GreetingView extends Component {
   render() {
@@ -8,7 +8,11 @@ class GreetingView extends Component {
       <div className="greeting-view">
         <div className="container">
           <div className="row">
-            <Blockies seed={this.props.identity.address} size={8} scale={8} />
+            <Blockies
+              seed={this.props.identity.address.toLowerCase()}
+              size={8}
+              scale={8}
+            />
             <div>
               <p className="user-id">{this.props.identity.name}</p>
               <p className="wallet-address">{this.props.identity.address}</p>
@@ -27,11 +31,7 @@ class GreetingView extends Component {
             <span className="bonus-ico icon-smartphone" />
             <div>
               <p>Add a second device to increase security</p>
-              <p>
-                You
-                {"'"}
-                ll get 5 extra clicks
-              </p>
+              <p>You&#39;ll get 5 extra clicks</p>
             </div>
           </div>
           <hr className="separator" />
@@ -39,11 +39,7 @@ class GreetingView extends Component {
             <span className="icon-printer bonus-ico" />
             <div>
               <p>Save a backup code</p>
-              <p>
-                You
-                {"'"}
-                ll get 10 extra clicks
-              </p>
+              <p>You&#39;ll get 10 extra clicks</p>
             </div>
           </div>
           <hr className="separator" />
@@ -51,11 +47,7 @@ class GreetingView extends Component {
             <span className="icon-users bonus-ico" />
             <div>
               <p>Set up 5 trusted friends to recover</p>
-              <p>
-                You
-                {"'"}
-                ll get 15 extra clicks
-              </p>
+              <p>You&#39;ll get 15 extra clicks</p>
             </div>
           </div>
           <button

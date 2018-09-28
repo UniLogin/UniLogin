@@ -1,15 +1,10 @@
 import {Wallet} from 'ethers';
-import {Interface} from 'ethers';
-import Token from '../../build/Token';
 
 class IdentityService {
-  constructor(sdk, emitter, tokenContractAddress, tokenService = []) {
+  constructor(sdk, emitter) {
     this.sdk = sdk;
     this.emitter = emitter;
     this.identity = {};
-    this.tokenContractAddress = tokenContractAddress;
-    this.tokenDripFunction = new Interface(Token.interface).functions.drip().data;
-    this.tokenService = tokenService;
   }
 
   async connect(label) {
@@ -44,16 +39,6 @@ class IdentityService {
       address
     };
     this.emitter.emit('identityCreated', this.identity);
-    await this.getTokens();
-  }
-
-  async getTokens() {
-    const message = {
-      to: this.tokenContractAddress,
-      value: 0,
-      data: this.tokenDripFunction
-    };
-    await this.execute(message);
   }
 
   async execute(message) {

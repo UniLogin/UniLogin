@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import ethers from 'ethers';
 import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
+import {EventEmitter} from 'fbemitter';
 
 const defaultPort = 3311;
 
@@ -16,6 +17,7 @@ class Relayer {
     this.wallet = new ethers.Wallet(config.privateKey, provider);
     this.port = config.port || defaultPort;
     this.config = config;
+    this.hooks = new EventEmitter();
   }
 
   start() {
@@ -26,7 +28,7 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
     this.authorisationService = new AuthorisationService();
-    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService);
+    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks);
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));

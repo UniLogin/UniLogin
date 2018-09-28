@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Blockies from "react-blockies";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Blockies from 'react-blockies';
 
 class MainScreenView extends Component {
   renderEvent(event) {
@@ -8,8 +8,9 @@ class MainScreenView extends Component {
       <p className="click-history-item" key={event.key}>
         <span className="date"> {event.pressTime} ago </span>
         <span className="bold user-inline">
-          <Blockies seed={event.address} size={8} scale={4} /> {event.address}
-        </span>{" "}
+          <Blockies seed={event.address.toLowerCase()} size={8} scale={4} />{' '}
+          {event.name}
+        </span>{' '}
         pressed at {event.score} seconds
       </p>
     );
@@ -20,7 +21,7 @@ class MainScreenView extends Component {
       <div className="main-screen">
         <div className="container text-center">
           <p>
-            You have{" "}
+            You have{' '}
             <span className="bold">{this.props.clicksLeft} clicks</span> left
           </p>
           <button
@@ -32,7 +33,7 @@ class MainScreenView extends Component {
 
           <p className="click-cost">Costs 1 click</p>
           <p className="last-click-text">
-            Last time someone pressed this button was{" "}
+            Last time someone pressed this button was{' '}
             <span className="bold">{this.props.lastClick}</span> ago
           </p>
           <hr className="separator" />

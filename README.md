@@ -18,10 +18,10 @@ This is a work in progress. Planned functionality for first release include:
 To create a SDK instance:
 
 ```js
-import EthereumIdentitySDK from "EthereumIdentitySDK";
+import EthereumIdentitySDK from 'EthereumIdentitySDK';
 const sdk = new EthereumIdentitySDK(
-  "https://relayer.ethworks.io",
-  "https://etherscan.io/{yourapikey}"
+  'https://relayer.ethworks.io',
+  'https://etherscan.io/{yourapikey}'
 );
 ```
 
@@ -29,7 +29,7 @@ To create a new identity:
 
 ```js
 const [firstPrivateKey, identityAddress] = await sdk.create(
-  "alex.ethereum.eth"
+  'alex.ethereum.eth'
 );
 ```
 
@@ -45,7 +45,7 @@ The function will return a pair:
 To reconnect to existing identity, with a private key:
 
 ```js
-const identityAddress = await sdk.at("alex.ethereum.eth");
+const identityAddress = await sdk.at('alex.ethereum.eth');
 ```
 
 The call will return the address of the identity contract for later use.
@@ -56,9 +56,9 @@ To execute a message/transaction:
 
 ```js
 const message = {
-  to: "0x88a5C2c290d9919e46F883EB62F7b8Dd9d0CC45b",
-  data: "0x",
-  value: "1000000000"
+  to: '0x88a5C2c290d9919e46F883EB62F7b8Dd9d0CC45b',
+  data: '0x',
+  value: '1000000000'
 };
 const transactionId = await sdk.execute(identityAddress, message, privateKey);
 ```
@@ -93,7 +93,7 @@ Possible event names are: `KeyAdded`, `KeyRemoved`, `ConnectionRequested`.
 To unsubscribe to an event:
 
 ```js
-await sdk.unsubscribe(identityAddress, "eventType", callback);
+await sdk.unsubscribe(identityAddress, 'eventType', callback);
 ```
 
 ### Key management
@@ -117,7 +117,7 @@ const transactionId = await sdk.removeKey(
 Generate and request a new key to be added to an existing identity:
 
 ```js
-const [privateKey, identityAddress] = await sdk.connect("alex.ethereum.eth");
+const [privateKey, identityAddress] = await sdk.connect('alex.ethereum.eth');
 ```
 
 This function will generate a new private key and send a request to relayer to add a key to identity. The request needs to be confirmed from public key connected to identity at hand.
@@ -138,7 +138,7 @@ The function will throw:
 Confirmation connection (when request event occurs):
 
 ```js
-await identity.subscribe("ConnectionRequested", event => {
+await identity.subscribe('ConnectionRequested', event => {
   identity.addKey(event.key, firstPrivateKey);
 });
 ```
@@ -148,9 +148,9 @@ await identity.subscribe("ConnectionRequested", event => {
 To start relayer programmatically:
 
 ```js
-import Relayer from "../../lib/relayer/relayer";
-const privateKey = "0x.....";
-const relayer = new Relayer("https://etherscan.io/{yourapikey}", privateKey);
+import Relayer from '../../lib/relayer/relayer';
+const privateKey = '0x.....';
+const relayer = new Relayer('https://etherscan.io/{yourapikey}', privateKey);
 relayer.start();
 ```
 
