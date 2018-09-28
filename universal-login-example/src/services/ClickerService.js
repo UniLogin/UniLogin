@@ -1,6 +1,6 @@
-import ethers, { Interface } from "ethers";
-import Clicker from "../../build/Clicker";
-import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+import ethers, { Interface } from 'ethers';
+import Clicker from '../../build/Clicker';
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 class ClickerService {
   constructor(identityService, clickerContractAddress, provider, ensService) {

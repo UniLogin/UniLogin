@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Blockies from "react-blockies";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Blockies from 'react-blockies';
 
 class GreetingView extends Component {
   render() {

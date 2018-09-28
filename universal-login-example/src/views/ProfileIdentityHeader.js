@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Blockies from "react-blockies";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Blockies from 'react-blockies';
 
 const ProfileIdentityHeader = props => (
   <div className="row align-items-center">
