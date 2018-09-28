@@ -34,16 +34,5 @@ describe('Universal Login Token', async () => {
       await contract.transfer(anotherWallet.address, 25);
       expect(await contract.balanceOf(anotherWallet.address)).to.eq(25);
     });
-
-    it('drip', async () => {
-      const expectedBalance = totalSupply.add(20);
-      await contract.drip();
-      expect(await contract.balanceOf(wallet.address)).to.eq(expectedBalance);
-    });
-
-    it('total supply is 20 greater after drip', async () => {
-      await contract.drip();
-      expect(await contract.totalSupply()).to.eq(totalSupply.add(20));
-    })
   });
 });
