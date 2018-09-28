@@ -1,4 +1,6 @@
 import chai, {expect} from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import ethers, {utils, Interface} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
@@ -7,7 +9,10 @@ import IdentityService from '../../../lib/services/IdentityService';
 import {waitForContractDeploy, messageSignature, addressToBytes32} from '../../../lib/utils/utils';
 import buildEnsService from '../../helpers/buildEnsService';
 import AuthorisationService from '../../../lib/services/authorisationService';
+import {EventEmitter} from 'fbemitter';
+
 chai.use(require('chai-string'));
+chai.use(sinonChai);
 
 describe('Relayer - IdentityService', async () => {
   let identityService;
@@ -17,6 +22,7 @@ describe('Relayer - IdentityService', async () => {
   let otherWallet;
   let ensDeployer;
   let authorisationService;
+  let hooks;
   const data = utils.hexlify(0);
 
 
@@ -25,15 +31,20 @@ describe('Relayer - IdentityService', async () => {
     [managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     const wallet = new ethers.Wallet(defaultAccounts[0].secretKey, provider);
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
+    hooks = new EventEmitter();
     authorisationService = new AuthorisationService();
-    identityService = new IdentityService(wallet, ensService, authorisationService);
+    identityService = new IdentityService(wallet, ensService, authorisationService, hooks);
   });
 
   describe('IdentityService', async () => {
     let contract;
+    let callback;
+    let transaction;
 
     before(async () => {
-      const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
+      callback = sinon.spy();
+      hooks.addListener('created', callback);
+      transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
       contract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
       await contract.setRequiredApprovals(0);
     });
@@ -52,6 +63,10 @@ describe('Relayer - IdentityService', async () => {
 
       it('has ENS name reserved', async () => {
         expect(await provider.resolveName('alex.mylogin.eth')).to.eq(contract.address);
+      });
+
+      it('should emit created event', async () => {
+        expect(callback).to.be.calledWith(sinon.match(transaction));
       });
     });
 

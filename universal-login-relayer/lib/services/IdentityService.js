@@ -5,12 +5,13 @@ import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
 class IdentityService {
-  constructor(wallet, ensService, authorisationService) {
+  constructor(wallet, ensService, authorisationService, hooks) {
     this.wallet = wallet;
     this.abi = Identity.interface;
     this.ensService = ensService;
     this.authorisationService = authorisationService;
     this.codec = new utils.AbiCoder();
+    this.hooks = hooks;
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
@@ -24,7 +25,9 @@ class IdentityService {
       ...overrideOptions,
       ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
     };
-    return this.wallet.sendTransaction(deployTransaction);
+    const transaction = await this.wallet.sendTransaction(deployTransaction);
+    this.hooks.emit('created', transaction);
+    return transaction;
   }
 
   async executeSigned(contractAddress, message) {
@@ -34,6 +37,9 @@ class IdentityService {
       const [address] = (this.codec.decode(['bytes32', 'uint256', 'uint256'], message.data.replace(addKeySighash.slice(2), '')));
       const key = utils.hexlify(utils.stripZeros(address));
       await this.authorisationService.removeRequest(contractAddress, key);
+      const transaction = await contract.executeSigned(message.to, message.value, message.data, message.signature);
+      this.hooks.emit('added', key);
+      return transaction;
     }
     return await contract.executeSigned(message.to, message.value, message.data, message.signature);
   }
