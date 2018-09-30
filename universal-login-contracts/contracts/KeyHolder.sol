@@ -134,7 +134,7 @@ contract KeyHolder is ERC725 {
         return addExecution(_to, _value, _data);
     }
 
-    function executeSigned(address _to, uint256 _value, bytes _data, bytes _messageSignature)
+    function executeSigned(address _to, uint256 _value, bytes _data, bytes _messageSignature, address gasToken, uint gasPrice, uint gasLimit)
         public
         onlyManagementOrActionKeys(getSignerForExecutions(_to, _value, _data, _messageSignature))
         returns(uint256 executionId)
