@@ -6,13 +6,15 @@ import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
+import DEFAULT_PAYMENT_OPTIONS from './config';
 
 class EthereumIdentitySDK {
-  constructor(relayerUrl, provider) {
+  constructor(relayerUrl, provider, paymentOptions) {
     this.provider = provider;
     this.relayerUrl = relayerUrl;
     this.relayerObserver = new RelayerObserver(relayerUrl);
     this.blockchainObserver = new BlockchainObserver(provider);
+    this.defaultPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, ...paymentOptions};
   }
 
   async create(ensName) {
@@ -73,7 +75,7 @@ class EthereumIdentitySDK {
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
     const signature = messageSignature(wallet, message.to, message.value, message.data);
-    const body = JSON.stringify({...message, contractAddress, signature});
+    const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {

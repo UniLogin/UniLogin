@@ -14,6 +14,12 @@ import {EventEmitter} from 'fbemitter';
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
+const gasToken = '0x0000000000000000000000000000000000000000';
+const gasPrice = 1000000000;
+const gasLimit = 1000000;
+const data = utils.hexlify(0);
+
+
 describe('Relayer - IdentityService', async () => {
   let identityService;
   let ensService;
@@ -23,8 +29,6 @@ describe('Relayer - IdentityService', async () => {
   let ensDeployer;
   let authorisationService;
   let hooks;
-  const data = utils.hexlify(0);
-
 
   before(async () => {
     provider = createMockProvider();
@@ -84,7 +88,7 @@ describe('Relayer - IdentityService', async () => {
           const to = otherWallet.address;
           const signature = messageSignature(managementKey, to, value, data);
 
-          await identityService.executeSigned(contract.address, {to, value, data, signature});
+          await identityService.executeSigned(contract.address, {to, value, data, signature, gasToken, gasPrice, gasLimit});
           expect(await otherWallet.getBalance()).to.eq(expectedBalance);
         });
 
@@ -92,7 +96,7 @@ describe('Relayer - IdentityService', async () => {
           const newKeyAddress = addressToBytes32(otherWallet.address);
           const {data} = new Interface(Identity.interface).functions.addKey(newKeyAddress, ACTION_KEY, ECDSA_TYPE);
           const signature = messageSignature(managementKey, contract.address, 0, data);
-          const message =  {to: contract.address, value: 0, data, signature};
+          const message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
 
           await identityService.executeSigned(contract.address, message);
           const key = await contract.getKey(newKeyAddress);
@@ -107,7 +111,7 @@ describe('Relayer - IdentityService', async () => {
 
             const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(otherWallet.address), MANAGEMENT_KEY, ECDSA_TYPE);
             const signature = messageSignature(managementKey, contract.address, 0, data);
-            message =  {to: contract.address, value: 0, data, signature};
+            message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
           });
 
           it('should remove request from pending authorisations if addKey', async () => {
@@ -121,7 +125,7 @@ describe('Relayer - IdentityService', async () => {
         before(async () => {
           const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY, ECDSA_TYPE);
           const signature = messageSignature(managementKey, contract.address, 0, data);
-          const message =  {to: contract.address, value: 0, data, signature};
+          const message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
           await identityService.executeSigned(contract.address, message);
         });
 
@@ -129,7 +133,7 @@ describe('Relayer - IdentityService', async () => {
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(MANAGEMENT_KEY);
           const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY);
           const signature = messageSignature(managementKey, contract.address, 0, data);
-          const message =  {to: contract.address, value: 0, data, signature};
+          const message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
           await identityService.executeSigned(contract.address, message);
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(0);
         });
