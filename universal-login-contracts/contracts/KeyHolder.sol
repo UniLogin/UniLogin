@@ -1,3 +1,4 @@
+
 pragma solidity ^0.4.24;
 
 import "./ERC725.sol";
@@ -57,8 +58,12 @@ contract KeyHolder is ERC725 {
         _;
     }
 
-    function getSignerForExecutions(address _to, uint256 _value, bytes _data, bytes _messageSignature) public pure returns (bytes32) {
-        bytes32 messageHash = keccak256(abi.encodePacked(_to, _value, _data));
+    function getSignerForExecutions(
+        address _to, address _from, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
+        ) 
+        public pure returns (bytes32) 
+    {
+        bytes32 messageHash = keccak256(abi.encodePacked(_to, _from, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit));
         return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
     }
 
@@ -134,12 +139,14 @@ contract KeyHolder is ERC725 {
         return addExecution(_to, _value, _data);
     }
 
-    function executeSigned(address _to, uint256 _value, bytes _data, bytes _messageSignature, address gasToken, uint gasPrice, uint gasLimit)
+    function executeSigned(
+        address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
+        )
         public
-        onlyManagementOrActionKeys(getSignerForExecutions(_to, _value, _data, _messageSignature))
+        onlyManagementOrActionKeys(getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature))
         returns(uint256 executionId)
     {
-        bytes32 signer = getSignerForExecutions(_to, _value, _data, _messageSignature);
+        bytes32 signer = getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature);
         require(_to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
         return addExecution(_to, _value, _data);

@@ -5,6 +5,7 @@ import BackBtn from './BackBtn';
 import PendingAuthorizationsView from '../views/PendingAuthorizationsView';
 import PropTypes from 'prop-types';
 import ProfileIdentity from './ProfileIdentity';
+import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 class PendingAuthorizations extends Component {
 
@@ -35,7 +36,7 @@ class PendingAuthorizations extends Component {
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
-    await sdk.addKey(to, publicKey, privateKey);
+    await sdk.addKey(to, publicKey, privateKey, DEFAULT_PAYMENT_OPTIONS);
   }
 
   async onDenyClick(publicKey) {

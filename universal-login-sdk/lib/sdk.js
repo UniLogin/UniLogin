@@ -33,24 +33,34 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async addKey(to, publicKey, privateKey) {
+  async addKey(to, publicKey, privateKey, transactionDetails) {
     const key = addressToBytes32(publicKey);
     const {data} = new Interface(Identity.interface).functions.addKey(key, MANAGEMENT_KEY, ECDSA_TYPE);
     const message = {
       to,
+      from: to,
       value: 0,
-      data
+      data,
+      nonce: transactionDetails.nonce,
+      gasToken: transactionDetails.gasToken,
+      gasPrice: transactionDetails.gasPrice,
+      gasLimit: transactionDetails.gasLimit
     };
     return await this.execute(to, message, privateKey);
   }
 
-  async removeKey(to, address, privateKey) {
+  async removeKey(to, address, privateKey, transactionDetails) {
     const key = addressToBytes32(address);
     const {data} = new Interface(Identity.interface).functions.removeKey(key, MANAGEMENT_KEY);
     const message = {
       to,
+      from: to,
       value: 0,
-      data
+      data,
+      nonce: transactionDetails.nonce,
+      gasToken: transactionDetails.gasToken,
+      gasPrice: transactionDetails.gasPrice,
+      gasLimit: transactionDetails.gasLimit
     };
     return await this.execute(to, message, privateKey);
   }
@@ -74,7 +84,7 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
-    const signature = messageSignature(wallet, message.to, message.value, message.data);
+    const signature = messageSignature(wallet, message.to, contractAddress, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit);
     const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();

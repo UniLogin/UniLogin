@@ -5,6 +5,7 @@ import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
+import DEFAULT_PAYMENT_OPTIONS from '../../lib/config';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -42,7 +43,7 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
     await blockchainObserver.subscribe('KeyAdded', identityAddress, callback);
-    await sdk.addKey(identityAddress, wallet.address, privateKey);
+    await sdk.addKey(identityAddress, wallet.address, privateKey, DEFAULT_PAYMENT_OPTIONS);
     await blockchainObserver.fetchEvents(identityAddress);
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
   });
@@ -50,7 +51,7 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
     await blockchainObserver.subscribe('KeyRemoved', identityAddress, callback);
-    await sdk.removeKey(identityAddress, wallet.address, privateKey);
+    await sdk.removeKey(identityAddress, wallet.address, privateKey, DEFAULT_PAYMENT_OPTIONS);
     await blockchainObserver.fetchEvents(identityAddress);
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
   });
