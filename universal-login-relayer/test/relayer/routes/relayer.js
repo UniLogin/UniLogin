@@ -44,7 +44,7 @@ describe('Relayer - Identity routes', async () => {
     });
 
     it('Execute signed transfer', async () => {
-      const transferSignature = await messageSignature(wallet, otherWallet.address, 10, '0x0');
+      const transferSignature = await messageSignature(wallet, otherWallet.address, contract.address, 10, '0x0', 0, gasToken, gasPrice, gasLimit);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({
@@ -52,10 +52,11 @@ describe('Relayer - Identity routes', async () => {
           to: otherWallet.address,
           value: 10,
           data: '0x0',
-          signature: transferSignature,
+          nonce: 0,
           gasToken,
           gasPrice,
-          gasLimit
+          gasLimit,
+          signature: transferSignature
         });
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
     });

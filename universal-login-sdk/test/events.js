@@ -5,6 +5,7 @@ import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import ethers from 'ethers';
 import sinon from 'sinon';
+import DEFAULT_PAYMENT_OPTIONS from '../lib/config';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -41,7 +42,7 @@ describe('SDK - events', async () => {
 
     const secondPrivateKey = await sdk.connect(identityAddress, 'Some label');
     const {address} = new ethers.Wallet(secondPrivateKey);
-    await sdk.addKey(identityAddress, wallet.address, privateKey);
+    await sdk.addKey(identityAddress, wallet.address, privateKey, DEFAULT_PAYMENT_OPTIONS);
 
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});

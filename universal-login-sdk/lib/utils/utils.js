@@ -22,11 +22,11 @@ const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick
   return receipt;
 };
 
-const messageSignature = (wallet, to, amount, data) =>
+const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
-      ['address', 'uint256', 'bytes'],
-      [to, amount, data])
+      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
+      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit])
     ));
 
 export {waitForContractDeploy, messageSignature, addressToBytes32, sleep, waitForTransactionReceipt};
