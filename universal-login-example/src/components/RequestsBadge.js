@@ -25,6 +25,31 @@ class RequestsBadge extends Component {
 
   onAuthorisationChanged(authorisations) {
     this.setState({ requests: authorisations.length });
+
+    // Browser notification
+    if (authorisations.length > 0 && 'Notification' in window) {
+      const alertMessage =
+        'Login requested from ' +
+        authorisations[0].label.os +
+        ' from ' +
+        authorisations[0].label.city;
+
+      // Let's check whether notification permissions have already been granted
+      if (Notification.permission === 'granted') {
+        // If it's okay let's create a notification
+        new Notification(alertMessage);
+      }
+
+      // Otherwise, we need to ask the user for permission
+      else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function(permission) {
+          // If the user accepts, let's create a notification
+          if (permission === 'granted') {
+            new Notification(alertMessage);
+          }
+        });
+      }
+    }
   }
 
   render() {
