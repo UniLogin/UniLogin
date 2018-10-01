@@ -4,7 +4,7 @@ import KeyHolder from '../../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import {addressToBytes32} from '../../utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/consts';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE, RSA_TYPE} from '../../../lib/consts';
 
 
 chai.use(chaiAsPromised);
@@ -14,6 +14,7 @@ describe('Key holder: key management', async () => {
   let provider;
   let wallet;
   let anotherWallet;
+  let anotherWallet2;
   let managementWallet;
 
   let identity;
@@ -28,6 +29,7 @@ describe('Key holder: key management', async () => {
 
   let managementKey;
   let actionKey;
+  let actionKey2;
   let actionWalletKey;
 
   let to;
@@ -37,16 +39,20 @@ describe('Key holder: key management', async () => {
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
+  const addMultipleKeys = () => identity.addKeys([actionKey, actionKey2], [ACTION_KEY, ACTION_KEY], [ECDSA_TYPE, RSA_TYPE]);
+  const isActionKey2 = () => identity.keyHasPurpose(actionKey2, ACTION_KEY);
+  
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet] = await getWallets(provider);
+    [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet, anotherWallet2] = await getWallets(provider);
 
     managementKey = addressToBytes32(wallet.address);
     managementWalletKey = addressToBytes32(managementWallet.address);
     actionWalletKey = addressToBytes32(actionWallet.address);
     unknownWalletKey = addressToBytes32(unknownWallet.address);
     actionKey = addressToBytes32(anotherWallet.address);
+    actionKey2 = addressToBytes32(anotherWallet2.address);
 
     identity = await deployContract(wallet, KeyHolder, [managementKey]);
 
@@ -121,6 +127,34 @@ describe('Key holder: key management', async () => {
 
     it('Should not allow to add key with action key', async () => {
       await expect(fromActionWallet.addKey(unknownWalletKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
+    });
+  });
+
+  describe('Add multiple keys', async () => {
+    it('Should add multiple keys successfully', async () => {
+      await addMultipleKeys();
+      expect(await isActionKey()).to.be.true;
+      expect(await isActionKey2()).to.be.true;
+      const existingKeys = await identity.keys(actionKey);
+      expect(existingKeys[0]).to.eq(ACTION_KEY);
+      expect(existingKeys[1]).to.eq(ECDSA_TYPE);
+      expect(existingKeys[2]).to.eq(utils.hexlify(actionKey));
+      const existingKeys2 = await identity.keys(actionKey2);
+      expect(existingKeys2[0]).to.eq(ACTION_KEY);
+      expect(existingKeys2[1]).to.eq(RSA_TYPE);
+      expect(existingKeys2[2]).to.eq(utils.hexlify(actionKey2));
+    });
+
+    it('Should not allow to add existing key', async () => {
+      await expect(identity.addKeys([managementKey, actionKey], [MANAGEMENT_KEY, ACTION_KEY], [ECDSA_TYPE, ECDSA_TYPE])).to.be.reverted;
+    });
+
+    it('Should not allow unequal length argument sets', async () => {
+      await expect(identity.addKeys([actionKey, actionKey2], [ACTION_KEY], [])).to.be.reverted;
+    });
+
+    it('Should not allow the same key multiple times', async () => {
+      await expect(identity.addKeys([actionKey, actionKey], [ACTION_KEY, ACTION_KEY], [ECDSA_TYPE, ECDSA_TYPE])).to.be.reverted;
     });
   });
 
