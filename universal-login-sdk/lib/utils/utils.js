@@ -6,15 +6,20 @@ const addressToBytes32 = (address) =>
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
-  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
+const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash) => {
   const abi = contractJSON.interface;
-  let receipt = await provider.getTransactionReceipt(tansactionHash);
+  const receipt = await waitForTransactionReceipt(providerOrWallet, transactionHash);
+  return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
+};
+
+const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick = 1000) => {
+  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
+  let receipt = await provider.getTransactionReceipt(transactionHash);
   while (!receipt) {
     sleep(tick);
-    receipt = await provider.getTransactionReceipt(tansactionHash);
+    receipt = await provider.getTransactionReceipt(transactionHash);
   }
-  return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
+  return receipt;
 };
 
 const messageSignature = (wallet, to, amount, data) =>
@@ -24,4 +29,4 @@ const messageSignature = (wallet, to, amount, data) =>
       [to, amount, data])
     ));
 
-export {waitForContractDeploy, messageSignature, addressToBytes32, sleep};
+export {waitForContractDeploy, messageSignature, addressToBytes32, sleep, waitForTransactionReceipt};
