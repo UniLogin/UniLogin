@@ -19,9 +19,9 @@ class IdentitySelector extends Component {
   renderConnectHover() {
     return this.state.prefix.length > 1 ? (
       <ul className="loginHover">
-        <li className="active">
+        <li className="active" onClick={this.props.onNextClick.bind(this)}>
           <span className="identity">{this.state.identity}</span>
-          <button onClick={this.props.onNextClick.bind(this)} type="submit">
+          <button type="submit">
             {this.state.identityExist ? ' connect' : ' create'}
           </button>
         </li>
@@ -61,11 +61,13 @@ class IdentitySelector extends Component {
     event.target.value = inputText;
     const prefix = inputText;
     const identity = !!inputText.match(/\.eth$/)
-      ? inputText
+      ? inputText.replace(/\.\./, '.')
       : !!inputText.match(/\./)
-        ? `${prefix}.eth`
+        ? `${prefix}.eth`.replace(/\.\./, '.')
         : `${prefix}.${this.state.suffix}`;
-    const identityExist = !!(await this.props.identityExist(identity));
+    const identityExist = !!inputText.match(/\./)
+      ? true
+      : !!(await this.props.identityExist(identity));
     this.setState({ prefix, identity, identityExist });
     this.props.onChange(identity);
   }

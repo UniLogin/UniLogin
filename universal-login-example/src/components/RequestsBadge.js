@@ -6,12 +6,17 @@ class RequestsBadge extends Component {
     super(props);
     this.identityService = this.props.services.identityService;
     this.authorisationService = this.props.services.authorisationService;
-    this.state = { requests: this.authorisationService.pendingAuthorisations.length };
+    this.state = {
+      requests: this.authorisationService.pendingAuthorisations.length
+    };
   }
 
   componentDidMount() {
-    const {address} = this.identityService.identity;
-    this.authorisationService.subscribe(address, this.onAuthorisationChanged.bind(this));
+    const { address } = this.identityService.identity;
+    this.authorisationService.subscribe(
+      address,
+      this.onAuthorisationChanged.bind(this)
+    );
   }
 
   componentWillUnmount() {
@@ -19,17 +24,19 @@ class RequestsBadge extends Component {
   }
 
   onAuthorisationChanged(authorisations) {
-    this.setState({requests: authorisations.length});
+    this.setState({ requests: authorisations.length });
   }
 
   render() {
-    return (
+    return this.state.requests > 0 ? (
       <button
         onClick={() => this.props.setView('PendingAuthorizations')}
         className="request-notification"
       >
         {this.state.requests}
       </button>
+    ) : (
+      ''
     );
   }
 }
