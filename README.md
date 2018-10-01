@@ -4,7 +4,8 @@
 
 Ethereum Identity SDK is composed of smart contracts, a js lib, and a relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#735](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
 
-This is a work in progress. Planned functionality for first release include:
+This is a work in progress. Expect breaking changes. The code has not been audited and therefore can not be considered secure.
+Planned functionality for first release include:
 
 - Creating and managing identities
 - Multi-factor authentication
@@ -192,7 +193,7 @@ cd universal-login-example
 yarn dev:start
 ```
 
-## Running example on dev environment (manual option)
+## Running example on dev environment (manual option, deprecated, will be removed soon)
 
 Before running the example, first you must start a mock blockchain. From the `universal-login-relayer` directory run the following command:
 
@@ -212,6 +213,40 @@ then deploy contracts for the example application and run the application (from 
 ```
 yarn contracts:deploy
 yarn start
+```
+
+## Contributing
+
+Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/EthWorks/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/EthWorks/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
+
+Before you issue pull request:
+* Make sure all tests and linters pass.
+* Make sure you have test coverage for any new features.
+
+
+## Running linting/tests
+
+You can run lint via:
+
+```sh
+./script/lint.sh
+```
+
+You can run tests:
+
+```sh
+./scripts/test.sh
+```
+
+You can ran full clean:
+```sh
+./scripts/clean.sh
+```
+
+And you can emulate full CI process by:
+```sh
+yarn
+./scripts/travis.sh
 ```
 
 ## License
