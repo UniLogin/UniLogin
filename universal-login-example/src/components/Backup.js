@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 class Backup extends Component {
   render() {
-    return <BackupView setView={this.props.setView} />;
+  	const {identity} = this.props.identityService;
+    return <BackupView identity={identity} setView={this.props.setView} />;
   }
 }
 
