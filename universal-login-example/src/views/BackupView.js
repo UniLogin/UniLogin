@@ -9,11 +9,15 @@ class BackupView extends Component {
         <div className="container">
           <h1 className="main-title">BACKUP CODES</h1>
           <div className="row align-items-center">
-            <Blockies seed="alex" size={16}/>
+            <Blockies 
+              seed={this.props.identity.address.toLowerCase()}
+              size={8}
+              scale={8}
+            />
             <div>
-              <p className="user-id">bobby.universal-id.eth</p>
+              <p className="user-id">{this.props.identity.name}</p>
               <p className="wallet-address">
-                0xcee7a4d8be1c30623adc6185b6cdbcba19fac166
+                {this.props.identity.address}
               </p>
             </div>
           </div>
@@ -50,6 +54,7 @@ class BackupView extends Component {
 }
 
 BackupView.propTypes = {
+  identity: PropTypes.object,
   setView: PropTypes.type
 };
 
