@@ -4,7 +4,11 @@ import Blockies from 'react-blockies';
 
 const ProfileIdentityAccount = props => (
   <div className="row align-items-center">
-    <Blockies seed={props.address} size={16}/>
+    <Blockies 
+      seed={props.address.toLowerCase()} 
+      size={8} 
+      scale={6} 
+    />
     <div>
       <p className="user-id">{props.userId}</p>
       <p className="wallet-address">{props.address}</p>
