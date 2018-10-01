@@ -28,14 +28,24 @@ class BackupView extends Component {
             each one once. Keep offline and away from computers.
           </p>
           <hr className="separator-s" />
-          <p className="backup-code bold">bamdaa-ewar-izoisi</p>
+          <p className="backup-code bold">{this.props.backupCodes[0]}</p>
           <hr className="separator-s" />
-          <p className="backup-code bold">fa-depnob-tobpoo-fug</p>
+          <p className="backup-code bold">{this.props.backupCodes[1]}</p>
           <hr className="separator-s" />
-          <p className="backup-code bold">atyfud-nyjnua-feipyd</p>
+          <p className="backup-code bold">{this.props.backupCodes[2]}</p>
           <hr className="separator-s" />
-          <button className="generate-code-btn">Generate 3 more codes</button>
-          <button className="btn fullwidth">SET AS BACKUP CODE</button>
+          <button 
+            className="generate-code-btn"
+            onClick={this.props.onGenerateClick.bind(this)}
+          >
+            Generate 3 more codes
+          </button>
+          <button 
+            className="btn fullwidth"
+            onClick={this.props.onSetBackupClick.bind(this)}
+          >
+            SET AS BACKUP CODE
+          </button>
           <p className="click-cost">
             <i>Costs 2 clicks</i>
           </p>
@@ -54,6 +64,9 @@ class BackupView extends Component {
 }
 
 BackupView.propTypes = {
+  onSetBackupClick: PropTypes.func,
+  onGenerateClick: PropTypes.func,
+  backupCodes: PropTypes.object,
   identity: PropTypes.object,
   setView: PropTypes.type
 };
