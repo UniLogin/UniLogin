@@ -9,6 +9,18 @@
             opacity: 1
             margin-top: 50px
 
+@keyframes fade-in
+  from
+    opacity: 0
+    transform: translateY(-90px) scale(1.1)
+    filter: blur(2px)
+
+  to
+    opacity: 1
+    transform: translateY(0) scale()
+    filter: blur()
+
+
 @keyframes shake
   0%
     transform: translateX(-16px)
@@ -44,8 +56,6 @@
     transform: translateX(0)
 
 
-
-
 .click-history-item:first-child
   animation: slide-from-top 1s ease-in-out
   overflow: hidden
@@ -53,3 +63,9 @@
 
 .request-notification
     animation: shake 2s ease-in-out
+
+.greeting-view
+    animation: fade-in 0.5s ease-in-out
+
+.header
+    animation: fade-in 1s ease-in-out
