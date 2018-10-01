@@ -9,7 +9,7 @@ class BackupView extends Component {
         <div className="container">
           <h1 className="main-title">BACKUP CODES</h1>
           <div className="row align-items-center">
-            <Blockies seed="alex" size={16}/>
+            <Blockies seed="alwaysUse.toLowerCase" size={8} scale={6} />
             <div>
               <p className="user-id">bobby.universal-id.eth</p>
               <p className="wallet-address">
@@ -18,10 +18,10 @@ class BackupView extends Component {
             </div>
           </div>
           <p className="backup-text">
-            Keep this codes somewhere safe and secret. Also, don
-            {'\''}t forget your username as it
-            {'\''}s required to recover access. These are independent codes, use
-            each one once. Keep offline and away from computers.
+            Keep this codes somewhere safe and secret. Also, don&apos;t forget
+            your username as it&apos;s required to recover access. These are
+            independent codes, use each one once. Keep offline and away from
+            computers.
           </p>
           <hr className="separator-s" />
           <p className="backup-code bold">bamdaa-ewar-izoisi</p>
