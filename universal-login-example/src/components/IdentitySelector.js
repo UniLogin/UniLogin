@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import IdentityExistingIndicator from '../views/IdentityExistingIndicator';
 import TextBox from '../views/TextBox';
-import Button from './Button';
-import Dropdown from './Dropdown';
 import PropTypes from 'prop-types';
 
 class IdentitySelector extends Component {
