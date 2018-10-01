@@ -86,17 +86,17 @@ describe('Relayer - IdentityService', async () => {
       describe('Add Key', async () => {
         it('execute signed message', async () => {
           const to = otherWallet.address;
-          const signature = messageSignature(managementKey, to, value, data);
+          const signature = messageSignature(managementKey, to, contract.address, value, data, 0, gasToken, gasPrice, gasLimit);
 
-          await identityService.executeSigned(contract.address, {to, value, data, signature, gasToken, gasPrice, gasLimit});
+          await identityService.executeSigned(contract.address, {to, value, data, nonce: 0, gasToken, gasPrice, gasLimit, signature});
           expect(await otherWallet.getBalance()).to.eq(expectedBalance);
         });
 
         it('execute add key', async () => {
           const newKeyAddress = addressToBytes32(otherWallet.address);
           const {data} = new Interface(Identity.interface).functions.addKey(newKeyAddress, ACTION_KEY, ECDSA_TYPE);
-          const signature = messageSignature(managementKey, contract.address, 0, data);
-          const message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
+          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
+          const message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
 
           await identityService.executeSigned(contract.address, message);
           const key = await contract.getKey(newKeyAddress);
@@ -110,8 +110,8 @@ describe('Relayer - IdentityService', async () => {
             await authorisationService.addRequest(request);
 
             const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(otherWallet.address), MANAGEMENT_KEY, ECDSA_TYPE);
-            const signature = messageSignature(managementKey, contract.address, 0, data);
-            message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
+            const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
+            message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
           });
 
           it('should remove request from pending authorisations if addKey', async () => {
@@ -124,16 +124,16 @@ describe('Relayer - IdentityService', async () => {
       describe('Remove key ', async () => {
         before(async () => {
           const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY, ECDSA_TYPE);
-          const signature = messageSignature(managementKey, contract.address, 0, data);
-          const message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
+          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
+          const message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
           await identityService.executeSigned(contract.address, message);
         });
 
         it('should remove key', async () => {
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(MANAGEMENT_KEY);
           const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY);
-          const signature = messageSignature(managementKey, contract.address, 0, data);
-          const message =  {to: contract.address, value: 0, data, signature, gasToken, gasPrice, gasLimit};
+          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
+          const message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
           await identityService.executeSigned(contract.address, message);
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(0);
         });

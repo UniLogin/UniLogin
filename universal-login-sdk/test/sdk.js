@@ -5,9 +5,12 @@ import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
+import DEFAULT_PAYMENT_OPTIONS from '../lib/config';
 
 chai.use(solidity);
 chai.use(sinonChai);
+
+const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('SDK - integration', async () => {
   let provider;
@@ -62,7 +65,11 @@ describe('SDK - integration', async () => {
         message = {
           to: otherWallet.address,
           value: 10,
-          data: utils.hexlify(0)
+          data: utils.hexlify(0),
+          nonce: 0,
+          gasToken,
+          gasPrice,
+          gasLimit
         };
         expectedBalance = (await otherWallet.getBalance()).add(10);
         nonce = await sdk.execute(identityAddress, message, privateKey);
@@ -82,8 +89,14 @@ describe('SDK - integration', async () => {
     });
 
     describe('Add key', async () => {
+      const transactionDetalis = {
+        nonce: 0,
+        gasToken,
+        gasPrice,
+        gasLimit
+      };
       it('should return execution nonce', async () => {
-        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey)).to.eq(2);
+        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, transactionDetalis)).to.eq(2);
       });
     });
 
