@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
-import {toWords} from '../Daefen';
+import ethers from 'ethers';
 
 
 class Backup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      backupCodes: []
+      wallets: ['loading...', 'loading...', 'loading...']
     };
   }
 
@@ -17,15 +17,9 @@ class Backup extends Component {
   }
 
   generateBackupCodes() {
-    var backupCodes = [];
-    var random = Math.floor(Math.random() * Math.pow(2, 55));
-    var backupOne = toWords(random).replace(/\s/g, '-').toLowerCase();
-    random = Math.floor(Math.random() * Math.pow(2, 55));
-    var backupTwo = toWords(random).replace(/\s/g, '-').toLowerCase();
-    random = Math.floor(Math.random() * Math.pow(2, 55));
-    var backupThree = toWords(random).replace(/\s/g, '-').toLowerCase();
-    backupCodes.push(backupOne, backupTwo, backupThree);
-    this.setState({backupCodes: backupCodes});
+    var wallets = [];
+    wallets.push(ethers.Wallet.createRandom(), ethers.Wallet.createRandom(), ethers.Wallet.createRandom());
+    this.setState({wallets: wallets});
   }
 
   setBackupCodes() {
@@ -34,7 +28,7 @@ class Backup extends Component {
 
   render() {
     const {identity} = this.props.identityService;
-    return <BackupView identity={identity} setView={this.props.setView} backupCodes={this.state.backupCodes} onGenerateClick={this.generateBackupCodes.bind(this)} onSetBackupClick={this.setBackupCodes.bind(this)} />;
+    return <BackupView identity={identity} setView={this.props.setView} wallets={this.state.wallets} onGenerateClick={this.generateBackupCodes.bind(this)} onSetBackupClick={this.setBackupCodes.bind(this)} />;
   }
 }
 

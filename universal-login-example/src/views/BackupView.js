@@ -28,11 +28,11 @@ class BackupView extends Component {
             each one once. Keep offline and away from computers.
           </p>
           <hr className="separator-s" />
-          <p className="backup-code bold">{this.props.backupCodes[0]}</p>
+          <p className="backup-code bold">{this.props.wallets[0].mnemonic}</p>
           <hr className="separator-s" />
-          <p className="backup-code bold">{this.props.backupCodes[1]}</p>
+          <p className="backup-code bold">{this.props.wallets[1].mnemonic}</p>
           <hr className="separator-s" />
-          <p className="backup-code bold">{this.props.backupCodes[2]}</p>
+          <p className="backup-code bold">{this.props.wallets[2].mnemonic}</p>
           <hr className="separator-s" />
           <button 
             className="generate-code-btn"
@@ -66,7 +66,7 @@ class BackupView extends Component {
 BackupView.propTypes = {
   onSetBackupClick: PropTypes.func,
   onGenerateClick: PropTypes.func,
-  backupCodes: PropTypes.object,
+  wallets: PropTypes.object,
   identity: PropTypes.object,
   setView: PropTypes.type
 };
