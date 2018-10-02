@@ -41,7 +41,6 @@ class EthereumIdentitySDK {
       from: to,
       value: 0,
       data,
-      nonce: transactionDetails.nonce,
       gasToken: transactionDetails.gasToken,
       gasPrice: transactionDetails.gasPrice,
       gasLimit: transactionDetails.gasLimit
@@ -57,7 +56,6 @@ class EthereumIdentitySDK {
       from: to,
       value: 0,
       data,
-      nonce: transactionDetails.nonce,
       gasToken: transactionDetails.gasToken,
       gasPrice: transactionDetails.gasPrice,
       gasLimit: transactionDetails.gasLimit
@@ -84,6 +82,8 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
+    const nonce = parseInt(await this.getLastExecutionNonce(contractAddress, wallet), 10);
+    message.nonce = nonce;
     const signature = messageSignature(wallet, message.to, contractAddress, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit);
     const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
     const response = await fetch(url, {headers, method, body});
@@ -93,6 +93,11 @@ class EthereumIdentitySDK {
       return this.getExecutionNonce(receipt.logs);
     }
     throw new Error(`${response.status}`);
+  }
+
+  async getLastExecutionNonce(identityAddress, wallet) {
+    const contract = new ethers.Contract(identityAddress, Identity.interface, wallet);
+    return await contract.executionNonce();
   }
 
   getExecutionNonce(emittedEvents) {

@@ -3,18 +3,18 @@ import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {messageSignature} from './utils';
 import {utils, Wallet} from 'ethers';
+import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
+
+const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('Tools test', async () => {
   let provider;
   let wallet;
   const value = utils.parseEther('0.1');
   const data = utils.hexlify(0);
-  const gasToken = '0x0000000000000000000000000000000000000000';
-  const gasPrice = 1000000000;
-  const gasLimit = 1000000;
   const nonce = 0;
 
   before(async () => {

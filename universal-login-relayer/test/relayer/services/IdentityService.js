@@ -95,8 +95,8 @@ describe('Relayer - IdentityService', async () => {
         it('execute add key', async () => {
           const newKeyAddress = addressToBytes32(otherWallet.address);
           const {data} = new Interface(Identity.interface).functions.addKey(newKeyAddress, ACTION_KEY, ECDSA_TYPE);
-          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
-          const message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
+          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 1, gasToken, gasPrice, gasLimit);
+          const message =  {to: contract.address, value: 0, data, nonce: 1, gasToken, gasPrice, gasLimit, signature};
 
           await identityService.executeSigned(contract.address, message);
           const key = await contract.getKey(newKeyAddress);
@@ -110,8 +110,8 @@ describe('Relayer - IdentityService', async () => {
             await authorisationService.addRequest(request);
 
             const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(otherWallet.address), MANAGEMENT_KEY, ECDSA_TYPE);
-            const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
-            message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
+            const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 2, gasToken, gasPrice, gasLimit);
+            message =  {to: contract.address, value: 0, data, nonce: 2, gasToken, gasPrice, gasLimit, signature};
           });
 
           it('should remove request from pending authorisations if addKey', async () => {
@@ -124,16 +124,16 @@ describe('Relayer - IdentityService', async () => {
       describe('Remove key ', async () => {
         before(async () => {
           const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY, ECDSA_TYPE);
-          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
-          const message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
+          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 3, gasToken, gasPrice, gasLimit);
+          const message =  {to: contract.address, value: 0, data, nonce: 3, gasToken, gasPrice, gasLimit, signature};
           await identityService.executeSigned(contract.address, message);
         });
 
         it('should remove key', async () => {
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(MANAGEMENT_KEY);
           const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY);
-          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 0, gasToken, gasPrice, gasLimit);
-          const message =  {to: contract.address, value: 0, data, nonce: 0, gasToken, gasPrice, gasLimit, signature};
+          const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 4, gasToken, gasPrice, gasLimit);
+          const message =  {to: contract.address, value: 0, data, nonce: 4, gasToken, gasPrice, gasLimit, signature};
           await identityService.executeSigned(contract.address, message);
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(0);
         });
