@@ -27,25 +27,18 @@ class IdentitySelector extends Component {
             {this.state.prefix}
             .alternatedomain.eth
           </span>
-          <button> create new</button>
-        </li>{' '}
+          <button> create</button>
+        </li>
         <li>
           <span className="identity">
             {this.state.prefix}
             .popularapp.eth
           </span>
           <button> connect </button>
-        </li>{' '}
-        <li>
-          <span className="identity">
-            {this.state.prefix}
-            .my-id.eth
-          </span>
-          <button> create new</button>
         </li>
         <li className={this.state.identityExist ? 'visible' : 'hidden'}>
           <span className="identity">{this.state.identity}</span>
-          <button>Recover identity</button>
+          <button>recover</button>
         </li>
       </ul>
     ) : (
@@ -54,15 +47,18 @@ class IdentitySelector extends Component {
   }
 
   async updatePrefix(event) {
-    const inputText = event.target.value.toLowerCase().replace(/[ @]/, '');
+    const inputText = event.target.value
+      .toLowerCase()
+      .replace(/[ @]/, '')
+      .replace(/\.+/g, '.');
     event.target.value = inputText;
     const prefix = inputText;
-    const identity = !!inputText.match(/\.eth$/)
-      ? inputText.replace(/\.\./, '.')
-      : !!inputText.match(/\./)
-        ? `${prefix}.eth`.replace(/\.\./, '.')
+    const identity = /\.eth$/.test(inputText)
+      ? inputText.replace(/\.+/g, '.')
+      : /\./.test(inputText)
+        ? `${prefix}.eth`.replace(/\.+/g, '.')
         : `${prefix}.${this.state.suffix}`;
-    const identityExist = !!inputText.match(/\./)
+    const identityExist = /\./.test(inputText)
       ? true
       : !!(await this.props.identityExist(identity));
     this.setState({ prefix, identity, identityExist });
