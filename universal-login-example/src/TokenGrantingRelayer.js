@@ -1,7 +1,7 @@
 import { waitForContractDeploy } from "./utils";
 import Token from '../build/Token';
 import Relayer from 'universal-login-relayer';
-import ethers, {Wallet} from 'ethers';
+import ethers, {Wallet, utils} from 'ethers';
 
 class TokenGrantingRelayer extends Relayer {
 
@@ -18,9 +18,9 @@ class TokenGrantingRelayer extends Relayer {
       waitForContractDeploy(this.provider, Token, transaction.hash)
         .then((identityContract) => {
           this.identityAddress = identityContract.address;
-          this.tokenContract.transfer(identityContract.address, 20);});
+          this.tokenContract.transfer(identityContract.address, utils.parseEther('20'));});
     });
-    this.hooks.addListener('added', (key) => this.tokenContract.transfer(this.identityAddress, 5));
+    this.hooks.addListener('added', (key) => this.tokenContract.transfer(this.identityAddress, utils.parseEther('5')));
   }
 }
 

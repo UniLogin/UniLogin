@@ -5,7 +5,15 @@ import BackBtn from './BackBtn';
 import PendingAuthorizationsView from '../views/PendingAuthorizationsView';
 import PropTypes from 'prop-types';
 import ProfileIdentity from './ProfileIdentity';
-import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
+import {tokenContractAddress} from '../../config/config';
+import {utils} from 'ethers';
+
+const addKeyPaymentOptions = {
+  nonce: 0,
+  gasToken: tokenContractAddress,
+  gasLimit: 1,
+  gasPrice: utils.parseEther('0.00011').toString()
+};
 
 class PendingAuthorizations extends Component {
 
@@ -36,7 +44,7 @@ class PendingAuthorizations extends Component {
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
-    await sdk.addKey(to, publicKey, privateKey, DEFAULT_PAYMENT_OPTIONS);
+    await sdk.addKey(to, publicKey, privateKey, addKeyPaymentOptions);
   }
 
   async onDenyClick(publicKey) {

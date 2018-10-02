@@ -1,4 +1,4 @@
-import ethers from 'ethers';
+import ethers, {utils} from 'ethers';
 import Token from '../../build/Token';
 
 class TokenService {
@@ -9,7 +9,7 @@ class TokenService {
   }
 
   async getBalance(address) {
-    return await this.tokenContract.balanceOf(address);
+    return utils.formatEther(await this.tokenContract.balanceOf(address));
   }
 }
 
