@@ -43,6 +43,7 @@ class IdentitySelector extends Component {
 IdentitySelector.propTypes = {
   onChange: PropTypes.func,
   onNextClick: PropTypes.func,
+  onAccountRecoveryClick: PropTypes.func,
   ensDomains: PropTypes.arrayOf(PropTypes.string),
   services: PropTypes.object,
   identityExist: PropTypes.func,

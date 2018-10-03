@@ -11,7 +11,8 @@ class Backup extends Component {
     this.identityService = this.props.services.identityService;
     this.sdk = this.props.services.sdk;
     this.state = {
-      backupCodes: ['loading...', 'loading...', 'loading...']
+      backupCodes: ['loading...', 'loading...', 'loading...'],
+      btnLabel: 'SET AS BACKUP CODES'
     };
   }
 
@@ -21,7 +22,6 @@ class Backup extends Component {
 
   generateBackupCodes() {
     var backupCodes = [];
-
     for (var i = 0; i < 3; i++) {
       backupCodes.push(
         toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
@@ -33,11 +33,11 @@ class Backup extends Component {
             .toLowerCase()
       );
     }
-
     this.setState({ backupCodes: backupCodes });
   }
 
   async setBackupCodes() {
+    this.setState({ btnLabel: 'Setting...' });
     const {identityService} = this.props.services;
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
@@ -49,12 +49,14 @@ class Backup extends Component {
     ]);
     const publicKeys = [wallets[0].address, wallets[1].address, wallets[2].address];
     await sdk.addKeys(to, publicKeys, privateKey, DEFAULT_PAYMENT_OPTIONS);
+    this.setState({ btnLabel: 'Successful!' });
   }
 
   render() {
     const { identity } = this.props.services.identityService;
     return (
       <BackupView
+        btnLabel={this.state.btnLabel}
         identity={identity}
         setView={this.props.setView}
         backupCodes={this.state.backupCodes}

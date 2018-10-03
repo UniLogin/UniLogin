@@ -60,7 +60,7 @@ class BackupView extends Component {
             className="btn fullwidth"
             onClick={this.props.onSetBackupClick.bind(this)}
           >
-            SET AS BACKUP CODES
+            {this.props.btnLabel}
           </button>
           <p className="click-cost">
             <i>Costs 2 clicks</i>
@@ -80,6 +80,7 @@ class BackupView extends Component {
 }
 
 BackupView.propTypes = {
+  btnLabel: PropTypes.string,
   onSetBackupClick: PropTypes.func,
   onGenerateClick: PropTypes.func,
   backupCodes: PropTypes.array,
