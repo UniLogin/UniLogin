@@ -108,7 +108,7 @@ function fromWords(words) {
     .split(" ");
   let result = 0;
 
-  for (i = 0; i < wordArray.length; i++) {
+  for (var i = 0; i < wordArray.length; i++) {
     if (syllables.indexOf(wordArray[i]) < 0) return;
 
     result =
