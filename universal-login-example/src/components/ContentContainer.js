@@ -48,7 +48,7 @@ class ContentContainer extends Component {
     } else if (this.state.view === 'PendingAuthorizations') {
       return <PendingAuthorizations services = {this.props.services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Backup') {
-      return <Backup identityService={this.props.services.identityService} setView={this.setView.bind(this)}/>;
+      return <Backup services={this.props.services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Trusted') {
       return <Trusted setView={this.setView.bind(this)}/>;
     }
