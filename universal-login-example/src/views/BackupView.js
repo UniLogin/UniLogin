@@ -82,7 +82,7 @@ class BackupView extends Component {
 BackupView.propTypes = {
   onSetBackupClick: PropTypes.func,
   onGenerateClick: PropTypes.func,
-  backupCodes: PropTypes.object,
+  backupCodes: PropTypes.array,
   identity: PropTypes.object,
   setView: PropTypes.type
 };
