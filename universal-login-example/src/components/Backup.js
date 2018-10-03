@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
 import { toWords } from '../Daefen';
+import ethers from 'ethers';
 
 class Backup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      backupCodes: []
+      backupCodes: ['loading...', 'loading...', 'loading...'],
+      wallets: []
     };
   }
 
@@ -15,7 +17,8 @@ class Backup extends Component {
     this.generateBackupCodes();
   }
 
-  generateBackupCodes() {
+  async generateBackupCodes() {
+    this.setState({ backupCodes: ['loading...', 'loading...', 'loading...'], wallets: []});
     var backupCodes = [];
 
     for (var i = 0; i < 3; i++) {
@@ -29,11 +32,20 @@ class Backup extends Component {
             .toLowerCase()
       );
     }
-    this.setState({ backupCodes: backupCodes });
+
+    var wallets = await Promise.all([
+      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, backupCodes[0]), 
+      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, backupCodes[1]), 
+      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, backupCodes[2])
+    ]);
+
+    this.setState({ backupCodes: backupCodes, wallets: wallets});
   }
 
   setBackupCodes() {
-    // TODO: Add backup codes to identity contract
+    // TODO: Add backup code's keys to identity contract
+    // something like....
+    // this.props.identityService.addKeys(wallets) 
   }
 
   render() {
