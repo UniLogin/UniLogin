@@ -49,7 +49,7 @@ class MainScreenView extends Component {
 
 MainScreenView.propTypes = {
   clicksLeft: PropTypes.number,
-  lastClick: PropTypes.number,
+  lastClick: PropTypes.string,
   onClickerClick: PropTypes.func,
   events: PropTypes.array
 };
