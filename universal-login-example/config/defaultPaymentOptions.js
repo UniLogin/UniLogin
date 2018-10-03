@@ -1,0 +1,8 @@
+const DEFAULT_PAYMENT_OPTIONS = {
+  nonce: 0,
+  gasToken: '0x0000000000000000000000000000000000000000',
+  gasPrice: 1000000000,
+  gasLimit: 1000000
+};
+
+export default DEFAULT_PAYMENT_OPTIONS;

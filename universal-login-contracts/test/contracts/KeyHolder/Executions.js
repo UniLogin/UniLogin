@@ -6,9 +6,14 @@ import {createMockProvider, deployContract, getWallets, solidity, contractWithWa
 import {addressToBytes32, messageSignature} from '../../utils';
 import {utils, Wallet} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
+import DEFAULT_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
+
+const amount = utils.parseEther('0.1');
+const data = utils.hexlify(0);
+const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('Key holder: executions', async () => {
   let provider;
@@ -33,9 +38,6 @@ describe('Key holder: executions', async () => {
 
   let mockContractAddress;
   let targetAddress;
-  const amount = utils.parseEther('0.1');
-  const data = utils.hexlify(0);
-
 
   let addKeyData;
   let removeKeyData;
@@ -57,7 +59,6 @@ describe('Key holder: executions', async () => {
 
     mockContractAddress = mockContract.address;
     targetAddress = targetWallet.address;
-
 
     await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
     await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
@@ -129,73 +130,78 @@ describe('Key holder: executions', async () => {
 
   describe('Execute signed', async () => {
     let signature;
+
     beforeEach(async () => {
-      signature = messageSignature(wallet, targetAddress, amount, data);
+      signature = messageSignature(
+        wallet, targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
     });
 
     it('Get signer for executions work correctly', async () => {
-      const message = utils.arrayify(utils.solidityKeccak256(['address', 'uint256', 'bytes'],[targetAddress, amount, data]));
+      const message = utils.arrayify(utils.solidityKeccak256(
+        ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
+        [targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit]));
       const correctSigner = utils.hexlify(addressToBytes32(Wallet.verifyMessage(message, signature)));
-      expect(await identity.getSignerForExecutions(targetAddress, amount, data, signature)).to.eq(correctSigner);
+      expect(await identity.getSignerForExecutions(targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature))
+        .to.eq(correctSigner);
     });
 
     it('Should allow to add execution with valid message signature', async () => {
-      await expect(identity.executeSigned(targetAddress, amount, data, signature)).to
+      await expect(identity.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to
         .emit(identity, 'ExecutionRequested');
       const execution = await identity.executions(0);
       expect(execution[0]).to.eq(targetAddress);
     });
 
     it('Should not allow to add execution with invalid message signature', async () => {
-      await expect(identity.executeSigned(targetAddress, amount, data, signature + 1)).to.be.reverted;
+      await expect(identity.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit, signature + 1)).to.be.reverted;
     });
 
     it('Should not allow to add execution with incorrect target address', async () => {
-      await expect(identity.executeSigned(anotherWallet.address, amount, data, signature)).to.be.reverted;
+      await expect(identity.executeSigned(anotherWallet.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
     });
 
     it('Should not allow to add execution with incorrect amount', async () => {
-      await expect(identity.executeSigned(targetAddress, 4, data, signature)).to.be.reverted;
+      await expect(identity.executeSigned(targetAddress, 4, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
     });
 
     it('Should not allow to add execution with incorrect data', async () => {
-      await expect(identity.executeSigned(targetAddress, amount, ['0x16'], signature)).to.be.reverted;
+      await expect(identity.executeSigned(targetAddress, amount, ['0x16'], 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
     });
 
     it('Should allow to add execution unknown sender', async () => {
-      await fromUnknownWallet.executeSigned(targetAddress, amount, data, signature);
+      await fromUnknownWallet.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit, signature);
       const execution = await identity.executions(0);
       expect(execution[0]).to.eq(targetAddress);
     });
 
     it('Should allow to add execution signed by action key', async () => {
-      signature = messageSignature(actionWallet, targetAddress, amount, data);
-      await fromUnknownWallet.executeSigned(targetAddress, amount, data, signature);
+      signature = messageSignature(actionWallet, targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
+      await fromUnknownWallet.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit, signature);
       const execution = await identity.executions(0);
       expect(execution[0]).to.eq(targetAddress);
     });
 
     it('Should not allow to add execution signed by unknown key', async () => {
-      signature = messageSignature(unknownWallet, targetAddress, amount, data);
-      await expect(fromUnknownWallet.executeSigned(targetAddress, amount, data, signature)).to.be.reverted;
+      signature = messageSignature(unknownWallet, targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
+      await expect(fromUnknownWallet.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
     });
 
     describe('On self execute signed', async () => {
       it('Should allow to add execution on self signed by management key', async () => {
-        signature = messageSignature(wallet, identity.address, amount, data);
-        await identity.executeSigned(identity.address, amount, data, signature);
+        signature = messageSignature(wallet, identity.address, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
+        await identity.executeSigned(identity.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature);
         const execution = await identity.executions(0);
         expect(execution[0]).to.eq(identity.address);
       });
 
       it('Should not allow to add execution on self signed by action key', async () => {
-        signature = messageSignature(actionWallet, identity.address, amount, data);
-        await expect(fromUnknownWallet.executeSigned(identity.address, amount, data, signature)).to.be.reverted;
+        signature = messageSignature(actionWallet, identity.address, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
+        await expect(fromUnknownWallet.executeSigned(identity.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
       });
 
       it('Should not allow to add execution on self signed by unknown key', async () => {
-        signature = messageSignature(unknownWallet, identity.address, amount, data);
-        await expect(identity.executeSigned(identity.address, amount, data, signature)).to.be.reverted;
+        signature = messageSignature(unknownWallet, identity.address, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
+        await expect(identity.executeSigned(identity.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
       });
     });
   });

@@ -37,11 +37,11 @@ class IdentityService {
       const [address] = (this.codec.decode(['bytes32', 'uint256', 'uint256'], message.data.replace(addKeySighash.slice(2), '')));
       const key = utils.hexlify(utils.stripZeros(address));
       await this.authorisationService.removeRequest(contractAddress, key);
-      const transaction = await contract.executeSigned(message.to, message.value, message.data, message.signature);
+      const transaction = await contract.executeSigned(message.to, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit, message.signature);
       this.hooks.emit('added', key);
       return transaction;
     }
-    return await contract.executeSigned(message.to, message.value, message.data, message.signature);
+    return await contract.executeSigned(message.to, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit, message.signature);
   }
 }
 

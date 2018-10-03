@@ -6,22 +6,27 @@ const addressToBytes32 = (address) =>
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
-  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
+const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash) => {
   const abi = contractJSON.interface;
-  let receipt = await provider.getTransactionReceipt(tansactionHash);
-  while (!receipt) {
-    sleep(tick);
-    receipt = await provider.getTransactionReceipt(tansactionHash);
-  }
+  const receipt = await waitForTransactionReceipt(providerOrWallet, transactionHash);
   return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
-const messageSignature = (wallet, to, amount, data) =>
+const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick = 1000) => {
+  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
+  let receipt = await provider.getTransactionReceipt(transactionHash);
+  while (!receipt) {
+    sleep(tick);
+    receipt = await provider.getTransactionReceipt(transactionHash);
+  }
+  return receipt;
+};
+
+const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
-      ['address', 'uint256', 'bytes'],
-      [to, amount, data])
+      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
+      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit])
     ));
 
-export {waitForContractDeploy, messageSignature, addressToBytes32, sleep};
+export {waitForContractDeploy, messageSignature, addressToBytes32, sleep, waitForTransactionReceipt};

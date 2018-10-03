@@ -11,22 +11,22 @@ const addressToBytes32 = (address) =>
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
+const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
   const abi = contractJSON.interface;
-  let receipt = await provider.getTransactionReceipt(tansactionHash);
+  let receipt = await provider.getTransactionReceipt(transactionHash);
   while (!receipt) {
     sleep(tick);
-    receipt = await provider.getTransactionReceipt(tansactionHash);
+    receipt = await provider.getTransactionReceipt(transactionHash);
   }
   return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
-const messageSignature = (wallet, to, amount, data) =>
+const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
-      ['address', 'uint256', 'bytes'],
-      [to, amount, data])
+      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
+      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit])
     ));
 
 const messageSignatureForApprovals = (wallet, id) =>

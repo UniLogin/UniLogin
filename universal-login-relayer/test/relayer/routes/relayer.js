@@ -6,6 +6,9 @@ import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils'
 import Identity from 'universal-login-contracts/build/Identity';
 
 chai.use(chaiHttp);
+const gasToken = '0x0000000000000000000000000000000000000000';
+const gasPrice = 1000000000;
+const gasLimit = 1000000;
 
 describe('Relayer - Identity routes', async () => {
   let relayer;
@@ -41,7 +44,7 @@ describe('Relayer - Identity routes', async () => {
     });
 
     it('Execute signed transfer', async () => {
-      const transferSignature = await messageSignature(wallet, otherWallet.address, 10, '0x0');
+      const transferSignature = await messageSignature(wallet, otherWallet.address, contract.address, 10, '0x0', 0, gasToken, gasPrice, gasLimit);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({
@@ -49,6 +52,10 @@ describe('Relayer - Identity routes', async () => {
           to: otherWallet.address,
           value: 10,
           data: '0x0',
+          nonce: 0,
+          gasToken,
+          gasPrice,
+          gasLimit,
           signature: transferSignature
         });
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);

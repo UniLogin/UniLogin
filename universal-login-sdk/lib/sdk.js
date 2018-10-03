@@ -1,18 +1,20 @@
 import ethers, {utils, Interface} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
-import {addressToBytes32, waitForContractDeploy, messageSignature} from './utils/utils';
+import {addressToBytes32, waitForContractDeploy, messageSignature, waitForTransactionReceipt} from './utils/utils';
 import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
+import DEFAULT_PAYMENT_OPTIONS from './config';
 
 class EthereumIdentitySDK {
-  constructor(relayerUrl, provider) {
+  constructor(relayerUrl, provider, paymentOptions) {
     this.provider = provider;
     this.relayerUrl = relayerUrl;
     this.relayerObserver = new RelayerObserver(relayerUrl);
     this.blockchainObserver = new BlockchainObserver(provider);
+    this.defaultPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, ...paymentOptions};
   }
 
   async create(ensName) {
@@ -31,24 +33,34 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async addKey(to, publicKey, privateKey) {
+  async addKey(to, publicKey, privateKey, transactionDetails) {
     const key = addressToBytes32(publicKey);
     const {data} = new Interface(Identity.interface).functions.addKey(key, MANAGEMENT_KEY, ECDSA_TYPE);
     const message = {
       to,
+      from: to,
       value: 0,
-      data
+      data,
+      nonce: transactionDetails.nonce,
+      gasToken: transactionDetails.gasToken,
+      gasPrice: transactionDetails.gasPrice,
+      gasLimit: transactionDetails.gasLimit
     };
     return await this.execute(to, message, privateKey);
   }
 
-  async removeKey(to, address, privateKey) {
+  async removeKey(to, address, privateKey, transactionDetails) {
     const key = addressToBytes32(address);
     const {data} = new Interface(Identity.interface).functions.removeKey(key, MANAGEMENT_KEY);
     const message = {
       to,
+      from: to,
       value: 0,
-      data
+      data,
+      nonce: transactionDetails.nonce,
+      gasToken: transactionDetails.gasToken,
+      gasPrice: transactionDetails.gasPrice,
+      gasLimit: transactionDetails.gasLimit
     };
     return await this.execute(to, message, privateKey);
   }
@@ -72,12 +84,12 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
-    const signature = messageSignature(wallet, message.to, message.value, message.data);
-    const body = JSON.stringify({...message, contractAddress, signature});
+    const signature = messageSignature(wallet, message.to, contractAddress, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit);
+    const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
-      const receipt = await this.provider.getTransactionReceipt(responseJson.transaction.hash);
+      const receipt = await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
       return this.getExecutionNonce(receipt.logs);
     }
     throw new Error(`${response.status}`);
