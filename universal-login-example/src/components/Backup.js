@@ -3,10 +3,13 @@ import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
 import { toWords } from '../Daefen';
 import ethers from 'ethers';
+import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 class Backup extends Component {
   constructor(props) {
     super(props);
+    this.identityService = this.props.services.identityService;
+    this.sdk = this.props.services.sdk;
     this.state = {
       backupCodes: ['loading...', 'loading...', 'loading...']
     };
@@ -35,20 +38,21 @@ class Backup extends Component {
   }
 
   async setBackupCodes() {
-    // var wallets = 
-    await Promise.all([
-      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, this.state.backupCodes[0]), 
-      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, this.state.backupCodes[1]), 
-      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, this.state.backupCodes[2])
+    const {identityService} = this.props.services;
+    const to = identityService.identity.address;
+    const {privateKey} = identityService.identity;
+    const {sdk} = identityService;
+    var wallets = await Promise.all([
+      ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[0]), 
+      ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[1]), 
+      ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[2])
     ]);
-
-    // TODO: Add backup code's keys to identity contract
-    // something like....
-    // this.props.identityService.addKeys(wallets) 
+    const publicKeys = [wallets[0].address, wallets[1].address, wallets[2].address];
+    await sdk.addKeys(to, publicKeys, privateKey, DEFAULT_PAYMENT_OPTIONS);
   }
 
   render() {
-    const { identity } = this.props.identityService;
+    const { identity } = this.props.services.identityService;
     return (
       <BackupView
         identity={identity}
@@ -62,7 +66,7 @@ class Backup extends Component {
 }
 
 Backup.propTypes = {
-  identityService: PropTypes.object,
+  services: PropTypes.object,
   setView: PropTypes.func
 };
 

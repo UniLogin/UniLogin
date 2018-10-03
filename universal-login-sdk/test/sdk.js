@@ -17,11 +17,12 @@ describe('SDK - integration', async () => {
   let relayer;
   let sdk;
   let otherWallet;
+  let otherWallet2;
   let sponsor;
 
   before(async () => {
     provider = createMockProvider();
-    [otherWallet, sponsor] = await getWallets(provider);
+    [otherWallet, sponsor, otherWallet2] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     ({provider} = relayer);
@@ -100,6 +101,18 @@ describe('SDK - integration', async () => {
         expect(executionNonce).to.eq(3);
         await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken, gasPrice, gasLimit});
         expect(await sdk.getLastExecutionNonce(identityAddress, wallet)).to.eq(executionNonce.add(1));
+      });
+    });
+
+    describe('Add keys', async () => {
+      const transactionDetalis = {
+        nonce: 0,
+        gasToken,
+        gasPrice,
+        gasLimit
+      };
+      it('should return execution nonce', async () => {
+        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, transactionDetalis)).to.eq(3);
       });
     });
 

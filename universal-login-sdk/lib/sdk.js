@@ -48,6 +48,29 @@ class EthereumIdentitySDK {
     return await this.execute(to, message, privateKey);
   }
 
+  async addKeys(to, publicKeys, privateKey, transactionDetails) {
+    const keys = [];
+    const keyRoles = [];
+    const keyTypes = [];
+    for (const publicKey of publicKeys) {
+      keys.push(addressToBytes32(publicKey));
+      keyRoles.push(MANAGEMENT_KEY);
+      keyTypes.push(ECDSA_TYPE);
+    }
+    const {data} = new Interface(Identity.interface).functions.addKeys(keys, keyRoles, keyTypes);
+    const message = {
+      to,
+      from: to,
+      value: 0,
+      data,
+      nonce: transactionDetails.nonce,
+      gasToken: transactionDetails.gasToken,
+      gasPrice: transactionDetails.gasPrice,
+      gasLimit: transactionDetails.gasLimit
+    };
+    return await this.execute(to, message, privateKey);
+  }
+
   async removeKey(to, address, privateKey, transactionDetails) {
     const key = addressToBytes32(address);
     const {data} = new Interface(Identity.interface).functions.removeKey(key, MANAGEMENT_KEY);
