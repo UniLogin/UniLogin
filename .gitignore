@@ -20,3 +20,5 @@ yarn-error.log
 /universal-login-example/node_modules
 /universal-login-example/yarn-error.log
 sdk/*
+universal-login-example/src/.DS_Store
+.DS_Store
