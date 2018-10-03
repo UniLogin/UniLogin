@@ -8,8 +8,7 @@ class Backup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      backupCodes: ['loading...', 'loading...', 'loading...'],
-      wallets: []
+      backupCodes: ['loading...', 'loading...', 'loading...']
     };
   }
 
@@ -17,8 +16,7 @@ class Backup extends Component {
     this.generateBackupCodes();
   }
 
-  async generateBackupCodes() {
-    this.setState({ backupCodes: ['loading...', 'loading...', 'loading...'], wallets: []});
+  generateBackupCodes() {
     var backupCodes = [];
 
     for (var i = 0; i < 3; i++) {
@@ -33,16 +31,17 @@ class Backup extends Component {
       );
     }
 
-    var wallets = await Promise.all([
-      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, backupCodes[0]), 
-      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, backupCodes[1]), 
-      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, backupCodes[2])
-    ]);
-
-    this.setState({ backupCodes: backupCodes, wallets: wallets});
+    this.setState({ backupCodes: backupCodes });
   }
 
-  setBackupCodes() {
+  async setBackupCodes() {
+    // var wallets = 
+    await Promise.all([
+      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, this.state.backupCodes[0]), 
+      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, this.state.backupCodes[1]), 
+      ethers.Wallet.fromBrainWallet(this.props.identityService.identity.name, this.state.backupCodes[2])
+    ]);
+
     // TODO: Add backup code's keys to identity contract
     // something like....
     // this.props.identityService.addKeys(wallets) 
