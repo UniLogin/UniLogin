@@ -8,35 +8,55 @@ class BackupView extends Component {
       <div className="subview">
         <div className="container">
           <h1 className="main-title">BACKUP CODES</h1>
-          <div className="row align-items-center">
-            <Blockies seed="alwaysUse.toLowerCase" size={8} scale={6} />
-            <div>
-              <p className="user-id">{this.props.identity.name}</p>
-              <p className="wallet-address">
-                {this.props.identity.address}
-              </p>
-            </div>
-          </div>
           <p className="backup-text">
-            Keep this codes somewhere safe and secret. Also, don&apos;t forget
-            your username as it&apos;s required to recover access. These are
-            independent codes, use each one once. Keep offline and away from
-            computers.
+            Print these, cut them apart and keep them safe locations apart from
+            each other. Keep them away from computers until you want to use
+            them.
           </p>
           <hr className="separator-s" />
-          <p className="backup-code bold">{this.props.backupCodes[0]}</p>
+          <div className="row align-items-center">
+            <Blockies
+              seed={this.props.identity.address.toLowerCase()}
+              size={8}
+              scale={6}
+            />
+            <p className="backup-code">
+              {this.props.identity.name} <br />
+              <strong>{this.props.backupCodes[0]}</strong>
+            </p>
+          </div>
           <hr className="separator-s" />
-          <p className="backup-code bold">{this.props.backupCodes[1]}</p>
+          <div className="row align-items-center">
+            <Blockies
+              seed={this.props.identity.address.toLowerCase()}
+              size={8}
+              scale={6}
+            />
+            <p className="backup-code">
+              {this.props.identity.name} <br />
+              <strong>{this.props.backupCodes[1]}</strong>
+            </p>
+          </div>
           <hr className="separator-s" />
-          <p className="backup-code bold">{this.props.backupCodes[2]}</p>
+          <div className="row align-items-center">
+            <Blockies
+              seed={this.props.identity.address.toLowerCase()}
+              size={8}
+              scale={6}
+            />
+            <p className="backup-code">
+              {this.props.identity.name} <br />
+              <strong>{this.props.backupCodes[2]}</strong>
+            </p>
+          </div>
           <hr className="separator-s" />
-          <button 
+          <button
             className="generate-code-btn"
             onClick={this.props.onGenerateClick.bind(this)}
           >
             Generate 3 more codes
           </button>
-          <button 
+          <button
             className="btn fullwidth"
             onClick={this.props.onSetBackupClick.bind(this)}
           >
