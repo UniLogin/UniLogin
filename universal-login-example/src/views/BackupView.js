@@ -6,18 +6,18 @@ class BackupView extends Component {
 
   renderEvent(backupCode) {
     return (<div>
-          <div className="row align-items-center">
-            <Blockies
-              seed={this.props.identity.address.toLowerCase()}
-              size={8}
-              scale={6}
-            />
-            <p className="backup-code">
-              {this.props.identity.name} <br />
-              <strong>{backupCode}</strong>
-            </p>
-          </div>
-          <hr className="separator-s" />
+      <div className="row align-items-center">
+        <Blockies
+          seed={this.props.identity.address.toLowerCase()}
+          size={8}
+          scale={6}
+        />
+        <p className="backup-code">
+          {this.props.identity.name} <br />
+          <strong>{backupCode}</strong>
+        </p>
+      </div>
+      <hr className="separator-s" />
     </div>);
   }
 
@@ -32,6 +32,7 @@ class BackupView extends Component {
             each other. Keep them away from computers until you want to use
             them.
           </p>
+          <div><b>{this.props.isLoading ? <p> Loading backup codes... <div className="circle-loader" /> </p>: ''}</b></div>
           <hr className="separator-s" />
           { this.props.backupCodes.map(this.renderEvent.bind(this)) }
           <button
@@ -44,7 +45,7 @@ class BackupView extends Component {
             className="btn fullwidth"
             onClick={this.props.onSetBackupClick.bind(this)}
           >
-            {this.props.btnLabel}
+            Set As Backup Codes
           </button>
           <p className="click-cost">
             <i>Costs 2 clicks</i>
@@ -64,7 +65,7 @@ class BackupView extends Component {
 }
 
 BackupView.propTypes = {
-  btnLabel: PropTypes.string,
+  isLoading: PropTypes.bool,
   onSetBackupClick: PropTypes.func,
   onGenerateClick: PropTypes.func,
   backupCodes: PropTypes.array,

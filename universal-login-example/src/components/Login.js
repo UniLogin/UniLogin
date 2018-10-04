@@ -48,6 +48,13 @@ class Login extends Component {
     }
   }
 
+  async onAccountRecoveryClick(){
+    const {emitter} = this.props.services;
+    emitter.emit('setView', 'RecoverAccount');
+    const label = await this.getLabel();
+    await this.identityService.connect(label);
+  }
+
   onChange(identity) {
     this.setState({identity});
   }
@@ -66,6 +73,7 @@ class Login extends Component {
             onNextClick={(identity) => this.onNextClick(identity)}
             onChange={this.onChange.bind(this)}
             ensDomains={ensDomains}
+            onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
             identityExist = {this.identityExist.bind(this)}
             identitySelectionService={this.props.services.identitySelectionService}
           />

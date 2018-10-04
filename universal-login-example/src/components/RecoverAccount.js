@@ -1,11 +1,10 @@
-import ApproveConnectionView from '../views/ApproveConnectionView';
+import RecoverAccountView from '../views/RecoverAccountView';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Wallet} from 'ethers';
-import RecoverAccountAccordionView from '../views/RecoverAccountAccordionView';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
-class ApproveConnection extends Component {
+class RecoverAccount extends Component {
   constructor(props) {
     super(props);
     this.sdk = this.props.services.sdk;
@@ -13,7 +12,7 @@ class ApproveConnection extends Component {
     this.emitter = this.props.services.emitter;
     this.state = {
       backupCode: '',
-      btnLabel: 'RECOVER ACCOUNT'
+      isLoading: false
     };
   }
 
@@ -30,7 +29,7 @@ class ApproveConnection extends Component {
   }
 
   async onRecoverClick() {
-    this.setState({btnLabel: 'Recovering...'});
+    this.setState({isLoading: true});
     const {identityService, sdk} = this.props.services;
     let wallet = await Wallet.fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
     await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, DEFAULT_PAYMENT_OPTIONS);
@@ -45,19 +44,18 @@ class ApproveConnection extends Component {
   }
 
   render() {
-    return (<div className='container'><ApproveConnectionView
-      btnLabel={this.state.btnLabel}
+    return (<RecoverAccountView
+      isLoading={this.state.isLoading}
       onChange={this.onChange.bind(this)}
       onCancelClick={this.onCancelClick.bind(this)}
       onRecoverClick={this.onRecoverClick.bind(this)}
       identity={this.identityService.identity}
-    />
-    <RecoverAccountAccordionView setView={this.setView.bind(this)}/></div>);
+    />);
   }
 }
 
-ApproveConnection.propTypes = {
+RecoverAccount.propTypes = {
   services: PropTypes.object
 };
 
-export default ApproveConnection;
+export default RecoverAccount;

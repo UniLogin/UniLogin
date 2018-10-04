@@ -12,7 +12,8 @@ class Backup extends Component {
     this.sdk = this.props.services.sdk;
     this.state = {
       backupCodes: [],
-      btnLabel: 'SET AS BACKUP CODES'
+      publicKeys: [],
+      isLoading: false
     };
   }
 
@@ -20,35 +21,31 @@ class Backup extends Component {
     this.generateBackupCodes();
   }
 
-  generateBackupCodes() {
-    var backupCodes = this.state.backupCodes;
+  async generateBackupCodes() {
+    this.setState({isLoading: true});
+    const {identityService} = this.props.services;
+    var backupCodes = this.state.backupCodes.slice(0);
+    var publicKeys = this.state.publicKeys.slice(0);
     for (var i = 0; i < 3; i++) {
-      backupCodes.push(
+      var backupCode = 
         toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
           .replace(/\s/g, '-')
           .toLowerCase() +
           '-' +
           toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
             .replace(/\s/g, '-')
-            .toLowerCase()
-      );
+            .toLowerCase();
+      var wallet = await ethers.Wallet.fromBrainWallet(identityService.identity.name, backupCode);
+      publicKeys.push(wallet.address);
+      backupCodes.push(backupCode);
+      this.setState({backupCodes: backupCodes, publicKeys: publicKeys});
     }
-    this.setState({ backupCodes: backupCodes });
+    this.setState({isLoading: false});
   }
 
   async setBackupCodes() {
-    this.setState({ btnLabel: 'Setting' });
-    const {identityService, emitter} = this.props.services;
-    const to = identityService.identity.address;
-    const {privateKey} = identityService.identity;
-    const {sdk} = identityService;
-    var publicKeys = [];
-    for (var i = 0; i < this.state.backupCodes.length; i++) {
-      let wallet = await ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[i]);
-      publicKeys.push(wallet.address);
-      this.setState({ btnLabel: this.state.btnLabel + '.' });
-    }
-    await sdk.addKeys(to, publicKeys, privateKey, DEFAULT_PAYMENT_OPTIONS);
+    const {identityService, emitter, sdk} = this.props.services;
+    await sdk.addKeys(identityService.identity.address, this.state.publicKeys, identityService.identity.privateKey, DEFAULT_PAYMENT_OPTIONS);
     emitter.emit('setView', 'Account');
   }
 
@@ -56,7 +53,7 @@ class Backup extends Component {
     const { identity } = this.props.services.identityService;
     return (
       <BackupView
-        btnLabel={this.state.btnLabel}
+        isLoading={this.state.isLoading}
         identity={identity}
         setView={this.props.setView}
         backupCodes={this.state.backupCodes}
