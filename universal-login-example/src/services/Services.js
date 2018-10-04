@@ -8,6 +8,7 @@ import EnsService from './EnsService';
 import {clickerContractAddress, tokenContractAddress} from '../../config/config';
 import AuthorisationService from './AuthorisationService';
 import TokenService from './TokenService';
+import IdentitySelectionService from './IdentitySelectionService';
 
 class Services {
   constructor() {
@@ -20,6 +21,7 @@ class Services {
     this.identityService = new IdentityService(this.sdk, this.emitter);
     this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
+    this.identitySelectionService = new IdentitySelectionService(this.sdk, config.ensDomains);
   }
 
   start() {

@@ -1,76 +1,22 @@
 import React, { Component } from 'react';
 import TextBox from '../views/TextBox';
 import PropTypes from 'prop-types';
+import ConnectionHoverView from './ConnectionHoverView';
 
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      prefix: '',
-      suffix: this.props.ensDomains[0],
       identity: '',
-      identityExist: false
+      connections: [],
+      creations: []
     };
   }
 
-  renderConnectHover() {
-    return this.state.prefix.length > 1 ? (
-      <ul className="loginHover">
-        <li className="active" onClick={this.props.onNextClick.bind(this)}>
-          <span className="identity">{this.state.identity}</span>
-          <button type="submit">
-            {this.state.identityExist ? ' connect' : ' create'}
-          </button>
-        </li>
-        <li>
-          <span className="identity">
-            {this.state.prefix}
-            .alternatedomain.eth
-          </span>
-          <button> create</button>
-        </li>
-        <li>
-          <span className="identity">
-            {this.state.prefix}
-            .popularapp.eth
-          </span>
-          <button> connect </button>
-        </li>
-        <li className={this.state.identityExist ? 'visible' : 'hidden'}>
-          <span className="identity">{this.state.identity}</span>
-          <button>recover</button>
-        </li>
-      </ul>
-    ) : (
-      ''
-    );
-  }
-
-  async updatePrefix(event) {
-    const inputText = event.target.value
-      .toLowerCase()
-      .replace(/[ @]/, '')
-      .replace(/\.+/g, '.');
-    event.target.value = inputText;
-    const prefix = inputText;
-    const identity = /\.eth$/.test(inputText)
-      ? inputText.replace(/\.+/g, '.')
-      : /\./.test(inputText)
-        ? `${prefix}.eth`.replace(/\.+/g, '.')
-        : `${prefix}.${this.state.suffix}`;
-    const identityExist = /\./.test(inputText)
-      ? true
-      : !!(await this.props.identityExist(identity));
-    this.setState({ prefix, identity, identityExist });
-    this.props.onChange(identity);
-  }
-
-  async updateSuffix(value) {
-    const suffix = value;
-    const identity = `${this.state.prefix}.${suffix}`;
-    const identityExist = !!(await this.props.identityExist(identity));
-    this.setState({ suffix, identity, identityExist });
-    this.props.onChange(identity);
+  async update(event) {
+    const identity = event.target.value;
+    const [connections, creations] = await this.props.identitySelectionService.getSuggestions(event.target.value);
+    this.setState({identity, connections, creations});
   }
 
   render() {
@@ -80,10 +26,15 @@ class IdentitySelector extends Component {
         <div className="id-selector">
           <TextBox
             placeholder="bob.example.eth"
-            onChange={e => this.updatePrefix(e)}
+            onChange={e => this.update(e)}
           />
         </div>
-        {this.renderConnectHover()}
+        <ConnectionHoverView
+          connections={this.state.connections}
+          creations={this.state.creations}
+          identity={this.state.identity}
+          onNextClick={this.props.onNextClick}
+        />
       </div>
     );
   }
@@ -94,7 +45,8 @@ IdentitySelector.propTypes = {
   onNextClick: PropTypes.func,
   ensDomains: PropTypes.arrayOf(PropTypes.string),
   services: PropTypes.object,
-  identityExist: PropTypes.func
+  identityExist: PropTypes.func,
+  identitySelectionService: PropTypes.object
 };
 
 export default IdentitySelector;
