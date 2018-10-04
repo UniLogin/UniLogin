@@ -3,15 +3,14 @@ import Collapsible from '../components/Collapsible';
 import PropTypes from 'prop-types';
 
 const RecoverAccountAccordionView = props => (
-  <Collapsible
-    title="Recover Account"
-    subtitle="Use a backup code to recover your account."
-    icon="icon-printer"
-  >
-    <button onClick={() => props.setView('RecoverAccount')} className="btn fullwidth">
-      Recover Account
+  <div>
+    <button
+      onClick={() => props.setView('RecoverAccount')}
+      className="secondary-btn"
+    >
+      Recover from backup
     </button>
-  </Collapsible>
+  </div>
 );
 
 RecoverAccountAccordionView.propTypes = {

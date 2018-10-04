@@ -28,13 +28,14 @@ class Account extends Component {
         <div className="container">
           <ProfileIdentity
             type="identityAccount"
-            identityService={this.props.identityService}/>
+            identityService={this.props.identityService}
+          />
           <hr className="separator" />
-          <ManageDevicesAccordion emitter={this.props.identityService.emitter} />
+          <ManageDevicesAccordion
+            emitter={this.props.identityService.emitter}
+          />
           <hr className="separator" />
           <BackupCodeAccordionView setView={this.setView.bind(this)} />
-          <hr className="separator" />
-          <TrustedFriendsAccordionView setView={this.setView.bind(this)} />
           <hr className="separator" />
           <SettingsAccordion />
           <hr className="separator" />

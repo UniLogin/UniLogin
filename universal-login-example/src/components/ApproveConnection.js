@@ -1,7 +1,7 @@
 import ApproveConnectionView from '../views/ApproveConnectionView';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Wallet} from 'ethers';
+import { Wallet } from 'ethers';
 import RecoverAccountAccordionView from '../views/RecoverAccountAccordionView';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
@@ -18,26 +18,34 @@ class ApproveConnection extends Component {
   }
 
   async onCancelClick() {
-    const {emitter} = this.props.services;
+    const { emitter } = this.props.services;
     emitter.emit('setView', 'Login');
     this.identityService.cancelSubscription();
 
-    const {identityService} = this.props.services;
+    const { identityService } = this.props.services;
     const identityAddress = identityService.identity.address;
-    const {address} = new Wallet(identityService.privateKey);
-    const {sdk} = identityService;
+    const { address } = new Wallet(identityService.privateKey);
+    const { sdk } = identityService;
     await sdk.denyRequest(identityAddress, address);
   }
 
   async onRecoverClick() {
-    this.setState({btnLabel: 'Recovering...'});
-    const {identityService, sdk} = this.props.services;
-    let wallet = await Wallet.fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
-    await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, DEFAULT_PAYMENT_OPTIONS);
+    this.onCancelClick();
+    const { identityService, sdk } = this.props.services;
+    let wallet = await Wallet.fromBrainWallet(
+      this.identityService.identity.name,
+      this.state.backupCode
+    );
+    await sdk.addKey(
+      identityService.identity.address,
+      identityService.deviceAddress,
+      wallet.privateKey,
+      DEFAULT_PAYMENT_OPTIONS
+    );
   }
 
   onChange(event) {
-    this.setState({backupCode: event.target.value});
+    this.setState({ backupCode: event.target.value });
   }
 
   setView(view) {
@@ -45,14 +53,18 @@ class ApproveConnection extends Component {
   }
 
   render() {
-    return (<div className='container'><ApproveConnectionView
-      btnLabel={this.state.btnLabel}
-      onChange={this.onChange.bind(this)}
-      onCancelClick={this.onCancelClick.bind(this)}
-      onRecoverClick={this.onRecoverClick.bind(this)}
-      identity={this.identityService.identity}
-    />
-    <RecoverAccountAccordionView setView={this.setView.bind(this)}/></div>);
+    return (
+      <div className="container">
+        <ApproveConnectionView
+          btnLabel={this.state.btnLabel}
+          onChange={this.onChange.bind(this)}
+          onCancelClick={this.onCancelClick.bind(this)}
+          onRecoverClick={this.onRecoverClick.bind(this)}
+          identity={this.identityService.identity}
+        />
+        <RecoverAccountAccordionView setView={this.setView.bind(this)} />
+      </div>
+    );
   }
 }
 

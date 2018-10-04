@@ -3,24 +3,24 @@ import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
 class BackupView extends Component {
-
   renderEvent(backupCode) {
-    return (<div>
-      <div className="row align-items-center">
-        <Blockies
-          seed={this.props.identity.address.toLowerCase()}
-          size={8}
-          scale={6}
-        />
-        <p className="backup-code">
-          {this.props.identity.name} <br />
-          <strong>{backupCode}</strong>
-        </p>
+    return (
+      <div>
+        <div className="row align-items-center">
+          <Blockies
+            seed={this.props.identity.address.toLowerCase()}
+            size={8}
+            scale={6}
+          />
+          <p className="backup-code">
+            {this.props.identity.name} <br />
+            <strong>{backupCode}</strong>
+          </p>
+        </div>
+        <hr className="separator-s" />
       </div>
-      <hr className="separator-s" />
-    </div>);
+    );
   }
-
 
   render() {
     return (
@@ -32,28 +32,46 @@ class BackupView extends Component {
             each other. Keep them away from computers until you want to use
             them.
           </p>
-          <div><b>{this.props.isLoading ? <p> Loading backup codes... <div className="circle-loader" /> </p>: ''}</b></div>
           <hr className="separator-s" />
-          { this.props.backupCodes.map(this.renderEvent.bind(this)) }
-          <button
-            className="generate-code-btn"
-            onClick={this.props.onGenerateClick.bind(this)}
-          >
-            Generate 3 more codes
-          </button>
-          <button
-            className="btn fullwidth"
-            onClick={this.props.onSetBackupClick.bind(this)}
-          >
-            Set As Backup Codes
-          </button>
-          <p className="click-cost">
-            <i>Costs 2 clicks</i>
-          </p>
+          {this.props.backupCodes.map(this.renderEvent.bind(this))}
+
+          <div>
+            <div className="row align-items-center">
+              {this.props.isLoading ? (
+                <div className="row align-items-center">
+                  <div className="circle-loader" />
+                  <p className="backup-code">
+                    {this.props.identity.name} <br />
+                    <em>generating...</em>
+                  </p>
+                  <br />
+                </div>
+              ) : (
+                <div>
+                  <button
+                    className="generate-code-btn"
+                    onClick={this.props.onGenerateClick.bind(this)}
+                  >
+                    Generate 3 more codes
+                  </button>
+                  <button
+                    className="btn fullwidth"
+                    onClick={this.props.onSetBackupClick.bind(this)}
+                  >
+                    Set As Backup Codes
+                  </button>
+                  <p className="click-cost">
+                    <i>Costs 2 clicks</i>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="text-center">
             <button
               onClick={() => this.props.setView('Account')}
-              className="cancel-backup-btn"
+              className="secondary-btn"
             >
               Cancel backup code
             </button>
