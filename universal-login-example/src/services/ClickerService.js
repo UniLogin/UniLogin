@@ -1,4 +1,4 @@
-import ethers, { Interface } from 'ethers';
+import ethers, { Interface, utils} from 'ethers';
 import Clicker from '../../build/Clicker';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import {tokenContractAddress} from '../../config/config';
@@ -25,7 +25,7 @@ class ClickerService {
       data: this.clickerContract.interface.functions.press().data,
       nonce: 0,
       gasToken: tokenContractAddress,
-      gasPrice: 1,
+      gasPrice: utils.parseEther('0.00011').toString(),
       gasLimit: 1
     };
     await this.identityService.execute(message);

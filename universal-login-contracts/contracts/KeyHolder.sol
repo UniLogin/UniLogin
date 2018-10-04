@@ -3,18 +3,26 @@ pragma solidity ^0.4.24;
 
 import "./ERC725.sol";
 import "openzeppelin-solidity/contracts/ECRecovery.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
 
 contract KeyHolder is ERC725 {
     using ECRecovery for bytes32;
+    using SafeMath for uint;
 
     uint256 public executionNonce;
     uint256 requiredApprovals;
+    address public relayerAddress;
+
     struct Execution {
         address to;
         uint256 value;
         bytes data;
         bytes32[] approvals;
+        address gasToken;
+        uint gasPrice;
+        uint gasLimit;
     }
 
     mapping (bytes32 => Key) public keys;
@@ -26,6 +34,8 @@ contract KeyHolder is ERC725 {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         keys[_key].keyType = ECDSA_TYPE;
+
+        relayerAddress = msg.sender;
 
         requiredApprovals = 0;
 
@@ -149,7 +159,7 @@ contract KeyHolder is ERC725 {
         bytes32 signer = getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature);
         require(_to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
-        return addExecution(_to, _value, _data);
+        return addSignedExecution(_to, _value, _data, _gasToken, _gasPrice, _gasLimit);
     }
 
     function approve(uint256 _id)
@@ -201,13 +211,46 @@ contract KeyHolder is ERC725 {
         return executionNonce - 1;
     }
 
+    function addSignedExecution(address _to, uint256 _value, bytes _data, address _gasToken, uint _gasPrice, uint _gasLimit) 
+        private 
+        returns(uint256 executionId) 
+    {
+        require(_to != address(0), "Invalid 'to' address");
+        executions[executionNonce].to = _to;
+        executions[executionNonce].value = _value;
+        executions[executionNonce].data = _data;
+        executions[executionNonce].approvals = new bytes32[](0);
+        executions[executionNonce].gasToken = _gasToken;
+        executions[executionNonce].gasPrice = _gasPrice;
+        executions[executionNonce].gasLimit = _gasLimit;
+
+        emit ExecutionRequested(executionNonce, _to, _value, _data);
+
+        if (executions[executionNonce].approvals.length == requiredApprovals) {
+            doExecute(executionNonce);
+        }
+        executionNonce++;
+        return executionNonce - 1;
+    }
+
     function doExecute(uint256 _id) private returns (bool success) {
+        uint256 startingGas = gasleft();
         /* solium-disable-next-line security/no-call-value */
         success = executions[_id].to.call.value(executions[_id].value)(executions[_id].data);
+        uint256 gasUsed = startingGas - gasleft();
+
         if (success) {
+            refund(_id, gasUsed);
             emit Executed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         } else {
             emit ExecutionFailed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         }
+    }
+
+    function refund(uint256 _id, uint256 _gasUsed) private {
+        if (executions[_id].gasToken != address(0)) {
+            StandardToken token = StandardToken(executions[_id].gasToken);
+            token.transfer(relayerAddress, _gasUsed.mul(executions[_id].gasPrice));
+        } 
     }
 }

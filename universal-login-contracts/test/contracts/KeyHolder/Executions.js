@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import KeyHolder from '../../../build/KeyHolder';
 import MockContract from '../../../build/MockContract';
+import MockToken from '../../../build/MockToken';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature} from '../../utils';
 import {utils, Wallet} from 'ethers';
@@ -26,6 +27,7 @@ describe('Key holder: executions', async () => {
 
   let identity;
   let mockContract;
+  let mockToken;
   let fromUnknownWallet;
   let fromActionWallet;
 
@@ -53,6 +55,7 @@ describe('Key holder: executions', async () => {
 
     identity = await deployContract(wallet, KeyHolder, [managementKey]);
     mockContract = await deployContract(wallet, MockContract);
+    mockToken = await deployContract(wallet, MockToken);
 
     fromActionWallet = await contractWithWallet(identity, actionWallet);
     fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
@@ -204,7 +207,21 @@ describe('Key holder: executions', async () => {
         await expect(identity.executeSigned(identity.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
       });
     });
+
+    describe('Refund', async () => {
+      it('Should refund after execute', async () => {
+        const gasPrice = utils.parseEther('0.00011').toString();
+        const relayerTokenBalance = utils.formatEther(await mockToken.balanceOf(wallet.address));
+        signature = messageSignature(
+          wallet, targetAddress, identity.address, amount, data, 0, mockToken.address, gasPrice, 1);
+
+        await mockToken.transfer(identity.address, utils.parseEther('20'));
+        await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, 1, signature);
+        expect(utils.formatEther(await mockToken.balanceOf(wallet.address))).not.to.eq(relayerTokenBalance);
+      });
+    });
   });
+
   describe('Do execute', async () => {
     it('Success call function', async () => {
       await identity.execute(mockContractAddress, 0, functionData);
