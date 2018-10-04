@@ -23,7 +23,6 @@ class ClickerService {
       from: this.identityService.identity.address,
       value: 0,
       data: this.clickerContract.interface.functions.press().data,
-      nonce: 0,
       gasToken: tokenContractAddress,
       gasPrice: utils.parseEther('0.00011').toString(),
       gasLimit: 1

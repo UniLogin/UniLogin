@@ -189,6 +189,11 @@ describe('Key holder: executions', async () => {
       await expect(fromUnknownWallet.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
     });
 
+    it('Should not allow to add execution with invalid nonce', async () => {
+      signature = messageSignature(wallet, identity.address, identity.address, amount, data, 12, gasToken, gasPrice, gasLimit);
+      await expect(identity.executeSigned(identity.address, amount, data, 12, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
+    });
+
     describe('On self execute signed', async () => {
       it('Should allow to add execution on self signed by management key', async () => {
         signature = messageSignature(wallet, identity.address, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);

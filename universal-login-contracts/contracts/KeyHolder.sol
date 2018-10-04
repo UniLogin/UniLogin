@@ -156,7 +156,7 @@ contract KeyHolder is ERC725 {
         bytes32 signer = getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature);
         require(_to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
-        return addSignedExecution(_to, _value, _data, _gasToken, _gasPrice, _gasLimit);
+        return addSignedExecution(_to, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit);
     }
 
     function approve(uint256 _id)
@@ -208,11 +208,13 @@ contract KeyHolder is ERC725 {
         return executionNonce - 1;
     }
 
-    function addSignedExecution(address _to, uint256 _value, bytes _data, address _gasToken, uint _gasPrice, uint _gasLimit) 
+    function addSignedExecution(address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit) 
         private 
         returns(uint256 executionId) 
     {
         require(_to != address(0), "Invalid 'to' address");
+        require(executionNonce == _nonce, "Invalid execution nonce");
+
         executions[executionNonce].to = _to;
         executions[executionNonce].value = _value;
         executions[executionNonce].data = _data;

@@ -9,7 +9,6 @@ import {tokenContractAddress} from '../../config/config';
 import {utils} from 'ethers';
 
 const addKeyPaymentOptions = {
-  nonce: 0,
   gasToken: tokenContractAddress,
   gasLimit: 1,
   gasPrice: utils.parseEther('0.00011').toString()
