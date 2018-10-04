@@ -3,6 +3,25 @@ import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
 class BackupView extends Component {
+
+  renderEvent(backupCode) {
+    return (<div>
+          <div className="row align-items-center">
+            <Blockies
+              seed={this.props.identity.address.toLowerCase()}
+              size={8}
+              scale={6}
+            />
+            <p className="backup-code">
+              {this.props.identity.name} <br />
+              <strong>{backupCode}</strong>
+            </p>
+          </div>
+          <hr className="separator-s" />
+    </div>);
+  }
+
+
   render() {
     return (
       <div className="subview">
@@ -14,42 +33,7 @@ class BackupView extends Component {
             them.
           </p>
           <hr className="separator-s" />
-          <div className="row align-items-center">
-            <Blockies
-              seed={this.props.identity.address.toLowerCase()}
-              size={8}
-              scale={6}
-            />
-            <p className="backup-code">
-              {this.props.identity.name} <br />
-              <strong>{this.props.backupCodes[0]}</strong>
-            </p>
-          </div>
-          <hr className="separator-s" />
-          <div className="row align-items-center">
-            <Blockies
-              seed={this.props.identity.address.toLowerCase()}
-              size={8}
-              scale={6}
-            />
-            <p className="backup-code">
-              {this.props.identity.name} <br />
-              <strong>{this.props.backupCodes[1]}</strong>
-            </p>
-          </div>
-          <hr className="separator-s" />
-          <div className="row align-items-center">
-            <Blockies
-              seed={this.props.identity.address.toLowerCase()}
-              size={8}
-              scale={6}
-            />
-            <p className="backup-code">
-              {this.props.identity.name} <br />
-              <strong>{this.props.backupCodes[2]}</strong>
-            </p>
-          </div>
-          <hr className="separator-s" />
+          { this.props.backupCodes.map(this.renderEvent.bind(this)) }
           <button
             className="generate-code-btn"
             onClick={this.props.onGenerateClick.bind(this)}

@@ -11,7 +11,7 @@ class Backup extends Component {
     this.identityService = this.props.services.identityService;
     this.sdk = this.props.services.sdk;
     this.state = {
-      backupCodes: ['loading...', 'loading...', 'loading...'],
+      backupCodes: [],
       btnLabel: 'SET AS BACKUP CODES'
     };
   }
@@ -21,7 +21,7 @@ class Backup extends Component {
   }
 
   generateBackupCodes() {
-    var backupCodes = [];
+    var backupCodes = this.state.backupCodes;
     for (var i = 0; i < 3; i++) {
       backupCodes.push(
         toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
@@ -37,19 +37,19 @@ class Backup extends Component {
   }
 
   async setBackupCodes() {
-    this.setState({ btnLabel: 'Setting...' });
-    const {identityService} = this.props.services;
+    this.setState({ btnLabel: 'Setting' });
+    const {identityService, emitter} = this.props.services;
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
-    var wallets = await Promise.all([
-      ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[0]), 
-      ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[1]), 
-      ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[2])
-    ]);
-    const publicKeys = [wallets[0].address, wallets[1].address, wallets[2].address];
+    var publicKeys = [];
+    for (var i = 0; i < this.state.backupCodes.length; i++) {
+      let wallet = await ethers.Wallet.fromBrainWallet(identityService.identity.name, this.state.backupCodes[i]);
+      publicKeys.push(wallet.address);
+      this.setState({ btnLabel: this.state.btnLabel + '.' });
+    }
     await sdk.addKeys(to, publicKeys, privateKey, DEFAULT_PAYMENT_OPTIONS);
-    this.setState({ btnLabel: 'Successful!' });
+    emitter.emit('setView', 'Account');
   }
 
   render() {
