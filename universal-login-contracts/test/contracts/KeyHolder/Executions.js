@@ -69,7 +69,7 @@ describe('Key holder: executions', async () => {
     addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
     removeKeyData = identity.interface.functions.removeKey(actionKey, ACTION_KEY).data;
     functionData = mockContract.interface.functions.callMe().data;
-    await wallet.send(identity.address, amount);
+    await wallet.send(identity.address, utils.parseEther('2'));
   });
 
   describe('Execute', async () => {
@@ -209,13 +209,13 @@ describe('Key holder: executions', async () => {
     });
 
     describe('Refund', async () => {
-      it('Should refund after execute', async () => {
+      it('Should refund in token after execute', async () => {
+        await mockToken.transfer(identity.address, utils.parseEther('20'));
         const gasPrice = utils.parseEther('0.00011').toString();
         const relayerTokenBalance = utils.formatEther(await mockToken.balanceOf(wallet.address));
         signature = messageSignature(
           wallet, targetAddress, identity.address, amount, data, 0, mockToken.address, gasPrice, 1);
-
-        await mockToken.transfer(identity.address, utils.parseEther('20'));
+        
         await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, 1, signature);
         expect(utils.formatEther(await mockToken.balanceOf(wallet.address))).not.to.eq(relayerTokenBalance);
       });
