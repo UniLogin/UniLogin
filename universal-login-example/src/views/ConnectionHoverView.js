@@ -16,7 +16,7 @@ class ConnectionHoverView extends Component {
       </li>
     ));
     const recovers = this.props.connections.map((name) => (
-      <li key={`recovery_${name}`}>
+      <li key={`recovery_${name}`} onClick={() => this.props.onAccountRecoveryClick(name)}>
         <span className="identity">{name}</span>
         <button>recover</button>
       </li>
@@ -38,6 +38,7 @@ ConnectionHoverView.propTypes = {
   connections: PropTypes.arrayOf(PropTypes.string),
   creations: PropTypes.arrayOf(PropTypes.string),
   onNextClick: PropTypes.func,
+  onAccountRecoveryClick: PropTypes.func,
   identity: PropTypes.string
 };
 

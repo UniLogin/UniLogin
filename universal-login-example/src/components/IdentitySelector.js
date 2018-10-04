@@ -34,6 +34,7 @@ class IdentitySelector extends Component {
           creations={this.state.creations}
           identity={this.state.identity}
           onNextClick={this.props.onNextClick}
+          onAccountRecoveryClick={this.props.onAccountRecoveryClick}
         />
       </div>
     );

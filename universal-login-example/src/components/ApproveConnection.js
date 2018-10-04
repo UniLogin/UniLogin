@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Wallet } from 'ethers';
 import RecoverAccountAccordionView from '../views/RecoverAccountAccordionView';
-import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 class ApproveConnection extends Component {
   constructor(props) {
@@ -12,8 +11,7 @@ class ApproveConnection extends Component {
     this.identityService = this.props.services.identityService;
     this.emitter = this.props.services.emitter;
     this.state = {
-      backupCode: '',
-      btnLabel: 'RECOVER ACCOUNT'
+      backupCode: ''
     };
   }
 
@@ -29,21 +27,6 @@ class ApproveConnection extends Component {
     await sdk.denyRequest(identityAddress, address);
   }
 
-  async onRecoverClick() {
-    this.onCancelClick();
-    const { identityService, sdk } = this.props.services;
-    let wallet = await Wallet.fromBrainWallet(
-      this.identityService.identity.name,
-      this.state.backupCode
-    );
-    await sdk.addKey(
-      identityService.identity.address,
-      identityService.deviceAddress,
-      wallet.privateKey,
-      DEFAULT_PAYMENT_OPTIONS
-    );
-  }
-
   onChange(event) {
     this.setState({ backupCode: event.target.value });
   }
@@ -56,10 +39,8 @@ class ApproveConnection extends Component {
     return (
       <div className="container">
         <ApproveConnectionView
-          btnLabel={this.state.btnLabel}
           onChange={this.onChange.bind(this)}
           onCancelClick={this.onCancelClick.bind(this)}
-          onRecoverClick={this.onRecoverClick.bind(this)}
           identity={this.identityService.identity}
         />
         <RecoverAccountAccordionView setView={this.setView.bind(this)} />

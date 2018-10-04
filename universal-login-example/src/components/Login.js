@@ -48,8 +48,9 @@ class Login extends Component {
     }
   }
 
-  async onAccountRecoveryClick(){
+  async onAccountRecoveryClick(identity){
     const {emitter} = this.props.services;
+    await this.identityExist(identity);
     emitter.emit('setView', 'RecoverAccount');
     const label = await this.getLabel();
     await this.identityService.connect(label);
