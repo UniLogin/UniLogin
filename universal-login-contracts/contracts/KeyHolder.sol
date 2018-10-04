@@ -4,7 +4,7 @@ pragma solidity ^0.4.24;
 import "./ERC725.sol";
 import "openzeppelin-solidity/contracts/ECRecovery.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
 contract KeyHolder is ERC725 {
@@ -13,7 +13,6 @@ contract KeyHolder is ERC725 {
 
     uint256 public executionNonce;
     uint256 requiredApprovals;
-    address public relayerAddress;
 
     struct Execution {
         address to;
@@ -34,8 +33,6 @@ contract KeyHolder is ERC725 {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         keys[_key].keyType = ECDSA_TYPE;
-
-        relayerAddress = msg.sender;
 
         requiredApprovals = 0;
 
@@ -251,8 +248,8 @@ contract KeyHolder is ERC725 {
 
     function refund(uint256 _id, uint256 _gasUsed) private {
         if (executions[_id].gasToken != address(0)) {
-            StandardToken token = StandardToken(executions[_id].gasToken);
-            token.transfer(relayerAddress, _gasUsed.mul(executions[_id].gasPrice));
+            ERC20 token = ERC20(executions[_id].gasToken);
+            token.transfer(msg.sender, _gasUsed.mul(executions[_id].gasPrice));
         } 
     }
 }
