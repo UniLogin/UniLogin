@@ -20,7 +20,7 @@ class DropdownView extends Component {
     return (
       <div className="dropdown">
         <button onClick={() => this.props.openList()} className="dropdown-btn">
-          {this.props.title}
+          .{this.props.title}
         </button>
         {this.props.isListOpen ? (
           <ul className="dropdown-content">{this.renderContent()}</ul>

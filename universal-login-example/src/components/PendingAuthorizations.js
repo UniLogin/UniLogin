@@ -16,19 +16,25 @@ const addKeyPaymentOptions = {
 };
 
 class PendingAuthorizations extends Component {
-
   constructor(props) {
     super(props);
     this.identityService = this.props.services.identityService;
     this.sdk = this.props.services.sdk;
     this.authorisationService = this.props.services.authorisationService;
-    this.state = {authorisations: this.authorisationService.pendingAuthorisations};
+    this.state = {
+      authorisations: this.authorisationService.pendingAuthorisations
+    };
   }
 
   componentDidMount() {
-    const {address} = this.identityService.identity;
-    this.setState({authorisations: this.authorisationService.pendingAuthorisations});
-    this.subscription = this.authorisationService.subscribe(address, this.onAuthorisationChanged.bind(this));
+    const { address } = this.identityService.identity;
+    this.setState({
+      authorisations: this.authorisationService.pendingAuthorisations
+    });
+    this.subscription = this.authorisationService.subscribe(
+      address,
+      this.onAuthorisationChanged.bind(this)
+    );
   }
 
   componentWillUnmount() {
@@ -36,11 +42,11 @@ class PendingAuthorizations extends Component {
   }
 
   onAuthorisationChanged(authorisations) {
-    this.setState({authorisations});
+    this.setState({ authorisations });
   }
 
   async onAcceptClick(publicKey) {
-    const {identityService} = this.props.services;
+    const { identityService } = this.props.services;
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
@@ -48,9 +54,9 @@ class PendingAuthorizations extends Component {
   }
 
   async onDenyClick(publicKey) {
-    const {identityService} = this.props.services;
+    const { identityService } = this.props.services;
     const identityAddress = identityService.identity.address;
-    const {sdk} = identityService;
+    const { sdk } = identityService;
     await sdk.denyRequest(identityAddress, publicKey);
   }
 
@@ -58,13 +64,19 @@ class PendingAuthorizations extends Component {
     return (
       <div>
         <HeaderView>
-          <ProfileIdentity type="identityHeader" identityService={this.props.services.identityService}/>
-          <RequestsBadge setView={this.props.setView} services={this.props.services}/>
+          <ProfileIdentity
+            type="identityHeader"
+            identityService={this.props.services.identityService}
+          />
+          <RequestsBadge
+            setView={this.props.setView}
+            services={this.props.services}
+          />
           <BackBtn setView={this.props.setView} />
         </HeaderView>
-        <PendingAuthorizationsView 
-          setView={this.props.setView} 
-          authorisations={this.state.authorisations} 
+        <PendingAuthorizationsView
+          setView={this.props.setView}
+          authorisations={this.state.authorisations}
           onAcceptClick={this.onAcceptClick.bind(this)}
           onDenyClick={this.onDenyClick.bind(this)}
         />
