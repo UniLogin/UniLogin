@@ -26,24 +26,24 @@ class Login extends Component {
     const browser = detect();
     const {city} = await iplocation(ipAddress);
     return {
-      ipAddress, 
-      name: browser.name, 
-      city, 
+      ipAddress,
+      name: browser.name,
+      city,
       time: moment().format('h:mm'),
-      os: browser.os, 
+      os: browser.os,
       version: browser.version
     };
   }
 
-  async onNextClick() {
+  async onNextClick(identity) {
     const {emitter} = this.props.services;
-    if (await this.identityExist(this.state.identity)) {
+    if (await this.identityExist(identity)) {
       emitter.emit('setView', 'ApproveConnection');
       const label = await this.getLabel();
       await this.identityService.connect(label);
     } else {
       emitter.emit('setView', 'CreatingID');
-      await this.identityService.createIdentity(this.state.identity);
+      await this.identityService.createIdentity(identity);
       emitter.emit('setView', 'Greeting');
     }
   }
@@ -63,10 +63,11 @@ class Login extends Component {
             You can use this example to build your own app.
           </p>
           <IdentitySelector
-            onNextClick={() => this.onNextClick()}
+            onNextClick={this.onNextClick.bind(this)}
             onChange={this.onChange.bind(this)}
             ensDomains={ensDomains}
             identityExist = {this.identityExist.bind(this)}
+            identitySelectionService={this.props.services.identitySelectionService}
           />
         </div>
       </div>
