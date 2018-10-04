@@ -4,7 +4,6 @@ import BackToAppBtn from './BackToAppBtn';
 import ProfileIdentity from './ProfileIdentity';
 import ManageDevicesAccordion from './ManageDevicesAccordion';
 import BackupCodeAccordionView from '../views/BackupCodeAccordionView';
-import TrustedFriendsAccordionView from '../views/TrustedFriendsAccordionView';
 import SettingsAccordion from './SettingsAccordion';
 import PropTypes from 'prop-types';
 
