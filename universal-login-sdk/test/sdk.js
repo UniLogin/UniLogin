@@ -112,7 +112,7 @@ describe('SDK - integration', async () => {
         gasLimit
       };
       it('should return execution nonce', async () => {
-        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, transactionDetalis)).to.eq(3);
+        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, transactionDetalis)).to.eq(4);
       });
     });
 
