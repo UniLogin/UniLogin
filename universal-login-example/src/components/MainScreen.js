@@ -12,7 +12,7 @@ class MainScreen extends Component {
     super(props);
     const {clickerService} = this.props.services;
     this.clickerService = clickerService;
-    this.state = {lastClick: 20, lastPresser: 'nobody', events: []};
+    this.state = {lastClick: '0', lastPresser: 'nobody', events: []};
   }
 
   setView(view) {
@@ -22,7 +22,7 @@ class MainScreen extends Component {
 
   async onClickerClick() {
     await this.clickerService.click();
-    this.setState({lastClick: 0});
+    this.setState({lastClick: '0'});
   }
 
   componentDidMount() {
@@ -44,11 +44,11 @@ class MainScreen extends Component {
     const pressers = await this.clickerService.getPressEvents();
     if (pressers.length > 0) {
       this.setState({
-        lastClick: parseInt(pressers[0].pressTime, 10),
+        lastClick: pressers[0].pressTime,
         events: pressers});
     } else {
       this.setState({
-        lastClick: 0,
+        lastClick: '0',
         events: pressers});
     }
     setTimeout(this.update.bind(this), 1000);

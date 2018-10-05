@@ -17,7 +17,7 @@ class PendingAuthorizationsView extends Component {
         authorisation={authorisation}
         onAcceptClick={this.props.onAcceptClick}
         onDenyClick={this.props.onDenyClick}
-    />));
+      />));
 
     return (
       <div className="pending-authorizations">
