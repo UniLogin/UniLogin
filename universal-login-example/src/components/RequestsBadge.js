@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import NativeNotificationService from '../services/NativeNotificationService';
 
 class RequestsBadge extends Component {
   constructor(props) {
@@ -9,46 +10,25 @@ class RequestsBadge extends Component {
     this.state = {
       requests: this.authorisationService.pendingAuthorisations.length
     };
+    this.nativeNotificationService = new NativeNotificationService();
   }
 
   componentDidMount() {
     const { address } = this.identityService.identity;
-    this.authorisationService.subscribe(
+    this.subscription = this.authorisationService.subscribe(
       address,
       this.onAuthorisationChanged.bind(this)
     );
   }
 
   componentWillUnmount() {
-    //TODO: Unsubscribe
+    this.subscription.remove();
   }
 
   onAuthorisationChanged(authorisations) {
     this.setState({ requests: authorisations.length });
-
-    // Browser notification
-    if (authorisations.length > 0 && 'Notification' in window) {
-      const alertMessage =
-        'Login requested from ' +
-        authorisations[0].label.os +
-        ' from ' +
-        authorisations[0].label.city;
-
-      // Let's check whether notification permissions have already been granted
-      if (Notification.permission === 'granted') {
-        // If it's okay let's create a notification
-        new Notification(alertMessage);
-      }
-
-      // Otherwise, we need to ask the user for permission
-      else if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function(permission) {
-          // If the user accepts, let's create a notification
-          if (permission === 'granted') {
-            new Notification(alertMessage);
-          }
-        });
-      }
+    if (authorisations.length > 0) {
+      this.nativeNotificationService.notifyLoginRequest(authorisations[0].label);
     }
   }
 

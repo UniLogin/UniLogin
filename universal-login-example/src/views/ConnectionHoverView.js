@@ -37,7 +37,7 @@ class ConnectionHoverView extends Component {
 ConnectionHoverView.propTypes = {
   connections: PropTypes.arrayOf(PropTypes.string),
   creations: PropTypes.arrayOf(PropTypes.string),
-  onNextClick: PropTypes.function,
+  onNextClick: PropTypes.func,
   identity: PropTypes.string
 };
 

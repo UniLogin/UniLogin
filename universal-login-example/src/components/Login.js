@@ -63,7 +63,7 @@ class Login extends Component {
             You can use this example to build your own app.
           </p>
           <IdentitySelector
-            onNextClick={this.onNextClick.bind(this)}
+            onNextClick={(identity) => this.onNextClick(identity)}
             onChange={this.onChange.bind(this)}
             ensDomains={ensDomains}
             identityExist = {this.identityExist.bind(this)}
