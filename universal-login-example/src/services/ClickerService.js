@@ -25,7 +25,7 @@ class ClickerService {
       data: this.clickerContract.interface.functions.press().data,
       gasToken: tokenContractAddress,
       gasPrice: utils.parseEther('0.00011').toString(),
-      gasLimit: 1
+      gasLimit: 1000000
     };
     await this.identityService.execute(message);
   }

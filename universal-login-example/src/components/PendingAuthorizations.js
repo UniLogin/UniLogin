@@ -10,7 +10,7 @@ import {utils} from 'ethers';
 
 const addKeyPaymentOptions = {
   gasToken: tokenContractAddress,
-  gasLimit: 1,
+  gasLimit: 1000000,
   gasPrice: utils.parseEther('0.00011').toString()
 };
 

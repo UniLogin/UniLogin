@@ -1,9 +1,11 @@
 import ethers, {providers, utils} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
+import ERC20 from 'universal-login-contracts/build/ERC20';
 
 const {namehash} = utils;
 
+const ether = '0x0000000000000000000000000000000000000000';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
@@ -42,6 +44,18 @@ const withENS = (provider, ensAddress) => {
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
+const isEnoughGasLimit = (estimateGas, gasLimit) =>
+  gasLimit >= estimateGas;
+
+const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => {
+  if (gasToken !== ether) {
+    const token = new ethers.Contract(gasToken, ERC20.interface, provider);
+    const identityTokenBalance = await token.balanceOf(identityAddress);
+    return identityTokenBalance >= gasLimit;
+  } 
+  return true;
+};
+
 const lookupAddress = async (provider, address) => {
   const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
   const ens = new ethers.Contract(provider.ensAddress, ENS.interface, provider);
@@ -50,4 +64,4 @@ const lookupAddress = async (provider, address) => {
   return await contract.name(node);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress};
+export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, isEnoughGasLimit, hasEnoughToken};
