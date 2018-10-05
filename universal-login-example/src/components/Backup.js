@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
-import { toWords } from '../Daefen';
+import { toWords } from '../vendors/Daefen';
 import ethers from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 

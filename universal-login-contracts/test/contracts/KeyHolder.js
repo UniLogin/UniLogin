@@ -4,7 +4,7 @@ import KeyHolder from '../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import {addressToBytes32} from '../utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE, RSA_TYPE} from '../../../lib/consts';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE, RSA_TYPE} from '../../lib/consts';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -34,10 +34,7 @@ describe('Key holder', async () => {
   const amount = utils.parseEther('0.1');
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
-  const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
-  const addMultipleKeys = () => identity.addKeys([actionKey, actionKey2], [ACTION_KEY, ACTION_KEY], [ECDSA_TYPE, RSA_TYPE]);
-  const isActionKey2 = () => identity.keyHasPurpose(actionKey2, ACTION_KEY);
-  
+  const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);  
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -113,9 +110,9 @@ describe('Key holder', async () => {
 
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
-      await addMultipleKeys();
+      await identity.addKeys([actionKey, actionKey2], [ACTION_KEY, ACTION_KEY], [ECDSA_TYPE, RSA_TYPE]);
       expect(await isActionKey()).to.be.true;
-      expect(await isActionKey2()).to.be.true;
+      expect(await identity.keyHasPurpose(actionKey2, ACTION_KEY)).to.be.true;
       const existingKeys = await identity.keys(actionKey);
       expect(existingKeys[0]).to.eq(ACTION_KEY);
       expect(existingKeys[1]).to.eq(ECDSA_TYPE);
