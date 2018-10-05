@@ -35,6 +35,7 @@ class RecoverAccountView extends Component {
               )}
             </b>
           </div>
+          <p>{this.props.msg}</p>
           <button
             className="secondary-btn"
             onClick={this.props.onCancelClick.bind(this)}
@@ -48,6 +49,7 @@ class RecoverAccountView extends Component {
 }
 
 RecoverAccountView.propTypes = {
+  msg: PropTypes.string,
   isLoading: PropTypes.bool,
   onChange: PropTypes.func,
   identity: PropTypes.object,
