@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class BackupModal extends Component {
+class BackupModalView extends Component {
   render() {
     return (
       <div className="modal-overlay">
@@ -31,9 +31,9 @@ class BackupModal extends Component {
   }
 }
 
-BackupModal.propTypes = {
+BackupModalView.propTypes = {
   showAccount: PropTypes.func,
-  printScreen:PropTypes.func
+  printScreen: PropTypes.func
 };
 
-export default BackupModal;
+export default BackupModalView;
