@@ -1,16 +1,16 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import KeyHolder from '../../../build/KeyHolder';
+import KeyHolder from '../../build/KeyHolder';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import {addressToBytes32} from '../../utils';
+import {addressToBytes32} from '../utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/consts';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/consts';
 
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-describe('Key holder: key management', async () => {
+describe('Key holder', async () => {
   let provider;
   let wallet;
   let anotherWallet;
@@ -30,9 +30,6 @@ describe('Key holder: key management', async () => {
   let actionKey;
   let actionWalletKey;
 
-  let to;
-  const value = 0;
-  const id = 0;
   const amount = utils.parseEther('0.1');
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
@@ -52,8 +49,6 @@ describe('Key holder: key management', async () => {
 
     fromActionWallet = await contractWithWallet(identity, actionWallet);
     fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
-
-    to = identity.address;
 
     await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
     await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
@@ -80,12 +75,6 @@ describe('Key holder: key management', async () => {
       expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
       expect(await identity.keyHasPurpose(actionWalletKey, ACTION_KEY)).to.be.true;
     });
-
-    it('Should not allow to set required approvals greater than management keys nonce', async () => {
-      const managementKeysNonce = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      expect(managementKeysNonce.length).to.lt(3);
-      await expect(identity.setRequiredApprovals(3)).to.be.reverted;
-    });
   });
 
   describe('Add key', async () => {
@@ -110,13 +99,6 @@ describe('Key holder: key management', async () => {
 
     it('Should not allow to add new key with unknown key', async () => {
       await expect(fromUnknownWallet.addKey(unknownWalletKey, MANAGEMENT_KEY, ECDSA_TYPE)).to.be.reverted;
-    });
-
-    it('Should allow to add key by execute', async () => {
-      const addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
-      await identity.execute(to, value, addKeyData);
-      await identity.approve(id);
-      expect(await isActionKey()).to.be.true;
     });
 
     it('Should not allow to add key with action key', async () => {
@@ -188,12 +170,6 @@ describe('Key holder: key management', async () => {
       await identity.removeKey(managementWalletKey, MANAGEMENT_KEY);
       expect(await identity.keyHasPurpose(managementWalletKey, MANAGEMENT_KEY)).to.be.false;
       await expect(identity.removeKey(managementKey, MANAGEMENT_KEY)).to.be.reverted;
-    });
-
-    it('Should allow to remove key by execute', async () => {
-      const removeKeyData = identity.interface.functions.removeKey(actionKey, ACTION_KEY).data;
-      await identity.execute(to, value, removeKeyData);
-      expect(await isActionKey()).to.be.false;
     });
 
     it('Should not allow to remove key with invalid purpose', async () => {
