@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
-import { toWords } from '../vendors/Daefen';
-import ethers from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 class Backup extends Component {
@@ -10,40 +8,24 @@ class Backup extends Component {
     super(props);
     this.identityService = this.props.services.identityService;
     this.sdk = this.props.services.sdk;
+    this.backupService = this.props.services.backupService;
     this.state = {
       backupCodes: [],
       publicKeys: [],
-      isLoading: false
+      isLoading: true
     };
   }
 
-  componentDidMount() {
-    this.generateBackupCodes();
+  async componentDidMount() {
+    this.backupService.clearBackupCodes();
+    const [backupCodes, publicKeys] = await this.backupService.generateBackupCodes(1);
+    this.setState({ backupCodes, publicKeys, isLoading: false});
   }
 
   async generateBackupCodes() {
-    this.setState({ isLoading: true });
-    const { identityService } = this.props.services;
-    var backupCodes = this.state.backupCodes.slice(0);
-    var publicKeys = this.state.publicKeys.slice(0);
-    for (var i = 0; i < 3; i++) {
-      var backupCode =
-        toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
-          .replace(/\s/g, '-')
-          .toLowerCase() +
-        '-' +
-        toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
-          .replace(/\s/g, '-')
-          .toLowerCase();
-      var wallet = await ethers.Wallet.fromBrainWallet(
-        identityService.identity.name,
-        backupCode
-      );
-      publicKeys.push(wallet.address);
-      backupCodes.push(backupCode);
-      this.setState({ backupCodes: backupCodes, publicKeys: publicKeys });
-    }
-    this.setState({ isLoading: false });
+    this.setState({isLoading: true});
+    const [backupCodes, publicKeys] = await this.backupService.generateBackupCodes(1);
+    this.setState({ backupCodes, publicKeys, isLoading: false});
   }
 
   async setBackupCodes() {

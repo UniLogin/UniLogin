@@ -48,21 +48,37 @@ class BackupView extends Component {
                 </div>
               ) : (
                 <div>
-                  <button
-                    className="generate-code-btn"
-                    onClick={this.props.onGenerateClick.bind(this)}
-                  >
-                    Generate 3 more codes
-                  </button>
-                  <button
-                    className="btn fullwidth"
-                    onClick={this.props.onSetBackupClick.bind(this)}
-                  >
-                    Set As Backup Codes
-                  </button>
-                  <p className="click-cost">
-                    <i>Costs 2 clicks</i>
-                  </p>
+                  {this.props.backupCodes.length != 5 ? (
+                    <div>
+                      <button
+                        className="generate-code-btn"
+                        onClick={this.props.onGenerateClick.bind(this)}
+                      >
+                        Generate Another Code
+                      </button>
+                      <button
+                        className="btn fullwidth"
+                        onClick={this.props.onSetBackupClick.bind(this)}
+                      >
+                        Set As Backup Codes
+                      </button>
+                      <p className="click-cost">
+                        <i>Costs 2 clicks</i>
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="row align-items-center">
+                      <button
+                        className="btn fullwidth"
+                        onClick={this.props.onSetBackupClick.bind(this)}
+                      >
+                        Set As Backup Codes
+                      </button>
+                      <p className="click-cost">
+                        <i>Costs 2 clicks</i>
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
