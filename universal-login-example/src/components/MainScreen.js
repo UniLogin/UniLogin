@@ -44,7 +44,7 @@ class MainScreen extends Component {
     const pressers = await this.clickerService.getPressEvents();
     if (pressers.length > 0) {
       this.setState({
-        lastClick: pressers[0].pressTime,
+        lastClick: parseInt(pressers[0].pressTime, 10),
         events: pressers});
     } else {
       this.setState({

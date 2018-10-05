@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TextBox from '../views/TextBox';
 import PropTypes from 'prop-types';
-import ConnectionHoverView from './ConnectionHoverView';
+import ConnectionHoverView from '../views/ConnectionHoverView';
 
 class IdentitySelector extends Component {
   constructor(props) {
