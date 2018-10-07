@@ -1,6 +1,9 @@
 dist: trusty
 language: node_js
-cache: yarn
+cache:
+  yarn: true
+  directories:
+  - node_modules
 node_js:
   - '10'
 install:
