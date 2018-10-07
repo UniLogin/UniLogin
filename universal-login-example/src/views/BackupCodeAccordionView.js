@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const BackupCodeAccordionView = props => (
   <Collapsible
     title="Backup code"
-    subtitle="You have saved this"
+    subtitle="Back up your account"
     icon="icon-printer"
   >
     <p className="advice-text">
@@ -13,7 +13,7 @@ const BackupCodeAccordionView = props => (
       account. Generate a recovery code and keep it safe
     </p>
     <button onClick={() => props.setView('Backup')} className="btn fullwidth">
-      Generate new code
+      Generate new codes
     </button>
   </Collapsible>
 );

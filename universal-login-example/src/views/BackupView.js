@@ -3,42 +3,91 @@ import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
 class BackupView extends Component {
+  renderEvent(backupCode) {
+    return (
+      <div>
+        <div className="row align-items-center">
+          <Blockies
+            seed={this.props.identity.address.toLowerCase()}
+            size={8}
+            scale={6}
+          />
+          <p className="backup-code">
+            {this.props.identity.name} <br />
+            <strong>{backupCode}</strong>
+          </p>
+        </div>
+        <hr className="separator-s" />
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="subview">
         <div className="container">
           <h1 className="main-title">BACKUP CODES</h1>
-          <div className="row align-items-center">
-            <Blockies seed="alwaysUse.toLowerCase" size={8} scale={6} />
-            <div>
-              <p className="user-id">bobby.universal-id.eth</p>
-              <p className="wallet-address">
-                0xcee7a4d8be1c30623adc6185b6cdbcba19fac166
-              </p>
+          <p className="backup-text">
+            Print these, cut them apart and keep them safe locations apart from
+            each other. Keep them away from computers until you want to use
+            them.
+          </p>
+          <hr className="separator-s" />
+          {this.props.backupCodes.map(this.renderEvent.bind(this))}
+
+          <div>
+            <div className="row align-items-center">
+              {this.props.isLoading ? (
+                <div className="row align-items-center">
+                  <div className="circle-loader" />
+                  <p className="backup-code">
+                    {this.props.identity.name} <br />
+                    <em>generating...</em>
+                  </p>
+                  <br />
+                </div>
+              ) : (
+                <div>
+                  {this.props.backupCodes.length != 5 ? (
+                    <div>
+                      <button
+                        className="generate-code-btn"
+                        onClick={this.props.onGenerateClick.bind(this)}
+                      >
+                        Generate Another Code
+                      </button>
+                      <button
+                        className="btn fullwidth"
+                        onClick={this.props.onSetBackupClick.bind(this)}
+                      >
+                        Set As Backup Codes
+                      </button>
+                      <p className="click-cost">
+                        <i>Costs 2 clicks</i>
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="row align-items-center">
+                      <button
+                        className="btn fullwidth"
+                        onClick={this.props.onSetBackupClick.bind(this)}
+                      >
+                        Set As Backup Codes
+                      </button>
+                      <p className="click-cost">
+                        <i>Costs 2 clicks</i>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
-          <p className="backup-text">
-            Keep this codes somewhere safe and secret. Also, don&apos;t forget
-            your username as it&apos;s required to recover access. These are
-            independent codes, use each one once. Keep offline and away from
-            computers.
-          </p>
-          <hr className="separator-s" />
-          <p className="backup-code bold">bamdaa-ewar-izoisi</p>
-          <hr className="separator-s" />
-          <p className="backup-code bold">fa-depnob-tobpoo-fug</p>
-          <hr className="separator-s" />
-          <p className="backup-code bold">atyfud-nyjnua-feipyd</p>
-          <hr className="separator-s" />
-          <button className="generate-code-btn">Generate 3 more codes</button>
-          <button className="btn fullwidth">SET AS BACKUP CODE</button>
-          <p className="click-cost">
-            <i>Costs 2 clicks</i>
-          </p>
+
           <div className="text-center">
             <button
               onClick={() => this.props.setView('Account')}
-              className="cancel-backup-btn"
+              className="secondary-btn"
             >
               Cancel backup code
             </button>
@@ -50,6 +99,11 @@ class BackupView extends Component {
 }
 
 BackupView.propTypes = {
+  isLoading: PropTypes.bool,
+  onSetBackupClick: PropTypes.func,
+  onGenerateClick: PropTypes.func,
+  backupCodes: PropTypes.array,
+  identity: PropTypes.object,
   setView: PropTypes.type
 };
 

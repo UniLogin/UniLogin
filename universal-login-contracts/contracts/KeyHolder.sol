@@ -64,6 +64,14 @@ contract KeyHolder is ERC725KeyHolder {
         return true;
     }
 
+    function addKeys(bytes32[] _keys, uint256[] _purposes, uint256[] _types) public onlyManagementKeyOrThisContract returns(bool success) {
+        require(_keys.length == _purposes.length && _keys.length == _types.length, "Unequal argument set lengths");
+        for (uint i = 0; i < _keys.length; i++) {
+            addKey(_keys[i], _purposes[i], _types[i]);
+        }
+        return true;
+    }
+
     function removeKey(bytes32 _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
         require(keys[_key].purpose != MANAGEMENT_KEY || keysByPurpose[MANAGEMENT_KEY].length > 1, "Can not remove management key");
         require(keys[_key].purpose == _purpose, "Invalid key");

@@ -8,6 +8,7 @@ import MainScreen from './MainScreen';
 import PendingAuthorizations from './PendingAuthorizations';
 import Backup from './Backup';
 import Trusted from './Trusted';
+import RecoverAccount from './RecoverAccount';
 import PropTypes from 'prop-types';
 
 class ContentContainer extends Component {
@@ -48,9 +49,11 @@ class ContentContainer extends Component {
     } else if (this.state.view === 'PendingAuthorizations') {
       return <PendingAuthorizations services = {this.props.services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Backup') {
-      return <Backup setView={this.setView.bind(this)}/>;
+      return <Backup services={this.props.services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Trusted') {
       return <Trusted setView={this.setView.bind(this)}/>;
+    } else if (this.state.view === 'RecoverAccount') {
+      return <RecoverAccount services={this.props.services} setView={this.setView.bind(this)}/>;
     }
   }
 }

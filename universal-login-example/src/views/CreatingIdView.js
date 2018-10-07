@@ -7,9 +7,16 @@ class CreatingIdView extends Component {
       <div className="login-view">
         <div className="container">
           <h1 className="main-title">Creating ID...</h1>
-          <p className="login-view-text">We are creating your new ID, please wait a minute.</p>
-          <p className="user-id">{this.props.identityName}</p>
-          <div className="circle-loader"></div>
+          <div className="row align-items-center">
+            <div className="row align-items-center">
+              <div className="circle-loader" />
+              <p className="login-view-text">
+                {this.props.identityName} <br />
+                <em>We are creating your new ID, please wait a minute...</em>
+              </p>
+              <br />
+            </div>
+          </div>
         </div>
       </div>
     );

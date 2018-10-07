@@ -4,7 +4,6 @@ import BackToAppBtn from './BackToAppBtn';
 import ProfileIdentity from './ProfileIdentity';
 import ManageDevicesAccordion from './ManageDevicesAccordion';
 import BackupCodeAccordionView from '../views/BackupCodeAccordionView';
-import TrustedFriendsAccordionView from '../views/TrustedFriendsAccordionView';
 import SettingsAccordion from './SettingsAccordion';
 import PropTypes from 'prop-types';
 
@@ -28,13 +27,14 @@ class Account extends Component {
         <div className="container">
           <ProfileIdentity
             type="identityAccount"
-            identityService={this.props.identityService}/>
+            identityService={this.props.identityService}
+          />
           <hr className="separator" />
-          <ManageDevicesAccordion emitter={this.props.identityService.emitter} />
+          <ManageDevicesAccordion
+            emitter={this.props.identityService.emitter}
+          />
           <hr className="separator" />
           <BackupCodeAccordionView setView={this.setView.bind(this)} />
-          <hr className="separator" />
-          <TrustedFriendsAccordionView setView={this.setView.bind(this)} />
           <hr className="separator" />
           <SettingsAccordion />
           <hr className="separator" />

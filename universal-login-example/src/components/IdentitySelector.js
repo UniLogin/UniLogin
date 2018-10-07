@@ -34,6 +34,7 @@ class IdentitySelector extends Component {
           creations={this.state.creations}
           identity={this.state.identity}
           onNextClick={this.props.onNextClick}
+          onAccountRecoveryClick={this.props.onAccountRecoveryClick}
         />
       </div>
     );
@@ -43,6 +44,7 @@ class IdentitySelector extends Component {
 IdentitySelector.propTypes = {
   onChange: PropTypes.func,
   onNextClick: PropTypes.func,
+  onAccountRecoveryClick: PropTypes.func,
   ensDomains: PropTypes.arrayOf(PropTypes.string),
   services: PropTypes.object,
   identityExist: PropTypes.func,
