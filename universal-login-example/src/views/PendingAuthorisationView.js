@@ -15,7 +15,7 @@ class PendingAuthorisationView extends Component {
         </p>
         <button
           className="btn-alt fullwidth"
-          onClick={() => this.props.onAcceptClick(this.props.authorisation.key)}
+          onClick={() => this.props.onAcceptClick(this.props.authorisation)}
         >
           ACCEPT REQUEST <br />
           <span className="click-cost">costs 1 click</span>

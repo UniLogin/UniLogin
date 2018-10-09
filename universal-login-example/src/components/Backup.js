@@ -37,7 +37,6 @@ class Backup extends Component {
       DEFAULT_PAYMENT_OPTIONS
     );
     emitter.emit('showModal', 'backup');
-    //emitter.emit('setView', 'Account');
   }
 
   render() {

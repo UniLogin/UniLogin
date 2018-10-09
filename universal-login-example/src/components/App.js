@@ -21,7 +21,7 @@ class App extends Component {
     return (
       <div>
         <ContentContainer services={this.services} />
-        <Modals emitter={this.services.emitter} />
+        <Modals services={this.services} />
       </div>
     );
   }

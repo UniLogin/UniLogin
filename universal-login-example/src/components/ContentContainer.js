@@ -22,6 +22,7 @@ class ContentContainer extends Component {
   componentDidMount() {
     const {emitter} = this.props.services;
     this.subscription = emitter.addListener('setView', this.setView.bind(this));
+    this.loadIdentity();
   }
 
   componentWillUnmount() {
@@ -31,6 +32,15 @@ class ContentContainer extends Component {
   setView(view) {
     this.setState({view});
     window.scrollTo(0, 0);
+  }
+
+  async loadIdentity() {
+    const {emitter, storageService, identityService} = this.props.services;
+    let identity = await storageService.checkForIdentity();
+    if (identity) {
+      identityService.identity = identity;
+      this.setView('MainScreen');
+    }
   }
 
   render() {
@@ -43,7 +53,7 @@ class ContentContainer extends Component {
     } else if (this.state.view === 'MainScreen') {
       return <MainScreen services={this.props.services}/>;
     } else if (this.state.view === 'Account') {
-      return (<Account identityService={this.props.services.identityService}/>);
+      return (<Account services = {this.props.services}/>);
     } else if (this.state.view === 'ApproveConnection') {
       return <ApproveConnection services={this.props.services}/>;
     } else if (this.state.view === 'PendingAuthorizations') {

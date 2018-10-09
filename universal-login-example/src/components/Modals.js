@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DevicesModal from '../views/Modals/DevicesModal';
+import DevicesModal from './DevicesModal';
 import PostModal from '../views/Modals/PostModal';
 import BackupModal from './BackupModal';
 import PropTypes from 'prop-types';
@@ -7,31 +7,34 @@ import PropTypes from 'prop-types';
 class Modals extends Component {
   constructor(props) {
     super(props);
-    this.state = { modal: null };
+    this.state = { 
+      modal: null,
+      options: ''
+    };
   }
 
   componentDidMount() {
-    this.props.emitter.addListener('showModal', modal => {
-      this.showModal(modal);
+    this.props.services.emitter.addListener('showModal', (modal, options) => {
+      this.showModal(modal, options);
     });
   }
 
-  showModal(modal) {
-    this.setState({ modal });
+  showModal(modal, options='') {
+    this.setState({ modal, options });
   }
 
   hideModal() {
-    this.props.emitter.emit('showModal', null);
+    this.props.services.emitter.emit('showModal', null);
   }
 
   render() {
     switch (this.state.modal) {
     case 'devices':
-      return <DevicesModal hideModal={this.hideModal.bind(this)} />;
+      return <DevicesModal hideModal={this.hideModal.bind(this)} publicKey={this.state.options} services={this.props.services} />;
     case 'post':
       return <PostModal hideModal={this.hideModal.bind(this)} />;
     case 'backup':
-      return <BackupModal emitter={this.props.emitter} />;
+      return <BackupModal emitter={this.props.services.emitter} />;
     default:
       return null;
     }

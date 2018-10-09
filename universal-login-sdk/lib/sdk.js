@@ -28,7 +28,7 @@ class EthereumIdentitySDK {
     const responseJson = await response.json();
     if (response.status === 201) {
       const contract = await waitForContractDeploy(this.provider, Identity, responseJson.transaction.hash);
-      return [privateKey, contract.address];
+      return [privateKey, contract.address, managementKey];
     }
     throw new Error(`${response.status}`);
   }

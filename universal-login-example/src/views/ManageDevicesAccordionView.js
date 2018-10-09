@@ -7,9 +7,9 @@ class ManageDevicesAccordionView extends Component {
       return (
         <li key={i} className="device">
           <p className="device-name">{item.name}</p>
-          <p className="device-status">{item.name}</p>
+          <p className="device-status">{item.publicKey}</p>
           <button
-            onClick={() => this.props.confirmAction()}
+            onClick={() => this.props.confirmAction(item.publicKey)}
             className="device-btn icon-minus-circle"
           />
         </li>
