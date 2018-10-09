@@ -15,7 +15,7 @@ class BackupService {
 
   async generateBackupCodes(numCodes) {
     for (var i = 0; i < numCodes; i++) {
-      var backupCode =
+      const backupCode =
         toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
           .replace(/\s/g, '-')
           .toLowerCase() +
@@ -23,7 +23,7 @@ class BackupService {
         toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
           .replace(/\s/g, '-')
           .toLowerCase();
-      var wallet = await ethers.Wallet.fromBrainWallet(
+      const wallet = await ethers.Wallet.fromBrainWallet(
         this.identityService.identity.name,
         backupCode
       );
