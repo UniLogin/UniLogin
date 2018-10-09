@@ -2,15 +2,16 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
+import MockToken from 'universal-login-contracts/build/MockToken';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/config';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
-const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('SDK - integration', async () => {
   let provider;
@@ -19,6 +20,8 @@ describe('SDK - integration', async () => {
   let otherWallet;
   let otherWallet2;
   let sponsor;
+  let token;
+  let message;
 
   before(async () => {
     provider = createMockProvider();
@@ -27,6 +30,15 @@ describe('SDK - integration', async () => {
     await relayer.start();
     ({provider} = relayer);
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
+    token = await deployContract(sponsor, MockToken, []);
+    message = {
+      to: otherWallet.address,
+      value: 10,
+      data: utils.hexlify(0),
+      gasToken: token.address,
+      gasPrice,
+      gasLimit
+    };
   });
 
   describe('Create', async () => {
@@ -35,7 +47,8 @@ describe('SDK - integration', async () => {
 
     before(async () => {
       [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
-      sponsor.send(identityAddress, 10000);
+      await sponsor.send(identityAddress, 10000);
+      await token.transfer(identityAddress, utils.parseEther('20'));
     });
 
     describe('Initalization', () => {
@@ -60,17 +73,8 @@ describe('SDK - integration', async () => {
     describe('Execute signed message', async () => {
       let expectedBalance;
       let nonce;
-      let message;
 
       before(async () => {
-        message = {
-          to: otherWallet.address,
-          value: 10,
-          data: utils.hexlify(0),
-          gasToken,
-          gasPrice,
-          gasLimit
-        };
         expectedBalance = (await otherWallet.getBalance()).add(10);
         nonce = await sdk.execute(identityAddress, message, privateKey);
       });
@@ -86,11 +90,23 @@ describe('SDK - integration', async () => {
       it('Should return 1 as second nonce', async () => {
         expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(1);
       });
+
+      it('No tokens', async () => {
+        message = {
+          to: otherWallet.address,
+          value: 10,
+          data: utils.hexlify(0),
+          gasToken: token.address,
+          gasPrice,
+          gasLimit: utils.parseEther('25').toString() 
+        };
+        expect(sdk.execute(identityAddress, message, privateKey)).to.be.eventually.rejected;
+      });
     });
 
     describe('Add key', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken, gasPrice, gasLimit})).to.eq(2);
+        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: token.address, gasPrice, gasLimit})).to.eq(2);
       });
     });
 
@@ -99,20 +115,14 @@ describe('SDK - integration', async () => {
         const wallet = new ethers.Wallet(privateKey, provider);
         const executionNonce = await sdk.getLastExecutionNonce(identityAddress, wallet);
         expect(executionNonce).to.eq(3);
-        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken, gasPrice, gasLimit});
+        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: token.address, gasPrice, gasLimit});
         expect(await sdk.getLastExecutionNonce(identityAddress, wallet)).to.eq(executionNonce.add(1));
       });
     });
 
     describe('Add keys', async () => {
-      const transactionDetalis = {
-        nonce: 0,
-        gasToken,
-        gasPrice,
-        gasLimit
-      };
       it('should return execution nonce', async () => {
-        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, transactionDetalis)).to.eq(4);
+        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: token.address, gasPrice, gasLimit})).to.eq(4);
       });
     });
 

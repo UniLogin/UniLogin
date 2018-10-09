@@ -6,13 +6,7 @@ import PendingAuthorizationsView from '../views/PendingAuthorizationsView';
 import PropTypes from 'prop-types';
 import ProfileIdentity from './ProfileIdentity';
 import {tokenContractAddress} from '../../config/config';
-import {utils} from 'ethers';
-
-const addKeyPaymentOptions = {
-  gasToken: tokenContractAddress,
-  gasLimit: 1000000,
-  gasPrice: utils.parseEther('0.00011').toString()
-};
+import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 class PendingAuthorizations extends Component {
   constructor(props) {
@@ -49,6 +43,7 @@ class PendingAuthorizations extends Component {
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
+    const addKeyPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     await sdk.addKey(to, publicKey, privateKey, addKeyPaymentOptions);
   }
 
