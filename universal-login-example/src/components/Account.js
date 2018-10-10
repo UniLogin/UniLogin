@@ -18,9 +18,9 @@ class Account extends Component {
   }
 
   async loadDevices() {
-    const {identityService, storageService} = this.props.services;
+    const {storageService} = this.props.services;
     let devices = await storageService.getDevices();
-    if (devices) { this.setState({ devices: devices }); };
+    if (devices) { this.setState({ devices: devices }); }
   }
 
   setView(view) {

@@ -35,7 +35,7 @@ class ContentContainer extends Component {
   }
 
   async loadIdentity() {
-    const {emitter, storageService, identityService} = this.props.services;
+    const {storageService, identityService} = this.props.services;
     let identity = await storageService.checkForIdentity();
     if (identity) {
       identityService.identity = identity;

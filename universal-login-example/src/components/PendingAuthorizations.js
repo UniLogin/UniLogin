@@ -51,7 +51,7 @@ class PendingAuthorizations extends Component {
     const {sdk} = identityService;
     const publicKey = authorisation.key;
     await sdk.addKey(to, publicKey, privateKey, addKeyPaymentOptions);
-    await storageService.storeDevice(authorisation.label.name + " on " + authorisation.label.os, publicKey);
+    await storageService.storeDevice(authorisation.label.name + ' on ' + authorisation.label.os, publicKey);
   }
 
   async onDenyClick(publicKey) {

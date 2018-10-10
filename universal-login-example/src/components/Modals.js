@@ -42,7 +42,7 @@ class Modals extends Component {
 }
 
 Modals.propTypes = {
-  emitter: PropTypes.object
+  services: PropTypes.objeect
 };
 
 export default Modals;

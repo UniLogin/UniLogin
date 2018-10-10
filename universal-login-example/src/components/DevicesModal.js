@@ -20,7 +20,8 @@ class DevicesModal extends Component {
     if (identityService.deviceAddress === publicKey) {
       emitter.emit('setView', 'Login');
     } else {
-      emitter.emit('setView', 'MainScreen');
+      emitter.emit('setView', 'MainScreen'); // Switching from main screen to account forces a reload of the component
+      emitter.emit('setView', 'Account');
     }
   }
 
@@ -33,7 +34,8 @@ class DevicesModal extends Component {
 
 DevicesModal.propTypes = {
   hideModal: PropTypes.func,
-  publicKey: PropTypes.string
+  publicKey: PropTypes.string,
+  services: PropTypes.object
 };
 
 export default DevicesModal;
