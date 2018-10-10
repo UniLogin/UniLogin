@@ -1,16 +1,33 @@
-import {Wallet} from 'ethers';
+import ethers, {Wallet} from 'ethers';
 
 class IdentityService {
-  constructor(sdk, emitter) {
+  constructor(sdk, emitter, provider) {
     this.sdk = sdk;
     this.emitter = emitter;
     this.identity = {};
     this.deviceAddress = '';
+    this.provider = provider;
   }
 
   async connect(label) {
     this.privateKey = await this.sdk.connect(this.identity.address, label);
     const {address} = new Wallet(this.privateKey);
+    this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
+      if (event.address == address) {
+        this.cancelSubscription();
+        this.identity = {
+          name: this.identity.name,
+          privateKey: this.privateKey,
+          address: this.identity.address
+        };
+        this.emitter.emit('setView', 'MainScreen');
+      }
+    });
+  }
+
+  recover() {
+    const privateKey = ethers.Wallet.createRandom().privateKey;
+    const {address} = new Wallet(privateKey, this.provider);
     this.deviceAddress = address;
     this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
       if (event.address == address) {

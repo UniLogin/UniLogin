@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
+import {tokenContractAddress} from '../../config/config';
 
 class Backup extends Component {
   constructor(props) {
@@ -36,11 +37,12 @@ class Backup extends Component {
 
   async setBackupCodes() {
     const { identityService, emitter, sdk } = this.props.services;
+    const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     await sdk.addKeys(
       identityService.identity.address,
       this.state.publicKeys,
       identityService.identity.privateKey,
-      DEFAULT_PAYMENT_OPTIONS
+      addKeysPaymentOptions
     );
     emitter.emit('showModal', 'backup');
     //emitter.emit('setView', 'Account');
