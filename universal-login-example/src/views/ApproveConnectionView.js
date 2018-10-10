@@ -17,6 +17,12 @@ class ApproveConnectionView extends Component {
           >
             Cancel request
           </button>
+          <button
+            onClick={() => this.props.setView('RecoverAccount')}
+            className="secondary-btn"
+          >
+            Recover from backup
+          </button>
         </div>
       </div>
     );
@@ -25,7 +31,8 @@ class ApproveConnectionView extends Component {
 
 ApproveConnectionView.propTypes = {
   identity: PropTypes.object,
-  onCancelClick: PropTypes.func
+  onCancelClick: PropTypes.func,
+  setView: PropTypes.func
 };
 
 export default ApproveConnectionView;

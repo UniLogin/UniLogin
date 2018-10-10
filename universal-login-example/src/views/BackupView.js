@@ -35,7 +35,7 @@ class BackupView extends Component {
           <hr className="separator-s" />
           {this.props.backupCodes.map(this.renderEvent.bind(this))}
 
-          <div>
+          <div className="row">
             <div className="row align-items-center">
               {this.props.isLoading ? (
                 <div className="row align-items-center">
@@ -47,14 +47,14 @@ class BackupView extends Component {
                   <br />
                 </div>
               ) : (
-                <div>
-                  {this.props.backupCodes.length != 5 ? (
+                <div className="row">
+                  {this.props.backupCodes.length < 5 ? (
                     <div>
                       <button
                         className="generate-code-btn"
                         onClick={this.props.onGenerateClick.bind(this)}
                       >
-                        Generate Another Code
+                        Generate more codes
                       </button>
                       <button
                         className="btn fullwidth"
@@ -63,11 +63,11 @@ class BackupView extends Component {
                         Set As Backup Codes
                       </button>
                       <p className="click-cost">
-                        <i>Costs 2 clicks</i>
+                        <i>Costs 2 kliks</i>
                       </p>
                     </div>
                   ) : (
-                    <div className="row align-items-center">
+                    <div className="row">
                       <button
                         className="btn fullwidth"
                         onClick={this.props.onSetBackupClick.bind(this)}
@@ -75,7 +75,7 @@ class BackupView extends Component {
                         Set As Backup Codes
                       </button>
                       <p className="click-cost">
-                        <i>Costs 2 clicks</i>
+                        <i>Costs 2 kliks</i>
                       </p>
                     </div>
                   )}

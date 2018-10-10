@@ -2,7 +2,6 @@ import ApproveConnectionView from '../views/ApproveConnectionView';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Wallet } from 'ethers';
-import RecoverAccountAccordionView from '../views/RecoverAccountAccordionView';
 
 class ApproveConnection extends Component {
   constructor(props) {
@@ -42,8 +41,8 @@ class ApproveConnection extends Component {
           onChange={this.onChange.bind(this)}
           onCancelClick={this.onCancelClick.bind(this)}
           identity={this.identityService.identity}
+          setView={this.setView.bind(this)}
         />
-        <RecoverAccountAccordionView setView={this.setView.bind(this)} />
       </div>
     );
   }

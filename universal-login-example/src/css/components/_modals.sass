@@ -10,6 +10,8 @@
   left: 0
   background: rgba(5, 30, 79, 0.7)
   z-index: 10000
+  -webkit-backdrop-filter: blur(3px) saturate(25%)
+  backdrop-filter: blur(3px) saturate(25%)
 
 .modal-body
   position: absolute
@@ -55,3 +57,7 @@
   font-size: 12px
   border-radius: 50%
   background-color: #ECF3F9
+
+.modal-content h2, .modal-content h3
+  margin: 15px 0
+  color: #444
