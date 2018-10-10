@@ -18,6 +18,10 @@ class RecoverAccount extends Component {
     };
   }
 
+  async componentDidMount() {
+    await this.identityService.recover();
+  }
+
   async onCancelClick() {
     const {emitter} = this.props.services;
     emitter.emit('setView', 'Login');

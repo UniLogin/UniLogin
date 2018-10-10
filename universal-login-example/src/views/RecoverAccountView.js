@@ -20,11 +20,11 @@ class RecoverAccountView extends Component {
           <div>
             <b>
               {this.props.isLoading ? (
-                <p>
+                <div>
                   <br />
                   <div className="circle-loader" />{' '}
                   <strong>Recovering Account...</strong>
-                </p>
+                </div>
               ) : (
                 <button
                   className="btn fullwidth cancel-btn"
