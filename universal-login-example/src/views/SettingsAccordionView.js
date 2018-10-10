@@ -12,7 +12,7 @@ const SettingsAccordionView = () => (
     </div>
     <button className="btn fullwidth">Save new settings</button>
     <p className="click-cost">
-      <i>Cost 2 click</i>
+      <em>Cost 2 klik</em>
     </p>
   </div>
 );

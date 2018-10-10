@@ -19,14 +19,20 @@ class Backup extends Component {
 
   async componentDidMount() {
     this.backupService.clearBackupCodes();
-    const [backupCodes, publicKeys] = await this.backupService.generateBackupCodes(1);
-    this.setState({ backupCodes, publicKeys, isLoading: false});
+    const [
+      backupCodes,
+      publicKeys
+    ] = await this.backupService.generateBackupCodes(2);
+    this.setState({ backupCodes, publicKeys, isLoading: false });
   }
 
   async generateBackupCodes() {
-    this.setState({isLoading: true});
-    const [backupCodes, publicKeys] = await this.backupService.generateBackupCodes(1);
-    this.setState({ backupCodes, publicKeys, isLoading: false});
+    this.setState({ isLoading: true });
+    const [
+      backupCodes,
+      publicKeys
+    ] = await this.backupService.generateBackupCodes(1);
+    this.setState({ backupCodes, publicKeys, isLoading: false });
   }
 
   async setBackupCodes() {

@@ -5,13 +5,21 @@ class PendingAuthorisationView extends Component {
   render() {
     return (
       <div>
-        <p className="pending-authorizations-text" key={this.props.authorisation.key}>
-          Have you requested to log into this app from a{' '}
-          <span className="bold">{this.props.authorisation.label.name}</span> browser
-          <span className="bold">{this.props.authorisation.label.os}</span>, from the IP{' '}
-          {this.props.authorisation.label.ipAddress} ({this.props.authorisation.label.city}) at{' '}
-          <span className="bold">{this.props.authorisation.label.time}</span>, from this
-          address <span className="bold">{this.props.authorisation.key} </span>
+        <br />
+        <p
+          className="pending-authorizations-text"
+          key={this.props.authorisation.key}
+        >
+          Someone requested to log into this app from a{' '}
+          <span className="bold">{this.props.authorisation.label.name}</span>{' '}
+          browser in{' '}
+          <span className="bold">{this.props.authorisation.label.os}</span>,
+          from the IP{' '}
+          <span className="bold">
+            {this.props.authorisation.label.ipAddress} (
+            {this.props.authorisation.label.city})
+          </span>{' '}
+          at <span className="bold">{this.props.authorisation.label.time}</span>
         </p>
         <button
           className="btn-alt fullwidth"
@@ -25,7 +33,7 @@ class PendingAuthorisationView extends Component {
           onClick={() => this.props.onDenyClick(this.props.authorisation.key)}
         >
           Deny request
-        </button>
+        </button>{' '}
       </div>
     );
   }
