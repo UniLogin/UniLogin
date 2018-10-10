@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
+import {tokenContractAddress} from '../../config/config';
 
 class RecoverAccount extends Component {
   constructor(props) {
@@ -33,8 +34,9 @@ class RecoverAccount extends Component {
     this.setState({isLoading: true, msg: ''});
     const {identityService, sdk} = this.props.services;
     let wallet = await Wallet.fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
+    const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     try {
-      await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, DEFAULT_PAYMENT_OPTIONS);
+      await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);
     } catch (error) {
       this.setState({isLoading: false, msg: 'Incorrect backup code, please retry'});
     }
