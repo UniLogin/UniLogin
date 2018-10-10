@@ -1,9 +1,12 @@
-import ethers, {providers, utils} from 'ethers';
+import ethers, {providers, utils, Interface} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
+import ERC20 from 'universal-login-contracts/build/ERC20';
+import Identity from 'universal-login-contracts/build/Identity';
 
 const {namehash} = utils;
 
+const ether = '0x0000000000000000000000000000000000000000';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
@@ -42,6 +45,20 @@ const withENS = (provider, ensAddress) => {
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
+const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => {
+  // TODO what if passed address is not a for a token address
+  const erc20Bytecode = '0x6080604052600436106100b95763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630';
+  if (gasToken === ether) {
+    throw new Error('Ether refunds are not yet supported');
+  } else if ((await provider.getCode(gasToken)).slice(2, 111) !== erc20Bytecode.slice(2, 111)) {
+    throw new Error('Address isn`t token');
+  } else {
+    const token = new ethers.Contract(gasToken, ERC20.interface, provider);
+    const identityTokenBalance = await token.balanceOf(identityAddress);
+    return identityTokenBalance.gte(utils.bigNumberify(gasLimit));
+  }
+};
+
 const lookupAddress = async (provider, address) => {
   const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
   const ens = new ethers.Contract(provider.ensAddress, ENS.interface, provider);
@@ -50,4 +67,16 @@ const lookupAddress = async (provider, address) => {
   return await contract.name(node);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress};
+const isAddKeyCall = (data) => {
+  const addKeySighash = new Interface(Identity.interface).functions.addKey.sighash;
+  return addKeySighash === data.slice(0, addKeySighash.length);
+};
+
+const getKeyFromData = (data) => {
+  const codec = new utils.AbiCoder();
+  const addKeySighash = new Interface(Identity.interface).functions.addKey.sighash;
+  const [address] = (codec.decode(['bytes32', 'uint256', 'uint256'], data.replace(addKeySighash.slice(2), '')));
+  return utils.hexlify(utils.stripZeros(address));
+};
+
+export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData};

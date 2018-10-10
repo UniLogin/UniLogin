@@ -1,14 +1,14 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {utils} from 'ethers';
+import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
+import MockToken from 'universal-login-contracts/build/MockToken';
+import defaultPaymentOptions from '../../../lib/config/defaultPaymentOptions';
 
 chai.use(chaiHttp);
-const gasToken = '0x0000000000000000000000000000000000000000';
-const gasPrice = 1000000000;
-const gasLimit = 1000000;
 
 describe('Relayer - Identity routes', async () => {
   let relayer;
@@ -38,13 +38,18 @@ describe('Relayer - Identity routes', async () => {
 
   describe('Execute', async () => {
     let expectedBalance;
+    let token;
+
     before(async () => {
       await wallet.send(contract.address, 100000);
       expectedBalance = (await otherWallet.getBalance()).add(10);
+      token = await deployContract(wallet, MockToken, []);
+      await token.transfer(contract.address, utils.parseEther('1'));
     });
 
     it('Execute signed transfer', async () => {
-      const transferSignature = await messageSignature(wallet, otherWallet.address, contract.address, 10, '0x0', 0, gasToken, gasPrice, gasLimit);
+      const {gasPrice, gasLimit} = defaultPaymentOptions;
+      const transferSignature = await messageSignature(wallet, otherWallet.address, contract.address, 10, '0x0', 0, token.address, gasPrice, gasLimit);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({
@@ -53,7 +58,7 @@ describe('Relayer - Identity routes', async () => {
           value: 10,
           data: '0x0',
           nonce: 0,
-          gasToken,
+          gasToken: token.address,
           gasPrice,
           gasLimit,
           signature: transferSignature

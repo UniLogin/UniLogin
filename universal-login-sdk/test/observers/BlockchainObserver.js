@@ -3,9 +3,10 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
-import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
-import {Wallet} from 'ethers';
+import {createMockProvider, solidity, getWallets, deployContract} from 'ethereum-waffle';
+import {Wallet, utils} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/config';
+import MockToken from '../../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -18,6 +19,7 @@ describe('SDK: BlockchainObserver', async () => {
   let privateKey;
   let identityAddress;
   let wallet;
+  let token;
 
   before(async () => {
     provider = createMockProvider();
@@ -30,6 +32,8 @@ describe('SDK: BlockchainObserver', async () => {
     blockchainObserver.step = 50;
     [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
     await sdk.start();
+    token = await deployContract(wallet, MockToken, []);
+    await token.transfer(identityAddress, utils.parseEther('20'));
   });
 
   it('subscribe: should emit AddKey on construction', async () => {
@@ -43,7 +47,8 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
     await blockchainObserver.subscribe('KeyAdded', identityAddress, callback);
-    await sdk.addKey(identityAddress, wallet.address, privateKey, DEFAULT_PAYMENT_OPTIONS);
+    const addKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    await sdk.addKey(identityAddress, wallet.address, privateKey, addKeyPaymentOption);
     await blockchainObserver.fetchEvents(identityAddress);
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
   });
@@ -51,7 +56,8 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
     await blockchainObserver.subscribe('KeyRemoved', identityAddress, callback);
-    await sdk.removeKey(identityAddress, wallet.address, privateKey, DEFAULT_PAYMENT_OPTIONS);
+    const removeKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    await sdk.removeKey(identityAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await blockchainObserver.fetchEvents(identityAddress);
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
   });

@@ -2,10 +2,11 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from 'universal-login-sdk/lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import ethers from 'ethers';
+import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
+import ethers, {utils} from 'ethers';
 import sinon from 'sinon';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/config';
+import MockToken from '../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -18,6 +19,7 @@ describe('SDK - events', async () => {
   let wallet;
   let privateKey;
   let sponsor;
+  let token;
 
   before(async () => {
     provider = createMockProvider();
@@ -28,6 +30,8 @@ describe('SDK - events', async () => {
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
     [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
     sponsor.send(identityAddress, 10000);
+    token = await deployContract(wallet, MockToken, []);
+    await token.transfer(identityAddress, utils.parseEther('20'));
   });
 
 
@@ -42,7 +46,8 @@ describe('SDK - events', async () => {
 
     const secondPrivateKey = await sdk.connect(identityAddress, 'Some label');
     const {address} = new ethers.Wallet(secondPrivateKey);
-    await sdk.addKey(identityAddress, wallet.address, privateKey, DEFAULT_PAYMENT_OPTIONS);
+    const addKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    await sdk.addKey(identityAddress, wallet.address, privateKey, addKeyPaymentOption);
 
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
