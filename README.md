@@ -21,6 +21,24 @@ This repository is organised as monorepo.
 - [SDK](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
 
 
+##Quick example start 
+
+To install dependencies and build projects run following commands from the main project directory:
+
+```sh
+yarn && yarn build
+```
+
+To run example:
+
+```sh
+cd universal-login-example
+yarn dev:start
+```
+[manual option](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md)
+
+
+
 ## Contributing
 
 Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/EthWorks/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/EthWorks/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
