@@ -10,7 +10,17 @@ import PropTypes from 'prop-types';
 class Account extends Component {
   constructor(props) {
     super(props);
-    this.emitter = this.props.identityService.emitter;
+    this.state = {
+      devices: []
+    };
+    this.emitter = this.props.services.identityService.emitter;
+    this.loadDevices();
+  }
+
+  async loadDevices() {
+    const {storageService} = this.props.services;
+    let devices = await storageService.getDevices();
+    if (devices) { this.setState({ devices: devices }); }
   }
 
   setView(view) {
@@ -27,11 +37,13 @@ class Account extends Component {
         <div className="container">
           <ProfileIdentity
             type="identityAccount"
-            identityService={this.props.identityService}
+            identityService={this.props.services.identityService}
           />
           <hr className="separator" />
           <ManageDevicesAccordion
-            emitter={this.props.identityService.emitter}
+            emitter={this.props.services.identityService.emitter}
+            thisDevice={this.props.services.identityService.deviceAddress}
+            devices={this.state.devices}
           />
           <hr className="separator" />
           <BackupCodeAccordionView setView={this.setView.bind(this)} />
@@ -44,7 +56,7 @@ class Account extends Component {
   }
 }
 Account.propTypes = {
-  identityService: PropTypes.obj
+  services: PropTypes.obj
 };
 
 export default Account;

@@ -3,35 +3,26 @@ import Collapsible from './Collapsible';
 import ManageDevicesAccordionView from '../views/ManageDevicesAccordionView';
 import PropTypes from 'prop-types';
 
-const devices = [
-  {
-    name: 'Safari on Mac OSX',
-    status: 'The current device'
-  },
-  {
-    name: 'Chrome on Windows',
-    status: 'Last seen: a few minutes ago'
-  },
-  {
-    name: 'Status app on iOS',
-    status: 'Last seen: 8 days ago'
-  }
-];
-
 class ManageDevices extends Component {
-  confirmAction() {
-    this.props.emitter.emit('showModal', 'devices');
+  constructor(props) {
+    super(props);
+  }
+
+  confirmAction(publicKey) {
+    this.props.emitter.emit('showModal', 'devices', publicKey);
   }
 
   render() {
+    var subtitle = 'You currently have ' + (this.props.devices.length) + ' authorized devices';
     return (
       <Collapsible
         title="Manage devices"
-        subtitle="You currently have 3 authorized devices"
+        subtitle={subtitle}
         icon="icon-smartphone"
       >
         <ManageDevicesAccordionView
-          devices={devices}
+          devices={this.props.devices}
+          thisDevice={this.props.thisDevice}
           confirmAction={this.confirmAction.bind(this)}
         />
       </Collapsible>
@@ -40,7 +31,9 @@ class ManageDevices extends Component {
 }
 
 ManageDevices.propTypes = {
-  emitter: PropTypes.object
+  emitter: PropTypes.object,
+  devices: PropTypes.array,
+  thisDevice: PropTypes.object
 };
 
 export default ManageDevices;

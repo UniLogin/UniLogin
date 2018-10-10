@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class DevicesModal extends Component {
+class DevicesModalView extends Component {
   render() {
     return (
       <div className="modal-overlay">
@@ -20,7 +20,12 @@ class DevicesModal extends Component {
             >
               Cancel
             </button>
-            <button className="modal-btn">OK</button>
+            <button 
+              onClick={() => this.props.removeDevice()}
+              className="modal-btn"
+            >
+              OK
+            </button>
           </div>
         </div>
       </div>
@@ -28,8 +33,9 @@ class DevicesModal extends Component {
   }
 }
 
-DevicesModal.propTypes = {
+DevicesModalView.propTypes = {
+  removeDevice: PropTypes.func,
   hideModal: PropTypes.func
 };
 
-export default DevicesModal;
+export default DevicesModalView;

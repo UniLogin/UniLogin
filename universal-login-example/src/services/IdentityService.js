@@ -1,11 +1,12 @@
 import {Wallet} from 'ethers';
 
 class IdentityService {
-  constructor(sdk, emitter) {
+  constructor(sdk, emitter, storageService) {
     this.sdk = sdk;
     this.emitter = emitter;
     this.identity = {};
     this.deviceAddress = '';
+    this.storageService = storageService;
   }
 
   async connect(label) {
@@ -21,8 +22,14 @@ class IdentityService {
           address: this.identity.address
         };
         this.emitter.emit('setView', 'MainScreen');
+        this.storeIdentity(this.identity, this.deviceAddress);
       }
     });
+  }
+
+  async storeIdentity(identity, deviceAddress) {
+    this.storageService.storeIdentity(identity);
+    this.storageService.storeDevice('This Device', deviceAddress);
   }
 
   cancelSubscription() {
@@ -34,13 +41,15 @@ class IdentityService {
 
   async createIdentity(name) {
     this.emitter.emit('creatingIdentity', {name});
-    let [privateKey, address] = await this.sdk.create(name);
+    let [privateKey, address, deviceAddress] = await this.sdk.create(name);
     this.identity = {
       name,
       privateKey,
       address
     };
+    this.deviceAddress = deviceAddress;
     this.emitter.emit('identityCreated', this.identity);
+    this.storeIdentity(this.identity, this.deviceAddress);
   }
 
   async execute(message) {
