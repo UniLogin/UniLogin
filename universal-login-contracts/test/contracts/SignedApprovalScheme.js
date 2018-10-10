@@ -167,6 +167,7 @@ describe('Signed approval scheme', async () => {
 
         await mockToken.transfer(identity.address, utils.parseEther('20'));
         await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, 1, signature);
+        // TODO 
         expect(utils.formatEther(await mockToken.balanceOf(wallet.address))).not.to.eq(relayerTokenBalance);
       });
     });
