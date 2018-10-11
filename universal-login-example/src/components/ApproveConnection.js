@@ -14,16 +14,23 @@ class ApproveConnection extends Component {
     };
   }
 
-  async onCancelClick() {
-    const { emitter } = this.props.services;
-    emitter.emit('setView', 'Login');
+  async removeRequest() {
+    const { identityService, sdk } = this.props.services;
     this.identityService.cancelSubscription();
 
-    const { identityService } = this.props.services;
     const identityAddress = identityService.identity.address;
     const { address } = new Wallet(identityService.privateKey);
-    const { sdk } = identityService;
     await sdk.denyRequest(identityAddress, address);
+  }
+
+  async onCancelClick() {
+    await this.removeRequest();
+    this.emitter.emit('setView', 'Login');
+  }
+
+  async onAccountRecoveryClick(){
+    await this.removeRequest();
+    this.emitter.emit('setView', 'RecoverAccount');
   }
 
   onChange(event) {
@@ -41,7 +48,7 @@ class ApproveConnection extends Component {
           onChange={this.onChange.bind(this)}
           onCancelClick={this.onCancelClick.bind(this)}
           identity={this.identityService.identity}
-          setView={this.setView.bind(this)}
+          onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
         />
       </div>
     );

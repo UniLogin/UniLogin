@@ -52,7 +52,6 @@ class Login extends Component {
     const {emitter} = this.props.services;
     await this.identityExist(identity);
     emitter.emit('setView', 'RecoverAccount');
-    await this.identityService.recover();
   }
 
   onChange(identity) {
