@@ -1,4 +1,4 @@
-##SDK
+## SDK
 
 ### Getting Started
 
@@ -29,7 +29,7 @@ The function will return a pair:
 - `privateKey` - a private key that should be stored on given device as securely as possible
 - `identityAddress` - address of new identity contract
 
-To get address existing identity:
+To get address of existing identity:
 
 ```js
 const identityAddress = await sdk.identityExist('alex.ethereum.eth');
@@ -56,9 +56,9 @@ const transactionId = await sdk.execute(identityAddress, message, privateKey);
 
 The function takes six arguments:
 
-- `identityAddress` - address of that identity that requests execution
-- `message` - a message, in the same format as ethereum transaction, to be executed by the relayer
-- `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to identity
+- `identityAddress` - address of identity that requests execution
+- `message` - a message, in the same format as an ethereum transaction, to be executed by the relayer
+- `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to the identity
 - `gasToken` - address of token to refund relayer
 - `gasPrice` - price of gas 
 - `gasLimit` - limit of gas
