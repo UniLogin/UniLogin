@@ -1,4 +1,4 @@
-import { waitForContractDeploy } from "./utils";
+import { waitForContractDeploy } from './utils';
 import Token from '../build/Token';
 import Relayer from 'universal-login-relayer';
 import ethers, {Wallet, utils} from 'ethers';
@@ -6,7 +6,7 @@ import ethers, {Wallet, utils} from 'ethers';
 class TokenGrantingRelayer extends Relayer {
 
   constructor(provider, config, deployerPrivateKey, tokenContractAddress = []) {
-    super(provider, config);
+    super(config, provider);
     this.provider = provider;
     this.tokenContractAddress = tokenContractAddress;
     this.deployerWallet = new Wallet(deployerPrivateKey, this.provider);

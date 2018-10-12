@@ -18,10 +18,15 @@
         "test": "mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint lib test",
         "build": "babel lib --out-dir build",
-        "relayer:start": "babel-node scripts/relayer.js",
+        "relayer:start": "babel-node lib/scripts/relayer.js",
         "ganache:start": "babel-node scripts/ganache.js",
         "ens:deploy": "babel-node scripts/deployENS.js",
-        "clean": "rm -fr ./node_modules && rm -fr ./build"
+        "clean": "rm -fr ./node_modules && rm -fr ./build",
+        "postinstall": "yarn build",
+        "start": "node dist/scripts/relayer.js"
+    },
+    "engines": {
+      "node": ">=10.9"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

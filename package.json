@@ -19,6 +19,9 @@
   },
   "scripts": {
     "build": "yarn wsrun build --stages",
-    "clean": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules"
+    "clean": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules",
+    "postinstall": "yarn build"
+  }, "engines": {
+    "node": ">=10.9"
   }
 }
