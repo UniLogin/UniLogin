@@ -27,8 +27,8 @@ class EthereumIdentitySDK {
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
-      const contract = await waitForContractDeploy(this.provider, Identity, responseJson.transaction.hash);
-      return [privateKey, contract.address];
+
+      return [privateKey, responseJson.transaction.address];
     }
     throw new Error(`${response.status}`);
   }
@@ -111,6 +111,9 @@ class EthereumIdentitySDK {
   }
 
   async getLastExecutionNonce(identityAddress, wallet) {
+    if (!await this.identityContractExists(identityAddress)) {
+      return 0;
+    }
     const contract = new ethers.Contract(identityAddress, Identity.interface, wallet);
     return await contract.executionNonce();
   }
@@ -127,10 +130,19 @@ class EthereumIdentitySDK {
 
   async identityExist(identity) {
     const identityAddress = await this.resolveName(identity);
-    if (identityAddress && codeEqual(Identity.runtimeBytecode, await this.provider.getCode(identityAddress))) {
+    if (identityAddress && await this.identityContractExists(identityAddress)) {
       return identityAddress;
     }
     return false;
+  }
+
+  async identityContractExists(identityAddress) {
+    const code = await this.getContractCode(identityAddress);
+    return codeEqual(Identity.runtimeBytecode, code);
+  }
+
+  async getContractCode(identityAddress) {
+    return await this.provider.getCode(identityAddress);
   }
 
   async resolveName(identity) {

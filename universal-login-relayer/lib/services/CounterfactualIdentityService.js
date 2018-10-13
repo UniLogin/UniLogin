@@ -1,6 +1,6 @@
 import Identity from 'universal-login-contracts/build/Identity';
-import { addressToBytes32 } from '../utils/utils';
-import ethers, { utils, Wallet } from 'ethers';
+import {addressToBytes32} from '../utils/utils';
+import ethers, {utils, Wallet} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
@@ -13,7 +13,7 @@ class CounterfactualIdentityService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
-    this.minimumWeiInContractBeforeDeploy = utils.parseEther('0');
+    this.minimumWeiInContractBeforeDeploy = utils.parseEther('0.1');
     this.deploymentValue = utils.bigNumberify(utils.parseEther('0.4'));
   }
 
@@ -28,7 +28,7 @@ class CounterfactualIdentityService {
 
     const fullCounterfactualData = await this._extractCounterfactualParams(counterfactualTransaction);
 
-    this.hooks.emit('counterfactuallyCreated', fullCounterfactualData);
+    this.hooks.emit('counterfactuallyCreated', {address: fullCounterfactualData.counterfactualContractAddress});
 
     return fullCounterfactualData;
   }
@@ -110,16 +110,16 @@ class CounterfactualIdentityService {
 
     const hash = await this.provider.sendTransaction(fullCounterfactualData.counterfactualTransaction);
 
-    const deployTx = { hash }
+    const deployTx = {hash}
 
-    this.hooks.emit('created', deployTx);
+    this.hooks.emit('deployed', deployTx);
 
     return deployTx
   }
 
   async isContractDeployed(contractAddress) {
     let code = await this.provider.getCode(contractAddress);
-    return (code !== '0x');
+    return (code !== '0x00');
   }
 
 }

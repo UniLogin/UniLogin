@@ -1,8 +1,9 @@
 import Identity from 'universal-login-contracts/build/Identity';
-import { addressToBytes32, hasEnoughToken, isAddKeyCall, getKeyFromData } from '../utils/utils';
-import ethers, { utils, Interface } from 'ethers';
+import {addressToBytes32, hasEnoughToken, isAddKeyCall, getKeyFromData} from '../utils/utils';
+import ethers, {utils, Interface} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
-import CounterfactualIdentityService from './CounterfactualIdentityService';
+import CounterfactualIdentityService from './counterfactualIdentityService';
+import CounterfactualTransactionsService from './counterfactualTransactionsService';
 
 
 
@@ -16,29 +17,29 @@ class IdentityService {
     this.hooks = hooks;
     this.provider = provider;
     this.counterfactualIdentityService = new CounterfactualIdentityService(wallet, ensService, authorisationService, hooks, provider);
+    this.counterfactualTransactionsService = new CounterfactualTransactionsService();
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
-    const ethersGiftToUser = utils.parseEther('1')
-
 
     // Step 1 - create counterfactual id
     const counterfactualData = await this.counterfactualIdentityService.create(managementKey, ensName, overrideOptions);
+    this.counterfactualTransactionsService.upsertData(counterfactualData.counterfactualContractAddress, counterfactualData);
 
-    // Step 2 - send some money to the ID address before deployment
-    // Ideally this step is performed by the user himself
-    const fundTransaction = await this.wallet.send(counterfactualData.counterfactualContractAddress, ethersGiftToUser);
-    await this.provider.waitForTransaction(fundTransaction.hash);
+    return {
+      address: counterfactualData.counterfactualContractAddress
+    }
 
-    // Step 3 - deploy the proxy
-    // Ideally this step is executed before the first meaningful execution is done
-    const transaction = await this.counterfactualIdentityService.deployProxy(counterfactualData);
-    return transaction;
   }
 
   async executeSigned(contractAddress, message) {
+
+    if (!await this.counterfactualIdentityService.isContractDeployed(contractAddress)) {
+      await this._deployCounterfactualIdentity(contractAddress);
+    }
+
     if (await hasEnoughToken(message.gasToken, contractAddress, message.gasLimit, this.provider)) {
-      const { data } = new Interface(Identity.interface).functions.executeSigned(message.to, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit, message.signature);
+      const {data} = new Interface(Identity.interface).functions.executeSigned(message.to, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit, message.signature);
       const transaction = {
         value: 0,
         to: contractAddress,
@@ -58,6 +59,19 @@ class IdentityService {
       }
     }
     throw new Error('Not enough tokens');
+  }
+
+  async _deployCounterfactualIdentity(contractAddress) {
+    const counterfactualData = this.counterfactualTransactionsService.getData(contractAddress);
+    if (!counterfactualData) {
+      throw new Error('Unknown counterfactual identity');
+    }
+
+
+    // Step 2 - deploy the proxy
+    // Ideally this step is executed before the first meaningful execution is done
+    const transaction = await this.counterfactualIdentityService.deployProxy(counterfactualData);
+    await this.provider.waitForTransaction(transaction.hash);
   }
 }
 
