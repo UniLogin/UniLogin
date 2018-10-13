@@ -13,7 +13,7 @@ class CounterfactualIdentityService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
-    this.minimumWeiInContractBeforeDeploy = utils.parseEther('0.1');
+    this.minimumWeiInContractBeforeDeploy = 1;
     this.deploymentValue = utils.bigNumberify(utils.parseEther('0.4'));
   }
 

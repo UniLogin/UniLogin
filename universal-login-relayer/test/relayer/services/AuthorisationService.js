@@ -1,11 +1,14 @@
 import chai, {expect} from 'chai';
 import AuthorisationService from '../../../lib/services/authorisationService';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
 import buildEnsService from '../../helpers/buildEnsService';
 import Identity from 'universal-login-contracts/build/Identity';
-import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {EventEmitter} from 'fbemitter';
+import ethers, {utils} from 'ethers';
+import MockToken from 'universal-login-contracts/build/MockToken';
+import defaultPaymentOptions from '../../../lib/config/defaultPaymentOptions';
+import {messageSignature} from '../../../lib/utils/utils';
 
 chai.use(require('chai-string'));
 
@@ -21,6 +24,7 @@ describe('Authorisation Service', async () => {
   let otherWallet;
   let request;
   let hooks;
+  let token;
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -28,9 +32,19 @@ describe('Authorisation Service', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     hooks = new EventEmitter();
     authorisationService = new AuthorisationService();
-    identityService = new IdentityService(wallet, ensService, authorisationService, hooks);
+    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider);
+
     const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
-    identityContract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
+    token = await deployContract(wallet, MockToken, []);
+    await managementKey.send(transaction.address, utils.parseEther('4'));
+    await token.transfer(transaction.address, utils.parseEther('50'));
+
+    const value = 10;
+    const {gasPrice, gasLimit} = defaultPaymentOptions;
+    const to = otherWallet.address;
+    const signature = messageSignature(managementKey, to, transaction.address, value, utils.hexlify(0), 0, token.address, gasPrice, gasLimit);
+    await identityService.executeSigned(transaction.address, {to, value, data: utils.hexlify(0), nonce: 0, gasToken: token.address, gasPrice, gasLimit, signature});
+    identityContract = new ethers.Contract(transaction.address, Identity.interface, managementKey);
     request = {
       identityAddress: identityContract.address,
       key: otherWallet.address,
