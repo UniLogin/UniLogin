@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class CollapsibleView extends Component {
   render() {
     return (
       <div className="accordion">
-        <div
-          className={`accordion-btn ${this.props.isExpanded ? 'expanded' : ''}`}
-        >
+        <div className={`accordion-btn ${this.props.isExpanded ? 'expanded' : ''}`}>
           <span className={`accordion-btn-ico ${this.props.icon}`}></span>
-          <button onClick={e => this.props.toggleAccordion(e)}>
+          <button onClick={(event) => this.props.toggleAccordion(event)}>
             <h2 className="accordion-title">{this.props.title}</h2>
             <p className="accordion-subtitle">{this.props.subtitle}</p>
           </button>

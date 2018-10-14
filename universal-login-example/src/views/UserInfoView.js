@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
-const UserInfoView = props => (
+const UserInfoView = (props) => (
   <div className="row align-items-center">
     <Blockies seed={props.wallet.address.toLowerCase()} size={8} scale={6} />
     <div>

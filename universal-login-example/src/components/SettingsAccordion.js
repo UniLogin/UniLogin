@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Collapsible from './Collapsible';
 import SettingsAccordionView from '../views/SettingsAccordionView';
 

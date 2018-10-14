@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import DropdownView from '../views/DropdownView';
 import PropTypes from 'prop-types';
 
@@ -13,15 +13,15 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.title != this.state.title) {
+    if (prevState.title !== this.state.title) {
       this.props.returnValue(this.state.title);
     }
   }
 
-  handleItemClick(e) {
+  handleItemClick(event) {
     this.setState({
       isListOpen: false,
-      title: e.target.textContent
+      title: event.target.textContent
     });
   }
 

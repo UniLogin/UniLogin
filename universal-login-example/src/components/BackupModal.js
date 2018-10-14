@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import BackupModalView from '../views/BackupModalView';
 
 class BackupModal extends Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   showAccount() {
     this.props.emitter.emit('showModal', null);
     this.props.emitter.emit('setView', 'Account');

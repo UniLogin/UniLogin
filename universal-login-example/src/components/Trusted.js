@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import TrustedView from '../views/TrustedView';
 import PropTypes from 'prop-types';
 
