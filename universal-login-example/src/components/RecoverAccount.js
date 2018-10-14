@@ -1,5 +1,5 @@
 import RecoverAccountView from '../views/RecoverAccountView';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
@@ -37,7 +37,7 @@ class RecoverAccount extends Component {
   async onRecoverClick() {
     this.setState({isLoading: true, message: ''});
     const {identityService, sdk} = this.props.services;
-    let wallet = await Wallet.fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
+    const wallet = await Wallet.fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
     const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     try {
       await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);

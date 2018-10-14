@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Login from './Login';
 import CreatingId from './CreatingId';
 import ApproveConnection from './ApproveConnection';

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import IdentitySelector from './IdentitySelector';
 import PropTypes from 'prop-types';
 import publicIP from 'react-native-public-ip';
@@ -7,7 +7,6 @@ import iplocation from 'iplocation';
 import moment from 'moment';
 
 class Login extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +47,7 @@ class Login extends Component {
     }
   }
 
-  async onAccountRecoveryClick(identity){
+  async onAccountRecoveryClick(identity) {
     const {emitter} = this.props.services;
     await this.identityExist(identity);
     emitter.emit('setView', 'RecoverAccount');

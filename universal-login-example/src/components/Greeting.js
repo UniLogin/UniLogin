@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import GreetingView from '../views/GreetingView';
 import PropTypes from 'prop-types';
 
 class Greeting extends Component {
-
   showMainScreen() {
     this.props.identityService.emitter.emit('setView', 'MainScreen');
   }

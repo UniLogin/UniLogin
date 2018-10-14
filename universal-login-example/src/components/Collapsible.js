@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CollapsibleView from '../views/CollapsibleView';
 import PropTypes from 'prop-types';
 

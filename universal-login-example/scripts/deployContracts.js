@@ -9,7 +9,6 @@ const {jsonRpcUrl} = config;
 
 /* eslint-disable no-console */
 class ContractsDelpoyer {
-
   save(filename, _variables) {
     const variables = Object.entries(_variables)
       .map(([key, value]) => `  ${key}='${value}'`)

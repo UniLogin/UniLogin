@@ -13,7 +13,7 @@ class IdentityService {
     this.privateKey = await this.sdk.connect(this.identity.address, label);
     const {address} = new Wallet(this.privateKey);
     this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
-      if (event.address == address) {
+      if (event.address === address) {
         this.cancelSubscription();
         this.identity = {
           name: this.identity.name,
@@ -30,7 +30,7 @@ class IdentityService {
     const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
     this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
-      if (event.address == address) {
+      if (event.address === address) {
         this.cancelSubscription();
         this.identity = {
           name: this.identity.name,
@@ -51,7 +51,7 @@ class IdentityService {
 
   async createIdentity(name) {
     this.emitter.emit('creatingIdentity', {name});
-    let [privateKey, address] = await this.sdk.create(name);
+    const [privateKey, address] = await this.sdk.create(name);
     this.identity = {
       name,
       privateKey,

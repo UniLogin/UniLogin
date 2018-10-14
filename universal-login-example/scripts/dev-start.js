@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import {spawn} from 'child_process';
 import ethers from 'ethers';
 import Ganache from 'ganache-core';
 import {defaultAccounts, getWallets, deployContract} from 'ethereum-waffle';
@@ -101,12 +101,12 @@ class Deployer {
 
   async deployTokenContract() {
     this.tokenContract = await deployContract(this.deployer, Token);
-    this.env['TOKEN_CONTRACT_ADDRESS'] = this.tokenContract.address;
+    this.env.TOKEN_CONTRACT_ADDRESS = this.tokenContract.address;
   }
 
   async deployClickerContract() {
     const clickerContract = await deployContract(this.deployer, Clicker);
-    this.env['CLICKER_CONTRACT_ADDRESS'] = clickerContract.address;
+    this.env.CLICKER_CONTRACT_ADDRESS = clickerContract.address;
   }
 
   runWebServer() {
@@ -144,7 +144,6 @@ class Deployer {
     console.log('Starting example app web server...');
     this.runWebServer();
   }
-
 }
 
 const deployer = new Deployer();

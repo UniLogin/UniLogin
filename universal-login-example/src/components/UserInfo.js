@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import UserInfoView from '../views/UserInfoView';
 import UserAvatar from '../img/user.svg';
 
