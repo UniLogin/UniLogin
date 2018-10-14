@@ -5,7 +5,7 @@ import MockContract from '../../build/MockContract';
 import MockToken from '../../build/MockToken';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature, messageSignatureForApprovals} from '../utils';
-import {utils, Wallet} from 'ethers';
+import {utils, Wallet, Interface} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
@@ -78,7 +78,7 @@ describe('Signed approval scheme', async () => {
 
     addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
     functionData = mockContract.interface.functions.callMe().data;
-    await wallet.send(identity.address, amount);
+    await wallet.send(identity.address, utils.parseEther('5'));
   });
 
   describe('Execute signed', async () => {
@@ -160,15 +160,25 @@ describe('Signed approval scheme', async () => {
 
     describe('Refund', async () => {
       it('Should refund after execute', async () => {
-        const gasPrice = utils.parseEther('0.00011').toString();
-        const relayerTokenBalance = utils.formatEther(await mockToken.balanceOf(wallet.address));
+        const gasPrice = utils.parseEther('0.00011');
+        const amount = utils.parseEther('0.2');
         signature = messageSignature(
-          wallet, targetAddress, identity.address, amount, data, 0, mockToken.address, gasPrice, 1);
-
+          wallet, targetAddress, identity.address, amount, data, 0, mockToken.address, gasPrice, gasLimit);
         await mockToken.transfer(identity.address, utils.parseEther('20'));
-        await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, 1, signature);
-        // TODO 
-        expect(utils.formatEther(await mockToken.balanceOf(wallet.address))).not.to.eq(relayerTokenBalance);
+        const relayerTokenBalance = await mockToken.balanceOf(wallet.address);
+        const executeData = new Interface(SignedApprovalScheme.interface).functions.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature).data;
+        const transaction = {
+          value: 0,
+          to: identity.address,
+          data: executeData,
+          gasPrice,
+          gasLimit
+        };
+        const estimateGas = await wallet.estimateGas(transaction);
+        await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature);
+        const expectedIncome = estimateGas.mul(gasPrice);
+        expect(await mockToken.balanceOf(wallet.address)).to.be.below(relayerTokenBalance.add(expectedIncome));
+        expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance.add(estimateGas));
       });
     });
   });

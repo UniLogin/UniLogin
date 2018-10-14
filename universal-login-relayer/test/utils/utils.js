@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
-import {messageSignature, addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall} from '../../lib/utils/utils';
+import {messageSignature, addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
 import {utils, Wallet, Interface} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import ERC725ApprovalScheme from 'universal-login-contracts/build/ERC725ApprovalScheme';
-import {ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
+import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 
 chai.use(chaiAsPromised);
@@ -86,6 +86,21 @@ describe('Tools test', async () => {
     it('Should return false if no addKey call', async () => {
       const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(wallet.address), ACTION_KEY);
       expect(isAddKeyCall(data)).to.be.false;
+    });
+  });
+
+  describe('isAddKeysCall', async () => {
+    it('Should return true if addKeys call', async () => {
+      const keys = [addressToBytes32(wallet.address), addressToBytes32(otherWallet.address)];
+      const keyRoles = new Array(keys.length).fill(MANAGEMENT_KEY);
+      const keyTypes = new Array(keys.length).fill(ECDSA_TYPE);
+      const {data} = new Interface(Identity.interface).functions.addKeys(keys, keyRoles, keyTypes);
+      expect(isAddKeysCall(data)).to.be.true; 
+    });
+
+    it('Should return false if no addKeys call', async () => {
+      const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(wallet.address), ACTION_KEY);
+      expect(isAddKeysCall(data)).to.be.false;
     });
   });
 });
