@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import HeaderView from '../views/HeaderView';
 import BackToAppBtn from './BackToAppBtn';
 import ProfileIdentity from './ProfileIdentity';

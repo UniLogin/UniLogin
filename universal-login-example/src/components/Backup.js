@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
@@ -23,20 +23,20 @@ class Backup extends Component {
       backupCodes,
       publicKeys
     ] = await this.backupService.generateBackupCodes(2);
-    this.setState({ backupCodes, publicKeys, isLoading: false });
+    this.setState({backupCodes, publicKeys, isLoading: false});
   }
 
   async generateBackupCodes() {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     const [
       backupCodes,
       publicKeys
     ] = await this.backupService.generateBackupCodes(1);
-    this.setState({ backupCodes, publicKeys, isLoading: false });
+    this.setState({backupCodes, publicKeys, isLoading: false});
   }
 
   async setBackupCodes() {
-    const { identityService, emitter, sdk } = this.props.services;
+    const {identityService, emitter, sdk} = this.props.services;
     const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     await sdk.addKeys(
       identityService.identity.address,
@@ -45,11 +45,10 @@ class Backup extends Component {
       addKeysPaymentOptions
     );
     emitter.emit('showModal', 'backup');
-    //emitter.emit('setView', 'Account');
   }
 
   render() {
-    const { identity } = this.props.services.identityService;
+    const {identity} = this.props.services.identityService;
     return (
       <BackupView
         isLoading={this.state.isLoading}

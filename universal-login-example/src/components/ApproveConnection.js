@@ -1,7 +1,7 @@
 import ApproveConnectionView from '../views/ApproveConnectionView';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Wallet } from 'ethers';
+import {Wallet} from 'ethers';
 
 class ApproveConnection extends Component {
   constructor(props) {
@@ -15,11 +15,11 @@ class ApproveConnection extends Component {
   }
 
   async removeRequest() {
-    const { identityService, sdk } = this.props.services;
+    const {identityService, sdk} = this.props.services;
     this.identityService.cancelSubscription();
 
     const identityAddress = identityService.identity.address;
-    const { address } = new Wallet(identityService.privateKey);
+    const {address} = new Wallet(identityService.privateKey);
     await sdk.denyRequest(identityAddress, address);
   }
 
@@ -28,13 +28,13 @@ class ApproveConnection extends Component {
     this.emitter.emit('setView', 'Login');
   }
 
-  async onAccountRecoveryClick(){
+  async onAccountRecoveryClick() {
     await this.removeRequest();
     this.emitter.emit('setView', 'RecoverAccount');
   }
 
   onChange(event) {
-    this.setState({ backupCode: event.target.value });
+    this.setState({backupCode: event.target.value});
   }
 
   setView(view) {

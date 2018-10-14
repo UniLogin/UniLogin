@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import MainScreenView from '../views/MainScreenView';
 import HeaderView from '../views/HeaderView';
 import RequestsBadge from './RequestsBadge';
@@ -7,7 +7,6 @@ import ProfileIdentity from './ProfileIdentity';
 import PropTypes from 'prop-types';
 
 class MainScreen extends Component {
-
   constructor(props) {
     super(props);
     const {clickerService} = this.props.services;
@@ -38,9 +37,8 @@ class MainScreen extends Component {
     const {identityService} = this.props.services;
     const {address} = identityService.identity;
     const balance = await tokenService.getBalance(address);
-    const clicksLeft = parseInt(balance);
-    this.setState({clicksLeft: clicksLeft});
-
+    const clicksLeft = parseInt(balance, 10);
+    this.setState({clicksLeft});
     const pressers = await this.clickerService.getPressEvents();
     if (pressers.length > 0) {
       this.setState({

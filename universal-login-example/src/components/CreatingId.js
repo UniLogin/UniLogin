@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CreatingIdView from '../views/CreatingIdView';
 import PropTypes from 'prop-types';
 

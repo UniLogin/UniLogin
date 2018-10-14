@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import NativeNotificationService from '../services/NativeNotificationService';
 
@@ -14,7 +14,7 @@ class RequestsBadge extends Component {
   }
 
   componentDidMount() {
-    const { address } = this.identityService.identity;
+    const {address} = this.identityService.identity;
     this.subscription = this.authorisationService.subscribe(
       address,
       this.onAuthorisationChanged.bind(this)
@@ -26,7 +26,7 @@ class RequestsBadge extends Component {
   }
 
   onAuthorisationChanged(authorisations) {
-    this.setState({ requests: authorisations.length });
+    this.setState({requests: authorisations.length});
     if (authorisations.length > 0) {
       this.nativeNotificationService.notifyLoginRequest(authorisations[0].label);
     }

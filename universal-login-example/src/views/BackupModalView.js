@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class BackupModalView extends Component {
@@ -18,7 +18,7 @@ class BackupModalView extends Component {
             >
               Print Codes
             </button>
-            <button 
+            <button
               onClick={() => this.props.showAccount()}
               className="modal-btn"
             >

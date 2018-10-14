@@ -18,7 +18,7 @@ describe('BackupService', async () => {
     it('generates one backup code', async () => {
       await backupService.generateBackupCodes(1);
       expect(backupService.backupCodes.length).to.eq(1);
-      expect(backupService.backupCodes[0].length > 20);
+      expect(backupService.backupCodes[0]).to.match(/^\w+(-\w+)+$/);
     });
 
     it('generates more than one backup code', async () => {

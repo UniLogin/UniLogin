@@ -2,7 +2,7 @@ import React from 'react';
 import Collapsible from '../components/Collapsible';
 import PropTypes from 'prop-types';
 
-const BackupCodeAccordionView = props => (
+const BackupCodeAccordionView = (props) => (
   <Collapsible
     title="Backup code"
     subtitle="Back up your account"

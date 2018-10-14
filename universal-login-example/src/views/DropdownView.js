@@ -1,19 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class DropdownView extends Component {
   renderContent() {
-    return this.props.content.map((item, i) => {
-      return (
-        <li
-          key={i}
-          onClick={e => this.props.handleItemClick(e)}
-          className="dropdown-content-item"
-        >
-          {item}
-        </li>
-      );
-    });
+    return this.props.content.map((item, index) => (
+      <li key={index} onClick={(event) => this.props.handleItemClick(event)} className="dropdown-content-item">
+        {item}
+      </li>
+    ));
   }
 
   render() {

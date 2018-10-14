@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import TextBox from '../views/TextBox';
 import PropTypes from 'prop-types';
 import ConnectionHoverView from '../views/ConnectionHoverView';
@@ -26,7 +26,7 @@ class IdentitySelector extends Component {
         <div className="id-selector">
           <TextBox
             placeholder="bob.example.eth"
-            onChange={e => this.update(e)}
+            onChange={(event) => this.update(event)}
           />
         </div>
         <ConnectionHoverView
