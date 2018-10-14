@@ -8,6 +8,8 @@ import {Wallet, utils} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/config';
 import MockToken from '../../../universal-login-contracts/build/MockToken';
 
+const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+
 chai.use(solidity);
 chai.use(sinonChai);
 
@@ -19,12 +21,14 @@ describe('SDK: BlockchainObserver', async () => {
   let privateKey;
   let identityAddress;
   let wallet;
+  let otherWallet;
   let token;
+  let message;
 
   before(async () => {
     provider = createMockProvider();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
-    [wallet] = await getWallets(provider);
+    [wallet, otherWallet] = await getWallets(provider);
     await relayer.start();
     ({provider} = relayer);
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
@@ -33,7 +37,18 @@ describe('SDK: BlockchainObserver', async () => {
     [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
     await sdk.start();
     token = await deployContract(wallet, MockToken, []);
+    await otherWallet.send(identityAddress, 10000);
     await token.transfer(identityAddress, utils.parseEther('20'));
+
+    message = {
+      to: wallet.address,
+      value: 10,
+      data: utils.hexlify(0),
+      gasToken: token.address,
+      gasPrice,
+      gasLimit
+    };
+    await sdk.execute(identityAddress, message, privateKey);
   });
 
   it('subscribe: should emit AddKey on construction', async () => {

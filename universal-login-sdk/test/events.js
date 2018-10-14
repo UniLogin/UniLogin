@@ -8,6 +8,8 @@ import sinon from 'sinon';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/config';
 import MockToken from '../../universal-login-contracts/build/MockToken';
 
+const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+
 chai.use(solidity);
 chai.use(sinonChai);
 
@@ -20,6 +22,7 @@ describe('SDK - events', async () => {
   let privateKey;
   let sponsor;
   let token;
+  let message;
 
   before(async () => {
     provider = createMockProvider();
@@ -32,6 +35,16 @@ describe('SDK - events', async () => {
     sponsor.send(identityAddress, 10000);
     token = await deployContract(wallet, MockToken, []);
     await token.transfer(identityAddress, utils.parseEther('20'));
+
+    message = {
+      to: sponsor.address,
+      value: 10,
+      data: utils.hexlify(0),
+      gasToken: token.address,
+      gasPrice,
+      gasLimit
+    };
+    await sdk.execute(identityAddress, message, privateKey);
   });
 
 

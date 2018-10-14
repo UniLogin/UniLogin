@@ -1,6 +1,6 @@
 import Identity from 'universal-login-contracts/build/Identity';
-import {addressToBytes32, hasEnoughToken, isAddKeyCall, getKeyFromData} from '../utils/utils';
-import ethers, {utils, Interface} from 'ethers';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData} from '../utils/utils';
+import {utils, Interface} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import CounterfactualIdentityService from './counterfactualIdentityService';
 import CounterfactualTransactionsService from './counterfactualTransactionsService';
@@ -21,19 +21,16 @@ class IdentityService {
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
-
     // Step 1 - create counterfactual id
     const counterfactualData = await this.counterfactualIdentityService.create(managementKey, ensName, overrideOptions);
     this.counterfactualTransactionsService.upsertData(counterfactualData.counterfactualContractAddress, counterfactualData);
 
     return {
       address: counterfactualData.counterfactualContractAddress
-    }
-
+    };
   }
 
   async executeSigned(contractAddress, message) {
-
     if (!await this.counterfactualIdentityService.isContractDeployed(contractAddress)) {
       await this._deployCounterfactualIdentity(contractAddress);
     }
