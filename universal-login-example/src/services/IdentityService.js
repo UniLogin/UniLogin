@@ -25,9 +25,9 @@ class IdentityService {
     });
   }
 
-  recover() {
-    const privateKey = ethers.Wallet.createRandom().privateKey;
-    const {address} = new Wallet(privateKey, this.provider);
+  async recover() {
+    this.privateKey = await ethers.Wallet.createRandom().privateKey;
+    const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
     this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
       if (event.address == address) {
