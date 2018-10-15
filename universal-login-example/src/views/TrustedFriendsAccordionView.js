@@ -2,7 +2,7 @@ import React from 'react';
 import Collapsible from '../components/Collapsible';
 import PropTypes from 'prop-types';
 
-const TrustedFriendsView = props => (
+const TrustedFriendsView = (props) => (
   <Collapsible
     title="Trusted friends recovery"
     subtitle="You have 5 friends configured"

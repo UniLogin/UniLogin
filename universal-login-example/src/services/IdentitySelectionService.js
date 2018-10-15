@@ -56,13 +56,12 @@ class IdentitySelectionService {
     if (!this.isCorrectPrefix(namePrefix)) {
       return [[], []];
     } else if (this.isFullDomain(namePrefix)) {
-      return (await this.sdk.identityExist(namePrefix)) ? [[namePrefix], []]: [[], [namePrefix]];
+      return (await this.sdk.identityExist(namePrefix)) ? [[namePrefix], []] : [[], [namePrefix]];
     } else  if (this.countPeriods(namePrefix) > 0) {
       const [name, sldPrefix] = namePrefix.split('.');
       return await this.getSuggestionsForNodeAndSldPrefix(name, sldPrefix);
-    } else {
-      return await this.getSuggestionsForNodePrefix(namePrefix);
     }
+    return await this.getSuggestionsForNodePrefix(namePrefix);
   }
 }
 

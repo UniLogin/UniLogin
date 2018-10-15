@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class RecoverAccountView extends Component {
   render() {
@@ -14,17 +14,17 @@ class RecoverAccountView extends Component {
           <input
             className="input login-view-input"
             type="text"
-            onChange={e => this.props.onChange(e)}
+            onChange={(event) => this.props.onChange(event)}
             placeholder="Enter recovery code."
           />
           <div>
             <b>
               {this.props.isLoading ? (
-                <p>
+                <div>
                   <br />
                   <div className="circle-loader" />{' '}
                   <strong>Recovering Account...</strong>
-                </p>
+                </div>
               ) : (
                 <button
                   className="btn fullwidth cancel-btn"
@@ -35,7 +35,7 @@ class RecoverAccountView extends Component {
               )}
             </b>
           </div>
-          <p>{this.props.msg}</p>
+          <p>{this.props.message}</p>
           <button
             className="secondary-btn"
             onClick={this.props.onCancelClick.bind(this)}
@@ -49,7 +49,7 @@ class RecoverAccountView extends Component {
 }
 
 RecoverAccountView.propTypes = {
-  msg: PropTypes.string,
+  message: PropTypes.string,
   isLoading: PropTypes.bool,
   onChange: PropTypes.func,
   identity: PropTypes.object,

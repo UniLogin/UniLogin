@@ -1,5 +1,5 @@
 import ethers from 'ethers';
-import { toWords } from '../vendors/Daefen';
+import {toWords} from '../vendors/Daefen';
 
 class BackupService {
   constructor(identityService) {
@@ -14,16 +14,15 @@ class BackupService {
   }
 
   async generateBackupCodes(numCodes) {
-    for (var i = 0; i < numCodes; i++) {
-      var backupCode =
-        toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
-          .replace(/\s/g, '-')
-          .toLowerCase() +
-        '-' +
-        toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
-          .replace(/\s/g, '-')
-          .toLowerCase();
-      var wallet = await ethers.Wallet.fromBrainWallet(
+    for (let index = 0; index < numCodes; index++) {
+      const prefix = toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
+        .replace(/\s/g, '-')
+        .toLowerCase();
+      const suffix = toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
+        .replace(/\s/g, '-')
+        .toLowerCase();
+      const backupCode = `${prefix}-${suffix}`;
+      const wallet = await ethers.Wallet.fromBrainWallet(
         this.identityService.identity.name,
         backupCode
       );

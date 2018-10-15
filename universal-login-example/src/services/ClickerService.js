@@ -36,7 +36,7 @@ class ClickerService {
 
   getTimeDistanceInWords(time) {
     const date = new Date(time * 1000);
-    return distanceInWordsToNow(date, { includeSeconds: true });
+    return distanceInWordsToNow(date, {includeSeconds: true});
   }
 
   async getEnsName(address) {
@@ -44,16 +44,16 @@ class ClickerService {
   }
 
   async getEventsFromLogs(events) {
-    let pressers = [];
+    const pressers = [];
     for (const event of events) {
       const eventArguments = this.event.parse(this.event.topics, event.data);
       pressers.push({
         address: eventArguments.presser,
         name: await this.getEnsName(eventArguments.presser),
         pressTime: this.getTimeDistanceInWords(
-          parseInt(eventArguments.pressTime)
+          parseInt(eventArguments.pressTime, 10)
         ),
-        score: parseInt(eventArguments.score),
+        score: parseInt(eventArguments.score, 10),
         key: event.data
       });
     }

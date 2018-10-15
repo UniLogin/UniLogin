@@ -25,9 +25,8 @@ class Backup extends Component {
       publicKeys
     ] = await this.backupService.generateBackupCodes(2);
 
-    this.setState({ backupCodes, publicKeys, isLoading: false });
-
     // TODO: Add beforeUnload warning
+    this.setState({ backupCodes, publicKeys, isLoading: false });
   }
 
   async generateBackupCodes() {

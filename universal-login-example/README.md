@@ -1,8 +1,8 @@
-##Example
+## Example
 
 ### Running example on dev environment (quick option)
 
-To install dependencies and build projects run following commands from the main project directory:
+To install dependencies and build projects, run the following commands from the main project directory:
 
 ```sh
 yarn && yarn build

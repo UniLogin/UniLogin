@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import HeaderView from '../views/HeaderView';
 import RequestsBadge from './RequestsBadge';
 import BackBtn from './BackBtn';
@@ -20,7 +20,7 @@ class PendingAuthorizations extends Component {
   }
 
   componentDidMount() {
-    const { address } = this.identityService.identity;
+    const {address} = this.identityService.identity;
     this.setState({
       authorisations: this.authorisationService.pendingAuthorisations
     });
@@ -35,11 +35,11 @@ class PendingAuthorizations extends Component {
   }
 
   onAuthorisationChanged(authorisations) {
-    this.setState({ authorisations });
+    this.setState({authorisations});
   }
 
   async onAcceptClick(publicKey) {
-    const { identityService } = this.props.services;
+    const {identityService} = this.props.services;
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
@@ -48,9 +48,9 @@ class PendingAuthorizations extends Component {
   }
 
   async onDenyClick(publicKey) {
-    const { identityService } = this.props.services;
+    const {identityService} = this.props.services;
     const identityAddress = identityService.identity.address;
-    const { sdk } = identityService;
+    const {sdk} = identityService;
     await sdk.denyRequest(identityAddress, publicKey);
   }
 
