@@ -18,13 +18,6 @@ class Backup extends Component {
     };
   }
 
-  beforeUnloadWarning() {
-    // Cancel the event as stated by the standard.
-    e.preventDefault();
-    // Chrome requires returnValue to be set.
-    e.returnValue = '';
-  }
-
   async componentDidMount() {
     this.backupService.clearBackupCodes();
     const [
@@ -34,19 +27,7 @@ class Backup extends Component {
 
     this.setState({ backupCodes, publicKeys, isLoading: false });
 
-    // window.addEventListener('beforeunload', beforeUnloadWarning());
-
-    // window.onbeforeunload = function() {
-    //   e.preventDefault();
-    //   return 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
-    // };
-    // window.addEventListener('beforeunload', function(e) {
-    //   // Cancel the event as stated by the standard.
-    //   e.preventDefault();
-    //   // Chrome requires returnValue to be set.
-    //   e.returnValue = 'test123';
-    //   return 'test2';
-    // });
+    // TODO: Add beforeUnload warning
   }
 
   async generateBackupCodes() {
@@ -88,6 +69,7 @@ class Backup extends Component {
         'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless'
       )
     )
+      // TODO: Remove beforeUnload warning if one was added
       emitter.emit('setView', 'Account');
   }
 
