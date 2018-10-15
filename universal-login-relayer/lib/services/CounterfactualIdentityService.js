@@ -69,7 +69,7 @@ class CounterfactualIdentityService {
 
     const {from} = parsedTrans;
 
-    const nonce = await this.provider.getTransactionCount(deployer);
+    const nonce = await this.provider.getTransactionCount(from);
 
     const transaction = {
       from,
@@ -86,18 +86,18 @@ class CounterfactualIdentityService {
     return {
       contractAddress,
       counterfactualTransaction,
-      deployer
+      deployer: from
     };
   }
 
   async deployProxy(fullCounterfactualData) {
-    const from = fullCounterfactualData.deployer;
+    const deployer = fullCounterfactualData.deployer;
 
-    const existingValue = await this.provider.getBalance(from);
+    const existingValue = await this.provider.getBalance(deployer);
 
     const valueToBeSent = this.deploymentValue.sub(existingValue);
 
-    const fundTransaction = await this.wallet.send(from, valueToBeSent);
+    const fundTransaction = await this.wallet.send(deployer, valueToBeSent);
     await this.provider.waitForTransaction(fundTransaction.hash);
 
     const hash = await this.provider.sendTransaction(fullCounterfactualData.counterfactualTransaction);

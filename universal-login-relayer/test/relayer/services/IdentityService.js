@@ -6,6 +6,8 @@ import Identity from 'universal-login-contracts/build/Identity';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
+import CounterfactualIdentityService from '../../../lib/services/CounterfactualIdentityService';
+import CounterfactualTransactionsService from '../../../lib/services/CounterfactualTransactionsService';
 import {messageSignature, addressToBytes32} from '../../../lib/utils/utils';
 import buildEnsService from '../../helpers/buildEnsService';
 import AuthorisationService from '../../../lib/services/authorisationService';
@@ -17,6 +19,8 @@ chai.use(require('chai-string'));
 chai.use(sinonChai);
 
 describe('Relayer - IdentityService', async () => {
+  let counterfactualIdentityService;
+  let counterfactualTransactionsService;
   let identityService;
   let ensService;
   let managementKey;
@@ -34,7 +38,9 @@ describe('Relayer - IdentityService', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     hooks = new EventEmitter();
     authorisationService = new AuthorisationService();
-    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider);
+    counterfactualIdentityService = new CounterfactualIdentityService(wallet, ensService, authorisationService, hooks, provider);
+    counterfactualTransactionsService = new CounterfactualTransactionsService();
+    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider, counterfactualIdentityService, counterfactualTransactionsService);
   });
 
   describe('IdentityService', async () => {

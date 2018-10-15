@@ -2,6 +2,8 @@ import chai, {expect} from 'chai';
 import AuthorisationService from '../../../lib/services/authorisationService';
 import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
+import CounterfactualIdentityService from '../../../lib/services/CounterfactualIdentityService';
+import CounterfactualTransactionsService from '../../../lib/services/CounterfactualTransactionsService';
 import buildEnsService from '../../helpers/buildEnsService';
 import Identity from 'universal-login-contracts/build/Identity';
 import {EventEmitter} from 'fbemitter';
@@ -14,6 +16,8 @@ chai.use(require('chai-string'));
 
 describe('Authorisation Service', async () => {
   let authorisationService;
+  let counterfactualIdentityService;
+  let counterfactualTransactionsService;
   let provider;
   let managementKey;
   let wallet;
@@ -32,7 +36,9 @@ describe('Authorisation Service', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     hooks = new EventEmitter();
     authorisationService = new AuthorisationService();
-    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider);
+    counterfactualIdentityService = new CounterfactualIdentityService(wallet, ensService, authorisationService, hooks, provider);
+    counterfactualTransactionsService = new CounterfactualTransactionsService();
+    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider, counterfactualIdentityService, counterfactualTransactionsService);
 
     const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
     token = await deployContract(wallet, MockToken, []);
