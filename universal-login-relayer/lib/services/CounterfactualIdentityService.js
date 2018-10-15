@@ -13,27 +13,26 @@ class CounterfactualIdentityService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
-    this.minimumWeiInContractBeforeDeploy = 1;
     this.deploymentValue = utils.bigNumberify(utils.parseEther('0.4'));
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
-    let deployTransaction = this._createDeployTransaction(managementKey, ensName);
+    let deployTransaction = this.createDeployTransaction(managementKey, ensName);
 
-    deployTransaction = this._setupDeployTransaction(deployTransaction, overrideOptions);
+    deployTransaction = this.setupDeployTransaction(deployTransaction, overrideOptions);
 
-    const signedTransaction = this._signDeployTransaction(deployTransaction);
+    const signedTransaction = this.signDeployTransaction(deployTransaction);
 
-    const counterfactualTransaction = this._counterfactualizeSignedTransaction(signedTransaction);
+    const counterfactualTransaction = this.counterfactualizeSignedTransaction(signedTransaction);
 
-    const fullCounterfactualData = await this._extractCounterfactualParams(counterfactualTransaction);
+    const fullCounterfactualData = await this.extractCounterfactualParams(counterfactualTransaction);
 
-    this.hooks.emit('counterfactuallyCreated', {address: fullCounterfactualData.counterfactualContractAddress});
+    this.hooks.emit('AddressGenerated', {address: fullCounterfactualData.contractAddress});
 
     return fullCounterfactualData;
   }
 
-  _createDeployTransaction(managementKey, ensName) {
+  createDeployTransaction(managementKey, ensName) {
     const key = addressToBytes32(managementKey);
     const bytecode = `0x${Identity.bytecode}`;
     const ensArgs = this.ensService.argsFor(ensName);
@@ -41,7 +40,7 @@ class CounterfactualIdentityService {
     return ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args);
   }
 
-  _setupDeployTransaction(deployTransaction, overrideOptions) {
+  setupDeployTransaction(deployTransaction, overrideOptions) {
     const newDeployTransaction = {
       ...deployTransaction,
       ...defaultDeployOptions,
@@ -50,55 +49,49 @@ class CounterfactualIdentityService {
     return newDeployTransaction;
   }
 
-  _signDeployTransaction(deployTransaction) {
+  signDeployTransaction(deployTransaction) {
     return this.wallet.sign(deployTransaction);
   }
 
-  _counterfactualizeSignedTransaction(signedTransaction) {
+  counterfactualizeSignedTransaction(signedTransaction) {
     const signedTransNoRSV = signedTransaction.substring(0, signedTransaction.length - 134);
 
-    let randomS = utils.keccak256(utils.randomBytes(3));
-    randomS = `0 + ${randomS.substring(3, randomS.length)}`;
+    let randomS = utils.keccak256(utils.randomBytes(32));
+    randomS = `0${randomS.substring(3, randomS.length)}`;
 
     const counterfactualMagic = `1ba079be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798a0`;
 
     return `${signedTransNoRSV}${counterfactualMagic}${randomS}`;
   }
 
-  async _extractCounterfactualParams(counterfactualTransaction) {
+  async extractCounterfactualParams(counterfactualTransaction) {
     const parsedTrans = Wallet.parseTransaction(counterfactualTransaction);
 
-    const counterfactualDeploymentPayer = parsedTrans.from;
+    const {from} = parsedTrans;
 
-    const nonce = await this.provider.getTransactionCount(counterfactualDeploymentPayer);
+    const nonce = await this.provider.getTransactionCount(deployer);
 
     const transaction = {
-      from: counterfactualDeploymentPayer,
+      from,
       nonce
     };
 
-    const counterfactualContractAddress = utils.getContractAddress(transaction);
+    const contractAddress = utils.getContractAddress(transaction);
 
-    const counterfactualBalance = await this.provider.getBalance(counterfactualContractAddress);
+    const counterfactualBalance = await this.provider.getBalance(contractAddress);
     if (utils.bigNumberify(counterfactualBalance).gt(0)) {
       throw new Error('Contract with such address has already been used');
     }
 
     return {
-      counterfactualContractAddress,
+      contractAddress,
       counterfactualTransaction,
-      counterfactualDeploymentPayer
+      deployer
     };
   }
 
   async deployProxy(fullCounterfactualData) {
-    const counterfactualBalance = await this.provider.getBalance(fullCounterfactualData.counterfactualContractAddress);
-
-    if (utils.bigNumberify(counterfactualBalance).lt(this.minimumWeiInContractBeforeDeploy)) {
-      throw new Error('Counterfactual contract should have ethers');
-    }
-
-    const from = fullCounterfactualData.counterfactualDeploymentPayer;
+    const from = fullCounterfactualData.deployer;
 
     const existingValue = await this.provider.getBalance(from);
 
@@ -111,7 +104,7 @@ class CounterfactualIdentityService {
 
     const deployTx = {hash};
 
-    this.hooks.emit('deployed', deployTx);
+    this.hooks.emit('Instantiated', deployTx);
 
     return deployTx;
   }

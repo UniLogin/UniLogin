@@ -99,7 +99,7 @@
         "capIsNew": false
       }
     ],
-    "no-underscore-dangle": 0,
+    "no-underscore-dangle": 2,
     "no-restricted-globals": 2,
     "semi": [
       "error",

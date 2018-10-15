@@ -30,7 +30,7 @@ describe('Relayer - Authorisation routes', async () => {
         managementKey: wallet.address,
         ensName: 'marek.mylogin.eth'
       });
-    transaction = result.body.transaction;
+    {transaction} = result.body;
     expect(transaction.address).to.be.properAddress;
     contract = new ethers.Contract(transaction.address, Identity.interface, wallet);
     await wallet.send(contract.address, 100000);

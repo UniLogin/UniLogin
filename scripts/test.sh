@@ -1,4 +1,5 @@
 #!/bin/bash
+yarn build &&
 cd universal-login-contracts &&
 yarn test &&
 cd ../universal-login-relayer &&

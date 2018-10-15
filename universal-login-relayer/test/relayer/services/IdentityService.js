@@ -45,7 +45,7 @@ describe('Relayer - IdentityService', async () => {
 
     before(async () => {
       callback = sinon.spy();
-      hooks.addListener('counterfactuallyCreated', callback);
+      hooks.addListener('AddressGenerated', callback);
       transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
       contractAddress = transaction.address;
     });

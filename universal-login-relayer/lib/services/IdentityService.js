@@ -2,13 +2,11 @@ import Identity from 'universal-login-contracts/build/Identity';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData} from '../utils/utils';
 import {utils, Interface} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
-import CounterfactualIdentityService from './counterfactualIdentityService';
-import CounterfactualTransactionsService from './counterfactualTransactionsService';
 
 
 
 class IdentityService {
-  constructor(wallet, ensService, authorisationService, hooks, provider) {
+  constructor(wallet, ensService, authorisationService, hooks, provider, counterfactualIdentityService, counterfactualTransactionsService) {
     this.wallet = wallet;
     this.abi = Identity.interface;
     this.ensService = ensService;
@@ -16,23 +14,23 @@ class IdentityService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
-    this.counterfactualIdentityService = new CounterfactualIdentityService(wallet, ensService, authorisationService, hooks, provider);
-    this.counterfactualTransactionsService = new CounterfactualTransactionsService();
+    this.counterfactualIdentityService = counterfactualIdentityService;
+    this.counterfactualTransactionsService = counterfactualTransactionsService;
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
     // Step 1 - create counterfactual id
     const counterfactualData = await this.counterfactualIdentityService.create(managementKey, ensName, overrideOptions);
-    this.counterfactualTransactionsService.upsertData(counterfactualData.counterfactualContractAddress, counterfactualData);
+    this.counterfactualTransactionsService.upsertData(counterfactualData.contractAddress, counterfactualData);
 
     return {
-      address: counterfactualData.counterfactualContractAddress
+      address: counterfactualData.contractAddress
     };
   }
 
   async executeSigned(contractAddress, message) {
     if (!await this.counterfactualIdentityService.isContractDeployed(contractAddress)) {
-      await this._deployCounterfactualIdentity(contractAddress);
+      await this.deployCounterfactualIdentity(contractAddress);
     }
 
     if (await hasEnoughToken(message.gasToken, contractAddress, message.gasLimit, this.provider)) {
@@ -58,7 +56,7 @@ class IdentityService {
     throw new Error('Not enough tokens');
   }
 
-  async _deployCounterfactualIdentity(contractAddress) {
+  async deployCounterfactualIdentity(contractAddress) {
     const counterfactualData = this.counterfactualTransactionsService.getData(contractAddress);
     if (!counterfactualData) {
       throw new Error('Unknown counterfactual identity');

@@ -9,6 +9,8 @@ import ethers from 'ethers';
 import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
+import CounterfactualIdentityService from './services/counterfactualIdentityService';
+import CounterfactualTransactionsService from './services/counterfactualTransactionsService';
 
 const defaultPort = 3311;
 
@@ -24,12 +26,14 @@ class Relayer {
   start() {
     this.app = express();
     this.app.use(cors({
-      origin : '*',
+      origin: '*',
       credentials: true
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
     this.authorisationService = new AuthorisationService();
-    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider);
+    this.counterfactualIdentityService = new CounterfactualIdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider);
+    this.counterfactualTransactionsService = new CounterfactualTransactionsService();
+    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.counterfactualIdentityService, this.counterfactualTransactionsService);
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
