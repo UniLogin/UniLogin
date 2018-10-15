@@ -86,7 +86,7 @@ class BackupView extends Component {
 
           <div className="text-center">
             <button
-              onClick={() => this.props.setView('Account')}
+              onClick={this.props.onCancelClick.bind(this)}
               className="secondary-btn"
             >
               Cancel backup code
@@ -101,6 +101,7 @@ class BackupView extends Component {
 BackupView.propTypes = {
   isLoading: PropTypes.bool,
   onSetBackupClick: PropTypes.func,
+  onCancelClick: PropTypes.func,
   onGenerateClick: PropTypes.func,
   backupCodes: PropTypes.array,
   identity: PropTypes.object,

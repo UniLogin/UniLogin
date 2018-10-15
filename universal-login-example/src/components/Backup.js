@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
-import {tokenContractAddress} from '../../config/config';
+import { tokenContractAddress } from '../../config/config';
 
 class Backup extends Component {
   constructor(props) {
@@ -17,13 +17,35 @@ class Backup extends Component {
     };
   }
 
+  beforeUnloadWarning() {
+    // Cancel the event as stated by the standard.
+    e.preventDefault();
+    // Chrome requires returnValue to be set.
+    e.returnValue = '';
+  }
+
   async componentDidMount() {
     this.backupService.clearBackupCodes();
     const [
       backupCodes,
       publicKeys
     ] = await this.backupService.generateBackupCodes(2);
+
     this.setState({ backupCodes, publicKeys, isLoading: false });
+
+    window.addEventListener('beforeunload', beforeUnloadWarning());
+
+    // window.onbeforeunload = function() {
+    //   e.preventDefault();
+    //   return 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
+    // };
+    // window.addEventListener('beforeunload', function(e) {
+    //   // Cancel the event as stated by the standard.
+    //   e.preventDefault();
+    //   // Chrome requires returnValue to be set.
+    //   e.returnValue = 'test123';
+    //   return 'test2';
+    // });
   }
 
   async generateBackupCodes() {
@@ -37,7 +59,10 @@ class Backup extends Component {
 
   async setBackupCodes() {
     const { identityService, emitter, sdk } = this.props.services;
-    const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
+    const addKeysPaymentOptions = {
+      ...DEFAULT_PAYMENT_OPTIONS,
+      gasToken: tokenContractAddress
+    };
     await sdk.addKeys(
       identityService.identity.address,
       this.state.publicKeys,
@@ -46,6 +71,17 @@ class Backup extends Component {
     );
     emitter.emit('showModal', 'backup');
     //emitter.emit('setView', 'Account');
+  }
+
+  async cancelBackup() {
+    const { emitter } = this.props.services;
+
+    if (
+      confirm(
+        'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless'
+      )
+    )
+      emitter.emit('setView', 'Account');
   }
 
   render() {
@@ -58,6 +94,7 @@ class Backup extends Component {
         backupCodes={this.state.backupCodes}
         onGenerateClick={this.generateBackupCodes.bind(this)}
         onSetBackupClick={this.setBackupCodes.bind(this)}
+        onCancelClick={this.cancelBackup.bind(this)}
       />
     );
   }
