@@ -10,6 +10,7 @@ import TokenService from './TokenService';
 import IdentitySelectionService from './IdentitySelectionService';
 import BackupService from './BackupService';
 import GreetingService from './GreetingService';
+import StorageService from './StorageService';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 
@@ -22,7 +23,8 @@ class Services {
     this.sdk = new EthereumIdentitySDK(this.config.relayerUrl, this.provider);
     this.ensService = new EnsService(this.sdk, this.provider);
     this.tokenService = new TokenService(tokenContractAddress, this.provider);
-    this.identityService = new IdentityService(this.sdk, this.emitter, this.provider);
+    this.storageService = new StorageService();
+    this.identityService = new IdentityService(this.sdk, this.emitter, this.storageService, this.provider);
     this.backupService = new BackupService(this.identityService);
     this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService, tokenContractAddress, this.defaultPaymentOptions);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
