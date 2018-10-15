@@ -34,6 +34,10 @@ contract KeyHolder is ERC725KeyHolder {
         _;
     }
 
+    function keyExist(bytes32 _key) public view returns(bool) {
+        return keys[_key].key != bytes32(0x0);
+    }
+
     function getKey(bytes32 _key) public view returns(uint256 purpose, uint256 keyType, bytes32 key) {
         return (keys[_key].purpose, keys[_key].keyType, keys[_key].key);
     }
