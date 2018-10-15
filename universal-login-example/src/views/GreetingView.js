@@ -52,7 +52,7 @@ class GreetingView extends Component {
             className="btn fullwidth start-btn"
             onClick={this.props.onStartClick.bind(this)}
           >
-            Start using App
+            Go to App
           </button>
         </div>
       </div>

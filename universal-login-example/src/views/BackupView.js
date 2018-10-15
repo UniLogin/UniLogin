@@ -51,13 +51,23 @@ class BackupView extends Component {
                   {this.props.backupCodes.length < 5 ? (
                     <div>
                       <button
-                        className="generate-code-btn"
+                        className="generate-code-btn secondary-btn"
                         onClick={this.props.onGenerateClick.bind(this)}
                       >
-                        Generate more codes
+                        Create more codes
                       </button>
                       <button
-                        className="btn fullwidth"
+                        className="print-btn secondary-btn"
+                        onClick={this.props.onPrintClick.bind(this)}
+                      >
+                        Print codes
+                      </button>
+                      <button
+                        className={
+                          this.props.isSetting
+                            ? 'btn fullwidth disabled'
+                            : 'btn fullwidth'
+                        }
                         onClick={this.props.onSetBackupClick.bind(this)}
                       >
                         Set As Backup Codes
@@ -69,7 +79,11 @@ class BackupView extends Component {
                   ) : (
                     <div className="row">
                       <button
-                        className="btn fullwidth"
+                        className={
+                          this.props.isSetting
+                            ? 'btn fullwidth disabled'
+                            : 'btn fullwidth'
+                        }
                         onClick={this.props.onSetBackupClick.bind(this)}
                       >
                         Set As Backup Codes
@@ -100,9 +114,11 @@ class BackupView extends Component {
 
 BackupView.propTypes = {
   isLoading: PropTypes.bool,
+  isSetting: PropTypes.bool,
   onSetBackupClick: PropTypes.func,
   onCancelClick: PropTypes.func,
   onGenerateClick: PropTypes.func,
+  onPrintClick: PropTypes.func,
   backupCodes: PropTypes.array,
   identity: PropTypes.object,
   setView: PropTypes.type

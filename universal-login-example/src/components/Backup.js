@@ -13,7 +13,8 @@ class Backup extends Component {
     this.state = {
       backupCodes: [],
       publicKeys: [],
-      isLoading: true
+      isLoading: true,
+      isSetting: false
     };
   }
 
@@ -33,7 +34,7 @@ class Backup extends Component {
 
     this.setState({ backupCodes, publicKeys, isLoading: false });
 
-    window.addEventListener('beforeunload', beforeUnloadWarning());
+    // window.addEventListener('beforeunload', beforeUnloadWarning());
 
     // window.onbeforeunload = function() {
     //   e.preventDefault();
@@ -57,7 +58,13 @@ class Backup extends Component {
     this.setState({ backupCodes, publicKeys, isLoading: false });
   }
 
+  async printCodes() {
+    await window.print();
+  }
+
   async setBackupCodes() {
+    this.setState({ isSetting: true });
+
     const { identityService, emitter, sdk } = this.props.services;
     const addKeysPaymentOptions = {
       ...DEFAULT_PAYMENT_OPTIONS,
@@ -69,8 +76,8 @@ class Backup extends Component {
       identityService.identity.privateKey,
       addKeysPaymentOptions
     );
-    emitter.emit('showModal', 'backup');
-    //emitter.emit('setView', 'Account');
+    // emitter.emit('showModal', 'backup');
+    emitter.emit('setView', 'Greeting');
   }
 
   async cancelBackup() {
@@ -89,10 +96,12 @@ class Backup extends Component {
     return (
       <BackupView
         isLoading={this.state.isLoading}
+        isSetting={this.state.isSetting}
         identity={identity}
         setView={this.props.setView}
         backupCodes={this.state.backupCodes}
         onGenerateClick={this.generateBackupCodes.bind(this)}
+        onPrintClick={this.printCodes.bind(this)}
         onSetBackupClick={this.setBackupCodes.bind(this)}
         onCancelClick={this.cancelBackup.bind(this)}
       />

@@ -26,14 +26,12 @@ class Modals extends Component {
 
   render() {
     switch (this.state.modal) {
-    case 'devices':
-      return <DevicesModal hideModal={this.hideModal.bind(this)} />;
-    case 'post':
-      return <PostModal hideModal={this.hideModal.bind(this)} />;
-    case 'backup':
-      return <BackupModal emitter={this.props.emitter} />;
-    default:
-      return null;
+      case 'devices':
+        return <DevicesModal hideModal={this.hideModal.bind(this)} />;
+      case 'post':
+        return <PostModal hideModal={this.hideModal.bind(this)} />;
+      default:
+        return null;
     }
   }
 }
