@@ -79,4 +79,9 @@ const getKeyFromData = (data) => {
   return utils.hexlify(utils.stripZeros(address));
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData};
+const isAddKeysCall = (data) => {
+  const addKeysSighash = new Interface(Identity.interface).functions.addKeys.sighash;
+  return addKeysSighash === data.slice(0, addKeysSighash.length);
+};
+
+export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

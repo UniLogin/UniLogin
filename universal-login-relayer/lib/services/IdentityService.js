@@ -1,5 +1,5 @@
 import Identity from 'universal-login-contracts/build/Identity';
-import {hasEnoughToken, isAddKeyCall, getKeyFromData} from '../utils/utils';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import {utils, Interface} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
@@ -48,6 +48,10 @@ class IdentityService {
           await this.authorisationService.removeRequest(contractAddress, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('added', key);
+          return sentTransaction;
+        } else if (message.to === contractAddress && isAddKeysCall(message.data)) {
+          const sentTransaction = await this.wallet.sendTransaction(transaction);
+          this.hooks.emit('keysAdded');
           return sentTransaction;
         }
         return await this.wallet.sendTransaction(transaction);

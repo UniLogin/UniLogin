@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ContentContainer from './ContentContainer';
 import Services from '../services/Services';
 import Modals from './Modals';

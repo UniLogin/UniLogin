@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const BackToAppBtn = props => (
+const BackToAppBtn = (props) => (
   <button
     onClick={() => props.setView('MainScreen')}
     className="btn back-to-app"

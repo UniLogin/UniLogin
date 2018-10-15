@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Collapsible from './Collapsible';
 import ManageDevicesAccordionView from '../views/ManageDevicesAccordionView';
 import PropTypes from 'prop-types';

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
-const ProfileIdentityAccount = props => (
+const ProfileIdentityAccount = (props) => (
   <div className="row align-items-center">
     <Blockies seed={props.address.toLowerCase()} size={8} scale={6} />
     <div>

@@ -12,7 +12,7 @@ Planned functionality for first release include:
 - Universal login
 - Ether less transactions via relayer
 
-###Structure
+### Structure
 This repository is organised as monorepo. 
 
 - [Contracts](https://github.com/EthWorks/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
@@ -21,7 +21,7 @@ This repository is organised as monorepo.
 - [SDK](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
 
 
-##Quick example start 
+## Quick example start 
 
 To install dependencies and build projects run following commands from the main project directory:
 

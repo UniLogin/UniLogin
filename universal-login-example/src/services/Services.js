@@ -1,11 +1,10 @@
 import {EventEmitter} from 'fbemitter';
 import EthereumIdentitySDK from 'universal-login-sdk';
 import ethers from 'ethers';
-import config from '../../config/config';
+import config, {clickerContractAddress, tokenContractAddress} from '../../config/config';
 import IdentityService from './IdentityService';
 import ClickerService from './ClickerService';
 import EnsService from './EnsService';
-import {clickerContractAddress, tokenContractAddress} from '../../config/config';
 import AuthorisationService from './AuthorisationService';
 import TokenService from './TokenService';
 import IdentitySelectionService from './IdentitySelectionService';

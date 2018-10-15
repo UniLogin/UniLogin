@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class RecoverAccountView extends Component {
   render() {
@@ -14,7 +14,7 @@ class RecoverAccountView extends Component {
           <input
             className="input login-view-input"
             type="text"
-            onChange={e => this.props.onChange(e)}
+            onChange={(event) => this.props.onChange(event)}
             placeholder="Enter recovery code."
           />
           <div>

@@ -22,7 +22,14 @@ class TokenGrantingRelayer extends Relayer {
       this.giftTokens(this.identityAddress, walletNonce);
 
     });
-    this.hooks.addListener('added', (key) => this.tokenContract.transfer(this.identityAddress, utils.parseEther('5')));
+    this.addKeySubscription = this.hooks.addListener('added', (key) => {
+      this.tokenContract.transfer(this.identityAddress, utils.parseEther('5'));
+      this.addKeySubscription.remove();
+    });
+    this.addKeysSubscription = this.hooks.addListener('keysAdded', (key) => {
+      this.tokenContract.transfer(this.identityAddress, utils.parseEther('15'));
+      this.addKeysSubscription.remove();
+    });
   }
 
   giftTokens(identityAddress, nonce) {
