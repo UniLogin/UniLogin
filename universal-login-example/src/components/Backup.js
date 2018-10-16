@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BackupView from '../views/BackupView';
 import PropTypes from 'prop-types';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
-import { tokenContractAddress } from '../../config/config';
+import {tokenContractAddress} from '../../config/config';
 
 class Backup extends Component {
   constructor(props) {
@@ -26,16 +26,16 @@ class Backup extends Component {
     ] = await this.backupService.generateBackupCodes(2);
 
     // TODO: Add beforeUnload warning
-    this.setState({ backupCodes, publicKeys, isLoading: false });
+    this.setState({backupCodes, publicKeys, isLoading: false});
   }
 
   async generateBackupCodes() {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     const [
       backupCodes,
       publicKeys
     ] = await this.backupService.generateBackupCodes(1);
-    this.setState({ backupCodes, publicKeys, isLoading: false });
+    this.setState({backupCodes, publicKeys, isLoading: false});
   }
 
   async printCodes() {
@@ -43,9 +43,9 @@ class Backup extends Component {
   }
 
   async setBackupCodes() {
-    this.setState({ isSetting: true });
+    this.setState({isSetting: true});
 
-    const { identityService, emitter, sdk } = this.props.services;
+    const {identityService, emitter, sdk} = this.props.services;
     const addKeysPaymentOptions = {
       ...DEFAULT_PAYMENT_OPTIONS,
       gasToken: tokenContractAddress
@@ -56,24 +56,20 @@ class Backup extends Component {
       identityService.identity.privateKey,
       addKeysPaymentOptions
     );
-    // emitter.emit('showModal', 'backup');
-    emitter.emit('setView', 'Greeting');
+    emitter.emit('setView', 'Greeting', {greetMode: 'backupKeys'});
   }
 
   async cancelBackup() {
-    const { emitter } = this.props.services;
-
-    if (
-      confirm(
-        'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless'
-      )
-    )
+    const {emitter} = this.props.services;
+    const message = 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
+    if (confirm(message)) {
       // TODO: Remove beforeUnload warning if one was added
       emitter.emit('setView', 'Account');
+    }
   }
 
   render() {
-    const { identity } = this.props.services.identityService;
+    const {identity} = this.props.services.identityService;
     return (
       <BackupView
         isLoading={this.state.isLoading}

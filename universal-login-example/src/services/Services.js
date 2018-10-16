@@ -9,7 +9,7 @@ import AuthorisationService from './AuthorisationService';
 import TokenService from './TokenService';
 import IdentitySelectionService from './IdentitySelectionService';
 import BackupService from './BackupService';
-
+import GreetingService from './GreetingService';
 
 class Services {
   constructor() {
@@ -24,6 +24,7 @@ class Services {
     this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
     this.identitySelectionService = new IdentitySelectionService(this.sdk, config.ensDomains);
+    this.greetingService = new GreetingService(this.provider);
   }
 
   start() {

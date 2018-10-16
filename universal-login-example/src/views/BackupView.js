@@ -2,26 +2,33 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 
-class BackupView extends Component {
-  renderEvent(backupCode) {
-    return (
-      <div>
-        <div className="row align-items-center">
-          <Blockies
-            seed={this.props.identity.address.toLowerCase()}
-            size={8}
-            scale={6}
-          />
-          <p className="backup-code">
-            {this.props.identity.name} <br />
-            <strong>{backupCode}</strong>
-          </p>
-        </div>
-        <hr className="separator-s" />
+function BackupCode(props) {
+  return (
+    <div>
+      <div className="row align-items-center">
+        <Blockies
+          seed={props.identity.address.toLowerCase()}
+          size={8}
+          scale={6}
+        />
+        <p className="backup-code">
+          {props.identity.name} <br />
+          <strong>{props.code}</strong>
+        </p>
       </div>
-    );
-  }
+      <hr className="separator-s" />
+    </div>
+  );
+}
 
+
+BackupCode.propTypes = {
+  identity: PropTypes.object,
+  code: PropTypes.string
+};
+
+
+class BackupView extends Component {
   render() {
     return (
       <div className="subview">
@@ -33,8 +40,9 @@ class BackupView extends Component {
             them.
           </p>
           <hr className="separator-s" />
-          {this.props.backupCodes.map(this.renderEvent.bind(this))}
-
+          {this.props.backupCodes.map((code) =>
+            <BackupCode key={code} code={code} identity={this.props.identity}/>
+          )}
           <div className="row">
             <div className="row align-items-center">
               {this.props.isLoading ? (
@@ -120,8 +128,7 @@ BackupView.propTypes = {
   onGenerateClick: PropTypes.func,
   onPrintClick: PropTypes.func,
   backupCodes: PropTypes.array,
-  identity: PropTypes.object,
-  setView: PropTypes.type
+  identity: PropTypes.object
 };
 
 export default BackupView;

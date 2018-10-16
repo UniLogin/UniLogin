@@ -35,7 +35,13 @@ class PendingAuthorizations extends Component {
   }
 
   onAuthorisationChanged(authorisations) {
+    const {emitter} = this.props.services;
+
     this.setState({authorisations});
+
+    if (authorisations.length === 0) {
+      emitter.emit('setView', 'MainScreen');
+    }
   }
 
   async onAcceptClick(publicKey) {
@@ -43,7 +49,10 @@ class PendingAuthorizations extends Component {
     const to = identityService.identity.address;
     const {privateKey} = identityService.identity;
     const {sdk} = identityService;
-    const addKeyPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
+    const addKeyPaymentOptions = {
+      ...DEFAULT_PAYMENT_OPTIONS,
+      gasToken: tokenContractAddress
+    };
     await sdk.addKey(to, publicKey, privateKey, addKeyPaymentOptions);
   }
 
