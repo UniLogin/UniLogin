@@ -2,8 +2,8 @@
  * Authorization Contract that give permission to interact with only whiteListed Addresses
  *
  * Features:
- * Owners can set general White Listed Addresses which applies to all keys
- * Owners can give certain keys permission to specific White listed Addresses
+ * Permission Provider(identities) can set general White Listed Addresses which applies to all keys
+ * Permission Provider(identities) can give certain keys permission to specific White listed Addresses
  */
 
 pragma solidity ^0.4.24;
@@ -11,7 +11,6 @@ pragma solidity ^0.4.24;
 import "./authorizationInterface.sol";
 
 contract whiteListAuthorization is authorizationInterface {
-
 
     ////////////////////////
     // Storage Variables
