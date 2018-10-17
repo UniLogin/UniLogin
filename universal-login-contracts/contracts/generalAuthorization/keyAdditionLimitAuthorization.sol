@@ -11,7 +11,7 @@ import "./authorizationInterface.sol";
 
 contract keyAdditionLimitAuthorization is authorizationInterface {
 
-    bytes4 constant ADD_KEY_FUNC_SIG = "";
+    bytes4 constant ADD_KEY_FUNC_SIG = keccak256("addKey(bytes32 _key, uint256 _purpose, uint256 _type)");
 
     ////////////////////////
     // Storage Variables
