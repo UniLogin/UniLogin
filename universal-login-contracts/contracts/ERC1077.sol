@@ -25,23 +25,23 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes data,
         uint nonce,
         uint gasPrice,
-        uint gasLimit,
         address gasToken,
+        uint gasLimit,
         OperationType operationType,
-        bytes32 extraHash,
+        bytes extraData,
         bytes signatures) public view returns (bool)
     {
         address signer = getSigner(
             this,
             to,
             value,
-            keccak256(data),
+            data,
             nonce,
             gasPrice,
-            gasLimit,
             gasToken,
+            gasLimit,
             operationType,
-            extraHash,
+            extraData,
             signatures);
         return keyExist(bytes32(signer));
     }
@@ -49,27 +49,27 @@ contract ERC1077 is KeyHolder, IERC1077 {
     function calculateMessageHash(
         address from,
         address to,
-        uint value,
-        bytes32 dataHash,
+        uint256 value,
+        bytes data,
         uint nonce,
         uint gasPrice,
-        uint gasLimit,
         address gasToken,
+        uint gasLimit,
         OperationType operationType,
-        bytes32 _extraHash) public pure returns (bytes32)
+        bytes extraData) public pure returns (bytes32)
     {
         return keccak256(
             abi.encodePacked(
                 from,
                 to,
                 value,
-                dataHash,
+                keccak256(data),
                 nonce,
                 gasPrice,
-                gasLimit,
                 gasToken,
+                gasLimit,
                 uint(operationType),
-                keccak256(bytes32(0x0))
+                keccak256(extraData)
         ));
     }
 
@@ -77,26 +77,26 @@ contract ERC1077 is KeyHolder, IERC1077 {
         address from,
         address to,
         uint value,
-        bytes32 dataHash,
+        bytes data,
         uint nonce,
         uint gasPrice,
-        uint gasLimit,
         address gasToken,
+        uint gasLimit,
         OperationType operationType,
-        bytes32 extraHash,
+        bytes extraData,
         bytes signatures ) public pure returns (address)
     {
         return calculateMessageHash(
             from,
             to,
             value,
-            dataHash,
+            data,
             nonce,
             gasPrice,
-            gasLimit,
             gasToken,
+            gasLimit,
             operationType,
-            extraHash).toEthSignedMessageHash().recover(signatures);
+            extraData).toEthSignedMessageHash().recover(signatures);
     }
 
     function executeSigned(
@@ -105,17 +105,17 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes data,
         uint nonce,
         uint gasPrice,
-        uint gasLimit,
         address gasToken,
+        uint gasLimit,
         OperationType operationType,
-        bytes32 extraHash,
+        bytes extraData,
         bytes signatures) public returns (bytes32)
     {
         require(nonce == _lastNonce, "Invalid nonce");
-        require(canExecute(to, value, data, nonce, gasPrice, gasLimit, gasToken, operationType, extraHash, signatures), "Invalid signature");
+        require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, extraData, signatures), "Invalid signature");
         /* solium-disable-next-line security/no-call-value */
         bool success = to.call.value(value)(data);
-        bytes32 executionId = keccak256(nonce, signatures);
+        bytes32 executionId = keccak256(abi.encodePacked(nonce, signatures));
         emit ExecutedSigned(executionId, _lastNonce, success);
         _lastNonce++;
         return executionId;

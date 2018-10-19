@@ -4,7 +4,7 @@ pragma solidity ^0.4.24;
 contract IERC1077 {
     enum OperationType {CALL, DELEGATECALL, CREATE}
 
-    event ExecutedSigned(bytes32 signHash, uint nonce, bool success);
+    event ExecutedSigned(bytes32 executionId, address from, uint nonce, bool success);
 
     function lastNonce() public view returns (uint nonce);
 
@@ -14,10 +14,10 @@ contract IERC1077 {
         bytes data,
         uint nonce,
         uint gasPrice,
-        uint gasLimit,
         address gasToken,
+        uint gasLimit,
         OperationType operationType,
-        bytes32 extraHash,
+        bytes extraData,
         bytes signatures) public view returns (bool);
 
     function executeSigned(
@@ -26,9 +26,9 @@ contract IERC1077 {
         bytes data,
         uint nonce,
         uint gasPrice,
-        uint gasLimit,
         address gasToken,
+        uint gasLimit,
         OperationType operationType,
-        bytes32 extraHash,
-        bytes messageSignatures) public returns (bytes32);
+        bytes extraData,
+        bytes signatures) public returns (bytes32);
 }

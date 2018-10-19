@@ -26,5 +26,7 @@ export const transferMessage = {
   nonce: 0,
   gasPrice: 0,
   gasLimit: 0,
-  gasToken: '0x0000000000000000000000000000000000000000'
+  gasToken: '0x0000000000000000000000000000000000000000',
+  operationType: 0,
+  extraData: []
 };

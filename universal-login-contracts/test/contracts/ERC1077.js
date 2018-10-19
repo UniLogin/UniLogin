@@ -5,7 +5,7 @@ import basicIdentity, {transferMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
 import {OPERATION_CALL} from 'universal-login-contracts/lib/consts';
 import TestHelper from '../testHelper';
-import calculateMessageSignature from '../../lib/calculateMessageSignature';
+import calculateMessageSignature, {calculateMessageHash} from '../../lib/calculateMessageSignature';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -43,24 +43,45 @@ describe('ERC1077', async () => {
       expect(await identity.keyExist([])).to.be.false;
     });
 
+    it('calculates hash', async () => {
+      const jsHash = calculateMessageHash(msg);
+      const solidityHash = await identity.calculateMessageHash(
+        msg.from,
+        msg.to,
+        msg.value,
+        msg.data,
+        msg.nonce,
+        msg.gasPrice,
+        msg.gasToken,
+        msg.gasLimit, 0, []);
+      expect(jsHash).to.eq(solidityHash);
+    });
+
     it('recovers signature', async () => {
-      const dataHash = utils.solidityKeccak256(['bytes'], [msg.data]);
-      const recoveredAddress = await identity.getSigner(msg.from, msg.to, msg.value, dataHash, msg.nonce, msg.gasPrice, msg.gasLimit, msg.gasToken, 0, '0x0000000000000000000000000000000000000000000000000000000000000000', signature);
+      const recoveredAddress = await identity.getSigner(
+        msg.from,
+        msg.to,
+        msg.value,
+        msg.data,
+        msg.nonce,
+        msg.gasPrice,
+        msg.gasToken,
+        msg.gasLimit, 0, [], signature);
       expect(recoveredAddress).to.eq(keyAsAddress);
     });
   });
 
   describe('successful execution of transfer', () => {
     it('transfers funds', async () => {
-      await identity.executeSigned(to, parseEther('1.0'), [], 0, 0, 0, ETHER, OPERATION_CALL, [], signature);
+      await identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, [], signature);
       expect(await provider.getBalance(to)).to.eq(parseEther('1.0'));
       expect(await identity.lastNonce()).to.eq(1);
     });
 
     it('emits ExecutedSigned event', async () => {
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, 0, ETHER, OPERATION_CALL, [], signature))
+      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, [], signature))
         .to.emit(identity, 'ExecutedSigned')
-        .withArgs('0x7c3f015a15180442dcfa779f0d3e5deebdd1ecee0774f5265f6cee86cb07dded', 0, true);
+        .withArgs('0x13a42b322be71e0b743f383255da1dba5e8e3cbb57a12f7f77db07a4c7c29592', 0, true);
     });
 
     xit('refunds');
@@ -68,13 +89,13 @@ describe('ERC1077', async () => {
 
   describe('fails if invalid nonce', () => {
     it('fails if nonce too low', async () => {
-      await identity.executeSigned(to, parseEther('1.0'), [], 0, 0, 0, ETHER, OPERATION_CALL, [], signature);
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, 0, ETHER, OPERATION_CALL, [], signature))
+      await identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, [], signature);
+      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, [], signature))
         .to.be.revertedWith('Invalid nonce');
     });
 
     it('fails if nonce too high', async () => {
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 2, 0, 0, ETHER, OPERATION_CALL, [], signature))
+      await expect(identity.executeSigned(to, parseEther('1.0'), [], 2, 0, ETHER, 0, OPERATION_CALL, [], signature))
         .to.be.revertedWith('Invalid nonce');
     });
   });
@@ -99,7 +120,7 @@ describe('ERC1077', async () => {
 
   describe('fails if invalid signature', () => {
     it('empty signature', async () => {
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, 0, ETHER, OPERATION_CALL, [], []))
+      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, [], []))
         .to.be.revertedWith('Invalid signature');
       expect(await identity.lastNonce()).to.eq(0);
       expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
