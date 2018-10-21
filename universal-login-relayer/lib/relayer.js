@@ -15,12 +15,12 @@ import CounterfactualTransactionsService from './services/counterfactualTransact
 const defaultPort = 3311;
 
 class Relayer {
-  constructor(provider, config) {
-    this.wallet = new ethers.Wallet(config.privateKey, provider);
+  constructor(config, provider) {
     this.port = config.port || defaultPort;
     this.config = config;
     this.hooks = new EventEmitter();
-    this.provider = provider;
+    this.provider = provider || new ethers.providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
+    this.wallet = new ethers.Wallet(config.privateKey, this.provider);
   }
 
   start() {

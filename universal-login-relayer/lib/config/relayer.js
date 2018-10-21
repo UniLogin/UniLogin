@@ -1,25 +1,25 @@
-const {defaultAccounts} = require('ethereum-waffle');
+require('dotenv').config();
 
 module.exports = Object.freeze({
-  jsonRpcUrl: 'http://localhost:18545',
-  port: 3311,
-  privateKey: defaultAccounts[0].secretKey,
+  jsonRpcUrl: process.env.JSON_RPC_URL,
+  port: process.env.PORT,
+  privateKey: process.env.PRIVATE_KEY,
   chainSpec: {
     ensAddress: process.env.ENS_ADDRESS,
     chainId: 0
   },
   ensRegistrars: {
-    'mylogin.eth': {
+    [process.env.ENS_DOMAIN_1]: {
       resolverAddress: process.env.ENS_RESOLVER1_ADDRESS,
       registrarAddress: process.env.ENS_REGISTRAR1_ADDRESS,
       privteKey: process.env.ENS_REGISTRAR1_PRIVATE_KEY
     },
-    'universal-id.eth': {
+    [process.env.ENS_DOMAIN_2]: {
       resolverAddress: process.env.ENS_RESOLVER2_ADDRESS,
       registrarAddress: process.env.ENS_REGISTRAR2_ADDRESS,
       privteKey: process.env.ENS_REGISTRAR2_PRIVATE_KEY
     },
-    'popularapp.eth': {
+    [process.env.ENS_DOMAIN_3]: {
       resolverAddress: process.env.ENS_RESOLVER3_ADDRESS,
       registrarAddress: process.env.ENS_REGISTRAR3_ADDRESS,
       privteKey: process.env.ENS_REGISTRAR3_PRIVATE_KEY
