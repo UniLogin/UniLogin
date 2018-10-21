@@ -8,9 +8,7 @@
 
 pragma solidity ^0.4.24;
 
-import "./authorizationInterface.sol";
-
-contract whiteListAuthorization is authorizationInterface {
+contract whiteListAuthorization {
 
     ////////////////////////
     // Storage Variables

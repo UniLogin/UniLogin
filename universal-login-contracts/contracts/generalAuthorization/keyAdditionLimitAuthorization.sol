@@ -7,11 +7,9 @@
  */
 pragma solidity ^0.4.24;
 
-import "./authorizationInterface.sol";
+contract keyAdditionLimitAuthorization {
 
-contract keyAdditionLimitAuthorization is authorizationInterface {
-
-    bytes4 constant ADD_KEY_FUNC_SIG = keccak256("addKey(bytes32 _key, uint256 _purpose, uint256 _type)");
+    bytes4 constant ADD_KEY_FUNC_SIG = bytes4(keccak256("addKey(bytes32 _key, uint256 _purpose, uint256 _type)"));
 
     ////////////////////////
     // Storage Variables
@@ -43,8 +41,9 @@ contract keyAdditionLimitAuthorization is authorizationInterface {
         throw;
     }
 
-    function addAuthorizedAccount(bytes32 account, bytes initializationData) external {
+    function addAuthorizedAccount(bytes32 account, bytes initializationData) public {
         uint256 limit;
+
         assembly {
             limit := mload(add(initializationData, 32)) // first 32 bytes are data padding
         }
@@ -67,17 +66,17 @@ contract keyAdditionLimitAuthorization is authorizationInterface {
         bytes authorizationData) external {
         require(actionCheck(authorizers, callData));
 
-        keyAddedObjCurrentAuthorizer.currentCount++;
+        keyAddedByIdentityAndKey[msg.sender][authorizers[0]].currentCount++;
     }
 
     ////////////////////////
     // Private Functions
     ///////////////////////
 
-    function actionCheck(bytes32[] authorizer, bytes callData) internal view returns(bool checkPassed) {
+    function actionCheck(bytes32[] authorizers, bytes callData) internal view returns(bool checkPassed) {
         require(authorizers.length == 1); // we only support keyAddition if one authorized party is calling it. To keep things simple
         keyAdded storage keyAddedObjCurrentAuthorizer = keyAddedByIdentityAndKey[msg.sender][authorizers[0]];
-        require(keyAddedByIdentityAndKey[msg.sender][authorizers[0]] - keyAddedByIdentityAndKey[msg.sender][authorizers[0]] > 0); // safeMath?
+        require(keyAddedByIdentityAndKey[msg.sender][authorizers[0]].limit - keyAddedByIdentityAndKey[msg.sender][authorizers[0]].currentCount > 0); // safeMath?
 
         bytes4 callFunc = extractCallFunc(callData);
         require(callFunc == ADD_KEY_FUNC_SIG);
