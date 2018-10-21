@@ -87,10 +87,7 @@ contract SignedApprovalScheme is KeyHolder {
         require(executions[_id].to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
         executions[_id].approvals.push(bytes32(msg.sender));
-        if (executions[_id].approvals.length == requiredApprovals) {
-            return doExecute(_id);
-        }
-        return false;
+        return attemptExecution(_id);
     }
 
     function addSignedExecution(address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit) 
@@ -110,11 +107,16 @@ contract SignedApprovalScheme is KeyHolder {
 
         emit ExecutionRequested(executionNonce, _to, _value, _data);
 
-        if (executions[executionNonce].approvals.length == requiredApprovals) {
-            doExecute(executionNonce);
-        }
+        attemptExecution(executionNonce);
         executionNonce++;
         return executionNonce - 1;
+    }
+
+    function attemptExecution(uint256 executionNonce) private returns(bool success) {
+        if (executions[executionNonce].approvals.length == requiredApprovals) {
+            return doExecute(executionNonce);
+        }
+        return false;
     }
 
     function doExecute(uint256 _id) private returns (bool success) {
