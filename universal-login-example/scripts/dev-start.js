@@ -66,6 +66,10 @@ class Deployer {
     const deployer = new ENSDeployer(this.provider, this.deployerPrivateKey);
     await deployer.deployRegistrars(config.ensRegistrars);
     this.env = deployer.variables;
+    this.env.ENS_DOMAIN_1 = 'mylogin.eth';
+    this.env.ENS_DOMAIN_2 = 'universal-id.eth';
+    this.env.ENS_DOMAIN_3 = 'popularapp.eth';
+    this.env.JSON_RPC_URL = 'http://localhost:18545';
     this.config = Object.freeze({
       jsonRpcUrl: 'http://localhost:18545',
       port: 3311,
@@ -75,17 +79,17 @@ class Deployer {
         chainId: 0
       },
       ensRegistrars: {
-        'mylogin.eth': {
+        [this.env.ENS_DOMAIN_1]: {
           resolverAddress: this.env.ENS_RESOLVER1_ADDRESS,
           registrarAddress: this.env.ENS_REGISTRAR1_ADDRESS,
           privteKey: this.env.ENS_REGISTRAR1_PRIVATE_KEY
         },
-        'universal-id.eth': {
+        [this.env.ENS_DOMAIN_2]: {
           resolverAddress: this.env.ENS_RESOLVER2_ADDRESS,
           registrarAddress: this.env.ENS_REGISTRAR2_ADDRESS,
           privteKey: this.env.ENS_REGISTRAR2_PRIVATE_KEY
         },
-        'popularapp.eth': {
+        [this.env.ENS_DOMAIN_3]: {
           resolverAddress: this.env.ENS_RESOLVER3_ADDRESS,
           registrarAddress: this.env.ENS_REGISTRAR3_ADDRESS,
           privteKey: this.env.ENS_REGISTRAR3_PRIVATE_KEY
@@ -96,6 +100,7 @@ class Deployer {
 
   startRelayer() {
     this.relayer = new TokenGrantingRelayer(this.provider, this.config, this.deployerPrivateKey, this.tokenContract.address);
+    this.env.RELAYER_URL = `http://localhost:${this.config.port}`;
     this.relayer.start();
   }
 
