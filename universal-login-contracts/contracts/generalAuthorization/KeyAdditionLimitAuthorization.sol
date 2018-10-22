@@ -7,7 +7,7 @@
  */
 pragma solidity ^0.4.24;
 
-contract keyAdditionLimitAuthorization {
+contract KeyAdditionLimitAuthorization {
 
     bytes4 constant ADD_KEY_FUNC_SIG = bytes4(keccak256("addKey(bytes32 _key, uint256 _purpose, uint256 _type)"));
 
@@ -32,12 +32,12 @@ contract keyAdditionLimitAuthorization {
         address recipient, // is "target" / "destination" a better name?
         uint256 value,
         bytes callData,
-        bytes authorizationData) external returns (bool isAuthorized) {
+        bytes authorizationData) view external returns (bool isAuthorized) {
         return actionCheck(authorizers, callData);
     }
 
     // This interface is not being utilized in this specific implementation so throw;
-    function initAuthorization(bytes initializationData) external {
+    function initAuthorization(bytes initializationData) pure external {
         throw;
     }
 

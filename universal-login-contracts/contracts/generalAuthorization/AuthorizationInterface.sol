@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-interface authorizationInterface {
+interface AuthorizationInterface {
     /**
      * @notice Given a list of authorizers and an action ,
      * Checks whether the enough authorizedAccounts has been given in order to execute the action

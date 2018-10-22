@@ -8,7 +8,7 @@
 
 pragma solidity ^0.4.24;
 
-contract whiteListAuthorization {
+contract WhiteListAuthorization {
 
     ////////////////////////
     // Storage Variables
@@ -33,7 +33,7 @@ contract whiteListAuthorization {
         address recipient, // is "target" / "destination" a better name?
         uint256 value,
         bytes callData,
-        bytes authorizationData) external returns (bool isAuthorized) {
+        bytes authorizationData) view external returns (bool isAuthorized) {
         // check whether the recipient is one of the whiteListedAddress
 
         // first check the generalList
@@ -52,7 +52,7 @@ contract whiteListAuthorization {
     }
 
     // This specific authorization Contract is not utilizing the this function of the interface
-    function initAuthorization(bytes initializationData) external {
+    function initAuthorization(bytes initializationData) pure external {
         throw;
     }
 
@@ -98,7 +98,7 @@ contract whiteListAuthorization {
         address recipient,
         uint256 value,
         bytes callData,
-        bytes authorizationData) external {
+        bytes authorizationData) pure external {
     }
 
     /////////////////////////
