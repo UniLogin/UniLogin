@@ -17,7 +17,7 @@
     "scripts": {
         "test": "mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint lib test",
-        "build": "babel lib --out-dir build",
+        "build": "babel lib --out-dir dist",
         "relayer:start": "babel-node lib/startRelayer.js",
         "ganache:start": "babel-node scripts/ganache.js",
         "ens:deploy": "babel-node scripts/deployENS.js",
