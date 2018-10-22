@@ -1,14 +1,14 @@
-import chai, {expect} from 'chai';
-import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
+import {expect} from 'chai';
+import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import TokenGrantingRelayer from '../../src/relayer/TokenGrantingRelayer';
 import EthereumIdentitySDK from 'universal-login-sdk';
 import Token from '../../build/Token';
 import {utils} from 'ethers';
 import ENSBuilder from 'ens-builder';
+import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
-
 
 describe('Token Granting Relayer - tests', async () => {
   let provider;
@@ -28,7 +28,6 @@ describe('Token Granting Relayer - tests', async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     deployerPrivateKey = wallet.privateKey;
-    console.log(wallet.address);
     tokenContract = await deployContract(wallet, Token, []);
     const defaultDomain = 'mylogin.eth';
     const ensBuilder = new ENSBuilder(wallet);
@@ -50,7 +49,7 @@ describe('Token Granting Relayer - tests', async () => {
         }
       }
     });
-    relayer = new TokenGrantingRelayer(provider, config, deployerPrivateKey, tokenContract.address);
+    relayer = new TokenGrantingRelayer(config, provider, deployerPrivateKey, tokenContract.address);
     relayer.start();
     relayer.addHooks();
     [identityPrivateKey, identityContractAddress] = await sdk.create('ja.mylogin.eth');
@@ -59,11 +58,17 @@ describe('Token Granting Relayer - tests', async () => {
 
  
   describe('Token granting', async () => {
-    it('Should transfer tokens, when identity created.', async () => {
-      let identityTokenBalance;
-      sleep(5000).then(async () => {console.log(await tokenContract.balanceOf(identityContractAddress))});
-      console.log(identityTokenBalance);
+    it('Should transfer tokens, when identity created', async () => {
+      await sleep(500);
+      expect(await tokenContract.balanceOf(identityContractAddress)).to.eq(expectedIdentityTokenBalance);
     });
+
+    it('Should transfer tokens, when adding key', async () => {
+      const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContract.address};
+      await sdk.addKey(identityContractAddress, wallet.address, identityPrivateKey, addKeysPaymentOptions);
+      await sleep(500);
+      expect(await tokenContract.balanceOf(identityContractAddress)).to.be.above(expectedIdentityTokenBalance.sub(utils.parseEther('6')));
+    })
   });
 
   after(async () => {
