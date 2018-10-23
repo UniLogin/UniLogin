@@ -21,6 +21,7 @@
     filter: blur()
 
 
+
 @keyframes shake
   0%
     transform: translateX(-16px)
@@ -56,6 +57,20 @@
     transform: translateX(0)
 
 
+@keyframes reveal
+  0%
+    width: 0
+    margin-right: 60px
+    color: #CA001A
+
+  66%
+    width: 50px
+    margin-right: 10px
+
+  100%
+    color: #333
+
+
 .click-history-item:first-child
   animation: slide-from-top 1s ease-in-out
   overflow: hidden
@@ -67,5 +82,16 @@
 .greeting-view
     animation: fade-in 0.5s ease-in-out
 
+.greeting-view .checkmark-ico.animated
+  animation: reveal 1.5s ease-in-out
+  animation-fill-mode: backwards
+  animation-delay: 0.5s
+
+.greeting-view .checkmark-ico.order-2.animated
+  animation-delay: 0.5s
+
+.greeting-view .checkmark-ico.order-3.animated
+  animation-delay: 0.5s
+
 .header
-    animation: fade-in 1s ease-in-out
+    animation: fade-in .25s ease-in-out

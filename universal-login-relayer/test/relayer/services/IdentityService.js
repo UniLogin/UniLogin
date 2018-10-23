@@ -92,7 +92,7 @@ describe('Relayer - IdentityService', async () => {
         before(async () => {
           await token.transfer(contract.address, utils.parseEther('50'));
         });
-      
+
         it('Error when not enough tokens', async () => {
           const signature = messageSignature(managementKey, otherWallet.address, contract.address, value, utils.hexlify(0), 0, token.address, gasPrice, utils.parseEther('51'));
           expect(identityService.executeSigned(contract.address, {to: otherWallet.address, value, data: utils.hexlify(0), nonce: 0, gasToken: token.address, gasPrice, gasLimit: utils.parseEther('51'), signature})).to.be.eventually.rejected;
@@ -111,7 +111,7 @@ describe('Relayer - IdentityService', async () => {
           const {data} = new Interface(Identity.interface).functions.addKey(newKeyAddress, ACTION_KEY, ECDSA_TYPE);
           const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 1, token.address, gasPrice, gasLimit);
           const message =  {to: contract.address, value: 0, data, nonce: 1, gasToken: token.address, gasPrice, gasLimit, signature};
-          
+
           await identityService.executeSigned(contract.address, message);
           const key = await contract.getKey(newKeyAddress);
           expect(key.purpose).to.eq(ACTION_KEY);

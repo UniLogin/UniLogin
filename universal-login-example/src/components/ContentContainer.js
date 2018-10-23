@@ -15,7 +15,8 @@ class ContentContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'Login'
+      view: 'Login',
+      viewParameters: {}
     };
   }
 
@@ -28,32 +29,36 @@ class ContentContainer extends Component {
     this.subscription.remove();
   }
 
-  setView(view) {
-    this.setState({view});
+  setView(view, viewParameters = {}) {
+    this.setState({view, viewParameters});
     window.scrollTo(0, 0);
   }
 
   render() {
+    const {services} = this.props;
     if (this.state.view === 'Login') {
-      return <Login services={this.props.services} />;
+      return <Login services={services} />;
     } else if (this.state.view === 'CreatingID') {
       return <CreatingId identityService={this.props.services.identityService}/>;
     } else if (this.state.view === 'Greeting') {
-      return <Greeting identityService={this.props.services.identityService}/>;
+      return <Greeting
+        identityService={services.identityService}
+        greetingService={services.greetingService}
+        viewParameters={this.state.viewParameters} />;
     } else if (this.state.view === 'MainScreen') {
-      return <MainScreen services={this.props.services}/>;
+      return <MainScreen services={services}/>;
     } else if (this.state.view === 'Account') {
-      return (<Account identityService={this.props.services.identityService}/>);
+      return (<Account identityService={services.identityService}/>);
     } else if (this.state.view === 'ApproveConnection') {
-      return <ApproveConnection services={this.props.services}/>;
+      return <ApproveConnection services={services}/>;
     } else if (this.state.view === 'PendingAuthorizations') {
-      return <PendingAuthorizations services = {this.props.services} setView={this.setView.bind(this)}/>;
+      return <PendingAuthorizations services = {services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Backup') {
-      return <Backup services={this.props.services} setView={this.setView.bind(this)}/>;
+      return <Backup services={services} setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'Trusted') {
       return <Trusted setView={this.setView.bind(this)}/>;
     } else if (this.state.view === 'RecoverAccount') {
-      return <RecoverAccount services={this.props.services} setView={this.setView.bind(this)}/>;
+      return <RecoverAccount services={services} setView={this.setView.bind(this)}/>;
     }
   }
 }

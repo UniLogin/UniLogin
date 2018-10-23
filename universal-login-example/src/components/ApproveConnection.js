@@ -30,11 +30,13 @@ class ApproveConnection extends Component {
 
   async onAccountRecoveryClick() {
     await this.removeRequest();
-    this.emitter.emit('setView', 'RecoverAccount');
+    this.emitter.emit('setView', 'RecoverAccount', {greetMode: 1});
   }
 
   onChange(event) {
+    const {emitter} = this.props.services;
     this.setState({backupCode: event.target.value});
+    emitter.emit('setView', 'Greeting');
   }
 
   setView(view) {

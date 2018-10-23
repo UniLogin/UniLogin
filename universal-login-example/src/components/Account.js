@@ -44,7 +44,7 @@ class Account extends Component {
   }
 }
 Account.propTypes = {
-  identityService: PropTypes.obj
+  identityService: PropTypes.object
 };
 
 export default Account;

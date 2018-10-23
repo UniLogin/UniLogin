@@ -43,7 +43,7 @@ class Login extends Component {
     } else {
       emitter.emit('setView', 'CreatingID');
       await this.identityService.createIdentity(identity);
-      emitter.emit('setView', 'Greeting');
+      emitter.emit('setView', 'Greeting', {greetMode: 'created'});
     }
   }
 

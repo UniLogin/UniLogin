@@ -1,8 +1,5 @@
-import chai, {expect} from 'chai';
-import Services from '../../src/services/Services';
+import {expect} from 'chai';
 import BackupService from '../../src/services/BackupService';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 
 describe('BackupService', async () => {
   let backupService;

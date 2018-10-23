@@ -69,6 +69,7 @@ contract KeyHolder is ERC725KeyHolder {
         for (uint i = 0; i < _keys.length; i++) {
             addKey(_keys[i], _purposes[i], _types[i]);
         }
+        emit MultipleKeysAdded(_keys.length);
         return true;
     }
 
@@ -90,4 +91,6 @@ contract KeyHolder is ERC725KeyHolder {
 
         return true;
     }
+
+    event MultipleKeysAdded(uint count);
 }
