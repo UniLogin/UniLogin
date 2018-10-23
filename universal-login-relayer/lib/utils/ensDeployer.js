@@ -1,7 +1,6 @@
 import fs from 'fs';
 import ethers from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
-import {jsonRpcUrl, ensRegistrars} from '../config/relayer';
 import ENSBuilder from 'ens-builder';
 
 
@@ -27,11 +26,11 @@ class ENSDeployer {
     });
   }
 
-  async deployRegistrars(registrars = ensRegistrars) {
+  async deployRegistrars(registrars, tld = 'eth') {
     const builder = new ENSBuilder(this.deployer);
     await builder.bootstrap();
     this.variables.ENS_ADDRESS = builder.ens.address;
-    await builder.registerTLD('eth');
+    await builder.registerTLD(tld);
     await builder.registerReverseRegistrar();
     for (const domain of Object.keys(registrars)) {
       const [label, tld] = domain.split('.');
@@ -43,11 +42,11 @@ class ENSDeployer {
     }
   }
 
-  static async deploy() {
+  static async deploy(jsonRpcUrl, registrars, tld = 'eth') {
     const provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
     const deployerPrivateKey = defaultAccounts[defaultAccounts.length - 1].secretKey;
     const deployer = new ENSDeployer(provider, deployerPrivateKey);
-    await deployer.deployRegistrars();
+    await deployer.deployRegistrars(registrars, tld);
     deployer.save('.env');
   }
 }

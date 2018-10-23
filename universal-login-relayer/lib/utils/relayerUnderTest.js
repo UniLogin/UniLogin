@@ -32,7 +32,7 @@ class RelayerUnderTest extends Relayer {
         }
       }
     };
-    const relayer = new RelayerUnderTest(providerWithENS, config);
+    const relayer = new RelayerUnderTest(config, providerWithENS);
     relayer.provider = providerWithENS;
     return relayer;
   }
