@@ -13,7 +13,8 @@ class Backup extends Component {
     this.state = {
       backupCodes: [],
       publicKeys: [],
-      isLoading: true
+      isLoading: true,
+      isSetting: false
     };
   }
 
@@ -23,6 +24,8 @@ class Backup extends Component {
       backupCodes,
       publicKeys
     ] = await this.backupService.generateBackupCodes(2);
+
+    // TODO: Add beforeUnload warning
     this.setState({backupCodes, publicKeys, isLoading: false});
   }
 
@@ -35,16 +38,34 @@ class Backup extends Component {
     this.setState({backupCodes, publicKeys, isLoading: false});
   }
 
+  async printCodes() {
+    await window.print();
+  }
+
   async setBackupCodes() {
+    this.setState({isSetting: true});
+
     const {identityService, emitter, sdk} = this.props.services;
-    const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
+    const addKeysPaymentOptions = {
+      ...DEFAULT_PAYMENT_OPTIONS,
+      gasToken: tokenContractAddress
+    };
     await sdk.addKeys(
       identityService.identity.address,
       this.state.publicKeys,
       identityService.identity.privateKey,
       addKeysPaymentOptions
     );
-    emitter.emit('showModal', 'backup');
+    emitter.emit('setView', 'Greeting', {greetMode: 'backupKeys'});
+  }
+
+  async cancelBackup() {
+    const {emitter} = this.props.services;
+    const message = 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
+    if (confirm(message)) {
+      // TODO: Remove beforeUnload warning if one was added
+      emitter.emit('setView', 'Account');
+    }
   }
 
   render() {
@@ -52,11 +73,14 @@ class Backup extends Component {
     return (
       <BackupView
         isLoading={this.state.isLoading}
+        isSetting={this.state.isSetting}
         identity={identity}
         setView={this.props.setView}
         backupCodes={this.state.backupCodes}
         onGenerateClick={this.generateBackupCodes.bind(this)}
+        onPrintClick={this.printCodes.bind(this)}
         onSetBackupClick={this.setBackupCodes.bind(this)}
+        onCancelClick={this.cancelBackup.bind(this)}
       />
     );
   }

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import DevicesModal from '../views/Modals/DevicesModal';
 import PostModal from '../views/Modals/PostModal';
-import BackupModal from './BackupModal';
 import PropTypes from 'prop-types';
 
 class Modals extends Component {
@@ -30,8 +29,6 @@ class Modals extends Component {
         return <DevicesModal hideModal={this.hideModal.bind(this)} />;
       case 'post':
         return <PostModal hideModal={this.hideModal.bind(this)} />;
-      case 'backup':
-        return <BackupModal emitter={this.props.emitter} />;
       default:
         return null;
     }

@@ -10,36 +10,47 @@ class IdentityService {
   }
 
   async connect(label) {
-    this.privateKey = await this.sdk.connect(this.identity.address, label);
+    this.privateKey = await this.sdk.connect(
+      this.identity.address,
+      label
+    );
     const {address} = new Wallet(this.privateKey);
-    this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
-      if (event.address === address) {
-        this.cancelSubscription();
-        this.identity = {
-          name: this.identity.name,
-          privateKey: this.privateKey,
-          address: this.identity.address
-        };
-        this.emitter.emit('setView', 'MainScreen');
+    this.subscription = this.sdk.subscribe(
+      'KeyAdded',
+      this.identity.address,
+      (event) => {
+        if (event.address === address) {
+          this.cancelSubscription();
+          this.identity = {
+            name: this.identity.name,
+            privateKey: this.privateKey,
+            address: this.identity.address
+          };
+          this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
+        }
       }
-    });
+    );
   }
 
   async recover() {
     this.privateKey = await ethers.Wallet.createRandom().privateKey;
     const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
-    this.subscription = this.sdk.subscribe('KeyAdded', this.identity.address, (event) => {
-      if (event.address === address) {
-        this.cancelSubscription();
-        this.identity = {
-          name: this.identity.name,
-          privateKey: this.privateKey,
-          address: this.identity.address
-        };
-        this.emitter.emit('setView', 'MainScreen');
+    this.subscription = this.sdk.subscribe(
+      'KeyAdded',
+      this.identity.address,
+      (event) => {
+        if (event.address === address) {
+          this.cancelSubscription();
+          this.identity = {
+            name: this.identity.name,
+            privateKey: this.privateKey,
+            address: this.identity.address
+          };
+          this.emitter.emit('setView', 'Greeting');
+        }
       }
-    });
+    );
   }
 
   cancelSubscription() {
@@ -61,7 +72,11 @@ class IdentityService {
   }
 
   async execute(message) {
-    await this.sdk.execute(this.identity.address, message, this.identity.privateKey);
+    await this.sdk.execute(
+      this.identity.address,
+      message,
+      this.identity.privateKey
+    );
   }
 
   async identityExist(identity) {
