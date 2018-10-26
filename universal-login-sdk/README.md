@@ -60,7 +60,7 @@ The function takes six arguments:
 - `message` - a message, in the same format as an ethereum transaction, to be executed by the relayer
 - `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to the identity
 - `gasToken` - address of token to refund relayer
-- `gasPrice` - price of gas 
+- `gasPrice` - price of gas
 - `gasLimit` - limit of gas
 
 The function will return one result:
@@ -91,8 +91,8 @@ To add a key:
 
 ```js
 const transactionId = await sdk.addKey(
-  identityAddress, 
-  publicKey, 
+  identityAddress,
+  publicKey,
   privateKey,
   paymentOptions
 );
@@ -104,7 +104,7 @@ To remove a key:
 const transactionId = await sdk.removeKey(
   identityAddress,
   publicKey,
-  privateKey, 
+  privateKey,
   paymentOptions
 );
 ```
@@ -119,7 +119,7 @@ const paymentOptions = {
 }
 ```
 - `gasToken` - address of token to refund relayer
-- `gasPrice` - price of gas 
+- `gasPrice` - price of gas
 - `gasLimit` - limit of gas
 
 
