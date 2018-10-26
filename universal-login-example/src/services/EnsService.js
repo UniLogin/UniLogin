@@ -1,5 +1,4 @@
 import ethers, {utils} from 'ethers';
-import ENS from '../../abi/ENS';
 import PublicResolver from '../../abi/PublicResolver';
 
 const {namehash} = utils;
