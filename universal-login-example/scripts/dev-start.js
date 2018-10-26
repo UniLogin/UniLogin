@@ -78,6 +78,7 @@ class Deployer {
       privateKey: defaultAccounts[0].secretKey,
       chainSpec: {
         ensAddress: this.env.ENS_ADDRESS,
+        publicResolverAddress: this.env.ENS_RESOLVER1_ADDRESS,
         chainId: 0
       },
       ensRegistrars: {
@@ -101,7 +102,7 @@ class Deployer {
   }
 
   startRelayer() {
-    this.relayer = new TokenGrantingRelayer(this.config, this.provider, this.deployerPrivateKey, this.tokenContract.address);    
+    this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider);    
     this.env.RELAYER_URL = `http://localhost:${this.config.port}`;
     this.relayer.start();
   }

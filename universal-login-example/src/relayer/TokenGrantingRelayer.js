@@ -5,11 +5,10 @@ import Relayer from 'universal-login-relayer';
 import ethers, {Wallet, utils} from 'ethers';
 
 class TokenGrantingRelayer extends Relayer {
-  constructor(config, provider = '', deployerPrivateKey = '', tokenContractAddress = '') {
+  constructor(config, provider = '') {
     super(config, provider);
-    this.provider = provider || new ethers.providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
-    this.deployerPrivateKey = deployerPrivateKey || config.privateKey;
-    this.tokenContractAddress = tokenContractAddress || config.tokenContractAddress;
+    this.deployerPrivateKey = config.privateKey;
+    this.tokenContractAddress = config.tokenContractAddress;
     this.deployerWallet = new Wallet(this.deployerPrivateKey, this.provider);
   }
 

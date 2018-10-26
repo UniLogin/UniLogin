@@ -24,6 +24,13 @@ describe('Token Granting Relayer - tests', async () => {
 
   const relayerUrl = 'http://localhost:3311';
 
+  async function waitUntil(transaction, beforeBalance, timeout = 500) {   
+    while (transaction === beforeBalance) {
+      sleep(timeout);
+    }
+    return transaction;
+  }
+
   before(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
@@ -47,27 +54,25 @@ describe('Token Granting Relayer - tests', async () => {
           resolverAddress: ensBuilder.resolver.address,
           privateKey: deployerPrivateKey
         }
-      }
+      },
+      tokenContractAddress: tokenContract.address
     });
-    relayer = new TokenGrantingRelayer(config, provider, deployerPrivateKey, tokenContract.address);
+    relayer = new TokenGrantingRelayer(config, provider);
     relayer.start();
     relayer.addHooks();
     [identityPrivateKey, identityContractAddress] = await sdk.create('ja.mylogin.eth');
     expectedIdentityTokenBalance = (await tokenContract.balanceOf(identityContractAddress)).add(utils.parseEther('100'));
   });
-
  
   describe('Token granting', async () => {
     it('Should transfer tokens, when identity created', async () => {
-      await sleep(500);
-      expect(await tokenContract.balanceOf(identityContractAddress)).to.eq(expectedIdentityTokenBalance);
+      expect(await waitUntil((await tokenContract.balanceOf(identityContractAddress)), 0)).to.eq(expectedIdentityTokenBalance);
     });
 
     it('Should transfer tokens, when adding key', async () => {
       const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContract.address};
       await sdk.addKey(identityContractAddress, wallet.address, identityPrivateKey, addKeysPaymentOptions);
-      await sleep(500);
-      expect(await tokenContract.balanceOf(identityContractAddress)).to.be.above(expectedIdentityTokenBalance.sub(utils.parseEther('6')));
+      expect(await waitUntil((await tokenContract.balanceOf(identityContractAddress)), expectedIdentityTokenBalance)).to.be.above(expectedIdentityTokenBalance.sub(utils.parseEther('6')));
     })
   });
 
