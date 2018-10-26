@@ -24,7 +24,7 @@ class Services {
     this.tokenService = new TokenService(tokenContractAddress, this.provider);
     this.identityService = new IdentityService(this.sdk, this.emitter, this.provider);
     this.backupService = new BackupService(this.identityService);
-    this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService, this.tokenContractAddress, this.defaultPaymentOptions);
+    this.clickerService = new ClickerService(this.identityService, clickerContractAddress, this.provider, this.ensService, tokenContractAddress, this.defaultPaymentOptions);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
     this.identitySelectionService = new IdentitySelectionService(this.sdk, config.ensDomains);
     this.greetingService = new GreetingService(this.provider);
