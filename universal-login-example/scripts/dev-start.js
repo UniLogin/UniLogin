@@ -101,18 +101,20 @@ class Deployer {
   }
 
   startRelayer() {
-    this.relayer = new TokenGrantingRelayer(this.provider, this.config, this.deployerPrivateKey, this.tokenContract.address);    
+    this.relayer = new TokenGrantingRelayer(this.provider, this.config, this.deployerPrivateKey, this.tokenContract.address);
     this.env.RELAYER_URL = `http://localhost:${this.config.port}`;
     this.relayer.start();
   }
 
   async deployTokenContract() {
     this.tokenContract = await deployContract(this.deployer, Token);
+    console.log(`Token contract address: ${this.tokenContract.address}`);
     this.env.TOKEN_CONTRACT_ADDRESS = this.tokenContract.address;
   }
 
   async deployClickerContract() {
     const clickerContract = await deployContract(this.deployer, Clicker);
+    console.log(`Clicker contract address: ${clickerContract.address}`);
     this.env.CLICKER_CONTRACT_ADDRESS = clickerContract.address;
   }
 
