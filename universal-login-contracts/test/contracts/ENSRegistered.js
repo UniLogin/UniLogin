@@ -34,6 +34,6 @@ describe('Identity contract', async () => {
 
   it('resolves to given address', async () => {
     expect(await provider.resolveName('alex.mylogin.eth')).to.eq(identity.address);
-    expect(await lookupAddress(provider, identity.address)).to.eq('alex.mylogin.eth');
+    expect(await lookupAddress(provider, identity.address, ensBuilder.resolver.address)).to.eq('alex.mylogin.eth');
   });
 });
