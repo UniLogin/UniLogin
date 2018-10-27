@@ -4,7 +4,7 @@ import Transfer from '../views/Transfer';
 import EthereumIdentitySDK from 'universal-login-sdk';
 import {providers, Wallet, Contract} from 'ethers';
 import getLabel from '../utils';
-import Clicker from '../../build/Clicker';
+import Clicker from '../../abi/Clicker';
 
 class App extends Component {
   constructor(props) {
