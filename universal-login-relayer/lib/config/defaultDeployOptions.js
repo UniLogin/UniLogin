@@ -1,5 +1,5 @@
 const defaultDeployOptions = {
-  gasLimit: 4000000,
+  gasLimit: 6500000,
   gasPrice: 9000000000
 };
   

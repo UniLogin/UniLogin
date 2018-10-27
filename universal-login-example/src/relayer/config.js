@@ -25,5 +25,6 @@ module.exports = Object.freeze({
       registrarAddress: process.env.ENS_REGISTRAR3_ADDRESS,
       privteKey: process.env.ENS_REGISTRAR3_PRIVATE_KEY
     }
-  }
+  },
+  tokenContractAddress: process.env.TOKEN_CONTRACT_ADDRESS
 });

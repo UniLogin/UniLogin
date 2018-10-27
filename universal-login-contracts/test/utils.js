@@ -1,5 +1,4 @@
 import ethers, {providers, utils} from 'ethers';
-import ENS from '../build/ENS';
 import PublicResolver from '../build/PublicResolver';
 
 const {namehash} = utils;
@@ -42,11 +41,9 @@ const withENS = (provider, ensAddress) => {
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
-const lookupAddress = async (provider, address) => {
+const lookupAddress = async (provider, address, resolverAddress) => {
   const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
-  const ens = new ethers.Contract(provider.ensAddress, ENS.interface, provider);
-  const resolver = await ens.resolver(node);
-  const contract = new ethers.Contract(resolver, PublicResolver.interface, provider);
+  const contract = new ethers.Contract(resolverAddress, PublicResolver.interface, provider);
   return await contract.name(node);
 };
 
