@@ -22,6 +22,7 @@
     "universal-login-sdk": "^0.1.0"
   },
   "scripts": {
+    "build": "parcel build ./src/index.html",
     "start": "parcel --no-cache ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js"
   },

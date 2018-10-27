@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
-import TextBox from './TextBox';
 import PropTypes from 'prop-types';
 
-
 class Transfer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>

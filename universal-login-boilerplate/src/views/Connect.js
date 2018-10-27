@@ -2,13 +2,7 @@ import React, {Component} from 'react';
 import TextBox from './TextBox';
 import PropTypes from 'prop-types';
 
-
 class Connect extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-
   render() {
     return (
       <div>
@@ -30,6 +24,5 @@ Connect.propTypes = {
   onNextClick: PropTypes.func,
   onChange: PropTypes.func
 };
-
 
 export default Connect;

@@ -28,7 +28,7 @@ class App extends Component {
 
   onChange(event) {
     const {value} = event.target;
-    this.setState({'to': value});
+    this.setState({to: value});
   }
 
   async onTransferClick() {
@@ -52,12 +52,12 @@ class App extends Component {
     if (identityAddress) {
       const privateKey = await this.sdk.connect(identityAddress, await getLabel());
       this.privateKey = privateKey;
-      this.state.view == 'transfer';
+      this.state.view === 'transfer';
       const {address} = new Wallet(privateKey);
       this.subscription = this.sdk.subscribe('KeyAdded', identityAddress, (event) => {
         if (event.address === address) {
-          this.setState({view: 'transfer'})
-        };
+          this.setState({view: 'transfer'});
+        }
       });
     } else {
       alert(`Identity ${name} does not exist.`);
@@ -74,9 +74,9 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.view == 'connect') {
+    if (this.state.view === 'connect') {
       return (<Connect onChange={this.update.bind(this)} onNextClick={this.onNextClick.bind(this)}/>);
-    } if (this.state.view == 'transfer') {
+    } if (this.state.view === 'transfer') {
       return (<Transfer onChange={this.onChange.bind(this)} onClick={this.onTransferClick.bind(this)}/>);
     }
   }
