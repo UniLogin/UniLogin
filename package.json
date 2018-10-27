@@ -23,6 +23,7 @@
     "clean": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules",
     "postinstall": "yarn build"
   }, "engines": {
-    "node": ">=10.9"
+    "node": ">=10.9",
+    "yarn": "1.9.4"
   }
 }
