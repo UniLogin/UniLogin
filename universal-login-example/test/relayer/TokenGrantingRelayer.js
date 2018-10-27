@@ -22,9 +22,9 @@ describe('Token Granting Relayer - tests', async () => {
   let ensDeployer;
   let expectedIdentityTokenBalance;
 
-  const relayerUrl = 'http://localhost:3311';
+  const relayerUrl = 'http://localhost:33511';
 
-  async function waitUntil(transaction, beforeBalance, timeout = 500) {   
+  async function waitUntil(transaction, beforeBalance, timeout = 500) {
     while (transaction === beforeBalance) {
       sleep(timeout);
     }
@@ -43,7 +43,7 @@ describe('Token Granting Relayer - tests', async () => {
     sdk = new EthereumIdentitySDK(relayerUrl, provider);
     const config = Object.freeze({
       jsonRpcUrl: 'http://localhost:18545',
-      port: 3311,
+      port: 33511,
       privateKey: wallet.privateKey,
       chainSpec: {
         ensAddress,
@@ -63,7 +63,7 @@ describe('Token Granting Relayer - tests', async () => {
     [identityPrivateKey, identityContractAddress] = await sdk.create('ja.mylogin.eth');
     expectedIdentityTokenBalance = (await tokenContract.balanceOf(identityContractAddress)).add(utils.parseEther('100'));
   });
- 
+
   describe('Token granting', async () => {
     it('Should transfer tokens, when identity created', async () => {
       expect(await waitUntil((await tokenContract.balanceOf(identityContractAddress)), 0)).to.eq(expectedIdentityTokenBalance);
