@@ -24,6 +24,6 @@
     "postinstall": "yarn build"
   }, "engines": {
     "node": ">=10.9",
-    "yarn": "1.9.4"
+    "yarn": ">=1.9.4"
   }
 }
