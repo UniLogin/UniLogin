@@ -22,11 +22,11 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionH
   return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
-const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
+const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit, extraData) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
-      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit])
+      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint', 'bytes'],
+      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit, extraData])
     ));
 
 const messageSignatureForApprovals = (wallet, id) =>

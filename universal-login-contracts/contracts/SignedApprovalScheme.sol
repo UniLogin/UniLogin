@@ -25,7 +25,7 @@ contract SignedApprovalScheme is KeyHolder {
         bytes data;
         bytes32[] approvals;
         address gasToken;
-        uint gasPrice; 
+        uint gasPrice;
         uint gasLimit;
     }
 
@@ -50,11 +50,11 @@ contract SignedApprovalScheme is KeyHolder {
     } 
 
     function getSignerForExecutions(
-        address _to, address _from, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
+        address _to, address _from, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes extraData, bytes _messageSignature
         ) 
         public pure returns (bytes32) 
     {
-        bytes32 messageHash = keccak256(abi.encodePacked(_to, _from, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit));
+        bytes32 messageHash = keccak256(abi.encodePacked(_to, _from, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, extraData));
         return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
     }
 
@@ -64,13 +64,13 @@ contract SignedApprovalScheme is KeyHolder {
     }
 
     function executeSigned(
-        address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
+        address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes extraData, bytes _messageSignature
         )
         public
-        onlyManagementOrActionKeys(getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature))
+        onlyManagementOrActionKeys(getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, extraData, _messageSignature))
         returns(uint256 executionId)
     {
-        bytes32 signer = getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature);
+        bytes32 signer = getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, extraData, _messageSignature);
         require(_to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
         return addSignedExecution(_to, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit);
