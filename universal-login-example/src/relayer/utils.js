@@ -14,4 +14,13 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
   return new Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
-export {waitForContractDeploy};
+const waitToBeMined = async (providerOrWallet, transactionHash, tick = 1000) => {
+  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
+  let receipt = await provider.getTransactionReceipt(transactionHash);
+  while (!receipt || !receipt.blockNumber) {
+    sleep(tick);
+    receipt = await provider.getTransactionReceipt(transactionHash);
+  }
+};
+
+export {waitForContractDeploy, waitToBeMined};

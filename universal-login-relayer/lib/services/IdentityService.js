@@ -46,11 +46,11 @@ class IdentityService {
           const key = getKeyFromData(message.data);
           await this.authorisationService.removeRequest(contractAddress, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
-          this.hooks.emit('added', contractAddress);
+          this.hooks.emit('added', sentTransaction);
           return sentTransaction;
         } else if (message.to === contractAddress && isAddKeysCall(message.data)) {
           const sentTransaction = await this.wallet.sendTransaction(transaction);
-          this.hooks.emit('keysAdded', contractAddress);
+          this.hooks.emit('keysAdded', sentTransaction);
           return sentTransaction;
         }
         return await this.wallet.sendTransaction(transaction);

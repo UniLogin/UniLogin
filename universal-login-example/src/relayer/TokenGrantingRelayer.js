@@ -1,8 +1,9 @@
-import {waitForContractDeploy} from './utils';
+import {waitForContractDeploy, waitToBeMined} from './utils';
 import Identity from 'universal-login-contracts/build/Identity';
 import Token from '../../build/Token';
 import Relayer from 'universal-login-relayer';
 import ethers, {Wallet, utils} from 'ethers';
+
 
 class TokenGrantingRelayer extends Relayer {
   constructor(config, provider = '') {
@@ -20,11 +21,15 @@ class TokenGrantingRelayer extends Relayer {
           this.tokenContract.transfer(identityContract.address, utils.parseEther('100'));
         });
     });
-    this.addKeySubscription = this.hooks.addListener('added', (identityAddress) => {
-      this.tokenContract.transfer(identityAddress, utils.parseEther('5'));
+    this.addKeySubscription = this.hooks.addListener('added', (transaction) => {
+      waitToBeMined(this.provider, transaction.hash).then(() => {
+        this.tokenContract.transfer(transaction.to, utils.parseEther('5'));
+      });
     });
-    this.addKeysSubscription = this.hooks.addListener('keysAdded', (identityAddress) => {
-      this.tokenContract.transfer(identityAddress, utils.parseEther('15'));
+    this.addKeysSubscription = this.hooks.addListener('keysAdded', (transaction) => {
+      waitToBeMined(this.provider, transaction.hash).then(() => {
+        this.tokenContract.transfer(transaction.to, utils.parseEther('15'));
+      });
     });
   }
 }
