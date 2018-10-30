@@ -34,6 +34,7 @@ class Services {
 
   start() {
     this.sdk.start();
+    this.identityService.loadIdentity();
   }
 
   stop() {

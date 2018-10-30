@@ -10,7 +10,7 @@ class StorageService {
   }
 
   async getIdentity() {
-    return await localforage.getItem(IDENTITY_KEY, async (value, err) => {
+    return localforage.getItem(IDENTITY_KEY, async (value, err) => {
       if (err) {
         return null;
       }
@@ -19,7 +19,7 @@ class StorageService {
   }
 
   async storeIdentity(identity) {
-    return await localforage.setItem(IDENTITY_KEY, identity, async (err) => {
+    return localforage.setItem(IDENTITY_KEY, identity, async (err) => {
       if (err) {
         return false;
       }
@@ -28,7 +28,7 @@ class StorageService {
   }
 
   async clearStorage() {
-    return await localforage.clear();
+    return localforage.clear();
   }
 }
 
