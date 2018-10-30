@@ -18,7 +18,6 @@ class ContentContainer extends Component {
       view: 'Login',
       viewParameters: {}
     };
-    this.loadIdentity();
   }
 
   componentDidMount() {
@@ -28,11 +27,6 @@ class ContentContainer extends Component {
 
   componentWillUnmount() {
     this.subscription.remove();
-  }
-
-  async loadIdentity() {
-    const {identityService} = this.props.services;
-    identityService.loadIdentity();
   }
 
   setView(view, viewParameters = {}) {
