@@ -5,7 +5,6 @@
 ```sh
 git clone git@github.com:EthWorks/UniversalLoginSDK.git
 yarn
-yarn build
 ```
 
 ## Running example and creating an identity
