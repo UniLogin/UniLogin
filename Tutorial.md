@@ -3,7 +3,8 @@
 ## Downloading repository
 
 ```sh
-git clone git@github.com:EthWorks/UniversalLoginSDK.git
+git clone git@github.com:UniversalLogin/UniversalLoginSDK.git
+cd UniversalLoginSDK
 yarn
 ```
 
