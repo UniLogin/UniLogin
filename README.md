@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/EthWorks/UniversalLoginSDK.svg?branch=master)](https://travis-ci.com/EthWorks/UniversalLoginSDK)
+[![Build Status](https://travis-ci.org/UniversalLogin/UniversalLoginSDK.svg?branch=master)](https://travis-ci.org/UniversalLogin/UniversalLoginSDK)
 
 # Ethereum UniversalLoginSDK
 
