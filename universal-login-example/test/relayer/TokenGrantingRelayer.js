@@ -6,9 +6,7 @@ import Token from '../../build/Token';
 import {utils} from 'ethers';
 import ENSBuilder from 'ens-builder';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+import {waitUntil} from '../utils';
 
 describe('Token Granting Relayer - tests', async () => {
   let provider;
@@ -19,17 +17,8 @@ describe('Token Granting Relayer - tests', async () => {
   let sdk;
   let identityPrivateKey;
   let identityContractAddress;
-  let ensDeployer;
-  let expectedIdentityTokenBalance;
 
   const relayerUrl = 'http://localhost:33511';
-
-  async function waitUntil(transaction, beforeBalance, timeout = 500) {
-    while (transaction === beforeBalance) {
-      sleep(timeout);
-    }
-    return transaction;
-  }
 
   before(async () => {
     provider = createMockProvider();
@@ -61,18 +50,25 @@ describe('Token Granting Relayer - tests', async () => {
     relayer.start();
     relayer.addHooks();
     [identityPrivateKey, identityContractAddress] = await sdk.create('ja.mylogin.eth');
-    expectedIdentityTokenBalance = (await tokenContract.balanceOf(identityContractAddress)).add(utils.parseEther('100'));
   });
 
   describe('Token granting', async () => {
     it('Should transfer tokens, when identity created', async () => {
-      expect(await waitUntil((await tokenContract.balanceOf(identityContractAddress)), 0)).to.eq(expectedIdentityTokenBalance);
+      const isBalanceGreater = async () => {
+        return (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(0));
+      }
+      await waitUntil(isBalanceGreater, 5, 50);
+      expect(await tokenContract.balanceOf(identityContractAddress)).to.eq(utils.parseEther('100'));
     });
 
     it('Should transfer tokens, when adding key', async () => {
       const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContract.address};
       await sdk.addKey(identityContractAddress, wallet.address, identityPrivateKey, addKeysPaymentOptions);
-      expect(await waitUntil((await tokenContract.balanceOf(identityContractAddress)), expectedIdentityTokenBalance)).to.be.above(expectedIdentityTokenBalance.sub(utils.parseEther('6')));
+      const isBalanceGreater = async () => {
+        return (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(utils.parseEther('94')));
+      }
+      await waitUntil(isBalanceGreater, 5, 50);
+      expect(await tokenContract.balanceOf(identityContractAddress)).to.be.above(utils.parseEther('94'));
     })
   });
 
