@@ -10,15 +10,11 @@ class StorageService {
   }
 
   async getIdentity() {
-    return localforage.getItem(IDENTITY_KEY, async (value, err) => {
-      return err ? null : value;
-    });
+    return localforage.getItem(IDENTITY_KEY, (value, err) => (err ? null : value));
   }
 
   async storeIdentity(identity) {
-    return localforage.setItem(IDENTITY_KEY, identity, async (err) => {
-      return !!err;
-    });
+    return localforage.setItem(IDENTITY_KEY, identity, (err) => !!err);
   }
 
   async clearStorage() {
