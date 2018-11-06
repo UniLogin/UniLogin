@@ -14,8 +14,9 @@ class IdentityService {
     const identity = await this.storageService.getIdentity();
     if (identity) {
       this.identity = identity;
-      this.emitter.emit('setView', 'MainScreen');
+      return true;
     }
+    return false;
   }
 
   async connect(label) {
@@ -73,6 +74,10 @@ class IdentityService {
 
   async storeIdentity(identity) {
     this.storageService.storeIdentity(identity);
+  }
+
+  async disconnect() {
+    this.storageService.clearStorage();
   }
 
   async createIdentity(name) {
