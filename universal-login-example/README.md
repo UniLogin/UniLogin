@@ -2,10 +2,10 @@
 
 ### Running example on dev environment (quick option)
 
-To install dependencies and build projects, run the following commands from the main project directory:
+To install dependencies and build projects, run the following commands from the main directory of the repository.
 
 ```sh
-yarn && yarn build
+yarn
 ```
 
 To run example:

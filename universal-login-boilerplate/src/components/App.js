@@ -65,7 +65,9 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    await this.sdk.start();
+    if (await this.sdk.start()) {
+      this.emitter.emit('setView', 'MainScreen');
+    }
   }
 
   componentWillUnmount() {
