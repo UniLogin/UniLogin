@@ -17,7 +17,6 @@ contract IERC1077 {
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes extraData,
         bytes signatures) public view returns (bool);
 
     function executeSigned(
@@ -29,6 +28,5 @@ contract IERC1077 {
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes extraData,
         bytes signatures) public returns (bytes32);
 }

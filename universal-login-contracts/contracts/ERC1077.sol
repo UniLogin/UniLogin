@@ -28,7 +28,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes extraData,
         bytes signatures) public view returns (bool)
     {
         address signer = getSigner(
@@ -41,7 +40,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
             gasToken,
             gasLimit,
             operationType,
-            extraData,
             signatures);
         return keyExist(bytes32(signer));
     }
@@ -55,8 +53,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint gasPrice,
         address gasToken,
         uint gasLimit,
-        OperationType operationType,
-        bytes extraData) public pure returns (bytes32)
+        OperationType operationType) public pure returns (bytes32)
     {
         return keccak256(
             abi.encodePacked(
@@ -68,8 +65,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
                 gasPrice,
                 gasToken,
                 gasLimit,
-                uint(operationType),
-                keccak256(extraData)
+                uint(operationType)
         ));
     }
 
@@ -83,7 +79,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes extraData,
         bytes signatures ) public pure returns (address)
     {
         return calculateMessageHash(
@@ -95,8 +90,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
             gasPrice,
             gasToken,
             gasLimit,
-            operationType,
-            extraData).toEthSignedMessageHash().recover(signatures);
+            operationType).toEthSignedMessageHash().recover(signatures);
     }
 
     function executeSigned(
@@ -108,16 +102,15 @@ contract ERC1077 is KeyHolder, IERC1077 {
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes extraData,
         bytes signatures) public returns (bytes32)
     {
         require(nonce == _lastNonce, "Invalid nonce");
-        require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, extraData, signatures), "Invalid signature");
+        require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
         /* solium-disable-next-line security/no-call-value */
         bool success = to.call.value(value)(data);
-        bytes32 executionId = keccak256(abi.encodePacked(nonce, signatures));
-        emit ExecutedSigned(executionId, _lastNonce, success);
+        bytes32 messageHash = calculateMessageHash(this, to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType);
+        emit ExecutedSigned(messageHash, _lastNonce, success);
         _lastNonce++;
-        return executionId;
+        return messageHash;
     }
 }
