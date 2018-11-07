@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
-import {utils} from 'ethers';
+import ethers, {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
+import {messageSignature} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import defaultPaymentOptions from '../../../lib/config/defaultPaymentOptions';
@@ -16,6 +16,7 @@ describe('Relayer - Identity routes', async () => {
   let wallet;
   let otherWallet;
   let contract;
+  let transaction;
 
   before(async () => {
     provider = createMockProvider();
@@ -31,9 +32,8 @@ describe('Relayer - Identity routes', async () => {
         managementKey: wallet.address,
         ensName: 'marek.mylogin.eth'
       });
-    const {transaction} = result.body;
-    contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
-    expect(contract.address).to.be.properAddress;
+    transaction = result.body.transaction;
+    expect(transaction.address).to.be.properAddress;
   });
 
   describe('Execute', async () => {
@@ -41,6 +41,7 @@ describe('Relayer - Identity routes', async () => {
     let token;
 
     before(async () => {
+      contract = new ethers.Contract(transaction.address, Identity.interface, wallet);
       await wallet.send(contract.address, 100000);
       expectedBalance = (await otherWallet.getBalance()).add(10);
       token = await deployContract(wallet, MockToken, []);

@@ -57,7 +57,7 @@ Before you issue pull request:
 You can run lint via:
 
 ```sh
-./script/lint.sh
+./scripts/lint.sh
 ```
 
 You can run tests:

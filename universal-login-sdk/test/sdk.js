@@ -57,9 +57,7 @@ describe('SDK - integration', async () => {
         expect(identityAddress).to.be.properAddress;
       });
 
-      it('should register ENS name', async () => {
-        expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
-      });
+
 
       it('should return ens config', async () => {
         const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
@@ -83,6 +81,10 @@ describe('SDK - integration', async () => {
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 
+      it('should register ENS name', async () => {
+        expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
+      });
+
       it('Should return 0 as first nonce', () => {
         expect(nonce).to.eq(0);
       });
@@ -98,7 +100,7 @@ describe('SDK - integration', async () => {
           data: utils.hexlify(0),
           gasToken: token.address,
           gasPrice,
-          gasLimit: utils.parseEther('25').toString() 
+          gasLimit: utils.parseEther('25').toString()
         };
         expect(sdk.execute(identityAddress, message, privateKey)).to.be.eventually.rejected;
       });

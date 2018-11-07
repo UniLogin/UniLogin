@@ -32,10 +32,10 @@ export default (authorisationService) => {
   router.post('/',
     asyncMiddleware(request(authorisationService)));
 
-  router.get('/:identityAddress', 
+  router.get('/:identityAddress',
     asyncMiddleware(getPending(authorisationService)));
 
-  router.post('/:identityAddress', 
+  router.post('/:identityAddress',
     asyncMiddleware(denyRequest(authorisationService)));
 
   return router;

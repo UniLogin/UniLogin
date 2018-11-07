@@ -6,7 +6,9 @@ import Identity from 'universal-login-contracts/build/Identity';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
-import {waitForContractDeploy, messageSignature, addressToBytes32} from '../../../lib/utils/utils';
+import CounterfactualIdentityService from '../../../lib/services/CounterfactualIdentityService';
+import CounterfactualTransactionsService from '../../../lib/services/CounterfactualTransactionsService';
+import {messageSignature, addressToBytes32} from '../../../lib/utils/utils';
 import buildEnsService from '../../helpers/buildEnsService';
 import AuthorisationService from '../../../lib/services/authorisationService';
 import {EventEmitter} from 'fbemitter';
@@ -17,6 +19,8 @@ chai.use(require('chai-string'));
 chai.use(sinonChai);
 
 describe('Relayer - IdentityService', async () => {
+  let counterfactualIdentityService;
+  let counterfactualTransactionsService;
   let identityService;
   let ensService;
   let managementKey;
@@ -34,36 +38,27 @@ describe('Relayer - IdentityService', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     hooks = new EventEmitter();
     authorisationService = new AuthorisationService();
-    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider);
+    counterfactualIdentityService = new CounterfactualIdentityService(wallet, ensService, authorisationService, hooks, provider);
+    counterfactualTransactionsService = new CounterfactualTransactionsService();
+    identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider, counterfactualIdentityService, counterfactualTransactionsService);
   });
 
   describe('IdentityService', async () => {
     let contract;
     let callback;
     let transaction;
+    let contractAddress;
 
     before(async () => {
       callback = sinon.spy();
-      hooks.addListener('created', callback);
+      hooks.addListener('AddressGenerated', callback);
       transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
-      contract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
-      await contract.setRequiredApprovals(0);
+      contractAddress = transaction.address;
     });
 
     describe('Create', async () => {
       it('returns contract address', async () => {
-        expect(contract.address).to.be.properAddress;
-      });
-
-      it('is initialized with management key', async () => {
-        const managementKeys = await contract.getKeysByPurpose(MANAGEMENT_KEY);
-        const expectedKey = managementKey.address.slice(2).toLowerCase();
-        expect(managementKeys).to.have.lengthOf(1);
-        expect(managementKeys[0]).to.endsWith(expectedKey);
-      });
-
-      it('has ENS name reserved', async () => {
-        expect(await provider.resolveName('alex.mylogin.eth')).to.eq(contract.address);
+        expect(contractAddress).to.be.properAddress;
       });
 
       it('should emit created event', async () => {
@@ -78,14 +73,10 @@ describe('Relayer - IdentityService', async () => {
       const {gasPrice, gasLimit} = defaultPaymentOptions;
 
       before(async () => {
-        await managementKey.send(contract.address, utils.parseEther('12'));
+        await managementKey.send(contractAddress, utils.parseEther('12'));
         expectedBalance = (await otherWallet.getBalance()).add(value);
         token = await deployContract(wallet, MockToken, []);
-      });
-
-      it('Error when no tokens', async () => {
-        const signature = messageSignature(managementKey, otherWallet.address, contract.address, value, utils.hexlify(0), 0, token.address, gasPrice, gasLimit);
-        expect(identityService.executeSigned(contract.address, {to: otherWallet.address, value, data: utils.hexlify(0), nonce: 0, gasToken: token.address, gasPrice, gasLimit, signature})).to.be.eventually.rejected;
+        contract = new ethers.Contract(contractAddress, Identity.interface, managementKey);
       });
 
       describe('Add Key', async () => {
@@ -106,11 +97,27 @@ describe('Relayer - IdentityService', async () => {
           expect(await otherWallet.getBalance()).to.eq(expectedBalance);
         });
 
+        it('is initialized with management key', async () => {
+          const managementKeys = await contract.getKeysByPurpose(MANAGEMENT_KEY);
+          const expectedKey = managementKey.address.slice(2).toLowerCase();
+          expect(managementKeys).to.have.lengthOf(1);
+          expect(managementKeys[0]).to.endsWith(expectedKey);
+        });
+
+        it('has ENS name reserved', async () => {
+          expect(await provider.resolveName('alex.mylogin.eth')).to.eq(contract.address);
+        });
+
+        it('Error when not enough tokens', async () => {
+          const signature = messageSignature(managementKey, otherWallet.address, contract.address, value, utils.hexlify(0), 0, token.address, gasPrice, utils.parseEther('51'));
+          expect(identityService.executeSigned(contract.address, {to: otherWallet.address, value, data: utils.hexlify(0), nonce: 0, gasToken: token.address, gasPrice, gasLimit: utils.parseEther('51'), signature})).to.be.eventually.rejected;
+        });
+
         it('execute add key', async () => {
           const newKeyAddress = addressToBytes32(otherWallet.address);
           const {data} = new Interface(Identity.interface).functions.addKey(newKeyAddress, ACTION_KEY, ECDSA_TYPE);
           const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 1, token.address, gasPrice, gasLimit);
-          const message =  {to: contract.address, value: 0, data, nonce: 1, gasToken: token.address, gasPrice, gasLimit, signature};
+          const message = {to: contract.address, value: 0, data, nonce: 1, gasToken: token.address, gasPrice, gasLimit, signature};
 
           await identityService.executeSigned(contract.address, message);
           const key = await contract.getKey(newKeyAddress);
@@ -120,12 +127,13 @@ describe('Relayer - IdentityService', async () => {
         describe('Collaboration with Authorisation Service', async () => {
           let message;
           before(async () => {
+            await contract.setRequiredApprovals(0);
             const request = {identityAddress: contract.address, key: otherWallet.address, label: 'lol'};
             await authorisationService.addRequest(request);
 
             const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(otherWallet.address), MANAGEMENT_KEY, ECDSA_TYPE);
             const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 2, token.address, gasPrice, gasLimit);
-            message =  {to: contract.address, value: 0, data, nonce: 2, gasToken: token.address, gasPrice, gasLimit, signature};
+            message = {to: contract.address, value: 0, data, nonce: 2, gasToken: token.address, gasPrice, gasLimit, signature};
           });
 
           it('should remove request from pending authorisations if addKey', async () => {
@@ -139,7 +147,7 @@ describe('Relayer - IdentityService', async () => {
         before(async () => {
           const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY, ECDSA_TYPE);
           const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 3, token.address, gasPrice, gasLimit);
-          const message =  {to: contract.address, value: 0, data, nonce: 3, gasToken: token.address, gasPrice, gasLimit, signature};
+          const message = {to: contract.address, value: 0, data, nonce: 3, gasToken: token.address, gasPrice, gasLimit, signature};
           await identityService.executeSigned(contract.address, message);
         });
 
@@ -147,7 +155,7 @@ describe('Relayer - IdentityService', async () => {
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(MANAGEMENT_KEY);
           const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(ensDeployer.address), MANAGEMENT_KEY);
           const signature = messageSignature(managementKey, contract.address, contract.address, 0, data, 4, token.address, gasPrice, gasLimit);
-          const message =  {to: contract.address, value: 0, data, nonce: 4, gasToken: token.address, gasPrice, gasLimit, signature};
+          const message = {to: contract.address, value: 0, data, nonce: 4, gasToken: token.address, gasPrice, gasLimit, signature};
           await identityService.executeSigned(contract.address, message);
           expect((await contract.getKey(addressToBytes32(ensDeployer.address)))[0]).to.eq(0);
         });
