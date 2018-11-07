@@ -8,7 +8,7 @@ import Token from '../build/Token';
 const {jsonRpcUrl} = config;
 
 /* eslint-disable no-console */
-class ContractsDelpoyer {
+class ContractsDeployer {
   save(filename, _variables) {
     const variables = Object.entries(_variables)
       .map(([key, value]) => `  ${key}='${value}'`)
@@ -34,5 +34,5 @@ class ContractsDelpoyer {
   }
 }
 
-const prepare = new ContractsDelpoyer();
+const prepare = new ContractsDeployer();
 prepare.main();
