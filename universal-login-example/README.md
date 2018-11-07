@@ -2,18 +2,20 @@
 
 ### Running example on dev environment (quick option)
 
-To install dependencies and build projects, run the following commands from the main project directory:
+To install dependencies and build projects, run the following commands from the main directory of the repository.
 
 ```sh
-yarn && yarn build
+yarn
 ```
 
 To run example:
 
 ```sh
 cd universal-login-example
-yarn dev:start
+yarn dev:start [hostAddress]
 ```
+
+with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).
 
 ### Running example on dev environment (manual option, deprecated, will be removed soon)
 

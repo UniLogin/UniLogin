@@ -15,7 +15,7 @@ import CounterfactualTransactionsService from './services/counterfactualTransact
 const defaultPort = 3311;
 
 class Relayer {
-  constructor(config, provider) {
+  constructor(config, provider = '') {
     this.port = config.port || defaultPort;
     this.config = config;
     this.hooks = new EventEmitter();

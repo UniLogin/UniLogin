@@ -11,6 +11,7 @@
     "ethers": "^3.0.27",
     "fbemitter": "^2.1.1",
     "iplocation": "^5.0.1",
+    "localforage": "^1.7.2",
     "moment": "^2.22.2",
     "openzeppelin-solidity": "^1.12.0",
     "prop-types": "^15.6.2",
@@ -24,13 +25,15 @@
   "scripts": {
     "start": "parcel --no-cache ./src/index.html",
     "example:build": "parcel build ./src/index.html",
-    "build": "yarn contracts:build && parcel build ./src/index.html",
+    "build": "yarn contracts:build && yarn relayer:build && parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js",
     "test": "mocha --recursive --require babel-register test -t 10000",
     "clean": "rm -fr ./node_modules &&rm -fr ./cache && rm -fr ./build && rm -fr ./dist",
     "contracts:build": "waffle .waffle.json",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
-    "dev:start": "babel-node scripts/dev-start.js"
+    "dev:start": "babel-node scripts/dev-start.js",
+    "relayer:build": "babel src/relayer --out-dir dist/relayer",
+    "relayer:start": "node dist/relayer/startRelayer.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -3,17 +3,17 @@
 ## Downloading repository
 
 ```sh
-git clone git@github.com:EthWorks/UniversalLoginSDK.git
+git clone git@github.com:UniversalLogin/UniversalLoginSDK.git
+cd UniversalLoginSDK
 yarn
-yarn build
-```
-
-```sh
-cd universal-login-example/
-yarn dev start
 ```
 
 ## Running example and creating an identity
+
+```sh
+cd universal-login-example/
+yarn dev:start
+```
 
 This will do a number of things for you:
 * runs local ganache on localhost:18545
@@ -24,8 +24,9 @@ This will do a number of things for you:
 
 You can now go to localhost:1234 and create your identity using `mylogin.eth` domain.
 
-
 When creating identity it is given balance in ClickToken that you can spend to pay for transactions.
+
+Don't close it down. You will use it for developing your own app.
 
 ## Creating own project
 
@@ -40,5 +41,7 @@ Build app and start web server with:
 yarn
 yarn start
 ```
+
+Note: the port for example and the boilerplate app will conflict, but the boilerplate app will randomize other port so that it will run successfully.
 
 Play around!

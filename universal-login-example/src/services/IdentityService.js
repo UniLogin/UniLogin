@@ -1,12 +1,22 @@
 import ethers, {Wallet} from 'ethers';
 
 class IdentityService {
-  constructor(sdk, emitter, provider) {
+  constructor(sdk, emitter, storageService, provider) {
     this.sdk = sdk;
     this.emitter = emitter;
     this.identity = {};
     this.deviceAddress = '';
+    this.storageService = storageService;
     this.provider = provider;
+  }
+
+  async loadIdentity() {
+    const identity = await this.storageService.getIdentity();
+    if (identity) {
+      this.identity = identity;
+      return true;
+    }
+    return false;
   }
 
   async connect(label) {
@@ -27,6 +37,7 @@ class IdentityService {
             address: this.identity.address
           };
           this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
+          this.storeIdentity(this.identdity);
         }
       }
     );
@@ -48,6 +59,7 @@ class IdentityService {
             address: this.identity.address
           };
           this.emitter.emit('setView', 'Greeting');
+          this.storeIdentity(this.identity);
         }
       }
     );
@@ -60,6 +72,14 @@ class IdentityService {
     }
   }
 
+  async storeIdentity(identity) {
+    this.storageService.storeIdentity(identity);
+  }
+
+  async disconnect() {
+    this.storageService.clearStorage();
+  }
+
   async createIdentity(name) {
     this.emitter.emit('creatingIdentity', {name});
     const [privateKey, address] = await this.sdk.create(name);
@@ -69,6 +89,7 @@ class IdentityService {
       address
     };
     this.emitter.emit('identityCreated', this.identity);
+    this.storeIdentity(this.identity);
   }
 
   async execute(message) {

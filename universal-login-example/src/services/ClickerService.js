@@ -1,14 +1,14 @@
 import ethers, {Interface} from 'ethers';
 import Clicker from '../../build/Clicker';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
-import {tokenContractAddress} from '../../config/config';
-import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 class ClickerService {
-  constructor(identityService, clickerContractAddress, provider, ensService) {
+  constructor(identityService, clickerContractAddress, provider, ensService, tokenContractAddress, defaultPaymentOptions) {
     this.identityService = identityService;
     this.clickerContractAddress = clickerContractAddress;
     this.provider = provider;
+    this.tokenContractAddress = tokenContractAddress;
+    this.defaultPaymentOptions = defaultPaymentOptions;
     this.clickerContract = new ethers.Contract(
       this.clickerContractAddress,
       Clicker.interface,
@@ -24,8 +24,8 @@ class ClickerService {
       from: this.identityService.identity.address,
       value: 0,
       data: this.clickerContract.interface.functions.press().data,
-      gasToken: tokenContractAddress,
-      ...DEFAULT_PAYMENT_OPTIONS
+      gasToken: this.tokenContractAddress,
+      ...this.defaultPaymentOptions
     };
     await this.identityService.execute(message);
   }

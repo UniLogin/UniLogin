@@ -42,3 +42,6 @@
 .icon-minus-circle:before {
   content: "\e985";
 }
+.icon-disconnect:before {
+  content: "\e986";
+}

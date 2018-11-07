@@ -6,8 +6,11 @@ import {ENSDeployer} from 'universal-login-relayer';
 import Clicker from '../build/Clicker';
 import Token from '../build/Token';
 import {promisify} from 'util';
-import TokenGrantingRelayer from '../src/TokenGrantingRelayer';
+import TokenGrantingRelayer from '../src/relayer/TokenGrantingRelayer';
 
+const args = {
+  httpAddress: process.argv.length > 2 ? process.argv[2] : 'localhost'
+};
 
 const chainSpec = {
   ensAddress: process.env.ENS_ADDRESS,
@@ -15,7 +18,7 @@ const chainSpec = {
 };
 
 const config = Object.freeze({
-  jsonRpcUrl: 'http://localhost:18545',
+  jsonRpcUrl: 'http://${args.httpAddress}:18545',
   port: 3311,
   privateKey: defaultAccounts[0].secretKey,
   chainSpec,
@@ -47,7 +50,7 @@ class Deployer {
   }
 
   ganacheUrl() {
-    return `http://localhost:${this.ganachePort}`;
+    return `http://${args.httpAddress}:${this.ganachePort}`;
   }
 
   async startGanache() {
@@ -73,11 +76,12 @@ class Deployer {
     }
     this.env.JSON_RPC_URL = this.ganacheUrl();
     this.config = Object.freeze({
-      jsonRpcUrl: 'http://localhost:18545',
+      jsonRpcUrl: 'http://${args.httpAddress}:18545',
       port: 3311,
       privateKey: defaultAccounts[0].secretKey,
       chainSpec: {
         ensAddress: this.env.ENS_ADDRESS,
+        publicResolverAddress: this.env.ENS_RESOLVER1_ADDRESS,
         chainId: 0
       },
       ensRegistrars: {
@@ -101,8 +105,8 @@ class Deployer {
   }
 
   startRelayer() {
-    this.relayer = new TokenGrantingRelayer(this.provider, this.config, this.deployerPrivateKey, this.tokenContract.address);
-    this.env.RELAYER_URL = `http://localhost:${this.config.port}`;
+    this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider);    
+    this.env.RELAYER_URL = `http://${args.httpAddress}:${this.config.port}`;
     this.relayer.start();
   }
 

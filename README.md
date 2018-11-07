@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/EthWorks/UniversalLoginSDK.svg?branch=master)](https://travis-ci.com/EthWorks/UniversalLoginSDK)
+[![Build Status](https://travis-ci.org/UniversalLogin/UniversalLoginSDK.svg?branch=master)](https://travis-ci.org/UniversalLogin/UniversalLoginSDK)
 
-# Ethereum IdentitySDK
+# Ethereum UniversalLoginSDK
 
 Ethereum Identity SDK is composed of smart contracts, a js lib, and a relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#735](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
 
@@ -16,10 +16,15 @@ Planned functionality for first release include:
 This repository is organised as monorepo.
 
 - [Contracts](https://github.com/EthWorks/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
-- [Example](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
 - [Relayer](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) - allows to interact with blockchain
 - [SDK](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
+- [Example](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
 
+## Quick start
+
+## Hacking
+To start hacking around go to [tutorial](https://github.com/EthWorks/UniversalLoginSDK/blob/master/Tutorial.md).
+To just see example in action follow the next section.
 
 ## Quick example start
 
@@ -37,8 +42,6 @@ yarn dev:start
 ```
 [manual option](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md)
 
-## Tutorial & boilerplate
-A simple boilerplate and tutorial can be found [here](https://github.com/EthWorks/UniversalLoginSDK/blob/master/Tutorial.md)
 
 ## Contributing
 
