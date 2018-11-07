@@ -47,4 +47,7 @@ const lookupAddress = async (provider, address, resolverAddress) => {
   return await contract.name(node);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress};
+const getExecutionArgs = (msg) =>
+  [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
+
+export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs};

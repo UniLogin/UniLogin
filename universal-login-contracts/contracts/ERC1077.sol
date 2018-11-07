@@ -3,10 +3,13 @@ pragma solidity ^0.4.24;
 import "./KeyHolder.sol";
 import "./IERC1077.sol";
 import "openzeppelin-solidity/contracts/ECRecovery.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
 contract ERC1077 is KeyHolder, IERC1077 {
     using ECRecovery for bytes32;
+    using SafeMath for uint;
 
     event ExecutedSigned(bytes32 signHash, uint nonce, bool success);
 
@@ -106,11 +109,23 @@ contract ERC1077 is KeyHolder, IERC1077 {
     {
         require(nonce == _lastNonce, "Invalid nonce");
         require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
+        uint256 startingGas = gasleft();
         /* solium-disable-next-line security/no-call-value */
         bool success = to.call.value(value)(data);
         bytes32 messageHash = calculateMessageHash(this, to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType);
         emit ExecutedSigned(messageHash, _lastNonce, success);
         _lastNonce++;
+        uint256 gasUsed = startingGas.sub(gasleft());
+        refund(gasUsed, gasPrice, gasToken);
         return messageHash;
+    }
+
+    function refund(uint256 gasUsed, uint gasPrice, address gasToken) private {
+        if (gasToken != address(0)) {
+            ERC20 token = ERC20(gasToken);
+            token.transfer(msg.sender, gasUsed.mul(gasPrice));
+        } else {
+            msg.sender.transfer(gasUsed.mul(gasPrice));
+        }
     }
 }

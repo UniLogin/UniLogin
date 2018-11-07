@@ -1,20 +1,23 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets} from 'ethereum-waffle';
-import basicIdentity, {transferMessage} from '../fixtures/basicIdentity';
+import basicIdentity, {transferMessage, failedTransferMessage, callMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
-import {OPERATION_CALL} from 'universal-login-contracts/lib/consts';
 import TestHelper from '../testHelper';
 import calculateMessageSignature, {calculateMessageHash} from '../../lib/calculateMessageSignature';
+import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
+import {getExecutionArgs} from '../utils';
+
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 const {parseEther} = utils;
 const to = '0x0000000000000000000000000000000000000001';
-const ETHER = '0x0000000000000000000000000000000000000000';
+const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+const overrideOptions = {gasPrice};
 
-describe('ERC1077', async () => {
+describe('ERC1077', async  () => {
   const testHelper = new TestHelper();
   let provider;
   let identity;
@@ -24,11 +27,21 @@ describe('ERC1077', async () => {
   let signature;
   let msg;
   let mockContract;
+  let wallet;
+  let mockToken;
+  let anotherWallet;
+  let invalidSignature;
+  let relayerBalance;
+  let relayerTokenBalance;
 
   beforeEach(async () => {
-    ({provider, identity, privateKey, keyAsAddress, publicKey, mockContract} = await testHelper.load(basicIdentity));
+    ({provider, identity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await testHelper.load(basicIdentity));
     msg = {...transferMessage, from: identity.address};
     signature = calculateMessageSignature(privateKey, msg);
+    [anotherWallet] = await getWallets(provider);
+    invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
+    relayerBalance = await wallet.getBalance();
+    relayerTokenBalance = await mockToken.balanceOf(wallet.address);
   });
 
   it('properly construct', async () => {
@@ -74,122 +87,226 @@ describe('ERC1077', async () => {
     });
   });
 
-  describe('successful execution of transfer', () => {
-    it('transfers funds', async () => {
-      expect(await provider.getBalance(to)).to.eq(0);
-      await identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, signature);
-      expect(await provider.getBalance(to)).to.eq(parseEther('1.0'));
-      expect(await identity.lastNonce()).to.eq(1);
+  describe('Transfer', async () => {
+    describe('successful execution of transfer', () => {
+      it('transfers funds', async () => {
+        expect(await provider.getBalance(to)).to.eq(0);
+        await identity.executeSigned(...getExecutionArgs(msg), signature);
+        expect(await provider.getBalance(to)).to.eq(parseEther('1.0'));
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+  
+      it('emits ExecutedSigned event', async () => {
+        const messageHash = calculateMessageHash(msg);
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, true);
+      });
+
+      describe('refund', () => {
+        it('should refund in token after execute transfer ethers', async () => {
+          msg = {...transferMessage, from: identity.address, gasPrice, gasLimit, gasToken: mockToken.address};
+          signature = calculateMessageSignature(privateKey, msg);
+
+          await identity.executeSigned(...getExecutionArgs(msg), signature);
+    
+          expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
+        });
+
+        it('should refund after execute transfer ethers', async () => {
+          msg = {...transferMessage, from: identity.address, gasPrice, gasLimit};
+          signature = calculateMessageSignature(privateKey, msg);
+    
+          const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
+    
+          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
+    
+          expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
+        });
+      });  
     });
 
-    it('emits ExecutedSigned event', async () => {
-      const messageHash = calculateMessageHash(msg);
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, signature))
-        .to.emit(identity, 'ExecutedSigned')
-        .withArgs(messageHash, 0, true);
-    });
+    describe('failed execution of transafer', () => {
+      it('nonce too low', async () => {
+        await identity.executeSigned(...getExecutionArgs(msg), signature);
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+          .to.be.revertedWith('Invalid nonce');
+      });
+  
+      it('nonce too high', async () => {
+        msg = {...transferMessage, nonce: 2};
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+          .to.be.revertedWith('Invalid nonce');
+      });
+        
+      it('emits ExecutedSigned event', async () => {
+        msg = {...failedTransferMessage, from: identity.address};
+        signature = calculateMessageSignature(privateKey, msg);
+        const messageHash = calculateMessageHash(msg);
 
-    xit('refunded');
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, false);
+      });
+
+      it('should increase nonce, even if transfer fails', async () => {
+        msg = {...failedTransferMessage, from: identity.address};
+        signature = calculateMessageSignature(privateKey, msg);
+  
+        await identity.executeSigned(...getExecutionArgs(msg), signature);
+        expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+      
+      describe('Invalid signature', () => {
+        it('no signature', async () => {
+          await expect(identity.executeSigned(...getExecutionArgs(msg), []))
+            .to.be.revertedWith('Invalid signature');
+          expect(await identity.lastNonce()).to.eq(0);
+          expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
+        });
+    
+        it('should be reverted', async () => {
+          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature))
+            .to.be.revertedWith('Invalid signature');
+        });
+  
+        it('shouldn`t transfer ethers', async () => {
+          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature))
+            .to.be.revertedWith('Invalid signature');
+          expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
+        });
+
+        it('shouldn`t increase nonce', async () => {
+          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature))
+            .to.be.revertedWith('Invalid signature');
+          expect(await identity.lastNonce()).to.eq(0);
+        });
+      });
+
+      describe('refund', () => {
+        it('should refund ether', async () => {
+          msg = {...failedTransferMessage, from: identity.address, gasPrice, gasLimit};
+          signature = calculateMessageSignature(privateKey, msg);
+  
+          const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
+
+          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
+
+          expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
+        });
+
+        it('should refund tokens', async () => {
+          msg = {...failedTransferMessage, from: identity.address, gasPrice, gasLimit, gasToken: mockToken.address};
+          signature = calculateMessageSignature(privateKey, msg);
+          await identity.executeSigned(...getExecutionArgs(msg), signature);
+          expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
+        });
+      });
+    });
   });
-
-  describe('fails if invalid nonce', () => {
-    it('fails if nonce too low', async () => {
-      await identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, signature);
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, signature))
-        .to.be.revertedWith('Invalid nonce');
-    });
-
-    it('fails if nonce too high', async () => {
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 2, 0, ETHER, 0, OPERATION_CALL, signature))
-        .to.be.revertedWith('Invalid nonce');
-    });
-  });
-
-  describe('successful execution of call', () => {
+  
+  describe('Call', async () => {
     let callMockData;
     let msgToCall;
     let signatureToCall;
 
-    before(() => {
-      callMockData = mockContract.interface.functions.callMe().data; 
-      msgToCall = {...transferMessage, from: identity.address, to: mockContract.address, data: callMockData, value: 0};
-      signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+    describe('successful execution of call', () => {
+      before(() => {
+        callMockData = mockContract.interface.functions.callMe().data; 
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData};
+        signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+      });
+  
+      it('called method', async () => {
+        expect(await mockContract.wasCalled()).to.be.false;
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+        expect(await mockContract.wasCalled()).to.be.true;
+      });
+      
+      it('increase nonce', async () => {
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+
+      it('should emit ExecutedSigned', async () => {
+        const messageHash = calculateMessageHash(msgToCall);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, true);
+      });
+
+      describe('refund', () => {
+        it('should refund ether', async () => {
+          msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData, gasPrice, gasLimit};
+          signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+  
+          const transaction = await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+
+          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
+
+          expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
+        });
+
+        it('should refund tokens', async () => {
+          msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData, gasPrice, gasLimit, gasToken: mockToken.address};
+          signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+          await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+          expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
+        });
+      });
     });
 
-    it('called method', async () => {
-      expect(await mockContract.wasCalled()).to.be.false;
-      await identity.executeSigned(mockContract.address, 0, callMockData, 0, 0, ETHER, 0, OPERATION_CALL, signatureToCall);
-      expect(await mockContract.wasCalled()).to.be.true;
-    });
-    
-    it('increase nonce', async () => {
-      await identity.executeSigned(mockContract.address, 0, callMockData, 0, 0, ETHER, 0, OPERATION_CALL, signatureToCall);
-      expect(await identity.lastNonce()).to.eq(1);
-    });
+    describe('failed execution of call', () => {
+      before(() => {
+        callMockData = mockContract.interface.functions.revertingFunction().data; 
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData};
+        signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+      });
 
-    xit('refunded');
+      it('should increase nonce', async () => {
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+
+      it('should emit ExecutedSigned event', async () => {
+        const messageHash = calculateMessageHash(msgToCall);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, false);
+      });
+
+      it('invalid nonce', async () => {
+        msg = {...msgToCall, nonce: 2};
+        signatureToCall = calculateMessageSignature(privateKey, msg);
+
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signatureToCall))
+          .to.be.revertedWith('Invalid nonce');
+      });
+
+      describe('refund', () => {
+        it('should refund ether', async () => {
+          msg = {...msgToCall, gasPrice, gasLimit};
+          signatureToCall = calculateMessageSignature(privateKey, msg);
+  
+          const transaction = await identity.executeSigned(...getExecutionArgs(msg), signatureToCall, overrideOptions);
+
+          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
+
+          expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
+        });
+
+        it('should refund tokens', async () => {
+          msg = {...msgToCall, gasPrice, gasLimit, gasToken: mockToken.address};
+          signatureToCall = calculateMessageSignature(privateKey, msg);
+          await identity.executeSigned(...getExecutionArgs(msg), signatureToCall);
+          expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
+        });
+      });
+    });
   });
-
-  describe('fails if invalid signature', () => {
-    let anotherWallet;
-    let invalidSignature;
-
-    before(async () => {
-      [anotherWallet] = await getWallets(provider);
-      invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
-    });
-
-    it('no signature', async () => {
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, []))
-        .to.be.revertedWith('Invalid signature');
-      expect(await identity.lastNonce()).to.eq(0);
-      expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
-    });
-
-    it('unknown wallet signature', async () => {
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, invalidSignature))
-        .to.be.revertedWith('Invalid signature');
-      expect(await identity.lastNonce()).to.eq(0);
-      expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
-    });
-
-    it('nonce not increased', async () => {
-      const lasNonceBefore = await identity.lastNonce();
-      await expect(identity.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, invalidSignature))
-        .to.be.revertedWith('Invalid signature');
-      expect(await identity.lastNonce()).to.eq(lasNonceBefore);
-    });
-  });
-
-  describe('shouldn`t fail if call fails', () => {
-    it('increase nonce', async () => {
-      const message = {...transferMessage, value: parseEther('10.0'), from: identity.address};
-      const newSignature = calculateMessageSignature(privateKey, message);
-
-      await identity.executeSigned(to, parseEther('10.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, newSignature);
-      expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
-      expect(await identity.lastNonce()).to.eq(1);
-    });
-
-    xit('refunded');
-  });
-
-  xdescribe('fails if not enough signatures', () => {
-    xit('increase nonce');
-    xit('refunded');
-  });
-
-  describe('successful execution of transfer (multiple keys)', () => {
-    xit('transfered funds');
-    xit('increase nonce');
-    xit('refunded');
-  });
-
-  xdescribe('fails if not enough balance to refund', () => {
-    xit('increase nonce');
-    xit('refunded');
-  });
-
-  xdescribe('successful execution of create');
-  xdescribe('successful execution of delegate call');
 });
