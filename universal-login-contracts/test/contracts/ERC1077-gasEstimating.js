@@ -3,16 +3,12 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
 import basicIdentity, {transferMessage} from '../fixtures/basicIdentity';
 import ethers, {utils} from 'ethers';
-import {OPERATION_CALL} from 'universal-login-contracts/lib/consts';
 import TestHelper from '../testHelper';
 import calculateMessageSignature from '../../lib/calculateMessageSignature';
+import {getExecutionArgs} from '../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
-
-const {parseEther} = utils;
-const to = '0x0000000000000000000000000000000000000001';
-const ETHER = '0x0000000000000000000000000000000000000000';
 
 describe('ERC1077 - gas estimating', async () => {
   const testHelper = new TestHelper();
@@ -36,7 +32,7 @@ describe('ERC1077 - gas estimating', async () => {
       const callMockData = mockContract.interface.functions.callMe().data; 
       const msgToCall = {...transferMessage, from: identity.address, to: mockContract.address, data: callMockData, value: 0};
       const signatureToCall = calculateMessageSignature(privateKey, msgToCall);
-      const {data} = identity.interface.functions.executeSigned(mockContract.address, 0, callMockData, 0, 0, ETHER, 0, OPERATION_CALL, signatureToCall);
+      const {data} = identity.interface.functions.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
 
       const transaction = {
         to: identity.address,
@@ -50,7 +46,7 @@ describe('ERC1077 - gas estimating', async () => {
     });
 
     it('transfer ether costs', async () => {
-      const {data} = identity.interface.functions.executeSigned(to, parseEther('1.0'), [], 0, 0, ETHER, 0, OPERATION_CALL, signature);
+      const {data} = identity.interface.functions.executeSigned(...getExecutionArgs(msg), signature);
 
       const transaction = {
         to: identity.address,

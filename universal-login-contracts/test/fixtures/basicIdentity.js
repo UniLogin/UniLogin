@@ -1,11 +1,14 @@
 import ERC1077ApprovalScheme from '../../build/ERC1077';
 import MockToken from '../../build/MockToken';
 import MockContract from '../../build/MockContract';
-import {utils} from 'ethers';
+import ethers, {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {addressToBytes32} from '../utils';
+import {OPERATION_CALL} from '../../lib/consts';
+import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
 const {parseEther} = utils;
+const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 export default async function basicIdentity(provider, wallet) {
   const publicKey = addressToBytes32(wallet.address);
@@ -24,10 +27,10 @@ export const transferMessage = {
   value: parseEther('1.0'),
   data: [],
   nonce: 0,
-  gasPrice: 0,
-  gasLimit: 0,
+  gasPrice,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: 0
+  operationType: OPERATION_CALL
 };
 
 
@@ -36,19 +39,30 @@ export const failedTransferMessage = {
   value: parseEther('10.0'),
   data: [],
   nonce: 0,
-  gasPrice: 0,
-  gasLimit: 0,
+  gasPrice,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: 0
+  operationType: OPERATION_CALL
 };
 
 export const callMessage = {
   to: '0x0000000000000000000000000000000000000001',
   value: parseEther('0.0'),
-  data: [],
+  data: new ethers.Interface(MockContract.interface).functions.callMe().data,
   nonce: 0,
-  gasPrice: 0,
-  gasLimit: 0,
+  gasPrice,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: 0
+  operationType: OPERATION_CALL
+};
+
+export const failedCallMessage = {
+  to: '0x0000000000000000000000000000000000000001',
+  value: parseEther('0.0'),
+  data: new ethers.Interface(MockContract.interface).functions.revertingFunction().data,
+  nonce: 0,
+  gasPrice,
+  gasLimit,
+  gasToken: '0x0000000000000000000000000000000000000000',
+  operationType: OPERATION_CALL
 };

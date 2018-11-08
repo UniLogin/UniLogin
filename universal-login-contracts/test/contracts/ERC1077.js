@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets} from 'ethereum-waffle';
-import basicIdentity, {transferMessage, failedTransferMessage, callMessage} from '../fixtures/basicIdentity';
+import basicIdentity, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
 import TestHelper from '../testHelper';
 import calculateMessageSignature, {calculateMessageHash} from '../../lib/calculateMessageSignature';
@@ -14,7 +14,7 @@ chai.use(solidity);
 
 const {parseEther} = utils;
 const to = '0x0000000000000000000000000000000000000001';
-const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+const {gasPrice} = DEFAULT_PAYMENT_OPTIONS;
 const overrideOptions = {gasPrice};
 
 describe('ERC1077', async  () => {
@@ -105,7 +105,7 @@ describe('ERC1077', async  () => {
 
       describe('refund', () => {
         it('should refund in token after execute transfer ethers', async () => {
-          msg = {...transferMessage, from: identity.address, gasPrice, gasLimit, gasToken: mockToken.address};
+          msg = {...transferMessage, from: identity.address, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
 
           await identity.executeSigned(...getExecutionArgs(msg), signature);
@@ -114,9 +114,6 @@ describe('ERC1077', async  () => {
         });
 
         it('should refund after execute transfer ethers', async () => {
-          msg = {...transferMessage, from: identity.address, gasPrice, gasLimit};
-          signature = calculateMessageSignature(privateKey, msg);
-    
           const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
     
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
@@ -187,7 +184,7 @@ describe('ERC1077', async  () => {
 
       describe('refund', () => {
         it('should refund ether', async () => {
-          msg = {...failedTransferMessage, from: identity.address, gasPrice, gasLimit};
+          msg = {...failedTransferMessage, from: identity.address};
           signature = calculateMessageSignature(privateKey, msg);
   
           const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
@@ -199,7 +196,7 @@ describe('ERC1077', async  () => {
         });
 
         it('should refund tokens', async () => {
-          msg = {...failedTransferMessage, from: identity.address, gasPrice, gasLimit, gasToken: mockToken.address};
+          msg = {...failedTransferMessage, from: identity.address, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
           await identity.executeSigned(...getExecutionArgs(msg), signature);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
@@ -209,14 +206,12 @@ describe('ERC1077', async  () => {
   });
   
   describe('Call', async () => {
-    let callMockData;
     let msgToCall;
     let signatureToCall;
 
     describe('successful execution of call', () => {
       before(() => {
-        callMockData = mockContract.interface.functions.callMe().data; 
-        msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData};
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
         signatureToCall = calculateMessageSignature(privateKey, msgToCall);
       });
   
@@ -240,7 +235,7 @@ describe('ERC1077', async  () => {
 
       describe('refund', () => {
         it('should refund ether', async () => {
-          msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData, gasPrice, gasLimit};
+          msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
   
           const transaction = await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
@@ -252,7 +247,7 @@ describe('ERC1077', async  () => {
         });
 
         it('should refund tokens', async () => {
-          msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData, gasPrice, gasLimit, gasToken: mockToken.address};
+          msgToCall = {...callMessage, from: identity.address, to: mockContract.address, gasToken: mockToken.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
           await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
@@ -262,8 +257,7 @@ describe('ERC1077', async  () => {
 
     describe('failed execution of call', () => {
       before(() => {
-        callMockData = mockContract.interface.functions.revertingFunction().data; 
-        msgToCall = {...callMessage, from: identity.address, to: mockContract.address, data: callMockData};
+        msgToCall = {...failedCallMessage, from: identity.address, to: mockContract.address};
         signatureToCall = calculateMessageSignature(privateKey, msgToCall);
       });
 
@@ -281,18 +275,15 @@ describe('ERC1077', async  () => {
 
       it('invalid nonce', async () => {
         msg = {...msgToCall, nonce: 2};
-        signatureToCall = calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(privateKey, msg);
 
-        await expect(identity.executeSigned(...getExecutionArgs(msg), signatureToCall))
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
           .to.be.revertedWith('Invalid nonce');
       });
 
       describe('refund', () => {
         it('should refund ether', async () => {
-          msg = {...msgToCall, gasPrice, gasLimit};
-          signatureToCall = calculateMessageSignature(privateKey, msg);
-  
-          const transaction = await identity.executeSigned(...getExecutionArgs(msg), signatureToCall, overrideOptions);
+          const transaction = await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
           const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
@@ -301,9 +292,9 @@ describe('ERC1077', async  () => {
         });
 
         it('should refund tokens', async () => {
-          msg = {...msgToCall, gasPrice, gasLimit, gasToken: mockToken.address};
-          signatureToCall = calculateMessageSignature(privateKey, msg);
-          await identity.executeSigned(...getExecutionArgs(msg), signatureToCall);
+          msg = {...msgToCall, gasToken: mockToken.address};
+          signature = calculateMessageSignature(privateKey, msg);
+          await identity.executeSigned(...getExecutionArgs(msg), signature);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
