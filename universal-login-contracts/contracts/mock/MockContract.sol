@@ -15,4 +15,8 @@ contract MockContract {
     function callMe() public {
         wasCalled = true;
     }
+
+    function revertingFunction() public view {
+        require(msg.sender == address(this));
+    }
 }
