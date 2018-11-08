@@ -33,7 +33,7 @@ class IdentityService {
 
   async executeSigned(contractAddress, message) {
     if (await hasEnoughToken(message.gasToken, contractAddress, message.gasLimit, this.provider)) {
-      const {data} = new Interface(Identity.interface).functions.executeSigned(message.to, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit, message.signature);
+      const {data} = new Interface(Identity.interface).functions.executeSigned(message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature);
       const transaction = {
         value: 0,
         to: contractAddress,

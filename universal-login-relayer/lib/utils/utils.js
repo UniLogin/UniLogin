@@ -25,13 +25,6 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
   return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
-const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
-  wallet.signMessage(
-    utils.arrayify(utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
-      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit])
-    ));
-
 const messageSignatureForApprovals = (wallet, id) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
@@ -84,4 +77,19 @@ const isAddKeysCall = (data) => {
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+const calculateMessageHash = (msg) => {
+  const dataHash = utils.solidityKeccak256(['bytes'], [msg.data]);
+  return utils.solidityKeccak256(
+    ['address', 'address', 'uint256', 'bytes32', 'uint256', 'uint', 'address', 'uint', 'uint'],
+    [msg.from, msg.to, msg.value, dataHash, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType]);
+};
+
+const calculateMessageSignature = (wallet, msg) => {
+  const massageHash = calculateMessageHash(msg);
+  return wallet.signMessage(utils.arrayify(massageHash));
+};
+
+
+export default calculateMessageSignature;
+
+export {calculateMessageHash,addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

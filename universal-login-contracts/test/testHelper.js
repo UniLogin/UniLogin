@@ -35,7 +35,7 @@ class TestHelper {
       return this.fixtures[name];
     }
     await this.lazyLoadDeployer();
-    const fixture = await fixtureFunction(this.provider, this.deployer);
+    const fixture = await fixtureFunction(this.deployer);
     const {result} = await this.snapshot();
     this.snapshots[name] = result;
     this.fixtures[name] = {provider: this.provider, ...fixture};
