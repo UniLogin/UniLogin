@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {messageSignature} from './utils';
+import {messageSignature, getExecutionArgs} from './utils';
 import {utils, Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
 
@@ -29,5 +29,32 @@ describe('Tools test', async () => {
       ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
       [wallet.address, from, value, data, nonce, gasToken, gasPrice, gasLimit]));
     expect(Wallet.verifyMessage(message, signature)).to.eq(wallet.address);
+  });
+
+  describe('getExecutionArgs', () => {
+    it('should return corect array', async () => {
+      const msg = {
+        to: '0x0000000000000000000000000000000000000001',
+        value: utils.parseEther('1.0'),
+        data: 0x0,
+        nonce: 0,
+        gasPrice: 0,
+        gasLimit: 0,
+        gasToken: '0x0000000000000000000000000000000000000000',
+        operationType: 0
+      };
+
+      const expectedResult = [
+        '0x0000000000000000000000000000000000000001',
+        utils.parseEther('1.0'),
+        0x0,
+        0,
+        0,
+        '0x0000000000000000000000000000000000000000',
+        0,
+        0
+      ];
+      expect(getExecutionArgs(msg)).to.deep.eq(expectedResult);
+    });
   });
 });

@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./KeyHolder.sol";
 import "openzeppelin-solidity/contracts/ECRecovery.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
 contract SignedApprovalScheme is KeyHolder {
@@ -25,7 +25,7 @@ contract SignedApprovalScheme is KeyHolder {
         bytes data;
         bytes32[] approvals;
         address gasToken;
-        uint gasPrice; 
+        uint gasPrice;
         uint gasLimit;
     }
 
@@ -47,12 +47,12 @@ contract SignedApprovalScheme is KeyHolder {
     function setRequiredApprovals(uint _requiredApprovals) public onlyManagementKeyOrThisContract {
         require(keysByPurpose[MANAGEMENT_KEY].length >= _requiredApprovals, "Not enough management keys");
         requiredApprovals = _requiredApprovals;
-    } 
+    }
 
     function getSignerForExecutions(
         address _to, address _from, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
-        ) 
-        public pure returns (bytes32) 
+        )
+        public pure returns (bytes32)
     {
         bytes32 messageHash = keccak256(abi.encodePacked(_to, _from, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit));
         return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
@@ -93,9 +93,9 @@ contract SignedApprovalScheme is KeyHolder {
         return false;
     }
 
-    function addSignedExecution(address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit) 
-        private 
-        returns(uint256 executionId) 
+    function addSignedExecution(address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit)
+        private
+        returns(uint256 executionId)
     {
         require(_to != address(0), "Invalid 'to' address");
         require(executionNonce == _nonce, "Invalid execution nonce");
@@ -128,12 +128,12 @@ contract SignedApprovalScheme is KeyHolder {
         } else {
             emit ExecutionFailed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         }
-    }     
+    }
 
     function refund(uint256 _id, uint256 _gasUsed) private {
         if (executions[_id].gasToken != address(0)) {
-            StandardToken token = StandardToken(executions[_id].gasToken);
+            ERC20 token = ERC20(executions[_id].gasToken);
             token.transfer(msg.sender, _gasUsed.mul(executions[_id].gasPrice));
-        } 
+        }
     }
 }
