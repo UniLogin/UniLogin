@@ -1,7 +1,7 @@
 import ethers, {utils, Interface} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
-import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
-import {addressToBytes32, waitForContractDeploy, messageSignature, waitForTransactionReceipt} from './utils/utils';
+import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
+import {addressToBytes32, waitForContractDeploy, calculateMessageSignature, waitForTransactionReceipt} from './utils/utils';
 import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -37,13 +37,12 @@ class EthereumIdentitySDK {
     const key = addressToBytes32(publicKey);
     const {data} = new Interface(Identity.interface).functions.addKey(key, MANAGEMENT_KEY, ECDSA_TYPE);
     const message = {
+      ...transactionDetails,
       to,
       from: to,
       value: 0,
       data,
-      gasToken: transactionDetails.gasToken,
-      gasPrice: transactionDetails.gasPrice,
-      gasLimit: transactionDetails.gasLimit
+      operationType: OPERATION_CALL
     };
     return await this.execute(to, message, privateKey);
   }
@@ -58,7 +57,8 @@ class EthereumIdentitySDK {
       to,
       from: to,
       value: 0,
-      data
+      data,
+      operationType: OPERATION_CALL
     };
     return await this.execute(to, message, privateKey);
   }
@@ -67,13 +67,12 @@ class EthereumIdentitySDK {
     const key = addressToBytes32(address);
     const {data} = new Interface(Identity.interface).functions.removeKey(key, MANAGEMENT_KEY);
     const message = {
+      ...transactionDetails,
       to,
       from: to,
       value: 0,
       data,
-      gasToken: transactionDetails.gasToken,
-      gasPrice: transactionDetails.gasPrice,
-      gasLimit: transactionDetails.gasLimit
+      operationType: OPERATION_CALL
     };
     return await this.execute(to, message, privateKey);
   }
@@ -97,9 +96,9 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
-    const nonce = parseInt(await this.getLastExecutionNonce(contractAddress, wallet), 10);
+    const nonce = parseInt(await this.getLastNonce(contractAddress, wallet), 10);
     message.nonce = nonce;
-    const signature = messageSignature(wallet, message.to, contractAddress, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit);
+    const signature = calculateMessageSignature(wallet, {...message, from: contractAddress});
     const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
@@ -110,16 +109,16 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async getLastExecutionNonce(identityAddress, wallet) {
+  async getLastNonce(identityAddress, wallet) {
     const contract = new ethers.Contract(identityAddress, Identity.interface, wallet);
-    return await contract.executionNonce();
+    return await contract.lastNonce();
   }
 
   getExecutionNonce(emittedEvents) {
-    const [eventTopic] = new Interface(Identity.interface).events.ExecutionRequested.topics;
+    const [eventTopic] = new Interface(Identity.interface).events.ExecutedSigned.topics;
     for (const event of emittedEvents) {
       if (event.topics[0] === eventTopic) {
-        return utils.bigNumberify(event.topics[1]);
+        return utils.bigNumberify(event.topics[2]);
       }
     }
     throw 'Event ExecutionRequested not emitted';

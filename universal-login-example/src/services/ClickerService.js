@@ -1,6 +1,7 @@
 import ethers, {Interface} from 'ethers';
 import Clicker from '../../build/Clicker';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import {OPERATION_CALL} from 'universal-login-contracts';
 
 class ClickerService {
   constructor(identityService, clickerContractAddress, provider, ensService, tokenContractAddress, defaultPaymentOptions) {
@@ -25,6 +26,7 @@ class ClickerService {
       value: 0,
       data: this.clickerContract.interface.functions.press().data,
       gasToken: this.tokenContractAddress,
+      operationType: OPERATION_CALL,
       ...this.defaultPaymentOptions
     };
     await this.identityService.execute(message);

@@ -11,8 +11,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
     using ECRecovery for bytes32;
     using SafeMath for uint;
 
-    event ExecutedSigned(bytes32 signHash, uint nonce, bool success);
-
     uint _lastNonce;
 
     constructor(bytes32 _key) KeyHolder(_key) public {

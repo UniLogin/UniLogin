@@ -4,7 +4,7 @@ pragma solidity ^0.4.24;
 contract IERC1077 {
     enum OperationType {CALL, DELEGATECALL, CREATE}
 
-    event ExecutedSigned(bytes32 executionId, address from, uint nonce, bool success);
+    event ExecutedSigned(bytes32 indexed messageHash, uint indexed nonce, bool indexed success);
 
     function lastNonce() public view returns (uint nonce);
 
