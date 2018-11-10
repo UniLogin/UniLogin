@@ -14,6 +14,7 @@ class IdentityService {
     const identity = await this.storageService.getIdentity();
     if (identity) {
       this.identity = identity;
+      this.emitter.emit('setView', 'MainScreen');
       return true;
     }
     return false;
