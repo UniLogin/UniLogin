@@ -37,7 +37,7 @@ class IdentityService {
             address: this.identity.address
           };
           this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
-          this.storeIdentity(this.identdity);
+          this.storeIdentity(this.identity);
         }
       }
     );
