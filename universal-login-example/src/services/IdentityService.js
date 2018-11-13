@@ -14,6 +14,7 @@ class IdentityService {
     const identity = await this.storageService.getIdentity();
     if (identity) {
       this.identity = identity;
+      this.emitter.emit('setView', 'MainScreen');
       return true;
     }
     return false;
@@ -37,7 +38,7 @@ class IdentityService {
             address: this.identity.address
           };
           this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
-          this.storeIdentity(this.identdity);
+          this.storeIdentity(this.identity);
         }
       }
     );
