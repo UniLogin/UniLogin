@@ -65,10 +65,10 @@ describe('Token Granting Relayer - tests', async () => {
       const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContract.address};
       await sdk.addKey(identityContractAddress, wallet.address, identityPrivateKey, addKeysPaymentOptions);
       const isBalanceGreater = async () => {
-        return (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(utils.parseEther('94')));
+        return (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(utils.parseEther('92')));
       }
       await waitUntil(isBalanceGreater, 5, 50);
-      expect(await tokenContract.balanceOf(identityContractAddress)).to.be.above(utils.parseEther('94'));
+      expect(await tokenContract.balanceOf(identityContractAddress)).to.be.above(utils.parseEther('92'));
     })
   });
 

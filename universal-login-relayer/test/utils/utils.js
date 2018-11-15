@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
-import {messageSignature, addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
-import {utils, Wallet, Interface} from 'ethers';
+import {addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
+import {utils, Interface} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import ERC725ApprovalScheme from 'universal-login-contracts/build/ERC725ApprovalScheme';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
@@ -15,26 +15,12 @@ describe('Tools test', async () => {
   let provider;
   let wallet;
   let otherWallet;
-  const value = utils.parseEther('0.1');
-  const data = utils.hexlify(0);
   const ether = '0x0000000000000000000000000000000000000000';
-  const gasPrice = 1000000000;
   const gasLimit = 1000000;
   
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
-  });
-
-  describe('messageSignature', async () => {
-    it('Should return correct message signature', async () => {
-      const from = wallet.address;
-      const signature = await messageSignature(wallet, wallet.address, from, value, data, 0, ether, gasPrice, gasLimit);
-      const message = utils.arrayify(utils.solidityKeccak256(
-        ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
-        [wallet.address, from, value, data, 0, ether, gasPrice, gasLimit]));
-      expect(Wallet.verifyMessage(message, signature)).to.eq(wallet.address);
-    });  
   });
 
   describe('hasEnoughToken', async () => {

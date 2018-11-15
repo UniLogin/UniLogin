@@ -3,10 +3,9 @@ import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import {waitForContractDeploy, messageSignature} from '../../../lib/utils/utils';
+import calculateMessageSignature, {waitForContractDeploy} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
-import defaultPaymentOptions from '../../../lib/config/defaultPaymentOptions';
 
 chai.use(chaiHttp);
 
@@ -37,31 +36,31 @@ describe('Relayer - Identity routes', async () => {
   });
 
   describe('Execute', async () => {
-    let expectedBalance;
     let token;
 
     before(async () => {
-      await wallet.send(contract.address, 100000);
-      expectedBalance = (await otherWallet.getBalance()).add(10);
+      await wallet.send(contract.address, utils.parseEther('1.0'));
       token = await deployContract(wallet, MockToken, []);
-      await token.transfer(contract.address, utils.parseEther('1'));
+      await token.transfer(contract.address, utils.parseEther('1.0'));
     });
 
     it('Execute signed transfer', async () => {
-      const {gasPrice, gasLimit} = defaultPaymentOptions;
-      const transferSignature = await messageSignature(wallet, otherWallet.address, contract.address, 10, '0x0', 0, token.address, gasPrice, gasLimit);
+      const msg = {from: contract.address, to: otherWallet.address, value: 1000000000, data: [], nonce: 0, gasToken: token.address, gasPrice: 110000000, gasLimit: 1000000, operationType: 0};
+      const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
+      const signature = calculateMessageSignature(wallet, msg);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({
           contractAddress: contract.address,
           to: otherWallet.address,
-          value: 10,
-          data: '0x0',
+          value: 1000000000,
+          data: [],
           nonce: 0,
           gasToken: token.address,
-          gasPrice,
-          gasLimit,
-          signature: transferSignature
+          gasPrice: 110000000,
+          gasLimit: 1000000,
+          operationType: 0,
+          signature
         });
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
     });
