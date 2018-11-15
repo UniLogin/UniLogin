@@ -10,7 +10,7 @@ import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import {utils, Interface} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
-import {addressToBytes32} from '../../lib/utils/utils';
+import {addressToBytes32, waitForContractDeploy} from '../../lib/utils/utils';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -23,8 +23,12 @@ export default async function basicIdentityService(wallet) {
   hooks.addListener('created', callback);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
+  const transaction = await identityService.create(wallet.address, 'alex.mylogin.eth');
+  const contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
+  await wallet.send(contract.address, utils.parseEther('1.0'));
+  await mockToken.transfer(contract.address, utils.parseEther('1.0'));
   const [,otherWallet] = await getWallets(provider);
-  return {wallet, ensService, provider, identityService, callback, mockToken, mockContract, authorisationService, otherWallet};
+  return {wallet, ensService, provider, identityService, callback, mockToken, mockContract, authorisationService, contract, otherWallet};
 }
 
 export const transferMessage = {
