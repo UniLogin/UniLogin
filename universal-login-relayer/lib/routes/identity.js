@@ -1,20 +1,28 @@
 import express from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 
-export const create = (identityService) => async (req, res) => {
+export const create = (identityService) => async (req, res, next) => {
   const {managementKey, ensName} = req.body;
-  const transaction = await identityService.create(managementKey, ensName);
-  res.status(201)
-    .type('json')
-    .send(JSON.stringify({transaction}));
+  try {
+    const transaction = await identityService.create(managementKey, ensName);
+    res.status(201)
+      .type('json')
+      .send(JSON.stringify({transaction}));
+  } catch (err) {
+    next(err);
+  }
 };
 
-export const execution = (identityService) => async (req, res) => {
+export const execution = (identityService) => async (req, res, next) => {
   const {contractAddress, ...message} = req.body;
-  const transaction = await identityService.executeSigned(contractAddress, message);
-  res.status(201)
-    .type('json')
-    .send(JSON.stringify({transaction}));
+  try {
+    const transaction = await identityService.executeSigned(contractAddress, message);
+    res.status(201)
+      .type('json')
+      .send(JSON.stringify({transaction}));
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default (identityService) => {

@@ -42,8 +42,12 @@ class Login extends Component {
       await this.identityService.connect(label);
     } else {
       emitter.emit('setView', 'CreatingID');
-      await this.identityService.createIdentity(identity);
-      emitter.emit('setView', 'Greeting', {greetMode: 'created'});
+      try {
+        await this.identityService.createIdentity(identity);
+        emitter.emit('setView', 'Greeting', {greetMode: 'created'});
+      } catch (err) {
+        emitter.emit('setView', 'Failure', {error: err.message});
+      }
     }
   }
 

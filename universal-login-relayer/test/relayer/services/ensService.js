@@ -13,6 +13,11 @@ describe('Relayer - ENSService', async () => {
         registrarAddress: '0x1',
         resolverAddress: '0x2',
         privateKey: '0x3'
+      },
+      'universal-id.eth': {
+        registrarAddress: '0x1',
+        resolverAddress: '0x2',
+        privateKey: '0x3'
       }
     };
     ensService = new ENSService('0x4', ensRegistrars);
@@ -48,8 +53,14 @@ describe('Relayer - ENSService', async () => {
       expect(ensService.findRegistrar('universal-id.eth')).to.deep.eq(ensRegistrars['universal-id.eth']);
     });
 
-    it('return undefined if not found', async () => {
-      expect(ensService.findRegistrar('whatever.non-existing-id.eth')).to.be.undefined;
+    it('return null if not found', async () => {
+      expect(ensService.findRegistrar('whatever.non-existing-id.eth')).to.be.null;
+    });
+  });
+
+  describe('argsFor', () => {
+    it('return null if not found', async () => {
+      expect(ensService.argsFor('whatever.non-existing-id.eth')).to.be.null;
     });
   });
 });

@@ -12,6 +12,13 @@ import {EventEmitter} from 'fbemitter';
 
 const defaultPort = 3311;
 
+// eslint-disable-next-line no-unused-vars
+function errorHandler (err, req, res, next) {
+  res.status(500)
+    .type('json')
+    .send(JSON.stringify({error: err.toString()}));
+}
+
 class Relayer {
   constructor(config, provider = '') {
     this.port = config.port || defaultPort;
@@ -34,6 +41,7 @@ class Relayer {
     this.app.use('/identity', IdentityRouter(this.identityService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
+    this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
   }
 
