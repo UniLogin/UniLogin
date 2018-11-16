@@ -68,6 +68,10 @@ describe('Relayer - IdentityService', async () => {
         await identityService.executeSigned(contract.address, {...msg, signature});
         expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       });
+
+      it('should fail with not existing ENS name', async () => {
+        expect(identityService.create(managementKey.address, 'alex.non-existing-id.eth')).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
+      });
     });
 
     describe('Add Key', async () => {

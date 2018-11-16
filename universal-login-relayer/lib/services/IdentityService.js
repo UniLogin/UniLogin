@@ -19,16 +19,19 @@ class IdentityService {
     const key = addressToBytes32(managementKey);
     const bytecode = `0x${Identity.bytecode}`;
     const ensArgs = this.ensService.argsFor(ensName);
-    const args = [key, ...ensArgs];
-    const deployTransaction = {
-      value: utils.parseEther('0.1'),
-      ...defaultDeployOptions,
-      ...overrideOptions,
-      ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
-    };
-    const transaction = await this.wallet.sendTransaction(deployTransaction);
-    this.hooks.emit('created', transaction);
-    return transaction;
+    if (ensArgs !== null) {
+      const args = [key, ...ensArgs];
+      const deployTransaction = {
+        value: utils.parseEther('0.1'),
+        ...defaultDeployOptions,
+        ...overrideOptions,
+        ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
+      };
+      const transaction = await this.wallet.sendTransaction(deployTransaction);
+      this.hooks.emit('created', transaction);
+      return transaction;
+    }
+    throw new Error('domain not existing / not universal ID compatible');
   }
 
   async executeSigned(contractAddress, message) {

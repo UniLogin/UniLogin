@@ -30,7 +30,7 @@ class EthereumIdentitySDK {
       const contract = await waitForContractDeploy(this.provider, Identity, responseJson.transaction.hash);
       return [privateKey, contract.address];
     }
-    throw new Error(`${response.status}`);
+    throw new Error(`${responseJson.error}`);
   }
 
   async addKey(to, publicKey, privateKey, transactionDetails) {
