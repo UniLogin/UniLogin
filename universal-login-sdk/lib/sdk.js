@@ -1,7 +1,8 @@
 import ethers, {utils, Interface} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
-import {addressToBytes32, waitForContractDeploy, calculateMessageSignature, waitForTransactionReceipt} from './utils/utils';
+import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
+import calculateMessageSignature from 'universal-login-contracts/lib/calculateMessageSignature';
 import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -96,9 +97,9 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const wallet = new ethers.Wallet(privateKey, this.provider);
-    const nonce = parseInt(await this.getLastNonce(contractAddress, wallet), 10);
+    const nonce = parseInt(await this.getNonce(contractAddress, wallet), 10);
     message.nonce = nonce;
-    const signature = calculateMessageSignature(wallet, {...message, from: contractAddress});
+    const signature = calculateMessageSignature(privateKey, {...message, from: contractAddress});
     const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
@@ -109,7 +110,7 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async getLastNonce(identityAddress, wallet) {
+  async getNonce(identityAddress, wallet) {
     const contract = new ethers.Contract(identityAddress, Identity.interface, wallet);
     return await contract.lastNonce();
   }

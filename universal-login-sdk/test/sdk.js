@@ -117,10 +117,10 @@ describe('SDK - integration', async () => {
     describe('Last execution nonce', async () => {
       it('should return correct execution nonce', async () => {
         const wallet = new ethers.Wallet(privateKey, provider);
-        const executionNonce = await sdk.getLastNonce(identityAddress, wallet);
+        const executionNonce = await sdk.getNonce(identityAddress, wallet);
         expect(executionNonce).to.eq(3);
         await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: token.address, gasPrice, gasLimit});
-        expect(await sdk.getLastNonce(identityAddress, wallet)).to.eq(executionNonce.add(1));
+        expect(await sdk.getNonce(identityAddress, wallet)).to.eq(executionNonce.add(1));
       });
     });
 

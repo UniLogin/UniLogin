@@ -3,9 +3,11 @@ import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/index';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import calculateMessageSignature, {waitForContractDeploy} from '../../../lib/utils/utils';
+import {waitForContractDeploy} from '../../../lib/utils/utils';
+import calculateMessageSignature from 'universal-login-contracts/lib/calculateMessageSignature';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
+import {OPERATION_CALL} from 'universal-login-contracts';
 
 chai.use(chaiHttp);
 
@@ -45,9 +47,9 @@ describe('Relayer - Identity routes', async () => {
     });
 
     it('Execute signed transfer', async () => {
-      const msg = {from: contract.address, to: otherWallet.address, value: 1000000000, data: [], nonce: 0, gasToken: token.address, gasPrice: 110000000, gasLimit: 1000000, operationType: 0};
+      const msg = {from: contract.address, to: otherWallet.address, value: 1000000000, data: [], nonce: 0, gasToken: token.address, gasPrice: 110000000, gasLimit: 1000000, operationType: OPERATION_CALL};
       const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
-      const signature = calculateMessageSignature(wallet, msg);
+      const signature = calculateMessageSignature(wallet.privateKey, msg);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({
@@ -59,7 +61,7 @@ describe('Relayer - Identity routes', async () => {
           gasToken: token.address,
           gasPrice: 110000000,
           gasLimit: 1000000,
-          operationType: 0,
+          operationType: OPERATION_CALL,
           signature
         });
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
