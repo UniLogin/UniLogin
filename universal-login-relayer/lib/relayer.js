@@ -12,10 +12,11 @@ import {EventEmitter} from 'fbemitter';
 
 const defaultPort = 3311;
 
+// eslint-disable-next-line no-unused-vars
 function errorHandler (err, req, res, next) {
   res.status(500)
     .type('json')
-    .send(JSON.stringify({ error: err.toString() }));
+    .send(JSON.stringify({error: err.toString()}));
 }
 
 class Relayer {

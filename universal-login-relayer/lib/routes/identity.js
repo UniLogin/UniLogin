@@ -13,7 +13,7 @@ export const create = (identityService) => async (req, res, next) => {
   }
 };
 
-export const execution = (identityService) => async (req, res) => {
+export const execution = (identityService) => async (req, res, next) => {
   const {contractAddress, ...message} = req.body;
   try {
     const transaction = await identityService.executeSigned(contractAddress, message);

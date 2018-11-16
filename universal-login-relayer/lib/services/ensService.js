@@ -24,7 +24,9 @@ class ENSService {
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${domain}`);
     const registrarConfig = this.findRegistrar(ensName);
-    if (registrarConfig === null) return null;
+    if (registrarConfig === null) {
+      return null;
+    }
     const {resolverAddress} = registrarConfig;
     const {registrarAddress} = registrarConfig;
     return [hashLabel, ensName, node, this.ensAddress, registrarAddress, resolverAddress];

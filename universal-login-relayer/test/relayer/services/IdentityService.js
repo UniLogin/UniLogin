@@ -53,6 +53,12 @@ describe('Relayer - IdentityService', async () => {
     it('should emit created event', async () => {
       expect(callback).to.be.calledWith(sinon.match(transaction));
     });
+
+    it('should fail with not existing ENS name', async () => {
+      const managementKeys = await contract.getKeysByPurpose(MANAGEMENT_KEY);
+      expect(managementKeys).to.have.lengthOf(1);
+      await expect(identityService.create(managementKeys[0], 'alex.non-existing-id.eth')).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
+    });
   });
 
   describe('Execute signed', async () => {
@@ -67,10 +73,6 @@ describe('Relayer - IdentityService', async () => {
         const signature = calculateMessageSignature(wallet, msg);
         await identityService.executeSigned(contract.address, {...msg, signature});
         expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
-      });
-
-      it('should fail with not existing ENS name', async () => {
-        expect(identityService.create(managementKey.address, 'alex.non-existing-id.eth')).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
       });
     });
 
