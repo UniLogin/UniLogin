@@ -69,7 +69,9 @@ describe('SDK - integration', async () => {
         expect(response.config.ensAddress).to.eq(expectedEnsAddress);
       });
 
-      xit('should throw InvalidENS exception if invalid ENS name');
+      it('should throw InvalidENS exception if invalid ENS name', async () => {
+        await expect(sdk.create('alex.non-existing-id.eth')).to.be.eventually.rejectedWith('Error: domain not existing / not universal ID compatible');
+      });
     });
 
     describe('Execute signed message', async () => {
@@ -102,7 +104,7 @@ describe('SDK - integration', async () => {
           gasPrice,
           gasLimit: utils.parseEther('25').toString() 
         };
-        expect(sdk.execute(identityAddress, message, privateKey)).to.be.eventually.rejected;
+        await expect(sdk.execute(identityAddress, message, privateKey)).to.be.eventually.rejected;
       });
     });
 
