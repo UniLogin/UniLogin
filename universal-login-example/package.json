@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "3box": "^1.0.5",
+    "classnames": "^2.2.6",
     "components": "^0.1.0",
     "date-fns": "^1.29.0",
     "detect-browser": "^3.0.1",

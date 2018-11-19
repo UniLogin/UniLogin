@@ -1,6 +1,31 @@
 .main-screen
   padding-bottom: 100px
 
+.main-content
+  display: none
+  &.active
+    display: block
+
+.page-nav
+  display: flex
+  justify-content: center
+  padding: 15px 7.5px
+  a.page-nav-button
+    margin: 0 7.5px
+    width: 100px
+    height: 40px
+    border-radius: 5px
+    background: black
+    color: white
+    font-size: 18px
+    display: flex
+    align-items: center
+    justify-content: center
+    opacity: 0.5
+    cursor: pointer
+    &.active
+      opacity: 1
+
 .last-click-text
   max-width: 320px
   height: 120px
@@ -39,3 +64,44 @@
 .user-inline .identicon
   position: absolute
   left: 0
+
+.threebox .title
+  font-size: 24px
+  font-weight: bold
+
+.threebox .threebox-input
+  width: 100%
+  max-width: 500px
+  p
+    text-align: left
+    font-size: 14px
+    font-weight: bold
+    width: 100%
+    display: block
+  input
+    font-size: 18px
+    border: none
+    border-bottom: 2px solid black
+    width: 100%
+    height: 40px
+    margin-bottom: 15px
+
+.threebox .threebox-submit
+  width: 100%
+  max-width: 500px
+  display: flex
+  align-items: center
+  justify-content: flex-end
+  a
+    min-width: 100px
+    padding: 0 15px
+    height: 40px
+    border-radius: 5px
+    background: black
+    color: white
+    font-size: 18px
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+    margin-left: 15px

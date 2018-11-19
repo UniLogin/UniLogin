@@ -105,7 +105,7 @@ class Deployer {
   }
 
   startRelayer() {
-    this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider);    
+    this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider);
     this.env.RELAYER_URL = `http://${args.httpAddress}:${this.config.port}`;
     this.relayer.start();
   }

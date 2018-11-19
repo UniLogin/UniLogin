@@ -11,6 +11,7 @@ import IdentitySelectionService from './IdentitySelectionService';
 import BackupService from './BackupService';
 import GreetingService from './GreetingService';
 import StorageService from './StorageService';
+import Threebox from './Threebox';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 
@@ -30,6 +31,7 @@ class Services {
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
     this.identitySelectionService = new IdentitySelectionService(this.sdk, config.ensDomains);
     this.greetingService = new GreetingService(this.provider);
+    this.threeboxService = new Threebox(this.provider);
   }
 
   start() {

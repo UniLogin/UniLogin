@@ -62,7 +62,7 @@ class MainScreen extends Component {
           <RequestsBadge setView={this.setView.bind(this)} services={this.props.services}/>
           <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
-        <MainScreenView clicksLeft={this.state.clicksLeft} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />
+        <MainScreenView clicksLeft={this.state.clicksLeft} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} services={this.props.services} />
       </div>
     );
   }
