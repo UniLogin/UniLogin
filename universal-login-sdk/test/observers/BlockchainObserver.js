@@ -5,7 +5,7 @@ import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, solidity, getWallets, deployContract} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
-import DEFAULT_PAYMENT_OPTIONS from '../../lib/config';
+import {DEFAULT_PAYMENT_OPTIONS} from '../../lib/config';
 import MockToken from '../../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);
