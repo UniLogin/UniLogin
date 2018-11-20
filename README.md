@@ -20,6 +20,17 @@ This repository is organised as monorepo.
 - [SDK](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
 - [Example](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
 
+You can find below the diagram showing the internal dependencies among the Universal Login subsystems and the relevant external dependencies
+
+![Diagrams](./modeling/subsystems.png)
+
+The key interfaces defined within the Universal Login system are:
+
+- ERC1077/ERC1078 IF: this interface is made up of ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078) smart contracts ABI
+- SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the Relayer subsystem and route their meta transactions
+- RELAYER IF: this interface defines the customizable behavior of the Relayer subsystem, see [TokenGrantingRelayer](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/src/relayer/TokenGrantingRelayer.js) for an example
+
+
 ## Quick start
 
 ## Hacking
@@ -38,8 +49,11 @@ To run example:
 
 ```sh
 cd universal-login-example
-yarn dev:start
+yarn dev:start [hostAddress]
 ```
+
+with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).
+
 [manual option](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md)
 
 
