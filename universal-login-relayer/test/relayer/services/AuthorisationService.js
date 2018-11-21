@@ -34,7 +34,7 @@ describe('Authorisation Service', async () => {
     request = {
       identityAddress: identityContract.address,
       key: otherWallet.address,
-      label: ' '
+      label: 'Some label'
     };
     authorisationService.addRequest(request);
   });
@@ -57,7 +57,7 @@ describe('Authorisation Service', async () => {
     const secondRequest = {
       identityAddress: identityContract.address,
       key: otherWallet.address,
-      label: ' '
+      label: 'Some label'
     };
     const {key, label} = request;
     const key2 = secondRequest.key;
@@ -90,17 +90,17 @@ describe('Authorisation Service', async () => {
 
     it('2 pending authorisations', async () => {
       const {key} = request;
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: ' '});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: 'Some label'});
       await authorisationService.removeRequest(identityContract.address, key);
-      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key: managementKey.address, label: ' ', index: 1}]);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key: managementKey.address, label: 'Some label', index: 1}]);
     });
 
     it('should remove correct pending authorisations', async () => {
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: ' '});
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: ensDeployer.address, label: ' '});
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: wallet.address, label: ' '});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: 'Some label'});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: ensDeployer.address, label: 'Some label'});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: wallet.address, label: 'Some label'});
       await authorisationService.removeRequest(identityContract.address, ensDeployer.address);
-      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.not.include([{key: ensDeployer.address, label: ' ', index: 2}]);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.not.include([{key: ensDeployer.address, label: 'Some label', index: 2}]);
     });
   });
 });

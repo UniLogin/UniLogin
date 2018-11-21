@@ -20,10 +20,9 @@ class IdentityService {
     return false;
   }
 
-  async connect(label) {
+  async connect() {
     this.privateKey = await this.sdk.connect(
-      this.identity.address,
-      label
+      this.identity.address
     );
     const {address} = new Wallet(this.privateKey);
     this.subscription = this.sdk.subscribe(

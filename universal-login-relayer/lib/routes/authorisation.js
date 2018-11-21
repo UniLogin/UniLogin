@@ -1,8 +1,18 @@
 import express from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
+import geoip from 'geoip-lite';
+
 
 export const request = (authorisationService) => async (req, res) => {
-  const requestAuthorisation = req.body;
+  const label = {
+    ipAddress: req.ip,
+    name: req.useragent.platform,
+    city: geoip.lookup(req.ip) ? geoip.lookup(req.ip).city : '',
+    os: req.useragent.os,
+    browser: req.useragent.browser,
+    time: (new Date()).toLocaleTimeString()
+  };
+  const requestAuthorisation = {...req.body, label};
   await authorisationService.addRequest(requestAuthorisation);
   res.status(201)
     .type('json')
