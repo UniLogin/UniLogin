@@ -14,7 +14,7 @@ describe('Relayer - Authorisation routes', async () => {
   let otherWallet;
   let contract;
 
-  before(async () => {
+  beforeEach(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
@@ -34,16 +34,22 @@ describe('Relayer - Authorisation routes', async () => {
       .post('/authorisation')
       .send({
         identityAddress: contract.address,
-        key: wallet.address,
-        label: ' '
+        key: wallet.address
       });
     expect(result.status).to.eq(201);
   });
 
   it('get pending authorisations', async () => {
+    await chai.request(relayer.server)
+      .post('/authorisation')
+      .send({
+        identityAddress: contract.address,
+        key: wallet.address
+      });
     const result = await chai.request(relayer.server)
       .get(`/authorisation/${contract.address}`);
-    expect(result.body.response).to.deep.eq([{key:wallet.address, label: ' ', index: 0}]);
+    expect(result.body.response).to.have.lengthOf(1);
+    expect(result.body.response[0]).to.deep.include({key: wallet.address});
   });
 
   it('get non-existing pending authorisations', async () => {

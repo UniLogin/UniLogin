@@ -139,13 +139,13 @@ class EthereumIdentitySDK {
     return resolveName(this.provider, ensAddress, identity);
   }
 
-  async connect(identityAddress, label = '') {
+  async connect(identityAddress) {
     const privateKey = this.generatePrivateKey();
     const wallet = new ethers.Wallet(privateKey, this.provider);
     const key = wallet.address;
     const url = `${this.relayerUrl}/authorisation`;
     const method = 'POST';
-    const body = JSON.stringify({identityAddress, key, label});
+    const body = JSON.stringify({identityAddress, key});
     const response = await fetch(url, {headers, method, body});
     if (response.status === 201) {
       return privateKey;

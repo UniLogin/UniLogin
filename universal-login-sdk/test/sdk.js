@@ -161,7 +161,7 @@ describe('SDK - integration', async () => {
           const privateKey = await sdk.connect(identityAddress);
           const wallet = new ethers.Wallet(privateKey);
           const response = await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress);
-          expect(response[0]).to.deep.include({key: wallet.address, label: ''});
+          expect(response[0]).to.deep.include({key: wallet.address});
         });
 
         it('should return private key', async () => {
