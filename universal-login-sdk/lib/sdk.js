@@ -43,7 +43,7 @@ class EthereumIdentitySDK {
       from: to,
       data
     };
-    return await this.execute(to, message, privateKey);
+    return await this.execute(message, privateKey);
   }
 
   async addKeys(to, publicKeys, privateKey, transactionDetails) {
@@ -57,7 +57,7 @@ class EthereumIdentitySDK {
       from: to,
       data
     };
-    return await this.execute(to, message, privateKey);
+    return await this.execute(message, privateKey);
   }
 
   async removeKey(to, address, privateKey, transactionDetails) {
@@ -71,7 +71,7 @@ class EthereumIdentitySDK {
       data,
       operationType: OPERATION_CALL
     };
-    return await this.execute(to, message, privateKey);
+    return await this.execute(message, privateKey);
   }
 
   generatePrivateKey() {
@@ -89,19 +89,17 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async execute(contractAddress, message, privateKey) {
+  async execute(message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const msg = {
       ...this.defaultPaymentOptions, 
       ...DEFAULTS,
       ...message, 
-      from: contractAddress, 
-      nonce: message.nonce || parseInt(await this.getNonce(contractAddress, privateKey), 10)
+      nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
     };
-    
     const signature = calculateMessageSignature(privateKey, msg);
-    const body = JSON.stringify({...msg, contractAddress, signature});
+    const body = JSON.stringify({...msg, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {

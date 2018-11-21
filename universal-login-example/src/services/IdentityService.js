@@ -94,7 +94,6 @@ class IdentityService {
 
   async execute(message) {
     await this.sdk.execute(
-      this.identity.address,
       message,
       this.identity.privateKey
     );

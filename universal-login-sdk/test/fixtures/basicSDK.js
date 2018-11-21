@@ -31,7 +31,7 @@ export const transferMessage = {
   operationType: OPERATION_CALL
 };
 
-export const addKeyMessage = {
+export const addKeyDetails = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',

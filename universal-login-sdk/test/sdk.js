@@ -4,7 +4,7 @@ import {solidity} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import TestHelper from 'universal-login-contracts/test/testHelper';
-import basicSDK, {transferMessage, addKeyMessage} from './fixtures/basicSDK';
+import basicSDK, {transferMessage, addKeyDetails} from './fixtures/basicSDK';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -23,7 +23,7 @@ describe('SDK - integration', async () => {
 
   beforeEach(async () => {
     ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, identityAddress, relayer} = await testHelper.load(basicSDK));
-    message = {...transferMessage, gasToken: mockToken.address};
+    message = {...transferMessage, from: identityAddress, gasToken: mockToken.address};
   });
 
   describe('Create', async () => {
@@ -52,27 +52,27 @@ describe('SDK - integration', async () => {
     describe('Execute signed message', async () => {
       it('Should execute signed message', async () => {
         const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-        await sdk.execute(identityAddress, {...message, to: otherWallet.address}, privateKey);
+        await sdk.execute({...message, to: otherWallet.address}, privateKey);
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 
       it('Should return correct nonce', async () => {
-        expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(0);
-        expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(1);
-        expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(2);
-        expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(3);
-        expect(await sdk.execute(identityAddress, message, privateKey)).to.eq(4);
+        expect(await sdk.execute(message, privateKey)).to.eq(0);
+        expect(await sdk.execute(message, privateKey)).to.eq(1);
+        expect(await sdk.execute(message, privateKey)).to.eq(2);
+        expect(await sdk.execute(message, privateKey)).to.eq(3);
+        expect(await sdk.execute(message, privateKey)).to.eq(4);
       });
 
       it('when not enough tokens ', async () => {
-        message = {...transferMessage, gasLimit: utils.parseEther('25').toString()};
-        await expect(sdk.execute(identityAddress, message, privateKey)).to.be.eventually.rejected;
+        message = {...transferMessage, from: identityAddress, gasLimit: utils.parseEther('25').toString()};
+        await expect(sdk.execute(message, privateKey)).to.be.eventually.rejected;
       });
     });
 
     describe('Add key', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {...addKeyMessage, gasToken: mockToken.address})).to.eq(0);
+        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {...addKeyDetails, gasToken: mockToken.address})).to.eq(0);
       });
     });
 
@@ -80,14 +80,14 @@ describe('SDK - integration', async () => {
       it('getNonce should return correct nonce', async () => {
         const executionNonce = await sdk.getNonce(identityAddress, privateKey);
         expect(executionNonce).to.eq(0);
-        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {...addKeyMessage, gasToken: mockToken.address});
+        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {...addKeyDetails, gasToken: mockToken.address});
         expect(await sdk.getNonce(identityAddress, privateKey)).to.eq(executionNonce.add(1));
       });
     });
 
     describe('Add keys', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, {...addKeyMessage, gasToken: mockToken.address})).to.eq(0);
+        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, {...addKeyDetails, gasToken: mockToken.address})).to.eq(0);
       });
     });
 

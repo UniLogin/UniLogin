@@ -33,24 +33,24 @@ class IdentityService {
     throw new Error('domain not existing / not universal ID compatible');
   }
 
-  async executeSigned(contractAddress, message) {
-    if (await hasEnoughToken(message.gasToken, contractAddress, message.gasLimit, this.provider)) {
+  async executeSigned(message) {
+    if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
       const {data} = new Interface(Identity.interface).functions.executeSigned(message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature);
       const transaction = {
         value: 0,
-        to: contractAddress,
+        to: message.from,
         data,
         ...defaultDeployOptions
       };
       const estimateGas = await this.wallet.estimateGas(transaction);
       if (message.gasLimit >= estimateGas) {
-        if (message.to === contractAddress && isAddKeyCall(message.data)) {
+        if (message.to === message.from && isAddKeyCall(message.data)) {
           const key = getKeyFromData(message.data);
-          await this.authorisationService.removeRequest(contractAddress, key);
+          await this.authorisationService.removeRequest(message.from, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('added', sentTransaction);
           return sentTransaction;
-        } else if (message.to === contractAddress && isAddKeysCall(message.data)) {
+        } else if (message.to === message.from && isAddKeysCall(message.data)) {
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('keysAdded', sentTransaction);
           return sentTransaction;
