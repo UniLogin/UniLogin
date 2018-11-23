@@ -47,21 +47,23 @@ describe('Relayer - Identity routes', async () => {
     });
 
     it('Execute signed transfer', async () => {
-      const msg = {from: contract.address, to: otherWallet.address, value: 1000000000, data: [], nonce: 0, gasToken: token.address, gasPrice: 110000000, gasLimit: 1000000, operationType: OPERATION_CALL};
+      const msg = {
+        from: contract.address, 
+        to: otherWallet.address, 
+        value: 1000000000, 
+        data: [], 
+        nonce: 0, 
+        gasToken: token.address, 
+        gasPrice: 110000000, 
+        gasLimit: 1000000, 
+        operationType: OPERATION_CALL
+      };
       const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
       const signature = calculateMessageSignature(wallet.privateKey, msg);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({
-          contractAddress: contract.address,
-          to: otherWallet.address,
-          value: 1000000000,
-          data: [],
-          nonce: 0,
-          gasToken: token.address,
-          gasPrice: 110000000,
-          gasLimit: 1000000,
-          operationType: OPERATION_CALL,
+          ...msg,
           signature
         });
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);

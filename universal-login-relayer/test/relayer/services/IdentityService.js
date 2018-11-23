@@ -61,14 +61,14 @@ describe('Relayer - IdentityService', async () => {
     it('Error when not enough tokens', async () => {
       const message = {...msg, gasLimit: utils.parseEther('2.0')};
       const signature = calculateMessageSignature(wallet.privateKey, message);
-      expect(identityService.executeSigned(identity.address, {...message, signature})).to.be.eventually.rejectedWith('Not enough tokens');
+      expect(identityService.executeSigned({...message, signature})).to.be.eventually.rejectedWith('Not enough tokens');
     });
 
     describe('Transfer', async () => {
       it('successful execution of transfer', async () => {
         const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
         const signature = calculateMessageSignature(wallet.privateKey, msg);
-        await identityService.executeSigned(identity.address, {...msg, signature});
+        await identityService.executeSigned({...msg, signature});
         expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       });
     });
@@ -78,7 +78,7 @@ describe('Relayer - IdentityService', async () => {
         msg = {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = calculateMessageSignature(wallet.privateKey, msg);
 
-        await identityService.executeSigned(identity.address, {...msg, signature});
+        await identityService.executeSigned({...msg, signature});
         const key = await identity.getKey(addressToBytes32(otherWallet.address));
         expect(key.purpose).to.eq(ACTION_KEY);
       });
@@ -90,7 +90,7 @@ describe('Relayer - IdentityService', async () => {
           msg = {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
           const signature = calculateMessageSignature(wallet.privateKey, msg);
           
-          await identityService.executeSigned(identity.address, {...msg, signature});
+          await identityService.executeSigned({...msg, signature});
           expect(await authorisationService.getPendingAuthorisations(identity.address)).to.deep.eq([]);
         });
       });
@@ -101,7 +101,7 @@ describe('Relayer - IdentityService', async () => {
         const message =  {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = calculateMessageSignature(wallet.privateKey, message);
         
-        await identityService.executeSigned(identity.address, {...message, signature});
+        await identityService.executeSigned({...message, signature});
       });
 
       it('should remove key', async () => {
@@ -109,7 +109,7 @@ describe('Relayer - IdentityService', async () => {
         const message =  {...removeKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = calculateMessageSignature(wallet.privateKey, message);
         
-        await identityService.executeSigned(identity.address, {...message, signature});
+        await identityService.executeSigned({...message, signature});
         expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(0);
       });
     });

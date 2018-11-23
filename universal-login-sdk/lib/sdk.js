@@ -7,15 +7,15 @@ import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
-import DEFAULT_PAYMENT_OPTIONS from './config';
+import {MESSAGE_DEFAULTS} from './config';
 
 class EthereumIdentitySDK {
-  constructor(relayerUrl, provider, paymentOptions) {
-    this.provider = provider;
+  constructor(relayerUrl, providerOrUrl, paymentOptions) {
+    this.provider = typeof(providerOrUrl) === 'string' ? new ethers.JsonRpcProvider(providerOrUrl) : providerOrUrl;
     this.relayerUrl = relayerUrl;
     this.relayerObserver = new RelayerObserver(relayerUrl);
-    this.blockchainObserver = new BlockchainObserver(provider);
-    this.defaultPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, ...paymentOptions};
+    this.blockchainObserver = new BlockchainObserver(this.provider);
+    this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
   async create(ensName) {
@@ -41,11 +41,9 @@ class EthereumIdentitySDK {
       ...transactionDetails,
       to,
       from: to,
-      value: 0,
-      data,
-      operationType: OPERATION_CALL
+      data
     };
-    return await this.execute(to, message, privateKey);
+    return await this.execute(message, privateKey);
   }
 
   async addKeys(to, publicKeys, privateKey, transactionDetails) {
@@ -57,11 +55,9 @@ class EthereumIdentitySDK {
       ...transactionDetails,
       to,
       from: to,
-      value: 0,
-      data,
-      operationType: OPERATION_CALL
+      data
     };
-    return await this.execute(to, message, privateKey);
+    return await this.execute(message, privateKey);
   }
 
   async removeKey(to, address, privateKey, transactionDetails) {
@@ -75,7 +71,7 @@ class EthereumIdentitySDK {
       data,
       operationType: OPERATION_CALL
     };
-    return await this.execute(to, message, privateKey);
+    return await this.execute(message, privateKey);
   }
 
   generatePrivateKey() {
@@ -93,24 +89,27 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async execute(contractAddress, message, privateKey) {
+  async execute(message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
-    const wallet = new ethers.Wallet(privateKey, this.provider);
-    const nonce = parseInt(await this.getNonce(contractAddress, wallet), 10);
-    message.nonce = nonce;
-    const signature = calculateMessageSignature(privateKey, {...message, from: contractAddress});
-    const body = JSON.stringify({...this.defaultPaymentOptions, ...message, contractAddress, signature});
+    const finalMessage = {
+      ...this.defaultPaymentOptions, 
+      ...message, 
+      nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
+    };
+    const signature = calculateMessageSignature(privateKey, finalMessage);
+    const body = JSON.stringify({...finalMessage, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
       const receipt = await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
       return this.getExecutionNonce(receipt.logs);
     }
-    throw new Error(`${response.status}`);
+    throw new Error(`${responseJson.error}`);
   }
 
-  async getNonce(identityAddress, wallet) {
+  async getNonce(identityAddress, privateKey) {
+    const wallet = new ethers.Wallet(privateKey, this.provider);
     const contract = new ethers.Contract(identityAddress, Identity.interface, wallet);
     return await contract.lastNonce();
   }

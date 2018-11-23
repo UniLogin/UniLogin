@@ -5,7 +5,7 @@ import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, solidity, getWallets, deployContract} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
-import DEFAULT_PAYMENT_OPTIONS from '../../lib/config';
+import {MESSAGE_DEFAULTS} from '../../lib/config';
 import MockToken from '../../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);
@@ -47,7 +47,7 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
     await blockchainObserver.subscribe('KeyAdded', identityAddress, callback);
-    const addKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.addKey(identityAddress, wallet.address, privateKey, addKeyPaymentOption);
     await blockchainObserver.fetchEvents(identityAddress);
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
@@ -56,7 +56,7 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
     await blockchainObserver.subscribe('KeyRemoved', identityAddress, callback);
-    const removeKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.removeKey(identityAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await blockchainObserver.fetchEvents(identityAddress);
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
