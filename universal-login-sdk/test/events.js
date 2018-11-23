@@ -5,7 +5,7 @@ import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import sinon from 'sinon';
-import {DEFAULT_PAYMENT_OPTIONS} from '../lib/config';
+import {MESSAGE_DEFAULTS} from '../lib/config';
 import MockToken from '../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);
@@ -45,7 +45,7 @@ describe('SDK - events', async () => {
     await sdk.subscribe('KeyAdded', identityAddress, keyCallback);
 
     await sdk.connect(identityAddress);
-    const addKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.addKey(identityAddress, wallet.address, privateKey, addKeyPaymentOption);
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});

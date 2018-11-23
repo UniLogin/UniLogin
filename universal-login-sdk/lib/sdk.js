@@ -7,7 +7,7 @@ import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
-import {DEFAULT_PAYMENT_OPTIONS, DEFAULTS} from './config';
+import {MESSAGE_DEFAULTS} from './config';
 
 class EthereumIdentitySDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
@@ -15,7 +15,7 @@ class EthereumIdentitySDK {
     this.relayerUrl = relayerUrl;
     this.relayerObserver = new RelayerObserver(relayerUrl);
     this.blockchainObserver = new BlockchainObserver(this.provider);
-    this.defaultPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, ...paymentOptions};
+    this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
   async create(ensName) {
@@ -92,21 +92,20 @@ class EthereumIdentitySDK {
   async execute(message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
-    const msg = {
+    const finalMessage = {
       ...this.defaultPaymentOptions, 
-      ...DEFAULTS,
       ...message, 
       nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
     };
-    const signature = calculateMessageSignature(privateKey, msg);
-    const body = JSON.stringify({...msg, signature});
+    const signature = calculateMessageSignature(privateKey, finalMessage);
+    const body = JSON.stringify({...finalMessage, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
       const receipt = await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
       return this.getExecutionNonce(receipt.logs);
     }
-    throw new Error(`${response.status}`);
+    throw new Error(`${responseJson.error}`);
   }
 
   async getNonce(identityAddress, privateKey) {

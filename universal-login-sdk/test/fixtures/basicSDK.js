@@ -3,10 +3,7 @@ import {RelayerUnderTest} from 'universal-login-relayer';
 import {getWallets, deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
-import {DEFAULT_PAYMENT_OPTIONS} from '../../lib/config';
-import {OPERATION_CALL} from 'universal-login-contracts';
-
-const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+import {MESSAGE_DEFAULTS} from '../../lib/config';
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
@@ -23,18 +20,9 @@ export default async function basicIdentityService(wallet) {
 }
 
 export const transferMessage = {
+  ...MESSAGE_DEFAULTS,
   to: '0x0000000000000000000000000000000000000001',
-  value: utils.parseEther('0.5').toString(),
-  gasPrice,
-  gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  value: utils.parseEther('0.5').toString()
 };
 
-export const addKeyDetails = {
-  gasPrice,
-  gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
-};
 

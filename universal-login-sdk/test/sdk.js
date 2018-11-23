@@ -4,7 +4,8 @@ import {solidity} from 'ethereum-waffle';
 import ethers, {utils} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import TestHelper from 'universal-login-contracts/test/testHelper';
-import basicSDK, {transferMessage, addKeyDetails} from './fixtures/basicSDK';
+import basicSDK, {transferMessage} from './fixtures/basicSDK';
+
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -65,14 +66,14 @@ describe('SDK - integration', async () => {
       });
 
       it('when not enough tokens ', async () => {
-        message = {...transferMessage, from: identityAddress, gasLimit: utils.parseEther('25').toString()};
-        await expect(sdk.execute(message, privateKey)).to.be.eventually.rejected;
+        message = {...transferMessage, gasToken: mockToken.address, from: identityAddress, gasLimit: utils.parseEther('25').toString()};
+        await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Error: Not enough tokens');
       });
     });
 
     describe('Add key', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {...addKeyDetails, gasToken: mockToken.address})).to.eq(0);
+        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: mockToken.address})).to.eq(0);
       });
     });
 
@@ -80,14 +81,14 @@ describe('SDK - integration', async () => {
       it('getNonce should return correct nonce', async () => {
         const executionNonce = await sdk.getNonce(identityAddress, privateKey);
         expect(executionNonce).to.eq(0);
-        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {...addKeyDetails, gasToken: mockToken.address});
+        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
         expect(await sdk.getNonce(identityAddress, privateKey)).to.eq(executionNonce.add(1));
       });
     });
 
     describe('Add keys', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, {...addKeyDetails, gasToken: mockToken.address})).to.eq(0);
+        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address})).to.eq(0);
       });
     });
 
