@@ -4,7 +4,6 @@ import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, solidity} from 'ethereum-waffle';
-import ethers from 'ethers';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -37,10 +36,9 @@ describe('SDK: RelayerObserver', async () => {
   it('should emit AuthorisationsChanged event if connected called', async () => {
     const callback = sinon.spy();
     await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
-    const privateKey = await sdk.connect(identityAddress, 'Some label');
-    const {address} = new ethers.Wallet(privateKey);
+    await sdk.connect(identityAddress);
     await relayerObserver.checkAuthorisationRequests();
-    expect(callback).to.have.been.calledWith(sinon.match([{index: 0, key: address, label: 'Some label'}]));
+    expect(callback).to.have.been.called;
   });
 
   it('observation: no new reuqests', async () => {
@@ -55,10 +53,9 @@ describe('SDK: RelayerObserver', async () => {
     const callback = sinon.spy();
     relayerObserver.start();
     await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
-    const privateKey = await sdk.connect(identityAddress, 'Some label');
-    const {address} = new ethers.Wallet(privateKey);
+    await sdk.connect(identityAddress);
     await relayerObserver.finalizeAndStop();
-    expect(callback).to.have.been.calledWith(sinon.match([{index: 0, key: address, label: 'Some label'}]));
+    expect(callback).to.have.been.called;
   });
 
   it('AuthorisationChanged for multiple identities', async () => {
@@ -69,8 +66,8 @@ describe('SDK: RelayerObserver', async () => {
     await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
     await relayerObserver.subscribe('AuthorisationsChanged', newIdentityAddress, callback);
 
-    await sdk.connect(identityAddress, 'Some label');
-    await sdk.connect(newIdentityAddress, 'Some label');
+    await sdk.connect(identityAddress);
+    await sdk.connect(newIdentityAddress);
 
     await relayerObserver.finalizeAndStop();
     expect(callback).to.have.been.calledTwice;

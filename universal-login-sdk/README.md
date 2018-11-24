@@ -126,15 +126,14 @@ const paymentOptions = {
 Generate and request a new key to be added to an existing identity:
 
 ```js
-const [privateKey, identityAddress] = await sdk.connect(identityAddress, label);
+const [privateKey, identityAddress] = await sdk.connect(identityAddress);
 ```
 
 This function will generate a new private key and send a request to relayer to add a key to identity. The request needs to be confirmed from public key connected to identity at hand.
 
-`connect` function takes two parameters:
+`connect` function takes one parameter:
 
 - `identityAddress` - address of identity to connect
-- `label` - informations about details of connecting attempts
 
 and returns:
 

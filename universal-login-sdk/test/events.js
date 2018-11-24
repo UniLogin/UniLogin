@@ -3,9 +3,9 @@ import sinonChai from 'sinon-chai';
 import EthereumIdentitySDK from 'universal-login-sdk/lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
-import ethers, {utils} from 'ethers';
+import {utils} from 'ethers';
 import sinon from 'sinon';
-import DEFAULT_PAYMENT_OPTIONS from '../lib/config';
+import {MESSAGE_DEFAULTS} from '../lib/config';
 import MockToken from '../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);
@@ -44,14 +44,12 @@ describe('SDK - events', async () => {
     await sdk.subscribe('AuthorisationsChanged', identityAddress, connectionCallback);
     await sdk.subscribe('KeyAdded', identityAddress, keyCallback);
 
-    const secondPrivateKey = await sdk.connect(identityAddress, 'Some label');
-    const {address} = new ethers.Wallet(secondPrivateKey);
-    const addKeyPaymentOption = {...DEFAULT_PAYMENT_OPTIONS, gasToken: token.address};
+    await sdk.connect(identityAddress);
+    const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.addKey(identityAddress, wallet.address, privateKey, addKeyPaymentOption);
-
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
-    expect(connectionCallback).to.have.been.calledWith(sinon.match([{index: 0, key: address, label: 'Some label'}]));
+    expect(connectionCallback).to.have.been.called;
   });
 
   after(async () => {

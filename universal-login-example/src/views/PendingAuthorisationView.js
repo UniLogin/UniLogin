@@ -11,12 +11,12 @@ class PendingAuthorisationView extends Component {
           key={this.props.authorisation.key}
         >
           Someone requested to log into this app from a{' '}
-          <span className="bold">{this.props.authorisation.label.name}</span>{' '}
+          <span className="bold">{this.props.authorisation.label.browser}</span>{' '}
           browser in{' '}
-          <span className="bold">{this.props.authorisation.label.os}</span>,
+          <span className="bold">{this.props.authorisation.label.name}</span>,
           from the IP{' '}
           <span className="bold">
-            {this.props.authorisation.label.ipAddress} (
+            {this.props.authorisation.label.ipAddress === '::1' ? 'localhost' : this.props.authorisation.label.ipAddress} (
             {this.props.authorisation.label.city})
           </span>{' '}
           at <span className="bold">{this.props.authorisation.label.time}</span>

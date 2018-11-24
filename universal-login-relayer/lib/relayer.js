@@ -9,6 +9,7 @@ import ethers from 'ethers';
 import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
+import useragent from 'express-useragent';
 
 const defaultPort = 3311;
 
@@ -30,6 +31,7 @@ class Relayer {
 
   start() {
     this.app = express();
+    this.app.use(useragent.express());
     this.app.use(cors({
       origin : '*',
       credentials: true
