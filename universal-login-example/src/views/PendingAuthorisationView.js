@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {filterIP} from '../utils';
 
 class PendingAuthorisationView extends Component {
   render() {
@@ -16,7 +17,7 @@ class PendingAuthorisationView extends Component {
           <span className="bold">{this.props.authorisation.label.name}</span>,
           from the IP{' '}
           <span className="bold">
-            {this.props.authorisation.label.ipAddress === '::1' ? 'localhost' : this.props.authorisation.label.ipAddress} (
+            {filterIP(this.props.authorisation.label.ipAddress)} (
             {this.props.authorisation.label.city})
           </span>{' '}
           at <span className="bold">{this.props.authorisation.label.time}</span>
