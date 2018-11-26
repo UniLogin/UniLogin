@@ -1,6 +1,7 @@
 import express from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 import geoip from 'geoip-lite';
+import moment from 'moment';
 
 export const request = (authorisationService) => async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.ip;
@@ -10,7 +11,7 @@ export const request = (authorisationService) => async (req, res) => {
     city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
     os: req.useragent.os,
     browser: req.useragent.browser,
-    time: (new Date()).toLocaleTimeString()
+    time: moment().format('h:mm')
   };
   const requestAuthorisation = {...req.body, label};
   await authorisationService.addRequest(requestAuthorisation);

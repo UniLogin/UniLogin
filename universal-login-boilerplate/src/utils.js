@@ -1,12 +1,12 @@
 import publicIP from 'react-native-public-ip';
 import {detect} from 'detect-browser';
-import iplocation from 'iplocation';
 import moment from 'moment';
+import geoip from 'geoip-lite';
 
 async function getLabel() {
   const ipAddress = await publicIP();
   const browser = detect();
-  const {city} = await iplocation(ipAddress);
+  const city = geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown';
   return {
     ipAddress,
     name: browser.name,
