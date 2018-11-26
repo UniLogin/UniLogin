@@ -26,8 +26,8 @@ You can find below the diagram showing the internal dependencies among the Unive
 
 The *external* interfaces present in the Universal Login system are identified by the *lollipop* use symbol:
 
-- RELAYER HTTP+JSON IF: this interface defines an off-chain remote API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078)
-- ETH HTTP+JSON IF: this interface is the Ethereum JSON-RPC API for the on-chain execution
+- RELAYER HTTP JSON IF: this interface defines an off-chain remote API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078)
+- ETH JSON-RPC IF: this interface is the Ethereum JSON-RPC API for the on-chain execution
 
 The *internal* interfaces defined within the Universal Login system are identified by the *arrow* use symbol. The main ones are:
 
