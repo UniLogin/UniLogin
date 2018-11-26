@@ -5,7 +5,7 @@ import moment from 'moment';
 
 export const request = (authorisationService) => async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.ip;
-  const label = {
+  const deviceInfo = {
     ipAddress,
     name: req.useragent.platform,
     city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
@@ -13,7 +13,7 @@ export const request = (authorisationService) => async (req, res) => {
     browser: req.useragent.browser,
     time: moment().format('h:mm')
   };
-  const requestAuthorisation = {...req.body, label};
+  const requestAuthorisation = {...req.body, deviceInfo};
   await authorisationService.addRequest(requestAuthorisation);
   res.status(201)
     .type('json')

@@ -18,7 +18,7 @@ function classnames(classes = {}) {
     .join(' ');
 }
 
-const convertIPv6ToIPv4 = (IPv6Address) => IPv6Address.replace(/::ffff:/g, '');
+const convertIPv6ToIPv4 = (addressIPv6) => addressIPv6.replace(/::ffff:/g, '');
 
 function filterIP(ipAddress) {
   if(ipAddress === '::1' || ipAddress === '127.0.0.1' || ipAddress === '::ffff:127.0.0.1') {
