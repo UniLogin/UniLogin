@@ -24,16 +24,16 @@ You can find below the diagram showing the internal dependencies among the Unive
 
 ![Diagrams](./modeling/subsystems.png)
 
-The *external* interfaces present in the Universal Login system are identified by the *lollipop* use symbol:
+The *external* interfaces present in the Universal Login system are identified by the lollipop use symbol:
 
-- RELAYER HTTP JSON IF: this interface defines an off-chain remote API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078)
-- ETH JSON-RPC IF: this interface is the Ethereum JSON-RPC API for the on-chain execution
+- _\<\<IF-6\>\>_ RELAYER HTTP JSON IF: this interface defines an off-chain remote API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078)
+- _\<\<IF-9\>\>_ ETH JSON-RPC IF: this interface is the Ethereum JSON-RPC API for the on-chain execution
 
-The *internal* interfaces defined within the Universal Login system are identified by the *arrow* use symbol. The main ones are:
+The *internal* interfaces defined within the Universal Login system are identified by the arrow use symbol. The main ones are:
 
-- UL SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the [Relayer](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) subsystem and route their meta transactions
-- ERC1077 SIG IF: this interface is a message hash and signature JS facility API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077)
-- ERC1077 IF / ERC1078 IF: this interface is made up of ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078) smart contracts ABI
+- _\<\<IF-2\>\>_ UL SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the [Relayer](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) subsystem and route their meta transactions
+- _\<\<IF-4\>\>_ ERC1077 SIG IF: this interface is a message hash and signature JS facility API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077)
+- _\<\<IF-5\>\>_ ERC1077 IF / ERC1078 IF: this interface is made up of ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078) smart contracts ABI
 
 
 ## Quick start
