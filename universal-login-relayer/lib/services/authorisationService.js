@@ -5,9 +5,9 @@ class AuthorisationService {
   }
 
   addRequest(request) {
-    const {identityAddress, key, label} = request;
+    const {identityAddress, key, deviceInfo} = request;
     const {index} = this;
-    const pendingAuthorisation = {key, label, index};
+    const pendingAuthorisation = {key, deviceInfo, index};
     this.pendingAuthorisations[identityAddress] = this.pendingAuthorisations[identityAddress] || [];
     this.pendingAuthorisations[identityAddress].push(pendingAuthorisation);
     this.index++;

@@ -34,19 +34,19 @@ describe('Authorisation Service', async () => {
     request = {
       identityAddress: identityContract.address,
       key: otherWallet.address,
-      label: 'Some label'
+      deviceInfo: 'Some info'
     };
     authorisationService.addRequest(request);
   });
 
   it('should add pending authorisation', async () => {
-    const {key, label} = request;
-    expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key, label, index: 0}]);
+    const {key, deviceInfo} = request;
+    expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key, deviceInfo, index: 0}]);
   });
 
   it('should return pending authorisations', async () => {
-    const {key, label} = request;
-    expect(await authorisationService.getPendingAuthorisations(identityContract.address)).to.deep.eq([{key, label, index: 0}]);
+    const {key, deviceInfo} = request;
+    expect(await authorisationService.getPendingAuthorisations(identityContract.address)).to.deep.eq([{key, deviceInfo, index: 0}]);
   });
 
   it('should return [] array when no pending authorisations', async () => {
@@ -57,13 +57,13 @@ describe('Authorisation Service', async () => {
     const secondRequest = {
       identityAddress: identityContract.address,
       key: otherWallet.address,
-      label: 'Some label'
+      deviceInfo: 'Some info'
     };
-    const {key, label} = request;
+    const {key, deviceInfo} = request;
     const key2 = secondRequest.key;
-    const label2 = secondRequest.label;
+    const deviceInfo2 = secondRequest.deviceInfo;
     authorisationService.addRequest(secondRequest);
-    expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key, label, index: 0}, {key: key2, label: label2, index: 1}]);
+    expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key, deviceInfo, index: 0}, {key: key2, deviceInfo: deviceInfo2, index: 1}]);
   });
 
   describe('Indexes', async () => {
@@ -90,17 +90,17 @@ describe('Authorisation Service', async () => {
 
     it('2 pending authorisations', async () => {
       const {key} = request;
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: 'Some label'});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, deviceInfo: 'Some info'});
       await authorisationService.removeRequest(identityContract.address, key);
-      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key: managementKey.address, label: 'Some label', index: 1}]);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.deep.eq([{key: managementKey.address, deviceInfo: 'Some info', index: 1}]);
     });
 
     it('should remove correct pending authorisations', async () => {
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, label: 'Some label'});
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: ensDeployer.address, label: 'Some label'});
-      await authorisationService.addRequest({identityAddress: identityContract.address, key: wallet.address, label: 'Some label'});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: managementKey.address, deviceInfo: 'Some info'});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: ensDeployer.address, deviceInfo: 'Some info'});
+      await authorisationService.addRequest({identityAddress: identityContract.address, key: wallet.address, deviceInfo: 'Some info'});
       await authorisationService.removeRequest(identityContract.address, ensDeployer.address);
-      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.not.include([{key: ensDeployer.address, label: 'Some label', index: 2}]);
+      expect(await authorisationService.pendingAuthorisations[identityContract.address]).to.not.include([{key: ensDeployer.address, deviceInfo: 'Some info', index: 2}]);
     });
   });
 });

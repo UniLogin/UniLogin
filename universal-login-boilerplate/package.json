@@ -10,6 +10,7 @@
     "ethereum-waffle": "^0.2.3",
     "ethers": "^3.0.27",
     "fbemitter": "^2.1.1",
+    "geoip-lite": "^1.3.3",
     "iplocation": "^5.0.1",
     "moment": "^2.22.2",
     "openzeppelin-solidity": "^1.12.0",
