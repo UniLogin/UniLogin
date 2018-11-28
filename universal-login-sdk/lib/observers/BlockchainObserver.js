@@ -16,27 +16,26 @@ class BlockchainObserver extends ObserverBase {
   }
 
   async tick() {
-    for (const contractAddress of Object.keys(this.emitters)) {
-      await this.fetchEvents(contractAddress);
+    for (const filter of Object.keys(this.emitters)) {
+      await this.fetchEvents(filter);
     }
   }
 
-  async fetchEvents(contractAddress) {
-    await this.fetchEventsOfType('KeyAdded', contractAddress);
-    await this.fetchEventsOfType('KeyRemoved', contractAddress);
+  async fetchEvents(filter) {
+    await this.fetchEventsOfType('KeyAdded', filter);
+    await this.fetchEventsOfType('KeyRemoved', filter);
   }
 
-  async fetchEventsOfType(type, contractAddress) {
+  async fetchEventsOfType(type, filterString) {
     const topics = [this.eventInterface[type].topics];
-    const filter = {fromBlock: this.lastBlock, address: contractAddress, topics};
-    const events = await this.provider.getLogs(filter);
+    const filter = JSON.parse(filterString);
+    const eventsFilter = {fromBlock: this.lastBlock, address: filter.contractAddress, topics};
+    const events = await this.provider.getLogs(eventsFilter);
     for (const event of events) {
       const {address} = this.parseArgs(type, event);
-      if (this.emitters[contractAddress][address]) {
-        this.emitters[contractAddress][address].emit(type, this.parseArgs(type, event));
-      } else {
-        this.emitters[contractAddress].emit(type, this.parseArgs(type, event));
-      }
+      if (filter.key === 'undefined' || filter.key === address) {
+        this.emitters[filterString].emit(type, this.parseArgs(type, event));
+      } 
     }
     this.lastBlock = await this.provider.getBlockNumber();
   }

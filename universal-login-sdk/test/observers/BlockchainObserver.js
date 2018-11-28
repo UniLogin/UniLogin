@@ -42,17 +42,19 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit AddKey on construction', async () => {
     const {address} = new Wallet(privateKey);
     const callback = sinon.spy();
-    await blockchainObserver.subscribe('KeyAdded', {contractAddress, key: address}, callback);
-    await blockchainObserver.fetchEvents(contractAddress);
+    const filter = {contractAddress, key: address};
+    await blockchainObserver.subscribe('KeyAdded', filter, callback);
+    await blockchainObserver.fetchEvents(JSON.stringify(filter));
     expect(callback).to.have.been.calledWith({address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
     const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
-    await blockchainObserver.subscribe('KeyAdded', {contractAddress, key: wallet.address}, callback);
+    const filter = {contractAddress, key: wallet.address};
+    await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
-    await blockchainObserver.fetchEvents(contractAddress);
+    await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 
@@ -61,11 +63,13 @@ describe('SDK: BlockchainObserver', async () => {
     const callback2 = sinon.spy();
     const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
 
-    await blockchainObserver.subscribe('KeyAdded', {contractAddress, key: anotherWallet.address}, callback);
-    await blockchainObserver.subscribe('KeyAdded', {contractAddress, key: anotherWallet2.address}, callback2);
+    const filter = {contractAddress, key: anotherWallet.address};
+    const filter2 = {contractAddress, key: anotherWallet2.address};
+    await blockchainObserver.subscribe('KeyAdded', filter,  callback);
+    await blockchainObserver.subscribe('KeyAdded', filter2, callback2);
 
     await sdk.addKey(contractAddress, anotherWallet.address, privateKey, addKeyPaymentOption);
-    await blockchainObserver.fetchEvents(contractAddress);
+    await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
     expect(callback).to.have.been.calledWith({address: anotherWallet.address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
     expect(callback2).to.not.have.been.called;
@@ -75,10 +79,11 @@ describe('SDK: BlockchainObserver', async () => {
     const callback = sinon.spy();
     const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
-    await blockchainObserver.subscribe('KeyRemoved', {contractAddress, key: wallet.address}, callback);
+    const filter = {contractAddress, key: wallet.address};
+    await blockchainObserver.subscribe('KeyRemoved', filter, callback);
     const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
-    await blockchainObserver.fetchEvents(contractAddress);
+    await blockchainObserver.fetchEvents(JSON.stringify(filter));
     expect(callback).to.have.been.calledWith({address: wallet.address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 

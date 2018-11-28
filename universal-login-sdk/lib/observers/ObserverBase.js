@@ -9,14 +9,9 @@ class ObserverBase {
   }
 
   subscribe(eventType, filter, callback) {
-    let emitter;      
-    emitter = this.emitters[filter.contractAddress] || new EventEmitter();
-    this.emitters[filter.contractAddress] = emitter;
-    if (filter.key) {
-      this.emitters[filter.contractAddress] ? this.emitters[filter.contractAddress] : this.emitters[filter.contractAddress] = {};
-      emitter = this.emitters[filter.contractAddress][filter.key] || new EventEmitter();
-      this.emitters[filter.contractAddress][filter.key] = emitter;
-    }
+    const filterString = JSON.stringify(filter);
+    const emitter = this.emitters[filterString] || new EventEmitter();
+    this.emitters[filterString] = emitter;
     return emitter.addListener(eventType, callback);
   }
 

@@ -42,7 +42,7 @@ describe('SDK - events', async () => {
     sdk.start();
 
     await sdk.subscribe('AuthorisationsChanged', {contractAddress}, connectionCallback);
-    await sdk.subscribe('KeyAdded', {contractAddress}, keyCallback);
+    await sdk.subscribe('KeyAdded', {contractAddress, key: wallet.address}, keyCallback);
 
     await sdk.connect(contractAddress);
     const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};

@@ -21,25 +21,12 @@ class IdentityService {
   }
 
   async connect() {
-    this.privateKey = await this.sdk.connect(
-      this.identity.address
-    );
+    this.privateKey = await this.sdk.connect(this.identity.address);
     const {address} = new Wallet(this.privateKey);
     const filter = {contractAddress: this.identity.address, key: address};
-    this.subscription = this.sdk.subscribe(
-      'KeyAdded',
-      filter,
-      () => {
-        this.cancelSubscription();
-        this.identity = {
-          name: this.identity.name,
-          privateKey: this.privateKey,
-          address: this.identity.address
-        };
-        this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
-        this.storeIdentity(this.identity);
-      }
-    );
+    this.subscription = this.sdk.subscribe('KeyAdded', filter, () => {
+      this.onKeyAdded({greetMode: 'addKey'});
+    });
   }
 
   async recover() {
@@ -47,20 +34,20 @@ class IdentityService {
     const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
     const filter = {contractAddress: this.identity.address, key: address};
-    this.subscription = this.sdk.subscribe(
-      'KeyAdded',
-      filter,
-      () => {
-        this.cancelSubscription();
-        this.identity = {
-          name: this.identity.name,
-          privateKey: this.privateKey,
-          address: this.identity.address
-        };
-        this.emitter.emit('setView', 'Greeting');
-        this.storeIdentity(this.identity);
-      }
-    );
+    this.subscription = this.sdk.subscribe('KeyAdded', filter, () => {
+      this.onKeyAdded();
+    });
+  }
+
+  onKeyAdded(viewOptions = {}) {
+    this.cancelSubscription();
+    this.identity = {
+      name: this.identity.name,
+      privateKey: this.privateKey,
+      address: this.identity.address
+    };
+    this.emitter.emit('setView', 'Greeting', viewOptions);
+    this.storeIdentity(this.identity);
   }
 
   cancelSubscription() {
