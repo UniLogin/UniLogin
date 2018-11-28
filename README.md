@@ -20,6 +20,22 @@ This repository is organised as monorepo.
 - [SDK](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
 - [Example](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
 
+You can find below the diagram showing the internal dependencies among the Universal Login subsystems and the relevant external dependencies
+
+![Diagrams](./modeling/subsystems.png)
+
+The *external* interfaces present in the Universal Login system are identified by the lollipop use symbol:
+
+- _\<\<IF-6\>\>_ RELAYER HTTP JSON IF: this interface defines an off-chain remote API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078)
+- _\<\<IF-9\>\>_ ETH JSON-RPC IF: this interface is the Ethereum JSON-RPC API for the on-chain execution
+
+The *internal* interfaces defined within the Universal Login system are identified by the arrow use symbol. The main ones are:
+
+- _\<\<IF-2\>\>_ UL SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the [Relayer](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) subsystem and route their meta transactions
+- _\<\<IF-4\>\>_ ERC1077 SIG IF: this interface is a message hash and signature JS facility API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077)
+- _\<\<IF-5\>\>_ ERC1077 IF / ERC1078 IF: this interface is made up of ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078) smart contracts ABI
+
+
 ## Quick start
 
 ## Hacking
@@ -38,8 +54,11 @@ To run example:
 
 ```sh
 cd universal-login-example
-yarn dev:start
+yarn dev:start [hostAddress]
 ```
+
+with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).
+
 [manual option](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md)
 
 
