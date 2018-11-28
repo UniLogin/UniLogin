@@ -13,7 +13,7 @@ class PendingAuthorizationsView extends Component {
     }
     const authorisations = this.props.authorisations.map((authorisation) => (
       <PendingAuthorisationView
-        key={`${authorisation.key}_${authorisation.label.time}`}
+        key={`${authorisation.key}_${authorisation.deviceInfo.time}`}
         authorisation={authorisation}
         onAcceptClick={this.props.onAcceptClick}
         onDenyClick={this.props.onDenyClick}

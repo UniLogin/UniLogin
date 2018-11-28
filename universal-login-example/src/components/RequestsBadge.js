@@ -28,7 +28,7 @@ class RequestsBadge extends Component {
   onAuthorisationChanged(authorisations) {
     this.setState({requests: authorisations.length});
     if (authorisations.length > 0) {
-      this.nativeNotificationService.notifyLoginRequest(authorisations[0].label);
+      this.nativeNotificationService.notifyLoginRequest(authorisations[0].deviceInfo);
     }
   }
 
