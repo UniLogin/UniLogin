@@ -5,7 +5,7 @@ class ObserverBase {
   constructor() {
     this.state = 'stop';
     this.step = 1000;
-    this.emitters = {};
+    this.emitters = [];
   }
 
   subscribe(eventType, filter, callback) {
