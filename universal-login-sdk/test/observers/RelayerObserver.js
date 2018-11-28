@@ -12,7 +12,7 @@ describe('SDK: RelayerObserver', async () => {
   let provider;
   let relayer;
   let sdk;
-  let identityAddress;
+  let contractAddress;
   let relayerObserver;
 
   beforeEach(async () => {
@@ -23,20 +23,20 @@ describe('SDK: RelayerObserver', async () => {
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
     ({relayerObserver} = sdk);
     relayerObserver.step = 50;
-    [, identityAddress] = await sdk.create('alex.mylogin.eth');
+    [, contractAddress] = await sdk.create('alex.mylogin.eth');
   });
 
   it('should not emit events if no connection requests', async () => {
     const callback = sinon.spy();
-    await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
+    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
     await relayerObserver.checkAuthorisationRequests();
     expect(callback).to.have.not.been.called;
   });
 
   it('should emit AuthorisationsChanged event if connected called', async () => {
     const callback = sinon.spy();
-    await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
-    await sdk.connect(identityAddress);
+    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
+    await sdk.connect(contractAddress);
     await relayerObserver.checkAuthorisationRequests();
     expect(callback).to.have.been.called;
   });
@@ -44,7 +44,7 @@ describe('SDK: RelayerObserver', async () => {
   it('observation: no new reuqests', async () => {
     const callback = sinon.spy();
     relayerObserver.start();
-    await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
+    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
     await relayerObserver.finalizeAndStop();
     expect(callback).to.have.not.been.called;
   });
@@ -52,22 +52,22 @@ describe('SDK: RelayerObserver', async () => {
   it('observation: one new request', async () => {
     const callback = sinon.spy();
     relayerObserver.start();
-    await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
-    await sdk.connect(identityAddress);
+    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
+    await sdk.connect(contractAddress);
     await relayerObserver.finalizeAndStop();
     expect(callback).to.have.been.called;
   });
 
   it('AuthorisationChanged for multiple identities', async () => {
-    const [, newIdentityAddress] = await sdk.create('newlogin.mylogin.eth');
+    const [, newContractAddress] = await sdk.create('newlogin.mylogin.eth');
     const callback = sinon.spy();
     sdk.relayerObserver.start();
 
-    await relayerObserver.subscribe('AuthorisationsChanged', identityAddress, callback);
-    await relayerObserver.subscribe('AuthorisationsChanged', newIdentityAddress, callback);
+    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
+    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress: newContractAddress}, callback);
 
-    await sdk.connect(identityAddress);
-    await sdk.connect(newIdentityAddress);
+    await sdk.connect(contractAddress);
+    await sdk.connect(newContractAddress);
 
     await relayerObserver.finalizeAndStop();
     expect(callback).to.have.been.calledTwice;

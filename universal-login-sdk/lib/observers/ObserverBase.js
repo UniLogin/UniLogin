@@ -8,9 +8,15 @@ class ObserverBase {
     this.emitters = {};
   }
 
-  subscribe(eventType, identityAddress, callback) {
-    const emitter = this.emitters[identityAddress] || new EventEmitter();
-    this.emitters[identityAddress] = emitter;
+  subscribe(eventType, filter, callback) {
+    let emitter;      
+    emitter = this.emitters[filter.contractAddress] || new EventEmitter();
+    this.emitters[filter.contractAddress] = emitter;
+    if (filter.key) {
+      this.emitters[filter.contractAddress] ? this.emitters[filter.contractAddress] : this.emitters[filter.contractAddress] = {};
+      emitter = this.emitters[filter.contractAddress][filter.key] || new EventEmitter();
+      this.emitters[filter.contractAddress][filter.key] = emitter;
+    }
     return emitter.addListener(eventType, callback);
   }
 

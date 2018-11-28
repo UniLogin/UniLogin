@@ -25,20 +25,19 @@ class IdentityService {
       this.identity.address
     );
     const {address} = new Wallet(this.privateKey);
+    const filter = {contractAddress: this.identity.address, key: address};
     this.subscription = this.sdk.subscribe(
       'KeyAdded',
-      this.identity.address,
-      (event) => {
-        if (event.address === address) {
-          this.cancelSubscription();
-          this.identity = {
-            name: this.identity.name,
-            privateKey: this.privateKey,
-            address: this.identity.address
-          };
-          this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
-          this.storeIdentity(this.identity);
-        }
+      filter,
+      () => {
+        this.cancelSubscription();
+        this.identity = {
+          name: this.identity.name,
+          privateKey: this.privateKey,
+          address: this.identity.address
+        };
+        this.emitter.emit('setView', 'Greeting', {greetMode: 'addKey'});
+        this.storeIdentity(this.identity);
       }
     );
   }
@@ -47,20 +46,19 @@ class IdentityService {
     this.privateKey = await ethers.Wallet.createRandom().privateKey;
     const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
+    const filter = {contractAddress: this.identity.address, key: address};
     this.subscription = this.sdk.subscribe(
       'KeyAdded',
-      this.identity.address,
-      (event) => {
-        if (event.address === address) {
-          this.cancelSubscription();
-          this.identity = {
-            name: this.identity.name,
-            privateKey: this.privateKey,
-            address: this.identity.address
-          };
-          this.emitter.emit('setView', 'Greeting');
-          this.storeIdentity(this.identity);
-        }
+      filter,
+      () => {
+        this.cancelSubscription();
+        this.identity = {
+          name: this.identity.name,
+          privateKey: this.privateKey,
+          address: this.identity.address
+        };
+        this.emitter.emit('setView', 'Greeting');
+        this.storeIdentity(this.identity);
       }
     );
   }

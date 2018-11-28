@@ -15,7 +15,7 @@ const sdk = new EthereumIdentitySDK(
 To create a new identity:
 
 ```js
-const [firstPrivateKey, identityAddress] = await sdk.create(
+const [firstPrivateKey, contractAddress] = await sdk.create(
   'alex.ethereum.eth'
 );
 ```
@@ -27,12 +27,12 @@ const [firstPrivateKey, identityAddress] = await sdk.create(
 The function will return a pair:
 
 - `privateKey` - a private key that should be stored on given device as securely as possible
-- `identityAddress` - address of new identity contract
+- `contractAddress` - address of new identity contract
 
 To get address of existing identity:
 
 ```js
-const identityAddress = await sdk.identityExist('alex.ethereum.eth');
+const contractAddress = await sdk.identityExist('alex.ethereum.eth');
 ```
 
 The call will return the address of the identity contract for later use.
@@ -51,12 +51,12 @@ const message = {
   gasPrice: 11000000000,
   gasLimit: 1000000
 };
-const transactionId = await sdk.execute(identityAddress, message, privateKey);
+const transactionId = await sdk.execute(contractAddress, message, privateKey);
 ```
 
 The function takes six arguments:
 
-- `identityAddress` - address of identity that requests execution
+- `contractAddress` - address of identity that requests execution
 - `message` - a message, in the same format as an ethereum transaction, to be executed by the relayer
 - `privateKey` - a private key to be used to sign the transaction, the corresponding public key address needs to be connected to the identity
 - `gasToken` - address of token to refund relayer
@@ -74,7 +74,7 @@ To subscribe to an event:
 
 ```js
 const callback(event) = {};
-await sdk.subscribe('eventType', identityAddress, callback)
+await sdk.subscribe('eventType', contractAddress, callback)
 ```
 
 Possible event names are: `KeyAdded`, `KeyRemoved`, `AuthorisationsChanged`.
@@ -82,7 +82,7 @@ Possible event names are: `KeyAdded`, `KeyRemoved`, `AuthorisationsChanged`.
 To unsubscribe to an event:
 
 ```js
-await sdk.unsubscribe('eventType', identityAddress, callback);
+await sdk.unsubscribe('eventType', contractAddress, callback);
 ```
 
 ### Key management
@@ -91,7 +91,7 @@ To add a key:
 
 ```js
 const transactionId = await sdk.addKey(
-  identityAddress,
+  contractAddress,
   publicKey,
   privateKey,
   paymentOptions
@@ -102,7 +102,7 @@ To remove a key:
 
 ```js
 const transactionId = await sdk.removeKey(
-  identityAddress,
+  contractAddress,
   publicKey,
   privateKey,
   paymentOptions
@@ -126,14 +126,14 @@ const paymentOptions = {
 Generate and request a new key to be added to an existing identity:
 
 ```js
-const [privateKey, identityAddress] = await sdk.connect(identityAddress);
+const [privateKey, contractAddress] = await sdk.connect(contractAddress);
 ```
 
 This function will generate a new private key and send a request to relayer to add a key to identity. The request needs to be confirmed from public key connected to identity at hand.
 
 `connect` function takes one parameter:
 
-- `identityAddress` - address of identity to connect
+- `contractAddress` - address of identity to connect
 
 and returns:
 

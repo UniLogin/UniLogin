@@ -16,22 +16,27 @@ class BlockchainObserver extends ObserverBase {
   }
 
   async tick() {
-    for (const identityAddress of Object.keys(this.emitters)) {
-      await this.fetchEvents(identityAddress);
+    for (const contractAddress of Object.keys(this.emitters)) {
+      await this.fetchEvents(contractAddress);
     }
   }
 
-  async fetchEvents(identityAddress) {
-    await this.fetchEventsOfType('KeyAdded', identityAddress);
-    await this.fetchEventsOfType('KeyRemoved', identityAddress);
+  async fetchEvents(contractAddress) {
+    await this.fetchEventsOfType('KeyAdded', contractAddress);
+    await this.fetchEventsOfType('KeyRemoved', contractAddress);
   }
 
-  async fetchEventsOfType(type, identityAddress) {
+  async fetchEventsOfType(type, contractAddress) {
     const topics = [this.eventInterface[type].topics];
-    const filter = {fromBlock: this.lastBlock, address: identityAddress, topics};
+    const filter = {fromBlock: this.lastBlock, address: contractAddress, topics};
     const events = await this.provider.getLogs(filter);
     for (const event of events) {
-      this.emitters[identityAddress].emit(type, this.parseArgs(type, event));
+      const {address} = this.parseArgs(type, event);
+      if (this.emitters[contractAddress][address]) {
+        this.emitters[contractAddress][address].emit(type, this.parseArgs(type, event));
+      } else {
+        this.emitters[contractAddress].emit(type, this.parseArgs(type, event));
+      }
     }
     this.lastBlock = await this.provider.getBlockNumber();
   }

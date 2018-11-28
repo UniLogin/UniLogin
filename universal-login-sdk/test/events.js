@@ -15,7 +15,7 @@ describe('SDK - events', async () => {
   let provider;
   let relayer;
   let sdk;
-  let identityAddress;
+  let contractAddress;
   let wallet;
   let privateKey;
   let sponsor;
@@ -28,10 +28,10 @@ describe('SDK - events', async () => {
     await relayer.start();
     ({provider} = relayer);
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
-    [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
-    sponsor.send(identityAddress, 10000);
+    [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
+    sponsor.send(contractAddress, 10000);
     token = await deployContract(wallet, MockToken, []);
-    await token.transfer(identityAddress, utils.parseEther('20'));
+    await token.transfer(contractAddress, utils.parseEther('20'));
   });
 
 
@@ -41,12 +41,12 @@ describe('SDK - events', async () => {
 
     sdk.start();
 
-    await sdk.subscribe('AuthorisationsChanged', identityAddress, connectionCallback);
-    await sdk.subscribe('KeyAdded', identityAddress, keyCallback);
+    await sdk.subscribe('AuthorisationsChanged', {contractAddress}, connectionCallback);
+    await sdk.subscribe('KeyAdded', {contractAddress}, keyCallback);
 
-    await sdk.connect(identityAddress);
+    await sdk.connect(contractAddress);
     const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
-    await sdk.addKey(identityAddress, wallet.address, privateKey, addKeyPaymentOption);
+    await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
     expect(connectionCallback).to.have.been.called;

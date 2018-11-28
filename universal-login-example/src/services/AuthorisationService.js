@@ -4,8 +4,8 @@ class AuthorisationService {
     this.pendingAuthorisations = [];
   }
 
-  subscribe(identityAddress, callback) {
-    return this.sdk.subscribe('AuthorisationsChanged', identityAddress, (authorisations) => {
+  subscribe(contractAddress, callback) {
+    return this.sdk.subscribe('AuthorisationsChanged', {contractAddress}, (authorisations) => {
       this.pendingAuthorisations = authorisations;
       callback(authorisations);
     });
