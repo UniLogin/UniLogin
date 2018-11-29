@@ -14,9 +14,10 @@ class RelayerObserver extends ObserverBase {
     return this.checkAuthorisationRequests();
   }
 
-  async checkAuthorisationsChangedFor(identityAddress) {
-    const emitter = this.emitters[identityAddress];
-    const authorisations = await this.fetchPendingAuthorisations(identityAddress);
+  async checkAuthorisationsChangedFor(filter) {
+    const {contractAddress} = JSON.parse(filter);
+    const emitter = this.emitters[filter];
+    const authorisations = await this.fetchPendingAuthorisations(contractAddress);
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
       emitter.emit('AuthorisationsChanged', authorisations);
@@ -24,17 +25,17 @@ class RelayerObserver extends ObserverBase {
   }
 
   async checkAuthorisationRequests() {
-    for (const identityAddress of Object.keys(this.emitters)) {
-      await this.checkAuthorisationsChangedFor(identityAddress);
+    for (const filter of Object.keys(this.emitters)) {
+      await this.checkAuthorisationsChangedFor(filter);
     }
   }
 
-  authorisationUrl(identityAddress) {
-    return `${this.relayerUrl}/authorisation/${identityAddress}`;
+  authorisationUrl(contractAddress) {
+    return `${this.relayerUrl}/authorisation/${contractAddress}`;
   }
 
-  async fetchPendingAuthorisations(identityAddress) {
-    const url = this.authorisationUrl(identityAddress);
+  async fetchPendingAuthorisations(contractAddress) {
+    const url = this.authorisationUrl(contractAddress);
     const method = 'GET';
     const response = await fetch(url, {headers, method});
     const responseJson = await response.json();

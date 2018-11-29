@@ -5,12 +5,13 @@ class ObserverBase {
   constructor() {
     this.state = 'stop';
     this.step = 1000;
-    this.emitters = {};
+    this.emitters = [];
   }
 
-  subscribe(eventType, identityAddress, callback) {
-    const emitter = this.emitters[identityAddress] || new EventEmitter();
-    this.emitters[identityAddress] = emitter;
+  subscribe(eventType, filter, callback) {
+    const filterString = JSON.stringify(filter);
+    const emitter = this.emitters[filterString] || new EventEmitter();
+    this.emitters[filterString] = emitter;
     return emitter.addListener(eventType, callback);
   }
 

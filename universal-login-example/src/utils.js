@@ -21,7 +21,7 @@ function classnames(classes = {}) {
 const convertIPv6ToIPv4 = (addressIPv6) => addressIPv6.replace(/::ffff:/g, '');
 
 function filterIP(ipAddress) {
-  if(ipAddress === '::1' || ipAddress === '127.0.0.1' || ipAddress === '::ffff:127.0.0.1') {
+  if (ipAddress === '::1' || ipAddress === '127.0.0.1' || ipAddress === '::ffff:127.0.0.1') {
     return 'localhost';
   }
   return convertIPv6ToIPv4(ipAddress);
