@@ -57,10 +57,10 @@ describe('Key holder: executions', async () => {
     await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
     await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
 
-    addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
-    removeKeyData = identity.interface.functions.removeKey(actionKey, ACTION_KEY).data;
-    functionData = mockContract.interface.functions.callMe().data;
-    await wallet.send(identity.address, amount);
+    addKeyData = identity.interface.functions.addKey.encode([actionKey, ACTION_KEY, ECDSA_TYPE]);
+    removeKeyData = identity.interface.functions.removeKey.encode([actionKey, ACTION_KEY]);
+    functionData = mockContract.interface.functions.callMe.encode([]);
+    await wallet.sendTransaction({to: identity.address, value: amount});
   });
 
   describe('Execute', async () => {

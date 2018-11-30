@@ -1,61 +1,31 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import KeyHolder from '../../build/KeyHolder';
-import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
-import {addressToBytes32} from '../utils';
+import {solidity} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE, RSA_TYPE} from '../../lib/consts';
+import TestHelper from '../testHelper';
+import basicERC725 from '../fixtures/basicERC725';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 describe('Key holder', async () => {
-  let provider;
-  let wallet;
-  let anotherWallet;
-  let anotherWallet2;
-  let managementWallet;
-
+  const testHelper = new TestHelper();
   let identity;
-  let unknownWallet;
-  let actionWallet;
-
   let managementWalletKey;
   let unknownWalletKey;
-
   let fromActionWallet;
   let fromUnknownWallet;
-
   let managementKey;
   let actionKey;
   let actionKey2;
-  let actionWalletKey;
-
-  const amount = utils.parseEther('0.1');
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);  
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet, anotherWallet2] = await getWallets(provider);
-
-    managementKey = addressToBytes32(wallet.address);
-    managementWalletKey = addressToBytes32(managementWallet.address);
-    actionWalletKey = addressToBytes32(actionWallet.address);
-    unknownWalletKey = addressToBytes32(unknownWallet.address);
-    actionKey = addressToBytes32(anotherWallet.address);
-    actionKey2 = addressToBytes32(anotherWallet2.address);
-
-    identity = await deployContract(wallet, KeyHolder, [managementKey]);
-
-    fromActionWallet = await contractWithWallet(identity, actionWallet);
-    fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
-
-    await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
-    await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
-
-    await wallet.send(identity.address, amount);
+    ({identity, actionKey, actionKey2, managementKey, unknownWalletKey,managementWalletKey,
+      fromActionWallet, fromUnknownWallet} = await testHelper.load(basicERC725));
   });
 
   describe('Create', async () => {
@@ -72,10 +42,8 @@ describe('Key holder', async () => {
     it('Should return the purpose', async () => {
       expect(await identity.keyHasPurpose(managementKey, MANAGEMENT_KEY)).to.be.true;
       expect(await identity.keyHasPurpose(managementKey, ACTION_KEY)).to.be.false;
-      expect(await identity.keyHasPurpose(managementWalletKey, MANAGEMENT_KEY)).to.be.true;
       expect(await identity.keyHasPurpose(actionKey, MANAGEMENT_KEY)).to.be.false;
       expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
-      expect(await identity.keyHasPurpose(actionWalletKey, ACTION_KEY)).to.be.true;
     });
   });
 
@@ -203,7 +171,7 @@ describe('Key holder', async () => {
     });
 
     it('Should not allow to remove key with invalid purpose', async () => {
-      await expect(identity.removeKey(actionWalletKey, MANAGEMENT_KEY)).to.be.reverted;
+      await expect(identity.removeKey(actionKey2, MANAGEMENT_KEY)).to.be.reverted;
     });
   });
 });

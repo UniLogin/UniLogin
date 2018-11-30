@@ -5,7 +5,7 @@ import MockContract from '../../build/MockContract';
 import MockToken from '../../build/MockToken';
 import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature, messageSignatureForApprovals} from '../utils';
-import {utils, Wallet, Interface} from 'ethers';
+import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
@@ -76,16 +76,16 @@ describe('Signed approval scheme', async () => {
     await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
     await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
 
-    addKeyData = identity.interface.functions.addKey(actionKey, ACTION_KEY, ECDSA_TYPE).data;
-    functionData = mockContract.interface.functions.callMe().data;
-    await wallet.send(identity.address, utils.parseEther('5'));
+    addKeyData = identity.interface.functions.addKey.encode([actionKey, ACTION_KEY, ECDSA_TYPE]);
+    functionData = mockContract.interface.functions.callMe.encode([]);
+    await wallet.sendTransaction({to: identity.address, value: utils.parseEther('5')});
   });
 
   describe('Execute signed', async () => {
     let signature;
 
     beforeEach(async () => {
-      signature = messageSignature(
+      signature = await messageSignature(
         wallet, targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit);
     });
 
@@ -93,7 +93,7 @@ describe('Signed approval scheme', async () => {
       const message = utils.arrayify(utils.solidityKeccak256(
         ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
         [targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit]));
-      const correctSigner = utils.hexlify(addressToBytes32(Wallet.verifyMessage(message, signature)));
+      const correctSigner = utils.hexlify(addressToBytes32(utils.verifyMessage(message, signature)));
       expect(await identity.getSignerForExecutions(targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit, signature))
         .to.eq(correctSigner);
     });
@@ -162,11 +162,11 @@ describe('Signed approval scheme', async () => {
       it('Should refund after execute', async () => {
         const gasPrice = utils.parseEther('0.00011');
         const amount = utils.parseEther('0.2');
-        signature = messageSignature(
+        signature = await messageSignature(
           wallet, targetAddress, identity.address, amount, data, 0, mockToken.address, gasPrice, gasLimit);
         await mockToken.transfer(identity.address, utils.parseEther('20'));
         const relayerTokenBalance = await mockToken.balanceOf(wallet.address);
-        const executeData = new Interface(SignedApprovalScheme.interface).functions.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature).data;
+        const executeData = new utils.Interface(SignedApprovalScheme.interface).functions.executeSigned.encode([targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature]);
         const transaction = {
           value: 0,
           to: identity.address,
@@ -174,7 +174,7 @@ describe('Signed approval scheme', async () => {
           gasPrice,
           gasLimit
         };
-        const estimateGas = await wallet.estimateGas(transaction);
+        const estimateGas = await provider.estimateGas(transaction);
         await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature);
         const expectedIncome = estimateGas.mul(gasPrice);
         expect(await mockToken.balanceOf(wallet.address)).to.be.below(relayerTokenBalance.add(expectedIncome));

@@ -15,7 +15,7 @@ chai.use(solidity);
 const {parseEther} = utils;
 const to = '0x0000000000000000000000000000000000000001';
 const {gasPrice} = DEFAULT_PAYMENT_OPTIONS;
-const overrideOptions = {gasPrice};
+const overrideOptions = {gasPrice, gasLimit: 200000};
 
 describe('ERC1077', async  () => {
   const testHelper = new TestHelper();
@@ -54,7 +54,7 @@ describe('ERC1077', async  () => {
     });
 
     it('key exist', async () => {
-      expect(await identity.keyExist([])).to.be.false;
+      expect(await identity.keyExist(utils.formatBytes32String(0))).to.be.false;
     });
 
     it('calculates hash', async () => {
@@ -91,14 +91,14 @@ describe('ERC1077', async  () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
         expect(await provider.getBalance(to)).to.eq(0);
-        await identity.executeSigned(...getExecutionArgs(msg), signature);
+        await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
         expect(await provider.getBalance(to)).to.eq(parseEther('1.0'));
         expect(await identity.lastNonce()).to.eq(1);
       });
   
       it('emits ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msg);
-        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.emit(identity, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
@@ -108,7 +108,7 @@ describe('ERC1077', async  () => {
           msg = {...transferMessage, from: identity.address, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
 
-          await identity.executeSigned(...getExecutionArgs(msg), signature);
+          await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
     
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
@@ -126,14 +126,14 @@ describe('ERC1077', async  () => {
 
     describe('failed execution of transafer', () => {
       it('nonce too low', async () => {
-        await identity.executeSigned(...getExecutionArgs(msg), signature);
-        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+        await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.be.revertedWith('Invalid nonce');
       });
   
       it('nonce too high', async () => {
         msg = {...transferMessage, nonce: 2};
-        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.be.revertedWith('Invalid nonce');
       });
         
@@ -142,7 +142,7 @@ describe('ERC1077', async  () => {
         signature = calculateMessageSignature(privateKey, msg);
         const messageHash = calculateMessageHash(msg);
 
-        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.emit(identity, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
@@ -151,32 +151,32 @@ describe('ERC1077', async  () => {
         msg = {...failedTransferMessage, from: identity.address};
         signature = calculateMessageSignature(privateKey, msg);
   
-        await identity.executeSigned(...getExecutionArgs(msg), signature);
+        await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
         expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
         expect(await identity.lastNonce()).to.eq(1);
       });
       
       describe('Invalid signature', () => {
         it('no signature', async () => {
-          await expect(identity.executeSigned(...getExecutionArgs(msg), []))
+          await expect(identity.executeSigned(...getExecutionArgs(msg), [], overrideOptions))
             .to.be.revertedWith('Invalid signature');
           expect(await identity.lastNonce()).to.eq(0);
           expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
         });
     
         it('should be reverted', async () => {
-          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature))
+          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature, overrideOptions))
             .to.be.revertedWith('Invalid signature');
         });
   
         it('shouldn`t transfer ethers', async () => {
-          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature))
+          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature, overrideOptions))
             .to.be.revertedWith('Invalid signature');
           expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
         });
 
         it('shouldn`t increase nonce', async () => {
-          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature))
+          await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature, overrideOptions))
             .to.be.revertedWith('Invalid signature');
           expect(await identity.lastNonce()).to.eq(0);
         });
@@ -198,7 +198,7 @@ describe('ERC1077', async  () => {
         it('should refund tokens', async () => {
           msg = {...failedTransferMessage, from: identity.address, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
-          await identity.executeSigned(...getExecutionArgs(msg), signature);
+          await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -217,18 +217,18 @@ describe('ERC1077', async  () => {
   
       it('called method', async () => {
         expect(await mockContract.wasCalled()).to.be.false;
-        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
         expect(await mockContract.wasCalled()).to.be.true;
       });
       
       it('increase nonce', async () => {
-        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
         expect(await identity.lastNonce()).to.eq(1);
       });
 
       it('should emit ExecutedSigned', async () => {
         const messageHash = calculateMessageHash(msgToCall);
-        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall))
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions))
           .to.emit(identity, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
@@ -249,7 +249,7 @@ describe('ERC1077', async  () => {
         it('should refund tokens', async () => {
           msgToCall = {...callMessage, from: identity.address, to: mockContract.address, gasToken: mockToken.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
-          await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+          await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -262,13 +262,13 @@ describe('ERC1077', async  () => {
       });
 
       it('should increase nonce', async () => {
-        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall);
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
         expect(await identity.lastNonce()).to.eq(1);
       });
 
       it('should emit ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msgToCall);
-        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall))
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions))
           .to.emit(identity, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
@@ -277,7 +277,7 @@ describe('ERC1077', async  () => {
         msg = {...msgToCall, nonce: 2};
         signature = calculateMessageSignature(privateKey, msg);
 
-        await expect(identity.executeSigned(...getExecutionArgs(msg), signature))
+        await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.be.revertedWith('Invalid nonce');
       });
 
@@ -294,7 +294,7 @@ describe('ERC1077', async  () => {
         it('should refund tokens', async () => {
           msg = {...msgToCall, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
-          await identity.executeSigned(...getExecutionArgs(msg), signature);
+          await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });

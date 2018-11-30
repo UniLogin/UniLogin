@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './utils';
-import {utils, Wallet} from 'ethers';
+import {utils} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
 
 chai.use(chaiAsPromised);
@@ -28,7 +28,7 @@ describe('Tools test', async () => {
     const message = utils.arrayify(utils.solidityKeccak256(
       ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
       [wallet.address, from, value, data, nonce, gasToken, gasPrice, gasLimit]));
-    expect(Wallet.verifyMessage(message, signature)).to.eq(wallet.address);
+    expect(utils.verifyMessage(message, signature)).to.eq(wallet.address);
   });
 
   describe('getExecutionArgs', () => {

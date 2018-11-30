@@ -1,7 +1,7 @@
-import ethers, {providers, utils} from 'ethers';
+import ethers, {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
 
-const {namehash} = utils;
+
 
 
 const addressToBytes32 = (address) =>
@@ -42,8 +42,8 @@ const withENS = (provider, ensAddress) => {
 };
 
 const lookupAddress = async (provider, address, resolverAddress) => {
-  const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
-  const contract = new ethers.Contract(resolverAddress, PublicResolver.interface, provider);
+  const node = utils.namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
+  const contract = new Contract(resolverAddress, PublicResolver.interface, provider);
   return await contract.name(node);
 };
 
