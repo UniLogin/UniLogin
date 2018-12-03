@@ -1,6 +1,6 @@
 import Identity from 'universal-login-contracts/build/Identity';
 import {addressToBytes32, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
-import ethers, {utils, Interface} from 'ethers';
+import {utils, ContractFactory} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
@@ -24,7 +24,7 @@ class IdentityService {
       const deployTransaction = {
         ...defaultDeployOptions,
         ...overrideOptions,
-        ...ethers.Contract.getDeployTransaction(bytecode, this.abi, ...args)
+        ...new ContractFactory(this.abi, bytecode).getDeployTransaction(...args)
       };
       const transaction = await this.wallet.sendTransaction(deployTransaction);
       this.hooks.emit('created', transaction);
@@ -35,14 +35,14 @@ class IdentityService {
 
   async executeSigned(message) {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
-      const {data} = new Interface(Identity.interface).functions.executeSigned(message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature);
+      const data = new utils.Interface(Identity.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
         value: 0,
         to: message.from,
         data,
         ...defaultDeployOptions
       };
-      const estimateGas = await this.wallet.estimateGas(transaction);
+      const estimateGas = await this.provider.estimateGas(transaction);
       if (message.gasLimit >= estimateGas) {
         if (message.to === message.from && isAddKeyCall(message.data)) {
           const key = getKeyFromData(message.data);

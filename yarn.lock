@@ -2830,12 +2830,6 @@ end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
-ens-builder@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/ens-builder/-/ens-builder-1.1.0.tgz#0cff4558579efd1b45fe07aa3611b68f45a1c477"
-  dependencies:
-    ethers "^3.0.27"
-
 ens-builder@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ens-builder/-/ens-builder-2.0.0.tgz#30b26b6a83795694ffaec62a65059ffa7da36ff8"
