@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import {solidity} from 'ethereum-waffle';
-import ethers, {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicSDK, {transferMessage} from './fixtures/basicSDK';
@@ -121,7 +121,7 @@ describe('SDK - integration', async () => {
 
         it('should return pending authorisations', async () => {
           const privateKey = await sdk.connect(identityAddress);
-          const wallet = new ethers.Wallet(privateKey);
+          const wallet = new Wallet(privateKey);
           const response = await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress);
           expect(response[0]).to.deep.include({key: wallet.address});
         });
@@ -132,7 +132,7 @@ describe('SDK - integration', async () => {
 
         it('should return public key when deny request', async () => {
           const privateKey = await sdk.connect(identityAddress);
-          const wallet = new ethers.Wallet(privateKey);
+          const wallet = new Wallet(privateKey);
           const response = await sdk.denyRequest(identityAddress, wallet.address);
           expect(response).to.eq(wallet.address);
         });

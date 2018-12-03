@@ -1,4 +1,4 @@
-import ethers, {utils} from 'ethers';
+import ethers, {utils, Contract} from 'ethers';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
@@ -9,7 +9,7 @@ const sleep = (ms) =>
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash) => {
   const abi = contractJSON.interface;
   const receipt = await waitForTransactionReceipt(providerOrWallet, transactionHash);
-  return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
+  return new Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
 const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick = 1000) => {

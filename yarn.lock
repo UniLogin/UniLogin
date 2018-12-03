@@ -3257,7 +3257,7 @@ ethereum-waffle@^0.2.3:
     ethers "^3.0.27"
     solc "^0.4.24"
 
-ethereum-waffle@^1.0.0:
+ethereum-waffle@^1.0.0, ethereum-waffle@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-1.0.4.tgz#9c43f958f6a695797b5690539ae2e168763dcfbc"
   dependencies:
