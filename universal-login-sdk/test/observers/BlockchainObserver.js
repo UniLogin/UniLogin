@@ -24,7 +24,7 @@ describe('SDK: BlockchainObserver', async () => {
   let anotherWallet2;
   let token;
 
-  before(async () => {
+  beforeEach(async () => {
     provider = createMockProvider();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     [wallet, anotherWallet, anotherWallet2] = await getWallets(provider);
@@ -33,19 +33,21 @@ describe('SDK: BlockchainObserver', async () => {
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 50;
-    [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
     await sdk.start();
     token = await deployContract(wallet, MockToken, []);
+    [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
     await token.transfer(contractAddress, utils.parseEther('20'));
   });
 
   it('subscribe: should emit AddKey on construction', async () => {
+    [privateKey, contractAddress] = await sdk.create('me.mylogin.eth');
+    await token.transfer(contractAddress, utils.parseEther('20'));
     const {address} = new Wallet(privateKey);
     const callback = sinon.spy();
     const filter = {contractAddress, key: address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
-    expect(callback).to.have.been.calledWith({address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 
   it('subscribe: should emit AddKey on addKey', async () => {
@@ -55,7 +57,7 @@ describe('SDK: BlockchainObserver', async () => {
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
-    expect(callback).to.have.been.calledWith({address: wallet.address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 
   it('subscribe: shouldn`t emit AddKey on add another key', async () => {
@@ -71,7 +73,7 @@ describe('SDK: BlockchainObserver', async () => {
     await sdk.addKey(contractAddress, anotherWallet.address, privateKey, addKeyPaymentOption);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
-    expect(callback).to.have.been.calledWith({address: anotherWallet.address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: anotherWallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
     expect(callback2).to.not.have.been.called;
   });
 
@@ -84,10 +86,10 @@ describe('SDK: BlockchainObserver', async () => {
     const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
-    expect(callback).to.have.been.calledWith({address: wallet.address, keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 
-  after(async () => {
+  afterEach(async () => {
     await relayer.stop();
     sdk.stop();
   });

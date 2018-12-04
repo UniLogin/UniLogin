@@ -1,5 +1,5 @@
-import ethers from 'ethers';
 import {toWords} from '../vendors/Daefen';
+import {fromBrainWallet} from '../utils';
 
 class BackupService {
   constructor(identityService) {
@@ -22,10 +22,7 @@ class BackupService {
         .replace(/\s/g, '-')
         .toLowerCase();
       const backupCode = `${prefix}-${suffix}`;
-      const wallet = await ethers.Wallet.fromBrainWallet(
-        this.identityService.identity.name,
-        backupCode
-      );
+      const wallet = await fromBrainWallet(this.identityService.identity.name, backupCode);
       this.backupCodes.push(backupCode);
       this.publicKeys.push(wallet.address);
     }

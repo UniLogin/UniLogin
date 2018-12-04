@@ -41,7 +41,7 @@ describe('Relayer - Identity routes', async () => {
     let token;
 
     before(async () => {
-      await wallet.send(contract.address, utils.parseEther('1.0'));
+      await wallet.sendTransaction({to: contract.address, value: utils.parseEther('1.0')});
       token = await deployContract(wallet, MockToken, []);
       await token.transfer(contract.address, utils.parseEther('1.0'));
     });
@@ -59,7 +59,7 @@ describe('Relayer - Identity routes', async () => {
         operationType: OPERATION_CALL
       };
       const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
-      const signature = calculateMessageSignature(wallet.privateKey, msg);
+      const signature = await calculateMessageSignature(wallet.privateKey, msg);
       await chai.request(relayer.server)
         .post('/identity/execution')
         .send({

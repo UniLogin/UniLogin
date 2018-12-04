@@ -29,7 +29,7 @@ describe('SDK - events', async () => {
     ({provider} = relayer);
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
     [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
-    sponsor.send(contractAddress, 10000);
+    await sponsor.sendTransaction({to: contractAddress, value: 10000});
     token = await deployContract(wallet, MockToken, []);
     await token.transfer(contractAddress, utils.parseEther('20'));
   });
@@ -48,7 +48,7 @@ describe('SDK - events', async () => {
     const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: token.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
     await sdk.finalizeAndStop();
-    expect(keyCallback).to.have.been.calledWith({address: wallet.address, keyType: 1, purpose: 1});
+    expect(keyCallback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: 1, purpose: 1});
     expect(connectionCallback).to.have.been.called;
   });
 

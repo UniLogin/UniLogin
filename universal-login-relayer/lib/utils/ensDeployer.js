@@ -1,5 +1,5 @@
 import fs from 'fs';
-import ethers from 'ethers';
+import ethers, {Wallet} from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 
@@ -8,7 +8,7 @@ class ENSDeployer {
   constructor(provider, deployerPrivateKey) {
     this.provider = provider;
     this.deployerPrivateKey = deployerPrivateKey;
-    this.deployer = new ethers.Wallet(deployerPrivateKey, provider);
+    this.deployer = new Wallet(deployerPrivateKey, provider);
     this.variables = {};
     this.count = 1;
   }

@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
 import {addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
-import {utils, Interface} from 'ethers';
+import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import ERC725ApprovalScheme from 'universal-login-contracts/build/ERC725ApprovalScheme';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
@@ -58,19 +58,19 @@ describe('Tools test', async () => {
 
   describe('getKeyFromData', async () => {
     it('Should return proper key', async () => {
-      const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(wallet.address), ACTION_KEY, ECDSA_TYPE);
+      const data = new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32(wallet.address), ACTION_KEY, ECDSA_TYPE]);
       expect(getKeyFromData(data)).to.eq(wallet.address.toLowerCase()); // OK?
     });
   });
 
   describe('isAddKeyCall', async () => {
     it('Should return true if addKey call', async () => {
-      const {data} = new Interface(Identity.interface).functions.addKey(addressToBytes32(wallet.address), ACTION_KEY, ECDSA_TYPE);
+      const data = new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32(wallet.address), ACTION_KEY, ECDSA_TYPE]);
       expect(isAddKeyCall(data)).to.be.true;
     });
 
     it('Should return false if no addKey call', async () => {
-      const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(wallet.address), ACTION_KEY);
+      const data = new utils.Interface(Identity.interface).functions.removeKey.encode([addressToBytes32(wallet.address), ACTION_KEY]);
       expect(isAddKeyCall(data)).to.be.false;
     });
   });
@@ -80,12 +80,12 @@ describe('Tools test', async () => {
       const keys = [addressToBytes32(wallet.address), addressToBytes32(otherWallet.address)];
       const keyRoles = new Array(keys.length).fill(MANAGEMENT_KEY);
       const keyTypes = new Array(keys.length).fill(ECDSA_TYPE);
-      const {data} = new Interface(Identity.interface).functions.addKeys(keys, keyRoles, keyTypes);
+      const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyTypes]);
       expect(isAddKeysCall(data)).to.be.true; 
     });
 
     it('Should return false if no addKeys call', async () => {
-      const {data} = new Interface(Identity.interface).functions.removeKey(addressToBytes32(wallet.address), ACTION_KEY);
+      const data = new utils.Interface(Identity.interface).functions.removeKey.encode([addressToBytes32(wallet.address), ACTION_KEY]);
       expect(isAddKeysCall(data)).to.be.false;
     });
   });

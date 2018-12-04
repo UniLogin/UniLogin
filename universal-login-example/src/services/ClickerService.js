@@ -1,4 +1,4 @@
-import ethers, {Interface} from 'ethers';
+import {Contract, utils} from 'ethers';
 import Clicker from '../../build/Clicker';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import {OPERATION_CALL} from 'universal-login-contracts';
@@ -10,12 +10,13 @@ class ClickerService {
     this.provider = provider;
     this.tokenContractAddress = tokenContractAddress;
     this.defaultPaymentOptions = defaultPaymentOptions;
-    this.clickerContract = new ethers.Contract(
+    this.clickerContract = new Contract(
       this.clickerContractAddress,
       Clicker.interface,
       this.provider
     );
-    this.event = new Interface(Clicker.interface).events.ButtonPress;
+    this.interface = new utils.Interface(Clicker.interface);
+    this.event = new utils.Interface(Clicker.interface).events.ButtonPress;
     this.ensService = ensService;
   }
 
@@ -24,7 +25,7 @@ class ClickerService {
       to: this.clickerContractAddress,
       from: this.identityService.identity.address,
       value: 0,
-      data: this.clickerContract.interface.functions.press().data,
+      data: this.clickerContract.interface.functions.press.encode([]),
       gasToken: this.tokenContractAddress,
       operationType: OPERATION_CALL,
       ...this.defaultPaymentOptions
@@ -48,7 +49,7 @@ class ClickerService {
   async getEventsFromLogs(events) {
     const pressers = [];
     for (const event of events) {
-      const eventArguments = this.event.parse(this.event.topics, event.data);
+      const eventArguments = this.interface.parseLog(event).values;
       pressers.push({
         address: eventArguments.presser,
         name: await this.getEnsName(eventArguments.presser),
@@ -66,7 +67,7 @@ class ClickerService {
     const filter = {
       fromBlock: 0,
       address: this.clickerContractAddress,
-      topics: [this.event.topics]
+      topics: [this.event.topic]
     };
     const events = await this.provider.getLogs(filter);
     return this.getEventsFromLogs(events);

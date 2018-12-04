@@ -15,7 +15,7 @@ export default async function basicIdentityService(wallet) {
   const [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
   const mockToken = await deployContract(wallet, MockToken);
   await mockToken.transfer(identityAddress, utils.parseEther('1.0'));
-  await wallet.send(identityAddress, utils.parseEther('1.0'));
+  await wallet.sendTransaction({to: identityAddress, value: utils.parseEther('1.0')});
   return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, identityAddress, relayer};
 }
 

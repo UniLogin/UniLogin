@@ -10,7 +10,7 @@ class GreetingService {
   async getKeyEventsCounts(keyHolderAddress) {
     const single = await fetchEventsOfType(this.provider, KeyHolder.interface, keyHolderAddress, 'KeyAdded');
     const multiple = await fetchEventsOfType(this.provider, KeyHolder.interface, keyHolderAddress, 'MultipleKeysAdded');
-    const accumulatedMultipleKeys = multiple.reduce((accum, event) => accum + event.count.toNumber(), 0);
+    const accumulatedMultipleKeys = multiple.reduce((accum, event) => accum + event.values.count.toNumber(), 0);
     return {
       addKey: single.length - accumulatedMultipleKeys - 1,
       backupKeys: multiple.length
