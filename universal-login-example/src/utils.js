@@ -1,4 +1,5 @@
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
+import scrypt from 'scrypt-js';
 
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -27,4 +28,30 @@ function filterIP(ipAddress) {
   return convertIPv6ToIPv4(ipAddress);
 }
 
-export {fetchEventsOfType, classnames, convertIPv6ToIPv4, filterIP};
+
+function fromBrainWallet(username, password) {
+  if (typeof(username) === 'string') {
+    username =  utils.toUtf8Bytes(username, 'NFKC');
+  } else {
+    username = utils.arrayify(username, 'password');
+  }
+  if (typeof(password) === 'string') {
+    password =  utils.toUtf8Bytes(password, 'NFKC');
+  } else {
+    password = utils.arrayify(password, 'password');
+  }
+
+  return new Promise(function(resolve, reject) {
+    // eslint-disable-next-line no-unused-vars
+    scrypt(password, username, (1 << 18), 8, 1, 32, function(error, progress, key) {
+      if (error) {
+        reject(error);
+
+      } else if (key) {
+        resolve(new Wallet(utils.hexlify(key)));
+      }
+    });
+  });
+}
+
+export {fetchEventsOfType, classnames, convertIPv6ToIPv4, filterIP, fromBrainWallet};

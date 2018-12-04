@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 import {tokenContractAddress} from '../../config/config';
+import {fromBrainWallet} from '../utils';
 
 class RecoverAccount extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class RecoverAccount extends Component {
   async onRecoverClick() {
     this.setState({isLoading: true, message: ''});
     const {identityService, sdk} = this.props.services;
-    const wallet = await this.props.services.backupService.createWallet(this.state.backupCode);
+    const wallet = await fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
     const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     try {
       await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);

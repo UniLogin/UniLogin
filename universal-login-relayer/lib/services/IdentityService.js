@@ -37,13 +37,13 @@ class IdentityService {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
       const data = new utils.Interface(Identity.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
-        value: 0,
+        ...defaultDeployOptions,
+        value: utils.parseEther('0'),
         to: message.from,
-        data,
-        ...defaultDeployOptions
+        data
       };
-      const estimateGas = await this.provider.estimateGas(transaction);
-      if (message.gasLimit >= estimateGas) {
+      const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
+      if (utils.bigNumberify(message.gasLimit).gte(estimateGas)) {
         if (message.to === message.from && isAddKeyCall(message.data)) {
           const key = getKeyFromData(message.data);
           await this.authorisationService.removeRequest(message.from, key);
