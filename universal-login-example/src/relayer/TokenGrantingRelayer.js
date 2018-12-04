@@ -1,7 +1,7 @@
 import {waitToBeMined} from './utils';
 import Token from '../../build/Token';
 import Relayer from 'universal-login-relayer';
-import ethers, {Wallet, utils} from 'ethers';
+import {Wallet, utils, Contract} from 'ethers';
 
 
 class TokenGrantingRelayer extends Relayer {
@@ -13,7 +13,7 @@ class TokenGrantingRelayer extends Relayer {
   }
 
   addHooks() {
-    this.tokenContract = new ethers.Contract(this.tokenContractAddress, Token.interface, this.deployerWallet);
+    this.tokenContract = new Contract(this.tokenContractAddress, Token.interface, this.deployerWallet);
     this.hooks.addListener('created', async (transaction) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash);
       if (receipt.status) {

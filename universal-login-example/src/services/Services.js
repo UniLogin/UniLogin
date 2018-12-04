@@ -1,6 +1,6 @@
 import {EventEmitter} from 'fbemitter';
 import EthereumIdentitySDK from 'universal-login-sdk';
-import ethers from 'ethers';
+import {providers} from 'ethers';
 import config, {clickerContractAddress, tokenContractAddress} from '../../config/config';
 import IdentityService from './IdentityService';
 import ClickerService from './ClickerService';
@@ -19,7 +19,7 @@ class Services {
     this.config = config;
     this.defaultPaymentOptions = DEFAULT_PAYMENT_OPTIONS;
     this.emitter = new EventEmitter();
-    this.provider = new ethers.providers.JsonRpcProvider(this.config.jsonRpcUrl);
+    this.provider = new providers.JsonRpcProvider(this.config.jsonRpcUrl);
     this.sdk = new EthereumIdentitySDK(this.config.relayerUrl, this.provider);
     this.ensService = new EnsService(this.sdk, this.provider);
     this.tokenService = new TokenService(tokenContractAddress, this.provider);

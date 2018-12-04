@@ -1,4 +1,4 @@
-import ethers, {utils, Contract} from 'ethers';
+import {utils, Contract} from 'ethers';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);

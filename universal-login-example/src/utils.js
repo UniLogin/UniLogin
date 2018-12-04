@@ -1,14 +1,14 @@
-import {Interface} from 'ethers';
+import {utils} from 'ethers';
 
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 async function fetchEventsOfType(provider, abi, address, name) {
-  const eventInterface = new Interface(abi).events;
-  const topics = [eventInterface[name].topics];
-  const filter = {fromBlock: 0, address, topics};
+  const eventInterface = new utils.Interface(abi).events;
+  const topic = [eventInterface[name].topic];
+  const filter = {fromBlock: 0, address, topics: topic};
   const logs = await provider.getLogs(filter);
-  return logs.map((event) => eventInterface[name].parse(event.topics, event.data));
+  return logs.map((event) => (new utils.Interface(abi)).parseLog(event));
 }
 
 function classnames(classes = {}) {
