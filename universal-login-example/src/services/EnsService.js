@@ -1,4 +1,4 @@
-import ethers, {utils} from 'ethers';
+import {utils, Contract} from 'ethers';
 import PublicResolver from '../../abi/PublicResolver';
 
 const {namehash} = utils;
@@ -22,7 +22,7 @@ class EnsService {
 
   async getEnsName(address) {
     const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
-    this.resolverContract = this.resolverContract || new ethers.Contract(await this.getPublicResolverAddress(), PublicResolver.interface, this.provider);
+    this.resolverContract = this.resolverContract || new Contract(await this.getPublicResolverAddress(), PublicResolver.interface, this.provider);
     return await this.resolverContract.name(node);
   }
 }

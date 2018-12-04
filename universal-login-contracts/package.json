@@ -6,7 +6,7 @@
     "main": "index.js",
     "build": "babel lib --out-dir dist",
     "dependencies": {
-        "ens-builder": "^1.1.0"
+        "ens-builder": "^2.0.0"
     },
     "scripts": {
         "test": "mocha --recursive --require babel-register test -t 10000",
@@ -28,7 +28,7 @@
         "chai-as-promised": "^7.1.1",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
-        "ethereum-waffle": "^0.2.3",
+        "ethereum-waffle": "^1.0.0",
         "ganache-core": "^2.2.1",
         "mocha": "^5.2.0",
         "openzeppelin-solidity": "^1.12.0",

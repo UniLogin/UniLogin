@@ -1,4 +1,4 @@
-import ethers, {providers, utils, Interface} from 'ethers';
+import {providers, utils, Contract} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 import ERC20 from 'universal-login-contracts/build/ERC20';
@@ -22,7 +22,7 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
     sleep(tick);
     receipt = await provider.getTransactionReceipt(transactionHash);
   }
-  return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
+  return new Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
 const messageSignatureForApprovals = (wallet, id) =>
@@ -46,7 +46,7 @@ const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => 
   } else if ((await provider.getCode(gasToken)).slice(2, 111) !== erc20Bytecode.slice(2, 111)) {
     throw new Error('Address isn`t token');
   } else {
-    const token = new ethers.Contract(gasToken, ERC20.interface, provider);
+    const token = new Contract(gasToken, ERC20.interface, provider);
     const identityTokenBalance = await token.balanceOf(identityAddress);
     return identityTokenBalance.gte(utils.bigNumberify(gasLimit));
   }
@@ -54,26 +54,26 @@ const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => 
 
 const lookupAddress = async (provider, address) => {
   const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
-  const ens = new ethers.Contract(provider.ensAddress, ENS.interface, provider);
+  const ens = new Contract(provider.ensAddress, ENS.interface, provider);
   const resolver = await ens.resolver(node);
-  const contract = new ethers.Contract(resolver, PublicResolver.interface, provider);
+  const contract = new Contract(resolver, PublicResolver.interface, provider);
   return await contract.name(node);
 };
 
 const isAddKeyCall = (data) => {
-  const addKeySighash = new Interface(Identity.interface).functions.addKey.sighash;
+  const addKeySighash = new utils.Interface(Identity.interface).functions.addKey.sighash;
   return addKeySighash === data.slice(0, addKeySighash.length);
 };
 
 const getKeyFromData = (data) => {
   const codec = new utils.AbiCoder();
-  const addKeySighash = new Interface(Identity.interface).functions.addKey.sighash;
+  const addKeySighash = new utils.Interface(Identity.interface).functions.addKey.sighash;
   const [address] = (codec.decode(['bytes32', 'uint256', 'uint256'], data.replace(addKeySighash.slice(2), '')));
   return utils.hexlify(utils.stripZeros(address));
 };
 
 const isAddKeysCall = (data) => {
-  const addKeysSighash = new Interface(Identity.interface).functions.addKeys.sighash;
+  const addKeysSighash = new utils.Interface(Identity.interface).functions.addKeys.sighash;
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 

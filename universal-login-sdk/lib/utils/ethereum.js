@@ -1,13 +1,13 @@
-import ethers, {utils} from 'ethers';
+import {utils, Contract} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 
 const resolveName = async (provider, ensAddress, ensName) => {
   const node = utils.namehash(ensName);
-  const ensContract = new ethers.Contract(ensAddress, ENS.interface, provider);
+  const ensContract = new Contract(ensAddress, ENS.interface, provider);
   const resolverAddress = await ensContract.resolver(node);
   if (resolverAddress !== '0x0000000000000000000000000000000000000000') {
-    const resolverContract = new ethers.Contract(resolverAddress, PublicResolver.interface, provider);
+    const resolverContract = new Contract(resolverAddress, PublicResolver.interface, provider);
     return await resolverContract.addr(node);
   }
   return false;

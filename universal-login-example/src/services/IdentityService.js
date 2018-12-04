@@ -1,4 +1,4 @@
-import ethers, {Wallet} from 'ethers';
+import {Wallet} from 'ethers';
 
 class IdentityService {
   constructor(sdk, emitter, storageService, provider) {
@@ -30,7 +30,7 @@ class IdentityService {
   }
 
   async recover() {
-    this.privateKey = await ethers.Wallet.createRandom().privateKey;
+    this.privateKey = await Wallet.createRandom().privateKey;
     const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
     const filter = {contractAddress: this.identity.address, key: address};

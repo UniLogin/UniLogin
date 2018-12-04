@@ -1,4 +1,4 @@
-import ethers, {utils, Interface} from 'ethers';
+import ethers, {utils, Wallet, Contract} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
@@ -11,7 +11,7 @@ import {MESSAGE_DEFAULTS} from './config';
 
 class EthereumIdentitySDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
-    this.provider = typeof(providerOrUrl) === 'string' ? new ethers.JsonRpcProvider(providerOrUrl) : providerOrUrl;
+    this.provider = typeof(providerOrUrl) === 'string' ? new ethers.providers.JsonRpcProvider(providerOrUrl) : providerOrUrl;
     this.relayerUrl = relayerUrl;
     this.relayerObserver = new RelayerObserver(relayerUrl);
     this.blockchainObserver = new BlockchainObserver(this.provider);
@@ -20,7 +20,7 @@ class EthereumIdentitySDK {
 
   async create(ensName) {
     const privateKey = this.generatePrivateKey();
-    const wallet = new ethers.Wallet(privateKey, this.provider);
+    const wallet = new Wallet(privateKey, this.provider);
     const managementKey = wallet.address;
     const url = `${this.relayerUrl}/identity`;
     const method = 'POST';
@@ -36,7 +36,7 @@ class EthereumIdentitySDK {
 
   async addKey(to, publicKey, privateKey, transactionDetails) {
     const key = addressToBytes32(publicKey);
-    const {data} = new Interface(Identity.interface).functions.addKey(key, MANAGEMENT_KEY, ECDSA_TYPE);
+    const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, MANAGEMENT_KEY, ECDSA_TYPE]);
     const message = {
       ...transactionDetails,
       to,
@@ -50,7 +50,7 @@ class EthereumIdentitySDK {
     const keys = publicKeys.map((publicKey) => addressToBytes32(publicKey));
     const keyRoles = new Array(publicKeys.length).fill(MANAGEMENT_KEY);
     const keyTypes = new Array(publicKeys.length).fill(ECDSA_TYPE);
-    const {data} = new Interface(Identity.interface).functions.addKeys(keys, keyRoles, keyTypes);
+    const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyTypes]);
     const message = {
       ...transactionDetails,
       to,
@@ -62,7 +62,7 @@ class EthereumIdentitySDK {
 
   async removeKey(to, address, privateKey, transactionDetails) {
     const key = addressToBytes32(address);
-    const {data} = new Interface(Identity.interface).functions.removeKey(key, MANAGEMENT_KEY);
+    const data = new utils.Interface(Identity.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
     const message = {
       ...transactionDetails,
       to,
@@ -75,7 +75,7 @@ class EthereumIdentitySDK {
   }
 
   generatePrivateKey() {
-    return ethers.Wallet.createRandom().privateKey;
+    return Wallet.createRandom().privateKey;
   }
 
   async getRelayerConfig() {
@@ -97,31 +97,21 @@ class EthereumIdentitySDK {
       ...message, 
       nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
     };
-    const signature = calculateMessageSignature(privateKey, finalMessage);
+    const signature = await calculateMessageSignature(privateKey, finalMessage);
     const body = JSON.stringify({...finalMessage, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
-      const receipt = await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
-      return this.getExecutionNonce(receipt.logs);
+      await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
+      return finalMessage.nonce;
     }
     throw new Error(`${responseJson.error}`);
   }
 
   async getNonce(identityAddress, privateKey) {
-    const wallet = new ethers.Wallet(privateKey, this.provider);
-    const contract = new ethers.Contract(identityAddress, Identity.interface, wallet);
+    const wallet = new Wallet(privateKey, this.provider);
+    const contract = new Contract(identityAddress, Identity.interface, wallet);
     return await contract.lastNonce();
-  }
-
-  getExecutionNonce(emittedEvents) {
-    const [eventTopic] = new Interface(Identity.interface).events.ExecutedSigned.topics;
-    for (const event of emittedEvents) {
-      if (event.topics[0] === eventTopic) {
-        return utils.bigNumberify(event.topics[2]);
-      }
-    }
-    throw 'Event ExecutionRequested not emitted';
   }
 
   async identityExist(identity) {
@@ -140,7 +130,7 @@ class EthereumIdentitySDK {
 
   async connect(identityAddress) {
     const privateKey = this.generatePrivateKey();
-    const wallet = new ethers.Wallet(privateKey, this.provider);
+    const wallet = new Wallet(privateKey, this.provider);
     const key = wallet.address;
     const url = `${this.relayerUrl}/authorisation`;
     const method = 'POST';

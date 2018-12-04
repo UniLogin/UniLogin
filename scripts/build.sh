@@ -8,7 +8,6 @@ yarn build &&
 cd ../universal-login-sdk &&
 yarn build &&
 cd ../universal-login-example &&
-yarn contracts:build &&
 yarn build &&
 cd ../universal-login-boilerplate &&
 yarn build &&
