@@ -24,6 +24,7 @@
         "relayer:start": "babel-node lib/startRelayer.js",
         "ganache:start": "babel-node scripts/ganache.js",
         "ens:deploy": "babel-node scripts/deployENS.js",
+        "register:domain": "babel-node scripts/registerDomain.js",
         "clean": "rm -fr ./node_modules && rm -fr ./build",
         "postinstall": "yarn build",
         "start": "node build/startRelayer.js"
