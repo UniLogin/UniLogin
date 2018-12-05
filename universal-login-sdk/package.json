@@ -9,8 +9,8 @@
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
     "node-fetch": "^2.2.0",
-    "universal-login-contracts": "0.1.0",
-    "universal-login-relayer": "^0.1.0"
+    "universal-login-contracts": "0.1.1",
+    "universal-login-relayer": "^0.1.1"
   },
   "scripts": {
     "build": "babel lib --out-dir dist",
