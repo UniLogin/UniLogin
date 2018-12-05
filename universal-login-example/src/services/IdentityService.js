@@ -23,6 +23,7 @@ class IdentityService {
   async connect() {
     this.privateKey = await this.sdk.connect(this.identity.address);
     const {address} = new Wallet(this.privateKey);
+    this.deviceAddress = address;
     const filter = {contractAddress: this.identity.address, key: address};
     this.subscription = this.sdk.subscribe('KeyAdded', filter, () => {
       this.onKeyAdded({greetMode: 'addKey'});

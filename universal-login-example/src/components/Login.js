@@ -19,8 +19,8 @@ class Login extends Component {
   async onNextClick(identity) {
     const {emitter} = this.props.services;
     if (await this.identityExist(identity)) {
-      emitter.emit('setView', 'ApproveConnection');
       await this.identityService.connect();
+      emitter.emit('setView', 'ApproveConnection');
     } else {
       emitter.emit('setView', 'CreatingID');
       try {

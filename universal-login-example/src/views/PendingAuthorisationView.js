@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {filterIP} from '../utils';
+import Blockies from 'react-blockies';
 
 class PendingAuthorisationView extends Component {
   render() {
@@ -21,7 +22,10 @@ class PendingAuthorisationView extends Component {
             {this.props.authorisation.deviceInfo.city})
           </span>{' '}
           at <span className="bold">{this.props.authorisation.deviceInfo.time}</span>
+          <br />
+          <Blockies seed={this.props.authorisation.key.toLowerCase()} size={8} scale={6} />
         </p>
+
         <button
           className="btn-alt fullwidth"
           onClick={() => this.props.onAcceptClick(this.props.authorisation.key)}

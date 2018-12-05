@@ -50,6 +50,7 @@ class ApproveConnection extends Component {
           onChange={this.onChange.bind(this)}
           onCancelClick={this.onCancelClick.bind(this)}
           identity={this.identityService.identity}
+          deviceAddress={this.identityService.deviceAddress}
           onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
         />
       </div>
