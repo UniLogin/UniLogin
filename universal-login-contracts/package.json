@@ -1,10 +1,8 @@
 {
     "name": "universal-login-contracts",
-    "version": "0.1.0",
-    "private": true,
+    "version": "0.1.1",
     "license": "MIT",
     "main": "index.js",
-    "build": "babel lib --out-dir dist",
     "dependencies": {
         "ens-builder": "^2.0.0"
     },
