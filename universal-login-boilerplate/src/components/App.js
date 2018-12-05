@@ -3,7 +3,6 @@ import Connect from '../views/Connect';
 import Transfer from '../views/Transfer';
 import EthereumIdentitySDK from 'universal-login-sdk';
 import {providers, Wallet, Contract} from 'ethers';
-import getLabel from '../utils';
 import Clicker from '../../abi/Clicker';
 
 class App extends Component {
@@ -50,7 +49,7 @@ class App extends Component {
     const identityAddress = await this.sdk.identityExist(name);
     this.identityAddress = identityAddress;
     if (identityAddress) {
-      const privateKey = await this.sdk.connect(identityAddress, await getLabel());
+      const privateKey = await this.sdk.connect(identityAddress);
       this.privateKey = privateKey;
       this.state.view === 'transfer';
       const {address} = new Wallet(privateKey);
