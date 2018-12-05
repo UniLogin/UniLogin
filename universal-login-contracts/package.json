@@ -1,7 +1,6 @@
 {
     "name": "universal-login-contracts",
     "version": "0.1.0",
-    "private": true,
     "license": "MIT",
     "main": "index.js",
     "build": "babel lib --out-dir dist",
