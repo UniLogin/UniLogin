@@ -36,6 +36,7 @@ class ApproveConnectionView extends Component {
 
 ApproveConnectionView.propTypes = {
   identity: PropTypes.object,
+  deviceAddress: PropTypes.object,
   onCancelClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func
 };
