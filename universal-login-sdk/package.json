@@ -1,13 +1,16 @@
 {
   "name": "universal-login-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/sdk.js",
   "license": "MIT",
   "dependencies": {
     "deep-equal": "^1.0.1",
     "ethereum-waffle": "^1.0.4",
     "ethers": "^4.0",
-    "universal-login-contracts": "0.1.0"
+    "fbemitter": "^2.1.1",
+    "node-fetch": "^2.2.0",
+    "universal-login-contracts": "0.1.0",
+    "universal-login-relayer": "^0.1.0"
   },
   "scripts": {
     "build": "babel lib --out-dir dist",
@@ -25,12 +28,9 @@
     "chai": "^4.1.2",
     "eslint": "^5.5.0",
     "eslint-plugin-import": "^2.14.0",
-    "fbemitter": "^2.1.1",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
-    "node-fetch": "^2.2.0",
     "sinon": "^6.3.1",
-    "sinon-chai": "^3.2.0",
-    "universal-login-relayer": "^0.1.0"
+    "sinon-chai": "^3.2.0"
   }
 }
