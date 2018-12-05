@@ -31,3 +31,17 @@ Where config file is a JSON file in the following format:
 ```
 
 Default port is `3311`, `privateKey` is the only required field.
+
+
+### Register ENS domain script
+
+To register your domain, change `my-domain` in `registerDomain.js`
+```js
+  registrar.start('my-domain');
+```
+on your domain and run script from universal-login-relayer directory
+```
+  yarn register:domain
+```
+
+Learn more [here](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/RegisterENS.md)
