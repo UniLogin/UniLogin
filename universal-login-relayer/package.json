@@ -4,7 +4,6 @@
     "private": true,
     "license": "MIT",
     "main": "build/index.js",
-    "build": "babel lib --out-dir dist",
     "dependencies": {
         "dotenv": "^6.0.0",
         "ens-builder": "^2.0.0",
