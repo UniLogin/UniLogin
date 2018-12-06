@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {RelayerUnderTest} from '../../../lib/index';
+import RelayerUnderTest from '../../helpers/relayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
