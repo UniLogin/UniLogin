@@ -19,12 +19,6 @@ yarn-error.log
 /universal-login-example/.cache
 /universal-login-example/node_modules
 /universal-login-example/yarn-error.log
-/universal-login-boilerplate/.env
-/universal-login-boilerplate/dist
-/universal-login-boilerplate/build
-/universal-login-boilerplate/.cache
-/universal-login-boilerplate/node_modules
-/universal-login-boilerplate/yarn-error.log
 
 sdk/*
 universal-login-example/src/views/.DS_Store
