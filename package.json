@@ -12,8 +12,7 @@
     "universal-login-contracts",
     "universal-login-relayer",
     "universal-login-sdk",
-    "universal-login-example",
-    "universal-login-boilerplate"
+    "universal-login-example"
   ],
   "dependencies": {
     "wsrun": "^2.2.1"

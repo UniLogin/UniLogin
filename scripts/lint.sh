@@ -6,6 +6,4 @@ yarn lint &&
 cd ../universal-login-sdk &&
 yarn lint &&
 cd ../universal-login-example &&
-yarn lint &&
-cd ../universal-login-boilerplate &&
-yarn lint
+yarn lint 
