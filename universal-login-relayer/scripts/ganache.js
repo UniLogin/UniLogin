@@ -1,5 +1,5 @@
 import Ganache from 'ganache-core';
-import {port, options} from '../lib/config/ganache';
+import {port, options} from '../test/config/ganache';
 
 const server = Ganache.server(options);
 server.listen(port, (err) => {

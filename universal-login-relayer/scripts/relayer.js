@@ -1,5 +1,5 @@
 require('dotenv').config();
-import Relayer from '../lib//relayer';
+import Relayer from '../lib/relayer';
 
 const config = require('../lib/config/relayer');
 

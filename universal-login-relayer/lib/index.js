@@ -1,6 +1,6 @@
-import RelayerUnderTest from './utils/relayerUnderTest';
+import RelayerUnderTest from '../test/helpers/relayerUnderTest';
 import Relayer from './relayer';
-import ENSDeployer from './utils/ensDeployer';
+import ENSDeployer from '../test/helpers/ensDeployer';
 
 export default Relayer;
 
