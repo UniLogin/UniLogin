@@ -9,6 +9,4 @@ cd ../universal-login-sdk &&
 yarn build &&
 cd ../universal-login-example &&
 yarn build &&
-cd ../universal-login-boilerplate &&
-yarn build &&
 cd ..
