@@ -54,4 +54,4 @@ function fromBrainWallet(username, password) {
   });
 }
 
-export {fetchEventsOfType, classnames, convertIPv6ToIPv4, filterIP, fromBrainWallet};
+export {fetchEventsOfType, classnames, convertIPv6ToIPv4, filterIP, fromBrainWallet, sleep};

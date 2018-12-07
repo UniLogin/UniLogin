@@ -6,12 +6,12 @@ class MainScreenView extends Component {
   renderEvent(event) {
     return (
       <p className="click-history-item" key={event.key}>
-        <span className="date"> {event.pressTime} ago </span>
+        {event.pressTime} ago 
         <span className="bold user-inline">
           <Blockies seed={event.address.toLowerCase()} size={8} scale={4} />{' '}
           {event.name}
         </span>{' '}
-        pressed at {event.score} seconds
+        <span className="date">pressed at {event.score} seconds</span>
       </p>
     );
   }
