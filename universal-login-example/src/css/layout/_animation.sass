@@ -12,13 +12,29 @@
 @keyframes fade-in
   from
     opacity: 0
-    transform: translateY(-90px) scale(1.1)
+    // transform: translateY(-90px) scale(0.9)
     filter: blur(2px)
 
   to
     opacity: 1
-    transform: translateY(0) scale()
+    // transform: translateY(0) scale()
     filter: blur()
+
+@keyframes light-fade
+  from
+    opacity: 0.25
+    filter: blur(1px)
+
+  to
+    opacity: 0.75
+    filter: blur()
+
+@keyframes loadbar
+  from
+    width: 0
+
+  to
+    width: 100%
 
 
 
@@ -79,8 +95,8 @@
 .request-notification
     animation: shake 2s ease-in-out
 
-.greeting-view
-    animation: fade-in 0.5s ease-in-out
+// .greeting-view
+//     animation: fade-in 0.5s ease-in-out
 
 .greeting-view .checkmark-ico.animated
   animation: reveal 1.5s ease-in-out
@@ -93,5 +109,20 @@
 .greeting-view .checkmark-ico.order-3.animated
   animation-delay: 0.5s
 
+.greeting-view .start-btn
+    animation: fade-in .5s ease-in-out
+
 .header
     animation: fade-in .25s ease-in-out
+
+.loading
+  animation: light-fade 0.5s ease-in-out
+  animation-iteration-count: infinite
+  animation-direction: alternate-reverse
+
+.loadbar::after
+  content: " "
+  width: 100%
+  display: block
+  border-bottom: 2px solid #fd6073
+  animation: loadbar 30s ease-in-out

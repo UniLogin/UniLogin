@@ -1,22 +1,12 @@
 import {utils, Wallet} from 'ethers';
 import scrypt from 'scrypt-js';
 
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 async function fetchEventsOfType(provider, abi, address, name) {
   const eventInterface = new utils.Interface(abi).events;
   const topic = [eventInterface[name].topic];
   const filter = {fromBlock: 0, address, topics: topic};
   const logs = await provider.getLogs(filter);
   return logs.map((event) => (new utils.Interface(abi)).parseLog(event));
-}
-
-function classnames(classes = {}) {
-  return Object.entries(classes)
-    .filter(([key, value]) => value)
-    .map(([key, value]) => key)
-    .join(' ');
 }
 
 const convertIPv6ToIPv4 = (addressIPv6) => addressIPv6.replace(/::ffff:/g, '');
@@ -54,4 +44,4 @@ function fromBrainWallet(username, password) {
   });
 }
 
-export {fetchEventsOfType, classnames, convertIPv6ToIPv4, filterIP, fromBrainWallet};
+export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet};

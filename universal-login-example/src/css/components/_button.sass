@@ -13,11 +13,12 @@
     transform: translate3d(0, -1px, 0)
 
 .btn:active
-    background: darken(red, 20%)
+    background: darken(red, 25%)
     transform: translate3d(0, 3px, 0)
+    cursor: not-allowed
 
-.btn.disabled
-    background: desaturate(red, 75%)
+.btn:disabled, .btn.disabled
+    background: #8c7376
     transform: translate3d(0, 3px, 0)
 
 .btn-alt

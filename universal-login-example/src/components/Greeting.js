@@ -13,6 +13,7 @@ class Greeting extends Component {
   }
 
   async componentDidMount() {
+    console.log(this.state);
     const keyHolderAddress = this.props.identityService.identity.address;
     const {greetMode} = this.props.viewParameters;
     const status = await this.props.greetingService.getStatus(keyHolderAddress, greetMode);
