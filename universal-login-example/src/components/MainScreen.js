@@ -11,7 +11,7 @@ class MainScreen extends Component {
     super(props);
     const {clickerService} = this.props.services;
     this.clickerService = clickerService;
-    this.state = {lastClick: '0', lastPresser: 'nobody', events: []};
+    this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false};
   }
 
   setView(view) {
@@ -43,11 +43,15 @@ class MainScreen extends Component {
     if (pressers.length > 0) {
       this.setState({
         lastClick: pressers[0].pressTime,
-        events: pressers});
+        events: pressers,
+        loaded: true
+      });
     } else {
       this.setState({
         lastClick: '0',
-        events: pressers});
+        events: pressers,
+        loaded: true
+      });
     }
     setTimeout(this.update.bind(this), 1000);
   }
@@ -58,11 +62,20 @@ class MainScreen extends Component {
         <HeaderView>
           <ProfileIdentity
             type="identityHeader"
-            identityService={this.props.services.identityService}/>
-          <RequestsBadge setView={this.setView.bind(this)} services={this.props.services}/>
+            identityService={this.props.services.identityService}
+          />
+          <RequestsBadge
+            setView={this.setView.bind(this)}
+            services={this.props.services}
+          />
           <AccountLink setView={this.setView.bind(this)} />
         </HeaderView>
-        <MainScreenView clicksLeft={this.state.clicksLeft} events={this.state.events} onClickerClick={this.onClickerClick.bind(this)} lastClick={this.state.lastClick} />
+        <MainScreenView
+          clicksLeft={this.state.clicksLeft}
+          events={this.state.events}
+          onClickerClick={this.onClickerClick.bind(this)}
+          lastClick={this.state.lastClick}
+        />
       </div>
     );
   }

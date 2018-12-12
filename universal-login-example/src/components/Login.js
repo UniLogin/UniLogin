@@ -16,15 +16,16 @@ class Login extends Component {
     return await this.identityService.identityExist(identity);
   }
 
-  async onNextClick(identity) {
+  async onNextClick(identityName) {
     const {emitter} = this.props.services;
-    if (await this.identityExist(identity)) {
+    if (await this.identityExist(identityName)) {
       emitter.emit('setView', 'ApproveConnection');
       await this.identityService.connect();
     } else {
+      this.identityService.identity.name = identityName;
       emitter.emit('setView', 'CreatingID');
       try {
-        await this.identityService.createIdentity(identity);
+        await this.identityService.createIdentity(identityName);
         emitter.emit('setView', 'Greeting', {greetMode: 'created'});
       } catch (err) {
         emitter.emit('setView', 'Failure', {error: err.message});
