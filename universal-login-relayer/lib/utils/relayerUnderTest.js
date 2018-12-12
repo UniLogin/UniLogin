@@ -1,7 +1,7 @@
-import Relayer from '../../lib/relayer';
+import Relayer from '../relayer';
 import {defaultAccounts, getWallets} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
-import {withENS} from '../../lib/utils/utils';
+import {withENS} from './utils';
 
 class RelayerUnderTest extends Relayer {
   url() {
