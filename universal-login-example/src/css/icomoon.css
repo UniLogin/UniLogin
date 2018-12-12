@@ -1,14 +1,15 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('./../fonts/icomoon/icomoon.eot?qhridb');
-  src:  url('./../fonts/icomoon/icomoon.ttf?qhridb') format('truetype'),
+  src: url('./../fonts/icomoon/icomoon.eot?qhridb');
+  src: url('./../fonts/icomoon/icomoon.ttf?qhridb') format('truetype'),
     url('./../fonts/icomoon/icomoon.woff?qhridb') format('woff'),
     url('./../fonts/icomoon/icomoon.svg?qhridb#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^='icon-'],
+[class*=' icon-'] {
   font-family: 'icomoon' !important;
   speak: none;
   font-style: normal;
@@ -22,26 +23,32 @@
 }
 
 .icon-check:before {
-  content: "\e925";
+  content: '\e925';
 }
 .icon-smartphone:before {
-  content: "\e9bc";
+  content: '\e9bc';
 }
 .icon-printer:before {
-  content: "\e9a4";
+  content: '\e9a4';
+}
+.icon-user:before {
+  content: '\e9d9';
+}
+.icon-user-plus:before {
+  content: '\e9dc';
 }
 .icon-users:before {
-  content: "\e9de";
+  content: '\e9de';
 }
 .icon-info:before {
-  content: "\e96b";
+  content: '\e96b';
 }
 .icon-settings:before {
-  content: "\e9b0";
+  content: '\e9b0';
 }
 .icon-minus-circle:before {
-  content: "\e985";
+  content: '\e985';
 }
 .icon-disconnect:before {
-  content: "\e986";
+  content: '\e986';
 }

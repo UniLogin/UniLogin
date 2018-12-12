@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import AddNewDevice from './Sections/AddNewDevice';
+import AddBackupCode from './Sections/AddBackupCode';
+import CreatingNewAccount from './Sections/CreatingNewAccount';
+import HeaderWaiting from './Sections/HeaderWaiting';
 
 class CreatingIdView extends Component {
   render() {
     return (
-      <div className="login-view">
+      <div className="greeting-view">
         <div className="container">
-          <h1 className="main-title">Creating ID...</h1>
-          <div className="row align-items-center">
-            <div className="row align-items-center">
-              <div className="circle-loader" />
-              <p className="login-view-text">
-                {this.props.identityName} <br />
-                <em>We are creating your new ID, please wait a minute...</em>
-              </p>
-              <br />
-            </div>
-          </div>
+          <HeaderWaiting identityName={this.props.identityName}/>
+          <hr className="separator" />
+          <CreatingNewAccount />
+          <hr className="separator" />
+          <AddNewDevice />
+          <hr className="separator" />
+          <AddBackupCode />
         </div>
       </div>
     );
