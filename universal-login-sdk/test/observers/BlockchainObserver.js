@@ -33,7 +33,7 @@ describe('SDK: BlockchainObserver', async () => {
     sdk = new EthereumIdentitySDK(relayer.url(), provider);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 50;
-    await sdk.start();
+    blockchainObserver.lastBlock = 0;
     token = await deployContract(wallet, MockToken, []);
     [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
     await token.transfer(contractAddress, utils.parseEther('20'));
@@ -44,9 +44,9 @@ describe('SDK: BlockchainObserver', async () => {
     await token.transfer(contractAddress, utils.parseEther('20'));
     const {address} = new Wallet(privateKey);
     const callback = sinon.spy();
-    const filter = {contractAddress, key: address};
-    await blockchainObserver.subscribe('KeyAdded', filter, callback);
-    await blockchainObserver.fetchEvents(JSON.stringify(filter));
+    const filter = {contractAddress, key: address};    
+    await blockchainObserver.subscribe('KeyAdded', filter, callback);    
+    await blockchainObserver.fetchEvents();
     expect(callback).to.have.been.calledWith({key: address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
 
