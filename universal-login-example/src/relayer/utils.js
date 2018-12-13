@@ -1,4 +1,3 @@
-
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -11,4 +10,4 @@ const waitToBeMined = async (provider, transactionHash, tick = 1000) => {
   return receipt;
 };
 
-export {waitToBeMined};
+export {sleep, waitToBeMined};

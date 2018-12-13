@@ -17,6 +17,6 @@ contract MockContract {
     }
 
     function revertingFunction() public view {
-        require(msg.sender == address(this));
+        require(msg.sender == address(this), "Always revert");
     }
 }

@@ -8,7 +8,7 @@ class BlockchainObserver extends ObserverBase {
     this.provider = provider;
     this.identityInterface = new utils.Interface(Identity.interface);
     this.eventInterface = new utils.Interface(Identity.interface).events;
-    this.codec = new utils.AbiCoder();
+    this.codec = new utils.AbiCoder();    
   }
 
   async start() {
