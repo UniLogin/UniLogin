@@ -1,13 +1,16 @@
 import Identity from 'universal-login-contracts/build/Identity';
+import IdentityLegacy from 'universal-login-contracts/build/IdentityLegacy';
 import {addressToBytes32, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import {utils, ContractFactory} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
 class IdentityService {
-  constructor(wallet, ensService, authorisationService, hooks, provider) {
+  constructor(wallet, ensService, authorisationService, hooks, provider, config) {
     this.wallet = wallet;
-    this.abi = Identity.interface;
+    this.contractJSON = config.networkName === 'rinkeby' ? IdentityLegacy : Identity;
+    this.abi = this.contractJSON.interface;
+    this.bytecode = `0x${this.contractJSON.bytecode}`;
     this.ensService = ensService;
     this.authorisationService = authorisationService;
     this.codec = new utils.AbiCoder();
@@ -17,14 +20,13 @@ class IdentityService {
 
   async create(managementKey, ensName, overrideOptions = {}) {
     const key = addressToBytes32(managementKey);
-    const bytecode = `0x${Identity.bytecode}`;
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
       const args = [key, ...ensArgs];
       const deployTransaction = {
         ...defaultDeployOptions,
         ...overrideOptions,
-        ...new ContractFactory(this.abi, bytecode).getDeployTransaction(...args)
+        ...new ContractFactory(this.abi, this.bytecode).getDeployTransaction(...args)
       };
       const transaction = await this.wallet.sendTransaction(deployTransaction);
       this.hooks.emit('created', transaction);

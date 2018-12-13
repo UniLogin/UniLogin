@@ -2,6 +2,7 @@ require('dotenv').config();
 
 module.exports = Object.freeze({
   jsonRpcUrl: process.env.JSON_RPC_URL,
+  networkName: process.env.NETWORK_NAME,
   port: process.env.PORT,
   privateKey: process.env.PRIVATE_KEY,
   chainSpec: {

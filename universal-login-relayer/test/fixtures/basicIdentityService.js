@@ -18,7 +18,7 @@ export default async function basicIdentityService(wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService();
-  const identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider);
+  const identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider, {networkName: 0});
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const mockToken = await deployContract(wallet, MockToken);
