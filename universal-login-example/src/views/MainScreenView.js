@@ -36,13 +36,17 @@ class MainScreenView extends Component {
         )}
       >
         <div className="container text-center">
-          <p>
-            You have{' '}
-            <span className="bold">
-              {this.props.clicksLeft} <em>kliks</em>
-            </span>{' '}
-            left
-          </p>
+          {this.props.clicksLeft > 0 ? (
+            <p className="balance">
+              You have{' '}
+              <span className="bold">
+                {this.props.clicksLeft} <em>kliks</em>{' '}
+              </span>{' '}
+              left
+            </p>
+          ) : (
+            <p> &nbsp;</p>
+          )}
           <button
             className="btn main-screen-btn"
             onClick={this.props.onClickerClick}

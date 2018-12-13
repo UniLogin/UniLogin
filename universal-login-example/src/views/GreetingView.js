@@ -63,7 +63,8 @@ class GreetingView extends Component {
 
   render() {
     const {status} = this.props;
-    if (status.create) {
+    // for some reason this logic is reverse
+    if (!status.create) {
       return this.renderCreate();
     }
     return this.renderOther();
