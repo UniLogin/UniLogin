@@ -6,20 +6,23 @@
   font-size: 22px
   text-transform: uppercase
   background: #CA0019
-  transition: transform 0.25s ease-in-out, background 0.5s ease-in-out
+  transition: transform .5s ease-in-out, background .5s ease-in-out, cursor 2s
+  transition-delay: 5s
 
 .btn:hover
-    background: darken(red, 15%)
-    transform: translate3d(0, -1px, 0)
+  background: darken(red, 15%)
+  transform: translate3d(0, -1px, 0)
+  transition-delay: 0s
 
 .btn:active
-    background: darken(red, 25%)
-    transform: translate3d(0, 3px, 0)
-    cursor: not-allowed
+  background: darken(red, 30%)
+  transform: translate3d(0, 3px, 0)
+  cursor: not-allowed
+  transition-delay: 0s
 
 .btn:disabled, .btn.disabled
-    background: #8c7376
-    transform: translate3d(0, 3px, 0)
+  background: #8c7376
+  transform: translate3d(0, 3px, 0)
 
 .btn-alt
   height: 65px

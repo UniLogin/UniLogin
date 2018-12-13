@@ -11,7 +11,13 @@ class MainScreen extends Component {
     super(props);
     const {clickerService} = this.props.services;
     this.clickerService = clickerService;
-    this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false};
+    this.state = {
+      lastClick: '0',
+      lastPresser: 'nobody',
+      events: [],
+      loaded: false,
+      clickerClickEvent: false
+    };
   }
 
   setView(view) {
@@ -20,8 +26,13 @@ class MainScreen extends Component {
   }
 
   async onClickerClick() {
+    // Users see changes to the state immediately, while the system waits to confirm them
+    this.setState({lastClick: '0', clickerClickEvent: true});
+
+    // Reset clicker event
+    this.timeout = setTimeout(this.update.bind(this), 3000);
+
     await this.clickerService.click();
-    this.setState({lastClick: '0'});
   }
 
   componentDidMount() {
@@ -38,7 +49,7 @@ class MainScreen extends Component {
     const {address} = identityService.identity;
     const balance = await tokenService.getBalance(address);
     const clicksLeft = parseInt(balance, 10);
-    this.setState({clicksLeft});
+    this.setState({clicksLeft, clickerClickEvent: false});
     const pressers = await this.clickerService.getPressEvents();
     if (pressers.length > 0) {
       this.setState({
@@ -74,6 +85,7 @@ class MainScreen extends Component {
           clicksLeft={this.state.clicksLeft}
           events={this.state.events}
           onClickerClick={this.onClickerClick.bind(this)}
+          clickerClickEvent={this.state.clickerClickEvent}
           lastClick={this.state.lastClick}
         />
       </div>

@@ -19,16 +19,22 @@ class MainScreenView extends Component {
 
   renderEventList() {
     if (this.props.loaded === false) {
-      return (<div className="loading"> Loading activity </div>);
+      return <div className="loading"> Loading activity </div>;
     } else if (this.props.events.length === 0) {
-      return (<div> No events yet. Push the button! </div>);
+      return <div> No events yet. Push the button! </div>;
     }
     return this.props.events.map(this.renderEvent.bind(this));
   }
 
   render() {
     return (
-      <div className="main-screen">
+      <div
+        className={classIf(
+          this.props.lastClick === '0',
+          'main-screen loadbar',
+          'main-screen'
+        )}
+      >
         <div className="container text-center">
           <p>
             You have{' '}
@@ -38,9 +44,9 @@ class MainScreenView extends Component {
             left
           </p>
           <button
-            className={classIf(this.props.lastClick === 0, 'loadbar', 'btn main-screen-btn')}
+            className="btn main-screen-btn"
             onClick={this.props.onClickerClick}
-            disabled={this.props.lastClick === 0}
+            disabled={this.props.clickerClickEvent}
           >
             click here
           </button>
@@ -53,9 +59,7 @@ class MainScreenView extends Component {
             <span className="bold"> {this.props.lastClick}</span> ago
           </p>
           <hr className="separator" />
-          <div className="click-history">
-            {this.renderEventList()}
-          </div>
+          <div className="click-history">{this.renderEventList()}</div>
         </div>
       </div>
     );
@@ -66,6 +70,7 @@ MainScreenView.propTypes = {
   clicksLeft: PropTypes.number,
   lastClick: PropTypes.string,
   onClickerClick: PropTypes.func,
+  clickerClickEvent: PropTypes.bool,
   loaded: PropTypes.bool,
   events: PropTypes.array
 };

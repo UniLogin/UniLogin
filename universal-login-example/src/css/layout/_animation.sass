@@ -34,8 +34,7 @@
     width: 0
 
   to
-    width: 100%
-
+    width: 95%
 
 
 @keyframes shake
@@ -120,9 +119,23 @@
   animation-iteration-count: infinite
   animation-direction: alternate-reverse
 
-.loadbar::after
+.main-screen::after
   content: " "
   width: 100%
   display: block
+  position: absolute
+  top: 0
+  opacity: 0
   border-bottom: 2px solid #fd6073
-  animation: loadbar 30s ease-in-out
+  transition: width 2s ease-in-out, opacity 3s ease-out 2s
+
+.loadbar::after
+  content: " "
+  width: 95%
+  display: block
+  position: absolute
+  top: 0
+  opacity: 1
+  border-bottom: 2px solid #fd6073
+  transition: width 5s ease-in-out, opacity 1s ease-out
+  animation: loadbar 20s ease-in-out
