@@ -26,6 +26,7 @@ class IdentitySelector extends Component {
         <div className="id-selector">
           <TextBox
             placeholder="bob.example.eth"
+            maxlength="24"
             onChange={(event) => this.update(event)}
           />
         </div>

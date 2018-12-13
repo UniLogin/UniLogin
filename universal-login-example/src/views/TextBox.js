@@ -7,11 +7,13 @@ const TextBox = (props) => (
     onChange={props.onChange}
     type="text"
     placeholder={props.placeholder}
+    maxLength={props.maxlength}
   />
 );
 TextBox.propTypes = {
   onChange: PropTypes.func,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  maxlength: PropTypes.number
 };
 
 export default TextBox;
