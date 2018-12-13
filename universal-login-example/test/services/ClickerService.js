@@ -41,7 +41,7 @@ describe('ClickerService', async () => {
     clickerService = new ClickerService(identityService, clickerContract.address, provider, ensService, tokenContract.address, defaultPaymentOptions);
   });
 
-  it('clicks', async () => {
+  it('getPressLogs', async () => {
     await clickerContract.press();
     const [logs] = await clickerService.getPressLogs();
     expect(logs).to.deep.include({
