@@ -6,11 +6,14 @@ describe('BackupService', async () => {
   let identityService;
 
   before(async () => {
-    identityService = [];
-    identityService.identity = [];
-    identityService.identity.name = 'kyle';
+    identityService = {
+      identity: {
+        name: 'kyle'
+      }
+    };
     backupService = new BackupService(identityService);
   });
+
   describe('Backup Codes', async () => {
     it('generates one backup code', async () => {
       await backupService.generateBackupCodes(1);
