@@ -1,8 +1,10 @@
-import {providers, utils, Contract} from 'ethers';
+import {providers, utils, Contract, ContractFactory} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 import ERC20 from 'universal-login-contracts/build/ERC20';
 import Identity from 'universal-login-contracts/build/Identity';
+import defaultDeployOptions from '../../lib/config/defaultDeployOptions';
+import fs from 'fs';
 
 const {namehash} = utils;
 
@@ -19,7 +21,7 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
   const abi = contractJSON.interface;
   let receipt = await provider.getTransactionReceipt(transactionHash);
   while (!receipt) {
-    sleep(tick);
+    await sleep(tick);
     receipt = await provider.getTransactionReceipt(transactionHash);
   }
   return new Contract(receipt.contractAddress, abi, providerOrWallet);
@@ -77,4 +79,44 @@ const isAddKeysCall = (data) => {
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+const sendAndWaitForTransaction = async (deployer, transaction) => {
+  const tx = await deployer.sendTransaction(transaction);
+  let receipt = await deployer.provider.getTransactionReceipt(tx.hash);
+  while (!receipt || !receipt.blockNumber) {
+    await sleep(1000);
+    receipt = await deployer.provider.getTransactionReceipt(tx.hash);
+  }
+  return receipt.contractAddress;
+};
+
+const getDeployTransaction = (contractJSON, args = '') => {
+  const bytecode = `0x${contractJSON.bytecode}`;
+  const abi = contractJSON.interface;
+  const transaction = {
+    ...defaultDeployOptions,
+    ...new ContractFactory(abi, bytecode).getDeployTransaction(...args)
+  };
+  return transaction;
+};
+
+const waitToBeMined = async (provider, transaction, timeout = 1000) => {    
+  let receipt = await provider.getTransactionReceipt(transaction.hash);
+  while (!receipt || !receipt.blockNumber) {
+    await sleep(timeout);
+    receipt = await provider.getTransactionReceipt(transaction.hash);
+  }
+  return receipt;
+};
+
+const saveVariables = (filename, _variables) => {
+  const variables = Object.entries(_variables)
+    .map(([key, value]) => `  ${key}='${value}'`)
+    .join('\n');
+  fs.writeFile(filename, variables, (err) => {
+    if (err) {
+      return console.error(err);
+    }
+  });
+};
+
+export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

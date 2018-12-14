@@ -1,4 +1,4 @@
-import ENSDeployer from '../test/helpers/ensDeployer';
+import ENSDeployer from '../lib/utils/ensDeployer';
 
 const ensRegistrars = {'my-login.eth': [], 'universal-id.eth': [], 'poppularap.eth': []};
 const jsonRpcUrl = 'http://localhost:18545';
