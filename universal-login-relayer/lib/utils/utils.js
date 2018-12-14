@@ -108,7 +108,7 @@ const waitToBeMined = async (provider, transaction, timeout = 1000) => {
   return receipt;
 };
 
-const save = (filename, _variables) => {
+const saveVariables = (filename, _variables) => {
   const variables = Object.entries(_variables)
     .map(([key, value]) => `  ${key}='${value}'`)
     .join('\n');
@@ -116,8 +116,7 @@ const save = (filename, _variables) => {
     if (err) {
       return console.error(err);
     }
-    console.log(`${filename} file updated.`);
   });
 };
 
-export {sleep, sendAndWaitForTransaction, save, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

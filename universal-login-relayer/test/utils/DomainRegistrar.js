@@ -6,29 +6,30 @@ import DomainRegistrar from '../../lib/utils/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../lib/utils/ENS/ENSNameRegistrar';
 import {utils, Contract} from 'ethers';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
+import sinon from 'sinon';
+
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
+const nullConsole = () => {};
 
 describe('ENS register', async () => {
   const testHelper = new TestHelper();
   let provider;
   let wallet;
-  let domainRegistrar;
-  let nameRegistrar;
   let ensAddress;
   let ensRegistrars;
   let publicResolver;
-  let labelToRegister;
+  let label;
   let node;
   let labelHash;
-  const tld = 'eth';
-
+  let config;
+  
 
   before(async () => {
     ({wallet, provider, ensAddress, ensRegistrars, publicResolver} = await testHelper.load(basicENS));
-    const config = {
+    config = {
       privateKey: wallet.privateKey,
       chainSpec: {
         ensAddress,
@@ -36,27 +37,32 @@ describe('ENS register', async () => {
         chainId: 0
       }
     };
-    domainRegistrar = new DomainRegistrar(config, provider);
-    nameRegistrar = new ENSNameRegistrar(config, provider);
-    labelToRegister = 'universal-login';
-    labelHash = utils.keccak256(utils.toUtf8Bytes(labelToRegister));
-    node = utils.namehash(`${labelToRegister}.${tld}`);
   });
 
   describe('DomainRegistrar', async () => { 
+    let domainRegistrar;
+    const tld = 'eth';
+
+    before(() => {
+      domainRegistrar = new DomainRegistrar(config, provider, nullConsole);
+      label = 'universal-login';
+      labelHash = utils.keccak256(utils.toUtf8Bytes(label));
+      node = utils.namehash(`${label}.${tld}`);
+      domainRegistrar.save = sinon.fake.returns('');
+    });
     it('Should register label to register', async () => {
-      await domainRegistrar.registerInRegistrar(labelToRegister, labelHash, node, tld);
+      await domainRegistrar.registerInRegistrar(label, labelHash, node, tld);
       expect(await domainRegistrar.ens.owner(node)).to.eq(wallet.address);
     });
 
     it('Should set resolver', async () => {
-      await domainRegistrar.setAsResolverPublicResolver(labelToRegister, node, tld);
+      await domainRegistrar.setAsResolverPublicResolver(label, node, tld);
       expect(await domainRegistrar.ens.resolver(node)).to.eq(publicResolver);
     });
 
     it('should set new registrar as domain owner', async () => {
       const registrarAddress = await domainRegistrar.deployNewRegistrar(node);
-      await domainRegistrar.setRegistrarAsOwner(labelToRegister, node, tld);
+      await domainRegistrar.setRegistrarAsOwner(label, node, tld);
       expect(await domainRegistrar.ens.owner(node)).to.eq(registrarAddress);
     });
     describe('start works', async () => {
@@ -72,13 +78,12 @@ describe('ENS register', async () => {
   });
 
   describe('ENS Address registrar', async () => {
+    let nameRegistrar;
     let domain;
-    let labelHash;
-    let node;
-    let label;
     let publicResolver;
 
     before(async () => {
+      nameRegistrar = new ENSNameRegistrar(config, provider, nullConsole);
       label = 'justyna';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       [domain] = Object.keys(ensRegistrars);
@@ -88,7 +93,7 @@ describe('ENS register', async () => {
     });
 
     it('should register name', async () => {
-      await nameRegistrar.registerName(labelHash, domain);
+      await nameRegistrar.registerName(labelHash, label, domain, node);
       expect(await nameRegistrar.ens.owner(node)).to.eq(wallet.address);
     });
 
@@ -114,5 +119,9 @@ describe('ENS register', async () => {
       expect(await publicResolver.addr(utils.namehash(`justa.${domain}`))).to.eq(wallet.address);
       expect(await publicResolver.name(reverseNode)).to.eq(`justa.${domain}`);
     });
+  });
+
+  after(() => {
+
   });
 });

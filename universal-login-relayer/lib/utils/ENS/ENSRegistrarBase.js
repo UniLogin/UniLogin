@@ -2,12 +2,13 @@ import ENS from 'universal-login-contracts/build/ENS';
 import {providers, Contract, Wallet, utils} from 'ethers';
 
 class ENSRegistrarBase {
-  constructor(config, provider) {
+  constructor(config, provider, log = console.log) {
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.deployer = new Wallet(config.privateKey, this.provider);
     this.ens = new Contract(config.chainSpec.ensAddress, ENS.interface, this.deployer);
     this.config = config;
     this.variables = {};
+    this.log = log;
   }
 
   async prepareNameRegistration(domain) {

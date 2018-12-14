@@ -6,9 +6,9 @@ import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
 class IdentityService {
-  constructor(wallet, ensService, authorisationService, hooks, provider, config) {
+  constructor(wallet, ensService, authorisationService, hooks, provider, legacyENS) {
     this.wallet = wallet;
-    this.contractJSON = config.networkName === 'rinkeby' ? IdentityLegacy : Identity;
+    this.contractJSON = legacyENS ? IdentityLegacy : Identity;
     this.abi = this.contractJSON.interface;
     this.bytecode = `0x${this.contractJSON.bytecode}`;
     this.ensService = ensService;
