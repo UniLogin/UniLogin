@@ -27,7 +27,7 @@ class FakeStorageService {
   }
 }
 
-describe('TheNewClickerService', () => {
+describe('ClickService', () => {
   const testHelper = new TestHelper();
   let clickService;
   let identityService;

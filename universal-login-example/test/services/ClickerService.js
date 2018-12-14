@@ -1,18 +1,15 @@
 import chai, {expect} from 'chai';
 import ClickerService from '../../src/services/ClickerService';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import Clicker from '../../build/Clicker';
-import Token from '../../build/Token';
-import {addressToBytes32} from '../utils';
 import EnsService from '../../src/services/EnsService';
-import {RelayerUnderTest} from 'universal-login-relayer';
-import UniversalLoginSDK from 'universal-login-sdk';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import TestHelper from 'universal-login-contracts/test/testHelper';
+import basicEnviroment from '../fixtures/basicEnvironment';
 
 chai.use(sinonChai)
 
 describe('ClickerService', async () => {
+  const testHelper = new TestHelper();
   let clickerService;
   let identityService;
   let provider;
@@ -22,21 +19,15 @@ describe('ClickerService', async () => {
   let defaultPaymentOptions;
   let wallet;
   let relayer;
+  let sdk;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
-    await relayer.start();
-    ({provider} = relayer);
-    [wallet] = await getWallets(provider);
+    ({wallet, provider, relayer, clickerContract, tokenContract, sdk} = await testHelper.load(basicEnviroment));
     identityService = {
       identity: {
         name: 'kyle'
       }
     };
-    clickerContract = await deployContract(wallet, Clicker);
-    tokenContract = await deployContract(wallet, Token);
-    const sdk = new UniversalLoginSDK(relayer.url(), provider);
     ensService = new EnsService(sdk, provider);
     clickerService = new ClickerService(identityService, clickerContract.address, provider, ensService, tokenContract.address, defaultPaymentOptions);
   });
