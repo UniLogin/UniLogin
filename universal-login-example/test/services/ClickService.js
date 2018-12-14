@@ -7,6 +7,7 @@ import {EventEmitter} from 'events';
 import {utils} from 'ethers';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicEnviroment from '../fixtures/basicEnvironment';
+import setupSdk from '../fixtures/setupSdk';
 
 
 class FakeStorageService {
@@ -28,7 +29,7 @@ class FakeStorageService {
 }
 
 describe('ClickService', () => {
-  const testHelper = new TestHelper();
+  let testHelper;
   let clickService;
   let identityService;
   let provider;
@@ -39,7 +40,9 @@ describe('ClickService', () => {
   let sdk;
 
   beforeEach(async () => {
-    ({provider, relayer, clickerContract, tokenContract, sdk} = await testHelper.load(basicEnviroment));
+    ({relayer, sdk, provider} = await setupSdk());
+    testHelper = new TestHelper(provider);
+    ({clickerContract, tokenContract} = await testHelper.load(basicEnviroment));
     identityService = new IdentityService(sdk, new EventEmitter(), new FakeStorageService(), {});
     await identityService.createIdentity('kyle.mylogin.eth');
     await tokenContract.transfer(identityService.identity.address, utils.parseEther('1.0'));
