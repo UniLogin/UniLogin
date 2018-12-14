@@ -63,7 +63,7 @@ describe('ClickerService', async () => {
   it('getEventFromLogs', async () => {
     const logs = {
       data: '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff000000000000000000000000000000000000000000000000000000005c126bc40000000000000000000000000000000000000000000000000000000000000000',
-      topics: [ '0xed4ecf2dfe76f67b96ed1cee5b13992932ce8400770a51bc2a435e724602d5f6' ],
+      topics: ['0xed4ecf2dfe76f67b96ed1cee5b13992932ce8400770a51bc2a435e724602d5f6']
     };
     clickerService.getTimeDistanceInWords = sinon.fake.returns('6 minutes');
     clickerService.getEnsName = sinon.fake.returns('kyle.mylogin.eth');
