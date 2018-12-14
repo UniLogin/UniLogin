@@ -1,9 +1,8 @@
 import {expect} from 'chai';
-import ClickerService from '../../src/services/ClickerService';
 import Clicker from '../../build/Clicker';
 import {getLogs} from '../utils';
-import EnsService from '../../src/services/EnsService';
 import IdentityService from '../../src/services/IdentityService';
+import ClickService from '../../src/services/ClickService';
 import {EventEmitter} from 'events';
 import {utils} from 'ethers';
 import TestHelper from 'universal-login-contracts/test/testHelper';
@@ -30,11 +29,10 @@ class FakeStorageService {
 
 describe('TheNewClickerService', () => {
   const testHelper = new TestHelper();
-  let clickerService;
+  let clickService;
   let identityService;
   let provider;
   let clickerContract;
-  let ensService;
   let tokenContract;
   let defaultPaymentOptions;
   let relayer;
@@ -45,13 +43,12 @@ describe('TheNewClickerService', () => {
     identityService = new IdentityService(sdk, new EventEmitter(), new FakeStorageService(), {});
     await identityService.createIdentity('kyle.mylogin.eth');
     await tokenContract.transfer(identityService.identity.address, utils.parseEther('1.0'));
-    ensService = new EnsService(sdk, provider);
-    clickerService = new ClickerService(identityService, clickerContract.address, provider, ensService, tokenContract.address, defaultPaymentOptions);
+    clickService = new ClickService(identityService, {clicker: clickerContract.address, token: tokenContract.address}, defaultPaymentOptions);
   });
 
 
   it('clicks', async () => {
-    await clickerService.click();
+    await clickService.click();
     const logs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress');
     expect(logs[0]).to.deep.include({presser: identityService.identity.address});
   });
