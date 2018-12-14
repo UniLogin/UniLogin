@@ -5,7 +5,7 @@ import {RelayerUnderTest} from 'universal-login-relayer';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import sinon from 'sinon';
-import {MESSAGE_DEFAULTS} from '../lib/config';
+import MESSAGE_DEFAULTS from '../lib/config';
 import MockToken from '../../universal-login-contracts/build/MockToken';
 
 chai.use(solidity);

@@ -9,8 +9,10 @@ import PropTypes from 'prop-types';
 class MainScreen extends Component {
   constructor(props) {
     super(props);
-    const {clickerService} = this.props.services;
-    this.clickerService = clickerService;
+    const {historyService} = this.props.services;
+    this.historyService = historyService;
+    const {clickService} = this.props.services;
+    this.clickService = clickService;
     this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false};
   }
 
@@ -20,13 +22,13 @@ class MainScreen extends Component {
   }
 
   async onClickerClick() {
-    await this.clickerService.click();
+    await this.clickService.click();
     this.setState({lastClick: '0'});
   }
 
   async componentDidMount() {
     await this.updateClicksLeft();
-    this.clickerService.subscribe(this.onUpdate.bind(this));
+    this.historyService.subscribe(this.onUpdate.bind(this));
   }
 
   async updateClicksLeft() {
@@ -36,10 +38,12 @@ class MainScreen extends Component {
     const balance = await tokenService.getBalance(address);
     const clicksLeft = parseInt(balance, 10);
     this.setState({clicksLeft});
+    this.timeout = setTimeout(this.updateClicksLeft.bind(this), 2000);
   }
 
   componentWillUnmount() {
-    this.clickerService.unsubscribeAll();
+    this.historyService.unsubscribeAll();
+    clearTimeout(this.timeout);
   }
 
   onUpdate(pressers) {

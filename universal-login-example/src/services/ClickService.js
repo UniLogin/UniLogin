@@ -1,6 +1,5 @@
 import {utils} from 'ethers';
 import Clicker from '../../build/Clicker';
-import {OPERATION_CALL} from 'universal-login-contracts';
 
 class ClickService {
   constructor(identityService, addressess, defaultPaymentOptions) {
@@ -16,9 +15,8 @@ class ClickService {
       value: 0,
       data: new utils.Interface(Clicker.interface).functions.press.encode([]),
       gasToken: this.addressess.token,
-      operationType: OPERATION_CALL,
       ...this.defaultPaymentOptions
-    }
+    };
     await this.identityService.execute(message);
   }
 }

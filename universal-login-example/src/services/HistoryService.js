@@ -1,8 +1,7 @@
-import {Contract, utils} from 'ethers';
+import {utils} from 'ethers';
 import Clicker from '../../build/Clicker';
 import {sleep} from '../../src/relayer/utils';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
-import {OPERATION_CALL} from 'universal-login-contracts';
 
 class HistoryService {
   constructor(clickerContractAddress, provider, ensService) {
