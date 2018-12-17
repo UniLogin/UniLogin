@@ -58,7 +58,6 @@ class Login extends Component {
             onChange={this.onChange.bind(this)}
             ensDomains={ensDomains}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
-            identityExist = {this.identityExist.bind(this)}
             identitySelectionService={this.props.services.identitySelectionService}
           />
         </div>

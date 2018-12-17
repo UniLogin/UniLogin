@@ -53,7 +53,7 @@ class MainScreen extends Component {
         loaded: true
       });
     }
-    setTimeout(this.update.bind(this), 1000);
+    this.timeout = setTimeout(this.update.bind(this), 1000);
   }
 
   render() {

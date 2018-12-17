@@ -6,6 +6,9 @@ import ConnectionHoverView from '../views/ConnectionHoverView';
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
+
+    this.textBox = React.createRef();
+    this.connectionHoverViewRef = React.createRef();
     this.state = {
       identity: '',
       connections: [],
@@ -19,6 +22,22 @@ class IdentitySelector extends Component {
     this.setState({identity, connections, creations});
   }
 
+  async moveFocusToConnectionHoverView() {
+    const connectionList = this.connectionHoverViewRef.current.listRef.current;
+    if (connectionList.children.length > 0) {
+      this.connectionHoverViewRef.current.setState({selectedIndex: 0});
+      const firstConnectionItem = connectionList.children[0];
+      const firstConnectionItemButton = firstConnectionItem.children[1];
+      firstConnectionItemButton.focus();
+    }
+  }
+
+  async moveFocusToTextBox() {
+    const input = this.textBox.current;
+    input.focus();
+    setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
+  }
+
   render() {
     return (
       <div>
@@ -26,8 +45,10 @@ class IdentitySelector extends Component {
         <div className="id-selector">
           <TextBox
             placeholder="bob.example.eth"
-            maxlength="24"
+            maxlength={24}
             onChange={(event) => this.update(event)}
+            onArrowDownKeyPressed={this.moveFocusToConnectionHoverView.bind(this)}
+            ref={this.textBox}
           />
         </div>
         <ConnectionHoverView
@@ -36,6 +57,8 @@ class IdentitySelector extends Component {
           identity={this.state.identity}
           onNextClick={this.props.onNextClick}
           onAccountRecoveryClick={this.props.onAccountRecoveryClick}
+          onLastArrowUpKeyPressed={this.moveFocusToTextBox.bind(this)}
+          ref={this.connectionHoverViewRef}
         />
       </div>
     );
@@ -48,7 +71,6 @@ IdentitySelector.propTypes = {
   onAccountRecoveryClick: PropTypes.func,
   ensDomains: PropTypes.arrayOf(PropTypes.string),
   services: PropTypes.object,
-  identityExist: PropTypes.func,
   identitySelectionService: PropTypes.object
 };
 

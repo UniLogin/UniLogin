@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-const KEY_CODE_ARROW_KEY_UP = 38;
-const KEY_CODE_ARROW_KEY_DOWN = 40;
+const KEY_CODE_ARROW_UP = 38;
+const KEY_CODE_ARROW_DOWN = 40;
 
 class ConnectionHoverView extends Component {
   constructor(props) {
     super(props);
+
+    this.listRef = React.createRef();
     this.state = {
-      selectedIndex: 0
+      selectedIndex: -1
     };
   }
 
@@ -17,17 +19,22 @@ class ConnectionHoverView extends Component {
     const {connections, creations} = this.props;
     const {selectedIndex} = this.state;
     const length = (2 * connections.length) + creations.length;
-    let activeItem;
-    if (event.keyCode === KEY_CODE_ARROW_KEY_UP && selectedIndex > 0) {
-      this.setState({selectedIndex: selectedIndex - 1});
-      activeItem = list.children[selectedIndex - 1];
-    } else if (event.keyCode === KEY_CODE_ARROW_KEY_DOWN && selectedIndex < length - 1) {
+    let activeItem = null;
+    if (event.keyCode === KEY_CODE_ARROW_UP) {
+      if (selectedIndex > 0) {
+        this.setState({selectedIndex: selectedIndex - 1});
+        activeItem = list.children[selectedIndex - 1];
+      } else {
+        this.setState({selectedIndex: -1});
+        this.props.onLastArrowUpKeyPressed();
+      }
+    } else if (event.keyCode === KEY_CODE_ARROW_DOWN && selectedIndex < length - 1) {
       this.setState({selectedIndex: selectedIndex + 1});
       activeItem = list.children[selectedIndex + 1];
-    } else {
-      activeItem = list.children[selectedIndex];
     }
-    activeItem.children[1].focus();
+    if (activeItem !== null) {
+      activeItem.children[1].focus();
+    }
   }
 
   render() {
@@ -66,7 +73,7 @@ class ConnectionHoverView extends Component {
     ));
 
     return this.props.identity.length > 1 ? (
-      <ul className="loginHover" onKeyDown={(event) => this.moveSelection(event)}>
+      <ul className="loginHover" onKeyDown={(event) => this.moveSelection(event)} ref={this.listRef}>
         { connections }
         { creations }
         { recovers }
@@ -82,6 +89,7 @@ ConnectionHoverView.propTypes = {
   creations: PropTypes.arrayOf(PropTypes.string),
   onNextClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func,
+  onLastArrowUpKeyPressed: PropTypes.func,
   identity: PropTypes.string
 };
 
