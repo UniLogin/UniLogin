@@ -26,8 +26,8 @@ class IdentitySelector extends Component {
     const connectionList = this.connectionHoverViewRef.current.listRef.current;
     if (connectionList.children.length > 0) {
       this.connectionHoverViewRef.current.setState({selectedIndex: 0});
-      const firstConnectionItem = connectionList.children[0];
-      const firstConnectionItemButton = firstConnectionItem.children[1];
+      const [firstConnectionItem] = connectionList.children;
+      const [, firstConnectionItemButton] = firstConnectionItem.children;
       firstConnectionItemButton.focus();
     }
   }

@@ -7,7 +7,11 @@ const TextBox = React.forwardRef((props, ref) => (
   <input
     className="input"
     onChange={props.onChange}
-    onKeyDown={(event) => { if (event.keyCode === KEY_CODE_ARROW_DOWN) props.onArrowDownKeyPressed(event) }}
+    onKeyDown={(event) => {
+      if (event.keyCode === KEY_CODE_ARROW_DOWN) {
+        props.onArrowDownKeyPressed(event);
+      }
+    }}
     type="text"
     autoFocus
     placeholder={props.placeholder}
