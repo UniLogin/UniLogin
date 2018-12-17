@@ -1,6 +1,5 @@
 import chai, {expect} from 'chai';
 import HistoryService from '../../src/services/HistoryService';
-import EnsService from '../../src/services/EnsService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import TestHelper from 'universal-login-contracts/test/testHelper';
@@ -14,7 +13,6 @@ describe('HistoryService', async () => {
   let historyService;
   let provider;
   let clickerContract;
-  let ensService;
   let defaultPaymentOptions;
   let wallet;
   let relayer;
@@ -24,8 +22,7 @@ describe('HistoryService', async () => {
     ({relayer, sdk, provider} = await setupSdk());
     testHelper = new TestHelper(provider);
     ({wallet, clickerContract} = await testHelper.load(basicEnviroment));
-    ensService = new EnsService(sdk, provider);
-    historyService = new HistoryService(clickerContract.address, provider, ensService);
+    historyService = new HistoryService(clickerContract.address, provider); 
   });
 
   it('getPressLogs', async () => {
@@ -38,11 +35,10 @@ describe('HistoryService', async () => {
 
   it('getPressEvents', async () => {
     await clickerContract.press();
-    historyService.getTimeDistanceInWords = sinon.fake.returns('6 minutes');
-    historyService.getEnsName = sinon.fake.returns('kyle.mylogin.eth');
-    const [logs] = await historyService.getPressEvents();
+    await historyService.getPressEvents();
+    const [logs] = historyService.pressers;
     expect(logs).to.deep.include({
-      name: 'kyle.mylogin.eth',
+      name: wallet.address,
       address: wallet.address
     });
   });
@@ -53,12 +49,11 @@ describe('HistoryService', async () => {
       topics: ['0xed4ecf2dfe76f67b96ed1cee5b13992932ce8400770a51bc2a435e724602d5f6']
     };
     historyService.getTimeDistanceInWords = sinon.fake.returns('6 minutes');
-    historyService.getEnsName = sinon.fake.returns('kyle.mylogin.eth');
     const event = await historyService.getEventFormLogs(logs);
     expect(event).to.deep.eq({
       address: '0x17ec8597ff92C3F44523bDc65BF0f1bE632917ff',
       pressTime: '6 minutes',
-      name: 'kyle.mylogin.eth',
+      name: '0x17ec8597ff92C3F44523bDc65BF0f1bE632917ff',
       score: 0,
       key: '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff000000000000000000000000000000000000000000000000000000005c126bc40000000000000000000000000000000000000000000000000000000000000000'
     });

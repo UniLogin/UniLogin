@@ -6,6 +6,7 @@ import IdentityService from './IdentityService';
 import ClickService from './ClickService';
 import HistoryService from './HistoryService';
 import EnsService from './EnsService';
+import EnsNameService from './EnsNameService';
 import AuthorisationService from './AuthorisationService';
 import TokenService from './TokenService';
 import IdentitySelectionService from './IdentitySelectionService';
@@ -29,6 +30,7 @@ class Services {
     this.backupService = new BackupService(this.identityService);
     this.clickService = new ClickService(this.identityService, {clicker: clickerContractAddress, token: tokenContractAddress}, this.defaultPaymentOptions);
     this.historyService = new HistoryService(clickerContractAddress, this.provider, this.ensService);
+    this.ensNameService = new EnsNameService(this.ensService, this.historyService);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
     this.identitySelectionService = new IdentitySelectionService(this.sdk, config.ensDomains);
     this.greetingService = new GreetingService(this.provider);

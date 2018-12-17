@@ -11,6 +11,8 @@ class MainScreen extends Component {
     super(props);
     const {historyService} = this.props.services;
     this.historyService = historyService;
+    const {ensNameService} = this.props.services;
+    this.ensNameService = ensNameService;
     const {clickService} = this.props.services;
     this.clickService = clickService;
     this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false};
@@ -29,6 +31,7 @@ class MainScreen extends Component {
   async componentDidMount() {
     await this.updateClicksLeft();
     this.historyService.subscribe(this.onUpdate.bind(this));
+    this.ensNameService.subscribe();
   }
 
   async updateClicksLeft() {
@@ -42,6 +45,7 @@ class MainScreen extends Component {
   }
 
   componentWillUnmount() {
+    this.ensNameService.unsubscribeAll();
     this.historyService.unsubscribeAll();
     clearTimeout(this.timeout);
   }

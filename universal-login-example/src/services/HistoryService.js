@@ -4,13 +4,13 @@ import {sleep} from '../../src/relayer/utils';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 class HistoryService {
-  constructor(clickerContractAddress, provider, ensService) {
+  constructor(clickerContractAddress, provider) {
     this.clickerContractAddress = clickerContractAddress;
     this.provider = provider;
-    this.ensService = ensService;
     this.interface = new utils.Interface(Clicker.interface);
     this.pressButtonTopic = new utils.Interface(Clicker.interface).events.ButtonPress.topic;
     this.running = false;
+    this.pressers = [];
   }
 
   getTimeDistanceInWords(time) {
@@ -27,10 +27,10 @@ class HistoryService {
     this.loop(callback);
   }
 
-  async loop(callback, tick = 1000) {
+  async loop(callback, tick = 500) {
     do {
-      const events = await this.getPressEvents();
-      callback(events);
+      await this.getPressEvents();
+      callback([...this.pressers].reverse());
       await sleep(tick);
     } while (this.running);
   }
@@ -39,11 +39,11 @@ class HistoryService {
     this.running = false;
   }
 
-  async getEventFormLogs(event) {
+  getEventFormLogs(event) {
     const eventArguments = this.interface.parseLog(event).values;
     return {
       address: eventArguments.presser,
-      name: await this.getEnsName(eventArguments.presser),
+      name: eventArguments.presser,
       pressTime: this.getTimeDistanceInWords(
         parseInt(eventArguments.pressTime, 10)
       ),
@@ -53,11 +53,9 @@ class HistoryService {
   }
 
   async getEventsFromLogs(events) {
-    const pressers = [];
     for (const event of events) {
-      pressers.push(await this.getEventFormLogs(event));
+      this.pressers.push(this.getEventFormLogs(event));
     }
-    return pressers.reverse();
   }
 
   async getPressLogs() {
@@ -70,7 +68,10 @@ class HistoryService {
   }
 
   async getPressEvents() {
-    return this.getEventsFromLogs(await this.getPressLogs());
+    const newEvents = await this.getPressLogs();
+    if (newEvents.length !== this.pressers.length) {
+      await this.getEventsFromLogs(newEvents.slice(this.pressers.length));
+    }
   }
 }
 
