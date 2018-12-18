@@ -18,8 +18,9 @@ class MainScreenView extends Component {
   }
 
   renderEventList() {
-    if (this.props.loaded === false) {
-      return <div className="loading"> Loading activity </div>;
+
+    if (!this.props.loaded && this.props.events.length === 0) {
+      return (<div className="loading"> Loading activity </div>);
     } else if (this.props.events.length === 0) {
       return <div> No events yet. Push the button! </div>;
     }

@@ -8,4 +8,4 @@ const MESSAGE_DEFAULTS = {
   data: '0x0'
 };
 
-export {MESSAGE_DEFAULTS};
+export default MESSAGE_DEFAULTS;
