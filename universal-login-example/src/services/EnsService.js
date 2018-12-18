@@ -15,7 +15,6 @@ class EnsService {
     return this.publicResolverAddress;
   }
 
-
   async getEnsConfig() {
     return await this.sdk.getRelayerConfig();
   }
