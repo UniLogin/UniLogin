@@ -26,7 +26,6 @@ describe('EnsNameService', () => {
       }
     }
     ensNameService = new EnsNameService(ensService, historyService);
-    ensNameService.subscribe();
   });
 
 
@@ -38,9 +37,5 @@ describe('EnsNameService', () => {
     expect(historyService.pressers[0].name).to.eq(wallet.address);
     await ensNameService.changePressersName();
     expect(historyService.pressers[0].name).to.eq('alice.mylogin.eth');
-  });
-
-  afterEach(async () => {
-    ensNameService.unsubscribeAll();
   });
 });

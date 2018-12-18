@@ -1,11 +1,12 @@
 import {sleep} from '../../src/relayer/utils';
 
 class EnsNameService {
-  constructor(ensService, historyService) {
+  constructor(ensService, historyService, tick = 500) {
     this.ensService = ensService;
     this.historyService = historyService;
     this.running = false;
     this.isWorking = false; 
+    this.tick = tick;
   }
 
   subscribe() {
@@ -13,13 +14,13 @@ class EnsNameService {
     this.loop();
   }
   
-  async loop(tick = 1000) {
+  async loop() {
     do {
       if (!this.isWorking) {
         this.isWorking = true;
         await this.changePressersName();
       }
-      await sleep(tick);
+      await sleep(this.tick);
     } while (this.running);
   }
 

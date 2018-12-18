@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
 class MainScreen extends Component {
   constructor(props) {
     super(props);
-    const {historyService} = this.props.services;
-    this.historyService = historyService;
-    const {ensNameService} = this.props.services;
-    this.ensNameService = ensNameService;
-    const {clickService} = this.props.services;
-    this.clickService = clickService;
+    const {services} = this.props;
+    this.historyService = services.historyService;
+    this.ensNameService = services.ensNameService;
+    this.clickService = services.clickService;
+    this.tokenService = services.tokenService;
+    this.identityService = services.identityService;
     this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false};
   }
 
@@ -35,10 +35,8 @@ class MainScreen extends Component {
   }
 
   async updateClicksLeft() {
-    const {tokenService} = await this.props.services;
-    const {identityService} = this.props.services;
-    const {address} = identityService.identity;
-    const balance = await tokenService.getBalance(address);
+    const {address} = this.identityService.identity;
+    const balance = await this.tokenService.getBalance(address);
     const clicksLeft = parseInt(balance, 10);
     this.setState({clicksLeft});
     this.timeout = setTimeout(this.updateClicksLeft.bind(this), 2000);
