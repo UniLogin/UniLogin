@@ -3,7 +3,7 @@ import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 import ERC20 from 'universal-login-contracts/build/ERC20';
 import Identity from 'universal-login-contracts/build/Identity';
-import defaultDeployOptions from '../../lib/config/defaultDeployOptions';
+import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
 
 const {namehash} = utils;
