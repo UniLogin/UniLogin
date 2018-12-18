@@ -3,7 +3,7 @@ import {RelayerUnderTest} from 'universal-login-relayer';
 import {getWallets, deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
-import {MESSAGE_DEFAULTS} from '../../lib/config';
+import MESSAGE_DEFAULTS from '../../lib/config';
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
