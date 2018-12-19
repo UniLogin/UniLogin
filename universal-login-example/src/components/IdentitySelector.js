@@ -15,7 +15,7 @@ class IdentitySelector extends Component {
 
   async update(event) {
     const identity = event.target.value;
-    const [connections, creations] = await this.props.identitySelectionService.getSuggestions(event.target.value);
+    const [connections, creations] = await this.props.identitySelectionService.getSuggestions(identity);
     this.setState({identity, connections, creations});
   }
 

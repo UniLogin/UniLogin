@@ -1,7 +1,6 @@
-import chai, {expect} from 'chai';
+import {expect} from 'chai';
 import IdentitySelectionService from '../../src/services/IdentitySelectionService';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
 

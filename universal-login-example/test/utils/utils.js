@@ -1,10 +1,12 @@
 import chai, {expect} from 'chai';
-import {waitUntil, getLogs} from '../utils';
+import {waitUntil, getLogs, sleep} from '../utils';
 import chaiAsPromised from 'chai-as-promised';
 import {convertIPv6ToIPv4, filterIP} from '../../src/utils';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import Clicker from '../../build/Clicker';
 import {utils} from 'ethers';
+import sinon from 'sinon';
+import debounce from '../../src/services/DeferredService';
 
 chai.use(chaiAsPromised);
 
@@ -43,29 +45,19 @@ describe('Utils', async () => {
       expect(filterIP('::ffff:127.0.0.1')).to.eq('localhost');
       expect(filterIP('10.9.16.164')).to.eq('10.9.16.164');
       expect(filterIP('::ffff:10.9.16.164')).to.eq('10.9.16.164');
-    })
+    });
   });
 
   describe('getLogs', () => {
     let provider;
     let wallet;
     let clickerContract;
-    let topic;
-    let clickerInterface;
 
     before(async () => {
       provider = createMockProvider();
       [wallet] = await getWallets(provider);
       clickerContract = await deployContract(wallet, Clicker);
-      clickerInterface = new utils.Interface(Clicker.interface);
-      topic = new utils.Interface(Clicker.interface).events.ButtonPress.topic;
     });
-
-    async function awesomeGetLogs(provider, address, contractJson, eventName) {
-      const topic = new utils.Interface(contractJson.interface).events[eventName].topic;
-      const contractInterface = new utils.Interface(contractJson.interface);
-      return getLogs(provider, {fromBlock: 0, address, topics: [topic]}, contractInterface);
-    }
 
     it('getLogs', async () => {
       await clickerContract.press();
@@ -73,6 +65,30 @@ describe('Utils', async () => {
         .to.emit(clickerContract, 'ButtonPress');
       const actualLogs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress'); 
       expect(actualLogs[0]).to.deep.include({presser: wallet.address});
+    });
+  });
+
+  describe('debounce', () => {
+    const tick = 10;
+    it('works for one callback at one time', async () => {
+      const callback = sinon.spy();
+      const debounceCallback = debounce(callback, 0);
+      debounceCallback();
+      await sleep(0);
+      expect(callback).to.have.been.calledOnce;
+    });
+
+    it('works for a lot of callbacks', async () => {
+      const callback = sinon.spy();
+      const debounceCallback = debounce(callback, tick);
+      debounceCallback();
+      debounceCallback();
+      debounceCallback();
+      debounceCallback();
+      debounceCallback();
+      debounceCallback();
+      await sleep(tick);
+      expect(callback).to.have.been.calledOnce;
     });
   });
 });
