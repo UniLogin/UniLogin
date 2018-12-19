@@ -22,15 +22,24 @@ class HistoryService {
     return await this.ensService.getEnsName(address);
   }
 
-  subscribe(callback) {
+  subscribe(callback, tick = 500) {
     this.running = true;
-    this.loop(callback);
+    this.loop(callback, tick);
+  }
+
+  async calculateResult() {
+    await this.getPressEvents();
+    const events = [...this.pressers].reverse();
+    return {
+      loaded: true,
+      events,
+      lastClick: events.length > 0 ? events[0].pressTime : '0'
+    };
   }
 
   async loop(callback, tick = 500) {
     do {
-      await this.getPressEvents();
-      callback([...this.pressers].reverse());
+      await callback(await this.calculateResult());
       await sleep(tick);
     } while (this.running);
   }

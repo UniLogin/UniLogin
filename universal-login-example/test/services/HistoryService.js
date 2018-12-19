@@ -5,6 +5,8 @@ import sinonChai from 'sinon-chai';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicEnviroment from '../fixtures/basicEnvironment';
 import setupSdk from '../fixtures/setupSdk';
+import {sleep} from '../../src/relayer/utils';
+
 
 chai.use(sinonChai)
 
@@ -18,11 +20,11 @@ describe('HistoryService', async () => {
   let relayer;
   let sdk;
 
-  beforeEach(async () => {    
+  beforeEach(async () => {
     ({relayer, sdk, provider} = await setupSdk());
     testHelper = new TestHelper(provider);
     ({wallet, clickerContract} = await testHelper.load(basicEnviroment));
-    historyService = new HistoryService(clickerContract.address, provider); 
+    historyService = new HistoryService(clickerContract.address, provider);
   });
 
   it('getPressLogs', async () => {
@@ -61,10 +63,23 @@ describe('HistoryService', async () => {
 
   it('subscribe', async () => {
     const callback = sinon.spy();
-    historyService.subscribe(callback);
+    historyService.subscribe(callback, 0);
     await clickerContract.press();
-    expect(callback).to.have.been.called;
+    expect(callback).to.have.been.calledWith({
+      events: [],
+      lastClick: '0',
+      loaded: true
+    });
     historyService.unsubscribeAll();
+  });
+
+  it('calculateResult', async () => {
+    await clickerContract.press();
+    const result = await historyService.calculateResult();
+    expect(result.events[0]).to.deep.include({
+      address: '0x121199e18C70ac458958E8eB0BC97c0Ba0A36979'
+    });
+    expect(result.loaded).to.eq(true);
   });
 
   afterEach(async () => {

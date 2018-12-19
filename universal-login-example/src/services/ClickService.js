@@ -8,7 +8,7 @@ class ClickService {
     this.defaultPaymentOptions = defaultPaymentOptions;
   }
 
-  async click() {
+  async click(callback) {
     const message = {
       to: this.addressess.clicker,
       from: this.identityService.identity.address,
@@ -18,6 +18,7 @@ class ClickService {
       ...this.defaultPaymentOptions
     };
     await this.identityService.execute(message);
+    callback();
   }
 }
 

@@ -18,7 +18,7 @@ class MainScreenView extends Component {
   }
 
   renderEventList() {
-    if (!this.props.loaded && this.props.events.length === 0) {
+    if (this.props.loaded === false) {
       return (<div className="loading"> Loading activity </div>);
     } else if (this.props.events.length === 0) {
       return (<div> No events yet. Push the button! </div>);
@@ -28,7 +28,7 @@ class MainScreenView extends Component {
 
   render() {
     return (
-      <div className="main-screen">
+      <div className={classIf(this.props.busy, 'main-screen loadbar', 'main-screen')}>
         <div className="container text-center">
           <p>
             You have{' '}
@@ -38,9 +38,9 @@ class MainScreenView extends Component {
             left
           </p>
           <button
-            className={classIf(this.props.lastClick === 0, 'loadbar', 'btn main-screen-btn')}
+            className='btn main-screen-btn'
             onClick={this.props.onClickerClick}
-            disabled={this.props.lastClick === 0}
+            disabled={this.props.busy}
           >
             click here
           </button>
@@ -67,6 +67,7 @@ MainScreenView.propTypes = {
   lastClick: PropTypes.string,
   onClickerClick: PropTypes.func,
   loaded: PropTypes.bool,
+  busy: PropTypes.bool,
   events: PropTypes.array
 };
 
