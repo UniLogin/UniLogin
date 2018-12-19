@@ -15,7 +15,7 @@ class MainScreen extends Component {
     this.clickService = services.clickService;
     this.tokenService = services.tokenService;
     this.identityService = services.identityService;
-    this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false};
+    this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false, busy: false};
   }
 
   setView(view) {
@@ -24,13 +24,13 @@ class MainScreen extends Component {
   }
 
   async onClickerClick() {
-    await this.clickService.click();
-    this.setState({lastClick: '0'});
+    this.setState({busy: true});
+    await this.clickService.click(() => this.setState({busy: false}));
   }
 
   async componentDidMount() {
     await this.updateClicksLeft();
-    this.historyService.subscribe(this.onUpdate.bind(this));
+    this.historyService.subscribe(this.setState.bind(this));
     this.ensNameService.subscribe();
   }
 
@@ -38,7 +38,9 @@ class MainScreen extends Component {
     const {address} = this.identityService.identity;
     const balance = await this.tokenService.getBalance(address);
     const clicksLeft = parseInt(balance, 10);
-    this.setState({clicksLeft});
+    this.setState({
+      clicksLeft
+    });
     this.timeout = setTimeout(this.updateClicksLeft.bind(this), 2000);
   }
 
@@ -46,22 +48,6 @@ class MainScreen extends Component {
     this.ensNameService.unsubscribeAll();
     this.historyService.unsubscribeAll();
     clearTimeout(this.timeout);
-  }
-
-  onUpdate(pressers) {
-    if (pressers.length > 0) {
-      this.setState({
-        lastClick: pressers[0].pressTime,
-        events: pressers,
-        loaded: true
-      });
-    } else {
-      this.setState({
-        lastClick: '0',
-        events: pressers,
-        loaded: true
-      });
-    }
   }
 
   render() {
@@ -81,6 +67,8 @@ class MainScreen extends Component {
         <MainScreenView
           clicksLeft={this.state.clicksLeft}
           events={this.state.events}
+          loaded={this.state.loaded}
+          busy={this.state.busy}
           onClickerClick={this.onClickerClick.bind(this)}
           lastClick={this.state.lastClick}
         />

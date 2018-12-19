@@ -6,12 +6,8 @@ function HeaderWaiting(props) {
     <div className="row">
       <div className="identicon-loading loading" />
       <div>
-        <p className="user-id">
-          Creating new {props.identityName} identity...
-        </p>
-        <p className="wallet-address">
-          0x0000000000000000000000000000000000000000
-        </p>
+        <p className="user-id">{props.identityName}</p>
+        <p className="wallet-address">Creating new identity...</p>
       </div>
     </div>
   );

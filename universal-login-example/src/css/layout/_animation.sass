@@ -34,7 +34,7 @@
     width: 0
 
   to
-    width: 100%
+    width: 95%
 
 
 
@@ -95,10 +95,7 @@
 .request-notification
     animation: shake 2s ease-in-out
 
-// .greeting-view
-//     animation: fade-in 0.5s ease-in-out
-
-.greeting-view .checkmark-ico.animated
+.greeting-view .checkmark-ico
   animation: reveal 1.5s ease-in-out
   animation-fill-mode: backwards
   animation-delay: 0.5s
@@ -110,19 +107,36 @@
   animation-delay: 0.5s
 
 .greeting-view .start-btn
-    animation: fade-in .5s ease-in-out
+  animation: fade-in .5s ease-in-out
 
 .header
-    animation: fade-in .25s ease-in-out
+  animation: fade-in .25s ease-in-out
+
+.balance
+  animation: fade-in 1s ease-in-out
 
 .loading
   animation: light-fade 0.5s ease-in-out
   animation-iteration-count: infinite
   animation-direction: alternate-reverse
 
-.loadbar::after
+.main-screen::after
   content: " "
   width: 100%
   display: block
+  position: absolute
+  top: 0
+  opacity: 0
   border-bottom: 2px solid #fd6073
-  animation: loadbar 30s ease-in-out
+  transition: width 2s ease-in-out, opacity 3s ease-out 2s
+
+.loadbar::after
+  content: " "
+  width: 95%
+  display: block
+  position: absolute
+  top: 0
+  opacity: 1
+  border-bottom: 2px solid #fd6073
+  transition: width 5s ease-in-out, opacity 1s ease-out
+  animation: loadbar 20s ease-in-out

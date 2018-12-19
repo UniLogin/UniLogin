@@ -6,32 +6,9 @@ import AddBackupCode from './Sections/AddBackupCode';
 import Header from './Sections/Header';
 import BackupCodeAdded from './Sections/BackupCodeAdded';
 import IdentityCreated from './Sections/IdentityCreated';
-import CreatingNewAccount from './Sections/CreatingNewAccount';
 
 class GreetingView extends Component {
-  renderCreate() {
-    return (
-      <div className="greeting-view">
-        <div className="container">
-          <Header identity={this.props.identity} />
-          <hr className="separator" />
-          <CreatingNewAccount />
-          <hr className="separator" />
-          <AddNewDevice />
-          <hr className="separator" />
-          <AddBackupCode />
-          <button
-            className="btn fullwidth start-btn"
-            onClick={this.props.onStartClick.bind(this)}
-          >
-            Go to App
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  renderOther() {
+  render() {
     return (
       <div className="greeting-view">
         <div className="container">
@@ -59,14 +36,6 @@ class GreetingView extends Component {
         </div>
       </div>
     );
-  }
-
-  render() {
-    const {status} = this.props;
-    if (status.create) {
-      return this.renderCreate();
-    }
-    return this.renderOther();
   }
 }
 

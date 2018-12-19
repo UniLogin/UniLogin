@@ -15,10 +15,10 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
 const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
   let receipt = await provider.getTransactionReceipt(transactionHash);
-  while (!receipt) {
-    sleep(tick);
+  do {
     receipt = await provider.getTransactionReceipt(transactionHash);
-  }
+    await sleep(tick);
+  } while (!receipt || !receipt.blockHash);
   return receipt;
 };
 

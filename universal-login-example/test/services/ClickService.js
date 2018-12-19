@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import Clicker from '../../build/Clicker';
 import {getLogs} from '../utils';
 import IdentityService from '../../src/services/IdentityService';
@@ -8,7 +8,10 @@ import {utils} from 'ethers';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicEnviroment from '../fixtures/basicEnvironment';
 import setupSdk from '../fixtures/setupSdk';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
+chai.use(sinonChai);
 
 class FakeStorageService {
   constructor() {
@@ -51,9 +54,11 @@ describe('ClickService', () => {
 
 
   it('clicks', async () => {
-    await clickService.click();
+    const callback = sinon.spy();
+    await clickService.click(callback);
     const logs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress');
     expect(logs[0]).to.deep.include({presser: identityService.identity.address});
+    expect(callback).to.have.been.called;
   });
 
   afterEach(async () => {
