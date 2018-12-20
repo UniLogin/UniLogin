@@ -1,12 +1,10 @@
 import chai, {expect} from 'chai';
 import {waitUntil, getLogs, sleep} from '../utils';
 import chaiAsPromised from 'chai-as-promised';
-import {convertIPv6ToIPv4, filterIP} from '../../src/utils';
+import {convertIPv6ToIPv4, filterIP, debounce} from '../../src/utils';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import Clicker from '../../build/Clicker';
-import {utils} from 'ethers';
 import sinon from 'sinon';
-import debounce from '../../src/services/DeferredService';
 
 chai.use(chaiAsPromised);
 
