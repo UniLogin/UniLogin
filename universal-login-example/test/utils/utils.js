@@ -88,5 +88,35 @@ describe('Utils', async () => {
       await sleep(tick);
       expect(callback).to.have.been.calledOnce;
     });
+
+    it('works with args', async () => {
+      const callback = sinon.spy();
+      const args = 'some args';
+      const debounceCallback = debounce(callback, tick);
+      debounceCallback(args);
+      await sleep(tick);
+      expect(callback).to.have.been.calledWith(args);
+    });
+
+    it('works with a lot of args', async () => {
+      const callback = sinon.spy();
+      let args = 0;
+      const debounceCallback = debounce(callback, tick);
+      debounceCallback(args);
+      args++;
+      debounceCallback(args);
+      args++;
+      debounceCallback(args);
+      args++;
+      debounceCallback(args);
+      args++;
+      debounceCallback(args);
+      args++;
+      debounceCallback(args);
+      args++;
+      debounceCallback(args);
+      await sleep(tick);
+      expect(callback).to.have.been.calledWith(args);
+    });
   });
 });

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import TextBox from '../views/TextBox';
 import PropTypes from 'prop-types';
 import ConnectionHoverView from '../views/ConnectionHoverView';
+import {debounce} from '../utils';
 
 class IdentitySelector extends Component {
   constructor(props) {
@@ -9,14 +10,27 @@ class IdentitySelector extends Component {
     this.state = {
       identity: '',
       connections: [],
-      creations: []
+      creations: [],      
+      busy: false
     };
+    this.debouncedGetSuggestions = debounce(this.getSuggestions.bind(this), 1000);
+  }
+
+  async getSuggestions(identity) {
+    this.setState({busy: true});
+    const [connections, creations] = await this.props.identitySelectionService.getSuggestions(identity);
+    this.setState({identity, connections, creations, busy: false});
   }
 
   async update(event) {
     const identity = event.target.value;
-    const [connections, creations] = await this.props.identitySelectionService.getSuggestions(identity);
-    this.setState({identity, connections, creations});
+    this.debouncedGetSuggestions(identity);
+  }
+
+  renderBusyIndicator() {
+    if (this.state.busy) {
+      return <div className='circle-loader input-loader'> </div>;    
+    } 
   }
 
   render() {
@@ -27,7 +41,8 @@ class IdentitySelector extends Component {
           <TextBox
             placeholder="bob.example.eth"
             onChange={(event) => this.update(event)}
-          />
+          />          
+          { this.renderBusyIndicator() }
         </div>
         <ConnectionHoverView
           connections={this.state.connections}
@@ -36,6 +51,7 @@ class IdentitySelector extends Component {
           onNextClick={this.props.onNextClick}
           onAccountRecoveryClick={this.props.onAccountRecoveryClick}
         />
+        
       </div>
     );
   }
