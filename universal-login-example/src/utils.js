@@ -44,4 +44,19 @@ function fromBrainWallet(username, password) {
   });
 }
 
-export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet};
+
+function debounce(func, waitTime = 0) {
+  let timeout;
+  return function() {
+    const args = arguments;
+    const later = function() {
+      timeout = null;
+      func.apply(this, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, waitTime);
+  };
+}
+
+
+export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce};
