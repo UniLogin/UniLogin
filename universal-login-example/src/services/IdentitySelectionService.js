@@ -28,7 +28,7 @@ class IdentitySelectionService {
         creations.push(domain);
       }
     }
-    return [connections, creations];
+    return {connections, creations};
   }
 
   async getSuggestionsForNodePrefix(nodePrefix) {
@@ -45,18 +45,20 @@ class IdentitySelectionService {
   }
 
   async getConnects(namePrefix) {
-    return (await this.getSuggestions(namePrefix))[0];
+    return (await this.getSuggestions(namePrefix)).connections;
   }
 
   async getCreates(namePrefix) {
-    return (await this.getSuggestions(namePrefix))[1];
+    return (await this.getSuggestions(namePrefix)).creations;
   }
 
   async getSuggestions(namePrefix) {
     if (!this.isCorrectPrefix(namePrefix)) {
-      return [[], []];
+      return {connections: [], creations: []};
     } else if (this.isFullDomain(namePrefix)) {
-      return (await this.sdk.identityExist(namePrefix)) ? [[namePrefix], []] : [[], [namePrefix]];
+      return (await this.sdk.identityExist(namePrefix)) ? 
+        {connections: [namePrefix], creations: []} : 
+        {connections: [], creations: [namePrefix]};
     } else  if (this.countPeriods(namePrefix) > 0) {
       const [name, sldPrefix] = namePrefix.split('.');
       return await this.getSuggestionsForNodeAndSldPrefix(name, sldPrefix);

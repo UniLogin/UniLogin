@@ -4,8 +4,8 @@ import sinon from 'sinon';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
 
-describe('IdentitySelectionService', async () => {
-  describe('Connections', async () => {
+describe('IdentitySelectionService', () => {
+  describe('Connections', () => {
     it('gets all possible connections', async () => {
       const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
       const service = new IdentitySelectionService(sdk, domains);
@@ -61,7 +61,7 @@ describe('IdentitySelectionService', async () => {
     });
   });
 
-  describe('Creations', async () => {
+  describe('Creations', () => {
     it('gets all possible creations', async () => {
       const sdk = {identityExist: sinon.fake.returns(Promise.resolve(false))};
       const service = new IdentitySelectionService(sdk, domains);
@@ -114,6 +114,40 @@ describe('IdentitySelectionService', async () => {
       expect(await service.getConnects('a.ap')).to.deep.eq(['a.app.eth']);
       expect(await service.getConnects('a.app')).to.deep.eq(['a.app.eth']);
       expect(await service.getConnects('a.app.')).to.deep.eq(['a.app.eth']);
+    });
+  });
+
+  describe('Get all suggestions', () => {    
+    it('incorrect prefix', async () => {
+      const service = new IdentitySelectionService({}, domains);
+      expect(await service.getSuggestions('..')).to.deep.eq({connections: [], creations: []});
+    });
+
+    it('full domain exist', async () => {
+      const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
+      const service = new IdentitySelectionService(sdk, domains);
+      expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: ['a.my.eth'], creations: []});
+    });
+
+    it('full domain create', async () => {
+      const sdk = {identityExist: sinon.fake.returns(Promise.resolve(false))};
+      const service = new IdentitySelectionService(sdk, domains);
+      expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: [], creations: ['a.my.eth']});
+    });
+
+    it('with secondary domain prefix', async () => {
+      const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
+      const service = new IdentitySelectionService(sdk, domains);
+      expect(await service.getSuggestions('a.my')).to.deep.eq({connections:['a.my.eth'], creations: []});
+    });
+
+    it('returns proper suggestions', async () => {
+      const identityExist = sinon.stub();
+      identityExist.withArgs('a.my.eth').returns(Promise.resolve(true));
+      identityExist.withArgs('a.uni.eth').returns(Promise.resolve(false));
+      identityExist.withArgs('a.app.eth').returns(Promise.resolve(true));
+      const service = new IdentitySelectionService({identityExist}, domains);
+      expect(await service.getSuggestions('a')).to.deep.eq({connections: ['a.my.eth', 'a.app.eth'], creations: ['a.uni.eth']});
     });
   });
 });
