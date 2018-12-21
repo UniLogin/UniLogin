@@ -15,7 +15,23 @@ class IdentitySelectionService {
   }
 
   isCorrectPrefix(prefix) {
-    return /^\w+\.?(\w+|\w+-|\w+-\w+|\w+-\w+-|\w+-\w+-\w+)?\.?(t|te|tes|test|e|et|eth|x|xy|xyz)?$/.test(prefix);
+    const splitted = prefix.split('.');    
+    if (splitted.length === 0 || splitted.length > 3) {
+      return false;
+    } 
+    if (!/^\w[\w-]*$/.test(splitted[0])) {
+      return false;
+    }
+    if (splitted.length > 1 && !/^[\w-]*$/.test(splitted[1])) {
+      return false;
+    }
+    if (splitted.length > 2) {
+      if (splitted[1].length === 0) {
+        return false;
+      }
+      return 'test'.startsWith(splitted[2]) || 'eth'.startsWith(splitted[2]) || 'xyz'.startsWith(splitted[2]);
+    }
+    return true;
   }
 
   async splitByExistence(domains) {

@@ -176,6 +176,14 @@ describe('IdentitySelectionService', () => {
       expect(service.isCorrectPrefix('a.my.eth')).to.be.true;
     });
 
+    it('empty', () => {
+      expect(service.isCorrectPrefix('')).to.be.false;
+    });
+
+    it('too many segments', () => {
+      expect(service.isCorrectPrefix('a.b.c.d')).to.be.false;
+    });
+
     it('returns true for `test`', () => {
       expect(service.isCorrectPrefix('a.my.t')).to.be.true;
       expect(service.isCorrectPrefix('a.my.te')).to.be.true;
@@ -195,7 +203,21 @@ describe('IdentitySelectionService', () => {
       expect(service.isCorrectPrefix('a.my.th')).to.be.false;
     });
 
-    it('returns true for domains with - ', () => {
+    it('labels with dash', () => {
+      expect(service.isCorrectPrefix('a-b')).to.be.true;
+    });
+
+    it('ends with .', () => {
+      expect(service.isCorrectPrefix('a.')).to.be.true;
+      expect(service.isCorrectPrefix('a.my-log.')).to.be.true;
+      expect(service.isCorrectPrefix('a..')).to.be.false;
+      expect(service.isCorrectPrefix('...')).to.be.false;
+      expect(service.isCorrectPrefix('a.b..')).to.be.false;
+      expect(service.isCorrectPrefix('..')).to.be.false;
+      expect(service.isCorrectPrefix('.')).to.be.false;
+    });
+    
+    it('domains with dashes', () => {      
       expect(service.isCorrectPrefix('a.my-')).to.be.true;
       expect(service.isCorrectPrefix('a.my-log')).to.be.true;
       expect(service.isCorrectPrefix('a.my-super-')).to.be.true;
