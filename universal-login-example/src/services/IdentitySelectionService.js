@@ -7,7 +7,7 @@ class IdentitySelectionService {
   }
 
   isFullDomain(name) {
-    return name.endsWith('.eth');
+    return name.endsWith('.eth') || name.endsWith('.test') || name.endsWith('.xyz');
   }
 
   countPeriods(name) {
@@ -15,7 +15,7 @@ class IdentitySelectionService {
   }
 
   isCorrectPrefix(prefix) {
-    return /^\w+\.?(\w+)?\.?e?t?h?$/.test(prefix);
+    return /^\w+\.?(\w+|\w+-|\w+-\w+|\w+-\w+-|\w+-\w+-\w+)?\.?(t|te|tes|test|e|et|eth|x|xy|xyz)?$/.test(prefix);
   }
 
   async splitByExistence(domains) {

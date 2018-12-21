@@ -125,8 +125,9 @@ describe('IdentitySelectionService', () => {
 
     it('full domain exist', async () => {
       const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new IdentitySelectionService(sdk, domains);
+      const service = new IdentitySelectionService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: ['a.my.eth'], creations: []});
+      expect(await service.getSuggestions('a.my.test')).to.deep.eq({connections: ['a.my.test'], creations: []});
     });
 
     it('full domain create', async () => {
@@ -135,10 +136,16 @@ describe('IdentitySelectionService', () => {
       expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: [], creations: ['a.my.eth']});
     });
 
-    it('with secondary domain prefix', async () => {
+    it('with secondary domain prefix, identity exists', async () => {
       const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new IdentitySelectionService(sdk, domains);
-      expect(await service.getSuggestions('a.my')).to.deep.eq({connections:['a.my.eth'], creations: []});
+      const service = new IdentitySelectionService(sdk, [...domains, 'my.test']);
+      expect(await service.getSuggestions('a.my')).to.deep.eq({connections:['a.my.eth', 'a.my.test'], creations: []});
+    });
+
+    it('with secondary domain prefix, identity doesn`t exist', async () => {
+      const sdk = {identityExist: sinon.fake.returns(Promise.resolve(false))};
+      const service = new IdentitySelectionService(sdk, [...domains, 'my.test']);
+      expect(await service.getSuggestions('a.my')).to.deep.eq({connections:[], creations: ['a.my.eth', 'a.my.test']});
     });
 
     it('returns proper suggestions', async () => {
@@ -148,6 +155,51 @@ describe('IdentitySelectionService', () => {
       identityExist.withArgs('a.app.eth').returns(Promise.resolve(true));
       const service = new IdentitySelectionService({identityExist}, domains);
       expect(await service.getSuggestions('a')).to.deep.eq({connections: ['a.my.eth', 'a.app.eth'], creations: ['a.uni.eth']});
+    });
+  });
+
+  describe('Prefix check', () => {
+    let service;
+
+    before(() => {
+      service = new IdentitySelectionService({}, []);
+    });
+
+    it('returns true if there is no domain', () => {
+      expect(service.isCorrectPrefix('a')).to.be.true;
+      expect(service.isCorrectPrefix('a.my')).to.be.true;
+    });
+
+    it('works for `eth`', () => {
+      expect(service.isCorrectPrefix('a.my.e')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.et')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.eth')).to.be.true;
+    });
+
+    it('returns true for `test`', () => {
+      expect(service.isCorrectPrefix('a.my.t')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.te')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.tes')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.test')).to.be.true;
+    });
+
+    it('returns true for `xyz`', () => {
+      expect(service.isCorrectPrefix('a.my.x')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.xy')).to.be.true;
+      expect(service.isCorrectPrefix('a.my.xyz')).to.be.true;
+    });
+
+    it('returns false for invalid domains', () => {
+      expect(service.isCorrectPrefix('a.my.bad')).to.be.false;
+      expect(service.isCorrectPrefix('a.my.s')).to.be.false;
+      expect(service.isCorrectPrefix('a.my.th')).to.be.false;
+    });
+
+    it('returns true for domains with - ', () => {
+      expect(service.isCorrectPrefix('a.my-')).to.be.true;
+      expect(service.isCorrectPrefix('a.my-log')).to.be.true;
+      expect(service.isCorrectPrefix('a.my-super-')).to.be.true;
+      expect(service.isCorrectPrefix('a.my-super-domain')).to.be.true;
     });
   });
 });

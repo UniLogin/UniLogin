@@ -18,7 +18,7 @@ class IdentitySelector extends Component {
 
   async getSuggestions(identity) {
     this.setState({busy: true});
-    const [connections, creations] = await this.props.identitySelectionService.getSuggestions(identity);
+    const {connections, creations} = await this.props.identitySelectionService.getSuggestions(identity);
     this.setState({identity, connections, creations, busy: false});
   }
 
