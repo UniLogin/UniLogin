@@ -7,23 +7,19 @@ module.exports = {
     connection: {
       database: 'universal_login_relayer_development',
       user:     'postgres',
-      password: ''
+      password: 'postgres'
     },
     migrations: {
       tableName: 'knex_migrations'
     }
   },
 
-  staging: {
+  test: {
     client: 'postgresql',
     connection: {
-      database: 'universal_login_relayer_staging',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
+      database: 'universal_login_relayer_test',
+      user:     'postgres',
+      password: ''
     },
     migrations: {
       tableName: 'knex_migrations'
