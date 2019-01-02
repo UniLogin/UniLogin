@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import TextBox from '../views/TextBox';
 import PropTypes from 'prop-types';
 import ConnectionHoverView from '../views/ConnectionHoverView';
-import {debounce} from '../utils';
 
 class IdentitySelector extends Component {
   constructor(props) {
@@ -13,18 +12,17 @@ class IdentitySelector extends Component {
       creations: [],      
       busy: false
     };
-    this.debouncedGetSuggestions = debounce(this.getSuggestions.bind(this), 1000);
+    const {suggestionsService} = this.props.services;
+    this.suggestionsService = suggestionsService;
   }
-
-  async getSuggestions(identity) {
-    this.setState({busy: true});
-    const {connections, creations} = await this.props.identitySelectionService.getSuggestions(identity);
-    this.setState({identity, connections, creations, busy: false});
+  
+  componentDidMount() {
+    this.suggestionsService.setCallback(this.setState.bind(this));
   }
 
   async update(event) {
     const identity = event.target.value;
-    this.debouncedGetSuggestions(identity);
+    this.suggestionsService.getSuggestions(identity);
   }
 
   renderBusyIndicator() {
@@ -61,9 +59,7 @@ IdentitySelector.propTypes = {
   onChange: PropTypes.func,
   onNextClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func,
-  ensDomains: PropTypes.arrayOf(PropTypes.string),
   services: PropTypes.object,
-  identityExist: PropTypes.func,
   identitySelectionService: PropTypes.object
 };
 

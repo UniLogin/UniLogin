@@ -13,6 +13,7 @@ import IdentitySelectionService from './IdentitySelectionService';
 import BackupService from './BackupService';
 import GreetingService from './GreetingService';
 import StorageService from './StorageService';
+import SuggestionsService from './SuggestionsService';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
 
@@ -34,6 +35,7 @@ class Services {
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
     this.identitySelectionService = new IdentitySelectionService(this.sdk, config.ensDomains);
     this.greetingService = new GreetingService(this.provider);
+    this.suggestionsService = new SuggestionsService(this.identitySelectionService);
   }
 
   start() {

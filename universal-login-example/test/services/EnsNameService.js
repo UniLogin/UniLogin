@@ -1,8 +1,5 @@
 import {expect} from 'chai';
-import sinon from 'sinon';
 import EnsNameService from '../../src/services/EnsNameService';
-import {utils} from 'ethers';
-import setupSdk from '../fixtures/setupSdk';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 
@@ -11,7 +8,6 @@ describe('EnsNameService', () => {
   let provider;
   let ensNameService;
   let wallet;
-  let clickerContract;
   let historyService;
 
   beforeEach(async () => {
@@ -19,12 +15,12 @@ describe('EnsNameService', () => {
     [wallet] = await getWallets(provider);
     historyService =  {
       pressers: [{address: wallet.address, name: wallet.address}]
-    }
+    };
     ensService = {
       getEnsName() {
         return 'alice.mylogin.eth';
       }
-    }
+    };
     ensNameService = new EnsNameService(ensService, historyService);
   });
 
