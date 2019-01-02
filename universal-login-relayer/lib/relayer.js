@@ -10,6 +10,7 @@ import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
+import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
 
 const defaultPort = 3311;
 
@@ -21,15 +22,31 @@ function errorHandler (err, req, res, next) {
 }
 
 class Relayer {
-  constructor(config, provider = '') {
+  constructor(config, provider = '', database) {
     this.port = config.port || defaultPort;
     this.config = config;
     this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.wallet = new Wallet(config.privateKey, this.provider);
+    this.database = database;
   }
 
-  start() {
+  async start() {
+    if (await this.checkIfAllMigrated()) {
+      this.runServer();
+    } else {
+      this.database.destroy();
+      throw Error('Database is out of date.');
+    }
+  }
+
+  async checkIfAllMigrated() {
+    const {config, knex} = this.database.migrate;  
+    const list = await migrationListResolver.listAllAndCompleted(config, knex);
+    return list[0].length === list[1].length;
+  }
+
+  runServer() {
     this.app = express();
     this.app.use(useragent.express());
     this.app.use(cors({
@@ -48,6 +65,7 @@ class Relayer {
   }
 
   async stop() {
+    this.database.destroy();
     this.server.close();
   }
 }
