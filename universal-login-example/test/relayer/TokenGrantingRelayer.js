@@ -54,9 +54,9 @@ describe('Token Granting Relayer - tests', async () => {
 
   describe('Token granting', async () => {
     it('Should transfer tokens, when identity created', async () => {
-      const isBalanceGreater = async () => {
-        return (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(0));
-      }
+      const isBalanceGreater = async () => 
+        (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(0));
+      
       await waitUntil(isBalanceGreater, 5, 50);
       expect(await tokenContract.balanceOf(identityContractAddress)).to.eq(utils.parseEther('100'));
     });
@@ -64,12 +64,11 @@ describe('Token Granting Relayer - tests', async () => {
     it('Should transfer tokens, when adding key', async () => {
       const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContract.address};
       await sdk.addKey(identityContractAddress, wallet.address, identityPrivateKey, addKeysPaymentOptions);
-      const isBalanceGreater = async () => {
-        return (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(utils.parseEther('92')));
-      }
+      const isBalanceGreater = async () => 
+        (await tokenContract.balanceOf(identityContractAddress)).gt(utils.bigNumberify(utils.parseEther('92')));      
       await waitUntil(isBalanceGreater, 5, 50);
       expect(await tokenContract.balanceOf(identityContractAddress)).to.be.above(utils.parseEther('92'));
-    })
+    });
   });
 
   after(async () => {

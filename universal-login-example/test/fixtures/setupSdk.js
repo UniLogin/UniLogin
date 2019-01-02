@@ -2,10 +2,10 @@ import {RelayerUnderTest} from 'universal-login-relayer/build';
 import {createMockProvider} from 'ethereum-waffle';
 import UniversalLoginSDK from 'universal-login-sdk';
 
-export default async function setupSdk(provider = createMockProvider()) {
-  const relayer = await RelayerUnderTest.createPreconfigured(provider);
+export default async function setupSdk(givenProvider = createMockProvider()) {
+  const relayer = await RelayerUnderTest.createPreconfigured(givenProvider);
   await relayer.start();
-  ({provider} = relayer)
+  const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider);
-  return {sdk, relayer, provider}
+  return {sdk, relayer, provider};
 }

@@ -44,7 +44,6 @@ class Login extends Component {
   }
 
   render() {
-    const {ensDomains} = this.props.services.config;
     return (
       <div className="login-view">
         <div className="container">
@@ -56,10 +55,8 @@ class Login extends Component {
           <IdentitySelector
             onNextClick={(identity) => this.onNextClick(identity)}
             onChange={this.onChange.bind(this)}
-            ensDomains={ensDomains}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
-            identityExist = {this.identityExist.bind(this)}
-            identitySelectionService={this.props.services.identitySelectionService}
+            services = {this.props.services}
           />
         </div>
       </div>

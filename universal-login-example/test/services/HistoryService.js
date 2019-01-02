@@ -5,23 +5,20 @@ import sinonChai from 'sinon-chai';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicEnviroment from '../fixtures/basicEnvironment';
 import setupSdk from '../fixtures/setupSdk';
-import {sleep} from '../../src/relayer/utils';
 
 
-chai.use(sinonChai)
+chai.use(sinonChai);
 
 describe('HistoryService', async () => {
   let testHelper;
   let historyService;
   let provider;
   let clickerContract;
-  let defaultPaymentOptions;
   let wallet;
   let relayer;
-  let sdk;
 
   beforeEach(async () => {
-    ({relayer, sdk, provider} = await setupSdk());
+    ({relayer, provider} = await setupSdk());
     testHelper = new TestHelper(provider);
     ({wallet, clickerContract} = await testHelper.load(basicEnviroment));
     historyService = new HistoryService(clickerContract.address, provider);

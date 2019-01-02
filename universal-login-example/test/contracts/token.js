@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import Token from '../../build/Token';
 chai.use(solidity);
 
@@ -20,7 +20,7 @@ describe('Universal Login Token', async () => {
   describe('Basic functions', async () => {
     it('has proper address', async () => {
       expect(contract.address).to.not.be.null;
-    })
+    });
 
     it('total supply is not equal 0', async () => {
       expect(totalSupply).to.not.be.null;

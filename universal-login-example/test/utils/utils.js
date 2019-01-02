@@ -25,7 +25,7 @@ describe('Utils', async () => {
       const func = () => {
         count++;
         return count === 3;
-      }
+      };
       expect(await waitUntil(func, 1)).to.be.true;
       expect(count).to.eq(3);
     });
