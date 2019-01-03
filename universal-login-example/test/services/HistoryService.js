@@ -3,7 +3,7 @@ import HistoryService from '../../src/services/HistoryService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import TestHelper from 'universal-login-contracts/test/testHelper';
-import basicEnviroment from '../fixtures/basicEnvironment';
+import basicContracts from '../fixtures/basicContracts';
 import setupSdk from '../fixtures/setupSdk';
 
 
@@ -20,7 +20,7 @@ describe('HistoryService', async () => {
   beforeEach(async () => {
     ({relayer, provider} = await setupSdk());
     testHelper = new TestHelper(provider);
-    ({wallet, clickerContract} = await testHelper.load(basicEnviroment));
+    ({wallet, clickerContract} = await testHelper.load(basicContracts));
     historyService = new HistoryService(clickerContract.address, provider);
   });
 

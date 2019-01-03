@@ -6,7 +6,7 @@ import ClickService from '../../src/services/ClickService';
 import {EventEmitter} from 'events';
 import {utils} from 'ethers';
 import TestHelper from 'universal-login-contracts/test/testHelper';
-import basicEnviroment from '../fixtures/basicEnvironment';
+import basicContracts from '../fixtures/basicContracts';
 import setupSdk from '../fixtures/setupSdk';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -45,7 +45,7 @@ describe('ClickService', () => {
   beforeEach(async () => {
     ({relayer, sdk, provider} = await setupSdk());
     testHelper = new TestHelper(provider);
-    ({clickerContract, tokenContract} = await testHelper.load(basicEnviroment));
+    ({clickerContract, tokenContract} = await testHelper.load(basicContracts));
     identityService = new IdentityService(sdk, new EventEmitter(), new FakeStorageService(), {});
     await identityService.createIdentity('kyle.mylogin.eth');
     await tokenContract.transfer(identityService.identity.address, utils.parseEther('1.0'));
