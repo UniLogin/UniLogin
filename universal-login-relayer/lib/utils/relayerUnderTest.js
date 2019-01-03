@@ -2,6 +2,8 @@ import Relayer from '../relayer';
 import {defaultAccounts, getWallets} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 import {withENS} from './utils';
+import knex from 'knex';
+import knexConfig from '../../knexfile';
 
 class RelayerUnderTest extends Relayer {
   url() {
@@ -32,7 +34,8 @@ class RelayerUnderTest extends Relayer {
         }
       }
     };
-    const relayer = new RelayerUnderTest(config, providerWithENS);
+    const database = knex(knexConfig.test);
+    const relayer = new RelayerUnderTest(config, providerWithENS, database);
     relayer.provider = providerWithENS;
     return relayer;
   }

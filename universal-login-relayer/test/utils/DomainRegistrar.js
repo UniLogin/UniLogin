@@ -120,8 +120,4 @@ describe('ENS register', async () => {
       expect(await publicResolver.name(reverseNode)).to.eq(`justa.${domain}`);
     });
   });
-
-  after(() => {
-
-  });
 });
