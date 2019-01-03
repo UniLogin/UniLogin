@@ -2,21 +2,38 @@ import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {getWallets, deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';
+import path from 'path';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
+
+const knexConfig = {
+  test: {
+    client: 'postgresql',
+    connection: {
+      database: 'universal_login_relayer_test',
+      user:     'postgres',
+      password: ''
+    },
+    migrations: {
+      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
+      tableName: 'knex_migrations'
+    }
+  }
+};
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
   const [,otherWallet, otherWallet2] = await getWallets(provider);
-  const relayer = await RelayerUnderTest.createPreconfigured(provider);
+  const relayer = await RelayerUnderTest.createPreconfigured(provider, knexConfig);
+  await relayer.database.migrate.latest({directory: path.join(__dirname, '../../../universal-login-relayer/migrations')});
   await relayer.start();
   ({provider} = relayer);
   const sdk = new EthereumIdentitySDK(relayer.url(), provider);
-  const [privateKey, identityAddress] = await sdk.create('alex.mylogin.eth');
+  const [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
   const mockToken = await deployContract(wallet, MockToken);
-  await mockToken.transfer(identityAddress, utils.parseEther('1.0'));
-  await wallet.sendTransaction({to: identityAddress, value: utils.parseEther('1.0')});
-  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, identityAddress, relayer};
+  await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
+  await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
+  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, relayer};
 }
 
 export const transferMessage = {
@@ -25,4 +42,6 @@ export const transferMessage = {
   value: utils.parseEther('0.5').toString()
 };
 
-
+export const addKeyMessage = {
+  ...MESSAGE_DEFAULTS
+};
