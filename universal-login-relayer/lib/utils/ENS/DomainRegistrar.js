@@ -34,7 +34,7 @@ class DomainRegistrar extends ENSRegistrarBase {
     this.log(`${label}.${tld} owner set to: ${await this.ens.owner(node)} (registrar)`);
   }
 
-  async start(label, tld) {
+  async start(label, tld, save = saveVariables) {
     const labelHash = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${tld}`);
     this.variables.DOMAIN = `${label}.${tld}`;
@@ -45,7 +45,7 @@ class DomainRegistrar extends ENSRegistrarBase {
     await this.deployNewRegistrar(node);
     await this.setRegistrarAsOwner(label, node, tld);
     const filename = `./${label}.${tld}_info`;
-    saveVariables(filename, this.variables);
+    save(filename, this.variables);
     this.log(`${filename} file updated.`);
   }
 }
