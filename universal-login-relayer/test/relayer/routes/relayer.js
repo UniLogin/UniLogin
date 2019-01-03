@@ -22,6 +22,7 @@ describe('Relayer - Identity routes', async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
+    await relayer.database.migrate.latest();
     await relayer.start();
   });
 
