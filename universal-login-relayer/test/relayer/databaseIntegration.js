@@ -14,12 +14,6 @@ describe('Database integration', () => {
 
   it('won`t start if no migrations', async () => {
     await relayer.database.migrate.rollback(relayer.database.config);
-    await relayer.database.migrate.rollback(relayer.database.config);
-    await expect(relayer.start()).to.be.eventually.rejectedWith('Database is out of date.');
-  });
-
-  it('won`t start if not all migrations', async () => {
-    await relayer.database.migrate.rollback(relayer.database.config);
     await expect(relayer.start()).to.be.eventually.rejectedWith('Database is out of date.');
   });
 

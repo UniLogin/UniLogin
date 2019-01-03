@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const config = require('./config/relayer');
 
-const database = knex(knexConfig.test);
+const database = knex(knexConfig[`${process.env.NODE_ENV}`]);
 
 const relayer = new Relayer(config, '' , database);
 relayer.start();
