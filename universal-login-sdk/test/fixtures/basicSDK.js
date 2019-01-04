@@ -5,26 +5,15 @@ import {utils} from 'ethers';
 import path from 'path';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
+import {getKnexConfig} from 'universal-login-relayer/lib/utils/knexUtils';
 
-const knexConfig = {
-  test: {
-    client: 'postgresql',
-    connection: {
-      database: 'universal_login_relayer_test',
-      user:     'postgres',
-      password: ''
-    },
-    migrations: {
-      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
-      tableName: 'knex_migrations'
-    }
-  }
-};
+const config = getKnexConfig();
+config.migrations.directory = path.join(__dirname, '../../../universal-login-relayer/migrations');
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
   const [,otherWallet, otherWallet2] = await getWallets(provider);
-  const relayer = await RelayerUnderTest.createPreconfigured(provider, knexConfig);
+  const relayer = await RelayerUnderTest.createPreconfigured(provider, config);
   await relayer.database.migrate.latest({directory: path.join(__dirname, '../../../universal-login-relayer/migrations')});
   await relayer.start();
   ({provider} = relayer);
@@ -42,6 +31,4 @@ export const transferMessage = {
   value: utils.parseEther('0.5').toString()
 };
 
-export const addKeyMessage = {
-  ...MESSAGE_DEFAULTS
-};
+export const addKeyMessage = MESSAGE_DEFAULTS;

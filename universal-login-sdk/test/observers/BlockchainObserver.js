@@ -43,10 +43,10 @@ describe('SDK: BlockchainObserver', async () => {
 
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
-    const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
-    await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
+    await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
     expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });
@@ -54,14 +54,14 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: shouldn`t emit AddKey on add another key', async () => {
     const callback = sinon.spy();
     const callback2 = sinon.spy();
-    const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
 
     const filter = {contractAddress, key: otherWallet.address};
     const filter2 = {contractAddress, key: otherWallet2.address};
     await blockchainObserver.subscribe('KeyAdded', filter,  callback);
     await blockchainObserver.subscribe('KeyAdded', filter2, callback2);
 
-    await sdk.addKey(contractAddress, otherWallet.address, privateKey, addKeyPaymentOption);
+    await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
     expect(callback).to.have.been.calledWith({key: otherWallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
@@ -70,8 +70,8 @@ describe('SDK: BlockchainObserver', async () => {
 
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
-    const addKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
-    await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
+    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyRemoved', filter, callback);
     const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};

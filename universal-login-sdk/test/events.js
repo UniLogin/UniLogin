@@ -32,8 +32,8 @@ describe('SDK - events', async () => {
     await sdk.subscribe('KeyAdded', {contractAddress, key: wallet.address}, keyCallback);
 
     await sdk.connect(contractAddress);
-    const addKeyPaymentOption = {...addKeyMessage, gasToken: mockToken.address};
-    await sdk.addKey(contractAddress, wallet.address, privateKey, addKeyPaymentOption);
+    const paymentOptions = {...addKeyMessage, gasToken: mockToken.address};
+    await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: 1, purpose: 1});
     expect(connectionCallback).to.have.been.called;
