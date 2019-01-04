@@ -27,12 +27,12 @@ describe('Knex utils', () => {
   describe('getKnexConfig', () => {
     it('should return test config', () => {
       process.env.NODE_ENV = 'test';
-      expect(getKnexConfig().connection.database).to.deep.eq('universal-login-relayer-test');
+      expect(getKnexConfig().connection.database).to.deep.eq('universal_login_relayer_test');
     });
 
     it('should return development config', () => {
       process.env.NODE_ENV = 'development';
-      expect(getKnexConfig().connection.database).to.deep.eq('universal-login-relayer-development');
+      expect(getKnexConfig().connection.database).to.deep.eq('universal_login_relayer_development');
     });
 
     it('should return production config', () => {
@@ -51,13 +51,13 @@ describe('Knex utils', () => {
     it('should return knex if development', () => {
       process.env.NODE_ENV = 'development';
       const knex = getKnex();
-      expect(knex.connection().client.config.connection.database).to.eq('universal-login-relayer-development');
+      expect(knex.connection().client.config.connection.database).to.eq('universal_login_relayer_development');
     });
 
     it('should return  knex', () => {
       process.env.NODE_ENV = 'test';
       const knex = getKnex();
-      expect(knex.connection().client.config.connection.database).to.eq('universal-login-relayer-test');
+      expect(knex.connection().client.config.connection.database).to.eq('universal_login_relayer_test');
     });
   });
 });
