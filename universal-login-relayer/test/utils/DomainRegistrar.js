@@ -13,7 +13,6 @@ chai.use(require('chai-string'));
 chai.use(sinonChai);
 
 const nullConsole = () => {};
-const fakeSave = () => {};
 
 describe('ENS register', async () => {
   const testHelper = new TestHelper();
@@ -71,7 +70,7 @@ describe('ENS register', async () => {
         const label = 'my-domain';
         const tld = 'eth';
         const node = utils.namehash(`${label}.${tld}`);
-        await domainRegistrar.start(label, tld, fakeSave);
+        await domainRegistrar.start(label, tld);
         expect(await domainRegistrar.ens.owner(node)).to.eq(domainRegistrar.registrarAddress);
         expect(await domainRegistrar.ens.resolver(node)).to.eq(publicResolver);
       });
