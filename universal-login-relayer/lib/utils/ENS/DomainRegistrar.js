@@ -44,6 +44,10 @@ class DomainRegistrar extends ENSRegistrarBase {
     await this.setAsResolverPublicResolver(label, node, tld);
     await this.deployNewRegistrar(node);
     await this.setRegistrarAsOwner(label, node, tld);
+  }
+
+  async registerAndSave(label, tld) {
+    await this.start(label, tld);
     const filename = `./${label}.${tld}_info`;
     saveVariables(filename, this.variables);
     this.log(`${filename} file updated.`);

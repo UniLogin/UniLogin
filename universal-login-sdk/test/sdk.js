@@ -15,7 +15,7 @@ describe('SDK - integration', async () => {
   let provider;
   let relayer;
   let sdk;
-  let identityAddress;
+  let contractAddress;
   let privateKey;
   let otherWallet;
   let otherWallet2;
@@ -23,20 +23,20 @@ describe('SDK - integration', async () => {
   let message;
 
   beforeEach(async () => {
-    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, identityAddress, relayer} = await testHelper.load(basicSDK));
-    message = {...transferMessage, from: identityAddress, gasToken: mockToken.address};
+    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, relayer} = await testHelper.load(basicSDK));
+    message = {...transferMessage, from: contractAddress, gasToken: mockToken.address};
   });
 
   describe('Create', async () => {
     describe('Initalization', () => {
       it('should return proper private key and address', async () => {
-        [privateKey, identityAddress] = await sdk.create('test.mylogin.eth');
+        [privateKey, contractAddress] = await sdk.create('test.mylogin.eth');
         expect(privateKey).to.be.properPrivateKey;
-        expect(identityAddress).to.be.properAddress;
+        expect(contractAddress).to.be.properAddress;
       });
 
       it('should register ENS name', async () => {
-        expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
+        expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
       it('should return ens config', async () => {
@@ -66,29 +66,29 @@ describe('SDK - integration', async () => {
       });
 
       it('when not enough tokens ', async () => {
-        message = {...transferMessage, gasToken: mockToken.address, from: identityAddress, gasLimit: utils.parseEther('25').toString()};
+        message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: utils.parseEther('25').toString()};
         await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Error: Not enough tokens');
       });
     });
 
     describe('Add key', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: mockToken.address})).to.eq(0);
+        expect(await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address})).to.eq(0);
       });
     });
 
     describe('Get nonce', async () => {
       it('getNonce should return correct nonce', async () => {
-        const executionNonce = await sdk.getNonce(identityAddress, privateKey);
+        const executionNonce = await sdk.getNonce(contractAddress, privateKey);
         expect(executionNonce).to.eq(0);
-        await sdk.addKey(identityAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-        expect(await sdk.getNonce(identityAddress, privateKey)).to.eq(executionNonce.add(1));
+        await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+        expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(executionNonce.add(1));
       });
     });
 
     describe('Add keys', async () => {
       it('should return execution nonce', async () => {
-        expect(await sdk.addKeys(identityAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address})).to.eq(0);
+        expect(await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address})).to.eq(0);
       });
     });
 
@@ -103,11 +103,11 @@ describe('SDK - integration', async () => {
       });
 
       it('should get correct address', async () => {
-        expect(await sdk.resolveName('alex.mylogin.eth')).to.eq(identityAddress);
+        expect(await sdk.resolveName('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
       it('should return identity address if identity exist', async () => {
-        expect(await sdk.identityExist('alex.mylogin.eth')).to.eq(identityAddress);
+        expect(await sdk.identityExist('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
       it('should return false if identity doesn`t exist', async () => {
@@ -116,24 +116,24 @@ describe('SDK - integration', async () => {
 
       describe('Authorisation', async () => {
         it('no pending authorisations', async () => {
-          expect(await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress)).to.deep.eq([]);
+          expect(await sdk.relayerObserver.fetchPendingAuthorisations(contractAddress)).to.deep.eq([]);
         });
 
         it('should return pending authorisations', async () => {
-          const privateKey = await sdk.connect(identityAddress);
+          const privateKey = await sdk.connect(contractAddress);
           const wallet = new Wallet(privateKey);
-          const response = await sdk.relayerObserver.fetchPendingAuthorisations(identityAddress);
+          const response = await sdk.relayerObserver.fetchPendingAuthorisations(contractAddress);
           expect(response[0]).to.deep.include({key: wallet.address});
         });
 
         it('should return private key', async () => {
-          expect(await sdk.connect(identityAddress)).to.be.properPrivateKey;
+          expect(await sdk.connect(contractAddress)).to.be.properPrivateKey;
         });
 
         it('should return public key when deny request', async () => {
-          const privateKey = await sdk.connect(identityAddress);
+          const privateKey = await sdk.connect(contractAddress);
           const wallet = new Wallet(privateKey);
-          const response = await sdk.denyRequest(identityAddress, wallet.address);
+          const response = await sdk.denyRequest(contractAddress, wallet.address);
           expect(response).to.eq(wallet.address);
         });
       });

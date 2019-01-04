@@ -1,29 +1,25 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import EthereumIdentitySDK from '../../lib/sdk';
-import {RelayerUnderTest} from 'universal-login-relayer';
-import {createMockProvider, solidity} from 'ethereum-waffle';
+import {solidity} from 'ethereum-waffle';
+import basicSDK from '../fixtures/basicSDK';
+import TestHelper from 'universal-login-contracts/test/testHelper';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
+
 describe('SDK: RelayerObserver', async () => {
-  let provider;
+  const testHelper = new TestHelper();
   let relayer;
   let sdk;
   let contractAddress;
   let relayerObserver;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
-    await relayer.start();
-    ({provider} = relayer);
-    sdk = new EthereumIdentitySDK(relayer.url(), provider);
+    ({sdk, relayer, contractAddress} = await testHelper.load(basicSDK));
     ({relayerObserver} = sdk);
     relayerObserver.step = 50;
-    [, contractAddress] = await sdk.create('alex.mylogin.eth');
   });
 
   it('should not emit events if no connection requests', async () => {
@@ -73,7 +69,7 @@ describe('SDK: RelayerObserver', async () => {
     expect(callback).to.have.been.calledTwice;
   });
 
-  afterEach(async () => {
+  after(async () => {
     await relayer.stop();
   });
 });

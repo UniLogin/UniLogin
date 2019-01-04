@@ -12,7 +12,7 @@ describe('Relayer - Config routes', async () => {
   before(async () => {
     provider = createMockProvider();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
-    relayer.start();
+    await relayer.start();
   });
 
   it('Config', async () => {
