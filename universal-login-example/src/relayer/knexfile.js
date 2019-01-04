@@ -6,7 +6,7 @@ export default {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'universal_login_relayer_development',
+      database: 'universal-login-relayer-development',
       user:     'postgres',
       password: 'postgres'
     },
@@ -19,7 +19,7 @@ export default {
   test: {
     client: 'postgresql',
     connection: {
-      database: 'universal_login_relayer_test',
+      database: 'universal-login-relayer-test',
       user:     'postgres',
       password: 'postgres'
     },
@@ -32,7 +32,7 @@ export default {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'universal_login_relayer_production',
+      database: 'universal-login-relayer-production',
       user:     process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD
     },
