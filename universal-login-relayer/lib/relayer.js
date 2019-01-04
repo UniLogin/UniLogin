@@ -10,7 +10,7 @@ import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
-import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
+import {checkIfAllMigrated} from './utils/utils';
 
 const defaultPort = 3311;
 
@@ -32,18 +32,12 @@ class Relayer {
   }
 
   async start() {
-    if (await this.checkIfAllMigrated()) {
+    if (await checkIfAllMigrated(this.database)) {
       this.runServer();
     } else {
       this.database.destroy();
-      throw Error('Database is out of date.');
+      throw Error('You need to run migrations. Type `$ knex migrate:latest`');
     }
-  }
-
-  async checkIfAllMigrated() {
-    const {config, knex} = this.database.migrate;  
-    const list = await migrationListResolver.listAllAndCompleted(config, knex);
-    return list[0].length === list[1].length;
   }
 
   runServer() {

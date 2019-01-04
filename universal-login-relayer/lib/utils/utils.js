@@ -5,6 +5,7 @@ import ERC20 from 'universal-login-contracts/build/ERC20';
 import Identity from 'universal-login-contracts/build/Identity';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
+import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
 
 const {namehash} = utils;
 
@@ -119,4 +120,10 @@ const saveVariables = (filename, _variables) => {
   });
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+const checkIfAllMigrated = async (database) => {
+  const {config, knex} = database.migrate;  
+  const list = await migrationListResolver.listAllAndCompleted(config, knex);
+  return list[0].length === list[1].length;
+};
+
+export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};

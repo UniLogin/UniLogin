@@ -14,7 +14,7 @@ describe('Database integration', () => {
 
   it('won`t start if no migrations', async () => {
     await relayer.database.migrate.rollback(relayer.database.config);
-    await expect(relayer.start()).to.be.eventually.rejectedWith('Database is out of date.');
+    await expect(relayer.start()).to.be.eventually.rejectedWith('You need to run migrations. Type `$ knex migrate:latest`');
   });
 
   it('starts', async () => {
