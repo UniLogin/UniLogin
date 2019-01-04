@@ -7,21 +7,9 @@ import {utils} from 'ethers';
 import ENSBuilder from 'ens-builder';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 import {waitUntil} from '../utils';
-import knex from 'knex';
 import path from 'path';
+import {getKnex} from '../../src/relayer/utils';
 
-const database = knex({
-  client: 'postgresql',
-  connection: {
-    database: 'universal_login_relayer_test',
-    user:     'postgres',
-    password: ''
-  },
-  migrations: {
-    directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
-    tableName: 'knex_migrations'
-  }
-});
 
 describe('Token Granting Relayer - tests', async () => {
   let provider;
@@ -61,6 +49,7 @@ describe('Token Granting Relayer - tests', async () => {
       },
       tokenContractAddress: tokenContract.address
     });
+    const database = getKnex();
     relayer = new TokenGrantingRelayer(config, provider, database);
     await relayer.database.migrate.latest({directory: path.join(__dirname, '../../../universal-login-relayer/migrations')});
     await relayer.start();

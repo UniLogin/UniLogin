@@ -16,7 +16,7 @@
         "universal-login-contracts": "^0.1.1"
     },
     "scripts": {
-        "test": "yarn setup:test:db && mocha --recursive --require babel-register test -t 10000",
+        "test": "NODE_ENV=test mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint lib test",
         "build": "babel lib --out-dir build",
         "relayer:start": "babel-node lib/startRelayer.js",
@@ -27,7 +27,8 @@
         "clean": "rm -fr ./node_modules && rm -fr ./build",
         "start": "node build/startRelayer.js",
         "setup:db": "knex migrate:latest",
-        "setup:test:db": "NODE_ENV=test knex migrate:latest"
+        "setup:test:db": "NODE_ENV=test knex migrate:latest",
+        "rollback": "NODE_ENV=test knex migrate:rollback"
     },
     "engines": {
         "node": ">=10.9"

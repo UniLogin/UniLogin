@@ -14,7 +14,6 @@ export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
   const [,otherWallet, otherWallet2] = await getWallets(provider);
   const relayer = await RelayerUnderTest.createPreconfigured(provider, config);
-  await relayer.database.migrate.latest({directory: path.join(__dirname, '../../../universal-login-relayer/migrations')});
   await relayer.start();
   ({provider} = relayer);
   const sdk = new EthereumIdentitySDK(relayer.url(), provider);

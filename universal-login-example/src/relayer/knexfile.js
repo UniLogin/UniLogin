@@ -1,6 +1,7 @@
+import path from 'path';
 // Update with your config settings.
 
-module.exports = {
+export default {
 
   development: {
     client: 'postgresql',
@@ -10,6 +11,7 @@ module.exports = {
       password: 'postgres'
     },
     migrations: {
+      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
       tableName: 'knex_migrations'
     }
   },
@@ -22,6 +24,7 @@ module.exports = {
       password: 'postgres'
     },
     migrations: {
+      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
       tableName: 'knex_migrations'
     }
   },
