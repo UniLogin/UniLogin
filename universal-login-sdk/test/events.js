@@ -3,7 +3,8 @@ import sinonChai from 'sinon-chai';
 import {solidity} from 'ethereum-waffle';
 import sinon from 'sinon';
 import TestHelper from 'universal-login-contracts/test/testHelper';
-import basicSDK, {addKeyMessage} from './fixtures/basicSDK';
+import MESSAGE_DEFAULTS from '../lib/config';
+import basicSDK from './fixtures/basicSDK';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -32,7 +33,7 @@ describe('SDK - events', async () => {
     await sdk.subscribe('KeyAdded', {contractAddress, key: wallet.address}, keyCallback);
 
     await sdk.connect(contractAddress);
-    const paymentOptions = {...addKeyMessage, gasToken: mockToken.address};
+    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: 1, purpose: 1});

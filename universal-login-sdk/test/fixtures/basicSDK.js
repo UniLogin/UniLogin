@@ -30,5 +30,3 @@ export const transferMessage = {
   to: '0x0000000000000000000000000000000000000001',
   value: utils.parseEther('0.5').toString()
 };
-
-export const addKeyMessage = MESSAGE_DEFAULTS;
