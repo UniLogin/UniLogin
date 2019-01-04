@@ -4,17 +4,15 @@ import UniversalLoginSDK from 'universal-login-sdk';
 import path from 'path';
 
 const knexConfig = {
-  test: {
-    client: 'postgresql',
-    connection: {
-      database: 'universal_login_relayer_test',
-      user:     'postgres',
-      password: ''
-    },
-    migrations: {
-      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
-      tableName: 'knex_migrations'
-    }
+  client: 'postgresql',
+  connection: {
+    database: 'universal_login_relayer_test',
+    user:     'postgres',
+    password: ''
+  },
+  migrations: {
+    directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
+    tableName: 'knex_migrations'
   }
 };
 
