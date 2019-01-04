@@ -17,13 +17,9 @@ describe('Database integration', () => {
     await expect(relayer.start()).to.be.eventually.rejectedWith('Database is out of date.');
   });
 
-  describe('', () => {
-    it('starts', async () => {
-      await relayer.database.migrate.latest();
-      await expect(relayer.start()).to.not.be.rejected;
-    });
-    after(() => {
-      relayer.stop();
-    });
+  it('starts', async () => {
+    await relayer.database.migrate.latest();
+    await expect(relayer.start()).to.not.be.rejected;
+    relayer.stop();
   });
 });

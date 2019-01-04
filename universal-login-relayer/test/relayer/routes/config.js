@@ -12,7 +12,6 @@ describe('Relayer - Config routes', async () => {
   before(async () => {
     provider = createMockProvider();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
-    await relayer.database.migrate.latest();
     await relayer.start();
   });
 
