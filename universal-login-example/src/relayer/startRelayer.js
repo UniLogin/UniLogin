@@ -7,4 +7,4 @@ const db = getKnex();
 
 const relayer = new TokenGrantingRelayer(config, '', db);
 relayer.addHooks();
-relayer.start();
+relayer.database.migrate.latest().then(() => relayer.start());
