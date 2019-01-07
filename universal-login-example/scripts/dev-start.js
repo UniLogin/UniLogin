@@ -7,6 +7,7 @@ import Clicker from '../build/Clicker';
 import Token from '../build/Token';
 import {promisify} from 'util';
 import TokenGrantingRelayer from '../src/relayer/TokenGrantingRelayer';
+import {getKnex} from '../src/relayer/utils';
 
 const args = {
   httpAddress: process.argv.length > 2 ? process.argv[2] : 'localhost'
@@ -105,8 +106,10 @@ class Deployer {
   }
 
   startRelayer() {
-    this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider);    
+    const database = getKnex();
+    this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider, database);
     this.env.RELAYER_URL = `http://${args.httpAddress}:${this.config.port}`;
+    this.relayer.database.migrate.latest();
     this.relayer.start();
   }
 
