@@ -7,11 +7,6 @@ describe('Knex utils', () => {
       process.env.NODE_ENV = 'test';
       expect(getNodeEnv()).to.eq('test');
     });
-    
-    it('should return production if production node env', () => {
-      process.env.NODE_ENV = 'production';
-      expect(getNodeEnv()).to.eq('production');
-    });
   
     it('should return development if no node env', () => {
       process.env.NODE_ENV = '';
@@ -34,20 +29,9 @@ describe('Knex utils', () => {
       process.env.NODE_ENV = 'development';
       expect(getKnexConfig().connection.database).to.deep.eq('universal_login_relayer_development');
     });
-
-    it('should return production config', () => {
-      process.env.NODE_ENV = 'production';
-      expect(getKnexConfig().connection.database).to.deep.eq('universal-login-relayer-production');
-    });
   });
 
   describe('getKnex', () => {
-    it('should return knex if production', () => {
-      process.env.NODE_ENV = 'production';
-      const knex = getKnex();
-      expect(knex.connection().client.config.connection.database).to.eq('universal-login-relayer-production');
-    });
-
     it('should return knex if development', () => {
       process.env.NODE_ENV = 'development';
       const knex = getKnex();
