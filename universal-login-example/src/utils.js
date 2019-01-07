@@ -58,5 +58,7 @@ function debounce(func, waitTime = 0) {
   };
 }
 
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce};
+export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce, sleep};

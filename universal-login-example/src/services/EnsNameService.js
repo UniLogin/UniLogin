@@ -1,4 +1,4 @@
-import {sleep} from '../../src/relayer/utils';
+import {sleep} from '../utils';
 
 class EnsNameService {
   constructor(ensService, historyService, tick = 500) {
