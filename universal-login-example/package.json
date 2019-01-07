@@ -29,7 +29,8 @@
     "contracts:deploy": "babel-node scripts/deployContracts.js",
     "dev:start": "babel-node scripts/dev-start.js",
     "relayer:build": "babel src/relayer --out-dir dist/relayer",
-    "relayer:start": "node dist/relayer/startRelayer.js"
+    "relayer:start": "node dist/relayer/startRelayer.js",
+    "migrate": "cd ../universal-login-relayer && yarn knex migrate:latest cd ../universal-login-example"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
