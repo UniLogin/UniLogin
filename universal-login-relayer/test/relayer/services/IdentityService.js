@@ -89,9 +89,9 @@ describe('Relayer - IdentityService', async () => {
           await authorisationService.addRequest(request);
           msg = {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
           const signature = await calculateMessageSignature(wallet.privateKey, msg);
-          
           await identityService.executeSigned({...msg, signature});
-          expect(await authorisationService.getPendingAuthorisations(identity.address)).to.deep.eq([]);
+          const authorisations = await authorisationService.getPendingAuthorisations(identity.address);
+          expect(authorisations).to.deep.eq([]);
         });
       });
     });
@@ -113,5 +113,9 @@ describe('Relayer - IdentityService', async () => {
         expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(0);
       });
     });
+  });
+
+  after(() => {
+    authorisationService.database.destroy();
   });
 });

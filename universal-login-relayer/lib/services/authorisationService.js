@@ -1,26 +1,29 @@
 class AuthorisationService {
-  constructor() {
+  constructor(database) {
     this.pendingAuthorisations = {};
     this.index = 0;
+    this.database = database;
   }
 
-  addRequest(request) {
+
+  async addRequest(request) {
     const {identityAddress, key, deviceInfo} = request;
-    const {index} = this;
-    const pendingAuthorisation = {key, deviceInfo, index};
-    this.pendingAuthorisations[identityAddress] = this.pendingAuthorisations[identityAddress] || [];
-    this.pendingAuthorisations[identityAddress].push(pendingAuthorisation);
-    this.index++;
+    return await this.database.insert({identityAddress, key: key.toLowerCase(), deviceInfo})
+      .into('authorisations')
+      .returning('id');
   }
 
   getPendingAuthorisations(identityAddress) {
-    return this.pendingAuthorisations[identityAddress] || [];
+    return this.database('authorisations')
+      .where({identityAddress})
+      .select();
   }
 
-  removeRequest(identityAddress, key) {
-    const lowKey = key.toLowerCase();
-    this.pendingAuthorisations[identityAddress] = this.pendingAuthorisations[identityAddress] || [];
-    this.pendingAuthorisations[identityAddress] = this.pendingAuthorisations[identityAddress].filter((element) => element.key.toLowerCase() !== lowKey);
+  async removeRequest(identityAddress, key) {
+    await this.database('authorisations')
+      .where('identityAddress', identityAddress)
+      .where('key', key)
+      .del();
   }
 }
 

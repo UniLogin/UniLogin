@@ -48,8 +48,7 @@ describe('Relayer - Authorisation routes', async () => {
       });
     const result = await chai.request(relayer.server)
       .get(`/authorisation/${contract.address}`);
-    expect(result.body.response).to.have.lengthOf(1);
-    expect(result.body.response[0]).to.deep.include({key: wallet.address});
+    expect(result.body.response[0]).to.deep.include({key: wallet.address.toLowerCase()});
   });
 
   it('get non-existing pending authorisations', async () => {
