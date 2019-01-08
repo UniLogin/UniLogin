@@ -1,7 +1,6 @@
 class AuthorisationService {
   constructor(database) {
     this.pendingAuthorisations = {};
-    this.index = 0;
     this.database = database;
   }
 

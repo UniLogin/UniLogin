@@ -7,6 +7,7 @@ import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {EventEmitter} from 'fbemitter';
 import {getKnex} from '../../../lib/utils/knexUtils';
+import defaultDeviceInfo from '../../config/defaults';
 
 chai.use(require('chai-string'));
 
@@ -33,14 +34,14 @@ describe('Authorisation Service', async () => {
   });
 
   it('add record to database', async () => {
-    const request = {identityAddress: identityContract.address, key: managementKey.address.toLowerCase(), deviceInfo: 'I should be in database'};
+    const request = {identityAddress: identityContract.address, key: managementKey.address.toLowerCase(), deviceInfo: defaultDeviceInfo};
     const [id] = await authorisationService.addRequest(request);
     const authorisations = await authorisationService.getPendingAuthorisations(identityContract.address);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
   });
 
   it('should return pending authorisations', async () => {
-    const request = {identityAddress: identityContract.address, key: otherWallet.address.toLowerCase(), deviceInfo: 'give me pending authorisations'};
+    const request = {identityAddress: identityContract.address, key: otherWallet.address.toLowerCase(), deviceInfo: defaultDeviceInfo};
     const [id] = await authorisationService.addRequest(request);
     const authorisations = await authorisationService.getPendingAuthorisations(identityContract.address);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
@@ -51,7 +52,7 @@ describe('Authorisation Service', async () => {
   });
 
   it('should remove from database', async () => {
-    const request = {identityAddress: otherWallet.address, key: managementKey.address.toLowerCase(), deviceInfo: 'I will be deleted'};
+    const request = {identityAddress: otherWallet.address, key: managementKey.address.toLowerCase(), deviceInfo: defaultDeviceInfo};
     const [id] = await authorisationService.addRequest(request);
     const authorisations = await authorisationService.getPendingAuthorisations(otherWallet.address);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
