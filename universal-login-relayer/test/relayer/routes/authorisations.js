@@ -68,6 +68,6 @@ describe('Relayer - Authorisation routes', async () => {
   });
 
   afterEach(async () => {
-    relayer.stop();
+    await relayer.stop();
   });
 });

@@ -1,5 +1,4 @@
 import path from 'path';
-// Update with your config settings.
 
 export default {
 
@@ -11,8 +10,7 @@ export default {
       password: 'postgres'
     },
     migrations: {
-      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
-      tableName: 'knex_migrations'
+      directory: path.join(__dirname, '../../../node_modules/universal-login-relayer/migrations')
     }
   },
 
@@ -24,20 +22,15 @@ export default {
       password: 'postgres'
     },
     migrations: {
-      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
-      tableName: 'knex_migrations'
+      directory: path.join(__dirname, '../../../node_modules/universal-login-relayer/migrations')
     }
   },
 
   production: {
     client: 'postgresql',
     connection: process.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10
-    },
     migrations: {
-      directory: path.join(__dirname, '../../../universal-login-relayer/migrations'),
+      directory: path.join(__dirname, '../../../node_modules/universal-login-relayer/migrations'),
       tableName: 'knex_migrations'
     }
   }

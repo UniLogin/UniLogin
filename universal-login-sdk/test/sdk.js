@@ -123,7 +123,7 @@ describe('SDK - integration', async () => {
           const privateKey = await sdk.connect(contractAddress);
           const wallet = new Wallet(privateKey);
           const response = await sdk.relayerObserver.fetchPendingAuthorisations(contractAddress);
-          expect(response[response.length - 1]).to.deep.include({key: wallet.address});
+          expect(response[response.length - 1]).to.deep.include({key: wallet.address.toLowerCase()});
         });
 
         it('should return private key', async () => {

@@ -20,6 +20,6 @@ describe('Database integration', () => {
   it('starts', async () => {
     await relayer.database.migrate.latest();
     await expect(relayer.start()).to.not.be.rejected;
-    relayer.stop();
+    await relayer.stop();
   });
 });

@@ -115,7 +115,8 @@ describe('Relayer - IdentityService', async () => {
     });
   });
 
-  after(() => {
+  after(async () => {
+    await authorisationService.database.delete().from('authorisations');
     authorisationService.database.destroy();
   });
 });

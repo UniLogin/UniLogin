@@ -60,7 +60,8 @@ describe('Authorisation Service', async () => {
     expect(authorisationsAfterDelete.length).to.eq(authorisations.length - 1);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await authorisationService.database.delete().from('authorisations');
     authorisationService.database.destroy();
   });
 });
