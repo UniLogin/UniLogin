@@ -2,28 +2,52 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class ConnectionHoverView extends Component {
+  constructor(props) {
+    super(props);
+    this.listRef = React.createRef();
+  }
+
+  focusItem(index) {
+    this.listRef.current.children[index].children[1].focus();
+  }
+
   render() {
-    const connections = this.props.connections.map((name) => (
-      <li key={`connection_${name}`} className="active" onClick={() => this.props.onNextClick(name)}>
+    let offset = 0;
+    const connections = this.props.connections.map((name, index) => (
+      <li
+        key={`connection_${name}`}
+        onClick={() => this.props.onNextClick(name)}
+        className={index + offset === this.props.selectedIndex ? 'active' : null}
+      >
         <span className="identity">{name}</span>
         <button type="submit">connect</button>
       </li>
     ));
-    const creations = this.props.creations.map((name) => (
-      <li key={`creation_${name}`} onClick={() => this.props.onNextClick(name)}>
+    offset = offset + connections.length;
+    const creations = this.props.creations.map((name, index) => (
+      <li
+        key={`creation_${name}`}
+        onClick={() => this.props.onNextClick(name)}
+        className={index + offset === this.props.selectedIndex ? 'active' : null}
+      >
         <span className="identity">{name}</span>
         <button>create</button>
       </li>
     ));
-    const recovers = this.props.connections.map((name) => (
-      <li key={`recovery_${name}`} onClick={() => this.props.onAccountRecoveryClick(name)}>
+    offset = offset + creations.length;
+    const recovers = this.props.connections.map((name, index) => (
+      <li
+        key={`recovery_${name}`}
+        onClick={() => this.props.onAccountRecoveryClick(name)}
+        className={index + offset === this.props.selectedIndex ? 'active' : null}
+      >
         <span className="identity">{name}</span>
         <button>recover</button>
       </li>
     ));
 
     return this.props.identity.length > 1 ? (
-      <ul className="loginHover">
+      <ul className="loginHover" onKeyDown={this.props.onKeyDown.bind(this)} ref={this.listRef}>
         { connections }
         { creations }
         { recovers }
@@ -39,7 +63,9 @@ ConnectionHoverView.propTypes = {
   creations: PropTypes.arrayOf(PropTypes.string),
   onNextClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func,
-  identity: PropTypes.string
+  identity: PropTypes.string,
+  selectedIndex: PropTypes.number,
+  onKeyDown: PropTypes.func
 };
 
 export default ConnectionHoverView;

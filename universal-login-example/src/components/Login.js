@@ -57,6 +57,7 @@ class Login extends Component {
             onChange={this.onChange.bind(this)}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
             services = {this.props.services}
+            identitySelectionService={this.props.services.identitySelectionService}
           />
         </div>
       </div>
