@@ -23,6 +23,6 @@ describe('Relayer - Config routes', async () => {
   });
 
   after(async () => {
-    relayer.stop();
+    await relayer.stop();
   });
 });

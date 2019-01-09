@@ -11,8 +11,10 @@ async function fetchEventsOfType(provider, abi, address, name) {
 
 const convertIPv6ToIPv4 = (addressIPv6) => addressIPv6.replace(/::ffff:/g, '');
 
+const localhostAddresses = ['::1', '127.0.0.1', '::ffff:127.0.0.1'];
+
 function filterIP(ipAddress) {
-  if (ipAddress === '::1' || ipAddress === '127.0.0.1' || ipAddress === '::ffff:127.0.0.1') {
+  if (localhostAddresses.includes(ipAddress)) {
     return 'localhost';
   }
   return convertIPv6ToIPv4(ipAddress);

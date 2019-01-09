@@ -7,6 +7,7 @@ import {addressToBytes32} from '../../../lib/utils/utils';
 import calculateMessageSignature from 'universal-login-contracts/lib/calculateMessageSignature';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicIdentityService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicIdentityService';
+import defaultDeviceInfo from '../../config/defaults';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
@@ -85,13 +86,13 @@ describe('Relayer - IdentityService', async () => {
 
       describe('Collaboration with Authorisation Service', async () => {
         it('should remove request from pending authorisations if addKey', async () => {
-          const request = {identityAddress: identity.address, key: otherWallet.address, deviceInfo: 'lol'};
+          const request = {identityAddress: identity.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
           await authorisationService.addRequest(request);
           msg = {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
           const signature = await calculateMessageSignature(wallet.privateKey, msg);
-          
           await identityService.executeSigned({...msg, signature});
-          expect(await authorisationService.getPendingAuthorisations(identity.address)).to.deep.eq([]);
+          const authorisations = await authorisationService.getPendingAuthorisations(identity.address);
+          expect(authorisations).to.deep.eq([]);
         });
       });
     });
@@ -113,5 +114,10 @@ describe('Relayer - IdentityService', async () => {
         expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(0);
       });
     });
+  });
+
+  after(async () => {
+    await authorisationService.database.delete().from('authorisations');
+    authorisationService.database.destroy();
   });
 });

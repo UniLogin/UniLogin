@@ -48,7 +48,7 @@ class Relayer {
       credentials: true
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
-    this.authorisationService = new AuthorisationService();
+    this.authorisationService = new AuthorisationService(this.database);
     this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));

@@ -131,7 +131,7 @@ class EthereumIdentitySDK {
   async connect(identityAddress) {
     const privateKey = this.generatePrivateKey();
     const wallet = new Wallet(privateKey, this.provider);
-    const key = wallet.address;
+    const key = wallet.address.toLowerCase();
     const url = `${this.relayerUrl}/authorisation`;
     const method = 'POST';
     const body = JSON.stringify({identityAddress, key});

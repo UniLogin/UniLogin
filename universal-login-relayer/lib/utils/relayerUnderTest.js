@@ -37,6 +37,11 @@ class RelayerUnderTest extends Relayer {
     const database = knex(knexConfig);
     const relayer = new RelayerUnderTest(config, providerWithENS, database);
     relayer.provider = providerWithENS;
+    relayer.stop = async () => {
+      await relayer.database.delete().from('authorisations');
+      await relayer.database.destroy();
+      await relayer.server.close();
+    };
     await relayer.database.migrate.latest();
     return relayer;
   }

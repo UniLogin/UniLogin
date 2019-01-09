@@ -8,7 +8,7 @@ import MESSAGE_DEFAULTS from '../../lib/config';
 import {getKnexConfig} from 'universal-login-relayer/lib/utils/knexUtils';
 
 const config = getKnexConfig();
-config.migrations.directory = path.join(__dirname, '../../../universal-login-relayer/migrations');
+config.migrations.directory = path.join(__dirname, '../../../node_modules/universal-login-relayer/migrations');
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
