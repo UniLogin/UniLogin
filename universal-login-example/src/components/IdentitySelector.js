@@ -6,16 +6,19 @@ import ConnectionHoverView from '../views/ConnectionHoverView';
 class IdentitySelector extends Component {
   constructor(props) {
     super(props);
+
+    this.textBox = React.createRef();
+    this.connectionHoverViewRef = React.createRef();
     this.state = {
       identity: '',
       connections: [],
-      creations: [],      
+      creations: [],
       busy: false
     };
     const {suggestionsService} = this.props.services;
     this.suggestionsService = suggestionsService;
   }
-  
+
   componentDidMount() {
     this.suggestionsService.setCallback(this.setState.bind(this));
   }
@@ -27,8 +30,24 @@ class IdentitySelector extends Component {
 
   renderBusyIndicator() {
     if (this.state.busy) {
-      return <div className='circle-loader input-loader'> </div>;    
-    } 
+      return <div className='circle-loader input-loader'> </div>;
+    }
+  }
+
+  async moveFocusToConnectionHoverView() {
+    const connectionList = this.connectionHoverViewRef.current.listRef.current;
+    if (connectionList.children.length > 0) {
+      this.connectionHoverViewRef.current.setState({selectedIndex: 0});
+      const [firstConnectionItem] = connectionList.children;
+      const [, firstConnectionItemButton] = firstConnectionItem.children;
+      firstConnectionItemButton.focus();
+    }
+  }
+
+  async moveFocusToTextBox() {
+    const input = this.textBox.current;
+    input.focus();
+    setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
   }
 
   render() {
@@ -38,8 +57,11 @@ class IdentitySelector extends Component {
         <div className="id-selector">
           <TextBox
             placeholder="bob.example.eth"
+            maxlength={24}
             onChange={(event) => this.update(event)}
-          />          
+            onArrowDownKeyPressed={this.moveFocusToConnectionHoverView.bind(this)}
+            ref={this.textBox}
+          />
           { this.renderBusyIndicator() }
         </div>
         <ConnectionHoverView
@@ -48,8 +70,10 @@ class IdentitySelector extends Component {
           identity={this.state.identity}
           onNextClick={this.props.onNextClick}
           onAccountRecoveryClick={this.props.onAccountRecoveryClick}
+          onLastArrowUpKeyPressed={this.moveFocusToTextBox.bind(this)}
+          ref={this.connectionHoverViewRef}
         />
-        
+
       </div>
     );
   }
