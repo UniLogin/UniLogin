@@ -6,7 +6,11 @@
   "dependencies": {
     "components": "^0.1.0",
     "date-fns": "^1.29.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "fbemitter": "^2.1.1",
+    "jsdom": "^13.1.0",
+    "jsdom-global": "^3.0.2",
     "localforage": "^1.7.2",
     "moment": "^2.22.2",
     "openzeppelin-solidity": "^1.12.0",
