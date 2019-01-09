@@ -7,7 +7,7 @@ import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {EventEmitter} from 'fbemitter';
 import {getKnex} from '../../../lib/utils/knexUtils';
-import defaultDeviceInfo from '../../config/defaults';
+import deviceInfo from '../../config/defaults';
 
 chai.use(require('chai-string'));
 
@@ -19,7 +19,7 @@ describe('Authorisation Service', async () => {
   let ensDeployer;
   let ensService;
   let identityService;
-  let identityContract;
+  let walletContract;
   let otherWallet;
 
   beforeEach(async () => {
@@ -30,39 +30,29 @@ describe('Authorisation Service', async () => {
     authorisationService = new AuthorisationService(database);
     identityService = new IdentityService(wallet, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
     const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
-    identityContract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
+    walletContract = await waitForContractDeploy(managementKey, Identity, transaction.hash);
   });
 
-  it('add record to database', async () => {
-    const request = {identityAddress: identityContract.address, key: managementKey.address.toLowerCase(), deviceInfo: defaultDeviceInfo};
+  it('Authorisation roundtrip', async () => {
+    const identityAddress =  walletContract.address;
+    const key = managementKey.address.toLowerCase();
+    const request = {identityAddress, key, deviceInfo};
+    
     const [id] = await authorisationService.addRequest(request);
-    const authorisations = await authorisationService.getPendingAuthorisations(identityContract.address);
+    const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
-  });
 
-  it('should return pending authorisations', async () => {
-    const request = {identityAddress: identityContract.address, key: otherWallet.address.toLowerCase(), deviceInfo: defaultDeviceInfo};
-    const [id] = await authorisationService.addRequest(request);
-    const authorisations = await authorisationService.getPendingAuthorisations(identityContract.address);
-    expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
+    await authorisationService.removeRequest(otherWallet.address, managementKey.address.toLowerCase());
+    const authorisationsAfterDelete = await authorisationService.getPendingAuthorisations(otherWallet.address);
+    expect(authorisationsAfterDelete).to.deep.eq([]);
   });
 
   it('should return [] array when no pending authorisations', async () => {
-    expect(await authorisationService.getPendingAuthorisations(ensDeployer.address)).to.deep.eq([]);
-  });
-
-  it('should remove from database', async () => {
-    const request = {identityAddress: otherWallet.address, key: managementKey.address.toLowerCase(), deviceInfo: defaultDeviceInfo};
-    const [id] = await authorisationService.addRequest(request);
-    const authorisations = await authorisationService.getPendingAuthorisations(otherWallet.address);
-    expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
-    await authorisationService.removeRequest(otherWallet.address, managementKey.address.toLowerCase());
-    const authorisationsAfterDelete = await authorisationService.getPendingAuthorisations(otherWallet.address);
-    expect(authorisationsAfterDelete.length).to.eq(authorisations.length - 1);
+    expect(await authorisationService.getPendingAuthorisations(walletContract.address)).to.deep.eq([]);
   });
 
   afterEach(async () => {
     await authorisationService.database.delete().from('authorisations');
-    authorisationService.database.destroy();
+    await authorisationService.database.destroy();
   });
 });

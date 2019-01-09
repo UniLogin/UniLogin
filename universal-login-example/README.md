@@ -2,6 +2,9 @@
 
 ### Running example on dev environment (quick option)
 
+
+Before running example, you should install and run local PostreSQL database named `universal_login_relayer_development` with `postgres` user and `postgres` password. Alternatively, you need to edit `universal-login-example/src/relayer/knexfile.js` with your database connection options.
+
 To install dependencies and build projects, run the following commands from the main directory of the repository.
 
 ```sh
