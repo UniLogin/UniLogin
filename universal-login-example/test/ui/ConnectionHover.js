@@ -13,13 +13,20 @@ describe('(UI) <ConnectionHoverView />', () => {
   const emptyConnections = [];
   const creations = ['al.poppularapp.eth'];
   const identity = 'al';
-  const wrapper = mount(<ConnectionHoverView 
-    creations={creations}
-    connections={connections} 
-    identity={identity}
-  />);
+  const onKeyDown = sinon.spy();
+  let wrapper;
+  
+  beforeEach(() => {
+    wrapper = mount(<ConnectionHoverView 
+      creations={creations}
+      connections={emptyConnections} 
+      identity={identity}
+      onKeyDown={onKeyDown}
+    />);
+  });
   
   it('contains create and connect text if connections and creations exists', () => {
+    wrapper.setProps({connections});
     expect(wrapper.text()).to.contain('create');
     expect(wrapper.text()).to.contain('connect');
     expect(wrapper.text()).to.contain('recover');
@@ -32,26 +39,27 @@ describe('(UI) <ConnectionHoverView />', () => {
   });
 
   it('doesn`t contain create and recover if no creations and recovers', () => {
-    wrapper.setProps({connections: emptyConnections});
-
     expect(wrapper.contains(<button>create</button>)).to.be.true;
     expect(wrapper.contains(<button>connect</button>)).to.be.false;
     expect(wrapper.contains(<button>recover</button>)).to.be.false;
     expect(wrapper.contains(
       <span className="identity">{creations[0]}</span>
     )).to.be.true;
+    expect(onKeyDown).to.not.have.been.called;
   });
 
   it('should react on identity change', () => {
-    wrapper.setProps({connections: emptyConnections, identity: 'a'});
-    
+    wrapper.setProps({identity: 'a'});
+  
     expect(wrapper.text()).to.eq('');
     expect(wrapper.contains(
       <span className="identity">{creations[0]}</span>
     )).to.be.false;
-    expect(wrapper.find('create')).to.have.lengthOf(0);
-    expect(wrapper.find('connect')).to.have.lengthOf(0);
+    expect(wrapper.contains(<button>create</button>)).to.be.false;
+    expect(wrapper.contains(<button>connect</button>)).to.be.false;
+
     wrapper.setProps({identity: 'al'});
+
     expect(wrapper.contains(<button>create</button>)).to.be.true;
     expect(wrapper.text()).to.contain(creations[0]);
     expect(wrapper.text()).to.contain(identity);
@@ -62,5 +70,11 @@ describe('(UI) <ConnectionHoverView />', () => {
     wrapper.setProps({onNextClick});
     wrapper.find('button').simulate('click');
     expect(onNextClick).to.have.been.called;
+  });
+
+  it('works on keydown', () => {
+    const input = wrapper.find('li');
+    input.simulate('keyDown', {keyCode: 40});
+    expect(onKeyDown).to.have.been.called;
   });
 });
