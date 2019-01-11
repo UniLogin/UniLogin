@@ -6,9 +6,9 @@ const addressToBytes32 = (address) =>
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitUntil = async (predicate, tick = 25, timeout = 2500) => {
+const waitUntil = async (predicate, tick = 25, timeout = 2500, args = []) => {
   let elapsed = 0;
-  while (!await predicate()) {
+  while (!await predicate(...args)) {
     if (elapsed > timeout) {
       throw Error('Timeout');
     }

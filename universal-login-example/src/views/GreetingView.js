@@ -14,19 +14,19 @@ class GreetingView extends Component {
         <div className="container">
           <Header identity={this.props.identity} />
           <hr className="separator" />
-          <IdentityCreated status={status.create} />
+          <IdentityCreated status={this.props.status.create} />
           <hr className="separator" />
-          {status.addKey === 'old' ? (
-            <DeviceAdded status={status.addKey} />
+          {this.props.status.addKey === 'old' ? (
+            <DeviceAdded status={this.props.status.addKey} />
           ) : (
             <AddNewDevice />
           )}
           <hr className="separator" />
-          {status.backupKeys === 'old' ? (
-            <BackupCodeAdded status={status.backupKeys} />
+          {this.props.status.backupKeys === 'old' ? (
+            <BackupCodeAdded status={this.props.status.backupKeys} />
           ) : (
             <AddBackupCode />
-          )}
+          )} 
           <button
             className="btn fullwidth start-btn"
             onClick={this.props.onStartClick.bind(this)}

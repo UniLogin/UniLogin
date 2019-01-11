@@ -7,29 +7,12 @@ import {EventEmitter} from 'events';
 import {utils} from 'ethers';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicContracts from '../fixtures/basicContracts';
-import setupSdk from '../fixtures/setupSdk';
+import setupSdk from '../helpers/setupSdk';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import FakeStorageService from '../fakes/FakeStorageService';
 
 chai.use(sinonChai);
-
-class FakeStorageService {
-  constructor() {
-    this.identity = {};
-  }
-
-  async getIdentity() {
-    return this.identity;
-  }
-
-  async storeIdentity(identity) {
-    this.identity = identity;
-  }
-
-  async clearStorage() {
-    this.identity = {};
-  }
-}
 
 describe('ClickService', () => {
   let testHelper;

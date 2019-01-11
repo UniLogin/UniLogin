@@ -39,9 +39,9 @@ describe('(UI) <ConnectionHoverView />', () => {
   });
 
   it('doesn`t contain create and recover if no creations and recovers', () => {
-    expect(wrapper.contains(<button>create</button>)).to.be.true;
-    expect(wrapper.contains(<button>connect</button>)).to.be.false;
-    expect(wrapper.contains(<button>recover</button>)).to.be.false;
+    expect(wrapper.contains(<button className="create">create</button>)).to.be.true;
+    expect(wrapper.contains(<button className="connect">connect</button>)).to.be.false;
+    expect(wrapper.contains(<button className="recover">recover</button>)).to.be.false;
     expect(wrapper.contains(
       <span className="identity">{creations[0]}</span>
     )).to.be.true;
@@ -55,12 +55,12 @@ describe('(UI) <ConnectionHoverView />', () => {
     expect(wrapper.contains(
       <span className="identity">{creations[0]}</span>
     )).to.be.false;
-    expect(wrapper.contains(<button>create</button>)).to.be.false;
-    expect(wrapper.contains(<button>connect</button>)).to.be.false;
+    expect(wrapper.contains(<button className="create">create</button>)).to.be.false;
+    expect(wrapper.contains(<button className="connect">connect</button>)).to.be.false;
 
     wrapper.setProps({identity: 'al'});
 
-    expect(wrapper.contains(<button>create</button>)).to.be.true;
+    expect(wrapper.contains(<button className="create">create</button>)).to.be.true;
     expect(wrapper.text()).to.contain(creations[0]);
     expect(wrapper.text()).to.contain(identity);
   });
