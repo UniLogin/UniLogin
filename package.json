@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "universal-login-monorepo",
-  "repository": "git@github.com:EthWorks/EthereumIdentitySDK.git",
+  "repository": "git@github.com:UniversalLogin/UniversalLoginSDK.git",
   "author": "Marek Kirejczyk <marek.kirejczyk@gmail.com>",
   "license": "MIT",
   "version": "0.1.0",
