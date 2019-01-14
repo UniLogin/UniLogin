@@ -9,24 +9,9 @@ To install dependencies and build projects, run the following commands from the 
 yarn
 ```
 
-### Creating database
-
-Before running example, you should install and run local PostreSQL database named `universal_login_relayer_development` with `postgres` user and `postgres` password. Alternatively, you need to edit `universal-login-example/src/relayer/knexfile.js` with your database connection options.
-
-You can create database from your favorite database UI, or from `psql`:
-```sh
-psql
-> create database universal_login_relayer_development;
-> \q
-```
-
-Then you need to migrate database, you can use scripts from `universal-login-relayer` project:
-```sh
-cd universal-login-relayer
-yarn setup:db
-```
-
 ### Running example
+
+**Note**: Before running example, you need to have PostgreSQL installed, up and running.
 
 To run example:
 

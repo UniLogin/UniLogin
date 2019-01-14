@@ -7,7 +7,9 @@ import Clicker from '../build/Clicker';
 import Token from '../build/Token';
 import {promisify} from 'util';
 import TokenGrantingRelayer from '../src/relayer/TokenGrantingRelayer';
-import {getKnex} from '../src/relayer/utils';
+import {getKnex, getKnexWithoutDatabase} from '../src/relayer/utils';
+import {createDatabase, getDatabase} from '../src/utils/database';
+
 
 const args = {
   httpAddress: process.argv.length > 2 ? process.argv[2] : 'localhost'
@@ -105,11 +107,11 @@ class Deployer {
     });
   }
 
-  startRelayer() {
+  async startRelayer() {
     const database = getKnex();
     this.relayer = new TokenGrantingRelayer({...this.config, privateKey: this.deployerPrivateKey, tokenContractAddress: this.tokenContract.address}, this.provider, database);
     this.env.RELAYER_URL = `http://${args.httpAddress}:${this.config.port}`;
-    this.relayer.database.migrate.latest();
+    await this.relayer.database.migrate.latest();
     this.relayer.start();
   }
 
@@ -144,7 +146,22 @@ class Deployer {
     return child;
   }
 
+  async ensureDatabaseExist() {
+    const knex = getKnexWithoutDatabase();
+    const databaseName = 'universal_login_relayer_development';
+    const database = await getDatabase(knex, databaseName);
+    if (!database[0]) {
+      console.log(`No database detected. Creating '${databaseName}'...`);
+      await createDatabase(knex, databaseName);
+    } else {
+      console.log(`Database '${databaseName}' already exists.`);
+    }
+    await knex.destroy();
+  }
+
   async start() {
+    console.log('Checking for database...');
+    await this.ensureDatabaseExist();
     console.log('Starting ganache...');
     await this.startGanache();
     console.log('Deploying ENS contracts...');
@@ -161,6 +178,8 @@ class Deployer {
     this.runWebServer();
   }
 }
+
+
 
 const deployer = new Deployer();
 deployer.start().catch(console.error);
