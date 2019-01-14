@@ -7,7 +7,7 @@ contract Clicker {
     event ButtonPress(address presser, uint pressTime, uint score);
 
     // Set up last pressed at deploy
-    constructor() {
+    constructor() public {
       lastPressed = now;
     }
 
