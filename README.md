@@ -15,10 +15,10 @@ Planned functionality for first release include:
 ### Structure
 This repository is organised as monorepo.
 
-- [Contracts](https://github.com/EthWorks/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
-- [Relayer](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) - allows to interact with blockchain
-- [SDK](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
-- [Example](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
+- [Contracts](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
+- [Relayer](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) - allows to interact with blockchain
+- [SDK](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
+- [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
 
 You can find below the diagram showing the internal dependencies among the Universal Login subsystems and the relevant external dependencies
 
@@ -31,7 +31,7 @@ The *external* interfaces present in the Universal Login system are identified b
 
 The *internal* interfaces defined within the Universal Login system are identified by the arrow use symbol. The main ones are:
 
-- _\<\<IF-2\>\>_ UL SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the [Relayer](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) subsystem and route their meta transactions
+- _\<\<IF-2\>\>_ UL SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the [Relayer](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) subsystem and route their meta transactions
 - _\<\<IF-4\>\>_ ERC1077 SIG IF: this interface is a message hash and signature JS facility API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077)
 - _\<\<IF-5\>\>_ ERC1077 IF / ERC1078 IF: this interface is made up of ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078) smart contracts ABI
 
@@ -39,7 +39,7 @@ The *internal* interfaces defined within the Universal Login system are identifi
 ## Quick start
 
 ## Hacking
-To start hacking around go to [tutorial](https://github.com/EthWorks/UniversalLoginSDK/blob/master/Tutorial.md).
+To start hacking around go to [tutorial](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/Tutorial.md).
 To just see example in action follow the next section.
 
 ## Quick example start
@@ -62,12 +62,12 @@ yarn dev:start [hostAddress]
 
 with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).
 
-[manual option](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-example/README.md)
+[manual option](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md)
 
 
 ## Contributing
 
-Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/EthWorks/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/EthWorks/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
+Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
 
 Before you issue pull request:
 * Make sure all tests and linters pass.

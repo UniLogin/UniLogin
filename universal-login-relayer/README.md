@@ -72,4 +72,4 @@ where:
 * `name` is name, that you want to register
 * `my-domain.test` is existing domain
 
-Learn more [here](https://github.com/EthWorks/UniversalLoginSDK/blob/master/universal-login-relayer/RegisterENS.md)
+Learn more [here](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-relayer/RegisterENS.md)
