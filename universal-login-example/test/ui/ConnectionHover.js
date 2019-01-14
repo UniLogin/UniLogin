@@ -1,4 +1,4 @@
-import 'jsdom-global/register'; 
+import 'jsdom-global/register';
 import React from 'react';
 import {mount, configure} from 'enzyme';
 import {expect} from 'chai';
@@ -8,23 +8,23 @@ import sinon from 'sinon';
 
 configure({adapter: new Adapter()});
 
-describe('(UI) <ConnectionHoverView />', () => {
+describe('UI: <ConnectionHoverView />', () => {
   const connections = ['al.mylogin.eth'];
   const emptyConnections = [];
   const creations = ['al.poppularapp.eth'];
   const identity = 'al';
   const onKeyDown = sinon.spy();
   let wrapper;
-  
+
   beforeEach(() => {
-    wrapper = mount(<ConnectionHoverView 
+    wrapper = mount(<ConnectionHoverView
       creations={creations}
-      connections={emptyConnections} 
+      connections={emptyConnections}
       identity={identity}
       onKeyDown={onKeyDown}
     />);
   });
-  
+
   it('contains create and connect text if connections and creations exists', () => {
     wrapper.setProps({connections});
     expect(wrapper.text()).to.contain('create');
@@ -50,7 +50,7 @@ describe('(UI) <ConnectionHoverView />', () => {
 
   it('should react on identity change', () => {
     wrapper.setProps({identity: 'a'});
-  
+
     expect(wrapper.text()).to.eq('');
     expect(wrapper.contains(
       <span className="identity">{creations[0]}</span>

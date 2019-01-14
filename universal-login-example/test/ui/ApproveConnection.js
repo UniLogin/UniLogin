@@ -11,7 +11,7 @@ import {waitUntil} from '../utils';
 
 configure({adapter: new Adapter()});
 
-describe('(UI) <ApproveConnection />', () => {
+describe('UI: <ApproveConnection />', () => {
   let wrapper;
   let identity;
   let sdk;
@@ -45,7 +45,7 @@ describe('(UI) <ApproveConnection />', () => {
     expect(emitter.emit).to.have.been.calledWith('setView', 'Login');
   });
 
-  it('acount recovery button', async () => {
+  it('account recovery button', async () => {
     wrapper.find('button.secondary-btn').simulate('click');
     expect(sdk.denyRequest).to.have.been.called;
     const wasCalled = () =>  emitter.emit.lastCall && emitter.emit.lastCall.args.includes('RecoverAccount');
