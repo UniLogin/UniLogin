@@ -11,6 +11,7 @@ import Backup from './Backup';
 import Trusted from './Trusted';
 import RecoverAccount from './RecoverAccount';
 import PropTypes from 'prop-types';
+import {scrollTo} from '../utils';
 
 class ContentContainer extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class ContentContainer extends Component {
 
   setView(view, viewParameters = {}) {
     this.setState({view, viewParameters});
-    window.scrollTo(0, 0);
+    scrollTo(0, 0);  
   }
 
   render() {
@@ -49,7 +50,7 @@ class ContentContainer extends Component {
         greetingService={services.greetingService}
         viewParameters={this.state.viewParameters} />;
     } else if (this.state.view === 'MainScreen') {
-      return <MainScreen services={services}/>;
+      return <MainScreen services={services}/>;      
     } else if (this.state.view === 'Account') {
       return (<Account identityService={services.identityService}/>);
     } else if (this.state.view === 'ApproveConnection') {
