@@ -95,10 +95,10 @@ describe('SDK - integration', async () => {
     describe('Identity Exists', async () => {
       it('should return correct bytecode', async () => {
         const address = await sdk.resolveName('alex.mylogin.eth');
-        expect(Identity.runtimeBytecode.slice(0, 14666)).to.eq((await provider.getCode(address)).slice(2, 14668));
+        expect(Identity.evm.deployedBytecode.object.slice(0, 14666)).to.eq((await provider.getCode(address)).slice(2, 14668));
       });
 
-      it('shoul return false if no resolver address', async () => {
+      it('should return false if no resolver address', async () => {
         expect(await sdk.resolveName('no-such-login.mylogin.eth')).to.be.false;
       });
 

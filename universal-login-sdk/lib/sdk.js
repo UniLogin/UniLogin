@@ -93,8 +93,8 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const finalMessage = {
-      ...this.defaultPaymentOptions, 
-      ...message, 
+      ...this.defaultPaymentOptions,
+      ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
     };
     const signature = await calculateMessageSignature(privateKey, finalMessage);
@@ -116,7 +116,7 @@ class EthereumIdentitySDK {
 
   async identityExist(identity) {
     const identityAddress = await this.resolveName(identity);
-    if (identityAddress && codeEqual(Identity.runtimeBytecode, await this.provider.getCode(identityAddress))) {
+    if (identityAddress && codeEqual(Identity.evm.deployedBytecode.object, await this.provider.getCode(identityAddress))) {
       return identityAddress;
     }
     return false;
