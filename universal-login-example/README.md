@@ -1,15 +1,32 @@
-## Example
+# Example
 
-### Running example on dev environment (quick option)
+## Running example on development environment
 
+### Installing dependencies
 
-Before running example, you should install and run local PostreSQL database named `universal_login_relayer_development` with `postgres` user and `postgres` password. Alternatively, you need to edit `universal-login-example/src/relayer/knexfile.js` with your database connection options.
-
-To install dependencies and build projects, run the following commands from the main directory of the repository.
-
+To install dependencies and build projects, run the following commands from the **main directory** of the repository.
 ```sh
 yarn
 ```
+
+### Creating database
+
+Before running example, you should install and run local PostreSQL database named `universal_login_relayer_development` with `postgres` user and `postgres` password. Alternatively, you need to edit `universal-login-example/src/relayer/knexfile.js` with your database connection options.
+
+You can create database from your favorite database UI, or from `psql`:
+```sh
+psql
+> create database universal_login_relayer_development;
+> \q
+```
+
+Then you need to migrate database, you can use scripts from `universal-login-relayer` project:
+```sh
+cd universal-login-relayer
+yarn setup:db
+```
+
+### Running example
 
 To run example:
 
@@ -20,9 +37,9 @@ yarn dev:start [hostAddress]
 
 with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).
 
-### Running example on testnet environment 
+### Running example on testnet environment
 
-Before running example app, you need you need to fill up example config file. 
+Before running example app, you need you need to fill up example config file.
 ```js
   module.exports = Object.freeze({
     jsonRpcUrl: process.env.JSON_RPC_URL,
