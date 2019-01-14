@@ -13,7 +13,7 @@ const ProfileIdentityHeader = (props) => (
 );
 
 ProfileIdentityHeader.propTypes = {
-  userIco: PropTypes.string,
+  userIco: PropTypes.object,
   userId: PropTypes.string,
   address: PropTypes.string
 };

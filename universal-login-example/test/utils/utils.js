@@ -29,6 +29,12 @@ describe('Utils', async () => {
       expect(await waitUntil(func, 1)).to.be.true;
       expect(count).to.eq(3);
     });
+
+    it('should return true with arguments', async () => {
+      const func = (args) => args === true;
+      expect(await waitUntil(func, 1, 10, [true])).to.be.true;
+      await expect(waitUntil(func, 1, 10)).to.be.eventually.rejectedWith('Timeout');
+    });
   });
 
   describe('IP address', () => {

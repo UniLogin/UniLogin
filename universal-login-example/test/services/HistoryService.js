@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicContracts from '../fixtures/basicContracts';
-import setupSdk from '../fixtures/setupSdk';
+import setupSdk from '../helpers/setupSdk';
 
 
 chai.use(sinonChai);

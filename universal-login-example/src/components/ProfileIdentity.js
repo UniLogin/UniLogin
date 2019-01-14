@@ -7,6 +7,9 @@ import PropTypes from 'prop-types';
 class ProfileIdentity extends Component {
   render() {
     const {identity} = this.props.identityService;
+    if (!identity.address) {
+      return (<div/>);
+    }
     switch (this.props.type) {
       case 'identityAccount':
         return (

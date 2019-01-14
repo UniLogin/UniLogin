@@ -20,7 +20,7 @@ class ConnectionHoverView extends Component {
         className={index + offset === this.props.selectedIndex ? 'active' : null}
       >
         <span className="identity">{name}</span>
-        <button type="submit">connect</button>
+        <button type="submit" className='connect'>connect</button>
       </li>
     ));
     offset = offset + connections.length;
@@ -31,7 +31,7 @@ class ConnectionHoverView extends Component {
         className={index + offset === this.props.selectedIndex ? 'active' : null}
       >
         <span className="identity">{name}</span>
-        <button>create</button>
+        <button className='create'>create</button>
       </li>
     ));
     offset = offset + creations.length;
@@ -42,7 +42,7 @@ class ConnectionHoverView extends Component {
         className={index + offset === this.props.selectedIndex ? 'active' : null}
       >
         <span className="identity">{name}</span>
-        <button>recover</button>
+        <button className='recover'>recover</button>
       </li>
     ));
 
