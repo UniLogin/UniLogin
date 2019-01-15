@@ -1,6 +1,8 @@
 dist: trusty
 language: node_js
 cache: yarn
+services:
+  - docker
 node_js:
   - '10'
 before_install:

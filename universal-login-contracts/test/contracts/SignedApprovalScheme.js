@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import SignedApprovalScheme from '../../build/SignedApprovalScheme';
 import MockContract from '../../build/MockContract';
 import MockToken from '../../build/MockToken';
-import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature, messageSignatureForApprovals} from '../utils';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
@@ -64,9 +64,9 @@ describe('Signed approval scheme', async () => {
     mockContract = await deployContract(wallet, MockContract);
     mockToken = await deployContract(wallet, MockToken);
 
-    fromManagementWallet = await contractWithWallet(identity, managementWallet);
-    fromActionWallet = await contractWithWallet(identity, actionWallet);
-    fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
+    fromManagementWallet = await identity.connect(managementWallet);
+    fromActionWallet = await identity.connect(actionWallet);
+    fromUnknownWallet = await identity.connect(unknownWallet);
 
     mockContractAddress = mockContract.address;
     targetAddress = targetWallet.address;
@@ -166,7 +166,7 @@ describe('Signed approval scheme', async () => {
           wallet, targetAddress, identity.address, amount, data, 0, mockToken.address, gasPrice, gasLimit);
         await mockToken.transfer(identity.address, utils.parseEther('20'));
         const relayerTokenBalance = await mockToken.balanceOf(wallet.address);
-        const executeData = new utils.Interface(SignedApprovalScheme.interface).functions.executeSigned.encode([targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature]);
+        const executeData = new utils.Interface(SignedApprovalScheme.abi).functions.executeSigned.encode([targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature]);
         const transaction = {
           value: 0,
           to: identity.address,
@@ -190,48 +190,48 @@ describe('Signed approval scheme', async () => {
         const targetBalanceAfterSend = await targetWallet.getBalance();
         expect(targetBalanceAfterSend).to.eq(amount.add(targetBalance));
       });
-  
+
       it('Execute call on self', async () => {
         signature = messageSignature(wallet, identity.address, identity.address, 0, addKeyData, 0, gasToken, gasPrice, gasLimit);
         await identity.executeSigned(identity.address, 0, addKeyData, 0, gasToken, gasPrice, gasLimit, signature);
         expect(await isActionKey()).to.be.true;
       });
-  
+
       it('Execute call', async () => {
         signature = messageSignature(wallet, mockContractAddress, identity.address, 0, functionData, 0, gasToken, gasPrice, gasLimit);
         await identity.executeSigned(mockContractAddress, 0, functionData, 0, gasToken, gasPrice, gasLimit, signature);
         expect(await mockContract.wasCalled()).to.be.true;
       });
-  
+
       it('Will not execute with unknown key', async () => {
         signature = messageSignature(unknownWallet, mockContractAddress, identity.address, 0, functionData, 0, gasToken, gasPrice, gasLimit);
         await expect(fromUnknownWallet.executeSigned(mockContractAddress, 0, functionData, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
       });
-  
+
       it('Will not execute on self with unknown key', async () => {
         signature = messageSignature(unknownWallet, mockContractAddress, identity.address, 0, functionData, 0, gasToken, gasPrice, gasLimit);
         await expect(fromUnknownWallet.executeSigned(identity.address, 0, addKeyData, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
       });
-  
+
       it('Will not execute on self with action key', async () => {
         signature = messageSignature(actionWallet, identity.address, identity.address, 0, addKeyData, 0, gasToken, gasPrice, gasLimit);
         await expect(fromActionWallet.executeSigned(identity.address, 0, addKeyData, 0, gasToken, gasPrice, gasLimit, signature)).to.be.reverted;
       });
-  
+
       it('Will execute call with action key', async () => {
         signature = messageSignature(actionWallet, mockContractAddress, identity.address, 0, functionData, 0, gasToken, gasPrice, gasLimit);
         await fromActionWallet.executeSigned(mockContractAddress, 0, functionData, 0, gasToken, gasPrice, gasLimit, signature);
         expect(await mockContract.wasCalled()).to.be.true;
       });
     });
-  
+
     describe('1 key needed', async () => {
       beforeEach(async () => {
         await identity.setRequiredApprovals(1);
         signature = messageSignature(wallet, mockContractAddress, identity.address, 0, functionData, 0, gasToken, gasPrice, gasLimit);
         await identity.executeSigned(mockContractAddress, 0, functionData, 0, gasToken, gasPrice, gasLimit, signature);
       });
-  
+
       it('Execute transfer', async () => {
         signature = messageSignature(wallet, targetAddress, identity.address, amount, data, 1, gasToken, gasPrice, gasLimit);
         await identity.executeSigned(targetAddress, amount, data, 1 , gasToken, gasPrice, gasLimit, signature);
@@ -241,19 +241,19 @@ describe('Signed approval scheme', async () => {
         targetBalanceAfterSend = await targetWallet.getBalance();
         expect(targetBalanceAfterSend).not.to.eq(targetBalance);
       });
-  
+
       it('Execute call', async () => {
         signatureForApprovals = messageSignatureForApprovals(wallet, 0);
         await identity.approveSigned(0, signatureForApprovals);
         expect(await mockContract.wasCalled()).to.be.true;
       });
-  
+
       it('Should allow to approve with action key', async () => {
         signatureForApprovals = messageSignatureForApprovals(actionWallet, 0);
         await fromActionWallet.approveSigned(0, signatureForApprovals);
         expect(await mockContract.wasCalled()).to.be.true;
       });
-  
+
       it('Should not allow to approve with unknown key', async () => {
         signatureForApprovals = messageSignatureForApprovals(unknownWallet, 0);
         await expect(fromUnknownWallet.approveSigned(0, signatureForApprovals)).to.be.reverted;
@@ -262,55 +262,55 @@ describe('Signed approval scheme', async () => {
     describe('Approve signed with 2 keys needed', async () => {
       beforeEach(async () => {
         await identity.setRequiredApprovals(2);
-  
+
         await identity.executeSigned(targetAddress, amount, data, 0, gasToken, gasPrice, gasLimit,
           messageSignature(wallet, targetAddress, identity.address, amount, data, 0, gasToken, gasPrice, gasLimit));
         await identity.executeSigned(identity.address, 0, addKeyData, 1, gasToken, gasPrice, gasLimit,
           messageSignature(wallet, identity.address, identity.address, 0, addKeyData, 1, gasToken, gasPrice, gasLimit));
-        await identity.executeSigned(mockContractAddress, 0, functionData, 2, gasToken, gasPrice, gasLimit, 
+        await identity.executeSigned(mockContractAddress, 0, functionData, 2, gasToken, gasPrice, gasLimit,
           messageSignature(wallet, mockContractAddress, identity.address, 0, functionData, 2, gasToken, gasPrice, gasLimit));
-  
+
         await identity.approveSigned(0, messageSignatureForApprovals(wallet, 0));
         await identity.approveSigned(1, messageSignatureForApprovals(wallet, 1));
         await identity.approveSigned(2, messageSignatureForApprovals(wallet, 2));
       });
-  
+
       it('Will not approve with used key', async () => {
         await expect(identity.approveSigned(0, messageSignatureForApprovals(wallet, 0))).to.be.reverted;
         await expect(identity.approveSigned(1, messageSignatureForApprovals(wallet, 1))).to.be.reverted;
         await expect(identity.approveSigned(2, messageSignatureForApprovals(wallet, 2))).to.be.reverted;
       });
-  
+
       describe('Two management keys', async () => {
         it('Execute transfer', async () => {
           await fromManagementWallet.approveSigned(0, messageSignatureForApprovals(managementWallet, 0));
           targetBalanceAfterSend = await targetWallet.getBalance();
           expect(targetBalanceAfterSend).not.to.eq(targetBalance);
         });
-  
+
         it('Execute call on self', async () => {
           expect(await isActionKey()).to.be.false;
           await fromManagementWallet.approveSigned(1, messageSignatureForApprovals(managementWallet, 1));
           expect(await isActionKey()).to.be.true;
         });
-  
+
         it('Execute call', async () => {
           await fromManagementWallet.approveSigned(2, messageSignatureForApprovals(managementWallet, 2));
           expect(await mockContract.wasCalled()).to.be.true;
         });
       });
-  
+
       describe('One management, one action key', async () => {
         it('Execute transfer', async () => {
           await fromActionWallet.approveSigned(0, messageSignatureForApprovals(actionWallet, 0));
           targetBalanceAfterSend = await targetWallet.getBalance();
           expect(targetBalanceAfterSend).not.to.eq(targetBalance);
         });
-  
+
         it('Will not execute on self with action key approval', async () => {
           await expect(fromActionWallet.approveSigned(1, messageSignatureForApprovals(actionWallet, 1))).to.be.reverted;
         });
-  
+
         it('Execute call', async () => {
           await fromActionWallet.approveSigned(2, messageSignatureForApprovals(actionWallet, 2));
           expect(await mockContract.wasCalled()).to.be.true;

@@ -1,3 +1,6 @@
 {
-  "npmPath": "../node_modules"
+  "npmPath": "../node_modules",
+  "docker-tag": "0.4.24",
+  "solcVersion": "v0.4.24+commit.e67f0147",
+  "legacyOutput": true
 }

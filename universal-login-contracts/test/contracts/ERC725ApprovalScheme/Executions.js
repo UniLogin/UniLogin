@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ERC725ApprovalScheme from '../../../build/ERC725ApprovalScheme';
 import MockContract from '../../../build/MockContract';
-import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {addressToBytes32} from '../../utils';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
@@ -49,8 +49,8 @@ describe('Key holder: executions', async () => {
     identity = await deployContract(wallet, ERC725ApprovalScheme, [managementKey]);
     mockContract = await deployContract(wallet, MockContract);
 
-    fromActionWallet = await contractWithWallet(identity, actionWallet);
-    fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
+    fromActionWallet = await identity.connect(actionWallet);
+    fromUnknownWallet = await identity.connect(unknownWallet);
 
     mockContractAddress = mockContract.address;
 

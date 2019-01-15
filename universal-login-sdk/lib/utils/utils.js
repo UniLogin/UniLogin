@@ -7,7 +7,7 @@ const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash) => {
-  const abi = contractJSON.interface;
+  const {abi} = contractJSON;
   const receipt = await waitForTransactionReceipt(providerOrWallet, transactionHash);
   return new Contract(receipt.contractAddress, abi, providerOrWallet);
 };

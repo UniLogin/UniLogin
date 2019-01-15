@@ -43,7 +43,7 @@ const withENS = (provider, ensAddress) => {
 
 const lookupAddress = async (provider, address, resolverAddress) => {
   const node = utils.namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
-  const contract = new Contract(resolverAddress, PublicResolver.interface, provider);
+  const contract = new Contract(resolverAddress, PublicResolver.abi, provider);
   return await contract.name(node);
 };
 

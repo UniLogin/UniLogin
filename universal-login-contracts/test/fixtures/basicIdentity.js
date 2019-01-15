@@ -49,7 +49,7 @@ export const failedTransferMessage = {
 export const callMessage = {
   to: '0x0000000000000000000000000000000000000001',
   value: parseEther('0.0'),
-  data: new utils.Interface(MockContract.interface).functions.callMe.encode([]),
+  data: new utils.Interface(MockContract.abi).functions.callMe.encode([]),
   nonce: 0,
   gasPrice,
   gasLimit,
@@ -60,7 +60,7 @@ export const callMessage = {
 export const failedCallMessage = {
   to: '0x0000000000000000000000000000000000000001',
   value: parseEther('0.0'),
-  data: new utils.Interface(MockContract.interface).functions.revertingFunction.encode([]),
+  data: new utils.Interface(MockContract.abi).functions.revertingFunction.encode([]),
   nonce: 0,
   gasPrice,
   gasLimit,
