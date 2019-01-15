@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import SignedApprovalScheme from '../../build/SignedApprovalScheme';
 import MockContract from '../../build/MockContract';
 import MockToken from '../../build/MockToken';
-import {createMockProvider, deployContract, getWallets, solidity, contractWithWallet} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature, messageSignatureForApprovals} from '../utils';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
@@ -64,9 +64,9 @@ describe('Signed approval scheme', async () => {
     mockContract = await deployContract(wallet, MockContract);
     mockToken = await deployContract(wallet, MockToken);
 
-    fromManagementWallet = await contractWithWallet(identity, managementWallet);
-    fromActionWallet = await contractWithWallet(identity, actionWallet);
-    fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
+    fromManagementWallet = await identity.connect(managementWallet);
+    fromActionWallet = await identity.connect(actionWallet);
+    fromUnknownWallet = await identity.connect(unknownWallet);
 
     mockContractAddress = mockContract.address;
     targetAddress = targetWallet.address;

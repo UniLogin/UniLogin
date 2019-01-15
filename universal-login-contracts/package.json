@@ -14,7 +14,7 @@
         "clean": "rm -fr ./node_modules && rm -fr ./build"
     },
     "devDependencies": {
-        "ethereum-waffle": "2.0.0-beta.10",
+        "ethereum-waffle": "2.0.0-beta.11",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
         "babel-eslint": "^9.0.0",

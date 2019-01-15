@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run from main dir
-yarn
+yarn &&
 cd universal-login-contracts &&
 yarn build &&
 cd ../universal-login-relayer &&

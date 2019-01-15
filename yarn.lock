@@ -3457,19 +3457,10 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@2.0.0-beta.10:
-  version "2.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.0-beta.10.tgz#0d4dcda54bb71c888cafa500b1a51b2bc3d0be83"
-  integrity sha512-vDY4JBguiJwD/kEzyEbcqAhBFHRGaHwVoTw8RgHvSVypX3LENq30lfyjgjSokNBwV6950C87Bgou6skqrvaHWg==
-  dependencies:
-    ethers "^4.0.0"
-    ganache-core "2.2.1"
-    solc "^0.5.1"
-
-ethereum-waffle@2.0.0-beta.8:
-  version "2.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.0-beta.8.tgz#bf661771670ba489b9530c1df609d6638b671d40"
-  integrity sha512-k7fYmXJBpUCvWXh1zXEgEF1iC4TfghUwuk23ybAHjBGEw+1ydaw3xgovVl91Bexsu4f6NOa16rKSRsU9LsIqIg==
+ethereum-waffle@2.0.0-beta.11:
+  version "2.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.0-beta.11.tgz#0eada1cea5c97fe9828494febc9a84c4a2bc600c"
+  integrity sha512-hk33cjQHdGG/Fq+QtyXnxL9tgCmRALTz0xHdPU88lSXnvxlsMzHatVyRQS5U7ODiPlh5r+qVbvlT6deg1dcsaA==
   dependencies:
     ethers "^4.0.0"
     ganache-core "2.2.1"

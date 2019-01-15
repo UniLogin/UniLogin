@@ -1,5 +1,6 @@
 {
   "npmPath": "../node_modules",
-  "compiler": "dockerized-solc",
-  "docker-tag": "0.4.24"
+  "docker-tag": "0.4.24",
+  "solcVersion": "v0.4.24+commit.e67f0147",
+  "legacyOutput": true
 }
