@@ -7,7 +7,7 @@ class IdentitySelectionService {
   }
 
   isFullDomain(name) {
-    return name.endsWith('.eth');
+    return name.endsWith('.eth') || name.endsWith('.test') || name.endsWith('.xyz');
   }
 
   countPeriods(name) {
@@ -15,7 +15,23 @@ class IdentitySelectionService {
   }
 
   isCorrectPrefix(prefix) {
-    return /^\w+\.?(\w+)?\.?e?t?h?$/.test(prefix);
+    const splitted = prefix.split('.');    
+    if (splitted.length === 0 || splitted.length > 3) {
+      return false;
+    } 
+    if (!/^\w[\w-]*$/.test(splitted[0])) {
+      return false;
+    }
+    if (splitted.length > 1 && !/^[\w-]*$/.test(splitted[1])) {
+      return false;
+    }
+    if (splitted.length > 2) {
+      if (splitted[1].length === 0) {
+        return false;
+      }
+      return 'test'.startsWith(splitted[2]) || 'eth'.startsWith(splitted[2]) || 'xyz'.startsWith(splitted[2]);
+    }
+    return true;
   }
 
   async splitByExistence(domains) {
@@ -28,7 +44,7 @@ class IdentitySelectionService {
         creations.push(domain);
       }
     }
-    return [connections, creations];
+    return {connections, creations};
   }
 
   async getSuggestionsForNodePrefix(nodePrefix) {
@@ -45,18 +61,20 @@ class IdentitySelectionService {
   }
 
   async getConnects(namePrefix) {
-    return (await this.getSuggestions(namePrefix))[0];
+    return (await this.getSuggestions(namePrefix)).connections;
   }
 
   async getCreates(namePrefix) {
-    return (await this.getSuggestions(namePrefix))[1];
+    return (await this.getSuggestions(namePrefix)).creations;
   }
 
   async getSuggestions(namePrefix) {
     if (!this.isCorrectPrefix(namePrefix)) {
-      return [[], []];
+      return {connections: [], creations: []};
     } else if (this.isFullDomain(namePrefix)) {
-      return (await this.sdk.identityExist(namePrefix)) ? [[namePrefix], []] : [[], [namePrefix]];
+      return (await this.sdk.identityExist(namePrefix)) ? 
+        {connections: [namePrefix], creations: []} : 
+        {connections: [], creations: [namePrefix]};
     } else  if (this.countPeriods(namePrefix) > 0) {
       const [name, sldPrefix] = namePrefix.split('.');
       return await this.getSuggestionsForNodeAndSldPrefix(name, sldPrefix);

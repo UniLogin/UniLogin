@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {RelayerUnderTest} from '../../../lib/index';
+import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
@@ -18,7 +18,7 @@ describe('Relayer - Authorisation routes', async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
-    relayer.start();
+    await relayer.start();
     const result = await chai.request(relayer.server)
       .post('/identity')
       .send({
@@ -29,27 +29,26 @@ describe('Relayer - Authorisation routes', async () => {
     contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
   });
 
-  it('Authorise', async () => {
-    const result = await chai.request(relayer.server)
-      .post('/authorisation')
-      .send({
-        identityAddress: contract.address,
-        key: wallet.address
-      });
-    expect(result.status).to.eq(201);
-  });
+  it('add authorisation request and get authorisation request', async () => {
+    const authorisationRequest = {
+      identityAddress: contract.address,
+      key: wallet.address
+    };
 
-  it('get pending authorisations', async () => {
-    await chai.request(relayer.server)
+    const authorisationResult = await chai.request(relayer.server)
       .post('/authorisation')
-      .send({
-        identityAddress: contract.address,
-        key: wallet.address
-      });
-    const result = await chai.request(relayer.server)
+      .send(authorisationRequest);  
+    
+    expect(authorisationResult.status).to.eq(201);
+
+    const getAuthorisationResult = await chai.request(relayer.server)
       .get(`/authorisation/${contract.address}`);
-    expect(result.body.response).to.have.lengthOf(1);
-    expect(result.body.response[0]).to.deep.include({key: wallet.address});
+    const [getAuthorisationResponse] = getAuthorisationResult.body.response;
+
+    expect(getAuthorisationResponse.key).to.eq(wallet.address.toLowerCase());
+    expect(getAuthorisationResponse.id).to.eq(1);
+    expect(getAuthorisationResponse.identityAddress).to.eq(contract.address);
+    expect(getAuthorisationResponse.deviceInfo.city).to.eq('unknown');
   });
 
   it('get non-existing pending authorisations', async () => {
@@ -66,5 +65,9 @@ describe('Relayer - Authorisation routes', async () => {
         key: wallet.address
       });
     expect(result.status).to.eq(201);
+  });
+
+  afterEach(async () => {
+    await relayer.stop();
   });
 });

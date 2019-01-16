@@ -1,9 +1,6 @@
 import {utils, Wallet} from 'ethers';
 import scrypt from 'scrypt-js';
 
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 async function fetchEventsOfType(provider, abi, address, name) {
   const eventInterface = new utils.Interface(abi).events;
   const topic = [eventInterface[name].topic];
@@ -12,17 +9,12 @@ async function fetchEventsOfType(provider, abi, address, name) {
   return logs.map((event) => (new utils.Interface(abi)).parseLog(event));
 }
 
-function classnames(classes = {}) {
-  return Object.entries(classes)
-    .filter(([key, value]) => value)
-    .map(([key, value]) => key)
-    .join(' ');
-}
-
 const convertIPv6ToIPv4 = (addressIPv6) => addressIPv6.replace(/::ffff:/g, '');
 
+const localhostAddresses = ['::1', '127.0.0.1', '::ffff:127.0.0.1'];
+
 function filterIP(ipAddress) {
-  if (ipAddress === '::1' || ipAddress === '127.0.0.1' || ipAddress === '::ffff:127.0.0.1') {
+  if (localhostAddresses.includes(ipAddress)) {
     return 'localhost';
   }
   return convertIPv6ToIPv4(ipAddress);
@@ -54,4 +46,27 @@ function fromBrainWallet(username, password) {
   });
 }
 
-export {fetchEventsOfType, classnames, convertIPv6ToIPv4, filterIP, fromBrainWallet};
+
+function debounce(func, waitTime = 0) {
+  let timeout;
+  return function() {
+    const args = arguments;
+    const later = function() {
+      timeout = null;
+      func.apply(this, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, waitTime);
+  };
+}
+
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+const scrollTo = (x, y) => {
+  if (navigator.userAgent.search('jsdom') < 0) {
+    window.scrollTo(x, y);
+  }
+};
+
+export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce, sleep, scrollTo};

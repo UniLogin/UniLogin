@@ -1,0 +1,9 @@
+import Clicker from '../../build/Clicker';
+import Token from '../../build/Token';
+import {deployContract} from 'ethereum-waffle';
+
+export default async function basicContracts(wallet) {  
+  const clickerContract = await deployContract(wallet, Clicker);
+  const tokenContract = await deployContract(wallet, Token);
+  return {wallet, clickerContract, tokenContract};
+}

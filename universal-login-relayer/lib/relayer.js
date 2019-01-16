@@ -10,6 +10,7 @@ import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
+import {checkIfAllMigrated} from './utils/utils';
 
 const defaultPort = 3311;
 
@@ -21,15 +22,25 @@ function errorHandler (err, req, res, next) {
 }
 
 class Relayer {
-  constructor(config, provider = '') {
+  constructor(config, provider = '', database) {
     this.port = config.port || defaultPort;
     this.config = config;
     this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.wallet = new Wallet(config.privateKey, this.provider);
+    this.database = database;
   }
 
-  start() {
+  async start() {
+    if (await checkIfAllMigrated(this.database)) {
+      this.runServer();
+    } else {
+      this.database.destroy();
+      throw Error('You need to run migrations. Type `$ knex migrate:latest`');
+    }
+  }
+
+  runServer() {
     this.app = express();
     this.app.use(useragent.express());
     this.app.use(cors({
@@ -37,8 +48,8 @@ class Relayer {
       credentials: true
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
-    this.authorisationService = new AuthorisationService();
-    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider);
+    this.authorisationService = new AuthorisationService(this.database);
+    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
     this.app.use(bodyParser.json());
     this.app.use('/identity', IdentityRouter(this.identityService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
@@ -48,6 +59,7 @@ class Relayer {
   }
 
   async stop() {
+    this.database.destroy();
     this.server.close();
   }
 }

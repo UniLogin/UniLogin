@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
 
 /* solium-disable security/no-block-members*/
@@ -7,7 +7,7 @@ contract Clicker {
     event ButtonPress(address presser, uint pressTime, uint score);
 
     // Set up last pressed at deploy
-    constructor() {
+    constructor() public {
       lastPressed = now;
     }
 

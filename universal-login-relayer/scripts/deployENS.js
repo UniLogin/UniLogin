@@ -1,5 +1,7 @@
 import ENSDeployer from '../lib/utils/ensDeployer';
-import {jsonRpcUrl, ensRegistrars} from '../lib/config/relayer';
+
+const ensRegistrars = {'my-login.eth': [], 'universal-id.eth': [], 'poppularap.eth': []};
+const jsonRpcUrl = 'http://localhost:18545';
 
 ENSDeployer.deploy(jsonRpcUrl, ensRegistrars, 'eth').catch(console.error);
 

@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {RelayerUnderTest} from '../../../lib/index';
+import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
 
 chai.use(chaiHttp);
@@ -12,7 +12,7 @@ describe('Relayer - Config routes', async () => {
   before(async () => {
     provider = createMockProvider();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
-    relayer.start();
+    await relayer.start();
   });
 
   it('Config', async () => {
@@ -23,6 +23,6 @@ describe('Relayer - Config routes', async () => {
   });
 
   after(async () => {
-    relayer.stop();
+    await relayer.stop();
   });
 });

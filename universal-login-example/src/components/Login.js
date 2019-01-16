@@ -16,15 +16,16 @@ class Login extends Component {
     return await this.identityService.identityExist(identity);
   }
 
-  async onNextClick(identity) {
+  async onNextClick(identityName) {
     const {emitter} = this.props.services;
-    if (await this.identityExist(identity)) {
+    if (await this.identityExist(identityName)) {
       await this.identityService.connect();
       emitter.emit('setView', 'ApproveConnection');
     } else {
+      this.identityService.identity.name = identityName;
       emitter.emit('setView', 'CreatingID');
       try {
-        await this.identityService.createIdentity(identity);
+        await this.identityService.createIdentity(identityName);
         emitter.emit('setView', 'Greeting', {greetMode: 'created'});
       } catch (err) {
         emitter.emit('setView', 'Failure', {error: err.message});
@@ -43,7 +44,6 @@ class Login extends Component {
   }
 
   render() {
-    const {ensDomains} = this.props.services.config;
     return (
       <div className="login-view">
         <div className="container">
@@ -55,9 +55,8 @@ class Login extends Component {
           <IdentitySelector
             onNextClick={(identity) => this.onNextClick(identity)}
             onChange={this.onChange.bind(this)}
-            ensDomains={ensDomains}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
-            identityExist = {this.identityExist.bind(this)}
+            services = {this.props.services}
             identitySelectionService={this.props.services.identitySelectionService}
           />
         </div>

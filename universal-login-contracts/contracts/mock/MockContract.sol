@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
 
 contract MockContract {
@@ -8,7 +8,7 @@ contract MockContract {
         wasCalled = false;
     }
 
-    function() public {
+    function() external {
         wasCalled = true;
     }
 
@@ -17,6 +17,6 @@ contract MockContract {
     }
 
     function revertingFunction() public view {
-        require(msg.sender == address(this));
+        require(msg.sender == address(this), "Always revert");
     }
 }

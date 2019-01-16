@@ -1,7 +1,7 @@
 import ERC725ApprovalScheme from '../../build/ERC725ApprovalScheme';
 import MockContract from '../../build/MockContract';
 import {utils} from 'ethers';
-import {deployContract, contractWithWallet, getWallets} from 'ethereum-waffle';
+import {deployContract, getWallets} from 'ethereum-waffle';
 import {addressToBytes32} from '../utils';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/consts';
 
@@ -16,14 +16,14 @@ export default async function basicIdentity(wallet) {
   const unknownWalletKey = addressToBytes32(unknownWallet.address);
   const identity = await deployContract(wallet, ERC725ApprovalScheme, [managementKey]);
   const mockContract = await deployContract(wallet, MockContract);
-  const fromManagementWallet = await contractWithWallet(identity, managementWallet);
-  const fromActionWallet = await contractWithWallet(identity, actionWallet);
-  const fromUnknownWallet = await contractWithWallet(identity, unknownWallet);
+  const fromManagementWallet = await identity.connect(managementWallet);
+  const fromActionWallet = await identity.connect(actionWallet);
+  const fromUnknownWallet = await identity.connect(unknownWallet);
 
   await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
   await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
   await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
-  return {provider, identity, mockContract, wallet, 
+  return {provider, identity, mockContract, wallet,
     targetWallet, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
     fromManagementWallet, fromActionWallet, fromUnknownWallet
   };

@@ -1,8 +1,11 @@
-import {providers, utils, Contract} from 'ethers';
+import {providers, utils, Contract, ContractFactory} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
-import ERC20 from 'universal-login-contracts/build/ERC20';
 import Identity from 'universal-login-contracts/build/Identity';
+import ERC20 from 'universal-login-contracts/build/ERC20';
+import defaultDeployOptions from '../config/defaultDeployOptions';
+import fs from 'fs';
+import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
 
 const {namehash} = utils;
 
@@ -19,7 +22,7 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
   const abi = contractJSON.interface;
   let receipt = await provider.getTransactionReceipt(transactionHash);
   while (!receipt) {
-    sleep(tick);
+    await sleep(tick);
     receipt = await provider.getTransactionReceipt(transactionHash);
   }
   return new Contract(receipt.contractAddress, abi, providerOrWallet);
@@ -38,13 +41,18 @@ const withENS = (provider, ensAddress) => {
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
+const isContract = async (provider, contractAddress) => {
+  // TODO: Only whitelisted contracts
+  const code = await provider.getCode(contractAddress);
+  return !!code;
+};
+
 const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => {
-  // TODO what if passed address is not a for a token address
-  const erc20Bytecode = '0x6080604052600436106100b95763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630';
+  // TODO: Only whitelisted tokens/contracts
   if (gasToken === ether) {
     throw new Error('Ether refunds are not yet supported');
-  } else if ((await provider.getCode(gasToken)).slice(2, 111) !== erc20Bytecode.slice(2, 111)) {
-    throw new Error('Address isn`t token');
+  } else if (!await isContract(provider, gasToken)) {
+    throw new Error('Address is not a contract');
   } else {
     const token = new Contract(gasToken, ERC20.interface, provider);
     const identityTokenBalance = await token.balanceOf(identityAddress);
@@ -77,4 +85,50 @@ const isAddKeysCall = (data) => {
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 
-export {addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+const sendAndWaitForTransaction = async (deployer, transaction) => {
+  const tx = await deployer.sendTransaction(transaction);
+  let receipt = await deployer.provider.getTransactionReceipt(tx.hash);
+  while (!receipt || !receipt.blockNumber) {
+    await sleep(1000);
+    receipt = await deployer.provider.getTransactionReceipt(tx.hash);
+  }
+  return receipt.contractAddress;
+};
+
+const getDeployTransaction = (contractJSON, args = '') => {
+  const bytecode = `0x${contractJSON.bytecode}`;
+  const abi = contractJSON.interface;
+  const transaction = {
+    ...defaultDeployOptions,
+    ...new ContractFactory(abi, bytecode).getDeployTransaction(...args)
+  };
+  return transaction;
+};
+
+const waitToBeMined = async (provider, transaction, timeout = 1000) => {
+  let receipt = await provider.getTransactionReceipt(transaction.hash);
+  while (!receipt || !receipt.blockNumber) {
+    await sleep(timeout);
+    receipt = await provider.getTransactionReceipt(transaction.hash);
+  }
+  return receipt;
+};
+
+const saveVariables = (filename, _variables) => {
+  const variables = Object.entries(_variables)
+    .map(([key, value]) => `  ${key}='${value}'`)
+    .join('\n');
+  fs.writeFile(filename, variables, (err) => {
+    if (err) {
+      return console.error(err);
+    }
+  });
+};
+
+const checkIfAllMigrated = async (database) => {
+  const {config, knex} = database.migrate;
+  const list = await migrationListResolver.listAllAndCompleted(config, knex);
+  return list[0].length === list[1].length;
+};
+
+export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};

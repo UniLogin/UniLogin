@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
+import classIf from '../helpers/classIf';
 
 class MainScreenView extends Component {
   renderEvent(event) {
@@ -16,9 +17,18 @@ class MainScreenView extends Component {
     );
   }
 
+  renderEventList() {
+    if (this.props.loaded === false) {
+      return (<div className="loading"> Loading activity </div>);
+    } else if (this.props.events.length === 0) {
+      return (<div> No events yet. Push the button! </div>);
+    }
+    return this.props.events.map(this.renderEvent.bind(this));
+  }
+
   render() {
     return (
-      <div className="main-screen">
+      <div className={classIf(this.props.busy, 'main-screen loadbar', 'main-screen')}>
         <div className="container text-center">
           <p>
             You have{' '}
@@ -28,8 +38,9 @@ class MainScreenView extends Component {
             left
           </p>
           <button
-            className="btn main-screen-btn"
+            className='btn main-screen-btn'
             onClick={this.props.onClickerClick}
+            disabled={this.props.busy}
           >
             click here
           </button>
@@ -43,7 +54,7 @@ class MainScreenView extends Component {
           </p>
           <hr className="separator" />
           <div className="click-history">
-            {this.props.events.map(this.renderEvent.bind(this))}
+            {this.renderEventList()}
           </div>
         </div>
       </div>
@@ -55,6 +66,8 @@ MainScreenView.propTypes = {
   clicksLeft: PropTypes.number,
   lastClick: PropTypes.string,
   onClickerClick: PropTypes.func,
+  loaded: PropTypes.bool,
+  busy: PropTypes.bool,
   events: PropTypes.array
 };
 

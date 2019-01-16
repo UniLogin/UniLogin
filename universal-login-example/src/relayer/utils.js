@@ -1,3 +1,17 @@
+import knex from 'knex';
+import knexConfig from './knexfile';
+
+const getNodeEnv = () => process.env.NODE_ENV || 'development';
+
+const getKnexConfig = () => knexConfig[getNodeEnv()];
+
+const getKnex = () => knex(getKnexConfig());
+
+const getKnexWithoutDatabase = () => {
+  const config = getKnexConfig();
+  const newConfig = {...config, connection: {...config.connection, database: 'postgres'}};
+  return knex(newConfig);
+};
 
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -11,4 +25,4 @@ const waitToBeMined = async (provider, transactionHash, tick = 1000) => {
   return receipt;
 };
 
-export {waitToBeMined};
+export {sleep, waitToBeMined, getKnex, getKnexConfig, getKnexWithoutDatabase};

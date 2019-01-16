@@ -1,5 +1,4 @@
-
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 import "./ERC725KeyHolder.sol";
 
 
@@ -17,7 +16,7 @@ contract KeyHolder is ERC725KeyHolder {
         emit KeyAdded(keys[_key].key,  keys[_key].purpose, keys[_key].keyType);
     }
 
-    function() public payable {
+    function() external payable {
 
     }
 
@@ -29,7 +28,7 @@ contract KeyHolder is ERC725KeyHolder {
     }
 
     modifier onlyManagementKeyOrThisContract() {
-        bool isManagementKey = keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY);
+        bool isManagementKey = keyHasPurpose(bytes32(uint256(msg.sender)), MANAGEMENT_KEY);
         require(isManagementKey || msg.sender == address(this), "Sender not permissioned");
         _;
     }
@@ -46,7 +45,7 @@ contract KeyHolder is ERC725KeyHolder {
         return keys[_key].purpose;
     }
 
-    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[]) {
+    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] memory) {
         return keysByPurpose[_purpose];
     }
 
@@ -68,7 +67,7 @@ contract KeyHolder is ERC725KeyHolder {
         return true;
     }
 
-    function addKeys(bytes32[] _keys, uint256[] _purposes, uint256[] _types) public onlyManagementKeyOrThisContract returns(bool success) {
+    function addKeys(bytes32[] memory _keys, uint256[] memory _purposes, uint256[] memory _types) public onlyManagementKeyOrThisContract returns(bool success) {
         require(_keys.length == _purposes.length && _keys.length == _types.length, "Unequal argument set lengths");
         for (uint i = 0; i < _keys.length; i++) {
             addKey(_keys[i], _purposes[i], _types[i]);

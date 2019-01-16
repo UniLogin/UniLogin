@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {RelayerUnderTest} from '../../../lib/index';
+import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
@@ -22,7 +22,7 @@ describe('Relayer - Identity routes', async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(provider);
-    relayer.start();
+    await relayer.start();
   });
 
   it('Create', async () => {
@@ -71,7 +71,7 @@ describe('Relayer - Identity routes', async () => {
   });
 
   after(async () => {
-    relayer.stop();
+    await relayer.stop();
   });
 });
 

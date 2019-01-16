@@ -11,14 +11,15 @@ import {utils} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 import {addressToBytes32, waitForContractDeploy} from '../../lib/utils/utils';
+import {getKnex} from '../../lib/utils/knexUtils';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
 export default async function basicIdentityService(wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
-  const authorisationService = new AuthorisationService();
-  const identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider);
+  const authorisationService = new AuthorisationService(getKnex());
+  const identityService = new IdentityService(wallet, ensService, authorisationService, hooks, provider, {legacyENS: true});
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const mockToken = await deployContract(wallet, MockToken);

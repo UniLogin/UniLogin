@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
 
 contract IERC1077 {
@@ -11,22 +11,22 @@ contract IERC1077 {
     function canExecute(
         address to,
         uint256 value,
-        bytes data,
+        bytes memory data,
         uint nonce,
         uint gasPrice,
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes signatures) public view returns (bool);
+        bytes memory signatures) public view returns (bool);
 
     function executeSigned(
         address to,
         uint256 value,
-        bytes data,
+        bytes memory data,
         uint nonce,
         uint gasPrice,
         address gasToken,
         uint gasLimit,
         OperationType operationType,
-        bytes signatures) public returns (bytes32);
+        bytes memory signatures) public returns (bytes32);
 }

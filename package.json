@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "universal-login-monorepo",
-  "repository": "git@github.com:EthWorks/EthereumIdentitySDK.git",
+  "repository": "git@github.com:UniversalLogin/UniversalLoginSDK.git",
   "author": "Marek Kirejczyk <marek.kirejczyk@gmail.com>",
   "license": "MIT",
   "version": "0.1.0",
@@ -12,8 +12,7 @@
     "universal-login-contracts",
     "universal-login-relayer",
     "universal-login-sdk",
-    "universal-login-example",
-    "universal-login-boilerplate"
+    "universal-login-example"
   ],
   "dependencies": {
     "wsrun": "^2.2.1"

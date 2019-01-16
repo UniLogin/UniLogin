@@ -5,8 +5,8 @@ import {Wallet, utils, Contract} from 'ethers';
 
 
 class TokenGrantingRelayer extends Relayer {
-  constructor(config, provider = '') {
-    super(config, provider);
+  constructor(config, provider = '', database) {
+    super(config, provider, database);
     this.deployerPrivateKey = config.privateKey;
     this.tokenContractAddress = config.tokenContractAddress;
     this.deployerWallet = new Wallet(this.deployerPrivateKey, this.provider);

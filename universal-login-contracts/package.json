@@ -1,17 +1,15 @@
 {
     "name": "universal-login-contracts",
-    "version": "0.1.0",
-    "private": true,
+    "version": "0.1.1",
     "license": "MIT",
     "main": "index.js",
-    "build": "babel lib --out-dir dist",
     "dependencies": {
         "ens-builder": "^2.0.0"
     },
     "scripts": {
         "test": "mocha --recursive --require babel-register test -t 10000",
         "lint": "eslint test && solium -d contracts",
-        "build": "waffle .waffle.json",
+        "build": "waffle .waffle.js",
         "deploy": "babel-node scripts/deployENS.js",
         "clean": "rm -fr ./node_modules && rm -fr ./build"
     },
@@ -28,10 +26,10 @@
         "chai-as-promised": "^7.1.1",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
-        "ethereum-waffle": "^1.0.0",
+        "ethereum-waffle": "2.0.0-beta.11",
         "ganache-core": "^2.2.1",
         "mocha": "^5.2.0",
-        "openzeppelin-solidity": "^1.12.0",
+        "openzeppelin-solidity": "^2.1.1",
         "solium": "^1.1.8"
     }
 }

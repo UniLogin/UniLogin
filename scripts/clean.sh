@@ -7,6 +7,4 @@ yarn clean &&
 cd ../universal-login-sdk &&
 yarn clean &&
 cd ../universal-login-example &&
-yarn clean
-cd ../universal-login-boilerplate &&
-yarn clean
+yarn clean 

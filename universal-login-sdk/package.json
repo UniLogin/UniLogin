@@ -1,18 +1,18 @@
 {
   "name": "universal-login-sdk",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "main": "dist/sdk.js",
   "license": "MIT",
   "dependencies": {
-    "deep-equal": "^1.0.1",
-    "ethereum-waffle": "^1.0.4",
     "ethers": "^4.0",
-    "universal-login-contracts": "0.1.0"
+    "fbemitter": "^2.1.1",
+    "node-fetch": "^2.2.0",
+    "universal-login-contracts": "0.1.1"
   },
   "scripts": {
     "build": "babel lib --out-dir dist",
     "lint": "eslint lib test",
-    "test": "mocha --recursive --require babel-register test -t 10000",
+    "test": "NODE_ENV=test mocha --recursive --require babel-register test -t 10000",
     "clean": "rm -fr ./node_modules && rm -fr ./dist"
   },
   "devDependencies": {
@@ -23,14 +23,14 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "deep-equal": "^1.0.1",
+    "ethereum-waffle": "2.0.0-beta.11",
     "eslint": "^5.5.0",
     "eslint-plugin-import": "^2.14.0",
-    "fbemitter": "^2.1.1",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
-    "node-fetch": "^2.2.0",
+    "universal-login-relayer": "^0.1.2",
     "sinon": "^6.3.1",
-    "sinon-chai": "^3.2.0",
-    "universal-login-relayer": "^0.1.0"
+    "sinon-chai": "^3.2.0"
   }
 }

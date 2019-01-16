@@ -7,7 +7,7 @@ import {resolveName, codeEqual} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
-import {MESSAGE_DEFAULTS} from './config';
+import MESSAGE_DEFAULTS from './config';
 
 class EthereumIdentitySDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
@@ -93,8 +93,8 @@ class EthereumIdentitySDK {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const finalMessage = {
-      ...this.defaultPaymentOptions, 
-      ...message, 
+      ...this.defaultPaymentOptions,
+      ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
     };
     const signature = await calculateMessageSignature(privateKey, finalMessage);
@@ -116,7 +116,7 @@ class EthereumIdentitySDK {
 
   async identityExist(identity) {
     const identityAddress = await this.resolveName(identity);
-    if (identityAddress && codeEqual(Identity.runtimeBytecode, await this.provider.getCode(identityAddress))) {
+    if (identityAddress && codeEqual(Identity.evm.deployedBytecode.object, await this.provider.getCode(identityAddress))) {
       return identityAddress;
     }
     return false;
@@ -131,7 +131,7 @@ class EthereumIdentitySDK {
   async connect(identityAddress) {
     const privateKey = this.generatePrivateKey();
     const wallet = new Wallet(privateKey, this.provider);
-    const key = wallet.address;
+    const key = wallet.address.toLowerCase();
     const url = `${this.relayerUrl}/authorisation`;
     const method = 'POST';
     const body = JSON.stringify({identityAddress, key});

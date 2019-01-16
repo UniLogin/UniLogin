@@ -1,5 +1,5 @@
 import fs from 'fs';
-import ethers, {Wallet} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 
@@ -13,7 +13,7 @@ class ENSDeployer {
     this.count = 1;
   }
 
-  /* eslint-disable no-console */
+  /* eslint-disable no-console */ 
   save(filename) {
     const content = Object.entries(this.variables)
       .map(([key, value]) => `${key}=${value}`)
@@ -43,7 +43,7 @@ class ENSDeployer {
   }
 
   static async deploy(jsonRpcUrl, registrars, tld = 'eth') {
-    const provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl);
+    const provider = new providers.JsonRpcProvider(jsonRpcUrl);
     const deployerPrivateKey = defaultAccounts[defaultAccounts.length - 1].secretKey;
     const deployer = new ENSDeployer(provider, deployerPrivateKey);
     await deployer.deployRegistrars(registrars, tld);

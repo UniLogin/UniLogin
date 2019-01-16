@@ -1,7 +1,10 @@
 import TokenGrantingRelayer from './TokenGrantingRelayer';
+import {getKnex} from './utils';
 require('dotenv').config();
-const config = require('./config');
 
-const relayer = new TokenGrantingRelayer(config);
+const config = require('./config');
+const db = getKnex();
+
+const relayer = new TokenGrantingRelayer(config, '', db);
 relayer.addHooks();
-relayer.start();
+relayer.database.migrate.latest().then(() => relayer.start());

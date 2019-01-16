@@ -1,7 +1,9 @@
+import Relayer from '../lib/relayer';
+import {getKnex} from '../lib/utils/knexUtils';
 require('dotenv').config();
-import Relayer from '../lib//relayer';
 
 const config = require('../lib/config/relayer');
+const db = getKnex();
 
-const relayer = new Relayer(config);
+const relayer = new Relayer(config, '', db);
 relayer.start();

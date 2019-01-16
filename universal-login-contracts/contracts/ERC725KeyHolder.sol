@@ -1,7 +1,7 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
 
-contract ERC725KeyHolder {    
+contract ERC725KeyHolder {
     uint256 constant MANAGEMENT_KEY = 1;
     uint256 constant ACTION_KEY = 2;
     uint256 constant CLAIM_SIGNER_KEY = 3;
@@ -11,7 +11,7 @@ contract ERC725KeyHolder {
 
     event KeyAdded(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);
     event KeyRemoved(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);
-    
+
     struct Key {
         uint256 purpose;
         uint256 keyType;
@@ -20,6 +20,6 @@ contract ERC725KeyHolder {
 
     function getKey(bytes32 _key) public view returns(uint256 purpose, uint256 keyType, bytes32 key);
     function getKeyPurpose(bytes32 _key) public view returns(uint256 purpose);
-    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys);
+    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] memory keys);
     function addKey(bytes32 _key, uint256 _purpose, uint256 _keyType) public returns (bool success);
 }
