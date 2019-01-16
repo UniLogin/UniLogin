@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
 import "./KeyHolder.sol";
 import "./ERC725.sol";
@@ -29,7 +29,7 @@ contract ERC725ApprovalScheme is KeyHolder, ERC725 {
         _;
     }
 
-    function getExecutionApprovals(uint id) public view returns(bytes32[]) {
+    function getExecutionApprovals(uint id) public view returns(bytes32[] memory) {
         return executions[id].approvals;
     }
 
@@ -38,32 +38,33 @@ contract ERC725ApprovalScheme is KeyHolder, ERC725 {
         requiredApprovals = _requiredApprovals;
     }
 
-    function execute(address _to, uint256 _value, bytes _data)
+    function execute(address _to, uint256 _value, bytes memory _data)
         public
-        onlyManagementOrActionKeys(bytes32(msg.sender))
+        onlyManagementOrActionKeys(bytes32(uint256(msg.sender)))
         returns(uint256 executionId)
     {
-        require(_to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
+        require(_to != address(this) || keyHasPurpose(bytes32(uint256(msg.sender)), MANAGEMENT_KEY), "Management key required for actions on identity");
         return addExecution(_to, _value, _data);
     }
 
     function approve(uint256 _id)
         public
-        onlyManagementOrActionKeys(bytes32(msg.sender))
-        onlyUnusedKey(_id, bytes32(msg.sender))
+        onlyManagementOrActionKeys(bytes32(uint256(msg.sender)))
+        onlyUnusedKey(_id, bytes32(uint256(msg.sender)))
         returns(bool shouldExecute)
     {
         require(executions[_id].to != address(0), "Invalid execution id");
-        require(executions[_id].to != address(this) || keyHasPurpose(bytes32(msg.sender), MANAGEMENT_KEY), "Management key required for actions on identity");
+        bool isManagmentAction = executions[_id].to != address(this) || keyHasPurpose(bytes32(uint256(msg.sender)), MANAGEMENT_KEY);
+        require(isManagmentAction, "Management key required for actions on identity");
 
-        executions[_id].approvals.push(bytes32(msg.sender));
+        executions[_id].approvals.push(bytes32(uint256(msg.sender)));
         if (executions[_id].approvals.length == requiredApprovals) {
             return doExecute(_id);
         }
         return false;
     }
 
-    function addExecution(address _to, uint256 _value, bytes _data) private returns(uint256 executionId) {
+    function addExecution(address _to, uint256 _value, bytes memory _data) private returns(uint256 executionId) {
         require(_to != address(0), "Invalid 'to' address");
         executions[executionNonce].to = _to;
         executions[executionNonce].value = _value;
@@ -77,16 +78,17 @@ contract ERC725ApprovalScheme is KeyHolder, ERC725 {
         }
         executionNonce++;
         return executionNonce - 1;
-    }    
+    }
 
     function doExecute(uint256 _id) private returns (bool success) {
+        bytes memory _data;
         /* solium-disable-next-line security/no-call-value */
-        success = executions[_id].to.call.value(executions[_id].value)(executions[_id].data);
+        (success, _data) = executions[_id].to.call.value(executions[_id].value)(executions[_id].data);
 
         if (success) {
             emit Executed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         } else {
             emit ExecutionFailed(_id, executions[_id].to, executions[_id].value, executions[_id].data);
         }
-    }       
+    }
 }

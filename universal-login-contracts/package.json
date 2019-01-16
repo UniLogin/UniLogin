@@ -14,7 +14,6 @@
         "clean": "rm -fr ./node_modules && rm -fr ./build"
     },
     "devDependencies": {
-        "ethereum-waffle": "2.0.0-beta.11",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
         "babel-eslint": "^9.0.0",
@@ -27,9 +26,10 @@
         "chai-as-promised": "^7.1.1",
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
+        "ethereum-waffle": "2.0.0-beta.11",
         "ganache-core": "^2.2.1",
         "mocha": "^5.2.0",
-        "openzeppelin-solidity": "^1.12.0",
+        "openzeppelin-solidity": "^2.1.1",
         "solium": "^1.1.8"
     }
 }
