@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.2;
 
 import "./ENS.sol";
 
@@ -87,18 +87,18 @@ contract PublicResolver {
      * @param node The node to update.
      * @param hash The multihash to set
      */
-    function setMultihash(bytes32 node, bytes hash) public only_owner(node) {
+    function setMultihash(bytes32 node, bytes memory hash) public only_owner(node) {
         records[node].multihash = hash;
         emit MultihashChanged(node, hash);
     }
-    
+
     /**
      * Sets the name associated with an ENS node, for reverse records.
      * May only be called by the owner of that node in the ENS registry.
      * @param node The node to update.
      * @param name The name to set.
      */
-    function setName(bytes32 node, string name) public only_owner(node) {
+    function setName(bytes32 node, string memory name) public only_owner(node) {
         records[node].name = name;
         emit NameChanged(node, name);
     }
@@ -111,14 +111,14 @@ contract PublicResolver {
      * @param contentType The content type of the ABI
      * @param data The ABI data.
      */
-    function setABI(bytes32 node, uint256 contentType, bytes data) public only_owner(node) {
+    function setABI(bytes32 node, uint256 contentType, bytes memory data) public only_owner(node) {
         // Content types must be powers of 2
         require(((contentType - 1) & contentType) == 0);
-        
+
         records[node].abis[contentType] = data;
         emit ABIChanged(node, contentType);
     }
-    
+
     /**
      * Sets the SECP256k1 public key associated with an ENS node.
      * @param node The ENS node to query
@@ -137,7 +137,7 @@ contract PublicResolver {
      * @param key The key to set.
      * @param value The text data value to set.
      */
-    function setText(bytes32 node, string key, string value) public only_owner(node) {
+    function setText(bytes32 node, string memory key, string memory value) public only_owner(node) {
         records[node].text[key] = value;
         emit TextChanged(node, key, key);
     }
@@ -148,7 +148,7 @@ contract PublicResolver {
      * @param key The text data key to query.
      * @return The associated text data.
      */
-    function text(bytes32 node, string key) public view returns (string) {
+    function text(bytes32 node, string memory key) public view returns (string memory) {
         return records[node].text[key];
     }
 
@@ -170,12 +170,12 @@ contract PublicResolver {
      * @return contentType The content type of the return value
      * @return data The ABI data
      */
-    function ABI(bytes32 node, uint256 contentTypes) public view returns (uint256 contentType, bytes data) {
+    function ABI(bytes32 node, uint256 contentTypes) public view returns (uint256 contentType, bytes memory data) {
         Record storage record = records[node];
         for (contentType = 1; contentType <= contentTypes; contentType <<= 1) {
             if ((contentType & contentTypes) != 0 && record.abis[contentType].length > 0) {
                 data = record.abis[contentType];
-                return;
+                return (contentType, data);
             }
         }
         contentType = 0;
@@ -187,7 +187,7 @@ contract PublicResolver {
      * @param node The ENS node to query.
      * @return The associated name.
      */
-    function name(bytes32 node) public view returns (string) {
+    function name(bytes32 node) public view returns (string memory) {
         return records[node].name;
     }
 
@@ -207,7 +207,7 @@ contract PublicResolver {
      * @param node The ENS node to query.
      * @return The associated multihash.
      */
-    function multihash(bytes32 node) public view returns (bytes) {
+    function multihash(bytes32 node) public view returns (bytes memory) {
         return records[node].multihash;
     }
 

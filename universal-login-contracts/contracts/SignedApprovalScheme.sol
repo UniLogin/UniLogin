@@ -1,13 +1,13 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
 import "./KeyHolder.sol";
-import "openzeppelin-solidity/contracts/ECRecovery.sol";
+import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
 contract SignedApprovalScheme is KeyHolder {
-    using ECRecovery for bytes32;
+    using ECDSA for bytes32;
     using SafeMath for uint;
 
     uint256 requiredApprovals;
@@ -40,7 +40,7 @@ contract SignedApprovalScheme is KeyHolder {
         _;
     }
 
-    function getExecutionApprovals(uint id) public view returns(bytes32[]) {
+    function getExecutionApprovals(uint id) public view returns(bytes32[] memory) {
         return executions[id].approvals;
     }
 
@@ -50,21 +50,21 @@ contract SignedApprovalScheme is KeyHolder {
     }
 
     function getSignerForExecutions(
-        address _to, address _from, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
+        address _to, address _from, uint256 _value, bytes memory _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes memory _messageSignature
         )
         public pure returns (bytes32)
     {
         bytes32 messageHash = keccak256(abi.encodePacked(_to, _from, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit));
-        return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
+        return bytes32(uint256(messageHash.toEthSignedMessageHash().recover(_messageSignature)));
     }
 
-    function getSignerForApprovals(uint256 _id, bytes _messageSignature) public pure returns(bytes32) {
+    function getSignerForApprovals(uint256 _id, bytes memory _messageSignature) public pure returns(bytes32) {
         bytes32 messageHash = keccak256(abi.encodePacked((_id)));
-        return bytes32(messageHash.toEthSignedMessageHash().recover(_messageSignature));
+        return bytes32(uint256(messageHash.toEthSignedMessageHash().recover(_messageSignature)));
     }
 
     function executeSigned(
-        address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes _messageSignature
+        address _to, uint256 _value, bytes memory _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit, bytes memory _messageSignature
         )
         public
         onlyManagementOrActionKeys(getSignerForExecutions(_to, address(this), _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit, _messageSignature))
@@ -76,7 +76,7 @@ contract SignedApprovalScheme is KeyHolder {
         return addSignedExecution(_to, _value, _data, _nonce, _gasToken, _gasPrice, _gasLimit);
     }
 
-    function approveSigned(uint256 _id, bytes _messageSignature)
+    function approveSigned(uint256 _id, bytes memory _messageSignature)
         public
         onlyManagementOrActionKeys(getSignerForApprovals(_id, _messageSignature))
         onlyUnusedKey(_id, getSignerForApprovals(_id, _messageSignature))
@@ -86,14 +86,14 @@ contract SignedApprovalScheme is KeyHolder {
         bytes32 signer = getSignerForApprovals(_id, _messageSignature);
         require(executions[_id].to != address(this) || keyHasPurpose(signer, MANAGEMENT_KEY), "Management key required for actions on identity");
 
-        executions[_id].approvals.push(bytes32(msg.sender));
+        executions[_id].approvals.push(bytes32(uint256(msg.sender)));
         if (executions[_id].approvals.length == requiredApprovals) {
             return doExecute(_id);
         }
         return false;
     }
 
-    function addSignedExecution(address _to, uint256 _value, bytes _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit)
+    function addSignedExecution(address _to, uint256 _value, bytes memory _data, uint256 _nonce, address _gasToken, uint _gasPrice, uint _gasLimit)
         private
         returns(uint256 executionId)
     {
@@ -119,8 +119,9 @@ contract SignedApprovalScheme is KeyHolder {
 
     function doExecute(uint256 _id) private returns (bool success) {
         uint256 startingGas = gasleft();
+        bytes memory _data;
         /* solium-disable-next-line security/no-call-value */
-        success = executions[_id].to.call.value(executions[_id].value)(executions[_id].data);
+        (success, _data) = executions[_id].to.call.value(executions[_id].value)(executions[_id].data);
         uint256 gasUsed = startingGas.sub(gasleft());
         if (success) {
             refund(_id, gasUsed);

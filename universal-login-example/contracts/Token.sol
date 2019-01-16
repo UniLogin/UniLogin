@@ -1,17 +1,16 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.2;
 
-import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-contract Token is StandardToken {
+
+contract Token is ERC20 {
     string public constant name = "UniversalLoginToken";
     string public constant symbol = "UNL";
     uint8 public constant decimals = 18;
 
-    uint256 public constant INITIAL_SUPPLY = 1000000000 * (10 ** uint256(decimals));
+    uint256 public constant INITIAL_SUPPLY = 10000 * (10 ** uint256(decimals));
 
     constructor() public {
-        totalSupply_ = INITIAL_SUPPLY;
-        balances[msg.sender] = INITIAL_SUPPLY;
-        emit Transfer(0x0, msg.sender, INITIAL_SUPPLY);
+        _mint(msg.sender, INITIAL_SUPPLY);
     }
 }
