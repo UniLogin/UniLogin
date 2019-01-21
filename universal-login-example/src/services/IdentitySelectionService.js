@@ -6,12 +6,14 @@ class IdentitySelectionService {
     this.sdk = sdk;
   }
 
-  isFullDomain(name) {
-    return name.endsWith('.eth') || name.endsWith('.test') || name.endsWith('.xyz');
+  isCorrectDomainPrefix(domain) {
+    return this.domains
+      .filter((element) => element.startsWith(domain))
+      .length > 0;
   }
 
-  countPeriods(name) {
-    return name.split('.').length - 1;
+  isCorrectTld(tld) {
+    return 'test'.startsWith(tld) || 'eth'.startsWith(tld) || 'xyz'.startsWith(tld);
   }
 
   isCorrectPrefix(prefix) {
@@ -23,13 +25,13 @@ class IdentitySelectionService {
       return false;
     }
     if (splitted.length > 1 && !/^[\w-]*$/.test(splitted[1])) {
-      return false;
+      return this.isCorrectDomain(splitted[1]);
     }
     if (splitted.length > 2) {
       if (splitted[1].length === 0) {
         return false;
       }
-      return 'test'.startsWith(splitted[2]) || 'eth'.startsWith(splitted[2]) || 'xyz'.startsWith(splitted[2]);
+      return this.isCorrectTld(splitted[2]);
     }
     return true;
   }
@@ -69,17 +71,29 @@ class IdentitySelectionService {
   }
 
   async getSuggestions(namePrefix) {
+    const splitted = namePrefix.split('.');
+    const [name, domain, tld] = splitted;
     if (!this.isCorrectPrefix(namePrefix)) {
       return {connections: [], creations: []};
-    } else if (this.isFullDomain(namePrefix)) {
-      return (await this.sdk.identityExist(namePrefix)) ? 
-        {connections: [namePrefix], creations: []} : 
-        {connections: [], creations: [namePrefix]};
-    } else  if (this.countPeriods(namePrefix) > 0) {
-      const [name, sldPrefix] = namePrefix.split('.');
-      return await this.getSuggestionsForNodeAndSldPrefix(name, sldPrefix);
+    } 
+    if (splitted.length === 1) {
+      return await this.getSuggestionsForNodePrefix(namePrefix);
+    } else if (splitted.length === 2) {
+      return this.isCorrectDomainPrefix(domain) ? 
+        await this.getSuggestionsForNodeAndSldPrefix(name, domain) : 
+        {connections: [], creations: []};
+    } else if (splitted.length === 3) {
+      if (!this.isCorrectDomainPrefix(`${domain}.`)) {
+        return {connections: [], creations: []};
+      } else if (this.isCorrectTld(tld)) {
+        if (tld.length < 3) {
+          return await this.getSuggestionsForNodeAndSldPrefix(name, domain);
+        } 
+        return (await this.sdk.identityExist(namePrefix)) ? 
+          {connections: [namePrefix], creations: []} : 
+          {connections: [], creations: [namePrefix]};
+      }  
     }
-    return await this.getSuggestionsForNodePrefix(namePrefix);
   }
 }
 

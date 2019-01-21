@@ -156,6 +156,16 @@ describe('IdentitySelectionService', () => {
       const service = new IdentitySelectionService({identityExist}, domains);
       expect(await service.getSuggestions('a')).to.deep.eq({connections: ['a.my.eth', 'a.app.eth'], creations: ['a.uni.eth']});
     });
+
+    it('invalid domain', async () => {
+      const identityExist = sinon.stub();
+      identityExist.withArgs('a.nothing.eth').returns(Promise.resolve(false));
+      identityExist.withArgs('a.nothing.eth').returns(Promise.resolve(false));
+      identityExist.withArgs('a.nothing.eth').returns(Promise.resolve(false));
+      const service = new IdentitySelectionService({identityExist}, domains);
+      expect(await service.getSuggestions('a.nothing.eth')).to.deep.eq({connections: [], creations: []});
+      expect(await service.getSuggestions('a.un.eth')).to.deep.eq({connections: [], creations: []});
+    });
   });
 
   describe('Prefix check', () => {
