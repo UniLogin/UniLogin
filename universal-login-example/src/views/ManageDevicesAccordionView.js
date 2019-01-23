@@ -7,19 +7,36 @@ class ManageDevicesAccordionView extends Component {
       <li key={index} className="device">
         <p className="device-name">{item.name}</p>
         <p className="device-status">{item.name}</p>
-        <button onClick={() => this.props.confirmAction()} className="device-btn icon-minus-circle" />
+        <button
+          onClick={() => this.props.removeDevice()}
+          className="device-btn icon-minus-circle"
+        />
       </li>
     ));
   }
 
   render() {
-    return <ul className="devices-list">{this.renderDevices()}</ul>;
+    return (
+      <ul className="devices-list">
+        <li key="this" className="device">
+          <p className="device-name">This Device</p>
+          <p className="device-status">Click to remove it</p>
+          <button
+            onClick={() => this.props.onDisconnectClick()}
+            className="device-btn icon-minus-circle"
+          />
+        </li>
+
+        {this.renderDevices()}
+      </ul>
+    );
   }
 }
 
 ManageDevicesAccordionView.propTypes = {
   devices: PropTypes.array,
-  confirmAction: PropTypes.func
+  removeDevice: PropTypes.func,
+  onDisconnectClick: PropTypes.func
 };
 
 export default ManageDevicesAccordionView;
