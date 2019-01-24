@@ -3,7 +3,7 @@ import Identity from 'universal-login-contracts/build/Identity';
 import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
 import calculateMessageSignature from 'universal-login-contracts/lib/calculateMessageSignature';
-import {resolveName, codeEqual} from './utils/ethereum';
+import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
@@ -116,7 +116,7 @@ class EthereumIdentitySDK {
 
   async identityExist(identity) {
     const identityAddress = await this.resolveName(identity);
-    if (identityAddress && codeEqual(Identity.evm.deployedBytecode.object, await this.provider.getCode(identityAddress))) {
+    if (identityAddress && await this.provider.getCode(identityAddress)) {
       return identityAddress;
     }
     return false;
