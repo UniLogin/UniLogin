@@ -3,6 +3,7 @@ yarn-error.log
 /.vscode
 /node_modules
 /universal-login-contracts/build/
+/universal-login-contracts/dist/
 /universal-login-contracts/node_modules
 /universal-login-contracts/yarn-error.log
 /universal-login-sdk/dist/
