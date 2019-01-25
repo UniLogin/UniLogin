@@ -25,7 +25,7 @@ class IdentitySelectionService {
       return false;
     }
     if (splitted.length > 1 && !/^[\w-]*$/.test(splitted[1])) {
-      return this.isCorrectDomain(splitted[1]);
+      return this.isCorrectDomainPrefix(splitted[1]);
     }
     if (splitted.length > 2) {
       if (splitted[1].length === 0) {
