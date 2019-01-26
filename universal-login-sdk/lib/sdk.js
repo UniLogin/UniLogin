@@ -34,9 +34,9 @@ class EthereumIdentitySDK {
     throw new Error(`${responseJson.error}`);
   }
 
-  async addKey(to, publicKey, privateKey, transactionDetails) {
+  async addKey(to, publicKey, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const key = addressToBytes32(publicKey);
-    const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, MANAGEMENT_KEY, ECDSA_TYPE]);
+    const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, keyPurpose, ECDSA_TYPE]);
     const message = {
       ...transactionDetails,
       to,
@@ -46,11 +46,11 @@ class EthereumIdentitySDK {
     return await this.execute(message, privateKey);
   }
 
-  async addKeys(to, publicKeys, privateKey, transactionDetails) {
+  async addKeys(to, publicKeys, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const keys = publicKeys.map((publicKey) => addressToBytes32(publicKey));
-    const keyRoles = new Array(publicKeys.length).fill(MANAGEMENT_KEY);
-    const keyTypes = new Array(publicKeys.length).fill(ECDSA_TYPE);
-    const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyTypes]);
+    const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
+    const keyPurposes = new Array(publicKeys.length).fill(ECDSA_TYPE);
+    const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyPurposes]);
     const message = {
       ...transactionDetails,
       to,

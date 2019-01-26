@@ -1,8 +1,9 @@
 import EthereumIdentitySDK from '../../lib/sdk';
 import {RelayerUnderTest} from 'universal-login-relayer';
 import {getWallets, deployContract} from 'ethereum-waffle';
-import {utils} from 'ethers';
+import {utils, ContractFactory} from 'ethers';
 import path from 'path';
+import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
 import {getKnexConfig} from 'universal-login-relayer/lib/utils/knexUtils';
@@ -21,7 +22,9 @@ export default async function basicIdentityService(wallet) {
   const mockToken = await deployContract(wallet, MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
-  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, relayer};
+  const factory = new ContractFactory(Identity.abi, Identity.bytecode, wallet);
+  const identity = await factory.attach(contractAddress);
+  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, identity, relayer};
 }
 
 export const transferMessage = {
