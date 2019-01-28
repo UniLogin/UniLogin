@@ -11,7 +11,6 @@ Creating an instance:
 
 
 The last parameter is message options and it is optional. If no message options provided, sdk use default message options:
-
 ::
   {
     gasPrice: 1000000000,

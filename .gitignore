@@ -2,7 +2,6 @@
 .idea
 /.vscode
 /docs/build/
-/docs/doctress/
 /node_modules
 /sdk/*
 /universal-login-boilerplate/.cache/*
