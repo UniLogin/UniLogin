@@ -4,6 +4,8 @@
 
 UniversalLogin is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
 
+This repository is a monorepo including sdk, relayer, smart contracts and example. Each public sub-package is independently published to NPM.
+
 ## Disclaimer
 
 This is a work in progress. Expect breaking changes. The code has not been audited and therefore can not be considered secure.
@@ -16,7 +18,7 @@ Technically Universal Login utilizes four major concepts:
 - Universal login - ability to use the wallet as authorization layer to numerous web applications dapps
 -
 ## Structure
-This repository is organised as monorepo.
+Packages maintained with this monorepo are listed below.
 
 - [Contracts](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
 - [Relayer](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) - allows to interact with blockchain
