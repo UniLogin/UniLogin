@@ -25,7 +25,7 @@ class ManageDevices extends Component {
         'If you don\'t have other working devices or recovery options, you will lose access to this account permanently. Costs 1 click'
       )
     ) {
-      // remove device
+      // TODO: actually key from the contract
     }
   }
 
