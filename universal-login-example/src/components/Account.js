@@ -4,7 +4,6 @@ import BackToAppBtn from './BackToAppBtn';
 import ProfileIdentity from './ProfileIdentity';
 import ManageDevicesAccordion from './ManageDevicesAccordion';
 import BackupCodeAccordionView from '../views/BackupCodeAccordionView';
-import Disconnect from '../views/Disconnect';
 import SettingsAccordion from './SettingsAccordion';
 import PropTypes from 'prop-types';
 
@@ -19,8 +18,14 @@ class Account extends Component {
   }
 
   onDisconnectClick() {
-    this.props.identityService.disconnect();
-    this.emitter.emit('setView', 'Login');
+    if (
+      confirm(
+        'ATTENTION: disconnecting this device without other backups will result in making your account permanently unacessible! Are you sure you want to proceed?'
+      )
+    ) {
+      this.props.identityService.disconnect();
+      this.emitter.emit('setView', 'Login');
+    }
   }
 
   render() {
@@ -37,14 +42,13 @@ class Account extends Component {
           />
           <hr className="separator" />
           <ManageDevicesAccordion
+            onDisconnectClick={this.onDisconnectClick.bind(this)}
             emitter={this.props.identityService.emitter}
           />
           <hr className="separator" />
           <BackupCodeAccordionView setView={this.setView.bind(this)} />
           <hr className="separator" />
           <SettingsAccordion />
-          <hr className="separator" />
-          <Disconnect onDisconnectClick={this.onDisconnectClick.bind(this)}/>
           <hr className="separator" />
         </div>
       </div>

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ContentContainer from './ContentContainer';
 import Services from '../services/Services';
-import Modals from './Modals';
 
 class App extends Component {
   constructor(props) {
@@ -21,8 +20,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ContentContainer services={this.services}/>
-        <Modals emitter={this.services.emitter} />
+        <ContentContainer services={this.services} />
       </div>
     );
   }

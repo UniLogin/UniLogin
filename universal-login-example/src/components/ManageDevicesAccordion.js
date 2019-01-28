@@ -4,23 +4,29 @@ import ManageDevicesAccordionView from '../views/ManageDevicesAccordionView';
 import PropTypes from 'prop-types';
 
 const devices = [
-  {
-    name: 'Safari on Mac OSX',
-    status: 'The current device'
-  },
-  {
-    name: 'Chrome on Windows',
-    status: 'Last seen: a few minutes ago'
-  },
-  {
-    name: 'Status app on iOS',
-    status: 'Last seen: 8 days ago'
-  }
+  // {
+  //   name: 'Mockup device',
+  //   status: 'Feature not ye'
+  // },
+  // {
+  //   name: 'Chrome on Windows',
+  //   status: 'Last seen: a few minutes ago'
+  // },
+  // {
+  //   name: 'Status app on iOS',
+  //   status: 'Last seen: 8 days ago'
+  // }
 ];
 
 class ManageDevices extends Component {
-  confirmAction() {
-    this.props.emitter.emit('showModal', 'devices');
+  removeDevice() {
+    if (
+      confirm(
+        'If you don\'t have other working devices or recovery options, you will lose access to this account permanently. Costs 1 click'
+      )
+    ) {
+      // remove device
+    }
   }
 
   render() {
@@ -32,7 +38,8 @@ class ManageDevices extends Component {
       >
         <ManageDevicesAccordionView
           devices={devices}
-          confirmAction={this.confirmAction.bind(this)}
+          removeDevice={this.removeDevice.bind(this)}
+          onDisconnectClick={this.props.onDisconnectClick.bind(this)}
         />
       </Collapsible>
     );
@@ -40,7 +47,7 @@ class ManageDevices extends Component {
 }
 
 ManageDevices.propTypes = {
-  emitter: PropTypes.object
+  onDisconnectClick: PropTypes.func
 };
 
 export default ManageDevices;
