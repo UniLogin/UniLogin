@@ -2,17 +2,20 @@
 
 # Ethereum UniversalLoginSDK
 
-Ethereum UniversalLoginSDK is composed of smart contracts, a js lib, and a relayer that help build applications using ERC [#725](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md), [#735](https://github.com/ethereum/EIPs/issues/735), [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078).
+UniversalLogin is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
+
+## Disclaimer
 
 This is a work in progress. Expect breaking changes. The code has not been audited and therefore can not be considered secure.
-Planned functionality for first release include:
 
-- Creating and managing identities
-- Multi-factor authentication
-- Universal login
-- Ether less transactions via relayer
-
-### Structure
+## Technical concepts
+Technically Universal Login utilizes four major concepts:
+- Personal multi-sig wallet - a smart contract used to store personal funds. A user gets his wallet created in a bearly noticeable manner. The user then gets engaged incrementally to add authorization factors and recovery options.
+- Meta-transactions - that give user ability to interact with his wallet from multiple devices easily, without a need to store ether on each of those devices. Meta-transactions, also allow paying for execution with tokens.
+- ENS names - naming your wallet with easy-to-remember human-readable name
+- Universal login - ability to use the wallet as authorization layer to numerous web applications dapps
+-
+## Structure
 This repository is organised as monorepo.
 
 - [Contracts](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
@@ -20,7 +23,9 @@ This repository is organised as monorepo.
 - [SDK](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
 - [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
 
-You can find below the diagram showing the internal dependencies among the Universal Login subsystems and the relevant external dependencies
+## Internal dependencies
+
+The diagram below shows the internal dependencies among the Universal Login subsystems and the relevant external dependencies.
 
 ![Diagrams](./modeling/subsystems.png)
 
