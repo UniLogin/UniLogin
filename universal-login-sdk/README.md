@@ -5,8 +5,8 @@
 To create a SDK instance:
 
 ```js
-import EthereumIdentitySDK from 'EthereumIdentitySDK';
-const sdk = new EthereumIdentitySDK(
+import EthereumLoginSDK from 'universal-login-sdk';
+const sdk = new EthereumLoginSDK(
   'https://relayer.ethworks.io',
   'https://etherscan.io/{yourapikey}'
 );
