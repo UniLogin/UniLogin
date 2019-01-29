@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.9
+    steps:
+      - checkout
+      - yarn
+      - yarn ci
