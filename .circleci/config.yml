@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:10.15
         environment:
@@ -14,10 +14,18 @@ jobs:
     steps:
       - checkout
       - run: yarn
-      - run: yarn ci
+      - run: yarn test
   lint:
     docker:
       - image: circleci/node:10.15
     steps:
       - checkout
+      - run: yarn
       - run: yarn lint
+workflows:
+  version: 2
+  universallogin:
+    jobs:
+      - lint
+      - test
+
