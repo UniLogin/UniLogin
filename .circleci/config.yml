@@ -5,5 +5,5 @@ jobs:
       - image: circleci/node:10.9
     steps:
       - checkout
-      - yarn
-      - yarn ci
+      - run: yarn
+      - run: yarn ci
