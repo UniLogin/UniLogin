@@ -3,7 +3,21 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.15
+        environment:
+          PG_HOST: localhost
+          PG_USER: ubuntu
+      - image: postgres:9.6-jessie
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: db_name
+
     steps:
       - checkout
       - run: yarn
       - run: yarn ci
+  lint:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: yarn lint
