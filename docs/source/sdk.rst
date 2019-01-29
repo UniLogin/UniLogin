@@ -11,7 +11,7 @@ Creating SDK
   Parameters:
     - **relayerURL** : string - URL address of relayer
     - **providerURL** : string - JSON-RPC URL of an Ethereum node
-    - messageOptions (optional) : JSON - specific message options as gasPrice or gasLimit
+    - **messageOptions** (optional) : JSON - specific message options as gasPrice or gasLimit
   Returns:
     UniversalLoginSDK instance
 
@@ -71,7 +71,7 @@ addKey
     - **publicKey** : string - public key to manage contract
     - **privateKey** : string - private key that has permission to add new keys
     - **transactionDetails** : JSON - refund options
-    - **keysPurpose** (optional) : constant - key purpose: MANAGEMENT, ACTION or CALIM, set to MANAGAMENT_KEY by default
+    - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
     `promise`, that resolves to execution nonce
 
@@ -104,7 +104,7 @@ addKeys
     - **publicKeys** : array of strings - public keys to add
     - **privateKey** : string - private key that has permission to add new keys
     - **transactionDetails** : JSON - refund options
-    - **keysPurpose** (optional) : constant - key purpose: MANAGEMENT, ACTION or CALIM, set to MANAGAMENT_KEY by default
+    - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
     `promise`, that resolves to execution nonce
 
@@ -200,7 +200,7 @@ execute
 
     
  
- In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``. 
+  In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``. 
 
     
 
