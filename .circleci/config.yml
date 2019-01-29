@@ -6,7 +6,7 @@ jobs:
         environment:
           PG_HOST: localhost
           PG_USER: ubuntu
-      - image: postgres:9.6-jessie
+      - image: circleci/postgres:9.6-alpine
         environment:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: db_name
