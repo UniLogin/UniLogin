@@ -19,7 +19,10 @@
   },
   "scripts": {
     "build": "yarn wsrun build --stages",
-    "clean": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules",
+    "test": "yarn wsrun test --stages --fast-exit",
+    "lint": "yarn wsrun lint --stages",
+    "ci": "yarn lint && yarn test",
+    "clean": "yarn wsrun clean",
     "postinstall": "yarn build"
   }, "engines": {
     "node": ">=10.9",
