@@ -12,4 +12,4 @@ before_install:
 install:
   - yarn install
 script:
-  - scripts/travis.sh
+  - yarn ci

@@ -3,6 +3,7 @@ pragma solidity ^0.5.2;
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
+/* solium-disable uppercase */
 contract MockToken is ERC20 {
     string public constant name = "MockToken";
     string public constant symbol = "Mock";

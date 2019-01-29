@@ -23,7 +23,7 @@
     "build": "yarn contracts:build && yarn relayer:build && parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js test/**/*.js",
     "test": "NODE_ENV=test mocha --recursive --require ./test/helpers/testNullCompiler.js --require babel-register test -t 10000",
-    "clean": "rm -fr ./node_modules &&rm -fr ./cache && rm -fr ./build && rm -fr ./dist",
+    "clean": "rm -fr ./node_modules && rm -fr ./cache && rm -fr ./build && rm -fr ./dist",
     "contracts:build": "waffle .waffle.js",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
     "dev:start": "babel-node scripts/dev-start.js",

@@ -29,7 +29,7 @@ Packages maintained with this monorepo are listed below.
 
 The diagram below shows the internal dependencies among the Universal Login subsystems and the relevant external dependencies.
 
-![Diagrams](./modeling/subsystems.png)
+![Diagrams](./docs/modeling/subsystems.png)
 
 The *external* interfaces present in the Universal Login system are identified by the lollipop use symbol:
 
@@ -86,24 +86,25 @@ Before you issue pull request:
 You can run lint via:
 
 ```sh
-./script/lint.sh
+yarn lint
 ```
 
 You can run tests:
 
 ```sh
-./scripts/test.sh
+yarn test
 ```
 
 You can ran full clean:
 ```sh
-./scripts/clean.sh
+yarn clean
 ```
 
 And you can emulate full CI process by:
 ```sh
+yarn clean
 yarn
-./scripts/travis.sh
+yarn ci
 ```
 
 ## License
