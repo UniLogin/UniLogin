@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/UniversalLogin/UniversalLoginSDK.svg?branch=master)](https://travis-ci.org/UniversalLogin/UniversalLoginSDK)
+[![CircleCI](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master.svg?style=svg)](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master)
 
 # Ethereum UniversalLoginSDK
 

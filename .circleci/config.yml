@@ -1,6 +1,13 @@
 version: 2
 jobs:
-  test:
+  test_contracts:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: yarn
+      - run: cd universal-login-contracts && yarn test
+  test_relayer:
     docker:
       - image: circleci/node:10.15
         environment:
@@ -10,11 +17,38 @@ jobs:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: universal_login_relayer_test
-
     steps:
       - checkout
       - run: yarn
-      - run: yarn test
+      - run: cd universal-login-relayer && yarn test
+  test_sdk:
+    docker:
+      - image: circleci/node:10.15
+        environment:
+          PG_HOST: localhost
+          PG_USER: postgres
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: universal_login_relayer_test
+    steps:
+      - checkout
+      - run: yarn
+      - run: cd universal-login-sdk && yarn test
+  test_example:
+    docker:
+      - image: circleci/node:10.15
+        environment:
+          PG_HOST: localhost
+          PG_USER: postgres
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: universal_login_relayer_test
+    steps:
+      - checkout
+      - run: yarn
+      - run: cd universal-login-example && yarn test
   lint:
     docker:
       - image: circleci/node:10.15
@@ -22,10 +56,14 @@ jobs:
       - checkout
       - run: yarn
       - run: yarn lint
+
 workflows:
   version: 2
-  universallogin:
+  universal_login_all:
     jobs:
+      - test_contracts
+      - test_relayer
+      - test_example
       - lint
-      - test
+
 
