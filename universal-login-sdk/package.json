@@ -1,9 +1,11 @@
 {
   "name": "universal-login-sdk",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "dist/sdk.js",
   "license": "MIT",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "deep-equal": "^1.0.1",
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
     "node-fetch": "^2.2.0",
@@ -23,7 +25,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
-    "deep-equal": "^1.0.1",
     "ethereum-waffle": "2.0.0-beta.11",
     "eslint": "^5.5.0",
     "eslint-plugin-import": "^2.14.0",
