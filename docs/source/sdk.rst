@@ -61,10 +61,10 @@ connect
 
 **sdk.connect(contractAddress)**
   
-  requests adding a new key to contract.  
+  requests of adding a new key to contract.  
 
   Parameters:
-    - **contractAddress** : string - address of contract to connect
+    - **contractAddress** : string - address of contract to manage a connect
   Returns: 
     `promise`, that resolves to ``privateKey``, where:
     
@@ -74,6 +74,26 @@ connect
     ::
 
       const privateKey = sdk.connect('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA');
+
+denyRequest
+^^^^^^^^^^^
+
+**sdk.denyRequest(contractAddress, publicKey)**
+
+  removes request of adding new key from pending authorisations.
+
+  Parameters:
+    - **contractAddress** : string - address of contract to remove request
+    - **publicKey** : string - address to remove from add requests
+  Returns:
+    `promise`, that resolves to ``publicKey``, where:
+
+    - *publicKey* - address removed from pending authorisations
+
+  Example:
+    ::
+
+      const publicKey = await sdk.denyRequest('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', '0xb19Ec9bdC6733Bf0c825FCB6E6Da95518DB80D13');
 
 
 Managing contract
@@ -104,7 +124,7 @@ addKey
         gasPrice: 1000000,
         gasLimit: 150000
       };
-      await sdk.addKeys(
+      await sdk.addKey(
         '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', 
         '0x96E8B90685AFD981453803f1aE2f05f8Ebc3cfD0', 
         '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74', 
