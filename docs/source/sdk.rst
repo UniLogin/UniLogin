@@ -11,7 +11,7 @@ Creating SDK
   Parameters:
     - **relayerURL** : string - URL address of relayer
     - **providerURL** : string - JSON-RPC URL of an Ethereum node
-    - **messageOptions** (optional) : JSON - specific message options as gasPrice or gasLimit
+    - **messageOptions** (optional) : object - specific message options as gasPrice or gasLimit
   Returns:
     UniversalLoginSDK instance
 
@@ -36,6 +36,9 @@ Creating SDK
 Creating contract
 -----------------
 
+create
+^^^^^^
+
 **sdk.create(ensName)**
 
   creates new wallet contract.
@@ -53,6 +56,24 @@ Creating contract
 
       const [privateKey, contractAddress] = await sdk.create('myname.example-domain.eth');
 
+connect
+^^^^^^^
+
+**sdk.connect(contractAddress)**
+  
+  requests adding a new key to contract.  
+
+  Parameters:
+    - **contractAddress** : string - address of contract to connect
+  Returns: 
+    `promise`, that resolves to ``privateKey``, where:
+    
+    - *privateKey* - private key that is requested to add to manage contract
+  
+  Example:
+    ::
+
+      const privateKey = sdk.connect('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA');
 
 
 Managing contract
@@ -70,7 +91,7 @@ addKey
     - **contractAddress** : string - address of contract that requests to add new key
     - **publicKey** : string - public key to manage contract
     - **privateKey** : string - private key that has permission to add new keys
-    - **transactionDetails** : JSON - refund options
+    - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
     `promise`, that resolves to execution nonce
@@ -103,7 +124,7 @@ addKeys
     - **contractAddress** : string - address of contract that requests to add keys
     - **publicKeys** : array of strings - public keys to add
     - **privateKey** : string - private key that has permission to add new keys
-    - **transactionDetails** : JSON - refund options
+    - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
     `promise`, that resolves to execution nonce
@@ -139,7 +160,7 @@ removeKey
     - **contractAddress** : string - address of contract, that we want remove key from
     - **publicKey** : string - public key to remove
     - **privateKey** : string - private key with permission of removing key
-    - **transactionDetails** : JSON - optional parameter, that includes details of transactions for example gasLimit or gasPrice
+    - **transactionDetails** : object - optional parameter, that includes details of transactions for example gasLimit or gasPrice
   Returns:
     `promise`, that resolves to execution nonce
 
@@ -167,7 +188,7 @@ execute
   executes any message.
 
   Parameters:
-    - **message** : JSON - message that is sent to contract, includes: 
+    - **message** : object - message that is sent to contract, includes: 
 
       * contractAddress : string - address of contract that requests execution
       * to : string - beneficient of this execution
@@ -202,6 +223,110 @@ execute
  
   In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``. 
 
+
+Events
+------
+
+**sdk.start()**
+
+  Starts to listen relayer and blockchain events.
+
+**sdk.stop()**
+
+  Stops to listen relayer and blockchain events.
+
+Subscribe Event
+^^^^^^^^^^^^^^^
+
+**sdk.subscribe(eventType, filter, callback)**
+
+  subscribes an event.
+
+  Parameters:
+    - **eventType** : string - type of event, possible event types: ``KeyAdded``, ``KeyRemoved`` and  ``AuthorisationsChanged``
+    - **filter** : object - filter for events, includes:
+
+      * contractAddress : string - address of contract to observe
+      * key (optional) : string - public key, using when subsrcibe only events with specific key
+    - **callback**
+  Returns:
+    event listener
+
+  Example:
+    .. code-block:: javascript
+
+      const filter = {
+        contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+        key: '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A'
+      };
+      const subscription = sdk.subscribe(
+        'KeyAdded', 
+        filter, 
+        (keyInfo) => {
+          console.log(`${keyInfo.key} was added.`); 
+          // 0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A was added
+        }
+      );
+
+    .. code-block:: javascript
+
+      const filter = {
+        contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA'
+      };
+      const subscription = sdk.subscribe(
+        'AuthorisationsChanged', 
+        filter, 
+        (authorisations) => {
+          console.log(`${authorisations}`); 
+          // [{deviceInfo: 
+          //    {
+          //      ipAddress: '89.67.68.130',
+          //      browser: 'Safari',
+          //      city: 'Warsaw'
+          //    }, 
+          //  id: 1, 
+          //  identityAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', 
+          //  key: ''}]
+        }
+      );
+
     
+Unsubscribe Event
+^^^^^^^^^^^^^^^^^
 
+**subscription.remove()**
 
+  removes subscription
+
+  Example: 
+    .. code-block:: javascript
+
+      const subscription = sdk.subscribe(
+        'KeyAdded', 
+        filter, 
+        (keyInfo) => {
+          subscription.remove();
+        }
+      );
+
+Example use of Events:
+^^^^^^^^^^^^^^^^^^^^^^
+
+  ::
+
+    import {Wallet} from 'ethers';
+
+    const privateKey = await sdk.connect('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA');
+    const wallet = new Wallet(privateKey);
+    const filter = {
+      contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+      key: wallet.address
+    };
+    const subscription = sdk.subscribe(
+      'KeyAdded', 
+      filter, 
+      (keyInfo) => {
+        this.myWallet = wallet;
+        subscription.remove();
+      }
+    );
