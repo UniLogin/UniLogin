@@ -29,6 +29,7 @@ Before running example app, you need you need to fill up example config file.
   module.exports = Object.freeze({
     jsonRpcUrl: process.env.JSON_RPC_URL,
     relayerUrl: process.env.RELAYER_URL,
+    ensAddress: process.env.ENS_ADDRESS,
     ensDomains: [process.env.ENS_DOMAIN_1, process.env.ENS_DOMAIN_2],
     clickerContractAddress: process.env.CLICKER_CONTRACT_ADDRESS,
     tokenContractAddress: process.env.TOKEN_CONTRACT_ADDRESS
@@ -39,6 +40,7 @@ To do this, add new file in `universal-login-example` directory and name it `.en
 ```
   JSON_RPC_URL='https://rinkeby.infura.io'
   RELAYER_URL='https://universal-login-relayer.herokuapp.com'
+  ENS_ADDRESS='0xe7410170f87102DF0055eB195163A03B7F2Bff4A'
   ENS_DOMAIN_1='poppularapp.test'
   ENS_DOMAIN_2='my-id.test'
   TOKEN_CONTRACT_ADDRESS='0x5F81E2afde8297F90b3F9179F8F3eA172f3155A8'

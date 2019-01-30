@@ -3,10 +3,12 @@ import FakeStorageService from '../fakes/FakeStorageService';
 
 class ServicesUnderTest extends Services {
   static async createPreconfigured(provider, relayer, clickerContractAddress, tokenContractAddress) {
+    const {ensAddress} = relayer.config.chainSpec;
     const ensDomains = Object.keys(relayer.config.ensRegistrars);
     const config = {
       jsonRpcUrl: 'http://localhost:8545',
       relayerUrl: relayer.url(),
+      ensAddress,
       ensDomains,
       clickerContractAddress,
       tokenContractAddress

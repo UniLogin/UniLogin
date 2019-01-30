@@ -24,7 +24,7 @@ class Services {
     this.emitter = new EventEmitter();
     this.provider = overrides.provider || new providers.JsonRpcProvider(this.config.jsonRpcUrl);
     this.sdk = new EthereumIdentitySDK(this.config.relayerUrl, this.provider);
-    this.ensService = new EnsService(this.sdk, this.provider);
+    this.ensService = new EnsService(this.sdk, this.provider, this.config);
     this.tokenService = new TokenService(this.config.tokenContractAddress, this.provider);
     this.storageService = overrides.storageService || new StorageService();
     this.identityService = new IdentityService(this.sdk, this.emitter, this.storageService, this.provider);
