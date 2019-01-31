@@ -8,7 +8,7 @@ class BlockchainObserver extends ObserverBase {
     this.provider = provider;
     this.identityInterface = new utils.Interface(Identity.interface);
     this.eventInterface = new utils.Interface(Identity.interface).events;
-    this.codec = new utils.AbiCoder();    
+    this.codec = new utils.AbiCoder();
   }
 
   async start() {
@@ -45,7 +45,8 @@ class BlockchainObserver extends ObserverBase {
     if (event.topics[0] === this.eventInterface[type].topic) {
       const args = this.identityInterface.parseLog(event);
       const {key, purpose, keyType} = args.values;
-      return {key: utils.hexStripZeros(key), keyType: keyType.toNumber(), purpose: purpose.toNumber()};
+      const keyWithoutZeros = key.substr(0,2) + key.substr(26, 67);
+      return {key: keyWithoutZeros, keyType: keyType.toNumber(), purpose: purpose.toNumber()};
     }
     throw `Not supported event with topic: ${event.topics[0]}`;
   }
