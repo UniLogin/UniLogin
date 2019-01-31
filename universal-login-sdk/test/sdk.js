@@ -6,10 +6,12 @@ import Identity from 'universal-login-contracts/build/Identity';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicSDK, {transferMessage} from './fixtures/basicSDK';
 import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY} from 'universal-login-contracts';
+import UniversalLoginSDK from '../lib/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
+const jsonRpcUrl = 'http://localhost:18545';
 const addressToBytes32 = (address) => utils.padZeros(utils.arrayify(address), 32);
 
 describe('SDK - integration', async () => {
@@ -32,6 +34,11 @@ describe('SDK - integration', async () => {
 
   describe('Create', async () => {
     describe('Initalization', () => {
+      it('creates provider from URL', () => {
+        const universalLoginSDK = new UniversalLoginSDK(relayer.url(), jsonRpcUrl);
+        expect(universalLoginSDK.provider.connection.url).to.eq(jsonRpcUrl);
+      });
+
       it('should return proper private key and address', async () => {
         [privateKey, contractAddress] = await sdk.create('test.mylogin.eth');
         expect(privateKey).to.be.properPrivateKey;
