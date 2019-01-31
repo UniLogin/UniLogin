@@ -117,4 +117,4 @@ To connect SDK to the Rinkeby testnet and the UniversalLoginRelayer:
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
 
-You can find example use of UniversalLoginSDK :ref:`here <linking-pages>`
+You can find example use of UniversalLoginSDK :ref:`here <sdk-example-testnet>`
