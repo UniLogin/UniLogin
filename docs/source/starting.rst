@@ -101,4 +101,20 @@ Running example
     - deploy ClickToken that can be used for transaction refund
     - setup HTTP server for example app at ``localhost:3000``
 
+Connecting SDK to testnet
+-------------------------
 
+To connect SDK to the Rinkeby testnet and the UniversalLoginRelayer:
+
+::
+
+  import UniversalLoginSDK from 'universal-login-sdk';
+  import ethers from 'ethers';
+
+  
+  const relayerUrl = 'https://universal-login-relayer.herokuapp.com';
+  const jsonRpcUrl = 'https://rinkeby.infura.io';
+
+  const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
+
+You can find example use of UniversalLoginSDK :ref:`here <linking-pages>`
