@@ -1,4 +1,4 @@
-import ethers, {utils, Wallet, Contract} from 'ethers';
+import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
@@ -11,7 +11,7 @@ import MESSAGE_DEFAULTS from './config';
 
 class EthereumIdentitySDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
-    this.provider = typeof(providerOrUrl) === 'string' ? new ethers.providers.JsonRpcProvider(providerOrUrl) : providerOrUrl;
+    this.provider = typeof(providerOrUrl) === 'string' ? new providers.JsonRpcProvider(providerOrUrl) : providerOrUrl;
     this.relayerUrl = relayerUrl;
     this.relayerObserver = new RelayerObserver(relayerUrl);
     this.blockchainObserver = new BlockchainObserver(this.provider);
