@@ -11,7 +11,7 @@ Creating SDK
   Parameters:
     - **relayerURL** : string - URL address of relayer
     - **providerURL** : string - JSON-RPC URL of an Ethereum node
-    - **messageOptions** (optional) : object - specific message options as gasPrice or gasLimit
+    - **messageOptions** (optional) : object - specific message options as ``gasPrice`` or ``gasLimit``
   Returns:
     UniversalLoginSDK instance
 
@@ -112,7 +112,7 @@ addKey
     - **publicKey** : string - public key to manage contract
     - **privateKey** : string - private key that has permission to add new keys
     - **transactionDetails** : object - refund options
-    - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
+    - **keysPurpose** (optional) : number - key purpose: MANAGEMENT_KEY - ``1``, ACTION_KEY - ``2``, set to MANAGAMENT_KEY by default
   Returns:
     `promise`, that resolves to execution nonce
 
@@ -255,8 +255,8 @@ Events
 
   Stops to listen relayer and blockchain events.
 
-Subscribe Event
-^^^^^^^^^^^^^^^
+Subscribe
+^^^^^^^^^
 
 **sdk.subscribe(eventType, filter, callback)**
 
@@ -284,10 +284,15 @@ Subscribe Event
         filter, 
         (keyInfo) => {
           console.log(`${keyInfo.key} was added.`); 
-          // 0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A was added
         }
       );
 
+    Result
+    ::
+
+      0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A was added
+  
+  Example:    
     .. code-block:: javascript
 
       const filter = {
@@ -298,21 +303,24 @@ Subscribe Event
         filter, 
         (authorisations) => {
           console.log(`${authorisations}`); 
-          // [{deviceInfo: 
-          //    {
-          //      ipAddress: '89.67.68.130',
-          //      browser: 'Safari',
-          //      city: 'Warsaw'
-          //    }, 
-          //  id: 1, 
-          //  identityAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', 
-          //  key: ''}]
         }
       );
 
+    Result
+    ::
+      
+      [{deviceInfo: 
+          {
+            ipAddress: '89.67.68.130',
+            browser: 'Safari',
+            city: 'Warsaw'
+          }, 
+        id: 1, 
+        identityAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', 
+        key: ''}]
     
-Unsubscribe Event
-^^^^^^^^^^^^^^^^^
+Unsubscribe
+^^^^^^^^^^^
 
 **subscription.remove()**
 
@@ -329,8 +337,8 @@ Unsubscribe Event
         }
       );
 
-Example use of Events:
-^^^^^^^^^^^^^^^^^^^^^^
+Example
+^^^^^^^
 
   ::
 
@@ -351,10 +359,10 @@ Example use of Events:
       }
     );
 
-.. _linking-pages:
+.. _sdk-example-testnet:
 
-Example use
-------------
+Example: connecting to testnet
+------------------------------
 
 Create wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^
