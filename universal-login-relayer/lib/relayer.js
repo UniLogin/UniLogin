@@ -34,6 +34,7 @@ class Relayer {
   async start() {
     if (await checkIfAllMigrated(this.database)) {
       this.runServer();
+      await this.ensService.start();
     } else {
       this.database.destroy();
       throw Error('You need to run migrations. Type `$ knex migrate:latest`');
@@ -47,7 +48,7 @@ class Relayer {
       origin : '*',
       credentials: true
     }));
-    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars);
+    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
     this.app.use(bodyParser.json());
