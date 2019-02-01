@@ -21,7 +21,7 @@ describe('Relayer - Identity routes', async () => {
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    relayer = await RelayerUnderTest.createPreconfigured(provider);  
     await relayer.start();
   });
 

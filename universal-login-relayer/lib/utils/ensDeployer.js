@@ -29,15 +29,13 @@ class ENSDeployer {
   async deployRegistrars(registrars, tld = 'eth') {
     const builder = new ENSBuilder(this.deployer);
     await builder.bootstrap();
-    this.variables.ENS_ADDRESS = builder.ens.address;
+    this.variables.ENS_ADDRESS = builder.ens.address;    
     await builder.registerTLD(tld);
     await builder.registerReverseRegistrar();
-    for (const domain of Object.keys(registrars)) {
+    for (let count = 0; count < registrars.length; count++) {
+      const domain = registrars[count];
       const [label, tld] = domain.split('.');
       await builder.registerDomain(label, tld);
-      this.variables[`ENS_REGISTRAR${this.count}_ADDRESS`] = builder.registrars[domain].address;
-      this.variables[`ENS_REGISTRAR${this.count}_PRIVATE_KEY`] = this.deployerPrivateKey;
-      this.variables[`ENS_RESOLVER${this.count}_ADDRESS`] = builder.resolver.address;
       this.count += 1;
     }
   }
