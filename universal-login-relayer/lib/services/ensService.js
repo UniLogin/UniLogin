@@ -20,7 +20,6 @@ class ENSService {
   }
 
   findRegistrar(domain) {
-    // const [, domain] = this.get2ndLevelDomainForm(ensName);
     return this.domainsInfo[domain] || null;
   }
 

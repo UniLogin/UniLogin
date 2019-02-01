@@ -20,31 +20,7 @@ const chainSpec = {
   chainId: 0
 };
 
-const config = Object.freeze({
-  jsonRpcUrl: 'http://${args.httpAddress}:18545',
-  port: 3311,
-  privateKey: defaultAccounts[0].secretKey,
-  chainSpec,
-  ensRegistrars: {
-    'mylogin.eth': {
-      resolverAddress: process.env.ENS_RESOLVER1_ADDRESS,
-      registrarAddress: process.env.ENS_REGISTRAR1_ADDRESS,
-      privteKey: process.env.ENS_REGISTRAR1_PRIVATE_KEY
-    },
-    'universal-id.eth': {
-      resolverAddress: process.env.ENS_RESOLVER2_ADDRESS,
-      registrarAddress: process.env.ENS_REGISTRAR2_ADDRESS,
-      privteKey: process.env.ENS_REGISTRAR2_PRIVATE_KEY
-    },
-    'popularapp.eth': {
-      resolverAddress: process.env.ENS_RESOLVER3_ADDRESS,
-      registrarAddress: process.env.ENS_REGISTRAR3_ADDRESS,
-      privteKey: process.env.ENS_REGISTRAR3_PRIVATE_KEY
-    }
-  }
-});
-
-const registrars = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
+const ensRegistrars = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
 /* eslint-disable no-console */
 class Deployer {
@@ -71,19 +47,13 @@ class Deployer {
 
   async deployENS() {
     const deployer = new ENSDeployer(this.provider, this.deployerPrivateKey);
-    console.log(registrars);
-    await deployer.deployRegistrars(registrars);
-    console.log('deplou')
+    await deployer.deployRegistrars(ensRegistrars);
     this.env = deployer.variables;
     let count = 1;
-    // for (const domain of Object.keys(config.ensRegistrars)) {
-    //   this.env[`ENS_DOMAIN_${count}`] = domain;
-    //   count += 1;
-    // }
-
-    registrars.map((domain) => {
+    ensRegistrars.map((domain) => {
       this.env[`ENS_DOMAIN_${count}`] = domain;
       count += 1;
+      return domain;
     });
     this.env.JSON_RPC_URL = this.ganacheUrl();
     this.config = Object.freeze({
@@ -95,7 +65,7 @@ class Deployer {
         publicResolverAddress: this.env.ENS_RESOLVER1_ADDRESS,
         chainId: 0
       },
-      ensRegistrars: registrars
+      ensRegistrars
     });
   }
 

@@ -27,32 +27,17 @@ class ENSDeployer {
   }
 
   async deployRegistrars(registrars, tld = 'eth') {
-    console.log('lolo')
     const builder = new ENSBuilder(this.deployer);
     await builder.bootstrap();
-    this.variables.ENS_ADDRESS = builder.ens.address;
-    
+    this.variables.ENS_ADDRESS = builder.ens.address;    
     await builder.registerTLD(tld);
     await builder.registerReverseRegistrar();
-    // for (const domain of Object.keys(registrars)) {
-    //   const [label, tld] = domain.split('.');
-    //   await builder.registerDomain(label, tld);
-    //   this.variables[`ENS_REGISTRAR${this.count}_ADDRESS`] = builder.registrars[domain].address;
-    //   this.variables[`ENS_REGISTRAR${this.count}_PRIVATE_KEY`] = this.deployerPrivateKey;
-    //   this.variables[`ENS_RESOLVER${this.count}_ADDRESS`] = builder.resolver.address;
-    //   this.count += 1;
-    // }
-
     for (let count = 0; count < registrars.length; count++) {
       const domain = registrars[count];
-      console.log('domain: ', domain);
       const [label, tld] = domain.split('.');
       await builder.registerDomain(label, tld);
-      // this.variables[`ENS_REGISTRAR${this.count}_ADDRESS`] = builder.registrars[domain].address;
-      // this.variables[`ENS_REGISTRAR${this.count}_PRIVATE_KEY`] = this.deployerPrivateKey;
-      // this.variables[`ENS_RESOLVER${this.count}_ADDRESS`] = builder.resolver.address;
       this.count += 1;
-    };
+    }
   }
 
   static async deploy(jsonRpcUrl, registrars, tld = 'eth') {
