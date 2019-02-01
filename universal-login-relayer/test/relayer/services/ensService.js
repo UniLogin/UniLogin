@@ -1,28 +1,23 @@
 import chai, {expect} from 'chai';
-import ENSService from '../../../lib/services/ensService';
+import buildEnsService from '../../helpers/buildEnsService';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 chai.use(require('chai-string'));
 
 describe('Relayer - ENSService', async () => {
-  let ensRegistrars;
   let ensService;
+  let provider;
+  let wallet;
+  let ensBuilder;
+  const domain = 'mylogin.eth';
 
   before(async () => {
-    ensRegistrars = {
-      'mylogin.eth': {
-        registrarAddress: '0x1',
-        resolverAddress: '0x2',
-        privateKey: '0x3'
-      },
-      'universal-id.eth': {
-        registrarAddress: '0x1',
-        resolverAddress: '0x2',
-        privateKey: '0x3'
-      }
-    };
-    ensService = new ENSService('0x4', ensRegistrars);
+    provider = createMockProvider();
+    [wallet] = await getWallets(provider);
+    [ensService, provider, ensBuilder] = await buildEnsService(wallet, domain);
+    await ensService.start();
   });
-
+  
   describe('get2ndLevelDomainForm', () => {
     it('simple', () => {
       expect(ensService.get2ndLevelDomainForm('alex.mylogin.eth'))
@@ -45,12 +40,11 @@ describe('Relayer - ENSService', async () => {
   });
 
   describe('findRegistrar', () => {
-    it('find proper registrar by ens name', async () => {
-      expect(ensService.findRegistrar('alex.mylogin.eth')).to.deep.eq(ensRegistrars['mylogin.eth']);
-      expect(ensService.findRegistrar('marek.mylogin.eth')).to.deep.eq(ensRegistrars['mylogin.eth']);
-      expect(ensService.findRegistrar('alex.universal-id.eth')).to.deep.eq(ensRegistrars['universal-id.eth']);
-      expect(ensService.findRegistrar('marek.and.friends.universal-id.eth')).to.deep.eq(ensRegistrars['universal-id.eth']);
-      expect(ensService.findRegistrar('universal-id.eth')).to.deep.eq(ensRegistrars['universal-id.eth']);
+    it('should find resolver and registrar addresses', async () => {
+      const registrarInBuilder = ensBuilder.registrars[`${domain}`].address;
+      const resolverInBuilder = ensBuilder.resolver.address;
+      expect(ensService.findRegistrar(domain).registrarAddress).to.eq(registrarInBuilder);
+      expect(ensService.findRegistrar(domain).resolverAddress).to.eq(resolverInBuilder);
     });
 
     it('return null if not found', async () => {

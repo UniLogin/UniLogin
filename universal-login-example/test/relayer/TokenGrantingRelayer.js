@@ -13,7 +13,6 @@ import {getKnex} from '../../src/relayer/utils';
 
 describe('Token Granting Relayer', async () => {
   let provider;
-  let deployerPrivateKey;
   let wallet;
   let relayer;
   let tokenContract;
@@ -26,7 +25,6 @@ describe('Token Granting Relayer', async () => {
   before(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
-    deployerPrivateKey = wallet.privateKey;
     tokenContract = await deployContract(wallet, Token, []);
     const defaultDomain = 'mylogin.eth';
     const ensBuilder = new ENSBuilder(wallet);
@@ -40,13 +38,7 @@ describe('Token Granting Relayer', async () => {
       chainSpec: {
         ensAddress,
         chainId: 0},
-      ensRegistrars: {
-        'mylogin.eth': {
-          registrarAddress: ensBuilder.registrars[defaultDomain].address,
-          resolverAddress: ensBuilder.resolver.address,
-          privateKey: deployerPrivateKey
-        }
-      },
+      ensRegistrars: ['mylogin.eth'],
       tokenContractAddress: tokenContract.address
     });
     const database = getKnex();
