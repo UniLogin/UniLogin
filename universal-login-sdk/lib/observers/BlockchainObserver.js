@@ -1,6 +1,7 @@
 import {utils} from 'ethers';
 import ObserverBase from './ObserverBase';
 import Identity from 'universal-login-contracts/build/Identity';
+import {getKeyFromData} from '../utils/utils';
 
 class BlockchainObserver extends ObserverBase {
   constructor(provider) {
@@ -45,8 +46,7 @@ class BlockchainObserver extends ObserverBase {
     if (event.topics[0] === this.eventInterface[type].topic) {
       const args = this.identityInterface.parseLog(event);
       const {key, purpose, keyType} = args.values;
-      const keyWithoutZeros = key.substr(0,2) + key.substr(26, 67);
-      return {key: keyWithoutZeros, keyType: keyType.toNumber(), purpose: purpose.toNumber()};
+      return {key: getKeyFromData(key), keyType: keyType.toNumber(), purpose: purpose.toNumber()};
     }
     throw `Not supported event with topic: ${event.topics[0]}`;
   }
