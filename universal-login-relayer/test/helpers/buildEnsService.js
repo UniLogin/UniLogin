@@ -7,13 +7,9 @@ const buildEnsService = async (wallet, domain) => {
   const [label, tld] = domain.split('.');
   const ensAddress = await ensBuilder.bootstrapWith(label, tld);
   const provider = withENS(wallet.provider, ensAddress);
-  const ensRegistrars = {
-    [domain]: {
-      registrarAddress: ensBuilder.registrars[domain].address,
-      resolverAddress: ensBuilder.resolver.address
-    }
-  };
-  const ensService = new ENSService(ensBuilder.ens.address, ensRegistrars);
+  const ensRegistrars = [domain];
+  const ensService = new ENSService(ensBuilder.ens.address, ensRegistrars, provider);
+  await ensService.start();
   return [ensService, provider, ensBuilder];
 };
 

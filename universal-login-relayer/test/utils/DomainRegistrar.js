@@ -80,15 +80,15 @@ describe('ENS register', async () => {
   describe('ENS Address registrar', async () => {
     let nameRegistrar;
     let domain;
-    let publicResolver;
+    let publicResolverContract;
 
     before(async () => {
       nameRegistrar = new ENSNameRegistrar(config, provider, nullConsole);
       label = 'justyna';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
-      [domain] = Object.keys(ensRegistrars);
+      [domain] = ensRegistrars;
       node = utils.namehash(`${label}.${domain}`);
-      publicResolver = new Contract(ensRegistrars[domain].resolverAddress, PublicResolver.interface, wallet);
+      publicResolverContract = new Contract(publicResolver, PublicResolver.interface, wallet);
       await nameRegistrar.prepareNameRegistration(domain);
     });
 
@@ -97,27 +97,27 @@ describe('ENS register', async () => {
       expect(await nameRegistrar.ens.owner(node)).to.eq(wallet.address);
     });
 
-    it('should ser resolver', async () => {
+    it('should set resolver', async () => {
       await nameRegistrar.setResolver(node, label, domain);
-      expect(await nameRegistrar.ens.resolver(node)).to.eq(ensRegistrars[domain].resolverAddress);
+      expect(await nameRegistrar.ens.resolver(node)).to.eq(publicResolver);
     });
 
     it('should set address', async () => {
       await nameRegistrar.setAddress(node, label, domain);
-      expect(await publicResolver.addr(node)).to.eq(wallet.address);
+      expect(await publicResolverContract.addr(node)).to.eq(wallet.address);
     });
 
     it('should set name', async () => {
       const reverseNode = utils.namehash(`${wallet.address.slice(2)}.addr.reverse`.toLowerCase());
       await nameRegistrar.setReverseName(label, domain);
-      expect(await publicResolver.name(reverseNode)).to.eq(`${label}.${domain}`);
+      expect(await publicResolverContract.name(reverseNode)).to.eq(`${label}.${domain}`);
     });
 
     it('start works', async () => {
       const reverseNode = utils.namehash(`${wallet.address.slice(2)}.addr.reverse`.toLowerCase());
       await nameRegistrar.start('justa', domain);
-      expect(await publicResolver.addr(utils.namehash(`justa.${domain}`))).to.eq(wallet.address);
-      expect(await publicResolver.name(reverseNode)).to.eq(`justa.${domain}`);
+      expect(await publicResolverContract.addr(utils.namehash(`justa.${domain}`))).to.eq(wallet.address);
+      expect(await publicResolverContract.name(reverseNode)).to.eq(`justa.${domain}`);
     });
   });
 });

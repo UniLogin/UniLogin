@@ -1,4 +1,5 @@
 import chai, {expect} from 'chai';
+import ENSService from '../../../lib/services/ensService';
 import buildEnsService from '../../helpers/buildEnsService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 

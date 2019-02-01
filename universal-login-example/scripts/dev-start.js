@@ -44,6 +44,7 @@ const config = Object.freeze({
   }
 });
 
+const registrars = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
 /* eslint-disable no-console */
 class Deployer {
@@ -70,13 +71,20 @@ class Deployer {
 
   async deployENS() {
     const deployer = new ENSDeployer(this.provider, this.deployerPrivateKey);
-    await deployer.deployRegistrars(config.ensRegistrars);
+    console.log(registrars);
+    await deployer.deployRegistrars(registrars);
+    console.log('deplou')
     this.env = deployer.variables;
     let count = 1;
-    for (const domain of Object.keys(config.ensRegistrars)) {
+    // for (const domain of Object.keys(config.ensRegistrars)) {
+    //   this.env[`ENS_DOMAIN_${count}`] = domain;
+    //   count += 1;
+    // }
+
+    registrars.map((domain) => {
       this.env[`ENS_DOMAIN_${count}`] = domain;
       count += 1;
-    }
+    });
     this.env.JSON_RPC_URL = this.ganacheUrl();
     this.config = Object.freeze({
       jsonRpcUrl: 'http://${args.httpAddress}:18545',
@@ -87,23 +95,7 @@ class Deployer {
         publicResolverAddress: this.env.ENS_RESOLVER1_ADDRESS,
         chainId: 0
       },
-      ensRegistrars: {
-        [this.env.ENS_DOMAIN_1]: {
-          resolverAddress: this.env.ENS_RESOLVER1_ADDRESS,
-          registrarAddress: this.env.ENS_REGISTRAR1_ADDRESS,
-          privteKey: this.env.ENS_REGISTRAR1_PRIVATE_KEY
-        },
-        [this.env.ENS_DOMAIN_2]: {
-          resolverAddress: this.env.ENS_RESOLVER2_ADDRESS,
-          registrarAddress: this.env.ENS_REGISTRAR2_ADDRESS,
-          privteKey: this.env.ENS_REGISTRAR2_PRIVATE_KEY
-        },
-        [this.env.ENS_DOMAIN_3]: {
-          resolverAddress: this.env.ENS_RESOLVER3_ADDRESS,
-          registrarAddress: this.env.ENS_REGISTRAR3_ADDRESS,
-          privteKey: this.env.ENS_REGISTRAR3_PRIVATE_KEY
-        }
-      }
+      ensRegistrars: registrars
     });
   }
 
