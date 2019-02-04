@@ -6,6 +6,7 @@ import ERC20 from 'universal-login-contracts/build/ERC20';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
 import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
+import {sleep} from 'universal-login-contracts';
 
 const {namehash} = utils;
 
@@ -13,9 +14,6 @@ const ether = '0x0000000000000000000000000000000000000000';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
@@ -105,15 +103,6 @@ const getDeployTransaction = (contractJSON, args = '') => {
   return transaction;
 };
 
-const waitToBeMined = async (provider, transaction, timeout = 1000) => {
-  let receipt = await provider.getTransactionReceipt(transaction.hash);
-  while (!receipt || !receipt.blockNumber) {
-    await sleep(timeout);
-    receipt = await provider.getTransactionReceipt(transaction.hash);
-  }
-  return receipt;
-};
-
 const saveVariables = (filename, _variables) => {
   const variables = Object.entries(_variables)
     .map(([key, value]) => `  ${key}='${value}'`)
@@ -131,4 +120,4 @@ const checkIfAllMigrated = async (database) => {
   return list[0].length === list[1].length;
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};

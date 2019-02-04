@@ -1,5 +1,6 @@
 import chai, {expect} from 'chai';
-import {waitUntil, getLogs, sleep} from '../utils';
+import {waitUntil, getLogs} from '../utils';
+import {sleep} from 'universal-login-contracts';
 import chaiAsPromised from 'chai-as-promised';
 import {convertIPv6ToIPv4, filterIP, debounce} from '../../src/utils';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
@@ -67,7 +68,7 @@ describe('Utils', async () => {
       await clickerContract.press();
       await expect(clickerContract.press())
         .to.emit(clickerContract, 'ButtonPress');
-      const actualLogs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress'); 
+      const actualLogs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress');
       expect(actualLogs[0]).to.deep.include({presser: wallet.address});
     });
   });

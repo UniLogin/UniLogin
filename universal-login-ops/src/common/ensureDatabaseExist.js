@@ -1,4 +1,5 @@
 const knex = require('knex');
+const {deepCopy} = require('../utils');
 
 async function getDatabase(connection, databaseName) {
   return connection
@@ -9,10 +10,6 @@ async function getDatabase(connection, databaseName) {
 
 async function createDatabase(connection, databaseName) {
   return connection.raw(`CREATE DATABASE ${databaseName};`);
-}
-
-function deepCopy(obj) {
-  return JSON.parse(JSON.stringify(obj));
 }
 
 const stripDatabaseFromConfig = (config) => {

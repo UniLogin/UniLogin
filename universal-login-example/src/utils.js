@@ -60,13 +60,10 @@ function debounce(func, waitTime = 0) {
   };
 }
 
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 const scrollTo = (x, y) => {
   if (navigator.userAgent.search('jsdom') < 0) {
     window.scrollTo(x, y);
   }
 };
 
-export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce, sleep, scrollTo};
+export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce, scrollTo};

@@ -2,4 +2,8 @@ function getNodeUrl(nodeConfig) {
   return `http://${nodeConfig.address}:${nodeConfig.port}`;
 }
 
-module.exports = {getNodeUrl};
+function deepCopy(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+module.exports = {getNodeUrl, deepCopy};
