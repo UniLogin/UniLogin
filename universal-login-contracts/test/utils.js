@@ -1,14 +1,10 @@
 import ethers, {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
-
-
-
+import {sleep} from '../lib/utils';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
 
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;

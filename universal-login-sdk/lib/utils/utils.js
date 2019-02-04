@@ -1,10 +1,8 @@
 import {utils, Contract} from 'ethers';
+import {sleep} from 'universal-login-contracts';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash) => {
   const {abi} = contractJSON;
@@ -25,4 +23,4 @@ const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick
 const getKeyFromData = (data) =>
   data.substr(0,2) + data.substr(26, 67);
 
-export {waitForContractDeploy, addressToBytes32, sleep, waitForTransactionReceipt, getKeyFromData};
+export {waitForContractDeploy, addressToBytes32, waitForTransactionReceipt, getKeyFromData};

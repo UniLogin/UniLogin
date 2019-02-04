@@ -1,4 +1,4 @@
-import {sleep} from '../utils/utils';
+import {sleep} from 'universal-login-contracts';
 import {EventEmitter} from 'fbemitter';
 
 class ObserverBase {
@@ -9,7 +9,7 @@ class ObserverBase {
   }
 
   subscribe(eventType, filter, callback) {
-    if (filter.key) { 
+    if (filter.key) {
       filter.key = filter.key.toLowerCase();
     }
     const filterString = JSON.stringify(filter);

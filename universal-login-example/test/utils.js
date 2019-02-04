@@ -1,10 +1,8 @@
 import {utils} from 'ethers';
+import {sleep} from 'universal-login-contracts';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitUntil = async (predicate, tick = 25, timeout = 2500, args = []) => {
   let elapsed = 0;
@@ -26,4 +24,4 @@ async function getLogs(provider, address, contractJson, eventName) {
   return events.map((event) => contractInterface.parseLog(event).values);
 }
 
-export {addressToBytes32, waitUntil, getLogs, sleep};
+export {addressToBytes32, waitUntil, getLogs};

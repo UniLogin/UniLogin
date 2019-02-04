@@ -1,11 +1,11 @@
-import {sleep} from '../utils';
+import {sleep} from 'universal-login-contracts';
 
 class EnsNameService {
   constructor(ensService, historyService, tick = 500) {
     this.ensService = ensService;
     this.historyService = historyService;
     this.running = false;
-    this.isWorking = false; 
+    this.isWorking = false;
     this.tick = tick;
   }
 
@@ -13,7 +13,7 @@ class EnsNameService {
     this.running = true;
     this.loop();
   }
-  
+
   async loop() {
     do {
       if (!this.isWorking) {

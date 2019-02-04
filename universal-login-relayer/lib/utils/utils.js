@@ -6,6 +6,7 @@ import ERC20 from 'universal-login-contracts/build/ERC20';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
 import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
+import {sleep} from 'universal-login-contracts';
 
 const {namehash} = utils;
 
@@ -13,9 +14,6 @@ const ether = '0x0000000000000000000000000000000000000000';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;

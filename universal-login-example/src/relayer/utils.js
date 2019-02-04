@@ -1,5 +1,6 @@
 import knex from 'knex';
 import knexConfig from './knexfile';
+import {sleep} from 'universal-login-contracts';
 
 const getNodeEnv = () => process.env.NODE_ENV || 'development';
 
@@ -12,9 +13,6 @@ const getKnexWithoutDatabase = () => {
   const newConfig = {...config, connection: {...config.connection, database: 'postgres'}};
   return knex(newConfig);
 };
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitToBeMined = async (provider, transactionHash, tick = 1000) => {
   let receipt = await provider.getTransactionReceipt(transactionHash);
