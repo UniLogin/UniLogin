@@ -103,15 +103,6 @@ const getDeployTransaction = (contractJSON, args = '') => {
   return transaction;
 };
 
-const waitToBeMined = async (provider, transaction, timeout = 1000) => {
-  let receipt = await provider.getTransactionReceipt(transaction.hash);
-  while (!receipt || !receipt.blockNumber) {
-    await sleep(timeout);
-    receipt = await provider.getTransactionReceipt(transaction.hash);
-  }
-  return receipt;
-};
-
 const saveVariables = (filename, _variables) => {
   const variables = Object.entries(_variables)
     .map(([key, value]) => `  ${key}='${value}'`)
@@ -129,4 +120,4 @@ const checkIfAllMigrated = async (database) => {
   return list[0].length === list[1].length;
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, waitToBeMined, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};

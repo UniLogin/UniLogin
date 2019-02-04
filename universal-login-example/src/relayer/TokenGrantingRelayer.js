@@ -1,4 +1,4 @@
-import {waitToBeMined} from './utils';
+import {waitToBeMined} from 'universal-login-contracts';
 import Token from '../../build/Token';
 import Relayer from 'universal-login-relayer';
 import {Wallet, utils, Contract} from 'ethers';
@@ -17,7 +17,7 @@ class TokenGrantingRelayer extends Relayer {
     this.hooks.addListener('created', async (transaction) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash);
       if (receipt.status) {
-        this.tokenContract.transfer(receipt.contractAddress, utils.parseEther('100'));  
+        this.tokenContract.transfer(receipt.contractAddress, utils.parseEther('100'));
       }
     });
 

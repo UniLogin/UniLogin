@@ -1,4 +1,4 @@
-const {waitToBeMined} = require('universal-login-relayer');
+const {waitToBeMined} = require('universal-login-contracts');
 const Token = require('../../build/Token');
 const Relayer = require('universal-login-relayer').default;
 const {Wallet, utils, Contract} = require('ethers');
@@ -9,6 +9,7 @@ class TokenGrantingRelayer extends Relayer {
     this.deployerPrivateKey = config.privateKey;
     this.tokenContractAddress = config.tokenContractAddress;
     this.deployerWallet = new Wallet(this.deployerPrivateKey, this.provider);
+    this.addHooks();
   }
 
   addHooks() {
