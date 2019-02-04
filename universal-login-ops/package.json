@@ -1,0 +1,24 @@
+{
+  "name": "universal-login-ops",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./scripts/dev.js",
+    "build": "echo universal-login-ops: Nothing to to do",
+    "test": "echo universal-login-ops: Nothing to to do",
+    "lint": "eslint src",
+    "clean": "rm -fr ./node_modules"
+  },
+  "dependencies": {
+    "knex": "^0.16.3",
+    "universal-login-contracts": "^0.1.0",
+    "universal-login-relayer": "^0.1.0",
+    "universal-login-sdk": "^0.1.0",
+    "yargs": "^12.0.5"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.13.0"
+  }
+}

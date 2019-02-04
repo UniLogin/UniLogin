@@ -1,5 +1,5 @@
 import ENSNameRegistrar from '../lib/utils/ENS/ENSNameRegistrar';
-import config from '../lib/config/relayer';
+import config from '../lib/config/ensRegistration';
 
 
 if (process.argv.length === 4) {
