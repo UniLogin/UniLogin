@@ -15,7 +15,7 @@ class ENSNameRegistrar extends ENSRegistrarBase {
 
   async setResolver(node, label, domain) {
     this.publicResolver = new Contract(this.resolverAddress, PublicResolver.interface, this.deployer);
-    const transaction = await this.ens.setResolver(node, this.publicResolver.address)
+    const transaction = await this.ens.setResolver(node, this.publicResolver.address);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${domain} set to: ${await this.ens.resolver(node)}`);
     this.variables.PUBLIC_RESOLVER_ADDRESS = this.resolverAddress;
