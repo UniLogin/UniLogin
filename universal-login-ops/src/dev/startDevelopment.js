@@ -8,15 +8,7 @@ const startRelayer = require('./startRelayer');
 const knex = require('knex');
 const {dirname, join} = require('path');
 
-const defaultNodeConfig = {
-  port: 18545,
-  address: process.argv.length > 2 ? process.argv[2] : 'localhost'
-};
-
-function getMigrationPath() {
-  const packagePath = require.resolve('universal-login-relayer/package.json');
-  return join(dirname(packagePath), 'migrations');
-}
+const ganachePort = 18545;
 
 const databaseConfig = {
   client: 'postgresql',
@@ -33,10 +25,6 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getNodeConfig() {
-  return defaultNodeConfig;
-}
-
 function getRelayerConfig(jsonRpcUrl, wallet, tokenContractAddress, ensAddress, ensRegistrars) {
   return {
     port: 3311,
@@ -51,10 +39,14 @@ function getRelayerConfig(jsonRpcUrl, wallet, tokenContractAddress, ensAddress, 
   };
 }
 
-async function startDevelopment() {
-  const config = getNodeConfig();
-  const jsonRpcUrl = await startGanache(config);
-  const provider = new providers.JsonRpcProvider(jsonRpcUrl, config.chainSpec);
+function getMigrationPath() {
+  const packagePath = require.resolve('universal-login-relayer/package.json');
+  return join(dirname(packagePath), 'migrations');
+}
+
+async function startDevelopment(nodeUrl) {
+  const jsonRpcUrl = nodeUrl ? nodeUrl : await startGanache(ganachePort);
+  const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployEns(ensDeployer, ensDomains);
   const tokenAddress = await deployToken(deployWallet);
