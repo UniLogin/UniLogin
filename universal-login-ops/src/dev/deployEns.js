@@ -1,4 +1,4 @@
-const ENSDeployer = require('universal-login-relayer/build/utils/ensDeployer');
+const ENSDeployer = require('universal-login-relayer/build/utils/ensDeployer').default;
 
 async function deployENS(wallet, registrars) {
   const deployer = new ENSDeployer(wallet.provider, wallet.privateKey);
