@@ -4,6 +4,13 @@ Relayer
 Starting relayer
 ----------------
 
+There are two ways to setup relayer :ref:`from command line<from-command-line>` and :ref:`programmatically<programmatically>`.
+
+If you would like to have your own domain, jump to the section :ref:`ENS registration<ens-registration>`
+To build custom relayer jump to :ref:`Custom relayer<custom-relayer>`
+
+.. _from-command-line:
+
 From command line
 ^^^^^^^^^^^^^^^^^
 
@@ -35,6 +42,7 @@ To start relayer from command line, download UniversalLoginSDK from github and:
 
     yarn relayer:start
 
+.. _programmatically:
 
 Programmatically
 ^^^^^^^^^^^^^^^^
@@ -92,59 +100,6 @@ Programmatically
       relayer.start();
 
 
-Personalised relayer
---------------------
-
-After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
-
-**this.hooks.addListener('eventType', callback)**
-
-  subscribes an event.
-
-  Parameters:
-    - **eventType** : string - type of event, possible event types: ``created``, ``added`` and  ``keysAdded``
-    - **callback**
-  Returns: 
-    event listener
-  In this example, we create token granting relayer, that gives tokens to wallet contract for creation, adding key or adding keys. 
-    ::
-
-      import ethers from 'ethers';
-      import waitToBeMined from 'universal-login-contracts';
-      import Token from './build/Token';
-
-      class TokenGrantingRelayer extends Relayer {
-        constructor(config, provider = '', database) {
-          super(config, provider, database);
-          this.tokenContractAddress = config.tokenContractAddress;
-          this.tokenContract = new ethers.Contract(this.tokenContractAddress, Token.interface, this.wallet);
-          this.addHooks();
-        }
-
-        addHooks() {
-          this.hooks.addListener('created', async (transaction) => {
-            const receipt = await waitToBeMined(this.provider, transaction.hash);
-            if (receipt.status) {
-              this.tokenContract.transfer(receipt.contractAddress, ethers.utils.parseEther('100'));
-            }
-          });
-
-          this.addKeySubscription = this.hooks.addListener('added', async (transaction) => {
-            const receipt = await waitToBeMined(this.provider, transaction.hash);
-            if (receipt.status) {
-              this.tokenContract.transfer(transaction.to, ethers.utils.parseEther('5'));
-            }
-          });
-
-          this.addKeysSubscription = this.hooks.addListener('keysAdded', async (transaction) => {
-            const recepit = await waitToBeMined(this.provider, transaction.hash);
-            if (recepit.status) {
-              this.tokenContract.transfer(transaction.to, ethers.utils.parseEther('15'));
-            }
-          });
-        }
-      }
-
 Example: connectiong to testnet 
   config.js file
 
@@ -177,6 +132,8 @@ Example: connectiong to testnet
     ENS_DOMAIN_1='poppularapp.test'
     ENS_DOMAIN_2='my-id.test'
     ENS_DOMAIN_3='my-super-domain.test'
+
+.. _ens-registration:
 
 ENS registration
 ----------------
@@ -271,3 +228,70 @@ Example:
     Address for justyna.cool-domain.test is 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18
     Reverse resolver for 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18 is 0x53350F4089B10E516c164497f395Dbbbc8675e20
     ENS name for 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18 is justyna.cool-domain.test
+
+
+
+.. _custom-relayer:
+
+Custom relayer
+--------------
+
+After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
+
+**this.hooks.addListener('eventType', callback)**
+
+  subscribes an event.
+
+  Parameters:
+    - **eventType** : string - type of event, possible event types: ``created``, ``added`` and  ``keysAdded``
+    - **callback**
+  Returns: 
+    event listener
+    
+  In this example, we create ether granting relayer, that gives tokens to wallet contract for creation, adding key or adding keys. 
+
+  ::
+
+    import ethers from 'ethers';
+    import waitToBeMined from 'universal-login-contracts';
+
+    class EtherGrantingRelayer extends Relayer {
+      constructor(config, provider = '', database) {
+        super(config, provider, database);
+        this.addHooks();
+      }
+
+      addHooks() {
+        this.hooks.addListener('created', async (transaction) => {
+          const receipt = await waitToBeMined(this.provider, transaction.hash);
+          if (receipt.status) {
+            this.wallet.sendTransaction({
+              to: receipt.contractAddress, 
+              value: ethers.utils.parseEther('0.01')
+            });
+          }
+        });
+
+        this.addKeySubscription = this.hooks.addListener('added', async (transaction) => {
+          const receipt = await waitToBeMined(this.provider, transaction.hash);
+          if (receipt.status) {
+            this.wallet.sendTransaction({
+              to: receipt.contractAddress, 
+              value: ethers.utils.parseEther('0.001')
+            });
+          }
+        });
+
+        this.addKeysSubscription = this.hooks.addListener('keysAdded', async (transaction) => {
+          const recepit = await waitToBeMined(this.provider, transaction.hash);
+          if (recepit.status) {
+            this.wallet.sendTransaction({
+              to: receipt.contractAddress, 
+              value: ethers.utils.parseEther('0.005')
+            });
+          }
+        });
+      }
+    }
+
+  Relayer will issue a new transaction after contract is deployed. Therefore ether/tokens will not appear instantly, but after a while.
