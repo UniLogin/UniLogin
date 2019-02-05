@@ -30,7 +30,7 @@ class RelayerUnderTest extends Relayer {
       ensRegistrars: [defaultDomain]
     };
     const database = knex(knexConfig);
-    const relayer = new RelayerUnderTest(config, providerWithENS, database);
+    const relayer = new RelayerUnderTest(config, database, providerWithENS);
     relayer.provider = providerWithENS;
     relayer.stop = async () => {
       await relayer.database.delete().from('authorisations');

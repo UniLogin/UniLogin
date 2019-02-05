@@ -22,7 +22,7 @@ function errorHandler (err, req, res, next) {
 }
 
 class Relayer {
-  constructor(config, provider = '', database) {
+  constructor(config, database, provider = '') {
     this.port = config.port || defaultPort;
     this.config = config;
     this.hooks = new EventEmitter();

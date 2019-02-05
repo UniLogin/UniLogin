@@ -4,8 +4,8 @@ const Relayer = require('universal-login-relayer').default;
 const {Wallet, utils, Contract} = require('ethers');
 
 class TokenGrantingRelayer extends Relayer {
-  constructor(config, provider = '', database) {
-    super(config, provider, database);
+  constructor(config, database, provider = '') {
+    super(config, database, provider);
     this.deployerPrivateKey = config.privateKey;
     this.tokenContractAddress = config.tokenContractAddress;
     this.deployerWallet = new Wallet(this.deployerPrivateKey, this.provider);

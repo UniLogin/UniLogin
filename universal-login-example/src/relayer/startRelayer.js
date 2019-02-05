@@ -5,6 +5,6 @@ require('dotenv').config();
 const config = require('./config');
 const db = getKnex();
 
-const relayer = new TokenGrantingRelayer(config, '', db);
+const relayer = new TokenGrantingRelayer(config, db, '');
 relayer.addHooks();
 relayer.database.migrate.latest().then(() => relayer.start());

@@ -5,5 +5,5 @@ require('dotenv').config();
 const config = require('./config/relayer');
 const database = getKnex(); 
 
-const relayer = new Relayer(config, '' , database);
+const relayer = new Relayer(config, database, '');
 relayer.start();
