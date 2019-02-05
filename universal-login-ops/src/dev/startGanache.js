@@ -1,14 +1,13 @@
 const {promisify} = require('util');
 const Ganache = require('ganache-core');
 const {defaultAccounts} = require('ethereum-waffle');
-const {getNodeUrl} = require('../utils');
 
-async function startGanache(config) {
+async function startGanache(port) {
   const options = {accounts: defaultAccounts};
   const server = Ganache.server(options);
   const listenPromise = promisify(server.listen);
-  await listenPromise(config.port);
-  const nodeUrl = getNodeUrl(config);
+  await listenPromise(port);
+  const nodeUrl = `http://localhost:${port}`;
   console.log(`Ganache up and running on ${nodeUrl}...`);
   return nodeUrl;
 }
