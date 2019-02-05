@@ -5,7 +5,7 @@ import {configure, mount} from 'enzyme';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicContracts from '../fixtures/basicContracts';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
-import {RelayerUnderTest} from 'universal-login-relayer/build';
+import RelayerUnderTest from 'universal-login-relayer/build/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
 import {getKnexConfig} from '../../src/relayer/utils';
 import App from '../../src/components/App';
