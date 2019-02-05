@@ -55,12 +55,12 @@ async function startDevelopment() {
   const config = getNodeConfig();
   const jsonRpcUrl = await startGanache(config);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl, config.chainSpec);
-  const [deployWallet, relayerWallet] = await getWallets(provider);
-  const ensAddress = await deployEns(deployWallet, ensDomains);
+  const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
+  const ensAddress = await deployEns(ensDeployer, ensDomains);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
-  const relayerConfig = getRelayerConfig(jsonRpcUrl, relayerWallet, tokenAddress, ensAddress, ensDomains);
-  await startRelayer(relayerConfig, knex(databaseConfig), relayerWallet);
+  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
+  await startRelayer(relayerConfig, knex(databaseConfig), deployWallet);
   return {jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains};
 }
 
