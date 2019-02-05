@@ -42,7 +42,7 @@ describe('Token Granting Relayer', async () => {
       tokenContractAddress: tokenContract.address
     });
     const database = getKnex();
-    relayer = new TokenGrantingRelayer(config, provider, database);
+    relayer = new TokenGrantingRelayer(config, database, provider);
     await relayer.database.migrate.latest({directory: path.join(__dirname, '../../../universal-login-relayer/migrations')});
     await relayer.start();
     relayer.addHooks();
