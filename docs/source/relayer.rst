@@ -98,6 +98,7 @@ Personalised relayer
 After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
 
 **this.hooks.addListener('eventType', callback)**
+
   subscribes an event.
 
   Parameters:
@@ -105,8 +106,7 @@ After every operations on contract, there is emitted an event. You can add liste
     - **callback**
   Returns: 
     event listener
-  In this example, we create token granting relayer, that gives tokens to wallet contract for creating itself, adding key or adding keys. 
-
+  In this example, we create token granting relayer, that gives tokens to wallet contract for creation, adding key or adding keys. 
     ::
 
       import ethers from 'ethers';
