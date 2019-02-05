@@ -95,7 +95,6 @@ Programmatically
 Personalised relayer
 --------------------
 
-Token granting relayer, that gives tokens to wallet contract for creating itself, adding key or adding keys. 
 After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
 
 **this.hooks.addListener('eventType', callback)**
@@ -106,14 +105,15 @@ After every operations on contract, there is emitted an event. You can add liste
     - **callback**
   Returns: 
     event listener
-  Example:
+  In this example, we create token granting relayer, that gives tokens to wallet contract for creating itself, adding key or adding keys. 
+
     ::
 
       import ethers from 'ethers';
       import waitToBeMined from 'universal-login-contracts';
       import Token from './build/Token';
 
-      class MyOwnRelayer extends Relayer {
+      class TokenGrantingRelayer extends Relayer {
         constructor(config, provider = '', database) {
           super(config, provider, database);
           this.tokenContractAddress = config.tokenContractAddress;
