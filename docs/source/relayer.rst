@@ -6,17 +6,19 @@ Starting relayer
 
 There are two ways to setup relayer :ref:`from command line<from-command-line>` and :ref:`programmatically<programmatically>`.
 
-If you would like to have your own domain, jump to the section :ref:`ENS registration<ens-registration>`
-To build custom relayer jump to :ref:`Custom relayer<custom-relayer>`
+If you would like to use your own domain, jump to the section :ref:`ENS registration<ens-registration>`
+To learn how to build custom relayer jump to :ref:`Custom relayer<custom-relayer>`
 
 .. _from-command-line:
 
 From command line
 ^^^^^^^^^^^^^^^^^
 
-To start relayer from command line, download UniversalLoginSDK from github and:
+To start relayer from command line, clone `UniversalLoginSDK <https://github.com/UniversalLogin/UniversalLoginSDK>`_ github repository and follow steps:
 
-1. Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env file with parameters:
+**1. Setup environment**
+
+Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env file with parameters:
 
   - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
   - **PORT** : number - relayer endpoint
@@ -36,7 +38,9 @@ To start relayer from command line, download UniversalLoginSDK from github and:
     ENS_DOMAIN_2='my-id.test'
     ENS_DOMAIN_3='my-super-domain.test'
 
-2. In universal-login-relayer directory type:
+**2. Run relayer**
+
+Run following command from ``universal-login-relayer`` directory
 
   ::
 
@@ -46,6 +50,8 @@ To start relayer from command line, download UniversalLoginSDK from github and:
 
 Programmatically
 ^^^^^^^^^^^^^^^^
+
+To run relayer from your application you will need to create a relayer instance. Relayer constructor documentation below.
 
 **new Relayer(config, provider, database)**
 
@@ -100,7 +106,8 @@ Programmatically
       relayer.start();
 
 
-Example: connectiong to testnet 
+Example: connecting to testnet 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   config.js file
 
   .. code-block:: javascript
@@ -138,7 +145,12 @@ Example: connectiong to testnet
 ENS registration
 ----------------
 
-This script registers new ENS domain. To use registered domain in your relayer, type its name in relayer config.
+To use UniversalLogin with your own ENS domain, you will need to register it, connect to the resolver and deploy own registrar. There is a script for that.
+
+`Note:` script currently works only for ``.test`` domains. Tested on the Rinkeby and the Ropsten test networks. 
+
+You can register domain on two ways: from command line and programmatically.
+To use registered domain in your relayer, type its name in relayer config.
 
 
 From command line
@@ -147,9 +159,9 @@ First, prepare ``.env`` file in universal-login-relayer directory.
 
 Parameters:
   - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
-  - **PRIVATE_KEY** : string - private key to execute registrations
-  - **ENS_ADDRESS** : strig - address of ENS 
-  - **PUBLIC_RESOLVER_ADDRESS** - address of public resolver
+  - **PRIVATE_KEY** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
+  - **ENS_ADDRESS** : string - address of ENS 
+  - **PUBLIC_RESOLVER_ADDRESS** : string - address of public resolver. For the Ropsten test network working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
 
   Example ``.env`` file:
 
@@ -233,15 +245,30 @@ To register own ENS domain programmatically, you should use DomainRegistrar.
 
       registrar.registerAndSave('new-domain', 'test');
 
+  Result:
+    ::
+
+        DOMAIN='extra-domain.test'
+        PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
+        REGISTRAR_ADDRESS='0xEe0b357352C7Ba455EFD0E20d192bC44F1Bf8d22'
 
 .. _custom-relayer:
 
 Custom relayer
 --------------
 
-Create custom relayer to grant tokens or ether.
+You can subclass relayer to create custom behaviot, e.g. a relayer that grants ether or tokens to a newly created wallet contract.
 
 After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
+
+Possible events:
+  - **created** - emitted on new contract creation
+  - **added** - emitted on add new key to manage contract
+  - **keysAdded** - emitted on add multiple keys to manage contract 
+
+`Note:` Events are emitted after send transaction, not when transaction is mined. You need to wait until it is mined. 
+
+Event returns transaction detalis as transaction hash.
 
 **this.hooks.addListener(eventType, callback)**
 
@@ -250,6 +277,7 @@ After every operations on contract, there is emitted an event. You can add liste
   Parameters:
     - **eventType** : string - type of event, possible event types: ``created``, ``added`` and  ``keysAdded``
     - **callback**
+
   Returns: 
     event listener
     
@@ -299,4 +327,6 @@ After every operations on contract, there is emitted an event. You can add liste
       }
     }
 
-  Relayer will issue a new transaction after contract is deployed. Therefore ether/tokens will not appear instantly, but after a while.
+  `Note:` Relayer will issue a new transaction after contract is deployed. Therefore ether/tokens will not appear instantly, but after a while.
+
+  You can also take a look at `TokenGrantingRelayer <https://github.com/UniversalLogin/UniversalLoginSDK/blob/9cb7d32f0ac1e76141c32c70dbeea37ab63f78b6/universal-login-ops/src/dev/TokenGrantingRelayer.js>`_ used in dev environment.
