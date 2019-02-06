@@ -27,7 +27,7 @@
         "eslint": "4.19.1",
         "eslint-plugin-import": "^2.13.0",
         "ethereum-waffle": "2.0.0-beta.11",
-        "ganache-core": "^2.2.1",
+        "ganache-core": "2.2.1",
         "mocha": "^5.2.0",
         "openzeppelin-solidity": "^2.1.1",
         "solium": "^1.1.8"

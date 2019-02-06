@@ -28,7 +28,7 @@
     "ethereum-waffle": "2.0.0-beta.11",
     "eslint": "^5.5.0",
     "eslint-plugin-import": "^2.14.0",
-    "ganache-core": "^2.2.1",
+    "ganache-core": "2.2.1",
     "mocha": "^5.2.0",
     "universal-login-relayer": "^0.1.6",
     "sinon": "^6.3.1",
