@@ -1,7 +1,7 @@
-UniversalLoginSDK
-=================
+SDK
+===
 
-UniversalLoginSDK is a JS library, that helps to communicate with relayer. SDK makes easy to manage contract, by creating basic contract-calling messages. It uses private key to sign that messages and sends it to relayer, which propagates it to network.
+SDK is a JS library, that helps to communicate with relayer. SDK makes easy to manage contract, by creating basic contract-calling messages. It uses private key to sign that messages and sends it to relayer, which propagates it to network.
 
 Creating SDK
 ------------
