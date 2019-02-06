@@ -23,7 +23,7 @@
     "test": "yarn wsrun test --stages --fast-exit",
     "lint": "yarn wsrun lint --stages",
     "ci": "yarn lint && yarn test",
-    "clean": "yarn wsrun clean",
+    "clean": "yarn wsrun clean && rm -fr node_modules",
     "postinstall": "yarn build"
   }, "engines": {
     "node": ">=10.9",
