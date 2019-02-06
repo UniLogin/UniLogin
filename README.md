@@ -6,7 +6,7 @@ Universal Login is a design pattern for storing funds and connecting to Ethereum
 
 This repository is a monorepo including sdk, relayer, smart contracts and example. Each public sub-package is independently published to NPM.
 
-Learn [documentation](https://universalloginsdk.readthedocs.io/en/latest/index.html)
+Learn [documentation](https://universalloginsdk.readthedocs.io/en/latest/index.html).
 
 ## Disclaimer
 
@@ -26,6 +26,7 @@ Packages maintained with this monorepo are listed below.
 - [Relayer](https://universalloginsdk.readthedocs.io/en/latest/relayer.html) - node.js server application that allows interacting with blockchain without a wallet
 - [SDK](https://universalloginsdk.readthedocs.io/en/latest/sdk.html) - a JS library, that helps to communicate with relayer
 - [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example application written in React
+- OPS - scripts for development and deployment 
 
 
 ## Contributing
