@@ -50,7 +50,7 @@ Programmatically
 **new Relayer(config, provider, database)**
 
   Parameters:
-    - **config** : object, specific config parameters, includes:
+    - **config** : object - specific config parameters, includes:
 
       - **legacyENS** : boolean - ENS version deployed on network, for the Rinkeby testnet is ``true``, for the Ropsten testnet is ``false``
       - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
@@ -137,31 +137,21 @@ Example: connectiong to testnet
 
 ENS registration
 ----------------
-Config file
-^^^^^^^^^^^
 
-Parameters: 
-  - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
-  - **privateKey** : string - private key to execute registrations
-  - **ensAddress** : string - address of ENS
-  - **publicResolverAddress** : string - address of public resolver
+This script registers new ENS domain. To use registered domain in your relayer, type its name in relayer config.
 
-Example:
-  config file: 
 
-  .. code-block:: javascript
+From command line
+^^^^^^^^^^^^^^^^^
+First, prepare ``.env`` file in universal-login-relayer directory. 
 
-    const ensRegistrationConfig = {
-      jsonRpcUrl: process.env.JSON_RPC_URL,
-      privateKey: process.env.PRIVATE_KEY,
-      chainSpec: {
-        ensAddress: process.env.ENS_ADDRESS,
-        publicResolverAddress: process.env.PUBLIC_RESOLVER_ADDRESS,
-        chainId: 0
-      }
-    }
+Parameters:
+  - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
+  - **PRIVATE_KEY** : string - private key to execute registrations
+  - **ENS_ADDRESS** : strig - address of ENS 
+  - **PUBLIC_RESOLVER_ADDRESS** - address of public resolver
 
-  env file:
+  Example ``.env`` file:
 
   ::
 
@@ -169,9 +159,6 @@ Example:
     PRIVATE_KEY='YOUR_PRIVATE_KEY'
     ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
-
-Register ENS domain
-^^^^^^^^^^^^^^^^^^^
 
 To register ENS domain, in universal-login-relayer directory type in the console:
 
@@ -183,12 +170,13 @@ Parameters:
   - **my-domain** - domain to register
   - **tld** - top level domain, for example: ``eth`` or on testnets: ``test``
 
-Example:
+  Example:
+
   ::
 
-    yarn register:domain awesome-app test
+    yarn register:domain cool-domain test
 
-  Result
+  Result:
 
   ::
 
@@ -200,41 +188,58 @@ Example:
     cool-domain.test owner set to: 0xf1Af1CCEEC4464212Fc7b790c205ca3b8E74ba67 (registrar)
 
 
-Register ENS name
-^^^^^^^^^^^^^^^^^
 
-To register ENS name, in universal-login-relayer directory type in the console:
+Programmatically
+^^^^^^^^^^^^^^^^
 
-  ::
+To register own ENS domain programmatically, you should use DomainRegistrar. 
 
-    yarn register:name name my-domain.test
+**new DomainRegistrar(config)**
+  creates DomainRegistrar.
 
-Parameters:
-  - **name** - name to register
-  - **my-domain.test** - existing domain
+Parameters: 
+  - **config** : object - specific config parameters, includes: 
+
+    - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
+    - **privateKey** : string - private key to execute registrations
+    - **ensAddress** : string - address of ENS
+    - **publicResolverAddress** : string - address of public resolver
+Returns:
+  DomainRegistrar instance
 
 Example:
   ::
 
-    yarn register:name justyna cool-domain.test
+    const ensRegistrationConfig = {
+      jsonRpcUrl: 'https://ropsten.infura.io',
+      privateKey: 'YOUR_PRIVATE_KEY',
+      chainSpec: {
+        ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
+        publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A',
+        chainId: 0
+      }
+    }
+    const registrar = new DomainRegistrar(ensRegistrationConfig);
 
-  Result 
+**registrar.registerAndSave(domain, tld)** 
+  registers new domain and saves to new file all informations about newly registered domain (registrar address or resolver address)
 
+Parameters:
+  - **domain** : string - domain to register
+  - **tld** : string - top level domain, for example: ``eth`` or on testnets: ``test``
+
+Example:
   ::
 
-    Registgering justyna.cool-domain.test...
-    Registered justyna.cool-domain.test with owner: 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18
-    Resolver for justyna.cool-domain.test set to: 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A
-    Address for justyna.cool-domain.test is 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18
-    Reverse resolver for 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18 is 0x53350F4089B10E516c164497f395Dbbbc8675e20
-    ENS name for 0xf4C1A210B6436eEe17fDEe880206E9d3Ab178c18 is justyna.cool-domain.test
-
+    registrar.registerAndSave('new-domain', 'test');
 
 
 .. _custom-relayer:
 
 Custom relayer
 --------------
+
+Create custom relayer to grant tokens or ether.
 
 After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
 
@@ -248,7 +253,7 @@ After every operations on contract, there is emitted an event. You can add liste
   Returns: 
     event listener
     
-  In this example, we create ether granting relayer, that gives tokens to wallet contract for creation, adding key or adding keys. 
+  In this example, we create ether granting relayer, that gives tokens to wallet contract for creation, adding key and adding keys. 
 
   ::
 
