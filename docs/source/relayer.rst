@@ -197,41 +197,41 @@ To register own ENS domain programmatically, you should use DomainRegistrar.
 **new DomainRegistrar(config)**
   creates DomainRegistrar.
 
-Parameters: 
-  - **config** : object - specific config parameters, includes: 
+  Parameters: 
+    - **config** : object - specific config parameters, includes: 
 
-    - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
-    - **privateKey** : string - private key to execute registrations
-    - **ensAddress** : string - address of ENS
-    - **publicResolverAddress** : string - address of public resolver
-Returns:
-  DomainRegistrar instance
+      - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
+      - **privateKey** : string - private key to execute registrations
+      - **ensAddress** : string - address of ENS
+      - **publicResolverAddress** : string - address of public resolver
+  Returns:
+    DomainRegistrar instance
 
-Example:
-  ::
+  Example:
+    ::
 
-    const ensRegistrationConfig = {
-      jsonRpcUrl: 'https://ropsten.infura.io',
-      privateKey: 'YOUR_PRIVATE_KEY',
-      chainSpec: {
-        ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
-        publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A',
-        chainId: 0
+      const ensRegistrationConfig = {
+        jsonRpcUrl: 'https://ropsten.infura.io',
+        privateKey: 'YOUR_PRIVATE_KEY',
+        chainSpec: {
+          ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
+          publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A',
+          chainId: 0
+        }
       }
-    }
-    const registrar = new DomainRegistrar(ensRegistrationConfig);
+      const registrar = new DomainRegistrar(ensRegistrationConfig);
 
 **registrar.registerAndSave(domain, tld)** 
   registers new domain and saves to new file all informations about newly registered domain (registrar address or resolver address)
 
-Parameters:
-  - **domain** : string - domain to register
-  - **tld** : string - top level domain, for example: ``eth`` or on testnets: ``test``
+  Parameters:
+    - **domain** : string - domain to register
+    - **tld** : string - top level domain, for example: ``eth`` or on testnets: ``test``
 
-Example:
-  ::
+  Example:
+    ::
 
-    registrar.registerAndSave('new-domain', 'test');
+      registrar.registerAndSave('new-domain', 'test');
 
 
 .. _custom-relayer:
@@ -243,7 +243,7 @@ Create custom relayer to grant tokens or ether.
 
 After every operations on contract, there is emitted an event. You can add listeners to this events and transfer funds for every operation.
 
-**this.hooks.addListener('eventType', callback)**
+**this.hooks.addListener(eventType, callback)**
 
   subscribes an event.
 
