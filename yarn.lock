@@ -3556,6 +3556,15 @@ ethereum-waffle@2.0.0-beta.11:
     ganache-core "2.2.1"
     solc "^0.5.1"
 
+ethereum-waffle@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.3.tgz#957d95eed9210e143bca4826e1eb16d5917ed6c9"
+  integrity sha512-8IpRUr6gHa9TRrAdYKmMue3dGpGaoqyqfC1+vsFVKax73hJPHQ0Owb0WzmUA3gVFweAhW3Huf6L6nTVP4sDf+w==
+  dependencies:
+    ethers "^4.0.0"
+    ganache-core "2.2.1"
+    solc "^0.5.1"
+
 ethereumjs-abi@0.6.5, ethereumjs-abi@^0.6.5:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.5.tgz#5a637ef16ab43473fa72a29ad90871405b3f5241"
