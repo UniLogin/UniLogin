@@ -1,10 +1,12 @@
 [![CircleCI](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master.svg?style=svg)](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master)
 
-# Ethereum UniversalLoginSDK
+# Ethereum Universal Login
 
-UniversalLogin is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
+Universal Login is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
 
 This repository is a monorepo including sdk, relayer, smart contracts and example. Each public sub-package is independently published to NPM.
+
+Learn [documentation](https://universalloginsdk.readthedocs.io/en/latest/index.html).
 
 ## Disclaimer
 
@@ -16,60 +18,15 @@ Technically Universal Login utilizes four major concepts:
 - Meta-transactions - that give user ability to interact with his wallet from multiple devices easily, without a need to store ether on each of those devices. Meta-transactions, also allow paying for execution with tokens.
 - ENS names - naming your wallet with easy-to-remember human-readable name
 - Universal login - ability to use the wallet as authorization layer to numerous web applications dapps
--
+
 ## Structure
 Packages maintained with this monorepo are listed below.
 
 - [Contracts](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
-- [Relayer](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) - allows to interact with blockchain
-- [SDK](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-sdk/README.md) - easy way to communicate with relayer by http protocol
-- [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example app, which shows how to use SDK
-
-## Internal dependencies
-
-The diagram below shows the internal dependencies among the Universal Login subsystems and the relevant external dependencies.
-
-![Diagrams](./docs/modeling/subsystems.png)
-
-The *external* interfaces present in the Universal Login system are identified by the lollipop use symbol:
-
-- _\<\<IF-6\>\>_ RELAYER HTTP JSON IF: this interface defines an off-chain remote API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078)
-- _\<\<IF-9\>\>_ ETH JSON-RPC IF: this interface is the Ethereum JSON-RPC API for the on-chain execution
-
-The *internal* interfaces defined within the Universal Login system are identified by the arrow use symbol. The main ones are:
-
-- _\<\<IF-2\>\>_ UL SDK IF: the JS applications using Universal Login shall be based on this library interface to conveniently attach to the [Relayer](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-relayer/README.md) subsystem and route their meta transactions
-- _\<\<IF-4\>\>_ ERC1077 SIG IF: this interface is a message hash and signature JS facility API for ERC [#1077](https://github.com/ethereum/EIPs/pull/1077)
-- _\<\<IF-5\>\>_ ERC1077 IF / ERC1078 IF: this interface is made up of ERC [#1077](https://github.com/ethereum/EIPs/pull/1077) and [#1078](https://github.com/ethereum/EIPs/pull/1078) smart contracts ABI
-
-
-## Quick start
-
-## Hacking
-To start hacking around go to [tutorial](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/Tutorial.md).
-To just see example in action follow the next section.
-
-## Quick example start
-
-Before running example, you have PostgreSQL installed, up and running.
-You might want to check database configuration in file `universal-login-example/src/relayer/knexfile.js` and make sure your database is configured correctly.
-
-To install dependencies and build projects run following commands from the main project directory:
-
-```sh
-yarn && yarn build
-```
-
-To run example:
-
-```sh
-cd universal-login-example
-yarn dev:start [hostAddress]
-```
-
-with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).
-
-[manual option](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md)
+- [Relayer](https://universalloginsdk.readthedocs.io/en/latest/relayer.html) - node.js server application that allows interacting with blockchain without a wallet
+- [SDK](https://universalloginsdk.readthedocs.io/en/latest/sdk.html) - a JS library, that helps to communicate with relayer
+- [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example application written in React
+- OPS - scripts for development and deployment 
 
 
 ## Contributing
