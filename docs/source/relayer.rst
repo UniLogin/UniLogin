@@ -246,6 +246,7 @@ To register own ENS domain programmatically, you should use DomainRegistrar.
       registrar.registerAndSave('new-domain', 'test');
 
   Result:
+    file named ``extra-domain.test_info`` that includes:
     ::
 
         DOMAIN='extra-domain.test'
@@ -266,9 +267,9 @@ Possible events:
   - **added** - emitted on add new key to manage contract
   - **keysAdded** - emitted on add multiple keys to manage contract 
 
-`Note:` Events are emitted after send transaction, not when transaction is mined. You need to wait until it is mined. 
+`Note:` Events are emitted right after send transaction, not when transaction is mined. You need to wait until it is mined (e.g. use waitToBeMined function). 
 
-Event returns transaction detalis as transaction hash.
+Event returns transaction detalis as transaction hash or gasPrice.
 
 **this.hooks.addListener(eventType, callback)**
 
