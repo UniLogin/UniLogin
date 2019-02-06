@@ -1,13 +1,40 @@
 Relayer
 =======
 
+Relayer is a node.js server application, that allows interacting with blockchain without wallet.
+
+If you would like to use your own domain, jump to the section :ref:`ENS registration<ens-registration>`.
+To learn how to build custom relayer jump to :ref:`Custom relayer<custom-relayer>`.
+
+
 Starting relayer
 ----------------
 
+
+Prerequisites
+^^^^^^^^^^^^^
+
+To run relayer in development mode and to run tests you need to have Postgres installed and running.
+You also need to have `universal_login_relayer_development` database created.
+
+You can do it in your favorite database UI, or from `psql`:
+
+  ::
+
+    psql
+    > create database universal_login_relayer_development;
+    > \q
+
+Then you need to migrate database: 
+
+  ::
+
+    yarn setup:db
+
+
+
 There are two ways to setup relayer :ref:`from command line<from-command-line>` and :ref:`programmatically<programmatically>`.
 
-If you would like to use your own domain, jump to the section :ref:`ENS registration<ens-registration>`
-To learn how to build custom relayer jump to :ref:`Custom relayer<custom-relayer>`
 
 .. _from-command-line:
 
