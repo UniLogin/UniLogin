@@ -1,5 +1,7 @@
 [![CircleCI](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master.svg?style=svg)](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master)
 
+![Universal-Login](./docs/source/static/logo.png)
+
 # Ethereum Universal Login
 
 Universal Login is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.

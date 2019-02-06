@@ -17,12 +17,12 @@ Technically Universal Login utilizes four major concepts:
 
 Components
 ^^^^^^^^^^
-UniversalLoginSDK has three components. All components are stored in one monorepo `available here <https://github.com/universallogin>`_.
+Universal Login has three components. All components are stored in one monorepo `available here <https://github.com/universallogin>`_.
 Components are listed below:
 
-- `Contracts <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts>`_ - smart contracts used by UniversalLogin, along with some helper functions
-- `Relayer <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-relayer>`_ - HTTP REST server that relays meta-transactions to UniversalLogin smart contracts
-- `SDK <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-sdk>`_ - pure javascript API, a thin communication layer that interacts with UniversalLogin ecosystem, via both relayer and Ethereum node.
+- `Contracts <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts>`_ - smart contracts used by Universal Login, along with some helper functions
+- `Relayer <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-relayer>`_ - HTTP REST server that relays meta-transactions to Universal Login smart contracts
+- `SDK <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-sdk>`_ - pure javascript API, a thin communication layer that interacts with Universal Login ecosystem, via both relayer and Ethereum node.
 
 Additionally, there is one more package in the repository:
 
@@ -104,7 +104,7 @@ Running example
 Connecting SDK to testnet
 -------------------------
 
-To connect SDK to the Rinkeby testnet and the UniversalLoginRelayer:
+To connect SDK to the Rinkeby testnet and the Relayer:
 
 ::
 
@@ -117,4 +117,4 @@ To connect SDK to the Rinkeby testnet and the UniversalLoginRelayer:
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
 
-You can find example use of UniversalLoginSDK :ref:`here <sdk-example-testnet>`
+You can find example use of SDK :ref:`here <sdk-example-testnet>`

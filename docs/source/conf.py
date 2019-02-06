@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u'Universal-Login'
+project = u'Universal Login'
 copyright = u'2019, Marek Kirejczyk, Justyna Broniszewska'
 author = u'Marek Kirejczyk, Justyna Broniszewska'
 

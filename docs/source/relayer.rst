@@ -174,7 +174,7 @@ Example: connecting to testnet
 ENS registration
 ----------------
 
-To use UniversalLogin with your own ENS domain, you will need to register it, connect to the resolver and deploy own registrar. There is a script for that.
+To use Universal Login with your own ENS domain, you will need to register it, connect to the resolver and deploy own registrar. There is a script for that.
 
 `Note:` script currently works only for ``.test`` domains. Tested on the Rinkeby and the Ropsten test networks. 
 
