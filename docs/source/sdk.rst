@@ -44,7 +44,7 @@ create
   creates new wallet contract.
   
   Parameters:
-    - **ensName** : string - choosen ENS name with existing domain
+    - **ensName** : string - choosen ENS name with existing domain (ENS domain supported by relayer)
   Returns:
     `promise`, that resolves to a pair ``[privateKey, contractAddress]``, where:
 
@@ -208,7 +208,7 @@ execute
   executes any message.
 
   Parameters:
-    - **message** : object - message that is sent to contract, includes: 
+    - **message** : object - message that is sent to contract, includes:
 
       * contractAddress : string - address of contract that requests execution
       * to : string - beneficient of this execution
@@ -217,7 +217,7 @@ execute
       * gasToken : string - token address to refund
       * gasPrice : number - price of gas to refund
       * gasLimit : number - limit of gas to refund
-    - **privateKey** : string - private key that has permission to execute message
+    - **privateKey** : string - a private key to be used to sign the transaction and has permission to execute message
   Returns:
     `promise`, that resolves to execution nonce
 
@@ -243,6 +243,21 @@ execute
  
   In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``. 
 
+
+**identityExists(ensName)**
+
+  checks if ENS name is registered.
+
+  Parameters:
+    - **ensName** : string - ENS name 
+
+  Returns:
+    `promise`, that resolves to ``address`` if ENS name is registered or ``false`` if ENS name is available
+
+  Example:
+    ::
+
+      const contractAddress = await sdk.identityExists('justyna.my-super-domain.test');
 
 Events
 ------
