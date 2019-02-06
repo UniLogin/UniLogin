@@ -10,6 +10,10 @@ This repository is a monorepo including sdk, relayer, smart contracts and exampl
 
 Learn [documentation](https://universalloginsdk.readthedocs.io/en/latest/index.html).
 
+## Documentation
+
+Documentation is available at [universalloginsdk.readthedocs.io](https://universalloginsdk.readthedocs.io/en/latest/index.html)
+
 ## Disclaimer
 
 This is a work in progress. Expect breaking changes. The code has not been audited and therefore can not be considered secure.

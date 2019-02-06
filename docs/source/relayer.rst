@@ -1,7 +1,9 @@
 Relayer
 =======
 
-Relayer is a node.js server application, that allows interacting with blockchain without wallet.
+Relayer is a RESTful JSON API server written in node.js and express.js, that allows interacting with wallet contract using meta-transactions. Relayer gets signed message and propagates it to the network. It pays for transactions and gets the refund from contracts. 
+
+Below are the instructions how to run relayer.
 
 If you would like to use your own domain, jump to the section :ref:`ENS registration<ens-registration>`.
 To learn how to build custom relayer jump to :ref:`Custom relayer<custom-relayer>`.
