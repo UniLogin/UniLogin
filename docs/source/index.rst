@@ -25,9 +25,9 @@ Universal Login is a work in progress and is at the experimental stage. Expect b
 
   starting.rst
   sdk.rst
-  example.rst
   relayer.rst
-
+  example.rst
+  
 
 Indices and tables
 ==================
