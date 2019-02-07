@@ -4,8 +4,8 @@ async function startRelayer(configuration, database, wallet) {
   const relayer = new TokenGrantingRelayer(configuration, database, wallet.provider);
   console.log('Migrating database...');
   await relayer.database.migrate.latest();
-  console.log(`Starting relayer on port ${configuration.port}...`);
   relayer.start();
+  console.log(`Relayer started on port ${configuration.port}...`);
   return relayer;
 }
 
