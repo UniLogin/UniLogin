@@ -27,8 +27,8 @@ class TokenGrantingRelayer extends Relayer {
     });
 
     this.addKeysSubscription = this.hooks.addListener('keysAdded', async (transaction) => {
-      const recepit = await waitToBeMined(this.provider, transaction.hash);
-      if (recepit.status) {
+      const receipt = await waitToBeMined(this.provider, transaction.hash);
+      if (receipt.status) {
         this.tokenContract.transfer(transaction.to, utils.parseEther('15'));
       }
     });
