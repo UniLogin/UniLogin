@@ -9,13 +9,11 @@ class TestHelper {
   }
 
   async snapshot() {
-    /* eslint-disable-next-line no-underscore-dangle */
     const sendAsync = promisify(this.provider._web3Provider.sendAsync);
     return sendAsync({method: 'evm_snapshot'});
   }
 
   async restore(snapshotId) {
-    /* eslint-disable-next-line no-underscore-dangle */
     const sendAsync = promisify(this.provider._web3Provider.sendAsync);
     const payload = {method: 'evm_revert', params: [snapshotId]};
     return sendAsync(payload);
@@ -23,7 +21,7 @@ class TestHelper {
 
   async lazyLoadDeployer() {
     if (!this.deployer) {
-      [,,,,,,,,,this.deployer] = await getWallets(this.provider);
+      [, , , , , , , , , this.deployer] = await getWallets(this.provider);
     }
   }
 

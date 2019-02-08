@@ -9,7 +9,9 @@
   "scripts": {
     "prepublishOnly": "rm -rf build dist && yarn build",
     "test": "mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
-    "lint": "eslint test && solium -d contracts",
+    "lint": "yarn lint:js && yarn lint:sol",
+    "lint:js": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "lint:sol": "solium -d contracts",
     "build": "waffle .waffle.js && tsc --build tsconfig.build.json",
     "deploy": "babel-node scripts/deployENS.js",
     "clean": "rm -fr ./node_modules && rm -fr ./build"

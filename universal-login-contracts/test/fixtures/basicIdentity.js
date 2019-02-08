@@ -31,7 +31,7 @@ export const transferMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };
 
 
@@ -43,7 +43,7 @@ export const failedTransferMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };
 
 export const callMessage = {
@@ -54,7 +54,7 @@ export const callMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };
 
 export const failedCallMessage = {
@@ -65,5 +65,5 @@ export const failedCallMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };

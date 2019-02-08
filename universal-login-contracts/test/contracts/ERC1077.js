@@ -80,8 +80,8 @@ describe('ERC1077', async  () => {
         msg.nonce,
         msg.gasPrice,
         msg.gasToken,
-        msg.gasLimit, 
-        0, 
+        msg.gasLimit,
+        0,
         signature);
       expect(recoveredAddress).to.eq(keyAsAddress);
     });
@@ -95,7 +95,7 @@ describe('ERC1077', async  () => {
         expect(await provider.getBalance(to)).to.eq(parseEther('1.0'));
         expect(await identity.lastNonce()).to.eq(1);
       });
-  
+
       it('emits ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msg);
         await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
@@ -109,19 +109,19 @@ describe('ERC1077', async  () => {
           signature = calculateMessageSignature(privateKey, msg);
 
           await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
-    
+
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
 
         it('should refund after execute transfer ethers', async () => {
           const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
-    
+
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
           const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
-    
+
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
-      });  
+      });
     });
 
     describe('failed execution of transafer', () => {
@@ -130,13 +130,13 @@ describe('ERC1077', async  () => {
         await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.be.revertedWith('Invalid nonce');
       });
-  
+
       it('nonce too high', async () => {
         msg = {...transferMessage, nonce: 2};
         await expect(identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
           .to.be.revertedWith('Invalid nonce');
       });
-        
+
       it('emits ExecutedSigned event', async () => {
         msg = {...failedTransferMessage, from: identity.address};
         signature = calculateMessageSignature(privateKey, msg);
@@ -150,12 +150,12 @@ describe('ERC1077', async  () => {
       it('should increase nonce, even if transfer fails', async () => {
         msg = {...failedTransferMessage, from: identity.address};
         signature = calculateMessageSignature(privateKey, msg);
-  
+
         await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
         expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
         expect(await identity.lastNonce()).to.eq(1);
       });
-      
+
       describe('Invalid signature', () => {
         it('no signature', async () => {
           await expect(identity.executeSigned(...getExecutionArgs(msg), [], overrideOptions))
@@ -163,12 +163,12 @@ describe('ERC1077', async  () => {
           expect(await identity.lastNonce()).to.eq(0);
           expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
         });
-    
+
         it('should be reverted', async () => {
           await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature, overrideOptions))
             .to.be.revertedWith('Invalid signature');
         });
-  
+
         it('shouldn`t transfer ethers', async () => {
           await expect(identity.executeSigned(...getExecutionArgs(msg), invalidSignature, overrideOptions))
             .to.be.revertedWith('Invalid signature');
@@ -186,11 +186,11 @@ describe('ERC1077', async  () => {
         it('should refund ether', async () => {
           msg = {...failedTransferMessage, from: identity.address};
           signature = calculateMessageSignature(privateKey, msg);
-  
+
           const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -204,7 +204,7 @@ describe('ERC1077', async  () => {
       });
     });
   });
-  
+
   describe('Call', async () => {
     let msgToCall;
     let signatureToCall;
@@ -214,13 +214,13 @@ describe('ERC1077', async  () => {
         msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
         signatureToCall = calculateMessageSignature(privateKey, msgToCall);
       });
-  
+
       it('called method', async () => {
         expect(await mockContract.wasCalled()).to.be.false;
         await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
         expect(await mockContract.wasCalled()).to.be.true;
       });
-      
+
       it('increase nonce', async () => {
         await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
         expect(await identity.lastNonce()).to.eq(1);
@@ -237,11 +237,11 @@ describe('ERC1077', async  () => {
         it('should refund ether', async () => {
           msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
-  
+
           const transaction = await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -286,7 +286,7 @@ describe('ERC1077', async  () => {
           const transaction = await identity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice)); 
+          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });

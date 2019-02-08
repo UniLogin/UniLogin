@@ -172,7 +172,7 @@ describe('Signed approval scheme', async () => {
           to: identity.address,
           data: executeData,
           gasPrice,
-          gasLimit
+          gasLimit,
         };
         const estimateGas = await provider.estimateGas(transaction);
         await identity.executeSigned(targetAddress, amount, data, 0, mockToken.address, gasPrice, gasLimit, signature);

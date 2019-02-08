@@ -25,6 +25,6 @@ export default async function basicIdentity(wallet: Wallet) {
   await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
   return {provider, identity, mockContract, wallet,
     targetWallet, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
-    fromManagementWallet, fromActionWallet, fromUnknownWallet
+    fromManagementWallet, fromActionWallet, fromUnknownWallet,
   };
 }
