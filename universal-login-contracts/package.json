@@ -16,6 +16,9 @@
     "clean": "rm -fr ./node_modules && rm -fr ./build"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "ethereum-waffle": "^2.0.4",

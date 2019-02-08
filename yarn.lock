@@ -202,6 +202,18 @@
   version "3.5.25"
   resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.25.tgz#59188b871208092e37767e4b3d80c3b3eaae43bd"
 
+"@types/chai-as-promised@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@types/chai-as-promised/-/chai-as-promised-7.1.0.tgz#010b04cde78eacfb6e72bfddb3e58fe23c2e78b9"
+  integrity sha512-MFiW54UOSt+f2bRw8J7LgQeIvE/9b4oGvwU7XW30S9QGAiHGnU/fmiOprsyMkdmH2rl8xSPc0/yrQw8juXU6bQ==
+  dependencies:
+    "@types/chai" "*"
+
+"@types/chai@*", "@types/chai@^4.1.7":
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.7.tgz#1b8e33b61a8c09cbe1f85133071baa0dbf9fa71a"
+  integrity sha512-2Y8uPt0/jwjhQ6EiluT0XCri1Dbplr0ZxfFXUz+ye13gaqE8u5gL5ppao1JrUYr9cIip5S6MvQzBS7Kke7U9VA==
+
 "@types/chai@4":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.5.tgz#6163dc60078d215ec46186dc76062ef6ed68d39c"
@@ -215,6 +227,11 @@
 "@types/cookiejar@*":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@types/cookiejar/-/cookiejar-2.1.0.tgz#4b7daf2c51696cfc70b942c11690528229d1a1ce"
+
+"@types/mocha@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.5.tgz#8a4accfc403c124a0bafe8a9fc61a05ec1032073"
+  integrity sha512-lAVp+Kj54ui/vLUFxsJTMtWvZraZxum3w3Nwkble2dNuV5VnPA+Mi2oGX9XYJAaIvZi3tn3cbjS/qcJXRb6Bww==
 
 "@types/node@*", "@types/node@^10.3.2":
   version "10.10.1"

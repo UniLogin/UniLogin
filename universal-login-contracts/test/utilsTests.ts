@@ -11,16 +11,11 @@ chai.use(solidity);
 const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('Tools test', async () => {
-  let provider;
-  let wallet;
+  const provider = createMockProvider();
+  const [wallet] = getWallets(provider);
   const value = utils.parseEther('0.1');
   const data = utils.hexlify(0);
   const nonce = 0;
-
-  before(async () => {
-    provider = createMockProvider();
-    [wallet] = await getWallets(provider);
-  });
 
   it('Should return correct message signature', async () => {
     const from = wallet.address;
