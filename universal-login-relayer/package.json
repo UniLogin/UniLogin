@@ -28,7 +28,7 @@
         "ens:deploy": "babel-node scripts/deployENS.js",
         "register:domain": "babel-node scripts/domainRegister.js",
         "register:name": "babel-node scripts/ENSNameRegister.js",
-        "clean": "rm -fr ./node_modules && rm -fr ./build",
+        "clean": "rm -fr node_modules build",
         "start": "node build/startRelayer.js",
         "setup:db": "knex migrate:latest",
         "setup:test:db": "NODE_ENV=test knex migrate:latest",

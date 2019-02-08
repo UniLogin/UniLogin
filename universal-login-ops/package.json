@@ -1,6 +1,6 @@
 {
   "name": "universal-login-ops",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -11,7 +11,8 @@
     "build": "echo universal-login-ops: Nothing to to do",
     "test": "echo universal-login-ops: Nothing to to do",
     "lint": "eslint src",
-    "clean": "rm -fr ./node_modules"
+    "clean": "rm -fr ./node_modules",
+    "test": "NODE_ENV=test mocha --recursive test -t 10000"
   },
   "dependencies": {
     "ethereum-waffle": "^2.0.3",
@@ -27,6 +28,7 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^5.13.0"
   }
 }

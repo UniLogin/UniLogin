@@ -9,13 +9,13 @@
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
     "node-fetch": "^2.2.0",
-    "universal-login-contracts": "0.1.3"
+    "universal-login-contracts": "^0.1.4"
   },
   "scripts": {
     "build": "babel lib --out-dir dist",
     "lint": "eslint lib test",
     "test": "NODE_ENV=test mocha --recursive --require babel-register test -t 10000",
-    "clean": "rm -fr ./node_modules && rm -fr ./dist"
+    "clean": "rm -fr node_modules dist"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
