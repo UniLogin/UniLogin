@@ -11,5 +11,9 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": [
+    "**/build",
+    "**/dist"
+  ]
 }
