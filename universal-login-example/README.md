@@ -17,7 +17,7 @@ To run example:
 
 ```sh
 cd universal-login-example
-yarn dev:start [hostAddress]
+yarn start:dev [hostAddress]
 ```
 
 with `hostAddress` being your machine address where the Universal Login service will be accessible via HTTP (default is `localhost`, only local browser will work).

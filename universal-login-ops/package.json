@@ -9,7 +9,6 @@
   "scripts": {
     "cli": "node ./scripts/cli",
     "build": "echo universal-login-ops: Nothing to to do",
-    "test": "echo universal-login-ops: Nothing to to do",
     "lint": "eslint src",
     "clean": "rm -fr ./node_modules",
     "test": "NODE_ENV=test mocha --recursive test -t 10000"

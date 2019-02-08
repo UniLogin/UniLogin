@@ -26,7 +26,7 @@ Running example
   ::
 
     cd universal-login-example
-    yarn dev:start [hostAddress]
+    yarn start:dev [hostAddress]
 
   Parameters:
     - *hostAddress* (optional) - is host address where the Universal Login relayer will be accessible via HTTP (default is localhost, only works in the local browser).

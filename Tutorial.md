@@ -12,7 +12,7 @@ yarn
 
 ```sh
 cd universal-login-example/
-yarn dev:start
+yarn start:dev
 ```
 
 This will do a number of things for you:

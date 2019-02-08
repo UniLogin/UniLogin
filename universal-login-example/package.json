@@ -26,7 +26,7 @@
     "clean": "rm -fr node_modules cache build dist",
     "contracts:build": "waffle .waffle.js",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
-    "dev:start": "babel-node scripts/dev-start.js",
+    "start:dev": "babel-node scripts/dev-start.js",
     "relayer:build": "babel src/relayer --out-dir dist/relayer",
     "relayer:start": "node dist/relayer/startRelayer.js"
   },
