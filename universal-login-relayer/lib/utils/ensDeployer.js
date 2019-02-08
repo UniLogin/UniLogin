@@ -13,7 +13,7 @@ class ENSDeployer {
     this.count = 1;
   }
 
-  /* eslint-disable no-console */ 
+  /* eslint-disable no-console */
   save(filename) {
     const content = Object.entries(this.variables)
       .map(([key, value]) => `${key}=${value}`)
@@ -29,7 +29,7 @@ class ENSDeployer {
   async deployRegistrars(registrars, tld = 'eth') {
     const builder = new ENSBuilder(this.deployer);
     await builder.bootstrap();
-    this.variables.ENS_ADDRESS = builder.ens.address;    
+    this.variables.ENS_ADDRESS = builder.ens.address;
     await builder.registerTLD(tld);
     await builder.registerReverseRegistrar();
     for (let count = 0; count < registrars.length; count++) {

@@ -11,7 +11,7 @@ export const request = (authorisationService) => async (req, res) => {
     city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
     os: req.useragent.os,
     browser: req.useragent.browser,
-    time: moment().format('h:mm')
+    time: moment().format('h:mm'),
   };
   const requestAuthorisation = {...req.body, deviceInfo};
   await authorisationService.addRequest(requestAuthorisation);
@@ -43,10 +43,10 @@ export default (authorisationService) => {
   router.post('/',
     asyncMiddleware(request(authorisationService)));
 
-  router.get('/:identityAddress', 
+  router.get('/:identityAddress',
     asyncMiddleware(getPending(authorisationService)));
 
-  router.post('/:identityAddress', 
+  router.post('/:identityAddress',
     asyncMiddleware(denyRequest(authorisationService)));
 
   return router;

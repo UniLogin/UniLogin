@@ -15,7 +15,7 @@ import {checkIfAllMigrated} from './utils/utils';
 const defaultPort = 3311;
 
 // eslint-disable-next-line no-unused-vars
-function errorHandler (err, req, res, next) {
+function errorHandler(err, req, res, next) {
   res.status(500)
     .type('json')
     .send(JSON.stringify({error: err.toString()}));
@@ -46,7 +46,7 @@ class Relayer {
     this.app.use(useragent.express());
     this.app.use(cors({
       origin : '*',
-      credentials: true
+      credentials: true,
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);

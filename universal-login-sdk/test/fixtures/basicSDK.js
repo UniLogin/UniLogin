@@ -6,7 +6,7 @@ import path from 'path';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
-import {getKnexConfig} from 'universal-login-relayer/lib/utils/knexUtils';
+import {getKnexConfig} from 'universal-login-relayer/build/utils/knexUtils';
 
 const config = getKnexConfig();
 config.migrations.directory = path.join(__dirname, '../../../node_modules/universal-login-relayer/migrations');

@@ -5,7 +5,7 @@ exports.up = async (knex) => {
     table.string('identityAddress').notNullable();
     table.string('key').notNullable();
     table.json('deviceInfo');
-  });  
+  });
 };
 
 exports.down = async (knex) => {

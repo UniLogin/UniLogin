@@ -26,7 +26,7 @@ class IdentityService {
       const deployTransaction = {
         ...defaultDeployOptions,
         ...overrideOptions,
-        ...new ContractFactory(this.abi, this.bytecode).getDeployTransaction(...args)
+        ...new ContractFactory(this.abi, this.bytecode).getDeployTransaction(...args),
       };
       const transaction = await this.wallet.sendTransaction(deployTransaction);
       this.hooks.emit('created', transaction);
@@ -42,7 +42,7 @@ class IdentityService {
         ...defaultDeployOptions,
         value: utils.parseEther('0'),
         to: message.from,
-        data
+        data,
       };
       const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
       if (utils.bigNumberify(message.gasLimit).gte(estimateGas)) {
@@ -57,7 +57,7 @@ class IdentityService {
           this.hooks.emit('keysAdded', sentTransaction);
           return sentTransaction;
         }
-        return await this.wallet.sendTransaction(transaction);
+        return this.wallet.sendTransaction(transaction);
       }
     }
     throw new Error('Not enough tokens');

@@ -25,9 +25,9 @@ class RelayerUnderTest extends Relayer {
       privateKey,
       chainSpec: {
         ensAddress: ensBuilder.ens.address,
-        chainId: 0
+        chainId: 0,
       },
-      ensRegistrars: [defaultDomain]
+      ensRegistrars: [defaultDomain],
     };
     const database = knex(knexConfig);
     const relayer = new RelayerUnderTest(config, database, providerWithENS);

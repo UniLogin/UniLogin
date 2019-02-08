@@ -100,7 +100,7 @@ describe('Relayer - IdentityService', async () => {
       beforeEach(async () => {
         const message =  {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = await calculateMessageSignature(wallet.privateKey, message);
-        
+
         await identityService.executeSigned({...message, signature});
       });
 
@@ -108,7 +108,7 @@ describe('Relayer - IdentityService', async () => {
         expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(ACTION_KEY);
         const message =  {...removeKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = await calculateMessageSignature(wallet.privateKey, message);
-        
+
         await identityService.executeSigned({...message, signature});
         expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(0);
       });

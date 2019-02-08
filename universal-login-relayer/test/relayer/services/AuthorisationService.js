@@ -37,7 +37,7 @@ describe('Authorisation Service', async () => {
     const identityAddress =  walletContract.address;
     const key = managementKey.address.toLowerCase();
     const request = {identityAddress, key, deviceInfo};
-    
+
     const [id] = await authorisationService.addRequest(request);
     const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});

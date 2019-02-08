@@ -25,7 +25,7 @@ describe('ENS register', async () => {
   let node;
   let labelHash;
   let config;
-  
+
 
   before(async () => {
     ({wallet, provider, ensAddress, ensRegistrars, publicResolver} = await testHelper.load(basicENS));
@@ -34,12 +34,12 @@ describe('ENS register', async () => {
       chainSpec: {
         ensAddress,
         publicResolverAddress: publicResolver,
-        chainId: 0
-      }
+        chainId: 0,
+      },
     };
   });
 
-  describe('DomainRegistrar', async () => { 
+  describe('DomainRegistrar', async () => {
     let domainRegistrar;
     const tld = 'eth';
 

@@ -17,7 +17,7 @@ describe('Tools test', async () => {
   let otherWallet;
   const ether = '0x0000000000000000000000000000000000000000';
   const gasLimit = 1000000;
-  
+
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
@@ -81,7 +81,7 @@ describe('Tools test', async () => {
       const keyRoles = new Array(keys.length).fill(MANAGEMENT_KEY);
       const keyTypes = new Array(keys.length).fill(ECDSA_TYPE);
       const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyTypes]);
-      expect(isAddKeysCall(data)).to.be.true; 
+      expect(isAddKeysCall(data)).to.be.true;
     });
 
     it('Should return false if no addKeys call', async () => {

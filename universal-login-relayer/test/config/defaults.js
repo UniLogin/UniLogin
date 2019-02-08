@@ -4,7 +4,7 @@ const defaultDeviceInfo = {
   city: 'Warsaw',
   os: 'MacOS',
   browser: 'Chrome',
-  time: '21:37'
+  time: '21:37',
 };
-  
+
 export default defaultDeviceInfo;
