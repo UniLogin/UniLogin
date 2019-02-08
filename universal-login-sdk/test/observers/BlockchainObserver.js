@@ -35,8 +35,8 @@ describe('SDK: BlockchainObserver', async () => {
     await mockToken.transfer(contractAddress, utils.parseEther('20'));
     const {address} = new Wallet(privateKey);
     const callback = sinon.spy();
-    const filter = {contractAddress, key: address};    
-    await blockchainObserver.subscribe('KeyAdded', filter, callback);    
+    const filter = {contractAddress, key: address};
+    await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await blockchainObserver.fetchEvents();
     expect(callback).to.have.been.calledWith({key: address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
   });

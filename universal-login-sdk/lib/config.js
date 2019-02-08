@@ -5,7 +5,7 @@ const MESSAGE_DEFAULTS = {
   gasLimit: 1000000,
   operationType: OPERATION_CALL,
   value: 0,
-  data: '0x0'
+  data: '0x0',
 };
 
 export default MESSAGE_DEFAULTS;

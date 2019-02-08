@@ -14,7 +14,6 @@ import {checkIfAllMigrated} from './utils/utils';
 
 const defaultPort = 3311;
 
-// eslint-disable-next-line no-unused-vars
 function errorHandler(err, req, res, next) {
   res.status(500)
     .type('json')

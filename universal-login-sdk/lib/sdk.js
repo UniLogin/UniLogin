@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
-import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
+import {OPERATION_CALL, MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
@@ -40,9 +40,9 @@ class EthereumIdentitySDK {
       ...transactionDetails,
       to,
       from: to,
-      data
+      data,
     };
-    return await this.execute(message, privateKey);
+    return this.execute(message, privateKey);
   }
 
   async addKeys(to, publicKeys, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
@@ -54,9 +54,9 @@ class EthereumIdentitySDK {
       ...transactionDetails,
       to,
       from: to,
-      data
+      data,
     };
-    return await this.execute(message, privateKey);
+    return this.execute(message, privateKey);
   }
 
   async removeKey(to, address, privateKey, transactionDetails) {
@@ -68,9 +68,9 @@ class EthereumIdentitySDK {
       from: to,
       value: 0,
       data,
-      operationType: OPERATION_CALL
+      operationType: OPERATION_CALL,
     };
-    return await this.execute(message, privateKey);
+    return this.execute(message, privateKey);
   }
 
   generatePrivateKey() {
@@ -94,7 +94,7 @@ class EthereumIdentitySDK {
     const finalMessage = {
       ...this.defaultPaymentOptions,
       ...message,
-      nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10)
+      nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10),
     };
     const signature = await calculateMessageSignature(privateKey, finalMessage);
     const body = JSON.stringify({...finalMessage, signature});
@@ -110,7 +110,7 @@ class EthereumIdentitySDK {
   async getNonce(identityAddress, privateKey) {
     const wallet = new Wallet(privateKey, this.provider);
     const contract = new Contract(identityAddress, Identity.interface, wallet);
-    return await contract.lastNonce();
+    return contract.lastNonce();
   }
 
   async identityExist(identity) {
