@@ -11,13 +11,8 @@ describe('Database integration', () => {
     relayer = await RelayerUnderTest.createPreconfigured(provider);
   });
 
-  it('won`t start if no migrations', async () => {
+  it('migrates after start', async () => {
     await relayer.database.migrate.rollback(relayer.database.config);
-    await expect(relayer.start()).to.be.eventually.rejectedWith('You need to run migrations. Type `$ knex migrate:latest`');
-  });
-
-  it('starts', async () => {
-    await relayer.database.migrate.latest();
     await expect(relayer.start()).to.not.be.rejected;
     await relayer.stop();
   });

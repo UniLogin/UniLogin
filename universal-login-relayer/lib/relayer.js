@@ -10,7 +10,6 @@ import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
-import {checkIfAllMigrated} from './utils/utils';
 
 const defaultPort = 3311;
 
@@ -31,13 +30,9 @@ class Relayer {
   }
 
   async start() {
-    if (await checkIfAllMigrated(this.database)) {
-      this.runServer();
-      await this.ensService.start();
-    } else {
-      this.database.destroy();
-      throw Error('You need to run migrations. Type `$ knex migrate:latest`');
-    }
+    this.database.migrate.latest();
+    this.runServer();
+    await this.ensService.start();
   }
 
   runServer() {
