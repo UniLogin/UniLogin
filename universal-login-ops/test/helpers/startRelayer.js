@@ -1,7 +1,6 @@
 const {deployContract} = require('ethereum-waffle');
 const Token = require('../../build/Token');
 const ENSBuilder = require('ens-builder');
-const path = require('path');
 const {getKnex} = require('./knex');
 
 const defaultDomain = 'mylogin.eth';
@@ -27,7 +26,6 @@ async function startRelayer(wallet, relayerConstructor) {
   });
   const database = getKnex();
   const relayer = new relayerConstructor(config, database, wallet.provider);
-  await relayer.database.migrate.latest({directory: path.join(__dirname, '../../../universal-login-relayer/migrations')});
   await relayer.start();
   return {relayer, tokenContract};
 }
