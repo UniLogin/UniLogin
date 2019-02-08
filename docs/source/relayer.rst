@@ -1,7 +1,9 @@
+.. _relayer:
+
 Relayer
 =======
 
-Relayer is a RESTful JSON API server written in node.js and express.js, that allows interacting with wallet contract using meta-transactions. Relayer gets signed message and propagates it to the network. It pays for transactions and gets the refund from contracts. 
+Relayer is a RESTful JSON API server written in node.js and express.js, that allows interacting with wallet contract using meta-transactions. Relayer gets signed message and propagates it to the network. It pays for transactions and gets the refund from contracts.
 
 Below are the instructions how to run relayer.
 
@@ -27,7 +29,7 @@ You can do it in your favorite database UI, or from `psql`:
     > create database universal_login_relayer_development;
     > \q
 
-Then you need to migrate database: 
+Then you need to migrate database:
 
   ::
 
@@ -113,8 +115,8 @@ To run relayer from your application you will need to create a relayer instance.
           chainId: 0
         },
         ensRegistrars: [
-          'poppularapp.test', 
-          'my-id.test', 
+          'poppularapp.test',
+          'my-id.test',
           'my-super-domain.test'
         ]
 
@@ -129,13 +131,13 @@ To run relayer from your application you will need to create a relayer instance.
           directory: path.join(__dirname, './node_modules/universal-login-relayer/migrations')
         }
       };
-    
+
       const database = knex(knexConfig);
       const relayer = new Relayer(config, '', database);
       relayer.start();
 
 
-Example: connecting to testnet 
+Example: connecting to testnet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   config.js file
 
@@ -151,8 +153,8 @@ Example: connecting to testnet
         chainId: 0
       },
       ensRegistrars: [
-        process.env.ENS_DOMAIN_1, 
-        process.env.ENS_DOMAIN_2, 
+        process.env.ENS_DOMAIN_1,
+        process.env.ENS_DOMAIN_2,
         process.env.ENS_DOMAIN_3
       ]
     }
@@ -176,7 +178,7 @@ ENS registration
 
 To use Universal Login with your own ENS domain, you will need to register it, connect to the resolver and deploy own registrar. There is a script for that.
 
-`Note:` script currently works only for ``.test`` domains. Tested on the Rinkeby and the Ropsten test networks. 
+`Note:` script currently works only for ``.test`` domains. Tested on the Rinkeby and the Ropsten test networks.
 
 You can register domain on two ways: from command line and programmatically.
 To use registered domain in your relayer, type its name in relayer config.
@@ -184,12 +186,12 @@ To use registered domain in your relayer, type its name in relayer config.
 
 From command line
 ^^^^^^^^^^^^^^^^^
-First, prepare ``.env`` file in universal-login-relayer directory. 
+First, prepare ``.env`` file in universal-login-relayer directory.
 
 Parameters:
   - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
   - **PRIVATE_KEY** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
-  - **ENS_ADDRESS** : string - address of ENS 
+  - **ENS_ADDRESS** : string - address of ENS
   - **PUBLIC_RESOLVER_ADDRESS** : string - address of public resolver. For the Ropsten test network working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
 
   Example ``.env`` file:
@@ -233,13 +235,13 @@ Parameters:
 Programmatically
 ^^^^^^^^^^^^^^^^
 
-To register own ENS domain programmatically, you should use DomainRegistrar. 
+To register own ENS domain programmatically, you should use DomainRegistrar.
 
 **new DomainRegistrar(config)**
   creates DomainRegistrar.
 
-  Parameters: 
-    - **config** : object - specific config parameters, includes: 
+  Parameters:
+    - **config** : object - specific config parameters, includes:
 
       - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
       - **privateKey** : string - private key to execute registrations
@@ -262,7 +264,7 @@ To register own ENS domain programmatically, you should use DomainRegistrar.
       }
       const registrar = new DomainRegistrar(ensRegistrationConfig);
 
-**registrar.registerAndSave(domain, tld)** 
+**registrar.registerAndSave(domain, tld)**
   registers new domain and saves to new file all informations about newly registered domain (registrar address or resolver address)
 
   Parameters:
@@ -294,9 +296,9 @@ After every operations on contract, there is emitted an event. You can add liste
 Possible events:
   - **created** - emitted on new contract creation
   - **added** - emitted on add new key to manage contract
-  - **keysAdded** - emitted on add multiple keys to manage contract 
+  - **keysAdded** - emitted on add multiple keys to manage contract
 
-`Note:` Events are emitted right after send transaction, not when transaction is mined. You need to wait until it is mined (e.g. use waitToBeMined function). 
+`Note:` Events are emitted right after send transaction, not when transaction is mined. You need to wait until it is mined (e.g. use waitToBeMined function).
 
 Event returns transaction detalis as transaction hash or gasPrice.
 
@@ -308,10 +310,10 @@ Event returns transaction detalis as transaction hash or gasPrice.
     - **eventType** : string - type of event, possible event types: ``created``, ``added`` and  ``keysAdded``
     - **callback**
 
-  Returns: 
+  Returns:
     event listener
-    
-  In this example, we create ether granting relayer, that gives tokens to wallet contract for creation, adding key and adding keys. 
+
+  In this example, we create ether granting relayer, that gives tokens to wallet contract for creation, adding key and adding keys.
 
   ::
 
@@ -329,7 +331,7 @@ Event returns transaction detalis as transaction hash or gasPrice.
           const receipt = await waitToBeMined(this.provider, transaction.hash);
           if (receipt.status) {
             this.wallet.sendTransaction({
-              to: receipt.contractAddress, 
+              to: receipt.contractAddress,
               value: ethers.utils.parseEther('0.01')
             });
           }
@@ -339,7 +341,7 @@ Event returns transaction detalis as transaction hash or gasPrice.
           const receipt = await waitToBeMined(this.provider, transaction.hash);
           if (receipt.status) {
             this.wallet.sendTransaction({
-              to: receipt.contractAddress, 
+              to: receipt.contractAddress,
               value: ethers.utils.parseEther('0.001')
             });
           }
@@ -349,7 +351,7 @@ Event returns transaction detalis as transaction hash or gasPrice.
           const recepit = await waitToBeMined(this.provider, transaction.hash);
           if (recepit.status) {
             this.wallet.sendTransaction({
-              to: receipt.contractAddress, 
+              to: receipt.contractAddress,
               value: ethers.utils.parseEther('0.005')
             });
           }
