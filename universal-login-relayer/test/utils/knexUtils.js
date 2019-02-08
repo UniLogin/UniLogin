@@ -7,12 +7,12 @@ describe('Knex utils', () => {
       process.env.NODE_ENV = 'test';
       expect(getNodeEnv()).to.eq('test');
     });
-  
+
     it('should return development if no node env', () => {
       process.env.NODE_ENV = '';
       expect(getNodeEnv()).to.eq('development');
     });
-  
+
     it('should return development if development node env', () => {
       process.env.NODE_ENV = 'development';
       expect(getNodeEnv()).to.eq('development');

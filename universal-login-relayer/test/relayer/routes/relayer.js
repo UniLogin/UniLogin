@@ -20,7 +20,7 @@ describe('Relayer - Identity routes', async () => {
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured(provider);  
+    relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
   });
 
@@ -29,7 +29,7 @@ describe('Relayer - Identity routes', async () => {
       .post('/identity')
       .send({
         managementKey: wallet.address,
-        ensName: 'marek.mylogin.eth'
+        ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
     contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
@@ -47,15 +47,15 @@ describe('Relayer - Identity routes', async () => {
 
     it('Execute signed transfer', async () => {
       const msg = {
-        from: contract.address, 
-        to: otherWallet.address, 
-        value: 1000000000, 
-        data: [], 
-        nonce: 0, 
-        gasToken: token.address, 
-        gasPrice: 110000000, 
-        gasLimit: 1000000, 
-        operationType: OPERATION_CALL
+        from: contract.address,
+        to: otherWallet.address,
+        value: 1000000000,
+        data: [],
+        nonce: 0,
+        gasToken: token.address,
+        gasPrice: 110000000,
+        gasLimit: 1000000,
+        operationType: OPERATION_CALL,
       };
       const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
       const signature = await calculateMessageSignature(wallet.privateKey, msg);
@@ -63,7 +63,7 @@ describe('Relayer - Identity routes', async () => {
         .post('/identity/execution')
         .send({
           ...msg,
-          signature
+          signature,
         });
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
     });

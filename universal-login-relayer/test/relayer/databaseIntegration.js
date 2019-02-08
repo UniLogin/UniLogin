@@ -6,10 +6,10 @@ import {createMockProvider} from 'ethereum-waffle';
 describe('Database integration', () => {
   let relayer;
   let provider;
-  
+
   beforeEach(async () => {
     provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);  
+    relayer = await RelayerUnderTest.createPreconfigured(provider);
   });
 
   it('won`t start if no migrations', async () => {

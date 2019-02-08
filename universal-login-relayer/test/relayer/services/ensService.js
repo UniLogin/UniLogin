@@ -17,7 +17,7 @@ describe('Relayer - ENSService', async () => {
     [ensService, provider, ensBuilder] = await buildEnsService(wallet, domain);
     await ensService.start();
   });
-  
+
   describe('get2ndLevelDomainForm', () => {
     it('simple', () => {
       expect(ensService.get2ndLevelDomainForm('alex.mylogin.eth'))

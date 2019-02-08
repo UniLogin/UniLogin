@@ -30,7 +30,7 @@ const messageSignatureForApprovals = (wallet, id) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
       ['uint256'],
-      [id])
+      [id]),
     ));
 
 const withENS = (provider, ensAddress) => {
@@ -63,7 +63,7 @@ const lookupAddress = async (provider, address) => {
   const ens = new Contract(provider.ensAddress, ENS.interface, provider);
   const resolver = await ens.resolver(node);
   const contract = new Contract(resolver, PublicResolver.interface, provider);
-  return await contract.name(node);
+  return contract.name(node);
 };
 
 const isAddKeyCall = (data) => {
@@ -98,16 +98,16 @@ const getDeployTransaction = (contractJSON, args = '') => {
   const abi = contractJSON.interface;
   const transaction = {
     ...defaultDeployOptions,
-    ...new ContractFactory(abi, bytecode).getDeployTransaction(...args)
+    ...new ContractFactory(abi, bytecode).getDeployTransaction(...args),
   };
   return transaction;
 };
 
-const saveVariables = (filename, _variables) => {
-  const variables = Object.entries(_variables)
+const saveVariables = (filename, variables) => {
+  const output = Object.entries(variables)
     .map(([key, value]) => `  ${key}='${value}'`)
     .join('\n');
-  fs.writeFile(filename, variables, (err) => {
+  fs.writeFile(filename, output, (err) => {
     if (err) {
       return console.error(err);
     }

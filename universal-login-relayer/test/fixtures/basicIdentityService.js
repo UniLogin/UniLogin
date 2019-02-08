@@ -28,7 +28,7 @@ export default async function basicIdentityService(wallet) {
   const identity = await waitForContractDeploy(wallet, Identity, transaction.hash);
   await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(identity.address, utils.parseEther('1.0'));
-  const [,otherWallet] = await getWallets(provider);
+  const [, otherWallet] = await getWallets(provider);
   return {wallet, ensService, provider, identityService, callback, mockToken, mockContract, authorisationService, identity, otherWallet};
 }
 
@@ -40,7 +40,7 @@ export const transferMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };
 
 export const addKeyMessage = {
@@ -51,7 +51,7 @@ export const addKeyMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };
 
 export const removeKeyMessage = {
@@ -62,5 +62,5 @@ export const removeKeyMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL
+  operationType: OPERATION_CALL,
 };

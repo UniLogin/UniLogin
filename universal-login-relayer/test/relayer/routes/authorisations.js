@@ -23,7 +23,7 @@ describe('Relayer - Authorisation routes', async () => {
       .post('/identity')
       .send({
         managementKey: wallet.address,
-        ensName: 'marek.mylogin.eth'
+        ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
     contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
@@ -32,13 +32,13 @@ describe('Relayer - Authorisation routes', async () => {
   it('add authorisation request and get authorisation request', async () => {
     const authorisationRequest = {
       identityAddress: contract.address,
-      key: wallet.address
+      key: wallet.address,
     };
 
     const authorisationResult = await chai.request(relayer.server)
       .post('/authorisation')
-      .send(authorisationRequest);  
-    
+      .send(authorisationRequest);
+
     expect(authorisationResult.status).to.eq(201);
 
     const getAuthorisationResult = await chai.request(relayer.server)
@@ -60,9 +60,9 @@ describe('Relayer - Authorisation routes', async () => {
 
   it('response status should be 201 when deny request', async () => {
     const result = await chai.request(relayer.server)
-      .post(`/authorisation/${contract.address}`)      
+      .post(`/authorisation/${contract.address}`)
       .send({
-        key: wallet.address
+        key: wallet.address,
       });
     expect(result.status).to.eq(201);
   });

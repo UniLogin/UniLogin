@@ -6,7 +6,7 @@ class AuthorisationService {
 
   async addRequest(request) {
     const {identityAddress, key, deviceInfo} = request;
-    return await this.database.insert({identityAddress, key: key.toLowerCase(), deviceInfo})
+    return this.database.insert({identityAddress, key: key.toLowerCase(), deviceInfo})
       .into('authorisations')
       .returning('id');
   }

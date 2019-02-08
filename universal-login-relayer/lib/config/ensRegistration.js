@@ -6,6 +6,6 @@ module.exports = Object.freeze({
   chainSpec: {
     ensAddress: process.env.ENS_ADDRESS,
     publicResolverAddress: process.env.PUBLIC_RESOLVER_ADDRESS,
-    chainId: 0
-  }
+    chainId: 0,
+  },
 });
