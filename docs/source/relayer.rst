@@ -84,7 +84,7 @@ Programmatically
 
 To run relayer from your application you will need to create a relayer instance. Relayer constructor documentation below.
 
-**new Relayer(config, provider, database)**
+**new Relayer(config, database, provider)**
 
   Parameters:
     - **config** : object - specific config parameters, includes:
@@ -95,8 +95,8 @@ To run relayer from your application you will need to create a relayer instance.
       - **privateKey** : string - private key of relayer wallet
       - **ensAddress** : string - address of ENS
       - **ensRegistrars** : array of strings - possible domains
-    - **provider** : object (optional) - instance of provider of an Ethereum node
     - **database** : object - ``knex`` an SQL query builder
+    - **provider** : object (optional) - instance of provider of an Ethereum node
   Returns:
     Relayer instance
   Example
@@ -321,8 +321,8 @@ Event returns transaction detalis as transaction hash or gasPrice.
     import waitToBeMined from 'universal-login-contracts';
 
     class EtherGrantingRelayer extends Relayer {
-      constructor(config, provider = '', database) {
-        super(config, provider, database);
+      constructor(config, database, provider = '') {
+        super(config, database, provider);
         this.addHooks();
       }
 
