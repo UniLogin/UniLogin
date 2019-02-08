@@ -4,7 +4,7 @@ import {solidity} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, callMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
 import TestHelper from '../testHelper';
-import calculateMessageSignature from '../../lib/calculateMessageSignature';
+import {calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import {getExecutionArgs} from '../utils';
 
 chai.use(chaiAsPromised);
@@ -25,13 +25,13 @@ describe('ERC1077 - gas cost', async () => {
   let mockContract;
 
   beforeEach(async () => {
-    ({provider, identity, privateKey, mockContract} = await testHelper.load(basicIdentity)); 
+    ({provider, identity, privateKey, mockContract} = await testHelper.load(basicIdentity));
   });
 
   describe('gas cost', () => {
     it('mock call costs', async () => {
       msg = {...callMessage, from: identity.address, to: mockContract.address};
-      signature = calculateMessageSignature(privateKey, msg); 
+      signature = calculateMessageSignature(privateKey, msg);
       const transaction = await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
       const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
       console.log(`mock call costs: ${utils.formatEther(gasUsed)}`);

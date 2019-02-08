@@ -21,26 +21,25 @@ const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPri
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
       ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
-      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit])
+      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit]),
     ));
 
 const messageSignatureForApprovals = (wallet, id) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
       ['uint256'],
-      [id])
+      [id]),
     ));
 
 const withENS = (provider, ensAddress) => {
   const chainOptions = {ensAddress, chainId: 0};
-  // eslint-disable-next-line no-underscore-dangle
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
 const lookupAddress = async (provider, address, resolverAddress) => {
   const node = utils.namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
   const contract = new Contract(resolverAddress, PublicResolver.abi, provider);
-  return await contract.name(node);
+  return contract.name(node);
 };
 
 const getExecutionArgs = (msg) =>

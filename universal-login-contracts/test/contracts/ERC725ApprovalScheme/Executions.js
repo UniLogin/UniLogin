@@ -5,7 +5,7 @@ import MockContract from '../../../build/MockContract';
 import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {addressToBytes32} from '../../utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/consts';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

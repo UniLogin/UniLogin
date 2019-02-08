@@ -21,10 +21,10 @@ describe('Key holder', async () => {
   let actionKey2;
 
   const addActionKey = () => identity.addKey(actionKey, ACTION_KEY, ECDSA_TYPE);
-  const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);  
+  const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
 
   beforeEach(async () => {
-    ({identity, actionKey, actionKey2, managementKey, unknownWalletKey,managementWalletKey,
+    ({identity, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
       fromActionWallet, fromUnknownWallet} = await testHelper.load(basicERC725));
   });
 

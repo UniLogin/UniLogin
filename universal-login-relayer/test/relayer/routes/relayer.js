@@ -4,10 +4,9 @@ import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
-import calculateMessageSignature from 'universal-login-contracts/lib/calculateMessageSignature';
+import {calculateMessageSignature, OPERATION_CALL} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
-import {OPERATION_CALL} from 'universal-login-contracts';
 
 chai.use(chaiHttp);
 

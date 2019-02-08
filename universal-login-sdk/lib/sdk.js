@@ -1,8 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
-import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
+import {OPERATION_CALL,MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
-import calculateMessageSignature from 'universal-login-contracts/dist/calculateMessageSignature';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';

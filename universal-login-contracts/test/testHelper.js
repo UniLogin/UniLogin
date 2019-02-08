@@ -1,5 +1,14 @@
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {promisify} from 'util';
+/**
+ * READER BEWARE!!!
+ *
+ * This file is directly required in other projects. It has to follow commonjs
+ * convention to avoid compilation errors.
+ *
+ * Moreover THIS FILE IS NOT REALLY NEEDED. Since waffle v2 fixtures are built
+ * into the library!
+ */
+const {createMockProvider, getWallets} = require('ethereum-waffle');
+const {promisify} = require('util');
 
 class TestHelper {
   constructor(provider = createMockProvider()) {
@@ -9,13 +18,11 @@ class TestHelper {
   }
 
   async snapshot() {
-    /* eslint-disable-next-line no-underscore-dangle */
     const sendAsync = promisify(this.provider._web3Provider.sendAsync);
     return sendAsync({method: 'evm_snapshot'});
   }
 
   async restore(snapshotId) {
-    /* eslint-disable-next-line no-underscore-dangle */
     const sendAsync = promisify(this.provider._web3Provider.sendAsync);
     const payload = {method: 'evm_revert', params: [snapshotId]};
     return sendAsync(payload);
@@ -23,7 +30,7 @@ class TestHelper {
 
   async lazyLoadDeployer() {
     if (!this.deployer) {
-      [,,,,,,,,,this.deployer] = await getWallets(this.provider);
+      [, , , , , , , , , this.deployer] = await getWallets(this.provider);
     }
   }
 
@@ -38,9 +45,10 @@ class TestHelper {
     const fixture = await fixtureFunction(this.deployer);
     const {result} = await this.snapshot();
     this.snapshots[name] = result;
-    this.fixtures[name] = {provider: this.provider, ...fixture};
+    // tslint:disable-next-line
+    this.fixtures[name] = Object.assign({provider: this.provider}, fixture);
     return this.fixtures[name];
   }
 }
 
-export default TestHelper;
+module.exports = TestHelper;
