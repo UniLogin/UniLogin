@@ -1,9 +1,9 @@
 /**
  * READER BEWARE!!!
- * 
+ *
  * This file is directly required in other projects. It has to follow commonjs
  * convention to avoid compilation errors.
- * 
+ *
  * Moreover THIS FILE IS NOT REALLY NEEDED. Since waffle v2 fixtures are built
  * into the library!
  */
@@ -45,7 +45,8 @@ class TestHelper {
     const fixture = await fixtureFunction(this.deployer);
     const {result} = await this.snapshot();
     this.snapshots[name] = result;
-    this.fixtures[name] = Object.assign({provider: this.provider}, fixture)
+    // tslint:disable-next-line
+    this.fixtures[name] = Object.assign({provider: this.provider}, fixture);
     return this.fixtures[name];
   }
 }
