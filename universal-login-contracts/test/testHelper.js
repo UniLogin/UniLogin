@@ -1,5 +1,14 @@
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {promisify} from 'util';
+/**
+ * READER BEWARE!!!
+ * 
+ * This file is directly required in other projects. It has to follow commonjs
+ * convention to avoid compilation errors.
+ * 
+ * Moreover THIS FILE IS NOT REALLY NEEDED. Since waffle v2 fixtures are built
+ * into the library!
+ */
+const {createMockProvider, getWallets} = require('ethereum-waffle');
+const {promisify} = require('util');
 
 class TestHelper {
   constructor(provider = createMockProvider()) {
@@ -36,9 +45,9 @@ class TestHelper {
     const fixture = await fixtureFunction(this.deployer);
     const {result} = await this.snapshot();
     this.snapshots[name] = result;
-    this.fixtures[name] = {provider: this.provider, ...fixture};
+    this.fixtures[name] = Object.assign({provider: this.provider}, fixture)
     return this.fixtures[name];
   }
 }
 
-export default TestHelper;
+module.exports = TestHelper;
