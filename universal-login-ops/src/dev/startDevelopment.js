@@ -4,7 +4,7 @@ const deployToken = require('./deployToken');
 const {getWallets} = require('ethereum-waffle');
 const {providers} = require('ethers');
 const ensureDatabaseExist = require('../common/ensureDatabaseExist');
-const startRelayer = require('./startRelayer');
+const startDevelopmentRelayer = require('./startDevelopmentRelayer');
 const knex = require('knex');
 const {dirname, join} = require('path');
 
@@ -52,7 +52,7 @@ async function startDevelopment(nodeUrl) {
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
-  await startRelayer(relayerConfig, knex(databaseConfig), deployWallet);
+  await startDevelopmentRelayer(relayerConfig, knex(databaseConfig), deployWallet);
   return {jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains};
 }
 
