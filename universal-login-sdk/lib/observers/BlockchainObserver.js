@@ -37,7 +37,7 @@ class BlockchainObserver extends ObserverBase {
         const {key} = this.parseArgs(type, event);
         if (filter.key === 'undefined' || filter.key === key) {
           this.emitters[emitter].emit(type, this.parseArgs(type, event));
-        } 
+        }
       }
     }
   }

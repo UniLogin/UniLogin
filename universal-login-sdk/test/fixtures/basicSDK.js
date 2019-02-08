@@ -13,7 +13,7 @@ config.migrations.directory = path.join(__dirname, '../../../node_modules/univer
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
-  const [,otherWallet, otherWallet2] = await getWallets(provider);
+  const [, otherWallet, otherWallet2] = await getWallets(provider);
   const relayer = await RelayerUnderTest.createPreconfigured(provider, config);
   await relayer.start();
   ({provider} = relayer);
@@ -30,5 +30,5 @@ export default async function basicIdentityService(wallet) {
 export const transferMessage = {
   ...MESSAGE_DEFAULTS,
   to: '0x0000000000000000000000000000000000000001',
-  value: utils.parseEther('0.5').toString()
+  value: utils.parseEther('0.5').toString(),
 };

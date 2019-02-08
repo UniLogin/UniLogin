@@ -8,7 +8,7 @@ const resolveName = async (provider, ensAddress, ensName) => {
   const resolverAddress = await ensContract.resolver(node);
   if (resolverAddress !== '0x0000000000000000000000000000000000000000') {
     const resolverContract = new Contract(resolverAddress, PublicResolver.interface, provider);
-    return await resolverContract.addr(node);
+    return resolverContract.addr(node);
   }
   return false;
 };

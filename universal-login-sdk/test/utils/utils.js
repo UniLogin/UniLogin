@@ -22,7 +22,7 @@ describe('SDK - utils test', async () => {
       value: utils.parseEther('0.1'),
       gasLimit: 4000000,
       gasPrice: 9000000000,
-      to: anotherWallet.address
+      to: anotherWallet.address,
     };
     const transaction = await wallet.sendTransaction(deployTransaction);
     expect(await waitForTransactionReceipt(provider, transaction.hash)).to.deep.eq(await provider.getTransactionReceipt(transaction.hash));

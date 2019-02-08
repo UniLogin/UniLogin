@@ -21,6 +21,6 @@ const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick
 };
 
 const getKeyFromData = (data) =>
-  data.substr(0,2) + data.substr(26, 67);
+  data.substr(0, 2) + data.substr(26, 67);
 
 export {waitForContractDeploy, addressToBytes32, waitForTransactionReceipt, getKeyFromData};
