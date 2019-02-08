@@ -13,7 +13,6 @@ class ENSDeployer {
     this.count = 1;
   }
 
-  /* eslint-disable no-console */
   save(filename) {
     const content = Object.entries(this.variables)
       .map(([key, value]) => `${key}=${value}`)

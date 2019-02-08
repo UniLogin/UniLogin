@@ -2,8 +2,5 @@
   "extends": "./tsconfig.json",
   "include": [
     "lib"
-  ],
-  "exclude": [
-    "knexfile.js"
   ]
 }

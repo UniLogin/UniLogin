@@ -35,7 +35,6 @@ const messageSignatureForApprovals = (wallet, id) =>
 
 const withENS = (provider, ensAddress) => {
   const chainOptions = {ensAddress, chainId: 0};
-  // eslint-disable-next-line no-underscore-dangle
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
