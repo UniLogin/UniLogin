@@ -1,4 +1,4 @@
-const Token = require('../../build/Token');
+const Token = require('../contracts/Token.json');
 const {deployContract} = require('ethereum-waffle');
 
 async function deployToken(deployWallet) {

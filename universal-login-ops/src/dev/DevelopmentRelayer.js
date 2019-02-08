@@ -1,5 +1,5 @@
 const {waitToBeMined} = require('universal-login-contracts');
-const Token = require('../../build/Token');
+const Token = require('../contracts/Token.json');
 const Relayer = require('universal-login-relayer').default;
 const {utils, Contract} = require('ethers');
 

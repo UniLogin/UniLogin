@@ -7,11 +7,11 @@
     "universal-login": "./bin/universal-login"
   },
   "scripts": {
+    "build": "tsc --build tsconfig.build.json && cp -r src/contracts dist",
+    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "cli": "node ./scripts/cli",
-    "build": "echo universal-login-ops: Nothing to to do",
-    "lint": "eslint src",
-    "clean": "rm -fr ./node_modules",
-    "test": "NODE_ENV=test mocha --recursive test -t 10000"
+    "clean": "rm -fr node_modules dist"
   },
   "dependencies": {
     "ethereum-waffle": "^2.0.3",
@@ -27,7 +27,13 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
     "chai": "^4.2.0",
-    "eslint": "^5.13.0"
+    "eslint": "^5.13.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
   }
 }
