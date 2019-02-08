@@ -1,4 +1,4 @@
-import TokenGrantingRelayer from './TokenGrantingRelayer';
+import TokenGrantingRelayer from 'universal-login-ops';
 import {getKnex} from './utils';
 require('dotenv').config();
 
