@@ -217,7 +217,7 @@ execute
   Parameters:
     - **message** : object - message that is sent to contract, includes:
 
-      * contractAddress : string - address of contract that requests execution
+      * from : string - address of contract that requests execution
       * to : string - beneficient of this execution
       * data : string - data of execution
       * value : string - value of transaction
@@ -232,7 +232,7 @@ execute
     ::
 
       const message = {
-        contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+        from: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
         to: '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
         data: '0x0',
         value: '500000000000000000',
