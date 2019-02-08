@@ -37,7 +37,6 @@ class RelayerUnderTest extends Relayer {
       await relayer.database.destroy();
       await relayer.server.close();
     };
-    await relayer.database.migrate.latest();
     return relayer;
   }
 }

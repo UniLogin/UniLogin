@@ -29,12 +29,6 @@ You can do it in your favorite database UI, or from `psql`:
     > create database universal_login_relayer_development;
     > \q
 
-Then you need to migrate database:
-
-  ::
-
-    yarn setup:db
-
 
 
 There are two ways to setup relayer :ref:`from command line<from-command-line>` and :ref:`programmatically<programmatically>`.
