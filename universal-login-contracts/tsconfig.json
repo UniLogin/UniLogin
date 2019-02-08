@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "lib": [
+      "esnext"
+    ],
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
