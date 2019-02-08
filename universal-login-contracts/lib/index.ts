@@ -1,3 +1,3 @@
 export * from './consts';
-export {sleep, waitToBeMined} from './utils';
+export {sleep, waitToBeMined, waitUntil} from './utils';
 export {calculateMessageSignature} from './calculateMessageSignature';

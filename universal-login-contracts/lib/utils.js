@@ -10,4 +10,16 @@ const waitToBeMined = async (provider, transactionHash, tick = 1000) => {
   return receipt;
 };
 
-export {sleep, waitToBeMined};
+const waitUntil = async (predicate, tick = 5, timeout = 1000, args = []) => {
+  let elapsed = 0;
+  while (!await predicate(...args)) {
+    if (elapsed > timeout) {
+      throw Error('Timeout');
+    }
+    await sleep(tick);
+    elapsed += tick;
+  }
+  return true;
+};
+
+export {sleep, waitToBeMined, waitUntil};
