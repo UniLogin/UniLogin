@@ -2,9 +2,8 @@ import {expect} from 'chai';
 import RelayerUnderTest from '../../lib/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
 
-
 describe('Database integration', () => {
-  let relayer;
+  let relayer: RelayerUnderTest;
   let provider;
 
   beforeEach(async () => {
