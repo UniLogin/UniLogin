@@ -113,10 +113,4 @@ const saveVariables = (filename, variables) => {
   });
 };
 
-const checkIfAllMigrated = async (database) => {
-  const {config, knex} = database.migrate;
-  const list = await migrationListResolver.listAllAndCompleted(config, knex);
-  return list[0].length === list[1].length;
-};
-
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, checkIfAllMigrated};
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

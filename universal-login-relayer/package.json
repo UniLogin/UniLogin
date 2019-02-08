@@ -29,10 +29,7 @@
     "register:domain": "ts-node scripts/domainRegister.js",
     "register:name": "ts-node scripts/ENSNameRegister.js",
     "clean": "rm -fr node_modules build",
-    "start": "node build/startRelayer.js",
-    "setup:db": "knex migrate:latest",
-    "setup:test:db": "NODE_ENV=test knex migrate:latest",
-    "rollback": "NODE_ENV=test knex migrate:rollback"
+    "start": "node build/startRelayer.js"
   },
   "engines": {
     "node": ">=10.9"

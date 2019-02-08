@@ -6,4 +6,4 @@ const config = require('./config');
 const db = getKnex();
 
 const relayer = new TokenGrantingRelayer(config, db, '');
-relayer.start();
+relayer.start().catch(console.error);
