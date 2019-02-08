@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY} from 'universal-login-contracts';
 import {addressToBytes32} from '../../../lib/utils/utils';
-import calculateMessageSignature from 'universal-login-contracts/lib/calculateMessageSignature';
+import {calculateMessageSignature} from 'universal-login-contracts';
 import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicIdentityService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicIdentityService';
 import defaultDeviceInfo from '../../config/defaults';

@@ -4,7 +4,7 @@ import {solidity, getWallets} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
 import TestHelper from '../testHelper';
-import calculateMessageSignature, {calculateMessageHash} from '../../lib/calculateMessageSignature';
+import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
 

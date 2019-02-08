@@ -2,7 +2,7 @@
   "name": "universal-login-contracts",
   "version": "0.1.3",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "dependencies": {
     "ens-builder": "^2.0.0"
   },

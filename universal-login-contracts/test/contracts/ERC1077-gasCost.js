@@ -4,7 +4,7 @@ import {solidity} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, callMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
 import TestHelper from '../testHelper';
-import calculateMessageSignature from '../../lib/calculateMessageSignature';
+import {calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import {getExecutionArgs} from '../utils';
 
 chai.use(chaiAsPromised);

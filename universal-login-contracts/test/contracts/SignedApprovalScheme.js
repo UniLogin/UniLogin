@@ -6,7 +6,7 @@ import MockToken from '../../build/MockToken';
 import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature, messageSignatureForApprovals} from '../utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts/lib/consts';
+import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
 chai.use(chaiAsPromised);
