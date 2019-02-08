@@ -1,7 +1,7 @@
-const {waitToBeMined} = require('universal-login-contracts');
-const Token = require('../contracts/Token.json');
-const Relayer = require('universal-login-relayer').default;
-const {utils, Contract} = require('ethers');
+import {waitToBeMined} from 'universal-login-contracts';
+import Token from '../contracts/Token.json';
+import Relayer from 'universal-login-relayer';
+import {utils, Contract} from 'ethers';
 
 class TokenGrantingRelayer extends Relayer {
   constructor(config, database, provider = '') {

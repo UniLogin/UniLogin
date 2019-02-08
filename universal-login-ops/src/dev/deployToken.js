@@ -1,5 +1,5 @@
-const Token = require('../contracts/Token.json');
-const {deployContract} = require('ethereum-waffle');
+import Token from '../contracts/Token.json';
+import {deployContract} from 'ethereum-waffle';
 
 async function deployToken(deployWallet) {
   const {address} = await deployContract(deployWallet, Token);

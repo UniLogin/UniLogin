@@ -1,11 +1,10 @@
-
-const chai = require('chai');
-const DevelopmentRelayer = require('../../src/dev/DevelopmentRelayer');
-const {getWallets, createMockProvider, solidity} = require('ethereum-waffle');
-const UniversalLoginSDK = require('universal-login-sdk').default;
-const {waitUntil} = require('universal-login-contracts');
-const {utils} = require('ethers');
-const {startRelayer} = require('../helpers/startRelayer');
+import chai from 'chai';
+import DevelopmentRelayer from '../../src/dev/DevelopmentRelayer';
+import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
+import UniversalLoginSDK from 'universal-login-sdk';
+import {waitUntil} from 'universal-login-contracts';
+import {utils} from 'ethers';
+import {startRelayer} from '../helpers/startRelayer';
 chai.use(solidity);
 
 describe('Development Relayer', async () => {
