@@ -17,8 +17,12 @@
     "clean": "rm -fr node_modules dist"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/deep-equal": "^1.0.1",
+    "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
-    "ethereum-waffle": "2.0.0-beta.11",
+    "ethereum-waffle": "^2.0.4",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "sinon": "^6.3.1",

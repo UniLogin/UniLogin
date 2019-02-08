@@ -2,15 +2,15 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {waitForTransactionReceipt} from '../../lib/utils/utils';
-import {utils} from 'ethers';
+import {utils, providers, Wallet} from 'ethers';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 describe('SDK - utils test', async () => {
-  let provider;
-  let wallet;
-  let anotherWallet;
+  let provider: providers.Provider;
+  let wallet: Wallet;
+  let anotherWallet: Wallet;
 
   before(async () => {
     provider = createMockProvider();
@@ -25,6 +25,6 @@ describe('SDK - utils test', async () => {
       to: anotherWallet.address,
     };
     const transaction = await wallet.sendTransaction(deployTransaction);
-    expect(await waitForTransactionReceipt(provider, transaction.hash)).to.deep.eq(await provider.getTransactionReceipt(transaction.hash));
+    expect(await waitForTransactionReceipt(provider, transaction.hash)).to.deep.eq(await provider.getTransactionReceipt(transaction.hash!));
   });
 });

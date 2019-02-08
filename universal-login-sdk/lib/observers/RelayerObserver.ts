@@ -4,19 +4,18 @@ import deepEqual from 'deep-equal';
 
 
 class RelayerObserver extends ObserverBase {
-  constructor(relayerUrl) {
+  lastAuthorisations: any = {};
+  constructor(private relayerUrl: string) {
     super();
-    this.relayerUrl = relayerUrl;
-    this.lastAuthorisations = {};
   }
 
   async tick() {
     return this.checkAuthorisationRequests();
   }
 
-  async checkAuthorisationsChangedFor(filter) {
+  async checkAuthorisationsChangedFor(filter: string) {
     const {contractAddress} = JSON.parse(filter);
-    const emitter = this.emitters[filter];
+    const emitter = this.emitters[filter as any];
     const authorisations = await this.fetchPendingAuthorisations(contractAddress);
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
@@ -30,11 +29,11 @@ class RelayerObserver extends ObserverBase {
     }
   }
 
-  authorisationUrl(contractAddress) {
+  authorisationUrl(contractAddress: string) {
     return `${this.relayerUrl}/authorisation/${contractAddress}`;
   }
 
-  async fetchPendingAuthorisations(contractAddress) {
+  async fetchPendingAuthorisations(contractAddress: string) {
     const url = this.authorisationUrl(contractAddress);
     const method = 'GET';
     const response = await fetch(url, {headers, method});
