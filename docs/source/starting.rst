@@ -173,7 +173,7 @@ Once you have contract wallet deployed you can execute a transaction:
 ::
 
   const message = {
-    contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+    from: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
     to: '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
     data: '0x0',
     value: '500000000000000000',
@@ -184,8 +184,12 @@ Once you have contract wallet deployed you can execute a transaction:
 
   await sdk.execute(message, privateKey);
 
+
+Note: ``from`` field in this case is contract address.
+
 Most fields of a message are analogous to normal Ethereum transaction, except for ``gasToken``,
 which allows specifying token in which transaction cost will be refunded.
+
 The token need to be supported by relayer.
 Wallet needs to have enough token balance to refund transaction.
 
