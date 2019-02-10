@@ -1,12 +1,12 @@
-const startGanache = require('./startGanache.js');
-const deployEns = require('./deployEns.js');
-const deployToken = require('./deployToken');
-const {getWallets} = require('ethereum-waffle');
-const {providers} = require('ethers');
-const ensureDatabaseExist = require('../common/ensureDatabaseExist');
-const startDevelopmentRelayer = require('./startDevelopmentRelayer');
-const knex = require('knex');
-const {dirname, join} = require('path');
+import startGanache from './startGanache.js';
+import deployEns from './deployEns.js';
+import deployToken from './deployToken';
+import {getWallets} from 'ethereum-waffle';
+import {providers} from 'ethers';
+import ensureDatabaseExist from '../common/ensureDatabaseExist';
+import startDevelopmentRelayer from './startDevelopmentRelayer';
+import knex from 'knex';
+import {dirname, join} from 'path';
 
 const ganachePort = 18545;
 

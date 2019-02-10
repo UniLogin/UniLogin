@@ -19,7 +19,9 @@
 /universal-login-example/src/.DS_Store
 /universal-login-example/src/views/.DS_Store
 /universal-login-example/yarn-error.log
+/universal-login-ops/dist
 /universal-login-ops/node_modules
+/universal-login-ops/yarn-error.log
 /universal-login-relayer/.env
 /universal-login-relayer/build/
 /universal-login-relayer/dist/

@@ -11,12 +11,12 @@ const getKnex = () => knex({
   connection: {
     database: 'universal_login_relayer_test',
     user:     'postgres',
-    password: 'postgres'
+    password: 'postgres',
   },
   migrations: {
     tableName: 'knex_migrations',
-    directory: getMigrationPath()
-  }
+    directory: getMigrationPath(),
+  },
 });
 
 module.exports = {getKnex};

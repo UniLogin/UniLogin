@@ -1,6 +1,6 @@
-const {promisify} = require('util');
-const Ganache = require('ganache-core');
-const {defaultAccounts} = require('ethereum-waffle');
+import {promisify} from 'util';
+import Ganache from 'ganache-core';
+import {defaultAccounts} from 'ethereum-waffle';
 
 async function startGanache(port) {
   const options = {accounts: defaultAccounts};

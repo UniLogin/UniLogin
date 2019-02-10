@@ -1,14 +1,14 @@
-const {deployContract} = require('ethereum-waffle');
-const Token = require('../../build/Token');
-const ENSBuilder = require('ens-builder');
-const {getKnex} = require('./knex');
+import {deployContract} from 'ethereum-waffle';
+import Token from '../../src/contracts/Token.json';
+import ENSBuilder from 'ens-builder';
+import {getKnex} from './knex';
 
 const defaultDomain = 'mylogin.eth';
 
 async function depolyEns(wallet) {
   const ensBuilder = new ENSBuilder(wallet);
   const [label, tld] = defaultDomain.split('.');
-  return await ensBuilder.bootstrapWith(label, tld);
+  return ensBuilder.bootstrapWith(label, tld);
 }
 
 async function startRelayer(wallet, relayerConstructor) {
@@ -22,7 +22,7 @@ async function startRelayer(wallet, relayerConstructor) {
       ensAddress,
       chainId: 0},
     ensRegistrars: ['mylogin.eth'],
-    tokenContractAddress: tokenContract.address
+    tokenContractAddress: tokenContract.address,
   });
   const database = getKnex();
   const relayer = new relayerConstructor(config, database, wallet.provider);

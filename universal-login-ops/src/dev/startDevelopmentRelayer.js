@@ -1,4 +1,4 @@
-const DevelopmentRelayer = require('./developmentRelayer');
+import DevelopmentRelayer from './developmentRelayer';
 
 async function startDevelopmentRelayer(configuration, database, wallet) {
   const relayer = new DevelopmentRelayer(configuration, database, wallet.provider);
