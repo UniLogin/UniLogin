@@ -75,6 +75,7 @@ workflows:
   version: 2
   universal_login_all:
     jobs:
+      - test_ops
       - test_contracts
       - test_relayer
       - test_sdk
