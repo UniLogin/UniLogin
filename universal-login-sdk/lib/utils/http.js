@@ -5,7 +5,7 @@ let fetchFunction;
 if (typeof window === 'undefined') {
   fetchFunction = require('node-fetch');
 } else {
-  fetchFunction = window.fetch;
+  fetchFunction = window.fetch.bind(window);
 }
 
 const fetch = fetchFunction;
