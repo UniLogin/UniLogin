@@ -160,14 +160,14 @@ Below is a snippet doing precisely that for the development environment.
 
   import UniversalLoginSDK from 'universal-login-sdk';
 
-  const universalLoginSDK = new UniversalLoginSDK('http://localhost::3311', 'http://localhost:18545');
-  const [privateKey, contractAddress] = await sdk.create('myname.example-domain.eth');
+  const universalLoginSDK = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
+  const [privateKey, contractAddress] = await sdk.create('myname.mylogin.eth');
 
 
 The first argument of ``UniversalLoginSDK`` constructor is relayer address, second is Ethereum node address.
 
 Sending transaction
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 Once you have contract wallet deployed you can execute a transaction:
 
 ::
