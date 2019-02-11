@@ -401,7 +401,7 @@ In your project, create the UniversalLoginSDK
   import ethers from 'ethers';
 
 
-  const relayerUrl = 'https://universal-login-relayer.herokuapp.com';
+  const relayerUrl = 'https://relayer.universallogin.io/';
   const jsonRpcUrl = 'https://rinkeby.infura.io';
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
