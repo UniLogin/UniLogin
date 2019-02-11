@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import {deployContract} from 'ethereum-waffle';
 import Token from '../../src/contracts/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getKnex} from './knex';
-=======
-const {deployContract} = require('ethereum-waffle');
-const Token = require('../../build/Token');
-const ENSBuilder = require('ens-builder');
->>>>>>> 9a68a9b... getKnex in relayer constructor
 
 const defaultDomain = 'mylogin.eth';
 
