@@ -206,7 +206,7 @@ To connect SDK to the Rinkeby testnet and the test relayer:
   import ethers from 'ethers';
 
 
-  const relayerUrl = 'https://universal-login-relayer.herokuapp.com';
+  const relayerUrl = 'https://relayer.universallogin.io/';
   const jsonRpcUrl = 'https://rinkeby.infura.io';
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
