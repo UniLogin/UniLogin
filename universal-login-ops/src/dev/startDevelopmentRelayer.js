@@ -1,4 +1,4 @@
-import DevelopmentRelayer from './developmentRelayer';
+import DevelopmentRelayer from './DevelopmentRelayer';
 
 async function startDevelopmentRelayer(configuration, wallet) {
   const relayer = new DevelopmentRelayer(configuration, wallet.provider);
