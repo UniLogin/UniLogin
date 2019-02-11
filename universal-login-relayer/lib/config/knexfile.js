@@ -1,3 +1,10 @@
+const {join, dirname} = require('path');
+
+function getMigrationPath() {
+  const packagePath = require.resolve('universal-login-relayer/package.json');
+  return join(dirname(packagePath), 'migrations');
+}
+
 module.exports = {
 
   development: {
@@ -9,6 +16,7 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
+      directory: getMigrationPath()
     },
   },
 
@@ -19,7 +27,9 @@ module.exports = {
       user:     'postgres',
       password: 'postgres',
     },
-    migrations: {},
+    migrations: {
+      directory: getMigrationPath()
+    },
   },
 
   production: {
@@ -28,3 +38,4 @@ module.exports = {
   },
 
 };
+
