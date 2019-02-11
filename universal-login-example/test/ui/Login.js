@@ -7,7 +7,6 @@ import basicContracts from '../fixtures/basicContracts';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import RelayerUnderTest from 'universal-login-relayer/build/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
-import {getKnexConfig} from '../../src/relayer/utils';
 import App from '../../src/components/App';
 import {expect} from 'chai';
 import {waitUntil} from '../utils';
@@ -24,7 +23,7 @@ describe('UI: Login', () => {
   
   beforeEach(async () => {
     const provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider, getKnexConfig());
+    relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     ({clickerContract, tokenContract} = await testHelper.load(basicContracts));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, clickerContract.address, tokenContract.address);

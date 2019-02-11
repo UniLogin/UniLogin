@@ -4,8 +4,8 @@ import Relayer from 'universal-login-relayer';
 import {utils, Contract} from 'ethers';
 
 class DevelopmentRelayer extends Relayer {
-  constructor(config, database, provider = '') {
-    super(config, database, provider);
+  constructor(config, provider = '') {
+    super(config, provider);
     this.tokenContractAddress = config.tokenContractAddress;
     this.tokenContract = new Contract(this.tokenContractAddress, Token.interface, this.wallet);
     this.addHooks();

@@ -52,7 +52,7 @@ async function startDevelopment(nodeUrl) {
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
-  await startDevelopmentRelayer(relayerConfig, knex(databaseConfig), deployWallet);
+  await startDevelopmentRelayer(relayerConfig, deployWallet);
   return {jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains};
 }
 

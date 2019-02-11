@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
 
   development: {
@@ -9,6 +11,7 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
+      directory: path.join(__dirname, '../../migrations'),
     },
   },
 
@@ -19,7 +22,9 @@ module.exports = {
       user:     'postgres',
       password: 'postgres',
     },
-    migrations: {},
+    migrations: {
+      directory: path.join(__dirname, '../../migrations'),
+    },
   },
 
   production: {
