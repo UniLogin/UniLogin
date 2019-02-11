@@ -1,6 +1,7 @@
-const startDevelopment = require('./dev/startDevelopment');
-const createEnv = require('./common/createEnv');
-const spawnProcess = require('./common/spawnProcess');
-const TokenGrantingRelayer = require('./dev/TokenGrantingRelayer');
+import startDevelopment from './dev/startDevelopment';
+import createEnv  from './common/createEnv';
+import spawnProcess  from './common/spawnProcess';
+import TokenGrantingRelayer  from './dev/TokenGrantingRelayer';
+import Token from './contracts/Token.json';
 
-module.exports = {startDevelopment, createEnv, spawnProcess, TokenGrantingRelayer};
+module.exports = {startDevelopment, createEnv, spawnProcess, TokenGrantingRelayer, Token};
