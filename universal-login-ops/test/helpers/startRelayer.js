@@ -1,7 +1,6 @@
 import {deployContract} from 'ethereum-waffle';
 import Token from '../../src/contracts/Token.json';
 import ENSBuilder from 'ens-builder';
-import {getKnex} from './knex';
 
 const defaultDomain = 'mylogin.eth';
 

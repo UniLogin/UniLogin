@@ -16,7 +16,7 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: getMigrationPath()
+      directory: getMigrationPath(),
     },
   },
 
@@ -28,7 +28,7 @@ module.exports = {
       password: 'postgres',
     },
     migrations: {
-      directory: getMigrationPath()
+      directory: getMigrationPath(),
     },
   },
 
