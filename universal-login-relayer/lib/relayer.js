@@ -10,6 +10,7 @@ import cors from 'cors';
 import AuthorisationService from './services/authorisationService';
 import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
+import {getKnex} from './utils/knexUtils';
 
 const defaultPort = 3311;
 
@@ -20,13 +21,13 @@ function errorHandler(err, req, res, next) {
 }
 
 class Relayer {
-  constructor(config, database, provider = '') {
+  constructor(config, provider = '') {
     this.port = config.port || defaultPort;
     this.config = config;
     this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.wallet = new Wallet(config.privateKey, this.provider);
-    this.database = database;
+    this.database = getKnex();
   }
 
   async start() {

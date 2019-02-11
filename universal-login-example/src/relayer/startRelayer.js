@@ -1,9 +1,7 @@
-import TokenGrantingRelayer from 'universal-login-ops';
-import {getKnex} from './utils';
+import {TokenGrantingRelayer} from 'universal-login-ops';
 require('dotenv').config();
 
 const config = require('./config');
-const db = getKnex();
 
-const relayer = new TokenGrantingRelayer(config, db, '');
+const relayer = new TokenGrantingRelayer(config);
 relayer.start().catch(console.error);

@@ -78,7 +78,7 @@ Programmatically
 
 To run relayer from your application you will need to create a relayer instance. Relayer constructor documentation below.
 
-**new Relayer(config, database, provider)**
+**new Relayer(config, provider)**
 
   Parameters:
     - **config** : object - specific config parameters, includes:
@@ -89,14 +89,12 @@ To run relayer from your application you will need to create a relayer instance.
       - **privateKey** : string - private key of relayer wallet
       - **ensAddress** : string - address of ENS
       - **ensRegistrars** : array of strings - possible domains
-    - **database** : object - ``knex`` an SQL query builder
     - **provider** : object (optional) - instance of provider of an Ethereum node
   Returns:
     Relayer instance
   Example
     ::
 
-      import knex from 'knex';
       import Relayer from 'unviersal-login-relayer';
 
       const config = {
@@ -113,21 +111,9 @@ To run relayer from your application you will need to create a relayer instance.
           'my-id.test',
           'my-super-domain.test'
         ]
-
-        const knexConfig = {
-        client: 'postgresql',
-        connection: {
-          database: 'universal_login_relayer_development',
-          user:     'postgres',
-          password: 'postgres'
-        },
-        migrations: {
-          directory: path.join(__dirname, './node_modules/universal-login-relayer/migrations')
-        }
       };
 
-      const database = knex(knexConfig);
-      const relayer = new Relayer(config, '', database);
+      const relayer = new Relayer(config);
       relayer.start();
 
 
@@ -315,8 +301,8 @@ Event returns transaction detalis as transaction hash or gasPrice.
     import {waitToBeMined} from 'universal-login-contracts';
 
     class EtherGrantingRelayer extends Relayer {
-      constructor(config, database, provider = '') {
-        super(config, database, provider);
+      constructor(config, provider = '') {
+        super(config, provider);
         this.addHooks();
       }
 

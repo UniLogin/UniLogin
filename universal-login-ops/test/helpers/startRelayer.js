@@ -1,7 +1,6 @@
 import {deployContract} from 'ethereum-waffle';
 import Token from '../../src/contracts/Token.json';
 import ENSBuilder from 'ens-builder';
-import {getKnex} from './knex';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -24,8 +23,7 @@ async function startRelayer(wallet, relayerConstructor) {
     ensRegistrars: ['mylogin.eth'],
     tokenContractAddress: tokenContract.address,
   });
-  const database = getKnex();
-  const relayer = new relayerConstructor(config, database, wallet.provider);
+  const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();
   return {relayer, tokenContract};
 }
