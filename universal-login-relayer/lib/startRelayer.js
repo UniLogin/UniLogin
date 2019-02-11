@@ -3,5 +3,5 @@ require('dotenv').config();
 
 const config = require('./config/relayer');
 
-const relayer = new Relayer(config, '');
+const relayer = new Relayer(config);
 relayer.start();
