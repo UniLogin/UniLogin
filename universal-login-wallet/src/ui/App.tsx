@@ -10,13 +10,12 @@ const App = () => (
     <div>
       <Navigation />
       <Switch>
-        <Route exact={true} path='/' component={Home}/>
+        <Route exact path='/' component={Home}/>
         <Route path='/dogs' component={Dogs}/>
         <Route component={NotFound}/>
       </Switch>
     </div>
   </BrowserRouter>
 );
-
 
 export default App;
