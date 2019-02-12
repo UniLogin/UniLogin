@@ -4,9 +4,9 @@ import {utils, Wallet} from 'ethers';
 import {deployContract, getWallets} from 'ethereum-waffle';
 import {addressToBytes32} from '../utils';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/consts';
+import { Provider } from 'ethers/providers';
 
-export default async function basicIdentity(wallet: Wallet) {
-  const {provider} = wallet;
+export default async function basicERC725(provider : Provider, [, , , , , , , , , wallet]: Wallet[]) {
   const [managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet, anotherWallet2] = await getWallets(provider);
   const managementKey = addressToBytes32(wallet.address);
   const managementWalletKey = addressToBytes32(managementWallet.address);
