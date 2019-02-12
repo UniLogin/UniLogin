@@ -1,9 +1,8 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
-import {solidity} from 'ethereum-waffle';
+import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicSDK, {transferMessage} from './fixtures/basicSDK';
 import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY} from 'universal-login-contracts';
 import UniversalLoginSDK from '../lib/sdk';
@@ -11,11 +10,11 @@ import UniversalLoginSDK from '../lib/sdk';
 chai.use(solidity);
 chai.use(sinonChai);
 
+const loadFixture = createFixtureLoader();
 const jsonRpcUrl = 'http://localhost:18545';
 const addressToBytes32 = (address) => utils.padZeros(utils.arrayify(address), 32);
 
 describe('SDK - integration', async () => {
-  const testHelper = new TestHelper();
   let provider;
   let relayer;
   let sdk;
@@ -27,8 +26,9 @@ describe('SDK - integration', async () => {
   let message;
   let identity;
 
+
   beforeEach(async () => {
-    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, identity, relayer} = await testHelper.load(basicSDK));
+    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, identity, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address};
   });
 
@@ -71,8 +71,6 @@ describe('SDK - integration', async () => {
         expect(await sdk.execute(message, privateKey)).to.eq(0);
         expect(await sdk.execute(message, privateKey)).to.eq(1);
         expect(await sdk.execute(message, privateKey)).to.eq(2);
-        expect(await sdk.execute(message, privateKey)).to.eq(3);
-        expect(await sdk.execute(message, privateKey)).to.eq(4);
       });
 
       it('when not enough tokens ', async () => {

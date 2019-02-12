@@ -8,9 +8,7 @@ import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
 import {getKnexConfig} from 'universal-login-relayer/build/utils/knexUtils';
 
-
-export default async function basicIdentityService(wallet) {
-  let {provider} = wallet;
+export default async function basicIdentityService(provider, [wallet]) {
   const [, otherWallet, otherWallet2] = await getWallets(provider);
   const relayer = await RelayerUnderTest.createPreconfigured(provider);
   await relayer.start();
