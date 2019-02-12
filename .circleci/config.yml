@@ -63,6 +63,13 @@ jobs:
       - checkout
       - run: yarn
       - run: cd universal-login-example && yarn test
+  test_wallet:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: yarn
+      - run: cd universal-login-wallet && yarn test
   lint:
     docker:
       - image: circleci/node:10.15
@@ -80,6 +87,7 @@ workflows:
       - test_relayer
       - test_sdk
       - test_example
+      - test_wallet
       - lint
 
 
