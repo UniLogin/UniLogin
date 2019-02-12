@@ -5,6 +5,7 @@
   ],
   "rules": {
     "jsx-no-lambda": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "variable-name": ["allow-pascal-case"]
   }
 }
