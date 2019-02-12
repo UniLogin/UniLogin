@@ -2,7 +2,8 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ERC725ApprovalScheme from '../../../build/ERC725ApprovalScheme';
 import MockContract from '../../../build/MockContract';
-import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity, loadFixture} from 'ethereum-waffle';
+import basicERC725 from '../../fixtures/basicERC725';
 import {addressToBytes32} from '../../utils';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../../lib/consts';
@@ -38,24 +39,12 @@ describe('Key holder: executions', async () => {
   let removeKeyData;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet] = await getWallets(provider);
-
-    managementKey = addressToBytes32(wallet.address);
-    managementWalletKey = addressToBytes32(managementWallet.address);
-    actionWalletKey = addressToBytes32(actionWallet.address);
-    actionKey = addressToBytes32(anotherWallet.address);
-
-    identity = await deployContract(wallet, ERC725ApprovalScheme, [managementKey]);
-    mockContract = await deployContract(wallet, MockContract);
-
-    fromActionWallet = await identity.connect(actionWallet);
-    fromUnknownWallet = await identity.connect(unknownWallet);
-
+    ({provider, wallet, managementWallet, actionWallet, unknownWallet, anotherWallet,
+      managementKey, managementWalletKey, actionWalletKey, actionKey, identity, mockContract,
+      fromActionWallet, fromUnknownWallet
+    } =
+      await loadFixture(basicERC725));
     mockContractAddress = mockContract.address;
-
-    await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
-    await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
 
     addKeyData = identity.interface.functions.addKey.encode([actionKey, ACTION_KEY, ECDSA_TYPE]);
     removeKeyData = identity.interface.functions.removeKey.encode([actionKey, ACTION_KEY]);
