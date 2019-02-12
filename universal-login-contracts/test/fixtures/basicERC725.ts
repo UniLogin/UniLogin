@@ -8,7 +8,7 @@ import { Provider } from 'ethers/providers';
 
 export default async function basicERC725(
   provider : Provider,
-  [managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet, anotherWallet2, , , , wallet]: Wallet[]
+  [managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet, anotherWallet2, , , , wallet]: Wallet[],
 ) {
   const managementKey = addressToBytes32(wallet.address);
   const managementWalletKey = addressToBytes32(managementWallet.address);

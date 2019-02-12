@@ -41,7 +41,7 @@ describe('Key holder: executions', async () => {
   beforeEach(async () => {
     ({provider, wallet, managementWallet, actionWallet, unknownWallet, anotherWallet,
       managementKey, managementWalletKey, actionWalletKey, actionKey, identity, mockContract,
-      fromActionWallet, fromUnknownWallet
+      fromActionWallet, fromUnknownWallet,
     } =
       await loadFixture(basicERC725));
     mockContractAddress = mockContract.address;
