@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from '../assets/logo.png'
 
-const Home = () => (
+const NotFound = () => (
   <div>
-    Home
-    <img src={logo} />
+    Not found
+    <img src={logo}/>
   </div>
 );
 
-export default Home;
+export default NotFound;
