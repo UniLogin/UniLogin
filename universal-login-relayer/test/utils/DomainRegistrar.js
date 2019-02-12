@@ -1,12 +1,12 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicENS from '../fixtures/basicENS';
 import DomainRegistrar from '../../lib/utils/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../lib/utils/ENS/ENSNameRegistrar';
 import {utils, Contract} from 'ethers';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 import sinon from 'sinon';
+import { loadFixture } from 'ethereum-waffle';
 
 
 chai.use(require('chai-string'));
@@ -15,7 +15,6 @@ chai.use(sinonChai);
 const nullConsole = () => {};
 
 describe('ENS register', async () => {
-  const testHelper = new TestHelper();
   let provider;
   let wallet;
   let ensAddress;
@@ -28,7 +27,7 @@ describe('ENS register', async () => {
 
 
   before(async () => {
-    ({wallet, provider, ensAddress, ensRegistrars, publicResolver} = await testHelper.load(basicENS));
+    ({wallet, provider, ensAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
     config = {
       privateKey: wallet.privateKey,
       chainSpec: {
