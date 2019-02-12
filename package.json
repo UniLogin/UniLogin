@@ -13,7 +13,8 @@
     "universal-login-relayer",
     "universal-login-sdk",
     "universal-login-example",
-    "universal-login-ops"
+    "universal-login-ops",
+    "universal-login-wallet"
   ],
   "dependencies": {
     "wsrun": "^2.2.1"
