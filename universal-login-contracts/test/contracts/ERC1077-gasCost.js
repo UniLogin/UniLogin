@@ -1,9 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity} from 'ethereum-waffle';
+import {solidity, loadFixture} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, callMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
-import TestHelper from '../testHelper';
 import {calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import {getExecutionArgs} from '../utils';
 
@@ -16,7 +15,6 @@ const transferCost = 125000;
 const overrideOptions = {gasLimit: 120000};
 
 describe('ERC1077 - gas cost', async () => {
-  const testHelper = new TestHelper();
   let provider;
   let identity;
   let privateKey;
@@ -25,7 +23,7 @@ describe('ERC1077 - gas cost', async () => {
   let mockContract;
 
   beforeEach(async () => {
-    ({provider, identity, privateKey, mockContract} = await testHelper.load(basicIdentity));
+    ({provider, identity, privateKey, mockContract} = await loadFixture(basicIdentity));
   });
 
   describe('gas cost', () => {

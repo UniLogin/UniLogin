@@ -1,13 +1,11 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, getWallets} from 'ethereum-waffle';
+import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
-import TestHelper from '../testHelper';
 import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
-
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -18,7 +16,6 @@ const {gasPrice} = DEFAULT_PAYMENT_OPTIONS;
 const overrideOptions = {gasPrice, gasLimit: 200000};
 
 describe('ERC1077', async  () => {
-  const testHelper = new TestHelper();
   let provider;
   let identity;
   let privateKey;
@@ -35,7 +32,7 @@ describe('ERC1077', async  () => {
   let relayerTokenBalance;
 
   beforeEach(async () => {
-    ({provider, identity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await testHelper.load(basicIdentity));
+    ({provider, identity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicIdentity));
     msg = {...transferMessage, from: identity.address};
     signature = calculateMessageSignature(privateKey, msg);
     [anotherWallet] = await getWallets(provider);
