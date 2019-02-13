@@ -6,8 +6,11 @@ import Navigation from './Navigation';
 import NotFound from './NotFound';
 import {Services} from '../services/Services';
 
+interface AppProps {
+  services: Services
+}
 
-const App = (services: {services : Services}) => (
+const App = ({services} : AppProps) => (
   <BrowserRouter>
     <div>
     {console.log(services)}
