@@ -10,7 +10,7 @@ export interface Services {
 }
 
 const createServices = (config: Config) => {
-  const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl, undefined);
+  const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl);
   return {sdk};
 };
 
