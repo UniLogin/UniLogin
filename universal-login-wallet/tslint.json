@@ -7,6 +7,7 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "variable-name": ["allow-pascal-case"],
-    "jsx-boolean-value": ["never"]
+    "jsx-boolean-value": ["never"],
+    "eofline": true
   }
 }
