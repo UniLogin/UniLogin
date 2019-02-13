@@ -7,8 +7,8 @@ import Services from './services/Services';
 
 
 const services = Services({
-  jsonRpcUrl: 'http://rinkeby.infura.io', 
-  relayerUrl: 'https://relayer.universallogin.io/'
+  jsonRpcUrl: 'http://rinkeby.infura.io',
+  relayerUrl: 'https://relayer.universallogin.io/',
 });
 
 render(
