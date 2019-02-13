@@ -1,10 +1,7 @@
-import './styles/style.sass';
+import './styles/main.sass';
 
 import React from 'react';
 import { render } from 'react-dom';
 import App from './ui/App';
 
-render(
-  <App />,
-  document.getElementById('app'),
-);
+render(<App />, document.getElementById('app'));
