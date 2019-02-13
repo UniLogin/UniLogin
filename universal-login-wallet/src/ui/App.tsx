@@ -4,10 +4,13 @@ import Home from './Home';
 import Dogs from './Dogs';
 import Navigation from './Navigation';
 import NotFound from './NotFound';
+import Services from '../services/Services';
 
-const App = () => (
+
+const App = (services: {services : Services}) => (
   <BrowserRouter>
     <div>
+    {console.log(services)}
       <Navigation />
       <Switch>
         <Route exact path='/' component={Home}/>

@@ -8,9 +8,7 @@ import Services from './services/Services';
 
 const services = new Services({jsonRpcUrl: 'http://rinkeby.infura.io', relayerUrl: 'https://relayer.universallogin.io/'});
 
-console.log(services);
-
 render(
-  <App />,
+  <App services={services}/>,
   document.getElementById('app'),
 );
