@@ -5,7 +5,7 @@ declare interface Subscription {
 }
 
 declare class EthereumIdentitySDK {
-  constructor(relayerUrl: string, providerOrUrl: string | providers.Provider, paymentOptions: any);
+  constructor(relayerUrl: string, providerOrUrl: string | providers.Provider, paymentOptions?: any);
 
   create(ensName: string): Promise<[string, string]>;
 

@@ -1,6 +1,6 @@
 {
   "name": "universal-login-sdk",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "main": "dist/sdk.js",
   "types": "./types.d.ts",
   "license": "MIT",
