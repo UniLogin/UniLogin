@@ -9,9 +9,9 @@ export interface Services {
   sdk: any;
 }
 
-const Services = (config: Config) => {
+const createServices = (config: Config) => {
   const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl);
   return {sdk};
 };
 
-export default Services;
+export default createServices;
