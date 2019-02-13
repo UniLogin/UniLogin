@@ -7,6 +7,8 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "variable-name": ["allow-pascal-case"],
+    "quotemark": [true, "single", "jsx-double"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "jsx-boolean-value": ["never"]
   }
 }
