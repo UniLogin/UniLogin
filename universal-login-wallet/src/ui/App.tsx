@@ -13,7 +13,6 @@ interface AppProps {
 const App = ({services} : AppProps) => (
   <BrowserRouter>
     <div>
-    {console.log(services)}
       <Navigation />
       <Switch>
         <Route exact path='/' component={Home}/>
