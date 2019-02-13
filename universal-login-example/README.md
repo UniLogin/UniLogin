@@ -39,7 +39,7 @@ Before running example app, you need you need to fill up example config file.
 To do this, add new file in `universal-login-example` directory and name it `.env`. And then paste there following data:
 ```
   JSON_RPC_URL='https://rinkeby.infura.io'
-  RELAYER_URL='https://relayer.universallogin.io/'
+  RELAYER_URL='https://relayer.universallogin.io'
   ENS_ADDRESS='0xe7410170f87102DF0055eB195163A03B7F2Bff4A'
   ENS_DOMAIN_1='poppularapp.test'
   ENS_DOMAIN_2='my-id.test'
