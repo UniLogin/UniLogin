@@ -4,7 +4,7 @@ import Home from './Home';
 import Dogs from './Dogs';
 import Navigation from './Navigation';
 import NotFound from './NotFound';
-import Services from '../services/Services';
+import {Services} from '../services/Services';
 
 
 const App = (services: {services : Services}) => (
