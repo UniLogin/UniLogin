@@ -1,5 +1,6 @@
 import React from 'react';
 import TextBox from './TextBox';
+import Suggestions from './Suggestions';
 
 const IdentitySelector = () => {
   const update = async (event: any) => {
@@ -9,6 +10,7 @@ const IdentitySelector = () => {
 
   return(<div className="identity-selector">
     <TextBox onChange={update} placeholder={'bob.example.eth'}/>
+    <Suggestions />
   </div>)
 };
 
