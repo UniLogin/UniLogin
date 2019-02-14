@@ -1,16 +1,16 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
-import {solidity} from 'ethereum-waffle';
+import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import sinon from 'sinon';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 import MESSAGE_DEFAULTS from '../lib/config';
 import basicSDK from './fixtures/basicSDK';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
+const loadFixture = createFixtureLoader();
+
 describe('SDK - events', async () => {
-  const testHelper = new TestHelper();
   let relayer;
   let sdk;
   let contractAddress;
@@ -19,7 +19,7 @@ describe('SDK - events', async () => {
   let mockToken;
 
   before(async () => {
-    ({sdk, relayer, mockToken, privateKey, contractAddress, wallet} = await testHelper.load(basicSDK));
+    ({sdk, relayer, mockToken, privateKey, contractAddress, wallet} = await loadFixture(basicSDK));
   });
 
 

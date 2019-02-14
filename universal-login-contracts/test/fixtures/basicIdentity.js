@@ -10,7 +10,7 @@ import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
-export default async function basicIdentity(wallet) {
+export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
   const publicKey = addressToBytes32(wallet.address);
   const keyAsAddress = wallet.address;
   const {provider} = wallet;

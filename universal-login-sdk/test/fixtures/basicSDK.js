@@ -8,13 +8,11 @@ import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
 import {PostgreDB} from 'universal-login-relayer/build/utils/postgreDB';
 
-export default async function basicIdentityService(wallet) {
-  let {provider} = wallet;
-  const [, otherWallet, otherWallet2] = await getWallets(provider);
-  const database = new PostgreDB();
-  const relayer = await RelayerUnderTest.createPreconfigured(database, provider);
+export default async function basicIdentityService(givenProvider, [wallet]) {
+  const [, otherWallet, otherWallet2] = await getWallets(givenProvider);
+  const relayer = await RelayerUnderTest.createPreconfigured(new PostgreDB(), givenProvider);
   await relayer.start();
-  ({provider} = relayer);
+  const {provider} = relayer;
   const sdk = new EthereumIdentitySDK(relayer.url(), provider);
   const [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
   const mockToken = await deployContract(wallet, MockToken);
