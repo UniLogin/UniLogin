@@ -14,7 +14,7 @@ export default async function basicIdentityService(wallet) {
   const database = new PostgreDB();
   const relayer = await RelayerUnderTest.createPreconfigured(database, provider);
   await relayer.start();
-  ({provider} = relayer);
+  const {provider} = relayer;
   const sdk = new EthereumIdentitySDK(relayer.url(), provider);
   const [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
   const mockToken = await deployContract(wallet, MockToken);

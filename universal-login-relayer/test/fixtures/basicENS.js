@@ -1,7 +1,7 @@
 import ENSBuilder from 'ens-builder';
 import {withENS} from '../../lib/utils/utils';
 
-export default async function basicENS(wallet) {
+export default async function basicENS(provider, [wallet]) {
   const domain = 'mylogin.eth';
   const ensBuilder = new ENSBuilder(wallet);
   const [label, tld] = domain.split('.');

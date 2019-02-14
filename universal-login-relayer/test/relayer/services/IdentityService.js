@@ -2,9 +2,9 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {utils} from 'ethers';
+import {loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
 import {addressToBytes32} from '../../../lib/utils/utils';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicIdentityService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicIdentityService';
 import defaultDeviceInfo from '../../config/defaults';
 
@@ -13,7 +13,6 @@ chai.use(sinonChai);
 
 
 describe('Relayer - IdentityService', async () => {
-  const testHelper = new TestHelper();
   let identityService;
   let provider;
   let authorisationService;
@@ -25,7 +24,7 @@ describe('Relayer - IdentityService', async () => {
   let otherWallet;
 
   beforeEach(async () => {
-    ({wallet, provider, identityService, callback, mockToken, authorisationService, identity, otherWallet} = await testHelper.load(basicIdentityService));
+    ({wallet, provider, identityService, callback, mockToken, authorisationService, identity, otherWallet} = await loadFixture(basicIdentityService));
     msg = {...transferMessage, from: identity.address, gasToken: mockToken.address};
   });
 

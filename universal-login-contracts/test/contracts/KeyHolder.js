@@ -1,16 +1,14 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity} from 'ethereum-waffle';
+import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE, RSA_TYPE} from '../../lib/consts';
-import TestHelper from '../testHelper';
 import basicERC725 from '../fixtures/basicERC725';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 describe('Key holder', async () => {
-  const testHelper = new TestHelper();
   let identity;
   let managementWalletKey;
   let unknownWalletKey;
@@ -25,7 +23,7 @@ describe('Key holder', async () => {
 
   beforeEach(async () => {
     ({identity, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
-      fromActionWallet, fromUnknownWallet} = await testHelper.load(basicERC725));
+      fromActionWallet, fromUnknownWallet} = await loadFixture(basicERC725));
   });
 
   describe('Create', async () => {

@@ -1,9 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity} from 'ethereum-waffle';
+import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {ACTION_KEY, ECDSA_TYPE} from '../../../lib/consts';
-import TestHelper from '../../testHelper';
 import basicERC725 from '../../fixtures/basicERC725';
 
 chai.use(chaiAsPromised);
@@ -13,7 +12,6 @@ const amount = utils.parseEther('0.1');
 const data = utils.hexlify(0);
 
 describe('Key holder: approvals', async () => {
-  const testHelper = new TestHelper();
   let targetWallet;
 
   let identity;
@@ -33,7 +31,7 @@ describe('Key holder: approvals', async () => {
 
   beforeEach(async () => {
     ({identity, mockContract, targetWallet, actionKey, managementKey,
-      fromManagementWallet, fromActionWallet, fromUnknownWallet} = await testHelper.load(basicERC725));
+      fromManagementWallet, fromActionWallet, fromUnknownWallet} = await loadFixture(basicERC725));
 
     targetBalance = await targetWallet.getBalance();
     addKeyData = identity.interface.functions.addKey.encode([actionKey, ACTION_KEY, ECDSA_TYPE]);

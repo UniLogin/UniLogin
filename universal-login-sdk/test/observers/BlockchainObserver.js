@@ -1,18 +1,18 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {solidity} from 'ethereum-waffle';
+import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
 import MESSAGE_DEFAULTS from '../../lib/config';
 import {MANAGEMENT_KEY, ECDSA_TYPE} from 'universal-login-contracts';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicSDK from '../fixtures/basicSDK';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
+const loadFixture = createFixtureLoader();
+
 describe('SDK: BlockchainObserver', async () => {
-  const testHelper = new TestHelper();
   let relayer;
   let sdk;
   let blockchainObserver;
@@ -24,7 +24,7 @@ describe('SDK: BlockchainObserver', async () => {
   let mockToken;
 
   beforeEach(async () => {
-    ({relayer, sdk, mockToken, contractAddress, wallet, otherWallet, otherWallet2, privateKey} = await testHelper.load(basicSDK));
+    ({relayer, sdk, mockToken, contractAddress, wallet, otherWallet, otherWallet2, privateKey} = await loadFixture(basicSDK));
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 50;
     blockchainObserver.lastBlock = 0;

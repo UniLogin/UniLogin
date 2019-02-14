@@ -15,7 +15,7 @@ import {PostgreDB} from '../../lib/utils/postgreDB';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
-export default async function basicIdentityService(wallet) {
+export default async function basicIdentityService(provider, [wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
   const database = new PostgreDB();
