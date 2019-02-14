@@ -5,14 +5,13 @@ interface TextBoxProps {
   placeholder: string;
 }
 
-const TextBox = (props: TextBoxProps, ref: any) =>
+const TextBox = (props: TextBoxProps) =>
   <input
     className="input"
     onChange={props.onChange}
     type="text"
     autoFocus
     placeholder={props.placeholder}
-    ref={ref}
   />;
 
 export default TextBox;
