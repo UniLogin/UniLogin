@@ -6,12 +6,14 @@ interface TextBoxProps {
 }
 
 const TextBox = (props: TextBoxProps) =>
-  <input
-    className="input"
-    onChange={props.onChange}
-    type="text"
-    autoFocus
-    placeholder={props.placeholder}
-  />;
+  (
+    <input
+      className="input"
+      onChange={props.onChange}
+      type="text"
+      autoFocus
+      placeholder={props.placeholder}
+    />
+  );
 
 export default TextBox;

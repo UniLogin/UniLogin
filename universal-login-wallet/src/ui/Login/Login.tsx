@@ -6,7 +6,7 @@ const Login = () => {
   <div className="login">
     <h1>Universal Wallet</h1>
     <IdentitySelector />
-  </div>)
+  </div>);
 };
 
 export default Login;

@@ -21,10 +21,10 @@ class IdentitySelectionService {
   }
 
   isCorrectPrefix(prefix: string) {
-    const splitted = prefix.split('.');    
+    const splitted = prefix.split('.');
     if (splitted.length === 0 || splitted.length > 3) {
       return false;
-    } 
+    }
     if (!/^\w[\w-]*$/.test(splitted[0])) {
       return false;
     }
@@ -55,14 +55,14 @@ class IdentitySelectionService {
 
   async getSuggestionsForNodePrefix(nodePrefix: string) {
     const domains = this.domains
-      .map((domain) => `${nodePrefix}.${domain}`);
+      .map(domain => `${nodePrefix}.${domain}`);
     return this.splitByExistence(domains);
   }
 
   async getSuggestionsForNodeAndSldPrefix(node: string, sldPrefix: string) {
     const domains = this.domains
-      .filter((domain) => domain.startsWith(sldPrefix))
-      .map((domain) => `${node}.${domain}`);
+      .filter(domain => domain.startsWith(sldPrefix))
+      .map(domain => `${node}.${domain}`);
     return this.splitByExistence(domains);
   }
 
@@ -71,24 +71,24 @@ class IdentitySelectionService {
     const [name, domain, tld] = splitted;
     if (!this.isCorrectPrefix(namePrefix)) {
       return {connections: [], creations: []};
-    } 
+    }
     if (splitted.length === 1) {
-      return await this.getSuggestionsForNodePrefix(namePrefix);
+      return this.getSuggestionsForNodePrefix(namePrefix);
     } else if (splitted.length === 2) {
-      return this.isCorrectDomainPrefix(domain) ? 
-        await this.getSuggestionsForNodeAndSldPrefix(name, domain) : 
+      return this.isCorrectDomainPrefix(domain) ?
+        this.getSuggestionsForNodeAndSldPrefix(name, domain) :
         {connections: [], creations: []};
     } else if (splitted.length === 3) {
       if (!this.isCorrectDomainPrefix(`${domain}.`)) {
         return {connections: [], creations: []};
       } else if (this.isCorrectTld(tld)) {
         if (tld.length < 3) {
-          return await this.getSuggestionsForNodeAndSldPrefix(name, domain);
-        } 
-        return (await this.sdk.identityExist(namePrefix)) ? 
-          {connections: [namePrefix], creations: []} : 
+          return this.getSuggestionsForNodeAndSldPrefix(name, domain);
+        }
+        return (await this.sdk.identityExist(namePrefix)) ?
+          {connections: [namePrefix], creations: []} :
           {connections: [], creations: [namePrefix]};
-      }  
+      }
     }
   }
 }

@@ -8,9 +8,9 @@ class SuggestionsService  {
   constructor(identitySelectionService: any, {debounceTime} = {debounceTime: 1000}) {
     this.identitySelectionService = identitySelectionService;
     this.callback = () => {};
-    this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime)
-  } 
-  
+    this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);
+  }
+
   setCallback = (_callback: (...args: any[]) => void) => {
     this.callback = _callback;
   }
@@ -24,6 +24,6 @@ class SuggestionsService  {
     this.callback({busy: true});
     this.debouncedGetSuggestions(name);
   }
-};
+}
 
 export default SuggestionsService;
