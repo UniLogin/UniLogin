@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {getNodeEnv, getKnexConfig, getKnex} from '../../lib/utils/knexUtils';
+import {getNodeEnv, getKnexConfig, getKnex} from '../../lib/utils/postgreDB';
 
-describe('Knex utils', () => {
+describe('PostgreDB knex utils', () => {
   describe('getNodeEnv', () => {
     it('should return test if test node env', () => {
       process.env.NODE_ENV = 'test';

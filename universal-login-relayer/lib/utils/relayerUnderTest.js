@@ -8,7 +8,7 @@ class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  static async createPreconfigured(provider) {
+  static async createPreconfigured(database, provider) {
     const port = 33111;
     const [deployerWallet] = (await getWallets(provider)).slice(-2);
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
@@ -27,11 +27,12 @@ class RelayerUnderTest extends Relayer {
       },
       ensRegistrars: [defaultDomain],
     };
-    const relayer = new RelayerUnderTest(config, providerWithENS);
+
+    const relayer = new RelayerUnderTest(config, database, providerWithENS);
     relayer.provider = providerWithENS;
     relayer.stop = async () => {
-      await relayer.database.delete().from('authorisations');
-      await relayer.database.destroy();
+      await relayer.database.getKnex().delete().from('authorisations');
+      await relayer.database.getKnex().destroy();
       await relayer.server.close();
     };
     return relayer;

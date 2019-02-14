@@ -6,7 +6,7 @@ import buildEnsService from '../../helpers/buildEnsService';
 import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {EventEmitter} from 'fbemitter';
-import {getKnex} from '../../../lib/utils/knexUtils';
+import {getKnex} from '../../lib/utils/postgreDB';
 import deviceInfo from '../../config/defaults';
 
 chai.use(require('chai-string'));

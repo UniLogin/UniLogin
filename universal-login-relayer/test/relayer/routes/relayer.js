@@ -7,6 +7,7 @@ import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {calculateMessageSignature, OPERATION_CALL} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
+import {PostgreDB} from '../../lib/utils/postgreDB';
 
 chai.use(chaiHttp);
 
@@ -20,6 +21,7 @@ describe('Relayer - Identity routes', async () => {
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
+    qdatabase = new PostgreDB();
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
   });

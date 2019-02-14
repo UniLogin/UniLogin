@@ -6,6 +6,7 @@ import {providers} from 'ethers';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
 import startDevelopmentRelayer from './startDevelopmentRelayer';
 import knex from 'knex';
+import {PostgreDB} from 'universal-login-relayer/build/utils/postgreDB'
 import {dirname, join} from 'path';
 
 const ganachePort = 18545;
@@ -52,7 +53,8 @@ async function startDevelopment(nodeUrl) {
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
-  await startDevelopmentRelayer(relayerConfig, deployWallet);
+  var database = new PostgreDB();
+  await startDevelopmentRelayer(relayerConfig, database, deployWallet);
   return {jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains};
 }
 

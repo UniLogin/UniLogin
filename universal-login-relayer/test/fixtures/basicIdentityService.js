@@ -11,7 +11,7 @@ import {utils} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 import {addressToBytes32, waitForContractDeploy} from '../../lib/utils/utils';
-import {getKnex} from '../../lib/utils/knexUtils';
+import {getKnex} from '../../lib/utils/postgreDB';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 

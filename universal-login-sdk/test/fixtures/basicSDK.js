@@ -6,8 +6,6 @@ import path from 'path';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
-import {getKnexConfig} from 'universal-login-relayer/build/utils/knexUtils';
-
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;

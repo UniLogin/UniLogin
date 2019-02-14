@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import RelayerUnderTest from '../../lib/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
-import {getKnexConfig} from '../../lib/utils/knexUtils';
+import {getKnexConfig,PostgreDB} from '../../lib/utils/postgreDB';
 
 describe('Database integration', () => {
   let relayer: RelayerUnderTest;
@@ -9,11 +9,12 @@ describe('Database integration', () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    database = new PostgreDB();
+    relayer = await RelayerUnderTest.createPreconfigured(database, provider);
   });
 
   it('migrates after start', async () => {
-    await relayer.database.migrate.rollback(getKnexConfig());
+    await relayer.database.getKnex().migrate.rollback(getKnexConfig());
     await expect(relayer.start()).to.not.be.rejected;
     await relayer.stop();
   });

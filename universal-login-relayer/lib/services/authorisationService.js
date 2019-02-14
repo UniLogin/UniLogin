@@ -6,22 +6,15 @@ class AuthorisationService {
 
   async addRequest(request) {
     const {identityAddress, key, deviceInfo} = request;
-    return this.database.insert({identityAddress, key: key.toLowerCase(), deviceInfo})
-      .into('authorisations')
-      .returning('id');
+    return await this.database.insert(identityAddress, key.toLowerCase(), deviceInfo);
   }
 
-  getPendingAuthorisations(identityAddress) {
-    return this.database('authorisations')
-      .where({identityAddress})
-      .select();
+  async getPendingAuthorisations(identityAddress) {
+    return await this.database.find(identityAddress);
   }
 
   async removeRequest(identityAddress, key) {
-    await this.database('authorisations')
-      .where('identityAddress', identityAddress)
-      .where('key', key)
-      .del();
+    await await this.database.delete(identityAddress, key);
   }
 }
 

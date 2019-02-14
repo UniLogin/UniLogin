@@ -4,6 +4,7 @@ import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
+import {PostgreDB} from '../../lib/utils/postgreDB';
 
 chai.use(chaiHttp);
 
@@ -17,7 +18,8 @@ describe('Relayer - Authorisation routes', async () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    database = new PostgreDB();
+    relayer = await RelayerUnderTest.createPreconfigured(database, provider);
     await relayer.start();
     const result = await chai.request(relayer.server)
       .post('/identity')
