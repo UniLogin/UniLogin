@@ -14,7 +14,8 @@
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "universal-login-sdk": "^0.1.11"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
