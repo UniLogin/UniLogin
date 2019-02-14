@@ -1,8 +1,7 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import Home from './Home';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Dashboard from './Dashboard/Dashboard';
 import Dogs from './Dogs';
-import Navigation from './Navigation';
 import NotFound from './NotFound';
 import {Services} from '../services/Services';
 
@@ -12,14 +11,11 @@ interface AppProps {
 
 const App = ({services} : AppProps) => (
   <BrowserRouter>
-    <div>
-      <Navigation />
-      <Switch>
-        <Route exact path='/' component={Home}/>
-        <Route path='/dogs' component={Dogs}/>
-        <Route component={NotFound}/>
-      </Switch>
-    </div>
+    <Switch>
+      <Route exact path="/" component={Dashboard}/>
+      <Route path="/dogs" component={Dogs}/>
+      <Route component={NotFound}/>
+    </Switch>
   </BrowserRouter>
 );
 

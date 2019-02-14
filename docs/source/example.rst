@@ -68,7 +68,7 @@ To use existing testnet relayer create ``.env`` file in ``universal-login-exampl
   ::
 
     JSON_RPC_URL='https://rinkeby.infura.io'
-    RELAYER_URL='https://relayer.universallogin.io/'
+    RELAYER_URL='https://relayer.universallogin.io'
     ENS_ADDRESS='0xe7410170f87102DF0055eB195163A03B7F2Bff4A'
     ENS_DOMAIN_1='poppularapp.test'
     ENS_DOMAIN_2='my-id.test'
