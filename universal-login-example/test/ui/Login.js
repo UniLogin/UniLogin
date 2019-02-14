@@ -10,6 +10,7 @@ import {createMockProvider} from 'ethereum-waffle';
 import App from '../../src/components/App';
 import {expect} from 'chai';
 import {waitUntil} from '../utils';
+import {PostgreDB} from 'universal-login-relayer/build/utils/postgreDB';
 
 configure({adapter: new Adapter()});
 
@@ -23,7 +24,8 @@ describe('UI: Login', () => {
   
   beforeEach(async () => {
     const provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    const database = new PostgreDB();
+    relayer = await RelayerUnderTest.createPreconfigured(database, provider);
     await relayer.start();
     ({clickerContract, tokenContract} = await testHelper.load(basicContracts));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, clickerContract.address, tokenContract.address);
