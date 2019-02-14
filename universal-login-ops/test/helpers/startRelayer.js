@@ -1,6 +1,7 @@
 import {deployContract} from 'ethereum-waffle';
 import Token from '../../src/contracts/Token.json';
 import ENSBuilder from 'ens-builder';
+import {PostgreDB} from 'universal-login-relayer/build/utils/postgreDB';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -23,7 +24,8 @@ async function startRelayer(wallet, relayerConstructor) {
     ensRegistrars: ['mylogin.eth'],
     tokenContractAddress: tokenContract.address,
   });
-  const relayer = new relayerConstructor(config, wallet.provider);
+  const database = new PostgreDB();
+  const relayer = new relayerConstructor(config, database, wallet.provider);
   await relayer.start();
   return {relayer, tokenContract};
 }
