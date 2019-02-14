@@ -6,7 +6,7 @@ import buildEnsService from '../../helpers/buildEnsService';
 import Identity from 'universal-login-contracts/build/Identity';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {EventEmitter} from 'fbemitter';
-import {getKnex} from '../../lib/utils/postgreDB';
+import {PostgreDB} from '../../../lib/utils/postgreDB';
 import deviceInfo from '../../config/defaults';
 
 chai.use(require('chai-string'));
@@ -26,7 +26,7 @@ describe('Authorisation Service', async () => {
     provider = createMockProvider();
     [wallet, managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
-    const database = getKnex();
+    const database = new PostgreDB();
     authorisationService = new AuthorisationService(database);
     identityService = new IdentityService(wallet, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
     const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
@@ -52,7 +52,7 @@ describe('Authorisation Service', async () => {
   });
 
   afterEach(async () => {
-    await authorisationService.database.delete().from('authorisations');
-    await authorisationService.database.destroy();
+    await authorisationService.database.getKnex().delete().from('authorisations');
+    await authorisationService.database.getKnex().destroy();
   });
 });

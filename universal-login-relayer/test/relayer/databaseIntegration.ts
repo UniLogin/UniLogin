@@ -5,6 +5,7 @@ import {getKnexConfig, PostgreDB} from '../../lib/utils/postgreDB';
 
 describe('Database integration', () => {
   let relayer: RelayerUnderTest;
+  let database;
   let provider;
 
   beforeEach(async () => {

@@ -2,12 +2,13 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
-import {PostgreDB} from '../../lib/utils/postgreDB';
+import {PostgreDB} from '../../../lib/utils/postgreDB';
 
 chai.use(chaiHttp);
 
 describe('Relayer - Config routes', async () => {
   let relayer;
+  let database;
   let provider;
 
   before(async () => {

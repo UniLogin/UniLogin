@@ -4,12 +4,13 @@ import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '../../../lib/utils/utils';
 import Identity from 'universal-login-contracts/build/Identity';
-import {PostgreDB} from '../../lib/utils/postgreDB';
+import {PostgreDB} from '../../../lib/utils/postgreDB';
 
 chai.use(chaiHttp);
 
 describe('Relayer - Authorisation routes', async () => {
   let relayer;
+  let database;
   let provider;
   let wallet;
   let otherWallet;

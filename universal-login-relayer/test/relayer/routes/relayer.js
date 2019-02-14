@@ -7,12 +7,13 @@ import {waitForContractDeploy} from '../../../lib/utils/utils';
 import {calculateMessageSignature, OPERATION_CALL} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
-import {PostgreDB} from '../../lib/utils/postgreDB';
+import {PostgreDB} from '../../../lib/utils/postgreDB';
 
 chai.use(chaiHttp);
 
 describe('Relayer - Identity routes', async () => {
   let relayer;
+  let database;
   let provider;
   let wallet;
   let otherWallet;

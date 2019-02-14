@@ -14,19 +14,19 @@ class PostgreDB {
 
   // Default methods
   async insert(identityAddress, key, deviceInfo) {
-    return this.knex.database.insert({identityAddress, key, deviceInfo})
+    return this.knex.insert({identityAddress, key, deviceInfo})
       .into('authorisations')
       .returning('id');
   }
 
   find(identityAddress) {
-    return this.knex.database('authorisations')
+    return this.knex('authorisations')
       .where({identityAddress})
       .select();
   }
 
   async delete(identityAddress, key) {
-    await this.knex.database('authorisations')
+    await this.knex('authorisations')
       .where('identityAddress', identityAddress)
       .where('key', key)
       .del();
