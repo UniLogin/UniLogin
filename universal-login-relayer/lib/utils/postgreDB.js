@@ -13,19 +13,19 @@ class PostgreDB {
   }
 
   // Default methods
-  async addRequest(identityAddress, key, deviceInfo) {
+  async insert(identityAddress, key, deviceInfo) {
     return this.knex.database.insert({identityAddress, key, deviceInfo})
       .into('authorisations')
       .returning('id');
   }
-  
-  async getPendingAuthorisations(identityAddress) {
-    return await this.knex.database('authorisations')
+
+  find(identityAddress) {
+    return this.knex.database('authorisations')
       .where({identityAddress})
       .select();
   }
-  
-  async removeRequest(identityAddress, key) {
+
+  async delete(identityAddress, key) {
     await this.knex.database('authorisations')
       .where('identityAddress', identityAddress)
       .where('key', key)
@@ -45,4 +45,4 @@ class PostgreDB {
   }
 }
 
-export {getNodeEnv, getKnexConfig, getKnex, PostgreDB}
+export {getNodeEnv, getKnexConfig, getKnex, PostgreDB};

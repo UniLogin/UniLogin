@@ -4,6 +4,6 @@ require('dotenv').config();
 
 const config = require('./config');
 
-var database = new PostgreDB();
+const database = new PostgreDB();
 const relayer = new TokenGrantingRelayer(config, database);
 relayer.start().catch(console.error);

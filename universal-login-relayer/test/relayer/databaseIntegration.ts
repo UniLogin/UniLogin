@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import RelayerUnderTest from '../../lib/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
-import {getKnexConfig,PostgreDB} from '../../lib/utils/postgreDB';
+import {getKnexConfig, PostgreDB} from '../../lib/utils/postgreDB';
 
 describe('Database integration', () => {
   let relayer: RelayerUnderTest;

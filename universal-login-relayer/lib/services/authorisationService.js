@@ -6,11 +6,11 @@ class AuthorisationService {
 
   async addRequest(request) {
     const {identityAddress, key, deviceInfo} = request;
-    return await this.database.insert(identityAddress, key.toLowerCase(), deviceInfo);
+    return this.database.insert(identityAddress, key.toLowerCase(), deviceInfo);
   }
 
   async getPendingAuthorisations(identityAddress) {
-    return await this.database.find(identityAddress);
+    return this.database.find(identityAddress);
   }
 
   async removeRequest(identityAddress, key) {

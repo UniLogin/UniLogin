@@ -1,5 +1,5 @@
 import Relayer from './relayer';
-import {PostgreDB} from './utils/postgreDB'
+import {PostgreDB} from './utils/postgreDB';
 require('dotenv').config();
 
 const config = require('./config/relayer');
