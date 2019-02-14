@@ -8,13 +8,11 @@ import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
 import {getKnexConfig} from 'universal-login-relayer/build/utils/knexUtils';
 
-
-export default async function basicIdentityService(wallet) {
-  let {provider} = wallet;
-  const [, otherWallet, otherWallet2] = await getWallets(provider);
-  const relayer = await RelayerUnderTest.createPreconfigured(provider);
+export default async function basicIdentityService(givenProvider, [wallet]) {
+  const [, otherWallet, otherWallet2] = await getWallets(givenProvider);
+  const relayer = await RelayerUnderTest.createPreconfigured(givenProvider);
   await relayer.start();
-  ({provider} = relayer);
+  const {provider} = relayer;
   const sdk = new EthereumIdentitySDK(relayer.url(), provider);
   const [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
   const mockToken = await deployContract(wallet, MockToken);

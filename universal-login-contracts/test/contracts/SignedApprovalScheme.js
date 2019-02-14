@@ -3,11 +3,12 @@ import chaiAsPromised from 'chai-as-promised';
 import SignedApprovalScheme from '../../build/SignedApprovalScheme';
 import MockContract from '../../build/MockContract';
 import MockToken from '../../build/MockToken';
-import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
+import {createMockProvider, deployContract, getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {addressToBytes32, messageSignature, messageSignatureForApprovals} from '../utils';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
+import { Provider } from 'ethers/providers';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -51,34 +52,67 @@ describe('Signed approval scheme', async () => {
 
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
 
-  beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet] = await getWallets(provider);
+  async function signedApprovalScheme(provider, [wallet, managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet]) {
+    const managementKey = addressToBytes32(wallet.address);
+    const managementWalletKey = addressToBytes32(managementWallet.address);
+    const actionWalletKey = addressToBytes32(actionWallet.address);
+    const actionKey = addressToBytes32(anotherWallet.address);
 
-    managementKey = addressToBytes32(wallet.address);
-    managementWalletKey = addressToBytes32(managementWallet.address);
-    actionWalletKey = addressToBytes32(actionWallet.address);
-    actionKey = addressToBytes32(anotherWallet.address);
+    const identity = await deployContract(wallet, SignedApprovalScheme, [managementKey]);
+    const mockContract = await deployContract(wallet, MockContract);
+    const mockToken = await deployContract(wallet, MockToken);
 
-    identity = await deployContract(wallet, SignedApprovalScheme, [managementKey]);
-    mockContract = await deployContract(wallet, MockContract);
-    mockToken = await deployContract(wallet, MockToken);
+    const fromManagementWallet = await identity.connect(managementWallet);
+    const fromActionWallet = await identity.connect(actionWallet);
+    const fromUnknownWallet = await identity.connect(unknownWallet);
 
-    fromManagementWallet = await identity.connect(managementWallet);
-    fromActionWallet = await identity.connect(actionWallet);
-    fromUnknownWallet = await identity.connect(unknownWallet);
-
-    mockContractAddress = mockContract.address;
-    targetAddress = targetWallet.address;
-
-    targetBalance = await targetWallet.getBalance();
+    const mockContractAddress = mockContract.address;
+    const targetAddress = targetWallet.address;
 
     await identity.addKey(managementWalletKey, MANAGEMENT_KEY, ECDSA_TYPE);
     await identity.addKey(actionWalletKey, ACTION_KEY, ECDSA_TYPE);
 
-    addKeyData = identity.interface.functions.addKey.encode([actionKey, ACTION_KEY, ECDSA_TYPE]);
-    functionData = mockContract.interface.functions.callMe.encode([]);
+    const addKeyData = identity.interface.functions.addKey.encode([actionKey, ACTION_KEY, ECDSA_TYPE]);
+    const functionData = mockContract.interface.functions.callMe.encode([]);
     await wallet.sendTransaction({to: identity.address, value: utils.parseEther('5')});
+    return {provider,
+      managementKey,
+      managementWalletKey,
+      actionWalletKey,
+      actionKey,
+      identity,
+      mockContract,
+      mockToken,
+      fromManagementWallet,
+      fromActionWallet,
+      fromUnknownWallet,
+      mockContractAddress,
+      targetAddress,
+      addKeyData,
+      functionData,
+      targetWallet,
+      wallet, managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet};
+  }
+
+
+  beforeEach(async () => {
+    ({provider, managementKey,
+    managementWalletKey,
+    actionWalletKey,
+    actionKey,
+    identity,
+    mockContract,
+    mockToken,
+    fromManagementWallet,
+    fromActionWallet,
+    fromUnknownWallet,
+    mockContractAddress,
+    targetAddress,
+    addKeyData,
+    functionData,
+    targetWallet,
+    wallet, managementWallet, actionWallet, unknownWallet, anotherWallet, targetWallet} = await loadFixture(signedApprovalScheme));
+    targetBalance = await targetWallet.getBalance();
   });
 
   describe('Execute signed', async () => {

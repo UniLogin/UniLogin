@@ -5,7 +5,7 @@ import IdentityService from '../../src/services/IdentityService';
 import ClickService from '../../src/services/ClickService';
 import {EventEmitter} from 'events';
 import {utils} from 'ethers';
-import TestHelper from 'universal-login-contracts/test/testHelper';
+import {createFixtureLoader} from 'ethereum-waffle';
 import basicContracts from '../fixtures/basicContracts';
 import setupSdk from '../helpers/setupSdk';
 import sinon from 'sinon';
@@ -15,7 +15,6 @@ import FakeStorageService from '../fakes/FakeStorageService';
 chai.use(sinonChai);
 
 describe('ClickService', () => {
-  let testHelper;
   let clickService;
   let identityService;
   let provider;
@@ -27,8 +26,7 @@ describe('ClickService', () => {
 
   beforeEach(async () => {
     ({relayer, sdk, provider} = await setupSdk());
-    testHelper = new TestHelper(provider);
-    ({clickerContract, tokenContract} = await testHelper.load(basicContracts));
+    ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
     identityService = new IdentityService(sdk, new EventEmitter(), new FakeStorageService(), {});
     await identityService.createIdentity('kyle.mylogin.eth');
     await tokenContract.transfer(identityService.identity.address, utils.parseEther('1.0'));

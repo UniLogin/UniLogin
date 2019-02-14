@@ -1,23 +1,22 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {solidity} from 'ethereum-waffle';
+import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import basicSDK from '../fixtures/basicSDK';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
+const loadFixture = createFixtureLoader();
 
 describe('SDK: RelayerObserver', async () => {
-  const testHelper = new TestHelper();
   let relayer;
   let sdk;
   let contractAddress;
   let relayerObserver;
 
   beforeEach(async () => {
-    ({sdk, relayer, contractAddress} = await testHelper.load(basicSDK));
+    ({sdk, relayer, contractAddress} = await loadFixture(basicSDK));
     ({relayerObserver} = sdk);
     relayerObserver.step = 50;
   });

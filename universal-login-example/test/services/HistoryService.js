@@ -2,15 +2,13 @@ import chai, {expect} from 'chai';
 import HistoryService from '../../src/services/HistoryService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import TestHelper from 'universal-login-contracts/test/testHelper';
 import basicContracts from '../fixtures/basicContracts';
 import setupSdk from '../helpers/setupSdk';
-
+import {createFixtureLoader} from 'ethereum-waffle';
 
 chai.use(sinonChai);
 
 describe('HistoryService', async () => {
-  let testHelper;
   let historyService;
   let provider;
   let clickerContract;
@@ -19,8 +17,7 @@ describe('HistoryService', async () => {
 
   beforeEach(async () => {
     ({relayer, provider} = await setupSdk());
-    testHelper = new TestHelper(provider);
-    ({wallet, clickerContract} = await testHelper.load(basicContracts));
+    ({wallet, clickerContract} = await createFixtureLoader(provider)(basicContracts));
     historyService = new HistoryService(clickerContract.address, provider);
   });
 
@@ -74,7 +71,7 @@ describe('HistoryService', async () => {
     await clickerContract.press();
     const result = await historyService.calculateResult();
     expect(result.events[0]).to.deep.include({
-      address: '0x121199e18C70ac458958E8eB0BC97c0Ba0A36979'
+      address: clickerContract.signer.address
     });
     expect(result.loaded).to.eq(true);
   });
