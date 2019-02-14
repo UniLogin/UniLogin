@@ -1,0 +1,21 @@
+.notifications
+  position: relative
+  width: 25px
+  height: 25px
+
+.notifications:active
+  opacity: 0.8
+
+.notifications.active::after
+  content: ''
+  position: absolute
+  top: 0
+  right: 0
+  width: 6px
+  height: 6px
+  border: 2px solid #ffffff
+  background: #00D6D9
+  border-radius: 50%
+  
+.notifications-icon
+  max-width: 100%
