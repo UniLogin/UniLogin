@@ -10,7 +10,11 @@ const IdentitySelector = () => {
 
   return(<div className="identity-selector">
     <TextBox onChange={update} placeholder={'bob.example.eth'}/>
-    <Suggestions />
+    <Suggestions 
+      connections={['name.my-id.eth']} 
+      creations={['name.super-id.eth']} 
+      recovers={['name.mylogin.eth']}
+    />
   </div>)
 };
 

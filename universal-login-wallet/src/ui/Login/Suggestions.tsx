@@ -1,8 +1,40 @@
 import React from 'react';
 
-const Suggestions = () => {
+interface SuggestionsProps {
+  connections: string[];
+  creations: string[];
+  recovers: string[];
+}
+const Suggestions = ({connections, creations, recovers}: SuggestionsProps) => {
+  const connectionsSuggestions = connections.map(((name) => (
+    <li 
+      key={`connection_${name}`}
+    >
+      <span>{name}</span>
+      <button>connect</button>
+    </li>)
+  ));
+  const creationsSuggestions = creations.map(((name) => (
+    <li 
+      key={`create_${name}`}
+    >
+      <span>{name}</span>
+      <button>create</button>
+    </li>)
+  ));
+  const recoversSuggestions = recovers.map(((name) => (
+    <li 
+      key={`recover_${name}`}
+    >
+      <span>{name}</span>
+      <button>recover</button>
+    </li>)
+  ));
+  
   return (<ul>
-    <li>name.mylogin.eth</li>
+    {connectionsSuggestions}
+    {creationsSuggestions}
+    {recoversSuggestions}
   </ul>);
 };
 
