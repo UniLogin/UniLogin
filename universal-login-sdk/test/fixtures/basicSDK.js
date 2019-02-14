@@ -6,11 +6,13 @@ import path from 'path';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
+import {PostgreDB} from 'universal-login-relayer/build/utils/postgreDB';
 
 export default async function basicIdentityService(wallet) {
   let {provider} = wallet;
   const [, otherWallet, otherWallet2] = await getWallets(provider);
-  const relayer = await RelayerUnderTest.createPreconfigured(provider);
+  const database = new PostgreDB();
+  const relayer = await RelayerUnderTest.createPreconfigured(database, provider);
   await relayer.start();
   ({provider} = relayer);
   const sdk = new EthereumIdentitySDK(relayer.url(), provider);

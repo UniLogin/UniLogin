@@ -21,8 +21,8 @@ describe('Relayer - Identity routes', async () => {
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
-    qdatabase = new PostgreDB();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    database = new PostgreDB();
+    relayer = await RelayerUnderTest.createPreconfigured(database, provider);
     await relayer.start();
   });
 
