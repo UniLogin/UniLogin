@@ -6,7 +6,7 @@ import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import ApproveConnection from '../../src/components/ApproveConnection';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {waitUntil} from '../utils';
+import {waitUntil} from 'universal-login-commons';
 
 
 configure({adapter: new Adapter()});

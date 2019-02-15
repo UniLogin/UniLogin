@@ -6,10 +6,12 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "test": "echo Nothing to do yet",
+    "test": "mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\""
   },
   "devDependencies": {
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1"
   }
 }

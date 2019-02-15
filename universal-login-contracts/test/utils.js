@@ -1,6 +1,6 @@
 import ethers, {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
-import {sleep} from '../lib/utils';
+import {sleep} from 'universal-login-commons';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);

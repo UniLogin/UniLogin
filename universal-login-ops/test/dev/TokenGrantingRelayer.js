@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import TokenGrantingRelayer from '../../src/dev/TokenGrantingRelayer';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import UniversalLoginSDK from 'universal-login-sdk';
-import {waitUntil} from 'universal-login-contracts';
+import {waitUntil} from 'universal-login-commons';
 import {utils} from 'ethers';
 import {startRelayer} from '../helpers/startRelayer';
 chai.use(solidity);

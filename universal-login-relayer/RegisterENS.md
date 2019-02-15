@@ -8,18 +8,18 @@
 On the Rinkeby testnet, only the .test top level domain is supproted.
 
 ## Get ENS address
-For Rinkeby: 
+For Rinkeby:
 
 ```
   ensAddress = '0xe7410170f87102df0055eb195163a03b7f2bff4a'
 ```
-## Get test registrar 
+## Get test registrar
 
 ```js
   const testRegistrarAddress = await this.ens.owner(utils.namehash('test'));
   const testRegistrar = new Contract(testRegistrarAddress, TestRegistrar.interface, this.deployer);
 ```
-Note, that on the Rinkeby testnet, there is no FIFSRegistrar, which is on mainnet. There is only TestRegistrar. 
+Note, that on the Rinkeby testnet, there is no FIFSRegistrar, which is on mainnet. There is only TestRegistrar.
 
 ## Finally you can register your domain
 
@@ -28,9 +28,9 @@ Note, that on the Rinkeby testnet, there is no FIFSRegistrar, which is on mainne
 ```
 Now you are this domain owner. To check it:
 ```js
-  address = await this.ens.owner(node) 
+  address = await this.ens.owner(node)
 ```
-`address` should be yours. 
+`address` should be yours.
 
 ## Set Resolver
 
@@ -39,7 +39,7 @@ First, you need to deploy Resolver, or you can use existing. For example Rinkeby
   publicResolverAddress = '0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc'
 ```
 
-Now you can set this resolver as your domain's resolver: 
+Now you can set this resolver as your domain's resolver:
 ```js
   await this.waitToBeMined(await this.ens.setResolver(node, this.publicResolver.address));
 ```
