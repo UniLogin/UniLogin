@@ -8,17 +8,11 @@ import IdentitySelectionService from '../src/services/IdentitySelectionService';
 chai.use(sinonChai);
 
 describe('SuggestionsService', () => {
-  let service;
-  let identitySelectionService = {getSuggestions: sinon.fake.returns(Promise.resolve({connections: [], creations: []}))};
-
-  
-
-  before(() => {
-    service = new SuggestionsService(identitySelectionService, {debounceTime: 10})
-  });
-
   it('call callback with proper arguments', async () => {
+    const identitySelectionService = {getSuggestions: sinon.fake.returns(Promise.resolve({connections: [], creations: []}))};
+    const service = new SuggestionsService(identitySelectionService, {debounceTime: 10});
     const callback = sinon.spy();
+
     service.setCallback(callback);
     service.getSuggestions('a');
     expect(callback).to.have.been.calledWith({busy: true});
@@ -26,11 +20,10 @@ describe('SuggestionsService', () => {
     expect(callback).to.have.been.calledWith({busy: false, connections: [], creations: [], identity: 'a'});
   });
 
-  it('SuggestionsService works with IdentitySelectionService', async () => {
+  it('SuggestionsService works fine with IdentitySelectionService', async () => {
     const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
     const identitySelectionService = new IdentitySelectionService(sdk, ['mylogin.eth']);
     const suggestionsService = new SuggestionsService(identitySelectionService, 10);
-
     const callback = sinon.spy();
 
     suggestionsService.setCallback(callback);
