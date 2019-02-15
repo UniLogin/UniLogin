@@ -298,7 +298,7 @@ Event returns transaction detalis as transaction hash or gasPrice.
   ::
 
     import ethers from 'ethers';
-    import {waitToBeMined} from 'universal-login-contracts';
+    import {waitToBeMined} from 'universal-login-commons';
 
     class EtherGrantingRelayer extends Relayer {
       constructor(config, provider = '') {

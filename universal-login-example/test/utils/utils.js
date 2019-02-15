@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {waitUntil, getLogs} from '../utils';
-import {sleep} from 'universal-login-contracts';
+import {sleep} from 'universal-login-commons';
 import chaiAsPromised from 'chai-as-promised';
 import {convertIPv6ToIPv4, filterIP, debounce} from '../../src/utils';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';

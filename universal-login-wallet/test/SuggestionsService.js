@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
-import {sleep} from '../src/services/utils/utils';
+import {sleep} from 'universal-login-commons';
 import SuggestionsService from '../src/services/SuggestionsService';
 import sinonChai from 'sinon-chai';
 import IdentitySelectionService from '../src/services/IdentitySelectionService';

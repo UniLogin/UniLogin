@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {sleep} from 'universal-login-contracts';
+import {sleep} from 'universal-login-commons';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);

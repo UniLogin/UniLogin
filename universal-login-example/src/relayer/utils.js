@@ -1,6 +1,5 @@
 import knex from 'knex';
 import knexConfig from './knexfile';
-import {sleep} from 'universal-login-contracts';
 
 const getNodeEnv = () => process.env.NODE_ENV || 'development';
 
@@ -14,4 +13,4 @@ const getKnexWithoutDatabase = () => {
   return knex(newConfig);
 };
 
-export {sleep, getKnex, getKnexConfig, getKnexWithoutDatabase};
+export {getKnex, getKnexConfig, getKnexWithoutDatabase};

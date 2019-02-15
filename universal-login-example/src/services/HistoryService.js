@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import Clicker from '../../build/Clicker';
-import {sleep} from 'universal-login-contracts';
+import {sleep} from 'universal-login-commons';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 class HistoryService {
