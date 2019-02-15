@@ -9,6 +9,7 @@ import createServices from './services/Services';
 const services = createServices({
   jsonRpcUrl: 'http://rinkeby.infura.io',
   relayerUrl: 'https://relayer.universallogin.io/',
+  domains: ['mylogin.eth'],
 });
 
 render(

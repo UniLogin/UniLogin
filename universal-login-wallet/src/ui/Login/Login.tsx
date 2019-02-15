@@ -1,11 +1,11 @@
 import React from 'react';
 import IdentitySelector from './IdentitySelector';
 
-const Login = () => {
+const Login = (props: {services: any}) => {
   return(
   <div className="login">
     <h1>Universal Wallet</h1>
-    <IdentitySelector />
+    <IdentitySelector services={props.services}/>
   </div>);
 };
 
