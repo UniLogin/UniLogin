@@ -8,7 +8,7 @@ interface TextBoxProps {
 const TextBox = (props: TextBoxProps) =>
   (
     <input
-      className="input"
+      className="login-input"
       onChange={props.onChange}
       type="text"
       autoFocus

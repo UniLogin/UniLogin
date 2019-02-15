@@ -3,9 +3,8 @@ import React from 'react';
 interface SuggestionsProps {
   connections: string[];
   creations: string[];
-  recovers: string[];
 }
-const Suggestions = ({connections, creations, recovers}: SuggestionsProps) => {
+const Suggestions = ({connections, creations}: SuggestionsProps) => {
   const connectionsSuggestions = connections.map((name => (
     <li
       key={`connection_${name}`}
@@ -22,7 +21,7 @@ const Suggestions = ({connections, creations, recovers}: SuggestionsProps) => {
       <button>create</button>
     </li>)
   ));
-  const recoversSuggestions = recovers.map((name => (
+  const recoversSuggestions = connections.map((name => (
     <li
       key={`recover_${name}`}
     >

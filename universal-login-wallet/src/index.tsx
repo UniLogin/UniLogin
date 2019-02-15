@@ -7,9 +7,9 @@ import createServices from './services/Services';
 
 
 const services = createServices({
-  jsonRpcUrl: 'http://rinkeby.infura.io',
-  relayerUrl: 'https://relayer.universallogin.io/',
-  domains: ['mylogin.eth'],
+  jsonRpcUrl: 'https://rinkeby.infura.io',
+  relayerUrl: 'https://relayer.universallogin.io',
+  domains: ['my-id.test'],
 });
 
 render(
