@@ -17,7 +17,7 @@ describe('SuggestionsService', () => {
     service.getSuggestions('a');
     expect(callback).to.have.been.calledWith({busy: true});
     await sleep(20);
-    expect(callback).to.have.been.calledWith({busy: false, connections: [], creations: [], identity: 'a'});
+    expect(callback).to.have.been.calledWith({busy: false, connections: [], creations: [], name: 'a'});
   });
 
   it('SuggestionsService works fine with IdentitySelectionService', async () => {
@@ -30,6 +30,6 @@ describe('SuggestionsService', () => {
     suggestionsService.getSuggestions('a');
     expect(callback).to.have.been.calledWith({busy: true});
     await sleep(20);
-    expect(callback).to.have.been.calledWith({busy: false, connections: ['a.mylogin.eth'], creations: [], identity: 'a'});
+    expect(callback).to.have.been.calledWith({busy: false, connections: ['a.mylogin.eth'], creations: [], name: 'a'});
   });
 });

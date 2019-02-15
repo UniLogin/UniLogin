@@ -12,14 +12,15 @@ interface AppProps {
 
 const App = (props: AppProps) => {
   return(
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/login" render={() => <Login services={props.services}/>}/>
-      <Route exact path="/" component={Dashboard}/>
-      <Route path="/dogs" component={Dogs}/>
-      <Route component={NotFound}/>
-    </Switch>
-  </BrowserRouter>
-)};
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/login" render={() => <Login services={props.services}/>}/>
+        <Route exact path="/" component={Dashboard}/>
+        <Route path="/dogs" component={Dogs}/>
+        <Route component={NotFound}/>
+      </Switch>
+    </BrowserRouter>
+  );
+};
 
 export default App;

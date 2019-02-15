@@ -14,22 +14,22 @@ class IdentitySelector extends React.Component<any, any> {
       name: '',
       connections: [],
       creations: [],
-      busy: false
-    }
+      busy: false,
+    };
   }
-  
+
   componentDidMount() {
     this.suggestionsService.setCallback(this.setState.bind(this));
   }
-  
-  async update(event: any) {
+
+  update(event: any) {
     const name = event.target.value;
     this.suggestionsService.getSuggestions(name);
-  };
+  }
 
   renderBusyIndicator() {
     if (this.state.busy) {
-      return <div className='circle-loader input-loader'> </div>;
+      return <div className="circle-loader input-loader"/>;
     }
   }
 
@@ -37,8 +37,11 @@ class IdentitySelector extends React.Component<any, any> {
     return(
       <div className="identity-selector">
         <div className="id-selector">
-          <TextBox onChange={this.update.bind(this)} placeholder={'bob.example.eth'}/>
-          { this.renderBusyIndicator() }
+          <TextBox
+            onChange={event => this.update(event)}
+            placeholder={'bob.example.eth'}
+          />
+          {this.renderBusyIndicator()}
         </div>
         <Suggestions
           connections={this.state.connections}
