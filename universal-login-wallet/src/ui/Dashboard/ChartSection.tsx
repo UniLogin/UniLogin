@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import chartImage from './../../assets/chartPlaceholder.svg';
-import WyreComponent from './../WyreComponent'
+import WyreComponent from './../WyreComponent';
 
 const Chart = () => (
   <>
@@ -41,7 +41,7 @@ const ChartSection = () => {
         </div>
         <div className="chart-section-block">
           <h2 className="chart-section-title">Assets</h2>
-          {assets ? <Chart /> : <BuyCryptoAssets /> }
+          {assets ? <Chart /> : <BuyCryptoAssets />}
         </div>
       </div>
     </div>
