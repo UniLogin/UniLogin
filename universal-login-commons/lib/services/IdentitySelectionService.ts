@@ -1,11 +1,14 @@
-import UniversalLoginSDK from 'universal-login-sdk';
+export interface WalletExistenceVerifier {
+  identityExist(domain : string): Promise<string | false>;
+}
 
 const ensDomains = ['mylogin.eth'];
-class IdentitySelectionService {
-  domains: string[];
-  sdk: UniversalLoginSDK;
 
-  constructor(sdk: UniversalLoginSDK, domains: string[] = ensDomains) {
+export class IdentitySelectionService {
+  domains: string[];
+  sdk: WalletExistenceVerifier;
+
+  constructor(sdk: WalletExistenceVerifier, domains: string[] = ensDomains) {
     this.domains = domains;
     this.sdk = sdk;
   }
@@ -55,14 +58,14 @@ class IdentitySelectionService {
 
   async getSuggestionsForNodePrefix(nodePrefix: string) {
     const domains = this.domains
-      .map(domain => `${nodePrefix}.${domain}`);
+      .map((domain) => `${nodePrefix}.${domain}`);
     return this.splitByExistence(domains);
   }
 
   async getSuggestionsForNodeAndSldPrefix(node: string, sldPrefix: string) {
     const domains = this.domains
-      .filter(domain => domain.startsWith(sldPrefix))
-      .map(domain => `${node}.${domain}`);
+      .filter((domain) => domain.startsWith(sldPrefix))
+      .map((domain) => `${node}.${domain}`);
     return this.splitByExistence(domains);
   }
 
@@ -92,5 +95,3 @@ class IdentitySelectionService {
     }
   }
 }
-
-export default IdentitySelectionService;

@@ -5,13 +5,16 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
+    "prebuild": "rm -rf ./dist",
     "build": "tsc --build tsconfig.build.json",
     "test": "mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\""
   },
   "devDependencies": {
-    "typescript": "^3.3.3",
     "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1"
+    "chai-as-promised": "^7.1.1",
+    "sinon": "^7.2.3",
+    "sinon-chai": "^3.3.0",
+    "typescript": "^3.3.3"
   }
 }

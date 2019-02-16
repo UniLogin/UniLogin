@@ -1,8 +1,9 @@
-import {debounce} from './utils/utils';
+import {debounce} from '../utils/debounce';
+import {Procedure} from '../utils/types';
 
-class SuggestionsService  {
+export class SuggestionsService  {
   identitySelectionService: any;
-  callback: (...args: any[]) => void;
+  callback: Procedure;
   debouncedGetSuggestions: any;
 
   constructor(identitySelectionService: any, {debounceTime} = {debounceTime: 1000}) {
@@ -26,4 +27,4 @@ class SuggestionsService  {
   }
 }
 
-export default SuggestionsService;
+
