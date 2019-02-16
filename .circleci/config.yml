@@ -84,13 +84,6 @@ jobs:
       - checkout
       - run: yarn
       - run: cd universal-login-wallet && yarn test
-  lint:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - checkout
-      - run: yarn
-      - run: yarn lint
 
 workflows:
   version: 2
