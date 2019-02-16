@@ -4,13 +4,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './ui/App';
 import createServices from './services/Services';
+import config from './config/config';
 
-
-const services = createServices({
-  jsonRpcUrl: 'https://rinkeby.infura.io',
-  relayerUrl: 'https://relayer.universallogin.io',
-  domains: ['my-id.test'],
-});
+const services = createServices(config);
 
 render(
   <App services={services}/>,
