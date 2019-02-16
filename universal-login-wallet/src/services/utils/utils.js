@@ -11,7 +11,4 @@ function debounce(func, waitTime = 0) {
   };
 };
 
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 export {debounce, sleep}

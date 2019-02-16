@@ -1,4 +1,4 @@
-import {sleep} from 'universal-login-contracts';
+import {sleep} from 'universal-login-commons';
 import {EventEmitter} from 'fbemitter';
 
 class ObserverBase {

@@ -1,4 +1,4 @@
-import {waitToBeMined} from 'universal-login-contracts';
+import {waitToBeMined} from 'universal-login-commons';
 import Token from '../contracts/Token.json';
 import Relayer from 'universal-login-relayer';
 import {utils, Contract} from 'ethers';

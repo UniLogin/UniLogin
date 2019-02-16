@@ -15,7 +15,8 @@
     "react-dom": "^16.4.1",
     "scrypt-js": "^2.0.4",
     "universal-login-relayer": "^0.1.6",
-    "universal-login-sdk": "^0.1.9"
+    "universal-login-sdk": "^0.1.9",
+    "universal-login-commons": "^1.0.0"
   },
   "scripts": {
     "start": "parcel --no-cache ./src/index.html",

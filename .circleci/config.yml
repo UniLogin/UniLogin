@@ -1,5 +1,19 @@
 version: 2
 jobs:
+  lint:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: yarn
+      - run: yarn lint
+  test_commons:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: yarn
+      - run: cd universal-login-commons && yarn test
   test_contracts:
     docker:
       - image: circleci/node:10.15
@@ -70,13 +84,6 @@ jobs:
       - checkout
       - run: yarn
       - run: cd universal-login-wallet && yarn test
-  lint:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - checkout
-      - run: yarn
-      - run: yarn lint
 
 workflows:
   version: 2

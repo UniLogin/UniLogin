@@ -3,7 +3,7 @@ import PublicResolver from 'universal-login-contracts/build/PublicResolver';
 import ReverseRegistrar from 'universal-login-contracts/build/ReverseRegistrar';
 import FIFSRegistrar from 'universal-login-contracts/build/FIFSRegistrar';
 import ENSRegistrarBase from './ENSRegistrarBase';
-import {waitToBeMined} from 'universal-login-contracts';
+import {waitToBeMined} from 'universal-login-commons';
 
 class ENSNameRegistrar extends ENSRegistrarBase {
   async registerName(labelHash, label, domain, node) {

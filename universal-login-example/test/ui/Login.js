@@ -8,7 +8,7 @@ import RelayerUnderTest from 'universal-login-relayer/build/utils/relayerUnderTe
 import {createMockProvider, createFixtureLoader} from 'ethereum-waffle';
 import App from '../../src/components/App';
 import {expect} from 'chai';
-import {waitUntil} from '../utils';
+import {waitUntil} from 'universal-login-commons';
 
 configure({adapter: new Adapter()});
 

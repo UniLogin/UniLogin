@@ -9,6 +9,7 @@
     "chalk": "^2.0.1"
   },
   "workspaces": [
+    "universal-login-commons",
     "universal-login-contracts",
     "universal-login-relayer",
     "universal-login-sdk",
