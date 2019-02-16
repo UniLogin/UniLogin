@@ -46,24 +46,10 @@ function fromBrainWallet(username, password) {
   });
 }
 
-
-function debounce(func, waitTime = 0) {
-  let timeout;
-  return function() {
-    const args = arguments;
-    const later = function() {
-      timeout = null;
-      func.apply(this, args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, waitTime);
-  };
-}
-
 const scrollTo = (x, y) => {
   if (navigator.userAgent.search('jsdom') < 0) {
     window.scrollTo(x, y);
   }
 };
 
-export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, debounce, scrollTo};
+export {fetchEventsOfType, convertIPv6ToIPv4, filterIP, fromBrainWallet, scrollTo};

@@ -1,6 +1,5 @@
 import UniversalLoginSDK from 'universal-login-sdk';
-import IdentitySelectionService from './IdentitySelectionService';
-import SuggestionsService from './SuggestionsService';
+import {IdentitySelectionService, SuggestionsService} from 'universal-login-commons';
 
 interface Config {
   domains: string[];

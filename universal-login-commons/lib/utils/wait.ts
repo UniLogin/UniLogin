@@ -1,7 +1,10 @@
-const sleep = (ms) =>
+import {providers} from 'ethers';
+import {Predicate} from './types';
+
+const sleep = (ms : number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitToBeMined = async (provider, transactionHash, tick = 1000) => {
+const waitToBeMined = async (provider : providers.Provider, transactionHash : string, tick = 1000) => {
   let receipt = await provider.getTransactionReceipt(transactionHash);
   while (!receipt || !receipt.blockNumber) {
     await sleep(tick);
@@ -10,7 +13,7 @@ const waitToBeMined = async (provider, transactionHash, tick = 1000) => {
   return receipt;
 };
 
-const waitUntil = async (predicate, tick = 5, timeout = 1000, args = []) => {
+const waitUntil = async (predicate : Predicate, tick = 5, timeout = 1000, args = []) => {
   let elapsed = 0;
   while (!await predicate(...args)) {
     if (elapsed > timeout) {

@@ -1,10 +1,11 @@
 import {providers} from 'ethers';
+import {WalletExistenceVerifier} from 'universal-login-commons';
 
 declare interface Subscription {
   remove(): void
 }
 
-declare class EthereumIdentitySDK {
+declare class EthereumIdentitySDK extends WalletExistenceVerifier  {
   constructor(relayerUrl: string, providerOrUrl: string | providers.Provider, paymentOptions?: any);
 
   create(ensName: string): Promise<[string, string]>;
