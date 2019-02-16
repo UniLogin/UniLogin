@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import IdentitySelectionService from '../src/services/IdentitySelectionService';
+import {IdentitySelectionService, WalletExistenceVerifier} from '../../lib/services/IdentitySelectionService';
 import sinon from 'sinon';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
@@ -117,7 +117,7 @@ describe('IdentitySelectionService', () => {
     });
   });
 
-  describe('Get all suggestions', () => {    
+  describe('Get all suggestions', () => {
     it('incorrect prefix', async () => {
       const service = new IdentitySelectionService({}, domains);
       expect(await service.getSuggestions('..')).to.deep.eq({connections: [], creations: []});
@@ -139,13 +139,13 @@ describe('IdentitySelectionService', () => {
     it('with secondary domain prefix, identity exists', async () => {
       const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
       const service = new IdentitySelectionService(sdk, [...domains, 'my.test']);
-      expect(await service.getSuggestions('a.my')).to.deep.eq({connections:['a.my.eth', 'a.my.test'], creations: []});
+      expect(await service.getSuggestions('a.my')).to.deep.eq({connections: ['a.my.eth', 'a.my.test'], creations: []});
     });
 
     it('with secondary domain prefix, identity doesn`t exist', async () => {
       const sdk = {identityExist: sinon.fake.returns(Promise.resolve(false))};
       const service = new IdentitySelectionService(sdk, [...domains, 'my.test']);
-      expect(await service.getSuggestions('a.my')).to.deep.eq({connections:[], creations: ['a.my.eth', 'a.my.test']});
+      expect(await service.getSuggestions('a.my')).to.deep.eq({connections: [], creations: ['a.my.eth', 'a.my.test']});
     });
 
     it('returns proper suggestions', async () => {
@@ -226,8 +226,8 @@ describe('IdentitySelectionService', () => {
       expect(service.isCorrectPrefix('..')).to.be.false;
       expect(service.isCorrectPrefix('.')).to.be.false;
     });
-    
-    it('domains with dashes', () => {      
+
+    it('domains with dashes', () => {
       expect(service.isCorrectPrefix('a.my-')).to.be.true;
       expect(service.isCorrectPrefix('a.my-log')).to.be.true;
       expect(service.isCorrectPrefix('a.my-super-')).to.be.true;
