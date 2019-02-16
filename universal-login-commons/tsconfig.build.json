@@ -2,5 +2,10 @@
   "extends": "./tsconfig.json",
   "include": [
     "lib"
-  ]
+  ],
+  "compilerOptions": {
+    "allowJs": false,
+    "declaration": true
+  }
+
 }

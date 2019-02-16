@@ -173,7 +173,7 @@ Once you have contract wallet deployed you can execute a transaction:
 ::
 
   const message = {
-    from: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+    from: '0x0E2365e86A50377c567E1a62CA473656f0029F1e',
     to: '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
     data: '0x0',
     value: '500000000000000000',

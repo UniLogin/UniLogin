@@ -1,4 +1,4 @@
-import {debounce} from '../../src/utils';
+import {debounce} from 'universal-login-commons';
 
 export default class SuggestionsService {
   constructor(identitySelectionService, {debounceTime} = {debounceTime: 1000}) {

@@ -1,11 +1,9 @@
 import chai, {expect} from 'chai';
 import {getLogs} from '../utils';
-import {sleep} from 'universal-login-commons';
 import chaiAsPromised from 'chai-as-promised';
-import {convertIPv6ToIPv4, filterIP, debounce} from '../../src/utils';
+import {convertIPv6ToIPv4, filterIP} from '../../src/utils';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import Clicker from '../../build/Clicker';
-import sinon from 'sinon';
 
 chai.use(chaiAsPromised);
 
@@ -44,58 +42,5 @@ describe('Utils', async () => {
       expect(actualLogs[0]).to.deep.include({presser: wallet.address});
     });
   });
-
-  describe('debounce', () => {
-    const tick = 10;
-    it('works for one callback at one time', async () => {
-      const callback = sinon.spy();
-      const debounceCallback = debounce(callback, 0);
-      debounceCallback();
-      await sleep(0);
-      expect(callback).to.have.been.calledOnce;
-    });
-
-    it('works for a lot of callbacks', async () => {
-      const callback = sinon.spy();
-      const debounceCallback = debounce(callback, tick);
-      debounceCallback();
-      debounceCallback();
-      debounceCallback();
-      debounceCallback();
-      debounceCallback();
-      debounceCallback();
-      await sleep(tick);
-      expect(callback).to.have.been.calledOnce;
-    });
-
-    it('works with args', async () => {
-      const callback = sinon.spy();
-      const args = 'some args';
-      const debounceCallback = debounce(callback, tick);
-      debounceCallback(args);
-      await sleep(tick);
-      expect(callback).to.have.been.calledWith(args);
-    });
-
-    it('works with a lot of args', async () => {
-      const callback = sinon.spy();
-      let args = 0;
-      const debounceCallback = debounce(callback, tick);
-      debounceCallback(args);
-      args++;
-      debounceCallback(args);
-      args++;
-      debounceCallback(args);
-      args++;
-      debounceCallback(args);
-      args++;
-      debounceCallback(args);
-      args++;
-      debounceCallback(args);
-      args++;
-      debounceCallback(args);
-      await sleep(tick);
-      expect(callback).to.have.been.calledWith(args);
-    });
-  });
 });
+
