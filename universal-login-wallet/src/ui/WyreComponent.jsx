@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import WyreLogo from'../assets/wyre-logo.svg';
 
 
-class Dogs extends Component {
+class WyreComponent extends Component {
   constructor(props) {
     super(props);
     this.address = '0xB4DC65f8adE347d9D87D0d077F256aFC798c4dC6';
@@ -29,4 +29,4 @@ class Dogs extends Component {
   }
 }
 
-export default Dogs;
+export default WyreComponent;
