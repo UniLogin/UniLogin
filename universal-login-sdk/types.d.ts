@@ -41,6 +41,8 @@ declare class EthereumIdentitySDK extends WalletExistenceVerifier  {
   stop(): void;
 
   finalizeAndStop(): Promise<void>;
+
+  provider : providers.Provider;
 }
 
 export default EthereumIdentitySDK;

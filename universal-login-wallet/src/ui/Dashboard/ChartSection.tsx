@@ -1,21 +1,19 @@
 import React, {useState} from 'react';
 import chartImage from './../../assets/chartPlaceholder.svg';
+import {utils} from 'ethers';
 
-const Chart = () => (
-  <>
-    <p className="chart-section-amount">$ 12,987.76</p>
+const Chart = (props: any) => (
+  <div>
+    <p className="chart-section-amount">$ {utils.formatEther(props.balance) / 10}</p>
     <div className="chart-row">
       <div className="chart">
         <img src={chartImage} alt=""/>
       </div>
       <div>
-        <p className="chart-legend wbtc">wbtc</p>
-        <p className="chart-legend eth">eth</p>
-        <p className="chart-legend mkr">mkr</p>
-        <p className="chart-legend else">else</p>
+        <p className="chart-legend eth">dai</p>
       </div>
     </div>
-  </>
+  </div>
 );
 
 const BuyCryptoAssets = () => (
@@ -25,7 +23,7 @@ const BuyCryptoAssets = () => (
   </div>
 );
 
-const ChartSection = () => {
+const ChartSection = (props: any) => {
   const [assets] = useState(true);
 
   return (
@@ -33,12 +31,12 @@ const ChartSection = () => {
       <div className="chart-section-row">
         <div className="chart-section-block">
           <h2 className="chart-section-title">Cash (DAI)</h2>
-          <p className="chart-section-amount">$ 1,235.9876352124</p>
-          <p className="chart-section-text">You can spend up to US$ 9,464.25</p>
+          <p className="chart-section-amount">$ {utils.formatEther(props.balance) / 10}</p>
+          <p className="chart-section-text">You can spend up to US$ {utils.formatEther(props.balance) / 10}</p>
         </div>
         <div className="chart-section-block">
           <h2 className="chart-section-title">Assets</h2>
-          {assets ? <Chart /> : <BuyCryptoAssets />}
+          {assets ? <Chart balance= {props.balance}/> : <BuyCryptoAssets />}
         </div>
       </div>
     </div>

@@ -1,0 +1,15 @@
+=font($size: null, $line-height: null, $letter-spacing: null, $weight: null, $family: null, $style: null)
+	@if $size and $family and $line-height
+		font: $style $weight #{$size}/#{$line-height} $family
+		letter-spacing: $letter-spacing
+	@else if $size and $family
+		font: $style $weight $size $family
+		letter-spacing: $letter-spacing
+	@else
+		font:
+			size: $size
+			family: $family
+			weight: $weight
+			style: $style
+		line-height: $line-height
+		letter-spacing: $letter-spacing

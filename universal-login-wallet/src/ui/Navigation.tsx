@@ -5,7 +5,7 @@ const Navigation = () => (
   <nav>
     <ul>
       <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
-      <li><NavLink exact to="/dogs" activeClassName="active">Dogs</NavLink></li>
+      <li><NavLink exact to="/WyreComponent" activeClassName="active">Wyre</NavLink></li>
     </ul>
   </nav>
 );

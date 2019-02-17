@@ -1,12 +1,84 @@
+.login-view
+  padding: 200px 0 80px
 
-.login-input
+.login-view-text
+  margin: auto
+  margin-bottom: 30px
+
+
+.hidden
+  display: none !important
+
+h2
+  width: 100%
+  display: block
+  font-size: 22px
+  font-weight: 700
+  color: #333
+
+.login-method.active
+  display: inline-block
+  position: relative
+  padding-right: 30px
+  color: #000000
+
+.login-method.active::after
+  content: '\e925'
+  position: absolute
+  top: 50%
+  right: 0
+  width: 20px
+  height: 20px
+  transform: translateY(-50%)
+  font-family: 'icomoon' !important
+  line-height: 1
+
+.id-selector
   position: relative
   display: flex
+  align-items: center
+  margin: 25px 0 5px
 
 .id-selector .dropdown
   margin-left: 13px
 
 .input-loader
   position: absolute
-  right: 1470px
-  top: 14px
+  right: -4px
+  top: 6px
+  border-left-color: #efefef
+  height: 28px
+  width: 28px
+  border-width: 4px
+
+.loginHover
+  box-shadow: rgba(0,0,0,0.5) 0 2px 5px
+  width: 100%
+  padding: 5px
+  margin: 5px 0
+  border-radius: 2px
+  overflow: hidden
+
+.loginHover li
+  height: 48px
+  padding: 0 10px
+  font-size: 20px
+  font-weight: 400
+  display: flex
+  align-items: center
+
+.loginHover li:hover, .loginHover:not(:hover) li.active
+  background: #FFE9EB
+
+.loginHover .identity
+  flex: 1
+  overflow: hidden
+  white-space:  nowrap
+  text-overflow: ellipsis
+  height: 40px
+  padding-top: 11px
+
+.loginHover button
+    color: #D0021B
+    font-size: 20px
+    font-weight: 600

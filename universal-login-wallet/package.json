@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
+    "start:dev": "universal-login start:dev",
     "start": "webpack-dev-server --mode development --progress",
     "prebuild": "rm -rf ./dist",
     "build": "webpack --mode production --progress && cp src/_redirects dist/_redirects",
@@ -11,12 +12,14 @@
     "clean": "rm -fr node_modules dist"
   },
   "dependencies": {
+    "@types/fbemitter": "^2.0.32",
+    "fbemitter": "^2.1.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "universal-login-sdk": "^0.1.11",
-    "universal-login-commons": "^1.0.0"
+    "universal-login-commons": "^1.0.0",
+    "universal-login-sdk": "^0.1.11"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
