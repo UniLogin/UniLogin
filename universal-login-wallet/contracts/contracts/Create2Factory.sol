@@ -97,4 +97,10 @@ contract Create2Factory {
         );
         _contractAddress = address(bytes20(_data << 96));
     }
+
+    function isContract(address account) public view returns (bool) {
+        uint256 size;
+        assembly { size := extcodesize(account) }
+        return size > 0;
+    }
 }
