@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
+    "start:dev": "universal-login start:dev",
     "start": "webpack-dev-server --mode development --progress",
     "prebuild": "rm -rf ./dist",
     "build": "webpack --mode production --progress && cp src/_redirects dist/_redirects",

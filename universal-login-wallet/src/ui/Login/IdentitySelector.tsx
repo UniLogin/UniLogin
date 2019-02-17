@@ -6,7 +6,7 @@ class IdentitySelector extends React.Component<any, any> {
   identitySelectionService: any;
   suggestionsService: any;
 
-  constructor(props: {services: any}) {
+  constructor(props: {services: any, onItemClick: any}) {
     super(props);
     this.identitySelectionService = props.services.identitySelectionService;
     this.suggestionsService = props.services.suggestionsService;
@@ -46,6 +46,7 @@ class IdentitySelector extends React.Component<any, any> {
         <Suggestions
           connections={this.state.connections}
           creations={this.state.creations}
+          onItemClick={this.props.onItemClick}
         />
       </div>
     );

@@ -25,7 +25,7 @@ class ContentContainer extends Component {
 
   setView(view, viewParameters = {}) {
     this.setState({view, viewParameters});
-    scrollTo(0, 0);  
+    scrollTo(0, 0);
   }
 
   render() {
@@ -34,11 +34,11 @@ class ContentContainer extends Component {
       return <Login services={services} />;
     } else if (this.state.view === 'Wyre') {
       return <Wyre
-        //identityService={services.identityService}
-        address = '0xB4DC65f8adE347d9D87D0d077F256aFC798c4dC6'
+        identityService={services.identityService}
+        // address = '0xB4DC65f8adE347d9D87D0d077F256aFC798c4dC6'
       />;
     } else if (this.state.view === 'Dashboard') {
-      return <Dashboard services={services}/>;      
+      return <Dashboard services={services}/>;
     }
   }
 }

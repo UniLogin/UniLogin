@@ -1,5 +1,5 @@
 module.exports = Object.freeze({
-  jsonRpcUrl: 'https://rinkeby.infura.io',
-  relayerUrl: 'https://relayer.universallogin.io',
-  domains: ['my-id.test'],
+  jsonRpcUrl: 'http://localhost:18545',
+  relayerUrl: 'http://localhost:3311',
+  domains: ['mylogin.eth', 'universal-id.eth', 'popularapp.eth']
 });
