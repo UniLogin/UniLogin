@@ -19,7 +19,7 @@ const createServices = (config: Config) => {
   const emitter = new EventEmitter();
   const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl);
   const tokenService = new TokenService(config.tokenAddress, sdk.provider);
-  const identityService = new IdentityService(sdk, emitter);
+  const identityService = new IdentityService(sdk, emitter, config.tokenAddress);
   const identitySelectionService = new IdentitySelectionService(sdk, config.domains);
   const suggestionsService = new SuggestionsService(identitySelectionService);
   return {sdk, suggestionsService, identitySelectionService, identityService, emitter, tokenService};
