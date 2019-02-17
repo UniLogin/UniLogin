@@ -33,7 +33,6 @@ contract('MetaCoin', (accounts) => {
     const accountOneEndingBalance = (await metaCoinInstance.getBalance.call(accountOne)).toNumber();
     const accountTwoEndingBalance = (await metaCoinInstance.getBalance.call(accountTwo)).toNumber();
 
-
     assert.equal(accountOneEndingBalance, accountOneStartingBalance - amount, "Amount wasn't correctly taken from the sender");
     assert.equal(accountTwoEndingBalance, accountTwoStartingBalance + amount, "Amount wasn't correctly sent to the receiver");
   });
