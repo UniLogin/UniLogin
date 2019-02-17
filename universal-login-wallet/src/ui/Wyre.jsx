@@ -12,12 +12,13 @@ class Wyre extends Component {
       amount: 0.001
     };
     window.emitter = props.services.emitter;
+    this.identityService = props.services.identityService;
   }
 
   componentDidMount () {
   	console.log(this.services);
   	window.addEventListener("message", this.receiveMessage, false);
-    var address = this.state.address;
+    var address = this.identityService.identity.address;
     var wyreAccount = this.state.wyreAccount;
     var amount = this.state.amount;
 
@@ -33,7 +34,6 @@ class Wyre extends Component {
 
   receiveMessage(event) {
   	if (event.data === 'closed') {
-  		//console.log("GO TO DASHBOARD");
     	window.emitter.emit('setView', 'Dashboard');
   	}
 	}
