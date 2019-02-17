@@ -42,7 +42,7 @@ const Table = ({rows} : {rows: any}) => (
   </table>
 );
 
-const LatestTransfersSection = () => {
+const LatestTransfersSection = (props: any) => {
   const [lastTransfers] = useState(true);
 
   return (

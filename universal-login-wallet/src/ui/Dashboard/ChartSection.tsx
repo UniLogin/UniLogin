@@ -22,7 +22,7 @@ const BuyCryptoAssets = () => (
   </div>
 );
 
-const ChartSection = () => {
+const ChartSection = (props: any) => {
   const [assets] = useState(true);
 
   return (

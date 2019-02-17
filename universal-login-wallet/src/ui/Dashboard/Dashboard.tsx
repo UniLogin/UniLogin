@@ -11,12 +11,15 @@ type DashboardProps = {
 };
 
 type DashboardState = {
-
+  balance: string;
 };
 
 class Dashboard extends Component<DashboardProps, DashboardState> {
 
-  componentDidMount() {
+  async componentDidMount() {
+    const {address} = this.props.services.identityService.identity;
+    const balance = await this.props.services.tokenService.getBalance(address);
+    this.setState({balance: balance.toString()})
   }
 
   render() {
@@ -28,8 +31,8 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
             <Notifications />
             <UserSelect name={this.props.services.identityService.identity.name}/>
           </Header>
-          <ChartSection />
-          <LatestTransfers />
+          <ChartSection balance={this.state.balance} />
+          <LatestTransfers balance={this.state.balance} />
         </div>
       </div>
     )

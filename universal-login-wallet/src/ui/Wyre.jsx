@@ -7,7 +7,7 @@ class Wyre extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    	address: '0xB4DC65f8adE347d9D87D0d077F256aFC798c4dC6', 
+    	address: '0xB4DC65f8adE347d9D87D0d077F256aFC798c4dC6',
     	wyreAccount: 'AK-JLWBQZXZ-UDHJ9LGM-H3ZZB9GR-M9WM4P3P',
       amount: 0.001
     };
@@ -16,7 +16,6 @@ class Wyre extends Component {
   }
 
   componentDidMount () {
-  	console.log(this.services);
   	window.addEventListener("message", this.receiveMessage, false);
     var address = this.identityService.identity.address;
     var wyreAccount = this.state.wyreAccount;
