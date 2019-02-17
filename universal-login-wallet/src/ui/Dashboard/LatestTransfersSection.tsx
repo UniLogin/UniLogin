@@ -62,7 +62,7 @@ const dataPlaceholder = [
     address: 'Wyre Transfer',
     amountUsd: 10,
     amountEth: 10,
-    date: '05/02/2019',
+    date: '02/17/2019',
     status: 'completed',
   },
 ];
