@@ -1,4 +1,6 @@
+import {EventEmitter} from 'fbemitter';
 import UniversalLoginSDK from 'universal-login-sdk';
+import IdentityService from './IdentityService';
 import {IdentitySelectionService, SuggestionsService} from 'universal-login-commons';
 
 interface Config {
@@ -12,10 +14,12 @@ export interface Services {
 }
 
 const createServices = (config: Config) => {
+  const eventEmitter = new EventEmitter();
   const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl);
+  const identityService = new IdentityService(sdk, eventEmitter);
   const identitySelectionService = new IdentitySelectionService(sdk, config.domains);
   const suggestionsService = new SuggestionsService(identitySelectionService);
-  return {sdk, suggestionsService, identitySelectionService};
+  return {sdk, suggestionsService, identitySelectionService, identityService};
 };
 
 export default createServices;
