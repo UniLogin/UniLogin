@@ -1,6 +1,7 @@
 const TestContract = artifacts.require("TestContract");
 const Create2Factory = artifacts.require("Create2Factory");
 salt = web3.utils.sha3('0x01')
+console.log('salt', salt);
 contract('Create2', (accounts) => {
   it('should put 10000 MetaCoin in the first account', async () => {
     const contractCode = TestContract.bytecode;
@@ -9,7 +10,9 @@ contract('Create2', (accounts) => {
     
     let addr1 = await Create2FactoryInstance.computeContractAddress.call(salt, accounts[0])
     let msgHash = web3.utils.soliditySha3(Create2FactoryInstance.address, salt)
+    console.log('Create2FactoryInstance.address', Create2FactoryInstance.address,'salt',salt,'msgHash', msgHash);
     const signature = await web3.eth.sign(msgHash, accounts[0])
+    console.log('signature', signature)
   
     let balance1 = await web3.eth.getBalance(addr1)
     await web3.eth.sendTransaction({

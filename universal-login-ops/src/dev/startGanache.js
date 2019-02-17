@@ -3,7 +3,7 @@ import Ganache from 'ganache-core';
 import {defaultAccounts} from 'ethereum-waffle';
 
 async function startGanache(port) {
-  const options = {accounts: defaultAccounts};
+  const options = {accounts: defaultAccounts, hardfork: 'constantinople'};
   const server = Ganache.server(options);
   const listenPromise = promisify(server.listen);
   await listenPromise(port);
