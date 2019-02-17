@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import logo from '../../assets/logo.svg';
 import IdentitySelector from './IdentitySelector';
-
+    <img src={logo} />
 type LoginProps = {
   services: any;
 };
@@ -25,10 +26,10 @@ class Login extends Component<LoginProps, LoginState> {
       <div className="container">
         <div className="login-view">
           <div className="container">
-            <h1 className="main-title">Universal Logins Clicker</h1>
             <p className="login-view-text">
-            Clicker is an example application, that demonstrates Universal Logins, a design pattern for storing funds and connecting to Ethereum applications.
+              <img src={logo} />
             </p>
+            <h1 className="main-title">Universal Wallet</h1>
             <IdentitySelector
                 onNextClick={(identity : any) => this.onNextClick(identity)}
                 onChange={this.onChange.bind(this)}
