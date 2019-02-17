@@ -7,7 +7,7 @@ contract('Create2', (accounts) => {
     const Create2FactoryInstance = await Create2Factory.deployed();
     let tx = await Create2FactoryInstance.setContractCode(contractCode, {from:accounts[0]})
     
-    let addr1 = await Create2FactoryInstance.computeContractAddress(salt, accounts[0])
+    let addr1 = await Create2FactoryInstance.computeContractAddress.call(salt, accounts[0])
     let msgHash = web3.utils.soliditySha3(Create2FactoryInstance.address, salt)
     const signature = await web3.eth.sign(msgHash, accounts[0])
   
@@ -20,7 +20,7 @@ contract('Create2', (accounts) => {
 
     let balance2 = await web3.eth.getBalance(addr1)
     console.log({balance1, balance2})
-    assert.equal(false, await Create2FactoryInstance.isContract(addr1))
+    assert.equal(false, await Create2FactoryInstance.isContract.call(addr1))
 
     await Create2FactoryInstance.deployContract(accounts[0],salt, signature, {from:accounts[0]})
     let addr2 = await Create2FactoryInstance.contractAddress()
@@ -28,7 +28,7 @@ contract('Create2', (accounts) => {
     
     await testContract.setNum(2);
     let num = await testContract.num();
-    assert.equal(true, await Create2FactoryInstance.isContract(addr1))
+    assert.equal(true, await Create2FactoryInstance.isContract.call(addr1))
     assert.equal(num, 2, "num should match");
     assert.equal(addr1, addr2, "address should match");
   });
