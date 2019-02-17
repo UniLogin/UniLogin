@@ -24,9 +24,18 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
   }
 
   async componentDidMount() {
+    this.interval = setInterval(() => this.updateBalance(), 1000);
+  }
+
+  async updateBalance() {
     const {address} = this.props.services.identityService.identity;
     const balance = await this.props.services.tokenService.getBalance(address);
+    console.log(balance.toString())
     this.setState({balance: balance.toString()})
+  }
+
+  async sendTokens() {
+    await this.props.services.identityService.sendTokens(document.getElementById('address').value, document.getElementById('amount').value * 10)
   }
 
   render() {
@@ -36,9 +45,12 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
         <div className="dashboard-content">
           <Header>
             <Notifications />
-            <UserSelect name={this.props.services.identityService.identity.name}/>
+            <UserSelect address={this.props.services.identityService.identity.address} name={this.props.services.identityService.identity.name}/>
           </Header>
-          <ChartSection balance={this.state.balance} />
+          <input type="text" id="address" placeholder="address"/>
+          <input type="text" id="amount" placeholder="amount"></input> 
+          <button onClick={this.sendTokens.bind(this)}> Send </button>
+          <ChartSection services={this.state.services} balance={this.state.balance} />
           <LatestTransfers balance={this.state.balance} />
         </div>
       </div>
