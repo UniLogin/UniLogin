@@ -10,15 +10,10 @@ type LoginState = {
 
 };
 
-
 class Login extends Component<LoginProps, LoginState> {
-  async onNextClick(identityName : any) {
-  }
-
-  async onChange(identity : any) {
-  }
-
-  async onAccountRecoveryClick(identity : any) {
+  async onItemClick(ensName: string) {
+    await this.props.services.identityService.create(ensName);
+    this.props.services.emitter.emit('setView', 'Wyre');
   }
 
   render() {
@@ -31,11 +26,8 @@ class Login extends Component<LoginProps, LoginState> {
             </p>
             <h1 className="main-title">Universal Wallet</h1>
             <IdentitySelector
-                onNextClick={(identity : any) => this.onNextClick(identity)}
-                onChange={this.onChange.bind(this)}
-                onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
+                onItemClick={this.onItemClick.bind(this)}
                 services = {this.props.services}
-                identitySelectionService={this.props.services.identitySelectionService}
               />
           </div>
         </div>
