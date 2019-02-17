@@ -33,10 +33,7 @@ class ContentContainer extends Component {
     if (this.state.view === 'Login') {
       return <Login services={services} />;
     } else if (this.state.view === 'Wyre') {
-      return <Wyre
-        identityService={services.identityService}
-        // address = '0xB4DC65f8adE347d9D87D0d077F256aFC798c4dC6'
-      />;
+      return <Wyre services={services} />;
     } else if (this.state.view === 'Dashboard') {
       return <Dashboard services={services}/>;
     }

@@ -11,9 +11,11 @@ class Wyre extends Component {
     	wyreAccount: 'AK-JLWBQZXZ-UDHJ9LGM-H3ZZB9GR-M9WM4P3P',
       amount: 0.001
     };
+    window.emitter = props.services.emitter;
   }
 
   componentDidMount () {
+  	console.log(this.services);
   	window.addEventListener("message", this.receiveMessage, false);
     var address = this.state.address;
     var wyreAccount = this.state.wyreAccount;
@@ -31,7 +33,8 @@ class Wyre extends Component {
 
   receiveMessage(event) {
   	if (event.data === 'closed') {
-  		window.location.replace('http://localhost:8080/')
+  		//console.log("GO TO DASHBOARD");
+    	window.emitter.emit('setView', 'Dashboard');
   	}
 	}
 

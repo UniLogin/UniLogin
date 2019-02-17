@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ethIcon from './../../assets/ethereum-icon.svg';
+//import ethIcon from './../../assets/ethereum-icon.svg';
 import mkrIcon from './../../assets/maker-icon.svg';
 
 const TableRow = ({data} : {data: any}) => (
@@ -15,8 +15,8 @@ const TableRow = ({data} : {data: any}) => (
     </td>
     <td className="td">{data.address}</td>
     <td className="td">
-      <p className="amount-usd">-$ {data.amountUsd.toFixed(2)}</p>
-      <p className="amount-crypto">-{data.amountEth} {data.shortcut}</p>
+      <p className="amount-usd">+$ {data.amountUsd.toFixed(2)}</p>
+      <p className="amount-crypto">+{data.amountEth} {data.shortcut}</p>
     </td>
     <td className="td">{data.date}</td>
     <td className="td">
@@ -30,7 +30,7 @@ const Table = ({rows} : {rows: any}) => (
     <tbody>
       <tr className="tr">
         <th className="th">Currency</th>
-        <th className="th">Sent Address</th>
+        <th className="th">To/from Address</th>
         <th className="th">Amount</th>
         <th className="th">Date</th>
         <th className="th">Status</th>
@@ -56,47 +56,14 @@ const LatestTransfersSection = () => {
 const dataPlaceholder = [
   {
     id: 1,
-    icon: ethIcon,
-    currency: 'ethereum',
-    shortcut: 'eth',
-    address: 'bob.universal.eth',
-    amountUsd: 2.5,
-    amountEth: 0.0034729103,
+    icon: mkrIcon,
+    currency: 'Maker DAI',
+    shortcut: 'dai',
+    address: 'Wyre Transfer',
+    amountUsd: 10,
+    amountEth: 10,
     date: '05/02/2019',
     status: 'completed',
-  },
-  {
-    id: 2,
-    icon: mkrIcon,
-    currency: 'maker',
-    shortcut: 'mkr',
-    address: 'alex.universal.eth',
-    amountUsd: 1,
-    amountEth: 0.0034729103,
-    date: '04/02/2019',
-    status: 'pending',
-  },
-  {
-    id: 3,
-    icon: ethIcon,
-    currency: 'ethereum',
-    shortcut: 'eth',
-    address: 'bob.universal.eth',
-    amountUsd: 2.5,
-    amountEth: 0.0034729103,
-    date: '05/02/2019',
-    status: 'completed',
-  },
-  {
-    id: 4,
-    icon: mkrIcon,
-    currency: 'maker',
-    shortcut: 'mkr',
-    address: 'alex.universal.eth',
-    amountUsd: 1,
-    amountEth: 0.0034729103,
-    date: '04/02/2019',
-    status: 'pending',
   },
 ];
 
