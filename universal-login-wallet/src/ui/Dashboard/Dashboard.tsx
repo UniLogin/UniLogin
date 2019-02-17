@@ -16,6 +16,13 @@ type DashboardState = {
 
 class Dashboard extends Component<DashboardProps, DashboardState> {
 
+  constructor(props : any) {
+    super(props);
+    this.state = {
+      balance: '0'
+    };
+  }
+
   async componentDidMount() {
     const {address} = this.props.services.identityService.identity;
     const balance = await this.props.services.tokenService.getBalance(address);
