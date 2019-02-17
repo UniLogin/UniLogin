@@ -1,4 +1,5 @@
 import Token from '../contracts/Token.json';
+import Create2Factory from 'universal-login-contracts/contracts/create2/Create2Factory';
 import {deployContract} from 'ethereum-waffle';
 
 async function deployToken(deployWallet) {
