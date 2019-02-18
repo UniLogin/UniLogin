@@ -7,8 +7,6 @@ import createServices from './services/Services';
 import getConfig from '../config/getConfig';
 
 const config = getConfig();
-console.log(process.env.NODE_ENV)
-console.log(config);
 
 const services = createServices(config);
 
