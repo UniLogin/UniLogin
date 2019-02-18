@@ -1,12 +1,44 @@
-
-.login-input
+.login
   position: relative
-  display: flex
+  max-width: 500px
+  margin: 0 auto
+  padding: 123px 0
 
-.id-selector .dropdown
-  margin-left: 13px
+.login::before
+  content: ''
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-image: linear-gradient(131deg, #0C0E57 1%, #14052C 100%)
+  background-size: cover
+  z-index: -1
 
-.input-loader
-  position: absolute
-  right: 1470px
-  top: 14px
+.login-logo
+  display: block
+  margin: 0 auto 23px
+
+.login-subtitle
+  max-width: 383px
+  margin: 0 auto 48px
+  opacity: 0.75
+  font-size: 13px
+  color: #FFFFFF
+  text-align: center
+
+.login-input-label
+  display: block
+  margin-bottom: 16px
+
+.login-input-label-title
+  margin-bottom: 2px
+  font-family: 'Poppins-Medium', sans-serif
+  font-size: 15px
+  color: #FFFFFF
+  line-height: 25px
+
+.login-input-label-text
+  opacity: 0.75
+  font-size: 13px
+  color: #FFFFFF
