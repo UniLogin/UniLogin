@@ -5,7 +5,7 @@ interface SuggestionsProps {
   creations: string[];
 }
 
-const getSuggestionsList = (operationType: string, array: string[]) => 
+const getSuggestionsList = (operationType: string, array: string[]) =>
   array.map((element => (
     <li key={`${operationType}_${element}`}>
       <span>{element}</span>
