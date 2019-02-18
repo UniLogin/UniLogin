@@ -4,31 +4,20 @@ interface SuggestionsProps {
   connections: string[];
   creations: string[];
 }
+
+const getSuggestionsList = (operationType: string, array: string[]) => 
+  array.map((element => (
+    <li key={`${operationType}_${element}`}>
+      <span>{element}</span>
+      <button>{operationType}</button>
+    </li>)
+  )
+);
+
 const Suggestions = ({connections, creations}: SuggestionsProps) => {
-  const connectionsSuggestions = connections.map((name => (
-    <li
-      key={`connection_${name}`}
-    >
-      <span>{name}</span>
-      <button>connect</button>
-    </li>)
-  ));
-  const creationsSuggestions = creations.map((name => (
-    <li
-      key={`create_${name}`}
-    >
-      <span>{name}</span>
-      <button>create</button>
-    </li>)
-  ));
-  const recoversSuggestions = connections.map((name => (
-    <li
-      key={`recover_${name}`}
-    >
-      <span>{name}</span>
-      <button>recover</button>
-    </li>)
-  ));
+  const connectionsSuggestions = getSuggestionsList('connect', connections);
+  const creationsSuggestions = getSuggestionsList('create', creations);
+  const recoversSuggestions = getSuggestionsList('recover', connections);
 
   return (
     <ul>
