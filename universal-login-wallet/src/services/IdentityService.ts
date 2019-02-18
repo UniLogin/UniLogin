@@ -1,21 +1,17 @@
-interface identity {
+interface Identity {
   name: string;
   address: string;
   privateKey: string;
-};
+}
 
 export default class IdentityService {
-  identity: identity;
+  private identity?: Identity;
 
-  constructor() {
-    this.identity = {
-      name: '',
-      address: '',
-      privateKey: '',
-    };
+  setIdentity(identity: Identity) {
+    this.identity = identity;
   }
 
-  setIdentity(identity: identity) {
-    this.identity = {...this.identity, ...identity};
+  getIdentity() {
+    return this.identity;
   }
 }
