@@ -2,6 +2,7 @@ import React from 'react';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {IdentitySelectionService, SuggestionsService} from 'universal-login-commons';
 import ModalService from './ModalService';
+import IdentityService from './IdentityService';
 
 interface Config {
   domains: string[];
@@ -14,11 +15,13 @@ export const createServices = (config: Config) => {
   const identitySelectionService = new IdentitySelectionService(sdk, config.domains);
   const suggestionsService = new SuggestionsService(identitySelectionService);
   const modalService = new ModalService();
+  const identityService = new IdentityService();
   return {
     sdk,
     suggestionsService,
     identitySelectionService,
-    modalService
+    modalService,
+    identityService
   };
 };
 
