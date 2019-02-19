@@ -1,45 +1,53 @@
 {
   "$schema": "http://json.schemastore.org/tslint",
+  "jsRules": true,
   "rules": {
-    "prefer-const": true,
-    "no-var-keyword": true,
-    "object-literal-shorthand": true,
-    "object-literal-key-quotes": [true, "as-needed"],
-    "prefer-template": true,
-    "import-spacing": true,
-    "no-irregular-whitespace": true,
-    "no-eval": true,
-    "space-before-function-paren": [
-      true,
-      {
-        "anonymous": "always",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ],
-    "no-trailing-whitespace": true,
-    "no-parameter-reassignment": true,
-    "prefer-object-spread": true,
-    "arrow-return-shorthand": true,
     "arrow-parens": true,
+    "arrow-return-shorthand": true,
+    "class-name": true,
+    "comment-format": [
+      true,
+      "check-space"
+    ],
+    "curly": true,
+    "import-spacing": true,
+    "no-console": false,
     "no-construct": true,
     "no-duplicate-imports": true,
     "no-duplicate-super": true,
     "no-duplicate-switch-case": true,
-    "no-unused-variable": true,
-    "one-variable-per-declaration": true,
-    "triple-equals": true,
-    "class-name": true,
+    "no-eval": true,
+    "no-irregular-whitespace": true,
+    "no-parameter-reassignment": true,
     "no-return-await": true,
-    "comment-format": [true, "check-space"],
-    "whitespace": [
+    "no-trailing-whitespace": true,
+    "no-unused-variable": true,
+    "no-var-keyword": true,
+    "object-literal-key-quotes": [
       true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type",
-      "check-type-operator"
+      "as-needed"
+    ],
+    "object-literal-shorthand": true,
+    "one-variable-per-declaration": true,
+    "prefer-const": true,
+    "prefer-object-spread": true,
+    "prefer-template": true,
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "radix": true,
+    "semicolon": [
+      true,
+      "always"
+    ],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "always",
+        "asyncArrow": "always",
+        "named": "never"
+      }
     ],
     "space-within-parens": true,
     "trailing-comma": [
@@ -49,15 +57,19 @@
         "singleline": "never"
       }
     ],
-    "radix": true,
+    "triple-equals": true,
     "variable-name": [
       true,
       "check-format"
     ],
-    "semicolon": [true, "always"],
-    "quotemark": [true, "single"],
-    "no-console": false,
-    "curly": true
-  },
-  "jsRules": true
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type",
+      "check-type-operator"
+    ]
+  }
 }
