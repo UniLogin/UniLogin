@@ -2,7 +2,6 @@
   "compilerOptions": {
     "allowJs": true,
     "strict": true,
-    "noUnusedLocals": true,
     "lib": [
       "esnext"
     ],

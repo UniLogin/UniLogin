@@ -26,6 +26,7 @@
     "no-duplicate-imports": true,
     "no-duplicate-super": true,
     "no-duplicate-switch-case": true,
+    "no-unused-variable": true,
     "one-variable-per-declaration": true,
     "triple-equals": true,
     "class-name": true,
