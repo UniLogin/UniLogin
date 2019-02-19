@@ -31,7 +31,7 @@ class Relayer {
   }
 
   async start() {
-    this.database.migrate.latest();
+    await this.database.migrate.latest();
     this.runServer();
     await this.ensService.start();
   }
@@ -55,8 +55,8 @@ class Relayer {
   }
 
   async stop() {
-    this.database.destroy();
-    this.server.close();
+    await this.database.destroy();
+    await this.server.close();
   }
 }
 

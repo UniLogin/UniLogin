@@ -1,15 +1,12 @@
 import {expect} from 'chai';
 import RelayerUnderTest from '../../lib/utils/relayerUnderTest';
-import {createMockProvider} from 'ethereum-waffle';
 import {getKnexConfig} from '../../lib/utils/knexUtils';
 
 describe('Database integration', () => {
   let relayer: RelayerUnderTest;
-  let provider;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    relayer = await RelayerUnderTest.createPreconfigured();
   });
 
   it('migrates after start', async () => {
