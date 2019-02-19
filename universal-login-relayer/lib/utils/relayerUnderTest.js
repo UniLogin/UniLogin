@@ -1,5 +1,5 @@
 import Relayer from '../relayer';
-import {defaultAccounts, getWallets} from 'ethereum-waffle';
+import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 import {withENS} from './utils';
 
@@ -8,7 +8,7 @@ class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  static async createPreconfigured(provider) {
+  static async createPreconfigured(provider = createMockProvider()) {
     const port = 33111;
     const [deployerWallet] = (await getWallets(provider)).slice(-2);
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
