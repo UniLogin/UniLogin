@@ -1,5 +1,5 @@
 import React from 'react';
-import TextBox from './TextBox';
+import InputText from './InputText';
 import Suggestions from './Suggestions';
 
 class IdentitySelector extends React.Component<any, any> {
@@ -27,27 +27,31 @@ class IdentitySelector extends React.Component<any, any> {
     this.suggestionsService.getSuggestions(name);
   }
 
-  renderBusyIndicator() {
-    if (this.state.busy) {
+  renderSuggestions() {
+    const {busy, connections, creations} = this.state;
+    if (busy) {
       return <div className="circle-loader input-loader"/>;
     }
+    if (!connections.length && !creations.length) {
+      return null;
+    }
+    return <Suggestions connections={connections} creations={creations} />;
   }
 
   render() {
     return(
-      <div className="identity-selector">
-        <div className="id-selector">
-          <TextBox
-            onChange={event => this.update(event)}
-            placeholder={'bob.example.eth'}
-          />
-          {this.renderBusyIndicator()}
-        </div>
-        <Suggestions
-          connections={this.state.connections}
-          creations={this.state.creations}
+      <>
+        <label htmlFor="loginInput" className="login-input-label">
+          <p className="login-input-label-title">Type a nickname you want</p>
+          <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
+        </label>
+        <InputText
+          id="loginInput"
+          onChange={event => this.update(event)}
+          placeholder="bob.example.eth"
         />
-      </div>
+        {this.renderSuggestions()}
+      </>
     );
   }
 }
