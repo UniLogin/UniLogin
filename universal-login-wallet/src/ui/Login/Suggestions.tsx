@@ -7,9 +7,10 @@ interface SuggestionsProps {
 
 const getSuggestionsItems = (operationType: string, array: string[]) =>
   array.map((element => (
-    <li 
+    <li
       key={`${operationType}_${element}`}
-      className="suggestions-item">
+      className="suggestions-item"
+    >
       <button className="suggestions-item-btn">
         <p className="suggestions-item-text">{element}</p>
         <p className="suggestions-item-btn-text">{operationType}</p>
