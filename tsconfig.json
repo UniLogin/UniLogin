@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "strict": true,
-    "noUnusedLocals": true,
+    "esModuleInterop": true,
     "lib": [
       "esnext"
     ],
-    "target": "es5",
     "module": "commonjs",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es5"
   },
   "exclude": [
     "**/build",
