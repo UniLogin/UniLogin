@@ -1,5 +1,5 @@
 import React from 'react';
-import InputText from './InputText';
+import InputText from '../common/InputText';
 import Suggestions from './Suggestions';
 
 class IdentitySelector extends React.Component<any, any> {
