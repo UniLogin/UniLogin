@@ -1,14 +1,14 @@
 export default class CreationSerivce {
   sdk: any;
-  identityService: any;
-  constructor(sdk: any, identityService: any) {
+  userWalletService: any;
+  constructor(sdk: any, userWalletService: any) {
     this.sdk = sdk;
-    this.identityService = identityService;
+    this.userWalletService = userWalletService;
   }
 
   async create(name: string): Promise<[string, string]> {
     const [privateKey, contractAddress] = await this.sdk.create(name);
-    this.identityService.setIdentity({privateKey, contractAddress, name});
+    this.userWalletService.userWallet = {privateKey, contractAddress, name};
     return [privateKey, contractAddress];
   }
 }

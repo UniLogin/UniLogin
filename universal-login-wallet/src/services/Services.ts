@@ -2,7 +2,7 @@ import React from 'react';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {IdentitySelectionService, SuggestionsService} from 'universal-login-commons';
 import ModalService from './ModalService';
-import IdentityService from './IdentityService';
+import UserWalletService from './UserWalletService';
 
 interface Config {
   domains: string[];
@@ -15,13 +15,13 @@ export const createServices = (config: Config) => {
   const identitySelectionService = new IdentitySelectionService(sdk, config.domains);
   const suggestionsService = new SuggestionsService(identitySelectionService);
   const modalService = new ModalService();
-  const identityService = new IdentityService();
+  const userWalletService = new UserWalletService();
   return {
     sdk,
     suggestionsService,
     identitySelectionService,
     modalService,
-    identityService
+    userWalletService
   };
 };
 

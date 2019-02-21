@@ -9,6 +9,6 @@ describe('Services', () => {
     expect(services.sdk).to.not.be.null;
     expect(services.identitySelectionService).to.not.be.null;
     expect(services.suggestionsService).to.not.be.null;
-    expect(services.identityService).to.not.be.null;
+    expect(services.userWalletService).to.not.be.null;
   });
 });
