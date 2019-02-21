@@ -8,14 +8,14 @@ interface InputTextProps {
   id: string;
 }
 
-const InputText = (props: InputTextProps) => (
+const InputText = ({onChange, placeholder, autoFocus, className, id}: InputTextProps) => (
   <input
-    id={props.id}
-    className={`input ${props.className ? props.className : ''}`}
-    onChange={props.onChange}
+    id={id}
+    className={`input ${className ? className : ''}`}
+    onChange={onChange}
     type="text"
-    autoFocus={props.autoFocus}
-    placeholder={props.placeholder}
+    autoFocus={autoFocus}
+    placeholder={placeholder}
   />
 );
 
