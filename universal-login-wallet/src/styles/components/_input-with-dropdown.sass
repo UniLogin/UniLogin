@@ -1,0 +1,69 @@
+.input-dropdown-wrapper
+  position: relative
+
+.input-dropdown
+  padding-right: 103px
+
+.currency-dropdown
+  position: absolute
+  top: 0
+  right: 0
+  height: 45px
+  width: 100px
+
+.currency-dropdown-btn
+  position: relative
+  height: 100%
+  width: 100%
+  padding: 0 33px 0 20px
+  font-weight: 500
+  font-size: 14px
+  color: #3D3D41
+  line-height: 23px
+
+.currency-dropdown-btn::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  transform: translateY(-50%)
+  width: 1px
+  height: 31px
+  background: #979797
+
+.currency-dropdown-btn::after
+  content: ''
+  position: absolute
+  top: 50%
+  right: 20px
+  transform: translateY(-50%)
+  width: 11px
+  height: 6px
+  background: url('../assets/triangle.svg') center no-repeat
+  background-size: contain
+
+.currency-dropdown.open .currency-dropdown-btn::after
+  transform: translateY(-50%) rotate(180deg)
+
+.currency-dropdown-list
+  position: absolute
+  left: 0
+  bottom: -8.5px
+  width: 100%
+  transform: translateY(100%)
+  background: #ffffff
+  border-radius: 4px
+  box-shadow: 0 2px 4px 0 rgba(208,209,217,0.25)
+  overflow: hidden
+  z-index: 100
+
+.currency-item-btn
+  width: 100%
+  padding: 10px 20px
+  font-size: 14px
+  color: #3D3D41
+  line-height: 23px
+
+.currency-item-btn:hover,
+.currency-item-btn:focus
+  background: #F2F3F6

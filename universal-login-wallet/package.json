@@ -15,10 +15,12 @@
     "react-dom": "^16.8.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "universal-login-commons": "^1.0.0",
     "universal-login-sdk": "^0.1.11",
-    "universal-login-commons": "^1.0.0"
+    "fbemitter": "^2.1.1"
   },
   "devDependencies": {
+    "@types/fbemitter": "^2.0.32",
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.5",

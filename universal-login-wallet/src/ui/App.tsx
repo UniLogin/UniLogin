@@ -10,12 +10,12 @@ interface AppProps {
   services: Services;
 }
 
-const App = (props: AppProps) => {
+const App = ({services}: AppProps) => {
   return(
     <BrowserRouter>
       <Switch>
-        <Route exact path="/login" render={() => <Login services={props.services}/>}/>
-        <Route exact path="/" component={Dashboard}/>
+        <Route exact path="/login" render={() => <Login services={services}/>}/>
+        <Route exact path="/" render={() => <Dashboard services={services}/>}/>
         <Route path="/dogs" component={Dogs}/>
         <Route component={NotFound}/>
       </Switch>

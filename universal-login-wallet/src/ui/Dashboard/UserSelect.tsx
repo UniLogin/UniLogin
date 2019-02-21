@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
+import useToggler from '../../hooks/useToggler';
 import avatar from './../../assets/avatar.svg';
 
 const UserSelect = () => {
-  const [visible, setVisibility] = useState(false);
-  const toggle = () => setVisibility(visible => !visible);
+  const {visible, toggle} = useToggler();
 
   return (
     <div className="user-select">
