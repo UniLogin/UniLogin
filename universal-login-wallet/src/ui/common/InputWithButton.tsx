@@ -1,5 +1,5 @@
 import React from 'react';
-import copy from '../../utils/copy';
+import {copy} from 'universal-login-commons';
 
 interface InputProps {
   placeholder?: string;
