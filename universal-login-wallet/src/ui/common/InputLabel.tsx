@@ -1,6 +1,11 @@
 import React from 'react';
 
-const InputLabel = ({children, htmlFor} : {children: any, htmlFor: string}) => (
+interface InputLabelProps {
+  htmlFor: string;
+  children: any;
+}
+
+const InputLabel = ({children, htmlFor} : InputLabelProps) => (
   <label className="input-label" htmlFor={htmlFor}>{children}</label>
 );
 
