@@ -3,6 +3,7 @@ import ModalWrapper from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
+import {KEY_CODE_ESCAPE} from 'universal-login-commons';
 
 const Modal = ({emitter}: {emitter: any}) => {
   const [openModal, setModal] = useState('');
@@ -16,7 +17,7 @@ const Modal = ({emitter}: {emitter: any}) => {
   });
 
   const listenKeyboard = (event : any) => {
-    if (event.key === 'Escape' || event.keyCode === 27) {
+    if (event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) {
       closeModal();
     }
   };

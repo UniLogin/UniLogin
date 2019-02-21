@@ -4,4 +4,5 @@ export {Procedure, Predicate} from './utils/types';
 export {copy} from './utils/copy';
 export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, IdentitySelectionService} from './services/IdentitySelectionService';
+export * from './constans/constans';
 
