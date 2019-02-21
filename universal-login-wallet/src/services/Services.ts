@@ -3,6 +3,7 @@ import UniversalLoginSDK from 'universal-login-sdk';
 import {IdentitySelectionService, SuggestionsService} from 'universal-login-commons';
 import ModalService from './ModalService';
 import UserWalletService from './UserWalletService';
+import CreationSerivce from './Creation';
 
 interface Config {
   domains: string[];
@@ -16,6 +17,7 @@ export const createServices = (config: Config) => {
   const suggestionsService = new SuggestionsService(identitySelectionService);
   const modalService = new ModalService();
   const userWalletService = new UserWalletService();
+  const creation = CreationSerivce(sdk, userWalletService);
   return {
     sdk,
     suggestionsService,

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import CreationSerivice from '../src/services/CreationService';
+import CreationSerivice from '../src/services/Creation';
 import UserWalletService from '../src/services/UserWalletService';
 import setupSdk from './SetupSdk';
 
@@ -13,12 +13,12 @@ describe('CreationService', () => {
   before(async () => {
     ({sdk, relayer} = await setupSdk());
     userWalletService = new UserWalletService();
-    creationService = new CreationSerivice(sdk, userWalletService);
+    creationService = CreationSerivice(sdk, userWalletService);
   });
 
   it('should create contract wallet and set identity', async () => {
     const name = 'name.mylogin.eth';
-    const [privateKey, contractAddress] = await creationService.create(name);
+    const [privateKey, contractAddress] = await creationService(name);
     expect(privateKey).to.not.be.null;
     expect(contractAddress).to.not.be.null;
 
