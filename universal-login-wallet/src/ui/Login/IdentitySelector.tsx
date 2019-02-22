@@ -3,7 +3,11 @@ import InputText from '../common/InputText';
 import Suggestions from './Suggestions';
 import {useServices} from '../../hooks';
 
-const IdentitySelector = () => {
+interface IdentitySelector {
+  onCreateClick: (...args: any[]) => void;
+}
+
+const IdentitySelector = ({onCreateClick}: IdentitySelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
@@ -35,7 +39,7 @@ const IdentitySelector = () => {
       />
       {busy && <div className="circle-loader input-loader"/>}
       {!busy && (connections.length || creations.length) &&
-        <Suggestions connections={connections} creations={creations} />
+        <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/>
       }
     </>
   );
