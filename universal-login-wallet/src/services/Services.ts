@@ -2,6 +2,7 @@ import React from 'react';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {IdentitySelectionService, SuggestionsService} from 'universal-login-commons';
 import {EventEmitter} from 'fbemitter';
+import ModalService from './ModalService';
 
 interface Config {
   domains: string[];
@@ -14,7 +15,14 @@ export const createServices = (config: Config) => {
   const identitySelectionService = new IdentitySelectionService(sdk, config.domains);
   const suggestionsService = new SuggestionsService(identitySelectionService);
   const emitter = new EventEmitter();
-  return {sdk, suggestionsService, identitySelectionService, emitter};
+  const modalService = new ModalService();
+  return {
+    sdk,
+    suggestionsService,
+    identitySelectionService,
+    emitter,
+    modalService
+  };
 };
 
 export type Services = ReturnType<typeof createServices>;
