@@ -15,7 +15,7 @@ const App = ({services}: AppProps) => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/login" render={() => <Login services={services}/>}/>
-        <Route exact path="/" render={() => <Dashboard services={services}/>}/>
+        <Route exact path="/" component={Dashboard}/>
         <Route path="/dogs" component={Dogs}/>
         <Route component={NotFound}/>
       </Switch>

@@ -4,16 +4,16 @@ import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {KEY_CODE_ESCAPE} from 'universal-login-commons';
-import {useEvent, useServices} from '../../hooks';
+import {useSubscription, useServices} from '../../hooks';
 
 const Modal = () => {
-  const {emitter} = useServices();
-  const openModal = useEvent(emitter, 'showModal');
-  const closeModal = () => emitter.emit('showModal', '');
+  const {modalService} = useServices();
+  const openModal = useSubscription(modalService);
+  const hideModal = () => modalService.hideModal();
 
   const listenKeyboard = (event : any) => {
     if (event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) {
-      closeModal();
+      hideModal();
     }
   };
 
@@ -27,19 +27,19 @@ const Modal = () => {
   switch (openModal) {
     case 'transfer':
       return (
-        <ModalWrapper onClose={closeModal}>
+        <ModalWrapper onClose={hideModal}>
           <ModalTransfer />
         </ModalWrapper>
       );
     case 'request':
       return (
-        <ModalWrapper onClose={closeModal}>
+        <ModalWrapper onClose={hideModal}>
           <ModalRequest />
         </ModalWrapper>
       );
     case 'invitation':
       return (
-        <ModalWrapper onClose={closeModal}>
+        <ModalWrapper onClose={hideModal}>
           <ModalInvitation />
         </ModalWrapper>
       );

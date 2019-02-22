@@ -6,25 +6,22 @@ import UserSelect from './UserSelect';
 import LatestTransfers from './LatestTransfersSection';
 import ChartSection from './ChartSection';
 import Modal from '../Modals/Modal';
-import {Services} from '../../services/Services';
 
-const Dashboard = ({services}: {services: Services}) => {
-  return (
-    <>
-      <div className="dashboard">
-        <Sidebar emitter={services.emitter}/>
-        <div className="dashboard-content">
-          <Header>
-            <Notifications />
-            <UserSelect />
-          </Header>
-          <ChartSection />
-          <LatestTransfers />
-        </div>
+const Dashboard = () => (
+  <>
+    <div className="dashboard">
+      <Sidebar />
+      <div className="dashboard-content">
+        <Header>
+          <Notifications />
+          <UserSelect />
+        </Header>
+        <ChartSection />
+        <LatestTransfers />
       </div>
-      <Modal />
-    </>
-  );
-};
+    </div>
+    <Modal />
+  </>
+);
 
 export default Dashboard;
