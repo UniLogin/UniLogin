@@ -6,14 +6,14 @@ export interface Suggestions {
   creations: string[];
 }
 
-type SuggestionsCallback = (suggestions: Suggestions) => void
+type SuggestionsCallback = (suggestions: Suggestions) => void;
 
 export class SuggestionsService  {
   private debouncedGetSuggestions: any;
 
   constructor(
     private identitySelectionService: IdentitySelectionService,
-    {debounceTime} = {debounceTime: 1000}
+    {debounceTime} = {debounceTime: 1000},
   ) {
     this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);
   }
@@ -23,7 +23,7 @@ export class SuggestionsService  {
     if (suggestions) {
       callback(suggestions);
     } else {
-      callback({connections: [], creations: []})
+      callback({connections: [], creations: []});
     }
   }
 

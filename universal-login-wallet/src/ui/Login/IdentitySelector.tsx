@@ -14,12 +14,12 @@ const IdentitySelector = () => {
     const name = event.target.value;
     setName(name);
     setBusy(true);
-    suggestionsService.getSuggestions(name, (suggestions) => {
+    suggestionsService.getSuggestions(name, suggestions => {
       setConnections(suggestions.connections);
       setCreations(suggestions.creations);
       setBusy(false);
     });
-  }
+  };
 
   return(
     <>
@@ -39,6 +39,6 @@ const IdentitySelector = () => {
       }
     </>
   );
-}
+};
 
 export default IdentitySelector;
