@@ -120,7 +120,7 @@ addKey
     - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT_KEY - ``1``, ACTION_KEY - ``2``, set to MANAGAMENT_KEY by default
   Returns:
-    `promise`, that resolves to execution nonce
+    `promise`, that resolves to the hash of the on chain transaction
 
   Example:
     ::
@@ -153,7 +153,7 @@ addKeys
     - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
-    `promise`, that resolves to execution nonce
+    `promise`, that resolves to the hash of the on chain transaction
 
   Example:
     ::
@@ -188,7 +188,7 @@ removeKey
     - **privateKey** : string - private key with permission of removing key
     - **transactionDetails** : object - optional parameter, that includes details of transactions for example gasLimit or gasPrice
   Returns:
-    `promise`, that resolves to execution nonce
+    `promise`, that resolves to the hash of the on chain transaction
 
   Example
     ::
@@ -226,7 +226,7 @@ execute
       * gasLimit : number - limit of gas to refund
     - **privateKey** : string - a private key to be used to sign the transaction and has permission to execute message
   Returns:
-    `promise`, that resolves to execution nonce
+    `promise`, that resolves to the hash of the on chain transaction
 
   Example:
     ::
