@@ -7,7 +7,7 @@ const Login = (props: {services: any}) => {
   <div className="login">
     <img src={Logo} alt="Logo" className="login-logo"/>
     <p className="login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
-    <IdentitySelector services={props.services}/>
+    <IdentitySelector />
   </div>);
 };
 

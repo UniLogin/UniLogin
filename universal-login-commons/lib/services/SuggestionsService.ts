@@ -1,9 +1,15 @@
 import {debounce} from '../utils/debounce';
-import {Procedure} from '../utils/types';
 import {IdentitySelectionService} from './IdentitySelectionService';
 
+export interface Suggestions {
+  connections: string[];
+  creations: string[];
+}
+
+type SuggestionsCallback = (suggestions: Suggestions) => void
+
 export class SuggestionsService  {
-  debouncedGetSuggestions: any;
+  private debouncedGetSuggestions: any;
 
   constructor(
     private identitySelectionService: IdentitySelectionService,
@@ -12,13 +18,16 @@ export class SuggestionsService  {
     this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);
   }
 
-  private async doGetSuggestions(name: string, callback: Procedure) {
+  private async doGetSuggestions(name: string, callback: SuggestionsCallback) {
     const suggestions = await this.identitySelectionService.getSuggestions(name);
-    callback({...suggestions, name, busy: false});
+    if (suggestions) {
+      callback(suggestions);
+    } else {
+      callback({connections: [], creations: []})
+    }
   }
 
-  getSuggestions = (name: string, callback: Procedure) => {
-    callback({busy: true});
+  getSuggestions = (name: string, callback: SuggestionsCallback) => {
     this.debouncedGetSuggestions(name, callback);
   }
 }

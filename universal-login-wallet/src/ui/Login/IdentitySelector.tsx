@@ -1,55 +1,44 @@
-import React from 'react';
+import React, {useState, ChangeEvent} from 'react';
 import InputText from '../common/InputText';
 import Suggestions from './Suggestions';
+import {useServices} from '../../hooks';
 
-class IdentitySelector extends React.Component<any, any> {
-  identitySelectionService: any;
-  suggestionsService: any;
+const IdentitySelector = () => {
+  const [busy, setBusy] = useState(false);
+  const [connections, setConnections] = useState<string[]>([]);
+  const [creations, setCreations] = useState<string[]>([]);
+  const [name, setName] = useState('');
+  const {suggestionsService} = useServices();
 
-  constructor(props: {services: any}) {
-    super(props);
-    this.identitySelectionService = props.services.identitySelectionService;
-    this.suggestionsService = props.services.suggestionsService;
-    this.state = {
-      name: '',
-      connections: [],
-      creations: [],
-      busy: false,
-    };
-  }
-  
-  update(event: any) {
+  const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
-    this.suggestionsService.getSuggestions(name, (value: any) => this.setState(value));
+    setName(name);
+    setBusy(true);
+    suggestionsService.getSuggestions(name, (suggestions) => {
+      setConnections(suggestions.connections);
+      setCreations(suggestions.creations);
+      setBusy(false);
+    });
   }
 
-  renderSuggestions() {
-    const {busy, connections, creations} = this.state;
-    if (busy) {
-      return <div className="circle-loader input-loader"/>;
-    }
-    if (!connections.length && !creations.length) {
-      return null;
-    }
-    return <Suggestions connections={connections} creations={creations} />;
-  }
-
-  render() {
-    return(
-      <>
-        <label htmlFor="loginInput" className="login-input-label">
-          <p className="login-input-label-title">Type a nickname you want</p>
-          <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
-        </label>
-        <InputText
-          id="loginInput"
-          onChange={event => this.update(event)}
-          placeholder="bob.example.eth"
-        />
-        {this.renderSuggestions()}
-      </>
-    );
-  }
+  return(
+    <>
+      <label htmlFor="loginInput" className="login-input-label">
+        <p className="login-input-label-title">Type a nickname you want</p>
+        <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
+      </label>
+      <InputText
+        id="loginInput"
+        onChange={update}
+        placeholder="bob.example.eth"
+        value={name}
+      />
+      {busy && <div className="circle-loader input-loader"/>}
+      {!busy && (connections.length || creations.length) &&
+        <Suggestions connections={connections} creations={creations} />
+      }
+    </>
+  );
 }
 
 export default IdentitySelector;
