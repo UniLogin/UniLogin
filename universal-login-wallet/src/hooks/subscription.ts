@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { EventEmitter } from 'fbemitter';
+import {useState, useEffect} from 'react';
+import {EventEmitter} from 'fbemitter';
 
 export function useEvent(emitter: EventEmitter, eventName: string) {
-  const [event, setEvent] = useState(undefined as any)
-  useEmitter(emitter, eventName, setEvent)
-  return event
+  const [event, setEvent] = useState(undefined as any);
+  useEmitter(emitter, eventName, setEvent);
+  return event;
 }
 
-export function useEmitter (
+export function useEmitter(
   emitter: EventEmitter,
   eventName: string,
   callback: (value: any) => void,

@@ -4,11 +4,11 @@ import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {KEY_CODE_ESCAPE} from 'universal-login-commons';
-import { useEvent } from '../../hooks/subscription';
-import { EventEmitter } from 'fbemitter';
+import {useEvent, useServices} from '../../hooks';
 
-const Modal = ({emitter}: {emitter: EventEmitter}) => {
-  const openModal = useEvent(emitter, 'showModal')
+const Modal = () => {
+  const {emitter} = useServices();
+  const openModal = useEvent(emitter, 'showModal');
   const closeModal = () => emitter.emit('showModal', '');
 
   const listenKeyboard = (event : any) => {

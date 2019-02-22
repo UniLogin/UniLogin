@@ -1,5 +1,5 @@
 import React from 'react';
-import useToggler from '../../hooks/useToggler';
+import {useToggler} from '../../hooks';
 
 interface InputProps {
   onChange: (...args: any[]) => void;

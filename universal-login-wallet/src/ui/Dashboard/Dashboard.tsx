@@ -6,8 +6,9 @@ import UserSelect from './UserSelect';
 import LatestTransfers from './LatestTransfersSection';
 import ChartSection from './ChartSection';
 import Modal from '../Modals/Modal';
+import {Services} from '../../services/Services';
 
-const Dashboard = ({services}: {services: any}) => {
+const Dashboard = ({services}: {services: Services}) => {
   return (
     <>
       <div className="dashboard">
@@ -21,7 +22,7 @@ const Dashboard = ({services}: {services: any}) => {
           <LatestTransfers />
         </div>
       </div>
-      <Modal emitter={services.emitter}/>
+      <Modal />
     </>
   );
 };
