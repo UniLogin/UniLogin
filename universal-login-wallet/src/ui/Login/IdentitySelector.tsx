@@ -17,14 +17,10 @@ class IdentitySelector extends React.Component<any, any> {
       busy: false,
     };
   }
-
-  componentDidMount() {
-    this.suggestionsService.setCallback(this.setState.bind(this));
-  }
-
+  
   update(event: any) {
     const name = event.target.value;
-    this.suggestionsService.getSuggestions(name);
+    this.suggestionsService.getSuggestions(name, (value: any) => this.setState(value));
   }
 
   renderSuggestions() {
