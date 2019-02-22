@@ -1,24 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import ModalWrapper from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {KEY_CODE_ESCAPE} from 'universal-login-commons';
+import {useSubscription, useServices} from '../../hooks';
 
-const Modal = ({emitter}: {emitter: any}) => {
-  const [openModal, setModal] = useState('');
-  const closeModal = () => setModal('');
-
-  useEffect(() => {
-    const subscription = emitter.addListener('showModal', setModal);
-    return () => {
-      subscription.remove();
-    };
-  });
+const Modal = () => {
+  const {modalService} = useServices();
+  const openModal = useSubscription(modalService);
+  const hideModal = () => modalService.hideModal();
 
   const listenKeyboard = (event : any) => {
     if (event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) {
-      closeModal();
+      hideModal();
     }
   };
 
@@ -32,19 +27,19 @@ const Modal = ({emitter}: {emitter: any}) => {
   switch (openModal) {
     case 'transfer':
       return (
-        <ModalWrapper onClose={closeModal}>
+        <ModalWrapper onClose={hideModal}>
           <ModalTransfer />
         </ModalWrapper>
       );
     case 'request':
       return (
-        <ModalWrapper onClose={closeModal}>
+        <ModalWrapper onClose={hideModal}>
           <ModalRequest />
         </ModalWrapper>
       );
     case 'invitation':
       return (
-        <ModalWrapper onClose={closeModal}>
+        <ModalWrapper onClose={hideModal}>
           <ModalInvitation />
         </ModalWrapper>
       );

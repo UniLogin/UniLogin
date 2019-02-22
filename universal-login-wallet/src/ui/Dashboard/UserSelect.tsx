@@ -1,5 +1,5 @@
 import React from 'react';
-import useToggler from '../../hooks/useToggler';
+import {useToggler} from '../../hooks';
 import avatar from './../../assets/avatar.svg';
 
 const UserSelect = () => {
@@ -14,7 +14,7 @@ const UserSelect = () => {
           <p className="user-select-nickname">liam.universal-id.eth</p>
         </div>
       </button>
-      { visible ?
+      {visible ?
       <ul className="user-select-list">
         <li className="user-select-list-item">liam.universal-id.eth</li>
         <li className="user-select-list-item">liam.statusapp.eth</li>

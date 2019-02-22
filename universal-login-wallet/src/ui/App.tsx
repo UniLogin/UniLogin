@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
 import Dogs from './Dogs';
 import NotFound from './NotFound';
@@ -15,7 +15,7 @@ const App = ({services}: AppProps) => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/login" render={() => <Login services={services}/>}/>
-        <Route exact path="/" render={() => <Dashboard services={services}/>}/>
+        <Route exact path="/" component={Dashboard}/>
         <Route path="/dogs" component={Dogs}/>
         <Route component={NotFound}/>
       </Switch>
