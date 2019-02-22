@@ -1,20 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import ModalWrapper from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {KEY_CODE_ESCAPE} from 'universal-login-commons';
+import { useEvent } from '../../hooks/subscription';
+import { EventEmitter } from 'fbemitter';
 
-const Modal = ({emitter}: {emitter: any}) => {
-  const [openModal, setModal] = useState('');
-  const closeModal = () => setModal('');
-
-  useEffect(() => {
-    const subscription = emitter.addListener('showModal', setModal);
-    return () => {
-      subscription.remove();
-    };
-  });
+const Modal = ({emitter}: {emitter: EventEmitter}) => {
+  const openModal = useEvent(emitter, 'showModal')
+  const closeModal = () => emitter.emit('showModal', '');
 
   const listenKeyboard = (event : any) => {
     if (event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) {
