@@ -4,6 +4,6 @@ interface UserWallet {
   privateKey: string;
 }
 
-export default class UserWalletService {
+export default class WalletService {
   public userWallet?: UserWallet;
 }
