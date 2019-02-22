@@ -1,28 +1,28 @@
 import {expect} from 'chai';
 import CreationSerivice from '../src/services/Creation';
-import UserWalletService from '../src/services/UserWalletService';
+import WalletService from '../src/services/WalletService';
 import setupSdk from './SetupSdk';
 
 
 describe('CreationService', () => {
   let creationService: any;
-  let userWalletService: any;
+  let walletService: any;
   let sdk;
   let relayer: any;
 
   before(async () => {
     ({sdk, relayer} = await setupSdk());
-    userWalletService = new UserWalletService();
-    creationService = CreationSerivice(sdk, userWalletService);
+    walletService = new WalletService();
+    creationService = CreationSerivice(sdk, walletService);
   });
 
-  it('should create contract wallet and set identity', async () => {
+  it('should create contract wallet', async () => {
     const name = 'name.mylogin.eth';
     const [privateKey, contractAddress] = await creationService(name);
     expect(privateKey).to.not.be.null;
     expect(contractAddress).to.not.be.null;
 
-    const userWallet = userWalletService.userWallet;
+    const userWallet = walletService.userWallet;
     expect(userWallet.name).to.eq(name);
     expect(userWallet.privateKey).to.eq(privateKey);
     expect(userWallet.contractAddress).to.eq(contractAddress);
