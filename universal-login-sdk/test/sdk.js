@@ -88,8 +88,8 @@ describe('SDK - integration', async () => {
 
     describe('Add key', async () => {
       it('should return transaction hash', async () => {
-        const hash = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address})
-        expect(hash).to.be.properHex(64)
+        const hash = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+        expect(hash).to.be.properHex(64);
         expect(await identity.lastNonce()).to.be.eq(1);
       });
 

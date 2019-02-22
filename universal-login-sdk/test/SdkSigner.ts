@@ -5,13 +5,13 @@ import basicIdentityService from './fixtures/basicSDK';
 import {SdkSigner} from '../lib/SdkSigner';
 
 describe('SdkSigner', () => {
-  let relayer: any
+  let relayer: any;
   before(async () => {
-    ({relayer} = await loadFixture(basicIdentityService))
-  })
+    ({relayer} = await loadFixture(basicIdentityService));
+  });
   after(async () => {
     await relayer.stop();
-  })
+  });
 
   it('can be created', async () => {
     const {sdk, contractAddress, privateKey} = await loadFixture(basicIdentityService);
@@ -24,7 +24,7 @@ describe('SdkSigner', () => {
     const {sdk, contractAddress, privateKey, mockToken} = await loadFixture(basicIdentityService);
     const signer = new SdkSigner(sdk, contractAddress, privateKey);
 
-    const contract = mockToken.connect(signer)
+    const contract = mockToken.connect(signer);
     const balance = await contract.balanceOf(signer.contractAddress);
 
     expect(balance).to.deep.equal(utils.parseEther('1'));
@@ -35,12 +35,12 @@ describe('SdkSigner', () => {
     const signer = new SdkSigner(sdk, contractAddress, privateKey);
 
     // gasToken should be configured when creating SDK instance in order to use the signer
-    sdk.defaultPaymentOptions.gasToken = mockToken.address
+    sdk.defaultPaymentOptions.gasToken = mockToken.address;
 
-    const contract = mockToken.connect(signer)
-    await contract.transfer(otherWallet.address, utils.parseEther('0.5'))
+    const contract = mockToken.connect(signer);
+    await contract.transfer(otherWallet.address, utils.parseEther('0.5'));
     const balance = await contract.balanceOf(signer.contractAddress);
 
-    expect(balance.lt(utils.parseEther('0.5'))).to.equal(true)
+    expect(balance.lt(utils.parseEther('0.5'))).to.equal(true);
   });
 });
