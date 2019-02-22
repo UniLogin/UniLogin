@@ -1,15 +1,13 @@
 import EthereumIdentitySDK from '../../lib/sdk';
 import RelayerUnderTest from 'universal-login-relayer/build/utils/relayerUnderTest';
-import {getWallets, deployContract} from 'ethereum-waffle';
+import {deployContract} from 'ethereum-waffle';
 import {utils, ContractFactory} from 'ethers';
-import path from 'path';
 import Identity from 'universal-login-contracts/build/Identity';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
-import {getKnexConfig} from 'universal-login-relayer/build/utils/knexUtils';
 
-export default async function basicIdentityService(givenProvider, [wallet]) {
-  const [, otherWallet, otherWallet2] = await getWallets(givenProvider);
+export default async function basicIdentityService(givenProvider, wallets) {
+  const [wallet, otherWallet, otherWallet2] = wallets;
   const relayer = await RelayerUnderTest.createPreconfigured(givenProvider);
   await relayer.start();
   const {provider} = relayer;

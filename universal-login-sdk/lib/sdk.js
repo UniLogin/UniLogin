@@ -8,6 +8,8 @@ import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
 import MESSAGE_DEFAULTS from './config';
 
+export {SdkSigner} from './SdkSigner';
+
 class EthereumIdentitySDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
     this.provider = typeof(providerOrUrl) === 'string' ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0}) : providerOrUrl;
@@ -102,7 +104,7 @@ class EthereumIdentitySDK {
     const responseJson = await response.json();
     if (response.status === 201) {
       await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
-      return finalMessage.nonce;
+      return responseJson.transaction.hash;
     }
     throw new Error(`${responseJson.error}`);
   }
