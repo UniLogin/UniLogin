@@ -3,15 +3,16 @@ import React from 'react';
 interface SuggestionsProps {
   connections: string[];
   creations: string[];
+  onCreateClick: (...args: any[]) => void;
 }
 
-const getSuggestionsItems = (operationType: string, array: string[]) =>
+const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void) =>
   array.map((element => (
     <li
       key={`${operationType}_${element}`}
       className="suggestions-item"
     >
-      <button className="suggestions-item-btn">
+      <button className="suggestions-item-btn" onClick={() => onClick(element)}>
         <p className="suggestions-item-text">{element}</p>
         <p className="suggestions-item-btn-text">{operationType}</p>
       </button>
@@ -19,10 +20,10 @@ const getSuggestionsItems = (operationType: string, array: string[]) =>
   )
 );
 
-const Suggestions = ({connections, creations}: SuggestionsProps) => {
-  const connectionsSuggestions = getSuggestionsItems('connect to existing', connections);
-  const creationsSuggestions = getSuggestionsItems('create new', creations);
-  const recoversSuggestions = getSuggestionsItems('recover', connections);
+const Suggestions = ({connections, creations, onCreateClick}: SuggestionsProps) => {
+  const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, () => console.log('connect'));
+  const creationsSuggestions = getSuggestionsItems('create new', creations, onCreateClick);
+  const recoversSuggestions = getSuggestionsItems('recover', connections, () => console.log('recover'));
   return (
     <ul className="suggestions-list">
       {connectionsSuggestions}
