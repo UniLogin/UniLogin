@@ -80,6 +80,10 @@ jobs:
   test_wallet:
     docker:
       - image: circleci/node:10.15
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
       - run: yarn

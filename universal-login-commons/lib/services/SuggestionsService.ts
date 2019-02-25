@@ -1,29 +1,34 @@
 import {debounce} from '../utils/debounce';
-import {Procedure} from '../utils/types';
+import {IdentitySelectionService} from './IdentitySelectionService';
+
+export interface Suggestions {
+  connections: string[];
+  creations: string[];
+}
+
+type SuggestionsCallback = (suggestions: Suggestions) => void;
 
 export class SuggestionsService  {
-  identitySelectionService: any;
-  callback: Procedure;
-  debouncedGetSuggestions: any;
+  private debouncedGetSuggestions: any;
 
-  constructor(identitySelectionService: any, {debounceTime} = {debounceTime: 1000}) {
-    this.identitySelectionService = identitySelectionService;
-    this.callback = () => {};
+  constructor(
+    private identitySelectionService: IdentitySelectionService,
+    {debounceTime} = {debounceTime: 1000},
+  ) {
     this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);
   }
 
-  setCallback = (callback: (...args: any[]) => void) => {
-    this.callback = callback;
-  }
-
-  async doGetSuggestions(name: string) {
+  private async doGetSuggestions(name: string, callback: SuggestionsCallback) {
     const suggestions = await this.identitySelectionService.getSuggestions(name);
-    this.callback({...suggestions, name, busy: false});
+    if (suggestions) {
+      callback(suggestions);
+    } else {
+      callback({connections: [], creations: []});
+    }
   }
 
-  getSuggestions = (name: string) => {
-    this.callback({busy: true});
-    this.debouncedGetSuggestions(name);
+  getSuggestions = (name: string, callback: SuggestionsCallback) => {
+    this.debouncedGetSuggestions(name, callback);
   }
 }
 
