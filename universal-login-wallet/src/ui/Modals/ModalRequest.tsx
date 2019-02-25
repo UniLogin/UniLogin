@@ -31,7 +31,7 @@ const ModalRequest = () => (
     <TextArea
       id="description"
       className="request-modal-description"
-      onChange={() => console.log('not implemented')}
+      onChange={() => alert('not implemented')}
     />
     <ButtonFullwidth id="requestButton" onClick={() => alert('not implemented')}>Request</ButtonFullwidth>
   </>

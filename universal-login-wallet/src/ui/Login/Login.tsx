@@ -9,9 +9,7 @@ const Login = (props: {services: any}) => {
   const {createWallet, walletService} = useServices();
 
   const onCreateCLick = async (name: string) => {
-    const [privateKey, contractAddress] = await createWallet(name);
-    console.log('privateKey', privateKey);
-    console.log('contractAddress', contractAddress);
+    await createWallet(name);
     forceUpdate(true);
   };
 
