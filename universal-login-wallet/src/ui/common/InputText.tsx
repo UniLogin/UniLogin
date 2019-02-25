@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface InputTextProps {
-  onChange: (...args: any[]) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   autoFocus?: boolean;
   className?: string;
   id: string;
+  value?: string;
 }
 
-const InputText = ({onChange, placeholder, autoFocus, className, id}: InputTextProps) => (
+const InputText = ({onChange, placeholder, autoFocus, className, id, value}: InputTextProps) => (
   <input
     id={id}
     className={`input ${className ? className : ''}`}
+    value={value}
     onChange={onChange}
     type="text"
     autoFocus={autoFocus}

@@ -13,8 +13,7 @@ describe('SuggestionsService', () => {
     const service = new SuggestionsService(identitySelectionService, {debounceTime: 1});
     const callback = sinon.spy();
 
-    service.setCallback(callback);
-    service.getSuggestions('a');
+    service.getSuggestions('a', callback);
     expect(callback).to.have.been.calledWith({busy: true});
     await sleep(20);
     expect(callback).to.have.been.calledWith({busy: false, connections: [], creations: [], name: 'a'});
@@ -26,8 +25,7 @@ describe('SuggestionsService', () => {
     const suggestionsService = new SuggestionsService(identitySelectionService, {debounceTime: 1});
     const callback = sinon.spy();
 
-    suggestionsService.setCallback(callback);
-    suggestionsService.getSuggestions('a');
+    suggestionsService.getSuggestions('a', callback);
     expect(callback).to.have.been.calledWith({busy: true});
     await sleep(10);
     expect(callback).to.have.been.calledWith({busy: false, connections: ['a.mylogin.eth'], creations: [], name: 'a'});
