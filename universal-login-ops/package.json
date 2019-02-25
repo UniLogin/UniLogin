@@ -14,7 +14,7 @@
     "clean": "rm -fr node_modules dist"
   },
   "dependencies": {
-    "ethereum-waffle": "^2.0.3",
+    "ethereum-waffle": "2.0.5",
     "ganache-core": "^2.2.1",
     "knex": "^0.16.3",
     "universal-login-contracts": "^0.1.3",
