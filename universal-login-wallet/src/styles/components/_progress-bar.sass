@@ -1,0 +1,53 @@
+.progress-bar
+  position: relative
+  width: 100%
+  height: 5px
+  background: #fff
+
+.progress-bar-line
+  position: absolute
+  top: 0
+  left: 0
+  width: 50%
+  height: 100%
+  background-image: linear-gradient(90deg, #F76C1C 0%, #F9B047 10%, #FAD55F 21%, #275BB7 34%, #579BEF 47%, #19AE5F 64%, #59F1B0 77%, #D05DF7 87.5%, #F76C1C 100%)
+  animation: gradient-animation 4s linear infinite
+  background-size: 200% 200%
+  animation-direction: reverse
+
+.progress-bar-line.complete
+  width: 100%
+  
+.progress-bar::before,
+.progress-bar::after,
+.progress-bar-line::after
+  content: ''
+  position: absolute
+  top: 50%
+  width: 15px
+  height: 15px
+  background: #100940
+  border: 2px solid #fff
+  border-radius: 50%
+  z-index: 10
+
+.progress-bar::before
+  left: 0
+  transform: translate(-50%, -50%)
+
+.progress-bar::after,
+.progress-bar-line::after
+  right: 0
+  transform: translate(50%, -50%)
+
+.progress-bar-line.complete::after
+  display: none
+  
+@keyframes gradient-animation 
+	0%
+		background-position: 0% 0%
+	50%
+		background-position: 100% 0%
+	100% 
+		background-position: 200% 0%
+	

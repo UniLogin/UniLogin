@@ -1,6 +1,7 @@
 import React from 'react';
 import IdentitySelector from './IdentitySelector';
 import Logo from './../../assets/logo-with-text.svg';
+import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
 
 const Login = () => {
@@ -17,6 +18,7 @@ const Login = () => {
       <img src={Logo} alt="Logo" className="login-logo"/>
       <p className="login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
       <IdentitySelector  onCreateClick={(name: string) => onCreateCLick(name)}/>
+      <Modal />
     </div>
   );
 };

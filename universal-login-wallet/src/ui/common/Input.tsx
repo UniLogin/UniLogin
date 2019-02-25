@@ -1,24 +1,25 @@
 import React, { ChangeEvent } from 'react';
 
-interface InputTextProps {
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+interface InputProps {
+  onChange: (...args: any[]) => void;
   placeholder?: string;
   autoFocus?: boolean;
   className?: string;
+  type?: string;
   id: string;
   value?: string;
 }
 
-const InputText = ({onChange, placeholder, autoFocus, className, id, value}: InputTextProps) => (
+const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => (
   <input
     id={id}
     className={`input ${className ? className : ''}`}
     value={value}
     onChange={onChange}
-    type="text"
+    type={type ? type : 'text'}
     autoFocus={autoFocus}
     placeholder={placeholder}
   />
 );
 
-export default InputText;
+export default Input;

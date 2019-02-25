@@ -4,25 +4,29 @@
   left: 0
   width: 100%
   height: 100%
-  opacity: 0.75
+  opacity: 0.2
   background: #FFFFFF
 
 .modal
-  position: absolute
+  position: fixed
   top: 50%
   left: 50%
-  width: 430px
   padding: 40.5px 30px
   transform: translate(-50%, -50%)
   color: #ffffff
-  background-image: linear-gradient(180deg, #0C0E57 0%, #14052C 100%)
+  background-image: linear-gradient(-180deg, #0C0E57 0%, #14052C 100%)
   border-radius: 6px
 
 .modal-title
   padding-right: 25px
-  margin-bottom: 42px
+  margin-bottom: 6px
   font-weight: 600
   font-size: 18px
+  color: #FFFFFF
+
+.modal-subtitle
+  opacity: 0.75
+  font-size: 13px
   color: #FFFFFF
 
 .modal-close-btn
@@ -33,9 +37,27 @@
   height: 20px
   background: url('../assets/close.svg') center no-repeat
 
+.modal-text
+  opacity: 0.75
+  font-size: 12px
+  color: #FFFFFF
+
+.transfer-modal,
+.request-modal,
+.invitation-modal
+  width: 430px
+  
+.transfer-modal-title,
+.invitation-modal-title
+  margin-bottom: 42px
+
+.transfer-modal-title
 .transfer-modal-address
   margin-bottom: 30px
 
+.request-modal-title
+  margin-bottom: 27px
+  
 .request-modal-amount
   margin-bottom: 30px
 
@@ -47,3 +69,100 @@
 .request-modal-description,
 .request-modal-address
   margin-bottom: 30px
+
+.modal-topup-row
+  display: flex
+  width: 707px
+  margin: 74px 0 36px
+
+.modal-topup-block + .modal-topup-block
+  margin-left: 33px
+
+.modal-topup-block
+  width: 50%
+  
+.modal-topup-btn
+  width: 100%
+  height: 168px
+  display: flex
+  justify-content: center
+  align-items: center
+  padding: 25px
+  background: #262053
+  border: 1px solid transparent
+  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90)
+  border-radius: 5px
+
+.modal-topup-btn:hover
+  background: rgba(15,185,137,0.10)
+  border: 1px solid #0FB989
+  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90)
+
+.modal-topup-separator
+  height: 118px
+  width: 1px
+  margin: 0 45px
+  border: none
+  background: #C3C0D8
+  opacity: 0.2
+
+.modal-topup-icon
+  width: 78px
+  height: 78px
+  
+.modal-topup-text
+  max-width: 195px
+  margin: 29px auto 0
+
+.address-modal
+  width: 618px
+
+.address-modal-text
+  margin: 10px 0 38px
+
+.address-modal-row
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 40px 0 55px
+
+.address-modal-block
+  display: flex
+  align-items: center
+
+.address-modal-block + .address-modal-block
+  margin-left: 30px
+
+.address-modal-amount
+  margin-left: 19px
+  opacity: 0.5
+  font-size: 13px
+  color: #FFFFFF
+  text-align: center
+
+.info-modal-fields
+  width: 500px
+  margin: 38px 0 10px
+
+.info-modal-input
+  margin-bottom: 30px
+
+.modal-card-amount
+  font-weight: 500
+  font-size: 20px
+  color: #0FB989
+
+.card-modal-fields
+  width: 500px
+  margin: 40px 0
+
+.card-modal-input
+  margin-bottom: 15px
+
+.card-modal-row
+  display: flex
+  justify-content: space-between
+
+.card-modal-row-item + .card-modal-row-item
+  margin-left: 45px
+  
