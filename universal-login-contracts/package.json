@@ -21,7 +21,7 @@
     "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "ethereum-waffle": "^2.0.4",
+    "ethereum-waffle": "2.0.5",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",
