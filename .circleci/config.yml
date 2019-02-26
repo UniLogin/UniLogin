@@ -149,3 +149,6 @@ workflows:
       - test_wallet:
           requires:
             - build
+      - lint:
+          requires:
+            - build      
