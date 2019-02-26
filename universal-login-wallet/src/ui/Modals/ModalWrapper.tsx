@@ -1,10 +1,9 @@
 import React from 'react';
 
-const ModalWrapper = ({children, onClose} : {children: any, onClose: () => void}) => (
+const ModalWrapper = ({children} : {children: any}) => (
   <>
-    <div className="modal-overlay" onClick={onClose} />
+    <div className="modal-overlay" />
     <div className="modal">
-      <button className="modal-close-btn" onClick={onClose} />
       {children}
     </div>
   </>

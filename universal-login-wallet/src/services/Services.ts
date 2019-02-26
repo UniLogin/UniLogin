@@ -17,13 +17,13 @@ export const createServices = (config: Config) => {
   const suggestionsService = new SuggestionsService(identitySelectionService);
   const modalService = new ModalService();
   const walletService = new WalletService();
-  const createWalletService = createWallet(sdk, walletService);
+  const _createWallet = createWallet(sdk, walletService);
   return {
     sdk,
     suggestionsService,
     identitySelectionService,
     modalService,
-    createWalletService,
+    createWallet: _createWallet,
     walletService
   };
 };

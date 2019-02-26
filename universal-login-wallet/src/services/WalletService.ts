@@ -1,6 +1,6 @@
 interface UserWallet {
   name: string;
-  address: string;
+  contractAddress: string;
   privateKey: string;
 }
 

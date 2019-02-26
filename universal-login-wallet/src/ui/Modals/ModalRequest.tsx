@@ -9,8 +9,8 @@ import ButtonFullwidth from '../common/ButtonFullwidth';
 const addressPlaceholder = '0xf902fd8B2AEE76AE81bBA106d667';
 
 const ModalRequest = () => (
-  <>
-    <h2 className="modal-title">Request funds</h2>
+  <div className="request-modal">
+    <h2 className="modal-title request-modal-title">Request funds</h2>
     <div className="qr-code">
       <img src={qrCodePlacehoder} alt="Qrcode placeholder"/>
     </div>
@@ -31,10 +31,10 @@ const ModalRequest = () => (
     <TextArea
       id="description"
       className="request-modal-description"
-      onChange={() => console.log('not implemented')}
+      onChange={() => alert('not implemented')}
     />
     <ButtonFullwidth id="requestButton" onClick={() => alert('not implemented')}>Request</ButtonFullwidth>
-  </>
+  </div>
 );
 
 export default ModalRequest;

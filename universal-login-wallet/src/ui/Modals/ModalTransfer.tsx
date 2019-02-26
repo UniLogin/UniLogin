@@ -1,15 +1,15 @@
 import React from 'react';
-import InputText from '../common/InputText';
+import Input from '../common/Input';
 import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 
 const ModalTransfer = () => {
   return (
-    <>
-      <h2 className="modal-title">Transfer funds</h2>
+    <div className="transfer-modal">
+      <h2 className="modal-title transfer-modal-title">Transfer funds</h2>
       <InputLabel htmlFor="address">To address</InputLabel>
-      <InputText
+      <Input
         id="address"
         className="transfer-modal-address"
         onChange={() => alert('not implemented')}
@@ -27,7 +27,7 @@ const ModalTransfer = () => {
       >
         Generate transaction
       </ButtonFullwidth>
-    </>
+    </div>
   );
 };
 

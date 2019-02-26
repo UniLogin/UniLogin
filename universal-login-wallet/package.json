@@ -11,18 +11,19 @@
     "clean": "rm -fr node_modules dist"
   },
   "dependencies": {
+    "create-react-context": "^0.2.3",
+    "fbemitter": "^2.1.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "universal-login-commons": "^1.0.0",
-    "universal-login-sdk": "^0.1.11",
-    "fbemitter": "^2.1.1"
+    "universal-login-sdk": "^0.1.11"
   },
   "devDependencies": {
-    "@types/fbemitter": "^2.0.32",
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
+    "@types/fbemitter": "^2.0.32",
     "@types/mocha": "^5.2.5",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",

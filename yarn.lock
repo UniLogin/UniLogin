@@ -98,6 +98,36 @@
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.2.tgz#54c5a964462be3d4d78af631363c18d6fa91ac26"
 
+"@resolver-engine/core@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@resolver-engine/core/-/core-0.3.0.tgz#8d0e254ab0a73ed60f1bdd4e89d1aa081e8ecf11"
+  dependencies:
+    debug "^3.1.0"
+    request "^2.85.0"
+
+"@resolver-engine/fs@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@resolver-engine/fs/-/fs-0.3.0.tgz#ca109a27abc4c56ad997e2ae7dcd7466526afd26"
+  dependencies:
+    "@resolver-engine/core" "^0.3.0"
+    debug "^3.1.0"
+
+"@resolver-engine/imports-fs@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@resolver-engine/imports-fs/-/imports-fs-0.3.2.tgz#41ac4b286679843a1d1d61ed2f4add14997c3b22"
+  dependencies:
+    "@resolver-engine/fs" "^0.3.0"
+    "@resolver-engine/imports" "^0.3.2"
+    debug "^3.1.0"
+
+"@resolver-engine/imports@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@resolver-engine/imports/-/imports-0.3.2.tgz#2882652247df72917df44a8aa6cbcff9ed4143b1"
+  dependencies:
+    "@resolver-engine/core" "^0.3.0"
+    debug "^3.1.0"
+    hosted-git-info "^2.6.0"
+
 "@sinonjs/commons@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.0.2.tgz#3e0ac737781627b8844257fadc3d803997d0526e"
@@ -191,7 +221,6 @@
 "@types/fbemitter@^2.0.32":
   version "2.0.32"
   resolved "https://registry.yarnpkg.com/@types/fbemitter/-/fbemitter-2.0.32.tgz#8ed204da0f54e9c8eaec31b1eec91e25132d082c"
-  integrity sha1-jtIE2g9U6cjq7DGx7skeJRMtCCw=
 
 "@types/history@*":
   version "4.7.2"
@@ -2673,6 +2702,13 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+create-react-context@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/create-react-context/-/create-react-context-0.2.3.tgz#9ec140a6914a22ef04b8b09b7771de89567cb6f3"
+  dependencies:
+    fbjs "^0.8.0"
+    gud "^1.0.0"
+
 cross-fetch@^2.1.0, cross-fetch@^2.1.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.2.2.tgz#a47ff4f7fc712daba8f6a695a11c948440d45723"
@@ -3975,26 +4011,12 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@2.0.0-beta.11:
-  version "2.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.0-beta.11.tgz#0eada1cea5c97fe9828494febc9a84c4a2bc600c"
+ethereum-waffle@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.5.tgz#55c0142672193f3aa20f226d2b5b61782cde9d12"
   dependencies:
-    ethers "^4.0.0"
-    ganache-core "2.2.1"
-    solc "^0.5.1"
-
-ethereum-waffle@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.3.tgz#957d95eed9210e143bca4826e1eb16d5917ed6c9"
-  dependencies:
-    ethers "^4.0.0"
-    ganache-core "2.2.1"
-    solc "^0.5.1"
-
-ethereum-waffle@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.0.4.tgz#ed51726c1970047bc212bf209f432bf5d3e295d3"
-  dependencies:
+    "@resolver-engine/imports" "^0.3.2"
+    "@resolver-engine/imports-fs" "^0.3.2"
     ethers "^4.0.0"
     ganache-core "2.2.1"
     solc "^0.5.1"
@@ -4474,7 +4496,7 @@ fbemitter@^2.1.1:
   dependencies:
     fbjs "^0.8.4"
 
-fbjs@^0.8.4:
+fbjs@^0.8.0, fbjs@^0.8.4:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -5094,6 +5116,10 @@ growl@1.10.5:
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
 
+gud@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
+
 handle-thing@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
@@ -5268,7 +5294,7 @@ homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-hosted-git-info@^2.1.4:
+hosted-git-info@^2.1.4, hosted-git-info@^2.6.0:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.7.1.tgz#97f236977bd6e125408930ff6de3eec6281ec047"
 
@@ -9273,7 +9299,7 @@ request@2.87.0:
     tunnel-agent "^0.6.0"
     uuid "^3.1.0"
 
-request@^2.67.0, request@^2.79.0, request@^2.87.0, request@^2.88.0:
+request@^2.67.0, request@^2.79.0, request@^2.85.0, request@^2.87.0, request@^2.88.0:
   version "2.88.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
   dependencies:

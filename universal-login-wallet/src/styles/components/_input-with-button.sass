@@ -10,14 +10,30 @@
   right: 0
   width: 99px
   height: 45px
+  padding-right: 15px
+  padding-left: 46px
   font-weight: 500
   font-size: 14px
   color: #FFFFFF
-  background: #0FB989
   border-top-right-radius: 5px
   border-bottom-right-radius: 5px
 
-.input-copy-btn:hover
-  background: darken(#0FB989, 2%)
-.input-copy-btn:active
-  background: darken(#0FB989, 5%)
+.input-copy-btn::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 16px
+  width: 18px
+  height: 18px
+  transform: translateY(-50%)
+  background: url('../assets/icons/copy.svg') no-repeat center
+
+.input-copy-btn::after
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  width: 1px
+  height: 31px
+  transform: translateY(-50%)
+  background: #B9C3F8

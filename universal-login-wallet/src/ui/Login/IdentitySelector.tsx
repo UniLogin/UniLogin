@@ -1,13 +1,17 @@
 import React, {useState, ChangeEvent} from 'react';
-import InputText from '../common/InputText';
+import Input from '../common/Input';
 import Suggestions from './Suggestions';
 import {useServices} from '../../hooks';
 
-const IdentitySelector = () => {
+interface IdentitySelector {
+  onCreateClick: (...args: any[]) => void;
+}
+
+const IdentitySelector = ({onCreateClick}: IdentitySelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
-  const [name, setName] = useState('');
+  const [, setName] = useState('');
   const {suggestionsService} = useServices();
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,15 +31,15 @@ const IdentitySelector = () => {
         <p className="login-input-label-title">Type a nickname you want</p>
         <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
       </label>
-      <InputText
-        id="loginInput"
-        onChange={update}
-        placeholder="bob.example.eth"
-        value={name}
+      <Input
+          id="loginInput"
+          onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
+          placeholder="bob.example.eth"
+          autoFocus
       />
       {busy && <div className="circle-loader input-loader"/>}
       {!busy && (connections.length || creations.length) &&
-        <Suggestions connections={connections} creations={creations} />
+        <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/>
       }
     </>
   );

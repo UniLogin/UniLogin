@@ -2289,7 +2289,7 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^0.2.3:
+ethereum-waffle@2.0.5:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-0.2.3.tgz#65b1fbfeb73e20963aad74c39d52b54097f784e7"
   dependencies:
