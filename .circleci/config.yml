@@ -6,8 +6,10 @@ jobs:
     steps:
       - checkout
       - run: yarn
-    save_cache:
-      key: universal-login-{{ .Environment.CIRCLE_SHA1 }}
+      - save_cache:
+            key: universal-login-{{ .Environment.CIRCLE_SHA1 }}
+            paths:
+              - ~/project
   lint:
     docker:
       - image: circleci/node:10.15
@@ -26,8 +28,11 @@ jobs:
     docker:
       - image: circleci/node:10.15
     steps:
-      - checkout
-      - run: yarn
+      - restore_cache:
+            keys: 
+                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
+      - checkout: 
+          path: ~/project
       - run: cd universal-login-contracts && yarn test
   test_relayer:
     docker:
@@ -102,13 +107,11 @@ workflows:
   universal_login_all:
     jobs:
       - build
-      - test_ops
-      - test_contracts
-      - test_commons
-      - test_relayer
-      - test_sdk
-      - test_example
-      - test_wallet
-      - lint
+
+
+      - test_contracts:
+          requires:
+            - build
+
 
 
