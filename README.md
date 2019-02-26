@@ -30,7 +30,7 @@ Packages maintained with this monorepo are listed below.
 - [Relayer](https://universalloginsdk.readthedocs.io/en/latest/relayer.html) - node.js server application that allows interacting with blockchain without a wallet
 - [SDK](https://universalloginsdk.readthedocs.io/en/latest/sdk.html) - a JS library, that helps to communicate with relayer
 - [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example application written in React
-- OPS - scripts for development and deployment 
+- OPS - scripts for development and deployment
 
 
 ## Contributing
@@ -38,6 +38,9 @@ Packages maintained with this monorepo are listed below.
 Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
 
 Before you issue pull request:
+* Create an issue and discuss with us to see if feature fits the project
+* For bigger PRs - setup a pair programing session with us :)
+* Split big PRs into multiple smaller PRs
 * Make sure all tests and linters pass.
 * Make sure you have test coverage for any new features.
 
@@ -50,23 +53,31 @@ You can run lint via:
 yarn lint
 ```
 
-You can run tests:
+Running tests:
 
 ```sh
 yarn test
 ```
 
-You can ran full clean:
+To clean the project:
 ```sh
 yarn clean
 ```
 
-And you can emulate full CI process by:
+To emulate the full CI process:
 ```sh
 yarn clean
 yarn
 yarn ci
 ```
+
+Building documentation:
+```sh
+cd docs
+make html
+```
+
+Documentation will be compile to `docs/build/html`.
 
 ## License
 
