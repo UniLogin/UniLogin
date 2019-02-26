@@ -101,6 +101,7 @@ workflows:
   version: 2
   universal_login_all:
     jobs:
+      - build
       - test_ops
       - test_contracts
       - test_commons
