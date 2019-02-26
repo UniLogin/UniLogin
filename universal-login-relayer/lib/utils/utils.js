@@ -17,13 +17,8 @@ const addressToBytes32 = (address) =>
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
-  const abi = contractJSON.interface;
-  let receipt = await provider.getTransactionReceipt(transactionHash);
-  while (!receipt) {
-    await sleep(tick);
-    receipt = await provider.getTransactionReceipt(transactionHash);
-  }
-  return new Contract(receipt.contractAddress, abi, providerOrWallet);
+  const receipt = await provider.waitForTransaction(transactionHash);
+  return new Contract(receipt.contractAddress, contractJSON.interface, providerOrWallet);
 };
 
 const messageSignatureForApprovals = (wallet, id) =>
@@ -84,11 +79,7 @@ const isAddKeysCall = (data) => {
 
 const sendAndWaitForTransaction = async (deployer, transaction) => {
   const tx = await deployer.sendTransaction(transaction);
-  let receipt = await deployer.provider.getTransactionReceipt(tx.hash);
-  while (!receipt || !receipt.blockNumber) {
-    await sleep(1000);
-    receipt = await deployer.provider.getTransactionReceipt(tx.hash);
-  }
+  const receipt = await deployer.provider.waitForTransaction(tx.hash);
   return receipt.contractAddress;
 };
 

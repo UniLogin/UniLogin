@@ -4,14 +4,9 @@ import {Predicate} from './types';
 const sleep = (ms : number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitToBeMined = async (provider : providers.Provider, transactionHash : string, tick = 1000) => {
-  let receipt = await provider.getTransactionReceipt(transactionHash);
-  while (!receipt || !receipt.blockNumber) {
-    await sleep(tick);
-    receipt = await provider.getTransactionReceipt(transactionHash);
-  }
-  return receipt;
-};
+const waitToBeMined = (provider : providers.Provider, transactionHash : string, tick = 1000) =>
+  provider.waitForTransaction(transactionHash);
+
 
 const waitUntil = async (predicate : Predicate, tick = 5, timeout = 1000, args = []) => {
   let elapsed = 0;
