@@ -1,5 +1,13 @@
 version: 2
 jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: yarn
+    save_cache:
+      key: universal-login-{{ .Environment.CIRCLE_SHA1 }}
   lint:
     docker:
       - image: circleci/node:10.15
