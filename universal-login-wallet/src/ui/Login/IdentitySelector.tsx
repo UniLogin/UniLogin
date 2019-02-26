@@ -36,7 +36,7 @@ const IdentitySelector = ({onCreateClick}: IdentitySelector) => {
           onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
           placeholder="bob.example.eth"
           autoFocus
-        />
+      />
       {busy && <div className="circle-loader input-loader"/>}
       {!busy && (connections.length || creations.length) &&
         <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/>
