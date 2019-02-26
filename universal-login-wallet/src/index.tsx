@@ -12,7 +12,7 @@ const services = createServices(config);
 
 render(
   <ServiceContext.Provider value={services}>
-    <App services={services}/>
+    <App/>
   </ServiceContext.Provider>,
   document.getElementById('app'),
 );
