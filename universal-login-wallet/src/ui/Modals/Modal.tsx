@@ -1,46 +1,61 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ModalWrapper from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
-import {KEY_CODE_ESCAPE} from 'universal-login-commons';
 import {useSubscription, useServices} from '../../hooks';
+import ModalWrapperClosable from './ModalWrapperClosable';
+import ModalTopUp from './ModalTopUp';
+import ModalAddress from './ModalAddress';
+import ModalPersonalInfo from './ModalPersonalInfo';
+import ModalCardInfo from './ModalCardInfo';
 
 const Modal = () => {
   const {modalService} = useServices();
   const openModal = useSubscription(modalService);
   const hideModal = () => modalService.hideModal();
 
-  const listenKeyboard = (event : any) => {
-    if (event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) {
-      hideModal();
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', listenKeyboard, true);
-    return () => {
-      window.removeEventListener('keydown', listenKeyboard, true);
-    };
-  });
-
   switch (openModal) {
     case 'transfer':
       return (
-        <ModalWrapper onClose={hideModal}>
+        <ModalWrapperClosable hideModal={hideModal}>
           <ModalTransfer />
-        </ModalWrapper>
+        </ModalWrapperClosable>
       );
     case 'request':
       return (
-        <ModalWrapper onClose={hideModal}>
+        <ModalWrapperClosable hideModal={hideModal}>
           <ModalRequest />
-        </ModalWrapper>
+        </ModalWrapperClosable>
       );
     case 'invitation':
       return (
-        <ModalWrapper onClose={hideModal}>
+        <ModalWrapperClosable hideModal={hideModal}>
           <ModalInvitation />
+        </ModalWrapperClosable>
+      );
+    case 'topUpAccount':
+      return (
+        <ModalWrapper>
+          <ModalTopUp />
+        </ModalWrapper>
+      );
+    case 'address':
+      return (
+        <ModalWrapper>
+          <ModalAddress />
+        </ModalWrapper>
+      );
+    case 'personalInfo':
+      return (
+        <ModalWrapper>
+          <ModalPersonalInfo />
+        </ModalWrapper>
+      );
+    case 'cardInfo':
+      return (
+        <ModalWrapper>
+          <ModalCardInfo />
         </ModalWrapper>
       );
     default:
