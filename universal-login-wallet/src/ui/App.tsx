@@ -4,7 +4,7 @@ import Dashboard from './Dashboard/Dashboard';
 import Dogs from './Dogs';
 import NotFound from './NotFound';
 import Login from './Login/Login';
-import {CustomBrowserRouter} from '../services/CustomRouter';
+import {CustomBrowserRouter} from './CustomBrowserRouter';
 
 const App = () => {
   return(
