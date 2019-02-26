@@ -21,9 +21,9 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
 );
 
 const Suggestions = ({connections, creations, onCreateClick}: SuggestionsProps) => {
-  const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, () => console.log('connect'));
+  const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, () => alert('not implemented'));
   const creationsSuggestions = getSuggestionsItems('create new', creations, onCreateClick);
-  const recoversSuggestions = getSuggestionsItems('recover', connections, () => console.log('recover'));
+  const recoversSuggestions = getSuggestionsItems('recover', connections, () => alert('not implemented'));
   return (
     <ul className="suggestions-list">
       {connectionsSuggestions}

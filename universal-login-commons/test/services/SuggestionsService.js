@@ -14,9 +14,8 @@ describe('SuggestionsService', () => {
     const callback = sinon.spy();
 
     service.getSuggestions('a', callback);
-    expect(callback).to.have.been.calledWith({busy: true});
     await sleep(20);
-    expect(callback).to.have.been.calledWith({busy: false, connections: [], creations: [], name: 'a'});
+    expect(callback).to.have.been.calledWith({connections: [], creations: []});
   });
 
   it('works fine with IdentitySelectionService', async () => {
@@ -26,8 +25,7 @@ describe('SuggestionsService', () => {
     const callback = sinon.spy();
 
     suggestionsService.getSuggestions('a', callback);
-    expect(callback).to.have.been.calledWith({busy: true});
     await sleep(10);
-    expect(callback).to.have.been.calledWith({busy: false, connections: ['a.mylogin.eth'], creations: [], name: 'a'});
+    expect(callback).to.have.been.calledWith({connections: ['a.mylogin.eth'], creations: []});
   });
 });
