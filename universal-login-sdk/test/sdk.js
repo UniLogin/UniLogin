@@ -67,10 +67,17 @@ describe('SDK - integration', async () => {
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 
-      it('Should return correct nonce', async () => {
-        expect(await sdk.execute(message, privateKey)).to.eq(0);
-        expect(await sdk.execute(message, privateKey)).to.eq(1);
-        expect(await sdk.execute(message, privateKey)).to.eq(2);
+      it('Should return transaction hash', async () => {
+        const hash = await sdk.execute(message, privateKey);
+        expect(hash).to.be.properHex(64);
+      });
+
+      it('Should increment nonce', async () => {
+        expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(0);
+        await sdk.execute(message, privateKey);
+        expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(1);
+        await sdk.execute(message, privateKey);
+        expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(2);
       });
 
       it('when not enough tokens ', async () => {
@@ -80,8 +87,9 @@ describe('SDK - integration', async () => {
     });
 
     describe('Add key', async () => {
-      it('should return execution nonce', async () => {
-        expect(await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address})).to.eq(0);
+      it('should return transaction hash', async () => {
+        const hash = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+        expect(hash).to.be.properHex(64);
         expect(await identity.lastNonce()).to.be.eq(1);
       });
 
@@ -116,8 +124,9 @@ describe('SDK - integration', async () => {
     });
 
     describe('Add keys', async () => {
-      it('should return execution nonce', async () => {
-        expect(await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address})).to.eq(0);
+      it('should return transaction hash', async () => {
+        const hash = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
+        expect(hash).to.be.properHex(64);
       });
     });
 
