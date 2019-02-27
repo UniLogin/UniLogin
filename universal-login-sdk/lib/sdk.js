@@ -8,7 +8,6 @@ import BlockchainObserver from './observers/BlockchainObserver';
 import {headers, fetch} from './utils/http';
 import MESSAGE_DEFAULTS from './config';
 
-export {SdkSigner} from './SdkSigner';
 
 class EthereumIdentitySDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
@@ -185,3 +184,4 @@ class EthereumIdentitySDK {
 
 export default EthereumIdentitySDK;
 export {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE};
+export {SdkSigner} from './SdkSigner';
