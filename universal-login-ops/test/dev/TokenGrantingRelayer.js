@@ -25,7 +25,7 @@ describe('Token Granting Relayer', async () => {
   });
 
   const isTokenBalanceGreater = (value) => async () =>
-    (await tokenContract.balanceOf(walletContractAddress)).gt(utils.bigNumberify(value));
+    (await tokenContract.balanceOf(walletContractAddress)).gt(utils.parseEther(value));
 
   const isTokenBalanceEqual = (value) => async () =>
     (await tokenContract.balanceOf(walletContractAddress)).eq(value);

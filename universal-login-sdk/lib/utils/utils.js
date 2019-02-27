@@ -5,6 +5,7 @@ const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
 
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash) => {
+  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
   const {abi} = contractJSON;
   const receipt = await waitForTransactionReceipt(providerOrWallet, transactionHash);
   return new Contract(receipt.contractAddress, abi, providerOrWallet);
@@ -12,12 +13,7 @@ const waitForContractDeploy = async (providerOrWallet, contractJSON, transaction
 
 const waitForTransactionReceipt = async (providerOrWallet, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
-  let receipt = await provider.getTransactionReceipt(transactionHash);
-  do {
-    receipt = await provider.getTransactionReceipt(transactionHash);
-    await sleep(tick);
-  } while (!receipt || !receipt.blockHash);
-  return receipt;
+  return provider.waitForTransaction(transactionHash);
 };
 
 const getKeyFromData = (data) =>
