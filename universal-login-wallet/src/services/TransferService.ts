@@ -13,7 +13,7 @@ export class TransferService {
     this.contractAddress = this.walletService.userWallet ? this.walletService.userWallet.contractAddress : '';
   }
 
-  async transfer(to: string, amount: BigNumber, currency: string) {
+  async transferTokens(to: string, amount: BigNumber, currency: string) {
     const data = new utils.Interface(MockContract.abi).functions.transfer.encode([to, amount]);
     const message = {
       from: this.contractAddress,

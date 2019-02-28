@@ -28,11 +28,11 @@ describe('TransferService', () => {
     transferService = new TransferService(sdk, walletService);
   });
 
-  it('Should transfer funds', async () => {
+  it('Should transfer tokens', async () => {
     const to = '0x0000000000000000000000000000000000000001';
     const amount = utils.parseEther('1.0');
     const currency = mockTokenContract.address;
-    await transferService.transfer(to, amount, currency);
+    await transferService.transferTokens(to, amount, currency);
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(amount);
   });
 
