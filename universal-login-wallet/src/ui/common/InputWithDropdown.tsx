@@ -10,7 +10,7 @@ interface InputProps {
   id: string;
   currency?: string;
   setCurrency?: (...args: any[]) => void;
-  shortcuts?: string[];
+  shortcuts: string[];
 }
 
 const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency, shortcuts}: InputProps) => {
@@ -32,7 +32,7 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
       />
       <div className="currency-dropdown">
         <button onClick={toggle} className="currency-dropdown-btn">{currency}</button>
-        {visible && shortcuts ?
+        {visible ?
           <ul className="currency-dropdown-list">
             {shortcuts.map((currency, i) => (
               <li key={i} className="currency-item">
