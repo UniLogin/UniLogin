@@ -6,13 +6,13 @@ import createWallet from '../src/services/Creation';
 import {deployMockToken} from 'universal-login-commons/test';
 import {createFixtureLoader} from 'ethereum-waffle';
 import WalletService from '../src/services/WalletService';
-import {utils} from 'ethers';
+import {utils, providers} from 'ethers';
 
 
 
 describe('TransferService', () => {
   let transferService: TransferService;
-  let provider: any;
+  let provider: providers.Web3Provider;
   let relayer: any;
   let sdk: UniversalLoginSDK;
   let mockTokenContract: any;

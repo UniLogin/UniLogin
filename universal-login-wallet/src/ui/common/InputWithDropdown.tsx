@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useToggler} from '../../hooks';
 
 interface InputProps {
@@ -8,17 +8,15 @@ interface InputProps {
   autoFocus?: boolean;
   className?: string;
   id: string;
+  currency?: string;
+  setCurrency?: (...args: any[]) => void;
+  shortcuts?: string[];
 }
 
-const shortcuts = ['ETH', 'DAI', 'UNL'];
-
-const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, onCurrencyChange}: InputProps) => {
+const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency, shortcuts}: InputProps) => {
   const {visible, toggle} = useToggler();
-  const [currentCurrency, setCurrentCurrency] = useState<string>(shortcuts[0]);
   const onDropdownItemClick = (currency: string) => {
-    setCurrentCurrency(currency);
-    if(onCurrencyChange) 
-      onCurrencyChange(currency);
+    if (setCurrency) setCurrency(currency);
     toggle();
   };
 
@@ -33,12 +31,14 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, onC
         placeholder={placeholder}
       />
       <div className="currency-dropdown">
-        <button onClick={toggle} className="currency-dropdown-btn">{currentCurrency}</button>
-        {visible ?
+        <button onClick={toggle} className="currency-dropdown-btn">{currency}</button>
+        {visible && shortcuts ?
           <ul className="currency-dropdown-list">
             {shortcuts.map((currency, i) => (
               <li key={i} className="currency-item">
-                <button className="currency-item-btn" onClick={() => onDropdownItemClick(currency)}>{currency}</button>
+                <button className="currency-item-btn" onClick={() => onDropdownItemClick(currency)}>
+                  {currency}
+                </button>
               </li>
             ))}
          </ul>
