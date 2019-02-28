@@ -1,4 +1,4 @@
-import {TransferService} from '../src/services/TransferService';
+import TransferService from '../src/services/TransferService';
 import {expect} from 'chai';
 import setupSdk from './SetupSdk';
 import UniversalLoginSDK from 'universal-login-sdk';
@@ -30,7 +30,7 @@ describe('TransferService', () => {
 
   it('Should transfer tokens', async () => {
     const to = '0x0000000000000000000000000000000000000001';
-    const amount = utils.parseEther('1.0');
+    const amount = '1.0';
     const currency = mockTokenContract.address;
     await transferService.transferTokens(to, amount, currency);
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(amount);

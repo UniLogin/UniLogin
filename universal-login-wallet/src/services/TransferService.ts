@@ -2,9 +2,8 @@ import UniversalLoginSDK from 'universal-login-sdk';
 import WalletService from './WalletService';
 import {utils} from 'ethers';
 import MockContract from 'universal-login-commons/build/MockToken.json';
-import { BigNumber } from '../../../node_modules/ethers/utils';
 
-export class TransferService {
+class TransferService {
   private privateKey: string;
   private contractAddress: string;
 
@@ -13,15 +12,19 @@ export class TransferService {
     this.contractAddress = this.walletService.userWallet ? this.walletService.userWallet.contractAddress : '';
   }
 
-  async transferTokens(to: string, amount: BigNumber, currency: string) {
-    const data = new utils.Interface(MockContract.abi).functions.transfer.encode([to, amount]);
-    const message = {
-      from: this.contractAddress,
-      to: currency, 
-      value: 0,
-      data,
-      gasToken: currency
+  async transferTokens(to: string, amount: string, currency: string) {
+    if (this.walletService.userWallet) {
+      const data = new utils.Interface(MockContract.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
+      const message = {
+        from: this.walletService.userWallet.contractAddress,
+        to: currency, 
+        value: 0,
+        data,
+        gasToken: currency
+      }
+      await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
-    await this.sdk.execute(message, this.privateKey);
   }
 }
+
+export default TransferService;

@@ -3,13 +3,22 @@ import Input from '../common/Input';
 import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
+import {useServices} from '../../hooks';
+import { BigNumber } from 'ethers/utils';
 
 const shortcuts = ['ETH', 'DAI', 'UNL'];
 
+interface TransferDetails {
+  targetAddress: string;
+  amount: string;
+  currency: string;
+}
+
 const ModalTransfer = () => {
-  const [transferDetalis, setTransferDetails] = useState({});
+  const [transferDetalis, setTransferDetails] = useState({} as TransferDetails);
   const [currentCurrency, setCurrentCurrency] = useState(shortcuts[0]);
-  const onGenerateClick = () => console.log(transferDetalis);
+  const {transferService} = useServices();
+  const onGenerateClick = () => transferService.transferTokens(transferDetalis.targetAddress, transferDetalis.amount, '0x0E2365e86A50377c567E1a62CA473656f0029F1e');
   const updateTransferDetailsWith = (name: string, value: string) => {
     setTransferDetails({...transferDetalis, currency: currentCurrency, [`${name}`]: value});
   }
