@@ -19,7 +19,7 @@ const Modal = () => {
     case 'transfer':
       return (
         <ModalWrapperClosable hideModal={hideModal}>
-          <ModalTransfer />
+          <ModalTransfer hideModal={hideModal}/>
         </ModalWrapperClosable>
       );
     case 'request':

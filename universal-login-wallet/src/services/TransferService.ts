@@ -4,13 +4,7 @@ import {utils} from 'ethers';
 import MockContract from 'universal-login-commons/build/MockToken.json';
 
 class TransferService {
-  private privateKey: string;
-  private contractAddress: string;
-
-  constructor(private sdk: UniversalLoginSDK, private walletService: WalletService) {
-    this.privateKey = this.walletService.userWallet ? this.walletService.userWallet.privateKey : '';
-    this.contractAddress = this.walletService.userWallet ? this.walletService.userWallet.contractAddress : '';
-  }
+  constructor(private sdk: UniversalLoginSDK, private walletService: WalletService) {}
 
   async transferTokens(to: string, amount: string, currency: string) {
     if (this.walletService.userWallet) {
