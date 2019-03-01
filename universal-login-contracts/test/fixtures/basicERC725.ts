@@ -1,4 +1,4 @@
-import ERC725ApprovalScheme from '../../build/ERC725ApprovalScheme.json';
+import KeyHolder from '../../build/KeyHolder.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
@@ -16,7 +16,7 @@ export default async function basicERC725(
   const actionKey = addressToBytes32(anotherWallet.address);
   const actionKey2 = addressToBytes32(anotherWallet2.address);
   const unknownWalletKey = addressToBytes32(unknownWallet.address);
-  const identity = await deployContract(wallet, ERC725ApprovalScheme, [managementKey]);
+  const identity = await deployContract(wallet, KeyHolder, [managementKey]);
   const mockContract = await deployContract(wallet, MockContract);
   const fromManagementWallet = await identity.connect(managementWallet);
   const fromActionWallet = await identity.connect(actionWallet);
