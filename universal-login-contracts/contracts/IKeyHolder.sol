@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
 
-contract ERC725KeyHolder {
+contract IKeyHolder {
     uint256 constant MANAGEMENT_KEY = 1;
     uint256 constant ACTION_KEY = 2;
     uint256 constant CLAIM_SIGNER_KEY = 3;
