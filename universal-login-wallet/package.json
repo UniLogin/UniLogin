@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --mode development --progress",
+    "start": "webpack-dev-server --mode development",
     "prebuild": "rm -rf ./dist",
     "build": "webpack --mode production --progress && cp src/_redirects dist/_redirects",
     "test": "NODE_ENV=test mocha -r ts-node/register \"test/**/*.{js,ts}\"",
