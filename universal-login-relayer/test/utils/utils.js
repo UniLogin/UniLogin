@@ -4,7 +4,7 @@ import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum
 import {addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
 import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
-import ERC725ApprovalScheme from 'universal-login-contracts/build/ERC725ApprovalScheme';
+import KeyHolder from 'universal-login-contracts/build/KeyHolder.json';
 import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 
@@ -29,7 +29,7 @@ describe('Tools test', async () => {
 
     before(async () => {
       token = await deployContract(wallet, MockToken, []);
-      identity = await deployContract(wallet, ERC725ApprovalScheme, [addressToBytes32(wallet.address)]);
+      identity = await deployContract(wallet, KeyHolder, [addressToBytes32(wallet.address)]);
       await token.transfer(identity.address, utils.parseEther('1'));
     });
 
