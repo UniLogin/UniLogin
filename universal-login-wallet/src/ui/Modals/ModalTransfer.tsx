@@ -4,7 +4,6 @@ import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
-import { BigNumber } from 'ethers/utils';
 
 const shortcuts = ['ETH', 'DAI', 'UNL'];
 
@@ -26,16 +25,16 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
 
   const onGenerateClick = async () => {
     await transferService.transferTokens(
-      transferDetalis.targetAddress, 
-      transferDetalis.amount, 
+      transferDetalis.targetAddress,
+      transferDetalis.amount,
       '0x0E2365e86A50377c567E1a62CA473656f0029F1e'
     );
     hideModal();
-  }
+  };
 
   const updateTransferDetailsWith = (name: string, value: string) => {
     setTransferDetails({...transferDetalis, currency: currentCurrency, [`${name}`]: value});
-  }
+  };
 
   return (
     <div className="transfer-modal">
@@ -44,14 +43,14 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
       <Input
         id="address"
         className="transfer-modal-address"
-        onChange={(event) => updateTransferDetailsWith('targetAddress', event.target.value)}
+        onChange={event => updateTransferDetailsWith('targetAddress', event.target.value)}
         autoFocus
       />
       <InputLabel htmlFor="amount">Amount to send</InputLabel>
       <InputWithDropdown
         id="amount"
-        onChange={(event) => updateTransferDetailsWith('amount', event.target.value)}
-        setCurrency={(currency) => setCurrentCurrency(currency)}
+        onChange={event => updateTransferDetailsWith('amount', event.target.value)}
+        setCurrency={currency => setCurrentCurrency(currency)}
         currency={currentCurrency}
         shortcuts={shortcuts}
       />

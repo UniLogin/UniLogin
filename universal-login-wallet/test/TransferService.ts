@@ -1,9 +1,8 @@
 import TransferService from '../src/services/TransferService';
 import {expect} from 'chai';
-import {setupSdk} from 'universal-login-commons/test';
 import UniversalLoginSDK from 'universal-login-sdk';
 import createWallet from '../src/services/Creation';
-import {deployMockToken} from 'universal-login-commons/test';
+import {deployMockToken, setupSdk} from 'universal-login-commons/test';
 import {createFixtureLoader} from 'ethereum-waffle';
 import WalletService from '../src/services/WalletService';
 import {utils, providers} from 'ethers';
@@ -16,15 +15,14 @@ describe('TransferService', () => {
   let relayer: any;
   let sdk: UniversalLoginSDK;
   let mockTokenContract: any;
-  let privateKey;
   let contractAddress: string;
 
   before(async () => {
     ({sdk, relayer, provider} = await setupSdk());
     ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
     const walletService = new WalletService();
-    [privateKey, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
-    await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'))
+    [, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
+    await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
     transferService = new TransferService(sdk, walletService);
   });
 
@@ -38,5 +36,5 @@ describe('TransferService', () => {
 
   after(async () => {
     await relayer.stop();
-  })
+  });
 });

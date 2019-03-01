@@ -16,7 +16,7 @@ interface InputProps {
 const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency, shortcuts}: InputProps) => {
   const {visible, toggle} = useToggler();
   const onDropdownItemClick = (currency: string) => {
-    if (setCurrency) setCurrency(currency);
+    if (setCurrency) { setCurrency(currency); }
     toggle();
   };
 

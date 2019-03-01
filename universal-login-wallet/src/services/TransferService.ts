@@ -11,11 +11,11 @@ class TransferService {
       const data = new utils.Interface(MockContract.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
       const message = {
         from: this.walletService.userWallet.contractAddress,
-        to: currency, 
+        to: currency,
         value: 0,
         data,
         gasToken: currency
-      }
+      };
       await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
   }
