@@ -24,7 +24,7 @@ export default async function basicIdentity(provider, [, , , , , , , , , wallet]
   await wallet.sendTransaction({to: identity.address, value: parseEther('2.0')});
   await mockToken.transfer(identity.address, parseEther('1.0'));
   await identity.addKey(publicActionKey, MANAGEMENT_KEY, ECDSA_TYPE);
-  return {provider, publicKey, privateKey, privateActionKey ,keyAsAddress, identity, mockToken, mockContract, wallet};
+  return {provider, publicKey, privateKey, privateActionKey, keyAsAddress, identity, mockToken, mockContract, wallet};
 }
 
 export const transferMessage = {

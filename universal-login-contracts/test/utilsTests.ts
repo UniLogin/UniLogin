@@ -27,9 +27,9 @@ describe('Tools test', async () => {
     expect(utils.verifyMessage(message, signature)).to.eq(wallet.address);
   });
 
-  it('Should concatenate two bytes arrays', async() => {
-      const bytes1 = "0xfff";
-      const bytes2 = "0xcfba";
+  it('Should concatenate two bytes arrays', async () => {
+      const bytes1 = '0xfff';
+      const bytes2 = '0xcfba';
       const concatenate = concatenateBytes(bytes1, bytes2); // Uint8Array [ 255, 255, 207, 186 ] = 0xfffcfba
       expect(concatenate).to.be.equal('0xfffcfba');
   });

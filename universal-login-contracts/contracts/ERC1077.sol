@@ -20,15 +20,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
         return _lastNonce;
     }
 
-    function isSignerValid(address signer, address[] memory signers) private view returns(bool){
-      for(uint i = 0;i < signers.length; i++) {
-        if(signers[i] == signer) {
-          return false;
-        }
-      }
-      return keyExist(bytes32(uint256(signer)));
-    }
-
     function canExecute(
         address to,
         uint256 value,
@@ -41,14 +32,14 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes memory signatures) public view returns (bool)
     {
         address[] memory signers = new address[](signatures.length / 65);
-        for(uint8 i = 0;i < signatures.length / 65; i++) {
+        for (uint8 i = 0;i < signatures.length / 65; i++) {
             bytes memory sig = new bytes(65);
-            for(uint8 j = 0;j < 65; j++) {
+            for (uint8 j = 0;j < 65; j++) {
                 sig[j] = signatures[j + i * 65];
             }
             address signer = getSigner(address(this), to, value, data,nonce, gasPrice, gasToken, gasLimit, operationType, sig);
-            if(!isSignerValid(signer, signers)) {
-              return false;
+            if (!isSignerValid(signer, signers)) {
+                return false;
             }
             signers[i] = signer;
         }
@@ -139,5 +130,14 @@ contract ERC1077 is KeyHolder, IERC1077 {
         } else {
             msg.sender.transfer(gasUsed.mul(gasPrice));
         }
+    }
+
+    function isSignerValid(address signer, address[] memory signers) private view returns (bool) {
+        for (uint i = 0;i < signers.length; i++) {
+            if (signers[i] == signer) {
+                return false;
+            }
+        }
+        return keyExist(bytes32(uint256(signer)));
     }
 }

@@ -22,9 +22,8 @@ export const calculateMessageHash = (msg: Message) => {
 export const calculateMessageSignature = async (privateKey: string, msg: Message) => {
   const wallet = new Wallet(privateKey);
   const massageHash = calculateMessageHash(msg);
-  return await wallet.signMessage(utils.arrayify(massageHash));
+  return wallet.signMessage(utils.arrayify(massageHash));
 };
 
-export const concatenateBytes = (bytes1: string, bytes2: string) => {
-  return bytes1 + bytes2.replace('0x', "");
-}
+export const concatenateBytes = (bytes1: string, bytes2: string) =>
+   bytes1 + bytes2.replace('0x', '');

@@ -206,7 +206,7 @@ describe('ERC1077', async  () => {
     let msgToCall;
     let signatures;
 
-    describe('Successful execution of call via multi-signature', async() => {
+    describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
         const signature1 = await calculateMessageSignature(privateKey, msgToCall);
@@ -233,7 +233,7 @@ describe('ERC1077', async  () => {
       });
     });
 
-    describe('failed execution of call via multi-signature', async() => {
+    describe('failed execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
       });
