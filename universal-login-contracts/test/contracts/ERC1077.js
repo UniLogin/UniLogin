@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
-import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
+import {calculateMessageHash, calculateMessageSignature, concatenateBytes} from '../../lib/calculateMessageSignature';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
 
@@ -30,13 +30,13 @@ describe('ERC1077', async  () => {
   let invalidSignature;
   let relayerBalance;
   let relayerTokenBalance;
-
+  let privateActionKey;
   beforeEach(async () => {
-    ({provider, identity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicIdentity));
+    ({provider, identity, privateKey, privateActionKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicIdentity));
     msg = {...transferMessage, from: identity.address};
     signature = calculateMessageSignature(privateKey, msg);
     [anotherWallet] = await getWallets(provider);
-    invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
+    invalidSignature = await calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);
   });
@@ -200,6 +200,59 @@ describe('ERC1077', async  () => {
         });
       });
     });
+  });
+
+  describe('Multi-Signature call', async () => {
+    let msgToCall;
+    let signatures;
+
+    describe('Successful execution of call via multi-signature', async() => {
+      before(async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+        const signature1 = await calculateMessageSignature(privateKey, msgToCall);
+        const signature2 = await calculateMessageSignature(privateActionKey, msgToCall);
+        signatures = concatenateBytes(signature1, signature2);
+      });
+
+      it('called method', async () => {
+        expect(await mockContract.wasCalled()).to.be.false;
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        expect(await mockContract.wasCalled()).to.be.true;
+      });
+
+      it('increase nonce', async () => {
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+
+      it('should emit ExecutedSigned', async () => {
+        const messageHash = calculateMessageHash(msgToCall);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, true);
+      });
+    });
+
+    describe('failed execution of call via multi-signature', async() => {
+      before(async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+      });
+
+      it('should fail with a least an invalid signature', async () => {
+        const signature1 = await calculateMessageSignature(privateKey, msgToCall);
+        const corruptedSignatures = concatenateBytes(signature1, invalidSignature);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail if there are two equal singatures', async () => {
+        const signature1 = await calculateMessageSignature(privateKey, msgToCall);
+        const corruptedSignatures = concatenateBytes(signature1, signature1);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+    });
+
   });
 
   describe('Call', async () => {

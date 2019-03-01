@@ -4,6 +4,7 @@ import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './utils';
 import {utils} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
+import {concatenateBytes} from '../lib/calculateMessageSignature';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -24,6 +25,13 @@ describe('Tools test', async () => {
       ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
       [wallet.address, from, value, data, nonce, gasToken, gasPrice, gasLimit]));
     expect(utils.verifyMessage(message, signature)).to.eq(wallet.address);
+  });
+
+  it('Should concatenate two bytes arrays', async() => {
+      const bytes1 = "0xfff";
+      const bytes2 = "0xcfba";
+      const concatenate = concatenateBytes(bytes1, bytes2); // Uint8Array [ 255, 255, 207, 186 ] = 0xfffcfba
+      expect(concatenate).to.be.equal('0xfffcfba');
   });
 
   describe('getExecutionArgs', () => {

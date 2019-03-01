@@ -20,6 +20,15 @@ contract ERC1077 is KeyHolder, IERC1077 {
         return _lastNonce;
     }
 
+    function isSignerValid(address signer, address[] memory signers) private view returns(bool){
+      for(uint i = 0;i < signers.length; i++) {
+        if(signers[i] == signer) {
+          return false;
+        }
+      }
+      return keyExist(bytes32(uint256(signer)));
+    }
+
     function canExecute(
         address to,
         uint256 value,
@@ -31,18 +40,19 @@ contract ERC1077 is KeyHolder, IERC1077 {
         OperationType operationType,
         bytes memory signatures) public view returns (bool)
     {
-        address signer = getSigner(
-            address(this),
-            to,
-            value,
-            data,
-            nonce,
-            gasPrice,
-            gasToken,
-            gasLimit,
-            operationType,
-            signatures);
-        return keyExist(bytes32(uint256(signer)));
+        address[] memory signers = new address[](signatures.length / 65);
+        for(uint8 i = 0;i < signatures.length / 65; i++) {
+            bytes memory sig = new bytes(65);
+            for(uint8 j = 0;j < 65; j++) {
+                sig[j] = signatures[j + i * 65];
+            }
+            address signer = getSigner(address(this), to, value, data,nonce, gasPrice, gasToken, gasLimit, operationType, sig);
+            if(!isSignerValid(signer, signers)) {
+              return false;
+            }
+            signers[i] = signer;
+        }
+        return true;
     }
 
     function calculateMessageHash(
@@ -105,6 +115,8 @@ contract ERC1077 is KeyHolder, IERC1077 {
         OperationType operationType,
         bytes memory signatures) public returns (bytes32)
     {
+        require(signatures.length != 0, "Invalid signatures");
+        require(signatures.length % 65 == 0, "Invalid signatures");
         require(nonce == _lastNonce, "Invalid nonce");
         require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
         uint256 startingGas = gasleft();
