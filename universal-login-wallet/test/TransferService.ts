@@ -24,7 +24,7 @@ describe('TransferService', () => {
     ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
     const walletService = new WalletService();
     [privateKey, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
-    mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'))
+    await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'))
     transferService = new TransferService(sdk, walletService);
   });
 
@@ -33,7 +33,7 @@ describe('TransferService', () => {
     const amount = '1.0';
     const currency = mockTokenContract.address;
     await transferService.transferTokens(to, amount, currency);
-    expect(await mockTokenContract.balanceOf(to)).to.deep.eq(amount);
+    expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
   });
 
   after(async () => {

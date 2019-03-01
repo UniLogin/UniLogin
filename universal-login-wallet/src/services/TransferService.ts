@@ -1,7 +1,7 @@
 import UniversalLoginSDK from 'universal-login-sdk';
 import WalletService from './WalletService';
 import {utils} from 'ethers';
-import MockContract from 'universal-login-commons/build/MockToken.json';
+import MockContract from 'universal-login-commons/test/fixtures/MockToken.json';
 
 class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService) {}
