@@ -1,6 +1,6 @@
 import TransferService from '../src/services/TransferService';
 import {expect} from 'chai';
-import setupSdk from './SetupSdk';
+import {setupSdk} from 'universal-login-commons/test';
 import UniversalLoginSDK from 'universal-login-sdk';
 import createWallet from '../src/services/Creation';
 import {deployMockToken} from 'universal-login-commons/test';

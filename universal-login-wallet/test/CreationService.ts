@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import CreationSerivice from '../src/services/Creation';
 import WalletService from '../src/services/WalletService';
-import setupSdk from './SetupSdk';
+import {setupSdk} from 'universal-login-commons/test';
 
 
 describe('CreationService', () => {
