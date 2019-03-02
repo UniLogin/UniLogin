@@ -9,11 +9,10 @@ contract KeyHolder is IKeyHolder {
     constructor(bytes32 _key) public {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
-        keys[_key].keyType = ECDSA_TYPE;
 
         keysByPurpose[MANAGEMENT_KEY].push(_key);
 
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose, keys[_key].keyType);
+        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
     }
 
     function() external payable {
@@ -37,8 +36,8 @@ contract KeyHolder is IKeyHolder {
         return keys[_key].key != bytes32(0x0);
     }
 
-    function getKey(bytes32 _key) public view returns(uint256 purpose, uint256 keyType, bytes32 key) {
-        return (keys[_key].purpose, keys[_key].keyType, keys[_key].key);
+    function getKey(bytes32 _key) public view returns(uint256 purpose, bytes32 key) {
+        return (keys[_key].purpose, keys[_key].key);
     }
 
     function getKeyPurpose(bytes32 _key) public view returns(uint256 purpose) {
@@ -53,24 +52,23 @@ contract KeyHolder is IKeyHolder {
         return keys[_key].purpose == _purpose;
     }
 
-    function addKey(bytes32 _key, uint256 _purpose, uint256 _type) public onlyManagementKeyOrThisContract returns(bool success) {
+    function addKey(bytes32 _key, uint256 _purpose) public onlyManagementKeyOrThisContract returns(bool success) {
         require(keys[_key].key != _key, "Key already added");
 
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
-        keys[_key].keyType = _type;
 
         keysByPurpose[_purpose].push(_key);
 
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose, keys[_key].keyType);
+        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
         return true;
     }
 
-    function addKeys(bytes32[] memory _keys, uint256[] memory _purposes, uint256[] memory _types) public onlyManagementKeyOrThisContract returns(bool success) {
-        require(_keys.length == _purposes.length && _keys.length == _types.length, "Unequal argument set lengths");
+    function addKeys(bytes32[] memory _keys, uint256[] memory _purposes) public onlyManagementKeyOrThisContract returns(bool success) {
+        require(_keys.length == _purposes.length, "Unequal argument set lengths");
         for (uint i = 0; i < _keys.length; i++) {
-            addKey(_keys[i], _purposes[i], _types[i]);
+            addKey(_keys[i], _purposes[i]);
         }
         emit MultipleKeysAdded(_keys.length);
         return true;
@@ -80,7 +78,7 @@ contract KeyHolder is IKeyHolder {
         require(keys[_key].purpose != MANAGEMENT_KEY || keysByPurpose[MANAGEMENT_KEY].length > 1, "Can not remove management key");
         require(keys[_key].purpose == _purpose, "Invalid key");
 
-        emit KeyRemoved(keys[_key].key, keys[_key].purpose, keys[_key].keyType);
+        emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
         delete keys[_key];
 

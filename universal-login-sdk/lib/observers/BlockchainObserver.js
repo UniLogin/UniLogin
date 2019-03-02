@@ -45,8 +45,8 @@ class BlockchainObserver extends ObserverBase {
   parseArgs(type, event) {
     if (event.topics[0] === this.eventInterface[type].topic) {
       const args = this.identityInterface.parseLog(event);
-      const {key, purpose, keyType} = args.values;
-      return {key: getKeyFromData(key), keyType: keyType.toNumber(), purpose: purpose.toNumber()};
+      const {key, purpose} = args.values;
+      return {key: getKeyFromData(key), purpose: purpose.toNumber()};
     }
     throw `Not supported event with topic: ${event.topics[0]}`;
   }

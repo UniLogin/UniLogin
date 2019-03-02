@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
 import MESSAGE_DEFAULTS from '../../lib/config';
-import {MANAGEMENT_KEY, ECDSA_TYPE} from 'universal-login-contracts';
+import {MANAGEMENT_KEY} from 'universal-login-contracts';
 import basicSDK from '../fixtures/basicSDK';
 
 chai.use(solidity);
@@ -38,7 +38,7 @@ describe('SDK: BlockchainObserver', async () => {
     const filter = {contractAddress, key: address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await blockchainObserver.fetchEvents();
-    expect(callback).to.have.been.calledWith({key: address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });
 
   it('subscribe: should emit AddKey on addKey', async () => {
@@ -48,7 +48,7 @@ describe('SDK: BlockchainObserver', async () => {
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
-    expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });
 
   it('subscribe: shouldn`t emit AddKey on add another key', async () => {
@@ -64,7 +64,7 @@ describe('SDK: BlockchainObserver', async () => {
     await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
-    expect(callback).to.have.been.calledWith({key: otherWallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: otherWallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
     expect(callback2).to.not.have.been.called;
   });
 
@@ -77,7 +77,7 @@ describe('SDK: BlockchainObserver', async () => {
     const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
     await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
-    expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), keyType: ECDSA_TYPE, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });
 
   after(async () => {
