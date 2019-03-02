@@ -68,7 +68,7 @@ const isAddKeyCall = (data) => {
 const getKeyFromData = (data) => {
   const codec = new utils.AbiCoder();
   const addKeySighash = new utils.Interface(Identity.interface).functions.addKey.sighash;
-  const [address] = (codec.decode(['bytes32', 'uint256', 'uint256'], data.replace(addKeySighash.slice(2), '')));
+  const [address] = (codec.decode(['bytes32', 'uint256'], data.replace(addKeySighash.slice(2), '')));
   return utils.hexlify(utils.stripZeros(address));
 };
 

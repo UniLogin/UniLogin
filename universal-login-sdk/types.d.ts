@@ -47,7 +47,6 @@ export default EthereumIdentitySDK;
 
 export declare const MANAGEMENT_KEY = 1;
 export declare const ACTION_KEY = 2;
-export declare const ECDSA_TYPE = 1;
 
 export declare class SdkSigner extends ethers.Signer {
   public provider: providers.Provider;

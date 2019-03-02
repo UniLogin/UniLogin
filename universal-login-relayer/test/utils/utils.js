@@ -5,7 +5,7 @@ import {addressToBytes32, hasEnoughToken, getKeyFromData, isAddKeyCall, isAddKey
 import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import KeyHolder from 'universal-login-contracts/build/KeyHolder.json';
-import {MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY} from 'universal-login-contracts';
+import {MANAGEMENT_KEY, ACTION_KEY} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 
 chai.use(chaiAsPromised);
@@ -58,14 +58,14 @@ describe('Tools test', async () => {
 
   describe('getKeyFromData', async () => {
     it('Should return proper key', async () => {
-      const data = new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32(wallet.address), ACTION_KEY, ECDSA_TYPE]);
+      const data = new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32(wallet.address), ACTION_KEY]);
       expect(getKeyFromData(data)).to.eq(wallet.address.toLowerCase()); // OK?
     });
   });
 
   describe('isAddKeyCall', async () => {
     it('Should return true if addKey call', async () => {
-      const data = new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32(wallet.address), ACTION_KEY, ECDSA_TYPE]);
+      const data = new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32(wallet.address), ACTION_KEY]);
       expect(isAddKeyCall(data)).to.be.true;
     });
 
@@ -79,8 +79,7 @@ describe('Tools test', async () => {
     it('Should return true if addKeys call', async () => {
       const keys = [addressToBytes32(wallet.address), addressToBytes32(otherWallet.address)];
       const keyRoles = new Array(keys.length).fill(MANAGEMENT_KEY);
-      const keyTypes = new Array(keys.length).fill(ECDSA_TYPE);
-      const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyTypes]);
+      const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles]);
       expect(isAddKeysCall(data)).to.be.true;
     });
 

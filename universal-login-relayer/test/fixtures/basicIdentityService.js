@@ -8,7 +8,7 @@ import MockContract from 'universal-login-contracts/build/MockContract';
 import {deployContract, getWallets} from 'ethereum-waffle';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import {utils} from 'ethers';
-import {OPERATION_CALL, ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts';
+import {OPERATION_CALL, ACTION_KEY} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
 import {addressToBytes32, waitForContractDeploy} from '../../lib/utils/utils';
 import {getKnex} from '../../lib/utils/knexUtils';
@@ -46,7 +46,7 @@ export const transferMessage = {
 export const addKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
-  data: new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32('0x63FC2aD3d021a4D7e64323529a55a9442C444dA0'), ACTION_KEY, ECDSA_TYPE]),
+  data: new utils.Interface(Identity.interface).functions.addKey.encode([addressToBytes32('0x63FC2aD3d021a4D7e64323529a55a9442C444dA0'), ACTION_KEY]),
   nonce: 0,
   gasPrice,
   gasLimit,

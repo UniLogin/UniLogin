@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
-import {OPERATION_CALL, MANAGEMENT_KEY, ECDSA_TYPE, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
+import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
 import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
@@ -36,7 +36,7 @@ class EthereumIdentitySDK {
 
   async addKey(to, publicKey, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const key = addressToBytes32(publicKey);
-    const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, keyPurpose, ECDSA_TYPE]);
+    const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, keyPurpose]);
     const message = {
       ...transactionDetails,
       to,
@@ -49,8 +49,7 @@ class EthereumIdentitySDK {
   async addKeys(to, publicKeys, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const keys = publicKeys.map((publicKey) => addressToBytes32(publicKey));
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
-    const keyPurposes = new Array(publicKeys.length).fill(ECDSA_TYPE);
-    const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles, keyPurposes]);
+    const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles]);
     const message = {
       ...transactionDetails,
       to,
@@ -183,5 +182,5 @@ class EthereumIdentitySDK {
 }
 
 export default EthereumIdentitySDK;
-export {MANAGEMENT_KEY, ACTION_KEY, ECDSA_TYPE};
+export {MANAGEMENT_KEY, ACTION_KEY};
 export {SdkSigner} from './SdkSigner';
