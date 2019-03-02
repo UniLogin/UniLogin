@@ -1,6 +1,5 @@
 import ethers, {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
-import {sleep} from 'universal-login-commons';
 
 const addressToBytes32 = (address) =>
   utils.padZeros(utils.arrayify(address), 32);
@@ -9,11 +8,7 @@ const addressToBytes32 = (address) =>
 const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
   const abi = contractJSON.interface;
-  let receipt = await provider.getTransactionReceipt(tansactionHash);
-  while (!receipt) {
-    sleep(tick);
-    receipt = await provider.getTransactionReceipt(tansactionHash);
-  }
+  const receipt = await provider.waitForTransaction(tansactionHash);
   return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
 };
 
