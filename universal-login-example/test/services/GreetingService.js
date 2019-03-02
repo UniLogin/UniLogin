@@ -3,7 +3,7 @@ import GreetingService from '../../src/services/GreetingService';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import KeyHolder from 'universal-login-contracts/build/KeyHolder';
 import {addressToBytes32} from '../utils';
-import {ACTION_KEY, ECDSA_TYPE} from 'universal-login-contracts';
+import {ACTION_KEY} from 'universal-login-contracts';
 
 describe('Greeting service', async () => {
   let greetingService;
@@ -45,7 +45,7 @@ describe('Greeting service', async () => {
       const key = addressToBytes32(wallet.address);
       const key2 = addressToBytes32(someOtherWallet.address);
       identity = await deployContract(wallet, KeyHolder, [key]);
-      await identity.addKey(key2, ACTION_KEY, ECDSA_TYPE);
+      await identity.addKey(key2, ACTION_KEY);
       greetingService = new GreetingService(provider);
     });
 
@@ -73,7 +73,7 @@ describe('Greeting service', async () => {
       const key2 = addressToBytes32(wallet2.address);
       const key3 = addressToBytes32(wallet3.address);
       identity = await deployContract(wallet, KeyHolder, [key]);
-      await identity.addKeys([key2, key3], [ACTION_KEY, ACTION_KEY], [ECDSA_TYPE, ECDSA_TYPE]);
+      await identity.addKeys([key2, key3], [ACTION_KEY, ACTION_KEY]);
       greetingService = new GreetingService(provider, identity.address);
     });
 
