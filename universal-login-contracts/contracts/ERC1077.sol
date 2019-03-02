@@ -31,11 +31,11 @@ contract ERC1077 is KeyHolder, IERC1077 {
         OperationType operationType,
         bytes memory signatures) public view returns (bool)
     {
-        address[] memory signers = new address[](signatures.length / 65);
-        for (uint8 i = 0;i < signatures.length / 65; i++) {
+        address[] memory signers = new address[](signatures.length.div(65));
+        for (uint i = 0;i < signatures.length.div(65); i++) {
             bytes memory sig = new bytes(65);
-            for (uint8 j = 0;j < 65; j++) {
-                sig[j] = signatures[j + i * 65];
+            for (uint j = 0;j < 65; j++) {
+                sig[j] = signatures[j.add(i.mul(65))];
             }
             address signer = getSigner(address(this), to, value, data,nonce, gasPrice, gasToken, gasLimit, operationType, sig);
             if (!isSignerValid(signer, signers)) {

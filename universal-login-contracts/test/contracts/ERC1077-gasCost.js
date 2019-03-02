@@ -9,7 +9,7 @@ import {getExecutionArgs} from '../utils';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const callCost = 109500;
+const callCost = 129500;
 const transferCost = 225000;
 
 const overrideOptions = {gasLimit: 220000};
