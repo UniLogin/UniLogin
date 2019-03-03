@@ -26,14 +26,13 @@ export const calculateMessageSignature = async (privateKey: string, msg: Message
 };
 
 export const concatenateSignatures = (signatures: string[]) => {
-  let concatenated = "";
+  let concatenated = '';
   // sort the signatures
   signatures.forEach((signature) => {
-    if (signature.indexOf('0x') != 0) {
-      throw 'Invalid Signature: ' + signature + ' needs prefix 0x';
+    if (signature.indexOf('0x') !== 0) {
+      throw `Invalid Signature: ${signature} needs prefix 0x`;
     }
     concatenated += signature.replace('0x', '');
-  })
-  return '0x' + concatenated;
-}
-
+  });
+  return `0x${concatenated}`;
+};

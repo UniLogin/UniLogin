@@ -30,14 +30,14 @@ describe('Tools test', async () => {
   it('Should concatenate two bytes arrays', async () => {
       const bytes1 = '0xfff';
       const bytes2 = '0xcfba';
-      const concatenate = concatenateSignatures([bytes1, bytes2]); 
-      expect(concatenate).to.be.equal('0xfffcfba'); 
+      const concatenate = concatenateSignatures([bytes1, bytes2]);
+      expect(concatenate).to.be.equal('0xfffcfba');
   });
 
   it('Should not concatenate two bytes arrays without 0x prefix', async () => {
       const bytes1 = 'fff';
       const bytes2 = 'cfba';
-      expect(concatenateSignatures.bind(null, [bytes1, bytes2])).to.throw('Invalid Signature: ' + bytes1 + ' needs prefix 0x');
+      expect(concatenateSignatures.bind(null, [bytes1, bytes2])).to.throw(`Invalid Signature: ${bytes1} needs prefix 0x`);
   });
 
   describe('getExecutionArgs', () => {

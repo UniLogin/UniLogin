@@ -256,7 +256,7 @@ describe('ERC1077', async  () => {
       it('should fail with invalid signature size', async () => {
         const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
-        const corruptedSignatures = concatenateSignatures([signature1, signature2]) + 'a';
+        const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
           .to.be.revertedWith('Invalid signature');
       });
@@ -335,7 +335,7 @@ describe('ERC1077', async  () => {
         const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
         const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
-        const corruptedSignatures = concatenateSignatures([signature1, signature2, signature3]) + 'a';
+        const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
           .to.be.revertedWith('Invalid signature');
       });

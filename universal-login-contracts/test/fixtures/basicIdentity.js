@@ -24,7 +24,7 @@ export default async function basicIdentity(provider, [, , , , , , , , , wallet]
     } else {
       return 0;
     }
-  })
+  });
   const publicActionKey1 = addressToBytes32(actionWallet1.address);
   const publicActionKey2 = addressToBytes32(actionWallet2.address);
   const sortedKeys = [sortedWallets[0].privateKey, sortedWallets[1].privateKey, sortedWallets[2].privateKey];
