@@ -31,19 +31,17 @@ contract ERC1077 is KeyHolder, IERC1077 {
         OperationType operationType,
         bytes memory signatures) public view returns (bool)
     {
-        address[] memory signers = new address[](signatures.length.div(65));
-        for (uint i = 0;i < signatures.length.div(65); i++) {
-            bytes memory sig = new bytes(65);
-            for (uint j = 0;j < 65; j++) {
-                sig[j] = signatures[j.add(i.mul(65))];
-            }
-            address signer = getSigner(address(this), to, value, data,nonce, gasPrice, gasToken, gasLimit, operationType, sig);
-            if (!isSignerValid(signer, signers)) {
-                return false;
-            }
-            signers[i] = signer;
-        }
-        return true;
+        bytes32 hash = calculateMessageHash(
+            address(this),
+            to,
+            value,
+            data,
+            nonce,
+            gasPrice,
+            gasToken,
+            gasLimit,
+            operationType).toEthSignedMessageHash();
+        return areSignaturesValid(signatures, hash);
     }
 
     function calculateMessageHash(
@@ -131,13 +129,30 @@ contract ERC1077 is KeyHolder, IERC1077 {
             msg.sender.transfer(gasUsed.mul(gasPrice));
         }
     }
-
-    function isSignerValid(address signer, address[] memory signers) private view returns (bool) {
-        for (uint i = 0;i < signers.length; i++) {
-            if (signers[i] == signer) {
+    
+    function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
+        // There cannot be an owner with address 0.
+        uint sigCount = signatures.length / 65;
+        address lastSigner = address(0);
+        address signer;
+        uint8 v;
+        bytes32 r;
+        bytes32 s;
+        uint256 i;
+        for (i = 0; i < sigCount; i++) {
+            assembly {
+                let signaturePos := mul(0x41, i)
+                r := mload(add(signatures, add(signaturePos, 0x20)))
+                s := mload(add(signatures, add(signaturePos, 0x40)))
+                v := and(mload(add(signatures, add(signaturePos, 0x41))), 0xff)
+            }            
+            signer = ecrecover(dataHash, v, r, s);
+            if (!keyExist(bytes32(uint256(signer))) || signer <= lastSigner) {
                 return false;
             }
+
+            lastSigner = signer;
         }
-        return keyExist(bytes32(uint256(signer)));
+        return true;
     }
 }

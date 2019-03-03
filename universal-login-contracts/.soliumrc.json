@@ -4,6 +4,7 @@
     "security"
   ],
   "rules": {
+    "security/no-inline-assembly": "off",
     "max-len": [
       "error",
       160
