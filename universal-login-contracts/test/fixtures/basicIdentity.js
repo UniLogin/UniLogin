@@ -12,9 +12,22 @@ const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
   const publicKey = addressToBytes32(wallet.address);
-  const actionWallet = Wallet.createRandom();
-  const publicActionKey = addressToBytes32(actionWallet.address);
-  const privateActionKey = actionWallet.privateKey;
+  const actionWallet1 = Wallet.createRandom();
+  const actionWallet2 = Wallet.createRandom();
+  const sortedWallets = [actionWallet1, actionWallet2, wallet].sort((wallet1, wallet2) => {
+    const address1 = parseInt(wallet1.address, 16);
+    const address2 = parseInt(wallet2.address, 16);
+    if (address1 > address2) {
+      return 1;
+    } else if (address1 < address2) {
+      return -1;
+    } else {
+      return 0;
+    }
+  })
+  const publicActionKey1 = addressToBytes32(actionWallet1.address);
+  const publicActionKey2 = addressToBytes32(actionWallet2.address);
+  const sortedKeys = [sortedWallets[0].privateKey, sortedWallets[1].privateKey, sortedWallets[2].privateKey];
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
   const privateKey = addressToBytes32(wallet.privateKey);
@@ -23,8 +36,9 @@ export default async function basicIdentity(provider, [, , , , , , , , , wallet]
   const mockContract = await deployContract(wallet, MockContract);
   await wallet.sendTransaction({to: identity.address, value: parseEther('2.0')});
   await mockToken.transfer(identity.address, parseEther('1.0'));
-  await identity.addKey(publicActionKey, ACTION_KEY);
-  return {provider, publicKey, privateKey, privateActionKey, keyAsAddress, identity, mockToken, mockContract, wallet};
+  await identity.addKey(publicActionKey1, ACTION_KEY);
+  await identity.addKey(publicActionKey2, ACTION_KEY);
+  return {provider, publicKey, privateKey, sortedKeys, keyAsAddress, identity, mockToken, mockContract, wallet};
 }
 
 export const transferMessage = {

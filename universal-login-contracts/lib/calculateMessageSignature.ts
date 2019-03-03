@@ -25,5 +25,15 @@ export const calculateMessageSignature = async (privateKey: string, msg: Message
   return wallet.signMessage(utils.arrayify(massageHash));
 };
 
-export const concatenateBytes = (bytes1: string, bytes2: string) =>
-   bytes1 + bytes2.replace('0x', '');
+export const concatenateSignatures = (signatures: string[]) => {
+  let concatenated = "";
+  // sort the signatures
+  signatures.forEach((signature) => {
+    if (signature.indexOf('0x') != 0) {
+      throw 'Invalid Signature: ' + signature + ' needs prefix 0x';
+    }
+    concatenated += signature.replace('0x', '');
+  })
+  return '0x' + concatenated;
+}
+
