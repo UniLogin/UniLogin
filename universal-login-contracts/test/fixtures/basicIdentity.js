@@ -4,7 +4,7 @@ import MockContract from '../../build/MockContract';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {addressToBytes32} from '../utils';
-import {OPERATION_CALL, ECDSA_TYPE, MANAGEMENT_KEY} from '../../lib/consts';
+import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
 const {parseEther} = utils;
@@ -23,7 +23,7 @@ export default async function basicIdentity(provider, [, , , , , , , , , wallet]
   const mockContract = await deployContract(wallet, MockContract);
   await wallet.sendTransaction({to: identity.address, value: parseEther('2.0')});
   await mockToken.transfer(identity.address, parseEther('1.0'));
-  await identity.addKey(publicActionKey, MANAGEMENT_KEY, ECDSA_TYPE);
+  await identity.addKey(publicActionKey, ACTION_KEY);
   return {provider, publicKey, privateKey, privateActionKey, keyAsAddress, identity, mockToken, mockContract, wallet};
 }
 
