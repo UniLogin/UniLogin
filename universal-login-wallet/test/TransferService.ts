@@ -2,10 +2,11 @@ import TransferService from '../src/services/TransferService';
 import {expect} from 'chai';
 import UniversalLoginSDK from 'universal-login-sdk';
 import createWallet from '../src/services/Creation';
-import {deployMockToken, setupSdk} from 'universal-login-commons/test';
+import {deployMockToken} from 'universal-login-commons/test';
 import {createFixtureLoader} from 'ethereum-waffle';
 import WalletService from '../src/services/WalletService';
 import {utils, providers} from 'ethers';
+import {setupSdk} from 'universal-login-sdk/test';
 
 
 
