@@ -15,11 +15,10 @@ interface ModalTransferProps {
 
 const ModalTransfer = ({hideModal}: ModalTransferProps) => {
   const [transferDetalis, setTransferDetails] = useState({currency: shortcuts[0]} as TransferDetails);
-  const [currentCurrency, setCurrentCurrency] = useState(shortcuts[0]);
-
   const {transferService} = useServices();
 
   const onGenerateClick = async () => {
+    console.log(transferDetalis);
     await transferService.transferTokens({
         to: transferDetalis.to,
         amount: transferDetalis.amount,
@@ -47,8 +46,7 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
       <InputWithDropdown
         id="amount"
         onChange={event => updateTransferDetailsWith('amount', event.target.value)}
-        setCurrency={currency => setCurrentCurrency(currency)}
-        currency={currentCurrency}
+        currency={transferDetalis.currency}
         shortcuts={shortcuts}
       />
       <button className="btn-text">Send entire balance</button>
