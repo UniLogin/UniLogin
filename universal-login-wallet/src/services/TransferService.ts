@@ -3,10 +3,16 @@ import WalletService from './WalletService';
 import {utils} from 'ethers';
 import MockContract from 'universal-login-commons/test/fixtures/MockToken.json';
 
+export interface TransferDetails {
+  to: string;
+  amount: string;
+  currency: string;
+}
+
 class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService) {}
 
-  async transferTokens(to: string, amount: string, currency: string) {
+  async transferTokens({to, amount, currency} : TransferDetails) {
     if (this.walletService.userWallet) {
       const data = new utils.Interface(MockContract.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
       const message = {

@@ -31,7 +31,7 @@ describe('TransferService', () => {
     const to = '0x0000000000000000000000000000000000000001';
     const amount = '1.0';
     const currency = mockTokenContract.address;
-    await transferService.transferTokens(to, amount, currency);
+    await transferService.transferTokens({to, amount, currency});
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
   });
 
