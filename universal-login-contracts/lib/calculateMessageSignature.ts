@@ -25,14 +25,17 @@ export const calculateMessageSignature = async (privateKey: string, msg: Message
   return wallet.signMessage(utils.arrayify(massageHash));
 };
 
-export const concatenateSignatures = (signatures: string[]) => {
-  let concatenated = '';
-  // sort the signatures
-  signatures.forEach((signature) => {
-    if (signature.indexOf('0x') !== 0) {
-      throw `Invalid Signature: ${signature} needs prefix 0x`;
-    }
-    concatenated += signature.replace('0x', '');
-  });
-  return `0x${concatenated}`;
+const removePrefix = (value: string, index: number, array: string[])  => {
+  const signature = value;
+  if (value.length !== 132) {
+    throw `Invalid signature length: ${signature} should be 132`;
+  }
+  if (value.indexOf('0x') !== 0) {
+    throw `Invalid Signature: ${signature} needs prefix 0x`;
+  }
+  return signature.slice(2);
+};
+
+export const concatenateSignatures = (signatures: string[])  => {
+  return `0x${signatures.map(removePrefix).join('')}`;
 };

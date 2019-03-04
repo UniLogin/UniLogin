@@ -28,16 +28,23 @@ describe('Tools test', async () => {
   });
 
   it('Should concatenate two bytes arrays', async () => {
-      const bytes1 = '0xfff';
-      const bytes2 = '0xcfba';
-      const concatenate = concatenateSignatures([bytes1, bytes2]);
-      expect(concatenate).to.be.equal('0xfffcfba');
+      const sig1 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+      const sig2 = '0xe241748c6bd2bf25fcc0ab862501180914ed5281773803e4cd8f7c14e0b16cd46e6495a3879b1dd7841bdebe8d773ecbc2ec7a9c53500db230280a885e1119a81b';
+      const expected = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe241748c6bd2bf25fcc0ab862501180914ed5281773803e4cd8f7c14e0b16cd46e6495a3879b1dd7841bdebe8d773ecbc2ec7a9c53500db230280a885e1119a81b';
+      const concatenate = concatenateSignatures([sig1, sig2]);
+      expect(concatenate).to.be.equal(expected);
   });
 
   it('Should not concatenate two bytes arrays without 0x prefix', async () => {
-      const bytes1 = 'fff';
-      const bytes2 = 'cfba';
-      expect(concatenateSignatures.bind(null, [bytes1, bytes2])).to.throw(`Invalid Signature: ${bytes1} needs prefix 0x`);
+      const sig1 = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+      const sig2 = 'ffe241748c6bd2bf25fcc0ab862501180914ed5281773803e4cd8f7c14e0b16cd46e6495a3879b1dd7841bdebe8d773ecbc2ec7a9c53500db230280a885e1119a81b';
+      expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid Signature: ${sig1} needs prefix 0x`);
+  });
+
+    it('Should not concatenate two bytes arrays without 0x prefix', async () => {
+      const sig1 = 'ffff';
+      const sig2 = 'ffe2';
+      expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid signature length: ${sig1} should be 132`);
   });
 
   describe('getExecutionArgs', () => {
