@@ -1,4 +1,4 @@
-import MockToken from '../../build/MockToken.json';
+import MockToken from './MockToken.json';
 import {deployContract} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 

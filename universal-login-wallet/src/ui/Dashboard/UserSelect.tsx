@@ -12,8 +12,8 @@ const UserSelect = () => {
       <button onClick={toggle} className="user-select-button">
         <img className="user-select-avatar" src={avatar} alt="avatar"/>
         <div>
-          <p className="user-select-name">{walletService.userWallet ? walletService.userWallet.name : 'Liam Riley'}</p>
-          <p className="user-select-nickname">{walletService.userWallet ? walletService.userWallet.contractAddress : 'liam.universal-id.eth'}</p>
+          <p className="user-select-name">{walletService.userWallet ? walletService.userWallet.name : null}</p>
+          <p className="user-select-nickname">{walletService.userWallet ? walletService.userWallet.contractAddress : null}</p>
         </div>
       </button>
       {visible ?

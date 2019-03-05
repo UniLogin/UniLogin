@@ -1,10 +1,36 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Input from '../common/Input';
 import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
+import {useServices} from '../../hooks';
+import {TransferDetails} from '../../services/TransferService';
 
-const ModalTransfer = () => {
+const shortcuts = ['ETH', 'DAI', 'UNL'];
+
+
+interface ModalTransferProps {
+  hideModal: () => void;
+}
+
+const ModalTransfer = ({hideModal}: ModalTransferProps) => {
+  const [transferDetalis, setTransferDetails] = useState({currency: shortcuts[0]} as TransferDetails);
+  const {transferService} = useServices();
+
+  const onGenerateClick = async () => {
+    await transferService.transferTokens({
+        to: transferDetalis.to,
+        amount: transferDetalis.amount,
+        currency: '0x0E2365e86A50377c567E1a62CA473656f0029F1e'
+      }
+    );
+    hideModal();
+  };
+
+  const updateTransferDetailsWith = (name: string, value: string) => {
+    setTransferDetails({...transferDetalis, [`${name}`]: value});
+  };
+
   return (
     <div className="transfer-modal">
       <h2 className="modal-title transfer-modal-title">Transfer funds</h2>
@@ -12,18 +38,20 @@ const ModalTransfer = () => {
       <Input
         id="address"
         className="transfer-modal-address"
-        onChange={() => alert('not implemented')}
+        onChange={event => updateTransferDetailsWith('to', event.target.value)}
         autoFocus
       />
       <InputLabel htmlFor="amount">Amount to send</InputLabel>
       <InputWithDropdown
         id="amount"
-        onChange={() => alert('not implemented')}
+        onChange={event => updateTransferDetailsWith('amount', event.target.value)}
+        currency={transferDetalis.currency}
+        shortcuts={shortcuts}
       />
       <button className="btn-text">Send entire balance</button>
       <ButtonFullwidth
         id="transferButton"
-        onClick={() => alert('not implemented')}
+        onClick={onGenerateClick}
       >
         Generate transaction
       </ButtonFullwidth>
@@ -32,4 +60,3 @@ const ModalTransfer = () => {
 };
 
 export default ModalTransfer;
-

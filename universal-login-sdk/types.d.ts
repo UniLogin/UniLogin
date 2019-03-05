@@ -6,6 +6,8 @@ declare interface Subscription {
 }
 
 declare class EthereumIdentitySDK extends WalletExistenceVerifier  {
+  public provider: providers.Provider;
+  
   constructor(relayerUrl: string, providerOrUrl: string | providers.Provider, paymentOptions?: any);
 
   create(ensName: string): Promise<[string, string]>;
