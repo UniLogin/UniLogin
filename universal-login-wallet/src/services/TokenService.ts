@@ -22,6 +22,13 @@ class TokenService {
       this.tokensDetails[count] = {name, symbol, address: token.address};
     }
   }
+
+  getTokenAddress(symbol: string) {
+    for (let count = 0; count < this.tokensDetails.length; count++) {
+      if (this.tokensDetails[count].symbol === symbol) 
+        return this.tokensDetails[count].address;
+    }
+  }
 }
 
 export default TokenService;

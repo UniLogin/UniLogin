@@ -21,8 +21,8 @@ export const createServices = (config: Config) => {
   const modalService = new ModalService();
   const walletService = new WalletService();
   const _createWallet = createWallet(sdk, walletService);
-  const transferService = new TransferService(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
+  const transferService = new TransferService(sdk, walletService, tokenService);
   return {
     sdk,
     suggestionsService,
