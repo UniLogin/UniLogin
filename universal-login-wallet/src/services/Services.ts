@@ -4,6 +4,7 @@ import {IdentitySelectionService, SuggestionsService} from 'universal-login-comm
 import ModalService from './ModalService';
 import WalletService from './WalletService';
 import createWallet from './Creation';
+import TransferService from './TransferService';
 
 interface Config {
   domains: string[];
@@ -18,13 +19,15 @@ export const createServices = (config: Config) => {
   const modalService = new ModalService();
   const walletService = new WalletService();
   const _createWallet = createWallet(sdk, walletService);
+  const transferService = new TransferService(sdk, walletService);
   return {
     sdk,
     suggestionsService,
     identitySelectionService,
     modalService,
     createWallet: _createWallet,
-    walletService
+    walletService,
+    transferService
   };
 };
 
