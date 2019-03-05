@@ -5,6 +5,7 @@ import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import {TransferDetails} from '../../services/TransferService';
+import {Partial} from 'universal-login-commons';
 
 
 interface ModalTransferProps {
@@ -20,8 +21,8 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
     hideModal();
   };
 
-  const updateTransferDetailsWith = (name: string, value: string) => {
-    setTransferDetails({...transferDetalis, [`${name}`]: value});
+  const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
+    setTransferDetails({...transferDetalis, ...args});
   };
 
   return (
@@ -31,15 +32,15 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
       <Input
         id="address"
         className="transfer-modal-address"
-        onChange={event => updateTransferDetailsWith('to', event.target.value)}
+        onChange={event => updateTransferDetailsWith({to: event.target.value})}
         autoFocus
       />
       <InputLabel htmlFor="amount">Amount to send</InputLabel>
       <InputWithDropdown
         id="amount"
-        onChange={event => updateTransferDetailsWith('amount', event.target.value)}
+        onChange={event => updateTransferDetailsWith({amount: event.target.value})}
         currency={transferDetalis.currency}
-        setCurrency={event => updateTransferDetailsWith('currency', event)}
+        setCurrency={event => updateTransferDetailsWith({currency: event})}
       />
       <button className="btn-text">Send entire balance</button>
       <ButtonFullwidth
