@@ -29,7 +29,7 @@ export const createServices = (config: Config) => {
     identitySelectionService,
     modalService,
     createWallet: _createWallet,
-    walletService, 
+    walletService,
     tokenService,
     transferService
   };

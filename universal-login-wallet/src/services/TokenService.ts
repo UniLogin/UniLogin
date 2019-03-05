@@ -25,8 +25,9 @@ class TokenService {
 
   getTokenAddress(symbol: string) {
     for (let count = 0; count < this.tokensDetails.length; count++) {
-      if (this.tokensDetails[count].symbol === symbol) 
+      if (this.tokensDetails[count].symbol === symbol) {
         return this.tokensDetails[count].address;
+      }
     }
   }
 }
