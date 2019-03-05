@@ -9,7 +9,6 @@ import getConfig from '../config/getConfig';
 const config = getConfig();
 
 const services = createServices(config);
-services.tokenService.start();
 
 render(
   <ServiceContext.Provider value={services}>
