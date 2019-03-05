@@ -12,9 +12,6 @@ const {namehash} = utils;
 
 const ether = '0x0000000000000000000000000000000000000000';
 
-const addressToBytes32 = (address) =>
-  utils.padZeros(utils.arrayify(address), 32);
-
 const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
   const receipt = await provider.waitForTransaction(transactionHash);
@@ -104,4 +101,4 @@ const saveVariables = (filename, variables) => {
   });
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, addressToBytes32, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

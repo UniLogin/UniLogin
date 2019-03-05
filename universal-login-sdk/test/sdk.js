@@ -12,7 +12,6 @@ chai.use(sinonChai);
 
 const loadFixture = createFixtureLoader();
 const jsonRpcUrl = 'http://localhost:18545';
-const addressToBytes32 = (address) => utils.padZeros(utils.arrayify(address), 32);
 
 describe('SDK - integration', async () => {
   let provider;

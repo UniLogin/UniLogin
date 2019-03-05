@@ -2,10 +2,6 @@ import ethers, {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
 import {sleep} from 'universal-login-commons';
 
-const addressToBytes32 = (address) =>
-  utils.padZeros(utils.arrayify(address), 32);
-
-
 const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
   const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
   const abi = contractJSON.interface;
@@ -45,4 +41,4 @@ const lookupAddress = async (provider, address, resolverAddress) => {
 const getExecutionArgs = (msg) =>
   [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
 
-export {addressToBytes32, waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs};
+export {waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs};

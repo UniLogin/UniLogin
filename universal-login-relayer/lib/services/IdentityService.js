@@ -18,8 +18,7 @@ class IdentityService {
     this.provider = provider;
   }
 
-  async create(managementKey, ensName, overrideOptions = {}) {
-    const key = managementKey;
+  async create(key, ensName, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
       const args = [key, ...ensArgs];
