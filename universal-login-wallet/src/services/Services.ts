@@ -22,7 +22,6 @@ export const createServices = (config: Config) => {
   const walletService = new WalletService();
   const _createWallet = createWallet(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
-  tokenService.start();
   const transferService = new TransferService(sdk, walletService, tokenService);
   return {
     sdk,
