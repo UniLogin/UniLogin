@@ -77,8 +77,7 @@ describe('Relayer - IdentityService', async () => {
         const signature = await calculateMessageSignature(wallet.privateKey, msg);
 
         await identityService.executeSigned({...msg, signature});
-        const key = await identity.getKey(otherWallet.address);
-        expect(key.purpose).to.eq(ACTION_KEY);
+        expect(await identity.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
       });
 
       describe('Collaboration with Authorisation Service', async () => {
@@ -103,12 +102,12 @@ describe('Relayer - IdentityService', async () => {
       });
 
       it('should remove key', async () => {
-        expect((await identity.getKey(otherWallet.address))[0]).to.eq(ACTION_KEY);
+        expect((await identity.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY);
         const message =  {...removeKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = await calculateMessageSignature(wallet.privateKey, message);
 
         await identityService.executeSigned({...message, signature});
-        expect((await identity.getKey(otherWallet.address))[0]).to.eq(0);
+        expect((await identity.keyExist(otherWallet.address))).to.eq(false);
       });
     });
   });

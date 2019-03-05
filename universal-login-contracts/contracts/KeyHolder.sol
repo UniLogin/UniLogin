@@ -36,10 +36,6 @@ contract KeyHolder is IKeyHolder {
         return keys[_key].key != address(0x0);
     }
 
-    function getKey(address _key) public view returns(uint256 purpose, address key) {
-        return (keys[_key].purpose, keys[_key].key);
-    }
-
     function getKeyPurpose(address _key) public view returns(uint256 purpose) {
         return keys[_key].purpose;
     }

@@ -33,8 +33,7 @@ describe('KeyHolder', async () => {
     });
 
     it('Key should be management key', async () => {
-      const key = await identity.getKey(managementKey);
-      expect(key.purpose).to.eq(MANAGEMENT_KEY);
+      expect(await identity.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
     });
 
     it('Should return the purpose', async () => {
@@ -102,9 +101,8 @@ describe('KeyHolder', async () => {
   describe('Get key', async () => {
     it('Should return key correctly', async () => {
       await addActionKey();
-      const getKeyResult = await identity.getKey(actionKey);
-      expect(getKeyResult[0]).to.eq(ACTION_KEY);
-      expect(getKeyResult[1]).to.eq(utils.hexlify(actionKey));
+      expect(await identity.getKeyPurpose(actionKey)).to.eq(ACTION_KEY);
+      expect(await identity.keyExist(actionKey)).to.eq(true);
     });
 
     it('Should return key purpose correctly', async () => {
