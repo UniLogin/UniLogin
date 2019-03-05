@@ -18,7 +18,6 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
   const {transferService} = useServices();
 
   const onGenerateClick = async () => {
-    console.log(transferDetalis);
     await transferService.transferTokens({
         to: transferDetalis.to,
         amount: transferDetalis.amount,
