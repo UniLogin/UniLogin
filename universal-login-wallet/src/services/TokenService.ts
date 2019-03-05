@@ -7,7 +7,7 @@ declare type TokenDetails = {
   address: string;
 };
 
-export class TokenService {
+class TokenService {
   tokensDetails: TokenDetails[];
 
   constructor(private tokensAddresses: string[], private provider: providers.Provider) {
@@ -23,3 +23,5 @@ export class TokenService {
     }
   }
 }
+
+export default TokenService;

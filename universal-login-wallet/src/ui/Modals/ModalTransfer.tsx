@@ -14,16 +14,11 @@ interface ModalTransferProps {
 }
 
 const ModalTransfer = ({hideModal}: ModalTransferProps) => {
-  const [transferDetalis, setTransferDetails] = useState({currency: shortcuts[0]} as TransferDetails);
+  const [transferDetalis, setTransferDetails] = useState({currency: '0x0E2365e86A50377c567E1a62CA473656f0029F1e'} as TransferDetails);
   const {transferService} = useServices();
 
   const onGenerateClick = async () => {
-    await transferService.transferTokens({
-        to: transferDetalis.to,
-        amount: transferDetalis.amount,
-        currency: '0x0E2365e86A50377c567E1a62CA473656f0029F1e'
-      }
-    );
+    await transferService.transferTokens(transferDetalis);
     hideModal();
   };
 

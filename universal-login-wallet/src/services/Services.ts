@@ -5,11 +5,13 @@ import ModalService from './ModalService';
 import WalletService from './WalletService';
 import createWallet from './Creation';
 import TransferService from './TransferService';
+import TokenService from './TokenService';
 
 interface Config {
   domains: string[];
   relayerUrl: string;
   jsonRpcUrl: string;
+  tokens: string[];
 }
 
 export const createServices = (config: Config) => {
@@ -20,6 +22,7 @@ export const createServices = (config: Config) => {
   const walletService = new WalletService();
   const _createWallet = createWallet(sdk, walletService);
   const transferService = new TransferService(sdk, walletService);
+  const tokenService = new TokenService(config.tokens, sdk.provider);
   return {
     sdk,
     suggestionsService,
@@ -27,7 +30,8 @@ export const createServices = (config: Config) => {
     modalService,
     createWallet: _createWallet,
     walletService,
-    transferService
+    transferService, 
+    tokenService
   };
 };
 
