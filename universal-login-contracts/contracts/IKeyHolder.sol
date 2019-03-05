@@ -16,6 +16,5 @@ contract IKeyHolder {
     }
 
     function getKeyPurpose(address _key) public view returns(uint256 purpose);
-    function getKeysByPurpose(uint256 _purpose) public view returns(address[] memory keys);
     function addKey(address _key, uint256 _purpose) public returns (bool success);
 }

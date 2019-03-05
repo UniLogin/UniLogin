@@ -10,7 +10,6 @@ chai.use(solidity);
 
 describe('KeyHolder', async () => {
   let identity;
-  let managementWalletKey;
   let unknownWalletKey;
   let fromActionWallet;
   let fromUnknownWallet;
@@ -22,7 +21,7 @@ describe('KeyHolder', async () => {
   const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
 
   beforeEach(async () => {
-    ({identity, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
+    ({identity, actionKey, actionKey2, managementKey, unknownWalletKey,
       fromActionWallet, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
 
@@ -110,14 +109,6 @@ describe('KeyHolder', async () => {
       await addActionKey();
       expect(await identity.getKeyPurpose(actionKey)).to.eq(ACTION_KEY);
     });
-
-    it('Should return keys by purpose correctly', async () => {
-      const actualManagementKeys = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      expect(actualManagementKeys[0]).to.eq(utils.hexlify(managementKey));
-      await identity.addKey(actionKey, ACTION_KEY);
-      const actualActionKeys = await identity.getKeysByPurpose(ACTION_KEY);
-      expect(actualActionKeys[1]).to.eq(utils.hexlify(actionKey));
-    });
   });
 
   describe('Remove key', async () => {
@@ -138,16 +129,6 @@ describe('KeyHolder', async () => {
         .withArgs(utils.hexlify(actionKey), ACTION_KEY);
     });
 
-    it('Should remove key from keysByPurpose', async () => {
-      const actionKeys = await identity.getKeysByPurpose(ACTION_KEY);
-      expect(actionKeys[1]).to.eq(utils.hexlify(actionKey));
-      expect(await isActionKey()).to.be.true;
-      await identity.removeKey(actionKey, ACTION_KEY);
-      expect(await isActionKey()).to.be.false;
-      const actualActionKeys = await identity.getKeysByPurpose(ACTION_KEY);
-      expect(actualActionKeys[1]).not.to.eq(utils.hexlify(actionKey));
-    });
-
     it('Should not allow to remove key with unknown key', async () => {
       expect(await isActionKey()).to.be.true;
       await expect(fromUnknownWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
@@ -155,12 +136,6 @@ describe('KeyHolder', async () => {
 
     it('Should not allow to remove key with action key', async () => {
       await expect(fromActionWallet.removeKey(actionKey, ACTION_KEY)).to.be.reverted;
-    });
-
-    it('Should not allow to remove last management key', async () => {
-      await identity.removeKey(managementWalletKey, MANAGEMENT_KEY);
-      expect(await identity.keyHasPurpose(managementWalletKey, MANAGEMENT_KEY)).to.be.false;
-      await expect(identity.removeKey(managementKey, MANAGEMENT_KEY)).to.be.reverted;
     });
 
     it('Should not allow to remove key with invalid purpose', async () => {

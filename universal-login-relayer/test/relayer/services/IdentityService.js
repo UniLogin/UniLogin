@@ -33,10 +33,7 @@ describe('Relayer - IdentityService', async () => {
     });
 
     it('is initialized with management key', async () => {
-      const managementKeys = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      const expectedKey = wallet.address;
-      expect(managementKeys).to.have.lengthOf(1);
-      expect(managementKeys[0]).to.endsWith(expectedKey);
+      expect(await identity.keyExist(wallet.address)).to.eq(true);
     });
 
     it('has ENS name reserved', async () => {
@@ -49,9 +46,8 @@ describe('Relayer - IdentityService', async () => {
     });
 
     it('should fail with not existing ENS name', async () => {
-      const managementKeys = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      expect(managementKeys).to.have.lengthOf(1);
-      await expect(identityService.create(managementKeys[0], 'alex.non-existing-id.eth')).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
+      const creationPromise = identityService.create(wallet.address, 'alex.non-existing-id.eth');
+      await expect(creationPromise).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
     });
   });
 

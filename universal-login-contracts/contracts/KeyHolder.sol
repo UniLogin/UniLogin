@@ -4,13 +4,10 @@ import "./IKeyHolder.sol";
 
 contract KeyHolder is IKeyHolder {
     mapping (address => Key) public keys;
-    mapping (uint256 => address[]) keysByPurpose;
 
     constructor(address _key) public {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
-
-        keysByPurpose[MANAGEMENT_KEY].push(_key);
 
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
     }
@@ -40,10 +37,6 @@ contract KeyHolder is IKeyHolder {
         return keys[_key].purpose;
     }
 
-    function getKeysByPurpose(uint256 _purpose) public view returns(address[] memory) {
-        return keysByPurpose[_purpose];
-    }
-
     function keyHasPurpose(address _key, uint256 _purpose) public view returns(bool result) {
         return keys[_key].purpose == _purpose;
     }
@@ -53,8 +46,6 @@ contract KeyHolder is IKeyHolder {
 
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
-
-        keysByPurpose[_purpose].push(_key);
 
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
@@ -71,20 +62,11 @@ contract KeyHolder is IKeyHolder {
     }
 
     function removeKey(address _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
-        require(keys[_key].purpose != MANAGEMENT_KEY || keysByPurpose[MANAGEMENT_KEY].length > 1, "Can not remove management key");
         require(keys[_key].purpose == _purpose, "Invalid key");
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
         delete keys[_key];
-
-        for (uint i = 0; i < keysByPurpose[_purpose].length; i++) {
-            if (keysByPurpose[_purpose][i] == _key) {
-                keysByPurpose[_purpose][i] = keysByPurpose[_purpose][keysByPurpose[_purpose].length - 1];
-                delete keysByPurpose[_purpose][keysByPurpose[_purpose].length - 1];
-                keysByPurpose[_purpose].length--;
-            }
-        }
 
         return true;
     }
