@@ -6,16 +6,14 @@ import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import {TransferDetails} from '../../services/TransferService';
 
-const shortcuts = ['ETH', 'DAI', 'UNL'];
-
 
 interface ModalTransferProps {
   hideModal: () => void;
 }
 
 const ModalTransfer = ({hideModal}: ModalTransferProps) => {
-  const [transferDetalis, setTransferDetails] = useState({currency: '0x0E2365e86A50377c567E1a62CA473656f0029F1e'} as TransferDetails);
-  const {transferService} = useServices();
+  const {transferService, tokenService} = useServices();
+  const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[0].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {
     await transferService.transferTokens(transferDetalis);
@@ -41,7 +39,7 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
         id="amount"
         onChange={event => updateTransferDetailsWith('amount', event.target.value)}
         currency={transferDetalis.currency}
-        shortcuts={shortcuts}
+        setCurrency={event => updateTransferDetailsWith('currency', event)}
       />
       <button className="btn-text">Send entire balance</button>
       <ButtonFullwidth

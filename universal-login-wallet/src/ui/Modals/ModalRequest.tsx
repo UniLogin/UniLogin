@@ -8,8 +8,6 @@ import ButtonFullwidth from '../common/ButtonFullwidth';
 
 const addressPlaceholder = '0xf902fd8B2AEE76AE81bBA106d667';
 
-const shortcuts = ['ETH', 'DAI', 'UNL'];
-
 const ModalRequest = () => (
   <div className="request-modal">
     <h2 className="modal-title request-modal-title">Request funds</h2>
@@ -22,8 +20,6 @@ const ModalRequest = () => (
       className="request-modal-amount"
       onChange={() => alert('not implemented')}
       autoFocus
-      shortcuts={shortcuts}
-      currency={shortcuts[0]}
     />
     <InputLabel htmlFor="address">Receiving address</InputLabel>
     <InputWithButton
