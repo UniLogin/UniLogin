@@ -95,22 +95,22 @@ describe('SDK - integration', async () => {
 
       it('should add a management key to the identity', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-        expect(await identity.getKeyPurpose(addressToBytes32(otherWallet.address))).to.be.eq(MANAGEMENT_KEY);
+        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(MANAGEMENT_KEY);
       });
 
       it('should add an action key to the identity', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ACTION_KEY);
-        expect(await identity.getKeyPurpose(addressToBytes32(otherWallet.address))).to.be.eq(ACTION_KEY);
+        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(ACTION_KEY);
       });
 
       it('should add a claim key to the identity', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-        expect(await identity.getKeyPurpose(addressToBytes32(otherWallet.address))).to.be.eq(CLAIM_KEY);
+        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(CLAIM_KEY);
       });
 
       it('should add an encryption key to the identity', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ENCRYPTION_KEY);
-        expect(await identity.getKeyPurpose(addressToBytes32(otherWallet.address))).to.be.eq(ENCRYPTION_KEY);
+        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(ENCRYPTION_KEY);
       });
     });
 

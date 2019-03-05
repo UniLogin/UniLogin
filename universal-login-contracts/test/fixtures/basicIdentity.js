@@ -3,7 +3,6 @@ import MockToken from '../../build/MockToken';
 import MockContract from '../../build/MockContract';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {addressToBytes32} from '../utils';
 import {OPERATION_CALL} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
@@ -11,10 +10,10 @@ const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
-  const publicKey = addressToBytes32(wallet.address);
+  const publicKey = wallet.address;
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
-  const privateKey = addressToBytes32(wallet.privateKey);
+  const privateKey = wallet.privateKey;
   const identity = await deployContract(wallet, ERC1077ApprovalScheme, [publicKey]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);

@@ -1,6 +1,6 @@
 import Identity from 'universal-login-contracts/build/Identity';
 import IdentityLegacy from 'universal-login-contracts/build/IdentityLegacy';
-import {addressToBytes32, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import {utils, ContractFactory} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
@@ -19,7 +19,7 @@ class IdentityService {
   }
 
   async create(managementKey, ensName, overrideOptions = {}) {
-    const key = addressToBytes32(managementKey);
+    const key = managementKey;
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
       const args = [key, ...ensArgs];

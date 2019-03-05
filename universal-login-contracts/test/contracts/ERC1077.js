@@ -51,7 +51,7 @@ describe('ERC1077', async  () => {
     });
 
     it('key exist', async () => {
-      expect(await identity.keyExist(utils.formatBytes32String(0))).to.be.false;
+      expect(await identity.keyExist('0x0000000000000000000000000000000000000000')).to.be.false;
     });
 
     it('calculates hash', async () => {

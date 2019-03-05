@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import GreetingService from '../../src/services/GreetingService';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import KeyHolder from 'universal-login-contracts/build/KeyHolder';
-import {addressToBytes32} from '../utils';
 import {ACTION_KEY} from 'universal-login-contracts';
 
 describe('Greeting service', async () => {
@@ -17,7 +16,7 @@ describe('Greeting service', async () => {
   describe('created', () => {
     before(async () => {
       const [wallet] = await getWallets(provider);
-      const key = addressToBytes32(wallet.address);
+      const key = wallet.address;
       identity = await deployContract(wallet, KeyHolder, [key]);
       greetingService = new GreetingService(provider);
     });
@@ -42,8 +41,8 @@ describe('Greeting service', async () => {
   describe('keyAdded', () => {
     before(async () => {
       const [wallet, someOtherWallet] = await getWallets(provider);
-      const key = addressToBytes32(wallet.address);
-      const key2 = addressToBytes32(someOtherWallet.address);
+      const key = wallet.address;
+      const key2 = someOtherWallet.address;
       identity = await deployContract(wallet, KeyHolder, [key]);
       await identity.addKey(key2, ACTION_KEY);
       greetingService = new GreetingService(provider);
@@ -69,9 +68,9 @@ describe('Greeting service', async () => {
   describe('backupKeys', () => {
     before(async () => {
       const [wallet, wallet2, wallet3] = await getWallets(provider);
-      const key = addressToBytes32(wallet.address);
-      const key2 = addressToBytes32(wallet2.address);
-      const key3 = addressToBytes32(wallet3.address);
+      const key = wallet.address;
+      const key2 = wallet2.address;
+      const key3 = wallet3.address;
       identity = await deployContract(wallet, KeyHolder, [key]);
       await identity.addKeys([key2, key3], [ACTION_KEY, ACTION_KEY]);
       greetingService = new GreetingService(provider, identity.address);
