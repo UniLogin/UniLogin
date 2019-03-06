@@ -1,4 +1,5 @@
 import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
@@ -9,6 +10,7 @@ import UniversalLoginSDK from '../lib/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
+chai.use(chaiAsPromised);
 
 const loadFixture = createFixtureLoader();
 const jsonRpcUrl = 'http://localhost:18545';
