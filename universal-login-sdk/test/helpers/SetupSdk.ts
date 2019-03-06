@@ -9,5 +9,4 @@ export async function setupSdk(givenProvider: providers.Provider = createMockPro
   const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider);
   return {sdk, relayer, provider};
-  
 }
