@@ -5,8 +5,7 @@ import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import {TransferDetails} from '../../services/TransferService';
-
-const shortcuts = ['ETH', 'DAI', 'UNL'];
+import {Partial} from 'universal-login-commons';
 
 
 interface ModalTransferProps {
@@ -14,21 +13,16 @@ interface ModalTransferProps {
 }
 
 const ModalTransfer = ({hideModal}: ModalTransferProps) => {
-  const [transferDetalis, setTransferDetails] = useState({currency: shortcuts[0]} as TransferDetails);
-  const {transferService} = useServices();
+  const {transferService, tokenService} = useServices();
+  const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[0].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {
-    await transferService.transferTokens({
-        to: transferDetalis.to,
-        amount: transferDetalis.amount,
-        currency: '0x0E2365e86A50377c567E1a62CA473656f0029F1e'
-      }
-    );
+    await transferService.transferTokens(transferDetalis);
     hideModal();
   };
 
-  const updateTransferDetailsWith = (name: string, value: string) => {
-    setTransferDetails({...transferDetalis, [`${name}`]: value});
+  const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
+    setTransferDetails({...transferDetalis, ...args});
   };
 
   return (
@@ -38,15 +32,15 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
       <Input
         id="address"
         className="transfer-modal-address"
-        onChange={event => updateTransferDetailsWith('to', event.target.value)}
+        onChange={event => updateTransferDetailsWith({to: event.target.value})}
         autoFocus
       />
       <InputLabel htmlFor="amount">Amount to send</InputLabel>
       <InputWithDropdown
         id="amount"
-        onChange={event => updateTransferDetailsWith('amount', event.target.value)}
+        onChange={event => updateTransferDetailsWith({amount: event.target.value})}
         currency={transferDetalis.currency}
-        shortcuts={shortcuts}
+        setCurrency={event => updateTransferDetailsWith({currency: event})}
       />
       <button className="btn-text">Send entire balance</button>
       <ButtonFullwidth

@@ -10,7 +10,7 @@ import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import {utils} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY} from 'universal-login-contracts';
 import Identity from 'universal-login-contracts/build/Identity';
-import {waitForContractDeploy} from '../../lib/utils/utils';
+import {waitForContractDeploy} from 'universal-login-commons';
 import {getKnex} from '../../lib/utils/knexUtils';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;

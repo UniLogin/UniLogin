@@ -1,12 +1,6 @@
 import ethers, {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
-
-const waitForContractDeploy = async (providerOrWallet, contractJSON, tansactionHash, tick = 1000) => {
-  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
-  const abi = contractJSON.interface;
-  const receipt = await provider.waitForTransaction(tansactionHash);
-  return new ethers.Contract(receipt.contractAddress, abi, providerOrWallet);
-};
+import {sleep} from 'universal-login-commons';
 
 const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(
@@ -36,4 +30,4 @@ const lookupAddress = async (provider, address, resolverAddress) => {
 const getExecutionArgs = (msg) =>
   [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
 
-export {waitForContractDeploy, messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs};
+export {messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs};

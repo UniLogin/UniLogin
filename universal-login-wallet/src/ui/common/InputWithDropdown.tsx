@@ -1,5 +1,5 @@
 import React from 'react';
-import {useToggler} from '../../hooks';
+import {useToggler, useServices} from '../../hooks';
 
 interface InputProps {
   onChange: (...args: any[]) => void;
@@ -10,11 +10,12 @@ interface InputProps {
   id: string;
   currency?: string;
   setCurrency?: (...args: any[]) => void;
-  shortcuts: string[];
 }
 
-const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency, shortcuts}: InputProps) => {
+const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency}: InputProps) => {
   const {visible, toggle} = useToggler();
+  const {tokenService} = useServices();
+  const symbols = tokenService.tokensDetails.map(element => element.symbol);
   const onDropdownItemClick = (currency: string) => {
     if (setCurrency) { setCurrency(currency); }
     toggle();
@@ -34,7 +35,7 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
         <button onClick={toggle} className="currency-dropdown-btn">{currency}</button>
         {visible ?
           <ul className="currency-dropdown-list">
-            {shortcuts.map((currency, i) => (
+            {symbols.map((currency, i) => (
               <li key={i} className="currency-item">
                 <button className="currency-item-btn" onClick={() => onDropdownItemClick(currency)}>
                   {currency}

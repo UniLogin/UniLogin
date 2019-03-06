@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const Dotenv = require("dotenv-webpack")
 
 module.exports = {
   entry: './src/index.tsx',
@@ -47,9 +48,13 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
+    }),
+    new Dotenv()
   ],
   devServer: {
     historyApiFallback: true
+  },
+  node: {
+    fs: 'empty'
   }
 }
