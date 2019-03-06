@@ -4,7 +4,6 @@ import sinonChai from 'sinon-chai';
 import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
-import {addressToBytes32} from '../../../lib/utils/utils';
 import basicIdentityService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicIdentityService';
 import defaultDeviceInfo from '../../config/defaults';
 
@@ -34,10 +33,7 @@ describe('Relayer - IdentityService', async () => {
     });
 
     it('is initialized with management key', async () => {
-      const managementKeys = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      const expectedKey = wallet.address.slice(2).toLowerCase();
-      expect(managementKeys).to.have.lengthOf(1);
-      expect(managementKeys[0]).to.endsWith(expectedKey);
+      expect(await identity.keyExist(wallet.address)).to.eq(true);
     });
 
     it('has ENS name reserved', async () => {
@@ -50,9 +46,8 @@ describe('Relayer - IdentityService', async () => {
     });
 
     it('should fail with not existing ENS name', async () => {
-      const managementKeys = await identity.getKeysByPurpose(MANAGEMENT_KEY);
-      expect(managementKeys).to.have.lengthOf(1);
-      await expect(identityService.create(managementKeys[0], 'alex.non-existing-id.eth')).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
+      const creationPromise = identityService.create(wallet.address, 'alex.non-existing-id.eth');
+      await expect(creationPromise).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
     });
   });
 
@@ -78,8 +73,7 @@ describe('Relayer - IdentityService', async () => {
         const signature = await calculateMessageSignature(wallet.privateKey, msg);
 
         await identityService.executeSigned({...msg, signature});
-        const key = await identity.getKey(addressToBytes32(otherWallet.address));
-        expect(key.purpose).to.eq(ACTION_KEY);
+        expect(await identity.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
       });
 
       describe('Collaboration with Authorisation Service', async () => {
@@ -104,12 +98,12 @@ describe('Relayer - IdentityService', async () => {
       });
 
       it('should remove key', async () => {
-        expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(ACTION_KEY);
+        expect((await identity.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY);
         const message =  {...removeKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
         const signature = await calculateMessageSignature(wallet.privateKey, message);
 
         await identityService.executeSigned({...message, signature});
-        expect((await identity.getKey(addressToBytes32(otherWallet.address)))[0]).to.eq(0);
+        expect((await identity.keyExist(otherWallet.address))).to.eq(false);
       });
     });
   });

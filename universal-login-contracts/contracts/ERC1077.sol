@@ -13,7 +13,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
 
     uint _lastNonce;
 
-    constructor(bytes32 _key) KeyHolder(_key) public {
+    constructor(address _key) KeyHolder(_key) public {
     }
 
     function lastNonce() public view returns (uint) {
@@ -42,7 +42,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
             gasLimit,
             operationType,
             signatures);
-        return keyExist(bytes32(uint256(signer)));
+        return keyExist(signer);
     }
 
     function calculateMessageHash(
