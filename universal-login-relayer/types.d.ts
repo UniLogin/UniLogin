@@ -1,4 +1,5 @@
 import {providers} from 'ethers';
+import Knex from 'knex';
 
 declare interface RelayerConfig {
   legacyENS: boolean;
@@ -14,6 +15,8 @@ declare interface RelayerConfig {
 
 declare class Relayer {
   provider: providers.Provider;
+  database: Knex;
+
   constructor(config: RelayerConfig, provider?: providers.Provider);
 
   start(): void;

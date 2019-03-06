@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import RelayerUnderTest from '../../../lib/utils/relayerUnderTest';
+import {RelayerUnderTest} from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
 
 chai.use(chaiHttp);
