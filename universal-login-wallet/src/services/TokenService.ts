@@ -24,7 +24,7 @@ class TokenService {
   }
 
   getTokenAddress(symbol: string) {
-    const token = this.tokensDetails.find((token) => token.symbol === symbol);
+    const token = this.tokensDetails.find(token => token.symbol === symbol);
     return token ? token.address : undefined;
   }
 }
