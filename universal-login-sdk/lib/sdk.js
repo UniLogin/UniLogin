@@ -1,8 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
-import {waitForTransactionReceipt} from './utils/utils';
-import {waitForContractDeploy} from 'universal-login-commons';
+import {waitToBeMined, waitForContractDeploy} from 'universal-login-commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -102,7 +101,7 @@ class EthereumIdentitySDK {
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
-      await waitForTransactionReceipt(this.provider, responseJson.transaction.hash);
+      await waitToBeMined(this.provider, responseJson.transaction.hash);
       return responseJson.transaction.hash;
     }
     throw new Error(`${responseJson.error}`);
