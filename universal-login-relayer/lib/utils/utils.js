@@ -12,12 +12,6 @@ const {namehash} = utils;
 
 const ether = '0x0000000000000000000000000000000000000000';
 
-const waitForContractDeploy = async (providerOrWallet, contractJSON, transactionHash, tick = 1000) => {
-  const provider = providerOrWallet.provider ? providerOrWallet.provider : providerOrWallet;
-  const receipt = await provider.waitForTransaction(transactionHash);
-  return new Contract(receipt.contractAddress, contractJSON.interface, providerOrWallet);
-};
-
 const messageSignatureForApprovals = (wallet, id) =>
   wallet.signMessage(
     utils.arrayify(utils.solidityKeccak256(
@@ -101,4 +95,4 @@ const saveVariables = (filename, variables) => {
   });
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, waitForContractDeploy, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

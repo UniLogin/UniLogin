@@ -4,7 +4,7 @@ import {getWallets, createMockProvider} from 'ethereum-waffle';
 import IdentityService from '../../../lib/services/IdentityService';
 import buildEnsService from '../../helpers/buildEnsService';
 import Identity from 'universal-login-contracts/build/Identity';
-import {waitForContractDeploy} from '../../../lib/utils/utils';
+import {waitForContractDeploy} from 'universal-login-commons';
 import {EventEmitter} from 'fbemitter';
 import {getKnex} from '../../../lib/utils/knexUtils';
 import deviceInfo from '../../config/defaults';
