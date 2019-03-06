@@ -3,7 +3,7 @@ import MockToken from '../../build/MockToken';
 import MockContract from '../../build/MockContract';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {OPERATION_CALL} from '../../lib/consts';
+import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
 const {parseEther} = utils;

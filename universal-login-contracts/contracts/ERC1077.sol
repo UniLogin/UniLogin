@@ -129,7 +129,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
             msg.sender.transfer(gasUsed.mul(gasPrice));
         }
     }
-    
+
     function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
         uint sigCount = signatures.length / 65;
@@ -145,9 +145,9 @@ contract ERC1077 is KeyHolder, IERC1077 {
                 r := mload(add(signatures, add(signaturePos, 0x20)))
                 s := mload(add(signatures, add(signaturePos, 0x40)))
                 v := and(mload(add(signatures, add(signaturePos, 0x41))), 0xff)
-            }            
+            }
             signer = ecrecover(dataHash, v, r, s);
-            if (!keyExist(bytes32(uint256(signer))) || signer <= lastSigner) {
+            if (!keyExist(signer) || signer <= lastSigner) {
                 return false;
             }
 
