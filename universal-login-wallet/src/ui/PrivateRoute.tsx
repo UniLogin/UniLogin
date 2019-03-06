@@ -1,9 +1,9 @@
-import React from 'react'
-import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom'
+import React from 'react';
+import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
 
 export interface PrivateRouteProps extends RouteProps {
-  authorized: boolean
-  render: ((props: RouteComponentProps<any>) => React.ReactNode)
+  authorized: boolean;
+  render: ((props: RouteComponentProps<any>) => React.ReactNode);
 }
 
 export const PrivateRoute = ({ authorized, render, ...restProps }: PrivateRouteProps) => (
@@ -22,4 +22,4 @@ export const PrivateRoute = ({ authorized, render, ...restProps }: PrivateRouteP
         )
     )}
   />
-)
+);

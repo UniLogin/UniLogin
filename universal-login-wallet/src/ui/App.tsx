@@ -12,31 +12,30 @@ const App = () => {
   return(
     <CustomBrowserRouter>
       <Switch>
-        <Route 
-          exact 
-          path="/login" 
-          render={
-            (props) => 
-              <Login 
-                {...props} 
+        <Route
+          exact
+          path="/login"
+          render={props =>
+              <Login
+                {...props}
                 setAuthorized={() => setAuthorized(true)}
               />
           }
         />
-        <PrivateRoute 
-          authorized={authorized} 
-          exact 
-          path="/" 
+        <PrivateRoute
+          authorized={authorized}
+          exact
+          path="/"
           render={
-            () => 
+            () =>
             <Dashboard/>
           }
         />
-        <PrivateRoute 
-          path="/transferring" 
-          authorized={authorized} 
+        <PrivateRoute
+          path="/transferring"
+          authorized={authorized}
           render={
-            () => 
+            () =>
             <ProgressScreen/>
           }
         />
