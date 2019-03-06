@@ -140,6 +140,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes32 s;
         uint256 i;
         for (i = 0; i < sigCount; i++) {
+            /* solium-disable-next-line security/no-inline-assembly */
             assembly {
                 let signaturePos := mul(0x41, i)
                 r := mload(add(signatures, add(signaturePos, 0x20)))
