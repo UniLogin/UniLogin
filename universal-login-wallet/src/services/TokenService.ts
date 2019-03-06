@@ -11,7 +11,7 @@ class TokenService {
   tokensDetails: TokenDetails[];
 
   constructor(private tokensAddresses: string[], private provider: providers.Provider) {
-    this.tokensDetails = [];
+    this.tokensDetails = [{name: '', symbol: '', address: ''}];
   }
 
   async start() {
@@ -24,11 +24,8 @@ class TokenService {
   }
 
   getTokenAddress(symbol: string) {
-    for (let count = 0; count < this.tokensDetails.length; count++) {
-      if (this.tokensDetails[count].symbol === symbol) {
-        return this.tokensDetails[count].address;
-      }
-    }
+    const token = this.tokensDetails.find((token) => token.symbol === symbol);
+    return token ? token.address : undefined;
   }
 }
 
