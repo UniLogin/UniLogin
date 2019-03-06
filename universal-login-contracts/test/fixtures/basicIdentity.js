@@ -3,15 +3,13 @@ import MockToken from '../../build/MockToken';
 import MockContract from '../../build/MockContract';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {addressToBytes32} from '../utils';
-import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
+import {OPERATION_CALL} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
-  const publicKey = addressToBytes32(wallet.address);
   const actionWallet1 = Wallet.createRandom();
   const actionWallet2 = Wallet.createRandom();
   const sortedWallets = [actionWallet1, actionWallet2, wallet].sort((wallet1, wallet2) => {
@@ -25,12 +23,13 @@ export default async function basicIdentity(provider, [, , , , , , , , , wallet]
       return 0;
     }
   });
-  const publicActionKey1 = addressToBytes32(actionWallet1.address);
-  const publicActionKey2 = addressToBytes32(actionWallet2.address);
+  const publicActionKey1 = actionWallet1.address;
+  const publicActionKey2 = actionWallet2.address;
   const sortedKeys = [sortedWallets[0].privateKey, sortedWallets[1].privateKey, sortedWallets[2].privateKey];
+  const publicKey = wallet.address;
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
-  const privateKey = addressToBytes32(wallet.privateKey);
+  const privateKey = wallet.privateKey;
   const identity = await deployContract(wallet, ERC1077ApprovalScheme, [publicKey]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);

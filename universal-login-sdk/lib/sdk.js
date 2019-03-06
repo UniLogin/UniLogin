@@ -1,7 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
-import {addressToBytes32, waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
+import {waitForContractDeploy, waitForTransactionReceipt} from './utils/utils';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -35,7 +35,7 @@ class EthereumIdentitySDK {
   }
 
   async addKey(to, publicKey, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
-    const key = addressToBytes32(publicKey);
+    const key = publicKey;
     const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, keyPurpose]);
     const message = {
       ...transactionDetails,
@@ -47,7 +47,7 @@ class EthereumIdentitySDK {
   }
 
   async addKeys(to, publicKeys, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
-    const keys = publicKeys.map((publicKey) => addressToBytes32(publicKey));
+    const keys = publicKeys.map((publicKey) => publicKey);
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
     const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles]);
     const message = {
@@ -60,7 +60,7 @@ class EthereumIdentitySDK {
   }
 
   async removeKey(to, address, privateKey, transactionDetails) {
-    const key = addressToBytes32(address);
+    const key = address;
     const data = new utils.Interface(Identity.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
     const message = {
       ...transactionDetails,

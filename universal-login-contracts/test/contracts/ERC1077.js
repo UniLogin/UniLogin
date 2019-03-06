@@ -42,19 +42,21 @@ describe('ERC1077', async  () => {
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);
   });
 
-  it('properly construct', async () => {
-    expect(await identity.lastNonce()).to.eq(0);
-  });
+  describe('construction', () => {
+    it('properly construct', async () => {
+      expect(await identity.lastNonce()).to.eq(0);
+    });
 
-  describe('signing message', () => {
-    it('key exist', async () => {
+    it('first key exist', async () => {
       expect(await identity.keyExist(publicKey)).to.be.true;
     });
 
-    it('key exist', async () => {
-      expect(await identity.keyExist(utils.formatBytes32String(0))).to.be.false;
+    it('empty key does exist', async () => {
+      expect(await identity.keyExist('0x0000000000000000000000000000000000000000')).to.be.false;
     });
+  });
 
+  describe('signing message', () => {
     it('calculates hash', async () => {
       const jsHash = calculateMessageHash(msg);
       const solidityHash = await identity.calculateMessageHash(

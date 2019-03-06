@@ -13,7 +13,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
 
     uint _lastNonce;
 
-    constructor(bytes32 _key) KeyHolder(_key) public {
+    constructor(address _key) KeyHolder(_key) public {
     }
 
     function lastNonce() public view returns (uint) {
