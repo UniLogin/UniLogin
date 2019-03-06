@@ -15,13 +15,13 @@ const transferCost = 105000;
 const overrideOptions = {gasLimit: 120000};
 
 describe('ERC1077 - gas cost', async () => {
+  const gasCosts = {};
   let provider;
   let identity;
   let privateKey;
   let signature;
   let msg;
   let mockContract;
-  let gasCosts = {};
 
   beforeEach(async () => {
     ({provider, identity, privateKey, mockContract} = await loadFixture(basicIdentity));
