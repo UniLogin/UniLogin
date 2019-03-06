@@ -1,4 +1,4 @@
-import {providers} from 'ethers';
+import {providers, Contract, Wallet} from 'ethers';
 import {Predicate} from './types';
 
 const sleep = (ms : number) =>
@@ -20,4 +20,19 @@ const waitUntil = async (predicate : Predicate, tick = 5, timeout = 1000, args =
   return true;
 };
 
-export {sleep, waitToBeMined, waitUntil};
+interface ContractJSON {
+  abi: any;
+  evm: {bytecode: {object: any}};
+}
+
+const isWallet = (maybeWallet: any) : boolean  => {
+  return maybeWallet.constructor.name === 'Wallet';
+};
+
+const waitForContractDeploy = async (providerOrWallet : providers.Provider | Wallet, contractJSON : ContractJSON, transactionHash : string) => {
+  const provider : providers.Provider = (isWallet(providerOrWallet)) ? (<Wallet>providerOrWallet).provider : <providers.Provider>providerOrWallet;
+  const receipt = await provider.waitForTransaction(transactionHash);
+  return new Contract(<string>receipt.contractAddress, contractJSON.abi, providerOrWallet);
+};
+
+export {sleep, waitToBeMined, waitUntil, waitForContractDeploy};

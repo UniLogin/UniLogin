@@ -1,4 +1,4 @@
-export {sleep, waitToBeMined, waitUntil} from './utils/wait';
+export {sleep, waitToBeMined, waitUntil, waitForContractDeploy} from './utils/wait';
 export {debounce} from './utils/debounce';
 export {Procedure, Predicate} from './utils/types';
 export {copy} from './utils/copy';
