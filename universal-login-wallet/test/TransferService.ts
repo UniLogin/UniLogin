@@ -5,8 +5,9 @@ import createWallet from '../src/services/Creation';
 import {deployMockToken} from 'universal-login-commons/test';
 import {createFixtureLoader} from 'ethereum-waffle';
 import WalletService from '../src/services/WalletService';
-import {utils, providers} from 'ethers';
+import {utils, providers, Contract} from 'ethers';
 import {setupSdk} from 'universal-login-sdk/test';
+import TokenService from '../src/services/TokenService';
 
 
 
@@ -15,8 +16,9 @@ describe('TransferService', () => {
   let provider: providers.Web3Provider;
   let relayer: any;
   let sdk: UniversalLoginSDK;
-  let mockTokenContract: any;
+  let mockTokenContract: Contract;
   let contractAddress: string;
+  let tokenService: TokenService;
 
   before(async () => {
     ({sdk, relayer, provider} = await setupSdk());
@@ -24,13 +26,15 @@ describe('TransferService', () => {
     const walletService = new WalletService();
     [, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
-    transferService = new TransferService(sdk, walletService);
+    tokenService = new TokenService([mockTokenContract.address], provider);
+    await tokenService.start();
+    transferService = new TransferService(sdk, walletService, tokenService);
   });
 
   it('Should transfer tokens', async () => {
     const to = '0x0000000000000000000000000000000000000001';
     const amount = '1.0';
-    const currency = mockTokenContract.address;
+    const currency = 'Mock';
     await transferService.transferTokens({to, amount, currency});
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
   });

@@ -4,13 +4,20 @@ import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
 
-const Login = () => {
+interface LoginProps {
+  setAuthorized: () => void;
+  location? : {state: {from: {pathname : string}}};
+}
+
+const Login = ({setAuthorized, location} : LoginProps) => {
   const {createWallet} = useServices();
   const {history} = useRouter();
+  const {from} = location ? location.state : {from: {pathname: '/'}};
 
   const onCreateCLick = async (name: string) => {
     await createWallet(name);
-    history.push('/');
+    setAuthorized();
+    history.push(from);
   };
 
   return(
