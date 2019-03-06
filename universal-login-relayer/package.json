@@ -3,6 +3,7 @@
   "version": "0.1.10",
   "license": "MIT",
   "main": "build/index.js",
+  "types": "./types.d.ts",
   "dependencies": {
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
