@@ -1,10 +1,8 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import Notifications from './Notifications';
+import Notifications from '../Notifications/Notifications';
 import UserSelect from './UserSelect';
-import LatestTransfers from './LatestTransfersSection';
-import ChartSection from './ChartSection';
 import Modal from '../Modals/Modal';
 
 const Dashboard = () => (
@@ -16,8 +14,6 @@ const Dashboard = () => (
           <Notifications />
           <UserSelect />
         </Header>
-        <ChartSection />
-        <LatestTransfers />
       </div>
     </div>
     <Modal />
