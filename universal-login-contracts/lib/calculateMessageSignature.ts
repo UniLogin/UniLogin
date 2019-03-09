@@ -39,9 +39,9 @@ const removePrefix = (value: string, index: number, array: string[])  => {
 export const concatenateSignatures = (signatures: string[]) =>
   `0x${signatures.map(removePrefix).join('')}`;
 
-const walletComparator = (wallet1: Wallet, wallet2: Wallet) =>  {
-  const address1 = parseInt(wallet1.address, 16);
-  const address2 = parseInt(wallet2.address, 16);
+const addressComparator = (privateKey1: string, privateKey2: string) =>  {
+  const address1 = parseInt(new Wallet(privateKey1).address, 16);
+  const address2 = parseInt(new Wallet(privateKey2).address, 16);
   if (address1 > address2) {
     return 1;
   } else if (address1 < address2) {
@@ -51,5 +51,5 @@ const walletComparator = (wallet1: Wallet, wallet2: Wallet) =>  {
   }
 };
 
-export const sortWallets = (wallets: Wallet[]) =>
-  wallets.sort(walletComparator);
+export const sortPrivateKeysByAddress = (privateKeys: string[]) =>
+  privateKeys.sort(addressComparator);

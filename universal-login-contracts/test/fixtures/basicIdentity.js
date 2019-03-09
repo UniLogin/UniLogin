@@ -5,17 +5,16 @@ import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
-import {sortWallets} from '../../lib/calculateMessageSignature';
+import {sortPrivateKeysByAddress} from '../../lib/calculateMessageSignature';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
   const actionWallet1 = Wallet.createRandom();
   const actionWallet2 = Wallet.createRandom();
-  const sortedWallets = sortWallets([actionWallet1, actionWallet2, wallet]);
+  const sortedKeys = sortPrivateKeysByAddress([actionWallet1.privateKey, actionWallet2.privateKey, wallet.privateKey]);
   const publicActionKey1 = actionWallet1.address;
   const publicActionKey2 = actionWallet2.address;
-  const sortedKeys = [sortedWallets[0].privateKey, sortedWallets[1].privateKey, sortedWallets[2].privateKey];
   const publicKey = wallet.address;
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
