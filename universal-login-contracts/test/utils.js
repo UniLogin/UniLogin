@@ -29,19 +29,4 @@ const lookupAddress = async (provider, address, resolverAddress) => {
 const getExecutionArgs = (msg) =>
   [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
 
-const walletComparator = (wallet1, wallet2) =>  {
-  const address1 = parseInt(wallet1.address, 16);
-  const address2 = parseInt(wallet2.address, 16);
-  if (address1 > address2) {
-    return 1;
-  } else if (address1 < address2) {
-    return -1;
-  } else {
-    return 0;
-  }
-};
-
-const sortWallets = (wallets) =>
-  wallets.sort(walletComparator);
-
-export {messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs, sortWallets};
+export {messageSignature, messageSignatureForApprovals, withENS, lookupAddress, getExecutionArgs};

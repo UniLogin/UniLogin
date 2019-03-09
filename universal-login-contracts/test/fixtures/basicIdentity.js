@@ -5,7 +5,7 @@ import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
-import {sortWallets} from '../utils';
+import {sortWallets} from '../../lib/calculateMessageSignature';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
