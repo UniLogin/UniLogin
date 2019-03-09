@@ -1,5 +1,5 @@
 import EthereumIdentitySDK from '../../lib/sdk';
-import RelayerUnderTest from 'universal-login-relayer/build/utils/relayerUnderTest';
+import {RelayerUnderTest} from 'universal-login-relayer/build/utils/relayerUnderTest';
 import {deployContract} from 'ethereum-waffle';
 import {utils, ContractFactory} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
