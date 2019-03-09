@@ -25,6 +25,14 @@ export const calculateMessageSignature = async (privateKey: string, msg: Message
   return wallet.signMessage(utils.arrayify(massageHash));
 };
 
+
+export const calculateMessageSignatures = async (privateKeys: string[], msg: Message) => {
+  const signatures = privateKeys.map((value: string) =>
+    calculateMessageSignature(value, msg));
+  const resolvedSignatures = await Promise.all(signatures);
+  return sortPrivateKeysByAddress(resolvedSignatures);
+};
+
 const removePrefix = (value: string, index: number, array: string[])  => {
   const signature = value;
   if (value.length !== 132) {

@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './utils';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
 import {concatenateSignatures} from '../lib/calculateMessageSignature';
 
@@ -12,40 +12,47 @@ chai.use(solidity);
 const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('Tools test', async () => {
-  const provider = createMockProvider();
-  const [wallet] = getWallets(provider);
+  const wallet1 = Wallet.createRandom();
+  const wallet2 = Wallet.createRandom();
   const value = utils.parseEther('0.1');
   const data = utils.hexlify(0);
   const nonce = 0;
+  describe('signature utils', () => {
+    let signature1: string;
+    let signature2: string;
 
-  it('Should return correct message signature', async () => {
-    const from = wallet.address;
-    const signature = await messageSignature(wallet, wallet.address, from, value, data, nonce, gasToken, gasPrice, gasLimit);
-    const message = utils.arrayify(utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
-      [wallet.address, from, value, data, nonce, gasToken, gasPrice, gasLimit]));
-    expect(utils.verifyMessage(message, signature)).to.eq(wallet.address);
+    before(async () => {
+      signature1 = await messageSignature(wallet1, wallet1.address, wallet1.address, value, data, nonce, gasToken, gasPrice, gasLimit);
+      signature2 = await messageSignature(wallet1, wallet1.address, wallet2.address, value, data, nonce, gasToken, gasPrice, gasLimit);
+    });
+
+    it('Should return correct message signature', async () => {
+      const from = wallet1.address;
+      const message = utils.arrayify(utils.solidityKeccak256(
+        ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
+        [wallet1.address, from, value, data, nonce, gasToken, gasPrice, gasLimit]));
+      expect(utils.verifyMessage(message, signature1)).to.eq(wallet1.address);
+    });
+
+    it('Should concatenate two signatures arrays', async () => {
+        const expected = `${signature1}${signature2.replace('0x', '')}`;
+        const concatenate = concatenateSignatures([signature1, signature2]);
+        expect(concatenate).to.be.equal(expected);
+    });
+
+    it('Should not concatenate two signatures arrays without 0x prefix', async () => {
+        signature1 = `${signature1.replace('0x', '')}aa`;
+        signature2 = `${signature2.replace('0x', '')}aa`;
+        expect(concatenateSignatures.bind(null, [signature1, signature2])).to.throw(`Invalid Signature: ${signature1} needs prefix 0x`);
+    });
+
+      it('Should not concatenate two signatures arrays with invalid length', async () => {
+        const sig1 = '0xffff';
+        const sig2 = '0xffe2';
+        expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid signature length: ${sig1} should be 132`);
+    });
   });
 
-  it('Should concatenate two bytes arrays', async () => {
-      const sig1 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
-      const sig2 = '0xe241748c6bd2bf25fcc0ab862501180914ed5281773803e4cd8f7c14e0b16cd46e6495a3879b1dd7841bdebe8d773ecbc2ec7a9c53500db230280a885e1119a81b';
-      const expected = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe241748c6bd2bf25fcc0ab862501180914ed5281773803e4cd8f7c14e0b16cd46e6495a3879b1dd7841bdebe8d773ecbc2ec7a9c53500db230280a885e1119a81b';
-      const concatenate = concatenateSignatures([sig1, sig2]);
-      expect(concatenate).to.be.equal(expected);
-  });
-
-  it('Should not concatenate two bytes arrays without 0x prefix', async () => {
-      const sig1 = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
-      const sig2 = 'ffe241748c6bd2bf25fcc0ab862501180914ed5281773803e4cd8f7c14e0b16cd46e6495a3879b1dd7841bdebe8d773ecbc2ec7a9c53500db230280a885e1119a81b';
-      expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid Signature: ${sig1} needs prefix 0x`);
-  });
-
-    it('Should not concatenate two bytes arrays without 0x prefix', async () => {
-      const sig1 = 'ffff';
-      const sig2 = 'ffe2';
-      expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid signature length: ${sig1} should be 132`);
-  });
 
   describe('getExecutionArgs', () => {
     it('should return corect array', async () => {
