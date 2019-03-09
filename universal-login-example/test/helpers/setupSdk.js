@@ -1,4 +1,4 @@
-import RelayerUnderTest from 'universal-login-relayer/build/utils/relayerUnderTest';
+import {RelayerUnderTest} from 'universal-login-relayer/build/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
 import UniversalLoginSDK from 'universal-login-sdk';
 

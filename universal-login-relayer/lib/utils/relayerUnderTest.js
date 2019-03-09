@@ -38,4 +38,4 @@ class RelayerUnderTest extends Relayer {
   }
 }
 
-export default RelayerUnderTest;
+export {RelayerUnderTest};
