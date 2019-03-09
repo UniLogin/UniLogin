@@ -3,7 +3,7 @@ import {deployContract} from 'ethereum-waffle';
 
 async function deployToken(deployWallet) {
   const {address} = await deployContract(deployWallet, Token);
-  console.log(`Token contract address: ${address}`);
+  console.log(`       Token address: ${address}`);
   return address;
 }
 

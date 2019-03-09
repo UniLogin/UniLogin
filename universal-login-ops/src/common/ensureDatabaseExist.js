@@ -25,8 +25,6 @@ async function ensureDatabaseExist(databaseConfig) {
   if (!database[0]) {
     console.log(`No database detected. Creating '${databaseName}'...`);
     await createDatabase(connection, databaseName);
-  } else {
-    console.log(`Database '${databaseName}' already exists.`);
   }
   await connection.destroy();
 }

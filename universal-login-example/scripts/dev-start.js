@@ -4,7 +4,7 @@ import {startDevelopment, createEnv, spawnProcess} from 'universal-login-ops';
 
 async function deployClickerContract(deployWallet) {
   const clickerContract = await deployContract(deployWallet, Clicker);
-  console.log(`Clicker contract address: ${clickerContract.address}`);
+  console.log(`     Clicker address: ${clickerContract.address}`);
   return clickerContract.address;
 }
 
@@ -17,6 +17,7 @@ async function start() {
   const artefacts = await startDevelopment();
   const env = createEnv(artefacts);
   env.CLICKER_CONTRACT_ADDRESS = await deployClickerContract(artefacts.deployWallet);
+  console.log();
   runWebServer(env);
 }
 

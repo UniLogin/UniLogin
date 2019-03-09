@@ -5,7 +5,6 @@ import {getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
 import startDevelopmentRelayer from './startDevelopmentRelayer';
-import knex from 'knex';
 import {dirname, join} from 'path';
 
 const ganachePort = 18545;
