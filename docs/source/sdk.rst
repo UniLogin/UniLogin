@@ -39,8 +39,8 @@ Creating SDK
 
 .. _sdk_create_contract:
 
-Creating contract
------------------
+Creating wallet contract
+------------------------
 
 create
 ^^^^^^
@@ -101,9 +101,71 @@ denyRequest
 
       const publicKey = await sdk.denyRequest('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', '0xb19Ec9bdC6733Bf0c825FCB6E6Da95518DB80D13');
 
+Transaction execution
+---------------------
 
-Managing contract
------------------
+.. _sdk_execute:
+
+execute
+^^^^^^^
+
+**sdk.execute(message, privateKey)**
+
+  executes any message.
+
+  Parameters:
+    - **message** : object - message that is sent to contract, includes:
+
+      * from : string - address of contract that requests execution
+      * to : string - beneficient of this execution
+      * data : string - data of execution
+      * value : string - value of transaction
+      * gasToken : string - token address to refund
+      * gasPrice : number - price of gas to refund
+      * gasLimit : number - limit of gas to refund
+    - **privateKey** : string - a private key to be used to sign the transaction and has permission to execute message
+  Returns:
+    `promise`, that resolves to the hash of the on-chain transaction
+
+  Example:
+    ::
+
+      const message = {
+        from: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+        to: '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
+        data: '0x0',
+        value: '500000000000000000',
+        gasToken: '0x9f2990f93694B496F5EAc5822a45f9c642aaDB73',
+        gasPrice: 1000000000,
+        gasLimit: 1000000
+      };
+
+      await sdk.execute(
+        message,
+        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74'
+      );
+
+
+
+  In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``.
+
+.. _signer:
+
+SdkSigner
+^^^^^^^^^
+
+::
+
+  // gasToken should be configured when creating SDK instance in order to use the signer
+  const signer = new SdkSigner(sdk, contractAddress, privateKey);
+
+  const token = new Contract(contractAddress, contractInterface, signer)
+  await contract.transfer(someOtherAddress, utils.parseEther('123'))
+
+Note: This is an experimental feature, expect breaking changes.
+
+Managing wallet contract
+------------------------
 
 
 addKey
@@ -204,52 +266,6 @@ removeKey
         '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74',
         transactionDetails
       );
-
-.. _sdk_execute:
-
-execute
-^^^^^^^
-
-**sdk.execute(message, privateKey)**
-
-  executes any message.
-
-  Parameters:
-    - **message** : object - message that is sent to contract, includes:
-
-      * from : string - address of contract that requests execution
-      * to : string - beneficient of this execution
-      * data : string - data of execution
-      * value : string - value of transaction
-      * gasToken : string - token address to refund
-      * gasPrice : number - price of gas to refund
-      * gasLimit : number - limit of gas to refund
-    - **privateKey** : string - a private key to be used to sign the transaction and has permission to execute message
-  Returns:
-    `promise`, that resolves to the hash of the on-chain transaction
-
-  Example:
-    ::
-
-      const message = {
-        from: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-        to: '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
-        data: '0x0',
-        value: '500000000000000000',
-        gasToken: '0x9f2990f93694B496F5EAc5822a45f9c642aaDB73',
-        gasPrice: 1000000000,
-        gasLimit: 1000000
-      };
-
-      await sdk.execute(
-        message,
-        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74'
-      );
-
-
-
-  In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``.
-
 
 **identityExists(ensName)**
 
@@ -380,78 +396,3 @@ Example
         subscription.remove();
       }
     );
-
-.. _sdk-example-testnet:
-
-Example: connecting to testnet
-------------------------------
-
-Create wallet contract
-^^^^^^^^^^^^^^^^^^^^^^
-
-Create your own wallet contract using `Universal Login Example App <https://example.universallogin.io//>`_ and get your contract address.
-
-Create UniversalLoginSDK
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-In your project, create the UniversalLoginSDK
-::
-
-  import UniversalLoginSDK from 'universal-login-sdk';
-  import ethers from 'ethers';
-
-
-  const relayerUrl = 'https://relayer.universallogin.io';
-  const jsonRpcUrl = 'https://rinkeby.infura.io';
-
-  const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
-
-Start listen events
-^^^^^^^^^^^^^^^^^^^
-
-Then make UniversalLoginSDK start listening relayer and blockchain events
-::
-
-  sdk.start();
-
-Request connection
-^^^^^^^^^^^^^^^^^^
-
-Now, you can request connection to created wallet contract
-::
-
-  const privateKey = await sdk.connect('YOUR_CONTRACT_ADDRESS');
-
-Subscribe KeyAdded
-^^^^^^^^^^^^^^^^^^
-
-Subscribe ``KeyAdded`` event with your new key filter
-::
-
-  const key = new ethers.Wallet(privateKey).address;
-  const filter =
-    {
-      contractAddress: 'YOUR_CONTRACT_ADDRESS',
-      key
-    };
-
-  const subscription = sdk.subscribe(
-    'KeyAdded',
-    filter,
-    (keyInfo) =>
-      {
-        console.log(`${keyInfo.key} now has permission to manage wallet contract`);
-      });
-
-Accept connection request
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Accept connection request in Universal Login Example App. After that your newly created key has permission to manage your wallet contract.
-
-Stop listen events
-^^^^^^^^^^^^^^^^^^
-
-Remember about stop listening relayer and blockchain events
-::
-
-  sdk.stop();

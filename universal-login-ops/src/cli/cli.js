@@ -1,17 +1,27 @@
 const yargs = require('yargs');
-const startDevelopment = require('../dev/startDevelopment');
+import startDevelopment from '../dev/startDevelopment';
+import deployToken from '../dev/deployToken';
+import connectAndExecute from './connectAndExecute';
 
 const commandLineBuilder = yargs
-  .usage('Usage: $0 start:dev ')
+  .usage('Usage: $0 [command] [options]')
   .option('nodeUrl', {
-    describe: 'connects to existing json rpc node on port 18545'
+    describe: 'Address of json rpc node to connect to',
+    default: ''
   })
-  .command('start:dev', 'start development environment',
+  .option('privateKey', {
+    describe: 'private key to be used for '
+  })
+  .command('start:dev', 'Starts development environment',
     () => {
     },
     (argv) => {
-      startDevelopment(argv.nodeUrl)
-        .catch(console.error);
+      startDevelopment(argv.nodeUrl).catch(console.error);
+    })
+  .command('deploy:token', 'Deploys a test token',
+    () => {},
+    (argv) => {
+      connectAndExecute(argv.nodeUrl, argv.privateKey, deployToken).catch(console.error);
     })
   .demandCommand(1, 'No command provided');
 
