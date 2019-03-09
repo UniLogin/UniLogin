@@ -9,6 +9,7 @@ function printWallets(wallets) {
   for (const wallet of wallets) {
     console.log(`    ${wallet.address} - ${wallet.privateKey}`);
   }
+  console.log('');
 }
 
 async function startGanache(port) {

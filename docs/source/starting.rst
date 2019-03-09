@@ -137,12 +137,12 @@ Which will start the development environment. The output should look somewhat li
       0xFC6F167a5AB77Fe53C4308a44d6893e8F2E54131 - 0xba35c32f7cbda6a6cedeea5f73ff928d1e41557eddfd457123f6426a43adb1e4
       0xDe41151d0762CB537921c99208c916f1cC7dA04D - 0x71f7818582e55456cb575eea3d0ce408dcf4cbbc3d845e86a7936d2f48f74035
       0x121199e18C70ac458958E8eB0BC97c0Ba0A36979 - 0x03c909455dcef4e1e981a21ffb14c1c51214906ce19e8e7541921b758221b5ae
+
     Node url (ganache): http://localhost:18545...
           ENS address: 0x67AC97e1088C332cBc7a7a9bAd8a4f7196D5a1Ce
     Registered domains: mylogin.eth, universal-id.eth, popularapp.eth
         Token address: 0x0E2365e86A50377c567E1a62CA473656f0029F1e
           Relayer url: http://localhost:3311
-
 
 Troubleshooting
   ``web3.js`` is derivative dependence of ``universal-login-ops``.
