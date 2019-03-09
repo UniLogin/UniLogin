@@ -29,8 +29,7 @@ export const calculateMessageSignature = async (privateKey: string, msg: Message
 export const calculateMessageSignatures = async (privateKeys: string[], msg: Message) => {
   const signatures = privateKeys.map((value: string) =>
     calculateMessageSignature(value, msg));
-  const resolvedSignatures = await Promise.all(signatures);
-  return sortPrivateKeysByAddress(resolvedSignatures);
+  return sortPrivateKeysByAddress(await Promise.all(signatures));
 };
 
 const removePrefix = (value: string, index: number, array: string[])  => {
