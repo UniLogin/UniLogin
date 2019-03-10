@@ -12,19 +12,19 @@ declare class EthereumIdentitySDK extends WalletExistenceVerifier  {
 
   create(ensName: string): Promise<[string, string]>;
 
-  addKey(to: string, publicKey: string, privateKey: string, transactionDetails: any, keyPurpose: 1 | 2 | 3): Promise<number>;
+  addKey(to: string, publicKey: string, privateKeys: string[], transactionDetails: any, keyPurpose: 1 | 2 | 3): Promise<number>;
 
-  addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: any, keyPurpose: 1 | 2 | 3): Promise<number>;
+  addKeys(to: string, publicKeys: string[], privateKeys: string[], transactionDetails: any, keyPurpose: 1 | 2 | 3): Promise<number>;
 
-  removeKey(to: string, address: string, privateKey: string, transactionDetails: any): Promise<number>;
+  removeKey(to: string, address: string, privateKeys: string[], transactionDetails: any): Promise<number>;
 
   generatePrivateKey(): string;
 
   getRelayerConfig(): any;
 
-  execute(message: any, privateKey: string): Promise<number>;
+  execute(message: any, privateKeys: string[]): Promise<number>;
 
-  getNonce(identityAddress: string, privateKey: string): Promise<number>;
+  getNonce(identityAddress: string): Promise<number>;
 
   identityExist(identity: string): Promise<string | false>;
 

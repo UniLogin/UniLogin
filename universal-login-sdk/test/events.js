@@ -34,7 +34,7 @@ describe('SDK - events', async () => {
 
     await sdk.connect(contractAddress);
     const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
-    await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
+    await sdk.addKey(contractAddress, wallet.address, [privateKey], paymentOptions);
     await sdk.finalizeAndStop();
     expect(keyCallback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: 1});
     expect(connectionCallback).to.have.been.called;
