@@ -80,4 +80,4 @@ make html
 Documentation will be compile to `docs/build/html`.
 
 ## License
-Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT).
+Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT). 
