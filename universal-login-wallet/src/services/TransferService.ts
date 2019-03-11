@@ -24,7 +24,7 @@ class TransferService {
         data,
         gasToken: tokenAddress
       };
-      await this.sdk.execute(message, [this.walletService.userWallet.privateKey]);
+      await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
   }
 }

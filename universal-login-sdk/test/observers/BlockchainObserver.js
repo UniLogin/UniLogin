@@ -46,7 +46,7 @@ describe('SDK: BlockchainObserver', async () => {
     const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
-    await sdk.addKey(contractAddress, wallet.address, [privateKey], paymentOptions);
+    await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
     expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });
@@ -61,7 +61,7 @@ describe('SDK: BlockchainObserver', async () => {
     await blockchainObserver.subscribe('KeyAdded', filter,  callback);
     await blockchainObserver.subscribe('KeyAdded', filter2, callback2);
 
-    await sdk.addKey(contractAddress, otherWallet.address, [privateKey], paymentOptions);
+    await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
     expect(callback).to.have.been.calledWith({key: otherWallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
@@ -71,11 +71,11 @@ describe('SDK: BlockchainObserver', async () => {
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
     const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
-    await sdk.addKey(contractAddress, wallet.address, [privateKey], paymentOptions);
+    await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyRemoved', filter, callback);
     const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
-    await sdk.removeKey(contractAddress, wallet.address, [privateKey], removeKeyPaymentOption);
+    await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
     expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });

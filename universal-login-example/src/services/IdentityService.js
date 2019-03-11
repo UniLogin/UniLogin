@@ -80,7 +80,7 @@ class IdentityService {
   async execute(message) {
     await this.sdk.execute(
       message,
-      [this.identity.privateKey]
+      this.identity.privateKey
     );
   }
 

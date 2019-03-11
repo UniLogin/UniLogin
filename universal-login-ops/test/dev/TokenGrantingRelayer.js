@@ -37,7 +37,7 @@ describe('Token Granting Relayer', async () => {
     });
 
     it('Grants 5 tokens on key add', async () => {
-      await sdk.addKey(walletContractAddress, wallet.address, [identityPrivateKey], {gasToken: tokenContract.address});
+      await sdk.addKey(walletContractAddress, wallet.address, identityPrivateKey, {gasToken: tokenContract.address});
       await waitUntil(isTokenBalanceGreater('104'), 5, 50);
       const actualBalance = await tokenContract.balanceOf(walletContractAddress);
       expect(actualBalance).to.be.above(utils.parseEther('104'));

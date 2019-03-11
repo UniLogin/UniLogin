@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import Identity from 'universal-login-contracts/build/Identity';
-import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignatures} from 'universal-login-contracts';
+import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
 import {waitToBeMined, waitForContractDeploy} from 'universal-login-commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
@@ -10,7 +10,6 @@ import MESSAGE_DEFAULTS from './config';
 
 
 class EthereumIdentitySDK {
-
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
     this.provider = typeof(providerOrUrl) === 'string' ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0}) : providerOrUrl;
     this.relayerUrl = relayerUrl;
@@ -35,7 +34,7 @@ class EthereumIdentitySDK {
     throw new Error(`${responseJson.error}`);
   }
 
-  async addKey(to, publicKey, privateKeys, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
+  async addKey(to, publicKey, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const key = publicKey;
     const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, keyPurpose]);
     const message = {
@@ -44,10 +43,10 @@ class EthereumIdentitySDK {
       from: to,
       data,
     };
-    return this.execute(message, privateKeys);
+    return this.execute(message, privateKey);
   }
 
-  async addKeys(to, publicKeys, privateKeys, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
+  async addKeys(to, publicKeys, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const keys = publicKeys.map((publicKey) => publicKey);
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
     const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles]);
@@ -57,10 +56,10 @@ class EthereumIdentitySDK {
       from: to,
       data,
     };
-    return this.execute(message, privateKeys);
+    return this.execute(message, privateKey);
   }
 
-  async removeKey(to, address, privateKeys, transactionDetails) {
+  async removeKey(to, address, privateKey, transactionDetails) {
     const key = address;
     const data = new utils.Interface(Identity.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
     const message = {
@@ -71,7 +70,7 @@ class EthereumIdentitySDK {
       data,
       operationType: OPERATION_CALL,
     };
-    return this.execute(message, privateKeys);
+    return this.execute(message, privateKey);
   }
 
   generatePrivateKey() {
@@ -89,15 +88,15 @@ class EthereumIdentitySDK {
     throw new Error(`${response.status}`);
   }
 
-  async execute(message, privateKeys) {
+  async execute(message, privateKey) {
     const url = `${this.relayerUrl}/identity/execution`;
     const method = 'POST';
     const finalMessage = {
       ...this.defaultPaymentOptions,
       ...message,
-      nonce: message.nonce || parseInt(await this.getNonce(message.from), 10),
+      nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10),
     };
-    const signature = await calculateMessageSignatures(privateKeys, finalMessage);
+    const signature = await calculateMessageSignature(privateKey, finalMessage);
     const body = JSON.stringify({...finalMessage, signature});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
@@ -108,8 +107,9 @@ class EthereumIdentitySDK {
     throw new Error(`${responseJson.error}`);
   }
 
-  async getNonce(identityAddress) {
-    const contract = new Contract(identityAddress, Identity.interface, this.provider);
+  async getNonce(identityAddress, privateKey) {
+    const wallet = new Wallet(privateKey, this.provider);
+    const contract = new Contract(identityAddress, Identity.interface, wallet);
     return contract.lastNonce();
   }
 
