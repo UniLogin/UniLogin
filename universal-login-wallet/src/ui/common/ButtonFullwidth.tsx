@@ -12,7 +12,7 @@ const ButtonFullwidth = ({onClick, children, id, className, disabled}: ButtonPro
   <button
     id={id}
     onClick={onClick}
-    className={`btn btn-fullwidth ${className ? className : ''}`}
+    className={`btn btn-primary btn-fullwidth ${className ? className : ''}`}
     disabled={disabled}
   >
     {children}
