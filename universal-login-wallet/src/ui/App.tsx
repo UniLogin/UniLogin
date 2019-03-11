@@ -4,13 +4,11 @@ import Dashboard from './Dashboard/Dashboard';
 import ProgressScreen from './Login/ProgressScreen';
 import NotFound from './NotFound';
 import Login from './Login/Login';
-import {CustomBrowserRouter} from './CustomBrowserRouter';
 import {PrivateRoute} from './PrivateRoute';
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
   return(
-    <CustomBrowserRouter>
       <Switch>
         <Route
           exact
@@ -39,10 +37,8 @@ const App = () => {
             <ProgressScreen/>
           }
         />
-
         <Route component={NotFound}/>
       </Switch>
-    </CustomBrowserRouter>
   );
 };
 

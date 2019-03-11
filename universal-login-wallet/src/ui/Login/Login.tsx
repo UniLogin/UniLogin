@@ -12,6 +12,7 @@ interface LoginProps {
 const Login = ({setAuthorized, location} : LoginProps) => {
   const {createWallet} = useServices();
   const {history} = useRouter();
+  // TODO: location.state
   const {from} = location ? location.state : {from: {pathname: '/'}};
 
   const onCreateCLick = async (name: string) => {

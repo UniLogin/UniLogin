@@ -5,6 +5,7 @@ import {render} from 'react-dom';
 import App from './ui/App';
 import {createServices, ServiceContext} from './services/Services';
 import getConfig from '../config/getConfig';
+import {CustomBrowserRouter} from './ui/CustomBrowserRouter';
 
 const config = getConfig();
 
@@ -13,7 +14,9 @@ services.tokenService.start();
 
 render(
   <ServiceContext.Provider value={services}>
-    <App/>
+    <CustomBrowserRouter>
+      <App/>
+    </CustomBrowserRouter>
   </ServiceContext.Provider>,
   document.getElementById('app'),
 );
