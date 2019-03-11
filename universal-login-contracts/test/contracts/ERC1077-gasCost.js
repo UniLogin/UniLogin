@@ -12,7 +12,7 @@ chai.use(solidity);
 const callCost = 90000;
 const transferCost = 105000;
 
-const overrideOptions = {gasLimit: 220000};
+const overrideOptions = {gasLimit: 120000};
 
 describe('ERC1077 - gas cost', async () => {
   const gasCosts = {};

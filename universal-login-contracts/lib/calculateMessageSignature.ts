@@ -27,9 +27,9 @@ export const calculateMessageSignature = async (privateKey: string, msg: Message
 
 
 export const calculateMessageSignatures = async (privateKeys: string[], msg: Message) => {
-  const signatures = privateKeys.map((value: string) =>
+  const signaturesPromises = privateKeys.map((value: string) =>
     calculateMessageSignature(value, msg));
-  const sortedSignatures = sortPrivateKeysByAddress(await Promise.all(signatures));
+  const sortedSignatures = sortPrivateKeysByAddress(await Promise.all(signaturesPromises));
   return concatenateSignatures(sortedSignatures);
 };
 
