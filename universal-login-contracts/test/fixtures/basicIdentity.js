@@ -1,15 +1,20 @@
 import ERC1077ApprovalScheme from '../../build/ERC1077';
 import MockToken from '../../build/MockToken';
 import MockContract from '../../build/MockContract';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {OPERATION_CALL} from '../../lib/consts';
+import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
-
+import {sortPrivateKeysByAddress} from '../../lib/calculateMessageSignature';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
+  const actionWallet1 = Wallet.createRandom();
+  const actionWallet2 = Wallet.createRandom();
+  const sortedKeys = sortPrivateKeysByAddress([actionWallet1.privateKey, actionWallet2.privateKey, wallet.privateKey]);
+  const publicActionKey1 = actionWallet1.address;
+  const publicActionKey2 = actionWallet2.address;
   const publicKey = wallet.address;
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
@@ -19,7 +24,9 @@ export default async function basicIdentity(provider, [, , , , , , , , , wallet]
   const mockContract = await deployContract(wallet, MockContract);
   await wallet.sendTransaction({to: identity.address, value: parseEther('2.0')});
   await mockToken.transfer(identity.address, parseEther('1.0'));
-  return {provider, publicKey, privateKey, keyAsAddress, identity, mockToken, mockContract, wallet};
+  await identity.addKey(publicActionKey1, ACTION_KEY);
+  await identity.addKey(publicActionKey2, ACTION_KEY);
+  return {provider, publicKey, privateKey, sortedKeys, keyAsAddress, identity, mockToken, mockContract, wallet};
 }
 
 export const transferMessage = {

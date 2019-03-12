@@ -1,6 +1,5 @@
-import ethers, {providers, utils, Contract} from 'ethers';
+import {providers, utils, Contract} from 'ethers';
 import PublicResolver from '../build/PublicResolver';
-import {sleep} from 'universal-login-commons';
 
 const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(

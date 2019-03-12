@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import basicIdentity, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicIdentity';
 import {utils} from 'ethers';
-import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
+import {calculateMessageHash, calculateMessageSignature, concatenateSignatures} from '../../lib/calculateMessageSignature';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
 
@@ -30,13 +30,14 @@ describe('ERC1077', async  () => {
   let invalidSignature;
   let relayerBalance;
   let relayerTokenBalance;
+  let sortedKeys;
 
   beforeEach(async () => {
-    ({provider, identity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicIdentity));
+    ({provider, identity, privateKey, sortedKeys, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicIdentity));
     msg = {...transferMessage, from: identity.address};
-    signature = calculateMessageSignature(privateKey, msg);
+    signature = await calculateMessageSignature(privateKey, msg);
     [anotherWallet] = await getWallets(provider);
-    invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
+    invalidSignature = await calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);
   });
@@ -200,6 +201,160 @@ describe('ERC1077', async  () => {
           await identity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
+      });
+    });
+  });
+
+  describe('Multi-Signature call with 2 signatures', async () => {
+    let msgToCall;
+    let signatures;
+
+    describe('Successful execution of call via multi-signature', async () => {
+      before(async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        signatures = concatenateSignatures([signature1, signature2]);
+      });
+
+      it('called method', async () => {
+        expect(await mockContract.wasCalled()).to.be.false;
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        expect(await mockContract.wasCalled()).to.be.true;
+      });
+
+      it('increase nonce', async () => {
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+
+      it('should emit ExecutedSigned', async () => {
+        const messageHash = calculateMessageHash(msgToCall);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, true);
+      });
+    });
+
+    describe('failed execution of call via multi-signature', async () => {
+      before(async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+      });
+
+      it('should fail with a least an invalid signature', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const corruptedSignatures = concatenateSignatures([signature1, invalidSignature]);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail if there are two equal singatures', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const corruptedSignatures = concatenateSignatures([signature1, signature1]);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail with invalid signature size', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail 0 length input in signatures', async () => {
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), '0x', overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+    });
+
+  });
+
+  describe('Multi-Signature call with 3 signatures', async () => {
+    let msgToCall;
+    let signatures;
+
+    describe('Successful execution of call via multi-signature', async () => {
+      before(async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        signatures = concatenateSignatures([signature1, signature2, signature3]);
+      });
+
+      it('called method', async () => {
+        expect(await mockContract.wasCalled()).to.be.false;
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        expect(await mockContract.wasCalled()).to.be.true;
+      });
+
+      it('increase nonce', async () => {
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        expect(await identity.lastNonce()).to.eq(1);
+      });
+
+      it('should emit ExecutedSigned', async () => {
+        const messageHash = calculateMessageHash(msgToCall);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+          .to.emit(identity, 'ExecutedSigned')
+          .withArgs(messageHash, 0, true);
+      });
+
+      it('should fail with not sorted signatures', async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        signatures = concatenateSignatures([signature2, signature1]);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+    });
+
+    describe('failed execution of call via multi-signature', async () => {
+      before(async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+      });
+
+      it('should fail with a least an invalid signature', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const corruptedSignatures = concatenateSignatures([signature1, signature2, invalidSignature]);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail if there are two equal singatures', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const corruptedSignatures = concatenateSignatures([signature1, signature1, signature2]);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail with invalid signature size', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail 0 length input in signatures', async () => {
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), '0x', overrideOptions))
+          .to.be.revertedWith('Invalid signature');
+      });
+
+      it('should fail with not sorted signatures', async () => {
+        msgToCall = {...callMessage, from: identity.address, to: mockContract.address};
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        signatures = concatenateSignatures([signature1, signature3, signature2]);
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+          .to.be.revertedWith('Invalid signature');
       });
     });
   });
