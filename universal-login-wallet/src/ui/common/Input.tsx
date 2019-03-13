@@ -13,7 +13,7 @@ interface InputProps {
 const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => (
   <input
     id={id}
-    className={`input ${className ? className : ''}`}
+    className={`input-${className ? className : ''}`}
     value={value}
     onChange={onChange}
     type={type ? type : 'text'}

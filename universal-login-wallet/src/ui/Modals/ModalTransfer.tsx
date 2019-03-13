@@ -38,6 +38,7 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
       <InputLabel htmlFor="amount">Amount to send</InputLabel>
       <InputWithDropdown
         id="amount"
+        className="transfer-modal-amount"
         onChange={event => updateTransferDetailsWith({amount: event.target.value})}
         currency={transferDetalis.currency}
         setCurrency={event => updateTransferDetailsWith({currency: event})}
