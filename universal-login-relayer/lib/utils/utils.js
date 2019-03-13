@@ -33,7 +33,8 @@ const isContract = async (provider, contractAddress) => {
 const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => {
   // TODO: Only whitelisted tokens/contracts
   if (gasToken === ether) {
-    throw new Error('Ether refunds are not yet supported');
+    const walletBalance = await provider.getBalance(identityAddress);
+    return walletBalance.gte(utils.bigNumberify(gasLimit));
   } else if (!await isContract(provider, gasToken)) {
     throw new Error('Address is not a contract');
   } else {
