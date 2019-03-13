@@ -1,4 +1,4 @@
-import config from './config';
+const config = require('./config.ts');
 
 const getNodeEnv = () => process.env.NODE_ENV || 'development';
 
