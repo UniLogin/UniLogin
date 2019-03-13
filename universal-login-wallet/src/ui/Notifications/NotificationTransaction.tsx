@@ -48,7 +48,7 @@ const NotificationTransaction = ({data}: NotificationTransactionProps) => {
         </div>
         <div className="notification-buttons-row">
           <button className="notification-reject-btn">Reject</button>
-          <button className="btn-secondary">Confirm</button>
+          <button className="btn btn-secondary btn-confirm">Confirm</button>
         </div>
       </div>
     </li>
