@@ -1,3 +1,3 @@
 require('./configuration.ts');
 require('./nullCompiler.ts');
-require('./require.ts');
+require('./requireMock.ts');
