@@ -17,7 +17,7 @@ class TokenService {
 
   async start() {
     for (let count = 0; count < this.tokensAddresses.length; count++) {
-      if(this.tokensAddresses[count] === ETHER.address){
+      if (this.tokensAddresses[count] === ETHER.address){
         this.tokensDetails[count] = ETHER;
       } else {
         const token = new Contract(this.tokensAddresses[count], Token.abi, this.provider);

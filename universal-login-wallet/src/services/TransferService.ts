@@ -15,7 +15,7 @@ class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}
 
   async transfer(transferDetails: TransferDetails) {
-    if(transferDetails.currency === ETHER.symbol) {
+    if (transferDetails.currency === ETHER.symbol) {
       await this.transferEther(transferDetails);
     } else {
       await this.transferTokens(transferDetails);
