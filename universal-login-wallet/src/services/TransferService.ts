@@ -13,6 +13,14 @@ export interface TransferDetails {
 class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}
 
+  async transfer(transferDetails: TransferDetails) {
+    if(transferDetails.currency === '0x0000000000000000000000000000000000000000') {
+      await this.transferEther(transferDetails);
+    } else {
+      await this.transferTokens(transferDetails);
+    }
+  }
+
   async transferTokens({to, amount, currency} : TransferDetails) {
     const tokenAddress = this.tokenService.getTokenAddress(currency);
     if (this.walletService.userWallet) {
@@ -23,6 +31,19 @@ class TransferService {
         value: 0,
         data,
         gasToken: tokenAddress
+      };
+      await this.sdk.execute(message, this.walletService.userWallet.privateKey);
+    }
+  }
+
+  async transferEther({to, amount, currency} : TransferDetails) {
+    if (this.walletService.userWallet) {
+      const message = {
+        from: this.walletService.userWallet.contractAddress,
+        to,
+        value: utils.parseEther(amount),
+        data: '0x0',
+        gasToken: currency
       };
       await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
