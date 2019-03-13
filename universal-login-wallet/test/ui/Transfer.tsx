@@ -2,23 +2,17 @@ import 'jsdom-global/register';
 import React from 'react';
 import {expect} from 'chai';
 import App from '../../src/ui/App';
-import {configure, ReactWrapper} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import {setupSdk} from 'universal-login-sdk/test';
 import {Services} from '../../src/services/Services';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {sleep, waitUntil} from 'universal-login-commons';
-import {mountWithRouterAndContextProvider} from '../helpers/CustomMount';
+import {mountWithContext} from '../helpers/CustomMount';
 import {deployMockToken} from 'universal-login-commons/test';
+import {hasChangedOn} from '../utils/utils';
 
-configure({adapter: new Adapter()});
-
-const hasChangedOn = (wrapper: ReactWrapper, message: any) => {
-  wrapper.update();
-  return wrapper.text().includes(message);
-};
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
@@ -37,7 +31,7 @@ describe('UI: Transfer', () => {
   });
 
   it('Creates wallet and transfers tokens', async () => {
-    appWrapper = mountWithRouterAndContextProvider(<App/>, services, ['/', '/login']);
+    appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
     const input = appWrapper.find('input');
 
     input.simulate('change', {target: {value: 'super-name'}});
