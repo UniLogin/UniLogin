@@ -44,7 +44,7 @@ describe('UI: Transfer', () => {
     await waitUntil(hasChangedOn, 5, 3000, [appWrapper, 'create new']);
 
     appWrapper.find('.suggestions-item-btn').simulate('click');
-    await waitUntil(hasChangedOn, 5, 2000, [appWrapper, 'You can spend']);
+    await waitUntil(hasChangedOn, 5, 2000, [appWrapper, 'Your balance']);
 
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
