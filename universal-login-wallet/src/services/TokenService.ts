@@ -16,10 +16,12 @@ class TokenService {
 
   async start() {
     for (let count = 0; count < this.tokensAddresses.length; count++) {
-      const token = new Contract(this.tokensAddresses[count], Token.abi, this.provider);
-      const symbol = await token.symbol();
-      const name = await token.name();
-      this.tokensDetails[count] = {name, symbol, address: token.address};
+      if(this.tokensAddresses[count] === ''){
+        const token = new Contract(this.tokensAddresses[count], Token.abi, this.provider);
+        const symbol = await token.symbol();
+        const name = await token.name();
+        this.tokensDetails[count] = {name, symbol, address: token.address};
+      }
     }
   }
 
