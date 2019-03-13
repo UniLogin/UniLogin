@@ -1,7 +1,7 @@
-var Module = require('module');
-var originalRequire = Module.prototype.require;
+let Module = require('module');
+let originalRequire = Module.prototype.require;
 
-Module.prototype.require = function(){
+Module.prototype.require = function (){
   const name = arguments[0];
   if (name === 'react') {
     const React = originalRequire.apply(this, arguments);

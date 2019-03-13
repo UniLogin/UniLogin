@@ -46,9 +46,9 @@ describe('UI: Transfer', () => {
     appWrapper.find('.suggestions-item-btn').simulate('click');
     await waitUntil(hasChangedOn, 5, 2000, [appWrapper, 'You can spend']);
 
-    const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0'
+    const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
-    
+
     appWrapper.find('.transfer-funds-button').simulate('click');
     appWrapper.update();
 
@@ -56,7 +56,7 @@ describe('UI: Transfer', () => {
     const amountInput = appWrapper.find('.input-with-dropdown-transfer-modal-amount');
 
     addressInput.simulate('change', {target: {value: receiverAddress}});
-    amountInput.simulate('change', {target: {value: '1'}})
+    amountInput.simulate('change', {target: {value: '1'}});
 
     appWrapper.find('#transferButton').first().simulate('click');
     await sleep(300);
@@ -67,5 +67,5 @@ describe('UI: Transfer', () => {
   after(() => {
     appWrapper.unmount();
     relayer.stop();
-  })
+  });
 });
