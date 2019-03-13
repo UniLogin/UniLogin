@@ -6,6 +6,11 @@
     "lib": [
       "dom",
       "esnext"
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "../node_modules/@types",
+      "shims"
     ]
   }
 }

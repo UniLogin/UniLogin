@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const Dotenv = require("dotenv-webpack")
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -49,7 +50,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
-    new Dotenv()
+    new Dotenv(),
+    new webpack.DefinePlugin({
+      'process.env.TOKEN_CONTRACT_ADDRESS': JSON.stringify(process.env.TOKEN_CONTRACT_ADDRESS)
+    })
   ],
   devServer: {
     historyApiFallback: true

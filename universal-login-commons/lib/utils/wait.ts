@@ -8,7 +8,7 @@ const waitToBeMined = (provider : providers.Provider, transactionHash : string, 
   provider.waitForTransaction(transactionHash);
 
 
-const waitUntil = async (predicate : Predicate, tick = 5, timeout = 1000, args = []) => {
+const waitUntil = async (predicate : Predicate, tick: number = 5, timeout: number = 1000, args: any[] = []) => {
   let elapsed = 0;
   while (!await predicate(...args)) {
     if (elapsed > timeout) {
