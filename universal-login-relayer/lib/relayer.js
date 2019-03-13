@@ -1,8 +1,8 @@
 import express from 'express';
-import IdentityRouter from './routes/identity';
+import WalletRouter from './routes/wallet';
 import ConfigRouter from './routes/config';
 import RequestAuthorisationRouter from './routes/authorisation';
-import IdentityService from './services/IdentityService';
+import WalletService from './services/WalletService';
 import ENSService from './services/ensService';
 import bodyParser from 'body-parser';
 import {Wallet, providers} from 'ethers';
@@ -45,9 +45,9 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
-    this.identityService = new IdentityService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
+    this.identityService = new WalletService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
     this.app.use(bodyParser.json());
-    this.app.use('/identity', IdentityRouter(this.identityService));
+    this.app.use('/wallet', WalletRouter(this.identityService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use(errorHandler);

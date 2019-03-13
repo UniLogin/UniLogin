@@ -5,7 +5,7 @@ import DeviceAdded from './Sections/DeviceAdded';
 import AddBackupCode from './Sections/AddBackupCode';
 import Header from './Sections/Header';
 import BackupCodeAdded from './Sections/BackupCodeAdded';
-import IdentityCreated from './Sections/IdentityCreated';
+import WalletCreated from './Sections/WalletCreated';
 
 class GreetingView extends Component {
   render() {
@@ -14,7 +14,7 @@ class GreetingView extends Component {
         <div className="container">
           <Header identity={this.props.identity} />
           <hr className="separator" />
-          <IdentityCreated status={this.props.status.create} />
+          <WalletCreated status={this.props.status.create} />
           <hr className="separator" />
           {this.props.status.addKey === 'old' ? (
             <DeviceAdded status={this.props.status.addKey} />
@@ -26,7 +26,7 @@ class GreetingView extends Component {
             <BackupCodeAdded status={this.props.status.backupKeys} />
           ) : (
             <AddBackupCode />
-          )} 
+          )}
           <button
             className="btn fullwidth start-btn"
             onClick={this.props.onStartClick.bind(this)}

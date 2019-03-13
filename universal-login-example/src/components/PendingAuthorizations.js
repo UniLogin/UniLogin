@@ -4,7 +4,7 @@ import RequestsBadge from './RequestsBadge';
 import BackBtn from './BackBtn';
 import PendingAuthorizationsView from '../views/PendingAuthorizationsView';
 import PropTypes from 'prop-types';
-import ProfileIdentity from './ProfileIdentity';
+import Profile from './Profile';
 import {tokenContractAddress} from '../../config/config';
 import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 
@@ -67,7 +67,7 @@ class PendingAuthorizations extends Component {
     return (
       <div>
         <HeaderView>
-          <ProfileIdentity
+          <Profile
             type="identityHeader"
             identityService={this.props.services.identityService}
           />

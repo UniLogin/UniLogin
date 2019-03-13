@@ -9,7 +9,7 @@ import {sortPrivateKeysByAddress} from '../../lib/calculateMessageSignature';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
-export default async function basicIdentity(provider, [, , , , , , , , , wallet]) {
+export default async function basicWallet(provider, [, , , , , , , , , wallet]) {
   const actionWallet1 = Wallet.createRandom();
   const actionWallet2 = Wallet.createRandom();
   const sortedKeys = sortPrivateKeysByAddress([actionWallet1.privateKey, actionWallet2.privateKey, wallet.privateKey]);

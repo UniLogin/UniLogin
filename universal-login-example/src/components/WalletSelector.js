@@ -6,7 +6,7 @@ import ConnectionHoverView from '../views/ConnectionHoverView';
 const KEY_CODE_ARROW_UP = 38;
 const KEY_CODE_ARROW_DOWN = 40;
 
-class IdentitySelector extends Component {
+class WalletSelector extends Component {
   constructor(props) {
     super(props);
     this.textBox = React.createRef();
@@ -104,12 +104,12 @@ class IdentitySelector extends Component {
   }
 }
 
-IdentitySelector.propTypes = {
+WalletSelector.propTypes = {
   onChange: PropTypes.func,
   onNextClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func,
   services: PropTypes.object,
-  identitySelectionService: PropTypes.object
+  walletSelectionService: PropTypes.object
 };
 
-export default IdentitySelector;
+export default WalletSelector;

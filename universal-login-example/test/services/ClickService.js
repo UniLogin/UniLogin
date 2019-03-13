@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import Clicker from '../../build/Clicker';
 import {getLogs} from '../utils';
-import IdentityService from '../../src/services/IdentityService';
+import WalletService from '../../src/services/WalletService';
 import ClickService from '../../src/services/ClickService';
 import {EventEmitter} from 'events';
 import {utils} from 'ethers';
@@ -27,8 +27,8 @@ describe('ClickService', () => {
   beforeEach(async () => {
     ({relayer, sdk, provider} = await setupSdk());
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
-    identityService = new IdentityService(sdk, new EventEmitter(), new FakeStorageService(), {});
-    await identityService.createIdentity('kyle.mylogin.eth');
+    identityService = new WalletService(sdk, new EventEmitter(), new FakeStorageService(), {});
+    await identityService.createWallet('kyle.mylogin.eth');
     await tokenContract.transfer(identityService.identity.address, utils.parseEther('1.0'));
     clickService = new ClickService(identityService, {clicker: clickerContract.address, token: tokenContract.address}, defaultPaymentOptions);
   });

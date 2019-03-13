@@ -1,5 +1,5 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
 import {waitToBeMined, waitForContractDeploy} from 'universal-login-commons';
 import {resolveName} from './utils/ethereum';
@@ -9,7 +9,7 @@ import {headers, fetch} from './utils/http';
 import MESSAGE_DEFAULTS from './config';
 
 
-class EthereumIdentitySDK {
+class UniversalLoginSDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
     this.provider = typeof(providerOrUrl) === 'string' ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0}) : providerOrUrl;
     this.relayerUrl = relayerUrl;
@@ -22,13 +22,13 @@ class EthereumIdentitySDK {
     const privateKey = this.generatePrivateKey();
     const wallet = new Wallet(privateKey, this.provider);
     const managementKey = wallet.address;
-    const url = `${this.relayerUrl}/identity`;
+    const url = `${this.relayerUrl}/wallet`;
     const method = 'POST';
     const body = JSON.stringify({managementKey, ensName});
     const response = await fetch(url, {headers, method, body});
     const responseJson = await response.json();
     if (response.status === 201) {
-      const contract = await waitForContractDeploy(this.provider, Identity, responseJson.transaction.hash);
+      const contract = await waitForContractDeploy(this.provider, WalletContract, responseJson.transaction.hash);
       return [privateKey, contract.address];
     }
     throw new Error(`${responseJson.error}`);
@@ -36,7 +36,7 @@ class EthereumIdentitySDK {
 
   async addKey(to, publicKey, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const key = publicKey;
-    const data = new utils.Interface(Identity.interface).functions.addKey.encode([key, keyPurpose]);
+    const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([key, keyPurpose]);
     const message = {
       ...transactionDetails,
       to,
@@ -49,7 +49,7 @@ class EthereumIdentitySDK {
   async addKeys(to, publicKeys, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
     const keys = publicKeys.map((publicKey) => publicKey);
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
-    const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles]);
+    const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys, keyRoles]);
     const message = {
       ...transactionDetails,
       to,
@@ -61,7 +61,7 @@ class EthereumIdentitySDK {
 
   async removeKey(to, address, privateKey, transactionDetails) {
     const key = address;
-    const data = new utils.Interface(Identity.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
+    const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
     const message = {
       ...transactionDetails,
       to,
@@ -89,7 +89,7 @@ class EthereumIdentitySDK {
   }
 
   async execute(message, privateKey) {
-    const url = `${this.relayerUrl}/identity/execution`;
+    const url = `${this.relayerUrl}/wallet/execution`;
     const method = 'POST';
     const finalMessage = {
       ...this.defaultPaymentOptions,
@@ -109,7 +109,7 @@ class EthereumIdentitySDK {
 
   async getNonce(identityAddress, privateKey) {
     const wallet = new Wallet(privateKey, this.provider);
-    const contract = new Contract(identityAddress, Identity.interface, wallet);
+    const contract = new Contract(identityAddress, WalletContract.interface, wallet);
     return contract.lastNonce();
   }
 
@@ -181,6 +181,6 @@ class EthereumIdentitySDK {
   }
 }
 
-export default EthereumIdentitySDK;
+export default UniversalLoginSDK;
 export {MANAGEMENT_KEY, ACTION_KEY};
 export {SdkSigner} from './SdkSigner';

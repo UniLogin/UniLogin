@@ -1,4 +1,4 @@
-import EthereumIdentitySDK from './sdk';
+import UniversalLoginSDK from './sdk';
 import {ethers, Wallet, utils, providers} from 'ethers';
 
 export class SdkSigner extends ethers.Signer {
@@ -6,7 +6,7 @@ export class SdkSigner extends ethers.Signer {
   public provider: providers.Provider;
 
   constructor(
-    private sdk: EthereumIdentitySDK,
+    private sdk: UniversalLoginSDK,
     public contractAddress: string,
     privateKey: string,
   ) {

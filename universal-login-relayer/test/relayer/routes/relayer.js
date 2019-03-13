@@ -5,12 +5,12 @@ import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy} from 'universal-login-commons';
 import {calculateMessageSignature, OPERATION_CALL} from 'universal-login-contracts';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 import MockToken from 'universal-login-contracts/build/MockToken';
 
 chai.use(chaiHttp);
 
-describe('Relayer - Identity routes', async () => {
+describe('Relayer - WalletContract routes', async () => {
   let relayer;
   let provider;
   let wallet;
@@ -26,13 +26,13 @@ describe('Relayer - Identity routes', async () => {
 
   it('Create', async () => {
     const result = await chai.request(relayer.server)
-      .post('/identity')
+      .post('/wallet')
       .send({
         managementKey: wallet.address,
         ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
-    contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
+    contract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
     expect(contract.address).to.be.properAddress;
   });
 
@@ -60,7 +60,7 @@ describe('Relayer - Identity routes', async () => {
       const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
       const signature = await calculateMessageSignature(wallet.privateKey, msg);
       await chai.request(relayer.server)
-        .post('/identity/execution')
+        .post('/wallet/execution')
         .send({
           ...msg,
           signature,

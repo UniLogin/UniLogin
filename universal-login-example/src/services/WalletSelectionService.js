@@ -1,6 +1,6 @@
 import {ensDomains} from '../../config/config';
 
-class IdentitySelectionService {
+class WalletSelectionService {
   constructor(sdk, domains = ensDomains) {
     this.domains = domains;
     this.sdk = sdk;
@@ -17,10 +17,10 @@ class IdentitySelectionService {
   }
 
   isCorrectPrefix(prefix) {
-    const splitted = prefix.split('.');    
+    const splitted = prefix.split('.');
     if (splitted.length === 0 || splitted.length > 3) {
       return false;
-    } 
+    }
     if (!/^\w[\w-]*$/.test(splitted[0])) {
       return false;
     }
@@ -75,12 +75,12 @@ class IdentitySelectionService {
     const [name, domain, tld] = splitted;
     if (!this.isCorrectPrefix(namePrefix)) {
       return {connections: [], creations: []};
-    } 
+    }
     if (splitted.length === 1) {
       return await this.getSuggestionsForNodePrefix(namePrefix);
     } else if (splitted.length === 2) {
-      return this.isCorrectDomainPrefix(domain) ? 
-        await this.getSuggestionsForNodeAndSldPrefix(name, domain) : 
+      return this.isCorrectDomainPrefix(domain) ?
+        await this.getSuggestionsForNodeAndSldPrefix(name, domain) :
         {connections: [], creations: []};
     } else if (splitted.length === 3) {
       if (!this.isCorrectDomainPrefix(`${domain}.`)) {
@@ -88,13 +88,13 @@ class IdentitySelectionService {
       } else if (this.isCorrectTld(tld)) {
         if (tld.length < 3) {
           return await this.getSuggestionsForNodeAndSldPrefix(name, domain);
-        } 
-        return (await this.sdk.identityExist(namePrefix)) ? 
-          {connections: [namePrefix], creations: []} : 
+        }
+        return (await this.sdk.identityExist(namePrefix)) ?
+          {connections: [namePrefix], creations: []} :
           {connections: [], creations: [namePrefix]};
-      }  
+      }
     }
   }
 }
 
-export default IdentitySelectionService;
+export default WalletSelectionService;

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import HeaderView from '../views/HeaderView';
 import BackToAppBtn from './BackToAppBtn';
-import ProfileIdentity from './ProfileIdentity';
+import Profile from './Profile';
 import ManageDevicesAccordion from './ManageDevicesAccordion';
 import BackupCodeAccordionView from '../views/BackupCodeAccordionView';
 import SettingsAccordion from './SettingsAccordion';
@@ -36,7 +36,7 @@ class Account extends Component {
         </HeaderView>
 
         <div className="container">
-          <ProfileIdentity
+          <Profile
             type="identityAccount"
             identityService={this.props.identityService}
           />

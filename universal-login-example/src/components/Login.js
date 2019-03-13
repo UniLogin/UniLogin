@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import IdentitySelector from './IdentitySelector';
+import WalletSelector from './WalletSelector';
 import PropTypes from 'prop-types';
 
 class Login extends Component {
@@ -25,7 +25,7 @@ class Login extends Component {
       this.identityService.identity.name = identityName;
       emitter.emit('setView', 'CreatingID');
       try {
-        await this.identityService.createIdentity(identityName);
+        await this.identityService.createWallet(identityName);
         emitter.emit('setView', 'Greeting', {greetMode: 'created'});
       } catch (err) {
         emitter.emit('setView', 'Failure', {error: err.message});
@@ -51,12 +51,12 @@ class Login extends Component {
           <p className="login-view-text">
           Clicker is an example application, that demonstrates Universal Logins, a design pattern for storing funds and connecting to Ethereum applications.
           </p>
-          <IdentitySelector
+          <WalletSelector
             onNextClick={(identity) => this.onNextClick(identity)}
             onChange={this.onChange.bind(this)}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
             services = {this.props.services}
-            identitySelectionService={this.props.services.identitySelectionService}
+            walletSelectionService={this.props.services.walletSelectionService}
           />
         </div>
       </div>

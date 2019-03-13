@@ -1,13 +1,13 @@
 import {utils} from 'ethers';
 import ObserverBase from './ObserverBase';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 
 class BlockchainObserver extends ObserverBase {
   constructor(provider) {
     super();
     this.provider = provider;
-    this.identityInterface = new utils.Interface(Identity.interface);
-    this.eventInterface = new utils.Interface(Identity.interface).events;
+    this.identityInterface = new utils.Interface(WalletContract.interface);
+    this.eventInterface = new utils.Interface(WalletContract.interface).events;
     this.codec = new utils.AbiCoder();
   }
 

@@ -1,7 +1,7 @@
 import {providers, utils, Contract, ContractFactory} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 import ERC20 from 'universal-login-contracts/build/ERC20';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
@@ -52,19 +52,19 @@ const lookupAddress = async (provider, address) => {
 };
 
 const isAddKeyCall = (data) => {
-  const addKeySighash = new utils.Interface(Identity.interface).functions.addKey.sighash;
+  const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
   return addKeySighash === data.slice(0, addKeySighash.length);
 };
 
 const getKeyFromData = (data) => {
   const codec = new utils.AbiCoder();
-  const addKeySighash = new utils.Interface(Identity.interface).functions.addKey.sighash;
+  const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
   const [address] = (codec.decode(['bytes32', 'uint256'], data.replace(addKeySighash.slice(2), '')));
   return utils.hexlify(utils.stripZeros(address));
 };
 
 const isAddKeysCall = (data) => {
-  const addKeysSighash = new utils.Interface(Identity.interface).functions.addKeys.sighash;
+  const addKeysSighash = new utils.Interface(WalletContract.interface).functions.addKeys.sighash;
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 
