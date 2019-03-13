@@ -60,7 +60,7 @@ describe('UI: Transfer', () => {
 
     appWrapper.find('#transferButton').first().simulate('click');
     await sleep(300);
-    
+
     expect(await mockTokenContract.balanceOf(receiverAddress)).to.deep.eq(utils.parseEther(amount));
   });
 
