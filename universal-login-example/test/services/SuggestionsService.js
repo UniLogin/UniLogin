@@ -1,18 +1,18 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import SuggestionsService from '../../src/services/SuggestionsService';
-import IdentitySelectionService from '../../src/services/IdentitySelectionService';
+import WalletSelectionService from '../../src/services/WalletSelectionService';
 import {sleep} from 'universal-login-commons';
 
 describe('SuggestionsService', () => {
   let service;
-  let identitySelectionService;
+  let walletSelectionService;
 
   const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
 
   before(() => {
-    identitySelectionService = new IdentitySelectionService(sdk, ['my.eth', 'log.eth']);
-    service = new SuggestionsService(identitySelectionService, {debounceTime: 5});
+    walletSelectionService = new WalletSelectionService(sdk, ['my.eth', 'log.eth']);
+    service = new SuggestionsService(walletSelectionService, {debounceTime: 5});
   });
 
   it('call callback with proper arguments', async () => {

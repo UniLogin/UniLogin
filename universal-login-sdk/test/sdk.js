@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 import basicSDK, {transferMessage} from './fixtures/basicSDK';
 import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY} from 'universal-login-contracts';
 import UniversalLoginSDK from '../lib/sdk';
@@ -131,10 +131,10 @@ describe('SDK - integration', async () => {
       });
     });
 
-    describe('Identity Exists', async () => {
+    describe('WalletContract Exists', async () => {
       it('should return correct bytecode', async () => {
         const address = await sdk.resolveName('alex.mylogin.eth');
-        expect(Identity.evm.deployedBytecode.object.slice(0, 14666)).to.eq((await provider.getCode(address)).slice(2, 14668));
+        expect(WalletContract.evm.deployedBytecode.object.slice(0, 14666)).to.eq((await provider.getCode(address)).slice(2, 14668));
       });
 
       it('should return false if no resolver address', async () => {

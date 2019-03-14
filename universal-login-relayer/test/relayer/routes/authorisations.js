@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from 'universal-login-commons';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 
 chai.use(chaiHttp);
 
@@ -20,13 +20,13 @@ describe('Relayer - Authorisation routes', async () => {
     relayer = await RelayerUnderTest.createPreconfigured(provider);
     await relayer.start();
     const result = await chai.request(relayer.server)
-      .post('/identity')
+      .post('/wallet')
       .send({
         managementKey: wallet.address,
         ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
-    contract = await waitForContractDeploy(wallet, Identity, transaction.hash);
+    contract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
   });
 
   it('add authorisation request and get authorisation request', async () => {

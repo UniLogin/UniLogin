@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from '../../helpers/classnames';
 
-function IdentityCreated(props) {
+function WalletCreated(props) {
   const classes = classnames({
     animated: props.status === 'fresh',
     'checkmark-ico': true,
@@ -21,8 +21,8 @@ function IdentityCreated(props) {
   );
 }
 
-IdentityCreated.propTypes = {
+WalletCreated.propTypes = {
   status: PropTypes.string
 };
 
-export default IdentityCreated;
+export default WalletCreated;

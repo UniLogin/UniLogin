@@ -1,6 +1,6 @@
 import {Wallet} from 'ethers';
 
-class IdentityService {
+class WalletService {
   constructor(sdk, emitter, storageService, provider) {
     this.sdk = sdk;
     this.emitter = emitter;
@@ -10,8 +10,8 @@ class IdentityService {
     this.provider = provider;
   }
 
-  async loadIdentity() {
-    const identity = await this.storageService.getIdentity();
+  async loadWallet() {
+    const identity = await this.storageService.getWallet();
     if (identity) {
       this.identity = identity;
       this.emitter.emit('setView', 'MainScreen');
@@ -47,7 +47,7 @@ class IdentityService {
       address: this.identity.address
     };
     this.emitter.emit('setView', 'Greeting', viewOptions);
-    this.storeIdentity(this.identity);
+    this.storeWallet(this.identity);
   }
 
   cancelSubscription() {
@@ -57,16 +57,16 @@ class IdentityService {
     }
   }
 
-  async storeIdentity(identity) {
-    this.storageService.storeIdentity(identity);
+  async storeWallet(identity) {
+    this.storageService.storeWallet(identity);
   }
 
   async disconnect() {
     this.storageService.clearStorage();
   }
 
-  async createIdentity(name) {
-    this.emitter.emit('creatingIdentity', {name});
+  async createWallet(name) {
+    this.emitter.emit('creatingWalletContract', {name});
     const [privateKey, address] = await this.sdk.create(name);
     this.identity = {
       name,
@@ -74,7 +74,7 @@ class IdentityService {
       address
     };
     this.emitter.emit('identityCreated', this.identity);
-    this.storeIdentity(this.identity);
+    this.storeWallet(this.identity);
   }
 
   async execute(message) {
@@ -93,4 +93,4 @@ class IdentityService {
   }
 }
 
-export default IdentityService;
+export default WalletService;

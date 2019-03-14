@@ -4,7 +4,7 @@ export interface WalletExistenceVerifier {
 
 const ensDomains = ['mylogin.eth'];
 
-export class IdentitySelectionService {
+export class WalletSelectionService {
   domains: string[];
   sdk: WalletExistenceVerifier;
 

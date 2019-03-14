@@ -4,14 +4,14 @@ import sinonChai from 'sinon-chai';
 import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
-import basicIdentityService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicIdentityService';
+import basicWalletService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
 import defaultDeviceInfo from '../../config/defaults';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
 
-describe('Relayer - IdentityService', async () => {
+describe('Relayer - WalletService', async () => {
   let identityService;
   let provider;
   let authorisationService;
@@ -23,7 +23,7 @@ describe('Relayer - IdentityService', async () => {
   let otherWallet;
 
   beforeEach(async () => {
-    ({wallet, provider, identityService, callback, mockToken, authorisationService, identity, otherWallet} = await loadFixture(basicIdentityService));
+    ({wallet, provider, identityService, callback, mockToken, authorisationService, identity, otherWallet} = await loadFixture(basicWalletService));
     msg = {...transferMessage, from: identity.address, gasToken: mockToken.address};
   });
 

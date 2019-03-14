@@ -1,5 +1,5 @@
 import {debounce} from '../utils/debounce';
-import {IdentitySelectionService} from './IdentitySelectionService';
+import {WalletSelectionService} from './WalletSelectionService';
 
 export interface Suggestions {
   connections: string[];
@@ -12,14 +12,14 @@ export class SuggestionsService  {
   private debouncedGetSuggestions: any;
 
   constructor(
-    private identitySelectionService: IdentitySelectionService,
+    private walletSelectionService: WalletSelectionService,
     {debounceTime} = {debounceTime: 1000},
   ) {
     this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);
   }
 
   private async doGetSuggestions(name: string, callback: SuggestionsCallback) {
-    const suggestions = await this.identitySelectionService.getSuggestions(name);
+    const suggestions = await this.walletSelectionService.getSuggestions(name);
     if (suggestions) {
       callback(suggestions);
     } else {

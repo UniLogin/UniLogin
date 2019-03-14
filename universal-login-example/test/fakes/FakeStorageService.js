@@ -3,11 +3,11 @@ class FakeStorageService {
     this.identity = null;
   }
 
-  async getIdentity() {
+  async getWallet() {
     return this.identity;
   }
 
-  async storeIdentity(identity) {
+  async storeWallet(identity) {
     this.identity = identity;
   }
 

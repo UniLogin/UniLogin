@@ -3,7 +3,7 @@ import MainScreenView from '../views/MainScreenView';
 import HeaderView from '../views/HeaderView';
 import RequestsBadge from './RequestsBadge';
 import AccountLink from './AccountLink';
-import ProfileIdentity from './ProfileIdentity';
+import Profile from './Profile';
 import PropTypes from 'prop-types';
 
 class MainScreen extends Component {
@@ -54,7 +54,7 @@ class MainScreen extends Component {
     return (
       <div>
         <HeaderView>
-          <ProfileIdentity
+          <Profile
             type="identityHeader"
             identityService={this.props.services.identityService}
           />

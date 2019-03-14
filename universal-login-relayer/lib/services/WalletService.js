@@ -1,14 +1,14 @@
-import Identity from 'universal-login-contracts/build/Identity';
-import IdentityLegacy from 'universal-login-contracts/build/IdentityLegacy';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
+import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import {utils, ContractFactory} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
-class IdentityService {
+class WalletService {
   constructor(wallet, ensService, authorisationService, hooks, provider, legacyENS) {
     this.wallet = wallet;
-    this.contractJSON = legacyENS ? IdentityLegacy : Identity;
+    this.contractJSON = legacyENS ? LegacyWallet : WalletContract;
     this.abi = this.contractJSON.interface;
     this.bytecode = `0x${this.contractJSON.bytecode}`;
     this.ensService = ensService;
@@ -36,7 +36,7 @@ class IdentityService {
 
   async executeSigned(message) {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
-      const data = new utils.Interface(Identity.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
+      const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
         ...defaultDeployOptions,
         value: utils.parseEther('0'),
@@ -63,4 +63,4 @@ class IdentityService {
   }
 }
 
-export default IdentityService;
+export default WalletService;

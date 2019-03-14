@@ -6,7 +6,7 @@ import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import KeyHolder from 'universal-login-contracts/build/KeyHolder.json';
 import {MANAGEMENT_KEY, ACTION_KEY} from 'universal-login-contracts';
-import Identity from 'universal-login-contracts/build/Identity';
+import WalletContract from 'universal-login-contracts/build/WalletContract';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -58,19 +58,19 @@ describe('Tools test', async () => {
 
   describe('getKeyFromData', async () => {
     it('Should return proper key', async () => {
-      const data = new utils.Interface(Identity.interface).functions.addKey.encode([wallet.address, ACTION_KEY]);
+      const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([wallet.address, ACTION_KEY]);
       expect(getKeyFromData(data)).to.eq(wallet.address.toLowerCase()); // OK?
     });
   });
 
   describe('isAddKeyCall', async () => {
     it('Should return true if addKey call', async () => {
-      const data = new utils.Interface(Identity.interface).functions.addKey.encode([wallet.address, ACTION_KEY]);
+      const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([wallet.address, ACTION_KEY]);
       expect(isAddKeyCall(data)).to.be.true;
     });
 
     it('Should return false if no addKey call', async () => {
-      const data = new utils.Interface(Identity.interface).functions.removeKey.encode([wallet.address, ACTION_KEY]);
+      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address, ACTION_KEY]);
       expect(isAddKeyCall(data)).to.be.false;
     });
   });
@@ -79,12 +79,12 @@ describe('Tools test', async () => {
     it('Should return true if addKeys call', async () => {
       const keys = [wallet.address, otherWallet.address];
       const keyRoles = new Array(keys.length).fill(MANAGEMENT_KEY);
-      const data = new utils.Interface(Identity.interface).functions.addKeys.encode([keys, keyRoles]);
+      const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys, keyRoles]);
       expect(isAddKeysCall(data)).to.be.true;
     });
 
     it('Should return false if no addKeys call', async () => {
-      const data = new utils.Interface(Identity.interface).functions.removeKey.encode([wallet.address, ACTION_KEY]);
+      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address, ACTION_KEY]);
       expect(isAddKeysCall(data)).to.be.false;
     });
   });

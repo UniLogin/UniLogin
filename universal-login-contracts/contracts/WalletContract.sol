@@ -4,7 +4,7 @@ import "./ENSRegistered.sol";
 import "./ERC1077.sol";
 
 
-contract Identity is ENSRegistered, ERC1077 {
+contract WalletContract is ENSRegistered, ERC1077 {
     constructor(
         address _key, bytes32 _hashLabel, string memory _name, bytes32 _node, ENS ens, FIFSRegistrar registrar, PublicResolver resolver)
         payable public

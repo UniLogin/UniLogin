@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import UserIco from '../img/user.svg';
-import ProfileIdentityAccount from '../views/ProfileIdentityAccount';
-import ProfileIdentityHeader from '../views/ProfileIdentityHeader';
+import ProfileAccount from '../views/ProfileAccount';
+import ProfileHeader from '../views/ProfileHeader';
 import PropTypes from 'prop-types';
 
-class ProfileIdentity extends Component {
+class Profile extends Component {
   render() {
     const {identity} = this.props.identityService;
     if (!identity.address) {
@@ -13,7 +13,7 @@ class ProfileIdentity extends Component {
     switch (this.props.type) {
       case 'identityAccount':
         return (
-          <ProfileIdentityAccount
+          <ProfileAccount
             userIco={UserIco}
             userId={identity.name}
             address={identity.address}
@@ -22,7 +22,7 @@ class ProfileIdentity extends Component {
 
       case 'identityHeader':
         return (
-          <ProfileIdentityHeader
+          <ProfileHeader
             userIco={UserIco}
             userId={identity.name}
             address={identity.address}
@@ -35,9 +35,9 @@ class ProfileIdentity extends Component {
   }
 }
 
-ProfileIdentity.propTypes = {
+Profile.propTypes = {
   type: PropTypes.string,
   identityService: PropTypes.object
 };
 
-export default ProfileIdentity;
+export default Profile;

@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
-import basicIdentity, {transferMessage, callMessage} from '../fixtures/basicIdentity';
+import basicWallet, {transferMessage, callMessage} from '../fixtures/basicWallet';
 import {utils} from 'ethers';
 import {calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import {getExecutionArgs} from '../utils';
@@ -24,7 +24,7 @@ describe('ERC1077 - gas cost', async () => {
   let mockContract;
 
   beforeEach(async () => {
-    ({provider, identity, privateKey, mockContract} = await loadFixture(basicIdentity));
+    ({provider, identity, privateKey, mockContract} = await loadFixture(basicWallet));
   });
 
   it('Function call', async () => {

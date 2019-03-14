@@ -9,11 +9,11 @@ class StorageService {
     }
   }
 
-  async getIdentity() {
+  async getWallet() {
     return localforage.getItem(IDENTITY_KEY, (value, err) => (err ? null : value));
   }
 
-  async storeIdentity(identity) {
+  async storeWallet(identity) {
     return localforage.setItem(IDENTITY_KEY, identity, (err) => !!err);
   }
 

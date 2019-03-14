@@ -1,8 +1,8 @@
 import {debounce} from 'universal-login-commons';
 
 export default class SuggestionsService {
-  constructor(identitySelectionService, {debounceTime} = {debounceTime: 1000}) {
-    this.identitySelectionService = identitySelectionService;
+  constructor(walletSelectionService, {debounceTime} = {debounceTime: 1000}) {
+    this.walletSelectionService = walletSelectionService;
     this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);
   }
 
@@ -11,7 +11,7 @@ export default class SuggestionsService {
   }
 
   async doGetSuggestions(name) {
-    const suggestions = await this.identitySelectionService.getSuggestions(name);
+    const suggestions = await this.walletSelectionService.getSuggestions(name);
     this.callback({...suggestions, identity: name, busy: false});
   }
 

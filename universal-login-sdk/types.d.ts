@@ -5,9 +5,9 @@ declare interface Subscription {
   remove(): void
 }
 
-declare class EthereumIdentitySDK extends WalletExistenceVerifier  {
+declare class UniversalLoginSDK extends WalletExistenceVerifier  {
   public provider: providers.Provider;
-  
+
   constructor(relayerUrl: string, providerOrUrl: string | providers.Provider, paymentOptions?: any);
 
   create(ensName: string): Promise<[string, string]>;
@@ -45,7 +45,7 @@ declare class EthereumIdentitySDK extends WalletExistenceVerifier  {
   finalizeAndStop(): Promise<void>;
 }
 
-export default EthereumIdentitySDK;
+export default UniversalLoginSDK;
 
 export declare const MANAGEMENT_KEY = 1;
 export declare const ACTION_KEY = 2;
@@ -55,7 +55,7 @@ export declare class SdkSigner extends ethers.Signer {
   public contractAddress: string;
 
   constructor(
-    sdk: EthereumIdentitySDK,
+    sdk: UniversalLoginSDK,
     contractAddress: string,
     privateKey: string,
   )

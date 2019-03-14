@@ -3,11 +3,11 @@ import Input from '../common/Input';
 import Suggestions from './Suggestions';
 import {useServices} from '../../hooks';
 
-interface IdentitySelector {
+interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
 }
 
-const IdentitySelector = ({onCreateClick}: IdentitySelector) => {
+const WalletSelector = ({onCreateClick}: WalletSelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
@@ -45,4 +45,4 @@ const IdentitySelector = ({onCreateClick}: IdentitySelector) => {
   );
 };
 
-export default IdentitySelector;
+export default WalletSelector;
