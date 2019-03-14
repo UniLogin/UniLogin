@@ -34,7 +34,7 @@ describe('UI: Transfer', () => {
     appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
     const loginPage = new LoginPage(appWrapper);
     await loginPage.pickUsername('super-name');
-    
+
 
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
