@@ -11,7 +11,7 @@ class ServicesUnderTest {
       domains,
       tokens
     };
-    const services = createServices(config, provider);
+    const services = createServices(config, {provider});
     return services;
   }
 }

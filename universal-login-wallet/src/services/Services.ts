@@ -15,7 +15,11 @@ interface Config {
   tokens: string[];
 }
 
-export const createServices = (config: Config, provider?: providers.Provider) => {
+interface Overrides {
+  provider?: providers.Provider;
+}
+
+export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl);
   const walletSelectionService = new WalletSelectionService(sdk, config.domains);
