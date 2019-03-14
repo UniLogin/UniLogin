@@ -20,8 +20,11 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
     if (setCurrency) { setCurrency(currency); }
     toggle();
   };
-  
+
   const extraClassName = className ? ` input-with-dropdown-${className}` : '';
+
+  /* tslint:disable:prefer-template */
+
   return (
     <div className="input-dropdown-wrapper">
       <input
@@ -49,6 +52,8 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
       </div>
     </div>
   );
+
+  /* tslint:enable:prefer-template */
 };
 
 export default InputWithDropdown;
