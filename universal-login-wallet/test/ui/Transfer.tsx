@@ -8,10 +8,9 @@ import {createFixtureLoader} from 'ethereum-waffle';
 import {setupSdk} from 'universal-login-sdk/test';
 import {Services} from '../../src/services/Services';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
-import {sleep} from 'universal-login-commons';
 import {mountWithContext} from '../helpers/CustomMount';
 import {deployMockToken} from 'universal-login-commons/test';
-import { AppPage } from '../../../node_modules/universal-login-wallet/test/pages/AppPage';
+import {AppPage} from '../../../node_modules/universal-login-wallet/test/pages/AppPage';
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
@@ -34,15 +33,14 @@ describe('UI: Transfer', () => {
     const appPage = new AppPage(appWrapper)
     await appPage.login().pickUsername('super-name');
 
-
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
-    mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
+    await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));    
 
     appPage.dashboard().clickTransferButton();
-    appPage.transfer().enterTransferDetails(receiverAddress, '1');
-
-    await sleep(300);
-    expect(await mockTokenContract.balanceOf(receiverAddress)).to.deep.eq(utils.parseEther(amount));
+    appPage.transfer().enterTransferDetails(receiverAddress, '1');    
+    
+    const tokenBalance = await appPage.dashboard().getBalance(mockTokenContract, walletAddress);
+    expect(tokenBalance).to.eq('999947384000000000');
   });
 
   after(() => {
