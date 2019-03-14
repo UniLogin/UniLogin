@@ -11,8 +11,7 @@ import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {sleep} from 'universal-login-commons';
 import {mountWithContext} from '../helpers/CustomMount';
 import {deployMockToken} from 'universal-login-commons/test';
-import LoginPage from '../pages/LoginPage';
-import TransferPage from '../pages/TransferPage';
+import { AppPage } from '../../../node_modules/universal-login-wallet/test/pages/AppPage';
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
@@ -32,21 +31,17 @@ describe('UI: Transfer', () => {
 
   it('Creates wallet and transfers tokens', async () => {
     appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
-    const loginPage = new LoginPage(appWrapper);
-    await loginPage.pickUsername('super-name');
+    const appPage = new AppPage(appWrapper)
+    await appPage.login().pickUsername('super-name');
 
 
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
 
-    appWrapper.find('.transfer-funds-button').simulate('click');
-    appWrapper.update();
-
-    const transferPage = new TransferPage(appWrapper);
-    transferPage.enterTransferDetails(receiverAddress, '1');
+    appPage.dashboard().clickTransferButton();
+    appPage.transfer().enterTransferDetails(receiverAddress, '1');
 
     await sleep(300);
-
     expect(await mockTokenContract.balanceOf(receiverAddress)).to.deep.eq(utils.parseEther(amount));
   });
 

@@ -3,14 +3,14 @@ import {waitForUI} from '../utils/utils';
 
 export default class LoginPage {
 
-  constructor(private appWrapper : ReactWrapper) {
+  constructor(private wrapper : ReactWrapper) {
   }
 
   async pickUsername(userName : string) {
-    const input = this.appWrapper.find('input');
+    const input = this.wrapper.find('input');
     input.simulate('change', {target: {value: userName}});
-    await waitForUI(this.appWrapper, () => this.appWrapper.text().includes('create new'));
-    this.appWrapper.find('.suggestions-item-btn').simulate('click');
-    await waitForUI(this.appWrapper, () => this.appWrapper.text().includes('Your balance'));
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('create new'));
+    this.wrapper.find('.suggestions-item-btn').simulate('click');
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Your balance'));
   }
 }
