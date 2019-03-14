@@ -6,4 +6,4 @@ export const getTokenDetails = async (provider: providers.Provider, address: str
   const symbol = await token.symbol();
   const name = await token.name();
   return {address, name, symbol};
-}
+};

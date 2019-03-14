@@ -6,8 +6,7 @@ import ERC20 from 'universal-login-contracts/build/ERC20';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
 import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
-import {sleep} from 'universal-login-commons';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {sleep, ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 const {namehash} = utils;
 
