@@ -1,4 +1,5 @@
 import React from 'react';
+import {classesForElement} from 'universal-login-commons';
 
 interface InputProps {
   onChange: (...args: any[]) => void;
@@ -10,16 +11,20 @@ interface InputProps {
   value?: string;
 }
 
-const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => (
-  <input
-    id={id}
-    className={`input input-${className ? className : ''}`}
-    value={value}
-    onChange={onChange}
-    type={type ? type : 'text'}
-    autoFocus={autoFocus}
-    placeholder={placeholder}
-  />
-);
+const classesForInput = classesForElement('input', 'input');
+
+const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => {
+  return(
+    <input
+      id={id}
+      className={classesForInput(className)}
+      value={value}
+      onChange={onChange}
+      type={type ? type : 'text'}
+      autoFocus={autoFocus}
+      placeholder={placeholder}
+    />
+  );
+};
 
 export default Input;

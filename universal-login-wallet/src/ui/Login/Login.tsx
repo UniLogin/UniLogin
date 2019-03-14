@@ -3,6 +3,7 @@ import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
+import {DEFAULT_LOCATION} from 'universal-login-commons';
 
 interface LoginProps {
   setAuthorized: () => void;
@@ -12,7 +13,7 @@ interface LoginProps {
 const Login = ({setAuthorized, location} : LoginProps) => {
   const {createWallet} = useServices();
   const {history} = useRouter();
-  const {from} = location ? location.state ? location.state : {from: {pathname: '/'}} : {from: {pathname: '/'}};
+  const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
 
   const onCreateCLick = async (name: string) => {
     await createWallet(name);

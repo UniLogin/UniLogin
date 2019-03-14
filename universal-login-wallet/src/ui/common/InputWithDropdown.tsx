@@ -1,4 +1,5 @@
 import React from 'react';
+import {classesForElement} from 'universal-login-commons';
 import {useToggler, useServices} from '../../hooks';
 
 interface InputProps {
@@ -11,6 +12,8 @@ interface InputProps {
   currency?: string;
   setCurrency?: (...args: any[]) => void;
 }
+
+const classesForInputWithDropdown = classesForElement('input', 'input-with-dropdown');
 
 const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency}: InputProps) => {
   const {visible, toggle} = useToggler();
@@ -25,7 +28,7 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
     <div className="input-dropdown-wrapper">
       <input
         id={id}
-        className={`input input-with-dropdown-${className ? className : ''}`}
+        className={classesForInputWithDropdown(className)}
         onChange={onChange}
         type="number"
         autoFocus={autoFocus}

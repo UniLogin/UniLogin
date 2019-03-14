@@ -8,11 +8,9 @@ import {createFixtureLoader} from 'ethereum-waffle';
 import {setupSdk} from 'universal-login-sdk/test';
 import {Services} from '../../src/services/Services';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
-import {sleep, waitUntil} from 'universal-login-commons';
 import {mountWithContext} from '../helpers/CustomMount';
 import {deployMockToken} from 'universal-login-commons/test';
-import {hasChangedOn} from '../utils/utils';
-
+import {AppPage} from '../../../node_modules/universal-login-wallet/test/pages/AppPage';
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
@@ -32,30 +30,17 @@ describe('UI: Transfer', () => {
 
   it('Creates wallet and transfers tokens', async () => {
     appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
-    const input = appWrapper.find('input');
-
-    input.simulate('change', {target: {value: 'super-name'}});
-    await waitUntil(hasChangedOn, 5, 3000, [appWrapper, 'create new']);
-
-    appWrapper.find('.suggestions-item-btn').simulate('click');
-    await waitUntil(hasChangedOn, 5, 2000, [appWrapper, 'Your balance']);
+    const appPage = new AppPage(appWrapper);
+    await appPage.login().pickUsername('super-name');
 
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
-    mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
+    await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
 
-    appWrapper.find('.transfer-funds-button').simulate('click');
-    appWrapper.update();
+    appPage.dashboard().clickTransferButton();
+    appPage.transfer().enterTransferDetails(receiverAddress, '1');
 
-    const addressInput = appWrapper.find('.input-transfer-modal-address');
-    const amountInput = appWrapper.find('.input-with-dropdown-transfer-modal-amount');
-
-    addressInput.simulate('change', {target: {value: receiverAddress}});
-    amountInput.simulate('change', {target: {value: '1'}});
-
-    appWrapper.find('#transferButton').first().simulate('click');
-    await sleep(300);
-
-    expect(await mockTokenContract.balanceOf(receiverAddress)).to.deep.eq(utils.parseEther(amount));
+    const tokenBalance = await appPage.dashboard().getBalance(mockTokenContract, walletAddress);
+    expect(tokenBalance).to.eq('999947384000000000');
   });
 
   after(() => {
