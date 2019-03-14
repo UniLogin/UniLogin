@@ -20,12 +20,13 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
     if (setCurrency) { setCurrency(currency); }
     toggle();
   };
-
+  
+  const extraClassName = className ? ` input-with-dropdown-${className}` : '';
   return (
     <div className="input-dropdown-wrapper">
       <input
         id={id}
-        className={`input input-with-dropdown-${className ? className : ''}`}
+        className={'input' + extraClassName}
         onChange={onChange}
         type="number"
         autoFocus={autoFocus}
