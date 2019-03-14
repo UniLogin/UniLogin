@@ -28,7 +28,7 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
     <div className="input-dropdown-wrapper">
       <input
         id={id}
-        className={ classesForInputWithDropdown(className) }
+        className={classesForInputWithDropdown(className)}
         onChange={onChange}
         type="number"
         autoFocus={autoFocus}

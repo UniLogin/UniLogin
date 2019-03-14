@@ -17,7 +17,7 @@ const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: I
   return(
     <input
       id={id}
-      className={ classesForInput(className) }
+      className={classesForInput(className)}
       value={value}
       onChange={onChange}
       type={type ? type : 'text'}
