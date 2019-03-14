@@ -7,10 +7,9 @@ import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
 import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
 import {sleep} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 const {namehash} = utils;
-
-const ether = '0x0000000000000000000000000000000000000000';
 
 const messageSignatureForApprovals = (wallet, id) =>
   wallet.signMessage(
@@ -32,7 +31,7 @@ const isContract = async (provider, contractAddress) => {
 
 const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => {
   // TODO: Only whitelisted tokens/contracts
-  if (gasToken === ether) {
+  if (gasToken === ETHER_NATIVE_TOKEN.address) {
     const walletBalance = await provider.getBalance(identityAddress);
     return walletBalance.gte(utils.bigNumberify(gasLimit));
   } else if (!await isContract(provider, gasToken)) {
