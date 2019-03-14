@@ -1,5 +1,5 @@
 import chai from 'chai';
-import DevelopmentRelayer from '../../src/dev/DevelopmentRelayer';
+import {DevelopmentRelayer} from 'universal-login-relayer/test';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {waitUntil} from 'universal-login-commons';

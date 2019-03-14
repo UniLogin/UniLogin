@@ -1,4 +1,4 @@
-import DevelopmentRelayer from './DevelopmentRelayer';
+import {DevelopmentRelayer} from 'universal-login-relayer/test';
 
 async function startDevelopmentRelayer(configuration, wallet) {
   const relayer = new DevelopmentRelayer(configuration, wallet.provider);
