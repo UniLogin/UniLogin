@@ -12,7 +12,7 @@ export class AppPage {
   }
 
   login() : LoginPage {
-    this.loginPage = this.loginPage || new LoginPage(this.wrapper)
+    this.loginPage = this.loginPage || new LoginPage(this.wrapper);
     return this.loginPage;
   }
 

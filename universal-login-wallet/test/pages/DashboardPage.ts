@@ -12,7 +12,7 @@ export default class DashboardPage {
   }
 
   async getBalance(mockTokenContract : Contract, walletAddress: string) {
-    //TODO: walletAddress Should be taken from UI
+    // TODO: walletAddress Should be taken from UI
     await sleep(300);
     const tokenBalance = await mockTokenContract.balanceOf(walletAddress);
     return tokenBalance.toString();
