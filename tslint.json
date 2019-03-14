@@ -49,13 +49,6 @@
       }
     ],
     "space-within-parens": true,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": "always",
-        "singleline": "never"
-      }
-    ],
     "triple-equals": true,
     "variable-name": [
       true,
