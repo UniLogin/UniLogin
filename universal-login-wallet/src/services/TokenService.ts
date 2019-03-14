@@ -1,6 +1,6 @@
-import {providers, Contract} from 'ethers';
-const Token = require('openzeppelin-solidity/build/contracts/ERC20Detailed.json');
+import {providers} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {getTokenDetails} from './utils/utils';
 
 declare type TokenDetails = {
   name: string;
@@ -20,10 +20,7 @@ class TokenService {
       if (this.tokensAddresses[count] === ETHER_NATIVE_TOKEN.address){
         this.tokensDetails[count] = ETHER_NATIVE_TOKEN;
       } else {
-        const token = new Contract(this.tokensAddresses[count], Token.abi, this.provider);
-        const symbol = await token.symbol();
-        const name = await token.name();
-        this.tokensDetails[count] = {name, symbol, address: token.address};
+        this.tokensDetails[count] = await getTokenDetails(this.provider, this.tokensAddresses[count]);
       }
     }
   }
