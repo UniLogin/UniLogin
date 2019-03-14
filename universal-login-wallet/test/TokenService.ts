@@ -3,7 +3,7 @@ import TokenService from '../src/services/TokenService';
 import {MockToken} from 'universal-login-commons/test';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {Contract} from 'ethers';
-import {ETHER} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 describe('TokenService', () => {
   let mockToken: Contract;
@@ -15,7 +15,7 @@ describe('TokenService', () => {
     const provider = createMockProvider();
     const [wallet] = await getWallets(provider);
     mockToken = await deployContract(wallet, MockToken, []);
-    tokenService = new TokenService([mockToken.address, ETHER.address], provider);
+    tokenService = new TokenService([mockToken.address, ETHER_NATIVE_TOKEN.address], provider);
     symbol = await mockToken.symbol();
     name = await mockToken.name();
     await tokenService.start();
@@ -28,9 +28,7 @@ describe('TokenService', () => {
   });
 
   it('Should fill up ether details', async () => {
-    expect(tokenService.tokensDetails[1].name).to.eq(ETHER.name);
-    expect(tokenService.tokensDetails[1].symbol).to.eq(ETHER.symbol);
-    expect(tokenService.tokensDetails[1].address).to.eq(ETHER.address);
+    expect(tokenService.tokensDetails[1]).to.deep.eq(ETHER_NATIVE_TOKEN);
   });
 
   it('Returns token address', async () => {

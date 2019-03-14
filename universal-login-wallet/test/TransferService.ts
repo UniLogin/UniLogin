@@ -8,7 +8,7 @@ import WalletService from '../src/services/WalletService';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {setupSdk} from 'universal-login-sdk/test';
 import TokenService from '../src/services/TokenService';
-import {ETHER} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 chai.use(solidity);
 
@@ -45,7 +45,7 @@ describe('TransferService', () => {
   it('Should transfer ether', async () => {
     const to = '0x0000000000000000000000000000000000000001';
     const amount = '0.5';
-    const currency = ETHER.symbol;
+    const currency = ETHER_NATIVE_TOKEN.symbol;
     await transferService.transfer({to, amount, currency});
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
   });

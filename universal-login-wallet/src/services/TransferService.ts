@@ -3,7 +3,7 @@ import WalletService from './WalletService';
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import TokenService from './TokenService';
-import {ETHER} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 export interface TransferDetails {
   to: string;
@@ -15,7 +15,7 @@ class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}
 
   async transfer(transferDetails: TransferDetails) {
-    if (transferDetails.currency === ETHER.symbol) {
+    if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
       await this.transferEther(transferDetails);
     } else {
       await this.transferTokens(transferDetails);
@@ -44,7 +44,7 @@ class TransferService {
         to,
         value: utils.parseEther(amount),
         data: '0x0',
-        gasToken: ETHER.address
+        gasToken: ETHER_NATIVE_TOKEN.address
       };
       await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
