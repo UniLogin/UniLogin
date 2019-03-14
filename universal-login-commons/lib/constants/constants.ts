@@ -4,3 +4,4 @@ export const ETHER_NATIVE_TOKEN = {
   symbol: 'ETH',
   name: 'ether'
 };
+export const testJsonRpcUrl = 'http://localhost:8545';
