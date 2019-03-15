@@ -10,9 +10,9 @@ export class RelayerApi {
     return this.http('POST', '/wallet', {
       managementKey,
       ensName
-    }).catch(e => {
+    }).catch((e) => {
       // TODO: Maybe wrap this as a custom Error?
-      throw new Error(e != null && e.error)
+      throw new Error(e !== undefined && e.error);
     });
   }
 
@@ -22,9 +22,9 @@ export class RelayerApi {
 
   async execute(message: any) {
     return this.http('POST', '/wallet/execution', message)
-      .catch(e => {
+      .catch((e) => {
         // TODO: Maybe wrap this as a custom Error?
-        throw new Error(e != null && e.error)
+        throw new Error(e !== undefined && e.error);
       });
   }
 

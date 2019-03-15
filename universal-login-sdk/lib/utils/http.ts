@@ -1,13 +1,13 @@
 import {fetch} from './fetch';
 
 const COMMON_HEADERS = {
-  'Accept': 'application/json',
+  Accept: 'application/json',
   'Content-Type': 'application/json',
 };
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type HttpFunction = ReturnType<typeof http>
+export type HttpFunction = ReturnType<typeof http>;
 
 export const http = (baseUrl: string) =>
   (method: HttpMethod, url: string, body?: any) =>
@@ -17,24 +17,24 @@ export const http = (baseUrl: string) =>
       body: body !== undefined
         ? JSON.stringify(body)
         : undefined
-    }).then(handleApiResponse)
+    }).then(handleApiResponse);
 
-export async function handleApiResponse (res: Response) {
-  return getResponseValue(res).then(value => {
+export async function handleApiResponse(res: Response) {
+  return getResponseValue(res).then((value) => {
     if (res.ok) {
       return value;
     } else {
       throw value;
     }
-  })
+  });
 }
 
-async function getResponseValue (res: Response) {
+async function getResponseValue(res: Response) {
   return res.text().then((text) => {
     try {
-      return JSON.parse(text)
+      return JSON.parse(text);
     } catch (e) {
-      return text
+      return text;
     }
-  })
+  });
 }
