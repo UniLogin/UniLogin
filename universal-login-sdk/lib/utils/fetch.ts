@@ -1,5 +1,3 @@
-const headers = {'Content-Type': 'application/json; charset=utf-8'};
-
 let fetch: GlobalFetch['fetch'];
 
 if (typeof window === 'undefined') {
@@ -8,4 +6,4 @@ if (typeof window === 'undefined') {
   fetch = window.fetch;
 }
 
-export {headers, fetch};
+export {fetch};

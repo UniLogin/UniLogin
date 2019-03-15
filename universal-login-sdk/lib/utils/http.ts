@@ -20,7 +20,7 @@ export const http = (baseUrl: string) =>
     }).then(handleApiResponse);
 
 export async function handleApiResponse(res: Response) {
-  return getResponseValue(res).then((value) => {
+  return getJsonOrText(res).then((value) => {
     if (res.ok) {
       return value;
     } else {
@@ -29,7 +29,7 @@ export async function handleApiResponse(res: Response) {
   });
 }
 
-async function getResponseValue(res: Response) {
+async function getJsonOrText(res: Response) {
   return res.text().then((text) => {
     try {
       return JSON.parse(text);
