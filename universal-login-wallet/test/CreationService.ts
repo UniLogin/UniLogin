@@ -11,7 +11,7 @@ describe('CreationService', () => {
   let relayer: any;
 
   before(async () => {
-    ({sdk, relayer} = await setupSdk());
+    ({sdk, relayer} = await setupSdk({overridePort: 33113}));
     walletService = new WalletService();
     creationService = CreationSerivice(sdk, walletService);
   });

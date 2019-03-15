@@ -22,7 +22,7 @@ describe('TransferService', () => {
   let tokenService: TokenService;
 
   beforeEach(async () => {
-    ({sdk, relayer, provider} = await setupSdk());
+    ({sdk, relayer, provider} = await setupSdk({overridePort: 33113}));
     const [randomWallet] = await getWallets(provider);
     ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
     const walletService = new WalletService();
