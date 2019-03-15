@@ -11,6 +11,7 @@ export class RelayerApi {
       managementKey,
       ensName
     }).catch(e => {
+      // TODO: Maybe wrap this as a custom Error?
       throw new Error(e != null && e.error)
     });
   }
@@ -22,6 +23,7 @@ export class RelayerApi {
   async execute(message: any) {
     return this.http('POST', '/wallet/execution', message)
       .catch(e => {
+        // TODO: Maybe wrap this as a custom Error?
         throw new Error(e != null && e.error)
       });
   }
@@ -38,5 +40,9 @@ export class RelayerApi {
       identityAddress,
       key,
     });
+  }
+
+  async getPendingAuthorisations(identityAddress: string) {
+    return this.http('GET', `/authorisation/${identityAddress}`);
   }
 }
