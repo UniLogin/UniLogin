@@ -9,8 +9,8 @@
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
     "node-fetch": "^2.2.0",
-    "universal-login-contracts": "^0.1.4",
-    "universal-login-commons": "^1.0.0"
+    "universal-login-commons": "^1.0.0",
+    "universal-login-contracts": "^0.1.4"
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
@@ -23,6 +23,7 @@
     "@types/chai-as-promised": "^7.1.0",
     "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^5.2.5",
+    "@types/node-fetch": "^2.1.6",
     "chai": "^4.1.2",
     "ethereum-waffle": "2.0.5",
     "ganache-core": "^2.2.1",

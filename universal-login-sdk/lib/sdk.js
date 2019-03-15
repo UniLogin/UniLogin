@@ -5,33 +5,30 @@ import {waitToBeMined, waitForContractDeploy} from 'universal-login-commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import {headers, fetch} from './utils/http';
 import MESSAGE_DEFAULTS from './config';
+import {RelayerApi} from './RelayerApi';
 
 
 class UniversalLoginSDK {
   constructor(relayerUrl, providerOrUrl, paymentOptions) {
-    this.provider = typeof(providerOrUrl) === 'string' ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0}) : providerOrUrl;
-    this.relayerUrl = relayerUrl;
-    this.relayerObserver = new RelayerObserver(relayerUrl);
+    this.provider = typeof(providerOrUrl) === 'string' ?
+      new providers.JsonRpcProvider(providerOrUrl, {chainId: 0})
+      : providerOrUrl;
+    this.relayerApi = new RelayerApi(relayerUrl);
+    this.relayerObserver = new RelayerObserver(this.relayerApi);
     this.blockchainObserver = new BlockchainObserver(this.provider);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
   async create(ensName) {
-    const privateKey = this.generatePrivateKey();
-    const wallet = new Wallet(privateKey, this.provider);
-    const managementKey = wallet.address;
-    const url = `${this.relayerUrl}/wallet`;
-    const method = 'POST';
-    const body = JSON.stringify({managementKey, ensName});
-    const response = await fetch(url, {headers, method, body});
-    const responseJson = await response.json();
-    if (response.status === 201) {
-      const contract = await waitForContractDeploy(this.provider, WalletContract, responseJson.transaction.hash);
-      return [privateKey, contract.address];
-    }
-    throw new Error(`${responseJson.error}`);
+    const {address, privateKey} = Wallet.createRandom();
+    const result = await this.relayerApi.createWallet(address, ensName);
+    const contract = await waitForContractDeploy(
+      this.provider,
+      WalletContract,
+      result.transaction.hash,
+    );
+    return [privateKey, contract.address];
   }
 
   async addKey(to, publicKey, privateKey, transactionDetails, keyPurpose = MANAGEMENT_KEY) {
@@ -78,33 +75,25 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
-    const url = `${this.relayerUrl}/config`;
-    const method = 'GET';
-    const response = await fetch(url, {headers, method});
-    const responseJson = await response.json();
-    if (response.status === 200) {
-      return responseJson;
-    }
-    throw new Error(`${response.status}`);
+    return this.relayerApi.getConfig();
   }
 
   async execute(message, privateKey) {
-    const url = `${this.relayerUrl}/wallet/execution`;
-    const method = 'POST';
     const finalMessage = {
       ...this.defaultPaymentOptions,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from, privateKey), 10),
     };
     const signature = await calculateMessageSignature(privateKey, finalMessage);
-    const body = JSON.stringify({...finalMessage, signature});
-    const response = await fetch(url, {headers, method, body});
-    const responseJson = await response.json();
-    if (response.status === 201) {
-      await waitToBeMined(this.provider, responseJson.transaction.hash);
-      return responseJson.transaction.hash;
-    }
-    throw new Error(`${responseJson.error}`);
+
+    const result = await this.relayerApi.execute({
+      ...finalMessage,
+      signature,
+    });
+
+    const transactionHash = result.transaction.hash;
+    await waitToBeMined(this.provider, transactionHash);
+    return transactionHash;
   }
 
   async getNonce(identityAddress, privateKey) {
@@ -128,28 +117,14 @@ class UniversalLoginSDK {
   }
 
   async connect(identityAddress) {
-    const privateKey = this.generatePrivateKey();
-    const wallet = new Wallet(privateKey, this.provider);
-    const key = wallet.address.toLowerCase();
-    const url = `${this.relayerUrl}/authorisation`;
-    const method = 'POST';
-    const body = JSON.stringify({identityAddress, key});
-    const response = await fetch(url, {headers, method, body});
-    if (response.status === 201) {
-      return privateKey;
-    }
-    throw new Error(`${response.status}`);
+    const {address, privateKey} = Wallet.createRandom();
+    await this.relayerApi.connect(identityAddress, address.toLowerCase());
+    return privateKey;
   }
 
-  async denyRequest(identityAddress, publicKey) {
-    const url = `${this.relayerUrl}/authorisation/${identityAddress}`;
-    const method = 'POST';
-    const body = JSON.stringify({identityAddress, key: publicKey});
-    const response = await fetch(url, {headers, method, body});
-    if (response.status === 201) {
-      return publicKey;
-    }
-    throw new Error(`${response.status}`);
+  async denyRequest(identityAddress, key) {
+    await this.relayerApi.denyConnection(identityAddress, key);
+    return key;
   }
 
   async fetchPendingAuthorisations(identityAddress) {

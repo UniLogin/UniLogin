@@ -1,11 +1,11 @@
 import ObserverBase from './ObserverBase';
-import {headers, fetch} from '../utils/http';
+import {RelayerApi} from '../RelayerApi';
 import deepEqual from 'deep-equal';
 
 
 class RelayerObserver extends ObserverBase {
   lastAuthorisations: any = {};
-  constructor(private relayerUrl: string) {
+  constructor(private relayerApi: RelayerApi) {
     super();
   }
 
@@ -29,19 +29,9 @@ class RelayerObserver extends ObserverBase {
     }
   }
 
-  authorisationUrl(contractAddress: string) {
-    return `${this.relayerUrl}/authorisation/${contractAddress}`;
-  }
-
   async fetchPendingAuthorisations(contractAddress: string) {
-    const url = this.authorisationUrl(contractAddress);
-    const method = 'GET';
-    const response = await fetch(url, {headers, method});
-    const responseJson = await response.json();
-    if (response.status === 200) {
-      return responseJson.response;
-    }
-    throw new Error(`${response.status}`);
+    const {response} = await this.relayerApi.getPendingAuthorisations(contractAddress);
+    return response;
   }
 }
 
