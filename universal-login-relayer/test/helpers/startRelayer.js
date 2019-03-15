@@ -1,5 +1,5 @@
 import {deployContract} from 'ethereum-waffle';
-import Token from '../../src/contracts/Token.json';
+import Token from '../../lib/dev/Token.json';
 import ENSBuilder from 'ens-builder';
 
 const defaultDomain = 'mylogin.eth';

@@ -21,7 +21,7 @@ describe('UI: Login', () => {
 
   beforeEach(async () => {
     const provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    relayer = await RelayerUnderTest.createPreconfigured({provider});
     await relayer.start();
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, clickerContract.address, tokenContract.address);

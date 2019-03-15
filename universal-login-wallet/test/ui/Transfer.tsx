@@ -22,7 +22,7 @@ describe('UI: Transfer', () => {
   const receiverAddress = '0x0000000000000000000000000000000000000001';
 
   before(async () => {
-    ({relayer, provider} = await setupSdk());
+    ({relayer, provider} = await setupSdk({overridePort: 33113}));
     ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [mockTokenContract.address]);
     services.tokenService.start();
@@ -43,8 +43,8 @@ describe('UI: Transfer', () => {
     expect(tokenBalance).to.eq('999947384000000000');
   });
 
-  after(() => {
+  after(async () => {
     appWrapper.unmount();
-    relayer.stop();
+    await relayer.stop();
   });
 });

@@ -1,5 +1,5 @@
 import chai from 'chai';
-import DevelopmentRelayer from '../../src/dev/DevelopmentRelayer';
+import {DevelopmentRelayer} from '../../lib/dev';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {waitUntil} from 'universal-login-commons';
@@ -17,7 +17,7 @@ describe('Development Relayer', async () => {
 
   const relayerUrl = 'http://localhost:33511';
 
-  before(async () => {
+  beforeEach(async () => {
     ({relayer, tokenContract} = await startRelayer(wallet, DevelopmentRelayer));
     sdk = new UniversalLoginSDK(relayerUrl, provider);
     [, walletContractAddress] = await sdk.create('ja.mylogin.eth');
@@ -38,7 +38,7 @@ describe('Development Relayer', async () => {
     await waitUntil(isTokenBalanceEqual(utils.parseEther('100')), 5, 50);
   });
 
-  after(async () => {
-    relayer.stop();
+  afterEach(async () => {
+    await relayer.stop();
   });
 });

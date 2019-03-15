@@ -17,7 +17,7 @@ describe('Relayer - Authorisation routes', async () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    relayer = await RelayerUnderTest.createPreconfigured({provider});
     await relayer.start();
     const result = await chai.request(relayer.server)
       .post('/wallet')
