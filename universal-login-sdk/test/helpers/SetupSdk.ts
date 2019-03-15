@@ -8,8 +8,8 @@ declare interface SetupSdkOverrides {
   overridePort?: number;
 }
 
-export async function setupSdk({givenProvider, overridePort}: SetupSdkOverrides = {overridePort: 33111, givenProvider: createMockProvider()}) {
-  const relayer = await RelayerUnderTest.createPreconfigured(givenProvider, {overridePort});
+export async function setupSdk({givenProvider = createMockProvider(), overridePort = 33111}: SetupSdkOverrides) {
+  const relayer = await RelayerUnderTest.createPreconfigured({provider: givenProvider, overridePort});
   await relayer.start();
   const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider);

@@ -11,7 +11,7 @@ describe('Relayer - Config routes', async () => {
 
   before(async () => {
     provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured(provider);
+    relayer = await RelayerUnderTest.createPreconfigured({provider});
     await relayer.start();
   });
 

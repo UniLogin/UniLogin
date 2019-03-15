@@ -8,7 +8,7 @@ class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  static async createPreconfigured(provider = createMockProvider(), {overridePort} = {overridePort: 33111}) {
+  static async createPreconfigured({provider, overridePort} = {provider: createMockProvider(), overridePort: 33111}) {
     const port = overridePort;
     const [deployerWallet] = (await getWallets(provider)).slice(-2);
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
