@@ -11,7 +11,7 @@ export declare interface DevelopmentRelayerConfig {
   chainSpec: {
     ensAddress: string;
     chainId: number;
-  },
+  };
   ensRegistrars: string[];
   tokenContractAddress: string;
 }
