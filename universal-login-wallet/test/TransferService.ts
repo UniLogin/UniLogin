@@ -21,7 +21,7 @@ describe('TransferService', () => {
   let contractAddress: string;
   let tokenService: TokenService;
 
-  before(async () => {
+  beforeEach(async () => {
     ({sdk, relayer, provider} = await setupSdk());
     const [randomWallet] = await getWallets(provider);
     ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
@@ -50,7 +50,7 @@ describe('TransferService', () => {
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
   });
 
-  after(async () => {
+  afterEach(async () => {
     await relayer.stop();
   });
 });

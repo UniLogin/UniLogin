@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import TokenGrantingRelayer from '../../src/dev/TokenGrantingRelayer';
+import {TokenGrantingRelayer} from '../../lib/dev';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {waitUntil} from 'universal-login-commons';
@@ -18,7 +18,7 @@ describe('Token Granting Relayer', async () => {
 
   const relayerUrl = 'http://localhost:33511';
 
-  before(async () => {
+  beforeEach(async () => {
     ({relayer, tokenContract} = await startRelayer(wallet, TokenGrantingRelayer));
     sdk = new UniversalLoginSDK(relayerUrl, provider);
     [identityPrivateKey, walletContractAddress] = await sdk.create('ja.mylogin.eth');
@@ -44,7 +44,7 @@ describe('Token Granting Relayer', async () => {
     });
   });
 
-  after(async () => {
-    relayer.stop();
+  afterEach(async () => {
+    await relayer.stop();
   });
 });

@@ -43,8 +43,8 @@ describe('UI: Transfer', () => {
     expect(tokenBalance).to.eq('999947384000000000');
   });
 
-  after(() => {
+  after(async () => {
     appWrapper.unmount();
-    relayer.stop();
+    await relayer.stop();
   });
 });

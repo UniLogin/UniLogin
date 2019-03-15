@@ -1,5 +1,6 @@
-import {providers} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import Knex from 'knex';
+import {EventEmitter} from 'fbemitter';
 
 declare interface RelayerConfig {
   legacyENS: boolean;
@@ -16,6 +17,8 @@ declare interface RelayerConfig {
 declare class Relayer {
   provider: providers.Provider;
   database: Knex;
+  wallet: Wallet;
+  hooks: EventEmitter;
 
   constructor(config: RelayerConfig, provider?: providers.Provider);
 
@@ -27,3 +30,5 @@ declare class Relayer {
 }
 
 export default Relayer;
+
+export {RelayerConfig};

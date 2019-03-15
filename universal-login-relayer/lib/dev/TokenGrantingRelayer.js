@@ -1,5 +1,5 @@
 import {waitToBeMined} from 'universal-login-commons';
-import Token from '../contracts/Token.json';
+import Token from './Token.json';
 import Relayer from 'universal-login-relayer';
 import {utils, Contract} from 'ethers';
 
@@ -35,4 +35,4 @@ class TokenGrantingRelayer extends Relayer {
   }
 }
 
-module.exports = TokenGrantingRelayer;
+export {TokenGrantingRelayer};
