@@ -1,5 +1,5 @@
 import ObserverBase from './ObserverBase';
-import {headers, fetch} from '../utils/http';
+import {headers, fetch} from '../utils/fetch';
 import deepEqual from 'deep-equal';
 
 

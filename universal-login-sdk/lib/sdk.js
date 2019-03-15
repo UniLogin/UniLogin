@@ -5,7 +5,7 @@ import {waitToBeMined, waitForContractDeploy} from 'universal-login-commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import {headers, fetch} from './utils/http';
+import {headers, fetch} from './utils/fetch';
 import MESSAGE_DEFAULTS from './config';
 
 
