@@ -35,6 +35,10 @@ describe('KeyHolder', async () => {
       expect(await identity.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
     });
 
+    it('there must be a total of 3 keys', async () => {
+      expect(await identity.keyCount()).to.eq(3);
+    });
+
     it('Should return the purpose', async () => {
       expect(await identity.keyHasPurpose(managementKey, MANAGEMENT_KEY)).to.be.true;
       expect(await identity.keyHasPurpose(managementKey, ACTION_KEY)).to.be.false;
@@ -50,6 +54,7 @@ describe('KeyHolder', async () => {
       const existingKeys = await identity.keys(actionKey);
       expect(existingKeys[0]).to.eq(ACTION_KEY);
       expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
+      expect(await identity.keyCount()).to.eq(4);
     });
 
     it('Should not allow to add existing key', async () => {
@@ -82,6 +87,7 @@ describe('KeyHolder', async () => {
       const existingKeys2 = await identity.keys(actionKey2);
       expect(existingKeys2[0]).to.eq(ACTION_KEY);
       expect(existingKeys2[1]).to.eq(utils.hexlify(actionKey2));
+      expect(await identity.keyCount()).to.eq(5);
     });
 
     it('Should not allow to add existing key', async () => {
@@ -114,12 +120,14 @@ describe('KeyHolder', async () => {
   describe('Remove key', async () => {
     beforeEach(async () => {
       await addActionKey();
+      expect(await identity.keyCount()).to.eq(4);
     });
 
     it('Should remove key successfully', async () => {
       expect(await isActionKey()).to.be.true;
       await identity.removeKey(actionKey, ACTION_KEY);
       expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
+      expect(await identity.keyCount()).to.eq(3);
     });
 
     it('Should emit KeyRemoved event successfully', async () => {
