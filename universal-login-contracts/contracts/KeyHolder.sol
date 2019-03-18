@@ -5,12 +5,12 @@ import "./IKeyHolder.sol";
 contract KeyHolder is IKeyHolder {
     mapping (address => Key) public keys;
 
-    uint _keyCount;
+    uint public keyCount;
 
     constructor(address _key) public {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
-        _keyCount = 1;
+        keyCount = 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
     }
 
@@ -31,10 +31,6 @@ contract KeyHolder is IKeyHolder {
         _;
     }
 
-    function keyCount() public view returns(uint) {
-        return _keyCount;
-    }
-
     function keyExist(address _key) public view returns(bool) {
         return keys[_key].key != address(0x0);
     }
@@ -52,7 +48,7 @@ contract KeyHolder is IKeyHolder {
 
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
-        _keyCount += 1;
+        keyCount += 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
         return true;
@@ -73,7 +69,7 @@ contract KeyHolder is IKeyHolder {
         emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
         delete keys[_key];
-        _keyCount -= 1;
+        keyCount -= 1;
 
         return true;
     }
