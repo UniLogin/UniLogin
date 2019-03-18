@@ -15,7 +15,6 @@ export default async function basicWalletService(givenProvider, wallets) {
   const [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
   const mockToken = await deployContract(wallet, MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
-  await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
   const factory = new ContractFactory(WalletContract.abi, WalletContract.bytecode, wallet);
   const identity = await factory.attach(contractAddress);
   return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, identity, relayer};

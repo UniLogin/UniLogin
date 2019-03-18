@@ -1,14 +1,15 @@
-import Relayer from '../relayer';
+import {DevelopmentRelayer} from '../dev';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 import {withENS} from './utils';
 
-class RelayerUnderTest extends Relayer {
+
+class RelayerUnderTest extends DevelopmentRelayer {
   url() {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  static async createPreconfigured({provider, overridePort} = {provider: createMockProvider(), overridePort: 33111}) {
+  static async createPreconfigured({provider = createMockProvider(), overridePort = 33111, tokenContractAddress = undefined} = {}) {
     const port = overridePort;
     const [deployerWallet] = (await getWallets(provider)).slice(-2);
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
@@ -26,6 +27,7 @@ class RelayerUnderTest extends Relayer {
         chainId: 0,
       },
       ensRegistrars: [defaultDomain],
+      tokenContractAddress
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
     relayer.provider = providerWithENS;

@@ -22,7 +22,7 @@ const withENS = (provider, ensAddress) => {
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
-const isContract = async (provider, contractAddress) => {
+export const isContract = async (provider, contractAddress) => {
   // TODO: Only whitelisted contracts
   const code = await provider.getCode(contractAddress);
   return !!code;

@@ -4,6 +4,7 @@ import Relayer from '../../types.d.ts';
 declare interface Overrides {
   overridePort?: number;
   provider?: providers.Provider;
+  tokenContractAddress?: string;
 }
 
 declare class RelayerUnderTest extends Relayer {
