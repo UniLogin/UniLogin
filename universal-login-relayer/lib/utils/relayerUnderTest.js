@@ -1,7 +1,9 @@
 import {DevelopmentRelayer} from '../dev';
-import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
+import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 import {withENS} from './utils';
+import {Wallet} from 'ethers';
+import MockToken from 'universal-login-contracts/build/MockToken';
 
 
 class RelayerUnderTest extends DevelopmentRelayer {
@@ -13,6 +15,11 @@ class RelayerUnderTest extends DevelopmentRelayer {
     const port = overridePort;
     const [deployerWallet] = (await getWallets(provider)).slice(-2);
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
+    const relayerWallet = new Wallet(privateKey, provider);
+    if (!tokenContractAddress) {
+      const mockToken = await deployContract(relayerWallet, MockToken);
+      tokenContractAddress = mockToken.address;
+    }
     const defaultDomain = 'mylogin.eth';
     const ensBuilder = new ENSBuilder(deployerWallet);
     const [label, tld] = defaultDomain.split('.');
