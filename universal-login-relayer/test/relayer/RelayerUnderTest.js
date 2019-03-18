@@ -23,7 +23,7 @@ describe('Relayer Under Test', async () => {
     await relayer.start();
     sdk = new UniversalLoginSDK(relayerUrl, provider);
     [, walletContractAddress] = await sdk.create('ja.mylogin.eth');
-    tokenContract = new Contract(relayer.config.tokenContractAddress, MockToken.interface, provider)
+    tokenContract = new Contract(relayer.config.tokenContractAddress, MockToken.interface, provider);
   });
 
   const isBalanceEqual = (value) => async () =>

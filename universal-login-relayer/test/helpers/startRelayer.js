@@ -22,6 +22,8 @@ async function startRelayer(wallet, relayerConstructor) {
       chainId: 0},
     ensRegistrars: ['mylogin.eth'],
     tokenContractAddress: tokenContract.address,
+    tokenPrivateKey: wallet.privateKey,
+    etherPrivateKey: wallet.privateKey
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();
