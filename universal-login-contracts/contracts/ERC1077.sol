@@ -11,13 +11,9 @@ contract ERC1077 is KeyHolder, IERC1077 {
     using ECDSA for bytes32;
     using SafeMath for uint;
 
-    uint _lastNonce;
+    uint public lastNonce;
 
     constructor(address _key) KeyHolder(_key) public {
-    }
-
-    function lastNonce() public view returns (uint) {
-        return _lastNonce;
     }
 
     function canExecute(
@@ -106,7 +102,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
     {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length % 65 == 0, "Invalid signatures");
-        require(nonce == _lastNonce, "Invalid nonce");
+        require(nonce == lastNonce, "Invalid nonce");
         require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
         uint256 startingGas = gasleft();
         bytes memory _data;
@@ -114,8 +110,8 @@ contract ERC1077 is KeyHolder, IERC1077 {
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.value(value)(data);
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType);
-        emit ExecutedSigned(messageHash, _lastNonce, success);
-        _lastNonce++;
+        emit ExecutedSigned(messageHash, lastNonce, success);
+        lastNonce++;
         uint256 gasUsed = startingGas.sub(gasleft());
         refund(gasUsed, gasPrice, gasToken);
         return messageHash;
