@@ -1,10 +1,10 @@
 import {providers} from 'ethers';
-import {UserWallet} from '../WalletService';
+import WalletService from '../WalletService';
 import {Partial} from 'universal-login-commons';
 
 export class EtherBalanceService {
-  constructor(private provider: providers.Provider, private userWallet: Partial<UserWallet>) {}
+  constructor(private provider: providers.Provider, private walletService: Partial<WalletService>) {}
 
   getBalance = () => 
-    this.userWallet.contractAddress ? this.provider.getBalance(this.userWallet.contractAddress) : null; 
+    this.walletService.userWallet && this.walletService.userWallet.contractAddress ? this.provider.getBalance(this.walletService.userWallet.contractAddress) : null; 
 }
