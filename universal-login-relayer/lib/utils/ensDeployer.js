@@ -33,7 +33,7 @@ class ENSDeployer {
     await builder.registerReverseRegistrar();
     for (let count = 0; count < registrars.length; count++) {
       const domain = registrars[count];
-      const [label, tld] = domain.split('.');
+      const [label, tld] = domain.split(/\.(.*)/);
       await builder.registerDomain(label, tld);
       this.count += 1;
     }

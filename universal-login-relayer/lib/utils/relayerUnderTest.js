@@ -14,7 +14,7 @@ class RelayerUnderTest extends Relayer {
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
     const defaultDomain = 'mylogin.eth';
     const ensBuilder = new ENSBuilder(deployerWallet);
-    const [label, tld] = defaultDomain.split('.');
+    const [label, tld] = defaultDomain.split(/\.(.*)/);
     const ensAddress = await ensBuilder.bootstrapWith(label, tld);
     const providerWithENS = withENS(provider, ensAddress);
     const config = {
