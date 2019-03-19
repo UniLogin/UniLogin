@@ -1,4 +1,5 @@
 import {EtherBalanceService} from "./EtherBalanceService";
+import {sleep} from 'universal-login-commons';
 
 type Callback = (...args: any[]) => any;
 
@@ -7,20 +8,27 @@ export class BalanceService {
   constructor(private etherBalanceService: EtherBalanceService) {}
 
   async start(callback: Callback) {
+    let lastBalance = undefined;
     while(this.running) {
-      await this.getBalance(callback);
+      const balance = await this.getBalance();
+      if (lastBalance != balance) {
+        callback(balance);
+        lastBalance = balance;
+      }
+      await sleep(1000);
     }
   }
 
   async subscribeBalance(callback: Callback) {
     this.running = true;
     this.start(callback);
-    return () => this.running = false;
+    return this.unsubscribe.bind(this);
   }
 
-  getBalance = async (callback: Callback) => {
-    const etherBalance = await this.etherBalanceService.getBalance();
-    callback(etherBalance);
-    await setTimeout(1000);
+  unsubscribe() {
+    this.running = false;
   }
+
+  getBalance = () => 
+    this.etherBalanceService.getBalance();
 }
