@@ -115,7 +115,7 @@ jobs:
       - run: git clone --branch v0.2x.3 https://github.com/dapphub/klab.git
       - run: cd klab
       - run: make deps
-      - run: make link
+      - run: sudo make link
 
 workflows:
   version: 2
