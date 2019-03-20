@@ -111,12 +111,11 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - checkout
-      - run: |
-          sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-          git clone --branch v0.2.3 https://github.com/dapphub/klab.git
-          cd klab
-          make deps
-          make link
+      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
+      - run: git clone --branch v0.2x.3 https://github.com/dapphub/klab.git
+      - run: cd klab
+      - run: make deps
+      - run: make link
 
 workflows:
   version: 2
