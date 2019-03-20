@@ -107,8 +107,9 @@ jobs:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
   run_klab:
-    - checkout
-    - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev npm
+    steps:
+      - checkout
+      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev npm
 
 workflows:
   version: 2
