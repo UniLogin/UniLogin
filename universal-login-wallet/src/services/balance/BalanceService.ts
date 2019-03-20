@@ -6,7 +6,7 @@ type Callback = (...args: any[]) => any;
 
 export class BalanceService {
   private running: boolean = false;
-  constructor(private etherBalanceService: EtherBalanceService) {}
+  constructor(private etherBalanceService: EtherBalanceService, private timeout: number = 1000) {}
 
   async start(callback: Callback) {
     let lastBalance = undefined;
@@ -16,7 +16,7 @@ export class BalanceService {
         callback(balance);
         lastBalance = balance;
       }
-      await sleep(1000);
+      await sleep(this.timeout);
     }
   }
 
