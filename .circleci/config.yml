@@ -121,10 +121,11 @@ jobs:
           cd klab
           sudo make link
       - run: |
-          export PATH=$PATH:/path/to/klab/bin
-          export KLAB_EVMS_PATH=/path/to/evm-semantics
+          export PATH=$PATH:/usr/local/bin
+          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
           export TMPDIR=/tmp
-          export KLAB_K_PATH=/path/to/k
+          cd klab
+          make proof
 
 workflows:
   version: 2
