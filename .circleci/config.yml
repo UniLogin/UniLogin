@@ -124,7 +124,7 @@ jobs:
           export PATH=$PATH:/usr/local/bin
           export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
           export TMPDIR=/tmp
-          cd klab
+          cd universal-login-formal-verification
           make proof
 
 workflows:
