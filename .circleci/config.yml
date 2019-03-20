@@ -108,10 +108,7 @@ jobs:
       - run: cd universal-login-wallet && yarn test
   run_klab:
     - checkout
-    - setup_remote_docker:
-        docker_layer_caching: true
-    - run: |
-        sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev npm
+    - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev npm
 
 workflows:
   version: 2
