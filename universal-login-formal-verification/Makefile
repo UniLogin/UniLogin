@@ -20,7 +20,8 @@ $(SRC_JSON): $(SRC_SOL)
 	mkdir -p dapp/out
 	cp $(SRC_SOL) dapp/src
 	docker create -v /src --name comp $(SOLC) 
-	docker cp dapp/src/* comp:/src
+	docker cp dapp/src/KeyHolder.sol comp:/src
+	docker cp dapp/src/IKeyHolder.sol comp:/src
 	docker run comp \
 	--combined-json=abi,bin,bin-runtime,srcmap,srcmap-runtime,ast \
 	/src/$(MAIN_SOL) > $(SRC_JSON)
