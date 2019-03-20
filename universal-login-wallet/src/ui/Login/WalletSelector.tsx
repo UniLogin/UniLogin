@@ -25,6 +25,16 @@ const WalletSelector = ({onCreateClick}: WalletSelector) => {
     });
   };
 
+  const renderSuggestions = () =>
+    !busy && (connections.length || creations.length) ?
+      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/> :
+      null;
+
+  const renderBusyIndicator = () =>
+    busy ?
+      <div className="circle-loader input-loader"/> :
+      null;
+
   return(
     <>
       <label htmlFor="loginInput" className="login-input-label">
@@ -37,11 +47,8 @@ const WalletSelector = ({onCreateClick}: WalletSelector) => {
           placeholder="bob.example.eth"
           autoFocus
       />
-      {busy && <div className="circle-loader input-loader"/>}
-      {!busy && (connections.length || creations.length) ?
-        <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/>
-        : null
-      }
+      {renderBusyIndicator()}
+      {renderSuggestions()}
     </>
   );
 };
