@@ -19,8 +19,9 @@ $(SRC_JSON): $(SRC_SOL)
 	mkdir -p dapp/src
 	mkdir -p dapp/out
 	cp $(SRC_SOL) dapp/src
-	ls dapp/src
-	docker run -v $(shell pwd)/dapp/src:/src $(SOLC) \
+	docker create -v /src --name comp $(SOLC) 
+	docker cp dapp/src/* comp:/src
+	docker run comp \
 	--combined-json=abi,bin,bin-runtime,srcmap,srcmap-runtime,ast \
 	/src/$(MAIN_SOL) > $(SRC_JSON)
 
