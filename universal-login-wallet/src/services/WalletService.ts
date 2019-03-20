@@ -6,4 +6,5 @@ export interface UserWallet {
 
 export default class WalletService {
   public userWallet?: UserWallet;
+  walletExists = () => !!this.userWallet;
 }
