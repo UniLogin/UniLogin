@@ -110,6 +110,7 @@ jobs:
     docker:
       - image: circleci/node:10.15
     steps:
+      - run: pwd
       - checkout
       - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
       - run: git clone --branch v0.2.3 https://github.com/dapphub/klab.git
@@ -119,6 +120,11 @@ jobs:
       - run: |
           cd klab
           sudo make link
+      - run: |
+          export PATH=$PATH:/path/to/klab/bin
+          export KLAB_EVMS_PATH=/path/to/evm-semantics
+          export TMPDIR=/tmp
+          export KLAB_K_PATH=/path/to/k
 
 workflows:
   version: 2
