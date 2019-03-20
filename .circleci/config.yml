@@ -118,7 +118,6 @@ workflows:
   formal_verification:
     jobs:
       - run_klab
-      -
   universal_login_all:
     jobs:
       - build
