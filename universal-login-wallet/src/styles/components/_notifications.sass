@@ -1,59 +1,11 @@
 .notifications-wrapper
-  max-height: 25px
-  
-.notifications-btn
-  position: relative
-  
-.notifications-btn:active
-  opacity: 0.8
-
-.notifications-btn.active::after
-  content: ''
-  position: absolute
-  top: 0
-  right: 0
-  width: 6px
-  height: 6px
-  border: 2px solid #ffffff
-  background: #0FB989
-  border-radius: 50%
-  
-.notifications-icon
-  max-width: 100%
-
-.notifications-overlay
-  position: fixed
-  top: 0
-  right: 0
-  bottom: 0
-  left: 0
-  z-index: 90
+  max-width: 892px
+  margin: 0 auto
   
 .notifications
-  position: absolute
-  bottom: -17px
-  right: 0
-  transform: translateY(100%)
-  min-width: 647px
-  max-height: 370px
-  overflow-x: auto
-  padding: 20px 40px 20px 20px
+  padding: 20px 30px 20px
   background: #EDEDF2
   border-radius: 5px
-  z-index: 100
-
-.notifications::-webkit-scrollbar
-  width: 9px
-  height: 10px
-
-.notifications::-webkit-scrollbar-thumb
-  background-color: #5053DD
-  border-radius: 100px
-
-.notifications::-webkit-scrollbar-track
-  background: #fff
-  border: 1px solid #EDEDF2
-  border-radius: 0 5px 5px 0
 
 .notifications-title
   margin-bottom: 17px
@@ -108,7 +60,6 @@
   font-size: 13px
   color: #B1B5BF
   
-
 .notification-buttons-row
   display: flex
   justify-content: flex-end
@@ -201,7 +152,6 @@
   border-left: 6px solid transparent
   border-right: 6px solid transparent
   border-top: 6px solid #fff
-
 
 .tooltip-row
   display: flex

@@ -7,7 +7,7 @@ export default class DashboardPage {
   }
 
   clickTransferButton() {
-    this.wrapper.find('.transfer-funds-button').simulate('click');
+    this.wrapper.find('#transferFunds').simulate('click');
     this.wrapper.update();
   }
 
