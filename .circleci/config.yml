@@ -106,9 +106,19 @@ jobs:
             keys: 
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
+    run_klab:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: |
+          sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev npm
 
 workflows:
   version: 2
+  formal_verification:
+    jobs:
+      - run_klab
+      -
   universal_login_all:
     jobs:
       - build
@@ -136,3 +146,5 @@ workflows:
       - lint:
           requires:
             - build      
+
+
