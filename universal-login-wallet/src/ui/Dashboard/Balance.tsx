@@ -16,7 +16,6 @@ const Balance = ({className} : BalanceProps) => {
       <h2 className="balance-title">Your balance</h2>
       <div className="balance-box">
         <p className="balance-amount"><span className="balance-amount-highlighted">{balance}</span>ETH</p>
-        <p className="balance-amount"><span className="balance-amount-highlighted">$1000,00</span>00 0000 2334</p>
       </div>
     </section>
   );
