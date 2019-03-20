@@ -15,7 +15,7 @@ const HomeScreen = () => {
           <UserSelect />
           <div className="dashboard-buttons-row">
             <button onClick={() => modalService.showModal('request')} className="btn btn-primary btn-add">Top-up</button>
-            <button onClick={() => modalService.showModal('transfer')} className="btn btn-secondary btn-send">Send</button>
+            <button id="transferFunds" onClick={() => modalService.showModal('transfer')} className="btn btn-secondary btn-send">Send</button>
           </div>
           <Balance className="dashboard-balance"/>
         </div>
