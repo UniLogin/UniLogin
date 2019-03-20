@@ -38,8 +38,9 @@ const WalletSelector = ({onCreateClick}: WalletSelector) => {
           autoFocus
       />
       {busy && <div className="circle-loader input-loader"/>}
-      {!busy && (connections.length || creations.length) &&
+      {!busy && (connections.length || creations.length) ?
         <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/>
+        : null
       }
     </>
   );
