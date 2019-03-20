@@ -120,6 +120,8 @@ jobs:
       - run: |
           cd klab
           sudo make link
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: |
           export PATH=$PATH:/usr/local/bin
           export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
