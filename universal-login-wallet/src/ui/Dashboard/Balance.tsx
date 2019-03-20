@@ -9,9 +9,7 @@ const Balance = ({className} : BalanceProps) => {
   const [balance, setBalance] = useState(0);
   const {balanceService} = useServices();
 
-  useEffect(() => {
-    (async () =>  balanceService.subscribeBalance(setBalance))();
-  }, []);
+  useEffect(() => balanceService.subscribeBalance(setBalance), []);
 
   return(
     <section className={`${className ? className : ''}`}>

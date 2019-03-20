@@ -33,7 +33,7 @@ describe('Balance', () => {
       const walletService = {userWallet: {contractAddress: '0x0000000000000000000000000000000000000001', name: 'name', privateKey: '0x012345'}};
       const etherBalanceService = new EtherBalanceService(provider, walletService);
       const balanceService = new BalanceService(etherBalanceService);
-      const unsubscribe = await balanceService.subscribeBalance(callback);
+      const unsubscribe = balanceService.subscribeBalance(callback);
       await waitUntil(() => !!callback.firstCall);
       expect(callback).to.have.been.calledOnce;
       expect(callback.getCall(0).args[0]).to.eq('0.0');

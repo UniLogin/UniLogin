@@ -20,7 +20,7 @@ export class BalanceService {
     }
   }
 
-  async subscribeBalance(callback: Callback) {
+  subscribeBalance(callback: Callback) {
     this.running = true;
     this.start(callback);
     return this.unsubscribe.bind(this);
