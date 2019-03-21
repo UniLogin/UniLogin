@@ -4,7 +4,7 @@ import "./ENSRegistered.sol";
 import "./ERC1077Proxy.sol";
 
 
-contract IdentityProxy is ENSRegistered, ERC1077Proxy {
+contract WalletProxy is ENSRegistered, ERC1077Proxy {
     constructor(
         address _masterCopy,
         address _key,

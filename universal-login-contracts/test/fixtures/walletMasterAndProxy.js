@@ -7,7 +7,7 @@ import {constants, utils, Contract} from 'ethers';
 
 const {parseEther} = utils;
 
-export default async function basicIdentityMasterAndProxy(provider, [, , , , , , , , , wallet]) {
+export default async function walletMasterAndProxy(provider, [, , , , , , , , , wallet]) {
   const publicKey = wallet.address;
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
