@@ -10,6 +10,8 @@ SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder.sol \
 MAIN_SOL = KeyHolder.sol
 
 proof: build
+	ls out/specs
+	export TERM=xterm
 	for f in out/specs/*; do klab prove $$f; done; 
 
 build: $(SRC_JSON) $(SRC_SPEC)
