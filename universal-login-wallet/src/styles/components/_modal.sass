@@ -6,17 +6,29 @@
   height: 100%
   opacity: 0.2
   background: #FFFFFF
-
-.modal
+  
+.modal-wrapper
   position: fixed
   top: 50%
   left: 50%
-  padding: 40.5px 30px
+  max-height: 100%
+  max-width: 100%
   transform: translate(-50%, -50%)
+  padding: 15px
+  overflow-y: auto
+  
+.modal
+  padding: 40.5px 30px
   color: #ffffff
   background-image: linear-gradient(-180deg, #0C0E57 0%, #14052C 100%)
   border-radius: 6px
 
+  +media(s)
+    padding: 40px 15px
+
+.modal-body
+  max-width: 100%
+  
 .modal-title
   padding-right: 25px
   margin-bottom: 6px
@@ -41,6 +53,7 @@
   opacity: 0.75
   font-size: 12px
   color: #FFFFFF
+  line-height: 19px
 
 .transfer-modal,
 .request-modal,
@@ -72,14 +85,25 @@
 
 .modal-topup-row
   display: flex
+  max-width: 100%
   width: 707px
   margin: 74px 0 36px
+
+  +media(s, 50px)
+    flex-direction: column
+    margin: 90px 0 20px
 
 .modal-topup-block + .modal-topup-block
   margin-left: 33px
 
+  +media(s, 50px)
+    margin: 43px 0 0
+
 .modal-topup-block
   width: 50%
+
+  +media(s, 50px)
+    width: 100%
   
 .modal-topup-btn
   width: 100%
@@ -100,25 +124,35 @@
 
 .modal-topup-separator
   height: 118px
-  width: 1px
-  margin: 0 45px
+  min-width: 1px
+  margin: 0 16%
   border: none
   background: #C3C0D8
   opacity: 0.2
-
+  
 .modal-topup-icon
   width: 78px
   height: 78px
+
+  +media(s, 50px)
+    width: 72px
+    height: 72px
   
 .modal-topup-text
   max-width: 195px
   margin: 29px auto 0
 
+  +media(s, 50px)
+    margin: 15px auto 0
+  
 .address-modal
   width: 618px
 
 .address-modal-text
   margin: 10px 0 38px
+
+  +media(s)
+    margin: 20px 0 0    
 
 .address-modal-row
   display: flex
@@ -126,12 +160,22 @@
   justify-content: center
   margin: 40px 0 55px
 
+  +media(s)
+    margin: 55px 0
+
 .address-modal-block
   display: flex
   align-items: center
+  justify-content: center
+
+  +media(s)
+    flex-direction: column
 
 .address-modal-block + .address-modal-block
   margin-left: 30px
+
+  +media(s)
+    margin-left: 55px
 
 .address-modal-amount
   margin-left: 19px
@@ -140,11 +184,15 @@
   color: #FFFFFF
   text-align: center
 
+  +media(s)
+    margin: 16px 0 0
+
 .info-modal-fields
+  max-width: 100%
   width: 500px
   margin: 38px 0 10px
 
-.info-modal-input
+.input-info-modal-input
   margin-bottom: 30px
 
 .modal-card-amount
@@ -153,16 +201,44 @@
   color: #0FB989
 
 .card-modal-fields
+  max-width: 100%
   width: 500px
   margin: 40px 0
 
-.card-modal-input
-  margin-bottom: 15px
+.input-card-modal-input
+  margin-bottom: 30px
 
 .card-modal-row
   display: flex
   justify-content: space-between
 
+  +media(xs, 60px)
+    flex-wrap: wrap
+
+.card-modal-row-item:nth-child(1),
+.card-modal-row-item:nth-child(2)
+  +media(xs, 60px)
+    width: 46%
+
+.card-modal-row-item:nth-child(1)
+  +media(xs, 60px)
+    margin-right: 2%
+
+.card-modal-row-item:nth-child(2)
+  +media(xs, 60px)
+    margin-left: 2%
+
+.card-modal-row-item:nth-child(3)
+  +media(xs, 60px)
+    margin-top: 30px
+    width: 100%
+
+
 .card-modal-row-item + .card-modal-row-item
   margin-left: 45px
-  
+
+  +media(s)
+    margin-left: 15px
+
+  +media(xs, 60px)
+    margin-left: 0
