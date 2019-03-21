@@ -23,7 +23,8 @@ const commandLineBuilder = yargs
     default: ETHER_NATIVE_TOKEN.symbol
   })
   .option('amount', {
-    describe: 'Amount of transfer'
+    describe: 'Amount of transfer',
+    string: true
   })
   .command('start:dev', 'Starts development environment',
     () => {
