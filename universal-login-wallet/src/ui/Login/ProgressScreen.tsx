@@ -9,7 +9,7 @@ const Transferring = () => {
     <div className="transferring">
       <div className="transferring-content">
         <Spinner />
-        <h1 className="transferring-title">Transfering funds</h1>
+        <h1 className="transferring-title">Transferring funds</h1>
         <div className="progress-bar">
           <div className={`progress-bar-line ${complete ? 'complete' : ''}`} />
         </div>
