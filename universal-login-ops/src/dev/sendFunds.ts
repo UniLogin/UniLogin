@@ -13,6 +13,7 @@ export interface sendFundsParameters {
 }
 
 export const sendFunds = async ({nodeUrl, privateKey, to, amount, currency, provider} : sendFundsParameters) => {
+  console.log(amount)
   const {wallet} = connect(nodeUrl, privateKey, provider);
   const value = etherFormatOf(amount);
 

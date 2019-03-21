@@ -3,7 +3,7 @@ import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../dev/deployToken';
 import connectAndExecute from './connectAndExecute';
 import {sendFunds} from '../dev/sendFunds';
-import {ETHER_NATIVE_TOKEN, TEST_PRIVATE_KEY} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from 'universal-login-commons';
 
 const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')
@@ -13,7 +13,7 @@ const commandLineBuilder = yargs
   })
   .option('privateKey', {
     describe: 'private key to be used for ',
-    default: TEST_PRIVATE_KEY
+    default: DEV_DEFAULT_PRIVATE_KEY
   })
   .option('to', {
     describe: 'Target address of transfer'
