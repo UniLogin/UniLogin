@@ -2,6 +2,8 @@ const yargs = require('yargs');
 import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../dev/deployToken';
 import connectAndExecute from './connectAndExecute';
+import {sendFunds} from '../dev/sendFunds';
+import {ETHER_NATIVE_TOKEN, TEST_PRIVATE_KEY} from 'universal-login-commons';
 
 const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')
@@ -10,7 +12,18 @@ const commandLineBuilder = yargs
     default: ''
   })
   .option('privateKey', {
-    describe: 'private key to be used for '
+    describe: 'private key to be used for ',
+    default: TEST_PRIVATE_KEY
+  })
+  .option('to', {
+    describe: 'Target address of transfer'
+  })
+  .option('currency', {
+    describe: 'Currency of transfer',
+    default: ETHER_NATIVE_TOKEN.symbol
+  })
+  .option('amount', {
+    describe: 'Amount of transfer'
   })
   .command('start:dev', 'Starts development environment',
     () => {
@@ -22,6 +35,11 @@ const commandLineBuilder = yargs
     () => {},
     (argv) => {
       connectAndExecute(argv.nodeUrl, argv.privateKey, deployToken).catch(console.error);
+    })
+  .command('send', 'Sends funds to specified address',
+    () => {},
+    (argv) => {
+      sendFunds(argv).catch(console.error);
     })
   .demandCommand(1, 'No command provided');
 
