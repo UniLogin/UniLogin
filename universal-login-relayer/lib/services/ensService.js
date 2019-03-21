@@ -1,5 +1,6 @@
 import {utils, Contract} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
+import {parseDomain} from 'universal-login-commons';
 
 class ENSService {
   constructor(ensAddress, ensRegistrars, provider) {
@@ -23,16 +24,8 @@ class ENSService {
     return this.domainsInfo[domain] || null;
   }
 
-  get2ndLevelDomainForm(ensName) {
-    const labels = ensName.split('.');
-    const {length} = labels;
-    const label = labels.slice(0, length - 2).join('.');
-    const domain = labels.slice(length - 2, length).join('.');
-    return [label, domain];
-  }
-
   argsFor(ensName) {
-    const [label, domain] = this.get2ndLevelDomainForm(ensName);
+    const [label, domain] = parseDomain(ensName);
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${domain}`);
     const registrarConfig = this.findRegistrar(domain);
