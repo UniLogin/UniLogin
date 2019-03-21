@@ -2,10 +2,8 @@ pragma solidity ^0.5.2;
 
 
 contract IKeyHolder {
-    uint256 constant MANAGEMENT_KEY = 1;
-    uint256 constant ACTION_KEY = 2;
-    uint256 constant CLAIM_SIGNER_KEY = 3;
-    uint256 constant ENCRYPTION_KEY = 4;
+    uint256 constant public MANAGEMENT_KEY = 1;
+    uint256 constant public ACTION_KEY = 2;
 
     event KeyAdded(address indexed key, uint256 indexed purpose);
     event KeyRemoved(address indexed key, uint256 indexed purpose);
