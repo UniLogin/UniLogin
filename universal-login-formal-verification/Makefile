@@ -15,6 +15,7 @@ proof: build
 		klab prove $$f > out.txt; \
 		cat out.txt; \
 		cat out.txt | grep "ACCEPT"; \
+		if [ $$? -ne 0 ]; then exit 1; fi; \
 	done;
 
 build: $(SRC_JSON) $(SRC_SPEC)
