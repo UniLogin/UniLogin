@@ -18,7 +18,9 @@ export const sendFunds = async ({nodeUrl, privateKey, to, amount, currency, prov
 
   switch(currency.toUpperCase()) {
     case ETHER_NATIVE_TOKEN.symbol: {
-      return await wallet.sendTransaction({to, value});
+      await wallet.sendTransaction({to, value});
+      console.log(`       Sent ${amount} ${currency} to ${to}`);
+      return;
     }
     default: {
       throw new Error(`${currency} is not supported yet. Supported currencies: ${ETHER_NATIVE_TOKEN.symbol}`);
