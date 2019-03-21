@@ -1,12 +1,8 @@
 import React from 'react';
-import bell from './../../assets/bell.svg';
-import {useToggler} from '../../hooks';
 import NotificationConnection from './NotificationConnection';
 import NotificationTransaction from './NotificationTransaction';
 
 const Notifications = () => {
-  const {visible, toggle} = useToggler();
-
   const placeholderTransactionData = {
     deviceId: 1234567890,
     amount: 300,
@@ -20,25 +16,16 @@ const Notifications = () => {
 
   return (
     <div className="notifications-wrapper">
-      <button onClick={toggle} className="notifications-btn active">
-        <img className="notifications-icon" src={bell} />
-      </button>
-      { visible ?
-      <>
-        <div className="notifications-overlay" onClick={toggle}/>
-        <div className="notifications">
-          <h2 className="notifications-title">Notifications:</h2>
-          <ul className="notifications-list">
-            <NotificationConnection device="mobile" id={123456789} />
-            <NotificationTransaction data={placeholderTransactionData}/>
-            <NotificationConnection device="computer" id={123456789} />
-            <NotificationConnection device="tablet" id={123456789} />
-            <NotificationConnection device="mobile" id={123456789} />
-          </ul>
-        </div>
-      </>
-      : null
-      }
+      <div className="notifications">
+        <h2 className="notifications-title">Notifications:</h2>
+        <ul className="notifications-list">
+          <NotificationConnection device="mobile" id={123456789} />
+          <NotificationTransaction data={placeholderTransactionData}/>
+          <NotificationConnection device="computer" id={123456789} />
+          <NotificationConnection device="tablet" id={123456789} />
+          <NotificationConnection device="mobile" id={123456789} />
+        </ul>
+      </div>
     </div>
   );
 };
