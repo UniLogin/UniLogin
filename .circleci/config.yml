@@ -109,6 +109,8 @@ jobs:
   run_klab:
     docker:
       - image: circleci/node:10.15
+        environment:
+          TERM: xterm-256color
     steps:
       - checkout
       - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
