@@ -1,8 +1,6 @@
 import {EtherBalanceService} from './EtherBalanceService';
-import {sleep} from 'universal-login-commons';
+import {sleep, Callback} from 'universal-login-commons';
 import {utils} from 'ethers';
-
-type Callback = (...args: any[]) => any;
 
 export class BalanceService {
   private running: boolean = false;
