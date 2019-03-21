@@ -2,7 +2,7 @@ const yargs = require('yargs');
 import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../dev/deployToken';
 import connectAndExecute from './connectAndExecute';
-import {sendFunds} from '../dev/sendFunds';
+import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from 'universal-login-commons';
 
 const commandLineBuilder = yargs

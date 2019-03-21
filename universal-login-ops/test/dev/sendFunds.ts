@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {sendFunds, sendFundsParameters} from '../../src/dev/sendFunds';
+import {sendFunds, sendFundsParameters} from '../../src/ops/sendFunds';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {EMPTY_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, etherFormatOf} from 'universal-login-commons';
+import {EMPTY_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
@@ -28,7 +28,7 @@ describe('SendFunds', () => {
 
   it('should send funds', async () => {
     await sendFunds(args);
-    expect(await provider.getBalance(EMPTY_ACCOUNT_ADDRESS)).to.eq(etherFormatOf(1));
+    expect(await provider.getBalance(EMPTY_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1.0'));
   });
 
   it('should send decimal funds', async () => {
