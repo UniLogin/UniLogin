@@ -12,8 +12,10 @@ contract ERC1077 is KeyHolder, IERC1077 {
     using SafeMath for uint;
 
     uint public lastNonce;
+    uint public requiredSignatures;
 
     constructor(address _key) KeyHolder(_key) public {
+        requiredSignatures = 1;
     }
 
     function canExecute(
@@ -38,6 +40,13 @@ contract ERC1077 is KeyHolder, IERC1077 {
             gasLimit,
             operationType).toEthSignedMessageHash();
         return areSignaturesValid(signatures, hash);
+    }
+
+    function setRequiredSignatures(uint _requiredSignatures) public onlyManagementKeyOrThisContract returns(bool) {
+        require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
+        require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number"); 
+        requiredSignatures = _requiredSignatures;
+        return true; 
     }
 
     function calculateMessageHash(
@@ -101,7 +110,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes memory signatures) public returns (bytes32)
     {
         require(signatures.length != 0, "Invalid signatures");
-        require(signatures.length % 65 == 0, "Invalid signatures");
+        require(signatures.length / 65 >= requiredSignatures, "Invalid signatures");
         require(nonce == lastNonce, "Invalid nonce");
         require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
         uint256 startingGas = gasleft();

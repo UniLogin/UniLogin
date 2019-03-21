@@ -45,6 +45,7 @@ describe('ERC1077', async  () => {
   describe('construction', () => {
     it('properly construct', async () => {
       expect(await identity.lastNonce()).to.eq(0);
+      expect(await identity.requiredSignatures()).to.eq(1)
     });
 
     it('first key exist', async () => {
@@ -56,6 +57,28 @@ describe('ERC1077', async  () => {
     });
   });
 
+  describe('change required signatures per transaction',async () => {
+    it('should change the number of required signatures successfully', async () => {
+        await identity.setRequiredSignatures(2);
+        expect(await identity.requiredSignatures()).to.eq(2);
+    })
+
+    it('should change the number of required signatures to keyCount', async () => {
+        await identity.setRequiredSignatures(await identity.keyCount());
+        expect(await identity.requiredSignatures()).to.eq(await identity.keyCount());
+    })
+    it('shouldnt change the amount of required signatures if the amount is equal to the actual amount', async () => {
+        await expect(identity.setRequiredSignatures(1)).to.be.revertedWith('Invalid required signature');
+    })
+
+    it('shouldnt change the amount of required signatures if the new amount 0', async () => {
+        await expect(identity.setRequiredSignatures(0)).to.be.revertedWith('Invalid required signature');
+    })
+
+    it('shouldnt change the amount of required signatures if the new amount is higher than keyCount', async () => {
+        await expect(identity.setRequiredSignatures(await identity.keyCount() + 1)).to.be.revertedWith('Signatures exceed owned keys number');
+    })
+  })
   describe('signing message', () => {
     it('calculates hash', async () => {
       const jsHash = calculateMessageHash(msg);
