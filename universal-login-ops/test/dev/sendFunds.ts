@@ -11,7 +11,7 @@ describe('SendFunds', () => {
   let wallet : Wallet;
   let args : sendFundsParameters;
 
-  before(async () => {
+  beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     args = {
@@ -27,6 +27,18 @@ describe('SendFunds', () => {
   it('should send funds', async () => {
     await sendFunds(args);
     expect(await provider.getBalance(NULL_PUBLIC_KEY)).to.eq(utils.parseEther('1.0'));
+  });
+
+  it('should send large amount', async () => {
+    const largeAmount = 123456789
+    await sendFunds({...args, amount: largeAmount});
+    expect(await provider.getBalance(NULL_PUBLIC_KEY)).to.eq(utils.parseEther(largeAmount.toString()));
+  });
+
+  it('should send decimal funds', async () => {
+    const decimalAmount = 0.000000001234;
+    await sendFunds({...args, amount: decimalAmount});
+    expect(await provider.getBalance(NULL_PUBLIC_KEY)).to.eq(utils.parseEther(decimalAmount.toFixed(15)));
   });
 });
 
