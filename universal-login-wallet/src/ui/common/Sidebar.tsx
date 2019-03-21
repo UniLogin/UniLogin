@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../../assets/logo.svg';
 import { NavLink } from 'react-router-dom';
+import avatar from '../../assets/avatar.svg';
 
 function Sidebar() {
+  const [newNotifications] = useState(true);
+
   return (
     <div className="sidebar">
-      <img src={logo} />
+      <img className="sidebar-logo" src={logo} />
       <ul className="sidebar-list">
         <li className="sidebar-button sidebar-list-item">
           <NavLink exact to="/" id="homeLink" className="sidebar-link home-link" />
@@ -14,7 +17,16 @@ function Sidebar() {
           <button className="sidebar-link settings-link" />
         </li>
         <li className="sidebar-button sidebar-list-item">
-          <NavLink to="/notifications" id="notificationsLink" className="sidebar-link notifications-link active" />
+          <NavLink
+            to="/notifications"
+            id="notificationsLink"
+            className={`sidebar-link notifications-link ${newNotifications ? 'new-notifications' : ''}`}
+          />
+        </li>
+        <li className="sidebar-button sidebar-list-item">
+          <button className="user-btn">
+            <img src={avatar} alt="user avatar"/>
+          </button>
         </li>
       </ul>
     </div>

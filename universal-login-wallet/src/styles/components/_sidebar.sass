@@ -4,21 +4,49 @@
   padding: 17px
   background-image: linear-gradient(131deg, #0C0E57 1%, #14052C 100%)
   
+  +media(s, 168px)
+    position: fixed
+    left: 0
+    bottom: 0
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    height: 83px
+    padding: 17px 55px
+    background: #fff
+    border: 1px solid #EAEAEF
+    z-index: 1000
+  
+.sidebar-logo
+  +media(s, 168px)
+    display: none
+  
 .sidebar-list
   margin-top: 57px
 
+  +media(s, 168px)
+    display: flex
+    justify-content: space-around
+    align-items: center
+    width: 100%
+    margin-top: 0
+
 .sidebar-list-item + .sidebar-list-item
   margin-top: 60px
+
+  +media(s, 168px)
+    margin: 0 0 0 50px
 
 .sidebar-link
   display: block
   margin: 0 auto
   text-align: center
 
-.sidebar-button:hover
+.sidebar-link:hover
   opacity: 0.8
 
-.sidebar-button:active
+.sidebar-link:active
   opacity: 0.6
 
 .home-link
@@ -27,14 +55,56 @@
   background: url('../assets/icons/home.svg') center no-repeat
   background-size: contain
 
+.home-link.active
+  +media(s, 168px)
+    background: url('../assets/icons/home-active.svg') center no-repeat
+    background-size: contain
+
 .settings-link
   width: 21px
   height: 21px
   background: url('../assets/icons/settings.svg') center no-repeat
   background-size: contain
 
+.settings-link.active
+  +media(s, 168px)
+    background: url('../assets/icons/settings-active.svg') center no-repeat
+    background-size: contain
+
 .notifications-link
+  position: relative
   width: 23px
   height: 23px
   background: url('../assets/icons/bell.svg') center no-repeat
   background-size: contain
+
+.notifications-link.active
+  +media(s, 168px)
+    background: url('../assets/icons/bell-active.svg') center no-repeat
+    background-size: contain
+
+.notifications-link.new-notifications::after
+  content: ''
+  position: absolute
+  top: 0
+  right: 0
+  width: 6px
+  height: 6px
+  background: #0FB989
+  border-radius: 50%
+  border: 2px solid #0E0C4C
+
+  +media(s, 168px)
+    border: 2px solid #ffffff
+
+.user-btn
+  display: none
+  width: 25px
+  height: 25px
+  margin: 0 auto
+
+  +media(s, 168px)
+    display: block
+
+.user-btn img
+  max-width: 100%
