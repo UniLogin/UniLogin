@@ -16,7 +16,7 @@ export const sendFunds = async ({nodeUrl, privateKey, to, amount, currency, prov
   const {wallet} = connect(nodeUrl, privateKey, provider);
   const value = etherFormatOf(amount);
 
-  switch(currency.toLocaleUpperCase()) {
+  switch(currency.toUpperCase()) {
     case ETHER_NATIVE_TOKEN.symbol: {
       return await wallet.sendTransaction({to, value});
     }
