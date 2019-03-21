@@ -4,7 +4,7 @@ import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
 import ERC1077MasterCopy from '../../build/ERC1077MasterCopy';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
-import basicIdentityMasterAndProxy from '../fixtures/walletMasterAndProxy';
+import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
 import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
@@ -40,7 +40,7 @@ describe('ERC1077MasterCopy', async () => {
   let relayerTokenBalance;
 
   beforeEach(async () => {
-    ({provider, identityMaster, identityProxy, proxyAsIdentity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicIdentityMasterAndProxy));
+    ({provider, identityMaster, identityProxy, proxyAsIdentity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
     changeMasterCopyFunc = new utils.Interface(ERC1077MasterCopy.interface).functions.changeMasterCopy;
     executeSignedFunc = new utils.Interface(ERC1077MasterCopy.interface).functions.executeSigned;
     msg = {...transferMessage, from: identityProxy.address};
