@@ -110,7 +110,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes memory signatures) public returns (bytes32)
     {
         require(signatures.length != 0, "Invalid signatures");
-        require(signatures.length / 65 >= requiredSignatures, "Invalid signatures");
+        require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         require(nonce == lastNonce, "Invalid nonce");
         require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
         uint256 startingGas = gasleft();
