@@ -59,7 +59,7 @@ types
 
 storage
 
-    #mapping.keys[_key]  |-> X
+    #mapping.keys[_key]  |-> X + 1
 
 if
 
