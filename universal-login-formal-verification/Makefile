@@ -10,7 +10,12 @@ SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder.sol \
 MAIN_SOL = KeyHolder.sol
 
 proof: build
-	for f in out/specs/*; do klab prove $$f; done; 
+	for f in out/specs/*; \
+	do \
+		klab prove $$f > out.txt; \
+		cat out.txt; \
+		cat out.txt | grep "ACCEPT"; \
+	done;
 
 build: $(SRC_JSON) $(SRC_SPEC)
 	klab build
