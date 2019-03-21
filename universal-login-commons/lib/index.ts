@@ -7,3 +7,4 @@ export {WalletExistenceVerifier, WalletSelectionService} from './services/Wallet
 export {TokenService} from './services/TokenService';
 export {classesForElement} from './utils/react';
 export * from './constants/constants';
+export {etherFormatOf} from './utils/ethereum';
