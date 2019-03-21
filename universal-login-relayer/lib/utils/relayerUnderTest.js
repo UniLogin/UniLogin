@@ -2,6 +2,7 @@ import Relayer from '../relayer';
 import {defaultAccounts, getWallets, createMockProvider} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 import {withENS} from './utils';
+import {parseDomain} from 'universal-login-commons';
 
 class RelayerUnderTest extends Relayer {
   url() {
@@ -14,7 +15,7 @@ class RelayerUnderTest extends Relayer {
     const privateKey = defaultAccounts.slice(-1)[0].secretKey;
     const defaultDomain = 'mylogin.eth';
     const ensBuilder = new ENSBuilder(deployerWallet);
-    const [label, tld] = defaultDomain.split('.');
+    const [label, tld] = parseDomain(defaultDomain);
     const ensAddress = await ensBuilder.bootstrapWith(label, tld);
     const providerWithENS = withENS(provider, ensAddress);
     const config = {
