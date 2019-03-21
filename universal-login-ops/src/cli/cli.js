@@ -15,17 +15,6 @@ const commandLineBuilder = yargs
     describe: 'private key to be used for ',
     default: DEV_DEFAULT_PRIVATE_KEY
   })
-  .option('to', {
-    describe: 'Target address of transfer'
-  })
-  .option('currency', {
-    describe: 'Currency of transfer',
-    default: ETHER_NATIVE_TOKEN.symbol
-  })
-  .option('amount', {
-    describe: 'Amount of transfer',
-    string: true
-  })
   .command('start:dev', 'Starts development environment',
     () => {
     },
@@ -37,8 +26,21 @@ const commandLineBuilder = yargs
     (argv) => {
       connectAndExecute(argv.nodeUrl, argv.privateKey, deployToken).catch(console.error);
     })
-  .command('send', 'Sends funds to specified address',
-    () => {},
+  .command('send [to] [amount] [currency]', 'Sends funds to specified address',
+    (yargs) => {
+      yargs
+        .positional('to', {
+          describe: 'Target address of transfer'
+        })
+        .positional('amount', {
+          type: 'string',
+          describe: 'Amount to transfer'
+        })
+        .positional('currency', {
+          describe: 'Currency of transfer',
+          default: ETHER_NATIVE_TOKEN.symbol
+        })
+    },
     (argv) => {
       sendFunds(argv).catch(console.error);
     })
