@@ -2,7 +2,7 @@ import fs from 'fs';
 import {providers, Wallet} from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
-
+import {parseDomain} from 'universal-login-commons';
 
 class ENSDeployer {
   constructor(provider, deployerPrivateKey) {
@@ -33,7 +33,7 @@ class ENSDeployer {
     await builder.registerReverseRegistrar();
     for (let count = 0; count < registrars.length; count++) {
       const domain = registrars[count];
-      const [label, tld] = domain.split('.');
+      const [label, tld] = parseDomain(domain);
       await builder.registerDomain(label, tld);
       this.count += 1;
     }

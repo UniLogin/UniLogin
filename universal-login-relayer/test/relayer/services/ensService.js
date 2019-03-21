@@ -18,27 +18,6 @@ describe('Relayer - ENSService', async () => {
     await ensService.start();
   });
 
-  describe('get2ndLevelDomainForm', () => {
-    it('simple', () => {
-      expect(ensService.get2ndLevelDomainForm('alex.mylogin.eth'))
-        .to.deep.eq(['alex', 'mylogin.eth']);
-      expect(ensService.get2ndLevelDomainForm('john.mylogin.eth'))
-        .to.deep.eq(['john', 'mylogin.eth']);
-      expect(ensService.get2ndLevelDomainForm('marek.universal-id.eth'))
-        .to.deep.eq(['marek', 'universal-id.eth']);
-    });
-
-    it('complex label', () => {
-      expect(ensService.get2ndLevelDomainForm('john.and.marek.universal-id.eth'))
-        .to.deep.eq(['john.and.marek', 'universal-id.eth']);
-    });
-
-    it('empty label', () => {
-      expect(ensService.get2ndLevelDomainForm('universal-id.eth'))
-        .to.deep.eq(['', 'universal-id.eth']);
-    });
-  });
-
   describe('findRegistrar', () => {
     it('should find resolver and registrar addresses', async () => {
       const registrarInBuilder = ensBuilder.registrars[`${domain}`].address;

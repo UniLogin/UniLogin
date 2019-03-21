@@ -6,4 +6,5 @@ export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';
 export {TokenService} from './services/TokenService';
 export {classesForElement} from './utils/react';
+export {parseDomain} from './utils/ens';
 export * from './constants/constants';
