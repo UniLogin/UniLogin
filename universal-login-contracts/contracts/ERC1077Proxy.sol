@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
-import "./proxies/Proxy.sol";
-import "./IKeyHolder.sol";
+import "./common/Proxy.sol";
+import "./KeyHolder/IKeyHolder.sol";
 
 
 contract ERC1077Proxy is Proxy {

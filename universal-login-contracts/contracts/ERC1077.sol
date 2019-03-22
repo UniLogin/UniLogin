@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import "./KeyHolder.sol";
+import "./KeyHolder/KeyHolder.sol";
 import "./IERC1077.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
