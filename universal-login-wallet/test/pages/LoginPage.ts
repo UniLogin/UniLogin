@@ -18,6 +18,6 @@ export default class LoginPage {
   async topUp(wallet: Wallet) {
     const address = this.wrapper.find('.input-copy').props().defaultValue as string;
     await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Your balance'), 3000);
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Your balance'));
   }
 }

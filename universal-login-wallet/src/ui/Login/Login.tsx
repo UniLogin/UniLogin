@@ -25,8 +25,8 @@ const Login = ({setAuthorized, location} : LoginProps) => {
     unsubscribe = balanceService.subscribeBalance(isMinimumAmount);
   };
 
-  const isMinimumAmount = (amount: string) => {
-    if (utils.parseEther(amount).gte(MINIMUM_AMOUNT)) {
+  const isMinimumAmount = (amount: utils.BigNumber) => {
+    if (amount.gte(MINIMUM_AMOUNT)) {
       setAuthorized();
       unsubscribe();
       history.push(from);

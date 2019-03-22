@@ -1,12 +1,11 @@
 import {EtherBalanceService} from './EtherBalanceService';
-import {sleep, Callback} from 'universal-login-commons';
-import {utils} from 'ethers';
+import {sleep, Procedure} from 'universal-login-commons';
 
 export class BalanceService {
   private running: boolean = false;
   constructor(private etherBalanceService: EtherBalanceService, private timeout: number = 1000) {}
 
-  async start(callback: Callback) {
+  async start(callback: Procedure) {
     let lastBalance = undefined;
     while (this.running) {
       const balance = await this.getBalance();
@@ -18,7 +17,7 @@ export class BalanceService {
     }
   }
 
-  subscribeBalance(callback: Callback) {
+  subscribeBalance(callback: Procedure) {
     this.running = true;
     this.start(callback);
     return this.unsubscribe.bind(this);
@@ -29,5 +28,5 @@ export class BalanceService {
   }
 
   getBalance = async () =>
-    utils.formatEther(await this.etherBalanceService.getBalance())
+    await this.etherBalanceService.getBalance()
 }
