@@ -22,7 +22,7 @@ const Login = ({setAuthorized, location} : LoginProps) => {
   const onCreateCLick = async (name: string) => {
     await createWallet(name);
     modalService.showModal('address');
-    unsubscribe = balanceService.subscribe(isMinimumAmount)
+    unsubscribe = balanceService.subscribe(isMinimumAmount);
   };
 
   const isMinimumAmount = (amount: utils.BigNumber) => {
@@ -31,7 +31,7 @@ const Login = ({setAuthorized, location} : LoginProps) => {
       setAuthorized();
       history.push(from);
     }
-  }
+  };
   return(
     <div className="login">
       <img src={Logo} alt="Logo" className="login-logo"/>

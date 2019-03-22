@@ -49,7 +49,7 @@ describe('Balance', () => {
       const unsubscribe = balanceService.subscribe(callback);
       await waitUntil(() => !!callback.firstCall);
       expect(callback).to.have.been.called;
-      expect(callback.firstCall.args[0]).to.eq(utils.bigNumberify(0))
+      expect(callback.firstCall.args[0]).to.eq(utils.bigNumberify(0));
 
       await wallet.sendTransaction({to: walletService.userWallet.contractAddress, value});
       await waitUntil(() => !!callback.secondCall);

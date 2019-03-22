@@ -9,7 +9,7 @@ interface BalanceProps {
 const Balance = ({className} : BalanceProps) => {
   const [balance, setBalance] = useState(utils.bigNumberify(0));
   const {balanceService} = useServices();
-  
+
   useEffect(() => balanceService.subscribe(setBalance), []);
 
   return(

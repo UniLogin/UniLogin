@@ -6,14 +6,13 @@ import {utils} from 'ethers';
 const BALANCE_EVENT = 'balance';
 
 export class BalanceService {
-
   private running: boolean = false;
   private emitter = new EventEmitter();
   constructor(private etherBalanceService: EtherBalanceService, private timeout: number = 1000) {}
 
   async loop() {
     while (this.running) {
-      const balance = await this.getBalance();
+      const balance = await this.etherBalanceService.getBalance();
       this.emitter.emit(BALANCE_EVENT, balance);
       await sleep(this.timeout);
     }
@@ -32,9 +31,6 @@ export class BalanceService {
     const subscription = this.emitter.addListener(BALANCE_EVENT, callback);
     return function unsubscribe() {
       subscription.remove();
-    }
+    };
   }
-
-  getBalance = async () =>
-    await this.etherBalanceService.getBalance()
 }
