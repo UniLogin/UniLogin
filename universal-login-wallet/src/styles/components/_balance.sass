@@ -5,12 +5,18 @@
   color: #3D3D41
   text-transform: uppercase
 
+  +media(s, 168px)
+    display: none
+
 .balance-box
   padding: 48px 30px 38px
   background: #FFFFFF
   box-shadow: 0 2px 4px 0 rgba(208,209,217,0.25)
   border-radius: 5px
   text-align: center
+
+  +media(s, 168px)
+    box-shadow: none
 
 .balance-amount
   font-weight: 600

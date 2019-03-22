@@ -34,14 +34,16 @@
 .btn-add
   position: relative
   width: 165px
-  padding-left: 70px
-  padding-right: 40px
 
-.btn-add::before
+.btn-add-text
+  position: relative
+  padding-left: 31px
+  
+.btn-add-text::before
   content: ''
   position: absolute
   top: 50%
-  left: 40px
+  left: 0
   width: 18px
   height: 18px
   transform: translateY(-50%)
@@ -49,19 +51,31 @@
   background-size: contain
   
 .btn-send
-  position: relative
   width: 165px
   margin-left: 20px
-  padding-left: 80px
-  padding-right: 49px
 
-.btn-send::before
+  +media(s, 168px)
+    margin: 0
+  
+.btn-send-text
+  position: relative
+  padding-left: 33px
+  
+.btn-send-text::before
   content: ''
   position: absolute
   top: 50%
-  left: 40px
+  left: 0
   width: 18px
   height: 15px
   transform: translateY(-50%)
   background: url('./../assets/icons/send.svg') no-repeat center
   background-size: contain
+
+.btn-add,
+.btn-send
+  +media(s, 168px)
+    display: block
+    max-width: 311px
+    margin: 0 auto 20px
+    width: 100%
