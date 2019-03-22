@@ -65,15 +65,16 @@ describe('ERC1077', async  () => {
         await identity.setRequiredSignatures(await identity.keyCount());
         expect(await identity.requiredSignatures()).to.eq(await identity.keyCount());
     });
-    it('shouldnt change the amount of required signatures if the amount is equal to the actual amount', async () => {
+
+    it('should fail to change the amount of required signatures if the amount is equal to the actual amount', async () => {
         await expect(identity.setRequiredSignatures(1)).to.be.revertedWith('Invalid required signature');
     });
 
-    it('shouldnt change the amount of required signatures if the new amount 0', async () => {
+    it('should fail to change the amount of required signatures if the new amount 0', async () => {
         await expect(identity.setRequiredSignatures(0)).to.be.revertedWith('Invalid required signature');
     });
 
-    it('shouldnt change the amount of required signatures if the new amount is higher than keyCount', async () => {
+    it('should fail to change the amount of required signatures if the new amount is higher than keyCount', async () => {
         await expect(identity.setRequiredSignatures(await identity.keyCount() + 1)).to.be.revertedWith('Signatures exceed owned keys number');
     });
   });
@@ -145,7 +146,7 @@ describe('ERC1077', async  () => {
       });
     });
 
-    describe('failed execution of transafer', () => {
+    describe('failed execution of transfer', () => {
       it('nonce too low', async () => {
         await identity.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         await expect(identity.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
@@ -259,7 +260,7 @@ describe('ERC1077', async  () => {
       it('with 2 required Signature', async () => {
         await identity.setRequiredSignatures(2);
         expect(await mockContract.wasCalled()).to.be.false;
-        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         expect(await mockContract.wasCalled()).to.be.true;
       });
     });
@@ -296,12 +297,23 @@ describe('ERC1077', async  () => {
           .to.be.revertedWith('Invalid signature');
       });
 
-      it('with not enough signatures', async () => {
+      it('called method with not enough signatures', async () => {
         signatures = await calculateMessageSignature(sortedKeys[0], msgToCall);
         await identity.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
-        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Not enough signatures');
+        expect(await mockContract.wasCalled()).to.be.false;
+      });
+
+      it('called method with duplicated signatures', async () => {
+        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        signatures = await concatenateSignatures([signature1, signature2, signature2]);
+        await identity.setRequiredSignatures(3);
+        expect(await mockContract.wasCalled()).to.be.false;
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+          .to.be.revertedWith('Invalid signature');
         expect(await mockContract.wasCalled()).to.be.false;
       });
     });
@@ -331,10 +343,17 @@ describe('ERC1077', async  () => {
         expect(await identity.lastNonce()).to.eq(1);
       });
 
-      it('with 3 required Signature', async () => {
+      it('call method with 3 out of 2 required signatures', async () => {
+        await identity.setRequiredSignatures(2);
+        expect(await mockContract.wasCalled()).to.be.false;
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+        expect(await mockContract.wasCalled()).to.be.true;
+      });
+
+      it('call method with 3 out of 3 required signatures', async () => {
         await identity.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
-        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions);
+        await identity.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         expect(await mockContract.wasCalled()).to.be.true;
       });
 
@@ -351,7 +370,7 @@ describe('ERC1077', async  () => {
         const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
         const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
         signatures = concatenateSignatures([signature2, signature1, signature3]);
-        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, overrideOptions))
+        await expect(identity.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
       });
     });
