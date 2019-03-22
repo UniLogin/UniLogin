@@ -1,6 +1,6 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
-import UserSelect from './UserSelect';
+import UserDropdown from './UserDropdown';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
 import { useServices } from '../../hooks';
@@ -12,7 +12,7 @@ const HomeScreen = () => {
       <div className="dashboard">
         <Sidebar />
         <div className="dashboard-content">
-          <UserSelect />
+          <UserDropdown />
           <div className="dashboard-buttons-row">
             <button onClick={() => modalService.showModal('request')} className="btn btn-primary btn-add">Top-up</button>
             <button id="transferFunds" onClick={() => modalService.showModal('transfer')} className="btn btn-secondary btn-send">Send</button>

@@ -2,6 +2,7 @@ import React from 'react';
 import UniversalLoginSDK from 'universal-login-sdk';
 import {WalletSelectionService, SuggestionsService} from 'universal-login-commons';
 import ModalService from './ModalService';
+import UserDropdownService from './UserDropdownService';
 import WalletService from './WalletService';
 import createWallet from './Creation';
 import TransferService from './TransferService';
@@ -27,6 +28,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const walletSelectionService = new WalletSelectionService(sdk, config.domains);
   const suggestionsService = new SuggestionsService(walletSelectionService);
   const modalService = new ModalService();
+  const userDropdownService = new UserDropdownService();
   const walletService = new WalletService();
   const _createWallet = createWallet(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
@@ -38,6 +40,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     suggestionsService,
     walletSelectionService,
     modalService,
+    userDropdownService,
     createWallet: _createWallet,
     walletService,
     tokenService,

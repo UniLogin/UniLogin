@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import logo from '../../assets/logo.svg';
 import { NavLink } from 'react-router-dom';
 import avatar from '../../assets/avatar.svg';
+import { useServices } from '../../hooks';
 
 function Sidebar() {
+  const {userDropdownService} = useServices();
   const [newNotifications] = useState(true);
 
   return (
@@ -24,7 +26,7 @@ function Sidebar() {
           />
         </li>
         <li className="sidebar-button sidebar-list-item">
-          <button className="user-btn">
+          <button onClick={() => userDropdownService.setDropdownVisibility(true)} className="user-btn">
             <img src={avatar} alt="user avatar"/>
           </button>
         </li>
