@@ -26,12 +26,12 @@ const Login = ({setAuthorized, location} : LoginProps) => {
   };
 
   const isMinimumAmount = (amount: string) => {
-    if(utils.parseEther(amount).gte(MINIMUM_AMOUNT)) {
+    if (utils.parseEther(amount).gte(MINIMUM_AMOUNT)) {
       setAuthorized();
       unsubscribe();
       history.push(from);
     }
-  }
+  };
   return(
     <div className="login">
       <img src={Logo} alt="Logo" className="login-logo"/>
