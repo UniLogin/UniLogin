@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import "./proxies/Proxy.sol";
+import "./common/Proxy.sol";
 import "./IKeyHolder.sol";
 
 
