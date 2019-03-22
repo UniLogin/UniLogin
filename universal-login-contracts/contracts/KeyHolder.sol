@@ -1,5 +1,5 @@
 pragma solidity ^0.5.2;
-import "./IKeyHolder.sol";
+import "./KeyHolder/IKeyHolder.sol";
 
 
 contract KeyHolder is IKeyHolder {
