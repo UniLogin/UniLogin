@@ -7,10 +7,10 @@ interface BalanceProps {
 }
 
 const Balance = ({className} : BalanceProps) => {
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(utils.bigNumberify(0));
   const {balanceService} = useServices();
-
-  useEffect(() => balanceService.subscribeBalance(setBalance), []);
+  
+  useEffect(() => balanceService.subscribe(setBalance), []);
 
   return(
     <section className={`${className ? className : ''}`}>

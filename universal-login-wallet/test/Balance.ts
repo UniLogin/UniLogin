@@ -32,6 +32,7 @@ describe('Balance', () => {
     [wallet] = await getWallets(provider);
     etherBalanceService = new EtherBalanceService(provider, walletService);
     balanceService = new BalanceService(etherBalanceService, testTick);
+    balanceService.start();
   });
 
   describe('EtherBalanceService', () => {
@@ -45,7 +46,7 @@ describe('Balance', () => {
   describe('BalanceService', () => {
     it('should call callback with 0 balance', async () => {
       const callback = sinon.spy();
-      const unsubscribe = balanceService.subscribeBalance(callback);
+      const unsubscribe = balanceService.subscribe(callback);
       await waitUntil(() => !!callback.firstCall);
       expect(callback).to.have.been.called;
       expect(callback.firstCall.args[0]).to.eq(utils.bigNumberify(0))
@@ -56,5 +57,9 @@ describe('Balance', () => {
       expect(callback.secondCall.args[0]).to.deep.eq(utils.bigNumberify(value));
       unsubscribe();
     });
+  });
+
+  afterEach(() => {
+    balanceService.stop();
   });
 });

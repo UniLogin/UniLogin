@@ -19,7 +19,6 @@ describe('UI: Transfer', () => {
   let provider: providers.Web3Provider;
   let mockTokenContract: Contract;
   let wallet: Wallet;
-  const amount = '1';
   const receiverAddress = '0x0000000000000000000000000000000000000001';
 
   before(async () => {
@@ -28,6 +27,7 @@ describe('UI: Transfer', () => {
     ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [mockTokenContract.address]);
     services.tokenService.start();
+    services.balanceService.start();
   });
 
   it('Creates wallet and transfers tokens', async () => {
@@ -47,6 +47,7 @@ describe('UI: Transfer', () => {
   });
 
   after(async () => {
+    services.balanceService.stop();
     appWrapper.unmount();
     await relayer.stop();
   });
