@@ -1,6 +1,6 @@
 import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
-import deployWalletMasterCopy from './deployWalletMasterCopy';
+import {deployWalletMasterCopy} from './deployWalletMasterCopy';
 import {deployToken} from './deployToken';
 import {getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
@@ -50,12 +50,12 @@ async function startDevelopment(nodeUrl: string, basicRelayer: boolean = false) 
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
-  const identityMasterAddress = await deployWalletMasterCopy(deployWallet);
+  const walletMasterAddress = await deployWalletMasterCopy(deployWallet);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
   await startDevelopmentRelayer(relayerConfig, deployWallet, basicRelayer);
-  return {jsonRpcUrl, deployWallet, identityMasterAddress, tokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl, deployWallet, walletMasterAddress, tokenAddress, ensAddress, ensDomains};
 }
 
 module.exports = startDevelopment;
