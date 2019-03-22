@@ -58,4 +58,4 @@ async function startDevelopment(nodeUrl: string, basicRelayer: boolean = false) 
   return {jsonRpcUrl, deployWallet, walletMasterAddress, tokenAddress, ensAddress, ensDomains};
 }
 
-module.exports = startDevelopment;
+export default startDevelopment;
