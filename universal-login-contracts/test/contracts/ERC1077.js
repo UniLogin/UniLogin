@@ -1,9 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
-import ERC1077 from '../../build/ERC1077';
+import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import basicWallet, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
-import {constants, utils} from 'ethers';
+import {utils} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures} from '../../lib/calculateMessageSignature';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
@@ -16,28 +15,6 @@ const to = '0x0000000000000000000000000000000000000001';
 const {gasPrice} = DEFAULT_PAYMENT_OPTIONS;
 const overrideOptions = {gasPrice, gasLimit: 200000};
 
-describe('Void ERC1077', () => {
-  let provider;
-  let identityWithZeroKey;
-  let privateKey;
-  let signature;
-  let msg;
-  let wallet;
-
-  beforeEach(async () => {
-    provider = createMockProvider();
-    [, , , , , , , , , wallet] = getWallets(provider);
-    identityWithZeroKey = await deployContract(wallet, ERC1077, [constants.AddressZero]);
-  });
-
-  it('execute signed fails', async () => {
-    signature = [];
-    msg = {...transferMessage, from: identityWithZeroKey.address};
-    privateKey = wallet.privateKey;
-    await expect(identityWithZeroKey.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
-      .to.be.revertedWith('Invalid signature');
-  });
-});
 
 describe('ERC1077', async  () => {
   let provider;
