@@ -1,12 +1,13 @@
-import startGanache from './startGanache.js';
-import deployEns from './deployEns.js';
+import {startGanache} from './startGanache.js';
+import {deployENS} from './deployEns.js';
 import deployWalletMasterCopy from './deployWalletMasterCopy';
-import deployToken from './deployToken';
+import {deployToken} from './deployToken';
 import {getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startDevelopmentRelayer';
 import {dirname, join} from 'path';
+import {Wallet} from 'ethers';
 
 const ganachePort = 18545;
 
@@ -25,7 +26,7 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl, wallet, tokenContractAddress, ensAddress, ensRegistrars) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[]) {
   return {
     port: 3311,
     jsonRpcUrl,
@@ -44,16 +45,16 @@ function getMigrationPath() {
   return join(dirname(packagePath), 'migrations');
 }
 
-async function startDevelopment(nodeUrl) {
+async function startDevelopment(nodeUrl: string, basicRelayer: boolean = false) {
   const jsonRpcUrl = nodeUrl ? nodeUrl : await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
-  const ensAddress = await deployEns(ensDeployer, ensDomains);
+  const ensAddress = await deployENS(ensDeployer, ensDomains);
   const identityMasterAddress = await deployWalletMasterCopy(deployWallet);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
-  await startDevelopmentRelayer(relayerConfig, deployWallet);
+  await startDevelopmentRelayer(relayerConfig, deployWallet, basicRelayer);
   return {jsonRpcUrl, deployWallet, identityMasterAddress, tokenAddress, ensAddress, ensDomains};
 }
 
