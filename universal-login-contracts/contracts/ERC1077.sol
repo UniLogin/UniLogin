@@ -42,11 +42,10 @@ contract ERC1077 is KeyHolder, IERC1077 {
         return areSignaturesValid(signatures, hash);
     }
 
-    function setRequiredSignatures(uint _requiredSignatures) public onlyManagementKeyOrThisContract returns(bool) {
+    function setRequiredSignatures(uint _requiredSignatures) public onlyManagementKeyOrThisContract {
         require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
         require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number"); 
         requiredSignatures = _requiredSignatures;
-        return true; 
     }
 
     function calculateMessageHash(
