@@ -6,7 +6,7 @@ import ERC1077MasterCopy from '../../build/ERC1077MasterCopy';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
 import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
 import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
-import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
 
 chai.use(chaiAsPromised);
@@ -15,8 +15,6 @@ chai.use(solidity);
 const {parseEther} = utils;
 const to1 = '0x0000000000000000000000000000000000000001';
 const to2 = '0x0000000000000000000000000000000000000002';
-const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
-const overrideOptions = {gasPrice, gasLimit: 200000};
 
 describe('ERC1077MasterCopy', async () => {
   let provider;
@@ -99,14 +97,14 @@ describe('ERC1077MasterCopy', async () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
         expect(await provider.getBalance(to1)).to.eq(0);
-        await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+        await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
         expect(await provider.getBalance(to1)).to.eq(parseEther('1.0'));
         expect(await proxyAsIdentity.lastNonce()).to.eq(1);
       });
 
       it('emits ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msg);
-        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit}))
+        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
           .to.emit(identityMaster, 'ExecutedSigned') // TODO: is this OK? Don't think so
           .withArgs(messageHash, 0, true);
       });
@@ -117,14 +115,14 @@ describe('ERC1077MasterCopy', async () => {
           signature = await calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-          await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+          await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
 
         it('should refund after execute transfer ethers', async () => {
-          const transaction = await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+          const transaction = await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
+          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -133,8 +131,8 @@ describe('ERC1077MasterCopy', async () => {
 
     describe('failed execution of transfer', () => {
       it('nonce too low', async () => {
-        await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
-        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit}))
+        await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
           .to.be.revertedWith('Invalid nonce');
       });
 
@@ -143,7 +141,7 @@ describe('ERC1077MasterCopy', async () => {
         signature = await calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit}))
+        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
           .to.be.revertedWith('Invalid nonce');
       });
 
@@ -153,7 +151,7 @@ describe('ERC1077MasterCopy', async () => {
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
         const messageHash = calculateMessageHash(msg);
 
-        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit}))
+        await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
           .to.emit(identityMaster, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
@@ -163,7 +161,7 @@ describe('ERC1077MasterCopy', async () => {
         signature = await calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-        await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+        await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
         expect(await provider.getBalance(to1)).to.eq(parseEther('0.0'));
         expect(await proxyAsIdentity.lastNonce()).to.eq(1);
       });
@@ -171,7 +169,7 @@ describe('ERC1077MasterCopy', async () => {
       describe('Invalid signature', () => {
         it('no signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), []]);
-          await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit}))
+          await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
             .to.be.revertedWith('Invalid signature');
           expect(await proxyAsIdentity.lastNonce()).to.eq(0);
           expect(await provider.getBalance(to1)).to.eq(parseEther('0.0'));
@@ -179,7 +177,7 @@ describe('ERC1077MasterCopy', async () => {
 
         it('invalid signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), invalidSignature]);
-          await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit}))
+          await expect(wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
             .to.be.revertedWith('Invalid signature');
           expect(await proxyAsIdentity.lastNonce()).to.eq(0);
           expect(await provider.getBalance(to1)).to.eq(parseEther('0.0'));
@@ -192,10 +190,10 @@ describe('ERC1077MasterCopy', async () => {
           signature = await calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-          const transaction = await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+          const transaction = await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
+          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -204,7 +202,7 @@ describe('ERC1077MasterCopy', async () => {
           msg = {...failedTransferMessage, from: identityProxy.address, gasToken: mockToken.address};
           signature = await calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
-          await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+          await wallet.sendTransaction({to: identityProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -223,18 +221,18 @@ describe('ERC1077MasterCopy', async () => {
 
       it('called method', async () => {
         expect(await mockContract.wasCalled()).to.be.false;
-        await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+        await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         expect(await mockContract.wasCalled()).to.be.true;
       });
 
       it('increase nonce', async () => {
-        await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+        await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         expect(await proxyAsIdentity.lastNonce()).to.eq(1);
       });
 
       it('should emit ExecutedSigned', async () => {
         const messageHash = calculateMessageHash(msgToCall);
-        await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions))
+        await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.emit(proxyAsIdentity, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
@@ -244,10 +242,10 @@ describe('ERC1077MasterCopy', async () => {
           msgToCall = {...callMessage, from: identityProxy.address, to: mockContract.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
 
-          const transaction = await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+          const transaction = await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
+          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -255,7 +253,7 @@ describe('ERC1077MasterCopy', async () => {
         it('should refund tokens', async () => {
           msgToCall = {...callMessage, from: identityProxy.address, to: mockContract.address, gasToken: mockToken.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
-          await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+          await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -268,13 +266,13 @@ describe('ERC1077MasterCopy', async () => {
       });
 
       it('should increase nonce', async () => {
-        await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+        await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         expect(await proxyAsIdentity.lastNonce()).to.eq(1);
       });
 
       it('should emit ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msgToCall);
-        await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions))
+        await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.emit(identityMaster, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
@@ -283,16 +281,16 @@ describe('ERC1077MasterCopy', async () => {
         msg = {...msgToCall, nonce: 2};
         signature = calculateMessageSignature(privateKey, msg);
 
-        await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions))
+        await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid nonce');
       });
 
       describe('refund', () => {
         it('should refund ether', async () => {
-          const transaction = await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions);
+          const transaction = await proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(gasPrice));
+          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -300,7 +298,7 @@ describe('ERC1077MasterCopy', async () => {
         it('should refund tokens', async () => {
           msg = {...msgToCall, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
-          await proxyAsIdentity.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
+          await proxyAsIdentity.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -317,7 +315,7 @@ describe('ERC1077MasterCopy', async () => {
       msgToCall = {...callMessage, data, from: identityProxy.address, to: identityProxy.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions))
+      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
         .to.emit(proxyAsIdentity, 'ExecutedSigned')
         .withArgs(messageHash, 0, false);
       expect(await identityProxy.implementation()).to.eq(identityMaster.address);
@@ -329,7 +327,7 @@ describe('ERC1077MasterCopy', async () => {
       msgToCall = {...callMessage, data, from: identityProxy.address, to: identityProxy.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, overrideOptions))
+      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
         .to.emit(proxyAsIdentity, 'ExecutedSigned')
         .withArgs(messageHash, 0, true);
       expect(await identityProxy.implementation()).to.eq(to2);
