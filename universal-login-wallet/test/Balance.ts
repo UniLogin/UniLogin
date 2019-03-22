@@ -10,7 +10,7 @@ import {waitUntil} from 'universal-login-commons';
 chai.use(solidity);
 chai.use(sinonChai);
 
-const testTick = 1000;
+const testTick = 30;
 const value = utils.parseEther('1');
 const walletService = {
   userWallet: {
@@ -53,8 +53,8 @@ describe('Balance', () => {
 
       await wallet.sendTransaction({to: walletService.userWallet.contractAddress, value});
       await waitUntil(() => !!callback.secondCall);
-      expect(callback).to.have.been.called;
-      expect(callback.secondCall.args[0]).to.deep.eq(utils.bigNumberify(value));
+      expect(callback).to.have.been.calledTwice;
+      expect(callback.lastCall.args[0]).to.deep.eq(utils.bigNumberify(value));
       unsubscribe();
     });
   });
