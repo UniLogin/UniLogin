@@ -1,6 +1,10 @@
+export const DEFAULT_GAS_PRICE = 1000000000;
+
+export const DEFAULT_GAS_LIMIT = 1000000;
+
 export const DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN = {
-  gasPrice: 1000000000,
-  gasLimit: 1000000,
+  gasPrice: DEFAULT_GAS_PRICE,
+  gasLimit: DEFAULT_GAS_LIMIT,
 };
 
 
