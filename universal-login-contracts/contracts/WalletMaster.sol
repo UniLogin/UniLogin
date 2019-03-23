@@ -1,9 +1,11 @@
 pragma solidity ^0.5.2;
 
 import "./common/MasterBase.sol";
-import "./Wallet.sol";
+import "./ENSRegistered.sol";
+import "./ERC1077.sol";
+import "./IERC1271.sol";
 
-contract WalletMaster is MasterBase, ENSRegistered, ERC1077
+contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271
 {
 	constructor()
 		ERC1077(address(0))
@@ -45,5 +47,11 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077
 
 		// set next master
 		setMaster(_newMaster, _callback);
+	}
+
+	function isValidSignature(bytes32 _data, bytes memory _signature)
+		public view returns (bool isValid)
+	{
+		return keyExist(_data.recover(_signature));
 	}
 }

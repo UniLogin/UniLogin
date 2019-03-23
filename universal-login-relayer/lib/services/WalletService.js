@@ -1,4 +1,5 @@
 import ProxyContract from 'universal-login-contracts/build/Proxy';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 import WalletMasterContract from 'universal-login-contracts/build/WalletMaster';
 import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
