@@ -13,7 +13,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
     {}
 
 
-    function initializeWithENS(address _key) external initialization {
+    function initialize(address _key) external initialization {
         // ERC1836 nonce
         lastNonce = m_nonce;
         // ERC1077 → KeyHolder

@@ -1,9 +1,9 @@
 pragma solidity ^0.5.0;
 
-import "../common/MasterBase.sol";
+import "../WalletMaster.sol";
 
 
-contract MockMasterBase is MasterBase {
+contract MockWalletMaster is WalletMaster {
     uint256 _count;
 
     function giveAway() external payable {

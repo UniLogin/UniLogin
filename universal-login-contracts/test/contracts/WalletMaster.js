@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
+import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
-import ERC1077MasterCopy from '../../build/ERC1077MasterCopy';
+import WalletMaster from '../../build/WalletMaster';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
 import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
 import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
@@ -16,7 +16,7 @@ const {parseEther} = utils;
 const to1 = '0x0000000000000000000000000000000000000001';
 const to2 = '0x0000000000000000000000000000000000000002';
 
-describe('ERC1077MasterCopy', async () => {
+describe('WalletMaster', async () => {
   let provider;
   let identityMaster;
   let identityProxy;
@@ -39,8 +39,8 @@ describe('ERC1077MasterCopy', async () => {
 
   beforeEach(async () => {
     ({provider, identityMaster, identityProxy, proxyAsIdentity, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
-    changeMasterCopyFunc = new utils.Interface(ERC1077MasterCopy.interface).functions.changeMasterCopy;
-    executeSignedFunc = new utils.Interface(ERC1077MasterCopy.interface).functions.executeSigned;
+    changeMasterCopyFunc = new utils.Interface(WalletMaster.interface).functions.updateMaster;
+    executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
     msg = {...transferMessage, from: identityProxy.address};
     signature = await calculateMessageSignature(privateKey, msg);
     data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
@@ -310,27 +310,40 @@ describe('ERC1077MasterCopy', async () => {
     let signatureToCall;
 
     it('should fail if changing masterCopy through proxy with zero address', async () => {
-      expect(await identityProxy.implementation()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([constants.AddressZero]);
-      msgToCall = {...callMessage, data, from: identityProxy.address, to: identityProxy.address };
+      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+      const data = changeMasterCopyFunc.encode([constants.AddressZero, []]);
+      msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);
       await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
         .to.emit(proxyAsIdentity, 'ExecutedSigned')
         .withArgs(messageHash, 0, false);
-      expect(await identityProxy.implementation()).to.eq(identityMaster.address);
+      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+    });
+
+    it('should fail if changing masterCopy through proxy with invalid master', async () => {
+      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+      const data = changeMasterCopyFunc.encode([to2, []]);
+      msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
+      signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
+      const messageHash = calculateMessageHash(msgToCall);
+      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+        .to.emit(proxyAsIdentity, 'ExecutedSigned')
+        .withArgs(messageHash, 0, false);
+      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
     });
 
     it('should change masterCopy through proxy with valid address', async () => {
-      expect(await identityProxy.implementation()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([to2]);
-      msgToCall = {...callMessage, data, from: identityProxy.address, to: identityProxy.address };
+      const otherIdentityMaster = await deployContract(wallet, WalletMaster);
+      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+      const data = changeMasterCopyFunc.encode([otherIdentityMaster.address, []]);
+      msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);
       await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
         .to.emit(proxyAsIdentity, 'ExecutedSigned')
         .withArgs(messageHash, 0, true);
-      expect(await identityProxy.implementation()).to.eq(to2);
+      expect(await proxyAsIdentity.master()).to.eq(otherIdentityMaster.address);
     });
   });
 });
