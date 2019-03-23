@@ -1,44 +1,49 @@
 pragma solidity ^0.5.2;
 
 import "./common/MasterBase.sol";
-import "./WalletContract.sol";
+import "./Wallet.sol";
 
-
-contract WalletMasterCopy is MasterBase, ERC1077, ENSRegistered
+contract WalletMaster is MasterBase, ENSRegistered, ERC1077
 {
-    constructor()
-        ERC1077(address(0))
-        public
-    {}
+	constructor()
+		ERC1077(address(0))
+		public
+	{}
 
-    function initialize(address _key)
-        public initialization
-    {
-        // ERC1077 → KeyHolder
-        keys[_key].key = _key;
-        keys[_key].purpose = MANAGEMENT_KEY;
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
-        // ERC1836 nonce
-        lastNonce = m_nonce;
-    }
 
-    function initializeWithENS(address _key, bytes32 _hashLabel, string memory _name, bytes32 _node, ENS ens, FIFSRegistrar registrar, PublicResolver resolver)
-        public initialization
-    {
-        initialize(_key);
-        // ENSRegistered
-        ENSregister(_hashLabel, _name, _node, ens, registrar, resolver);
-    }
+	function initializeWithENS(address _key)
+		external initialization
+	{
+		// ERC1836 nonce
+		lastNonce = m_nonce;
+		// ERC1077 → KeyHolder
+		keys[_key].key = _key;
+		keys[_key].purpose = MANAGEMENT_KEY;
+		emit KeyAdded(keys[_key].key,  keys[_key].purpose);
+	}
 
-    function updateDelegate(address _newMaster, bytes calldata _callback)
-        external protected
-    {
-        // ERC1836 nonce
-        m_nonce = lastNonce;
+	function initializeWithENS(address _key, bytes32 _hashLabel, string calldata _name, bytes32 _node, ENS ens, FIFSRegistrar registrar, PublicResolver resolver)
+		external initialization
+	{
+		// ERC1836 nonce
+		lastNonce = m_nonce;
+		// ERC1077 → KeyHolder
+		keys[_key].key = _key;
+		keys[_key].purpose = MANAGEMENT_KEY;
+		emit KeyAdded(keys[_key].key,  keys[_key].purpose);
+		// ENSRegistered
+		ENSregister(_hashLabel, _name, _node, ens, registrar, resolver);
+	}
 
-        // TODO: reset memory space
+	function updateMaster(address _newMaster, bytes calldata _callback)
+		external protected
+	{
+		// ERC1836 nonce
+		m_nonce = lastNonce;
 
-        // set next master
-        setMaster(_newMaster, _callback);
-    }
+		// TODO: reset memory space
+
+		// set next master
+		setMaster(_newMaster, _callback);
+	}
 }

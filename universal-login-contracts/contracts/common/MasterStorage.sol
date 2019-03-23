@@ -10,7 +10,7 @@ contract MasterStorage
 	mapping(bytes32 => bytes32) internal m_store;       // Generic purpose persistent store (ERC725).
 	bool                        internal m_initialized; // Reserved for initialization protection.
 
-	event DelegateChange(address indexed previousDelegate, address indexed newDelegate);
+	event MasterChange(address indexed previousMaster, address indexed newMaster);
 
 	modifier protected()
 	{
@@ -28,19 +28,18 @@ contract MasterStorage
 	function setMaster(address _newMaster, bytes memory _initData)
 	internal
 	{
-		// keccak256("ERC1836")
-		require(IMaster(_newMaster).UUID() == 0x26b8c8548d7daec1fffc293834f2cee70c6b9ca8d5c456721fc1fdf9b10dd909);
+		require(IMaster(_newMaster).UUID() == 0x26b8c8548d7daec1fffc293834f2cee70c6b9ca8d5c456721fc1fdf9b10dd909, "invalid-master-uuid");
 
-		// Update delegate pointer
-		emit DelegateChange(m_master, _newMaster);
+		// Update master pointer
+		emit MasterChange(m_master, _newMaster);
 		m_master = _newMaster;
 
-		// Allows the run of an initialization method in the new delegate.
+		// Allows the run of an initialization method in the new master.
 		// Will be reset to true by the initialization modifier of the initialize methode.
 		m_initialized = false;
 
-		// Call the initialize method in the new delegate
+		// Call the initialize method in the new master
 		(bool success, /*bytes memory returndata*/) = _newMaster.delegatecall(_initData);
-		require(success, "failed-to-initialize-delegate");
+		require(success, "failed-to-initialize");
 	}
 }

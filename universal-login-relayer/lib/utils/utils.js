@@ -1,7 +1,7 @@
 import {providers, utils, Contract, ContractFactory} from 'ethers';
 import ENS from 'universal-login-contracts/build/ENS';
 import PublicResolver from 'universal-login-contracts/build/PublicResolver';
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 import ERC20 from 'universal-login-contracts/build/ERC20';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';

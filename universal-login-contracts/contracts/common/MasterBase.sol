@@ -6,20 +6,19 @@ import "./MasterStorage.sol";
 contract MasterBase is IMaster, MasterStorage
 {
 	function UUID()
-	external pure returns (bytes32 _uuid)
+	external pure returns (bytes32)
 	{
-		// keccak256("ERC1836")
 		return 0x26b8c8548d7daec1fffc293834f2cee70c6b9ca8d5c456721fc1fdf9b10dd909;
 	}
 
 	function master()
-	external view returns (address _delegate)
+	external view returns (address)
 	{
 		return m_master;
 	}
 
 	function getData(bytes32 _key)
-	external view returns (bytes32 _value)
+	external view returns (bytes32)
 	{
 		return m_store[_key];
 	}

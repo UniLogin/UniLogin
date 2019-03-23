@@ -17,7 +17,7 @@ contract Proxy is MasterStorage
 		{
 			assembly
 			{
-				let to  := and(sload(0x0), 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) // m_delegate
+				let to  := and(sload(0x0), 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) // m_master
 				let ptr := mload(0x40)
 				calldatacopy(ptr, 0, calldatasize)
 				let result := delegatecall(gas, to, ptr, calldatasize, 0, 0)

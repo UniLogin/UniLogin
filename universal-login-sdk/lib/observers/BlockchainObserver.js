@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import ObserverBase from './ObserverBase';
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 
 class BlockchainObserver extends ObserverBase {
   constructor(provider) {
