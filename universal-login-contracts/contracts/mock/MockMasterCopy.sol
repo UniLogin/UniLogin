@@ -1,9 +1,9 @@
 pragma solidity ^0.5.0;
 
-import "../common/MasterCopy.sol";
+import "../common/MasterBase.sol";
 
 
-contract MockMasterCopy is MasterCopy {
+contract MockMasterBase is MasterBase {
     uint256 _count;
 
     function giveAway() external payable {

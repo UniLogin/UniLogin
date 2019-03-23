@@ -6,7 +6,7 @@ import "../common/Proxy.sol";
 contract MockProxy is Proxy {
     uint256 _count;
 
-    constructor(address _masterCopy) Proxy(_masterCopy) public {
+    constructor(address _master, bytes memory _initData) Proxy(_master, _initData) public {
         _count = 10;
     }
 
