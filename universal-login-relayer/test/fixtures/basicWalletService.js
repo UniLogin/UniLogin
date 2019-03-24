@@ -9,7 +9,7 @@ import {deployContract, getWallets} from 'ethereum-waffle';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import {utils} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY} from 'universal-login-contracts';
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 import {waitForContractDeploy} from 'universal-login-commons';
 import {getKnex} from '../../lib/utils/knexUtils';
 
@@ -19,7 +19,7 @@ export default async function basicWalletService(provider, [wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService(getKnex());
-  const identityService = new WalletService(wallet, ensService, authorisationService, hooks, provider, {legacyENS: true});
+  const identityService = new WalletService(wallet, null, ensService, authorisationService, hooks, provider, {legacyENS: true});
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const mockToken = await deployContract(wallet, MockToken);

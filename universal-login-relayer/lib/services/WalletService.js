@@ -19,16 +19,21 @@ class WalletService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
+    this.useInitData = !legacyENS;
   }
 
   async create(key, ensName, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
-      const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode([key, ...ensArgs]);
+      let args = [key, ...ensArgs]
+      if (this.useInitData) {
+        const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode(args);
+        args = [ this.walletMasterAddress, initData ];
+      }
       const deployTransaction = {
         ...defaultDeployOptions,
         ...overrideOptions,
-        ...new ContractFactory(this.abi, this.bytecode).getDeployTransaction(this.walletMasterAddress, initData),
+        ...new ContractFactory(this.abi, this.bytecode).getDeployTransaction(...args),
       };
       const transaction = await this.wallet.sendTransaction(deployTransaction);
       this.hooks.emit('created', transaction);
