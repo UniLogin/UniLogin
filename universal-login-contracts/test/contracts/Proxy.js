@@ -36,7 +36,7 @@ describe('ProxyMasterCopy', async () => {
 
   describe('MasterCopy', async () => {
     it('should fail if authorized function is called directly', async () => {
-      await expect(identityMaster.updateMaster(to, [])).to.be.revertedWith('restricted-access');
+      await expect(identityMaster.updateMaster(to, [], false)).to.be.revertedWith('restricted-access');
     });
   });
 

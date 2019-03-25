@@ -311,7 +311,7 @@ describe('WalletMaster', async () => {
 
     it('should fail if changing masterCopy through proxy with zero address', async () => {
       expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([constants.AddressZero, []]);
+      const data = changeMasterCopyFunc.encode([constants.AddressZero, [], false]);
       msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);
@@ -323,7 +323,7 @@ describe('WalletMaster', async () => {
 
     it('should fail if changing masterCopy through proxy with invalid master', async () => {
       expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([to2, []]);
+      const data = changeMasterCopyFunc.encode([to2, [], false]);
       msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);
@@ -336,7 +336,7 @@ describe('WalletMaster', async () => {
     it('should change masterCopy through proxy with valid address', async () => {
       const otherIdentityMaster = await deployContract(wallet, WalletMaster);
       expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([otherIdentityMaster.address, []]);
+      const data = changeMasterCopyFunc.encode([otherIdentityMaster.address, [], false]);
       msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
       signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
       const messageHash = calculateMessageHash(msgToCall);

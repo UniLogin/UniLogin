@@ -12,6 +12,9 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         public
     {}
 
+    function owner() external view returns (address) {
+        return address(this);
+    }
 
     function initialize(address _key) external initialization {
         // ERC1836 nonce
@@ -33,14 +36,14 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         ENSregister(_hashLabel, _name, _node, ens, registrar, resolver);
     }
 
-    function updateMaster(address _newMaster, bytes calldata _callback) external protected {
+    function updateMaster(address _newMaster, bytes calldata _callback, bool _reset) external protected {
+        if (_reset) {
+            revert('not-implemented');
+        }
         // ERC1836 nonce
         m_nonce = lastNonce;
         // set next master
         setMaster(_newMaster, _callback);
-    }
-    function resetUpdateMaster(address, bytes calldata) external protected {
-        revert('not-implemented');
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
