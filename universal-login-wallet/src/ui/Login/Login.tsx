@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';

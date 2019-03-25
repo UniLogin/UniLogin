@@ -2,7 +2,7 @@ import {providers, Wallet} from 'ethers';
 import Knex from 'knex';
 import {EventEmitter} from 'fbemitter';
 
-declare interface RelayerConfig {
+export declare interface RelayerConfig {
   legacyENS: boolean;
   jsonRpcUrl: string;
   port: string;
@@ -29,6 +29,26 @@ declare class Relayer {
   stop(): void;
 }
 
-export default Relayer;
+export declare interface DevelopmentRelayerConfig {
+  legacyENS: boolean;
+  jsonRpcUrl: string;
+  port: string;
+  privateKey: string;
+  chainSpec: {
+    ensAddress: string;
+    chainId: number;
+  },
+  ensRegistrars: string[];
+  tokenContractAddress: string;
+}
 
-export {RelayerConfig};
+export declare class DevelopmentRelayer extends Relayer {
+  tokenContractAddress: string;
+  tokenContract: Contract;
+
+  constructor(config: DevelopmentRelayerConfig, provider?: providers.Provider);
+  
+  addHooks(): void;
+}
+
+export default Relayer;
