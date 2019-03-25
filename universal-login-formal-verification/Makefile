@@ -4,8 +4,8 @@ SRC_SPEC = src/spec.md
 SRC_JSON = dapp/out/KeyHolder.sol.json
 SOLC = ethereum/solc:0.5.2
 
-SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder.sol \
-		  ../universal-login-contracts/contracts/IKeyHolder.sol
+SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder/KeyHolder.sol \
+		  ../universal-login-contracts/contracts/KeyHolder/IKeyHolder.sol
 
 MAIN_SOL = KeyHolder.sol
 
