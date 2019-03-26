@@ -25,11 +25,11 @@ export default async function basicWalletService(provider, [wallet]) {
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
   const transaction = await identityService.create(wallet.address, 'alex.mylogin.eth');
-  const identity = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
-  await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
-  await mockToken.transfer(identity.address, utils.parseEther('1.0'));
+  const walletContract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
+  await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+  await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   const [, otherWallet] = await getWallets(provider);
-  return {wallet, ensService, provider, identityService, callback, mockToken, mockContract, authorisationService, identity, otherWallet};
+  return {wallet, ensService, provider, identityService, callback, mockToken, mockContract, authorisationService, identity: walletContract, otherWallet};
 }
 
 export const transferMessage = {
