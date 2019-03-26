@@ -26,7 +26,7 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
   };
 
   return (
-    <div className="transfer-modal">
+    <div className="modal-body transfer-modal">
       <h2 className="modal-title transfer-modal-title">Transfer funds</h2>
       <InputLabel htmlFor="address">To address</InputLabel>
       <Input

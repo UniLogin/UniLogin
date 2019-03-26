@@ -23,9 +23,11 @@ const ModalWrapperClosable = ({children, hideModal} : ModalWrapperProps) => {
   return (
     <>
       <div className="modal-overlay" onClick={hideModal} />
-      <div className="modal">
-        <button className="modal-close-btn" onClick={hideModal} />
-        {children}
+      <div className="modal-wrapper">
+        <div className="modal">
+          <button className="modal-close-btn" onClick={hideModal} />
+          {children}
+        </div>
       </div>
     </>
   );

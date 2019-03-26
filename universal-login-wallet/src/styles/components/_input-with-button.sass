@@ -4,26 +4,18 @@
 .input-copy
   padding-right: 116px
 
+  +media(s)
+    padding-right: 112px
+
 .input-copy-btn
   position: absolute
   top: 0
   right: 0
   width: 99px
   height: 45px
-  padding-right: 15px
-  padding-left: 46px
+  padding: 0 30px
   font-weight: 500
   font-size: 14px
   color: #FFFFFF
   border-top-right-radius: 5px
   border-bottom-right-radius: 5px
-
-.input-copy-btn::before
-  content: ''
-  position: absolute
-  top: 50%
-  left: 16px
-  width: 18px
-  height: 18px
-  transform: translateY(-50%)
-  background: url('../assets/icons/copy.svg') no-repeat center

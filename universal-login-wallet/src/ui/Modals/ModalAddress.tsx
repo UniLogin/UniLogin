@@ -7,7 +7,7 @@ import InputLabel from '../common/InputLabel';
 const placeholderValue = '0x67ABC896789DB67890DEF5678EF5678A';
 
 const ModalAddress = () => (
-  <div className="address-modal">
+  <div className="modal-body address-modal">
     <h2 className="modal-title">Transfer one of following </h2>
     <p className="modal-subtitle">With minimum amount</p>
     <div className="address-modal-row">

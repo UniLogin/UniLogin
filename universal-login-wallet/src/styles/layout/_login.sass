@@ -2,7 +2,10 @@
   position: relative
   max-width: 500px
   margin: 0 auto
-  padding: 123px 0
+  padding: 123px 15px
+
+  +media(s)
+    padding: 115px 15px
 
 .login::before
   content: ''
@@ -19,13 +22,22 @@
   display: block
   margin: 0 auto 23px
 
+  +media(s)
+    margin: 0 auto 27px
+
 .login-subtitle
-  max-width: 383px
+  max-width: 420px
   margin: 0 auto 48px
   opacity: 0.75
-  font-size: 13px
+  font-size: 14px
   color: #FFFFFF
   text-align: center
+  line-height: 21px
+
+  +media(s)
+    max-width: 274px
+    margin: 0 auto 69px
+    line-height: 23px
 
 .login-input-label
   display: block
@@ -38,7 +50,13 @@
   color: #FFFFFF
   line-height: 25px
 
+  +media(s)
+    margin-bottom: 5px
+
 .login-input-label-text
   opacity: 0.75
   font-size: 13px
   color: #FFFFFF
+
+  +media(s)
+    font-size: 12px

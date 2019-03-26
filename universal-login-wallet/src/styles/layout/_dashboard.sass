@@ -1,6 +1,10 @@
 .dashboard
+  position: relative
   display: flex
   height: 100vh
+
+  +media(s, 168px)
+    padding-bottom: 83px
 
 .dashboard-main
   position: relative
@@ -11,6 +15,37 @@
   overflow-y: auto
   padding: 30px 30px 100px
 
+  +media(s, 168px)
+    padding: 60px 15px 0
+  
+.dashboard-content-notifications
+  +media(s, 168px)
+    padding: 0 0 83px
+
 .dashboard-balance
   max-width: 707px
   margin: 140px auto 0
+
+  +media(s, 168px)
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 100%
+    margin: 0
+
+.home-screen-column
+  +media(s, 168px)
+    display: flex
+    flex-direction: column-reverse
+    justify-content: flex-end
+    height: calc(100vh - 163px)
+    padding: 20px 15px
+    background: #fff
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(208,209,217,0.25)
+    border-radius: 5px
+
+.dashboard-buttons-row
+  +media(s, 168px)
+    margin-top: auto
+  

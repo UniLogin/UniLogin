@@ -49,7 +49,7 @@ const ModalCardInfo = () => {
           </div>
         </div>
       </div>
-      <Link to="/transferring" id="buyButton" className="btn btn-fullwidth link">Buy</Link>
+      <Link to="/transferring" id="buyButton" className="btn btn-primary btn-fullwidth link">Buy</Link>
     </>
   );
 };

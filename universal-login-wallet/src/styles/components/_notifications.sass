@@ -1,11 +1,22 @@
 .notifications-wrapper
   max-width: 892px
-  margin: 0 auto
+  margin: 50px auto 0
+
+  +media(s, 168px)
+    height: 100%
+    margin: 0 auto
   
 .notifications
   padding: 20px 30px 20px
   background: #EDEDF2
   border-radius: 5px
+
+  +media(s, 168px)
+    min-height: calc(100vh - 83px)
+    border-radius: 0
+
+  +media(s)
+    padding: 20px 15px 20px
 
 .notifications-title
   margin-bottom: 17px
@@ -17,6 +28,12 @@
   padding: 20px 20px 20px 90px
   background: #fff
   border-radius: 5px
+
+  +media(s)
+    padding: 15px 10px 10px 84px
+
+  +media(xs, 50px)
+    padding: 15px 10px 10px 65px
 
 .notifications-item + .notifications-item
   margin-top: 10px
@@ -41,6 +58,11 @@
   transform: translateX(-100%)
   border-radius: 50%
 
+  +media(xs, 50px)
+    width: 45px
+    height: 45px
+    left: -7px
+
 .notification-transaction::before
   background: rgba(221, 223, 245, 0.5) url('../assets/icons/transfer.svg') no-repeat center
 .notification-connected.mobile::before
@@ -54,6 +76,9 @@
   margin-top: 8px
   font-size: 14px
   color: #282828
+
+  +media(s)
+    margin-bottom: 52px
   
 .notification-connected-id span
   font-weight: 600
@@ -74,7 +99,11 @@
 .notification-transaction-row
   display: flex
   align-items: center
+  max-width: 100%
   margin-top: 22px
+
+  +media(s, -100px)
+    flex-wrap: wrap
 
 .notification-transaction-amount
   margin-right: 10px
@@ -91,24 +120,41 @@
 .notification-transaction-icon
   margin-right: 10px
 
+  +media(s, -100px)
+    display: none
+
 .notification-transaction-address
   padding: 4px 18px 2px 24px
+  margin: 5px 0
   font-size: 12px
   line-height: 19px
   color: #6c6c70
   background: #fafafe
   border-radius: 4px
+
+  +media(s, -100px)
+    padding: 4px 4px 2px
   
 .notification-transaction-fee
   display: flex
   align-items: center
-  margin-top: 15px
+  margin-top: 10px
+
+  +media(s)
+    margin-bottom: 30px
+
+  +media(xs, 50)
+    flex-wrap: wrap
 
 .notification-transaction-fee-label
   margin-right: 19px
   opacity: 0.75
   font-size: 12px
   color: #3D3D41
+
+  +media(xs, 50)
+    width: 100%
+    margin: 0 0 5px 0
 
 .notification-transaction-fee-amount
   padding: 3px 21px 1px
