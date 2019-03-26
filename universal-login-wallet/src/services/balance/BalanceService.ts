@@ -3,7 +3,7 @@ import {sleep} from 'universal-login-commons';
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
 
-const BALANCE_EVENT = 'balance';
+const BALANCE_CHANGED = 'balance_changed';
 
 export class BalanceService {
   private running: boolean = false;
@@ -15,7 +15,7 @@ export class BalanceService {
     while (this.running) {
       const balance = await this.etherBalanceService.getBalance();
       if(!balance.eq(this.lastBalance)) {
-        this.emitter.emit(BALANCE_EVENT, balance);
+        this.emitter.emit(BALANCE_CHANGED, balance);
         this.lastBalance = balance;
       }
       await sleep(this.timeout);
@@ -32,8 +32,8 @@ export class BalanceService {
   }
 
   subscribe(callback: (balance: utils.BigNumber) => void) {
-    const subscription = this.emitter.addListener(BALANCE_EVENT, callback);
-    this.emitter.emit(BALANCE_EVENT, this.lastBalance);
+    const subscription = this.emitter.addListener(BALANCE_CHANGED, callback);
+    this.emitter.emit(BALANCE_CHANGED, this.lastBalance);
     return function unsubscribe() {
       subscription.remove();
     };

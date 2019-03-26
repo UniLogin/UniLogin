@@ -3,13 +3,13 @@ import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
-import {DEFAULT_LOCATION} from 'universal-login-commons';
+import {DEFAULT_LOCATION, Procedure} from 'universal-login-commons';
 import {utils} from 'ethers';
 
-const TOP_UP_COST = utils.parseEther('0.005');
+const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
 
 interface LoginProps {
-  setAuthorized: () => void;
+  setAuthorized: Procedure;
   location? : {state: {from: {pathname : string}}};
 }
 
@@ -17,16 +17,16 @@ const Login = ({setAuthorized, location} : LoginProps) => {
   const {createWallet, modalService, balanceService} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
-  let unsubscribe : () => void;
+  let unsubscribe: Procedure;
 
   const onCreateCLick = async (name: string) => {
     await createWallet(name);
     modalService.showModal('address');
-    unsubscribe = balanceService.subscribe(isMinimumAmount);
+    unsubscribe = balanceService.subscribe(onBalanceChange);
   };
 
-  const isMinimumAmount = (amount: utils.BigNumber) => {
-    if (amount.gte(TOP_UP_COST)) {
+  const onBalanceChange = (amount: utils.BigNumber) => {
+    if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
       unsubscribe();
       setAuthorized();
       history.push(from);
