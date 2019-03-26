@@ -9,7 +9,7 @@ chai.use(chaiAsPromised);
 chai.use(solidity);
 
 describe('KeyHolder', async () => {
-  let identity;
+  let walletContract;
   let unknownWalletKey;
   let fromActionWallet;
   let fromUnknownWallet;
@@ -17,33 +17,33 @@ describe('KeyHolder', async () => {
   let actionKey;
   let actionKey2;
 
-  const addActionKey = () => identity.addKey(actionKey, ACTION_KEY);
-  const isActionKey = () => identity.keyHasPurpose(actionKey, ACTION_KEY);
+  const addActionKey = () => walletContract.addKey(actionKey, ACTION_KEY);
+  const isActionKey = () => walletContract.keyHasPurpose(actionKey, ACTION_KEY);
 
   beforeEach(async () => {
-    ({identity, actionKey, actionKey2, managementKey, unknownWalletKey,
+    ({identity: walletContract, actionKey, actionKey2, managementKey, unknownWalletKey,
       fromActionWallet, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
 
   describe('Create', async () => {
     it('Should be deployed successfully', async () => {
-      const {address} = identity;
+      const {address} = walletContract;
       expect(address).to.not.be.null;
     });
 
     it('Key should be management key', async () => {
-      expect(await identity.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
     });
 
     it('there must be a total of 3 keys', async () => {
-      expect(await identity.keyCount()).to.eq(3);
+      expect(await walletContract.keyCount()).to.eq(3);
     });
 
     it('Should return the purpose', async () => {
-      expect(await identity.keyHasPurpose(managementKey, MANAGEMENT_KEY)).to.be.true;
-      expect(await identity.keyHasPurpose(managementKey, ACTION_KEY)).to.be.false;
-      expect(await identity.keyHasPurpose(actionKey, MANAGEMENT_KEY)).to.be.false;
-      expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
+      expect(await walletContract.keyHasPurpose(managementKey, MANAGEMENT_KEY)).to.be.true;
+      expect(await walletContract.keyHasPurpose(managementKey, ACTION_KEY)).to.be.false;
+      expect(await walletContract.keyHasPurpose(actionKey, MANAGEMENT_KEY)).to.be.false;
+      expect(await walletContract.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
     });
   });
 
@@ -51,19 +51,19 @@ describe('KeyHolder', async () => {
     it('Should add key successfully', async () => {
       await addActionKey();
       expect(await isActionKey()).to.be.true;
-      const existingKeys = await identity.keys(actionKey);
+      const existingKeys = await walletContract.keys(actionKey);
       expect(existingKeys[0]).to.eq(ACTION_KEY);
       expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
-      expect(await identity.keyCount()).to.eq(4);
+      expect(await walletContract.keyCount()).to.eq(4);
     });
 
     it('Should not allow to add existing key', async () => {
-      await expect(identity.addKey(managementKey, MANAGEMENT_KEY)).to.be.reverted;
+      await expect(walletContract.addKey(managementKey, MANAGEMENT_KEY)).to.be.reverted;
     });
 
     it('Should emit KeyAdded event successfully', async () => {
       await expect(addActionKey()).to
-        .emit(identity, 'KeyAdded')
+        .emit(walletContract, 'KeyAdded')
         .withArgs(utils.hexlify(actionKey), ACTION_KEY);
     });
 
@@ -78,62 +78,62 @@ describe('KeyHolder', async () => {
 
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
-      await identity.addKeys([actionKey, actionKey2], [ACTION_KEY, ACTION_KEY]);
+      await walletContract.addKeys([actionKey, actionKey2], [ACTION_KEY, ACTION_KEY]);
       expect(await isActionKey()).to.be.true;
-      expect(await identity.keyHasPurpose(actionKey2, ACTION_KEY)).to.be.true;
-      const existingKeys = await identity.keys(actionKey);
+      expect(await walletContract.keyHasPurpose(actionKey2, ACTION_KEY)).to.be.true;
+      const existingKeys = await walletContract.keys(actionKey);
       expect(existingKeys[0]).to.eq(ACTION_KEY);
       expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
-      const existingKeys2 = await identity.keys(actionKey2);
+      const existingKeys2 = await walletContract.keys(actionKey2);
       expect(existingKeys2[0]).to.eq(ACTION_KEY);
       expect(existingKeys2[1]).to.eq(utils.hexlify(actionKey2));
-      expect(await identity.keyCount()).to.eq(5);
+      expect(await walletContract.keyCount()).to.eq(5);
     });
 
     it('Should not allow to add existing key', async () => {
-      await expect(identity.addKeys([managementKey, actionKey], [MANAGEMENT_KEY, ACTION_KEY])).to.be.reverted;
+      await expect(walletContract.addKeys([managementKey, actionKey], [MANAGEMENT_KEY, ACTION_KEY])).to.be.reverted;
     });
 
     it('Should not allow unequal length argument sets', async () => {
-      await expect(identity.addKeys([actionKey, actionKey2], [ACTION_KEY], [])).to.be.reverted;
+      await expect(walletContract.addKeys([actionKey, actionKey2], [ACTION_KEY], [])).to.be.reverted;
     });
 
     it('Should not allow the same key multiple times', async () => {
-      await expect(identity.addKeys([actionKey, actionKey], [ACTION_KEY, ACTION_KEY])).to.be.reverted;
+      await expect(walletContract.addKeys([actionKey, actionKey], [ACTION_KEY, ACTION_KEY])).to.be.reverted;
     });
   });
 
   describe('Get key', async () => {
     it('Should return key correctly', async () => {
       await addActionKey();
-      expect(await identity.getKeyPurpose(actionKey)).to.eq(ACTION_KEY);
-      expect(await identity.keyExist(actionKey)).to.eq(true);
+      expect(await walletContract.getKeyPurpose(actionKey)).to.eq(ACTION_KEY);
+      expect(await walletContract.keyExist(actionKey)).to.eq(true);
     });
 
     it('Should return key purpose correctly', async () => {
-      expect(await identity.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
       await addActionKey();
-      expect(await identity.getKeyPurpose(actionKey)).to.eq(ACTION_KEY);
+      expect(await walletContract.getKeyPurpose(actionKey)).to.eq(ACTION_KEY);
     });
   });
 
   describe('Remove key', async () => {
     beforeEach(async () => {
       await addActionKey();
-      expect(await identity.keyCount()).to.eq(4);
+      expect(await walletContract.keyCount()).to.eq(4);
     });
 
     it('Should remove key successfully', async () => {
       expect(await isActionKey()).to.be.true;
-      await identity.removeKey(actionKey, ACTION_KEY);
-      expect(await identity.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
-      expect(await identity.keyCount()).to.eq(3);
+      await walletContract.removeKey(actionKey, ACTION_KEY);
+      expect(await walletContract.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
+      expect(await walletContract.keyCount()).to.eq(3);
     });
 
     it('Should emit KeyRemoved event successfully', async () => {
       expect(await isActionKey()).to.be.true;
-      await expect(identity.removeKey(actionKey, ACTION_KEY)).to
-        .emit(identity, 'KeyRemoved')
+      await expect(walletContract.removeKey(actionKey, ACTION_KEY)).to
+        .emit(walletContract, 'KeyRemoved')
         .withArgs(utils.hexlify(actionKey), ACTION_KEY);
     });
 
@@ -147,7 +147,7 @@ describe('KeyHolder', async () => {
     });
 
     it('Should not allow to remove key with invalid purpose', async () => {
-      await expect(identity.removeKey(actionKey2, MANAGEMENT_KEY)).to.be.reverted;
+      await expect(walletContract.removeKey(actionKey2, MANAGEMENT_KEY)).to.be.reverted;
     });
   });
 });

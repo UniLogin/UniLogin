@@ -15,16 +15,16 @@ export default async function basicKeyHolder(
   const actionKey = anotherWallet.address;
   const actionKey2 = anotherWallet2.address;
   const unknownWalletKey = unknownWallet.address;
-  const identity = await deployContract(wallet, KeyHolder, [managementKey]);
+  const walletContract = await deployContract(wallet, KeyHolder, [managementKey]);
   const mockContract = await deployContract(wallet, MockContract);
-  const fromManagementWallet = await identity.connect(managementWallet);
-  const fromActionWallet = await identity.connect(actionWallet);
-  const fromUnknownWallet = await identity.connect(unknownWallet);
+  const fromManagementWallet = await walletContract.connect(managementWallet);
+  const fromActionWallet = await walletContract.connect(actionWallet);
+  const fromUnknownWallet = await walletContract.connect(unknownWallet);
 
-  await identity.addKey(managementWalletKey, MANAGEMENT_KEY);
-  await identity.addKey(actionWalletKey, ACTION_KEY);
-  await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
-  return {provider, identity, mockContract, wallet,
+  await walletContract.addKey(managementWalletKey, MANAGEMENT_KEY);
+  await walletContract.addKey(actionWalletKey, ACTION_KEY);
+  await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+  return {provider, identity: walletContract, mockContract, wallet,
     targetWallet, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
     fromManagementWallet, fromActionWallet, fromUnknownWallet,
   };

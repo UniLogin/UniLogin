@@ -19,14 +19,14 @@ export default async function basicWallet(provider, [, , , , , , , , , wallet]) 
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
   const privateKey = wallet.privateKey;
-  const identity = await deployContract(wallet, ERC1077, [publicKey]);
+  const walletContract = await deployContract(wallet, ERC1077, [publicKey]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
-  await wallet.sendTransaction({to: identity.address, value: parseEther('2.0')});
-  await mockToken.transfer(identity.address, parseEther('1.0'));
-  await identity.addKey(publicActionKey1, ACTION_KEY);
-  await identity.addKey(publicActionKey2, ACTION_KEY);
-  return {provider, publicKey, privateKey, sortedKeys, keyAsAddress, identity, mockToken, mockContract, wallet};
+  await wallet.sendTransaction({to: walletContract.address, value: parseEther('2.0')});
+  await mockToken.transfer(walletContract.address, parseEther('1.0'));
+  await walletContract.addKey(publicActionKey1, ACTION_KEY);
+  await walletContract.addKey(publicActionKey2, ACTION_KEY);
+  return {provider, publicKey, privateKey, sortedKeys, keyAsAddress, identity: walletContract, mockToken, mockContract, wallet};
 }
 
 export const transferMessage = {
