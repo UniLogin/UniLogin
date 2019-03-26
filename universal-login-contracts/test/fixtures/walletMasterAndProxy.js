@@ -18,6 +18,6 @@ export default async function walletMasterAndProxy(provider, [, , , , , , , , , 
   const mockContract = await deployContract(wallet, MockContract);
   await wallet.sendTransaction({to: walletContractProxy.address, value: parseEther('2.0')});
   await mockToken.transfer(walletContractProxy.address, parseEther('1.0'));
-  const proxyAsIdentity = new Contract(walletContractProxy.address, ERC1077MasterCopy.abi, wallet);
-  return {provider, publicKey, privateKey, keyAsAddress, walletContractMaster, walletContractProxy, proxyAsIdentity, mockToken, mockContract, wallet};
+  const proxyAsWalletContract = new Contract(walletContractProxy.address, ERC1077MasterCopy.abi, wallet);
+  return {provider, publicKey, privateKey, keyAsAddress, walletContractMaster, walletContractProxy, proxyAsWalletContract, mockToken, mockContract, wallet};
 }
