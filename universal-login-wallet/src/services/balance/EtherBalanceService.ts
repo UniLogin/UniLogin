@@ -1,4 +1,4 @@
-import {providers} from 'ethers';
+import {providers, utils} from 'ethers';
 import WalletService from '../WalletService';
 
 export class EtherBalanceService {
@@ -7,5 +7,5 @@ export class EtherBalanceService {
   getBalance = () =>
     this.walletService.walletExists() ?
       this.provider.getBalance(this.walletService.userWallet!.contractAddress) :
-      0
+      utils.bigNumberify(0)
 }
