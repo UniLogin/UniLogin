@@ -1,8 +1,8 @@
 pragma solidity ^0.5.2;
 
+import "./erc1836/interfaces/IERC1271.sol";
 import "./ENSRegistered.sol";
 import "./ERC1077.sol";
-import "./IERC1271.sol";
 
 
 contract Wallet is ENSRegistered, ERC1077, IERC1271 {
