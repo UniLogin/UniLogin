@@ -19,7 +19,7 @@ const commandLineBuilder = yargs
     () => {
     },
     (argv) => {
-      startDevelopment(argv.nodeUrl).catch(console.error);
+      startDevelopment({nodeUrl: argv.nodeUrl}).catch(console.error);
     })
   .command('deploy:token', 'Deploys a test token',
     () => {},

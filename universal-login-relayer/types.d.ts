@@ -29,6 +29,10 @@ declare class Relayer {
   stop(): void;
 }
 
+export type RelayerClass = {
+  new (config: any, provider: providers.Provider): Relayer;
+}
+
 export declare interface DevelopmentRelayerConfig {
   legacyENS: boolean;
   jsonRpcUrl: string;

@@ -5,7 +5,8 @@ import {deployToken} from './deployToken';
 import {getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
-import {startDevelopmentRelayer, RelayerConstructor} from './startRelayer';
+import {startDevelopmentRelayer} from './startRelayer';
+import {RelayerClass} from 'universal-login-relayer';
 import {dirname, join} from 'path';
 import {Wallet} from 'ethers';
 
@@ -45,7 +46,12 @@ function getMigrationPath() {
   return join(dirname(packagePath), 'migrations');
 }
 
-async function startDevelopment(nodeUrl: string, relayerConstructor?: RelayerConstructor) {
+declare interface startDevelopmentOverrides {
+  nodeUrl?: string;
+  relayerClass?: RelayerClass;
+}
+
+async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverrides) {
   const jsonRpcUrl = nodeUrl ? nodeUrl : await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
@@ -54,7 +60,7 @@ async function startDevelopment(nodeUrl: string, relayerConstructor?: RelayerCon
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
-  await startDevelopmentRelayer(relayerConfig, provider, relayerConstructor);
+  await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, walletMasterAddress, tokenAddress, ensAddress, ensDomains};
 }
 

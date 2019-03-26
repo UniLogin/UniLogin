@@ -1,14 +1,11 @@
-import Relayer, {DevelopmentRelayer} from 'universal-login-relayer';
+import {DevelopmentRelayer, RelayerClass} from 'universal-login-relayer';
 import {providers} from 'ethers';
 
-export type RelayerConstructor = {
-  new (config: any, provider: providers.Provider): Relayer;
-}
 
 export async function startDevelopmentRelayer(
   configuration: any,
   provider: providers.Provider,
-  relayerConstructor: RelayerConstructor = DevelopmentRelayer
+  relayerConstructor: RelayerClass = DevelopmentRelayer
 ) {
   const relayer = new relayerConstructor(configuration, provider)
   await relayer.start();
