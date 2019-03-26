@@ -31,7 +31,7 @@ describe('ERC1077 - main', async  () => {
   let sortedKeys;
 
   beforeEach(async () => {
-    ({provider, identity: walletContract, privateKey, sortedKeys, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicWallet));
+    ({provider, walletContract, privateKey, sortedKeys, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicWallet));
     msg = {...transferMessage, from: walletContract.address};
     signature = await calculateMessageSignature(privateKey, msg);
     [anotherWallet] = await getWallets(provider);

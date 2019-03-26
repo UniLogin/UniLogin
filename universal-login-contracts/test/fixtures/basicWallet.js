@@ -26,7 +26,7 @@ export default async function basicWallet(provider, [, , , , , , , , , wallet]) 
   await mockToken.transfer(walletContract.address, parseEther('1.0'));
   await walletContract.addKey(publicActionKey1, ACTION_KEY);
   await walletContract.addKey(publicActionKey2, ACTION_KEY);
-  return {provider, publicKey, privateKey, sortedKeys, keyAsAddress, identity: walletContract, mockToken, mockContract, wallet};
+  return {provider, publicKey, privateKey, sortedKeys, keyAsAddress, walletContract, mockToken, mockContract, wallet};
 }
 
 export const transferMessage = {

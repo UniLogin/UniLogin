@@ -21,7 +21,7 @@ describe('KeyHolder', async () => {
   const isActionKey = () => walletContract.keyHasPurpose(actionKey, ACTION_KEY);
 
   beforeEach(async () => {
-    ({identity: walletContract, actionKey, actionKey2, managementKey, unknownWalletKey,
+    ({walletContract, actionKey, actionKey2, managementKey, unknownWalletKey,
       fromActionWallet, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
 

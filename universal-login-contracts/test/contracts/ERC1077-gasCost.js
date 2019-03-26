@@ -24,7 +24,7 @@ describe('ERC1077 - gas cost', async () => {
   let mockContract;
 
   beforeEach(async () => {
-    ({provider, identity: walletContract, privateKey, mockContract} = await loadFixture(basicWallet));
+    ({provider, walletContract, privateKey, mockContract} = await loadFixture(basicWallet));
   });
 
   it('Function call', async () => {

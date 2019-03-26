@@ -24,7 +24,7 @@ export default async function basicKeyHolder(
   await walletContract.addKey(managementWalletKey, MANAGEMENT_KEY);
   await walletContract.addKey(actionWalletKey, ACTION_KEY);
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
-  return {provider, identity: walletContract, mockContract, wallet,
+  return {provider, walletContract, mockContract, wallet,
     targetWallet, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
     fromManagementWallet, fromActionWallet, fromUnknownWallet,
   };
