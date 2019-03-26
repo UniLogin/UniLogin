@@ -2,7 +2,7 @@ import Relayer, {DevelopmentRelayer} from 'universal-login-relayer';
 import {providers} from 'ethers';
 
 export type RelayerConstructor = {
-  new (config: any, provider: providers.Provider): DevelopmentRelayer | Relayer;
+  new (config: any, provider: providers.Provider): Relayer;
 }
 
 export async function startDevelopmentRelayer(
