@@ -38,7 +38,9 @@ describe('UI: Transfer', () => {
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
 
-    await appPage.login().topUp(wallet);
+    const address = appPage.login().getAddress();
+    await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
+    await appPage.login().waitForHomeView();
     appPage.dashboard().clickTransferButton();
     appPage.transfer().enterTransferDetails(receiverAddress, '1');
 

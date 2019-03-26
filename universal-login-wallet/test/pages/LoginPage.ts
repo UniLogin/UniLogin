@@ -15,9 +15,11 @@ export default class LoginPage {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Transfer one of following'));
   }
 
-  async topUp(wallet: Wallet) {
-    const address = this.wrapper.find('.input-copy').props().defaultValue as string;
-    await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
+  getAddress() {
+    return this.wrapper.find('.input-copy').props().defaultValue as string;
+  }
+
+  async waitForHomeView() {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Your balance'));
   }
 }
