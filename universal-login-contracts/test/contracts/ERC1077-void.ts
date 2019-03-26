@@ -9,7 +9,7 @@ import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOpti
 
 describe('Void ERC1077', () => {
   let provider;
-  let identityWithZeroKey : Contract;
+  let walletContractWithZeroKey : Contract;
   let signature : string [];
   let message;
   let wallet;
@@ -17,13 +17,13 @@ describe('Void ERC1077', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [, , , , , , , , , wallet] = getWallets(provider);
-    identityWithZeroKey = await deployContract(wallet, ERC1077, [constants.AddressZero]);
+    walletContractWithZeroKey = await deployContract(wallet, ERC1077, [constants.AddressZero]);
   });
 
   it('execute signed fails', async () => {
     signature = [];
-    message = {...transferMessage, from: identityWithZeroKey.address};
-    await expect(identityWithZeroKey.executeSigned(...getExecutionArgs(message), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+    message = {...transferMessage, from: walletContractWithZeroKey.address};
+    await expect(walletContractWithZeroKey.executeSigned(...getExecutionArgs(message), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
       .to.be.revertedWith('Invalid signature');
   });
 });
