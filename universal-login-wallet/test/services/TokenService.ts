@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import TokenService from '../src/services/TokenService';
+import TokenService from '../../src/services/TokenService';
 import {MockToken} from 'universal-login-commons/test';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {Contract} from 'ethers';
