@@ -19,7 +19,7 @@ describe('WalletContract contract', async () => {
   let provider;
   let wallet;
   let ensBuilder;
-  let identity;
+  let walletContract;
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -29,11 +29,11 @@ describe('WalletContract contract', async () => {
     provider = withENS(provider, ensAddress);
     const registrar = ensBuilder.registrars[domain].address;
     const args = [hashLabel, name, node, ensBuilder.ens.address, registrar, ensBuilder.resolver.address];
-    identity = await deployContract(wallet, ENSRegistered, args);
+    walletContract = await deployContract(wallet, ENSRegistered, args);
   });
 
   it('resolves to given address', async () => {
-    expect(await provider.resolveName('alex.mylogin.eth')).to.eq(identity.address);
-    expect(await lookupAddress(provider, identity.address, ensBuilder.resolver.address)).to.eq('alex.mylogin.eth');
+    expect(await provider.resolveName('alex.mylogin.eth')).to.eq(walletContract.address);
+    expect(await lookupAddress(provider, walletContract.address, ensBuilder.resolver.address)).to.eq('alex.mylogin.eth');
   });
 });

@@ -12,12 +12,12 @@ export default async function walletMasterAndProxy(provider, [, , , , , , , , , 
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
   const privateKey = wallet.privateKey;
-  const identityMaster = await deployContract(wallet, ERC1077MasterCopy, [constants.AddressZero]);
-  const identityProxy = await deployContract(wallet, ERC1077Proxy, [identityMaster.address, publicKey]);
+  const walletContractMaster = await deployContract(wallet, ERC1077MasterCopy, [constants.AddressZero]);
+  const walletContractProxy = await deployContract(wallet, ERC1077Proxy, [walletContractMaster.address, publicKey]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
-  await wallet.sendTransaction({to: identityProxy.address, value: parseEther('2.0')});
-  await mockToken.transfer(identityProxy.address, parseEther('1.0'));
-  const proxyAsIdentity = new Contract(identityProxy.address, ERC1077MasterCopy.abi, wallet);
-  return {provider, publicKey, privateKey, keyAsAddress, identityMaster, identityProxy, proxyAsIdentity, mockToken, mockContract, wallet};
+  await wallet.sendTransaction({to: walletContractProxy.address, value: parseEther('2.0')});
+  await mockToken.transfer(walletContractProxy.address, parseEther('1.0'));
+  const proxyAsWalletContract = new Contract(walletContractProxy.address, ERC1077MasterCopy.abi, wallet);
+  return {provider, publicKey, privateKey, keyAsAddress, walletContractMaster, walletContractProxy, proxyAsWalletContract, mockToken, mockContract, wallet};
 }
