@@ -14,7 +14,7 @@ export class BalanceService {
   async loop() {
     while (this.running) {
       const balance = await this.etherBalanceService.getBalance();
-      if(!balance.eq(this.lastBalance)) {
+      if (!balance.eq(this.lastBalance)) {
         this.emitter.emit(BALANCE_CHANGED, balance);
         this.lastBalance = balance;
       }
