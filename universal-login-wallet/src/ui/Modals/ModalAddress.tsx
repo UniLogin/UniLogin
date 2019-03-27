@@ -20,11 +20,12 @@ const ModalAddress = () => {
         <img src={bitmapIcon} alt="ethereum icon" className="address-modal-coin"/>
         <p className="address-modal-amount">2 dai</p>
       </div>
+    </div>
       <InputLabel htmlFor="addressButton">To following address:</InputLabel>
       <InputWithButton id="addressButton" value={walletService.userWallet!.contractAddress} autoFocus/>
       <p className="modal-text address-modal-text">The cost of wallet creation will be: 0,002 ETH or 0,5 dai  Transfer will be automatically discovered.</p>
-    </div>
-  </div>)
+  </div>
+  );
 };
 
 export default ModalAddress;
