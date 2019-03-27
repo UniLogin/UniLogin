@@ -51,7 +51,7 @@ declare interface startDevelopmentOverrides {
   relayerClass?: RelayerClass;
 }
 
-async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverrides) {
+async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverrides = {}) {
   const jsonRpcUrl = nodeUrl ? nodeUrl : await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
