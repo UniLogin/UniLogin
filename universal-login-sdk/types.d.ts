@@ -24,17 +24,17 @@ declare class UniversalLoginSDK extends WalletExistenceVerifier  {
 
   execute(message: any, privateKey: string): Promise<number>;
 
-  getNonce(identityAddress: string, privateKey: string): Promise<number>;
+  getNonce(walletContractAddress: string, privateKey: string): Promise<number>;
 
-  identityExist(identity: string): Promise<string | false>;
+  walletContractExist(identity: string): Promise<string | false>;
 
   resolveName(identity: string): Promise<string | false>;
 
-  connect(identityAddress: string): Promise<string>;
+  connect(walletContractAddress: string): Promise<string>;
 
-  denyRequest(identityAddress: string, publicKey: string): Promise<string>;
+  denyRequest(walletContractAddress: string, publicKey: string): Promise<string>;
 
-  fetchPendingAuthorisations(identityAddress: string): Promise<any>;
+  fetchPendingAuthorisations(walletContractAddress: string): Promise<any>;
 
   subscribe(eventType: string, filter: any, callback: (...args: any[]) => void): Subscription;
 

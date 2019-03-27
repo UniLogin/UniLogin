@@ -28,21 +28,21 @@ export class RelayerApi {
       });
   }
 
-  async connect(identityAddress: string, key: string) {
+  async connect(walletContractAddress: string, key: string) {
     return this.http('POST', '/authorisation', {
-      identityAddress,
+      walletContractAddress,
       key,
     });
   }
 
-  async denyConnection(identityAddress: string, key: string) {
-    return this.http('POST', `/authorisation/${identityAddress}`, {
-      identityAddress,
+  async denyConnection(walletContractAddress: string, key: string) {
+    return this.http('POST', `/authorisation/${walletContractAddress}`, {
+      walletContractAddress,
       key,
     });
   }
 
-  async getPendingAuthorisations(identityAddress: string) {
-    return this.http('GET', `/authorisation/${identityAddress}`);
+  async getPendingAuthorisations(walletContractAddress: string) {
+    return this.http('GET', `/authorisation/${walletContractAddress}`);
   }
 }

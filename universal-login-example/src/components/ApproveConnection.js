@@ -18,9 +18,9 @@ class ApproveConnection extends Component {
     const {identityService, sdk} = this.props.services;
     this.identityService.cancelSubscription();
 
-    const identityAddress = identityService.identity.address;
+    const walletContractAddress = identityService.identity.address;
     const {address} = new Wallet(identityService.privateKey);
-    await sdk.denyRequest(identityAddress, address);
+    await sdk.denyRequest(walletContractAddress, address);
   }
 
   async onCancelClick() {

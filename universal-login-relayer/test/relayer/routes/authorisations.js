@@ -31,7 +31,7 @@ describe('Relayer - Authorisation routes', async () => {
 
   it('add authorisation request and get authorisation request', async () => {
     const authorisationRequest = {
-      identityAddress: contract.address,
+      walletContractAddress: contract.address,
       key: wallet.address,
     };
 
@@ -47,7 +47,7 @@ describe('Relayer - Authorisation routes', async () => {
 
     expect(getAuthorisationResponse.key).to.eq(wallet.address.toLowerCase());
     expect(getAuthorisationResponse.id).to.eq(1);
-    expect(getAuthorisationResponse.identityAddress).to.eq(contract.address);
+    expect(getAuthorisationResponse.walletContractAddress).to.eq(contract.address);
     expect(getAuthorisationResponse.deviceInfo.city).to.eq('unknown');
   });
 

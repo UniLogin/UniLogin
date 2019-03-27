@@ -25,41 +25,41 @@ describe('Tools test', async () => {
 
   describe('hasEnoughToken', async () => {
     let token;
-    let identity;
+    let walletContract;
 
     before(async () => {
       token = await deployContract(wallet, MockToken, []);
-      identity = await deployContract(wallet, KeyHolder, [wallet.address]);
-      await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
-      await token.transfer(identity.address, utils.parseEther('1'));
+      walletContract = await deployContract(wallet, KeyHolder, [wallet.address]);
+      await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+      await token.transfer(walletContract.address, utils.parseEther('1'));
     });
 
     it('Should return true if contract has enough token', async () => {
-      expect(await hasEnoughToken(token.address, identity.address, gasLimit, provider)).to.be.true;
-      expect(await hasEnoughToken(token.address, identity.address, gasLimit * 2, provider)).to.be.true;
-      expect(await hasEnoughToken(token.address, identity.address, utils.parseEther('0.09'), provider)).to.be.true;
-      expect(await hasEnoughToken(token.address, identity.address, utils.parseEther('0.9'), provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, gasLimit, provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, gasLimit * 2, provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('0.09'), provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('0.9'), provider)).to.be.true;
     });
 
     it('Should return false if contract has not enough token', async () => {
-      expect(await hasEnoughToken(token.address, identity.address, utils.parseEther('1.00001'), provider)).to.be.false;
-      expect(await hasEnoughToken(token.address, identity.address, utils.parseEther('1.1'), provider)).to.be.false;
-      expect(await hasEnoughToken(token.address, identity.address, utils.parseEther('2'), provider)).to.be.false;
-      expect(await hasEnoughToken(token.address, identity.address, utils.parseEther('10'), provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('1.00001'), provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('1.1'), provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('2'), provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('10'), provider)).to.be.false;
     });
 
     it('Should return true if contract has enough ethers', async () => {
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, identity.address, gasLimit, provider)).to.be.true;
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, identity.address, utils.parseEther('1.0'), provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, gasLimit, provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('1.0'), provider)).to.be.true;
     });
 
     it('Should return false if contract has not enough ethers', async () => {
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, identity.address, utils.parseEther('1.01'), provider)).to.be.false;
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, identity.address, utils.parseEther('2.0'), provider)).to.be.false;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('1.01'), provider)).to.be.false;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('2.0'), provider)).to.be.false;
     });
 
     it('Should throw error, when passed address is not a token address', async () => {
-      expect(hasEnoughToken(otherWallet.address, identity.address, utils.parseEther('2'), provider)).to.be.eventually.rejectedWith(Error);
+      expect(hasEnoughToken(otherWallet.address, walletContract.address, utils.parseEther('2'), provider)).to.be.eventually.rejectedWith(Error);
     });
   });
 

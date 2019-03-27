@@ -8,7 +8,7 @@ describe('SuggestionsService', () => {
   let service;
   let walletSelectionService;
 
-  const sdk = {identityExist: sinon.fake.returns(Promise.resolve(true))};
+  const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
 
   before(() => {
     walletSelectionService = new WalletSelectionService(sdk, ['my.eth', 'log.eth']);

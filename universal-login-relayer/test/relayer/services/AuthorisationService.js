@@ -18,7 +18,7 @@ describe('Authorisation Service', async () => {
   let wallet;
   let ensDeployer;
   let ensService;
-  let identityService;
+  let walletContractService;
   let walletContract;
   let otherWallet;
 
@@ -28,15 +28,15 @@ describe('Authorisation Service', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     const database = getKnex();
     authorisationService = new AuthorisationService(database);
-    identityService = new WalletService(wallet, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
-    const transaction = await identityService.create(managementKey.address, 'alex.mylogin.eth');
+    walletContractService = new WalletService(wallet, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
+    const transaction = await walletContractService.create(managementKey.address, 'alex.mylogin.eth');
     walletContract = await waitForContractDeploy(managementKey, WalletContract, transaction.hash);
   });
 
   it('Authorisation roundtrip', async () => {
-    const identityAddress =  walletContract.address;
+    const walletContractAddress =  walletContract.address;
     const key = managementKey.address.toLowerCase();
-    const request = {identityAddress, key, deviceInfo};
+    const request = {walletContractAddress, key, deviceInfo};
 
     const [id] = await authorisationService.addRequest(request);
     const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);

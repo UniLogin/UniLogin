@@ -96,16 +96,16 @@ class UniversalLoginSDK {
     return transactionHash;
   }
 
-  async getNonce(identityAddress, privateKey) {
+  async getNonce(walletContractAddress, privateKey) {
     const wallet = new Wallet(privateKey, this.provider);
-    const contract = new Contract(identityAddress, WalletContract.interface, wallet);
+    const contract = new Contract(walletContractAddress, WalletContract.interface, wallet);
     return contract.lastNonce();
   }
 
-  async identityExist(identity) {
-    const identityAddress = await this.resolveName(identity);
-    if (identityAddress && await this.provider.getCode(identityAddress)) {
-      return identityAddress;
+  async walletContractExist(identity) {
+    const walletContractAddress = await this.resolveName(identity);
+    if (walletContractAddress && await this.provider.getCode(walletContractAddress)) {
+      return walletContractAddress;
     }
     return false;
   }
@@ -116,19 +116,19 @@ class UniversalLoginSDK {
     return resolveName(this.provider, ensAddress, identity);
   }
 
-  async connect(identityAddress) {
+  async connect(walletContractAddress) {
     const {address, privateKey} = Wallet.createRandom();
-    await this.relayerApi.connect(identityAddress, address.toLowerCase());
+    await this.relayerApi.connect(walletContractAddress, address.toLowerCase());
     return privateKey;
   }
 
-  async denyRequest(identityAddress, key) {
-    await this.relayerApi.denyConnection(identityAddress, key);
+  async denyRequest(walletContractAddress, key) {
+    await this.relayerApi.denyConnection(walletContractAddress, key);
     return key;
   }
 
-  async fetchPendingAuthorisations(identityAddress) {
-    return this.relayerObserver.fetchPendingAuthorisations(identityAddress);
+  async fetchPendingAuthorisations(walletContractAddress) {
+    return this.relayerObserver.fetchPendingAuthorisations(walletContractAddress);
   }
 
   subscribe(eventType, filter, callback) {

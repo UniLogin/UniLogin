@@ -29,10 +29,10 @@ class RecoverAccount extends Component {
     this.identityService.cancelSubscription();
 
     const {identityService} = this.props.services;
-    const identityAddress = identityService.identity.address;
+    const walletContractAddress = identityService.identity.address;
     const {address} = new Wallet(identityService.privateKey);
     const {sdk} = identityService;
-    await sdk.denyRequest(identityAddress, address);
+    await sdk.denyRequest(walletContractAddress, address);
   }
 
   async onRecoverClick() {

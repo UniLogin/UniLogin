@@ -19,17 +19,17 @@ export default async function basicWalletService(provider, [wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService(getKnex());
-  const identityService = new WalletService(wallet, ensService, authorisationService, hooks, provider, {legacyENS: true});
+  const walletContractService = new WalletService(wallet, ensService, authorisationService, hooks, provider, {legacyENS: true});
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
-  const transaction = await identityService.create(wallet.address, 'alex.mylogin.eth');
-  const identity = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
-  await wallet.sendTransaction({to: identity.address, value: utils.parseEther('1.0')});
-  await mockToken.transfer(identity.address, utils.parseEther('1.0'));
+  const transaction = await walletContractService.create(wallet.address, 'alex.mylogin.eth');
+  const walletContract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
+  await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+  await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   const [, otherWallet] = await getWallets(provider);
-  return {wallet, ensService, provider, identityService, callback, mockToken, mockContract, authorisationService, identity, otherWallet};
+  return {wallet, ensService, provider, walletContractService, callback, mockToken, mockContract, authorisationService, identity: walletContract, otherWallet};
 }
 
 export const transferMessage = {
