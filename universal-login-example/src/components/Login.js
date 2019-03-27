@@ -16,16 +16,16 @@ class Login extends Component {
     return await this.identityService.walletContractExist(identity);
   }
 
-  async onNextClick(identityName) {
+  async onNextClick(walletContractName) {
     const {emitter} = this.props.services;
-    if (await this.walletContractExist(identityName)) {
+    if (await this.walletContractExist(walletContractName)) {
       emitter.emit('setView', 'ApproveConnection');
       await this.identityService.connect();
     } else {
-      this.identityService.identity.name = identityName;
+      this.identityService.identity.name = walletContractName;
       emitter.emit('setView', 'CreatingID');
       try {
-        await this.identityService.createWallet(identityName);
+        await this.identityService.createWallet(walletContractName);
         emitter.emit('setView', 'Greeting', {greetMode: 'created'});
       } catch (err) {
         emitter.emit('setView', 'Failure', {error: err.message});

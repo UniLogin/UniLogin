@@ -6,7 +6,7 @@ function HeaderWaiting(props) {
     <div className="row">
       <div className="identicon-loading loading" />
       <div>
-        <p className="user-id">{props.identityName}</p>
+        <p className="user-id">{props.walletContractName}</p>
         <p className="wallet-address">Creating new identity...</p>
       </div>
     </div>
@@ -14,7 +14,7 @@ function HeaderWaiting(props) {
 }
 
 HeaderWaiting.propTypes = {
-  identityName: PropTypes.string
+  walletContractName: PropTypes.string
 };
 
 export default HeaderWaiting;
