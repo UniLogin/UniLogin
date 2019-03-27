@@ -11,6 +11,14 @@ export default class LoginPage {
     input.simulate('change', {target: {value: userName}});
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('create new'));
     this.wrapper.find('.suggestions-item-btn').simulate('click');
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Your balance'));
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Transfer one of following'));
+  }
+
+  getAddress() {
+    return this.wrapper.find('.input-copy').props().defaultValue as string;
+  }
+
+  async waitForHomeView(balance: string) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Your balance${balance}`));
   }
 }

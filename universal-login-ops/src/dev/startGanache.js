@@ -29,4 +29,4 @@ async function startGanache(port) {
   return jsonRpcUrl;
 }
 
-module.exports = startGanache;
+export {startGanache};

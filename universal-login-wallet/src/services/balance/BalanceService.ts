@@ -1,35 +1,41 @@
 import {EtherBalanceService} from './EtherBalanceService';
 import {sleep} from 'universal-login-commons';
+import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
 
-type Callback = (...args: any[]) => any;
+const BALANCE_CHANGED = 'balance_changed';
 
 export class BalanceService {
   private running: boolean = false;
-  constructor(private etherBalanceService: EtherBalanceService, private timeout: number = 1000) {}
+  private emitter = new EventEmitter();
+  private lastBalance = utils.bigNumberify(0);
+  constructor(private etherBalanceService: EtherBalanceService, private tick: number = 1000) {}
 
-  async start(callback: Callback) {
-    let lastBalance = undefined;
+  async loop() {
     while (this.running) {
-      const balance = await this.getBalance();
-      if (lastBalance !== balance) {
-        callback(balance);
-        lastBalance = balance;
+      const balance = await this.etherBalanceService.getBalance();
+      if (!balance.eq(this.lastBalance)) {
+        this.lastBalance = balance;
+        this.emitter.emit(BALANCE_CHANGED, balance);
       }
-      await sleep(this.timeout);
+      await sleep(this.tick);
     }
   }
 
-  subscribeBalance(callback: Callback) {
+  start() {
     this.running = true;
-    this.start(callback);
-    return this.unsubscribe.bind(this);
+    this.loop();
   }
 
-  unsubscribe() {
+  stop() {
     this.running = false;
   }
 
-  getBalance = async () =>
-    utils.formatEther(await this.etherBalanceService.getBalance())
+  subscribe(callback: (balance: utils.BigNumber) => void) {
+    const subscription = this.emitter.addListener(BALANCE_CHANGED, callback);
+    callback(this.lastBalance);
+    return function unsubscribe() {
+      subscription.remove();
+    };
+  }
 }

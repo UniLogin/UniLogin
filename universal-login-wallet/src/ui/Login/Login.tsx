@@ -3,24 +3,35 @@ import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
-import {DEFAULT_LOCATION} from 'universal-login-commons';
+import {DEFAULT_LOCATION, Procedure} from 'universal-login-commons';
+import {utils} from 'ethers';
+
+const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
 
 interface LoginProps {
-  setAuthorized: () => void;
+  setAuthorized: Procedure;
   location? : {state: {from: {pathname : string}}};
 }
 
 const Login = ({setAuthorized, location} : LoginProps) => {
-  const {createWallet} = useServices();
+  const {createWallet, modalService, balanceService} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
+  let unsubscribe: Procedure;
 
   const onCreateCLick = async (name: string) => {
     await createWallet(name);
-    setAuthorized();
-    history.push(from);
+    modalService.showModal('address');
+    unsubscribe = balanceService.subscribe(onBalanceChange);
   };
 
+  const onBalanceChange = (amount: utils.BigNumber) => {
+    if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
+      unsubscribe();
+      setAuthorized();
+      history.push(from);
+    }
+  };
   return(
     <div className="login">
       <img src={Logo} alt="Logo" className="login-logo"/>
