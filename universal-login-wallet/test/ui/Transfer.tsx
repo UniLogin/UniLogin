@@ -10,7 +10,7 @@ import {Services} from '../../src/services/Services';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
 import {deployMockToken} from 'universal-login-commons/test';
-import {AppPage} from '../../../node_modules/universal-login-wallet/test/pages/AppPage';
+import {AppPage} from '../pages/AppPage';
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
@@ -40,7 +40,7 @@ describe('UI: Transfer', () => {
 
     const address = appPage.login().getAddress();
     await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
-    await appPage.login().waitForHomeView();
+    await appPage.login().waitForHomeView('2.0');
     appPage.dashboard().clickTransferButton();
     appPage.transfer().enterTransferDetails(receiverAddress, '1');
 

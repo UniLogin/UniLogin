@@ -1,6 +1,5 @@
 import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '../utils/utils';
-import {Wallet, utils} from 'ethers';
 
 export default class LoginPage {
 
@@ -19,7 +18,7 @@ export default class LoginPage {
     return this.wrapper.find('.input-copy').props().defaultValue as string;
   }
 
-  async waitForHomeView() {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Your balance'));
+  async waitForHomeView(balance: string) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Your balance${balance}`));
   }
 }

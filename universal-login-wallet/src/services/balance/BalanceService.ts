@@ -9,16 +9,16 @@ export class BalanceService {
   private running: boolean = false;
   private emitter = new EventEmitter();
   private lastBalance = utils.bigNumberify(0);
-  constructor(private etherBalanceService: EtherBalanceService, private timeout: number = 1000) {}
+  constructor(private etherBalanceService: EtherBalanceService, private tick: number = 1000) {}
 
   async loop() {
     while (this.running) {
       const balance = await this.etherBalanceService.getBalance();
       if (!balance.eq(this.lastBalance)) {
-        this.emitter.emit(BALANCE_CHANGED, balance);
         this.lastBalance = balance;
+        this.emitter.emit(BALANCE_CHANGED, balance);
       }
-      await sleep(this.timeout);
+      await sleep(this.tick);
     }
   }
 
@@ -33,7 +33,7 @@ export class BalanceService {
 
   subscribe(callback: (balance: utils.BigNumber) => void) {
     const subscription = this.emitter.addListener(BALANCE_CHANGED, callback);
-    this.emitter.emit(BALANCE_CHANGED, this.lastBalance);
+    callback(this.lastBalance);
     return function unsubscribe() {
       subscription.remove();
     };
