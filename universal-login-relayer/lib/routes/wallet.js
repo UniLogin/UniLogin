@@ -1,10 +1,10 @@
 import express from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 
-export const create = (identityService) => async (req, res, next) => {
+export const create = (walletContractService) => async (req, res, next) => {
   const {managementKey, ensName} = req.body;
   try {
-    const transaction = await identityService.create(managementKey, ensName);
+    const transaction = await walletContractService.create(managementKey, ensName);
     res.status(201)
       .type('json')
       .send(JSON.stringify({transaction}));
@@ -13,9 +13,9 @@ export const create = (identityService) => async (req, res, next) => {
   }
 };
 
-export const execution = (identityService) => async (req, res, next) => {
+export const execution = (walletContractService) => async (req, res, next) => {
   try {
-    const transaction = await identityService.executeSigned(req.body);
+    const transaction = await walletContractService.executeSigned(req.body);
     res.status(201)
       .type('json')
       .send(JSON.stringify({transaction}));
@@ -24,14 +24,14 @@ export const execution = (identityService) => async (req, res, next) => {
   }
 };
 
-export default (identityService) => {
+export default (walletContractService) => {
   const router = new express.Router();
 
   router.post('/',
-    asyncMiddleware(create(identityService)));
+    asyncMiddleware(create(walletContractService)));
 
   router.post('/execution',
-    asyncMiddleware(execution(identityService)));
+    asyncMiddleware(execution(walletContractService)));
 
   return router;
 };
