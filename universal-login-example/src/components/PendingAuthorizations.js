@@ -58,9 +58,9 @@ class PendingAuthorizations extends Component {
 
   async onDenyClick(publicKey) {
     const {identityService} = this.props.services;
-    const identityAddress = identityService.identity.address;
+    const walletContractAddress = identityService.identity.address;
     const {sdk} = identityService;
-    await sdk.denyRequest(identityAddress, publicKey);
+    await sdk.denyRequest(walletContractAddress, publicKey);
   }
 
   render() {

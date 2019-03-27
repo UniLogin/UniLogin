@@ -85,9 +85,9 @@ class WalletService {
   }
 
   async identityExist(identity) {
-    const identityAddress = await this.sdk.identityExist(identity);
-    if (identityAddress) {
-      this.identity = {name: identity, address: identityAddress};
+    const walletContractAddress = await this.sdk.identityExist(identity);
+    if (walletContractAddress) {
+      this.identity = {name: identity, address: walletContractAddress};
       return true;
     }
   }

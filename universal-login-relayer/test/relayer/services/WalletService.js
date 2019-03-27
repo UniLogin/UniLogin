@@ -78,7 +78,7 @@ describe('Relayer - WalletService', async () => {
 
       describe('Collaboration with Authorisation Service', async () => {
         it('should remove request from pending authorisations if addKey', async () => {
-          const request = {identityAddress: walletContract.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
+          const request = {walletContractAddress: walletContract.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
           await authorisationService.addRequest(request);
           msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
           const signature = await calculateMessageSignature(wallet.privateKey, msg);

@@ -21,17 +21,17 @@ export const request = (authorisationService) => async (req, res) => {
 };
 
 export const getPending = (authorisationService) => async (req, res) => {
-  const {identityAddress} = req.params;
-  const response = await authorisationService.getPendingAuthorisations(identityAddress);
+  const {walletContractAddress} = req.params;
+  const response = await authorisationService.getPendingAuthorisations(walletContractAddress);
   res.status(200)
     .type('json')
     .send(JSON.stringify({response}));
 };
 
 export const denyRequest = (authorisationService) => async (req, res) => {
-  const {identityAddress} = req.params;
+  const {walletContractAddress} = req.params;
   const {key} = req.body;
-  const response = await authorisationService.removeRequest(identityAddress, key);
+  const response = await authorisationService.removeRequest(walletContractAddress, key);
   res.status(201)
     .type('json')
     .send(JSON.stringify({response}));
@@ -43,10 +43,10 @@ export default (authorisationService) => {
   router.post('/',
     asyncMiddleware(request(authorisationService)));
 
-  router.get('/:identityAddress',
+  router.get('/:walletContractAddress',
     asyncMiddleware(getPending(authorisationService)));
 
-  router.post('/:identityAddress',
+  router.post('/:walletContractAddress',
     asyncMiddleware(denyRequest(authorisationService)));
 
   return router;

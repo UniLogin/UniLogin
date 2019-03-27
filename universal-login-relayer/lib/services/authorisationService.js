@@ -5,21 +5,21 @@ class AuthorisationService {
   }
 
   async addRequest(request) {
-    const {identityAddress, key, deviceInfo} = request;
-    return this.database.insert({identityAddress, key: key.toLowerCase(), deviceInfo})
+    const {walletContractAddress, key, deviceInfo} = request;
+    return this.database.insert({walletContractAddress, key: key.toLowerCase(), deviceInfo})
       .into('authorisations')
       .returning('id');
   }
 
-  getPendingAuthorisations(identityAddress) {
+  getPendingAuthorisations(walletContractAddress) {
     return this.database('authorisations')
-      .where({identityAddress})
+      .where({walletContractAddress})
       .select();
   }
 
-  async removeRequest(identityAddress, key) {
+  async removeRequest(walletContractAddress, key) {
     await this.database('authorisations')
-      .where('identityAddress', identityAddress)
+      .where('walletContractAddress', walletContractAddress)
       .where('key', key)
       .del();
   }

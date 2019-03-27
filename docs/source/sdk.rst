@@ -354,7 +354,7 @@ Subscribe
             city: 'Warsaw'
           },
         id: 1,
-        identityAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+        walletContractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
         key: ''}]
 
 Unsubscribe

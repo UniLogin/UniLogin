@@ -34,9 +34,9 @@ describe('Authorisation Service', async () => {
   });
 
   it('Authorisation roundtrip', async () => {
-    const identityAddress =  walletContract.address;
+    const walletContractAddress =  walletContract.address;
     const key = managementKey.address.toLowerCase();
-    const request = {identityAddress, key, deviceInfo};
+    const request = {walletContractAddress, key, deviceInfo};
 
     const [id] = await authorisationService.addRequest(request);
     const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);
