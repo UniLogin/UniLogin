@@ -13,7 +13,7 @@ describe('Token Granting Relayer', async () => {
   let relayer;
   let tokenContract;
   let sdk;
-  let identityPrivateKey;
+  let walletContractPrivateKey;
   let walletContractAddress;
 
   const relayerUrl = 'http://localhost:33511';
@@ -21,7 +21,7 @@ describe('Token Granting Relayer', async () => {
   beforeEach(async () => {
     ({relayer, tokenContract} = await startRelayer(wallet, TokenGrantingRelayer));
     sdk = new UniversalLoginSDK(relayerUrl, provider);
-    [identityPrivateKey, walletContractAddress] = await sdk.create('ja.mylogin.eth');
+    [walletContractPrivateKey, walletContractAddress] = await sdk.create('ja.mylogin.eth');
   });
 
   const isTokenBalanceGreater = (value) => async () =>
@@ -37,7 +37,7 @@ describe('Token Granting Relayer', async () => {
     });
 
     it('Grants 5 tokens on key add', async () => {
-      await sdk.addKey(walletContractAddress, wallet.address, identityPrivateKey, {gasToken: tokenContract.address});
+      await sdk.addKey(walletContractAddress, wallet.address, walletContractPrivateKey, {gasToken: tokenContract.address});
       await waitUntil(isTokenBalanceGreater('104'), 5, 50);
       const actualBalance = await tokenContract.balanceOf(walletContractAddress);
       expect(actualBalance).to.be.above(utils.parseEther('104'));

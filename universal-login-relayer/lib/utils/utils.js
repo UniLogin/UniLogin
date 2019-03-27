@@ -28,17 +28,17 @@ const isContract = async (provider, contractAddress) => {
   return !!code;
 };
 
-const hasEnoughToken = async (gasToken, identityAddress, gasLimit, provider) => {
+const hasEnoughToken = async (gasToken, walletContractAddress, gasLimit, provider) => {
   // TODO: Only whitelisted tokens/contracts
   if (gasToken === ETHER_NATIVE_TOKEN.address) {
-    const walletBalance = await provider.getBalance(identityAddress);
+    const walletBalance = await provider.getBalance(walletContractAddress);
     return walletBalance.gte(utils.bigNumberify(gasLimit));
   } else if (!await isContract(provider, gasToken)) {
     throw new Error('Address is not a contract');
   } else {
     const token = new Contract(gasToken, ERC20.interface, provider);
-    const identityTokenBalance = await token.balanceOf(identityAddress);
-    return identityTokenBalance.gte(utils.bigNumberify(gasLimit));
+    const walletContractTokenBalance = await token.balanceOf(walletContractAddress);
+    return walletContractTokenBalance.gte(utils.bigNumberify(gasLimit));
   }
 };
 

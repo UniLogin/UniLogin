@@ -18,26 +18,26 @@ describe('Relayer - WalletService', async () => {
   let wallet;
   let callback;
   let mockToken;
-  let identity;
+  let walletContract;
   let msg;
   let otherWallet;
 
   beforeEach(async () => {
-    ({wallet, provider, walletContractService, callback, mockToken, authorisationService, identity, otherWallet} = await loadFixture(basicWalletService));
-    msg = {...transferMessage, from: identity.address, gasToken: mockToken.address};
+    ({wallet, provider, walletContractService, callback, mockToken, authorisationService, identity: walletContract, otherWallet} = await loadFixture(basicWalletService));
+    msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
   });
 
   describe('Create', async () => {
     it('returns contract address', async () => {
-      expect(identity.address).to.be.properAddress;
+      expect(walletContract.address).to.be.properAddress;
     });
 
     it('is initialized with management key', async () => {
-      expect(await identity.keyExist(wallet.address)).to.eq(true);
+      expect(await walletContract.keyExist(wallet.address)).to.eq(true);
     });
 
     it('has ENS name reserved', async () => {
-      expect(await provider.resolveName('alex.mylogin.eth')).to.eq(identity.address);
+      expect(await provider.resolveName('alex.mylogin.eth')).to.eq(walletContract.address);
     });
 
     it('should emit created event', async () => {
@@ -69,21 +69,21 @@ describe('Relayer - WalletService', async () => {
 
     describe('Add Key', async () => {
       it('execute add key', async () => {
-        msg = {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
+        msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
         const signature = await calculateMessageSignature(wallet.privateKey, msg);
 
         await walletContractService.executeSigned({...msg, signature});
-        expect(await identity.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
+        expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
       });
 
       describe('Collaboration with Authorisation Service', async () => {
         it('should remove request from pending authorisations if addKey', async () => {
-          const request = {identityAddress: identity.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
+          const request = {identityAddress: walletContract.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
           await authorisationService.addRequest(request);
-          msg = {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
+          msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
           const signature = await calculateMessageSignature(wallet.privateKey, msg);
           await walletContractService.executeSigned({...msg, signature});
-          const authorisations = await authorisationService.getPendingAuthorisations(identity.address);
+          const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);
           expect(authorisations).to.deep.eq([]);
         });
       });
@@ -91,19 +91,19 @@ describe('Relayer - WalletService', async () => {
 
     describe('Remove key ', async () => {
       beforeEach(async () => {
-        const message =  {...addKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
+        const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
         const signature = await calculateMessageSignature(wallet.privateKey, message);
 
         await walletContractService.executeSigned({...message, signature});
       });
 
       it('should remove key', async () => {
-        expect((await identity.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY);
-        const message =  {...removeKeyMessage, from: identity.address, gasToken: mockToken.address, to: identity.address};
+        expect((await walletContract.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY);
+        const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
         const signature = await calculateMessageSignature(wallet.privateKey, message);
 
         await walletContractService.executeSigned({...message, signature});
-        expect((await identity.keyExist(otherWallet.address))).to.eq(false);
+        expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
       });
     });
   });
