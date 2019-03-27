@@ -29,7 +29,7 @@ export default async function basicWalletService(provider, [wallet]) {
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   const [, otherWallet] = await getWallets(provider);
-  return {wallet, ensService, provider, walletContractService: walletContractService, callback, mockToken, mockContract, authorisationService, identity: walletContract, otherWallet};
+  return {wallet, ensService, provider, walletContractService, callback, mockToken, mockContract, authorisationService, identity: walletContract, otherWallet};
 }
 
 export const transferMessage = {
