@@ -12,13 +12,13 @@ class Login extends Component {
     this.sdk = this.props.services.sdk;
   }
 
-  async walletContractExist(identity) {
-    return await this.identityService.walletContractExist(identity);
+  async getWalletContractAddress(identity) {
+    return await this.identityService.getWalletContractAddress(identity);
   }
 
   async onNextClick(walletContractName) {
     const {emitter} = this.props.services;
-    if (await this.walletContractExist(walletContractName)) {
+    if (await this.getWalletContractAddress(walletContractName)) {
       emitter.emit('setView', 'ApproveConnection');
       await this.identityService.connect();
     } else {
@@ -35,7 +35,7 @@ class Login extends Component {
 
   async onAccountRecoveryClick(identity) {
     const {emitter} = this.props.services;
-    await this.walletContractExist(identity);
+    await this.getWalletContractAddress(identity);
     emitter.emit('setView', 'RecoverAccount');
   }
 

@@ -19,7 +19,7 @@ describe('SuggestionsService', () => {
   });
 
   it('works fine with WalletSelectionService', async () => {
-    const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
+    const sdk = {getWalletContractAddress: sinon.fake.returns(Promise.resolve(true))};
     const walletSelectionService = new WalletSelectionService(sdk, ['mylogin.eth']);
     const suggestionsService = new SuggestionsService(walletSelectionService, {debounceTime: 1});
     const callback = sinon.spy();

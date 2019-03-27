@@ -267,7 +267,7 @@ removeKey
         transactionDetails
       );
 
-**walletContractExist(ensName)**
+**getWalletContractAddress(ensName)**
 
   checks if ENS name is registered.
 
@@ -280,7 +280,7 @@ removeKey
   Example:
     ::
 
-      const contractAddress = await sdk.walletContractExist('justyna.my-super-domain.test');
+      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
 
 Events
 ------

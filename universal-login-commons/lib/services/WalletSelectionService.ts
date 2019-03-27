@@ -1,5 +1,5 @@
 export interface WalletExistenceVerifier {
-  walletContractExist(domain : string): Promise<string | false>;
+  getWalletContractAddress(domain : string): Promise<string | false>;
 }
 
 const ensDomains = ['mylogin.eth'];
@@ -47,7 +47,7 @@ export class WalletSelectionService {
     const connections = [];
     const creations = [];
     for (const domain of domains) {
-      if (await this.sdk.walletContractExist(domain)) {
+      if (await this.sdk.getWalletContractAddress(domain)) {
         connections.push(domain);
       } else {
         creations.push(domain);
@@ -88,7 +88,7 @@ export class WalletSelectionService {
         if (tld.length < 3) {
           return this.getSuggestionsForNodeAndSldPrefix(name, domain);
         }
-        return (await this.sdk.walletContractExist(namePrefix)) ?
+        return (await this.sdk.getWalletContractAddress(namePrefix)) ?
           {connections: [namePrefix], creations: []} :
           {connections: [], creations: [namePrefix]};
       }
