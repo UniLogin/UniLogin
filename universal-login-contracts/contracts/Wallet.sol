@@ -11,7 +11,7 @@ contract Wallet is ENSRegistered, ERC1077, IERC1271 {
         payable public
         ERC1077(_key)
     {
-        ENSregister(_hashLabel, _name, _node, ens, registrar, resolver);
+        registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature)

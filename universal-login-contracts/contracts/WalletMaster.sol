@@ -33,7 +33,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         keys[_key].purpose = MANAGEMENT_KEY;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
-        ENSregister(_hashLabel, _name, _node, ens, registrar, resolver);
+        registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
     }
 
     function updateMaster(address _newMaster, bytes calldata _callback, bool _reset) external protected {
