@@ -29,8 +29,11 @@ if
 
     #rangeUInt(256, #mapping.keys[CALLER_ID])
     #rangeUInt(256, 1 + #mapping.keys[_key])
-    #rangeUInt(256, _key |Int IrrelevantForAddressBits(X))
+    #rangeUInt(256, #mapping.keys[_key])
+    #rangeUInt(256, 0 |Int IrrelevantForAddressBits(X))
+    #rangeUInt(256, #keyCount)
 
+    #mapping.keys[_key] =/= 1 + #mapping.keys[_key]
     #keyCount =/= #mapping.keys[_key]
     #keyCount =/= 1 + #mapping.keys[_key]
     #mapping.keys[CALLER_ID] =/= #keyCount
