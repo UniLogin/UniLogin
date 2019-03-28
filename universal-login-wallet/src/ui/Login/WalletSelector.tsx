@@ -5,9 +5,10 @@ import {useServices} from '../../hooks';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
+  onConnectionClick: (...args: any[]) => void;
 }
 
-const WalletSelector = ({onCreateClick}: WalletSelector) => {
+const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
@@ -27,7 +28,7 @@ const WalletSelector = ({onCreateClick}: WalletSelector) => {
 
   const renderSuggestions = () =>
     !busy && (connections.length || creations.length) ?
-      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick}/> :
+      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick} /> :
       null;
 
   const renderBusyIndicator = () =>

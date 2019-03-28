@@ -4,6 +4,7 @@ interface SuggestionsProps {
   connections: string[];
   creations: string[];
   onCreateClick: (...args: any[]) => void;
+  onConnectionClick: (...args: any[]) => void;
 }
 
 const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void) =>
@@ -20,8 +21,8 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
   )
 );
 
-const Suggestions = ({connections, creations, onCreateClick}: SuggestionsProps) => {
-  const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, () => alert('not implemented'));
+const Suggestions = ({connections, creations, onCreateClick, onConnectionClick}: SuggestionsProps) => {
+  const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, onConnectionClick);
   const creationsSuggestions = getSuggestionsItems('create new', creations, onCreateClick);
   const recoversSuggestions = getSuggestionsItems('recover', connections, () => alert('not implemented'));
   return (

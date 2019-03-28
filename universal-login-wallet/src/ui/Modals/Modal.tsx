@@ -9,6 +9,7 @@ import ModalTopUp from './ModalTopUp';
 import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
+import ModalWaiting from './ModalWaiting';
 
 const Modal = () => {
   const {modalService} = useServices();
@@ -56,6 +57,12 @@ const Modal = () => {
       return (
         <ModalWrapper>
           <ModalCardInfo />
+        </ModalWrapper>
+      );
+    case 'waiting':
+      return (
+        <ModalWrapper>
+          <ModalWaiting />
         </ModalWrapper>
       );
     default:
