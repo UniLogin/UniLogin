@@ -29,7 +29,7 @@ describe('ClickService', () => {
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
     walletContractService = new WalletService(sdk, new EventEmitter(), new FakeStorageService(), {});
     await walletContractService.createWallet('kyle.mylogin.eth');
-    await tokenContract.transfer(walletContractService.identity.address, utils.parseEther('1.0'));
+    await tokenContract.transfer(walletContractService.walletContract.address, utils.parseEther('1.0'));
     clickService = new ClickService(walletContractService, {clicker: clickerContract.address, token: tokenContract.address}, defaultPaymentOptions);
   });
 
@@ -38,7 +38,7 @@ describe('ClickService', () => {
     const callback = sinon.spy();
     await clickService.click(callback);
     const logs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress');
-    expect(logs[0]).to.deep.include({presser: walletContractService.identity.address});
+    expect(logs[0]).to.deep.include({presser: walletContractService.walletContract.address});
     expect(callback).to.have.been.called;
   });
 

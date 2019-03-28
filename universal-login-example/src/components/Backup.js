@@ -51,9 +51,9 @@ class Backup extends Component {
       gasToken: tokenContractAddress
     };
     await sdk.addKeys(
-      walletContractService.identity.address,
+      walletContractService.walletContract.address,
       this.state.publicKeys,
-      walletContractService.identity.privateKey,
+      walletContractService.walletContract.privateKey,
       addKeysPaymentOptions
     );
     emitter.emit('setView', 'Greeting', {greetMode: 'backupKeys'});
@@ -69,12 +69,12 @@ class Backup extends Component {
   }
 
   render() {
-    const {identity} = this.props.services.walletContractService;
+    const {walletContract} = this.props.services.walletContractService;
     return (
       <BackupView
         isLoading={this.state.isLoading}
         isSetting={this.state.isSetting}
-        identity={identity}
+        walletContract={walletContract}
         setView={this.props.setView}
         backupCodes={this.state.backupCodes}
         onGenerateClick={this.generateBackupCodes.bind(this)}

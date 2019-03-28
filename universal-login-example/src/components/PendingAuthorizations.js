@@ -20,7 +20,7 @@ class PendingAuthorizations extends Component {
   }
 
   componentDidMount() {
-    const {address} = this.walletContractService.identity;
+    const {address} = this.walletContractService.walletContract;
     this.setState({
       authorisations: this.authorisationService.pendingAuthorisations
     });
@@ -46,8 +46,8 @@ class PendingAuthorizations extends Component {
 
   async onAcceptClick(publicKey) {
     const {walletContractService} = this.props.services;
-    const to = walletContractService.identity.address;
-    const {privateKey} = walletContractService.identity;
+    const to = walletContractService.walletContract.address;
+    const {privateKey} = walletContractService.walletContract;
     const {sdk} = walletContractService;
     const addKeyPaymentOptions = {
       ...DEFAULT_PAYMENT_OPTIONS,
@@ -58,7 +58,7 @@ class PendingAuthorizations extends Component {
 
   async onDenyClick(publicKey) {
     const {walletContractService} = this.props.services;
-    const walletContractAddress = walletContractService.identity.address;
+    const walletContractAddress = walletContractService.walletContract.address;
     const {sdk} = walletContractService;
     await sdk.denyRequest(walletContractAddress, publicKey);
   }
@@ -68,7 +68,7 @@ class PendingAuthorizations extends Component {
       <div>
         <HeaderView>
           <Profile
-            type="identityHeader"
+            type="walletContractHeader"
             walletContractService={this.props.services.walletContractService}
           />
           <RequestsBadge

@@ -14,7 +14,7 @@ class RequestsBadge extends Component {
   }
 
   componentDidMount() {
-    const {address} = this.walletContractService.identity;
+    const {address} = this.walletContractService.walletContract;
     this.subscription = this.authorisationService.subscribe(
       address,
       this.onAuthorisationChanged.bind(this)

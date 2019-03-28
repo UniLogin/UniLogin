@@ -136,13 +136,13 @@ describe('WalletSelectionService', () => {
       expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: [], creations: ['a.my.eth']});
     });
 
-    it('with secondary domain prefix, identity exists', async () => {
+    it('with secondary domain prefix, walletContract exists', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
       const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my')).to.deep.eq({connections:['a.my.eth', 'a.my.test'], creations: []});
     });
 
-    it('with secondary domain prefix, identity doesn`t exist', async () => {
+    it('with secondary domain prefix, walletContract doesn`t exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
       const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my')).to.deep.eq({connections:[], creations: ['a.my.eth', 'a.my.test']});

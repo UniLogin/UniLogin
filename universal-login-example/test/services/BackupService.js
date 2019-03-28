@@ -7,7 +7,7 @@ describe('BackupService', async () => {
 
   before(async () => {
     walletContractService = {
-      identity: {
+      walletContract: {
         name: 'kyle'
       }
     };

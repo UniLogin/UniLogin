@@ -37,7 +37,7 @@ class Account extends Component {
 
         <div className="container">
           <Profile
-            type="identityAccount"
+            type="walletContractAccount"
             walletContractService={this.props.walletContractService}
           />
           <hr className="separator" />

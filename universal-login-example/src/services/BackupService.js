@@ -22,7 +22,7 @@ class BackupService {
         .replace(/\s/g, '-')
         .toLowerCase();
       const backupCode = `${prefix}-${suffix}`;
-      const wallet = await fromBrainWallet(this.walletContractService.identity.name, backupCode);
+      const wallet = await fromBrainWallet(this.walletContractService.walletContract.name, backupCode);
       this.backupCodes.push(backupCode);
       this.publicKeys.push(wallet.address);
     }

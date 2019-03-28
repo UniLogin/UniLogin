@@ -12,7 +12,7 @@ class WalletSelector extends Component {
     this.textBox = React.createRef();
     this.connectionHoverViewRef = React.createRef();
     this.state = {
-      identity: '',
+      walletContract: '',
       connections: [],
       creations: [],
       busy: false,
@@ -27,8 +27,8 @@ class WalletSelector extends Component {
   }
 
   async update(event) {
-    const identity = event.target.value;
-    this.suggestionsService.getSuggestions(identity);
+    const walletContract = event.target.value;
+    this.suggestionsService.getSuggestions(walletContract);
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -92,7 +92,7 @@ class WalletSelector extends Component {
         <ConnectionHoverView
           connections={this.state.connections}
           creations={this.state.creations}
-          identity={this.state.identity}
+          walletContract={this.state.walletContract}
           onNextClick={this.props.onNextClick}
           onAccountRecoveryClick={this.props.onAccountRecoveryClick}
           onKeyDown={this.moveSelection.bind(this)}

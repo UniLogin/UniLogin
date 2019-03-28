@@ -4,16 +4,16 @@ class WalletService {
   constructor(sdk, emitter, storageService, provider) {
     this.sdk = sdk;
     this.emitter = emitter;
-    this.identity = {};
+    this.walletContract = {};
     this.deviceAddress = '';
     this.storageService = storageService;
     this.provider = provider;
   }
 
   async loadWallet() {
-    const identity = await this.storageService.getWallet();
-    if (identity) {
-      this.identity = identity;
+    const walletContract = await this.storageService.getWallet();
+    if (walletContract) {
+      this.walletContract = walletContract;
       this.emitter.emit('setView', 'MainScreen');
       return true;
     }
@@ -21,9 +21,9 @@ class WalletService {
   }
 
   async connect() {
-    this.privateKey = await this.sdk.connect(this.identity.address);
+    this.privateKey = await this.sdk.connect(this.walletContract.address);
     const {address} = new Wallet(this.privateKey);
-    const filter = {contractAddress: this.identity.address, key: address};
+    const filter = {contractAddress: this.walletContract.address, key: address};
     this.subscription = this.sdk.subscribe('KeyAdded', filter, () => {
       this.onKeyAdded({greetMode: 'addKey'});
     });
@@ -33,7 +33,7 @@ class WalletService {
     this.privateKey = await Wallet.createRandom().privateKey;
     const {address} = new Wallet(this.privateKey, this.provider);
     this.deviceAddress = address;
-    const filter = {contractAddress: this.identity.address, key: address};
+    const filter = {contractAddress: this.walletContract.address, key: address};
     this.subscription = this.sdk.subscribe('KeyAdded', filter, () => {
       this.onKeyAdded();
     });
@@ -41,13 +41,13 @@ class WalletService {
 
   onKeyAdded(viewOptions = {}) {
     this.cancelSubscription();
-    this.identity = {
-      name: this.identity.name,
+    this.walletContract = {
+      name: this.walletContract.name,
       privateKey: this.privateKey,
-      address: this.identity.address
+      address: this.walletContract.address
     };
     this.emitter.emit('setView', 'Greeting', viewOptions);
-    this.storeWallet(this.identity);
+    this.storeWallet(this.walletContract);
   }
 
   cancelSubscription() {
@@ -57,8 +57,8 @@ class WalletService {
     }
   }
 
-  async storeWallet(identity) {
-    this.storageService.storeWallet(identity);
+  async storeWallet(walletContract) {
+    this.storageService.storeWallet(walletContract);
   }
 
   async disconnect() {
@@ -68,26 +68,26 @@ class WalletService {
   async createWallet(name) {
     this.emitter.emit('creatingWalletContract', {name});
     const [privateKey, address] = await this.sdk.create(name);
-    this.identity = {
+    this.walletContract = {
       name,
       privateKey,
       address
     };
-    this.emitter.emit('identityCreated', this.identity);
-    this.storeWallet(this.identity);
+    this.emitter.emit('walletContractCreated', this.walletContract);
+    this.storeWallet(this.walletContract);
   }
 
   async execute(message) {
     await this.sdk.execute(
       message,
-      this.identity.privateKey
+      this.walletContract.privateKey
     );
   }
 
-  async getWalletContractAddress(identity) {
-    const walletContractAddress = await this.sdk.getWalletContractAddress(identity);
+  async getWalletContractAddress(walletContract) {
+    const walletContractAddress = await this.sdk.getWalletContractAddress(walletContract);
     if (walletContractAddress) {
-      this.identity = {name: identity, address: walletContractAddress};
+      this.walletContract = {name: walletContract, address: walletContractAddress};
       return true;
     }
   }

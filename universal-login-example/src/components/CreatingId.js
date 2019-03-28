@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 class CreatingId extends Component {
   render() {
-    const {identity} = this.props.walletContractService;
-    return (<CreatingIdView walletContractName={identity.name}/>);
+    const {walletContract} = this.props.walletContractService;
+    return (<CreatingIdView walletContractName={walletContract.name}/>);
   }
 }
 CreatingId.propTypes = {

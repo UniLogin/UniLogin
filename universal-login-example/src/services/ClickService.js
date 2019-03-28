@@ -11,7 +11,7 @@ class ClickService {
   async click(callback) {
     const message = {
       to: this.addresses.clicker,
-      from: this.walletContractService.identity.address,
+      from: this.walletContractService.walletContract.address,
       value: 0,
       data: new utils.Interface(Clicker.interface).functions.press.encode([]),
       gasToken: this.addresses.token,

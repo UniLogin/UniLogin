@@ -13,17 +13,17 @@ class Greeting extends Component {
   }
 
   async componentDidMount() {
-    const keyHolderAddress = this.props.walletContractService.identity.address;
+    const keyHolderAddress = this.props.walletContractService.walletContract.address;
     const {greetMode} = this.props.viewParameters;
     const status = await this.props.greetingService.getStatus(keyHolderAddress, greetMode);
     this.setState({status});
   }
 
   render() {
-    const {identity} = this.props.walletContractService;
+    const {walletContract} = this.props.walletContractService;
     return (
       <GreetingView
-        identity={identity}
+        walletContract={walletContract}
         onStartClick={this.showMainScreen.bind(this)}
         status={this.state.status}
       />

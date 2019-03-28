@@ -19,7 +19,7 @@ class ConnectionHoverView extends Component {
         onClick={() => this.props.onNextClick(name)}
         className={index + offset === this.props.selectedIndex ? 'active' : null}
       >
-        <span className="identity">{name}</span>
+        <span className="walletContract">{name}</span>
         <button type="submit" className='connect'>connect</button>
       </li>
     ));
@@ -30,7 +30,7 @@ class ConnectionHoverView extends Component {
         onClick={() => this.props.onNextClick(name)}
         className={index + offset === this.props.selectedIndex ? 'active' : null}
       >
-        <span className="identity">{name}</span>
+        <span className="walletContract">{name}</span>
         <button className='create'>create</button>
       </li>
     ));
@@ -41,12 +41,12 @@ class ConnectionHoverView extends Component {
         onClick={() => this.props.onAccountRecoveryClick(name)}
         className={index + offset === this.props.selectedIndex ? 'active' : null}
       >
-        <span className="identity">{name}</span>
+        <span className="walletContract">{name}</span>
         <button className='recover'>recover</button>
       </li>
     ));
 
-    return this.props.identity.length > 1 ? (
+    return this.props.walletContract.length > 1 ? (
       <ul className="loginHover" onKeyDown={this.props.onKeyDown.bind(this)} ref={this.listRef}>
         { connections }
         { creations }
@@ -63,7 +63,7 @@ ConnectionHoverView.propTypes = {
   creations: PropTypes.arrayOf(PropTypes.string),
   onNextClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func,
-  identity: PropTypes.string,
+  walletContract: PropTypes.string,
   selectedIndex: PropTypes.number,
   onKeyDown: PropTypes.func
 };

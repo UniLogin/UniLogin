@@ -35,7 +35,7 @@ class MainScreen extends Component {
   }
 
   async updateClicksLeft() {
-    const {address} = this.walletContractService.identity;
+    const {address} = this.walletContractService.walletContract;
     const balance = await this.tokenService.getBalance(address);
     const clicksLeft = parseInt(balance, 10);
     this.setState({
@@ -55,7 +55,7 @@ class MainScreen extends Component {
       <div>
         <HeaderView>
           <Profile
-            type="identityHeader"
+            type="walletContractHeader"
             walletContractService={this.props.services.walletContractService}
           />
           <RequestsBadge

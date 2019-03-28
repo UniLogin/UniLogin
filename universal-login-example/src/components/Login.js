@@ -6,14 +6,14 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      identity: ''
+      walletContract: ''
     };
     this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
   }
 
-  async getWalletContractAddress(identity) {
-    return await this.walletContractService.getWalletContractAddress(identity);
+  async getWalletContractAddress(walletContract) {
+    return await this.walletContractService.getWalletContractAddress(walletContract);
   }
 
   async onNextClick(walletContractName) {
@@ -22,7 +22,7 @@ class Login extends Component {
       emitter.emit('setView', 'ApproveConnection');
       await this.walletContractService.connect();
     } else {
-      this.walletContractService.identity.name = walletContractName;
+      this.walletContractService.walletContract.name = walletContractName;
       emitter.emit('setView', 'CreatingID');
       try {
         await this.walletContractService.createWallet(walletContractName);
@@ -33,14 +33,14 @@ class Login extends Component {
     }
   }
 
-  async onAccountRecoveryClick(identity) {
+  async onAccountRecoveryClick(walletContract) {
     const {emitter} = this.props.services;
-    await this.getWalletContractAddress(identity);
+    await this.getWalletContractAddress(walletContract);
     emitter.emit('setView', 'RecoverAccount');
   }
 
-  onChange(identity) {
-    this.setState({identity});
+  onChange(walletContract) {
+    this.setState({walletContract});
   }
 
   render() {
@@ -52,7 +52,7 @@ class Login extends Component {
           Clicker is an example application, that demonstrates Universal Logins, a design pattern for storing funds and connecting to Ethereum applications.
           </p>
           <WalletSelector
-            onNextClick={(identity) => this.onNextClick(identity)}
+            onNextClick={(walletContract) => this.onNextClick(walletContract)}
             onChange={this.onChange.bind(this)}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
             services = {this.props.services}

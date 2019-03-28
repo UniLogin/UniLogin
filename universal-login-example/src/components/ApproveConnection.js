@@ -18,7 +18,7 @@ class ApproveConnection extends Component {
     const {walletContractService, sdk} = this.props.services;
     this.walletContractService.cancelSubscription();
 
-    const walletContractAddress = walletContractService.identity.address;
+    const walletContractAddress = walletContractService.walletContract.address;
     const {address} = new Wallet(walletContractService.privateKey);
     await sdk.denyRequest(walletContractAddress, address);
   }
@@ -49,7 +49,7 @@ class ApproveConnection extends Component {
         <ApproveConnectionView
           onChange={this.onChange.bind(this)}
           onCancelClick={this.onCancelClick.bind(this)}
-          identity={this.walletContractService.identity}
+          walletContract={this.walletContractService.walletContract}
           onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
         />
       </div>

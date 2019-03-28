@@ -6,20 +6,20 @@ function Header(props) {
   return (
     <div className="row">
       <Blockies
-        seed={props.identity.address.toLowerCase()}
+        seed={props.walletContract.address.toLowerCase()}
         size={8}
         scale={8}
       />
       <div>
-        <p className="user-id">{props.identity.name}</p>
-        <p className="wallet-address">{props.identity.address}</p>
+        <p className="user-id">{props.walletContract.name}</p>
+        <p className="wallet-address">{props.walletContract.address}</p>
       </div>
     </div>
   );
 }
 
 Header.propTypes = {
-  identity: PropTypes.object
+  walletContract: PropTypes.object
 };
 
 export default Header;
