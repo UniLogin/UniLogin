@@ -68,7 +68,10 @@ contract KeyHolder is IKeyHolder {
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
-        delete keys[_key];
+        //delete keys[_key];
+        keys[_key].purpose = 0;
+        keys[_key].key = address(0x0);
+
         keyCount -= 1;
 
         return true;
