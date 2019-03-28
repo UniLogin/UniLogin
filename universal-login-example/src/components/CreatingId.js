@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 class CreatingId extends Component {
   render() {
-    const {identity} = this.props.identityService;
+    const {identity} = this.props.walletContractService;
     return (<CreatingIdView walletContractName={identity.name}/>);
   }
 }
 CreatingId.propTypes = {
-  identityService: PropTypes.object
+  walletContractService: PropTypes.object
 };
 
 export default CreatingId;

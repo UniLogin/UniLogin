@@ -14,7 +14,7 @@ class MainScreen extends Component {
     this.ensNameService = services.ensNameService;
     this.clickService = services.clickService;
     this.tokenService = services.tokenService;
-    this.identityService = services.identityService;
+    this.walletContractService = services.walletContractService;
     this.state = {lastClick: '0', lastPresser: 'nobody', events: [], loaded: false, busy: false};
   }
 
@@ -35,7 +35,7 @@ class MainScreen extends Component {
   }
 
   async updateClicksLeft() {
-    const {address} = this.identityService.identity;
+    const {address} = this.walletContractService.identity;
     const balance = await this.tokenService.getBalance(address);
     const clicksLeft = parseInt(balance, 10);
     this.setState({
@@ -56,7 +56,7 @@ class MainScreen extends Component {
         <HeaderView>
           <Profile
             type="identityHeader"
-            identityService={this.props.services.identityService}
+            walletContractService={this.props.services.walletContractService}
           />
           <RequestsBadge
             setView={this.setView.bind(this)}

@@ -7,7 +7,7 @@ import {tokenContractAddress} from '../../config/config';
 class Backup extends Component {
   constructor(props) {
     super(props);
-    this.identityService = this.props.services.identityService;
+    this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
     this.backupService = this.props.services.backupService;
     this.state = {
@@ -45,15 +45,15 @@ class Backup extends Component {
   async setBackupCodes() {
     this.setState({isSetting: true});
 
-    const {identityService, emitter, sdk} = this.props.services;
+    const {walletContractService, emitter, sdk} = this.props.services;
     const addKeysPaymentOptions = {
       ...DEFAULT_PAYMENT_OPTIONS,
       gasToken: tokenContractAddress
     };
     await sdk.addKeys(
-      identityService.identity.address,
+      walletContractService.identity.address,
       this.state.publicKeys,
-      identityService.identity.privateKey,
+      walletContractService.identity.privateKey,
       addKeysPaymentOptions
     );
     emitter.emit('setView', 'Greeting', {greetMode: 'backupKeys'});
@@ -69,7 +69,7 @@ class Backup extends Component {
   }
 
   render() {
-    const {identity} = this.props.services.identityService;
+    const {identity} = this.props.services.walletContractService;
     return (
       <BackupView
         isLoading={this.state.isLoading}

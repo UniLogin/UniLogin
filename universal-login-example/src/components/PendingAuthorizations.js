@@ -11,7 +11,7 @@ import DEFAULT_PAYMENT_OPTIONS from '../../config/defaultPaymentOptions';
 class PendingAuthorizations extends Component {
   constructor(props) {
     super(props);
-    this.identityService = this.props.services.identityService;
+    this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
     this.authorisationService = this.props.services.authorisationService;
     this.state = {
@@ -20,7 +20,7 @@ class PendingAuthorizations extends Component {
   }
 
   componentDidMount() {
-    const {address} = this.identityService.identity;
+    const {address} = this.walletContractService.identity;
     this.setState({
       authorisations: this.authorisationService.pendingAuthorisations
     });
@@ -45,10 +45,10 @@ class PendingAuthorizations extends Component {
   }
 
   async onAcceptClick(publicKey) {
-    const {identityService} = this.props.services;
-    const to = identityService.identity.address;
-    const {privateKey} = identityService.identity;
-    const {sdk} = identityService;
+    const {walletContractService} = this.props.services;
+    const to = walletContractService.identity.address;
+    const {privateKey} = walletContractService.identity;
+    const {sdk} = walletContractService;
     const addKeyPaymentOptions = {
       ...DEFAULT_PAYMENT_OPTIONS,
       gasToken: tokenContractAddress
@@ -57,9 +57,9 @@ class PendingAuthorizations extends Component {
   }
 
   async onDenyClick(publicKey) {
-    const {identityService} = this.props.services;
-    const walletContractAddress = identityService.identity.address;
-    const {sdk} = identityService;
+    const {walletContractService} = this.props.services;
+    const walletContractAddress = walletContractService.identity.address;
+    const {sdk} = walletContractService;
     await sdk.denyRequest(walletContractAddress, publicKey);
   }
 
@@ -69,7 +69,7 @@ class PendingAuthorizations extends Component {
         <HeaderView>
           <Profile
             type="identityHeader"
-            identityService={this.props.services.identityService}
+            walletContractService={this.props.services.walletContractService}
           />
           <RequestsBadge
             setView={this.props.setView}

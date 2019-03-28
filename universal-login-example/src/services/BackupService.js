@@ -2,8 +2,8 @@ import {toWords} from '../vendors/Daefen';
 import {fromBrainWallet} from '../utils';
 
 class BackupService {
-  constructor(identityService) {
-    this.identityService = identityService;
+  constructor(walletContractService) {
+    this.walletContractService = walletContractService;
     this.backupCodes = [];
     this.publicKeys = [];
   }
@@ -22,7 +22,7 @@ class BackupService {
         .replace(/\s/g, '-')
         .toLowerCase();
       const backupCode = `${prefix}-${suffix}`;
-      const wallet = await fromBrainWallet(this.identityService.identity.name, backupCode);
+      const wallet = await fromBrainWallet(this.walletContractService.identity.name, backupCode);
       this.backupCodes.push(backupCode);
       this.publicKeys.push(wallet.address);
     }

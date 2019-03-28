@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 class Account extends Component {
   constructor(props) {
     super(props);
-    this.emitter = this.props.identityService.emitter;
+    this.emitter = this.props.walletContractService.emitter;
   }
 
   setView(view) {
@@ -23,7 +23,7 @@ class Account extends Component {
         'ATTENTION: disconnecting this device without other backups will result in making your account permanently unacessible! Are you sure you want to proceed?'
       )
     ) {
-      this.props.identityService.disconnect();
+      this.props.walletContractService.disconnect();
       this.emitter.emit('setView', 'Login');
     }
   }
@@ -38,12 +38,12 @@ class Account extends Component {
         <div className="container">
           <Profile
             type="identityAccount"
-            identityService={this.props.identityService}
+            walletContractService={this.props.walletContractService}
           />
           <hr className="separator" />
           <ManageDevicesAccordion
             onDisconnectClick={this.onDisconnectClick.bind(this)}
-            emitter={this.props.identityService.emitter}
+            emitter={this.props.walletContractService.emitter}
           />
           <hr className="separator" />
           <BackupCodeAccordionView setView={this.setView.bind(this)} />
@@ -56,7 +56,7 @@ class Account extends Component {
   }
 }
 Account.propTypes = {
-  identityService: PropTypes.object
+  walletContractService: PropTypes.object
 };
 
 export default Account;

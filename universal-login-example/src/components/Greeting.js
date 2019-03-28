@@ -9,18 +9,18 @@ class Greeting extends Component {
   }
 
   showMainScreen() {
-    this.props.identityService.emitter.emit('setView', 'MainScreen');
+    this.props.walletContractService.emitter.emit('setView', 'MainScreen');
   }
 
   async componentDidMount() {
-    const keyHolderAddress = this.props.identityService.identity.address;
+    const keyHolderAddress = this.props.walletContractService.identity.address;
     const {greetMode} = this.props.viewParameters;
     const status = await this.props.greetingService.getStatus(keyHolderAddress, greetMode);
     this.setState({status});
   }
 
   render() {
-    const {identity} = this.props.identityService;
+    const {identity} = this.props.walletContractService;
     return (
       <GreetingView
         identity={identity}
@@ -32,7 +32,7 @@ class Greeting extends Component {
 }
 
 Greeting.propTypes = {
-  identityService: PropTypes.object,
+  walletContractService: PropTypes.object,
   greetingService: PropTypes.object,
   greetMode: PropTypes.number,
   viewParameters: PropTypes.object

@@ -10,7 +10,7 @@ class RecoverAccount extends Component {
   constructor(props) {
     super(props);
     this.sdk = this.props.services.sdk;
-    this.identityService = this.props.services.identityService;
+    this.walletContractService = this.props.services.walletContractService;
     this.emitter = this.props.services.emitter;
     this.state = {
       backupCode: '',
@@ -20,28 +20,28 @@ class RecoverAccount extends Component {
   }
 
   async componentDidMount() {
-    await this.identityService.recover();
+    await this.walletContractService.recover();
   }
 
   async onCancelClick() {
     const {emitter} = this.props.services;
     emitter.emit('setView', 'Login');
-    this.identityService.cancelSubscription();
+    this.walletContractService.cancelSubscription();
 
-    const {identityService} = this.props.services;
-    const walletContractAddress = identityService.identity.address;
-    const {address} = new Wallet(identityService.privateKey);
-    const {sdk} = identityService;
+    const {walletContractService} = this.props.services;
+    const walletContractAddress = walletContractService.identity.address;
+    const {address} = new Wallet(walletContractService.privateKey);
+    const {sdk} = walletContractService;
     await sdk.denyRequest(walletContractAddress, address);
   }
 
   async onRecoverClick() {
     this.setState({isLoading: true, message: ''});
-    const {identityService, sdk} = this.props.services;
-    const wallet = await fromBrainWallet(this.identityService.identity.name, this.state.backupCode);
+    const {walletContractService, sdk} = this.props.services;
+    const wallet = await fromBrainWallet(this.walletContractService.identity.name, this.state.backupCode);
     const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     try {
-      await sdk.addKey(identityService.identity.address, identityService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);
+      await sdk.addKey(walletContractService.identity.address, walletContractService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);
     } catch (error) {
       this.setState({isLoading: false, message: 'Incorrect backup code, please retry'});
     }
@@ -62,7 +62,7 @@ class RecoverAccount extends Component {
       onChange={this.onChange.bind(this)}
       onCancelClick={this.onCancelClick.bind(this)}
       onRecoverClick={this.onRecoverClick.bind(this)}
-      identity={this.identityService.identity}
+      identity={this.walletContractService.identity}
     />);
   }
 }

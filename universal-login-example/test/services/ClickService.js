@@ -16,7 +16,7 @@ chai.use(sinonChai);
 
 describe('ClickService', () => {
   let clickService;
-  let identityService;
+  let walletContractService;
   let provider;
   let clickerContract;
   let tokenContract;
@@ -27,10 +27,10 @@ describe('ClickService', () => {
   beforeEach(async () => {
     ({relayer, sdk, provider} = await setupSdk());
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
-    identityService = new WalletService(sdk, new EventEmitter(), new FakeStorageService(), {});
-    await identityService.createWallet('kyle.mylogin.eth');
-    await tokenContract.transfer(identityService.identity.address, utils.parseEther('1.0'));
-    clickService = new ClickService(identityService, {clicker: clickerContract.address, token: tokenContract.address}, defaultPaymentOptions);
+    walletContractService = new WalletService(sdk, new EventEmitter(), new FakeStorageService(), {});
+    await walletContractService.createWallet('kyle.mylogin.eth');
+    await tokenContract.transfer(walletContractService.identity.address, utils.parseEther('1.0'));
+    clickService = new ClickService(walletContractService, {clicker: clickerContract.address, token: tokenContract.address}, defaultPaymentOptions);
   });
 
 
@@ -38,7 +38,7 @@ describe('ClickService', () => {
     const callback = sinon.spy();
     await clickService.click(callback);
     const logs = await getLogs(provider, clickerContract.address, Clicker, 'ButtonPress');
-    expect(logs[0]).to.deep.include({presser: identityService.identity.address});
+    expect(logs[0]).to.deep.include({presser: walletContractService.identity.address});
     expect(callback).to.have.been.called;
   });
 

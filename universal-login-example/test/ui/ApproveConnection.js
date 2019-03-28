@@ -22,9 +22,9 @@ describe('UI: <ApproveConnection />', () => {
     const [wallet] = await getWallets(provider);
     identity = {name: 'name', address: wallet.address, privateKey: wallet.privateKey};
     sdk = {denyRequest: sinon.spy()};
-    const identityService = {identity, privateKey: wallet.privateKey, cancelSubscription: sinon.fake.returns()};
+    const walletContractService = {identity, privateKey: wallet.privateKey, cancelSubscription: sinon.fake.returns()};
     emitter = {emit: sinon.spy()};
-    const services = {sdk, identityService, emitter};
+    const services = {sdk, walletContractService, emitter};
     wrapper = mount(<ApproveConnection services={services} />);
   });
 

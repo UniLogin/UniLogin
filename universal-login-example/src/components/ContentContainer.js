@@ -41,18 +41,18 @@ class ContentContainer extends Component {
     if (this.state.view === 'Login') {
       return <Login services={services} />;
     } else if (this.state.view === 'CreatingID') {
-      return <CreatingId identityService={this.props.services.identityService}/>;
+      return <CreatingId walletContractService={this.props.services.walletContractService}/>;
     } else if (this.state.view === 'Failure') {
       return <Failure services={services} viewParameters={this.state.viewParameters} />;
     } else if (this.state.view === 'Greeting') {
       return <Greeting
-        identityService={services.identityService}
+        walletContractService={services.walletContractService}
         greetingService={services.greetingService}
         viewParameters={this.state.viewParameters} />;
     } else if (this.state.view === 'MainScreen') {
       return <MainScreen services={services}/>;      
     } else if (this.state.view === 'Account') {
-      return (<Account identityService={services.identityService}/>);
+      return (<Account walletContractService={services.walletContractService}/>);
     } else if (this.state.view === 'ApproveConnection') {
       return <ApproveConnection services={services}/>;
     } else if (this.state.view === 'PendingAuthorizations') {
