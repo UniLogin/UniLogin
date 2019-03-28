@@ -112,7 +112,7 @@ class UniversalLoginSDK {
 
   async walletContractExist(ensName) {
     const walletContractAddress = await this.getWalletContractAddress(ensName);
-    return walletContractAddress != null;
+    return walletContractAddress !== null;
   }
 
   async resolveName(ensName) {
