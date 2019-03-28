@@ -102,23 +102,23 @@ class UniversalLoginSDK {
     return contract.lastNonce();
   }
 
-  async getWalletContractAddress(identity) {
-    const walletContractAddress = await this.resolveName(identity);
+  async getWalletContractAddress(ensName) {
+    const walletContractAddress = await this.resolveName(ensName);
     if (walletContractAddress && await this.provider.getCode(walletContractAddress)) {
       return walletContractAddress;
     }
     return null;
   }
 
-  async walletContractExist(identity) {
-    const walletContractAddress = await this.getWalletContractAddress(identity);
+  async walletContractExist(ensName) {
+    const walletContractAddress = await this.getWalletContractAddress(ensName);
     return walletContractAddress != null;
   }
 
-  async resolveName(identity) {
+  async resolveName(ensName) {
     this.config = this.config || (await this.getRelayerConfig()).config;
     const {ensAddress} = this.config;
-    return resolveName(this.provider, ensAddress, identity);
+    return resolveName(this.provider, ensAddress, ensName);
   }
 
   async connect(walletContractAddress) {

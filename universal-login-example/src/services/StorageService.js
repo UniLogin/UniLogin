@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 
-const IDENTITY_KEY = 'universal-login-identity';
+const WALLET_CONTRACT_KEY = 'universal-login-wallet-info';
 
 class StorageService {
   constructor(driver) {
@@ -10,11 +10,11 @@ class StorageService {
   }
 
   async getWallet() {
-    return localforage.getItem(IDENTITY_KEY, (value, err) => (err ? null : value));
+    return localforage.getItem(WALLET_CONTRACT_KEY, (value, err) => (err ? null : value));
   }
 
   async storeWallet(walletContract) {
-    return localforage.setItem(IDENTITY_KEY, walletContract, (err) => !!err);
+    return localforage.setItem(WALLET_CONTRACT_KEY, walletContract, (err) => !!err);
   }
 
   async clearStorage() {

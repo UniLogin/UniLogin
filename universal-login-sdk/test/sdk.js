@@ -25,11 +25,11 @@ describe('SDK - integration', async () => {
   let otherWallet2;
   let mockToken;
   let message;
-  let identity;
+  let walletContract;
 
 
   beforeEach(async () => {
-    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, identity, relayer} = await loadFixture(basicSDK));
+    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address};
   });
 
@@ -91,27 +91,27 @@ describe('SDK - integration', async () => {
       it('should return transaction hash', async () => {
         const hash = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
         expect(hash).to.be.properHex(64);
-        expect(await identity.lastNonce()).to.be.eq(1);
+        expect(await walletContract.lastNonce()).to.be.eq(1);
       });
 
-      it('should add a management key to the identity', async () => {
+      it('should add a management key to the walletContract', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(MANAGEMENT_KEY);
+        expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(MANAGEMENT_KEY);
       });
 
-      it('should add an action key to the identity', async () => {
+      it('should add an action key to the walletContract', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ACTION_KEY);
-        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(ACTION_KEY);
+        expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(ACTION_KEY);
       });
 
-      it('should add a claim key to the identity', async () => {
+      it('should add a claim key to the walletContract', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(CLAIM_KEY);
+        expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(CLAIM_KEY);
       });
 
-      it('should add an encryption key to the identity', async () => {
+      it('should add an encryption key to the walletContract', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ENCRYPTION_KEY);
-        expect(await identity.getKeyPurpose(otherWallet.address)).to.be.eq(ENCRYPTION_KEY);
+        expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(ENCRYPTION_KEY);
       });
     });
 
@@ -145,19 +145,19 @@ describe('SDK - integration', async () => {
         expect(await sdk.resolveName('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
-      it('should return identity address if identity exist', async () => {
+      it('should return walletContract address if walletContract exist', async () => {
         expect(await sdk.getWalletContractAddress('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
-      it('should return null if identity doesn`t exist', async () => {
+      it('should return null if walletContract doesn`t exist', async () => {
         expect(await sdk.getWalletContractAddress('no-such-login.mylogin.eth')).to.be.null;
       });
 
-      it('should return true if identity exist', async () => {
+      it('should return true if walletContract exist', async () => {
         expect(await sdk.walletContractExist('alex.mylogin.eth')).to.be.true;
       });
 
-      it('should return false if identity doesn`t exist', async () => {
+      it('should return false if walletContract doesn`t exist', async () => {
         expect(await sdk.walletContractExist('no-such-login.mylogin.eth')).to.be.false;
       });
 
