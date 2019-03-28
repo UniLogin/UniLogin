@@ -149,8 +149,16 @@ describe('SDK - integration', async () => {
         expect(await sdk.getWalletContractAddress('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
+      it('should return null if identity doesn`t exist', async () => {
+        expect(await sdk.getWalletContractAddress('no-such-login.mylogin.eth')).to.be.null;
+      });
+
+      it('should return true if identity exist', async () => {
+        expect(await sdk.walletContractExist('alex.mylogin.eth')).to.be.true;
+      });
+
       it('should return false if identity doesn`t exist', async () => {
-        expect(await sdk.getWalletContractAddress('no-such-login.mylogin.eth')).to.be.false;
+        expect(await sdk.walletContractExist('no-such-login.mylogin.eth')).to.be.false;
       });
 
       describe('Authorisation', async () => {

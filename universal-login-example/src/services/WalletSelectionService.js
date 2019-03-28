@@ -40,7 +40,7 @@ class WalletSelectionService {
     const connections = [];
     const creations = [];
     for (const domain of domains) {
-      if (await this.sdk.getWalletContractAddress(domain)) {
+      if (await this.sdk.walletContractExist(domain)) {
         connections.push(domain);
       } else {
         creations.push(domain);
@@ -89,7 +89,7 @@ class WalletSelectionService {
         if (tld.length < 3) {
           return await this.getSuggestionsForNodeAndSldPrefix(name, domain);
         }
-        return (await this.sdk.getWalletContractAddress(namePrefix)) ?
+        return (await this.sdk.walletContractExist(namePrefix)) ?
           {connections: [namePrefix], creations: []} :
           {connections: [], creations: [namePrefix]};
       }

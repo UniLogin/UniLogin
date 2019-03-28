@@ -26,7 +26,9 @@ declare class UniversalLoginSDK extends WalletExistenceVerifier  {
 
   getNonce(walletContractAddress: string, privateKey: string): Promise<number>;
 
-  getWalletContractAddress(identity: string): Promise<string | false>;
+  getWalletContractAddress(identity: string): Promise<string | null>;
+
+  walletContractExist(identity: string): Promise<boolean>;
 
   resolveName(identity: string): Promise<string | false>;
 

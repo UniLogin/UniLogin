@@ -107,7 +107,12 @@ class UniversalLoginSDK {
     if (walletContractAddress && await this.provider.getCode(walletContractAddress)) {
       return walletContractAddress;
     }
-    return false;
+    return null;
+  }
+
+  async walletContractExist(identity) {
+    const walletContractAddress = await this.getWalletContractAddress(identity);
+    return walletContractAddress != null;
   }
 
   async resolveName(identity) {
