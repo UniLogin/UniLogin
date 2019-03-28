@@ -25,6 +25,7 @@ $(SRC_JSON): $(SRC_SOL)
 	mkdir -p dapp/src
 	mkdir -p dapp/out
 	cp $(SRC_SOL) dapp/src
+	docker rm comp
 	docker create -v /src --name comp $(SOLC) 
 	docker cp dapp/src/KeyHolder.sol comp:/src
 	docker cp dapp/src/IKeyHolder.sol comp:/src
