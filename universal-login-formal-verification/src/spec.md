@@ -10,26 +10,26 @@ interface addKey(address _key, uint256 _purpose)
 
 types
 
-    X : uint256
-    Y : uint256
-    Z : uint256
+    PrevKey : uint256
+          Y : uint256
+          Z : uint256
 
 storage
 
         #mapping.keys[_key]  |-> _ => _purpose
-    1 + #mapping.keys[_key]  |-> X => _key |Int IrrelevantForAddressBits(X)
+    1 + #mapping.keys[_key]  |-> PrevKey => asAddress(_key, PrevKey)
                   #keyCount  |-> Y => Y + 1
     #mapping.keys[CALLER_ID] |-> Z
 
 if
 
-    _key =/= RelevantForAddressBits(X)
+    _key =/= AddressMask(PrevKey)
     #rangeUInt(256, Y + 1)
     (Z == #managementKey  or  CALLER_ID == ACCT_ID)
 
     #rangeUInt(256, #mapping.keys[CALLER_ID])
     #rangeUInt(256, 1 + #mapping.keys[_key])
-    #rangeUInt(256, _key |Int IrrelevantForAddressBits(X))
+    #rangeUInt(256, asAddress(_key, PrevKey))
 
     #keyCount =/= #mapping.keys[_key]
     #keyCount =/= 1 + #mapping.keys[_key]
