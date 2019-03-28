@@ -114,7 +114,7 @@ jobs:
     steps:
       - checkout
       - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone --branch v0.2.3 https://github.com/dapphub/klab.git
+      - run: git clone https://github.com/dapphub/klab.git
       - run: |
           cd klab
           make deps
