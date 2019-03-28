@@ -269,7 +269,7 @@ removeKey
 
 **getWalletContractAddress(ensName)**
 
-  checks if ENS name is registered.
+  gets wallet contract address by ENS name
 
   Parameters:
     - **ensName** : string - ENS name
