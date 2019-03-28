@@ -1,6 +1,50 @@
 High-level specification of KeyHolder
 =====================================
 
+-   `removeKey`:
+
+```act
+behaviour removeKey-succ of KeyHolder
+interface removeKey(address _key, uint256 _purpose)
+
+types
+
+    W : uint256
+    X : uint256
+    Y : uint256
+    Z : uint256
+
+storage
+
+        #mapping.keys[_key]  |-> W => 0
+    #mapping.keys[_key] + 1  |-> X => 0 |Int IrrelevantForAddressBits(X)
+                  #keyCount  |-> Y => Y - 1
+    #mapping.keys[CALLER_ID] |-> Z
+
+if
+
+    (Z == #managementKey  or  CALLER_ID == ACCT_ID)
+    W == _purpose
+    #rangeUInt(256, Y - 1)
+
+    #rangeUInt(256, #mapping.keys[CALLER_ID])
+    #rangeUInt(256, 1 + #mapping.keys[_key])
+    #rangeUInt(256, #mapping.keys[_key])
+    #rangeUInt(256, 0 |Int IrrelevantForAddressBits(X))
+    #rangeUInt(256, #keyCount)
+
+    #mapping.keys[_key] =/= 1 + #mapping.keys[_key]
+    #keyCount =/= #mapping.keys[_key]
+    #keyCount =/= 1 + #mapping.keys[_key]
+    #mapping.keys[CALLER_ID] =/= #keyCount
+    #mapping.keys[CALLER_ID] =/= #mapping.keys[_key]
+    #mapping.keys[CALLER_ID] =/= 1 + #mapping.keys[_key]
+
+    VCallValue == 0
+
+returns 1
+
+```
 
 -   `addKey`:
 
