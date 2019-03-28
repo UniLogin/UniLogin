@@ -1,7 +1,7 @@
-import ERC1077 from '../../build/ERC1077';
-import MockToken from '../../build/MockToken';
-import MockContract from '../../build/MockContract';
-import {utils, Wallet} from 'ethers';
+import ERC1077 from '../../build/ERC1077.json';
+import MockToken from '../../build/MockToken.json';
+import MockContract from '../../build/MockContract.json';
+import {utils, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
@@ -9,7 +9,7 @@ import {sortPrivateKeysByAddress} from '../../lib/calculateMessageSignature';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
-export default async function basicWallet(provider, [, , , , , , , , , wallet]) {
+export default async function basicWallet(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const actionWallet1 = Wallet.createRandom();
   const actionWallet2 = Wallet.createRandom();
   const sortedKeys = sortPrivateKeysByAddress([actionWallet1.privateKey, actionWallet2.privateKey, wallet.privateKey]);

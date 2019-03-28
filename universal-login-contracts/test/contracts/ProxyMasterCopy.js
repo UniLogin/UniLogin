@@ -13,7 +13,7 @@ chai.use(solidity);
 const to = '0x0000000000000000000000000000000000000001';
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
-describe('ProxyMasterCopy', async () => {
+describe('CONTRACT: ProxyMasterCopy', async () => {
   describe('Proxy without MasterCopy', async () => {
     it('should fail if masterCopy is zero', async () => {
       await expect(deployContract(wallet, Proxy, [0x0])).to.be.eventually.rejectedWith('invalid address');
