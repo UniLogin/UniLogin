@@ -2,12 +2,12 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
-import ERC1077MasterCopy from '../../build/ERC1077MasterCopy';
-import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
-import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
-import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
-import {getExecutionArgs} from '../utils';
+import ERC1077MasterCopy from '../../../build/ERC1077MasterCopy';
+import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../fixtures/basicWallet';
+import walletMasterAndProxy from '../../fixtures/walletMasterAndProxy';
+import {calculateMessageHash, calculateMessageSignature} from '../../../lib/calculateMessageSignature';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
+import {getExecutionArgs} from '../../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -16,7 +16,7 @@ const {parseEther} = utils;
 const to1 = '0x0000000000000000000000000000000000000001';
 const to2 = '0x0000000000000000000000000000000000000002';
 
-describe('ERC1077MasterCopy', async () => {
+describe('CONTRACT: ERC1077MasterCopy', async () => {
   let provider;
   let walletContractMaster;
   let walletContractProxy;

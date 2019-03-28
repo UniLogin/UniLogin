@@ -1,13 +1,13 @@
-import ERC1077MasterCopy from '../../build/ERC1077MasterCopy';
-import ERC1077Proxy from '../../build/ERC1077Proxy';
-import MockToken from '../../build/MockToken';
-import MockContract from '../../build/MockContract';
+import ERC1077MasterCopy from '../../build/ERC1077MasterCopy.json';
+import ERC1077Proxy from '../../build/ERC1077Proxy.json';
+import MockToken from '../../build/MockToken.json';
+import MockContract from '../../build/MockContract.json';
 import {deployContract} from 'ethereum-waffle';
-import {constants, utils, Contract} from 'ethers';
+import {constants, utils, Contract, Wallet, providers} from 'ethers';
 
 const {parseEther} = utils;
 
-export default async function walletMasterAndProxy(provider, [, , , , , , , , , wallet]) {
+export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const publicKey = wallet.address;
   const keyAsAddress = wallet.address;
   const {provider} = wallet;

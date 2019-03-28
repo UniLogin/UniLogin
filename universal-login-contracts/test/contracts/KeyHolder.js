@@ -8,7 +8,7 @@ import basicKeyHolder from '../fixtures/basicKeyHolder';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-describe('KeyHolder', async () => {
+describe('CONTRACT: KeyHolder', async () => {
   let walletContract;
   let unknownWalletKey;
   let fromActionWallet;

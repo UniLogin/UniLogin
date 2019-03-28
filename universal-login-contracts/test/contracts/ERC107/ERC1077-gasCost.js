@@ -1,10 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
-import basicWallet, {transferMessage, callMessage} from '../fixtures/basicWallet';
+import basicWallet, {transferMessage, callMessage} from '../../fixtures/basicWallet';
 import {utils} from 'ethers';
-import {calculateMessageSignature} from '../../lib/calculateMessageSignature';
-import {getExecutionArgs} from '../utils';
+import {calculateMessageSignature} from '../../../lib/calculateMessageSignature';
+import {getExecutionArgs} from '../../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
