@@ -25,6 +25,10 @@ const Login = ({setAuthorized, location} : LoginProps) => {
     unsubscribe = balanceService.subscribe(onBalanceChange);
   };
 
+  const onConnectionClick = () => {
+    modalService.showModal('waiting');
+  };
+
   const onBalanceChange = (amount: utils.BigNumber) => {
     if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
       unsubscribe();
@@ -36,7 +40,7 @@ const Login = ({setAuthorized, location} : LoginProps) => {
     <div className="login">
       <img src={Logo} alt="Logo" className="login-logo"/>
       <p className="login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
-      <WalletSelector  onCreateClick={(name: string) => onCreateCLick(name)}/>
+      <WalletSelector  onCreateClick={(name: string) => onCreateCLick(name)} onConnectionClick={onConnectionClick}/>
       <Modal />
     </div>
   );
