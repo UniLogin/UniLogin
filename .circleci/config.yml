@@ -132,7 +132,7 @@ jobs:
 
 workflows:
   version: 2
-  formal_verification:
+  nightly_formal_verification:
     triggers:
       - schedule:
           cron: "0 0 * * *"
@@ -140,9 +140,14 @@ workflows:
             branches:
               only:
                 - master
-                - fv
     jobs:
       - run_klab
+  fv_test:
+    jobs:
+      - run_klab:
+          filters:
+            branches:
+              only: fv
   universal_login_all:
     jobs:
       - build
