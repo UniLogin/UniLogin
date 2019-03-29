@@ -267,6 +267,21 @@ removeKey
         transactionDetails
       );
 
+**getWalletContractAddress(ensName)**
+
+  gets wallet contract address by ENS name
+
+  Parameters:
+    - **ensName** : string - ENS name
+
+  Returns:
+    `promise`, that resolves to ``address`` if ENS name is registered or ``null`` if ENS name is available
+
+  Example:
+    ::
+
+      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
+
 **walletContractExist(ensName)**
 
   checks if ENS name is registered.
@@ -275,12 +290,12 @@ removeKey
     - **ensName** : string - ENS name
 
   Returns:
-    `promise`, that resolves to ``address`` if ENS name is registered or ``false`` if ENS name is available
+    `promise`, that resolves to ``true`` if ENS name is registered or ``false`` if ENS name is available
 
   Example:
     ::
 
-      const contractAddress = await sdk.walletContractExist('justyna.my-super-domain.test');
+      const walletContractExist = await sdk.walletContractExist('justyna.my-super-domain.test');
 
 Events
 ------

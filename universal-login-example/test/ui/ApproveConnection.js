@@ -13,18 +13,18 @@ configure({adapter: new Adapter()});
 
 describe('UI: <ApproveConnection />', () => {
   let wrapper;
-  let identity;
+  let walletContract;
   let sdk;
   let emitter;
 
   before(async () => {
     const provider = createMockProvider();
     const [wallet] = await getWallets(provider);
-    identity = {name: 'name', address: wallet.address, privateKey: wallet.privateKey};
+    walletContract = {name: 'name', address: wallet.address, privateKey: wallet.privateKey};
     sdk = {denyRequest: sinon.spy()};
-    const identityService = {identity, privateKey: wallet.privateKey, cancelSubscription: sinon.fake.returns()};
+    const walletContractService = {walletContract, privateKey: wallet.privateKey, cancelSubscription: sinon.fake.returns()};
     emitter = {emit: sinon.spy()};
-    const services = {sdk, identityService, emitter};
+    const services = {sdk, walletContractService, emitter};
     wrapper = mount(<ApproveConnection services={services} />);
   });
 
@@ -33,7 +33,7 @@ describe('UI: <ApproveConnection />', () => {
     expect(wrapper.text()).to.contains('Cancel request');
     expect(wrapper.text()).to.contains('Waiting for approval');
     expect(wrapper.contains(
-      <p className="user-id">{identity.name}</p>
+      <p className="user-id">{walletContract.name}</p>
     )).to.be.true;
   });
 

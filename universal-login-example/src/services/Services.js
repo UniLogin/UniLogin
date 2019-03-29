@@ -27,9 +27,9 @@ class Services {
     this.ensService = new EnsService(this.sdk, this.provider, this.config);
     this.tokenService = new TokenService(this.config.tokenContractAddress, this.provider);
     this.storageService = overrides.storageService || new StorageService();
-    this.identityService = new WalletService(this.sdk, this.emitter, this.storageService, this.provider);
-    this.backupService = new BackupService(this.identityService);
-    this.clickService = new ClickService(this.identityService, {clicker: this.config.clickerContractAddress, token: this.config.tokenContractAddress}, this.defaultPaymentOptions);
+    this.walletContractService = new WalletService(this.sdk, this.emitter, this.storageService, this.provider);
+    this.backupService = new BackupService(this.walletContractService);
+    this.clickService = new ClickService(this.walletContractService, {clicker: this.config.clickerContractAddress, token: this.config.tokenContractAddress}, this.defaultPaymentOptions);
     this.historyService = new HistoryService(this.config.clickerContractAddress, this.provider, this.ensService);
     this.ensNameService = new EnsNameService(this.ensService, this.historyService);
     this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
@@ -40,7 +40,7 @@ class Services {
 
   start() {
     this.sdk.start();
-    return this.identityService.loadWallet();
+    return this.walletContractService.loadWallet();
   }
 
   stop() {

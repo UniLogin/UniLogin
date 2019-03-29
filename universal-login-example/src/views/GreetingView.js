@@ -12,7 +12,7 @@ class GreetingView extends Component {
     return (
       <div className="greeting-view">
         <div className="container">
-          <Header identity={this.props.identity} />
+          <Header walletContract={this.props.walletContract} />
           <hr className="separator" />
           <WalletCreated status={this.props.status.create} />
           <hr className="separator" />
@@ -40,7 +40,7 @@ class GreetingView extends Component {
 }
 
 GreetingView.propTypes = {
-  identity: PropTypes.object,
+  walletContract: PropTypes.object,
   status: PropTypes.object,
   onStartClick: PropTypes.func
 };

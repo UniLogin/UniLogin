@@ -6,7 +6,7 @@ class BlockchainObserver extends ObserverBase {
   constructor(provider) {
     super();
     this.provider = provider;
-    this.identityInterface = new utils.Interface(WalletContract.interface);
+    this.walletContractInterface = new utils.Interface(WalletContract.interface);
     this.eventInterface = new utils.Interface(WalletContract.interface).events;
     this.codec = new utils.AbiCoder();
   }
@@ -43,7 +43,7 @@ class BlockchainObserver extends ObserverBase {
 
   parseArgs(type, event) {
     if (event.topics[0] === this.eventInterface[type].topic) {
-      const args = this.identityInterface.parseLog(event);
+      const args = this.walletContractInterface.parseLog(event);
       const {key, purpose} = args.values;
       return {key: key.toLowerCase(), purpose: purpose.toNumber()};
     }

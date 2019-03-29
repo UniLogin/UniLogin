@@ -21,6 +21,6 @@ describe('SuggestionsService', () => {
     service.getSuggestions('a');
     expect(callback).to.have.been.calledWith({busy: true});
     await sleep(10);
-    expect(callback).to.have.been.calledWith({busy: false, connections: ['a.my.eth', 'a.log.eth'], creations: [], identity: 'a'});
+    expect(callback).to.have.been.calledWith({busy: false, connections: ['a.my.eth', 'a.log.eth'], creations: [], walletContract: 'a'});
   });
 });

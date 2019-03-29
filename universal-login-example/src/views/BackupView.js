@@ -7,12 +7,12 @@ function BackupCode(props) {
     <div>
       <div className="row align-items-center">
         <Blockies
-          seed={props.identity.address.toLowerCase()}
+          seed={props.walletContract.address.toLowerCase()}
           size={8}
           scale={6}
         />
         <p className="backup-code">
-          {props.identity.name} <br />
+          {props.walletContract.name} <br />
           <strong>{props.code}</strong>
         </p>
       </div>
@@ -23,7 +23,7 @@ function BackupCode(props) {
 
 
 BackupCode.propTypes = {
-  identity: PropTypes.object,
+  walletContract: PropTypes.object,
   code: PropTypes.string
 };
 
@@ -41,7 +41,7 @@ class BackupView extends Component {
           </p>
           <hr className="separator-s" />
           {this.props.backupCodes.map((code) =>
-            <BackupCode key={code} code={code} identity={this.props.identity}/>
+            <BackupCode key={code} code={code} walletContract={this.props.walletContract}/>
           )}
           <div className="row">
             <div className="row align-items-center">
@@ -49,7 +49,7 @@ class BackupView extends Component {
                 <div className="row align-items-center">
                   <div className="circle-loader" />
                   <p className="backup-code">
-                    {this.props.identity.name} <br />
+                    {this.props.walletContract.name} <br />
                     <em>generating...</em>
                   </p>
                   <br />
@@ -128,7 +128,7 @@ BackupView.propTypes = {
   onGenerateClick: PropTypes.func,
   onPrintClick: PropTypes.func,
   backupCodes: PropTypes.array,
-  identity: PropTypes.object
+  walletContract: PropTypes.object
 };
 
 export default BackupView;

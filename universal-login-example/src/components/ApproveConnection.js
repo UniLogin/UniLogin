@@ -7,7 +7,7 @@ class ApproveConnection extends Component {
   constructor(props) {
     super(props);
     this.sdk = this.props.services.sdk;
-    this.identityService = this.props.services.identityService;
+    this.walletContractService = this.props.services.walletContractService;
     this.emitter = this.props.services.emitter;
     this.state = {
       backupCode: ''
@@ -15,11 +15,11 @@ class ApproveConnection extends Component {
   }
 
   async removeRequest() {
-    const {identityService, sdk} = this.props.services;
-    this.identityService.cancelSubscription();
+    const {walletContractService, sdk} = this.props.services;
+    this.walletContractService.cancelSubscription();
 
-    const walletContractAddress = identityService.identity.address;
-    const {address} = new Wallet(identityService.privateKey);
+    const walletContractAddress = walletContractService.walletContract.address;
+    const {address} = new Wallet(walletContractService.privateKey);
     await sdk.denyRequest(walletContractAddress, address);
   }
 
@@ -49,7 +49,7 @@ class ApproveConnection extends Component {
         <ApproveConnectionView
           onChange={this.onChange.bind(this)}
           onCancelClick={this.onCancelClick.bind(this)}
-          identity={this.identityService.identity}
+          walletContract={this.walletContractService.walletContract}
           onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
         />
       </div>

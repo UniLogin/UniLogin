@@ -3,15 +3,15 @@ import BackupService from '../../src/services/BackupService';
 
 describe('BackupService', async () => {
   let backupService;
-  let identityService;
+  let walletContractService;
 
   before(async () => {
-    identityService = {
-      identity: {
+    walletContractService = {
+      walletContract: {
         name: 'kyle'
       }
     };
-    backupService = new BackupService(identityService);
+    backupService = new BackupService(walletContractService);
   });
 
   describe('Backup Codes', async () => {

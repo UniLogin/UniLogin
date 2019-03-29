@@ -10,7 +10,7 @@ class ApproveConnectionView extends Component {
           <p className="login-view-text">
             Open your device that controls this ID and approve this connection
           </p>
-          <p className="user-id">{this.props.identity.name}</p>
+          <p className="user-id">{this.props.walletContract.name}</p>
           <button
             className="btn fullwidth cancel-btn"
             onClick={this.props.onCancelClick.bind(this)}
@@ -30,7 +30,7 @@ class ApproveConnectionView extends Component {
 }
 
 ApproveConnectionView.propTypes = {
-  identity: PropTypes.object,
+  walletContract: PropTypes.object,
   onCancelClick: PropTypes.func,
   onAccountRecoveryClick: PropTypes.func
 };

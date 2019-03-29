@@ -10,7 +10,7 @@ class CreatingIdView extends Component {
     return (
       <div className="greeting-view">
         <div className="container">
-          <HeaderWaiting identityName={this.props.identityName}/>
+          <HeaderWaiting walletContractName={this.props.walletContractName}/>
           <hr className="separator" />
           <CreatingNewAccount />
           <hr className="separator" />
@@ -24,7 +24,7 @@ class CreatingIdView extends Component {
 }
 
 CreatingIdView.propTypes = {
-  identityName: PropTypes.string
+  walletContractName: PropTypes.string
 };
 
 export default CreatingIdView;
