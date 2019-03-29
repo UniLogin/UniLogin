@@ -20,7 +20,7 @@ const UserDropdown = () => {
           <button onClick={isExpanded ?  collapseDropdown : expandDropdown} className="user-dropdown-btn" />
         </div>
         <div className={`user-dropdown-content ${isExpanded ? 'expanded' : ''}`}>
-          <button className="sign-out-btn">Disconnect</button>
+          <button className="sign-out-btn" onClick={() => walletService.disconnect()}>Disconnect</button>
         </div>
       </div>
     </div>
