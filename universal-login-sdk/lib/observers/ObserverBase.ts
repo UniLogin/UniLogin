@@ -51,7 +51,7 @@ abstract class ObserverBase {
   }
 
   private isRunning() {
-    return this.state !== 'stop'
+    return this.state !== 'stop';
   }
 }
 

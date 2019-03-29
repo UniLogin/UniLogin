@@ -32,7 +32,7 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    paymentOptions: Message,
+    paymentOptions?: Message,
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)

@@ -6,7 +6,7 @@ const walletContractInterface = new utils.Interface(WalletContract.interface);
 const eventInterface = new utils.Interface(WalletContract.interface).events;
 
 class BlockchainObserver extends ObserverBase {
-  private lastBlock?: number
+  private lastBlock?: number;
 
   constructor(private provider: providers.Provider) {
     super();
