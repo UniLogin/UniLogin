@@ -35,4 +35,12 @@ syntax Int ::= "asAddress" "(" Int "," Int ")" [function]
 
 rule asAddress(A, B) => A |Int AddressRestMask(B) 
 
+
+// hashed storage offsets never overflow (probabilistic assumption):
+
+rule chop(keccakIntList(L))        => keccakIntList(L)
+rule chop(keccakIntList(L) +Int N) => keccakIntList(L) +Int N
+requires N <=Int 100
+
 ```
+
