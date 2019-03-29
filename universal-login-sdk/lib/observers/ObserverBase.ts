@@ -1,14 +1,14 @@
 import {sleep} from 'universal-login-commons';
 import {EventEmitter} from 'fbemitter';
 
-class ObserverBase {
-  constructor() {
-    this.state = 'stop';
-    this.step = 1000;
-    this.emitters = [];
-  }
+type ObserverBaseState = 'stop' | 'stopping' | 'running';
 
-  subscribe(eventType, filter, callback) {
+abstract class ObserverBase {
+  private state: ObserverBaseState = 'stop';
+  private step = 1000;
+  protected emitters: Record<string, EventEmitter> = {};
+
+  subscribe(eventType: any, filter: any, callback: Function) {
     if (filter.key) {
       filter.key = filter.key.toLowerCase();
     }
@@ -24,6 +24,8 @@ class ObserverBase {
       this.loop();
     }
   }
+
+  abstract async tick(): Promise<void>;
 
   async loop() {
     if (this.state === 'stop') {
@@ -45,7 +47,11 @@ class ObserverBase {
     this.state = 'stopping';
     do {
       await sleep(this.step);
-    } while (this.state !== 'stop');
+    } while (this.isRunning());
+  }
+
+  private isRunning() {
+    return this.state !== 'stop'
   }
 }
 
