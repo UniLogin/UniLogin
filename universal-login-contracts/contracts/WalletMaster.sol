@@ -16,34 +16,22 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         return address(this);
     }
 
+    // Disabled upgradability: persistent nonce not sync
     function initialize(address _key) external initialization {
-        // ERC1836 nonce
-        lastNonce = m_nonce;
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
     }
 
+    // Disabled upgradability: persistent nonce not sync
     function initializeWithENS(address _key, bytes32 _hashLabel, string calldata _name, bytes32 _node, ENS ens, FIFSRegistrar registrar, PublicResolver resolver) external initialization {
-        // ERC1836 nonce
-        lastNonce = m_nonce;
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
-    }
-
-    function updateMaster(address _newMaster, bytes calldata _callback, bool _reset) external protected {
-        if (_reset) {
-            revert('not-implemented');
-        }
-        // ERC1836 nonce
-        m_nonce = lastNonce;
-        // set next master
-        setMaster(_newMaster, _callback);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {

@@ -25,7 +25,7 @@ class WalletService {
   async create(key, ensName, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
-      let args = [key, ...ensArgs]
+      let args = [key, ...ensArgs];
       if (this.useInitData) {
         const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode(args);
         args = [ this.walletMasterAddress, initData ];

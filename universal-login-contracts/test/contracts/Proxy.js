@@ -35,9 +35,13 @@ describe('ProxyMasterCopy', async () => {
   });
 
   describe('MasterCopy', async () => {
-    it('should fail if authorized function is called directly', async () => {
-      await expect(identityMaster.updateMaster(to, [], false)).to.be.revertedWith('restricted-access');
+    // Disabled upgradability, updateMaster is undefined
+    it('updateMaster should not be available', async () => {
+      expect(identityMaster.updateMaster).to.be.eq(undefined);
     });
+    // it('should fail if authorized function is called directly', async () => {
+    //   await expect(identityMaster.updateMaster(to, [], false)).to.be.revertedWith('restricted-access');
+    // });
   });
 
   describe('Proxy', async () => {
@@ -45,10 +49,11 @@ describe('ProxyMasterCopy', async () => {
 			expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
     });
 
-    // catched by callback. Otherwize you cannot transfer value to a proxy.
-    // it('should fail if function does not exist in MasterCopy', async () => {
-    //   await expect(wallet.sendTransaction({to: proxy.address, data: [], gasPrice, gasLimit})).to.be.reverted;
-    // });
+    it('should fail if function does not exist in MasterCopy', async () => {
+      // await expect(wallet.sendTransaction({to: proxy.address, data: [], gasPrice, gasLimit})).to.be.reverted;
+      // catched by callback. Otherwize you cannot transfer value to a proxy.
+      await expect(wallet.sendTransaction({to: proxyAsIdentity.address, data: [], gasPrice, gasLimit})).to.be.fulfilled;
+    });
 
     it('should call payable function in MasterCopy', async () => {
       data = new utils.Interface(MockWalletMaster.interface).functions.giveAway.encode([]);

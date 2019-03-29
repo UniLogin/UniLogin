@@ -305,45 +305,51 @@ describe('WalletMaster', async () => {
     });
   });
 
+  // Disabled upgradability, changeMasterCopyFunc is undefined
   describe('MasterCopy', () => {
-    let msgToCall;
-    let signatureToCall;
-
-    it('should fail if changing masterCopy through proxy with zero address', async () => {
-      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([constants.AddressZero, [], false]);
-      msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
-      signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-      const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-        .to.emit(proxyAsIdentity, 'ExecutedSigned')
-        .withArgs(messageHash, 0, false);
-      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-    });
-
-    it('should fail if changing masterCopy through proxy with invalid master', async () => {
-      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([to2, [], false]);
-      msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
-      signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-      const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-        .to.emit(proxyAsIdentity, 'ExecutedSigned')
-        .withArgs(messageHash, 0, false);
-      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-    });
-
-    it('should change masterCopy through proxy with valid address', async () => {
-      const otherIdentityMaster = await deployContract(wallet, WalletMaster);
-      expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
-      const data = changeMasterCopyFunc.encode([otherIdentityMaster.address, [], false]);
-      msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
-      signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-      const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-        .to.emit(proxyAsIdentity, 'ExecutedSigned')
-        .withArgs(messageHash, 0, true);
-      expect(await proxyAsIdentity.master()).to.eq(otherIdentityMaster.address);
+    it('master cannot be upgraded', () => {
+      expect(changeMasterCopyFunc).to.be.eq(undefined);
     });
   });
+  // describe('MasterCopy', () => {
+  //   let msgToCall;
+  //   let signatureToCall;
+	//
+  //   it('should fail if changing masterCopy through proxy with zero address', async () => {
+  //     expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+  //     const data = changeMasterCopyFunc.encode([constants.AddressZero, [], false]);
+  //     msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
+  //     signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
+  //     const messageHash = calculateMessageHash(msgToCall);
+  //     await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+  //       .to.emit(proxyAsIdentity, 'ExecutedSigned')
+  //       .withArgs(messageHash, 0, false);
+  //     expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+  //   });
+	//
+  //   it('should fail if changing masterCopy through proxy with invalid master', async () => {
+  //     expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+  //     const data = changeMasterCopyFunc.encode([to2, [], false]);
+  //     msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
+  //     signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
+  //     const messageHash = calculateMessageHash(msgToCall);
+  //     await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+  //       .to.emit(proxyAsIdentity, 'ExecutedSigned')
+  //       .withArgs(messageHash, 0, false);
+  //     expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+  //   });
+	//
+  //   it('should change masterCopy through proxy with valid address', async () => {
+  //     const otherIdentityMaster = await deployContract(wallet, WalletMaster);
+  //     expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+  //     const data = changeMasterCopyFunc.encode([otherIdentityMaster.address, [], false]);
+  //     msgToCall = {...callMessage, data, from: proxyAsIdentity.address, to: proxyAsIdentity.address };
+  //     signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
+  //     const messageHash = calculateMessageHash(msgToCall);
+  //     await expect(proxyAsIdentity.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+  //       .to.emit(proxyAsIdentity, 'ExecutedSigned')
+  //       .withArgs(messageHash, 0, true);
+  //     expect(await proxyAsIdentity.master()).to.eq(otherIdentityMaster.address);
+  //   });
+  // });
 });

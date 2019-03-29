@@ -19,8 +19,8 @@ contract Core is Store {
 
     modifier initialization() {
         require(!m_initialized, "already-initialized");
-        m_initialized = true;
         _;
+        m_initialized = true;
     }
 
     // Internal functions
