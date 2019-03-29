@@ -1,5 +1,4 @@
 
-
 ```act
 behaviour test of Snippet
 interface test(address u, uint256 v)
@@ -12,17 +11,14 @@ types
 
 storage
 
-     #mapping.keys[u]     |-> W => 0
-     1 + #mapping.keys[u] |-> X => 0 |Int IrrelevantForAddressBits(X)
+    #mapping.keys[u].a |-> W => 0
+    #mapping.keys[u].b |-> X => 0 |Int IrrelevantForAddressBits(X)
 
 if
 
     VCallValue == 0
     #rangeUInt(256, 0 |Int IrrelevantForAddressBits(X))
-    #rangeUInt(256, 1 + #mapping.keys[u])
-    #rangeUInt(256, #mapping.keys[u])
 
 returns 1
-
 ```
 

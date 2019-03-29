@@ -12,3 +12,12 @@ rule IrrelevantForAddressBits(A) =>
     mask_ffff_ffff_ffff_ffff_ffff_ffff_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000 &Int A
 
 ```
+
+### hashed storage
+
+```k
+// hashed storage offsets never overflow (probabilistic assumption):
+rule chop(keccakIntList(L))        => keccakIntList(L)
+rule chop(keccakIntList(L) +Int N) => keccakIntList(L) +Int N
+  requires N <=Int 100
+```
