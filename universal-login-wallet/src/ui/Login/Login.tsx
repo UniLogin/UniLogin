@@ -14,7 +14,7 @@ interface LoginProps {
 }
 
 const Login = ({setAuthorized, location} : LoginProps) => {
-  const {createWallet, modalService, balanceService} = useServices();
+  const {createWallet, modalService, balanceService, connectToWallet} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
@@ -25,7 +25,8 @@ const Login = ({setAuthorized, location} : LoginProps) => {
     unsubscribe = balanceService.subscribe(onBalanceChange);
   };
 
-  const onConnectionClick = () => {
+  const onConnectionClick = async (name: string) => {
+    const unsubscribe = await connectToWallet(name, result => {console.log(result); });
     modalService.showModal('waiting');
   };
 

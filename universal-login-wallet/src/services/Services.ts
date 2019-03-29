@@ -5,6 +5,7 @@ import ModalService from './ModalService';
 import UserDropdownService from './UserDropdownService';
 import WalletService from './WalletService';
 import createWallet from './Creation';
+import connectToWallet from './ConnectToWallet';
 import TransferService from './TransferService';
 import TokenService from './TokenService';
 import {EtherBalanceService} from './balance/EtherBalanceService';
@@ -30,6 +31,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const modalService = new ModalService();
   const userDropdownService = new UserDropdownService();
   const walletService = new WalletService();
+  const _connectToWallet = connectToWallet(sdk, walletService);
   const _createWallet = createWallet(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
   const transferService = new TransferService(sdk, walletService, tokenService);
@@ -42,6 +44,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     modalService,
     userDropdownService,
     createWallet: _createWallet,
+    connectToWallet: _connectToWallet,
     walletService,
     tokenService,
     transferService,
