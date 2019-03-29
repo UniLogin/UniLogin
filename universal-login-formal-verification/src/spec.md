@@ -17,7 +17,7 @@ types
 storage
 
         #mapping.keys[_key]  |-> W => 0
-    #mapping.keys[_key] + 1  |-> X => 0 |Int IrrelevantForAddressBits(X)
+    #mapping.keys[_key] + 1  |-> X => 0 |Int AddressRestMask(X)
                   #keyCount  |-> Y => Y - 1
     #mapping.keys[CALLER_ID] |-> Z
 
@@ -30,7 +30,7 @@ if
     #rangeUInt(256, #mapping.keys[CALLER_ID])
     #rangeUInt(256, 1 + #mapping.keys[_key])
     #rangeUInt(256, #mapping.keys[_key])
-    #rangeUInt(256, 0 |Int IrrelevantForAddressBits(X))
+    #rangeUInt(256, 0 |Int AddressRestMask(X))
     #rangeUInt(256, #keyCount)
 
     #mapping.keys[_key] =/= 1 + #mapping.keys[_key]
