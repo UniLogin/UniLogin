@@ -8,7 +8,7 @@ abstract class ObserverBase {
   private step = 1000;
   protected emitters: Record<string, EventEmitter> = {};
 
-  subscribe(eventType: any, filter: any, callback: Function) {
+  subscribe(eventType: string, filter: any, callback: Function) {
     if (filter.key) {
       filter.key = filter.key.toLowerCase();
     }
