@@ -63,14 +63,14 @@ contract KeyHolder is IKeyHolder {
         return true;
     }
 
-    function removeKey(address _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
+    function removeKey(address _key, uint256 _purpose) public  /*onlyManagementKeyOrThisContract*/ returns(bool success) {
         require(keys[_key].purpose == _purpose, "Invalid key");
 
-        emit KeyRemoved(keys[_key].key, keys[_key].purpose);
+        //emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
-        //delete keys[_key];
-        keys[_key].purpose = 0;
-        keys[_key].key = address(0x0);
+        delete keys[_key];
+        //keys[_key].purpose = 0;
+        //keys[_key].key = address(0x0);
 
         keyCount -= 1;
 

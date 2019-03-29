@@ -1,0 +1,17 @@
+{
+  "src": {
+    "specification": "src/spec.md",
+    "smt_prelude": "src/prelude.smt2.md",
+    "rules": [
+      "src/lemmas.k.md",
+      "src/storage.md"
+    ]
+  },
+  "implementations": {
+    "Snippet" :
+        {"solc_output": "dapp/out/Snippet.sol.json"}
+  },
+  "dapp_root": "dapp",
+  "host": "127.0.0.1:8080"
+}
+
