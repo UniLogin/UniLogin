@@ -2,7 +2,7 @@
   "name": "universal-login-sdk",
   "version": "0.1.11",
   "main": "dist/sdk.js",
-  "types": "./types.d.ts",
+  "types": "dist/sdk.d.ts",
   "license": "MIT",
   "dependencies": {
     "deep-equal": "^1.0.1",

@@ -3,6 +3,7 @@
   "version": "0.1.4",
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "ens-builder": "^2.0.0"
   },
