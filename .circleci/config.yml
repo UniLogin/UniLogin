@@ -5,7 +5,8 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - checkout
-      - run: yarn
+      - run: yarn install
+      - run: yarn build
       - save_cache:
             key: universal-login-{{ .Environment.CIRCLE_SHA1 }}
             paths:
@@ -15,7 +16,7 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: yarn lint
   test_commons:
@@ -23,7 +24,7 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-commons && yarn test
   test_contracts:
@@ -31,7 +32,7 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-contracts && yarn test
   test_relayer:
@@ -46,7 +47,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-relayer && yarn test
   test_ops:
@@ -61,7 +62,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-ops && yarn test
   test_sdk:
@@ -76,7 +77,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-sdk && yarn test
   test_example:
@@ -91,7 +92,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-example && yarn test
   test_wallet:
@@ -103,7 +104,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - restore_cache:
-            keys: 
+            keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
   run_klab:
@@ -174,6 +175,6 @@ workflows:
             - build
       - lint:
           requires:
-            - build      
+            - build
 
 
