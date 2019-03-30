@@ -10,7 +10,7 @@ class RecoverAccountView extends Component {
           <p className="login-view-text">
             Enter a recovery code and click unlock.
           </p>
-          <h2>{this.props.identity.name}</h2> <br />
+          <h2>{this.props.walletContract.name}</h2> <br />
           <input
             className="input login-view-input"
             type="text"
@@ -52,7 +52,7 @@ RecoverAccountView.propTypes = {
   message: PropTypes.string,
   isLoading: PropTypes.bool,
   onChange: PropTypes.func,
-  identity: PropTypes.object,
+  walletContract: PropTypes.object,
   onCancelClick: PropTypes.func,
   onRecoverClick: PropTypes.func
 };

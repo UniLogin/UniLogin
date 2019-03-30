@@ -1,5 +1,5 @@
 export interface WalletExistenceVerifier {
-  walletContractExist(domain : string): Promise<string | false>;
+  walletContractExist(domain: string): Promise<boolean>;
 }
 
 const ensDomains = ['mylogin.eth'];

@@ -20,7 +20,7 @@ describe('WalletSelectionService', () => {
       expect((await service.getSuggestions('bb.')).connections).to.deep.eq(['bb.my.eth', 'bb.uni.eth', 'bb.app.eth']);
     });
 
-    it('gets connections for identities that exist', async () => {
+    it('gets connections for wallet contracts that exist', async () => {
       const walletContractExist = sinon.stub();
       walletContractExist.withArgs('a.my.eth').returns(Promise.resolve(true));
       walletContractExist.withArgs('a.uni.eth').returns(Promise.resolve(false));
@@ -76,7 +76,7 @@ describe('WalletSelectionService', () => {
       expect((await service.getSuggestions('bb.')).creations).to.deep.eq(['bb.my.eth', 'bb.uni.eth', 'bb.app.eth']);
     });
 
-    it('gets connections for identities that exist', async () => {
+    it('gets connections for wallet contracts that exist', async () => {
       const walletContractExist = sinon.stub();
       walletContractExist.withArgs('a.my.eth').returns(Promise.resolve(true));
       walletContractExist.withArgs('a.uni.eth').returns(Promise.resolve(false));
@@ -136,13 +136,13 @@ describe('WalletSelectionService', () => {
       expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: [], creations: ['a.my.eth']});
     });
 
-    it('with secondary domain prefix, identity exists', async () => {
+    it('with secondary domain prefix, wallet contract exists', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
       const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my')).to.deep.eq({connections: ['a.my.eth', 'a.my.test'], creations: []});
     });
 
-    it('with secondary domain prefix, identity doesn`t exist', async () => {
+    it('with secondary domain prefix, wallet contract doesn`t exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
       const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my')).to.deep.eq({connections: [], creations: ['a.my.eth', 'a.my.test']});

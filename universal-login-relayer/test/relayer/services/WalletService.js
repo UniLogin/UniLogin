@@ -23,7 +23,7 @@ describe('Relayer - WalletService', async () => {
   let otherWallet;
 
   beforeEach(async () => {
-    ({wallet, provider, walletContractService, callback, mockToken, authorisationService, identity: walletContract, otherWallet} = await loadFixture(basicWalletService));
+    ({wallet, provider, walletContractService, callback, mockToken, authorisationService, walletContract, otherWallet} = await loadFixture(basicWalletService));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
   });
 

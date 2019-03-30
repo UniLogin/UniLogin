@@ -12,7 +12,7 @@ export default class SuggestionsService {
 
   async doGetSuggestions(name) {
     const suggestions = await this.walletSelectionService.getSuggestions(name);
-    this.callback({...suggestions, identity: name, busy: false});
+    this.callback({...suggestions, walletContract: name, busy: false});
   }
 
   getSuggestions(name) {

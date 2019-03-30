@@ -2,7 +2,7 @@
   "name": "universal-login-sdk",
   "version": "0.1.11",
   "main": "dist/sdk.js",
-  "types": "./types.d.ts",
+  "types": "dist/sdk.d.ts",
   "license": "MIT",
   "dependencies": {
     "deep-equal": "^1.0.1",
@@ -16,7 +16,7 @@
     "build": "tsc --build tsconfig.build.json",
     "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
-    "clean": "rm -fr node_modules dist"
+    "clean": "rm -fr dist"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

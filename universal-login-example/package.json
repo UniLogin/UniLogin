@@ -24,7 +24,7 @@
     "build": "yarn contracts:build && yarn relayer:build && parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js test/**/*.js",
     "test": "NODE_ENV=test mocha --recursive --require ./test/helpers/testNullCompiler.js --require babel-register test -t 10000",
-    "clean": "rm -fr node_modules .cache build dist",
+    "clean": "rm -fr .cache build dist",
     "contracts:build": "waffle .waffle.js",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
     "start:dev": "babel-node scripts/dev-start.js",

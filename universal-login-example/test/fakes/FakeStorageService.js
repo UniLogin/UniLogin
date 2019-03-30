@@ -1,18 +1,18 @@
 class FakeStorageService {
   constructor() {
-    this.identity = null;
+    this.walletContract = null;
   }
 
   async getWallet() {
-    return this.identity;
+    return this.walletContract;
   }
 
-  async storeWallet(identity) {
-    this.identity = identity;
+  async storeWallet(walletContract) {
+    this.walletContract = walletContract;
   }
 
   async clearStorage() {
-    this.identity = {};
+    this.walletContract = {};
   }
 }
 export default FakeStorageService;

@@ -5,7 +5,7 @@ import NativeNotificationService from '../services/NativeNotificationService';
 class RequestsBadge extends Component {
   constructor(props) {
     super(props);
-    this.identityService = this.props.services.identityService;
+    this.walletContractService = this.props.services.walletContractService;
     this.authorisationService = this.props.services.authorisationService;
     this.state = {
       requests: this.authorisationService.pendingAuthorisations.length
@@ -14,7 +14,7 @@ class RequestsBadge extends Component {
   }
 
   componentDidMount() {
-    const {address} = this.identityService.identity;
+    const {address} = this.walletContractService.walletContract;
     this.subscription = this.authorisationService.subscribe(
       address,
       this.onAuthorisationChanged.bind(this)

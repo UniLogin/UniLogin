@@ -6,26 +6,26 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      identity: ''
+      walletContract: ''
     };
-    this.identityService = this.props.services.identityService;
+    this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
   }
 
-  async walletContractExist(identity) {
-    return await this.identityService.walletContractExist(identity);
+  async getWalletContractAddress(walletContract) {
+    return await this.walletContractService.getWalletContractAddress(walletContract);
   }
 
-  async onNextClick(identityName) {
+  async onNextClick(walletContractName) {
     const {emitter} = this.props.services;
-    if (await this.walletContractExist(identityName)) {
+    if (await this.getWalletContractAddress(walletContractName)) {
       emitter.emit('setView', 'ApproveConnection');
-      await this.identityService.connect();
+      await this.walletContractService.connect();
     } else {
-      this.identityService.identity.name = identityName;
+      this.walletContractService.walletContract.name = walletContractName;
       emitter.emit('setView', 'CreatingID');
       try {
-        await this.identityService.createWallet(identityName);
+        await this.walletContractService.createWallet(walletContractName);
         emitter.emit('setView', 'Greeting', {greetMode: 'created'});
       } catch (err) {
         emitter.emit('setView', 'Failure', {error: err.message});
@@ -33,14 +33,14 @@ class Login extends Component {
     }
   }
 
-  async onAccountRecoveryClick(identity) {
+  async onAccountRecoveryClick(walletContract) {
     const {emitter} = this.props.services;
-    await this.walletContractExist(identity);
+    await this.getWalletContractAddress(walletContract);
     emitter.emit('setView', 'RecoverAccount');
   }
 
-  onChange(identity) {
-    this.setState({identity});
+  onChange(walletContract) {
+    this.setState({walletContract});
   }
 
   render() {
@@ -52,7 +52,7 @@ class Login extends Component {
           Clicker is an example application, that demonstrates Universal Logins, a design pattern for storing funds and connecting to Ethereum applications.
           </p>
           <WalletSelector
-            onNextClick={(identity) => this.onNextClick(identity)}
+            onNextClick={(walletContract) => this.onNextClick(walletContract)}
             onChange={this.onChange.bind(this)}
             onAccountRecoveryClick={this.onAccountRecoveryClick.bind(this)}
             services = {this.props.services}

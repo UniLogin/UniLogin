@@ -6,26 +6,26 @@ import PropTypes from 'prop-types';
 
 class Profile extends Component {
   render() {
-    const {identity} = this.props.identityService;
-    if (!identity.address) {
+    const {walletContract} = this.props.walletContractService;
+    if (!walletContract.address) {
       return (<div/>);
     }
     switch (this.props.type) {
-      case 'identityAccount':
+      case 'walletContractAccount':
         return (
           <ProfileAccount
             userIco={UserIco}
-            userId={identity.name}
-            address={identity.address}
+            userId={walletContract.name}
+            address={walletContract.address}
           />
         );
 
-      case 'identityHeader':
+      case 'walletContractHeader':
         return (
           <ProfileHeader
             userIco={UserIco}
-            userId={identity.name}
-            address={identity.address}
+            userId={walletContract.name}
+            address={walletContract.address}
           />
         );
 
@@ -37,7 +37,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
   type: PropTypes.string,
-  identityService: PropTypes.object
+  walletContractService: PropTypes.object
 };
 
 export default Profile;

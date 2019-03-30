@@ -45,24 +45,38 @@ Before you issue pull request:
 * Make sure you have test coverage for any new features.
 
 
-## Running linting/tests
+## Building, running, linting & tests
 
-You can run lint via:
+To install dependencies:
 
 ```sh
-yarn lint
+yarn install
 ```
 
-Running tests:
+To build all projects:
+
+```sh
+yarn build
+```
+
+Running run tests for all projects:
 
 ```sh
 yarn test
+```
+
+Running linter for all projects:
+
+```sh
+yarn lint
 ```
 
 To clean the project:
 ```sh
 yarn clean
 ```
+
+You can run all of above scripts (`install`, `build`, `test`, `lint`, `clean`) from individual project directories.
 
 To emulate the full CI process:
 ```sh
@@ -71,7 +85,7 @@ yarn
 yarn ci
 ```
 
-Building documentation:
+## Building documentation:
 ```sh
 cd docs
 make html

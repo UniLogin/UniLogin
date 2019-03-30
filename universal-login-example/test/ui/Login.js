@@ -21,14 +21,14 @@ describe('UI: Login', () => {
 
   beforeEach(async () => {
     const provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured({provider});
+    relayer = await RelayerUnderTest.createPreconfigured({provider, overridePort: 33112});
     await relayer.start();
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, clickerContract.address, tokenContract.address);
     appWrapper = mount(<App services={services}/>);
   });
 
-  it('create identity', async () => {
+  it('create walletContract', async () => {
     const name = 'my-name';
     const input = appWrapper.find('input');
 
@@ -44,9 +44,9 @@ describe('UI: Login', () => {
     await waitUntil(hasChangedOn, 5, 2000, ['create']);
     appWrapper.find('.create').simulate('click');
 
-    await waitUntil(hasChangedOn, 5, 500, ['Creating new identity...']);
+    await waitUntil(hasChangedOn, 5, 500, ['Creating new wallet contract...']);
     expect(appWrapper.html()).to.contain(`${name}`);
-    expect(appWrapper.html()).to.contain('Creating new identity...');
+    expect(appWrapper.html()).to.contain('Creating new wallet contract...');
 
     await waitUntil(hasChangedOn, 5, 2000, ['You created a new account']);
     expect(appWrapper.html()).to.contain(`${name}`);
