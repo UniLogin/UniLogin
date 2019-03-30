@@ -94,4 +94,19 @@ const saveVariables = (filename, variables) => {
   });
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+const executionComparator = (execution1, execution2) =>  {
+  const key1 = parseInt(execution1.key, 16);
+  const key2 = parseInt(execution2.key, 16);
+  if (key1 > key2) {
+    return 1;
+  } else if (key1 < key2) {
+    return -1;
+  } else {
+    return 0;
+  }
+};
+
+const sortExecutionsByKey = (executions) =>
+    executions.sort(executionComparator);
+
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey};

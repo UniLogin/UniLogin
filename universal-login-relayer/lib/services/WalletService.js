@@ -1,11 +1,50 @@
 import WalletContract from 'universal-login-contracts/build/WalletContract';
 import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
-import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
-import {utils, ContractFactory} from 'ethers';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey} from '../utils/utils';
+import {utils, ContractFactory, Contract} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
+import {concatenateSignatures, calculateMessageHash} from 'universal-login-contracts';
 
+class PendingExecution {
+
+  constructor(walletAddress, wallet) {
+    this.Wallet = wallet;
+    this.WalletContract = new Contract(walletAddress, WalletContract.interface, this.Wallet);
+    this.CollectedSignatures = [];
+  }
+
+  async getStatus() {
+    return {
+      collectedSignatures: this.CollectedSignatures,
+      totalCollected: this.CollectedSignatures.length,
+      required: await this.WalletContract.requiredSignatures()
+    };
+  }
+
+  async push(from, to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signature) {
+    if (collectedSignatures.includes(signature)) {
+      throw 'signature already collected';
+    }
+    const key = await this.WalletContract.getSigner(from, to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signature);
+    if (await this.WalletContract.getKeyPurpose(key) === 0) {
+      throw 'invalid signature';
+    }
+    collectedSignatures.push({signature, key});
+  }
+
+  async canExecute() {
+    return collectedSignatures.length >= await this.WalletContract.requiredSignatures();
+  }
+
+  getConcatenatedSignatures() {
+    const sortedExecutions = sortExecutionsByKey(this.collectedSignatures);
+    const sortedSignatures = sortedExecutions.map((value) => value.signature);
+    return concatenateSignatures(sortedSignatures);
+  }
+}
 
 class WalletService {
+
   constructor(wallet, ensService, authorisationService, hooks, provider, legacyENS) {
     this.wallet = wallet;
     this.contractJSON = legacyENS ? LegacyWallet : WalletContract;
@@ -16,6 +55,7 @@ class WalletService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
+    this.pendingExecutions = new Object();
   }
 
   async create(key, ensName, overrideOptions = {}) {
@@ -35,6 +75,28 @@ class WalletService {
   }
 
   async executeSigned(message) {
+    const walletContract = new Contract(message.from, WalletContract.interface, this.wallet);
+
+    if (await walletContract.requiredSignatures() > 1) {
+      const hash = await calculateMessageHash(message);
+      if (pendingExecutions[hash] !== undefined) {
+        await pendingExecutions[hash].push(message.signature);
+        if (pendingExecutions[hash].canExecute()) {
+          const finalMessage = {...message, signature: pendingExecutions[hash].getConcatenatedSignatures()};
+          return this.execute(finalMessage);
+        }
+        return JSON.stringify(pendingExecutions[hash].getStatus());
+      } else {
+        pendingExecutions[hash] = new PendingExecution(message.from, this.wallet);
+        await pendingExecutions[hash].push(message.signature);
+        return JSON.stringify(await pendingExecutions[hash].getStatus());
+      }
+    } else {
+      return this.execute(message);
+    }
+  }
+
+  async execute(message) {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
       const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
