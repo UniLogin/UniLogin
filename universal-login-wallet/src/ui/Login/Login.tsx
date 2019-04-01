@@ -26,15 +26,19 @@ const Login = ({setAuthorized, location} : LoginProps) => {
   };
 
   const onConnectionClick = async (name: string) => {
-    const unsubscribe = await connectToWallet(name, result => {console.log(result); });
+    unsubscribe = await connectToWallet(name, loginAndChangeScreen);
     modalService.showModal('waiting');
+  };
+
+  const loginAndChangeScreen = () => {
+    unsubscribe();
+    setAuthorized();
+    history.push(from);
   };
 
   const onBalanceChange = (amount: utils.BigNumber) => {
     if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
-      unsubscribe();
-      setAuthorized();
-      history.push(from);
+      loginAndChangeScreen();
     }
   };
   return(
