@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.2;
 
 import "./IMaster.sol";
 import "../common/Core.sol";
@@ -6,7 +6,7 @@ import "../common/Core.sol";
 
 contract MasterBase is IMaster, Core {
     function master() external view returns (address) {
-        return m_master;
+        return masterAddress;
     }
 
     function masterId() external pure returns (bytes32) {

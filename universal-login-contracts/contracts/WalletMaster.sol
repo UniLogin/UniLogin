@@ -18,7 +18,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
     }
 
     // Disabled upgradability: persistent nonce not sync
-    function initialize(address _key) external initialization {
+    function initialize(address _key) external onlyInitialized() {
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
@@ -32,7 +32,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         string calldata _name,
         bytes32 _node, ENS ens,
         FIFSRegistrar registrar,
-        PublicResolver resolver) external initialization
+        PublicResolver resolver) external onlyInitialized()
         {
 
         // ERC1077 → KeyHolder

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.2;
 
 import "../common/Core.sol";
 
@@ -9,10 +9,10 @@ contract Proxy is Core {
     }
 
     function () external payable {
-        if (m_master != address(0)) {
+        if (masterAddress != address(0)) {
             // solium-disable-next-line security/no-inline-assembly
             assembly {
-                let to  := and(sload(0x0), 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) // m_master
+                let to  := and(sload(0x0), 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) // masterAddress
                 let ptr := mload(0x40)
                 calldatacopy(ptr, 0, calldatasize)
                 let result := delegatecall(gas, to, ptr, calldatasize, 0, 0)

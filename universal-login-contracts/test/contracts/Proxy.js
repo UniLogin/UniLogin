@@ -14,51 +14,44 @@ const to = '0x0000000000000000000000000000000000000001';
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('CONTRACT: ProxyMasterCopy', async () => {
-  let identityMaster;
-  let identityProxy;
-  let proxyAsIdentity;
+  let walletMaster;
+  let walletProxy;
+  let proxyAsWallet;
   let wallet;
   let data;
 
   beforeEach(async () => {
-    ({identityMaster, identityProxy, proxyAsIdentity, wallet} = await loadFixture(basicMasterAndProxy));
+    ({walletMaster, walletProxy, proxyAsWallet, wallet} = await loadFixture(basicMasterAndProxy));
   });
 
-  describe('MasterCopy', async () => {
-    it('updateMaster should not be available', async () => {
-      expect(identityMaster.updateMaster).to.be.eq(undefined);
-    });
-
-    xit('Disabled upgradability: should fail if authorized function is called directly', async () => {
-      await expect(identityMaster.updateMaster(to, [], false)).to.be.revertedWith('restricted-access');
-    });
-  });
-
-  describe('Proxy without MasterCopy', async () => {
-    it('should fail if masterCopy is zero', async () => {
-      await expect(deployContract(wallet, Proxy, [0x0, []])).to.be.eventually.rejectedWith('invalid address');
-    });
-  });
 
   describe('Proxy', async () => {
+    xit('updates master', async () => {
+      await expect(proxyAsWallet.setMaster(to, [])).to.be.revertedWith('restricted-access');
+    });
+
+    it('deployment fails if masterCopy is zero', async () => {
+      await expect(deployContract(wallet, Proxy, [0x0, []])).to.be.eventually.rejectedWith('invalid address');
+    });
+
     it('should be properly constructed', async () => {
-			expect(await proxyAsIdentity.master()).to.eq(identityMaster.address);
+			expect(await proxyAsWallet.master()).to.eq(walletMaster.address);
     });
 
     it('should be able to send transaction to wallet', async () => {
-      await expect(wallet.sendTransaction({to: proxyAsIdentity.address, data: [], gasPrice, gasLimit})).to.be.fulfilled;
+      await expect(wallet.sendTransaction({to: proxyAsWallet.address, data: [], gasPrice, gasLimit})).to.be.fulfilled;
     });
 
     it('should call payable function in MasterCopy', async () => {
       data = new utils.Interface(MockWalletMaster.interface).functions.giveAway.encode([]);
-      await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
+      await wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit});
     });
 
     it('should call function in MasterCopy', async () => {
       data = new utils.Interface(MockWalletMaster.interface).functions.increase.encode([]);
-      const countBefore = await proxyAsIdentity.count();
-      await wallet.sendTransaction({to: identityProxy.address, data, gasPrice, gasLimit});
-      const countAfter = await proxyAsIdentity.count();
+      const countBefore = await proxyAsWallet.count();
+      await wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit});
+      const countAfter = await proxyAsWallet.count();
       expect(countAfter - countBefore).to.be.equal(1);
     });
   });

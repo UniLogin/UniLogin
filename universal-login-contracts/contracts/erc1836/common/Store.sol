@@ -1,12 +1,7 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.2;
 
 
-/* solium-disable mixedcase */
-
-// Modified ERC1836 ** Minimal store without persistante / upgradability
 contract Store {
-    // Storage for Upgradability
-
-    address                   internal m_master;
-    bool                      internal m_initialized;
+    address internal masterAddress;
+    bool internal initialized;
 }
