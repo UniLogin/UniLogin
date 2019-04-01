@@ -35,7 +35,8 @@ export default class PendingExecution {
   }
 
   async canExecute() {
-    return this.collectedSignatures.length >= await this.walletContract.requiredSignatures();
+    const requiredSignatures = await this.walletContract.requiredSignatures();
+    return this.collectedSignatures.length >= requiredSignatures;
   }
 
   getConcatenatedSignatures() {
