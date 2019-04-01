@@ -2,19 +2,7 @@ import WalletContract from 'universal-login-contracts/build/WalletContract.json'
 import {utils, ContractFactory, Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../utils/utils';
 import {concatenateSignatures} from 'universal-login-contracts';
-
-export interface Message {
-  gasToken: string;
-  operationType: number;
-  to: string;
-  from: string;
-  nonce: number | string;
-  gasLimit: utils.BigNumberish;
-  gasPrice: utils.BigNumberish;
-  data: utils.Arrayish;
-  value: utils.BigNumberish;
-  signature: string;
-}
+import {Message} from 'universal-login-commons';
 
 export default class PendingExecution {
   private wallet: Wallet;
