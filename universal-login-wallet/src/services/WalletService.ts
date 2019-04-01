@@ -7,10 +7,10 @@ export interface UserWallet {
 export default class WalletService {
 
   disconnect(): any {
-    this.userWallet = {name: '', contractAddress: '', privateKey: ''};
+    this.userWallet = null;
   }
 
 
-  public userWallet?: UserWallet;
+  public userWallet?: UserWallet | null;
   walletExists = () => !!this.userWallet;
 }

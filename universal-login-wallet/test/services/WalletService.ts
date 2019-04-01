@@ -8,6 +8,6 @@ describe('WalletService', () => {
        walletService.userWallet = userWallet;
        expect(walletService.userWallet).to.deep.eq(userWallet);
        walletService.disconnect();
-       expect(walletService.userWallet).to.deep.eq({name: '', contractAddress: '', privateKey: ''});
+       expect(walletService.userWallet).to.be.null;
     });
 });

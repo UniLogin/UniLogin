@@ -1,13 +1,23 @@
 import React from 'react';
 import avatar from './../../assets/avatar.svg';
-import {useServices, useSubscription} from '../../hooks';
+import {useRouter, useServices, useSubscription} from '../../hooks';
 
-const UserDropdown = () => {
+
+interface UserDropdownProps {
+  setUnauthorized?: () => void;
+}
+const UserDropdown = ({setUnauthorized}: UserDropdownProps = {}) => {
   const {walletService, userDropdownService} = useServices();
   const isExpanded = useSubscription(userDropdownService);
   const collapseDropdown = () => userDropdownService.setDropdownVisibility(false);
   const expandDropdown = () => userDropdownService.setDropdownVisibility(true);
+  const {history} = useRouter();
 
+  const onDisconnectClick = () => {
+    walletService.disconnect();
+    setUnauthorized!();
+    history.push('/login');
+  }
   return (
     <div className={`user-dropdown-wrapper ${isExpanded ? 'expanded' : ''}`}>
       <div className="user-dropdown">
@@ -20,7 +30,7 @@ const UserDropdown = () => {
           <button onClick={isExpanded ?  collapseDropdown : expandDropdown} className="user-dropdown-btn" />
         </div>
         <div className={`user-dropdown-content ${isExpanded ? 'expanded' : ''}`}>
-          <button className="sign-out-btn" onClick={() => walletService.disconnect()}>Disconnect</button>
+          <button className="sign-out-btn" onClick={onDisconnectClick}>Disconnect</button>
         </div>
       </div>
     </div>
