@@ -9,37 +9,25 @@ interface removeKey(address _key, uint256 _purpose)
 
 types
 
-    W : uint256
+    PrevPurpose : uint256
+    PrevKey : uint256
+    CallerKeyPurpose : uint256
     X : uint256
-    Y : uint256
-    Z : uint256
 
 storage
 
-        #mapping.keys[_key]  |-> W => 0
-    #mapping.keys[_key] + 1  |-> X => 0 |Int AddressRestMask(X)
-                  #keyCount  |-> Y => Y - 1
-    #mapping.keys[CALLER_ID] |-> Z
+        #mapping.keys[_key]  |-> PrevPurpose => 0
+     #mapping.keys[_key] + 1 |-> PrevKey => asAddress(0, PrevKey)
+                  #keyCount  |-> X => X - 1
+    #mapping.keys[CALLER_ID] |-> CallerKeyPurpose
 
 if
 
-    (Z == #managementKey  or  CALLER_ID == ACCT_ID)
-    W == _purpose
-    #rangeUInt(256, Y - 1)
+    (CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID)
+    PrevPurpose == _purpose
+    #rangeUInt(256, X - 1)
 
-    #rangeUInt(256, #mapping.keys[CALLER_ID])
-    #rangeUInt(256, 1 + #mapping.keys[_key])
-    #rangeUInt(256, #mapping.keys[_key])
-    #rangeUInt(256, 0 |Int AddressRestMask(X))
-    #rangeUInt(256, #keyCount)
-
-    #mapping.keys[_key] =/= 1 + #mapping.keys[_key]
-    #keyCount =/= #mapping.keys[_key]
-    #keyCount =/= 1 + #mapping.keys[_key]
-    #mapping.keys[CALLER_ID] =/= #keyCount
-    #mapping.keys[CALLER_ID] =/= #mapping.keys[_key]
-    #mapping.keys[CALLER_ID] =/= 1 + #mapping.keys[_key]
-
+    _key =/= CALLER_ID
     VCallValue == 0
 
 returns 1
@@ -71,16 +59,9 @@ if
     #rangeUInt(256, Y + 1)
     (Z == #managementKey  or  CALLER_ID == ACCT_ID)
 
-    #rangeUInt(256, #mapping.keys[CALLER_ID])
-    #rangeUInt(256, 1 + #mapping.keys[_key])
     #rangeUInt(256, asAddress(_key, PrevKey))
 
-    #keyCount =/= #mapping.keys[_key]
-    #keyCount =/= 1 + #mapping.keys[_key]
-    #mapping.keys[CALLER_ID] =/= #keyCount
-    #mapping.keys[CALLER_ID] =/= #mapping.keys[_key]
-    #mapping.keys[CALLER_ID] =/= 1 + #mapping.keys[_key]
-
+    _key =/= CALLER_ID
     VCallValue == 0
 
 returns 1
@@ -100,8 +81,6 @@ storage
 if
 
     VCallValue == 0
-    0 <= #mapping.keys[_key]
-    #mapping.keys[_key] <  (2 ^Int 256)
 
 returns 1
 
@@ -125,8 +104,6 @@ if
 
     X =/= _purpose
     VCallValue == 0
-    0 <= #mapping.keys[_key]
-    #mapping.keys[_key] <  (2 ^Int 256)
 
 returns 0
 
@@ -149,8 +126,6 @@ storage
 if
 
     VCallValue == 0
-    0 <= #mapping.keys[_key]
-    #mapping.keys[_key] <  (2 ^Int 256)
 
 returns X
 
@@ -174,8 +149,6 @@ if
 
     X =/= 0
     VCallValue == 0
-    0 <= 1 + #mapping.keys[_key]
-    1 + #mapping.keys[_key] <  (2 ^Int 256)
 
 returns 1
 
