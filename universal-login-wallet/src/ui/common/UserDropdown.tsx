@@ -17,7 +17,7 @@ const UserDropdown = ({setUnauthorized}: UserDropdownProps = {}) => {
     walletService.disconnect();
     setUnauthorized!();
     history.push('/login');
-  }
+  };
   return (
     <div className={`user-dropdown-wrapper ${isExpanded ? 'expanded' : ''}`}>
       <div className="user-dropdown">
