@@ -1,18 +1,28 @@
 import React from 'react';
 
-const Spinner = () => {
+interface SpinnerProps {
+  className?: string;
+  dotClassName?: string;
+}
+
+const Spinner = ({className, dotClassName}: SpinnerProps) => {
+  const spinnerClassName = className ? `spinner ${className}` : 'spinner';
+  const spinnerDotClassName = dotClassName ? `spinner-dot ${dotClassName}` : 'spinner-dot';
+
   return (
-    <div className="spinner-wrapper">
-      <div className="spinner">
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-        <div className="spinner-dot" />
-      </div>
+    <div className={spinnerClassName}>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
+      <div className={spinnerDotClassName}/>
     </div>
   );
 };

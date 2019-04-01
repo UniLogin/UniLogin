@@ -42,5 +42,32 @@ rule chop(keccakIntList(L))        => keccakIntList(L)
 rule chop(keccakIntList(L) +Int N) => keccakIntList(L) +Int N
 requires N <=Int 100
 
+rule chop(N +Int keccakIntList(L) ) => N +Int keccakIntList(L)
+requires N <=Int 100
+
+rule A ==K B +Int keccakIntList(C) => false
+     requires 0 <=Int A andBool A <=Int 20
+     andBool 0 <=Int B andBool B <=Int 20
+rule A =/=K B +Int keccakIntList(C) => true
+     requires 0 <=Int A andBool A <=Int 20
+     andBool 0 <=Int B andBool B <=Int 20
+
+rule B +Int keccakIntList(C) ==K A => false
+     requires 0 <=Int A andBool A <=Int 20
+     andBool 0 <=Int B andBool B <=Int 20
+rule B +Int keccakIntList(C) =/=K A => true
+     requires 0 <=Int A andBool A <=Int 20
+     andBool 0 <=Int B andBool B <=Int 20
+
+rule keccakIntList(C) ==K B +Int keccakIntList(A) => false
+     requires 0 <=Int B andBool B <=Int 20
+rule keccakIntList(C) =/=K B +Int keccakIntList(A) => true
+     requires 0 <=Int B andBool B <=Int 20
+
+rule B +Int keccakIntList(C) ==K keccakIntList(A) => false
+     requires 0 <=Int B andBool B <=Int 20
+rule B +Int keccakIntList(C) =/=K keccakIntList(A) => true
+     requires 0 <=Int B andBool B <=Int 20
+
 ```
 

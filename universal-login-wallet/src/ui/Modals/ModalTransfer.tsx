@@ -43,7 +43,7 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
         currency={transferDetalis.currency}
         setCurrency={event => updateTransferDetailsWith({currency: event})}
       />
-      <button className="btn-text">Send entire balance</button>
+      <button className="modal-btn-text">Send entire balance</button>
       <ButtonFullwidth
         id="transferButton"
         onClick={onGenerateClick}
