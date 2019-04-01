@@ -27,7 +27,7 @@ const App = () => {
           path="/"
           render={
             () =>
-            <HomeScreen/>
+            <HomeScreen setUnauthorized={() => setAuthorized(false)}/>
           }
         />
         <PrivateRoute
