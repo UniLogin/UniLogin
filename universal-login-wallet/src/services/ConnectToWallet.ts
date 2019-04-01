@@ -6,8 +6,9 @@ const connectToWallet = (sdk: UniversalLoginSDK, walletService: any) => async (n
   const contractAddress = await sdk.getWalletContractAddress(name);
   const privateKey = await sdk.connect(contractAddress);
   const publicKey = (new Wallet(privateKey)).address;
-  walletService.userWallet.privateKey = privateKey;
-  const subscription = sdk.subscribe('KeyAdded', {contractAddress, key: publicKey}, callback);
+  walletService.userWallet = {privateKey};
+  const filter = {contractAddress, key: publicKey};
+  const subscription = sdk.subscribe('KeyAdded', filter, callback);
   return () => subscription.remove();
 };
 export default connectToWallet;
