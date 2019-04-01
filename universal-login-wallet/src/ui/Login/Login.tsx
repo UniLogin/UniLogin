@@ -37,9 +37,9 @@ const Login = ({setAuthorized, location} : LoginProps) => {
     }
   };
   return(
-    <div className="login">
-      <img src={Logo} alt="Logo" className="login-logo"/>
-      <p className="login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
+    <div className="start login">
+      <img src={Logo} alt="Logo" className="start-logo login-logo"/>
+      <p className="start-subtitle login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
       <WalletSelector  onCreateClick={(name: string) => onCreateCLick(name)} onConnectionClick={onConnectionClick}/>
       <Modal />
     </div>

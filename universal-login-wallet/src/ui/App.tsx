@@ -6,6 +6,8 @@ import NotFound from './NotFound';
 import Login from './Login/Login';
 import {PrivateRoute} from './PrivateRoute';
 import NotificationsScreen from './Notifications/NotificationsScreen';
+import AproveScreen from './Login/AproveScreen';
+import RecoveryScreen from './Login/RecoveryScreen';
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
@@ -20,6 +22,16 @@ const App = () => {
                 setAuthorized={() => setAuthorized(true)}
               />
           }
+        />
+        <Route
+          exact
+          path="/aprove"
+          render={() => <AproveScreen />}
+        />
+        <Route
+          exact
+          path="/recovery"
+          render={() => <RecoveryScreen />}
         />
         <PrivateRoute
           authorized={authorized}
