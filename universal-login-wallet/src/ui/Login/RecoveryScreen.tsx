@@ -30,7 +30,7 @@ const RecoveryScreen = () => {
       <Link to="/login"className="btn-text start-link-text">Cancel request</Link>
     </div>
   );
-}
+};
 
 
 export default RecoveryScreen;
