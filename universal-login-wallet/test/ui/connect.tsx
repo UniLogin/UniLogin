@@ -5,7 +5,7 @@ import App from '../../src/ui/App';
 import {providers, Wallet, utils} from 'ethers';
 import {Services} from '../../src/services/Services';
 import {setupSdk} from 'universal-login-sdk/test';
-import {ETHER_NATIVE_TOKEN, sleep} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
 import {getWallets} from 'ethereum-waffle';
@@ -31,7 +31,7 @@ describe('UI: Connect', () => {
     const name = 'name.mylogin.eth';
     const [privateKey, contractAddress] = await services.sdk.create(name);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
-    appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
+    appWrapper = mountWithContext(<App/>, services, ['/']);
     const appPage = new AppPage(appWrapper);
     await appPage.login().connect(name);
     const publicKey = (new Wallet(services.walletService.userWallet!.privateKey)).address;
