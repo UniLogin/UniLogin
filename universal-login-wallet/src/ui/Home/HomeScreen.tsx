@@ -5,14 +5,17 @@ import Modal from '../Modals/Modal';
 import Balance from './Balance';
 import { useServices } from '../../hooks';
 
-const HomeScreen = () => {
+interface HomeScreenProps {
+  setUnauthorized: () => void;
+}
+const HomeScreen = ({setUnauthorized}: HomeScreenProps) => {
   const {modalService} = useServices();
   return (
     <>
       <div className="dashboard">
         <Sidebar />
         <div className="dashboard-content">
-          <UserDropdown />
+          <UserDropdown setUnauthorized={setUnauthorized}/>
           <div className="home-screen-column">
             <div className="dashboard-buttons-row">
               <button
