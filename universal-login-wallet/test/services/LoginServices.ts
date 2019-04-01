@@ -19,6 +19,9 @@ describe('Login', () => {
   let wallet: Wallet;
   let provider: providers.Web3Provider;
   let blockchainObserver: any;
+  let name : string;
+  let privateKey : string;
+  let contractAddress : string;
 
   before(async () => {
     ({sdk, relayer, provider} = await setupSdk({overridePort: 33113}));
@@ -34,8 +37,8 @@ describe('Login', () => {
 
   describe('CreationService', () => {
     it('should create contract wallet', async () => {
-      const name = 'name.mylogin.eth';
-      const [privateKey, contractAddress] = await creationService(name);
+      name = 'name.mylogin.eth';
+      [privateKey, contractAddress] = await creationService(name);
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
 
@@ -47,25 +50,24 @@ describe('Login', () => {
   });
 
   describe('ConnectionService', () => {
-    it('should request connect to existing wallet and call callback when add key', async () => {
-      const name = 'super-name.mylogin.eth';
-      const [privateKey, contractAddress] = await creationService(name);
-
+    before(async () => {
+      name = 'super-name.mylogin.eth';
+      [privateKey, contractAddress] = await creationService(name);
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
+    });
+
+    it('should request connect to existing wallet and call callback when add key', async () => {
       const callback = sinon.spy();
       const unsubscribe = await connectToWalletService(name, callback);
       const newPublicKey = (new Wallet(walletService.userWallet.privateKey)).address;
       expect(unsubscribe).to.not.be.null;
-
       await sdk.addKey(
         contractAddress,
         newPublicKey,
         privateKey,
         {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: 1000000000, gasLimit: 1000000},
         MANAGEMENT_KEY);
-
       await waitUntil(() => !!callback.firstCall);
-
       expect(callback).to.have.been.calledOnce;
       unsubscribe();
     });
