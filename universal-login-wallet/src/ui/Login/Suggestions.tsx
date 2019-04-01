@@ -1,4 +1,5 @@
 import React from 'react';
+import {getSuggestionId} from 'universal-login-commons';
 
 interface SuggestionsProps {
   connections: string[];
@@ -13,7 +14,7 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
       key={`${operationType}_${element}`}
       className="suggestions-item"
     >
-      <button className="suggestions-item-btn" onClick={() => onClick(element)}>
+      <button className="suggestions-item-btn"  id={getSuggestionId(operationType)} onClick={() => onClick(element)}>
         <p className="suggestions-item-text">{element}</p>
         <p className="suggestions-item-btn-text">{operationType}</p>
       </button>
