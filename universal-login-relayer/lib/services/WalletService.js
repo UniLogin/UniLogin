@@ -4,44 +4,7 @@ import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecuti
 import {utils, ContractFactory, Contract} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import {concatenateSignatures, calculateMessageHash} from 'universal-login-contracts';
-
-class PendingExecution {
-
-  constructor(walletAddress, wallet) {
-    this.Wallet = wallet;
-    this.WalletContract = new Contract(walletAddress, WalletContract.interface, this.Wallet);
-    this.CollectedSignatures = [];
-  }
-
-  async getStatus() {
-    return {
-      collectedSignatures: this.CollectedSignatures,
-      totalCollected: this.CollectedSignatures.length,
-      required: await this.WalletContract.requiredSignatures()
-    };
-  }
-
-  async push(from, to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signature) {
-    if (collectedSignatures.includes(signature)) {
-      throw 'signature already collected';
-    }
-    const key = await this.WalletContract.getSigner(from, to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signature);
-    if (await this.WalletContract.getKeyPurpose(key) === 0) {
-      throw 'invalid signature';
-    }
-    collectedSignatures.push({signature, key});
-  }
-
-  async canExecute() {
-    return collectedSignatures.length >= await this.WalletContract.requiredSignatures();
-  }
-
-  getConcatenatedSignatures() {
-    const sortedExecutions = sortExecutionsByKey(this.collectedSignatures);
-    const sortedSignatures = sortedExecutions.map((value) => value.signature);
-    return concatenateSignatures(sortedSignatures);
-  }
-}
+import PendingExecution from '../utils/pendingExecution';
 
 class WalletService {
 
@@ -55,7 +18,7 @@ class WalletService {
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
-    this.pendingExecutions = new Object();
+    this.pendingExecutions = {};
   }
 
   async create(key, ensName, overrideOptions = {}) {
