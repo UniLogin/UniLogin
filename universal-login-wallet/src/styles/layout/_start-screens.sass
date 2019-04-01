@@ -1,0 +1,91 @@
+.start
+  position: relative
+  max-width: 500px
+  margin: 0 auto
+  padding: 123px 15px 134px
+
+  +media(s)
+    padding: 115px 15px 30px
+
+.start::before
+  content: ''
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-image: linear-gradient(131deg, #0C0E57 1%, #14052C 100%)
+  background-size: cover
+  z-index: -1
+
+.start-logo
+  display: block
+  margin: 0 auto 24px
+
+  +media(s)
+    margin: 0 auto 27px
+
+.start-title
+  margin-bottom: 15px
+  font-weight: 400
+  font-size: 23px
+  color: #FFFFFF
+  text-align: center
+  line-height: 38px
+  
+.start-subtitle
+  opacity: 0.75
+  font-size: 14px
+  color: #FFFFFF
+  text-align: center
+  line-height: 21px
+
+.start-link
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 45px
+
+.user-row
+  display: flex
+  align-items: center
+  justify-content: center
+
+.user-avatar
+  width: 40px
+  height: 40px
+
+.user-id
+  margin-left: 15px
+  font-weight: 500
+  font-size: 15px
+  color: #FFFFFF
+
+.start-link-text
+  display: block
+  margin: 30px auto 0
+  text-align: center
+
+.aprove-screen-user
+  margin: 50px 0
+
+.devices
+  position: relative
+  max-width: 194px
+  max-height: 126px
+  margin: 0 auto 60px
+  text-align: center
+
+.devices img
+  max-width: 100%
+  
+.devices .device-spinner
+  position: absolute
+  top: 0
+  left: 0
+  
+.recovery-screen-user
+  margin: 95px 0
+
+.recovery-screen-input
+  margin-bottom: 30px
