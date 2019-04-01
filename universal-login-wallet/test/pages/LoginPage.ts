@@ -27,7 +27,7 @@ export default class LoginPage {
     return this.wrapper.find('.input-copy').props().defaultValue as string;
   }
 
-  async waitForHomeView(balance: string) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Your balance${balance}`));
+  async waitForHomeView(balance: string, timeout?: number) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Your balance${balance}`), timeout);
   }
 }

@@ -6,9 +6,9 @@ export const hasChangedOn = (wrapper: ReactWrapper, message: any) => {
   return wrapper.text().includes(message);
 };
 
-export const waitForUI = async (wrapper : ReactWrapper, predicate: Predicate) => {
+export const waitForUI = async (wrapper : ReactWrapper, predicate: Predicate, timeout = 3000) => {
   await waitUntil(() => {
     wrapper.update();
     return predicate();
-  }, 3, 3000);
+  }, 3, timeout);
 };

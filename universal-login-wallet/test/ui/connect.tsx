@@ -1,15 +1,15 @@
 import {ReactWrapper} from 'enzyme';
 import React from 'react';
-import {expect} from 'chai';
 import {mountWithContext} from '../helpers/CustomMount';
 import App from '../../src/ui/App';
 import {providers, Wallet, utils} from 'ethers';
 import {Services} from '../../src/services/Services';
 import {setupSdk} from 'universal-login-sdk/test';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN, sleep} from 'universal-login-commons';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
 import {getWallets} from 'ethereum-waffle';
+
 
 describe('UI: Connect', () => {
   let services : Services;
@@ -22,6 +22,9 @@ describe('UI: Connect', () => {
     ({relayer, provider} = await setupSdk({overridePort: 33113}));
     [wallet] = await getWallets(provider);
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
+    services.tokenService.start();
+    services.balanceService.start();
+    services.sdk.start();
   });
 
   it('Should connect to existing wallet', async () => {
@@ -31,10 +34,14 @@ describe('UI: Connect', () => {
     appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
     const appPage = new AppPage(appWrapper);
     await appPage.login().connect(name);
-    // await services.sdk.addKey()
+    const publicKey = (new Wallet(services.walletService.userWallet!.privateKey)).address;
+    await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
+    await appPage.login().waitForHomeView('1.999926705');
   });
 
   after(async () => {
+    services.balanceService.stop();
+    await services.sdk.finalizeAndStop();
     appWrapper.unmount();
     await relayer.stop();
   });
