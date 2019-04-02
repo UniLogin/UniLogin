@@ -6,8 +6,9 @@ import NotFound from './NotFound';
 import Login from './Login/Login';
 import {PrivateRoute} from './PrivateRoute';
 import NotificationsScreen from './Notifications/NotificationsScreen';
-import AproveScreen from './Login/AproveScreen';
+import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
+import SettingsScreen from './Settings/SettingsScreen';
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
@@ -25,8 +26,8 @@ const App = () => {
         />
         <Route
           exact
-          path="/aprove"
-          render={() => <AproveScreen />}
+          path="/approve"
+          render={() => <ApproveScreen />}
         />
         <Route
           exact
@@ -57,6 +58,11 @@ const App = () => {
             () =>
             <NotificationsScreen />
           }
+        />
+        <PrivateRoute
+          path="/settings"
+          authorized={authorized}
+          render={() => <SettingsScreen />}
         />
         <Route component={NotFound}/>
       </Switch>

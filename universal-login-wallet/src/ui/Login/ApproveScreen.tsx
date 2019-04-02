@@ -5,7 +5,7 @@ import devices from './../../assets/devices.svg';
 import Spinner from './Spinner';
 import { Link } from 'react-router-dom';
 
-const AproveScreen = () => (
+const ApproveScreen = () => (
   <div className="start">
     <img src={Logo} alt="Logo" className="start-logo"/>
     <h1 className="start-title">Waiting for approval</h1>
@@ -25,4 +25,4 @@ const AproveScreen = () => (
   </div>
 );
 
-export default AproveScreen;
+export default ApproveScreen;

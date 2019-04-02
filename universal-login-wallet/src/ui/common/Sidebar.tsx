@@ -16,7 +16,7 @@ function Sidebar() {
           <NavLink exact to="/" id="homeLink" className="sidebar-link home-link" />
         </li>
         <li className="sidebar-button sidebar-list-item">
-          <button className="sidebar-link settings-link" />
+          <NavLink exact to="/settings" id="settingsLink" className="sidebar-link settings-link" />
         </li>
         <li className="sidebar-button sidebar-list-item">
           <NavLink

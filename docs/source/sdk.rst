@@ -320,7 +320,7 @@ Subscribe
     - **filter** : object - filter for events, includes:
 
       * contractAddress : string - address of contract to observe
-      * key (optional) : string - public key, using when subsrcibe only events with specific key
+      * key (optional) : string - public key, using when subscribe to events with specific key (only for ``KeyAdded`` and ``KeyRemoved``)
     - **callback**
   Returns:
     event listener

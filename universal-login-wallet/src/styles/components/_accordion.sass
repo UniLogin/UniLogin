@@ -1,0 +1,67 @@
+.accordion
+  width: 100%
+  background: #FFFFFF
+  box-shadow: 0 2px 4px 0 rgba(208,209,217,0.25)
+  border-radius: 5px
+
+.accordion + .accordion
+  margin-top: 10px
+
+.accordion-btn
+  position: relative
+  display: flex
+  align-items: center
+  width: 100%
+  padding: 20px 27px 20px 20px
+  text-align: left
+
+  +media(s, 168px)
+    padding: 15px 49px 15px 15px
+
+.accordion-btn::after
+  content: ''
+  position: absolute
+  top: 50%
+  right: 20px
+  width: 14px
+  height: 13px
+  transform: translateY(-50%)
+  background: url('../assets/icons/angle.svg') center no-repeat
+
+.accordion-btn.expanded::after
+  transform: translateY(-50%) rotate(180deg)
+
+.accordion-icon-wrapper
+  display: flex
+  align-items: center
+  justify-content: center
+  min-width: 50px
+  min-height: 50px
+  margin-right: 20px
+  border-radius: 50%
+  background: #eeeffa
+  
+.accordion-title
+  margin-bottom: 7px
+  font-weight: 600
+  font-size: 16px
+  color: #3D3D41
+  line-height: 20px
+
+.accordion-subtitle
+  font-size: 14px
+  color: #282828
+  line-height: 23px
+
+.accordion-content
+  padding: 0 20px 20px 90px
+
+  +media(s, 168px)
+    padding: 0 15px 15px
+
+.accordion-separator  
+  margin: 0 0 20px
+  height: 1px
+  background: #F2F2FA
+  border: none
+  

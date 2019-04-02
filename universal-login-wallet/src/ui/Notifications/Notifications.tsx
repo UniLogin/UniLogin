@@ -15,17 +15,15 @@ const Notifications = () => {
   };
 
   return (
-    <div className="notifications-wrapper">
-      <div className="notifications">
-        <h2 className="notifications-title">Notifications:</h2>
-        <ul className="notifications-list">
-          <NotificationConnection device="mobile" id={123456789} />
-          <NotificationTransaction data={placeholderTransactionData}/>
-          <NotificationConnection device="computer" id={123456789} />
-          <NotificationConnection device="tablet" id={123456789} />
-          <NotificationConnection device="mobile" id={123456789} />
-        </ul>
-      </div>
+    <div className="subscreen">
+      <h2 className="subscreen-title">Notifications:</h2>
+      <ul className="notifications-list">
+        <NotificationConnection device="mobile" id={123456789} />
+        <NotificationTransaction data={placeholderTransactionData}/>
+        <NotificationConnection device="computer" id={123456789} />
+        <NotificationConnection device="tablet" id={123456789} />
+        <NotificationConnection device="mobile" id={123456789} />
+      </ul>
     </div>
   );
 };
