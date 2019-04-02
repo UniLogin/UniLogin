@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Group 70</title>
+    <desc>Created with Sketch.</desc>
+    <g id="do-pocięcia" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Settings_generated" transform="translate(-533.000000, -448.000000)" stroke="#0FB989" stroke-width="2">
+            <g id="Group" transform="translate(218.000000, 30.000000)">
+                <g id="Group-8">
+                    <g id="Group-7-Copy" transform="translate(30.000000, 162.000000)">
+                        <g id="Group-13-Copy" transform="translate(286.000000, 254.000000)">
+                            <g id="Group-70" transform="translate(0.000000, 3.000000)">
+                                <path d="M3,11.9921773 L1,11.9921773 C0.448,11.9921773 0,11.5454687 0,10.9928292 L0,6.99543677 C0,6.44279726 0.448,5.99608866 1,5.99608866 L13,5.99608866 C13.552,5.99608866 14,6.44279726 14,6.99543677 L14,10.9928292 C14,11.5454687 13.552,11.9921773 13,11.9921773 L11,11.9921773" id="Stroke-200"></path>
+                                <path d="M3,5.99608866 L3,0.99934811 C3,0.446708605 3.448,5.68434189e-14 4,5.68434189e-14 L10,5.68434189e-14 C10.552,5.68434189e-14 11,0.446708605 11,0.99934811 L11,5.99608866" id="Stroke-201"></path>
+                                <path d="M10,13.9908735 L4,13.9908735 C3.448,13.9908735 3,13.5441649 3,12.9915254 L3,10.9928292 C3,10.4401897 3.448,9.9934811 4,9.9934811 L10,9.9934811 C10.552,9.9934811 11,10.4401897 11,10.9928292 L11,12.9915254 C11,13.5441649 10.552,13.9908735 10,13.9908735 Z" id="Stroke-202"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

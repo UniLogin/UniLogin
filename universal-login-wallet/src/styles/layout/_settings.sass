@@ -1,0 +1,134 @@
+.backup-text
+  max-width: 530px
+  font-size: 14px
+  color: #282828
+  line-height: 20px
+  
+.codes-row
+  display: flex
+  flex-wrap: wrap
+
+  +media(s, 168px)
+    flex-direction: column
+  
+.code-block
+  display: flex
+  align-items: center
+  width: 48.5%
+  padding: 15px
+  margin-top: 20px
+  background: #EDEDF2
+  border-radius: 5px
+
+  +media(s, 168px)
+    margin-top: 15px
+    width: 100%
+  
+.code-block:nth-child(even)
+  margin-left: 3%
+
+  +media(s, 168px)
+    margin: 15px 0 0
+
+.code-block-img
+  min-width: 40px
+  min-height: 40px
+  margin-right: 15px
+
+.code-block-id
+  font-size: 14px
+  color: #282828
+  line-height: 20px
+
+.code
+  font-weight: 600
+  font-size: 16px
+  color: #3D3D41
+  line-height: 23px
+
+  +media(s, 168px)
+    font-size: 14px
+  
+.backup-btn
+  margin-top: 15px
+  padding-left: 25px
+  position: relative
+  font-weight: 500
+  font-size: 14px
+  color: #0FB989
+  
+.backup-btn::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  width: 15px
+  height: 15px
+  transform: translateY(-50%)
+
+.backup-generate-btn::before,
+.backup-create-btn::before
+  background: url('../assets/icons/plus.svg') center no-repeat
+
+.backup-generate-btn
+  +media(s)
+    height: 40px
+    width: 100%
+    padding-left: 0
+    font-weight: 500
+    font-size: 14px
+    color: #0FB989
+    border: 1px solid #0FB989
+    border-radius: 3px
+
+.backup-generate-btn::before
+  +media(s)
+    display: none
+  
+.backup-create-btn
+  margin-right: 35px
+  
+.backup-print-btn::before
+  background: url('../assets/icons/printer-bright.svg') center no-repeat
+  background-size: contain
+
+.backup-codes-buttons
+  display: flex
+  align-items: center
+  
+  +media(s, 168px)
+    flex-wrap: wrap
+    justify-content: space-between
+  
+.backup-buttons-row
+  display: flex
+  align-items: center
+  justify-content: flex-end
+  margin-top: 47px
+
+  +media(s)
+    flex-direction: column-reverse
+  
+.backup-buttons-row .btn
+  +media(s)
+    width: 100%
+  
+.backup-buttons-row .btn + .btn
+  margin-left: 20px
+
+  +media(s)
+    margin: 0 0 15px
+
+.backup-codes-loader
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-top: 15px
+  
+.backup-codes-loader .backup-codes-loader-dot
+  background: #282828
+
+.backup-codes-loader-text
+  margin-left: 15px
+  font-size: 14px
+  color: #282828
