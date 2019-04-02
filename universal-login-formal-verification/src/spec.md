@@ -1,10 +1,10 @@
 High-level specification of KeyHolder
 =====================================
 
--   `removeKey`:
+-   `removeKey`, case 1:
 
 ```act
-behaviour removeKey-succ of KeyHolder
+behaviour removeKey-1 of KeyHolder
 interface removeKey(address _key, uint256 _purpose)
 
 types
@@ -21,23 +21,58 @@ storage
                   #keyCount  |-> X => X - 1
     #mapping.keys[CALLER_ID] |-> CallerKeyPurpose
 
-if
+iff
 
     (CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID)
     PrevPurpose == _purpose
-    #rangeUInt(256, X - 1)
-
-    _key =/= CALLER_ID
     VCallValue == 0
+
+if
+
+    #rangeUInt(256, X - 1)
+    _key =/= CALLER_ID
 
 returns 1
 
 ```
 
--   `addKey`:
+-   `removeKey`, case 2:
 
 ```act
-behaviour addKey-succ of KeyHolder
+behaviour removeKey-2 of KeyHolder
+interface removeKey(address _key, uint256 _purpose)
+
+types
+
+    PrevKey : uint256
+    CallerKeyPurpose : uint256
+    X : uint256
+
+storage
+
+        #mapping.keys[_key]  |-> CallerKeyPurpose => 0
+     #mapping.keys[_key] + 1 |-> PrevKey => asAddress(0, PrevKey)
+                  #keyCount  |-> X => X - 1
+
+iff
+
+    (CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID)
+    CallerKeyPurpose == _purpose
+    VCallValue == 0
+
+if
+
+    #rangeUInt(256, X - 1)
+    _key == CALLER_ID
+
+returns 1
+
+```
+
+-   `addKey`, case 1:
+
+```act
+behaviour addKey-1 of KeyHolder
 interface addKey(address _key, uint256 _purpose)
 
 types
@@ -53,18 +88,54 @@ storage
                   #keyCount  |-> Y => Y + 1
     #mapping.keys[CALLER_ID] |-> Z
 
-if
+iff
 
+    VCallValue == 0
     _key =/= AddressMask(PrevKey)
-    #rangeUInt(256, Y + 1)
     (Z == #managementKey  or  CALLER_ID == ACCT_ID)
 
+if
+
+    #rangeUInt(256, Y + 1)
     _key =/= CALLER_ID
-    VCallValue == 0
 
 returns 1
 
 ```
+
+-   `addKey`, case 2:
+
+```act
+behaviour addKey-2 of KeyHolder
+interface addKey(address _key, uint256 _purpose)
+
+types
+
+    PrevKey : uint256
+          Y : uint256
+          Z : uint256
+
+storage
+
+        #mapping.keys[_key]  |-> Z => _purpose
+    #mapping.keys[_key] + 1  |-> PrevKey => asAddress(_key, PrevKey)
+                  #keyCount  |-> Y => Y + 1
+
+iff
+
+    VCallValue == 0
+    _key =/= AddressMask(PrevKey)
+    (Z == #managementKey  or  CALLER_ID == ACCT_ID)
+
+if
+
+    #rangeUInt(256, Y + 1)
+    _key == CALLER_ID
+
+returns 1
+
+```
+
 
 -   The function `keyHasPurpose` returns `TRUE` when `#mapping.keys[_key] == _purpose`:
 
@@ -76,7 +147,7 @@ storage
 
     #mapping.keys[_key]   |-> _purpose
 
-if
+iff
 
     VCallValue == 0
 
@@ -98,10 +169,13 @@ storage
 
     #mapping.keys[_key]   |-> X
 
+iff
+
+    VCallValue == 0
+
 if
 
     X =/= _purpose
-    VCallValue == 0
 
 returns 0
 
@@ -121,7 +195,7 @@ storage
 
     #mapping.keys[_key]  |-> X
 
-if
+iff
 
     VCallValue == 0
 
@@ -143,12 +217,32 @@ storage
 
     #mapping.keys[_key] + 1  |-> X
 
+iff
+
+    VCallValue == 0
+
 if
 
     X =/= 0
-    VCallValue == 0
-
+    
 returns 1
 
 ```
 
+-   `keyExist`, failure case:
+
+```act
+behaviour keyExist-fail of KeyHolder
+interface keyExist(address _key)
+
+storage
+
+    #mapping.keys[_key] + 1  |-> 0
+
+iff
+
+    VCallValue == 0
+    
+returns 0
+
+```
