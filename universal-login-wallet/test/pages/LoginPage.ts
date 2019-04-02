@@ -20,7 +20,7 @@ export default class LoginPage {
   }
 
   async connect(userName: string) {
-    await this.pickUsername(userName, 'connect to existing', 'Please confirm from your another device');
+    await this.pickUsername(userName, 'connect to existing', 'Waiting for approval');
   }
 
   getAddress() {

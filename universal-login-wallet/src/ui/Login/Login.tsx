@@ -27,7 +27,7 @@ const Login = ({setAuthorized, location} : LoginProps) => {
 
   const onConnectionClick = async (name: string) => {
     unsubscribe = await connectToWallet(name, loginAndChangeScreen);
-    modalService.showModal('waiting');
+    history.push('/approve');
   };
 
   const loginAndChangeScreen = () => {
