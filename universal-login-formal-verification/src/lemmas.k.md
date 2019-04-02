@@ -36,9 +36,12 @@ syntax Int ::= "asAddress" "(" Int "," Int ")" [function]
 rule asAddress(A, B) => A |Int AddressRestMask(B) 
 
 
+// obvious rules, needed for the proofs:
+
+// Bit "or" newer exceeds the range of uint
 rule chop(X |Int Y) => X |Int Y
 
-
+//alternation of adding
 rule N +Int keccakIntList(C) => keccakIntList(C) +Int N
     requires 0 <=Int N andBool N <=Int 20
 
