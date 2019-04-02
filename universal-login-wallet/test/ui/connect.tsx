@@ -9,6 +9,7 @@ import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
 import {getWallets} from 'ethereum-waffle';
+import {expect} from 'chai';
 
 
 describe('UI: Connect', () => {
@@ -16,27 +17,30 @@ describe('UI: Connect', () => {
   let relayer: any;
   let provider: providers.Web3Provider;
   let appWrapper: ReactWrapper;
-  let wallet: Wallet;
+  let privateKey : string;
+  let contractAddress : string;
+  const name = 'name.mylogin.eth';
 
   before(async () => {
     ({relayer, provider} = await setupSdk({overridePort: 33113}));
-    [wallet] = await getWallets(provider);
+    const [wallet] = await getWallets(provider);
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     services.tokenService.start();
     services.balanceService.start();
     services.sdk.start();
+    [privateKey, contractAddress] = await services.sdk.create(name);
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
+    appWrapper = mountWithContext(<App/>, services, ['/']);
   });
 
   it('Should connect to existing wallet', async () => {
-    const name = 'name.mylogin.eth';
-    const [privateKey, contractAddress] = await services.sdk.create(name);
-    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
-    appWrapper = mountWithContext(<App/>, services, ['/']);
     const appPage = new AppPage(appWrapper);
     await appPage.login().connect(name);
     const publicKey = (new Wallet(services.walletService.userWallet!.privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
     await appPage.login().waitForHomeView('1.999926705');
+    const balance = appPage.dashboard().getWalletBalance();
+    expect(balance).to.eq('1.999926705');
   });
 
   after(async () => {
