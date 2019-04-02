@@ -1,27 +1,35 @@
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import ProxyContract from 'universal-login-contracts/build/Proxy';
+import WalletContract from 'universal-login-contracts/build/Wallet';
+import WalletMasterContract from 'universal-login-contracts/build/WalletMaster';
 import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
-import {utils, ContractFactory} from 'ethers';
+import {utils, Contract, ContractFactory} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 
 
 class WalletService {
-  constructor(wallet, ensService, authorisationService, hooks, provider, legacyENS) {
+  constructor(wallet, walletMasterAddress, ensService, authorisationService, hooks, provider, legacyENS) {
     this.wallet = wallet;
-    this.contractJSON = legacyENS ? LegacyWallet : WalletContract;
+    this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
     this.abi = this.contractJSON.interface;
     this.bytecode = `0x${this.contractJSON.bytecode}`;
+    this.walletMasterAddress = walletMasterAddress;
     this.ensService = ensService;
     this.authorisationService = authorisationService;
     this.codec = new utils.AbiCoder();
     this.hooks = hooks;
     this.provider = provider;
+    this.useInitData = !legacyENS;
   }
 
   async create(key, ensName, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
-      const args = [key, ...ensArgs];
+      let args = [key, ...ensArgs];
+      if (this.useInitData) {
+        const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode(args);
+        args = [ this.walletMasterAddress, initData ];
+      }
       const deployTransaction = {
         ...defaultDeployOptions,
         ...overrideOptions,

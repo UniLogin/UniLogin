@@ -3,7 +3,7 @@ import AuthorisationService from '../../../lib/services/authorisationService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import WalletService from '../../../lib/services/WalletService';
 import buildEnsService from '../../helpers/buildEnsService';
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 import {waitForContractDeploy} from 'universal-login-commons';
 import {EventEmitter} from 'fbemitter';
 import {getKnex} from '../../../lib/utils/knexUtils';
@@ -28,7 +28,7 @@ describe('Authorisation Service', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     const database = getKnex();
     authorisationService = new AuthorisationService(database);
-    walletContractService = new WalletService(wallet, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
+    walletContractService = new WalletService(wallet, null, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
     const transaction = await walletContractService.create(managementKey.address, 'alex.mylogin.eth');
     walletContract = await waitForContractDeploy(managementKey, WalletContract, transaction.hash);
   });

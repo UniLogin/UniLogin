@@ -36,38 +36,17 @@ syntax Int ::= "asAddress" "(" Int "," Int ")" [function]
 rule asAddress(A, B) => A |Int AddressRestMask(B) 
 
 
+rule chop(X |Int Y) => X |Int Y
+
+
+rule N +Int keccakIntList(C) => keccakIntList(C) +Int N
+    requires 0 <=Int N andBool N <=Int 20
+
+
 // hashed storage offsets never overflow (probabilistic assumption):
 
 rule chop(keccakIntList(L))        => keccakIntList(L)
 rule chop(keccakIntList(L) +Int N) => keccakIntList(L) +Int N
 requires N <=Int 100
 
-rule chop(N +Int keccakIntList(L) ) => N +Int keccakIntList(L)
-requires N <=Int 100
-
-rule A ==K B +Int keccakIntList(C) => false
-     requires 0 <=Int A andBool A <=Int 20
-     andBool 0 <=Int B andBool B <=Int 20
-rule A =/=K B +Int keccakIntList(C) => true
-     requires 0 <=Int A andBool A <=Int 20
-     andBool 0 <=Int B andBool B <=Int 20
-
-rule B +Int keccakIntList(C) ==K A => false
-     requires 0 <=Int A andBool A <=Int 20
-     andBool 0 <=Int B andBool B <=Int 20
-rule B +Int keccakIntList(C) =/=K A => true
-     requires 0 <=Int A andBool A <=Int 20
-     andBool 0 <=Int B andBool B <=Int 20
-
-rule keccakIntList(C) ==K B +Int keccakIntList(A) => false
-     requires 0 <=Int B andBool B <=Int 20
-rule keccakIntList(C) =/=K B +Int keccakIntList(A) => true
-     requires 0 <=Int B andBool B <=Int 20
-
-rule B +Int keccakIntList(C) ==K keccakIntList(A) => false
-     requires 0 <=Int B andBool B <=Int 20
-rule B +Int keccakIntList(C) =/=K keccakIntList(A) => true
-     requires 0 <=Int B andBool B <=Int 20
-
 ```
-

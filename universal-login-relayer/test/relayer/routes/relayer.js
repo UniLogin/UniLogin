@@ -5,7 +5,7 @@ import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy} from 'universal-login-commons';
 import {calculateMessageSignature, OPERATION_CALL} from 'universal-login-contracts';
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 import MockToken from 'universal-login-contracts/build/MockToken';
 
 chai.use(chaiHttp);
@@ -73,5 +73,3 @@ describe('Relayer - WalletContract routes', async () => {
     await relayer.stop();
   });
 });
-
-

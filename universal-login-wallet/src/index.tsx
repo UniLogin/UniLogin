@@ -12,6 +12,7 @@ const config = getConfig();
 const services = createServices(config);
 services.tokenService.start();
 services.balanceService.start();
+services.sdk.start();
 
 render(
   <ServiceContext.Provider value={services}>
