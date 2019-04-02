@@ -33,7 +33,7 @@ describe('UI: Transfer', () => {
   it('Creates wallet and transfers tokens', async () => {
     appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
     const appPage = new AppPage(appWrapper);
-    await appPage.login().pickUsername('super-name');
+    await appPage.login().createNew('super-name');
 
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));

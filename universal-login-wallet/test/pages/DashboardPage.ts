@@ -17,4 +17,8 @@ export default class DashboardPage {
     const tokenBalance = await mockTokenContract.balanceOf(walletAddress);
     return tokenBalance.toString();
   }
+
+  getWalletBalance() {
+    return this.wrapper.find('span.balance-amount-highlighted').props().children;
+  }
 }

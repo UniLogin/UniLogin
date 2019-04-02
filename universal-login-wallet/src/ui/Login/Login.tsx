@@ -14,7 +14,7 @@ interface LoginProps {
 }
 
 const Login = ({setAuthorized, location} : LoginProps) => {
-  const {createWallet, modalService, balanceService} = useServices();
+  const {createWallet, modalService, balanceService, connectToWallet} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
@@ -25,15 +25,20 @@ const Login = ({setAuthorized, location} : LoginProps) => {
     unsubscribe = balanceService.subscribe(onBalanceChange);
   };
 
-  const onConnectionClick = () => {
-    modalService.showModal('waiting');
+  const onConnectionClick = async (name: string) => {
+    unsubscribe = await connectToWallet(name, loginAndChangeScreen);
+    history.push('/approve');
+  };
+
+  const loginAndChangeScreen = () => {
+    unsubscribe();
+    setAuthorized();
+    history.push(from);
   };
 
   const onBalanceChange = (amount: utils.BigNumber) => {
     if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
-      unsubscribe();
-      setAuthorized();
-      history.push(from);
+      loginAndChangeScreen();
     }
   };
   return(
