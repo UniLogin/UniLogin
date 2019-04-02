@@ -1,6 +1,6 @@
 import {utils, providers} from 'ethers';
 import ObserverBase from './ObserverBase';
-import WalletContract from 'universal-login-contracts/build/WalletContract.json';
+import WalletContract from 'universal-login-contracts/build/Wallet.json';
 
 const walletContractInterface = new utils.Interface(WalletContract.interface);
 const eventInterface = new utils.Interface(WalletContract.interface).events;
