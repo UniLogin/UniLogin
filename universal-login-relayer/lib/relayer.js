@@ -45,7 +45,7 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
-    this.walletContractService = new WalletService(this.wallet, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
+    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));

@@ -6,7 +6,7 @@ import {utils} from 'ethers';
 import MockToken from 'universal-login-contracts/build/MockToken';
 import KeyHolder from 'universal-login-contracts/build/KeyHolder.json';
 import {MANAGEMENT_KEY, ACTION_KEY} from 'universal-login-contracts';
-import WalletContract from 'universal-login-contracts/build/WalletContract';
+import WalletContract from 'universal-login-contracts/build/Wallet';
 import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 
 chai.use(chaiAsPromised);
