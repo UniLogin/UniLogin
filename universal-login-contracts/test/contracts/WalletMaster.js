@@ -27,7 +27,6 @@ describe('WalletMaster', async () => {
   let mockToken;
   let mockContract;
   let wallet;
-  let changeMasterCopyFunc;
   let executeSignedFunc;
   let msg;
   let signature;
@@ -39,7 +38,6 @@ describe('WalletMaster', async () => {
 
   beforeEach(async () => {
     ({provider, walletContractMaster, walletContractProxy, proxyAsWalletContract, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
-    changeMasterCopyFunc = new utils.Interface(WalletMaster.interface).functions.updateMaster;
     executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = await calculateMessageSignature(privateKey, msg);
@@ -305,51 +303,4 @@ describe('WalletMaster', async () => {
     });
   });
 
-  // Disabled upgradability, changeMasterCopyFunc is undefined
-  describe('MasterCopy', () => {
-    it('master cannot be upgraded', () => {
-      expect(changeMasterCopyFunc).to.be.eq(undefined);
-    });
-  });
-  // describe('MasterCopy', () => {
-  //   let msgToCall;
-  //   let signatureToCall;
-	//
-  //   it('should fail if changing masterCopy through proxy with zero address', async () => {
-  //     expect(await proxyAsWalletContract.master()).to.eq(walletContractMaster.address);
-  //     const data = changeMasterCopyFunc.encode([constants.AddressZero, [], false]);
-  //     msgToCall = {...callMessage, data, from: proxyAsWalletContract.address, to: proxyAsWalletContract.address };
-  //     signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-  //     const messageHash = calculateMessageHash(msgToCall);
-  //     await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-  //       .to.emit(proxyAsWalletContract, 'ExecutedSigned')
-  //       .withArgs(messageHash, 0, false);
-  //     expect(await proxyAsWalletContract.master()).to.eq(walletContractMaster.address);
-  //   });
-	//
-  //   it('should fail if changing masterCopy through proxy with invalid master', async () => {
-  //     expect(await proxyAsWalletContract.master()).to.eq(walletContractMaster.address);
-  //     const data = changeMasterCopyFunc.encode([to2, [], false]);
-  //     msgToCall = {...callMessage, data, from: proxyAsWalletContract.address, to: proxyAsWalletContract.address };
-  //     signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-  //     const messageHash = calculateMessageHash(msgToCall);
-  //     await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-  //       .to.emit(proxyAsWalletContract, 'ExecutedSigned')
-  //       .withArgs(messageHash, 0, false);
-  //     expect(await proxyAsWalletContract.master()).to.eq(walletContractMaster.address);
-  //   });
-	//
-  //   it('should change masterCopy through proxy with valid address', async () => {
-  //     const otherwalletContractMaster = await deployContract(wallet, WalletMaster);
-  //     expect(await proxyAsWalletContract.master()).to.eq(walletContractMaster.address);
-  //     const data = changeMasterCopyFunc.encode([otherwalletContractMaster.address, [], false]);
-  //     msgToCall = {...callMessage, data, from: proxyAsWalletContract.address, to: proxyAsWalletContract.address };
-  //     signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-  //     const messageHash = calculateMessageHash(msgToCall);
-  //     await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-  //       .to.emit(proxyAsWalletContract, 'ExecutedSigned')
-  //       .withArgs(messageHash, 0, true);
-  //     expect(await proxyAsWalletContract.master()).to.eq(otherwalletContractMaster.address);
-  //   });
-  // });
 });

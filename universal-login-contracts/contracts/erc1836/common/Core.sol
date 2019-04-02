@@ -11,7 +11,7 @@ contract Core is Store {
     // Constants
     bytes32 constant MASTER_ID = bytes32(0x26b8c8548d7daec1fffc293834f2cee70c6b9ca8d5c456721fc1fdf9b10dd909);
 
-    modifier onlyInitialized() {
+    modifier onlyInitializing() {
         require(!initialized, "already-initialized");
         _;
         initialized = true;
@@ -25,8 +25,8 @@ contract Core is Store {
         emit MasterChange(masterAddress, _newMaster);
         masterAddress = _newMaster;
 
-        // Allows the run of an onlyInitialized method in the new master.
-        // Will be reset to true by the onlyInitialized modifier of the initialize methode.
+        // Allows the run of an initialzed method in the new master.
+        // Will be reset to true by the initialzed modifier of the initialize methode.
         initialized = false;
 
         // Call the initialize method in the new master
