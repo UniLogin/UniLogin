@@ -34,3 +34,4 @@ $(SRC_JSON): $(SRC_SOL)
 
 clean:
 	rm -rf out dapp
+	docker rm comp
