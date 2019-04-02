@@ -24,6 +24,18 @@ export const execution = (walletContractService) => async (req, res, next) => {
   }
 };
 
+export const getStatus = (walletContractService) => async (req, res, next) => {
+  try {
+    const {hash} = req.params;
+    const status = await walletContractService.getStatus(hash);
+    res.status(201)
+      .type('json')
+      .send(JSON.stringify(status));
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default (walletContractService) => {
   const router = new express.Router();
 
@@ -32,6 +44,9 @@ export default (walletContractService) => {
 
   router.post('/execution',
     asyncMiddleware(execution(walletContractService)));
+
+  router.get('/execution/:hash',
+    asyncMiddleware(getStatus(walletContractService)));
 
   return router;
 };

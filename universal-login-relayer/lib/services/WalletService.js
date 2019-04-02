@@ -65,6 +65,13 @@ class WalletService {
     }
   }
 
+  async getStatus(hash) {
+    if (!pendingExecutions[hash]) {
+      throw new Error('Unable to find execution with given hash');
+    }
+    return pendingExecutions[hash].getStatus();
+  }
+
   async execute(message) {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
       const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
