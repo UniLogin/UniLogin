@@ -95,9 +95,9 @@ const saveVariables = (filename, variables) => {
 };
 
 const executionComparator = (execution1, execution2) =>  {
-  const key1 = parseInt(execution1.key, 16);
-  const key2 = parseInt(execution2.key, 16);
-  if (key1 > key2) {
+  const key1 = utils.bigNumberify(execution1.key);
+  const key2 = utils.bigNumberify(execution2.key);
+  if (key1.gte(key2)) {
     return 1;
   } else if (key1 < key2) {
     return -1;
@@ -109,4 +109,10 @@ const executionComparator = (execution1, execution2) =>  {
 const sortExecutionsByKey = (executions) =>
     executions.sort(executionComparator);
 
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey};
+const getRequiredSignatures = async (walletAddress, wallet) => {
+    const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
+    const requiredSignatures = await walletContract.requiredSignatures();
+    return requiredSignatures;
+};
+
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures};

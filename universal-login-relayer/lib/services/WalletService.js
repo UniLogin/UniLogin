@@ -1,7 +1,7 @@
 import WalletContract from 'universal-login-contracts/build/WalletContract';
 import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
-import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey} from '../utils/utils';
-import {utils, ContractFactory, Contract} from 'ethers';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures} from '../utils/utils';
+import {utils, ContractFactory} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import {concatenateSignatures, calculateMessageHash} from 'universal-login-contracts';
 import PendingExecution from '../utils/pendingExecution';
@@ -38,9 +38,8 @@ class WalletService {
   }
 
   async executeSigned(message) {
-    const walletContract = new Contract(message.from, WalletContract.interface, this.wallet);
-
-    if (await walletContract.requiredSignatures() > 1) {
+    const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
+    if (requiredSignatures > 1) {
       const hash = await calculateMessageHash(message);
       if (pendingExecutions[hash] !== undefined) {
         await pendingExecutions[hash].push(message.signature);
