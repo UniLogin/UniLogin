@@ -18,9 +18,9 @@
   +media(s, 168px)
     padding: 60px 15px 0
   
-.dashboard-content-notifications
+.dashboard-content-subscreen
   +media(s, 168px)
-    padding: 0 0 83px
+    padding: 0
 
 .dashboard-balance
   max-width: 707px
@@ -48,4 +48,25 @@
 .dashboard-buttons-row
   +media(s, 168px)
     margin-top: auto
+
+.subscreen
+  max-width: 892px
+  margin: 50px auto 0
+  padding: 20px 30px 20px
+  background: #EDEDF2
+  border-radius: 5px
+
+  +media(s, 168px)
+    min-height: calc(100vh - 83px)
+    margin: 0 auto
+    border-radius: 0
+
+  +media(s)
+    padding: 20px 15px 20px
+
+.subscreen-title
+  margin-bottom: 17px
+  font-weight: 600
+  font-size: 14px
+  color: #3D3D41
   

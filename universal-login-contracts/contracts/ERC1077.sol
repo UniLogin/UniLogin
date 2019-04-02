@@ -5,9 +5,10 @@ import "./IERC1077.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 
 
-contract ERC1077 is KeyHolder, IERC1077 {
+contract ERC1077 is KeyHolder, IERC1077, IERC721Receiver {
     using ECDSA for bytes32;
     using SafeMath for uint;
 
@@ -123,6 +124,10 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint256 gasUsed = startingGas.sub(gasleft());
         refund(gasUsed, gasPrice, gasToken);
         return messageHash;
+    }
+
+    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 
     function refund(uint256 gasUsed, uint gasPrice, address gasToken) private {

@@ -8,7 +8,9 @@ const Transferring = () => {
   return (
     <div className="transferring">
       <div className="transferring-content">
-        <Spinner />
+        <div className="transferring-content-loader">
+          <Spinner />
+        </div>
         <h1 className="transferring-title">Transferring funds</h1>
         <div className="progress-bar">
           <div className={`progress-bar-line ${complete ? 'complete' : ''}`} />
