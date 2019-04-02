@@ -1,13 +1,13 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
+import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
-import ERC1077MasterCopy from '../../../build/ERC1077MasterCopy';
-import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../fixtures/basicWallet';
-import walletMasterAndProxy from '../../fixtures/walletMasterAndProxy';
-import {calculateMessageHash, calculateMessageSignature} from '../../../lib/calculateMessageSignature';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
-import {getExecutionArgs} from '../../utils';
+import WalletMaster from '../../build/WalletMaster';
+import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
+import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
+import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
+import {getExecutionArgs} from '../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -16,7 +16,7 @@ const {parseEther} = utils;
 const to1 = '0x0000000000000000000000000000000000000001';
 const to2 = '0x0000000000000000000000000000000000000002';
 
-describe('CONTRACT: ERC1077MasterCopy', async () => {
+describe('WalletMaster', async () => {
   let provider;
   let walletContractMaster;
   let walletContractProxy;
@@ -27,7 +27,6 @@ describe('CONTRACT: ERC1077MasterCopy', async () => {
   let mockToken;
   let mockContract;
   let wallet;
-  let changeMasterCopyFunc;
   let executeSignedFunc;
   let msg;
   let signature;
@@ -39,8 +38,7 @@ describe('CONTRACT: ERC1077MasterCopy', async () => {
 
   beforeEach(async () => {
     ({provider, walletContractMaster, walletContractProxy, proxyAsWalletContract, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
-    changeMasterCopyFunc = new utils.Interface(ERC1077MasterCopy.interface).functions.changeMasterCopy;
-    executeSignedFunc = new utils.Interface(ERC1077MasterCopy.interface).functions.executeSigned;
+    executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = await calculateMessageSignature(privateKey, msg);
     data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
@@ -305,32 +303,4 @@ describe('CONTRACT: ERC1077MasterCopy', async () => {
     });
   });
 
-  describe('MasterCopy', () => {
-    let msgToCall;
-    let signatureToCall;
-
-    it('should fail if changing masterCopy through proxy with zero address', async () => {
-      expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
-      const data = changeMasterCopyFunc.encode([constants.AddressZero]);
-      msgToCall = {...callMessage, data, from: walletContractProxy.address, to: walletContractProxy.address };
-      signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-      const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-        .to.emit(proxyAsWalletContract, 'ExecutedSigned')
-        .withArgs(messageHash, 0, false);
-      expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
-    });
-
-    it('should change masterCopy through proxy with valid address', async () => {
-      expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
-      const data = changeMasterCopyFunc.encode([to2]);
-      msgToCall = {...callMessage, data, from: walletContractProxy.address, to: walletContractProxy.address };
-      signatureToCall = await calculateMessageSignature(privateKey, msgToCall);
-      const messageHash = calculateMessageHash(msgToCall);
-      await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-        .to.emit(proxyAsWalletContract, 'ExecutedSigned')
-        .withArgs(messageHash, 0, true);
-      expect(await walletContractProxy.implementation()).to.eq(to2);
-    });
-  });
 });

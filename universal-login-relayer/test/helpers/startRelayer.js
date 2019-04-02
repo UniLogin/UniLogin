@@ -1,4 +1,5 @@
 import {deployContract} from 'ethereum-waffle';
+import WalletMaster from 'universal-login-contracts/build/WalletMaster';
 import Token from '../../lib/dev/Token.json';
 import ENSBuilder from 'ens-builder';
 
@@ -11,6 +12,7 @@ async function depolyEns(wallet) {
 }
 
 async function startRelayer(wallet, relayerConstructor) {
+  const walletMaster = await deployContract(wallet, WalletMaster);
   const tokenContract = await deployContract(wallet, Token, []);
   const ensAddress = await depolyEns(wallet);
   const config = Object.freeze({
@@ -21,6 +23,7 @@ async function startRelayer(wallet, relayerConstructor) {
       ensAddress,
       chainId: 0},
     ensRegistrars: ['mylogin.eth'],
+    walletMasterAddress: walletMaster.address,
     tokenContractAddress: tokenContract.address,
   });
   const relayer = new relayerConstructor(config, wallet.provider);

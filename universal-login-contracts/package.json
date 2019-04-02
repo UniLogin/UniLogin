@@ -17,7 +17,9 @@
     "clean": "rm -fr build dist"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@ensdomains/ens": "^0.3.5",
+    "@ensdomains/resolver": "^0.1.2",
+		"@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
@@ -26,7 +28,7 @@
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",
-    "solium": "^1.1.8",
+    "ethlint": "^1.2.3",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"

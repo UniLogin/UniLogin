@@ -49,7 +49,7 @@ types
 storage
 
         #mapping.keys[_key]  |-> _ => _purpose
-    1 + #mapping.keys[_key]  |-> PrevKey => asAddress(_key, PrevKey)
+    #mapping.keys[_key] + 1  |-> PrevKey => asAddress(_key, PrevKey)
                   #keyCount  |-> Y => Y + 1
     #mapping.keys[CALLER_ID] |-> Z
 
@@ -58,8 +58,6 @@ if
     _key =/= AddressMask(PrevKey)
     #rangeUInt(256, Y + 1)
     (Z == #managementKey  or  CALLER_ID == ACCT_ID)
-
-    #rangeUInt(256, asAddress(_key, PrevKey))
 
     _key =/= CALLER_ID
     VCallValue == 0
@@ -143,7 +141,7 @@ types
 
 storage
 
-    1 + #mapping.keys[_key]  |-> X
+    #mapping.keys[_key] + 1  |-> X
 
 if
 

@@ -1,6 +1,6 @@
 import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
-import {deployWalletMasterCopy} from './deployWalletMasterCopy';
+import deployWalletMaster from './deployWalletMaster';
 import {deployToken} from './deployToken';
 import {getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
@@ -27,11 +27,12 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[]) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[]) {
   return {
     port: 3311,
     jsonRpcUrl,
     privateKey: wallet.privateKey,
+    walletMasterAddress,
     tokenContractAddress,
     chainSpec: {
       ensAddress,
@@ -56,10 +57,10 @@ async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverri
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
-  const walletMasterAddress = await deployWalletMasterCopy(deployWallet);
+  const walletMasterAddress = await deployWalletMaster(deployWallet);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
-  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, tokenAddress, ensAddress, ensDomains);
+  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, walletMasterAddress, tokenAddress, ensAddress, ensDomains);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, walletMasterAddress, tokenAddress, ensAddress, ensDomains};
 }
