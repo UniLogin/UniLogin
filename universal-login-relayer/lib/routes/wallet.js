@@ -28,7 +28,7 @@ export const getStatus = (walletContractService) => async (req, res, next) => {
   try {
     const {hash} = req.params;
     const status = await walletContractService.getStatus(hash);
-    res.status(201)
+    res.status(200)
       .type('json')
       .send(JSON.stringify(status));
   } catch (err) {
