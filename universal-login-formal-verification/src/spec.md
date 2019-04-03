@@ -23,9 +23,9 @@ storage
 
 iff
 
-    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
-    PrevPurpose == _purpose
     VCallValue == 0
+    PrevPurpose == _purpose
+    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
 
 if
 
@@ -56,9 +56,9 @@ storage
 
 iff
 
-    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
-    CallerKeyPurpose == _purpose
     VCallValue == 0
+    CallerKeyPurpose == _purpose
+    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
 
 if
 
