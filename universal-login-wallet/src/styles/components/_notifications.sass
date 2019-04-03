@@ -2,6 +2,7 @@
   padding: 20px 20px 20px 90px
   background: #fff
   border-radius: 5px
+  transition: all 200ms ease-in
 
   +media(s)
     padding: 15px 10px 10px 84px
@@ -190,3 +191,15 @@
 .tooltip-value
   font-size: 10px
   color: #3D3D41
+
+.move-exit 
+  opacity: 1
+  max-height: 187px
+  padding: 0
+  transform: scale(1)
+  transition: all 200ms ease-in
+
+.move-exit-active 
+  max-height: 0
+  opacity: 0.01
+  transform: scale(0)
