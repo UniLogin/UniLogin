@@ -1,7 +1,7 @@
 High-level specification of KeyHolder
 =====================================
 
--   `removeKey`, case 1:
+-  Semantics of the function `removeKey`, case when `_key =/= CALLER_ID`:
 
 ```act
 behaviour removeKey-1 of KeyHolder
@@ -36,7 +36,7 @@ returns 1
 
 ```
 
--   `removeKey`, case 2:
+-  Semantics of the function `removeKey`, case when `_key == CALLER_ID`:
 
 ```act
 behaviour removeKey-2 of KeyHolder
@@ -69,7 +69,7 @@ returns 1
 
 ```
 
--   `addKey`, case 1:
+-  Semantics of the function `addKey`, case when `_key =/= CALLER_ID`:
 
 ```act
 behaviour addKey-1 of KeyHolder
@@ -103,7 +103,7 @@ returns 1
 
 ```
 
--   `addKey`, case 2:
+-  Semantics of the function `addKey`, case when `_key == CALLER_ID`:
 
 ```act
 behaviour addKey-2 of KeyHolder
@@ -136,8 +136,7 @@ returns 1
 
 ```
 
-
--   The function `keyHasPurpose` returns `TRUE` when `#mapping.keys[_key] == _purpose`:
+-  Semantics of the function `keyHasPurpose`, case when `true` is returned:
 
 ```act
 behaviour keyHasPurpose-succ of KeyHolder
@@ -155,7 +154,7 @@ returns 1
 
 ```
 
--   `keyHasPurpose` returns `FALSE` when `#mapping.keys[_key] =/= _purpose`:
+-  Semantics of the function `keyHasPurpose`, case when `false` is returned:
 
 ```act
 behaviour keyHasPurpose-fail of KeyHolder
@@ -181,7 +180,7 @@ returns 0
 
 ```
 
--   `getKeyPurpose`:
+-  Semantics of the function `getKeyPurpose`:
 
 ```act
 behaviour getKeyPurpose of KeyHolder
@@ -203,7 +202,7 @@ returns X
 
 ```
 
--   `keyExist`, success case:
+-  Semantics of the function `keyExist`, case when `true` is returned:
 
 ```act
 behaviour keyExist-succ of KeyHolder
@@ -229,7 +228,7 @@ returns 1
 
 ```
 
--   `keyExist`, failure case:
+-  Semantics of the function `keyExist`, case when `false` is returned:
 
 ```act
 behaviour keyExist-fail of KeyHolder
