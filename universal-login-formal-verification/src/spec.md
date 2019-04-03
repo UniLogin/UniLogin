@@ -16,14 +16,14 @@ types
 
 storage
 
-        #mapping.keys[_key]  |-> PrevPurpose => 0
-     #mapping.keys[_key] + 1 |-> PrevKey => asAddress(0, PrevKey)
-                  #keyCount  |-> X => X - 1
-    #mapping.keys[CALLER_ID] |-> CallerKeyPurpose
+        #mapping.keys[_key].purpose  |-> PrevPurpose => 0
+        #mapping.keys[_key].key      |-> PrevKey => asAddress(0, PrevKey)
+                          #keyCount  |-> X => X - 1
+    #mapping.keys[CALLER_ID].purpose |-> CallerKeyPurpose
 
 iff
 
-    (CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID)
+    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
     PrevPurpose == _purpose
     VCallValue == 0
 
@@ -50,13 +50,13 @@ types
 
 storage
 
-        #mapping.keys[_key]  |-> CallerKeyPurpose => 0
-     #mapping.keys[_key] + 1 |-> PrevKey => asAddress(0, PrevKey)
-                  #keyCount  |-> X => X - 1
+    #mapping.keys[_key].purpose  |-> CallerKeyPurpose => 0
+    #mapping.keys[_key].key      |-> PrevKey => asAddress(0, PrevKey)
+                      #keyCount  |-> X => X - 1
 
 iff
 
-    (CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID)
+    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
     CallerKeyPurpose == _purpose
     VCallValue == 0
 
@@ -83,16 +83,16 @@ types
 
 storage
 
-        #mapping.keys[_key]  |-> _ => _purpose
-    #mapping.keys[_key] + 1  |-> PrevKey => asAddress(_key, PrevKey)
-                  #keyCount  |-> Y => Y + 1
-    #mapping.keys[CALLER_ID] |-> Z
+        #mapping.keys[_key].purpose  |-> _ => _purpose
+        #mapping.keys[_key].key      |-> PrevKey => asAddress(_key, PrevKey)
+                          #keyCount  |-> Y => Y + 1
+    #mapping.keys[CALLER_ID].purpose |-> Z
 
 iff
 
     VCallValue == 0
     _key =/= AddressMask(PrevKey)
-    (Z == #managementKey  or  CALLER_ID == ACCT_ID)
+    Z == #managementKey  or  CALLER_ID == ACCT_ID
 
 if
 
@@ -117,15 +117,15 @@ types
 
 storage
 
-        #mapping.keys[_key]  |-> Z => _purpose
-    #mapping.keys[_key] + 1  |-> PrevKey => asAddress(_key, PrevKey)
-                  #keyCount  |-> Y => Y + 1
+    #mapping.keys[_key].purpose  |-> Z => _purpose
+    #mapping.keys[_key].key      |-> PrevKey => asAddress(_key, PrevKey)
+                      #keyCount  |-> Y => Y + 1
 
 iff
 
     VCallValue == 0
     _key =/= AddressMask(PrevKey)
-    (Z == #managementKey  or  CALLER_ID == ACCT_ID)
+    Z == #managementKey  or  CALLER_ID == ACCT_ID
 
 if
 
@@ -145,7 +145,7 @@ interface keyHasPurpose(address _key, uint256 _purpose)
 
 storage
 
-    #mapping.keys[_key]   |-> _purpose
+    #mapping.keys[_key].purpose   |-> _purpose
 
 iff
 
@@ -167,7 +167,7 @@ types
 
 storage
 
-    #mapping.keys[_key]   |-> X
+    #mapping.keys[_key].purpose   |-> X
 
 iff
 
@@ -193,7 +193,7 @@ types
 
 storage
 
-    #mapping.keys[_key]  |-> X
+    #mapping.keys[_key].purpose  |-> X
 
 iff
 
@@ -215,7 +215,7 @@ types
 
 storage
 
-    #mapping.keys[_key] + 1  |-> X
+    #mapping.keys[_key].key  |-> X
 
 iff
 
@@ -237,7 +237,7 @@ interface keyExist(address _key)
 
 storage
 
-    #mapping.keys[_key] + 1  |-> 0
+    #mapping.keys[_key].key  |-> 0
 
 iff
 
