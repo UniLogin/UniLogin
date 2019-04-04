@@ -48,8 +48,8 @@ contract KeyHolder is IKeyHolder {
     }
 
     function addKey(address _key, uint256 _purpose) public onlyManagementKeyOrThisContract returns(bool success) {
+        require(_key != msg.sender);
         require(keys[_key].key != _key, "Key already added");
-
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
         keyCount = keyCount.add(1);
@@ -62,6 +62,7 @@ contract KeyHolder is IKeyHolder {
         require(_keys.length <= MAX_KEYS_PER_ADD); //Simplifies formal verification
         require(_keys.length == _purposes.length, "Unequal argument set lengths");
         for (uint i = 0; i < _keys.length; i++) {
+            require(_keys[i] != msg.sender);
             addKey(_keys[i], _purposes[i]);
         }
         emit MultipleKeysAdded(_keys.length);
