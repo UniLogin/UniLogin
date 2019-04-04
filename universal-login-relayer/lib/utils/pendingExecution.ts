@@ -8,23 +8,38 @@ export default class PendingExecution {
   private wallet: Wallet;
   private walletContract: Contract;
   private collectedSignatures: any;
+  private tx: string;
 
   constructor(walletAddress: string, wallet: Wallet) {
     this.wallet = wallet;
     this.walletContract = new Contract(walletAddress, WalletContract.interface, this.wallet);
     this.collectedSignatures = [];
+    this.tx = '0x0';
+  }
+
+  containSignature(signature: any) {
+    this.collectedSignatures.forEach((sig: any) => {
+      if (signature === sig.signature) {
+        return true;
+      }
+    });
+    return false;
   }
 
   async getStatus() {
     return {
       collectedSignatures: this.collectedSignatures,
       totalCollected: this.collectedSignatures.length,
-      required: await this.walletContract.requiredSignatures()
+      required: await this.walletContract.requiredSignatures(),
+      tx: this.tx
     };
   }
 
   async push(msg: Message) {
-    if (this.collectedSignatures.includes(msg.signature)) {
+    if (this.tx !== '0x0') {
+      throw 'Execution request already processed';
+    }
+    if (this.containSignature(msg.signature)) {
       throw 'signature already collected';
     }
     const key = await this.walletContract.getSigner(msg.from, msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType, msg.signature);
@@ -37,6 +52,10 @@ export default class PendingExecution {
   async canExecute() {
     const requiredSignatures = await this.walletContract.requiredSignatures();
     return this.collectedSignatures.length >= requiredSignatures;
+  }
+
+  confirmExecution(tx: string) {
+    this.tx = tx;
   }
 
   getConcatenatedSignatures() {
