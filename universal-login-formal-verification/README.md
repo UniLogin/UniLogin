@@ -24,6 +24,10 @@ To run the proofs, use the given `Makefile`:
 -   `make proof`: runs all proofs, one after another;
 -   `make clean`: cleans everything.
 
+If you want only to build K specifications (without invoking the proofs), you should run:
+
+- `make build`.
+
 License
 -------
 

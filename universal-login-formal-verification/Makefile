@@ -18,6 +18,42 @@ proof: build
 		if [ $$? -ne 0 ]; then exit 1; fi; \
 	done;
 
+proof-1: build
+	for f in out/specs/KeyHolder_addKey*; \
+	do \
+		klab prove $$f > out.txt; \
+		cat out.txt; \
+		cat out.txt | grep "ACCEPT"; \
+		if [ $$? -ne 0 ]; then exit 1; fi; \
+	done;
+
+proof-2: build
+	for f in out/specs/KeyHolder_removeKey*; \
+	do \
+		klab prove $$f > out.txt; \
+		cat out.txt; \
+		cat out.txt | grep "ACCEPT"; \
+		if [ $$? -ne 0 ]; then exit 1; fi; \
+	done;
+
+proof-3: build
+	for f in out/specs/KeyHolder_key*; \
+	do \
+		klab prove $$f > out.txt; \
+		cat out.txt; \
+		cat out.txt | grep "ACCEPT"; \
+		if [ $$? -ne 0 ]; then exit 1; fi; \
+	done;
+
+proof-4: build
+	for f in out/specs/KeyHolder_get*; \
+	do \
+		klab prove $$f > out.txt; \
+		cat out.txt; \
+		cat out.txt | grep "ACCEPT"; \
+		if [ $$? -ne 0 ]; then exit 1; fi; \
+	done;
+
 build: $(SRC_JSON) $(SRC_SPEC)
 	klab build
 
