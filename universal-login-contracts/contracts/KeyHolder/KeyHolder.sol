@@ -1,8 +1,10 @@
 pragma solidity ^0.5.2;
 import "./IKeyHolder.sol";
-
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract KeyHolder is IKeyHolder {
+    using SafeMath for uint;
+
     mapping (address => Key) public keys;
 
     uint public keyCount;
@@ -48,7 +50,7 @@ contract KeyHolder is IKeyHolder {
 
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
-        keyCount += 1;
+        keyCount = keyCount.add(1);
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
         return true;
@@ -69,7 +71,7 @@ contract KeyHolder is IKeyHolder {
         emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
         delete keys[_key];
-        keyCount -= 1;
+        keyCount = keyCount.sub(1);
 
         return true;
     }
