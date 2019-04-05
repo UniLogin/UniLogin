@@ -1,7 +1,7 @@
-import express from 'express';
+import {Router, Request, Response, NextFunction} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 
-export const create = (walletContractService) => async (req, res, next) => {
+export const create = (walletContractService : any) => async (req : Request, res : Response, next : NextFunction) => {
   const {managementKey, ensName} = req.body;
   try {
     const transaction = await walletContractService.create(managementKey, ensName);
@@ -13,7 +13,7 @@ export const create = (walletContractService) => async (req, res, next) => {
   }
 };
 
-export const execution = (walletContractService) => async (req, res, next) => {
+export const execution = (walletContractService : any) => async (req : Request, res : Response, next : NextFunction) => {
   try {
     const transaction = await walletContractService.executeSigned(req.body);
     res.status(201)
@@ -24,8 +24,8 @@ export const execution = (walletContractService) => async (req, res, next) => {
   }
 };
 
-export default (walletContractService) => {
-  const router = new express.Router();
+export default (walletContractService : any) => {
+  const router = Router();
 
   router.post('/',
     asyncMiddleware(create(walletContractService)));

@@ -5,6 +5,8 @@
   "main": "build/index.js",
   "types": "./types.d.ts",
   "dependencies": {
+    "@types/express": "^4.16.1",
+    "@types/geoip-lite": "^1.1.29",
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -18,8 +20,8 @@
     "knex": "^0.16.3",
     "moment": "^2.22.2",
     "pg": "^7.7.1",
-    "universal-login-contracts": "^0.1.4",
-    "universal-login-commons": "^1.0.0"
+    "universal-login-commons": "^1.0.0",
+    "universal-login-contracts": "^0.1.4"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
@@ -46,12 +48,12 @@
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.0.0",
     "chai-string": "^1.4.0",
-    "sinon": "^6.3.1",
-    "sinon-chai": "^3.2.0",
     "ethereum-waffle": "2.0.5",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "node-fetch": "^2.2.0",
+    "sinon": "^6.3.1",
+    "sinon-chai": "^3.2.0",
     "solium": "^1.1.8",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
