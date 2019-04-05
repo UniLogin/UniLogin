@@ -56,6 +56,9 @@
   font-weight: 500
   font-size: 14px
   color: #0FB989
+
+.backup-btn[disabled]
+  cursor: not-allowed
   
 .backup-btn::before
   content: ''
@@ -95,6 +98,7 @@
 .backup-codes-buttons
   display: flex
   align-items: center
+  margin-bottom: 20px
   
   +media(s, 168px)
     flex-wrap: wrap
@@ -119,16 +123,17 @@
   +media(s)
     margin: 0 0 15px
 
-.backup-codes-loader
-  display: flex
-  justify-content: center
-  align-items: center
-  margin-top: 15px
-  
-.backup-codes-loader .backup-codes-loader-dot
-  background: #282828
-
 .backup-codes-loader-text
-  margin-left: 15px
+  margin-bottom: 25px
   font-size: 14px
   color: #282828
+
+.backup-codes-loader-wrapper
+  padding: 0 6px
+
+.backup-codes-loader-wrapper .backup-codes-loader::before,
+.backup-codes-loader-wrapper .backup-codes-loader::after
+  display: none
+
+.backup-codes-loader .progress-bar-line
+  border-radius: 3px
