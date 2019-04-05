@@ -4,9 +4,9 @@
 
 # Ethereum Universal Login
 
-Universal Login is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
+Universal Login is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify on-boarding of new users.
 
-This repository is a monorepo including sdk, relayer, smart contracts and example. Each public sub-package is independently published to NPM.
+This repository is a monorepo including the sdk, relayer, smart contracts and examples. Each public sub-package is independently published to NPM.
 
 ## Documentation
 
@@ -18,10 +18,10 @@ This is a work in progress. Expect breaking changes. The code has not been audit
 
 ## Technical concepts
 Technically Universal Login utilizes four major concepts:
-- Personal multi-sig wallet - a smart contract used to store personal funds. A user gets his wallet created in a bearly noticeable manner. The user then gets engaged incrementally to add authorization factors and recovery options.
-- Meta-transactions - that give user ability to interact with his wallet from multiple devices easily, without a need to store ether on each of those devices. Meta-transactions, also allow paying for execution with tokens.
-- ENS names - naming your wallet with easy-to-remember human-readable name
-- Universal login - ability to use the wallet as authorization layer to numerous web applications dapps
+- Personal multi-sig wallet - a smart contract used to store personal funds. A user gets his wallet created in a barely noticeable manner. The user then incrementally adds authorization factors and recovery options.
+- Meta-transactions - these give users the ability to interact with their wallets from multiple devices easily, without a need to store ether on each of those devices. Meta-transactions, also allow one to pay for execution with tokens.
+- ENS names - naming your wallet with easy-to-remember human-readable names.
+- Universal login - ability to use the wallet as an authorization layer to numerous web applications/dapps.
 
 ## Structure
 Packages maintained with this monorepo are listed below.
