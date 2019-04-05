@@ -1,22 +1,26 @@
 import React from 'react';
 
 interface NotificationConnectionProps {
-  id: number;
-  device: string;
+  data: {
+    id: number,
+    deviceId: number,
+    device: string,
+  };
+  removeNotification: (id: number) => void;
 }
 
-const NotificationConnection = ({id, device}: NotificationConnectionProps) => {
+const NotificationConnection = ({data, removeNotification}: NotificationConnectionProps) => {
   return(
-    <li className="notifications-item">
-      <div className={`notification-connected ${device}`}>
+    <div className="notifications-item">
+      <div className={`notification-connected ${data.device}`}>
         <h3 className="notification-title">Connected</h3>
-        <p className="notification-connected-id"><span>Devices ID:</span> {id}</p>
+        <p className="notification-connected-id"><span>Devices ID:</span> {data.deviceId}</p>
         <div className="notification-buttons-row">
           <button className="notification-reject-btn">Reject</button>
-          <button className="btn btn-secondary btn-confirm">Confirm</button>
+          <button onClick={() => removeNotification(data.id)} className="btn btn-secondary btn-confirm">Confirm</button>
         </div>
       </div>
-    </li>
+    </div>
   );
 };
 

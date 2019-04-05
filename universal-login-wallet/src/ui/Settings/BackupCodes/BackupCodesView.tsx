@@ -7,10 +7,11 @@ interface BackupCodesViewProps {
   walletContract: string;
   printCodes: () => void;
   removeBackupCodes: () => void;
+  generateBackupCodes: () => void;
   loading: boolean;
 }
 
-const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, loading}: BackupCodesViewProps) => {
+const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, loading, generateBackupCodes}: BackupCodesViewProps) => {
   return (
     <>
       <p className="backup-text">Print these, cut them apart and keep them safe locations apart from each other. Keep them away from computers until you want to use them.</p>
@@ -25,14 +26,14 @@ const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, 
           </div>
         ))}
       </div>
-      {loading && <BackupCodesLoader title="Creating more codes"/>}
       <div className="backup-codes-buttons">
-        <button className="backup-btn backup-create-btn" disabled={loading}>Create more codes</button>
+        <button onClick={generateBackupCodes} className="backup-btn backup-create-btn" disabled={loading}>Create more codes</button>
         <button onClick={printCodes} className="backup-btn backup-print-btn">Print codes</button>
       </div>
+      {loading && <BackupCodesLoader title="Setting backup codes, please wait"/>}
       <div className="backup-buttons-row">
         <button onClick={removeBackupCodes} className="btn btn-secondary">Cancel backup code</button>
-        <button className="btn btn-primary">Set as backup codes</button>
+        <button className="btn btn-primary" disabled={loading}>Set as backup codes</button>
       </div>
     </>
   );

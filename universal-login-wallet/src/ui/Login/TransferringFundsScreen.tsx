@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import Spinner from './Spinner';
+import ProgressBar from '../common/ProgressBar';
 
 
-const Transferring = () => {
+const TransferringFundScreen = () => {
   const [complete] = useState(false);
 
   return (
@@ -12,13 +13,11 @@ const Transferring = () => {
           <Spinner />
         </div>
         <h1 className="transferring-title">Transferring funds</h1>
-        <div className="progress-bar">
-          <div className={`progress-bar-line ${complete ? 'complete' : ''}`} />
-        </div>
+        <ProgressBar dual={!complete}/>
         <p className="transferring-text">2 ETH</p>
       </div>
     </div>
   );
 };
 
-export default Transferring;
+export default TransferringFundScreen;

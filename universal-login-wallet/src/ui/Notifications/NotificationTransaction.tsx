@@ -4,6 +4,7 @@ import infoIcon from './../../assets/icons/info.svg';
 
 interface NotificationTransactionProps {
   data: {
+    id: number,
     amount: number,
     fee: number,
     gasPrice: number,
@@ -12,11 +13,12 @@ interface NotificationTransactionProps {
     currency: string,
     address: string,
   };
+  removeNotification: (id: number) => void;
 }
 
-const NotificationTransaction = ({data}: NotificationTransactionProps) => {
+const NotificationTransaction = ({data, removeNotification}: NotificationTransactionProps) => {
   return (
-    <li className="notifications-item">
+    <div className="notifications-item">
       <div className="notification-transaction">
         <h3 className="notification-title">Transaction</h3>
         <div className="notification-transaction-row">
@@ -48,10 +50,10 @@ const NotificationTransaction = ({data}: NotificationTransactionProps) => {
         </div>
         <div className="notification-buttons-row">
           <button className="notification-reject-btn">Reject</button>
-          <button className="btn btn-secondary btn-confirm">Confirm</button>
+          <button onClick={() => removeNotification(data.id)} className="btn btn-secondary btn-confirm">Confirm</button>
         </div>
       </div>
-    </li>
+    </div>
   );
 };
 
