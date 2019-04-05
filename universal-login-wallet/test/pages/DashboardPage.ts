@@ -1,6 +1,7 @@
 import {ReactWrapper} from 'enzyme';
 import {Contract} from 'ethers';
 import {sleep} from 'universal-login-commons';
+import {waitForUI} from '../utils/utils';
 
 export default class DashboardPage {
   constructor(private wrapper : ReactWrapper) {
@@ -22,7 +23,7 @@ export default class DashboardPage {
     return tokenBalance.toString();
   }
 
-  getWalletBalance() {
-    return this.wrapper.find('span.balance-amount-highlighted').props().children;
+  getWalletBalance() : string {
+    return this.wrapper.find('span.balance-amount-highlighted').text();
   }
 }
