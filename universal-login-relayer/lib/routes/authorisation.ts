@@ -3,23 +3,15 @@ import asyncMiddleware from '../middlewares/async_middleware';
 import geoip from 'geoip-lite';
 import moment from 'moment';
 
-
-declare interface AuthorisationRequest extends Request{
-  useragent: {
-    platform : string;
-    os : string;
-    browser : string;
-  };
-}
-
-export const request = (authorisationService : any) => async (req : AuthorisationRequest, res : Response) => {
+export const request = (authorisationService : any) => async (req : Request, res : Response) => {
   const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
+  const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   const deviceInfo = {
     ipAddress,
-    name: req.useragent.platform,
+    name: platform,
     city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
-    os: req.useragent.os,
-    browser: req.useragent.browser,
+    os,
+    browser,
     time: moment().format('h:mm'),
   };
   const requestAuthorisation = {...req.body, deviceInfo};
