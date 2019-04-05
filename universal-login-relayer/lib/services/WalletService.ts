@@ -1,13 +1,14 @@
-const WalletContract = require('universal-login-contracts/build/Wallet');
-const WalletMasterContract = require('universal-login-contracts/build/WalletMaster');
-const ProxyContract = require('universal-login-contracts/build/Proxy');
-const LegacyWallet = require('universal-login-contracts/build/LegacyWallet');
-import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
+import WalletContract from 'universal-login-contracts/build/Wallet.json';
+import WalletMasterContract from 'universal-login-contracts/build/WalletMaster.json';
+import ProxyContract from 'universal-login-contracts/build/Proxy.json';
 import {utils, ContractFactory, Wallet, providers} from 'ethers';
+import LegacyWallet from 'universal-login-contracts/build/LegacyWallet.json';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';
+import {ContractJSON, Abi} from 'universal-login-commons';
 
 declare interface Message {
   to: string;
@@ -25,14 +26,14 @@ declare interface Message {
 class WalletService {
   private codec: utils.AbiCoder;
   private bytecode: string;
-  private abi: utils.Interface;
-  private contractJSON: ContractFactory;
+  private abi: Abi;
+  private contractJSON: ContractJSON;
   private useInitData: boolean;
 
   constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
     this.abi = this.contractJSON.interface;
-    this.bytecode = `0x${this.contractJSON.bytecode}`;
+    this.bytecode = `0x${this.contractJSON.evm.bytecode.object}`;
     this.codec = new utils.AbiCoder();
     this.useInitData = !legacyENS;
   }
