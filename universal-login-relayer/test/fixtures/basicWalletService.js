@@ -7,7 +7,7 @@ import MockToken from 'universal-login-contracts/build/MockToken';
 import MockContract from 'universal-login-contracts/build/MockContract';
 import {deployContract, getWallets} from 'ethereum-waffle';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY} from 'universal-login-contracts';
 import WalletContract from 'universal-login-contracts/build/Wallet';
 import {waitForContractDeploy} from 'universal-login-commons';
@@ -22,14 +22,17 @@ export default async function basicWalletService(provider, [wallet]) {
   const walletContractService = new WalletService(wallet, null, ensService, authorisationService, hooks, provider, {legacyENS: true});
   const callback = sinon.spy();
   hooks.addListener('created', callback);
+  const actionWallet = Wallet.createRandom();
+  const actionKey = actionWallet.privateKey;
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
   const transaction = await walletContractService.create(wallet.address, 'alex.mylogin.eth');
   const walletContract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
+  await walletContract.addKey(actionWallet.address, ACTION_KEY);
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   const [, otherWallet] = await getWallets(provider);
-  return {wallet, ensService, provider, walletContractService, callback, mockToken, mockContract, authorisationService, walletContract, otherWallet};
+  return {wallet, actionKey, ensService, provider, walletContractService, callback, mockToken, mockContract, authorisationService, walletContract, otherWallet};
 }
 
 export const transferMessage = {

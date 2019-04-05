@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
+import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from 'universal-login-contracts';
 import basicWalletService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
 import defaultDeviceInfo from '../../config/defaults';
 
@@ -21,9 +21,10 @@ describe('Relayer - WalletService', async () => {
   let walletContract;
   let msg;
   let otherWallet;
+  let actionKey;
 
   beforeEach(async () => {
-    ({wallet, provider, walletContractService, callback, mockToken, authorisationService, walletContract, otherWallet} = await loadFixture(basicWalletService));
+    ({wallet, actionKey, provider, walletContractService, callback, mockToken, authorisationService, walletContract, otherWallet} = await loadFixture(basicWalletService));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
   });
 
@@ -105,6 +106,86 @@ describe('Relayer - WalletService', async () => {
         await walletContractService.executeSigned({...message, signature});
         expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
       });
+    });
+  });
+
+  describe('Execute signed with multi-sig', async () => {
+
+    beforeEach(async () => {
+      await walletContract.setRequiredSignatures(2);
+    });
+
+    it('Error when not enough tokens', async () => {
+      const message = {...msg, gasLimit: utils.parseEther('2.0')};
+      const signature0 = await calculateMessageSignature(wallet.privateKey, message);
+      const signature1 = await calculateMessageSignature(actionKey, message);
+      await walletContractService.executeSigned({...message, signature: signature0});
+      await expect(walletContractService.executeSigned({...message, signature: signature1})).to.be.eventually.rejectedWith('Not enough tokens');
+    });
+
+    describe('Transfer', async () => {
+      it('successful execution of transfer', async () => {
+        const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
+        const signature0 = await calculateMessageSignature(wallet.privateKey, msg);
+        const signature1 = await calculateMessageSignature(actionKey, msg);
+        await walletContractService.executeSigned({...msg, signature: signature0});
+        await walletContractService.executeSigned({...msg, signature: signature1});
+        expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
+      });
+    });
+
+    describe('Add Key', async () => {
+      it('execute add key', async () => {
+        msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
+        const signature0 = await calculateMessageSignature(wallet.privateKey, msg);
+        const signature1 = await calculateMessageSignature(actionKey, msg);
+        await walletContractService.executeSigned({...msg, signature: signature0});
+        await walletContractService.executeSigned({...msg, signature: signature1});
+        expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
+      });
+
+      describe('Query transaction status', async () => {
+        it('should get pending execution status', async () => {
+          const signature0 = await calculateMessageSignature(wallet.privateKey, msg);
+          const signature1 = await calculateMessageSignature(actionKey, msg);
+          const messageHash = await calculateMessageHash(msg);
+          await walletContractService.executeSigned({...msg, signature: signature0});
+          const transaction = await walletContractService.executeSigned({...msg, signature: signature1});
+          const status = await walletContractService.getStatus(messageHash);
+          const [sig0, sig1] = status.collectedSignatures;
+          expect(sig0.signature).to.eq(signature0);
+          expect(sig1.signature).to.eq(signature1);
+          expect(status.tx).to.eq(transaction.hash);
+        });
+
+        it('should get pending execution status', async () => {
+          await expect(walletContractService.getStatus('0x0')).to.be.rejectedWith('Unable to find execution with given message hash');
+        });
+      });
+    });
+
+    describe('Remove key ', async () => {
+      beforeEach(async () => {
+        const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
+        const signature0 = await calculateMessageSignature(wallet.privateKey, message);
+        const signature1 = await calculateMessageSignature(actionKey, message);
+        await walletContractService.executeSigned({...message, signature: signature0});
+        await walletContractService.executeSigned({...message, signature: signature1});
+      });
+
+      it('should remove key', async () => {
+        expect((await walletContract.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY);
+        const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
+        const signature0 = await calculateMessageSignature(wallet.privateKey, message);
+        const signature1 = await calculateMessageSignature(actionKey, message);
+        await walletContractService.executeSigned({...message, signature: signature0});
+        await walletContractService.executeSigned({...message, signature: signature1});
+        expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
+      });
+    });
+
+    afterEach(async () => {
+      walletContractService.pendingExecutions = {};
     });
   });
 

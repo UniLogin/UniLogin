@@ -48,17 +48,19 @@ class WalletService {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await calculateMessageHash(message);
-      if (pendingExecutions[hash] !== undefined) {
-        await pendingExecutions[hash].push(message.signature);
-        if (pendingExecutions[hash].canExecute()) {
-          const finalMessage = {...message, signature: pendingExecutions[hash].getConcatenatedSignatures()};
-          return this.execute(finalMessage);
+      if (this.pendingExecutions[hash] !== undefined) {
+        await this.pendingExecutions[hash].push(message);
+        if (this.pendingExecutions[hash].canExecute()) {
+          const finalMessage = {...message, signature: this.pendingExecutions[hash].getConcatenatedSignatures()};
+          const transaction = await this.execute(finalMessage);
+          await this.pendingExecutions[hash].confirmExecution(transaction.hash);
+          return transaction;
         }
-        return JSON.stringify(pendingExecutions[hash].getStatus());
+        return JSON.stringify(this.pendingExecutions[hash].getStatus());
       } else {
-        pendingExecutions[hash] = new PendingExecution(message.from, this.wallet);
-        await pendingExecutions[hash].push(message.signature);
-        return JSON.stringify(await pendingExecutions[hash].getStatus());
+        this.pendingExecutions[hash] = new PendingExecution(message.from, this.wallet);
+        await this.pendingExecutions[hash].push(message);
+        return JSON.stringify(await this.pendingExecutions[hash].getStatus());
       }
     } else {
       return this.execute(message);
@@ -66,10 +68,10 @@ class WalletService {
   }
 
   async getStatus(hash) {
-    if (!pendingExecutions[hash]) {
-      throw new Error('Unable to find execution with given hash');
+    if (!this.pendingExecutions[hash]) {
+      throw new Error('Unable to find execution with given message hash');
     }
-    return pendingExecutions[hash].getStatus();
+    return this.pendingExecutions[hash].getStatus();
   }
 
   async execute(message) {
