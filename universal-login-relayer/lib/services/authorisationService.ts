@@ -1,23 +1,29 @@
+import Knex from 'knex';
+
+declare interface Request {
+  walletContractAddress: string;
+  key: string;
+  deviceInfo: object;
+}
 class AuthorisationService {
-  constructor(database) {
-    this.pendingAuthorisations = {};
+  constructor(private database : Knex) {
     this.database = database;
   }
 
-  async addRequest(request) {
+  async addRequest(request: Request) {
     const {walletContractAddress, key, deviceInfo} = request;
     return this.database.insert({walletContractAddress, key: key.toLowerCase(), deviceInfo})
       .into('authorisations')
       .returning('id');
   }
 
-  getPendingAuthorisations(walletContractAddress) {
+  getPendingAuthorisations(walletContractAddress: string) {
     return this.database('authorisations')
       .where({walletContractAddress})
       .select();
   }
 
-  async removeRequest(walletContractAddress, key) {
+  async removeRequest(walletContractAddress: string, key: string) {
     await this.database('authorisations')
       .where('walletContractAddress', walletContractAddress)
       .where('key', key)
