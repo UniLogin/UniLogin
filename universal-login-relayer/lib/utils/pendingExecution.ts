@@ -18,11 +18,11 @@ export default class PendingExecution {
   }
 
   containSignature(signature: any) {
-    this.collectedSignatures.forEach((sig: any) => {
-      if (signature === sig.signature) {
+    for (let i = this.collectedSignatures.length - 1; i >= 0; i--) {
+      if (this.collectedSignatures[i].signature === signature) {
         return true;
       }
-    });
+    }
     return false;
   }
 
@@ -40,11 +40,12 @@ export default class PendingExecution {
       throw 'Execution request already processed';
     }
     if (this.containSignature(msg.signature)) {
-      throw 'signature already collected';
+      throw 'Signature already collected';
     }
     const key = await this.walletContract.getSigner(msg.from, msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType, msg.signature);
-    if (await this.walletContract.getKeyPurpose(key) === 0) {
-      throw 'invalid signature';
+    const keyPurpose = await this.walletContract.getKeyPurpose(key);
+    if (keyPurpose.eq(0)) {
+      throw 'Invalid signature';
     }
     this.collectedSignatures.push({signature: msg.signature, key});
   }
@@ -54,7 +55,15 @@ export default class PendingExecution {
     return this.collectedSignatures.length >= requiredSignatures;
   }
 
-  confirmExecution(tx: string) {
+  async confirmExecution(tx: string) {
+    const requiredSignatures = await this.walletContract.requiredSignatures();
+    if (requiredSignatures > this.collectedSignatures.length) {
+      throw 'Not enough signatures';
+    } else if (this.tx !== '0x0') {
+      throw 'Transaction has already been confirmed';
+    } else if (tx.length !== 66) {
+      throw 'Invalid Tx';
+    }
     this.tx = tx;
   }
 
