@@ -1,4 +1,3 @@
-
 import {Router, Request, Response, NextFunction} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 
@@ -25,8 +24,6 @@ export const execution = (walletContractService : any) => async (req : Request, 
   }
 };
 
-
-
 export const getStatus = (walletContractService: any) => async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {hash} = req.params;
@@ -39,7 +36,6 @@ export const getStatus = (walletContractService: any) => async (req: Request, re
   }
 };
 
-
 export default (walletContractService : any) => {
   const router = Router();
 
@@ -48,7 +44,7 @@ export default (walletContractService : any) => {
 
   router.post('/execution',
     asyncMiddleware(execution(walletContractService)));
-  
+
   router.get('/execution/:hash',
     asyncMiddleware(getStatus(walletContractService)));
 
