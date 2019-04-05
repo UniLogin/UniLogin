@@ -1,6 +1,7 @@
 pragma solidity ^0.5.2;
+
 import "./IKeyHolder.sol";
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "./SafeMath.sol";
 
 contract KeyHolder is IKeyHolder {
     using SafeMath for uint;
@@ -48,7 +49,7 @@ contract KeyHolder is IKeyHolder {
     }
 
     function addKey(address _key, uint256 _purpose) public onlyManagementKeyOrThisContract returns(bool success) {
-        require(_key != msg.sender);
+        require(_key != msg.sender); //Simplifies formal verification
         require(keys[_key].key != _key, "Key already added");
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;

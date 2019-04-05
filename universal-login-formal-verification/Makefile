@@ -5,7 +5,8 @@ SRC_JSON = dapp/out/KeyHolder.sol.json
 SOLC = ethereum/solc:0.5.2
 
 SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder/KeyHolder.sol \
-		  ../universal-login-contracts/contracts/KeyHolder/IKeyHolder.sol
+		  ../universal-login-contracts/contracts/KeyHolder/IKeyHolder.sol \
+		  ../universal-login-contracts/contracts/SafeMath.sol \
 
 MAIN_SOL = KeyHolder.sol
 
@@ -64,6 +65,7 @@ $(SRC_JSON): $(SRC_SOL)
 	docker create -v /src --name comp $(SOLC) 
 	docker cp dapp/src/KeyHolder.sol comp:/src
 	docker cp dapp/src/IKeyHolder.sol comp:/src
+	docker cp dapp/src/SafeMath.sol comp:/src
 	docker run --volumes-from comp $(SOLC) \
 	--combined-json=abi,bin,bin-runtime,srcmap,srcmap-runtime,ast \
 	/src/$(MAIN_SOL) > $(SRC_JSON)

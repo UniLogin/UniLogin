@@ -124,12 +124,14 @@ jobs:
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof
+          no_output_timeout: 50m
 
   run_klab_1:
     docker:
@@ -148,12 +150,14 @@ jobs:
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-1
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-1
+          no_output_timeout: 50m
 
   run_klab_2:
     docker:
@@ -172,12 +176,14 @@ jobs:
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-2
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-2
+          no_output_timeout: 50m
 
   run_klab_3:
     docker:
@@ -196,12 +202,14 @@ jobs:
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-3
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-3
+          no_output_timeout: 50m
 
   run_klab_4:
     docker:
@@ -220,12 +228,14 @@ jobs:
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-4
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-4
+          no_output_timeout: 50m
 
 workflows:
   version: 2
