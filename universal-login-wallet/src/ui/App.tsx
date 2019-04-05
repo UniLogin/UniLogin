@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import HomeScreen from './Home/HomeScreen';
-import ProgressScreen from './Login/ProgressScreen';
+import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
 import Login from './Login/Login';
 import {PrivateRoute} from './PrivateRoute';
@@ -48,7 +48,7 @@ const App = () => {
           authorized={authorized}
           render={
             () =>
-            <ProgressScreen/>
+            <TransferringFundsScreen/>
           }
         />
         <PrivateRoute

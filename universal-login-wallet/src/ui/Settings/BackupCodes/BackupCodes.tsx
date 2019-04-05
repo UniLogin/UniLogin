@@ -12,7 +12,12 @@ const BackupCodes = () => {
 
   const generateBackupCodes = () => {
     const backupCodes = ['wokzai-tarwib-lezvie-lawgod', 'kenmil-syonuh-jujaro-zansar'];
-    setCodes(backupCodes);
+    setLoading(true);
+
+    setTimeout(() => {
+      setCodes(backupCodes);
+      setLoading(false);
+    }, 2000);
   };
 
   const removeBackupCodes = () => {
@@ -24,7 +29,14 @@ const BackupCodes = () => {
 
   const renderContent = () => {
     if (loading && !codes.length) {
-      return <BackupCodesLoader title="Generating new codes"/>;
+      return (
+        <>
+          <BackupCodesLoader title="Generating backup codes, please wait"/>
+          <div className="backup-buttons-row">
+            <button className="btn btn-secondary">Cancel backup code</button>
+          </div>
+        </>
+      );
     } else if (codes.length) {
       return (
               <BackupCodesView
@@ -32,6 +44,7 @@ const BackupCodes = () => {
                 printCodes={window.print}
                 walletContract={walletContract}
                 removeBackupCodes={removeBackupCodes}
+                generateBackupCodes={generateBackupCodes}
                 loading={loading}
               />
             );

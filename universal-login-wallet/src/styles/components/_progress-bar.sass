@@ -8,19 +8,19 @@
   position: absolute
   top: 0
   left: 0
-  width: 50%
+  width: 100%
   height: 100%
   background-image: linear-gradient(90deg, #F76C1C 0%, #F9B047 10%, #FAD55F 21%, #275BB7 34%, #579BEF 47%, #19AE5F 64%, #59F1B0 77%, #D05DF7 87.5%, #F76C1C 100%)
   animation: gradient-animation 4s linear infinite
   background-size: 200% 200%
   animation-direction: reverse
 
-.progress-bar-line.complete
-  width: 100%
+.progress-bar-line.dual
+  width: 50%
   
 .progress-bar::before,
 .progress-bar::after,
-.progress-bar-line::after
+.progress-bar-line.dual::after
   content: ''
   position: absolute
   top: 50%
@@ -39,9 +39,6 @@
 .progress-bar-line::after
   right: 0
   transform: translate(50%, -50%)
-
-.progress-bar-line.complete::after
-  display: none
   
 @keyframes gradient-animation 
 	0%
