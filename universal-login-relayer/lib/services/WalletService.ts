@@ -1,28 +1,42 @@
-import ProxyContract from 'universal-login-contracts/build/Proxy';
-import WalletContract from 'universal-login-contracts/build/Wallet';
-import WalletMasterContract from 'universal-login-contracts/build/WalletMaster';
-import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
+const WalletContract = require('universal-login-contracts/build/Wallet');
+const WalletMasterContract = require('universal-login-contracts/build/WalletMaster');
+const ProxyContract = require('universal-login-contracts/build/Proxy');
+const LegacyWallet = require('universal-login-contracts/build/LegacyWallet');
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
-import {utils, Contract, ContractFactory} from 'ethers';
+import {utils, ContractFactory, Wallet, providers} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
+import ENSService from './ensService';
+import AuthorisationService from './authorisationService';
 
+declare interface Message {
+  to: string;
+  from: string;
+  value: string;
+  data: string;
+  nonce: number;
+  gasPrice: string;
+  gasToken: string;
+  gasLimit: string;
+  operationType: number;
+  signature: string;
+}
 
 class WalletService {
-  constructor(wallet, walletMasterAddress, ensService, authorisationService, hooks, provider, legacyENS) {
-    this.wallet = wallet;
+  private codec: utils.AbiCoder;
+  private bytecode: string;
+  private abi: utils.Interface;
+  private contractJSON: ContractFactory;
+  private useInitData: boolean;
+
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: any, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
     this.abi = this.contractJSON.interface;
     this.bytecode = `0x${this.contractJSON.bytecode}`;
-    this.walletMasterAddress = walletMasterAddress;
-    this.ensService = ensService;
-    this.authorisationService = authorisationService;
     this.codec = new utils.AbiCoder();
-    this.hooks = hooks;
-    this.provider = provider;
     this.useInitData = !legacyENS;
   }
 
-  async create(key, ensName, overrideOptions = {}) {
+  async create(key: string, ensName: string, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
       let args = [key, ...ensArgs];
@@ -42,7 +56,7 @@ class WalletService {
     throw new Error('domain not existing / not universal ID compatible');
   }
 
-  async executeSigned(message) {
+  async executeSigned(message: Message) {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
       const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
