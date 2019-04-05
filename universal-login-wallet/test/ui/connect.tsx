@@ -9,7 +9,9 @@ import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
 import {getWallets} from 'ethereum-waffle';
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+
+chai.use(require('chai-string'));
 
 
 describe('UI: Connect', () => {
@@ -39,8 +41,7 @@ describe('UI: Connect', () => {
     const publicKey = (new Wallet(services.walletService.userWallet!.privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
     await appPage.login().waitForHomeView('');
-    const balance = appPage.dashboard().getWalletBalance();
-    expect(balance).to.eq('1.999910289');
+    expect(appPage.dashboard().getWalletBalance()).to.startWith('1.99');
   });
 
   after(async () => {

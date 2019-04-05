@@ -1,8 +1,12 @@
 pragma solidity ^0.5.2;
 import "./IKeyHolder.sol";
-
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract KeyHolder is IKeyHolder {
+    using SafeMath for uint;
+
+    uint constant MAX_KEYS_PER_ADD = 5;
+
     mapping (address => Key) public keys;
 
     uint public keyCount;
@@ -44,19 +48,21 @@ contract KeyHolder is IKeyHolder {
     }
 
     function addKey(address _key, uint256 _purpose) public onlyManagementKeyOrThisContract returns(bool success) {
+        require(_key != msg.sender);
         require(keys[_key].key != _key, "Key already added");
-
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
-        keyCount += 1;
+        keyCount = keyCount.add(1);
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
         return true;
     }
 
     function addKeys(address[] memory _keys, uint256[] memory _purposes) public onlyManagementKeyOrThisContract returns(bool success) {
+        require(_keys.length <= MAX_KEYS_PER_ADD); //Simplifies formal verification
         require(_keys.length == _purposes.length, "Unequal argument set lengths");
         for (uint i = 0; i < _keys.length; i++) {
+            require(_keys[i] != msg.sender);
             addKey(_keys[i], _purposes[i]);
         }
         emit MultipleKeysAdded(_keys.length);
@@ -64,12 +70,13 @@ contract KeyHolder is IKeyHolder {
     }
 
     function removeKey(address _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
+        require(_key != msg.sender); //Simplifies formal verification
         require(keys[_key].purpose == _purpose, "Invalid key");
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
         delete keys[_key];
-        keyCount -= 1;
+        keyCount = keyCount.sub(1);
 
         return true;
     }
