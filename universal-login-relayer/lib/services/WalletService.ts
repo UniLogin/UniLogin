@@ -7,6 +7,7 @@ import {utils, ContractFactory, Wallet, providers} from 'ethers';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
+import {EventEmitter} from 'fbemitter';
 
 declare interface Message {
   to: string;
@@ -28,7 +29,7 @@ class WalletService {
   private contractJSON: ContractFactory;
   private useInitData: boolean;
 
-  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: any, private provider: providers.Provider, private legacyENS : boolean) {
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
     this.abi = this.contractJSON.interface;
     this.bytecode = `0x${this.contractJSON.bytecode}`;
