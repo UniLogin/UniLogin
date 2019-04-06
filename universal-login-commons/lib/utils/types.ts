@@ -18,4 +18,4 @@ export interface Message {
   value?: utils.BigNumberish;
   chainId?: number;
   signature?: string;
-};
+}
