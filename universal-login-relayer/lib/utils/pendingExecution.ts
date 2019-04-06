@@ -17,14 +17,10 @@ export default class PendingExecution {
     this.tx = '0x0';
   }
 
-  containSignature(signature: any) {
-    for (let i = this.collectedSignatures.length - 1; i >= 0; i--) {
-      if (this.collectedSignatures[i].signature === signature) {
-        return true;
-      }
-    }
-    return false;
-  }
+  containSignature = (signature: any) =>
+    this.collectedSignatures
+      .filter((message: any) => message.signature === signature)
+      .length > 0
 
   async getStatus() {
     return {
