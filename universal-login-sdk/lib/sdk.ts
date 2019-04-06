@@ -1,25 +1,12 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from 'universal-login-contracts/build/Wallet.json';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from 'universal-login-contracts';
-import {waitToBeMined, waitForContractDeploy} from 'universal-login-commons';
+import {waitToBeMined, waitForContractDeploy, Message} from 'universal-login-commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
-
-export interface Message {
-  gasToken?: string;
-  operationType?: number;
-  to?: string;
-  from?: string;
-  nonce?: number | string;
-  gasLimit?: utils.BigNumberish;
-  gasPrice?: utils.BigNumberish;
-  data?: utils.Arrayish;
-  value?: utils.BigNumberish;
-  chainId?: number;
-}
 
 class UniversalLoginSDK {
   provider: providers.Provider;
