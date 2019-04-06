@@ -8,20 +8,8 @@ import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';
-import {ContractJSON, Abi} from 'universal-login-commons';
-
-declare interface Message {
-  to: string;
-  from: string;
-  value: string;
-  data: string;
-  nonce: number;
-  gasPrice: string;
-  gasToken: string;
-  gasLimit: string;
-  operationType: number;
-  signature: string;
-}
+import {ContractJSON, Abi, Message} from 'universal-login-commons';
+import {BigNumberish} from 'ethers/utils';
 
 class WalletService {
   private codec: utils.AbiCoder;
@@ -68,10 +56,10 @@ class WalletService {
         data,
       };
       const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
-      if (utils.bigNumberify(message.gasLimit).gte(estimateGas)) {
+      if (utils.bigNumberify(message.gasLimit as BigNumberish).gte(estimateGas)) {
         if (message.to === message.from && isAddKeyCall(message.data)) {
           const key = getKeyFromData(message.data);
-          await this.authorisationService.removeRequest(message.from, key);
+          await this.authorisationService.removeRequest(message.from as string, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('added', sentTransaction);
           return sentTransaction;
