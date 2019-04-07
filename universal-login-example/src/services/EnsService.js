@@ -1,6 +1,6 @@
 import {utils, Contract} from 'ethers';
 import PublicResolver from '../../abi/PublicResolver';
-import ENS from 'universal-login-contracts/build/ENS';
+import ENS from '@universal-login/contracts/build/ENS';
 
 const {namehash} = utils;
 

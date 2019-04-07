@@ -1,5 +1,5 @@
 {
-  "name": "universal-login-relayer",
+  "name": "@universal-login/relayer",
   "version": "0.1.11",
   "license": "MIT",
   "main": "build/index.js",
@@ -20,8 +20,8 @@
     "knex": "^0.16.3",
     "moment": "^2.22.2",
     "pg": "^7.7.1",
-    "universal-login-commons": "^1.0.0",
-    "universal-login-contracts": "^0.1.4"
+    "@universal-login/contracts": "^0.1.4",
+    "@universal-login/commons": "^1.0.0"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",

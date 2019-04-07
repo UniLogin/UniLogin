@@ -1,5 +1,5 @@
 require('dotenv').config();
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 module.exports = Object.freeze({
   development: {
@@ -15,7 +15,7 @@ module.exports = Object.freeze({
     jsonRpcUrl: "http://localhost:8545",
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS, ETHER_NATIVE_TOKEN.address]
   },
-  
+
   production: {
     domains: ["my-id.test"],
     relayerUrl: "https://relayer.universallogin.io",

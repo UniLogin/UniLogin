@@ -1,5 +1,5 @@
-import UniversalLoginSDK from 'universal-login-sdk';
-import {Procedure} from 'universal-login-commons';
+import UniversalLoginSDK from '@universal-login/sdk';
+import {Procedure} from '@universal-login/commons';
 import {Wallet} from 'ethers';
 
 const connectToWallet = (sdk: UniversalLoginSDK, walletService: any) => async (name: string, callback: Procedure) => {

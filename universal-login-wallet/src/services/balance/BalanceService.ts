@@ -1,5 +1,5 @@
 import {EtherBalanceService} from './EtherBalanceService';
-import {sleep} from 'universal-login-commons';
+import {sleep} from '@universal-login/commons';
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
 

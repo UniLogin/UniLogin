@@ -1,6 +1,7 @@
 import {utils, Contract, providers} from 'ethers';
-const ENS = require('universal-login-contracts/build/ENS');
-import {parseDomain} from 'universal-login-commons';
+import ENS from '@universal-login/contracts/build/ENS.json';
+import {parseDomain} from '@universal-login/commons';
+
 
 interface DomainInfo {
   resolverAddress? : string;

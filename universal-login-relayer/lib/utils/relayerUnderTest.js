@@ -1,9 +1,9 @@
 import Relayer from '../relayer';
 import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
-import WalletMaster from 'universal-login-contracts/build/WalletMaster';
+import WalletMaster from '@universal-login/contracts/build/WalletMaster';
 import ENSBuilder from 'ens-builder';
 import {withENS} from './utils';
-import {parseDomain} from 'universal-login-commons';
+import {parseDomain} from '@universal-login/commons';
 
 class RelayerUnderTest extends Relayer {
   url() {

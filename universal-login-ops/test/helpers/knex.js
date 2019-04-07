@@ -2,7 +2,7 @@ const knex = require('knex');
 const {join, dirname} = require('path');
 
 function getMigrationPath() {
-  const packagePath = require.resolve('universal-login-relayer/package.json');
+  const packagePath = require.resolve('@universal-login/relayer/package.json');
   return join(dirname(packagePath), 'migrations');
 }
 

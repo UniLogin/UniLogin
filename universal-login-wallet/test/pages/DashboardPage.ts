@@ -1,6 +1,6 @@
 import {ReactWrapper} from 'enzyme';
 import {Contract} from 'ethers';
-import {sleep} from 'universal-login-commons';
+import {sleep} from '@universal-login/commons';
 import {waitForUI} from '../utils/utils';
 
 export default class DashboardPage {

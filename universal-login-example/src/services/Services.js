@@ -1,5 +1,5 @@
 import {EventEmitter} from 'fbemitter';
-import UniversalLoginSDK from 'universal-login-sdk';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {providers} from 'ethers';
 import servicesConfig from '../../config/config';
 import WalletService from './WalletService';

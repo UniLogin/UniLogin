@@ -1,6 +1,6 @@
 import {createServices} from '../../src/services/Services';
 import {providers} from 'ethers';
-import {testJsonRpcUrl} from 'universal-login-commons';
+import {testJsonRpcUrl} from '@universal-login/commons';
 
 class ServicesUnderTest {
   static async createPreconfigured(provider: providers.Provider, relayer: any, tokens: string[]) {

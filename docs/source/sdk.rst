@@ -22,7 +22,7 @@ Creating SDK
   Example:
     ::
 
-      import UniversalLoginSDK from 'universal-login-sdk';
+      import UniversalLoginSDK from '@universal-login/sdk';
 
       const messageOptions = {
         gasPrice: 1500000000,

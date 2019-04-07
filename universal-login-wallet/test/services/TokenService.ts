@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import TokenService from '../../src/services/TokenService';
-import {MockToken} from 'universal-login-commons/test';
+import {MockToken} from '@universal-login/commons/test';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {Contract} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 describe('TokenService', () => {
   let mockToken: Contract;

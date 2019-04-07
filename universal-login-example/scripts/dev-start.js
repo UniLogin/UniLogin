@@ -1,6 +1,6 @@
 import {deployContract} from 'ethereum-waffle';
 import Clicker from '../build/Clicker';
-import {startDevelopment, createEnv, spawnProcess} from 'universal-login-ops';
+import {startDevelopment, createEnv, spawnProcess} from '@universal-login/ops';
 
 async function deployClickerContract(deployWallet) {
   const clickerContract = await deployContract(deployWallet, Clicker);

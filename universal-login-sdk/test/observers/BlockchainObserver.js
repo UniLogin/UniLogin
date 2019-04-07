@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
 import MESSAGE_DEFAULTS from '../../lib/config';
-import {MANAGEMENT_KEY} from 'universal-login-contracts';
+import {MANAGEMENT_KEY} from '@universal-login/contracts';
 import basicSDK from '../fixtures/basicSDK';
 
 chai.use(solidity);

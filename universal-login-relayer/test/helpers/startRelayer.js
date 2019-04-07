@@ -1,5 +1,5 @@
 import {deployContract} from 'ethereum-waffle';
-import WalletMaster from 'universal-login-contracts/build/WalletMaster';
+import WalletMaster from '@universal-login/contracts/build/WalletMaster';
 import Token from '../../lib/dev/Token.json';
 import ENSBuilder from 'ens-builder';
 
