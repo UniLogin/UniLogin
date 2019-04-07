@@ -12,5 +12,6 @@ const config =  Object.freeze({
   ensRegistrars: [process.env.ENS_DOMAIN_1, process.env.ENS_DOMAIN_2, process.env.ENS_DOMAIN_3],
 });
 
+export default config;
 export type Config = typeof config;
 export type ChainSpecConfig = Config['chainSpec'];
