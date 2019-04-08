@@ -1,5 +1,5 @@
-const {startDevelopment, createEnv, spawnProcess} = require('universal-login-ops');
-import Relayer from 'universal-login-relayer';
+const {startDevelopment, createEnv, spawnProcess} = require('@universal-login/ops');
+import Relayer from '@universal-login/relayer';
 
 function runWebServer(vars: any) {
   const env = {...process.env, ...vars};

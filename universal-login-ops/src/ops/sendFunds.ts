@@ -1,5 +1,5 @@
 import {providers, utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {connect} from '../cli/connectAndExecute';
 
 

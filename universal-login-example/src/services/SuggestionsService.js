@@ -1,4 +1,4 @@
-import {debounce} from 'universal-login-commons';
+import {debounce} from '@universal-login/commons';
 
 export default class SuggestionsService {
   constructor(walletSelectionService, {debounceTime} = {debounceTime: 1000}) {

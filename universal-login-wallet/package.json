@@ -1,6 +1,6 @@
 {
-  "name": "universal-login-wallet",
-  "version": "0.1.0",
+  "name": "@universal-login/wallet",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development",
@@ -21,8 +21,8 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-transition-group": "^2.8.0",
-    "universal-login-commons": "^1.0.0",
-    "universal-login-sdk": "^0.1.11"
+    "@universal-login/commons": "^0.2.0",
+    "@universal-login/sdk": "^0.2.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

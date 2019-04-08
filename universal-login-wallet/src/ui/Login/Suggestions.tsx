@@ -1,5 +1,5 @@
 import React from 'react';
-import {getSuggestionId} from 'universal-login-commons';
+import {getSuggestionId} from '@universal-login/commons';
 
 interface SuggestionsProps {
   connections: string[];

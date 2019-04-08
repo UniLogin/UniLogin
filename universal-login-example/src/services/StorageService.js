@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 
-const WALLET_CONTRACT_KEY = 'universal-login-wallet-info';
+const WALLET_CONTRACT_KEY = '@universal-login/wallet-info';
 
 class StorageService {
   constructor(driver) {

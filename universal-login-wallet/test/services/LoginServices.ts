@@ -3,11 +3,11 @@ import sinon from 'sinon';
 import CreationSerivice from '../../src/services/Creation';
 import ConnectionToWalletService from '../../src/services/ConnectToWallet';
 import WalletService from '../../src/services/WalletService';
-import {setupSdk} from 'universal-login-sdk/test';
-import UniversalLoginSDK, {MANAGEMENT_KEY} from 'universal-login-sdk';
+import {setupSdk} from '@universal-login/sdk/test';
+import UniversalLoginSDK, {MANAGEMENT_KEY} from '@universal-login/sdk';
 import {Wallet, providers, utils} from 'ethers';
 import {getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, waitUntil} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN, waitUntil} from '@universal-login/commons';
 
 
 describe('Login', () => {

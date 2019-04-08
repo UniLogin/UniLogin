@@ -1,4 +1,4 @@
-import WalletMaster from 'universal-login-contracts/build/WalletMaster';
+import WalletMaster from '@universal-login/contracts/build/WalletMaster';
 import {deployContract} from 'ethereum-waffle';
 
 export default async function deployWalletMaster(deployWallet) {

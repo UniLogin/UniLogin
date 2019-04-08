@@ -1,16 +1,16 @@
-import WalletContract from 'universal-login-contracts/build/Wallet';
-import PendingExecution from '../utils/pendingExecution';
-import WalletMasterContract from 'universal-login-contracts/build/WalletMaster.json';
-import ProxyContract from 'universal-login-contracts/build/Proxy.json';
 import {utils, ContractFactory, Wallet, providers} from 'ethers';
-import LegacyWallet from 'universal-login-contracts/build/LegacyWallet.json';
-import {calculateMessageHash} from 'universal-login-contracts';
+import WalletContract from '@universal-login-contracts/build/Wallet';
+import WalletMasterContract from '@universal-login-contracts/build/WalletMaster.json';
+import ProxyContract from '@universal-login-contracts/build/Proxy.json';
+import LegacyWallet from '@universal-login-contracts/build/LegacyWallet.json';
+import {calculateMessageHash} from '@universal-login-contracts';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures} from '../utils/utils';
+import PendingExecution from '../utils/pendingExecution';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';
-import {ContractJSON, Abi, Message} from 'universal-login-commons';
+import {ContractJSON, Abi, Message} from '@universal-login/commons';
 import {BigNumberish} from 'ethers/utils';
 
 class WalletService {

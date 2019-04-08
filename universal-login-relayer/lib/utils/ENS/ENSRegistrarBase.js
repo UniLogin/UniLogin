@@ -1,4 +1,4 @@
-import ENS from 'universal-login-contracts/build/ENS';
+import ENS from '@universal-login/contracts/build/ENS';
 import {providers, Contract, Wallet, utils} from 'ethers';
 
 class ENSRegistrarBase {

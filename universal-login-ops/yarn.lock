@@ -5726,16 +5726,16 @@ union-value@^1.0.0:
     is-extendable "^0.1.1"
     set-value "^0.4.3"
 
-universal-login-contracts@0.1.2, universal-login-contracts@^0.1.0, universal-login-contracts@^0.1.1:
+@universal-login/contracts@0.1.2, @universal-login/contracts@^0.1.0, @universal-login/contracts@^0.1.1:
   version "0.1.2"
-  resolved "https://registry.yarnpkg.com/universal-login-contracts/-/universal-login-contracts-0.1.2.tgz#0aec40852a0cf1de402f9e4fb6f40dce3f184fbc"
+  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/@universal-login/contracts-0.1.2.tgz#0aec40852a0cf1de402f9e4fb6f40dce3f184fbc"
   integrity sha512-0q4NbS/XCZKMDMvevXhZTVOJyPWkK+FQFgbxpOqLq3pe52nSs3WlLBEGKdFVY2ZHOyNFMQIMQOgd9AR0jqHFuA==
   dependencies:
     ens-builder "^2.0.0"
 
-universal-login-relayer@^0.1.0:
+@universal-login/relayer@^0.1.0:
   version "0.1.3"
-  resolved "https://registry.yarnpkg.com/universal-login-relayer/-/universal-login-relayer-0.1.3.tgz#b47c0e6acb28337805f4444d858859a61d429b96"
+  resolved "https://registry.yarnpkg.com/@universal-login/relayer/-/@universal-login/relayer-0.1.3.tgz#b47c0e6acb28337805f4444d858859a61d429b96"
   integrity sha512-/9SC1IokWJ/4mw46z31u1qJUjOhP6NNGHykaenF+XuerkjMNnjG9fJtPuI/yA83v+4EIupFcwgOageC4xursXg==
   dependencies:
     dotenv "^6.0.0"
@@ -5747,17 +5747,17 @@ universal-login-relayer@^0.1.0:
     knex "^0.16.3"
     moment "^2.22.2"
     pg "^7.7.1"
-    universal-login-contracts "^0.1.1"
+    @universal-login/contracts "^0.1.1"
 
-universal-login-sdk@^0.1.0:
+@universal-login/sdk@^0.1.0:
   version "0.1.7"
-  resolved "https://registry.yarnpkg.com/universal-login-sdk/-/universal-login-sdk-0.1.7.tgz#ae5166edbdcc29fc9bd1658480b7215291d709f9"
+  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/@universal-login/sdk-0.1.7.tgz#ae5166edbdcc29fc9bd1658480b7215291d709f9"
   integrity sha512-1tDPYFZy4abNoWZ8FWUMy+3kZx2bVEYQh2nfm8D4Atz9qXc//u/w+cXhxUd6ZQjpu5rbTe/eyqKPK0xYysF+IQ==
   dependencies:
     ethers "^4.0"
     fbemitter "^2.1.1"
     node-fetch "^2.2.0"
-    universal-login-contracts "0.1.2"
+    @universal-login/contracts "0.1.2"
 
 universalify@^0.1.0:
   version "0.1.2"

@@ -1,4 +1,4 @@
-import {OPERATION_CALL} from 'universal-login-contracts';
+import {OPERATION_CALL} from '@universal-login/contracts';
 
 const MESSAGE_DEFAULTS = {
   gasPrice: 1000000000,

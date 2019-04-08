@@ -1,6 +1,6 @@
-import {waitToBeMined} from 'universal-login-commons';
+import {waitToBeMined} from '@universal-login/commons';
 import Token from './Token.json';
-import Relayer from 'universal-login-relayer';
+import Relayer from '@universal-login/relayer';
 import {utils, Contract} from 'ethers';
 
 class TokenGrantingRelayer extends Relayer {

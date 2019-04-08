@@ -1,6 +1,6 @@
 {
-  "name": "universal-login-commons",
-  "version": "1.0.0",
+  "name": "@universal-login/commons",
+  "version": "0.2.0",
   "description": "Unviersal Login Common source code",
   "main": "dist/index.js",
   "license": "MIT",

@@ -1,4 +1,4 @@
-import {DevelopmentRelayer, RelayerClass} from 'universal-login-relayer';
+import {DevelopmentRelayer, RelayerClass} from '@universal-login/relayer';
 import {providers} from 'ethers';
 
 

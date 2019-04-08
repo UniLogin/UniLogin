@@ -1,4 +1,4 @@
-import {OPERATION_CALL} from 'universal-login-contracts';
+import {OPERATION_CALL} from '@universal-login/contracts';
 
 const DEFAULT_PAYMENT_OPTIONS = {
   gasPrice: 31000000000000,

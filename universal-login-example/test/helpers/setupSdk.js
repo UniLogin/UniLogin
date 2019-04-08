@@ -1,6 +1,6 @@
-import {RelayerUnderTest} from 'universal-login-relayer/build/utils/relayerUnderTest';
+import {RelayerUnderTest} from '@universal-login/relayer/build/utils/relayerUnderTest';
 import {createMockProvider} from 'ethereum-waffle';
-import UniversalLoginSDK from 'universal-login-sdk';
+import UniversalLoginSDK from '@universal-login/sdk';
 
 
 export default async function setupSdk(givenProvider = createMockProvider()) {

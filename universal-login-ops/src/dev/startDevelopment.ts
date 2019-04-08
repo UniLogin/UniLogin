@@ -6,7 +6,7 @@ import {getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
-import {RelayerClass} from 'universal-login-relayer';
+import {RelayerClass} from '@universal-login/relayer';
 import {dirname, join} from 'path';
 import {Wallet} from 'ethers';
 
@@ -43,7 +43,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
 }
 
 function getMigrationPath() {
-  const packagePath = require.resolve('universal-login-relayer/package.json');
+  const packagePath = require.resolve('@universal-login/relayer/package.json');
   return join(dirname(packagePath), 'migrations');
 }
 

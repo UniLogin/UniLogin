@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "universal-login-monorepo",
+  "name": "@universal-login/monorepo",
   "repository": "git@github.com:UniversalLogin/UniversalLoginSDK.git",
   "author": "Marek Kirejczyk <marek.kirejczyk@gmail.com>",
   "license": "MIT",
@@ -9,13 +9,7 @@
     "chalk": "^2.0.1"
   },
   "workspaces": [
-    "universal-login-commons",
-    "universal-login-contracts",
-    "universal-login-relayer",
-    "universal-login-sdk",
-    "universal-login-example",
-    "universal-login-ops",
-    "universal-login-wallet"
+    "universal-login-*"
   ],
   "dependencies": {
     "wsrun": "^2.2.1"

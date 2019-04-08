@@ -3,10 +3,10 @@ import chaiHttp from 'chai-http';
 import {RelayerUnderTest} from '../../../lib/utils/relayerUnderTest';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import {waitForContractDeploy} from 'universal-login-commons';
-import {calculateMessageSignature, OPERATION_CALL} from 'universal-login-contracts';
-import WalletContract from 'universal-login-contracts/build/Wallet';
-import MockToken from 'universal-login-contracts/build/MockToken';
+import {waitForContractDeploy} from '@universal-login/commons';
+import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
+import WalletContract from '@universal-login/contracts/build/Wallet';
+import MockToken from '@universal-login/contracts/build/MockToken';
 
 chai.use(chaiHttp);
 

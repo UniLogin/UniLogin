@@ -3,7 +3,7 @@ import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
-import {DEFAULT_LOCATION, Procedure} from 'universal-login-commons';
+import {DEFAULT_LOCATION, Procedure} from '@universal-login/commons';
 import {utils} from 'ethers';
 
 const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');

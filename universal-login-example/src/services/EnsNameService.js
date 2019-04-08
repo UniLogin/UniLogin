@@ -1,4 +1,4 @@
-import {sleep} from 'universal-login-commons';
+import {sleep} from '@universal-login/commons';
 
 class EnsNameService {
   constructor(ensService, historyService, tick = 500) {

@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {getTokenDetails} from './utils/utils';
 
 declare type TokenDetails = {

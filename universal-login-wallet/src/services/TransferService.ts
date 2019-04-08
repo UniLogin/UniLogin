@@ -1,9 +1,9 @@
-import UniversalLoginSDK from 'universal-login-sdk';
+import UniversalLoginSDK from '@universal-login/sdk';
 import WalletService from './WalletService';
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import TokenService from './TokenService';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 export interface TransferDetails {
   to: string;

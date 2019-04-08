@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import SuggestionsService from '../../src/services/SuggestionsService';
 import WalletSelectionService from '../../src/services/WalletSelectionService';
-import {sleep} from 'universal-login-commons';
+import {sleep} from '@universal-login/commons';
 
 describe('SuggestionsService', () => {
   let service;
