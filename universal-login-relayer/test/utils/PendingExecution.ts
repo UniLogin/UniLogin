@@ -122,6 +122,12 @@ describe('Pending Execution', async () => {
             status = await pendingExecution.getStatus();
             const concatenatedSignatures = pendingExecution.getConcatenatedSignatures();
             const [sig0, sig1] = status.collectedSignatures;
+            let expected: string;
+            if (parseInt(wallet.address, 16) < parseInt(actionKey, 16)) {
+                expected = concatenateSignatures([signature0, signature1]);
+            } else {
+                expected = concatenateSignatures([signature1, signature0]);
+            }
             await expect(concatenatedSignatures).to.be.eq(concatenateSignatures([signature0, signature1]));
         });
     });
