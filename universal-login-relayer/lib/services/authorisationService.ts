@@ -6,9 +6,7 @@ declare interface Request {
   deviceInfo: object;
 }
 class AuthorisationService {
-  constructor(private database : Knex) {
-    this.database = database;
-  }
+  constructor(private database : Knex) {}
 
   async addRequest(request: Request) {
     const {walletContractAddress, key, deviceInfo} = request;
