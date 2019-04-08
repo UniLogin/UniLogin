@@ -1,5 +1,5 @@
 {
-  "name": "universal-login-contracts",
+  "name": "@universal-login/contracts",
   "version": "0.1.4",
   "license": "MIT",
   "main": "dist/index.js",

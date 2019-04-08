@@ -5,7 +5,7 @@ import {utils, providers, Wallet} from 'ethers';
 import {BalanceService} from '../../src/services/balance/BalanceService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {waitUntil} from 'universal-login-commons';
+import {waitUntil} from '@universal-login/commons';
 
 chai.use(solidity);
 chai.use(sinonChai);

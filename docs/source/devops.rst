@@ -8,7 +8,7 @@ Prerequisites
 
   ::
 
-    yarn global add universal-login-ops
+    yarn global add @universal-login/ops
 
 Test token
 ----------
@@ -29,7 +29,7 @@ Sending funds
 To send funds to an address
 ``universal-login send [to] [amount] [currency] --nodeUrl [url] --privateKey [privateKey]``
 
-Parameters: 
+Parameters:
   - **to** - an address to send funds
   - **amount** - amount to send to the address
   - **currency** - currency of transfer

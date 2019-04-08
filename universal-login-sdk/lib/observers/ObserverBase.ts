@@ -1,4 +1,4 @@
-import {sleep} from 'universal-login-commons';
+import {sleep} from '@universal-login/commons';
 import {EventEmitter} from 'fbemitter';
 
 type ObserverBaseState = 'stop' | 'stopping' | 'running';

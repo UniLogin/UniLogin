@@ -1,5 +1,5 @@
 import {utils, Wallet} from 'ethers';
-import {Message} from 'universal-login-commons';
+import {Message} from '@universal-login/commons';
 
 
 export const calculateMessageHash = (msg: Message) => {

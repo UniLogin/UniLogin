@@ -1,6 +1,6 @@
 import React from 'react';
-import UniversalLoginSDK from 'universal-login-sdk';
-import {WalletSelectionService, SuggestionsService} from 'universal-login-commons';
+import UniversalLoginSDK from '@universal-login/sdk';
+import {WalletSelectionService, SuggestionsService} from '@universal-login/commons';
 import ModalService from './ModalService';
 import UserDropdownService from './UserDropdownService';
 import WalletService from './WalletService';

@@ -3,7 +3,7 @@ import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../dev/deployToken';
 import connectAndExecute from './connectAndExecute';
 import {sendFunds} from '../ops/sendFunds';
-import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
 
 const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')

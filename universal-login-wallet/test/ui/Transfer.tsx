@@ -5,11 +5,11 @@ import App from '../../src/ui/App';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
-import {setupSdk} from 'universal-login-sdk/test';
+import {setupSdk} from '@universal-login/sdk/test';
 import {Services} from '../../src/services/Services';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
-import {deployMockToken} from 'universal-login-commons/test';
+import {deployMockToken} from '@universal-login/commons/test';
 import {createAndSendInitial} from '../utils/utils';
 
 describe('UI: Transfer', () => {

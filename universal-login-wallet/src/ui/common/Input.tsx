@@ -1,5 +1,5 @@
 import React from 'react';
-import {classesForElement} from 'universal-login-commons';
+import {classesForElement} from '@universal-login/commons';
 
 interface InputProps {
   onChange: (...args: any[]) => void;

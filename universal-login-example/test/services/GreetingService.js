@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import GreetingService from '../../src/services/GreetingService';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import KeyHolder from 'universal-login-contracts/build/KeyHolder';
-import {ACTION_KEY} from 'universal-login-contracts';
+import KeyHolder from '@universal-login/contracts/build/KeyHolder';
+import {ACTION_KEY} from '@universal-login/contracts';
 
 describe('Greeting service', async () => {
   let greetingService;

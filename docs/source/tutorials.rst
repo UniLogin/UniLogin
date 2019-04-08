@@ -20,7 +20,7 @@ Create UniversalLoginSDK
 In your project, create the UniversalLoginSDK
 ::
 
-  import UniversalLoginSDK from 'universal-login-sdk';
+  import UniversalLoginSDK from '@universal-login/sdk';
   import ethers from 'ethers';
 
 

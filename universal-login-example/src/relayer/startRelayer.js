@@ -1,4 +1,4 @@
-import {TokenGrantingRelayer} from 'universal-login-relayer';
+import {TokenGrantingRelayer} from '@universal-login/relayer';
 require('dotenv').config();
 
 const config = require('./config');

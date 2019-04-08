@@ -1,4 +1,4 @@
-import KeyHolder from 'universal-login-contracts/build/KeyHolder';
+import KeyHolder from '@universal-login/contracts/build/KeyHolder';
 import {fetchEventsOfType} from '../utils';
 
 class GreetingService {

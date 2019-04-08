@@ -63,19 +63,19 @@ Installation
   To add SDK to your project using npm type following:
   ::
 
-    npm i universal-login-sdk
+    npm i @universal-login/sdk
 
   If you are using yarn than type:
   ::
 
-    yarn add universal-login-sdk
+    yarn add @universal-login/sdk
 
 
 Development environment
 ^^^^^^^^^^^^^^^^^^^^^^^
 Summary
   Development environment helps quickly develop and test applications using universal login.
-  The script that starts development environment can be run from ``universal-login-ops`` project.
+  The script that starts development environment can be run from ``@universal-login/ops`` project.
   The script does a bunch of helpful things:
 
   - creates a mock blockchain (ganache)
@@ -90,19 +90,19 @@ Prerequisites
   You might want to check database configuration in file `knexfile.js <https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/src/relayer/knexfile.js>`_ and make sure your database is configured correctly.
 
 Installation
-  To use development environment, you need to install ``universal-login-ops`` as dev dependency to your project.
+  To use development environment, you need to install ``@universal-login/ops`` as dev dependency to your project.
 
   With npm:
 
     ::
 
-      npm install universal-login-ops --save-dev
+      npm install @universal-login/ops --save-dev
 
   With yarn:
 
     ::
 
-      yarn add --dev universal-login-ops
+      yarn add --dev @universal-login/ops -D
 
 Adding a script
   The simplest way to use development environment is to add a script to ``package.json`` file:
@@ -146,17 +146,6 @@ Which will start the development environment. The output should look somewhat li
         Token address: 0x0E2365e86A50377c567E1a62CA473656f0029F1e
           Relayer url: http://localhost:3311
 
-Troubleshooting
-  ``web3.js`` is derivative dependence of ``universal-login-ops``.
-  Unfortunately ``web3.js`` is unstable.
-  If you have problems with installation or running the script, we recommend that you add following section to your ``package.json`` file.
-
-  ::
-
-    "resolutions": {
-      "web3": "1.0.0-beta.35"
-    }
-
 
 
 Using SDK
@@ -170,7 +159,7 @@ Below is a snippet doing precisely that for the development environment.
 
 ::
 
-  import UniversalLoginSDK from 'universal-login-sdk';
+  import UniversalLoginSDK from '@universal-login/sdk';
 
   const universalLoginSDK = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
   const [privateKey, contractAddress] = await sdk.create('myname.mylogin.eth');
@@ -214,7 +203,7 @@ To connect SDK to the Rinkeby testnet and the test relayer:
 
 ::
 
-  import UniversalLoginSDK from 'universal-login-sdk';
+  import UniversalLoginSDK from '@universal-login/sdk';
   import ethers from 'ethers';
 
 

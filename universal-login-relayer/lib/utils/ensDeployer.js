@@ -2,7 +2,7 @@ import fs from 'fs';
 import {providers, Wallet} from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
-import {parseDomain} from 'universal-login-commons';
+import {parseDomain} from '@universal-login/commons';
 
 class ENSDeployer {
   constructor(provider, deployerPrivateKey) {

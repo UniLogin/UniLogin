@@ -1,5 +1,5 @@
 {
-  "name": "universal-login-sdk",
+  "name": "@universal-login/sdk",
   "version": "0.1.11",
   "main": "dist/sdk.js",
   "types": "dist/sdk.d.ts",
@@ -9,8 +9,8 @@
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
     "node-fetch": "^2.2.0",
-    "universal-login-commons": "^1.0.0",
-    "universal-login-contracts": "^0.1.4"
+    "@universal-login/commons": "^1.0.0",
+    "@universal-login/contracts": "^0.1.4"
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
@@ -33,6 +33,6 @@
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3",
-    "universal-login-relayer": "^0.1.6"
+    "@universal-login/relayer": "^0.1.6"
   }
 }

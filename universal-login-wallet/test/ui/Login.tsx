@@ -5,11 +5,11 @@ import App from '../../src/ui/App';
 import {ReactWrapper} from 'enzyme';
 import {providers, Wallet} from 'ethers';
 import {getWallets} from 'ethereum-waffle';
-import {setupSdk} from 'universal-login-sdk/test';
+import {setupSdk} from '@universal-login/sdk/test';
 import {Services} from '../../src/services/Services';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
-import {ETHER_NATIVE_TOKEN} from 'universal-login-commons';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {createAndSendInitial} from '../utils/utils';
 
 describe('UI: Login', () => {

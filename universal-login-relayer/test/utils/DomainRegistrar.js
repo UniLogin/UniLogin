@@ -4,7 +4,7 @@ import basicENS from '../fixtures/basicENS';
 import DomainRegistrar from '../../lib/utils/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../lib/utils/ENS/ENSNameRegistrar';
 import {utils, Contract} from 'ethers';
-import PublicResolver from 'universal-login-contracts/build/PublicResolver';
+import PublicResolver from '@universal-login/contracts/build/PublicResolver';
 import sinon from 'sinon';
 import { loadFixture } from 'ethereum-waffle';
 
