@@ -1,16 +1,6 @@
 import {utils, Wallet} from 'ethers';
+import {Message} from 'universal-login-commons';
 
-export interface Message {
-  from: string;
-  to: string;
-  value: utils.BigNumberish;
-  data: string;
-  nonce: utils.BigNumberish;
-  gasPrice: utils.BigNumberish;
-  gasToken: string;
-  gasLimit: utils.BigNumberish;
-  operationType: utils.BigNumberish;
-}
 
 export const calculateMessageHash = (msg: Message) => {
   const dataHash = utils.solidityKeccak256(['bytes'], [msg.data]);

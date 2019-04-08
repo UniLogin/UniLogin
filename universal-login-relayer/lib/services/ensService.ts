@@ -1,17 +1,20 @@
-import {utils, Contract} from 'ethers';
-import ENS from 'universal-login-contracts/build/ENS';
+import {utils, Contract, providers} from 'ethers';
+const ENS = require('universal-login-contracts/build/ENS');
 import {parseDomain} from 'universal-login-commons';
 
+interface DomainInfo {
+  resolverAddress? : string;
+  registrarAddress? : string;
+}
+
 class ENSService {
-  constructor(ensAddress, ensRegistrars, provider) {
-    this.ensRegistrars = ensRegistrars;
-    this.ensAddress = ensAddress;
-    this.domainsInfo = {};
-    this.provider = provider;
+  private domainsInfo : Record<string, DomainInfo>  = {};
+  private ens: Contract;
+  constructor(private ensAddress: string, private ensRegistrars: string, private provider: providers.Provider) {
+    this.ens = new Contract(this.ensAddress, ENS.interface, this.provider);
   }
 
   async start() {
-    this.ens = new Contract(this.ensAddress, ENS.interface, this.provider);
     for (let count = 0; count < this.ensRegistrars.length; count++) {
       const domain = this.ensRegistrars[count];
       this.domainsInfo[`${domain}`] = {};
@@ -20,11 +23,11 @@ class ENSService {
     }
   }
 
-  findRegistrar(domain) {
+  findRegistrar(domain: string) {
     return this.domainsInfo[domain] || null;
   }
 
-  argsFor(ensName) {
+  argsFor(ensName: string) {
     const [label, domain] = parseDomain(ensName);
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${domain}`);
