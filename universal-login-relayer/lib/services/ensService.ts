@@ -8,6 +8,11 @@ interface DomainInfo {
   registrarAddress? : string;
 }
 
+interface DomainInfo {
+  resolverAddress? : string;
+  registrarAddress? : string;
+}
+
 class ENSService {
   private domainsInfo : Record<string, DomainInfo>  = {};
   private ens: Contract;
