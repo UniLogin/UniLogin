@@ -1,9 +1,9 @@
 import {utils, ContractFactory, Wallet, providers} from 'ethers';
-import WalletContract from '@universal-login-contracts/build/Wallet';
-import WalletMasterContract from '@universal-login-contracts/build/WalletMaster.json';
-import ProxyContract from '@universal-login-contracts/build/Proxy.json';
-import LegacyWallet from '@universal-login-contracts/build/LegacyWallet.json';
-import {calculateMessageHash} from '@universal-login-contracts';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletMasterContract from '@universal-login/contracts/build/WalletMaster.json';
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import LegacyWallet from '@universal-login/contracts/build/LegacyWallet.json';
+import {calculateMessageHash} from '@universal-login/contracts';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures} from '../utils/utils';
 import PendingExecution from '../utils/pendingExecution';
 import defaultDeployOptions from '../config/defaultDeployOptions';
@@ -19,7 +19,7 @@ class WalletService {
   private abi: Abi;
   private contractJSON: ContractJSON;
   private useInitData: boolean;
-  public pendingExecutions: PendingExecution[];
+  public pendingExecutions: { [index: string]: PendingExecution; };
 
   constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
@@ -27,7 +27,7 @@ class WalletService {
     this.bytecode = `0x${this.contractJSON.evm.bytecode.object}`;
     this.codec = new utils.AbiCoder();
     this.useInitData = !legacyENS;
-    this.pendingExecutions = [];
+    this.pendingExecutions = {};
   }
 
   async create(key: string, ensName: string, overrideOptions = {}) {
@@ -54,17 +54,18 @@ class WalletService {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await calculateMessageHash(message);
-      if (this.pendingExecutions[hash] !== undefined) {
+      if (hash in this.pendingExecutions) {
         await this.pendingExecutions[hash].push(message);
         if (this.pendingExecutions[hash].canExecute()) {
           const finalMessage = {...message, signature: this.pendingExecutions[hash].getConcatenatedSignatures()};
-          const transaction = await this.execute(finalMessage);
+          const transaction: any = await this.execute(finalMessage);
           await this.pendingExecutions[hash].confirmExecution(transaction.hash);
           return transaction;
         }
         return JSON.stringify(this.pendingExecutions[hash].getStatus());
       } else {
-        this.pendingExecutions[hash] = new PendingExecution(message.from, this.wallet);
+        const walletContract: any = message.from;
+        this.pendingExecutions[hash] = new PendingExecution(walletContract, this.wallet);
         await this.pendingExecutions[hash].push(message);
         return JSON.stringify(await this.pendingExecutions[hash].getStatus());
       }
@@ -99,6 +100,13 @@ class WalletService {
       }
     }
     throw new Error('Not enough tokens');
+  }
+
+  async getStatus(hash: string) {
+    if (!(hash in this.pendingExecutions)) {
+      throw 'Unable to find execution with given message hash';
+    }
+    return this.pendingExecutions[hash].getStatus();
   }
 }
 

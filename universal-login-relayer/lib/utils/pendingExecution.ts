@@ -1,8 +1,8 @@
-import WalletContract from 'universal-login-contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {utils, ContractFactory, Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../utils/utils';
-import {concatenateSignatures} from 'universal-login-contracts';
-import {Message} from 'universal-login-commons';
+import {concatenateSignatures} from '@universal-login/contracts';
+import {Message} from '@universal-login/commons';
 
 export default class PendingExecution {
   private wallet: Wallet;

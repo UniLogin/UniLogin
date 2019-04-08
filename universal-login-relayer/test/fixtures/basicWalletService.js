@@ -7,7 +7,7 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import MockContract from '@universal-login/contracts/build/MockContract';
 import {deployContract, getWallets} from 'ethereum-waffle';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import {waitForContractDeploy} from '@universal-login/commons';

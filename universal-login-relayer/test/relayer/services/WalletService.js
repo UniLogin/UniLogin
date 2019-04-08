@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login-contracts';
+import {MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import basicWalletService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
 import defaultDeviceInfo from '../../config/defaults';
 
@@ -158,7 +158,7 @@ describe('Relayer - WalletService', async () => {
           expect(status.tx).to.eq(transaction.hash);
         });
 
-        it('should get pending execution status', async () => {
+        it('should fail to get pending execution status when there it is unable to find it', async () => {
           await expect(walletContractService.getStatus('0x0')).to.be.rejectedWith('Unable to find execution with given message hash');
         });
       });

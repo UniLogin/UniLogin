@@ -2,8 +2,8 @@ import chai, {expect} from 'chai';
 import PendingExecution from '../../lib/utils/pendingExecution';
 import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
 import {utils, Wallet, providers, Contract} from 'ethers';
-import ERC1077 from 'universal-login-contracts/build/ERC1077.json';
-import {ACTION_KEY, OPERATION_CALL, calculateMessageSignature, concatenateSignatures} from 'universal-login-contracts';
+import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
+import {ACTION_KEY, OPERATION_CALL, calculateMessageSignature, concatenateSignatures} from '@universal-login/contracts';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 
 chai.use(solidity);
