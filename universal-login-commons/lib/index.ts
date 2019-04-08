@@ -9,3 +9,4 @@ export {classesForElement, getSuggestionId} from './utils/react';
 export {parseDomain} from './utils/ens';
 export * from './constants/constants';
 export * from './models/ContractJSON';
+export * from './models/Config';

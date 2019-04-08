@@ -14,5 +14,3 @@ const config =  Object.freeze({
 });
 
 export default config;
-export type Config = typeof config;
-export type ChainSpecConfig = Config['chainSpec'];
