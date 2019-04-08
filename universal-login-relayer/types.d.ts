@@ -51,7 +51,7 @@ export declare class DevelopmentRelayer extends Relayer {
   tokenContract: Contract;
 
   constructor(config: DevelopmentRelayerConfig, provider?: providers.Provider);
-  
+
   addHooks(): void;
 }
 

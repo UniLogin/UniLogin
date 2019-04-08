@@ -1,30 +1,36 @@
-import ProxyContract from 'universal-login-contracts/build/Proxy';
 import WalletContract from 'universal-login-contracts/build/Wallet';
-import WalletMasterContract from 'universal-login-contracts/build/WalletMaster';
-import LegacyWallet from 'universal-login-contracts/build/LegacyWallet';
-import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures} from '../utils/utils';
-import {utils, Contract, ContractFactory} from 'ethers';
-import defaultDeployOptions from '../config/defaultDeployOptions';
-import {concatenateSignatures, calculateMessageHash} from 'universal-login-contracts';
 import PendingExecution from '../utils/pendingExecution';
+import WalletMasterContract from 'universal-login-contracts/build/WalletMaster.json';
+import ProxyContract from 'universal-login-contracts/build/Proxy.json';
+import {utils, ContractFactory, Wallet, providers} from 'ethers';
+import LegacyWallet from 'universal-login-contracts/build/LegacyWallet.json';
+import {calculateMessageHash} from 'universal-login-contracts';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures} from '../utils/utils';
+import defaultDeployOptions from '../config/defaultDeployOptions';
+import ENSService from './ensService';
+import AuthorisationService from './authorisationService';
+import {EventEmitter} from 'fbemitter';
+import {ContractJSON, Abi, Message} from 'universal-login-commons';
+import {BigNumberish} from 'ethers/utils';
 
 class WalletService {
-  constructor(wallet, walletMasterAddress, ensService, authorisationService, hooks, provider, legacyENS) {
-    this.wallet = wallet;
+  private codec: utils.AbiCoder;
+  private bytecode: string;
+  private abi: Abi;
+  private contractJSON: ContractJSON;
+  private useInitData: boolean;
+  public pendingExecutions: PendingExecution[];
+
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
     this.abi = this.contractJSON.interface;
-    this.bytecode = `0x${this.contractJSON.bytecode}`;
-    this.walletMasterAddress = walletMasterAddress;
-    this.ensService = ensService;
-    this.authorisationService = authorisationService;
+    this.bytecode = `0x${this.contractJSON.evm.bytecode.object}`;
     this.codec = new utils.AbiCoder();
-    this.hooks = hooks;
-    this.provider = provider;
-    this.pendingExecutions = {};
     this.useInitData = !legacyENS;
+    this.pendingExecutions = [];
   }
 
-  async create(key, ensName, overrideOptions = {}) {
+  async create(key: string, ensName: string, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
       let args = [key, ...ensArgs];
@@ -44,7 +50,7 @@ class WalletService {
     throw new Error('domain not existing / not universal ID compatible');
   }
 
-  async executeSigned(message) {
+  async executeSigned(message: Message) {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await calculateMessageHash(message);
@@ -67,14 +73,7 @@ class WalletService {
     }
   }
 
-  async getStatus(hash) {
-    if (!this.pendingExecutions[hash]) {
-      throw new Error('Unable to find execution with given message hash');
-    }
-    return this.pendingExecutions[hash].getStatus();
-  }
-
-  async execute(message) {
+  async execute(message: Message) {
     if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
       const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
@@ -84,10 +83,10 @@ class WalletService {
         data,
       };
       const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
-      if (utils.bigNumberify(message.gasLimit).gte(estimateGas)) {
+      if (utils.bigNumberify(message.gasLimit as BigNumberish).gte(estimateGas)) {
         if (message.to === message.from && isAddKeyCall(message.data)) {
           const key = getKeyFromData(message.data);
-          await this.authorisationService.removeRequest(message.from, key);
+          await this.authorisationService.removeRequest(message.from as string, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('added', sentTransaction);
           return sentTransaction;
