@@ -2,8 +2,9 @@ import {Router, Request, Response} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 import geoip from 'geoip-lite';
 import moment from 'moment';
+import AuthorisationService from '../services/authorisationService';
 
-export const request = (authorisationService : any) => async (req : Request, res : Response) => {
+export const request = (authorisationService : AuthorisationService) => async (req : Request, res : Response) => {
   const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   const deviceInfo = {
