@@ -47,7 +47,7 @@ class WalletService {
   }
 
   async executeSigned(message: Message) {
-    if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
+    if (await hasEnoughToken(message.gasToken!, message.from!, message.gasLimit!, this.provider)) {
       const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
       const transaction = {
         ...defaultDeployOptions,
@@ -59,7 +59,7 @@ class WalletService {
       if (utils.bigNumberify(message.gasLimit as BigNumberish).gte(estimateGas)) {
         if (message.to === message.from && isAddKeyCall(message.data)) {
           const key = getKeyFromData(message.data);
-          await this.authorisationService.removeRequest(message.from as string, key);
+          await this.authorisationService.removeRequest(message.from!, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('added', sentTransaction);
           return sentTransaction;

@@ -73,7 +73,7 @@ const sendAndWaitForTransaction = async (deployer, transaction) => {
   return receipt.contractAddress;
 };
 
-const getDeployTransaction = (contractJSON, args = '') => {
+const getDeployTransaction = (contractJSON, args = []) => {
   const bytecode = `0x${contractJSON.bytecode}`;
   const abi = contractJSON.interface;
   const transaction = {

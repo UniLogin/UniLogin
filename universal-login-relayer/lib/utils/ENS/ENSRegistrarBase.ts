@@ -9,7 +9,7 @@ class ENSRegistrarBase {
   protected registrarAddress: ContractFunction | any;
   protected resolverAddress: ContractFunction | any;
 
-  constructor(private config : Config , protected readonly provider : providers.Provider, protected log = console.log) {
+  constructor(protected config : Config , protected readonly provider : providers.Provider, protected log = console.log) {
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.deployer = new Wallet(config.privateKey as string, this.provider);
     this.ens = new Contract(config.chainSpec.ensAddress as string, ENS.interface, this.deployer);
