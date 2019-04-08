@@ -1,14 +1,15 @@
 import Knex from 'knex';
 
-declare interface Request {
+interface AuthorisationRequest {
   walletContractAddress: string;
   key: string;
   deviceInfo: object;
 }
+
 class AuthorisationService {
   constructor(private database : Knex) {}
 
-  async addRequest(request: Request) {
+  async addRequest(request: AuthorisationRequest) {
     const {walletContractAddress, key, deviceInfo} = request;
     return this.database.insert({walletContractAddress, key: key.toLowerCase(), deviceInfo})
       .into('authorisations')
