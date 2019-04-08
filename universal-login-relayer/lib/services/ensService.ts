@@ -2,8 +2,13 @@ import {utils, Contract, providers} from 'ethers';
 const ENS = require('universal-login-contracts/build/ENS');
 import {parseDomain} from 'universal-login-commons';
 
+interface DomainInfo {
+  resolverAddress? : string;
+  registrarAddress? : string;
+}
+
 class ENSService {
-  private domainsInfo : any = {};
+  private domainsInfo : Record<string, DomainInfo>  = {};
   private ens: Contract;
   constructor(private ensAddress: string, private ensRegistrars: string, private provider: providers.Provider) {
     this.ens = new Contract(this.ensAddress, ENS.interface, this.provider);
