@@ -26,7 +26,7 @@ const ApproveScreen = () => {
     </div>
     <Link to="/recovery" className="btn btn-primary btn-fullwidth start-link">Recover from backup</Link>
     <Link to="/login"className="btn-text start-link-text">Cancel request</Link>
-  </div>
-)};
+  </div>);
+};
 
 export default ApproveScreen;
