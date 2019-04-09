@@ -13,14 +13,14 @@ const getExecutionArgs = (msg: any) => [msg.to, msg.value, msg.data, msg.nonce, 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
 const baseMsg = {
-    to: '0x0000000000000000000000000000000000000001',
-    value: utils.parseEther('0.5'),
-    data: utils.formatBytes32String('0x0'),
-    nonce: 0,
-    gasPrice,
-    gasLimit,
-    gasToken: '0x0000000000000000000000000000000000000000',
-    operationType: OPERATION_CALL,
+  to: '0x0000000000000000000000000000000000000001',
+  value: utils.parseEther('0.5'),
+  data: utils.formatBytes32String('0x0'),
+  nonce: 0,
+  gasPrice,
+  gasLimit,
+  gasToken: '0x0000000000000000000000000000000000000000',
+  operationType: OPERATION_CALL,
 };
 
 describe('Pending Execution', async () => {
