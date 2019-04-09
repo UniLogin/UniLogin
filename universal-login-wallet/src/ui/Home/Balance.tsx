@@ -20,7 +20,7 @@ const Balance = ({className} : BalanceProps) => {
       </div>
       <h2 className="balance-title">balance</h2>
       <div className="balance-box">
-        <p className="balance-amount">{utils.formatEther(balance)} ETH</p>
+        <p className="balance-amount"><span className="balance-amount-highlighted">{utils.formatEther(balance)}</span> ETH</p>
       </div>
     </section>
   );
