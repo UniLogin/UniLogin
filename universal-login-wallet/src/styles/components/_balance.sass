@@ -6,7 +6,12 @@
   text-transform: uppercase
 
   +media(s, 168px)
-    display: none
+    opacity: 0.75
+    font-size: 12px
+    text-align: center
+    text-transform: capitalize
+    margin-bottom: 0
+    font-weight: 400
 
 .balance-box
   padding: 48px 30px 38px
@@ -16,12 +21,24 @@
   text-align: center
 
   +media(s, 168px)
+    padding: 0
     box-shadow: none
 
+.balance-icon-wrapper
+  +media(s, 168px)
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-bottom: 20px
+    background: #eeeffa
+    border-radius: 50%
+    width: 50px
+    height: 50px
+  
 .balance-amount
   font-weight: 600
   font-size: 40px
-  color: #f4f4f4
+  color: #3D3D41
   line-height: 66px
 
   +media(s, 168px)
@@ -29,4 +46,3 @@
     line-height: 41px
 
 .balance-amount-highlighted
-  color: #3D3D41
