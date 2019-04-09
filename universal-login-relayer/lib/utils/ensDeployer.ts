@@ -1,7 +1,7 @@
 import fs from 'fs';
 import {providers, Wallet} from 'ethers';
 import {defaultAccounts} from 'ethereum-waffle';
-const ENSBuilder = require('ens-builder'); //TO DO: change to import (ens-builder doesn't have types now
+const ENSBuilder = require('ens-builder'); // TO DO: change to import (ens-builder doesn't have types now
 import {parseDomain} from '@universal-login/commons';
 
 class ENSDeployer {

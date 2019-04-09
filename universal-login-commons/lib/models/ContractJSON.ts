@@ -19,4 +19,5 @@ export interface ContractJSON {
     bytecode: Bytecode;
     deployedBytecode: Bytecode;
   };
+  bytecode : string;
 }
