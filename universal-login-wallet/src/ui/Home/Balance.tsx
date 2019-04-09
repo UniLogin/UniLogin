@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useServices} from '../../hooks';
 import {utils} from 'ethers';
+import EthereumIcon from './../../assets/icons/ethereum.svg';
 
 interface BalanceProps {
   className?: string;
@@ -14,9 +15,12 @@ const Balance = ({className} : BalanceProps) => {
 
   return(
     <section className={`${className ? className : ''}`}>
-      <h2 className="balance-title">Your balance</h2>
+      <div className="balance-icon-wrapper" hidden>
+        <img src={EthereumIcon} alt="Ethereum" className="balance-icon" />
+      </div>
+      <h2 className="balance-title">balance</h2>
       <div className="balance-box">
-        <p className="balance-amount"><span className="balance-amount-highlighted">{utils.formatEther(balance)}</span>ETH</p>
+        <p className="balance-amount">{utils.formatEther(balance)} ETH</p>
       </div>
     </section>
   );
