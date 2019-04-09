@@ -161,6 +161,10 @@ describe('Relayer - WalletService', async () => {
         it('should fail to get pending execution status when there it is unable to find it', async () => {
           await expect(walletContractService.getStatus('0x0')).to.be.rejectedWith('Unable to find execution with given message hash');
         });
+
+        afterEach(async () => {
+          walletContractService.pendingExecutions = {};
+        });
       });
     });
 
