@@ -1,6 +1,6 @@
-import ENS from 'universal-login-contracts/build/ENS.json';
+import ENS from '@universal-login/contracts/build/ENS.json';
 import {providers, Contract, Wallet, utils, ContractFunction} from 'ethers';
-import {Config} from 'universal-login-commons';
+import {Config} from '@universal-login/commons';
 
 class ENSRegistrarBase {
   protected readonly deployer : Wallet;
