@@ -19,7 +19,7 @@ class WalletService {
   private abi: Abi;
   private contractJSON: ContractJSON;
   private useInitData: boolean;
-  public pendingExecutions: { [index: string]: PendingExecution; };
+  public pendingExecutions: Record<string, PendingExecution>;
 
   constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
@@ -57,21 +57,29 @@ class WalletService {
       if (hash in this.pendingExecutions) {
         await this.pendingExecutions[hash].push(message);
         if (this.pendingExecutions[hash].canExecute()) {
-          const finalMessage = {...message, signature: this.pendingExecutions[hash].getConcatenatedSignatures()};
-          const transaction: any = await this.execute(finalMessage);
-          await this.pendingExecutions[hash].confirmExecution(transaction.hash);
-          return transaction;
+            return this.executePending(hash, message);
         }
         return JSON.stringify(this.pendingExecutions[hash].getStatus());
       } else {
-        const walletContract: any = message.from;
-        this.pendingExecutions[hash] = new PendingExecution(walletContract, this.wallet);
-        await this.pendingExecutions[hash].push(message);
-        return JSON.stringify(await this.pendingExecutions[hash].getStatus());
+        return this.createPending(hash, message);
       }
     } else {
       return this.execute(message);
     }
+  }
+
+  async executePending(hash: string, message: Message) {
+      const finalMessage = {...message, signature: this.pendingExecutions[hash].getConcatenatedSignatures()};
+      const transaction: any = await this.execute(finalMessage);
+      await this.pendingExecutions[hash].confirmExecution(transaction.hash);
+      return transaction;
+  }
+
+  async createPending(hash: string, message: Message) {
+      const walletContract: any = message.from;
+      this.pendingExecutions[hash] = new PendingExecution(walletContract, this.wallet);
+      await this.pendingExecutions[hash].push(message);
+      return JSON.stringify(await this.pendingExecutions[hash].getStatus());
   }
 
   async execute(message: Message) {

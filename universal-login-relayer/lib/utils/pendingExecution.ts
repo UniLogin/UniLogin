@@ -8,13 +8,13 @@ export default class PendingExecution {
   private wallet: Wallet;
   private walletContract: Contract;
   private collectedSignatures: any;
-  private tx: string;
+  private transactionHash: string;
 
   constructor(walletAddress: string, wallet: Wallet) {
     this.wallet = wallet;
     this.walletContract = new Contract(walletAddress, WalletContract.interface, this.wallet);
     this.collectedSignatures = [];
-    this.tx = '0x0';
+    this.transactionHash = '0x0';
   }
 
   containSignature = (signature: any) =>
@@ -27,12 +27,12 @@ export default class PendingExecution {
       collectedSignatures: this.collectedSignatures,
       totalCollected: this.collectedSignatures.length,
       required: await this.walletContract.requiredSignatures(),
-      tx: this.tx
+      transactionHash: this.transactionHash
     };
   }
 
   async push(msg: Message) {
-    if (this.tx !== '0x0') {
+    if (this.transactionHash !== '0x0') {
       throw 'Execution request already processed';
     }
     if (this.containSignature(msg.signature)) {
@@ -55,12 +55,12 @@ export default class PendingExecution {
     const requiredSignatures = await this.walletContract.requiredSignatures();
     if (requiredSignatures > this.collectedSignatures.length) {
       throw 'Not enough signatures';
-    } else if (this.tx !== '0x0') {
+    } else if (this.transactionHash !== '0x0') {
       throw 'Transaction has already been confirmed';
     } else if (tx.length !== 66) {
       throw 'Invalid Tx';
     }
-    this.tx = tx;
+    this.transactionHash = tx;
   }
 
   getConcatenatedSignatures() {

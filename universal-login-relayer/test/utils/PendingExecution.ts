@@ -52,7 +52,7 @@ describe('Pending Execution', async () => {
         invalidMsg = {...baseMsg, from: walletContract.address, signature: invalidSignature};
     });
 
-    describe('should be correctly initizialized', async () => {
+    describe('should be correctly initialized', async () => {
         let status: any;
 
         beforeEach(async () => {
@@ -72,7 +72,7 @@ describe('Pending Execution', async () => {
         });
 
         it('should get correct number of required signatures', async () => {
-            expect(status.tx).to.be.eq('0x0');
+            expect(status.transactionHash).to.be.eq('0x0');
         });
     });
 
@@ -137,7 +137,7 @@ describe('Pending Execution', async () => {
             await pendingExecution.push(msg1);
             await pendingExecution.confirmExecution(sampleTx);
             status = await pendingExecution.getStatus();
-            expect(status.tx).to.be.eq(sampleTx);
+            expect(status.transactionHash).to.be.eq(sampleTx);
         });
 
         it('should not confirm with not enough signatures', async () => {

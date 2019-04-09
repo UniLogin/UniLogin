@@ -155,7 +155,7 @@ describe('Relayer - WalletService', async () => {
           const [sig0, sig1] = status.collectedSignatures;
           expect(sig0.signature).to.eq(signature0);
           expect(sig1.signature).to.eq(signature1);
-          expect(status.tx).to.eq(transaction.hash);
+          expect(status.transactionHash).to.eq(transaction.hash);
         });
 
         it('should fail to get pending execution status when there it is unable to find it', async () => {
