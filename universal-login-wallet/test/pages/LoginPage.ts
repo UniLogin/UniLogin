@@ -28,6 +28,6 @@ export default class LoginPage {
   }
 
   async waitForHomeView(balance: string, timeout?: number) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Your balance${balance}`), timeout);
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`balance${balance}`), timeout);
   }
 }
