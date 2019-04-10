@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "allowJs": false,
-    "outDir": "build",
+    "outDir": "dist",
     "jsx": "react",
     "lib": [
       "dom",

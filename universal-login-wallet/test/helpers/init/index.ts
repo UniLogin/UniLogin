@@ -1,3 +1,3 @@
-require('./configuration.ts');
-require('./nullCompiler.ts');
-require('./reactMock.ts');
+import './configuration.ts';
+import './nullCompiler.ts';
+import './reactMock.ts';

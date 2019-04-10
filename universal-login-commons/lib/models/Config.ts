@@ -1,8 +1,8 @@
-import {Network} from 'ethers/utils';
+import {utils} from 'ethers';
 import dotenv from 'dotenv';
 dotenv.config();
 
-interface ChainSpec extends Network {
+interface ChainSpec extends utils.Network {
   publicResolverAddress?: string;
 }
 
