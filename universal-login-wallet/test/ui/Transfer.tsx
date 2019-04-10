@@ -16,13 +16,13 @@ describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
   let services: Services;
   let relayer: any;
-  let provider: providers.Web3Provider;
+  let provider: providers.Provider;
   let mockTokenContract: Contract;
   const receiverAddress = '0x0000000000000000000000000000000000000001';
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: 33113}));
-    ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
+    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
+    ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [mockTokenContract.address]);
     services.tokenService.start();
     services.balanceService.start();
@@ -30,7 +30,7 @@ describe('UI: Transfer', () => {
 
   it('Creates wallet and transfers tokens', async () => {
     appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
-    const appPage = await createAndSendInitial(appWrapper, provider);
+    const appPage = await createAndSendInitial(appWrapper, provider as providers.Web3Provider);
 
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));

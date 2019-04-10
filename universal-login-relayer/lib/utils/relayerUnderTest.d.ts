@@ -3,7 +3,7 @@ import Relayer from '../../types.d.ts';
 
 declare interface Overrides {
   overridePort?: number;
-  provider?: providers.Provider;
+  provider?: providers.Web3Provider;
 }
 
 declare class RelayerUnderTest extends Relayer {

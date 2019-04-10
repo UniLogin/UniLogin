@@ -25,18 +25,18 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
 
 
 class Relayer {
-  private readonly port: string;
+  protected readonly port: string;
   private readonly hooks: EventEmitter;
-  private readonly provider: providers.Provider;
+  public provider: providers.Provider;
   private readonly wallet: Wallet;
-  private readonly database: Knex;
+  public readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
   private app: Application = {} as Application;
-  private server: Server = {} as Server;
+  protected server: Server = {} as Server;
 
-  constructor(private config: Config, provider?: providers.Provider) {
+  constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
     this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
