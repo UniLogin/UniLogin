@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {createServices} from '../../src/services/Services';
-import getConfig from '../../src/config/getConfig';
+import {createServices} from '../../../src/services/Services';
+import getConfig from '../../../src/config/getConfig';
 
 describe('Services', () => {
   it('Should create services', () => {

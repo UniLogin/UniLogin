@@ -1,6 +1,6 @@
 import React from 'react';
 import {CustomMemoryRouter} from '../helpers/CustomMemoryRouter';
-import {ServiceContext, Services} from '../../src/services/Services';
+import {ServiceContext, Services} from '../../../src/services/Services';
 import {mount} from 'enzyme';
 
 export const mountWithContext = (component: any, value: Services, initialEntries = ['/']) =>
