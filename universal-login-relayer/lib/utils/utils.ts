@@ -99,4 +99,4 @@ const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
     return requiredSignatures;
 };
 
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, messageSignatureForApprovals, withENS, lookupAddress, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures};
+export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, withENS, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures};

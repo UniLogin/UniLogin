@@ -18,7 +18,6 @@ class WalletService {
   private bytecode: string;
   private abi: Abi;
   private contractJSON: ContractJSON;
-  private useInitData: boolean;
   public pendingExecutions: Record<string, PendingExecution>;
   private readonly useInitData: boolean;
 

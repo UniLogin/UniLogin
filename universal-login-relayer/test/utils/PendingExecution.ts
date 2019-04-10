@@ -12,7 +12,7 @@ const getExecutionArgs = (msg: any) => [msg.to, msg.value, msg.data, msg.nonce, 
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
-const baseMsg = {
+const baseMsg: any = {
   to: '0x0000000000000000000000000000000000000001',
   value: utils.parseEther('0.5'),
   data: utils.formatBytes32String('0x0'),
