@@ -50,8 +50,8 @@ class TransferService {
   }
 }
 
-export function encodeTransfer (to: string, amount: string) {
-  return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)])
+export function encodeTransfer(to: string, amount: string) {
+  return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
 }
 
 export default TransferService;
