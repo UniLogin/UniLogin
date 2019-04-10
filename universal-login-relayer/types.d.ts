@@ -10,7 +10,7 @@ export declare interface RelayerConfig {
   chainSpec: {
     ensAddress: string;
     chainId: number;
-  },
+  };
   ensRegistrars: string[];
 }
 
@@ -31,7 +31,7 @@ declare class Relayer {
 
 export type RelayerClass = {
   new (config: any, provider: providers.Provider): Relayer;
-}
+};
 
 export declare interface DevelopmentRelayerConfig {
   legacyENS: boolean;
@@ -41,7 +41,7 @@ export declare interface DevelopmentRelayerConfig {
   chainSpec: {
     ensAddress: string;
     chainId: number;
-  },
+  };
   ensRegistrars: string[];
   tokenContractAddress: string;
 }

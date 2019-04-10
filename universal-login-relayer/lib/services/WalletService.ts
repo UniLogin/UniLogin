@@ -20,6 +20,7 @@ class WalletService {
   private contractJSON: ContractJSON;
   private useInitData: boolean;
   public pendingExecutions: Record<string, PendingExecution>;
+  private readonly useInitData: boolean;
 
   constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private legacyENS : boolean) {
     this.contractJSON = legacyENS ? LegacyWallet : ProxyContract;
@@ -93,13 +94,13 @@ class WalletService {
       };
       const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
       if (utils.bigNumberify(message.gasLimit as BigNumberish).gte(estimateGas)) {
-        if (message.to === message.from && isAddKeyCall(message.data)) {
-          const key = getKeyFromData(message.data);
-          await this.authorisationService.removeRequest(message.from as string, key);
+        if (message.to === message.from && isAddKeyCall(message.data as string)) {
+          const key = getKeyFromData(message.data as string);
+          await this.authorisationService.removeRequest(message.from, key);
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('added', sentTransaction);
           return sentTransaction;
-        } else if (message.to === message.from && isAddKeysCall(message.data)) {
+        } else if (message.to === message.from && isAddKeysCall(message.data as string)) {
           const sentTransaction = await this.wallet.sendTransaction(transaction);
           this.hooks.emit('keysAdded', sentTransaction);
           return sentTransaction;

@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 const config =  Object.freeze({
   legacyENS: true,
@@ -13,5 +14,3 @@ const config =  Object.freeze({
 });
 
 export default config;
-export type Config = typeof config;
-export type ChainSpecConfig = Config['chainSpec'];

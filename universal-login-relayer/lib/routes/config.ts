@@ -1,16 +1,16 @@
 import {Router, Request, Response} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
-import {ChainSpecConfig} from '../config/relayer';
+import {Network} from 'ethers/utils';
 
 
 
-export const network = (config : ChainSpecConfig) => async (req : Request, res : Response) => {
+export const network = (config : Network) => async (req : Request, res : Response) => {
   res.status(200)
     .type('json')
     .send(JSON.stringify({config}));
 };
 
-export default (config : ChainSpecConfig) => {
+export default (config : Network) => {
   const router = Router();
 
   router.get('/',

@@ -1,13 +1,16 @@
 import {utils, Contract} from 'ethers';
-import PublicResolver from '@universal-login/contracts/build/PublicResolver';
-import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar';
-import TestRegistrar from '@universal-login/contracts/build/TestRegistrar';
+import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
+import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
+import TestRegistrar from '@universal-login/contracts/build/TestRegistrar.json';
 import ENSRegistrarBase from './ENSRegistrarBase';
 import {waitToBeMined} from '@universal-login/commons';
 import {sendAndWaitForTransaction, getDeployTransaction, saveVariables} from '../utils';
 
 class DomainRegistrar extends ENSRegistrarBase {
-  async registerInRegistrar(label, labelHash, node, tld) {
+  private testRegistrar? : Contract;
+  private publicResolver? : Contract;
+
+  async registerInRegistrar(label : string, labelHash : string, node : string, tld : string) {
     const tldRegistrarAddress = await this.ens.owner(utils.namehash(tld));
     this.testRegistrar = new Contract(tldRegistrarAddress, TestRegistrar.interface, this.deployer);
     this.log(`Registrar address for ${tld}: ${tldRegistrarAddress}`);
@@ -16,15 +19,15 @@ class DomainRegistrar extends ENSRegistrarBase {
     this.log(`Registered ${label}.${tld} with owner: ${await this.ens.owner(node)}`);
   }
 
-  async setAsResolverPublicResolver(label, node, tld) {
-    this.publicResolver = new Contract(this.config.chainSpec.publicResolverAddress, PublicResolver.interface, this.deployer);
+  async setAsResolverPublicResolver(label : string, node : string, tld : string) {
+    this.publicResolver = new Contract(this.config.chainSpec.publicResolverAddress!, PublicResolver.interface, this.deployer);
     const transaction = await this.ens.setResolver(node, this.publicResolver.address);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${tld} set to ${await this.ens.resolver(node)} (public resolver)`);
-    this.variables.PUBLIC_RESOLVER_ADDRESS = this.config.chainSpec.publicResolverAddress;
+    this.variables.PUBLIC_RESOLVER_ADDRESS = this.config.chainSpec.publicResolverAddress!;
   }
 
-  async deployNewRegistrar(node) {
+  async deployNewRegistrar(node : string) {
     const registrarDeployTransaction = getDeployTransaction(FIFSRegistrar, [this.ens.address, node]);
     this.registrarAddress = await sendAndWaitForTransaction(this.deployer, registrarDeployTransaction);
     this.log(`New registrar deployed: ${this.registrarAddress}`);
@@ -32,13 +35,13 @@ class DomainRegistrar extends ENSRegistrarBase {
     return this.registrarAddress;
   }
 
-  async setRegistrarAsOwner(label, node, tld) {
+  async setRegistrarAsOwner(label : string, node : string, tld : string) {
     const transaction = await this.ens.setOwner(node, this.registrarAddress);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`${label}.${tld} owner set to: ${await this.ens.owner(node)} (registrar)`);
   }
 
-  async start(label, tld) {
+  async start(label : string, tld : string) {
     const labelHash = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${tld}`);
     this.variables.DOMAIN = `${label}.${tld}`;
@@ -50,7 +53,7 @@ class DomainRegistrar extends ENSRegistrarBase {
     await this.setRegistrarAsOwner(label, node, tld);
   }
 
-  async registerAndSave(label, tld) {
+  async registerAndSave(label : string, tld : string) {
     await this.start(label, tld);
     const filename = `./${label}.${tld}_info`;
     saveVariables(filename, this.variables);

@@ -5,7 +5,6 @@ import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import {TransferDetails} from '../../services/TransferService';
-import {Partial} from '@universal-login/commons';
 
 
 interface ModalTransferProps {

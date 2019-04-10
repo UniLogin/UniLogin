@@ -1,6 +1,8 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-module.exports = Object.freeze({
+dotenv.config();
+
+const ensRegistration = Object.freeze({
   jsonRpcUrl: process.env.JSON_RPC_URL,
   privateKey: process.env.PRIVATE_KEY,
   chainSpec: {
@@ -9,3 +11,5 @@ module.exports = Object.freeze({
     chainId: 0,
   },
 });
+
+export default ensRegistration;

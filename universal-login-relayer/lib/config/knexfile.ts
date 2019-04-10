@@ -1,6 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+const knexfile = {
 
   development: {
     client: 'postgresql',
@@ -36,3 +36,5 @@ module.exports = {
   },
 
 };
+
+export default knexfile;
