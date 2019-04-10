@@ -13,13 +13,13 @@ class UniversalLoginSDK {
   relayerApi: RelayerApi;
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
-  defaultPaymentOptions: Message;
+  defaultPaymentOptions: Partial<Message>;
   config: any;
 
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    paymentOptions?: Message,
+    paymentOptions?: Partial<Message>,
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
@@ -45,7 +45,7 @@ class UniversalLoginSDK {
     to: string,
     publicKey: string,
     privateKey: string,
-    transactionDetails: Message,
+    transactionDetails: Partial<Message>,
     keyPurpose = MANAGEMENT_KEY,
   ) {
     const key = publicKey;
@@ -105,7 +105,7 @@ class UniversalLoginSDK {
     return this.relayerApi.getConfig();
   }
 
-  async execute(message: Message, privateKey: string) {
+  async execute(message: Partial<Message>, privateKey: string) {
     const finalMessage = {
       ...this.defaultPaymentOptions,
       ...message,

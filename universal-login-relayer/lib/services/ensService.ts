@@ -8,10 +8,15 @@ interface DomainInfo {
   registrarAddress? : string;
 }
 
+interface DomainInfo {
+  resolverAddress? : string;
+  registrarAddress? : string;
+}
+
 class ENSService {
   private domainsInfo : Record<string, DomainInfo>  = {};
   private ens: Contract;
-  constructor(private ensAddress: string, private ensRegistrars: string, private provider: providers.Provider) {
+  constructor(private ensAddress: string, private ensRegistrars: string[], private provider: providers.Provider) {
     this.ens = new Contract(this.ensAddress, ENS.interface, this.provider);
   }
 
