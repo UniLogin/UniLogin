@@ -15,7 +15,7 @@ import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from '@universal-login/commons';
 
-const defaultPort = 3311;
+const defaultPort = '3311';
 
 function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
   res.status(500)
@@ -25,7 +25,7 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
 
 
 class Relayer {
-  private readonly port: number | string;
+  private readonly port: string;
   private readonly hooks: EventEmitter;
   private readonly provider: providers.Provider;
   private readonly wallet: Wallet;
