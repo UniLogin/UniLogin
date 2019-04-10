@@ -3,8 +3,7 @@ import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'e
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 const ENSBuilder = require('ens-builder');
 import {withENS} from './utils';
-import {parseDomain} from '@universal-login/commons';
-import {Config} from '@universal-login/commons';
+import {parseDomain, Config} from '@universal-login/commons';
 import {providers} from 'ethers';
 
 interface Overrides {
