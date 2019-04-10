@@ -1,34 +1,26 @@
-import {providers, utils, Contract, ContractFactory} from 'ethers';
-import ENS from '@universal-login/contracts/build/ENS';
-import PublicResolver from '@universal-login/contracts/build/PublicResolver';
-import WalletContract from '@universal-login/contracts/build/Wallet';
-import ERC20 from '@universal-login/contracts/build/ERC20';
+import {providers, utils, Contract, ContractFactory, Wallet} from 'ethers';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import defaultDeployOptions from '../config/defaultDeployOptions';
 import fs from 'fs';
-import * as migrationListResolver from 'knex/lib/migrate/migration-list-resolver';
-import {sleep, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {sleep, ETHER_NATIVE_TOKEN, ContractJSON} from '@universal-login/commons';
+import {Arrayish, BigNumberish, Network} from 'ethers/utils';
+import {TransactionRequest} from 'ethers/providers';
 
 const {namehash} = utils;
 
-const messageSignatureForApprovals = (wallet, id) =>
-  wallet.signMessage(
-    utils.arrayify(utils.solidityKeccak256(
-      ['uint256'],
-      [id]),
-    ));
-
-const withENS = (provider, ensAddress) => {
-  const chainOptions = {ensAddress, chainId: 0};
+const withENS = (provider : providers.Web3Provider, ensAddress : string) => {
+  const chainOptions = {name: 'ganache', ensAddress, chainId: 0} as Network;
   return new providers.Web3Provider(provider._web3Provider, chainOptions);
 };
 
-const isContract = async (provider, contractAddress) => {
+const isContract = async (provider : providers.Provider, contractAddress : string) => {
   // TODO: Only whitelisted contracts
   const code = await provider.getCode(contractAddress);
   return !!code;
 };
 
-const hasEnoughToken = async (gasToken, walletContractAddress, gasLimit, provider) => {
+const hasEnoughToken = async (gasToken : string, walletContractAddress : string, gasLimit : BigNumberish, provider : providers.Provider) => {
   // TODO: Only whitelisted tokens/contracts
   if (gasToken === ETHER_NATIVE_TOKEN.address) {
     const walletBalance = await provider.getBalance(walletContractAddress);
@@ -42,38 +34,30 @@ const hasEnoughToken = async (gasToken, walletContractAddress, gasLimit, provide
   }
 };
 
-const lookupAddress = async (provider, address) => {
-  const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
-  const ens = new Contract(provider.ensAddress, ENS.interface, provider);
-  const resolver = await ens.resolver(node);
-  const contract = new Contract(resolver, PublicResolver.interface, provider);
-  return contract.name(node);
-};
-
-const isAddKeyCall = (data) => {
+const isAddKeyCall = (data : string) => {
   const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
   return addKeySighash === data.slice(0, addKeySighash.length);
 };
 
-const getKeyFromData = (data) => {
+const getKeyFromData = (data : string) => {
   const codec = new utils.AbiCoder();
   const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
   const [address] = (codec.decode(['bytes32', 'uint256'], data.replace(addKeySighash.slice(2), '')));
   return utils.hexlify(utils.stripZeros(address));
 };
 
-const isAddKeysCall = (data) => {
+const isAddKeysCall = (data : string) => {
   const addKeysSighash = new utils.Interface(WalletContract.interface).functions.addKeys.sighash;
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 
-const sendAndWaitForTransaction = async (deployer, transaction) => {
+const sendAndWaitForTransaction = async (deployer : Wallet, transaction : TransactionRequest) => {
   const tx = await deployer.sendTransaction(transaction);
-  const receipt = await deployer.provider.waitForTransaction(tx.hash);
+  const receipt = await deployer.provider.waitForTransaction(tx.hash!);
   return receipt.contractAddress;
 };
 
-const getDeployTransaction = (contractJSON, args = '') => {
+const getDeployTransaction = (contractJSON : ContractJSON, args : string[] = []) => {
   const bytecode = `0x${contractJSON.bytecode}`;
   const abi = contractJSON.interface;
   const transaction = {
@@ -83,7 +67,7 @@ const getDeployTransaction = (contractJSON, args = '') => {
   return transaction;
 };
 
-const saveVariables = (filename, variables) => {
+const saveVariables = (filename : string, variables : Record<string, string>) => {
   const output = Object.entries(variables)
     .map(([key, value]) => `  ${key}='${value}'`)
     .join('\n');
@@ -94,7 +78,7 @@ const saveVariables = (filename, variables) => {
   });
 };
 
-const executionComparator = (execution1, execution2) =>  {
+const executionComparator = (execution1: any, execution2: any) =>  {
   const key1 = utils.bigNumberify(execution1.key);
   const key2 = utils.bigNumberify(execution2.key);
   if (key1.gte(key2)) {
@@ -106,10 +90,10 @@ const executionComparator = (execution1, execution2) =>  {
   }
 };
 
-const sortExecutionsByKey = (executions) =>
+const sortExecutionsByKey = (executions: any) =>
     executions.sort(executionComparator);
 
-const getRequiredSignatures = async (walletAddress, wallet) => {
+const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
     const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
     const requiredSignatures = await walletContract.requiredSignatures();
     return requiredSignatures;
