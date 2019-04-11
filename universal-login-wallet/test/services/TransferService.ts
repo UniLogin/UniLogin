@@ -14,7 +14,7 @@ chai.use(solidity);
 
 describe('TransferService', () => {
   let transferService: TransferService;
-  let provider: providers.Web3Provider;
+  let provider: providers.Provider;
   let relayer: any;
   let sdk: UniversalLoginSDK;
   let mockTokenContract: Contract;
@@ -22,9 +22,9 @@ describe('TransferService', () => {
   let tokenService: TokenService;
 
   before(async () => {
-    ({sdk, relayer, provider} = await setupSdk({overridePort: 33113}));
+    ({sdk, relayer, provider} = await setupSdk({overridePort: '33113'}));
     const [randomWallet] = await getWallets(provider);
-    ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
+    ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     const walletService = new WalletService();
     [, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
     await randomWallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});

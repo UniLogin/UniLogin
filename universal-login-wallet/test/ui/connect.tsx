@@ -17,14 +17,14 @@ chai.use(require('chai-string'));
 describe('UI: Connect', () => {
   let services : Services;
   let relayer: any;
-  let provider: providers.Web3Provider;
+  let provider: providers.Provider;
   let appWrapper: ReactWrapper;
   let privateKey : string;
   let contractAddress : string;
   const name = 'name.mylogin.eth';
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: 33113}));
+    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
     const [wallet] = await getWallets(provider);
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     services.tokenService.start();

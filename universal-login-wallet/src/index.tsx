@@ -4,7 +4,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import App from './ui/App';
 import {createServices, ServiceContext} from './services/Services';
-import getConfig from '../config/getConfig';
+import getConfig from './config/getConfig';
 import {CustomBrowserRouter} from './ui/CustomBrowserRouter';
 
 const config = getConfig();

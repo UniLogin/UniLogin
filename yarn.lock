@@ -3728,6 +3728,13 @@ ens-builder@^2.0.0:
   dependencies:
     ethers "^4.0"
 
+ens-builder@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ens-builder/-/ens-builder-2.0.1.tgz#bf19f07cfb7a0ea294138f0850f616d3b35d67f0"
+  integrity sha512-f6+JgRCT9bSVNB4bbRme57/xHoKRwvsi/xLnXT1JY3tpW9Kdmvz8hryAwRMNY02lBgKyUjtVaT5ak/0WIb6PBg==
+  dependencies:
+    ethers "^4.0"
+
 entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
