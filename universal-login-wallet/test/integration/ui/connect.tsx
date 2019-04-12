@@ -1,9 +1,9 @@
 import {ReactWrapper} from 'enzyme';
 import React from 'react';
 import {mountWithContext} from '../helpers/CustomMount';
-import App from '../../src/ui/App';
+import App from '../../../src/ui/App';
 import {providers, Wallet, utils} from 'ethers';
-import {Services} from '../../src/services/Services';
+import {Services} from '../../../src/services/Services';
 import {setupSdk} from '@universal-login/sdk/test';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';

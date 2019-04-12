@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
-import {EtherBalanceService} from '../../src/services/balance/EtherBalanceService';
+import {EtherBalanceService} from '../../../src/services/balance/EtherBalanceService';
 import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
 import {utils, providers, Wallet} from 'ethers';
-import {BalanceService} from '../../src/services/balance/BalanceService';
+import {BalanceService} from '../../../src/services/balance/BalanceService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {waitUntil} from '@universal-login/commons';

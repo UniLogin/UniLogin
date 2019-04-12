@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import CreationSerivice from '../../src/services/Creation';
-import ConnectionToWalletService from '../../src/services/ConnectToWallet';
-import WalletService from '../../src/services/WalletService';
+import CreationSerivice from '../../../src/services/Creation';
+import ConnectionToWalletService from '../../../src/services/ConnectToWallet';
+import WalletService from '../../../src/services/WalletService';
 import {setupSdk} from '@universal-login/sdk/test';
 import UniversalLoginSDK, {MANAGEMENT_KEY} from '@universal-login/sdk';
 import {Wallet, providers, utils} from 'ethers';

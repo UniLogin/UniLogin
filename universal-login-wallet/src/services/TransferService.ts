@@ -22,22 +22,21 @@ class TransferService {
     }
   }
 
-  async transferTokens({to, amount, currency} : TransferDetails) {
-    const tokenAddress = this.tokenService.getTokenAddress(currency);
+  private async transferTokens({to, amount, currency} : TransferDetails) {
     if (this.walletService.userWallet) {
-      const data = new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
+      const tokenAddress = this.tokenService.getTokenAddress(currency);
       const message = {
         from: this.walletService.userWallet.contractAddress,
         to: tokenAddress,
         value: 0,
-        data,
+        data: encodeTransfer(to, amount),
         gasToken: tokenAddress
       };
       await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
   }
 
-  async transferEther({to, amount} : TransferDetails) {
+  private async transferEther({to, amount} : TransferDetails) {
     if (this.walletService.userWallet) {
       const message = {
         from: this.walletService.userWallet.contractAddress,
@@ -49,6 +48,10 @@ class TransferService {
       await this.sdk.execute(message, this.walletService.userWallet.privateKey);
     }
   }
+}
+
+export function encodeTransfer(to: string, amount: string) {
+  return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
 }
 
 export default TransferService;
