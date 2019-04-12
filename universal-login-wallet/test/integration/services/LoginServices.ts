@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import CreationSerivice from '../../src/services/Creation';
-import ConnectionToWalletService from '../../src/services/ConnectToWallet';
-import WalletService from '../../src/services/WalletService';
+import CreationSerivice from '../../../src/services/Creation';
+import ConnectionToWalletService from '../../../src/services/ConnectToWallet';
+import WalletService from '../../../src/services/WalletService';
 import {setupSdk} from '@universal-login/sdk/test';
 import UniversalLoginSDK, {MANAGEMENT_KEY} from '@universal-login/sdk';
 import {Wallet, providers, utils} from 'ethers';
@@ -17,14 +17,14 @@ describe('Login', () => {
   let sdk: UniversalLoginSDK;
   let relayer: any;
   let wallet: Wallet;
-  let provider: providers.Web3Provider;
+  let provider: providers.Provider;
   let blockchainObserver: any;
   let name : string;
   let privateKey : string;
   let contractAddress : string;
 
   before(async () => {
-    ({sdk, relayer, provider} = await setupSdk({overridePort: 33113}));
+    ({sdk, relayer, provider} = await setupSdk({overridePort: '33113'}));
     [wallet] = await getWallets(provider);
     walletService = new WalletService();
     creationService = CreationSerivice(sdk, walletService);

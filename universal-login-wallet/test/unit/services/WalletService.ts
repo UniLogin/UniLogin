@@ -1,5 +1,5 @@
-import WalletService from '../../src/services/WalletService';
 import {expect} from 'chai';
+import WalletService from '../../../src/services/WalletService';
 
 describe('WalletService', () => {
     it('should disconnect', () => {

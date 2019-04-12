@@ -11,7 +11,6 @@ import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';
 import {ContractJSON, Abi, Message} from '@universal-login/commons';
-import {BigNumberish} from 'ethers/utils';
 
 class WalletService {
   private codec: utils.AbiCoder;
@@ -92,7 +91,7 @@ class WalletService {
         data,
       };
       const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
-      if (utils.bigNumberify(message.gasLimit as BigNumberish).gte(estimateGas)) {
+      if (utils.bigNumberify(message.gasLimit as utils.BigNumberish).gte(estimateGas)) {
         if (message.to === message.from && isAddKeyCall(message.data as string)) {
           const key = getKeyFromData(message.data as string);
           await this.authorisationService.removeRequest(message.from, key);

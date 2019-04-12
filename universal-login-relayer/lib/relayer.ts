@@ -13,8 +13,9 @@ import useragent from 'express-useragent';
 import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
+import {Config} from '@universal-login/commons';
 
-const defaultPort = 3311;
+const defaultPort = '3311';
 
 function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
   res.status(500)
@@ -22,33 +23,20 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
     .send(JSON.stringify({error: err.toString()}));
 }
 
-interface RelayerConfig {
-  legacyENS: boolean;
-  jsonRpcUrl: string;
-  port: string;
-  privateKey: string;
-  chainSpec: {
-    ensAddress: string;
-    chainId: number;
-    name: string;
-  };
-  ensRegistrars: string[];
-  walletMasterAddress: string;
-}
 
 class Relayer {
-  private readonly port: number | string;
+  protected readonly port: string;
   private readonly hooks: EventEmitter;
-  private readonly provider: providers.Provider;
+  public provider: providers.Provider;
   private readonly wallet: Wallet;
-  private readonly database: Knex;
+  public readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
   private app: Application = {} as Application;
-  private server: Server = {} as Server;
+  protected server: Server = {} as Server;
 
-  constructor(private config: RelayerConfig, provider?: providers.Provider) {
+  constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
     this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
@@ -69,9 +57,9 @@ class Relayer {
       origin : '*',
       credentials: true,
     }));
-    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
+    this.ensService = new ENSService(this.config.chainSpec.ensAddress!, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
-    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
+    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));

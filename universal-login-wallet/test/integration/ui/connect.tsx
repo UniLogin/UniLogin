@@ -1,9 +1,9 @@
 import {ReactWrapper} from 'enzyme';
 import React from 'react';
 import {mountWithContext} from '../helpers/CustomMount';
-import App from '../../src/ui/App';
+import App from '../../../src/ui/App';
 import {providers, Wallet, utils} from 'ethers';
-import {Services} from '../../src/services/Services';
+import {Services} from '../../../src/services/Services';
 import {setupSdk} from '@universal-login/sdk/test';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
@@ -17,14 +17,14 @@ chai.use(require('chai-string'));
 describe('UI: Connect', () => {
   let services : Services;
   let relayer: any;
-  let provider: providers.Web3Provider;
+  let provider: providers.Provider;
   let appWrapper: ReactWrapper;
   let privateKey : string;
   let contractAddress : string;
   const name = 'name.mylogin.eth';
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: 33113}));
+    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
     const [wallet] = await getWallets(provider);
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     services.tokenService.start();
