@@ -5,19 +5,21 @@ interface NotificationConnectionProps {
     id: number,
     deviceId: number,
     device: string,
+    deviceInfo: string,
   };
-  removeNotification: (id: number) => void;
+  confirm: (id: number) => void;
+  reject: (id: number) => void;
 }
 
-const NotificationConnection = ({data, removeNotification}: NotificationConnectionProps) => {
+const NotificationConnection = ({data, confirm, reject}: NotificationConnectionProps) => {
   return(
     <div className="notifications-item">
       <div className={`notification-connected ${data.device}`}>
-        <h3 className="notification-title">Connected</h3>
+        <h3 className="notification-title">Connected ({data.deviceInfo})</h3>
         <p className="notification-connected-id"><span>Devices ID:</span> {data.deviceId}</p>
         <div className="notification-buttons-row">
-          <button className="notification-reject-btn">Reject</button>
-          <button onClick={() => removeNotification(data.id)} className="btn btn-secondary btn-confirm">Confirm</button>
+          <button onClick={() => reject(data.id)} className="notification-reject-btn">Reject</button>
+          <button onClick={() => confirm(data.id)} className="btn btn-secondary btn-confirm">Confirm</button>
         </div>
       </div>
     </div>

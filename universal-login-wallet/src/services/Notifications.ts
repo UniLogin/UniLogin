@@ -21,7 +21,7 @@ export default class NotificationsService {
     return () => { subscription.remove(); };
   }
 
-  confirm (walletContractAddress: string, publicKey: string) {
+  async confirm (walletContractAddress: string, publicKey: string) {
     const to = walletContractAddress;
     const {privateKey} =  this.walletService.userWallet!;
     const transactionDetails = {
@@ -31,7 +31,7 @@ export default class NotificationsService {
       gasToken: ETHER_NATIVE_TOKEN.address
     };
 
-    this.sdk.addKey(to, publicKey, privateKey, transactionDetails);
+    await this.sdk.addKey(to, publicKey, privateKey, transactionDetails);
   }
 
   reject (walletContractAddress: string, publicKey: string) {

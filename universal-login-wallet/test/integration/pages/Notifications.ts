@@ -8,7 +8,7 @@ export default class NotificationsPage {
     return this.wrapper.debug();
   }
 
-  async waitForNotificationView() {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Notifications'));
+  clickConfirmButton () {
+    this.wrapper.find('.btn-confirm').simulate('click', { button: 0 });
   }
 }
