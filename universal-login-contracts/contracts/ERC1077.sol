@@ -3,7 +3,6 @@ pragma solidity ^0.5.2;
 import "./KeyHolder/KeyHolder.sol";
 import "./IERC1077.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 
