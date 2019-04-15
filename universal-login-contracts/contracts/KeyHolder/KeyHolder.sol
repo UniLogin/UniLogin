@@ -1,10 +1,10 @@
 pragma solidity ^0.5.2;
 
 import "./IKeyHolder.sol";
-import "./SafeMath.sol";
+import "./SafeMathTemp.sol";
 
 contract KeyHolder is IKeyHolder {
-    using SafeMath for uint;
+    using SafeMathTemp for uint;
 
     uint constant MAX_KEYS_PER_ADD = 5;
 
