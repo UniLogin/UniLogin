@@ -6,7 +6,7 @@ SOLC = ethereum/solc:0.5.2
 
 SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder/KeyHolder.sol \
 		  ../universal-login-contracts/contracts/KeyHolder/IKeyHolder.sol \
-		  ../universal-login-contracts/contracts/SafeMath.sol \
+		  ../universal-login-contracts/contracts/KeyHolder/SafeMath.sol \
 
 MAIN_SOL = KeyHolder.sol
 
