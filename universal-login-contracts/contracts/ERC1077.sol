@@ -9,7 +9,6 @@ import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 
 contract ERC1077 is KeyHolder, IERC1077, IERC721Receiver {
     using ECDSA for bytes32;
-    using SafeMath for uint;
 
     uint public lastNonce;
     uint public requiredSignatures;
