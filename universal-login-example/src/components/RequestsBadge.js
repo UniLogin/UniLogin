@@ -7,8 +7,9 @@ class RequestsBadge extends Component {
     super(props);
     this.walletContractService = this.props.services.walletContractService;
     this.authorisationService = this.props.services.authorisationService;
+    this.sdk = props.services.sdk;
     this.state = {
-      requests: this.authorisationService.pendingAuthorisations.length
+      requests: this.sdk.relayerObserver.lastAuthorisations.length
     };
     this.nativeNotificationService = new NativeNotificationService();
   }
