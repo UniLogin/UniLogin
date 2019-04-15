@@ -13,7 +13,6 @@ class PendingAuthorizations extends Component {
     super(props);
     this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
-    this.authorisationService = this.props.services.authorisationService;
     this.state = {
       authorisations: this.sdk.relayerObserver.lastAuthorisations
     };
@@ -24,8 +23,9 @@ class PendingAuthorizations extends Component {
     this.setState({
       authorisations: this.sdk.relayerObserver.lastAuthorisations
     });
-    this.subscription = this.authorisationService.subscribe(
-      address,
+    this.subscription = this.sdk.subscribe(
+      'AuthorisationsChanged',
+      {contractAddress: address},
       this.onAuthorisationChanged.bind(this)
     );
   }

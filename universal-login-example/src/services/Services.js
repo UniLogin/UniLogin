@@ -32,7 +32,6 @@ class Services {
     this.clickService = new ClickService(this.walletContractService, {clicker: this.config.clickerContractAddress, token: this.config.tokenContractAddress}, this.defaultPaymentOptions);
     this.historyService = new HistoryService(this.config.clickerContractAddress, this.provider, this.ensService);
     this.ensNameService = new EnsNameService(this.ensService, this.historyService);
-    this.authorisationService = new AuthorisationService(this.sdk, this.emitter);
     this.walletSelectionService = new WalletSelectionService(this.sdk, config.ensDomains);
     this.greetingService = new GreetingService(this.provider);
     this.suggestionsService = new SuggestionsService(this.walletSelectionService);
