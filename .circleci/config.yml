@@ -249,7 +249,7 @@ workflows:
                 - master
     jobs:
       - run_klab
-  fv_test:
+  fv_test_distributed:
     jobs:
       - run_klab_1:
           filters:
@@ -268,6 +268,14 @@ workflows:
           filters:
             branches:
               only: /fv.*/
+  fv_test_one_job:
+    jobs:
+      - run_klab:
+          filters:
+            branches:
+              only:
+                - /one-fv.*/
+  
   universal_login_all:
     jobs:
       - build
