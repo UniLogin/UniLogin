@@ -7,7 +7,6 @@ import ClickService from './ClickService';
 import HistoryService from './HistoryService';
 import EnsService from './EnsService';
 import EnsNameService from './EnsNameService';
-import AuthorisationService from './AuthorisationService';
 import TokenService from './TokenService';
 import WalletSelectionService from './WalletSelectionService';
 import BackupService from './BackupService';
