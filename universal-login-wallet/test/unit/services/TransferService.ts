@@ -1,17 +1,19 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import TransferService, {encodeTransfer} from '../../../src/services/TransferService';
 
 chai.use(sinonChai);
+chai.use(chaiAsPromised);
 
 describe('TransferService', () => {
   function setup() {
     const sdk = {
       execute: sinon.fake()
-    };
+    } as any;
     const walletService = {
       userWallet: {
         privateKey: 'PRIVATE_KEY',
@@ -47,18 +49,15 @@ describe('TransferService', () => {
     );
   });
 
-  it('does nothing if wallet is missing and transferring ETH', async () => {
-    const {sdk, transferService, tokenService, walletService} = setup();
+  it('throw an error if wallet missing and transferring ETH', async () => {
+    const {transferService, tokenService, walletService} = setup();
     walletService.userWallet = undefined;
-
-    await transferService.transfer({
+    await expect(transferService.transfer({
       to: 'RECIPIENT',
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
-    });
-
+    })).to.be.rejectedWith('No user wallet provided!');
     expect(tokenService.getTokenAddress).to.not.be.called;
-    expect(sdk.execute).to.not.be.called;
   });
 
   it('can transfer tokens', async () => {
@@ -84,17 +83,26 @@ describe('TransferService', () => {
     );
   });
 
-  it('does nothing if wallet is missing and transfering tokens', async () => {
-    const {sdk, transferService, tokenService, walletService} = setup();
+  it('throw an error if wallet is missing and transfering tokens', async () => {
+    const {transferService, tokenService, walletService} = setup();
     walletService.userWallet = undefined;
 
-    await transferService.transfer({
+    await expect(transferService.transfer({
       to: 'RECIPIENT',
       amount: '123',
       currency: 'TOKEN_SYMBOL'
-    });
+    })).to.be.rejectedWith('No user wallet provided!');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
-    expect(sdk.execute).to.not.be.called;
+  });
+
+  it('throw an error if not enough tokens', async () => {
+    const {transferService, sdk} = setup();
+    sdk.execute = () => { throw new Error('Not enough tokens'); };
+    await expect(transferService.transfer({
+      to: 'RECIPIENT',
+      amount: '123',
+      currency: ETHER_NATIVE_TOKEN.symbol
+    })).to.be.rejectedWith('Not enough tokens');
   });
 });

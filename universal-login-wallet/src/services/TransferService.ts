@@ -15,38 +15,37 @@ class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}
 
   async transfer(transferDetails: TransferDetails) {
-    if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
-      await this.transferEther(transferDetails);
-    } else {
-      await this.transferTokens(transferDetails);
+    if (this.walletService.userWallet) {
+      if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
+        return this.transferEther(transferDetails);
+      } else {
+        return this.transferTokens(transferDetails);
+      }
     }
+    throw new Error('No user wallet provided!');
   }
 
   private async transferTokens({to, amount, currency} : TransferDetails) {
-    if (this.walletService.userWallet) {
       const tokenAddress = this.tokenService.getTokenAddress(currency);
       const message = {
-        from: this.walletService.userWallet.contractAddress,
+        from: this.walletService.userWallet!.contractAddress,
         to: tokenAddress,
         value: 0,
         data: encodeTransfer(to, amount),
         gasToken: tokenAddress
       };
-      await this.sdk.execute(message, this.walletService.userWallet.privateKey);
-    }
+      return this.sdk.execute(message, this.walletService.userWallet!.privateKey);
   }
 
   private async transferEther({to, amount} : TransferDetails) {
-    if (this.walletService.userWallet) {
       const message = {
-        from: this.walletService.userWallet.contractAddress,
+        from: this.walletService.userWallet!.contractAddress,
         to,
         value: utils.parseEther(amount),
         data: '0x0',
         gasToken: ETHER_NATIVE_TOKEN.address
       };
-      await this.sdk.execute(message, this.walletService.userWallet.privateKey);
-    }
+      return this.sdk.execute(message, this.walletService.userWallet!.privateKey);
   }
 }
 
