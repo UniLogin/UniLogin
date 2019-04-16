@@ -1,16 +1,16 @@
 import 'jsdom-global/register';
 import React from 'react';
 import {expect} from 'chai';
-import App from '../../../src/ui/App';
 import {ReactWrapper} from 'enzyme';
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, utils} from 'ethers';
 import {getWallets} from 'ethereum-waffle';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '@universal-login/sdk/test';
+import App from '../../../src/ui/App';
 import {Services} from '../../../src/services/Services';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {createAndSendInitial} from '../helpers/utils';
+import {AppPage} from '../pages/AppPage';
 
 describe('UI: Login', () => {
     let appWrapper: ReactWrapper;
@@ -29,7 +29,12 @@ describe('UI: Login', () => {
 
     it('create wallet and disconnect roundtrip', async () => {
         appWrapper = mountWithContext(<App/>, services, ['/']);
-        const appPage = await createAndSendInitial(appWrapper, provider as providers.Web3Provider);
+        const appPage = new AppPage(appWrapper);
+        await appPage.login().pickUsername('super-name', 'create new', 'Transfer one of following');
+        const address = appPage.login().getAddress();
+        const [wallet] = await getWallets(provider);
+        await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
+        await appPage.login().waitForHomeView('2.0');
         expect(appWrapper.text().includes('2.0')).to.be.true;
         appPage.dashboard().disconnect();
         expect(appWrapper.text().includes('Type a nickname you want')).to.be.true;

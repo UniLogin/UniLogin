@@ -1,21 +1,20 @@
 import 'jsdom-global/register';
 import React from 'react';
 import {expect} from 'chai';
-import App from '../../../src/ui/App';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import {setupSdk} from '@universal-login/sdk/test';
-import {Services} from '../../../src/services/Services';
-import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
-import {mountWithContext} from '../helpers/CustomMount';
 import {deployMockToken} from '@universal-login/commons/test';
-import {createAndSendInitial} from '../helpers/utils';
+import {Services} from '../../../src/services/Services';
+import {setupUI} from '../helpers/setupUI';
+import {AppPage} from '../pages/AppPage';
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
   let services: Services;
   let relayer: any;
+  let appPage: AppPage;
   let provider: providers.Provider;
   let mockTokenContract: Contract;
   const receiverAddress = '0x0000000000000000000000000000000000000001';
@@ -23,15 +22,10 @@ describe('UI: Transfer', () => {
   before(async () => {
     ({relayer, provider} = await setupSdk({overridePort: '33113'}));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
-    services = await createPreconfiguredServices(provider, relayer, [mockTokenContract.address]);
-    services.tokenService.start();
-    services.balanceService.start();
+    ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
   });
 
   it('Creates wallet and transfers tokens', async () => {
-    appWrapper = mountWithContext(<App/>, services, ['/', '/login']);
-    const appPage = await createAndSendInitial(appWrapper, provider as providers.Web3Provider);
-
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
 
