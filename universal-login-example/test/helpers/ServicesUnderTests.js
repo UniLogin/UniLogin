@@ -17,7 +17,6 @@ class ServicesUnderTest extends Services {
       provider,
       storageService: new FakeStorageService()
     });
-    await services.start();
     return services;
   }
 }

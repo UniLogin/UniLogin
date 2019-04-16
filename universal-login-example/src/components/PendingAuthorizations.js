@@ -13,19 +13,19 @@ class PendingAuthorizations extends Component {
     super(props);
     this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
-    this.authorisationService = this.props.services.authorisationService;
     this.state = {
-      authorisations: this.authorisationService.pendingAuthorisations
+      authorisations: this.sdk.relayerObserver.lastAuthorisations
     };
   }
 
   componentDidMount() {
     const {address} = this.walletContractService.walletContract;
     this.setState({
-      authorisations: this.authorisationService.pendingAuthorisations
+      authorisations: this.sdk.relayerObserver.lastAuthorisations
     });
-    this.subscription = this.authorisationService.subscribe(
-      address,
+    this.subscription = this.sdk.subscribe(
+      'AuthorisationsChanged',
+      {contractAddress: address},
       this.onAuthorisationChanged.bind(this)
     );
   }
