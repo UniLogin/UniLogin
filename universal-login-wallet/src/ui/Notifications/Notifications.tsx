@@ -3,7 +3,6 @@ import NotificationConnection from './NotificationConnection';
 import NotificationTransaction from './NotificationTransaction';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useServices } from '../../hooks';
-import {Notification} from '@universal-login/commons';
 
 const Notifications = () => {
   const {notificationService} = useServices();
@@ -11,22 +10,9 @@ const Notifications = () => {
 
   useEffect(() => notificationService.subscribe(setNotifications));
 
-  const removeNotification = (id: number, callback: Function) => {
-    const notification: Notification = notifications.find((notification: Notification) => (
-      notification.id === id
-    ))!;
-    if (notification){
-      callback(notification.walletContractAddress, notification.key);
-    }
-  };
+  const confirmRequest = (key : string) => notificationService.confirm(key);
 
-  const confirmRequest = (id: number) => {
-    removeNotification(id,  (walletContractAddress : string, key : string) => notificationService.confirm(key));
-  };
-
-  const rejectRequest = (id: number) => {
-    removeNotification(id, async (walletContractAddress : string, key : string) => { await notificationService.reject(walletContractAddress, key); });
-  };
+  const rejectRequest = (key: string) => notificationService.reject(key);
 
   return (
     <div className="subscreen">
@@ -56,5 +42,6 @@ const Notifications = () => {
     </div>
   );
 };
+
 
 export default Notifications;

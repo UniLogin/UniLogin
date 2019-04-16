@@ -26,8 +26,8 @@ export default class NotificationsService {
     await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
   }
 
-  reject (walletContractAddress: string, publicKey: string) {
-    return this.sdk.denyRequest(walletContractAddress, publicKey);
+  async reject (publicKey: string) {
+    await this.sdk.denyRequest(this.walletService.userWallet!.contractAddress, publicKey);
   }
 
 }

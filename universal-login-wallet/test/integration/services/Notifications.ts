@@ -14,14 +14,6 @@ describe('NotificationService', () => {
   let provider : providers.Provider;
   let blockchainObserver: any;
 
-  function setup() {
-    const sdk = {
-      execute: sinon.fake()
-    };
-
-    return {sdk};
-  }
-
   before(async () => {
     ({relayer, provider} = await setupSdk({overridePort: '33113'}));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
@@ -48,7 +40,7 @@ describe('NotificationService', () => {
 
     expect(notification.key).to.not.be.null;
 
-    services.notificationService.reject(contractAddress, notification.key);
+    await services.notificationService.reject(notification.key);
     await waitUntil(() => callback.thirdCall !== null);
 
     expect(notification).to.be.undefined;
