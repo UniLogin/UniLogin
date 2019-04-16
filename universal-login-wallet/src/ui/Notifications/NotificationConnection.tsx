@@ -3,7 +3,7 @@ import {Notification} from '@universal-login/commons';
 
 
 interface NotificationConnectionProps {
-  data: any;
+  data: Notification;
   device: string;
   confirm: (id: number) => void;
   reject: (id: number) => void;

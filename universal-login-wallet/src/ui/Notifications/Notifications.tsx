@@ -12,7 +12,7 @@ const Notifications = () => {
   useEffect(() => notificationService.subscribe(setNotifications));
 
   const removeNotification = (id: number, callback: Function) => {
-    const notification: any = notifications.find((notification: any) => (
+    const notification: Notification = notifications.find((notification: Notification) => (
       notification.id === id
     ))!;
     if (notification){
