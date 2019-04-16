@@ -3,10 +3,7 @@ import avatar from './../../assets/avatar.svg';
 import {useRouter, useServices, useSubscription} from '../../hooks';
 
 
-interface UserDropdownProps {
-  setUnauthorized?: () => void;
-}
-const UserDropdown = ({setUnauthorized}: UserDropdownProps = {}) => {
+const UserDropdown = () => {
   const {walletService, userDropdownService} = useServices();
   const isExpanded = useSubscription(userDropdownService);
   const collapseDropdown = () => userDropdownService.setDropdownVisibility(false);
@@ -15,7 +12,6 @@ const UserDropdown = ({setUnauthorized}: UserDropdownProps = {}) => {
 
   const onDisconnectClick = () => {
     walletService.disconnect();
-    setUnauthorized!();
     history.push('/login');
   };
   return (

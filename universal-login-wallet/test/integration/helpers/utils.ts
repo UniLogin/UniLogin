@@ -1,8 +1,12 @@
 import {ReactWrapper} from 'enzyme';
-import {waitUntil, Predicate} from '@universal-login/commons';
+import {waitUntil, Predicate, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {AppPage} from '../pages/AppPage';
 import {utils, providers} from 'ethers';
-import {getWallets} from 'ethereum-waffle';
+import {getWallets, deployContract} from 'ethereum-waffle';
+import {createPreconfiguredServices} from './ServicesUnderTests';
+import {mountWithContext} from './CustomMount';
+import App from '../../../src/ui/App';
+import React from 'react';
 
 export const hasChangedOn = (wrapper: ReactWrapper, message: any) => {
   wrapper.update();
@@ -25,3 +29,4 @@ export const createAndSendInitial = async (appWrapper : ReactWrapper, provider: 
   await appPage.login().waitForHomeView('2.0');
   return appPage;
 };
+
