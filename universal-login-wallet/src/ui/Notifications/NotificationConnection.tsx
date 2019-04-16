@@ -13,7 +13,7 @@ const NotificationConnection = ({data, device, confirm, reject}: NotificationCon
   return(
     <div className="notifications-item">
       <div className={`notification-connected ${device}`}>
-        <h3 className="notification-title">Connected ({data.deviceInfo})</h3>
+        <h3 className="notification-title">Connected ({data.deviceInfo.os})</h3>
         <p className="notification-connected-id"><span>Devices ID:</span> {data.id}</p>
         <div className="notification-buttons-row">
           <button onClick={() => reject(data.id)} className="notification-reject-btn">Reject</button>
