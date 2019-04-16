@@ -14,9 +14,6 @@ services.tokenService.start();
 services.balanceService.start();
 services.sdk.start();
 
-const initialAuthorized = {authorized: false};
-
-
 render(
   <ServiceContext.Provider value={services}>
       <CustomBrowserRouter>

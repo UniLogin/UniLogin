@@ -5,14 +5,12 @@ export interface UserWallet {
 }
 
 export default class WalletService {
-  authorized: boolean = false;
-  setAuthorized = (value: boolean) => this.authorized = value;
-
   public userWallet?: UserWallet | null;
   walletExists = () => !!this.userWallet;
 
+  isAuthorized = () => this.walletExists();
+
   disconnect(): any {
     this.userWallet = null;
-    this.setAuthorized(false);
   }
 }

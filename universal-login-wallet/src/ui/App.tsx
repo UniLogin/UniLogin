@@ -13,7 +13,8 @@ import {useServices} from '../hooks';
 
 const App = () => {
   const {walletService} = useServices();
-  const {authorized} = walletService;
+  const authorized = walletService.isAuthorized();
+
   return(
       <Switch>
         <Route
@@ -22,7 +23,6 @@ const App = () => {
           render={props =>
               <Login
                 {...props}
-                setAuthorized={() => walletService.setAuthorized(true)}
               />
           }
         />

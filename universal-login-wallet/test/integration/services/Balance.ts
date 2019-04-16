@@ -20,8 +20,7 @@ const walletService = {
   },
   walletExists: () => true,
   disconnect: () => {},
-  authorized: false,
-  setAuthorized: (value: boolean) => walletService.authorized = value
+  isAuthorized: () => true
 };
 
 describe('Balance', () => {
@@ -33,8 +32,8 @@ describe('Balance', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
-    etherBalanceService = new EtherBalanceService(provider, walletService as any);
-    balanceService = new BalanceService(etherBalanceService as any, testTick);
+    etherBalanceService = new EtherBalanceService(provider, walletService);
+    balanceService = new BalanceService(etherBalanceService, testTick);
     balanceService.start();
   });
 
