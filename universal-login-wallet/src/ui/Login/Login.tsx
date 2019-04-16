@@ -9,11 +9,10 @@ import {utils} from 'ethers';
 const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
 
 interface LoginProps {
-  setAuthorized: Procedure;
   location? : {state: {from: {pathname : string}}};
 }
 
-const Login = ({setAuthorized, location} : LoginProps) => {
+const Login = ({location} : LoginProps) => {
   const {createWallet, modalService, balanceService, connectToWallet} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
@@ -32,7 +31,6 @@ const Login = ({setAuthorized, location} : LoginProps) => {
 
   const loginAndChangeScreen = () => {
     unsubscribe();
-    setAuthorized();
     history.push(from);
   };
 
