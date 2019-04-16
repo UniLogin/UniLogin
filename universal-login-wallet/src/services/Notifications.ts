@@ -1,7 +1,7 @@
 import {Procedure, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import WalletService from './WalletService';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {OPERATION_CALL} from '@universal-login/contracts';
+import {transactionDetails} from '../config/TransactionDetails';
 
 export default class NotificationsService {
   notifications = [];
@@ -21,17 +21,9 @@ export default class NotificationsService {
     return () => { subscription.remove(); };
   }
 
-  async confirm (walletContractAddress: string, publicKey: string) {
-    const to = walletContractAddress;
-    const {privateKey} =  this.walletService.userWallet!;
-    const transactionDetails = {
-      gasPrice: 31000000000000,
-      gasLimit: 1000000,
-      operationType: OPERATION_CALL,
-      gasToken: ETHER_NATIVE_TOKEN.address
-    };
-
-    await this.sdk.addKey(to, publicKey, privateKey, transactionDetails);
+  async confirm (publicKey: string) {
+    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
   }
 
   reject (walletContractAddress: string, publicKey: string) {

@@ -17,3 +17,10 @@ export interface Message {
   chainId: number;
   signature: string;
 }
+
+export interface Notification {
+  id: number;
+  key: string;
+  walletContractAddress: string;
+  deviceInfo: any;
+}

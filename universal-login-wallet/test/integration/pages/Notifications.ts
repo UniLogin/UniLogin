@@ -4,11 +4,14 @@ import {waitForUI} from '../helpers/utils';
 export default class NotificationsPage {
   constructor(private wrapper: ReactWrapper) {}
 
-  debug() {
-    return this.wrapper.debug();
+  async clickConfirmButton () {
+    const button = this.wrapper.find('button.btn-confirm');
+    button.simulate('click');
+    await waitForUI(this.wrapper, () => !this.wrapper.text().includes('Connected'));
   }
 
-  clickConfirmButton () {
-    this.wrapper.find('.btn-confirm').simulate('click', { button: 0 });
+  isNotificationAlert(): boolean {
+    this.wrapper.update();
+    return this.wrapper.exists('.new-notifications');
   }
 }

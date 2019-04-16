@@ -3,6 +3,7 @@ import NotificationConnection from './NotificationConnection';
 import NotificationTransaction from './NotificationTransaction';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useServices } from '../../hooks';
+import {Notification} from '@universal-login/commons';
 
 const Notifications = () => {
   const {notificationService} = useServices();
@@ -10,14 +11,8 @@ const Notifications = () => {
 
   useEffect(() => notificationService.subscribe(setNotifications));
 
-  interface Notification {
-    id: number;
-    key: string;
-    walletContractAddress: string;
-    deviceInfo: any;
-  }
   const removeNotification = (id: number, callback: Function) => {
-    const notification: Notification = notifications.find((notification: any) => (
+    const notification: any = notifications.find((notification: any) => (
       notification.id === id
     ))!;
     if (notification){
@@ -26,7 +21,7 @@ const Notifications = () => {
   };
 
   const confirmRequest = (id: number) => {
-    removeNotification(id, async (walletContractAddress : string, key : string) => { await notificationService.confirm(walletContractAddress, key); });
+    removeNotification(id,  (walletContractAddress : string, key : string) => notificationService.confirm(key));
   };
 
   const rejectRequest = (id: number) => {
@@ -50,7 +45,8 @@ const Notifications = () => {
                 <NotificationConnection
                   confirm={confirmRequest}
                   reject={rejectRequest}
-                  data={{deviceId: notification.id, id: notification.id, device: 'mobile', deviceInfo: `${notification.deviceInfo.name}, ${notification.deviceInfo.os}`}}
+                  data={notification}
+                  device="mobile"
                 />
               </CSSTransition>
             );
@@ -62,35 +58,3 @@ const Notifications = () => {
 };
 
 export default Notifications;
-
-const placeholderTransactionData = [
-  {
-    id: 1,
-    type: 'connection',
-    device: 'mobile',
-    deviceId: 123456,
-  },
-  {
-    id: 2,
-    type: 'transaction',
-    amount: 300,
-    currency: 'DAI',
-    address: '0xf902fd8B2AEE76AE81bBA106d667',
-    fee: 0.5,
-    gasPrice: 123.45,
-    gasToken: 234,
-    gasLimit: 2345.54,
-  },
-  {
-    id: 3,
-    type: 'connection',
-    device: 'tablet',
-    deviceId: 1234567,
-  },
-  {
-    id: 4,
-    type: 'connection',
-    device: 'mobile',
-    deviceId: 12345678,
-  }
-];
