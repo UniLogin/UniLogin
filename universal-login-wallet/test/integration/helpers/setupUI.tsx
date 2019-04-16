@@ -15,12 +15,12 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
   services.tokenService.start();
   services.balanceService.start();
-  
+
   const [privateKey, contractAddress] = await services.sdk.create(name);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   services.walletService.userWallet = {name, contractAddress, privateKey};
   services.walletService.setAuthorized(true);
-  
+
   const appWrapper = mountWithContext(<App/>, services, ['/']);
   const appPage = new AppPage(appWrapper);
   await appPage.login().waitForHomeView('2.0');
