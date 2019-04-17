@@ -2,7 +2,7 @@ export {sleep, waitToBeMined, waitUntil, waitForContractDeploy, sendAndWaitForTr
 export {saveVariables} from './utils/save';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
-export {Procedure, Predicate, Message} from './utils/types';
+export {Procedure, Predicate, Message, Notification, DeviceInfo} from './utils/types';
 export {copy} from './utils/copy';
 export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';

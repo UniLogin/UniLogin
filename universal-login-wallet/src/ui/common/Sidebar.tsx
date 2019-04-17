@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from '../../assets/logo.svg';
 import { NavLink } from 'react-router-dom';
 import avatar from '../../assets/avatar.svg';
 import { useServices } from '../../hooks';
 
 function Sidebar() {
-  const {userDropdownService} = useServices();
-  const [newNotifications] = useState(true);
+  const {userDropdownService, notificationService} = useServices();
+  const [newNotifications, setNewNotifications] = useState(false);
+
+  useEffect(() => notificationService.subscribe(notifications => setNewNotifications(notifications.length !== 0)));
 
   return (
     <div className="sidebar">

@@ -1,9 +1,8 @@
 pragma solidity ^0.5.2;
+
 import "./IKeyHolder.sol";
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract KeyHolder is IKeyHolder {
-    using SafeMath for uint;
 
     uint constant MAX_KEYS_PER_ADD = 5;
 
@@ -48,11 +47,10 @@ contract KeyHolder is IKeyHolder {
     }
 
     function addKey(address _key, uint256 _purpose) public onlyManagementKeyOrThisContract returns(bool success) {
-        require(_key != msg.sender);
         require(keys[_key].key != _key, "Key already added");
         keys[_key].key = _key;
         keys[_key].purpose = _purpose;
-        keyCount = keyCount.add(1);
+        keyCount = keyCount + 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
         return true;
@@ -70,13 +68,12 @@ contract KeyHolder is IKeyHolder {
     }
 
     function removeKey(address _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
-        require(_key != msg.sender); //Simplifies formal verification
         require(keys[_key].purpose == _purpose, "Invalid key");
 
         emit KeyRemoved(keys[_key].key, keys[_key].purpose);
 
         delete keys[_key];
-        keyCount = keyCount.sub(1);
+        keyCount = keyCount - 1;
 
         return true;
     }
