@@ -3,10 +3,11 @@ import NotificationConnection from './NotificationConnection';
 import NotificationTransaction from './NotificationTransaction';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useServices } from '../../hooks';
+import {Notification} from '@universal-login/commons';
 
 const Notifications = () => {
   const {notificationService} = useServices();
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([] as Notification[]);
 
   useEffect(() => notificationService.subscribe(setNotifications));
 
