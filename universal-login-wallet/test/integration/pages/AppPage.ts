@@ -3,12 +3,14 @@ import LoginPage from '../pages/LoginPage';
 import TransferPage from '../pages/TransferPage';
 import DashboardPage from '../pages/DashboardPage';
 import NotificationsPage from './Notifications';
+import ApprovalPage from './ApprovalPage';
 
 export class AppPage {
   private loginPage? : LoginPage;
   private transferPage? : TransferPage;
   private dashboarPage? : DashboardPage;
   private notificationsPage? : NotificationsPage;
+  private approvalPage?: ApprovalPage;
 
   constructor(private wrapper : ReactWrapper) {
   }
@@ -31,5 +33,10 @@ export class AppPage {
   notifications() : NotificationsPage {
     this.notificationsPage = this.notificationsPage || new NotificationsPage(this.wrapper);
     return this.notificationsPage;
+  }
+
+  waitingForApproval() : ApprovalPage {
+    this.approvalPage = this.approvalPage || new ApprovalPage(this.wrapper);
+    return this.approvalPage;
   }
 }
