@@ -11,6 +11,8 @@
     "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "cli": "ts-node ./scripts/cli",
+    "register:domain": "ts-node ./scripts/domainRegister.ts",
+    "register:name": "ts-node ./scripts/ENSNameRegister.ts",
     "clean": "rm -fr dist"
   },
   "dependencies": {

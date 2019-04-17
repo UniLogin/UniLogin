@@ -1,4 +1,6 @@
-export {sleep, waitToBeMined, waitUntil, waitForContractDeploy} from './utils/wait';
+export {sleep, waitToBeMined, waitUntil, waitForContractDeploy, sendAndWaitForTransaction} from './utils/wait';
+export {saveVariables} from './utils/save';
+export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
 export {Procedure, Predicate, Message} from './utils/types';
 export {copy} from './utils/copy';
