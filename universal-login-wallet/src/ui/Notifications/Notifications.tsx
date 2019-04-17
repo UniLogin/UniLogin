@@ -19,26 +19,16 @@ const Notifications = () => {
     <div className="subscreen">
       <h2 className="subscreen-title">Notifications:</h2>
       <TransitionGroup className="notifications-list">
-        {notifications.map((notification: any) => {
-          if (notification.type === 'transaction') {
-            return (
-              <CSSTransition key={notification.id} timeout={200} classNames="move" >
-                <NotificationTransaction key={notification.id} removeNotification={() => () => {}} data={notification}/>
-              </CSSTransition>
-            );
-          } else {
-            return (
-              <CSSTransition key={notification.id} timeout={200} classNames="move" >
-                <NotificationConnection
-                  confirm={confirmRequest}
-                  reject={rejectRequest}
-                  data={notification}
-                  device="mobile"
-                />
-              </CSSTransition>
-            );
-          }
-        })}
+        {notifications.map((notification: Notification) =>
+          <CSSTransition key={notification.id} timeout={200} classNames="move" >
+              <NotificationConnection
+                confirm={confirmRequest}
+                reject={rejectRequest}
+                data={notification}
+                device="mobile"
+              />
+            </CSSTransition>
+        )}
       </TransitionGroup>
     </div>
   );
