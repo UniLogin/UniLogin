@@ -1,9 +1,7 @@
-import {providers, utils, Contract, ContractFactory, Wallet} from 'ethers';
+import {providers, utils, Contract} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
-import defaultDeployOptions from '../config/defaultDeployOptions';
-import fs from 'fs';
-import {sleep, ETHER_NATIVE_TOKEN, ContractJSON} from '@universal-login/commons';
+import {sleep, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 const withENS = (provider : providers.Web3Provider, ensAddress : string) => {
   const chainOptions = {name: 'ganache', ensAddress, chainId: 0} as utils.Network;
@@ -47,31 +45,5 @@ const isAddKeysCall = (data : string) => {
   return addKeysSighash === data.slice(0, addKeysSighash.length);
 };
 
-const sendAndWaitForTransaction = async (deployer : Wallet, transaction : providers.TransactionRequest) => {
-  const tx = await deployer.sendTransaction(transaction);
-  const receipt = await deployer.provider.waitForTransaction(tx.hash!);
-  return receipt.contractAddress;
-};
 
-const getDeployTransaction = (contractJSON : ContractJSON, args : string[] = []) => {
-  const bytecode = `0x${contractJSON.bytecode}`;
-  const abi = contractJSON.interface;
-  const transaction = {
-    ...defaultDeployOptions,
-    ...new ContractFactory(abi, bytecode).getDeployTransaction(...args),
-  };
-  return transaction;
-};
-
-const saveVariables = (filename : string, variables : Record<string, string>) => {
-  const output = Object.entries(variables)
-    .map(([key, value]) => `  ${key}='${value}'`)
-    .join('\n');
-  fs.writeFile(filename, output, (err) => {
-    if (err) {
-      return console.error(err);
-    }
-  });
-};
-
-export {sleep, sendAndWaitForTransaction, saveVariables, getDeployTransaction, withENS, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+export {sleep, withENS, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};

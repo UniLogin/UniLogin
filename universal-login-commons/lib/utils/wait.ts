@@ -35,4 +35,10 @@ const waitForContractDeploy = async (providerOrWallet : providers.Provider | Wal
   return new Contract(<string>receipt.contractAddress, contractJSON.abi, providerOrWallet);
 };
 
-export {sleep, waitToBeMined, waitUntil, waitForContractDeploy};
+const sendAndWaitForTransaction = async (deployer : Wallet, transaction : providers.TransactionRequest) => {
+  const tx = await deployer.sendTransaction(transaction);
+  const receipt = await deployer.provider.waitForTransaction(tx.hash!);
+  return receipt.contractAddress;
+};
+
+export {sleep, waitToBeMined, waitUntil, waitForContractDeploy, sendAndWaitForTransaction};

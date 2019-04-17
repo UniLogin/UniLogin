@@ -4,11 +4,10 @@ import WalletMasterContract from '@universal-login/contracts/build/WalletMaster.
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import LegacyWallet from '@universal-login/contracts/build/LegacyWallet.json';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
-import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';
-import {ContractJSON, Abi, Message} from '@universal-login/commons';
+import {ContractJSON, Abi, Message, defaultDeployOptions} from '@universal-login/commons';
 
 class WalletService {
   private codec: utils.AbiCoder;
