@@ -4,7 +4,7 @@ import {providers} from 'ethers';
 import {Services} from '../../../src/services/Services';
 import {setupSdk} from '@universal-login/sdk/test';
 import {waitUntil, ETHER_NATIVE_TOKEN, Notification} from '@universal-login/commons';
-import ServicesUnderTest from '../helpers/ServicesUnderTests';
+import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 
 describe('NotificationService', () => {
   let relayer: any;
@@ -16,7 +16,7 @@ describe('NotificationService', () => {
 
   before(async () => {
     ({relayer, provider} = await setupSdk({overridePort: '33113'}));
-    services = await ServicesUnderTest.createPreconfigured(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
+    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     const name = 'ja.mylogin.eth';
     [privateKey, contractAddress] = await services.createWallet(name);
     ({blockchainObserver} = services.sdk);
