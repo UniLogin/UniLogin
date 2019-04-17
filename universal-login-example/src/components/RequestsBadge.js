@@ -6,17 +6,18 @@ class RequestsBadge extends Component {
   constructor(props) {
     super(props);
     this.walletContractService = this.props.services.walletContractService;
-    this.authorisationService = this.props.services.authorisationService;
+    this.sdk = props.services.sdk;
     this.state = {
-      requests: this.authorisationService.pendingAuthorisations.length
+      requests: this.sdk.relayerObserver.lastAuthorisations.length
     };
     this.nativeNotificationService = new NativeNotificationService();
   }
 
   componentDidMount() {
     const {address} = this.walletContractService.walletContract;
-    this.subscription = this.authorisationService.subscribe(
-      address,
+    this.subscription = this.sdk.subscribe(
+      'AuthorisationsChanged',
+      {contractAddress: address},
       this.onAuthorisationChanged.bind(this)
     );
   }

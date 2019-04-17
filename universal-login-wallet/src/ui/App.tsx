@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
@@ -9,9 +9,12 @@ import NotificationsScreen from './Notifications/NotificationsScreen';
 import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
+import {useServices} from '../hooks';
 
 const App = () => {
-  const [authorized, setAuthorized] = useState(false);
+  const {walletService} = useServices();
+  const authorized = walletService.isAuthorized();
+
   return(
       <Switch>
         <Route
@@ -20,7 +23,6 @@ const App = () => {
           render={props =>
               <Login
                 {...props}
-                setAuthorized={() => setAuthorized(true)}
               />
           }
         />
@@ -40,7 +42,7 @@ const App = () => {
           path="/"
           render={
             () =>
-            <HomeScreen setUnauthorized={() => setAuthorized(false)}/>
+            <HomeScreen/>
           }
         />
         <PrivateRoute

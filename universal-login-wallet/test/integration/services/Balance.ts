@@ -19,7 +19,8 @@ const walletService = {
     privateKey: '0x012345'
   },
   walletExists: () => true,
-    disconnect: () => {}
+  disconnect: () => {},
+  isAuthorized: () => true
 };
 
 describe('Balance', () => {
