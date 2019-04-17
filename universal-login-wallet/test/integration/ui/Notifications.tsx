@@ -1,15 +1,13 @@
 import React from 'react';
 import {ReactWrapper} from 'enzyme';
 import {expect} from 'chai';
-import App from '../../../src/ui/App';
 import {Services} from '../../../src/services/Services';
-import {providers, utils} from 'ethers';
+import {providers, Contract} from 'ethers';
+import {createFixtureLoader} from 'ethereum-waffle';
 import {setupSdk} from '@universal-login/sdk/test';
-import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
-import {ETHER_NATIVE_TOKEN, waitUntil} from '@universal-login/commons';
-import {mountWithContext} from '../helpers/CustomMount';
-import {createAndSendInitial} from '../helpers/utils';
 import {AppPage} from '../pages/AppPage';
+import {setupUI} from '../helpers/setupUI';
+import {deployMockToken} from '@universal-login/commons/test';
 
 describe('UI: Notifications',  () => {
   let services : Services;
@@ -17,16 +15,13 @@ describe('UI: Notifications',  () => {
   let provider : providers.Provider;
   let appWrapper : ReactWrapper;
   let appPage : AppPage;
+  let mockTokenContract: Contract;
 
   before(async () => {
     ({relayer, provider} = await setupSdk({overridePort: '33113'}));
-    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-    await services.tokenService.start();
-    services.balanceService.start();
-    await services.sdk.start();
-    appWrapper = mountWithContext(<App/>, services, ['/']);
-
-    appPage = await createAndSendInitial(appWrapper, provider);
+    ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
+    ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
+     await services.sdk.start();
   });
 
   it('Should get notification when new device connect and confirm request', async () => {
