@@ -5,54 +5,36 @@ SRC_JSON = dapp/out/KeyHolder.sol.json
 SOLC = ethereum/solc:0.5.2
 
 SRC_SOL:= ../universal-login-contracts/contracts/KeyHolder/KeyHolder.sol \
-		  ../universal-login-contracts/contracts/KeyHolder/IKeyHolder.sol
+		  ../universal-login-contracts/contracts/KeyHolder/IKeyHolder.sol 
+
+INVOKE_TESTS := do \
+					klab prove $$f > out.txt; \
+					cat out.txt; \
+					cat out.txt | grep "ACCEPT"; \
+					if [ $$? -ne 0 ]; then exit 1; fi; \
+				done;
 
 MAIN_SOL = KeyHolder.sol
 
 proof: build
 	for f in out/specs/*; \
-	do \
-		klab prove $$f > out.txt; \
-		cat out.txt; \
-		cat out.txt | grep "ACCEPT"; \
-		if [ $$? -ne 0 ]; then exit 1; fi; \
-	done;
+	$(INVOKE_TESTS)
 
 proof-1: build
 	for f in out/specs/KeyHolder_addKey*; \
-	do \
-		klab prove $$f > out.txt; \
-		cat out.txt; \
-		cat out.txt | grep "ACCEPT"; \
-		if [ $$? -ne 0 ]; then exit 1; fi; \
-	done;
+	$(INVOKE_TESTS)
 
 proof-2: build
 	for f in out/specs/KeyHolder_removeKey*; \
-	do \
-		klab prove $$f > out.txt; \
-		cat out.txt; \
-		cat out.txt | grep "ACCEPT"; \
-		if [ $$? -ne 0 ]; then exit 1; fi; \
-	done;
+	$(INVOKE_TESTS)
 
 proof-3: build
 	for f in out/specs/KeyHolder_key*; \
-	do \
-		klab prove $$f > out.txt; \
-		cat out.txt; \
-		cat out.txt | grep "ACCEPT"; \
-		if [ $$? -ne 0 ]; then exit 1; fi; \
-	done;
+	$(INVOKE_TESTS)
 
 proof-4: build
 	for f in out/specs/KeyHolder_get*; \
-	do \
-		klab prove $$f > out.txt; \
-		cat out.txt; \
-		cat out.txt | grep "ACCEPT"; \
-		if [ $$? -ne 0 ]; then exit 1; fi; \
-	done;
+	$(INVOKE_TESTS)
 
 build: $(SRC_JSON) $(SRC_SPEC)
 	klab build
