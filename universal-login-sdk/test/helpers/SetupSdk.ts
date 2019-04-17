@@ -8,7 +8,7 @@ declare interface SetupSdkOverrides {
   overridePort?: string;
 }
 
-export async function setupSdk({givenProvider = createMockProvider(), overridePort = '33111'}: SetupSdkOverrides) {
+export async function setupSdk({givenProvider = createMockProvider(), overridePort = '33111'}: SetupSdkOverrides = {}) {
   const relayer = await RelayerUnderTest.createPreconfigured({provider: givenProvider, overridePort});
   await relayer.start();
   const {provider} = relayer;
