@@ -107,11 +107,10 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
-  run_klab:
+
+  build_klab:
     docker:
       - image: circleci/node:10.15
-        environment:
-          TERM: xterm-256color
     steps:
       - checkout
       - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
@@ -119,17 +118,35 @@ jobs:
       - run: |
           cd klab
           make deps
+      - save_cache:
+            key: night-klab-build-{{ epoch }}
+            paths:
+              - ~/project
+
+  run_klab:
+    docker:
+      - image: circleci/node:10.15
+        environment:
+          TERM: xterm-256color
+    steps:
+      - restore_cache:
+          keys:
+            - night-klab-build
       - run: |
           cd klab
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof
+      - run: | 
+          sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof
+          no_output_timeout: 50m
 
   run_klab_1:
     docker:
@@ -137,23 +154,24 @@ jobs:
         environment:
           TERM: xterm-256color
     steps:
-      - checkout
-      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone https://github.com/dapphub/klab.git
-      - run: |
-          cd klab
-          make deps
+      - restore_cache:
+          keys:
+            - night-klab-build
       - run: |
           cd klab
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-1
+      - run: | 
+          sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-1
+          no_output_timeout: 50m
 
   run_klab_2:
     docker:
@@ -161,23 +179,24 @@ jobs:
         environment:
           TERM: xterm-256color
     steps:
-      - checkout
-      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone https://github.com/dapphub/klab.git
-      - run: |
-          cd klab
-          make deps
+      - restore_cache:
+          keys:
+            - night-klab-build
       - run: |
           cd klab
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-2
+      - run: | 
+          sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-2
+          no_output_timeout: 50m
 
   run_klab_3:
     docker:
@@ -185,23 +204,24 @@ jobs:
         environment:
           TERM: xterm-256color
     steps:
-      - checkout
-      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone https://github.com/dapphub/klab.git
-      - run: |
-          cd klab
-          make deps
+      - restore_cache:
+          keys:
+            - night-klab-build
       - run: |
           cd klab
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-3
+      - run: | 
+          sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-3
+          no_output_timeout: 50m
 
   run_klab_4:
     docker:
@@ -209,26 +229,28 @@ jobs:
         environment:
           TERM: xterm-256color
     steps:
-      - checkout
-      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone https://github.com/dapphub/klab.git
-      - run: |
-          cd klab
-          make deps
+      - restore_cache:
+          keys:
+            - night-klab-build
       - run: |
           cd klab
           sudo make link
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: |
-          export PATH=$PATH:/usr/local/bin
-          export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
-          export TMPDIR=/tmp
-          cd universal-login-formal-verification
-          make proof-4
+      - run: | 
+          sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+      - run:
+          command: |
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd universal-login-formal-verification
+            make proof-4
+          no_output_timeout: 50m
 
 workflows:
   version: 2
+
   nightly_formal_verification:
     triggers:
       - schedule:
@@ -238,26 +260,38 @@ workflows:
               only:
                 - master
     jobs:
-      - run_klab
-  fv_test:
+      - build_klab
+      - run_klab:
+          requires:
+            - build_klab
+
+  fv_test_distributed:
     jobs:
       - run_klab_1:
           filters:
             branches:
-              only:
-                - /fv.*/
+              only: /fv-dist.*/
       - run_klab_2:
           filters:
             branches:
-              only: /fv.*/
+              only: /fv-dist.*/
       - run_klab_3:
           filters:
             branches:
-              only: /fv.*/
+              only: /fv-dist.*/
       - run_klab_4:
           filters:
             branches:
-              only: /fv.*/
+              only: /fv-dist.*/
+
+  fv_test_one_job:
+    jobs:
+      - run_klab:
+          filters:
+            branches:
+              only:
+                - /fv-one.*/
+
   universal_login_all:
     jobs:
       - build
