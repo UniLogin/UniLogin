@@ -10,7 +10,7 @@ import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';
-import {ContractJSON, Abi, Message} from '@universal-login/commons';
+import {ContractJSON, Abi, Message, defaultDeployOptions} from '@universal-login/commons';
 
 class WalletService {
   private codec: utils.AbiCoder;

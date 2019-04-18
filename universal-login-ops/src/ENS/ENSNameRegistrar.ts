@@ -1,9 +1,9 @@
 import {utils, Contract} from 'ethers';
+import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
 import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
 import ReverseRegistrar from '@universal-login/contracts/build/ReverseRegistrar.json';
-import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
-import ENSRegistrarBase from './ENSRegistrarBase';
 import {waitToBeMined} from '@universal-login/commons';
+import ENSRegistrarBase from './ENSRegistrarBase';
 
 class ENSNameRegistrar extends ENSRegistrarBase {
   private registrar?: Contract;
