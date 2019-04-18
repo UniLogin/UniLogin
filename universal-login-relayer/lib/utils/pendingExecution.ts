@@ -1,7 +1,7 @@
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {utils, ContractFactory, Contract, Wallet} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../utils/utils';
-import {concatenateSignatures} from '@universal-login/contracts';
+import {concatenateSignatures, calculateMessageHash} from '@universal-login/contracts';
 import {Message} from '@universal-login/commons';
 
 export default class PendingExecution {
@@ -38,7 +38,7 @@ export default class PendingExecution {
     if (this.containSignature(msg.signature)) {
       throw 'Signature already collected';
     }
-    const key = await this.walletContract.getSigner(msg.from, msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType, msg.signature);
+    const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg)), msg.signature);
     const keyPurpose = await this.walletContract.getKeyPurpose(key);
     if (keyPurpose.eq(0)) {
       throw 'Invalid signature';
