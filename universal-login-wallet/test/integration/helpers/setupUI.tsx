@@ -7,21 +7,26 @@ import App from '../../../src/ui/App';
 import {AppPage} from '../pages/AppPage';
 import {mountWithContext} from './CustomMount';
 import {createPreconfiguredServices} from './ServicesUnderTests';
+import {Services} from '../../../src/services/Services';
 
 export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const name = 'name.mylogin.eth';
   const [wallet] = await getWallets(relayer.provider);
   const tokens = tokenAddress ? [tokenAddress, ETHER_NATIVE_TOKEN.address] : [ETHER_NATIVE_TOKEN.address];
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
-  services.tokenService.start();
+  await services.tokenService.start();
   services.balanceService.start();
 
   const [privateKey, contractAddress] = await services.sdk.create(name);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   services.walletService.userWallet = {name, contractAddress, privateKey};
+  const {appPage, appWrapper} = await getApp(services);
+  return {appPage, services, contractAddress, appWrapper};
+};
 
+export const getApp = async (services: Services) => {
   const appWrapper = mountWithContext(<App/>, services, ['/']);
   const appPage = new AppPage(appWrapper);
   await appPage.login().waitForHomeView('2.0');
-  return {appPage, services, contractAddress, appWrapper};
+  return {appPage, appWrapper};
 };
