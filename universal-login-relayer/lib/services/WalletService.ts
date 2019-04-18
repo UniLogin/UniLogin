@@ -6,7 +6,6 @@ import LegacyWallet from '@universal-login/contracts/build/LegacyWallet.json';
 import {calculateMessageHash} from '@universal-login/contracts';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures} from '../utils/utils';
 import PendingExecution from '../utils/pendingExecution';
-import defaultDeployOptions from '../config/defaultDeployOptions';
 import ENSService from './ensService';
 import AuthorisationService from './authorisationService';
 import {EventEmitter} from 'fbemitter';

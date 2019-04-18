@@ -1,4 +1,4 @@
-import {providers, utils, Contract} from 'ethers';
+import {providers, utils, Contract, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {sleep, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
