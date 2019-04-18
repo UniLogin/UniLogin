@@ -23,7 +23,7 @@ describe('UI: Login', () => {
         ({relayer, provider} = await setupSdk({overridePort: '33113'}));
         [wallet] = await getWallets(provider);
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-        services.tokenService.start();
+        await services.tokenService.start();
         services.balanceService.start();
     });
 

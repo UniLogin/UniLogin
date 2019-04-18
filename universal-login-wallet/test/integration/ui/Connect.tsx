@@ -27,9 +27,9 @@ describe('UI: Connect', () => {
     ({relayer, provider} = await setupSdk({overridePort: '33113'}));
     const [wallet] = await getWallets(provider);
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-    services.tokenService.start();
+    await services.tokenService.start();
     services.balanceService.start();
-    services.sdk.start();
+    await services.sdk.start();
     [privateKey, contractAddress] = await services.sdk.create(name);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
     appWrapper = mountWithContext(<App/>, services, ['/']);
