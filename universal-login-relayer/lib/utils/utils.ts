@@ -1,4 +1,4 @@
-import {providers, utils, Contract} from 'ethers';
+import {providers, utils, Contract, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {sleep, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
@@ -46,4 +46,25 @@ const isAddKeysCall = (data : string) => {
 };
 
 
-export {sleep, withENS, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall};
+const executionComparator = (execution1: any, execution2: any) =>  {
+  const key1 = utils.bigNumberify(execution1.key);
+  const key2 = utils.bigNumberify(execution2.key);
+  if (key1.gte(key2)) {
+    return 1;
+  } else if (key1 < key2) {
+    return -1;
+  } else {
+    return 0;
+  }
+};
+
+const sortExecutionsByKey = (executions: any) =>
+    executions.sort(executionComparator);
+
+const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
+    const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
+    const requiredSignatures = await walletContract.requiredSignatures();
+    return requiredSignatures;
+};
+
+export {sleep, withENS, hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures};
