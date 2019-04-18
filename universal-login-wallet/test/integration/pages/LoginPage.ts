@@ -8,10 +8,22 @@ export default class LoginPage {
   }
 
   async pickUsername(userName : string, action : string, result : string) {
+    this.inputUserName(userName);
+    await this.waitAndClickOnAction(action);
+    await this.waitForResult(result);
+  }
+
+  inputUserName(userName: string) {
     const input = this.wrapper.find('input');
     input.simulate('change', {target: {value: userName}});
+  }
+
+  async waitAndClickOnAction(action: string) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(action));
     this.wrapper.find(`#${getSuggestionId(action)}`).simulate('click');
+  }
+
+  async waitForResult(result: string) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(result));
   }
 
