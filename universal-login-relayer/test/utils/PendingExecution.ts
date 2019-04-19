@@ -1,14 +1,12 @@
 import chai, {expect} from 'chai';
 import PendingExecution from '../../lib/utils/pendingExecution';
 import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
-import {utils, Wallet, providers, Contract} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
 import {ACTION_KEY, OPERATION_CALL, calculateMessageSignature, concatenateSignatures} from '@universal-login/contracts';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 
 chai.use(solidity);
-
-const getExecutionArgs = (msg: any) => [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -128,7 +126,7 @@ describe('Pending Execution', async () => {
             } else {
                 expected = concatenateSignatures([signature1, signature0]);
             }
-            await expect(concatenatedSignatures).to.be.eq(concatenateSignatures([signature0, signature1]));
+            await expect(concatenatedSignatures).to.be.eq(expected); // concatenateSignatures([signature0, signature1]));
         });
     });
     describe('Confirm', async () => {
