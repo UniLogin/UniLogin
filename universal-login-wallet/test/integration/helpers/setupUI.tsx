@@ -21,12 +21,12 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   services.walletService.userWallet = {name, contractAddress, privateKey};
   const {appPage, appWrapper} = await getApp(services);
+  await appPage.login().waitForHomeView('2.0');
   return {appPage, services, contractAddress, appWrapper};
 };
 
 export const getApp = async (services: Services) => {
   const appWrapper = mountWithContext(<App/>, services, ['/']);
   const appPage = new AppPage(appWrapper);
-  await appPage.login().waitForHomeView('2.0');
   return {appPage, appWrapper};
 };

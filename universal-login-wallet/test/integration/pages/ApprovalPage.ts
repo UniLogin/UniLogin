@@ -1,11 +1,12 @@
 import {ReactWrapper} from 'enzyme';
+import {waitForUI} from '../helpers/utils';
 
 export default class ApprovalPage {
   constructor(private wrapper: ReactWrapper) {}
 
-  clickCancel() {
+  async clickCancel() {
     const button = this.wrapper.find('a.btn-text');
-
-    console.log(this.wrapper.debug());
+    button.simulate('click', {button: 0});
+    await waitForUI(this.wrapper, () => this.wrapper.exists('Login'), 2000);
   }
 }
