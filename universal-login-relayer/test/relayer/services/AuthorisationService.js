@@ -28,7 +28,7 @@ describe('Authorisation Service', async () => {
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
     const database = getKnex();
     authorisationService = new AuthorisationService(database);
-    walletContractService = new WalletService(wallet, null, ensService, authorisationService, new EventEmitter(), provider, {legacyENS: true});
+    walletContractService = new WalletService(wallet, null, ensService, new EventEmitter(), true);
     const transaction = await walletContractService.create(managementKey.address, 'alex.mylogin.eth');
     walletContract = await waitForContractDeploy(managementKey, WalletContract, transaction.hash);
   });
