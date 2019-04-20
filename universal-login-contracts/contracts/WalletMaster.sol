@@ -22,6 +22,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
+        keyCount = 1;
         requiredSignatures = 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
     }
@@ -39,6 +40,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
+        keyCount = 1;
         requiredSignatures = 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
