@@ -3,7 +3,7 @@ import Proxy from '../../build/Proxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {deployContract} from 'ethereum-waffle';
-import {constants, utils, Contract, Wallet, providers} from 'ethers';
+import {utils, Contract, Wallet, providers} from 'ethers';
 
 const {parseEther} = utils;
 

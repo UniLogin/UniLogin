@@ -1,5 +1,4 @@
 import React from 'react';
-import Spinner from '../../Login/Spinner';
 import ProgressBar from '../../common/ProgressBar';
 
 interface BackupCodesLoaderProps {

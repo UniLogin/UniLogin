@@ -2,7 +2,6 @@ import {waitToBeMined} from '@universal-login/commons';
 import Token from './Token.json';
 import Relayer, {RelayerConfig} from '@universal-login/relayer';
 import {utils, Contract, providers} from 'ethers';
-import {EventSubscription} from 'fbemitter';
 
 interface TokenGrantingRelayerCongig extends RelayerConfig {
   tokenContractAddress : string;
@@ -11,8 +10,6 @@ interface TokenGrantingRelayerCongig extends RelayerConfig {
 class TokenGrantingRelayer extends Relayer {
   private readonly tokenContractAddress : string;
   private tokenContract : Contract;
-  private addKeySubscription?: EventSubscription;
-  private addKeysSubscription?: EventSubscription;
 
   constructor(config : TokenGrantingRelayerCongig, provider? : providers.Provider) {
     super(config, provider);
@@ -29,14 +26,14 @@ class TokenGrantingRelayer extends Relayer {
       }
     });
 
-    this.addKeySubscription = this.hooks.addListener('added', async (transaction : utils.Transaction) => {
+    this.hooks.addListener('added', async (transaction : utils.Transaction) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash as string);
       if (receipt.status) {
         this.tokenContract.transfer(transaction.to, utils.parseEther('5'));
       }
     });
 
-    this.addKeysSubscription = this.hooks.addListener('keysAdded', async (transaction : utils.Transaction) => {
+     this.hooks.addListener('keysAdded', async (transaction : utils.Transaction) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash as string);
       if (receipt.status) {
         this.tokenContract.transfer(transaction.to, utils.parseEther('15'));
