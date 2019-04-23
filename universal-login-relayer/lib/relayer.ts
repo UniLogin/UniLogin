@@ -14,6 +14,7 @@ import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from '@universal-login/commons';
+import TransactionService from './services/TransactionService';
 
 const defaultPort = '3311';
 
@@ -33,6 +34,7 @@ class Relayer {
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
+  private transactionService: TransactionService = {} as TransactionService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
 
@@ -59,9 +61,10 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress!, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
-    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.authorisationService, this.hooks, this.provider, this.config.legacyENS);
+    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks, this.config.legacyENS);
+    this.transactionService = new TransactionService(this.wallet, this.authorisationService, this.hooks, this.provider);
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(this.walletContractService));
+    this.app.use('/wallet', WalletRouter(this.walletContractService, this.transactionService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use(errorHandler);
