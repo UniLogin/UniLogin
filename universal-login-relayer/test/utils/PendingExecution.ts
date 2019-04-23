@@ -121,18 +121,13 @@ describe('Pending Execution', async () => {
             await pendingExecution.push(msg1);
             status = await pendingExecution.getStatus();
             const concatenatedSignatures = pendingExecution.getConcatenatedSignatures();
-            const [collected0, collected1] = status.collectedSignatures;
-            console.log('address0', wallet.address);
-            console.log('address1', actionAddress);
             let expected: string;
             if (parseInt(wallet.address, 16) < parseInt(actionAddress, 16)) {
-                console.log('0 < 1');
-                expected = concatenateSignatures([collected0.signature, collected1.signature]);
+                expected = concatenateSignatures([signature0, signature1]);
             } else {
-                console.log('0 > 1');
-                expected = concatenateSignatures([collected1.signature, collected0.signature]);
+                expected = concatenateSignatures([signature1, signature0]);
             }
-            await expect(concatenatedSignatures).to.be.eq(expected); // concatenateSignatures([signature0, signature1]));
+            await expect(concatenatedSignatures).to.be.eq(expected);
         });
     });
     describe('Confirm', async () => {
