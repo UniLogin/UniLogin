@@ -15,6 +15,8 @@ import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from '@universal-login/commons';
 import TransactionService from './services/TransactionService';
+import TransactionQueueService from './services/TransactionQueueService';
+import TransactionQueueStore from './services/TransactionQueueStore';
 
 const defaultPort = '3311';
 
@@ -34,6 +36,8 @@ class Relayer {
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
+  private transactionQueueStore: TransactionQueueStore = {} as TransactionQueueStore;
+  private transactionQueueService: TransactionQueueService = {} as TransactionQueueService;
   private transactionService: TransactionService = {} as TransactionService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
@@ -50,6 +54,7 @@ class Relayer {
     await this.database.migrate.latest();
     this.runServer();
     await this.ensService.start();
+    this.transactionQueueService.start();
   }
 
   runServer() {
@@ -62,7 +67,9 @@ class Relayer {
     this.ensService = new ENSService(this.config.chainSpec.ensAddress!, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks, this.config.legacyENS);
-    this.transactionService = new TransactionService(this.wallet, this.authorisationService, this.hooks, this.provider);
+    this.transactionQueueStore = new TransactionQueueStore(this.database);
+    this.transactionQueueService = new TransactionQueueService(this.wallet, this.provider, this.transactionQueueStore);
+    this.transactionService = new TransactionService(this.wallet, this.authorisationService, this.hooks, this.provider, this.transactionQueueService);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.transactionService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
@@ -72,6 +79,7 @@ class Relayer {
   }
 
   async stop() {
+    await this.transactionQueueService.stop();
     await this.database.destroy();
     await this.server.close();
   }

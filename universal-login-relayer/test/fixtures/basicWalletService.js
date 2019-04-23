@@ -13,15 +13,20 @@ import WalletContract from '@universal-login/contracts/build/Wallet';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {getKnex} from '../../lib/utils/knexUtils';
 import TransactionService from '../../lib/services/TransactionService';
+import TransactionQueueService from '../../lib/services/TransactionQueueService';
+import TransactionQueueStore from '../../lib/services/TransactionQueueStore';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
 export default async function basicWalletService(provider, [, , wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
-  const authorisationService = new AuthorisationService(getKnex());
+  const knex = getKnex();
+  const authorisationService = new AuthorisationService(knex);
   const walletService = new WalletService(wallet, null, ensService, hooks, {legacyENS: true});
-  const transactionService = new TransactionService(wallet, authorisationService, hooks, provider);
+  const transactionQueueStore = new TransactionQueueStore(knex);
+  const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
+  const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const actionWallet = Wallet.createRandom();

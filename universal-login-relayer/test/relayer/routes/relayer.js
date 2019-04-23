@@ -7,20 +7,21 @@ import {waitForContractDeploy} from '@universal-login/commons';
 import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import {startRelayer} from './helpers';
 
 chai.use(chaiHttp);
 
-describe('E2E: Relayer - WalletContract routes', async () => {
+describe('Relayer - WalletContract routes', async () => {
   let relayer;
   let provider;
   let wallet;
   let otherWallet;
   let contract;
-  let deployer;
 
   before(async () => {
-    ({provider, wallet, otherWallet, relayer, deployer} = await startRelayer());
+    provider = createMockProvider();
+    [wallet, otherWallet] = await getWallets(provider);
+    relayer = await RelayerUnderTest.createPreconfigured({provider});
+    await relayer.start();
   });
 
   it('Create', async () => {
@@ -31,7 +32,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
-    contract = await waitForContractDeploy(provider, WalletContract, transaction.hash);
+    contract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
     expect(contract.address).to.be.properAddress;
   });
 
