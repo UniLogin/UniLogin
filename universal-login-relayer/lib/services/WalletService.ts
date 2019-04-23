@@ -11,7 +11,7 @@ class WalletService {
   private abi: Abi;
   private readonly useInitData: boolean;
 
-  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter, private legacyENS : boolean) {
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter, legacyENS : boolean) {
     const contractJSON = legacyENS ? LegacyWallet : ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;

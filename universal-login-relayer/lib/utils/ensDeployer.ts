@@ -7,11 +7,9 @@ import {parseDomain} from '@universal-login/commons';
 class ENSDeployer {
   private readonly deployer : Wallet;
   private variables : Record<string, string>;
-  private count : number;
-  constructor(private provider : providers.Provider, private deployerPrivateKey : string) {
+  constructor(provider : providers.Provider, deployerPrivateKey : string) {
     this.deployer = new Wallet(deployerPrivateKey, provider);
     this.variables = {};
-    this.count = 1;
   }
 
   save(filename : string) {
@@ -36,7 +34,6 @@ class ENSDeployer {
       const domain = registrars[count];
       const [label, tld] = parseDomain(domain);
       await builder.registerDomain(label, tld);
-      this.count += 1;
     }
   }
 

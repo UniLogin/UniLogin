@@ -1,4 +1,4 @@
-import {utils, ContractFactory, Wallet, providers} from 'ethers';
+import {utils, Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {Message, defaultDeployOptions} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
