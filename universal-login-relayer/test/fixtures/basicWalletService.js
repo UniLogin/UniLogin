@@ -12,6 +12,7 @@ import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {getKnex} from '../../lib/utils/knexUtils';
+import TransactionService from '../../lib/services/TransactionService';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -19,20 +20,21 @@ export default async function basicWalletService(provider, [wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService(getKnex());
-  const walletContractService = new WalletService(wallet, null, ensService, authorisationService, hooks, provider, {legacyENS: true});
+  const walletService = new WalletService(wallet, null, ensService, hooks, {legacyENS: true});
+  const transactionService = new TransactionService(wallet, authorisationService, hooks, provider);
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const actionWallet = Wallet.createRandom();
   const actionKey = actionWallet.privateKey;
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
-  const transaction = await walletContractService.create(wallet.address, 'alex.mylogin.eth');
+  const transaction = await walletService.create(wallet.address, 'alex.mylogin.eth');
   const walletContract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
   await walletContract.addKey(actionWallet.address, ACTION_KEY);
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   const [, otherWallet] = await getWallets(provider);
-  return {wallet, actionKey, ensService, provider, walletContractService, callback, mockToken, mockContract, authorisationService, walletContract, otherWallet};
+  return {wallet, actionKey, ensService, provider, walletService, callback, mockToken, mockContract, authorisationService, transactionService, walletContract, otherWallet};
 }
 
 export const transferMessage = {

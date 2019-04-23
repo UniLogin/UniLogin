@@ -1,6 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 import WalletService from '../services/WalletService';
+import TransactionService from '../services/TransactionService';
 
 export const create = (walletContractService : WalletService) => async (req : Request, res : Response, next : NextFunction) => {
   const {managementKey, ensName} = req.body;
@@ -14,9 +15,10 @@ export const create = (walletContractService : WalletService) => async (req : Re
   }
 };
 
-export const execution = (walletContractService : WalletService) => async (req : Request, res : Response, next : NextFunction) => {
+export const execution = (
+transactionService : TransactionService) => async (req : Request, res : Response, next : NextFunction) => {
   try {
-    const transaction = await walletContractService.executeSigned(req.body);
+    const transaction = await transactionService.executeSigned(req.body);
     res.status(201)
       .type('json')
       .send(JSON.stringify({transaction}));
@@ -25,10 +27,10 @@ export const execution = (walletContractService : WalletService) => async (req :
   }
 };
 
-export const getStatus = (walletContractService: any) => async (req: Request, res: Response, next: NextFunction) => {
+export const getStatus = (transactionContractService: TransactionService) => async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {hash} = req.params;
-    const status = await walletContractService.getStatus(hash);
+    const status = await transactionContractService.getStatus(hash);
     res.status(200)
       .type('json')
       .send(JSON.stringify(status));
@@ -37,17 +39,17 @@ export const getStatus = (walletContractService: any) => async (req: Request, re
   }
 };
 
-export default (walletContractService : any) => {
+export default (walletContractService : WalletService, transactionService: TransactionService) => {
   const router = Router();
 
   router.post('/',
     asyncMiddleware(create(walletContractService)));
 
   router.post('/execution',
-    asyncMiddleware(execution(walletContractService)));
+    asyncMiddleware(execution(transactionService)));
 
   router.get('/execution/:hash',
-    asyncMiddleware(getStatus(walletContractService)));
+    asyncMiddleware(getStatus(transactionService)));
 
   return router;
 };
