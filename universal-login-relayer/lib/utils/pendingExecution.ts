@@ -24,7 +24,7 @@ export default class PendingExecution {
 
   async getStatus() {
     return {
-      collectedSignatures: this.collectedSignatures,
+      collectedSignatures: [...this.collectedSignatures].map((execution) => execution.signature),
       totalCollected: this.collectedSignatures.length,
       required: await this.walletContract.requiredSignatures(),
       transactionHash: this.transactionHash
@@ -64,7 +64,7 @@ export default class PendingExecution {
   }
 
   getConcatenatedSignatures() {
-    const sortedExecutions = sortExecutionsByKey(this.collectedSignatures);
+    const sortedExecutions = sortExecutionsByKey([...this.collectedSignatures]);
     const sortedSignatures = sortedExecutions.map((value: any) => value.signature);
     return concatenateSignatures(sortedSignatures);
   }

@@ -16,7 +16,7 @@ import TransactionService from '../../lib/services/TransactionService';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
-export default async function basicWalletService(provider, [wallet]) {
+export default async function basicWalletService(provider, [, , wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService(getKnex());

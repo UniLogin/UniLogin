@@ -81,19 +81,18 @@ describe('Pending Execution', async () => {
         it('should push one signature', async () => {
             await pendingExecution.push(msg0);
             status = await pendingExecution.getStatus();
-            const [sig] = status.collectedSignatures;
+            const {collectedSignatures} = status;
             expect(status.collectedSignatures.length).to.be.eq(1);
-            expect(sig.signature).to.be.eq(signature0);
+            expect(collectedSignatures[0]).to.be.eq(signature0);
         });
 
         it('should push two signatures', async () => {
             await pendingExecution.push(msg0);
             await pendingExecution.push(msg1);
             status = await pendingExecution.getStatus();
-            const [sig0, sig1] = status.collectedSignatures;
+            const {collectedSignatures} = status;
             expect(status.collectedSignatures.length).to.be.eq(2);
-            expect(sig0.signature).to.be.eq(signature0);
-            expect(sig1.signature).to.be.eq(signature1);
+            expect(collectedSignatures).to.deep.eq([signature0, signature1]);
         });
 
         it('should not push invalid signature', async () => {
