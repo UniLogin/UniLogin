@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import NotificationConnection from './NotificationConnection';
-import NotificationTransaction from './NotificationTransaction';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useServices } from '../../hooks';
 import {Notification} from '@universal-login/commons';

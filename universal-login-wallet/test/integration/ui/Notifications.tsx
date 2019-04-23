@@ -1,13 +1,12 @@
-import React from 'react';
-import {ReactWrapper} from 'enzyme';
 import {expect} from 'chai';
-import {Services} from '../../../src/services/Services';
+import {ReactWrapper} from 'enzyme';
 import {providers, Contract} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
+import {deployMockToken} from '@universal-login/commons/test';
 import {setupSdk} from '@universal-login/sdk/test';
+import {Services} from '../../../src/services/Services';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../helpers/setupUI';
-import {deployMockToken} from '@universal-login/commons/test';
 
 describe('UI: Notifications',  () => {
   let services : Services;

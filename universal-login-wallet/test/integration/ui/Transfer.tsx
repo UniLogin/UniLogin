@@ -1,5 +1,3 @@
-import 'jsdom-global/register';
-import React from 'react';
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';

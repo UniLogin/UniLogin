@@ -5,7 +5,7 @@ import createWallet from '../../../src/services/Creation';
 import {deployMockToken} from '@universal-login/commons/test';
 import {createFixtureLoader, getWallets, solidity} from 'ethereum-waffle';
 import WalletService from '../../../src/services/WalletService';
-import {utils, providers, Contract, Wallet} from 'ethers';
+import {utils, providers, Contract} from 'ethers';
 import {setupSdk} from '@universal-login/sdk/test';
 import TokenService from '../../../src/services/TokenService';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';

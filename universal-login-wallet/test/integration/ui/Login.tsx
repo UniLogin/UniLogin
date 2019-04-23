@@ -2,7 +2,7 @@ import 'jsdom-global/register';
 import React from 'react';
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
-import {providers, Wallet, utils} from 'ethers';
+import {providers, utils} from 'ethers';
 import {getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '@universal-login/sdk/test';
@@ -17,11 +17,9 @@ describe('UI: Login', () => {
     let services: Services;
     let relayer: any;
     let provider: providers.Provider;
-    let wallet: Wallet;
 
     before(async () => {
         ({relayer, provider} = await setupSdk({overridePort: '33113'}));
-        [wallet] = await getWallets(provider);
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
         services.tokenService.start();
         services.balanceService.start();

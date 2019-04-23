@@ -10,7 +10,6 @@ describe('NotificationService', () => {
   let relayer: any;
   let services : Services;
   let contractAddress: string;
-  let privateKey: string;
   let provider : providers.Provider;
   let blockchainObserver: any;
 
@@ -18,7 +17,7 @@ describe('NotificationService', () => {
     ({relayer, provider} = await setupSdk({overridePort: '33113'}));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     const name = 'ja.mylogin.eth';
-    [privateKey, contractAddress] = await services.createWallet(name);
+    [, contractAddress] = await services.createWallet(name);
     ({blockchainObserver} = services.sdk);
     blockchainObserver.step = 10;
     blockchainObserver.lastBlock = 0;
