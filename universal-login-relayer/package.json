@@ -26,6 +26,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
+    "test:unit": "NODE_ENV=test mocha -r ts-node/register \"test/unit/**/*.{ts,js}\"",
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
     "build": "tsc --build tsconfig.build.json",
     "relayer:start": "node build/startRelayer.js",
