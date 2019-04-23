@@ -1,14 +1,12 @@
 import chai, {expect} from 'chai';
 import PendingExecution from '../../lib/utils/pendingExecution';
 import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
-import {utils, Wallet, providers, Contract} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
 import {ACTION_KEY, OPERATION_CALL, calculateMessageSignature, concatenateSignatures} from '@universal-login/contracts';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 
 chai.use(solidity);
-
-const getExecutionArgs = (msg: any) => [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -26,10 +24,11 @@ const baseMsg: any = {
 describe('Pending Execution', async () => {
     const sampleTx = '0x0cd49580e0e003e50dc47059bc2001f378d260ab0d8f61cdb8c4421f3635ff6d';
     const provider = createMockProvider();
-    const [wallet] = getWallets(provider);
+    const [, , wallet] = getWallets(provider);
     let walletContract: Contract;
     let pendingExecution: PendingExecution;
-    let actionKey: string;
+    let actionPrivateKey: string;
+    let actionAddress: string;
     let signature0: string;
     let signature1: string;
     let msg0: any;
@@ -40,13 +39,14 @@ describe('Pending Execution', async () => {
     beforeEach(async () => {
         walletContract = await deployContract(wallet, ERC1077, [wallet.address]);
         const actionWallet = Wallet.createRandom();
-        actionKey = actionWallet.privateKey;
+        actionPrivateKey = actionWallet.privateKey;
+        actionAddress = actionWallet.address;
         pendingExecution = new PendingExecution(walletContract.address, wallet);
         await walletContract.addKey(actionWallet.address, ACTION_KEY);
         await walletContract.setRequiredSignatures(2);
         signature0 = await calculateMessageSignature(wallet.privateKey, {...baseMsg, from: walletContract.address});
-        signature1 = await calculateMessageSignature(actionKey, {...baseMsg, from: walletContract.address});
-        const invalidSignature = await calculateMessageSignature(actionKey, {...baseMsg, from: wallet.address});
+        signature1 = await calculateMessageSignature(actionPrivateKey, {...baseMsg, from: walletContract.address});
+        const invalidSignature = await calculateMessageSignature(actionPrivateKey, {...baseMsg, from: wallet.address});
         msg0 = {...baseMsg, from: walletContract.address, signature: signature0};
         msg1 = {...baseMsg, from: walletContract.address, signature: signature1};
         invalidMsg = {...baseMsg, from: walletContract.address, signature: invalidSignature};
@@ -121,14 +121,13 @@ describe('Pending Execution', async () => {
             await pendingExecution.push(msg1);
             status = await pendingExecution.getStatus();
             const concatenatedSignatures = pendingExecution.getConcatenatedSignatures();
-            const [sig0, sig1] = status.collectedSignatures;
             let expected: string;
-            if (parseInt(wallet.address, 16) < parseInt(actionKey, 16)) {
+            if (utils.bigNumberify(wallet.address).lt(utils.bigNumberify(actionAddress))) {
                 expected = concatenateSignatures([signature0, signature1]);
             } else {
                 expected = concatenateSignatures([signature1, signature0]);
             }
-            await expect(concatenatedSignatures).to.be.eq(concatenateSignatures([signature0, signature1]));
+            await expect(concatenatedSignatures).to.be.eq(expected);
         });
     });
     describe('Confirm', async () => {

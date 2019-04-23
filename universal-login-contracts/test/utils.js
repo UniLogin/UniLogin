@@ -3,10 +3,12 @@ import PublicResolver from '../build/PublicResolver';
 
 const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(
-    utils.arrayify(utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
-      [to, from, value, data, nonce, gasToken, gasPrice, gasLimit]),
-    ));
+    getMessageArrayify({to, from, value, data, nonce, gasToken, gasPrice, gasLimit})
+   );
+
+const getMessageArrayify = (message) =>  utils.arrayify(utils.solidityKeccak256(
+  ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint'],
+  [message.to, message.from, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimit]));
 
 const messageSignatureForApprovals = (wallet, id) =>
   wallet.signMessage(
