@@ -153,9 +153,8 @@ describe('Relayer - WalletService', async () => {
           await transactionService.executeSigned({...msg, signature: signature0});
           const transaction = await transactionService.executeSigned({...msg, signature: signature1});
           const status = await transactionService.getStatus(messageHash);
-          const [sig0, sig1] = status.collectedSignatures;
-          expect(sig0.signature).to.eq(signature0);
-          expect(sig1.signature).to.eq(signature1);
+          const collectedSignatures = status.collectedSignatures;
+          expect(collectedSignatures).to.deep.eq([signature0, signature1]);
           expect(status.transactionHash).to.eq(transaction.hash);
         });
 
