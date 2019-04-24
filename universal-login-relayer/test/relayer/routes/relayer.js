@@ -7,21 +7,20 @@ import {waitForContractDeploy} from '@universal-login/commons';
 import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import MockToken from '@universal-login/contracts/build/MockToken';
+import {startRelayer} from './helpers';
 
 chai.use(chaiHttp);
 
-describe('Relayer - WalletContract routes', async () => {
+describe('E2E: Relayer - WalletContract routes', async () => {
   let relayer;
   let provider;
   let wallet;
   let otherWallet;
   let contract;
+  let deployer;
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet, otherWallet] = await getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured({provider});
-    await relayer.start();
+    ({provider, wallet, otherWallet, relayer, deployer} = await startRelayer());
   });
 
   it('Create', async () => {
@@ -32,7 +31,7 @@ describe('Relayer - WalletContract routes', async () => {
         ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
-    contract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
+    contract = await waitForContractDeploy(provider, WalletContract, transaction.hash);
     expect(contract.address).to.be.properAddress;
   });
 
@@ -40,8 +39,8 @@ describe('Relayer - WalletContract routes', async () => {
     let token;
 
     before(async () => {
-      await wallet.sendTransaction({to: contract.address, value: utils.parseEther('1.0')});
-      token = await deployContract(wallet, MockToken, []);
+      await deployer.sendTransaction({to: contract.address, value: utils.parseEther('1.0')});
+      token = await deployContract(deployer, MockToken, []);
       await token.transfer(contract.address, utils.parseEther('1.0'));
     });
 
@@ -57,7 +56,7 @@ describe('Relayer - WalletContract routes', async () => {
         gasLimit: 1000000,
         operationType: OPERATION_CALL,
       };
-      const expectedBalance = (await otherWallet.getBalance()).add(msg.value);
+      const balanceBefore = await provider.getBalance(otherWallet.address);
       const signature = await calculateMessageSignature(wallet.privateKey, msg);
       await chai.request(relayer.server)
         .post('/wallet/execution')
@@ -65,7 +64,7 @@ describe('Relayer - WalletContract routes', async () => {
           ...msg,
           signature,
         });
-      expect(await otherWallet.getBalance()).to.eq(expectedBalance);
+      expect(await provider.getBalance(otherWallet.address)).to.eq(balanceBefore.add(msg.value));
     });
   });
 

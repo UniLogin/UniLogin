@@ -1,13 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {RelayerUnderTest} from '../../../lib/utils/relayerUnderTest';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {waitForContractDeploy} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/Wallet';
+import {startRelayer, createWalletContract} from './helpers';
 
 chai.use(chaiHttp);
 
-describe('Relayer - Authorisation routes', async () => {
+describe('E2E: Relayer - Authorisation routes', async () => {
   let relayer;
   let provider;
   let wallet;
@@ -15,40 +12,31 @@ describe('Relayer - Authorisation routes', async () => {
   let contract;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, otherWallet] = await getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured({provider});
-    await relayer.start();
-    const result = await chai.request(relayer.server)
-      .post('/wallet')
-      .send({
-        managementKey: wallet.address,
-        ensName: 'marek.mylogin.eth',
-      });
-    const {transaction} = result.body;
-    contract = await waitForContractDeploy(wallet, WalletContract, transaction.hash);
+    ({provider, wallet, otherWallet, relayer} = await startRelayer());
+    contract = await createWalletContract(provider, relayer, wallet);
   });
 
-  it('add authorisation request and get authorisation request', async () => {
-    const authorisationRequest = {
-      walletContractAddress: contract.address,
-      key: wallet.address,
-    };
-
-    const authorisationResult = await chai.request(relayer.server)
+  it('create and get authorisation', async () => {
+    const result = await chai.request(relayer.server)
       .post('/authorisation')
-      .send(authorisationRequest);
-
-    expect(authorisationResult.status).to.eq(201);
+      .send({
+        walletContractAddress: contract.address,
+        key: wallet.address,
+      });
+    expect(result.status).to.eq(201);
 
     const getAuthorisationResult = await chai.request(relayer.server)
       .get(`/authorisation/${contract.address}`);
-    const [getAuthorisationResponse] = getAuthorisationResult.body.response;
 
-    expect(getAuthorisationResponse.key).to.eq(wallet.address.toLowerCase());
-    expect(getAuthorisationResponse.id).to.eq(1);
-    expect(getAuthorisationResponse.walletContractAddress).to.eq(contract.address);
-    expect(getAuthorisationResponse.deviceInfo.city).to.eq('unknown');
+    const [response] = getAuthorisationResult.body.response;
+    expect(response).to.include({
+      key: wallet.address.toLowerCase(),
+      walletContractAddress: contract.address,
+    });
+    expect(response.deviceInfo).to.deep.include({
+      city: 'unknown',
+      ipAddress: '::ffff:127.0.0.1'
+    });
   });
 
   it('get non-existing pending authorisations', async () => {
