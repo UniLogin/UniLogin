@@ -4,7 +4,7 @@ High-level specification of KeyHolder
 -  Semantics of the function `removeKey`:
 
 ```act
-behaviour removeKey-1 of KeyHolder
+behaviour removeKey of KeyHolder
 interface removeKey(address _key, uint256 _purpose)
 
 types
@@ -37,7 +37,7 @@ returns 1
 -  Semantics of the function `addKey`:
 
 ```act
-behaviour addKey-1 of KeyHolder
+behaviour addKey of KeyHolder
 interface addKey(address _key, uint256 _purpose)
 
 types

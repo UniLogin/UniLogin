@@ -1,10 +1,10 @@
 pragma solidity ^0.5.2;
 
 import "./IKeyHolder.sol";
-import "./SafeMathTemp.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract KeyHolder is IKeyHolder {
-    using SafeMathTemp for uint;
+    using SafeMath for uint;
 
     uint constant MAX_KEYS_PER_ADD = 5;
 
