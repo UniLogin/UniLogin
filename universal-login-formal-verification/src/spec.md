@@ -1,6 +1,31 @@
 High-level specification of KeyHolder
 =====================================
 
+```act
+behaviour setRequiredSignatures of ERC1077
+interface setRequiredSignatures(uint _requiredSignatures)
+
+types
+
+    X : uint256
+    Y : uint256
+
+storage
+
+    1 |-> Y
+    3 |-> X => _requiredSignatures
+    #mapping.keys[CALLER_ID].purpose |-> CallerKeyPurpose
+
+iff
+
+    VCallValue == 0
+    X =/= _requiredSignatures
+    _requiredSignatures > 0
+    _requiredSignatures <= Y
+    CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
+
+```
+
 -  Semantics of the function `removeKey`:
 
 ```act
