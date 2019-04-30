@@ -1,25 +1,9 @@
 version: 2
 jobs:
-  build_klab:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone https://github.com/dapphub/klab.git
-      - run: |
-          cd klab
-          make deps
-      - save_cache:
-            key: night-klab-build-{{ epoch }}
-            paths:
-              - ~/project  
   build:
     docker:
       - image: circleci/node:10.15
     steps:
-      - restore_cache:
-          keys:
-            - night-klab-build
       - checkout
       - run: yarn install
       - run: yarn build
@@ -132,8 +116,9 @@ jobs:
               - universal-login-{{ .Environment.CIRCLE_SHA1 }} 
       - run:
           command: |
-            sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
-            cd klab && sudo make link
+            sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
+            git clone https://github.com/dapphub/klab.git
+            cd klab && make deps && sudo make link
             export PATH=$PATH:/usr/local/bin
             export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
             export TMPDIR=/tmp
@@ -245,12 +230,10 @@ workflows:
               only:
                 - master
     jobs:
-      - build_klab
       - build
       - build_klab_specs
       - run_klab:
           requires:
-            - build_klab
             - build
             - build_klab_specs
 
