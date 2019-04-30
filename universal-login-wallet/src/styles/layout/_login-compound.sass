@@ -1,0 +1,31 @@
+.login-compound
+  position: relative
+  max-width: 500px
+  margin: 0 auto
+  padding: 123px 15px
+
+  +media(s)
+    padding: 115px 15px
+
+.login-compound::before
+  content: ''
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-size: cover
+  z-index: -1
+
+.login-compound-subtitle
+  max-width: 420px
+  margin: 0 auto 48px
+  opacity: 0.75
+  font-size: 14px
+  text-align: center
+  line-height: 21px
+
+  +media(s)
+    max-width: 274px
+    margin: 0 auto 69px
+    line-height: 23px

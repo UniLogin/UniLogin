@@ -10,6 +10,7 @@ import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
 import {useServices} from '../hooks';
+import CompoundScreen from './Compound/CompoundScreen';
 
 const App = () => {
   const {walletService} = useServices();
@@ -69,7 +70,7 @@ const App = () => {
         <PrivateRoute
           path="/compound"
           authorized={authorized}
-          render={() => <h1>Hello World</h1>}
+          render={() => <CompoundScreen />}
         />
         <Route component={NotFound}/>
       </Switch>
