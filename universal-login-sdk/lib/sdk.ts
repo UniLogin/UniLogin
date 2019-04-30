@@ -97,6 +97,24 @@ class UniversalLoginSDK {
     return this.execute(message, privateKey);
   }
 
+  async setRequiredSignatures(
+    to: string,
+    requiredSignatures: number,
+    privateKey: string,
+    transactionDetails: Message,
+  ) {
+    const data = new utils.Interface(WalletContract.interface).functions.setRequiredSignatures.encode([requiredSignatures]);
+    const message = {
+      ...transactionDetails,
+      to,
+      from: to,
+      value: 0,
+      data,
+      operationType: OPERATION_CALL,
+    };
+    return this.execute(message, privateKey);
+  }
+
   generatePrivateKey() {
     return Wallet.createRandom().privateKey;
   }

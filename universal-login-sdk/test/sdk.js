@@ -185,9 +185,23 @@ describe('SDK - integration', async () => {
         });
       });
     });
-  });
 
-  after(async () => {
-    await relayer.stop();
+    describe('change required signatures', async () => {
+      it('should change required signatures', async () => {
+        await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+        await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
+        expect(await walletContract.requiredSignatures()).to.eq(2);
+      });
+
+      it('should return transaction hash', async () => {
+        await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+        const hash = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
+        expect(hash).to.be.properHex(64);
+      });
+    });
+
+    after(async () => {
+      await relayer.stop();
+    });
   });
 });
