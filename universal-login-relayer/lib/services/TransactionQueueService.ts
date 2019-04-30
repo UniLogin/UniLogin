@@ -1,5 +1,5 @@
 import {Wallet, utils, providers} from 'ethers';
-import {sleep} from '@universal-login/commons';
+import {sleep, onCritical} from '@universal-login/commons';
 import TransactionQueueStore from './TransactionQueueStore';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
@@ -25,15 +25,10 @@ class QueuedTransactionService {
     }
   }
 
-  private onCritical (err: Error) {
-    console.error(err);
-    process.exit(1);
-  }
-
   start() {
     if (this.state !== 'running') {
       this.state = 'running';
-      this.loop().catch(this.onCritical);
+      this.loop().catch(onCritical);
     }
   }
 
