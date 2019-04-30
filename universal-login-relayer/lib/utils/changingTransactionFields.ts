@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 
-export function parseTransactionParametersToString(transaction: Partial<utils.Transaction>) {
+export function stringifyTransactionFields(transaction: Partial<utils.Transaction>) {
   return {
     ...transaction,
     value: transaction.value && transaction.value.toString(),
@@ -9,7 +9,7 @@ export function parseTransactionParametersToString(transaction: Partial<utils.Tr
   };
 }
 
-export function parseTransactionParametersToBigNumber(transaction: any) {
+export function bignumberifyTransactionFields(transaction: any) {
   return {
     ...transaction,
     value:  utils.bigNumberify(transaction.value),

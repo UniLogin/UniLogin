@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {EMPTY_ACCOUNT_ADDRESS, waitUntil, sleep, defaultDeployOptions} from '@universal-login/commons';
-import {parseTransactionParametersToBigNumber, parseTransactionParametersToString} from '../../lib/utils/parseTransaction';
+import {EMPTY_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {bignumberifyTransactionFields, stringifyTransactionFields} from '../../lib/utils/changingTransactionFields';
 
 describe('UNIT: Parsing Transaction', () => {
   const transaction: Partial<utils.Transaction> = {
@@ -18,10 +18,10 @@ describe('UNIT: Parsing Transaction', () => {
   };
 
   it('should parse BigNumber to string', () => {
-    expect(parseTransactionParametersToString(transaction)).to.deep.equal(parsedTransaction);
+    expect(stringifyTransactionFields(transaction)).to.deep.equal(parsedTransaction);
   });
 
   it('should parse string to BigNumber', () => {
-    expect(parseTransactionParametersToBigNumber(parsedTransaction)).to.deep.equal(transaction);
+    expect(bignumberifyTransactionFields(parsedTransaction)).to.deep.equal(transaction);
   });
 });
