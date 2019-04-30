@@ -22,7 +22,6 @@ const Login = ({location} : LoginProps) => {
     await createWallet(name);
     modalService.showModal('address');
     unsubscribe = balanceService.subscribe(onBalanceChange);
-    loginAndChangeScreen();
   };
 
   const onConnectionClick = async (name: string) => {
