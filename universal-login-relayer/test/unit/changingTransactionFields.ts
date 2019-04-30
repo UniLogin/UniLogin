@@ -10,6 +10,7 @@ describe('UNIT: Parsing Transaction', () => {
     gasLimit: utils.bigNumberify(3500000),
     gasPrice: utils.bigNumberify(9000000000),
   };
+
   const parsedTransaction = {
     to: EMPTY_ACCOUNT_ADDRESS,
     value: '2000000000000000000',

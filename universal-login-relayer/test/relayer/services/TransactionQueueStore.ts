@@ -31,10 +31,16 @@ describe('INT: Transaction Queue Store', async () => {
   it('transaction round trip', async () => {
     const [idFirst] = await transactionQueueStore.add(transaction);
     const [idSecond] = await transactionQueueStore.add(transaction2);
-    expect((await transactionQueueStore.getNext()).id).to.be.equal(idFirst);
-    await transactionQueueStore.remove(idFirst, {hash: '0x000'});
-    expect((await transactionQueueStore.getNext()).id).to.be.equal(idSecond);
-    await transactionQueueStore.remove(idSecond, {hash: '0x000'});
+    const id = (await transactionQueueStore.getNext()).id;
+    expect(id).to.be.equal(idFirst);
+    expect(id).to.be.a('number');
+    expect(id).to.be.at.least(1);
+    await transactionQueueStore.onSuccessRemove(idFirst, '0x000');
+    const id2 = (await transactionQueueStore.getNext()).id;
+    expect(id2).to.be.equal(idSecond);
+    expect(id2).to.be.a('number');
+    expect(id2).to.be.at.least(2);
+    await transactionQueueStore.onSuccessRemove(idSecond, '0x000');
     expect(await transactionQueueStore.getNext()).to.be.undefined;
   });
 

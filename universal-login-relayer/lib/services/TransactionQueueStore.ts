@@ -1,8 +1,8 @@
 import Knex from 'knex';
 import {utils} from 'ethers';
-import {parseTransactionParametersToString, parseTransactionParametersToBigNumber} from '../utils/parseTransaction';
+import {stringifyTransactionFields, bignumberifyTransactionFields} from '../utils/changingTransactionFields';
 
-interface QueueData {
+interface QueueItem {
   hash?: string;
   error?: string;
 }
@@ -15,7 +15,7 @@ export default class TransactionQueueStore{
   }
 
   async add(transaction: Partial<utils.Transaction>) {
-    return this.database.insert({message: parseTransactionParametersToString(transaction), created_at: this.database.fn.now()})
+    return this.database.insert({message: stringifyTransactionFields(transaction), created_at: this.database.fn.now()})
       .into(this.tableName)
       .returning('id');
   }
@@ -28,12 +28,20 @@ export default class TransactionQueueStore{
       .orderBy('created_at', 'asc')
       .select();
     if (next) {
-      next.message = parseTransactionParametersToBigNumber(next.message);
+      next.message = bignumberifyTransactionFields(next.message);
     }
     return next;
   }
 
-  remove(id: string, data: QueueData) {
+  onSuccessRemove (id: string, hash: string) {
+    return this.remove(id, {hash});
+  }
+
+  onErrorRemove (id: string, error: string) {
+    return this.remove(id, {error});
+  }
+
+  private remove(id: string, data: QueueItem) {
     return this.database(this.tableName)
       .where('id', id)
       .update(data);

@@ -1,14 +1,13 @@
 import {Wallet, utils, providers} from 'ethers';
 import {sleep} from '@universal-login/commons';
 import TransactionQueueStore from './TransactionQueueStore';
-import {throwError} from 'ethers/errors';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
 class QueuedTransactionService {
   private state: QueueState;
 
-  constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: TransactionQueueStore, private step: number = 1000){
+  constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: TransactionQueueStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
@@ -20,40 +19,53 @@ class QueuedTransactionService {
     try {
       const {hash} = await this.wallet.sendTransaction(message);
       await this.provider.waitForTransaction(hash!);
-      await this.queueTransactionStore.remove(id, {hash});
+      await this.queueTransactionStore.onSuccessRemove(id, hash!);
     } catch (error) {
-      await this.queueTransactionStore.remove(id, {error: `${error.name}:${error.message}`});
+      await this.queueTransactionStore.onErrorRemove(id, `${error.name}: ${error.message}`);
     }
+  }
+
+  private onCritical (err: Error) {
+    console.error(err);
+    process.exit(1);
   }
 
   start() {
     if (this.state !== 'running') {
       this.state = 'running';
-      this.loop().then(
-        () => {},
-        () => throwError('Loop Error', 'Loop Error', {state: this.state})
-        );
+      this.loop().catch(this.onCritical);
     }
   }
 
   async loop() {
-    while (this.state !== 'stopped') {
+    do {
       const nextTransaction = await this.queueTransactionStore.getNext();
       if (nextTransaction){
         await this.execute(nextTransaction.message, nextTransaction.id);
       } else {
-        await sleep(this.step);
+        if (this.state === 'stopping'){
+          this.state = 'stopped';
+        } else {
+          await sleep(this.tick);
+        }
       }
-      if (this.state === 'stopping') {
-        this.state = 'stopped';
-      }
-    }
+    } while (this.state !== 'stopped');
   }
 
   async stop() {
-    this.state = 'stopping';
+    this.state = 'stopped';
   }
 
+  async stopLater() {
+    this.state = 'stopping';
+    while (!this.isStopped()) {
+      await sleep(this.tick);
+    }
+  }
+
+  private isStopped() {
+    return this.state === 'stopped';
+  }
 }
 
 export default QueuedTransactionService;
