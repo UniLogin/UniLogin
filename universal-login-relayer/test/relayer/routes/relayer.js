@@ -1,8 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {RelayerUnderTest} from '../../../lib/utils/relayerUnderTest';
 import {utils} from 'ethers';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
+import {deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
