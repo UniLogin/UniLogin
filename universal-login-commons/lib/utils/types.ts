@@ -1,5 +1,4 @@
 import {utils} from 'ethers';
-import {QueryBuilder} from 'knex';
 
 export type Procedure = (...args: any[]) => void;
 
