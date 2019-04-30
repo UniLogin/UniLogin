@@ -41,12 +41,12 @@ class RelayerUnderTest extends Relayer {
     };
     const relayer = new RelayerUnderTest(config as Config, providerWithENS);
     relayer.provider = providerWithENS;
-    relayer.stop = async () => {
-      await relayer.database.delete().from('authorisations');
-      await relayer.database.destroy();
-      await relayer.server.close();
-    };
     return relayer;
+  }
+
+  async stop () {
+    await this.database.delete().from('authorisations');
+    await super.stop();
   }
 }
 
