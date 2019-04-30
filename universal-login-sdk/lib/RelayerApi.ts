@@ -28,6 +28,10 @@ export class RelayerApi {
       });
   }
 
+  async getStatus(hash: string) {
+    return this.http('GET', `/wallet/execution/${hash}`);
+  }
+
   async connect(walletContractAddress: string, key: string) {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
