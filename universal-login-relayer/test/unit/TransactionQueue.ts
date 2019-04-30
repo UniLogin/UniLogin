@@ -8,23 +8,27 @@ import transaction from '../config/transaction';
 
 use(sinonChai);
 
-class TransactionQueueArray {
+class TransactionQueueMemoryStorage {
   public database: Partial<utils.Transaction>[];
   constructor() {
     this.database = [];
   }
-  add = (transaction: Partial<utils.Transaction>) => this.database.push(transaction);
-  getNext = () => {const message = this.database.pop(); return message ? {message, id: '1'} : undefined; };
-  remove = () => {};
+  add = async (transaction: Partial<utils.Transaction>) => this.database.push(transaction);
+  getNext = async () => {const message = this.database[0]; return message ? {message, id: '1'} : undefined; };
+  onSuccessRemove = async (id: string, hash: string) => this.database.pop();
+  onErrorRemove = async (id: string, error: string) => this.database.pop();
 }
 
 describe('UNIT: Transaction Queue Service', async () => {
   let transactionQueueService: TransactionQueueService;
+  let transactionQueueMemoryStorage: TransactionQueueMemoryStorage;
   const provider: any = {waitForTransaction: () => {}};
   const wallet: any = {sendTransaction: () => 'hash'};
+  const walletReturnsNull: any = {sendTransaction: () => null};
 
   beforeEach(async () => {
-    transactionQueueService = new TransactionQueueService(wallet, provider, new TransactionQueueArray() as any, 1);
+    transactionQueueMemoryStorage = new TransactionQueueMemoryStorage();
+    transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueMemoryStorage as any, 1);
   });
 
   it('transaction round trip', async () => {
@@ -43,6 +47,14 @@ describe('UNIT: Transaction Queue Service', async () => {
 
     transactionQueueService.start();
     await waitExpect(() => expect(spy).to.be.calledTwice);
+  });
+
+  it('should throw error when hash is null', async () => {
+    transactionQueueService = new TransactionQueueService(walletReturnsNull, provider, transactionQueueMemoryStorage as any, 1);
+    transactionQueueService.start();
+    transactionQueueMemoryStorage.onErrorRemove = sinon.spy(transactionQueueMemoryStorage.onErrorRemove);
+    await transactionQueueService.add(transaction);
+    await waitExpect(() => expect(transactionQueueMemoryStorage.onErrorRemove).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
   });
 
   afterEach(async () => { await transactionQueueService.stop(); });
