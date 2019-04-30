@@ -1,10 +1,7 @@
 import React from 'react';
 import WalletSelector from '../Login/WalletSelector';
 import Modal from '../Modals/Modal';
-import {utils} from 'ethers';
 import Sidebar from '../common/Sidebar';
-
-const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
 
 const CompoundScreen = () => {
   return(
