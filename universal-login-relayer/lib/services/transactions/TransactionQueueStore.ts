@@ -1,7 +1,7 @@
 import Knex from 'knex';
 import {utils} from 'ethers';
 import {ITransactionQueueStore} from '@universal-login/commons';
-import {stringifyTransactionFields, bignumberifyTransactionFields} from '../utils/changingTransactionFields';
+import {stringifyTransactionFields, bignumberifyTransactionFields} from '../../utils/changingTransactionFields';
 
 interface QueueItem {
   hash?: string;

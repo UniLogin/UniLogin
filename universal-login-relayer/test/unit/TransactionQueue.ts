@@ -2,7 +2,7 @@ import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {waitExpect} from '@universal-login/commons';
-import TransactionQueueService from '../../lib/services/TransactionQueueService';
+import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import transaction from '../config/transaction';
 import TransactionQueueMemoryStore from '../helpers/TransactionQueueMemoryStore';
 
