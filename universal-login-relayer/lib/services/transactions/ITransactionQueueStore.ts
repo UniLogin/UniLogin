@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 
-export default interface ITransactionQueueStore {
+export interface ITransactionQueueStore {
   add: (transaction: Partial<utils.Transaction>) => Promise<string>;
   getNext: () => Promise<TransactionEntity | undefined>;
   onSuccessRemove: (id: string, hash: string) => Promise<void>;
@@ -13,3 +13,5 @@ export interface TransactionEntity {
   error: string | undefined;
   message: Partial<utils.Transaction>;
 }
+
+export default ITransactionQueueStore;

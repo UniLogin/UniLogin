@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {utils} from 'ethers';
-import {ITransactionQueueStore} from '@universal-login/commons';
+import {ITransactionQueueStore} from './ITransactionQueueStore';
 import {stringifyTransactionFields, bignumberifyTransactionFields} from '../../utils/changingTransactionFields';
 
 interface QueueItem {
@@ -8,7 +8,7 @@ interface QueueItem {
   error?: string;
 }
 
-export default class TransactionQueueStore implements ITransactionQueueStore{
+export default class TransactionQueueStore implements ITransactionQueueStore {
   public tableName: string;
 
   constructor(public database: Knex) {

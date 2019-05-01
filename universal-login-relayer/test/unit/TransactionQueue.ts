@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {waitExpect} from '@universal-login/commons';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import transaction from '../config/transaction';
-import TransactionQueueMemoryStore from '../helpers/TransactionQueueMemoryStore';
+import TransactionQueueMemoryStore from '../../lib/services/transactions/TransactionQueueMemoryStore';
 
 use(sinonChai);
 
@@ -43,5 +43,7 @@ describe('UNIT: Transaction Queue Service', async () => {
     await waitExpect(() => expect(transactionQueueMemoryStorage.onErrorRemove).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
   });
 
-  afterEach(async () => { await transactionQueueService.stopLater(); });
+  afterEach(async () => {
+    await transactionQueueService.stopLater();
+  });
 });
