@@ -33,15 +33,3 @@ export interface DeviceInfo {
   browser: string;
   time: string;
 }
-
-export interface ITransactionQueueStore {
-  add: (transaction: Partial<utils.Transaction>) => Promise<string>;
-  getNext: () => Promise<{
-    id: string;
-    hash: string | undefined;
-    error: string | undefined;
-    message: Partial<utils.Transaction>;
-  } | undefined>;
-  onSuccessRemove: (id: string, hash: string) => Promise<void>;
-  onErrorRemove: (id: string, error: string) => Promise<void>;
-}

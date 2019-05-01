@@ -1,13 +1,13 @@
 import {Wallet, utils, providers} from 'ethers';
 import {sleep, onCritical} from '@universal-login/commons';
-import TransactionQueueStore from './TransactionQueueStore';
+import ITransactionQueueStore from './ITransactionQueueStore';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
 class QueuedTransactionService {
   private state: QueueState;
 
-  constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: TransactionQueueStore, private tick: number = 100){
+  constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: ITransactionQueueStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
