@@ -11,29 +11,27 @@ INVOKE_TESTS := do \
 					if [ $$? -ne 0 ]; then exit 1; fi; \
 				done;
 
-proof: build
+proof:
 	for f in out/specs/*; \
 	$(INVOKE_TESTS)
 
-proof-1: build
+proof-1:
 	for f in out/specs/KeyHolder_addKey*; \
 	$(INVOKE_TESTS)
 
-proof-2: build
+proof-2:
 	for f in out/specs/KeyHolder_removeKey*; \
 	$(INVOKE_TESTS)
 
-proof-3: build
+proof-3:
 	for f in out/specs/KeyHolder_key*; \
 	$(INVOKE_TESTS)
 
-proof-4: build
+proof-4:
 	for f in out/specs/KeyHolder_get*; \
 	$(INVOKE_TESTS)
 
 build: 
-	cd .. && yarn install
-	cd .. && yarn build
 	mkdir -p dapp/out
 	cp ../universal-login-contracts/build/Combined-Json.json $(SRC_JSON)
 	cp -r ../universal-login-contracts/contracts dapp/contracts
