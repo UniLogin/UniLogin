@@ -1,14 +1,13 @@
 Table of Contents
 =================
 
-* [Contract ERC1077](#erc1077)
+* [Contract ERC1077](#high-level-specification-of-the-contract-erc1077)
     * [setRequiredSignatures](#setRequiredSignatures)
+* [Contract KeyHolder](#high-level-specification-of-the-contract-keyholder)
 
-#erc1077
 High-level specification of the contract ERC1077 
 ================================================
 
-#setRequiredSignatures
 - Semantics of the function `setRequiredSignatures`: 
 
 ```act
