@@ -68,8 +68,10 @@ class HistoryService {
   }
 
   async getPressLogs() {
+    const lastBlock = utils.bigNumberify(await this.provider.getBlockNumber());
+    const fromBlock = lastBlock.sub(utils.bigNumberify(500000)).toNumber();
     const filter = {
-      fromBlock: 0,
+      fromBlock,
       address: this.clickerContractAddress,
       topics: [this.pressButtonTopic]
     };
