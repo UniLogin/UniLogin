@@ -107,21 +107,26 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
-
-  build_klab:
+  build_klab_specs:
     docker:
       - image: circleci/node:10.15
     steps:
-      - run: sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
-      - run: git clone https://github.com/dapphub/klab.git
-      - run: |
-          cd klab
-          make deps
+      - restore_cache:
+          keys:
+              - universal-login-{{ .Environment.CIRCLE_SHA1 }} 
+      - run:
+          command: |
+            sudo apt-get install make gcc maven openjdk-8-jdk flex pkg-config libmpfr-dev autoconf libtool pandoc zlib1g-dev z3 libz3-dev
+            git clone https://github.com/dapphub/klab.git
+            cd klab && make deps && sudo make link
+            export PATH=$PATH:/usr/local/bin
+            export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
+            export TMPDIR=/tmp
+            cd ../universal-login-formal-verification && make build
       - save_cache:
-            key: night-klab-build-{{ epoch }}
+            key: klab-specs-{{ .Environment.CIRCLE_SHA1 }}
             paths:
               - ~/project
-
   run_klab:
     docker:
       - image: circleci/node:10.15
@@ -129,19 +134,17 @@ jobs:
           TERM: xterm-256color
     steps:
       - restore_cache:
-          keys:
-            - night-klab-build
-      - checkout
+            keys:
+                - klab-specs-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: |
-            cd klab && sudo make link
             sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+            cd klab && sudo make link
             export PATH=$PATH:/usr/local/bin
             export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
             export TMPDIR=/tmp
             cd ../universal-login-formal-verification && make proof
           no_output_timeout: 50m
-
   run_klab_1:
     docker:
       - image: circleci/node:10.15
@@ -149,19 +152,17 @@ jobs:
           TERM: xterm-256color
     steps:
       - restore_cache:
-          keys:
-            - night-klab-build
-      - checkout
+            keys:
+                - klab-specs-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: |
-            cd klab && sudo make link
             sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+            cd klab && sudo make link
             export PATH=$PATH:/usr/local/bin
             export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
             export TMPDIR=/tmp
             cd ../universal-login-formal-verification && make proof-1
           no_output_timeout: 50m
-
   run_klab_2:
     docker:
       - image: circleci/node:10.15
@@ -169,19 +170,17 @@ jobs:
           TERM: xterm-256color
     steps:
       - restore_cache:
-          keys:
-            - night-klab-build
-      - checkout
+            keys:
+                - klab-specs-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: |
-            cd klab && sudo make link
             sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+            cd klab && sudo make link
             export PATH=$PATH:/usr/local/bin
             export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
             export TMPDIR=/tmp
             cd ../universal-login-formal-verification && make proof-2
           no_output_timeout: 50m
-
   run_klab_3:
     docker:
       - image: circleci/node:10.15
@@ -189,19 +188,17 @@ jobs:
           TERM: xterm-256color
     steps:
       - restore_cache:
-          keys:
-            - night-klab-build
-      - checkout
+            keys:
+                - klab-specs-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: |
-            cd klab && sudo make link
             sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+            cd klab && sudo make link
             export PATH=$PATH:/usr/local/bin
             export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
             export TMPDIR=/tmp
             cd ../universal-login-formal-verification && make proof-3
           no_output_timeout: 50m
-
   run_klab_4:
     docker:
       - image: circleci/node:10.15
@@ -209,13 +206,12 @@ jobs:
           TERM: xterm-256color
     steps:
       - restore_cache:
-          keys:
-            - night-klab-build
-      - checkout
+            keys:
+                - klab-specs-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: |
-            cd klab && sudo make link
             sudo apt-get install openjdk-8-jdk flex z3 libz3-dev
+            cd klab && sudo make link
             export PATH=$PATH:/usr/local/bin
             export KLAB_EVMS_PATH=/home/circleci/project/klab/evm-semantics
             export TMPDIR=/tmp
@@ -234,37 +230,12 @@ workflows:
               only:
                 - master
     jobs:
-      - build_klab
+      - build
+      - build_klab_specs
       - run_klab:
           requires:
-            - build_klab
-
-  fv_test_distributed:
-    jobs:
-      - run_klab_1:
-          filters:
-            branches:
-              only: /fv-dist.*/
-      - run_klab_2:
-          filters:
-            branches:
-              only: /fv-dist.*/
-      - run_klab_3:
-          filters:
-            branches:
-              only: /fv-dist.*/
-      - run_klab_4:
-          filters:
-            branches:
-              only: /fv-dist.*/
-
-  fv_test_one_job:
-    jobs:
-      - run_klab:
-          filters:
-            branches:
-              only:
-                - /fv-one.*/
+            - build
+            - build_klab_specs
 
   universal_login_all:
     jobs:
@@ -293,5 +264,42 @@ workflows:
       - lint:
           requires:
             - build
+      - build_klab_specs:
+          filters:
+            branches:
+              only: /fv-.*/
+          requires:
+            - build
+      - run_klab_1:
+          filters:
+            branches:
+              only: /fv-dist.*/
+          requires:
+            - build_klab_specs
+      - run_klab_2:
+          filters:
+            branches:
+              only: /fv-dist.*/
+          requires:
+            - build_klab_specs
+      - run_klab_3:
+          filters:
+            branches:
+              only: /fv-dist.*/
+          requires:
+            - build_klab_specs
+      - run_klab_4:
+          filters:
+            branches:
+              only: /fv-dist.*/
+          requires:
+            - build_klab_specs
+      - run_klab:
+          filters:
+            branches:
+              only:
+                - /fv-one.*/
+          requires:
+            - build_klab_specs
 
 
