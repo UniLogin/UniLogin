@@ -12,9 +12,9 @@ import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {getKnex} from '../../lib/utils/knexUtils';
-import TransactionService from '../../lib/services/TransactionService';
-import TransactionQueueService from '../../lib/services/TransactionQueueService';
-import TransactionQueueStore from '../../lib/services/TransactionQueueStore';
+import TransactionService from '../../lib/services/transactions/TransactionService';
+import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
+import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 

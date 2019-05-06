@@ -14,9 +14,9 @@ import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from '@universal-login/commons';
-import TransactionService from './services/TransactionService';
-import TransactionQueueService from './services/TransactionQueueService';
-import TransactionQueueStore from './services/TransactionQueueStore';
+import TransactionService from './services/transactions/TransactionService';
+import TransactionQueueService from './services/transactions/TransactionQueueService';
+import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 
 const defaultPort = '3311';
 

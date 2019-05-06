@@ -3,9 +3,9 @@ import {EventEmitter} from 'fbemitter';
 import {Message, defaultDeployOptions} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
-import PendingExecution from '../utils/pendingExecution';
-import AuthorisationService from './authorisationService';
+import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../../utils/utils';
+import PendingExecution from '../../utils/pendingExecution';
+import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
 
 class TransactionService {
