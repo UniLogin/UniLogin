@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {getKnex} from '../../../lib/utils/knexUtils';
-import TransactionQueueStore from '../../../lib/services/TransactionQueueStore';
+import TransactionQueueStore from '../../../lib/services/transactions/TransactionQueueStore';
 import transaction from '../../config/transaction';
 
 const transaction2 = {

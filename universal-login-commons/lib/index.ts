@@ -4,6 +4,7 @@ export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
 export {Procedure, Predicate, Message, Notification, DeviceInfo} from './utils/types';
 export {copy} from './utils/copy';
+export {onCritical} from './utils/error';
 export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';
 export {TokenService} from './services/TokenService';
