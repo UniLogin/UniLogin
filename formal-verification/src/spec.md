@@ -44,7 +44,7 @@ iff
 
 # High-level specification of the contract KeyHolder
 
-##removeKey
+## removeKey
 Semantics of the function `removeKey`:
 
 ```act
@@ -78,7 +78,7 @@ returns 1
 
 ```
 
-##addKey
+## addKey
 Semantics of the function `addKey`:
 
 ```act
@@ -110,7 +110,7 @@ returns 1
 
 ```
 
-##keyHasPurpose
+## keyHasPurpose
 Semantics of the function `keyHasPurpose`, case when `true` is returned:
 
 ```act
@@ -155,7 +155,7 @@ returns 0
 
 ```
 
-##getKeyPurpose
+## getKeyPurpose
 Semantics of the function `getKeyPurpose`:
 
 ```act
@@ -178,7 +178,7 @@ returns X
 
 ```
 
-##keyExist
+## keyExist
 Semantics of the function `keyExist`, case when `true` is returned:
 
 ```act
