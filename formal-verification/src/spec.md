@@ -4,10 +4,12 @@ Table of Contents
     * [Contract ERC1077](#erc1077)
         * [setRequiredSignatures](#setRequiredSignatures)
 
-High-level specification of the contract ERC1077 #erc1077
+#erc1077
+High-level specification of the contract ERC1077 
 ================================================
 
-- Semantics of the function `setRequiredSignatures`: #setRequiredSignatures
+#setRequiredSignatures
+- Semantics of the function `setRequiredSignatures`: 
 
 ```act
 behaviour setRequiredSignatures of ERC1077
