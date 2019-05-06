@@ -13,8 +13,13 @@ Table of Contents
 
 # High-level specification of the contract ERC1077 
 
+- Solidity source of the contract: [ERC1077](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/ERC1077.sol)
+
 ## setRequiredSignatures
-Semantics of the function `setRequiredSignatures`: 
+
+- Solidity source of the function: [setRequiredSignatures](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/ERC1077.sol#L44)
+
+- ACT semantics: 
 
 ```act
 behaviour setRequiredSignatures of ERC1077
@@ -44,8 +49,13 @@ iff
 
 # High-level specification of the contract KeyHolder
 
+- Solidity source of the contract: [KeyHolder](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/KeyHolder/KeyHolder.sol)
+
 ## removeKey
-Semantics of the function `removeKey`:
+
+- Solidity source of the function: [removeKey](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/KeyHolder/KeyHolder.sol#L73)
+
+- ACT semantics:
 
 ```act
 behaviour removeKey of KeyHolder
@@ -79,7 +89,10 @@ returns 1
 ```
 
 ## addKey
-Semantics of the function `addKey`:
+
+- Solidity source of the function: [addKey](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/KeyHolder/KeyHolder.sol#L51)
+
+- ACT semantics:
 
 ```act
 behaviour addKey of KeyHolder
@@ -111,7 +124,10 @@ returns 1
 ```
 
 ## keyHasPurpose
-Semantics of the function `keyHasPurpose`, case when `true` is returned:
+
+- Solidity source of the function: [keyHasPurpose](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/KeyHolder/KeyHolder.sol#L47)
+
+- ACT semantics, case when `true` is returned:
 
 ```act
 behaviour keyHasPurpose-succ of KeyHolder
@@ -129,7 +145,7 @@ returns 1
 
 ```
 
-Semantics of the function `keyHasPurpose`, case when `false` is returned:
+- ACT semantics, case when `false` is returned:
 
 ```act
 behaviour keyHasPurpose-fail of KeyHolder
@@ -156,7 +172,10 @@ returns 0
 ```
 
 ## getKeyPurpose
-Semantics of the function `getKeyPurpose`:
+
+- Solidity source of the function: [getKeyPurpose](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/KeyHolder/KeyHolder.sol#L43)
+
+- ACT semantics:
 
 ```act
 behaviour getKeyPurpose of KeyHolder
@@ -179,7 +198,10 @@ returns X
 ```
 
 ## keyExist
-Semantics of the function `keyExist`, case when `true` is returned:
+
+- Solidity source of the function: [keyExist](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-contracts/contracts/KeyHolder/KeyHolder.sol#L39)
+
+- ACT semantics, case when `true` is returned:
 
 ```act
 behaviour keyExist-succ of KeyHolder
@@ -205,7 +227,7 @@ returns 1
 
 ```
 
-Semantics of the function `keyExist`, case when `false` is returned:
+- ACT semantics, case when `false` is returned:
 
 ```act
 behaviour keyExist-fail of KeyHolder
