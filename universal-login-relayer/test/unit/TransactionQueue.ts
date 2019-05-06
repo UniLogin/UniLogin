@@ -1,10 +1,10 @@
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {waitExpect, sleep} from '@universal-login/commons';
-import TransactionQueueService from '../../lib/services/TransactionQueueService';
+import {waitExpect} from '@universal-login/commons';
+import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import transaction from '../config/transaction';
-import TransactionQueueMemoryStore from '../helpers/TransactionQueueMemoryStore';
+import TransactionQueueMemoryStore from '../../lib/services/transactions/TransactionQueueMemoryStore';
 
 use(sinonChai);
 
@@ -26,13 +26,10 @@ describe('UNIT: Transaction Queue Service', async () => {
 
     await waitExpect(() => expect(wallet.sendTransaction).to.be.calledOnce);
     expect(provider.waitForTransaction).to.be.calledOnce.and.calledAfter(wallet.sendTransaction);
-    await transactionQueueService.stopLater();
+  });
+
+  it('should execute transaction if id added before start', async () => {
     await transactionQueueService.add(transaction);
-    await sleep(2);
-
-    expect(wallet.sendTransaction).to.be.calledOnce;
-    expect(provider.waitForTransaction).to.be.calledOnce;
-
     transactionQueueService.start();
     await waitExpect(() => expect(wallet.sendTransaction).to.be.calledTwice);
     expect(provider.waitForTransaction).to.be.calledTwice.and.calledAfter(wallet.sendTransaction);
@@ -46,5 +43,7 @@ describe('UNIT: Transaction Queue Service', async () => {
     await waitExpect(() => expect(transactionQueueMemoryStorage.onErrorRemove).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
   });
 
-  afterEach(async () => { await transactionQueueService.stop(); });
+  afterEach(async () => {
+    await transactionQueueService.stopLater();
+  });
 });

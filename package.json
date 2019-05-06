@@ -21,7 +21,7 @@
     "ci": "yarn lint && yarn test",
     "clean": "yarn wsrun clean"
   }, "engines": {
-    "node": ">=10.9",
+    "node": "10.15",
     "yarn": ">=1.9.4"
   }
 }
