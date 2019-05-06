@@ -5,10 +5,10 @@ Table of Contents
     * [setRequiredSignatures](#setRequiredSignatures)
 * [Contract KeyHolder](#high-level-specification-of-the-contract-keyholder)
 
-High-level specification of the contract ERC1077 
-================================================
+# High-level specification of the contract ERC1077 
 
-- Semantics of the function `setRequiredSignatures`: 
+## setRequiredSignatures
+Semantics of the function `setRequiredSignatures`: 
 
 ```act
 behaviour setRequiredSignatures of ERC1077
@@ -36,8 +36,7 @@ iff
 ```
 
 
-High-level specification of the contract KeyHolder
-==================================================
+# High-level specification of the contract KeyHolder
 
 -  Semantics of the function `removeKey`:
 
