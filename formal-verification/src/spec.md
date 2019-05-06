@@ -1,5 +1,13 @@
-High-level specification of KeyHolder
-=====================================
+Table of Contents
+=================
+
+    * [Contract ERC1077](#erc1077)
+        * [setRequiredSignatures](#setRequiredSignatures)
+
+High-level specification of the contract ERC1077
+================================================
+
+- Semantics of the function `setRequiredSignatures`:
 
 ```act
 behaviour setRequiredSignatures of ERC1077
@@ -25,6 +33,10 @@ iff
     CallerKeyPurpose == #managementKey  or  CALLER_ID == ACCT_ID
 
 ```
+
+
+High-level specification of the contract KeyHolder
+==================================================
 
 -  Semantics of the function `removeKey`:
 
