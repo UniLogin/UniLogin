@@ -1,8 +1,8 @@
 Table of Contents
 =================
 
-    * [Contract ERC1077](#erc1077)
-        * [setRequiredSignatures](#setRequiredSignatures)
+* [Contract ERC1077](#erc1077)
+    * [setRequiredSignatures](#setRequiredSignatures)
 
 #erc1077
 High-level specification of the contract ERC1077 
