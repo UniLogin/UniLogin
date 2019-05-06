@@ -4,6 +4,12 @@ Table of Contents
 * [Contract ERC1077](#high-level-specification-of-the-contract-erc1077)
     * [setRequiredSignatures](#setRequiredSignatures)
 * [Contract KeyHolder](#high-level-specification-of-the-contract-keyholder)
+    * [removeKey](#removeKey)
+    * [addKey](#addKey)
+    * [keyHasPurpose](#keyHasPurpose)
+    * [getKeyPurpose](#getKeyPurpose)
+    * [keyExist](#keyExist)
+
 
 # High-level specification of the contract ERC1077 
 
@@ -38,7 +44,8 @@ iff
 
 # High-level specification of the contract KeyHolder
 
--  Semantics of the function `removeKey`:
+##removeKey
+Semantics of the function `removeKey`:
 
 ```act
 behaviour removeKey of KeyHolder
@@ -71,7 +78,8 @@ returns 1
 
 ```
 
--  Semantics of the function `addKey`:
+##addKey
+Semantics of the function `addKey`:
 
 ```act
 behaviour addKey of KeyHolder
@@ -102,7 +110,8 @@ returns 1
 
 ```
 
--  Semantics of the function `keyHasPurpose`, case when `true` is returned:
+##keyHasPurpose
+Semantics of the function `keyHasPurpose`, case when `true` is returned:
 
 ```act
 behaviour keyHasPurpose-succ of KeyHolder
@@ -120,7 +129,7 @@ returns 1
 
 ```
 
--  Semantics of the function `keyHasPurpose`, case when `false` is returned:
+Semantics of the function `keyHasPurpose`, case when `false` is returned:
 
 ```act
 behaviour keyHasPurpose-fail of KeyHolder
@@ -146,7 +155,8 @@ returns 0
 
 ```
 
--  Semantics of the function `getKeyPurpose`:
+##getKeyPurpose
+Semantics of the function `getKeyPurpose`:
 
 ```act
 behaviour getKeyPurpose of KeyHolder
@@ -168,7 +178,8 @@ returns X
 
 ```
 
--  Semantics of the function `keyExist`, case when `true` is returned:
+##keyExist
+Semantics of the function `keyExist`, case when `true` is returned:
 
 ```act
 behaviour keyExist-succ of KeyHolder
@@ -194,7 +205,7 @@ returns 1
 
 ```
 
--  Semantics of the function `keyExist`, case when `false` is returned:
+Semantics of the function `keyExist`, case when `false` is returned:
 
 ```act
 behaviour keyExist-fail of KeyHolder
