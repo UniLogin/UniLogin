@@ -5,7 +5,7 @@ export interface KnexConfig {
     user: string;
     password: string;
   } | string;
-  migrations?: {
+  migrations: {
     tableName?: string;
     directory?: string;
   };

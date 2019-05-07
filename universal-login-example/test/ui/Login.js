@@ -4,7 +4,7 @@ import React from 'react';
 import {configure, mount} from 'enzyme';
 import basicContracts from '../fixtures/basicContracts';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
-import {RelayerUnderTest} from '@universal-login/relayer/build/utils/relayerUnderTest';
+import {RelayerUnderTest} from '@universal-login/relayer/build/lib/utils/relayerUnderTest';
 import {createMockProvider, createFixtureLoader} from 'ethereum-waffle';
 import App from '../../src/components/App';
 import {expect} from 'chai';

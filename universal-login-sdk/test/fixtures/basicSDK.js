@@ -1,5 +1,5 @@
 import UniversalLoginSDK from '../../lib/sdk';
-import {RelayerUnderTest} from '@universal-login/relayer/build/utils/relayerUnderTest';
+import {RelayerUnderTest} from '@universal-login/relayer/build/lib/utils/relayerUnderTest';
 import {deployContract} from 'ethereum-waffle';
 import {utils, ContractFactory} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet';
