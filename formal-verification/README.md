@@ -19,14 +19,11 @@ The specification (statements that we want to verify) written in ACT is located 
 Running proofs
 --------------
 
-To run the proofs, use the given `Makefile`:
+To run the proofs, use `yarn`:
 
--   `make proof`: runs all proofs, one after another;
--   `make clean`: cleans everything.
-
-If you want only to build K specifications (without invoking the proofs), you should run:
-
-- `make build`.
+-   `yarn build`: builds K specifications; before this step, the folder universal-login-contracts must be built;
+-   `yarn test`: runs all proofs, one after another;
+-   `yarn clean`: cleans everything.
 
 License
 -------
