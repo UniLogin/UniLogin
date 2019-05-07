@@ -1,7 +1,7 @@
 import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {utils, Wallet} from 'ethers';
-import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
+import {deployContract, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import MockToken from '@universal-login/contracts/build/MockToken';
@@ -20,15 +20,7 @@ export default async function basicWalletService(provider, [, , wallet]) {
   const walletContract = await getWalletContract(wallet, walletService);
   const callback = sinon.spy();
   hooks.addListener('created', callback);
-  const actionWallet = Wallet.createRandom();
-  const actionKey = actionWallet.privateKey;
-  const mockToken = await deployContract(wallet, MockToken);
-  const mockContract = await deployContract(wallet, MockContract);
-  await walletContract.addKey(actionWallet.address, ACTION_KEY);
-  await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
-  await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
-  const [, otherWallet] = await getWallets(provider);
-  return {wallet, actionKey, ensService, provider, walletService, mockToken, mockContract, walletContract, otherWallet, hooks, callback};
+  return {wallet, provider, walletService, callback, walletContract};
 }
 
 async function getWalletContract(wallet, walletService) {

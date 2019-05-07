@@ -2,11 +2,11 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageSignature} from '@universal-login/contracts';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
-import setupTransactionService from '../../helpers/basicTransactionService';
+import setupTransactionService from '../../helpers/setupTransactionService';
 import defaultDeviceInfo from '../../config/defaults';
 import {getKnex} from '../../../lib/utils/knexUtils';
 
-describe.only('Relayer - TransactionService', async () => {
+describe('Relayer - TransactionService', async () => {
   let transactionService;
   let provider;
   let authorisationService;

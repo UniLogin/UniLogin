@@ -3,13 +3,13 @@ import TransactionService from '../../lib/services/transactions/TransactionServi
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
-import basicWalletService from '../fixtures/basicWalletService';
+import basicTransactionService from '../fixtures/basicTransactionService';
 
 export default async function setupTransactionService(knex) {
-  const {wallet, actionKey, ensService, provider, walletService, mockToken, mockContract, walletContract, otherWallet, hooks, callback} = await loadFixture(basicWalletService);
+  const {wallet, actionKey, provider, mockToken, walletContract, otherWallet, hooks} = await loadFixture(basicTransactionService);
   const authorisationService = new AuthorisationService(knex);
   const transactionQueueStore = new TransactionQueueStore(knex);
   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
   const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
-  return {wallet, actionKey, ensService, provider, walletService, callback, mockToken, mockContract, authorisationService, transactionService, walletContract, otherWallet, knex};
+  return {wallet, actionKey, provider, mockToken, authorisationService, transactionService, walletContract, otherWallet, knex};
 }

@@ -2,10 +2,10 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
-import setupTransactionService from '../../helpers/basicTransactionService';
+import setupTransactionService from '../../helpers/setupTransactionService';
 import {getKnex} from '../../../lib/utils/knexUtils';
 
-describe.only('Relayer - MultiSignatureExecute', async () => {
+describe('Relayer - MultiSignatureExecute', async () => {
   let transactionService;
   let provider;
   let wallet;
