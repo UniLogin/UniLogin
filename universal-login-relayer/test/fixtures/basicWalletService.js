@@ -1,32 +1,35 @@
-import buildEnsService from '../helpers/buildEnsService';
 import {EventEmitter} from 'fbemitter';
-import AuthorisationService from '../../lib/services/authorisationService';
-import WalletService from '../../lib/services/WalletService';
 import sinon from 'sinon';
+import {utils, Wallet} from 'ethers';
+import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
+import {waitForContractDeploy} from '@universal-login/commons';
+import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import MockContract from '@universal-login/contracts/build/MockContract';
-import {deployContract, getWallets} from 'ethereum-waffle';
-import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
-import {utils, Wallet} from 'ethers';
-import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
-import {waitForContractDeploy} from '@universal-login/commons';
-import {getKnex} from '../../lib/utils/knexUtils';
 import TransactionService from '../../lib/services/transactions/TransactionService';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
+import AuthorisationService from '../../lib/services/authorisationService';
+import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
+import WalletService from '../../lib/services/WalletService';
+import buildEnsService from '../helpers/buildEnsService';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
+
+export async function setupTransactionService(knex) {
+   const {wallet, actionKey, ensService, provider, walletService, mockToken, mockContract, walletContract, otherWallet, hooks, callback} = await loadFixture(basicWalletService);
+   const authorisationService = new AuthorisationService(knex);
+   const transactionQueueStore = new TransactionQueueStore(knex);
+   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
+   const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
+   return {wallet, actionKey, ensService, provider, walletService, callback, mockToken, mockContract, authorisationService, transactionService, walletContract, otherWallet, knex};
+}
 
 export default async function basicWalletService(provider, [, , wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const hooks = new EventEmitter();
-  const knex = getKnex();
-  const authorisationService = new AuthorisationService(knex);
-  const walletService = new WalletService(wallet, null, ensService, hooks, {legacyENS: true});
-  const transactionQueueStore = new TransactionQueueStore(knex);
-  const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
-  const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
+  const walletService = new WalletService(wallet, null, ensService, hooks, true);
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   const actionWallet = Wallet.createRandom();
@@ -39,7 +42,7 @@ export default async function basicWalletService(provider, [, , wallet]) {
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   const [, otherWallet] = await getWallets(provider);
-  return {wallet, actionKey, ensService, provider, walletService, callback, mockToken, mockContract, authorisationService, transactionService, walletContract, otherWallet};
+  return {wallet, actionKey, ensService, provider, walletService, mockToken, mockContract, walletContract, otherWallet, hooks, callback};
 }
 
 export const transferMessage = {
