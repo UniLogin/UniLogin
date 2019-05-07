@@ -2,7 +2,7 @@
   "name": "@universal-login/relayer",
   "version": "0.2.0",
   "license": "MIT",
-  "main": "build/index.js",
+  "main": "build/lib/index.js",
   "types": "./types.d.ts",
   "dependencies": {
     "@types/cors": "^2.8.4",
