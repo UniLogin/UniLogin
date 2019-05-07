@@ -14,7 +14,7 @@ describe('Relayer - TransactionService', async () => {
   let walletContract;
   let msg;
   let otherWallet;
-  let knex = getKnex();
+  const knex = getKnex();
 
   beforeEach(async () => {
     ({wallet, provider, transactionService, mockToken, authorisationService, walletContract, otherWallet} = await setupTransactionService(knex));

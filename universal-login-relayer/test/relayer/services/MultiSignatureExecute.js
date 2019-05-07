@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import {setupTransactionService, transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
-import { getKnex } from '../../../lib/utils/knexUtils';
+import {getKnex} from '../../../lib/utils/knexUtils';
 
 describe('Relayer - MultiSignatureExecute', async () => {
   let transactionService;
@@ -13,7 +13,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
   let msg;
   let otherWallet;
   let actionKey;
-  let knex = getKnex();
+  const knex = getKnex();
 
   beforeEach(async () => {
     ({wallet, actionKey, provider, transactionService, mockToken, walletContract, otherWallet} = await setupTransactionService(knex));
@@ -100,5 +100,5 @@ describe('Relayer - MultiSignatureExecute', async () => {
   after(async () => {
     await knex.delete().from('authorisations');
     await knex.destroy();
-  })
+  });
 });

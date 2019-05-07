@@ -1,20 +1,19 @@
-import buildEnsService from '../helpers/buildEnsService';
 import {EventEmitter} from 'fbemitter';
-import AuthorisationService from '../../lib/services/authorisationService';
-import WalletService from '../../lib/services/WalletService';
 import sinon from 'sinon';
+import {utils, Wallet} from 'ethers';
+import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
+import {waitForContractDeploy} from '@universal-login/commons';
+import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import MockContract from '@universal-login/contracts/build/MockContract';
-import {deployContract, getWallets} from 'ethereum-waffle';
-import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
-import {utils, Wallet} from 'ethers';
-import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
-import {waitForContractDeploy} from '@universal-login/commons';
 import TransactionService from '../../lib/services/transactions/TransactionService';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
-import {loadFixture} from 'ethereum-waffle';
+import AuthorisationService from '../../lib/services/authorisationService';
+import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
+import WalletService from '../../lib/services/WalletService';
+import buildEnsService from '../helpers/buildEnsService';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -24,7 +23,6 @@ export async function setupTransactionService(knex) {
    const transactionQueueStore = new TransactionQueueStore(knex);
    const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
    const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
-      
    return {wallet, actionKey, ensService, provider, walletService, callback, mockToken, mockContract, authorisationService, transactionService, walletContract, otherWallet, knex};
 }
 
