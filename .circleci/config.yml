@@ -252,7 +252,9 @@ workflows:
       - test_ops:
           requires:
             - build
-      - test_relayer
+      - test_relayer:
+          requires:
+            - build
       - test_sdk:
           requires:
             - build
