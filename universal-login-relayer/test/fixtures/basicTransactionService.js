@@ -5,7 +5,6 @@ import {waitForContractDeploy} from '@universal-login/commons';
 import {ACTION_KEY} from '@universal-login/contracts';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import WalletContract from '@universal-login/contracts/build/Wallet';
-import MockToken from '@universal-login/contracts/build/MockToken';
 import WalletService from '../../lib/services/WalletService';
 import buildEnsService from '../helpers/buildEnsService';
 
