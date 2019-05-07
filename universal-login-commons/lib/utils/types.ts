@@ -14,7 +14,6 @@ export interface Message {
   gasPrice: utils.BigNumberish;
   data: utils.Arrayish;
   value: utils.BigNumberish;
-  chainId: number;
   signature: string;
 }
 
