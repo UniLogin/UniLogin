@@ -32,8 +32,8 @@ types
 
 storage
 
-    1 |-> Y
-    3 |-> X => _requiredSignatures
+    #keyCount |-> Y
+    #requiredSignatures |-> X => _requiredSignatures
     #mapping.keys[CALLER_ID].purpose |-> CallerKeyPurpose
 
 iff
