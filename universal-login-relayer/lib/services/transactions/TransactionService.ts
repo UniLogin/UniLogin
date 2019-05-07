@@ -75,6 +75,7 @@ class TransactionService {
         }
         return this.wallet.sendTransaction(transaction);
       }
+      throw new Error('Not enough gas');
     }
     throw new Error('Not enough tokens');
   }
