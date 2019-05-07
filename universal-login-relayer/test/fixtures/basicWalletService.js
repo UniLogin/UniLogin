@@ -7,24 +7,11 @@ import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import MockContract from '@universal-login/contracts/build/MockContract';
 import WalletContract from '@universal-login/contracts/build/Wallet';
-import TransactionService from '../../lib/services/transactions/TransactionService';
-import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
-import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
-import AuthorisationService from '../../lib/services/authorisationService';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import WalletService from '../../lib/services/WalletService';
 import buildEnsService from '../helpers/buildEnsService';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
-
-export async function setupTransactionService(knex) {
-   const {wallet, actionKey, ensService, provider, walletService, mockToken, mockContract, walletContract, otherWallet, hooks, callback} = await loadFixture(basicWalletService);
-   const authorisationService = new AuthorisationService(knex);
-   const transactionQueueStore = new TransactionQueueStore(knex);
-   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
-   const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
-   return {wallet, actionKey, ensService, provider, walletService, callback, mockToken, mockContract, authorisationService, transactionService, walletContract, otherWallet, knex};
-}
 
 export default async function basicWalletService(provider, [, , wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
