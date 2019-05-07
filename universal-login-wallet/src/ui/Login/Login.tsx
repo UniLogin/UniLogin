@@ -20,7 +20,7 @@ const Login = ({location} : LoginProps) => {
 
   const onCreateCLick = async (name: string) => {
     await createWallet(name);
-    modalService.showModal('address');
+    modalService.showModal('topUpAccount');
     unsubscribe = balanceService.subscribe(onBalanceChange);
   };
 

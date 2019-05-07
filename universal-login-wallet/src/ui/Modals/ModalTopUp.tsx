@@ -21,7 +21,7 @@ const ModalTopUp = () => {
           <p className="modal-text modal-topup-text">Transfer crypto to your wallet</p>
         </div>
         <div className="modal-topup-block">
-          <button className="modal-topup-btn" onClick={() => modalService.showModal('personalInfo')}>
+          <button className="modal-topup-btn" onClick={() => modalService.showModal('safello')}>
             <img className="modal-topup-icon" src={usdIcon} alt="Bank account"/>
           </button>
           <p className="modal-text modal-topup-text">Transfer crypto to your wallet</p>

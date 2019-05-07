@@ -10,6 +10,7 @@ import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaiting from './ModalWaiting';
+import ModalSafello from './ModalSafello';
 
 const Modal = () => {
   const {modalService} = useServices();
@@ -63,6 +64,12 @@ const Modal = () => {
       return (
         <ModalWrapper>
           <ModalWaiting />
+        </ModalWrapper>
+      );
+    case 'safello':
+      return (
+        <ModalWrapper>
+          <ModalSafello />
         </ModalWrapper>
       );
     default:
