@@ -1,9 +1,9 @@
-import {waitToBeMined} from '@universal-login/commons';
+import {waitToBeMined, Config} from '@universal-login/commons';
 import Token from './Token.json';
-import Relayer, {RelayerConfig} from '@universal-login/relayer';
+import Relayer from '../relayer';
 import {utils, Contract, providers} from 'ethers';
 
-interface TokenGrantingRelayerCongig extends RelayerConfig {
+interface TokenGrantingRelayerCongig extends Config {
   tokenContractAddress : string;
 }
 

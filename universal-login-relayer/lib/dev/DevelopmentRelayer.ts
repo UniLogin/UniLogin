@@ -1,6 +1,6 @@
 import {waitToBeMined} from '@universal-login/commons';
 import Token from './Token.json';
-import Relayer from '@universal-login/relayer';
+import Relayer from '../relayer';
 import {utils, Contract, providers} from 'ethers';
 
 export declare interface DevelopmentRelayerConfig {
@@ -25,7 +25,7 @@ class DevelopmentRelayer extends Relayer {
   private tokenContract: Contract;
 
   constructor(config: DevelopmentRelayerConfig, provider?: providers.Provider) {
-    super(config, provider);
+    super(config as any, provider); // TODO: Incompatible types
     this.tokenContractAddress = config.tokenContractAddress;
     this.tokenContract = new Contract(this.tokenContractAddress, Token.interface, this.wallet);
     this.addHooks();

@@ -2,11 +2,9 @@ import knex from 'knex';
 import { getEnv } from '../config/getEnv';
 import { getKnexConfig as getConfig } from '../config/knexfile';
 
-const environment = getEnv('NODE_ENV', 'development');
+const getNodeEnv = () => getEnv('NODE_ENV', 'development');
 
-const getNodeEnv = () => environment;
-
-const getKnexConfig = () => getConfig(environment);
+const getKnexConfig = () => getConfig(getNodeEnv());
 
 const getKnex = () => knex(getKnexConfig());
 

@@ -29,9 +29,9 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
 
 class Relayer {
   protected readonly port: string;
-  private readonly hooks: EventEmitter;
+  protected readonly hooks: EventEmitter;
   public provider: providers.Provider;
-  private readonly wallet: Wallet;
+  protected readonly wallet: Wallet;
   public readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;

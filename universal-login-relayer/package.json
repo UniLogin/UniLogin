@@ -27,11 +27,11 @@
   "scripts": {
     "build": "yarn clean && tsc",
     "start": "node build/lib/startRelayer.js",
-    "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
-    "test:unit": "NODE_ENV=test mocha -r ts-node/register \"test/unit/**/*.{ts,js}\"",
-    "test:prebuilt": "rm -rf ./dist && tsc && NODE_ENV=test mocha dist/test -t 10000 --exit \"dist/test/**/*.js\"",
+    "test": "yarn build && yarn test:nobuild",
+    "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
+    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"build/test/**/*.js\"",
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
-    "relayer:start": "node build/startRelayer.js",
+    "relayer:start": "yarn start",
     "ganache:start": "ts-node scripts/ganache.js",
     "ens:deploy": "ts-node scripts/deployENS.js",
     "clean": "rm -fr build"
