@@ -27,9 +27,9 @@
   "scripts": {
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "test:unit": "NODE_ENV=test mocha -r ts-node/register \"test/unit/**/*.{ts,js}\"",
-    "test:prebuilt": "tsc --build tsconfig.all.json && NODE_ENV=test mocha dist/test -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:prebuilt": "rm -rf ./dist && tsc --build tsconfig.all.json && NODE_ENV=test mocha dist/test -t 10000 --exit \"dist/test/**/*.js\"",
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
-    "build": "rm -rf ./dist && tsc --build tsconfig.build.json",
+    "build": "tsc --build tsconfig.build.json",
     "relayer:start": "node build/startRelayer.js",
     "ganache:start": "ts-node scripts/ganache.js",
     "ens:deploy": "ts-node scripts/deployENS.js",
