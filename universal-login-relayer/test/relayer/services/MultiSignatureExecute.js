@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {loadFixture} from 'ethereum-waffle';
 import {ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
-import basicWalletService, {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
+import {setupTransactionService, transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
+import { getKnex } from '../../../lib/utils/knexUtils';
 
 describe('Relayer - MultiSignatureExecute', async () => {
   let transactionService;
@@ -13,9 +13,10 @@ describe('Relayer - MultiSignatureExecute', async () => {
   let msg;
   let otherWallet;
   let actionKey;
+  let knex = getKnex();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, transactionService, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletService));
+    ({wallet, actionKey, provider, transactionService, mockToken, walletContract, otherWallet} = await setupTransactionService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
     await walletContract.setRequiredSignatures(2);
   });
@@ -92,7 +93,12 @@ describe('Relayer - MultiSignatureExecute', async () => {
     });
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     transactionService.pendingExecutions = {};
   });
+
+  after(async () => {
+    await knex.delete().from('authorisations');
+    await knex.destroy();
+  })
 });
