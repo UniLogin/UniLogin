@@ -1,7 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 import WalletService from '../services/WalletService';
-import TransactionService from '../services/TransactionService';
+import TransactionService from '../services/transactions/TransactionService';
 
 export const create = (walletContractService : WalletService) => async (req : Request, res : Response, next : NextFunction) => {
   const {managementKey, ensName} = req.body;
