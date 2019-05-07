@@ -1,0 +1,14 @@
+{
+  "name": "@universal-login/formal-verification",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "./prepare_files && klab build",
+    "lint": "echo TODO",
+    "test":   "./invoke_tests \"out/specs/*\"",
+    "test-1": "./invoke_tests \"out/specs/KeyHolder_addKey*\"",
+    "test-2": "./invoke_tests \"out/specs/KeyHolder_removeKey*\"",
+    "test-3": "./invoke_tests \"out/specs/KeyHolder_key* out/specs/KeyHolder_get*\"",
+    "test-4": "./invoke_tests \"out/specs/ERC1077*\"",
+    "clean": "rm -rf out dapp out.log"
+  }
+}
