@@ -1,5 +1,5 @@
 import UniversalLoginSDK from '../../lib/sdk';
-import {RelayerUnderTest} from '@universal-login/relayer/build/utils/relayerUnderTest';
+import {RelayerUnderTest} from '@universal-login/relayer';
 import {deployContract} from 'ethereum-waffle';
 import {utils, ContractFactory} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet';
@@ -7,8 +7,8 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
 
 export default async function basicWalletService(givenProvider, wallets) {
-  const [wallet, otherWallet, otherWallet2] = wallets;
-  const relayer = await RelayerUnderTest.createPreconfigured({provider: givenProvider});
+  const [wallet, otherWallet, otherWallet2, deployer] = wallets;
+  const relayer = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
   const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider);

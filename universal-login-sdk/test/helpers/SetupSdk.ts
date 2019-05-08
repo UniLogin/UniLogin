@@ -1,5 +1,5 @@
-import {RelayerUnderTest} from '@universal-login/relayer/lib/utils/relayerUnderTest';
-import {createMockProvider} from 'ethereum-waffle';
+import {RelayerUnderTest} from '@universal-login/relayer';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {providers} from 'ethers';
 
@@ -9,7 +9,8 @@ declare interface SetupSdkOverrides {
 }
 
 export async function setupSdk({givenProvider = createMockProvider(), overridePort = '33111'}: SetupSdkOverrides = {}) {
-  const relayer = await RelayerUnderTest.createPreconfigured({provider: givenProvider, overridePort});
+  const [deployer] = getWallets(givenProvider);
+  const relayer = await RelayerUnderTest.createPreconfigured(deployer, overridePort);
   await relayer.start();
   const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider);

@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "license": "MIT",
   "main": "build/index.js",
-  "types": "./types.d.ts",
+  "types": "build/index.d.ts",
   "dependencies": {
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
@@ -28,10 +28,9 @@
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "test:unit": "NODE_ENV=test mocha -r ts-node/register \"test/unit/**/*.{ts,js}\"",
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
-    "build": "tsc --build tsconfig.build.json",
+    "build": "yarn clean && tsc --build tsconfig.build.json",
     "relayer:start": "node build/startRelayer.js",
     "ganache:start": "ts-node scripts/ganache.js",
-    "ens:deploy": "ts-node scripts/deployENS.js",
     "clean": "rm -fr build",
     "start": "node build/startRelayer.js"
   },
