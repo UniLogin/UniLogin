@@ -25,7 +25,7 @@
     "pg": "^7.7.1"
   },
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && tsc && tsc -p tsconfig.declaration.json",
     "start": "node build/lib/startRelayer.js",
     "test": "yarn build && yarn test:nobuild",
     "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
