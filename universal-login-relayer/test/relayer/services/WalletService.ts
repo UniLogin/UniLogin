@@ -2,8 +2,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { providers, Wallet, Contract } from 'ethers';
-import {loadFixture} from 'ethereum-waffle';
-import basicWalletService from '../../fixtures/basicWalletService';
+import setupWalletService from '../../helpers/setupWalletService';
 import WalletService from '../../../lib/services/WalletService';
 
 chai.use(require('chai-string'));
@@ -18,8 +17,8 @@ describe('Relayer - WalletService', async () => {
   let walletContract: Contract;
 
   before(async () => {
-    ({wallet, provider, walletService, callback, walletContract} = await loadFixture(basicWalletService as any));
- });
+    ({wallet, provider, walletService, callback, walletContract} = await setupWalletService());
+  });
 
   describe('Create', async () => {
     it('returns contract address', async () => {
