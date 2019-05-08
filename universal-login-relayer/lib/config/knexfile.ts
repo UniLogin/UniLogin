@@ -1,6 +1,6 @@
 import path from 'path';
 import { KnexConfig } from './KnexConfig';
-import { getEnv } from './getEnv';
+import { getEnv } from '@universal-login/commons';
 
 const migrationDir = path.join(__dirname, '../../../migrations');
 

@@ -1,5 +1,5 @@
 import knex from 'knex';
-import { getEnv } from '../config/getEnv';
+import { getEnv } from '@universal-login/commons';
 import { getKnexConfig as getConfig } from '../config/knexfile';
 
 const getNodeEnv = () => getEnv('NODE_ENV', 'development');

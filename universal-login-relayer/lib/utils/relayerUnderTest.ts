@@ -2,7 +2,7 @@ import Relayer from '../relayer';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 const ENSBuilder = require('ens-builder');
 import {withENS} from './utils';
-import {Config} from '@universal-login/commons';
+import {Config} from '../config/relayer';
 import {providers, Wallet, ContractFactory} from 'ethers';
 
 const DOMAIN_LABEL = 'mylogin';

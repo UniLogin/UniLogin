@@ -1,15 +1,28 @@
 import dotenv from 'dotenv';
+import { getEnv } from '@universal-login/commons';
 
 dotenv.config();
 
-const ensRegistration = Object.freeze({
-  jsonRpcUrl: process.env.JSON_RPC_URL,
-  privateKey: process.env.PRIVATE_KEY,
+export interface Config {
+  jsonRpcUrl: string,
+  privateKey: string,
   chainSpec: {
-    ensAddress: process.env.ENS_ADDRESS,
-    publicResolverAddress: process.env.PUBLIC_RESOLVER_ADDRESS,
+    ensAddress: string,
+    publicResolverAddress: string,
+    chainId: number,
+    name: string,
+  },
+}
+
+const getConfig = (): Config => Object.freeze({
+  jsonRpcUrl: getEnv('JSON_RPC_URL'),
+  privateKey: getEnv('PRIVATE_KEY'),
+  chainSpec: {
+    ensAddress: getEnv('ENS_ADDRESS'),
+    publicResolverAddress: getEnv('PUBLIC_RESOLVER_ADDRESS'),
     chainId: 0,
+    name: 'ganache'
   },
 });
 
-export default ensRegistration;
+export default getConfig;
