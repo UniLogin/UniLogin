@@ -1,16 +1,21 @@
 import dotenv from 'dotenv';
+import { getEnv } from './getEnv';
 dotenv.config();
 
 const config =  Object.freeze({
   legacyENS: true,
-  jsonRpcUrl: process.env.JSON_RPC_URL,
-  port: process.env.PORT,
-  privateKey: process.env.PRIVATE_KEY,
+  jsonRpcUrl: getEnv('JSON_RPC_URL'),
+  port: getEnv('PORT', ''),
+  privateKey: getEnv('PRIVATE_KEY'),
   chainSpec: Object.freeze({
-    ensAddress: process.env.ENS_ADDRESS,
+    ensAddress: getEnv('ENS_ADDRESS'),
     chainId: 0,
   }),
-  ensRegistrars: [process.env.ENS_DOMAIN_1, process.env.ENS_DOMAIN_2, process.env.ENS_DOMAIN_3],
+  ensRegistrars: [
+    getEnv('ENS_DOMAIN_1', ''),
+    getEnv('ENS_DOMAIN_2', ''),
+    getEnv('ENS_DOMAIN_3', ''),
+  ],
 });
 
 export default config;
