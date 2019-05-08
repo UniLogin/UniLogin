@@ -25,7 +25,7 @@ class DevelopmentRelayer extends Relayer {
   private tokenContract: Contract;
 
   constructor(config: DevelopmentRelayerConfig, provider?: providers.Provider) {
-    super(config as any, provider);
+    super(config as any, provider); // TODO: Incompatible types
     this.tokenContractAddress = config.tokenContractAddress;
     this.tokenContract = new Contract(this.tokenContractAddress, Token.interface, this.wallet);
     this.addHooks();
