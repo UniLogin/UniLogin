@@ -1,17 +1,14 @@
-import sinon from 'sinon';
-import {utils} from 'ethers';
-import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
+import { utils } from 'ethers';
+import { OPERATION_CALL, ACTION_KEY } from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
-import createWalletContractAndService from '../helpers/createWalletContractAndService';
+import createWalletContract from '../helpers/createWalletContract';
 
-const {gasPrice, gasLimit} = defaultPaymentOptions;
+const { gasPrice, gasLimit } = defaultPaymentOptions;
 
 export default async function basicWalletContract(provider, [, , wallet]) {
-  const { walletContract, walletService, hooks, provider } = await createWalletContractAndService(wallet);
-  const callback = sinon.spy();
-  hooks.addListener('created', callback);
-  return {wallet, provider, walletService, callback, walletContract};
+  const { walletContract, provider, ensService } = await createWalletContract(wallet);
+  return { wallet, provider, walletContract, ensService };
 }
 
 export const transferMessage = {
