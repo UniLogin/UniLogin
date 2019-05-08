@@ -10,7 +10,7 @@ export const startRelayer = async () => {
   const [deployer] = getWallets(provider);
   const wallet = Wallet.createRandom();
   const otherWallet = Wallet.createRandom();
-  const relayer = await RelayerUnderTest.createPreconfigured({provider});
+  const relayer = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
   return {provider, wallet, otherWallet, relayer, deployer};
 };

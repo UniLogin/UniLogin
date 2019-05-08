@@ -26,6 +26,9 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
     .send(JSON.stringify({error: err.toString()}));
 }
 
+export type RelayerClass = {
+  new (config: any, provider: providers.Provider): Relayer;
+};
 
 class Relayer {
   protected readonly port: string;
