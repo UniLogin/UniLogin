@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
-import {setupTransactionService, transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
+import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
+import setupTransactionService from '../../helpers/setupTransactionService';
 import {getKnex} from '../../../lib/utils/knexUtils';
 
 describe('Relayer - MultiSignatureExecute', async () => {
