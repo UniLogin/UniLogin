@@ -4,10 +4,10 @@ import TransactionService from '../../lib/services/transactions/TransactionServi
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
-import basicTransactionService from '../fixtures/basicTransactionService';
+import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
 
 export default async function setupTransactionService(knex) {
-  const { wallet, actionKey, provider, mockToken, walletContract, otherWallet } = await loadFixture(basicTransactionService);
+  const { wallet, actionKey, provider, mockToken, walletContract, otherWallet } = await loadFixture(basicWalletContractWithMockToken);
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService(knex);
   const transactionQueueStore = new TransactionQueueStore(knex);
