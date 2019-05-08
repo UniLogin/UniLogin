@@ -3,11 +3,13 @@ import { OPERATION_CALL, ACTION_KEY } from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
+import buildEnsService from '../helpers/buildEnsService';
 
 const { gasPrice, gasLimit } = defaultPaymentOptions;
 
 export default async function basicWalletContract(provider, [, , wallet]) {
-  const { walletContract, provider, ensService } = await createWalletContract(wallet);
+  const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
+  const walletContract = await createWalletContract(wallet, ensService);
   return { wallet, provider, walletContract, ensService };
 }
 

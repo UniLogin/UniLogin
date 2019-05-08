@@ -13,5 +13,5 @@ export default async function setupTransactionService(knex) {
   const transactionQueueStore = new TransactionQueueStore(knex);
   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
   const transactionService = new TransactionService(wallet, authorisationService, hooks, provider, transactionQueueService);
-  return { wallet, actionKey, provider, mockToken, authorisationService, transactionService, walletContract, otherWallet, knex };
+  return { wallet, actionKey, provider, mockToken, authorisationService, transactionService, walletContract, otherWallet };
 }
