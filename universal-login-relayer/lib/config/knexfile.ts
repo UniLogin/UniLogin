@@ -2,14 +2,7 @@ import path from 'path';
 import { KnexConfig } from './KnexConfig';
 import { getEnv } from './getEnv';
 
-function getMigrationDir() {
-  const dir1 = path.join(__dirname, '../../../migrations');
-  // THIS IS ONLY NEEDED BECAUSE SDK IMPORTS FROM LIB DIRECTLY
-  const dir2 = path.join(__dirname, '../../migrations');
-  return dir1.includes('universal-login-relayer') ? dir1 : dir2;
-}
-
-const migrationDir = getMigrationDir();
+const migrationDir = path.join(__dirname, '../../../migrations');
 
 function getDevelopmentKnexConfig(): KnexConfig {
   return {
