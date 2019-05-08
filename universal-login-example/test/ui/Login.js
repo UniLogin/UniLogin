@@ -4,8 +4,8 @@ import React from 'react';
 import {configure, mount} from 'enzyme';
 import basicContracts from '../fixtures/basicContracts';
 import ServicesUnderTest from '../helpers/ServicesUnderTests';
-import {RelayerUnderTest} from '@universal-login/relayer/build/utils/relayerUnderTest';
-import {createMockProvider, createFixtureLoader} from 'ethereum-waffle';
+import {RelayerUnderTest} from '@universal-login/relayer';
+import {createMockProvider, createFixtureLoader, getWallets} from 'ethereum-waffle';
 import App from '../../src/components/App';
 import {expect} from 'chai';
 import {waitUntil} from '@universal-login/commons';
@@ -21,7 +21,8 @@ describe('UI: Login', () => {
 
   beforeEach(async () => {
     const provider = createMockProvider();
-    relayer = await RelayerUnderTest.createPreconfigured({provider, overridePort: 33112});
+    const [wallet] = getWallets(provider)
+    relayer = await RelayerUnderTest.createPreconfigured(wallet, '33112');
     await relayer.start();
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));
     services = await ServicesUnderTest.createPreconfigured(provider, relayer, clickerContract.address, tokenContract.address);
