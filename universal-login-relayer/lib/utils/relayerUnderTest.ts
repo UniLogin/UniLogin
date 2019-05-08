@@ -33,13 +33,13 @@ export class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  async stop () {
+  async stop() {
     await this.database.delete().from('authorisations');
     await super.stop();
   }
 }
 
-async function deployContract (wallet: Wallet) {
-  const factory = new ContractFactory(WalletMaster.abi, WalletMaster.bytecode, wallet)
-  return factory.deploy()
+async function deployContract(wallet: Wallet) {
+  const factory = new ContractFactory(WalletMaster.abi, WalletMaster.bytecode, wallet);
+  return factory.deploy();
 }

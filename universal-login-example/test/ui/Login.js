@@ -21,7 +21,7 @@ describe('UI: Login', () => {
 
   beforeEach(async () => {
     const provider = createMockProvider();
-    const [wallet] = getWallets(provider)
+    const [wallet] = getWallets(provider);
     relayer = await RelayerUnderTest.createPreconfigured(wallet, '33112');
     await relayer.start();
     ({clickerContract, tokenContract} = await createFixtureLoader(provider)(basicContracts));

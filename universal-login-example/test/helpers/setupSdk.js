@@ -4,7 +4,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 
 
 export default async function setupSdk(givenProvider = createMockProvider()) {
-  const [wallet] = getWallets(givenProvider)
+  const [wallet] = getWallets(givenProvider);
   const relayer = await RelayerUnderTest.createPreconfigured(wallet, 33112);
   await relayer.start();
   const {provider} = relayer;
