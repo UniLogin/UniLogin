@@ -31,7 +31,6 @@
     "build": "yarn clean && tsc --build tsconfig.build.json",
     "relayer:start": "node build/startRelayer.js",
     "ganache:start": "ts-node scripts/ganache.js",
-    "ens:deploy": "ts-node scripts/deployENS.js",
     "clean": "rm -fr build",
     "start": "node build/startRelayer.js"
   },
