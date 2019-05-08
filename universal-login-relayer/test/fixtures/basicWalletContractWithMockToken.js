@@ -5,7 +5,7 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import createWalletContract from '../helpers/createWalletContract';
 import buildEnsService from '../helpers/buildEnsService';
 
-export default async function basicTransactionService(provider, [, otherWallet, wallet]) {
+export default async function basicWalletContractWithMockToken(provider, [, otherWallet, wallet]) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const walletContract = await createWalletContract(wallet, ensService);
   const actionWallet = Wallet.createRandom();
