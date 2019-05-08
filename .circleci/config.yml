@@ -231,10 +231,11 @@ workflows:
                 - master
     jobs:
       - build
-      - build_klab_specs
-      - run_klab:
+      - build_klab_specs:
           requires:
             - build
+      - run_klab:
+          requires:
             - build_klab_specs
 
   universal_login_all:
