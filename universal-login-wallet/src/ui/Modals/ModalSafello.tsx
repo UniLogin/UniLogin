@@ -6,7 +6,7 @@ const LANGUAGE = 'en';
 const COUNTRY = 'other';
 const CRYPTO = 'eth';
 
-function getSafelloUrl(address: string) {
+function getSafelloProductionUrl(address: string) {
   return 'https://app.safello.com/sdk/quickbuy.html' +
     `?appId=${APP_ID}` +
     '&border=true' +
@@ -17,9 +17,18 @@ function getSafelloUrl(address: string) {
     `&address=${address}`;
 }
 
+function getSafelloUrl(address: string) {
+  return 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
+    '&border=true' +
+    '&address-helper=true' +
+    `&lang=${LANGUAGE}` +
+    `&country=${COUNTRY}` +
+    `&crypto=${CRYPTO}` +
+    `&address=${address}`;
+}
+
 const ModalSafello = () => {
   const { walletService } = useServices();
-
   return (
     <iframe
       src={getSafelloUrl(walletService.userWallet!.contractAddress)}
