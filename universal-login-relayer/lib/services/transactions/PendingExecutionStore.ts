@@ -2,6 +2,7 @@ import PendingExecution from '../../utils/pendingExecution';
 import { Message } from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import { Wallet } from 'ethers';
+import { InvalidExecution } from '../../utils/errors';
 
 export default class PendingExecutionStore {
   public executions: Record<string, PendingExecution>;
@@ -29,7 +30,7 @@ export default class PendingExecutionStore {
 
   async getStatus(hash: string) {
     if (!this.isPresent(hash)) {
-      throw 'Unable to find execution with given message hash';
+      throw new InvalidExecution(hash);
     }
     return this.executions[hash].getStatus();
   }

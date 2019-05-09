@@ -114,6 +114,7 @@ describe('Pending Execution', async () => {
                 .to.be.rejectedWith('Execution request already processed');
         });
     });
+
     describe('Concatenate', async () => {
         it('should concatenate two signatures', async () => {
             await pendingExecution.push(msg0);

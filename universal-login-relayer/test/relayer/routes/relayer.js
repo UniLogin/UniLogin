@@ -30,6 +30,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
+    expect(result.status).to.eq(201);
     contract = await waitForContractDeploy(provider, WalletContract, transaction.hash);
     expect(contract.address).to.be.properAddress;
   });
@@ -57,12 +58,13 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       };
       const balanceBefore = await provider.getBalance(otherWallet.address);
       const signature = await calculateMessageSignature(wallet.privateKey, msg);
-      await chai.request(relayer.server)
+      const {status} = await chai.request(relayer.server)
         .post('/wallet/execution')
         .send({
           ...msg,
           signature,
         });
+      expect(status).to.eq(201);
       expect(await provider.getBalance(otherWallet.address)).to.eq(balanceBefore.add(msg.value));
     });
   });

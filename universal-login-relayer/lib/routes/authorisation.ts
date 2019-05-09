@@ -31,10 +31,10 @@ export const getPending = (authorisationService : any) => async (req : Request, 
 export const denyRequest = (authorisationService : any) => async (req : Request, res : Response) => {
   const {walletContractAddress} = req.params;
   const {key} = req.body;
-  const response = await authorisationService.removeRequest(walletContractAddress, key);
-  res.status(201)
+  await authorisationService.removeRequest(walletContractAddress, key);
+  res.status(204)
     .type('json')
-    .send(JSON.stringify({response}));
+    .send();
 };
 
 export default (authorisationService : any) => {
