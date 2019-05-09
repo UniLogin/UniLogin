@@ -13,7 +13,7 @@ import useragent from 'express-useragent';
 import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
-import {Config} from '@universal-login/commons';
+import {Config} from './config/relayer';
 import TransactionService from './services/transactions/TransactionService';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
@@ -67,7 +67,7 @@ class Relayer {
       origin : '*',
       credentials: true,
     }));
-    this.ensService = new ENSService(this.config.chainSpec.ensAddress!, this.config.ensRegistrars, this.provider);
+    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks, this.config.legacyENS);
     this.transactionQueueStore = new TransactionQueueStore(this.database);

@@ -1,7 +1,9 @@
-import Relayer from './relayer';
 require('dotenv').config();
-
-const config = require('./config/relayer');
+import Relayer from './relayer';
+import config from './config/relayer';
 
 const relayer = new Relayer(config);
-relayer.start();
+relayer.start().then(
+  () => console.log('Started'),
+  console.error
+);

@@ -1,8 +1,11 @@
 import path from 'path';
+import { KnexConfig } from './KnexConfig';
+import { getEnv } from '@universal-login/commons';
 
-const knexfile = {
+const migrationDir = path.join(__dirname, '../../../migrations');
 
-  development: {
+function getDevelopmentKnexConfig(): KnexConfig {
+  return {
     client: 'postgresql',
     connection: {
       database: 'universal_login_relayer_development',
@@ -11,11 +14,13 @@ const knexfile = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: path.join(__dirname, '../../migrations'),
+      directory: migrationDir,
     },
-  },
+  };
+}
 
-  test: {
+function getTestKnexConfig(): KnexConfig {
+  return {
     client: 'postgresql',
     connection: {
       database: 'universal_login_relayer_test',
@@ -23,18 +28,29 @@ const knexfile = {
       password: 'postgres',
     },
     migrations: {
-      directory: path.join(__dirname, '../../migrations'),
-    },
-  },
+      directory: migrationDir,
+    }
+  };
+}
 
-  production: {
+function getProductionKnexConfig(): KnexConfig {
+  return {
     client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    connection: getEnv('DATABASE_URL'),
     migrations: {
-      directory: path.join(__dirname, '../../migrations'),
-    },
-  },
+      directory: migrationDir,
+    }
+  };
+}
 
-};
-
-export default knexfile;
+export function getKnexConfig(environment: string) {
+  switch (environment) {
+    case 'production':
+      return getProductionKnexConfig();
+    case 'test':
+      return getTestKnexConfig();
+    case 'development':
+    default:
+      return getDevelopmentKnexConfig();
+  }
+}

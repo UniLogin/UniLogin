@@ -1,16 +1,37 @@
 import dotenv from 'dotenv';
+import { getEnv } from '@universal-login/commons';
+
 dotenv.config();
 
-const config =  Object.freeze({
+export interface Config {
+  legacyENS: boolean;
+  jsonRpcUrl?: string;
+  port?: string;
+  privateKey: string;
+  chainSpec: {
+    ensAddress: string,
+    chainId: number,
+    name: string,
+  };
+  ensRegistrars: string[];
+  walletMasterAddress?: string;
+}
+
+const config: Config =  Object.freeze({
   legacyENS: true,
-  jsonRpcUrl: process.env.JSON_RPC_URL,
-  port: process.env.PORT,
-  privateKey: process.env.PRIVATE_KEY,
+  jsonRpcUrl: getEnv('JSON_RPC_URL'),
+  port: getEnv('PORT', ''),
+  privateKey: getEnv('PRIVATE_KEY'),
   chainSpec: Object.freeze({
-    ensAddress: process.env.ENS_ADDRESS,
+    ensAddress: getEnv('ENS_ADDRESS'),
     chainId: 0,
+    name: 'ganache'
   }),
-  ensRegistrars: [process.env.ENS_DOMAIN_1, process.env.ENS_DOMAIN_2, process.env.ENS_DOMAIN_3],
+  ensRegistrars: [
+    getEnv('ENS_DOMAIN_1', ''),
+    getEnv('ENS_DOMAIN_2', ''),
+    getEnv('ENS_DOMAIN_3', ''),
+  ],
 });
 
 export default config;

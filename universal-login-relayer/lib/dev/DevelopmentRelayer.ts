@@ -1,18 +1,10 @@
-import {waitToBeMined} from '@universal-login/commons';
+import { waitToBeMined } from '@universal-login/commons';
 import Token from './Token.json';
 import Relayer from '../relayer';
-import {utils, Contract, providers} from 'ethers';
+import { utils, Contract, providers } from 'ethers';
+import { Config } from '../config/relayer';
 
-export declare interface DevelopmentRelayerConfig {
-  legacyENS: boolean;
-  jsonRpcUrl: string;
-  port: string;
-  privateKey: string;
-  chainSpec: {
-    ensAddress: string;
-    chainId: number;
-  };
-  ensRegistrars: string[];
+export declare interface DevelopmentRelayerConfig extends Config {
   tokenContractAddress: string;
 }
 
@@ -25,7 +17,7 @@ class DevelopmentRelayer extends Relayer {
   private tokenContract: Contract;
 
   constructor(config: DevelopmentRelayerConfig, provider?: providers.Provider) {
-    super(config as any, provider);
+    super(config, provider);
     this.tokenContractAddress = config.tokenContractAddress;
     this.tokenContract = new Contract(this.tokenContractAddress, Token.interface, this.wallet);
     this.addHooks();

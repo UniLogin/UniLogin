@@ -30,6 +30,14 @@ describe('Relayer - MultiSignatureExecute', async () => {
     await expect(transactionService.executeSigned({...message, signature: signature1})).to.be.eventually.rejectedWith('Not enough tokens');
   });
 
+  it('Error when not enough gas', async () => {
+    const message = {...msg, gasLimit: 100};
+    const signature0 = await calculateMessageSignature(wallet.privateKey, message);
+    const signature1 = await calculateMessageSignature(actionKey, message);
+    await transactionService.executeSigned({...message, signature: signature0});
+    await expect(transactionService.executeSigned({...message, signature: signature1})).to.be.eventually.rejectedWith('Not enough gas');
+  });
+
   describe('Transfer', async () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
