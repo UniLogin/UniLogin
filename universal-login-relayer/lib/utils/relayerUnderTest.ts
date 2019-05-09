@@ -1,53 +1,45 @@
 import Relayer from '../relayer';
-import {defaultAccounts, getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 const ENSBuilder = require('ens-builder');
 import {withENS} from './utils';
-import {parseDomain, Config} from '@universal-login/commons';
-import {providers} from 'ethers';
+import {Config} from '../config/relayer';
+import {providers, Wallet, ContractFactory} from 'ethers';
 
-interface Overrides {
-  overridePort?: string;
-  provider: providers.Provider;
-}
+const DOMAIN_LABEL = 'mylogin';
+const DOMAIN_TLD = 'eth';
+const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 
-class RelayerUnderTest extends Relayer {
-
+export class RelayerUnderTest extends Relayer {
+  static async createPreconfigured(wallet: Wallet, port = '33111') {
+    const { address } = await deployContract(wallet);
+    const ensBuilder = new ENSBuilder(wallet);
+    const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
+    const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
+    const config = {
+      port,
+      privateKey: wallet.privateKey,
+      chainSpec: {
+        ensAddress: ensBuilder.ens.address,
+        chainId: 0,
+      },
+      ensRegistrars: [DOMAIN],
+      walletMasterAddress: address,
+      legacyENS: false,
+    };
+    return new RelayerUnderTest(config as Config, providerWithENS);
+  }
 
   url() {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  static async createPreconfigured({provider, overridePort}: Overrides = {provider: createMockProvider(), overridePort: '33111'}) {
-    const port = overridePort;
-    const [deployerWallet] = (await getWallets(provider)).slice(-2);
-    const privateKey = defaultAccounts.slice(-1)[0].secretKey;
-    const walletMaster = await deployContract(deployerWallet, WalletMaster);
-    const defaultDomain = 'mylogin.eth';
-    const ensBuilder = new ENSBuilder(deployerWallet);
-    const [label, tld] = parseDomain(defaultDomain);
-    const ensAddress = await ensBuilder.bootstrapWith(label, tld);
-    const providerWithENS = withENS(provider as providers.Web3Provider, ensAddress);
-    const config = {
-      port,
-      privateKey,
-      chainSpec: {
-        ensAddress: ensBuilder.ens.address,
-        chainId: 0,
-      },
-      ensRegistrars: [defaultDomain],
-      walletMasterAddress: walletMaster.address,
-      legacyENS: false,
-    };
-    const relayer = new RelayerUnderTest(config as Config, providerWithENS);
-    relayer.provider = providerWithENS;
-    return relayer;
-  }
-
-  async stop () {
+  async stop() {
     await this.database.delete().from('authorisations');
     await super.stop();
   }
 }
 
-export {RelayerUnderTest};
+async function deployContract(wallet: Wallet) {
+  const factory = new ContractFactory(WalletMaster.abi, WalletMaster.bytecode, wallet);
+  return factory.deploy();
+}

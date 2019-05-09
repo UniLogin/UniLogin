@@ -2,8 +2,8 @@
   "name": "@universal-login/relayer",
   "version": "0.2.0",
   "license": "MIT",
-  "main": "build/index.js",
-  "types": "./types.d.ts",
+  "main": "build/lib/index.js",
+  "types": "build/lib/index.d.ts",
   "dependencies": {
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
@@ -25,15 +25,15 @@
     "pg": "^7.7.1"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
-    "test:unit": "NODE_ENV=test mocha -r ts-node/register \"test/unit/**/*.{ts,js}\"",
+    "build": "yarn clean && tsc && tsc -p tsconfig.declaration.json",
+    "start": "node build/lib/startRelayer.js",
+    "test": "yarn build && yarn test:nobuild",
+    "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
+    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"build/test/**/*.js\"",
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
-    "build": "tsc --build tsconfig.build.json",
-    "relayer:start": "node build/startRelayer.js",
+    "relayer:start": "yarn start",
     "ganache:start": "ts-node scripts/ganache.js",
-    "ens:deploy": "ts-node scripts/deployENS.js",
-    "clean": "rm -fr build",
-    "start": "node build/startRelayer.js"
+    "clean": "rm -fr build"
   },
   "engines": {
     "node": ">=10.9"

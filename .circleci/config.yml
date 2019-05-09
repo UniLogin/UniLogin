@@ -49,7 +49,7 @@ jobs:
       - restore_cache:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd universal-login-relayer && yarn test
+      - run: cd universal-login-relayer && yarn test:nobuild
   test_ops:
     docker:
       - image: circleci/node:10.15
@@ -231,10 +231,11 @@ workflows:
                 - master
     jobs:
       - build
-      - build_klab_specs
-      - run_klab:
+      - build_klab_specs:
           requires:
             - build
+      - run_klab:
+          requires:
             - build_klab_specs
 
   universal_login_all:

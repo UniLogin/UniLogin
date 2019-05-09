@@ -85,6 +85,11 @@ describe('SDK - integration', async () => {
         message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: utils.parseEther('25').toString()};
         await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Error: Not enough tokens');
       });
+
+      it('when not enough gas', async () => {
+        message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: '100'};
+        await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Error: Not enough gas');
+      });
     });
 
     describe('Add key', async () => {

@@ -1,18 +1,10 @@
-import {waitToBeMined} from '@universal-login/commons';
+import { waitToBeMined } from '@universal-login/commons';
 import Token from './Token.json';
-import Relayer from '@universal-login/relayer';
-import {utils, Contract, providers} from 'ethers';
+import Relayer from '../relayer';
+import { utils, Contract, providers } from 'ethers';
+import { Config } from '../config/relayer';
 
-export declare interface DevelopmentRelayerConfig {
-  legacyENS: boolean;
-  jsonRpcUrl: string;
-  port: string;
-  privateKey: string;
-  chainSpec: {
-    ensAddress: string;
-    chainId: number;
-  };
-  ensRegistrars: string[];
+export declare interface DevelopmentRelayerConfig extends Config {
   tokenContractAddress: string;
 }
 

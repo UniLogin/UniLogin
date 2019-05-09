@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageSignature} from '@universal-login/contracts';
-import {setupTransactionService, transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletService';
+import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
+import setupTransactionService from '../../helpers/setupTransactionService';
 import defaultDeviceInfo from '../../config/defaults';
 import {getKnex} from '../../../lib/utils/knexUtils';
 
@@ -25,6 +26,12 @@ describe('Relayer - TransactionService', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
     const signature = await calculateMessageSignature(wallet.privateKey, message);
     expect(transactionService.executeSigned({...message, signature})).to.be.eventually.rejectedWith('Not enough tokens');
+  });
+
+  it('Error when not enough gas', async () => {
+    const message = {...msg, gasLimit: 100};
+    const signature = await calculateMessageSignature(wallet.privateKey, message);
+    await expect(transactionService.executeSigned({...message, signature})).to.be.rejectedWith('Not enough gas');
   });
 
   describe('Transfer', async () => {

@@ -13,7 +13,7 @@ import useragent from 'express-useragent';
 import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
-import {Config} from '@universal-login/commons';
+import {Config} from './config/relayer';
 import TransactionService from './services/transactions/TransactionService';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
@@ -26,12 +26,15 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
     .send(JSON.stringify({error: err.toString()}));
 }
 
+export type RelayerClass = {
+  new (config: any, provider: providers.Provider): Relayer;
+};
 
 class Relayer {
   protected readonly port: string;
-  private readonly hooks: EventEmitter;
+  protected readonly hooks: EventEmitter;
   public provider: providers.Provider;
-  private readonly wallet: Wallet;
+  protected readonly wallet: Wallet;
   public readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
@@ -64,7 +67,7 @@ class Relayer {
       origin : '*',
       credentials: true,
     }));
-    this.ensService = new ENSService(this.config.chainSpec.ensAddress!, this.config.ensRegistrars, this.provider);
+    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks, this.config.legacyENS);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
