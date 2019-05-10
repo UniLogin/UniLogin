@@ -34,7 +34,7 @@ Packages maintained with this monorepo are listed below.
 
 ## Formal Verification
 Our goal is to formally verify functions declared in ethereum smart contracts used in our project.
-Please, see [Formal Verification README](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-formal-verification/README.md) for details and instructions.
+Please, see [Formal Verification README](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/formal-verification/README.md) for details and instructions.
 
 ## Contributing
 
