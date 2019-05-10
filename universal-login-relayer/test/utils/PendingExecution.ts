@@ -95,9 +95,9 @@ describe('Pending Execution', async () => {
             expect(collectedSignatures).to.deep.eq([signature0, signature1]);
         });
 
-        it('should not push invalid signature', async () => {
+        it('should not push invalid key purpose', async () => {
             await expect(pendingExecution.push(invalidMsg))
-                .to.be.rejectedWith('Invalid signature');
+                .to.be.rejectedWith('Invalid key purpose');
         });
 
         it('should not accept same signature twice', async () => {
