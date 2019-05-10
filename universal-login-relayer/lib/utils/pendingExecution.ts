@@ -41,7 +41,7 @@ export default class PendingExecution {
     const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg)), msg.signature);
     const keyPurpose = await this.walletContract.getKeyPurpose(key);
     if (keyPurpose.eq(0)) {
-      throw 'Invalid signature';
+      throw 'Invalid key purpose';
     }
     this.collectedSignatures.push({signature: msg.signature, key});
   }
