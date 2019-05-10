@@ -1,11 +1,13 @@
 import React, {useState, ChangeEvent} from 'react';
 import Input from '../common/Input';
+import {renderBusyIndicator} from '../common/BusyIndicator';
 import Suggestions from './Suggestions';
 import {useServices} from '../../hooks';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
+  setLoader: (arg: boolean) => void;
 }
 
 const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
@@ -31,11 +33,6 @@ const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
       <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick} /> :
       null;
 
-  const renderBusyIndicator = () =>
-    busy ?
-      <div className="circle-loader input-loader"/> :
-      null;
-
   return(
     <>
       <label htmlFor="loginInput" className="login-input-label">
@@ -48,7 +45,7 @@ const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
           placeholder="bob.example.eth"
           autoFocus
       />
-      {renderBusyIndicator()}
+      {renderBusyIndicator(busy)}
       {renderSuggestions()}
     </>
   );
