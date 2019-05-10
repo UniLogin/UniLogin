@@ -2,7 +2,7 @@ import {utils, ContractFactory} from 'ethers';
 import {ContractJSON} from '..';
 
 export const defaultDeployOptions = {
-  gasLimit: utils.bigNumberify(4500000),
+  gasLimit: utils.bigNumberify(3500000),
   gasPrice: utils.bigNumberify(9000000000),
 };
 
