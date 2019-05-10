@@ -7,7 +7,8 @@ import buildEnsService from '../helpers/buildEnsService';
 
 const { gasPrice, gasLimit } = defaultPaymentOptions;
 
-export default async function basicWalletContract(provider, [, , wallet]) {
+export default async function basicWalletContract(provider, wallets) {
+  const [ , , wallet] = wallets;
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const walletContract = await createWalletContract(wallet, ensService);
   return { wallet, provider, walletContract, ensService };

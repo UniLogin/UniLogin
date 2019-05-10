@@ -4,15 +4,15 @@ import {Message, defaultDeployOptions} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../../utils/utils';
-import PendingExecution from '../../utils/pendingExecution';
 import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
+import PendingExecutionStore from './PendingExecutionStore';
 
 class TransactionService {
-  public pendingExecutions: Record<string, PendingExecution>;
+  protected executionStore: PendingExecutionStore;
 
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private transactionQueue: TransactionQueueService) {
-    this.pendingExecutions = {};
+    this.executionStore = new PendingExecutionStore(wallet);
   }
 
   start() {
@@ -23,14 +23,15 @@ class TransactionService {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await calculateMessageHash(message);
-      if (hash in this.pendingExecutions) {
-        await this.pendingExecutions[hash].push(message);
-        if (this.pendingExecutions[hash].canExecute()) {
+      if (this.executionStore.isPresent(hash)) {
+        await this.executionStore.add(message);
+        if (this.executionStore.get(hash).canExecute()) {
           return this.executePending(hash, message);
         }
-        return JSON.stringify(this.pendingExecutions[hash].getStatus());
+        return JSON.stringify(this.executionStore.getStatus(hash));
       } else {
-        return this.createPending(hash, message);
+        const hash = await this.executionStore.add(message);
+        return JSON.stringify(await this.executionStore.getStatus(hash));
       }
     } else {
       return this.execute(message);
@@ -38,17 +39,10 @@ class TransactionService {
   }
 
   private async executePending(hash: string, message: Message) {
-    const finalMessage = {...message, signature: this.pendingExecutions[hash].getConcatenatedSignatures()};
+    const finalMessage = {...message, signature: this.executionStore.get(hash).getConcatenatedSignatures()};
     const transaction: any = await this.execute(finalMessage);
-    await this.pendingExecutions[hash].confirmExecution(transaction.hash);
+    await this.executionStore.get(hash).confirmExecution(transaction.hash);
     return transaction;
-  }
-
-  private async createPending(hash: string, message: Message) {
-    const walletContract: any = message.from;
-    this.pendingExecutions[hash] = new PendingExecution(walletContract, this.wallet);
-    await this.pendingExecutions[hash].push(message);
-    return JSON.stringify(await this.pendingExecutions[hash].getStatus());
   }
 
   async execute(message: Message) {
@@ -81,10 +75,7 @@ class TransactionService {
   }
 
   async getStatus(hash: string) {
-    if (!(hash in this.pendingExecutions)) {
-      throw 'Unable to find execution with given message hash';
-    }
-    return this.pendingExecutions[hash].getStatus();
+    return this.executionStore.getStatus(hash);
   }
 
   stop() {
