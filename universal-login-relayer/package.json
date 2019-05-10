@@ -49,7 +49,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.0.0",
     "chai-string": "^1.4.0",
-    "ethereum-waffle": "2.0.5",
+    "ethereum-waffle": "2.0.12",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "node-fetch": "^2.2.0",
