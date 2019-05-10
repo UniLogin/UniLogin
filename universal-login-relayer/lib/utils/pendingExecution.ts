@@ -47,14 +47,14 @@ export default class PendingExecution {
     this.collectedSignatures.push({signature: msg.signature, key});
   }
 
-  async canExecute() {
+  async isEnoughSignatures() {
     const requiredSignatures = await this.walletContract.requiredSignatures();
     return this.collectedSignatures.length >= requiredSignatures;
   }
 
   async confirmExecution(tx: string) {
     const requiredSignatures = await this.walletContract.requiredSignatures();
-    if (requiredSignatures > this.collectedSignatures.length) {
+    if (!(await this.isEnoughSignatures())) {
       throw new NotEnoughSignatures(requiredSignatures, this.collectedSignatures.length);
     } else if (this.transactionHash !== '0x0') {
       throw new TransactionAlreadyConfirmed('0x0');

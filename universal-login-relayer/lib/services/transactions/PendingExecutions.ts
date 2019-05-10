@@ -4,7 +4,7 @@ import {calculateMessageHash} from '@universal-login/contracts';
 import { Wallet } from 'ethers';
 import { InvalidExecution } from '../../utils/errors';
 
-export default class PendingExecutionStore {
+export default class PendingExecutions {
   public executions: Record<string, PendingExecution>;
 
   constructor(private wallet : Wallet) {
@@ -13,6 +13,12 @@ export default class PendingExecutionStore {
 
   isPresent(messageHash : string) {
     return messageHash in this.executions;
+  }
+
+  private throwIfNotPresent(hash: string) {
+    if (!this.isPresent(hash)) {
+      throw new InvalidExecution(hash);
+    }
   }
 
   async add(message: Message) : Promise<string> {
@@ -35,11 +41,20 @@ export default class PendingExecutionStore {
     return this.executions[hash].getStatus();
   }
 
-  get(hash: string) {
-    return this.executions[hash];
+  getMessageWithSignatures(message: Message, hash: string) : Message {
+    return  { ...message, signature: this.executions[hash].getConcatenatedSignatures()};
   }
 
-  getWallet() : Wallet {
-    return this.wallet;
+  async confirmExecution(hash: string) {
+
+  }
+
+  async isEnoughSignatures(hash: string) : Promise<boolean> {
+    this.throwIfNotPresent(hash);
+    return this.executions[hash].isEnoughSignatures();
+  }
+
+  get(hash: string) {
+    return this.executions[hash];
   }
 }
