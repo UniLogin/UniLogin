@@ -1,11 +1,26 @@
 import {Request, Response, NextFunction} from 'express';
-import {NotFound, PaymentError, Conflict, ValidationFailed} from '../utils/errors';
+import {NotFound, PaymentError, Conflict, ValidationFailed, RelayerError} from '../utils/errors';
 
 export default function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     const status = getCodeForException(err);
+    const content = getContentForException(err);
     res.status(status)
-    .type('json')
-    .send(JSON.stringify({error: err.toString()}));
+      .type('json')
+      .send(content);
+}
+
+function getContentForException(err: Error) {
+  if (err instanceof RelayerError) {
+    const relayerError = <RelayerError>err;
+    return {
+      error: err.toString(),
+      type: relayerError.errorType
+    };
+  } else {
+    return {
+      error: err.toString()
+    };
+  }
 }
 
 export function getCodeForException(err: Error) {

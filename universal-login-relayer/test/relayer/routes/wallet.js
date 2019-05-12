@@ -42,8 +42,10 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         managementKey: wallet.address,
         ensName: 'marek.non-existing.eth',
       });
-    expect(result.status).to.eq(404);
-    expect(result.body.error).to.eq('Error: ENS domain marek.non-existing.eth does not exist or is not compatible with Universal Login');
+    const {status, body: {type, error}} = result;
+    expect(status).to.eq(404);
+    expect(type).to.eq('NotFound');
+    expect(error).to.eq('Error: ENS domain marek.non-existing.eth does not exist or is not compatible with Universal Login');
   });
 
   describe('Execute', async () => {
