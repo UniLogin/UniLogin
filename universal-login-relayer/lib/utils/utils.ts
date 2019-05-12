@@ -2,6 +2,7 @@ import {providers, utils, Contract, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {sleep, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import { InvalidContract } from './errors';
 
 const withENS = (provider : providers.Web3Provider, ensAddress : string) => {
   const chainOptions = {name: 'ganache', ensAddress, chainId: 0} as utils.Network;
@@ -20,7 +21,7 @@ const hasEnoughToken = async (gasToken : string, walletContractAddress : string,
     const walletBalance = await provider.getBalance(walletContractAddress);
     return walletBalance.gte(utils.bigNumberify(gasLimit));
   } else if (!await isContract(provider, gasToken)) {
-    throw new Error('Address is not a contract');
+    throw new InvalidContract(gasToken);
   } else {
     const token = new Contract(gasToken, ERC20.interface, provider);
     const walletContractTokenBalance = await token.balanceOf(walletContractAddress);

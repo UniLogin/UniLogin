@@ -3,6 +3,7 @@ import {utils, Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../utils/utils';
 import {concatenateSignatures, calculateMessageHash} from '@universal-login/contracts';
 import {Message} from '@universal-login/commons';
+import { InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from './errors';
 
 export default class PendingExecution {
   private wallet: Wallet;
@@ -33,15 +34,15 @@ export default class PendingExecution {
 
   async push(msg: Message) {
     if (this.transactionHash !== '0x0') {
-      throw 'Execution request already processed';
+      throw new DuplicatedExecution();
     }
     if (this.containSignature(msg.signature)) {
-      throw 'Signature already collected';
+      throw new DuplicatedSignature();
     }
     const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg)), msg.signature);
     const keyPurpose = await this.walletContract.getKeyPurpose(key);
     if (keyPurpose.eq(0)) {
-      throw 'Invalid key purpose';
+      throw new InvalidSignature('Invalid key purpose');
     }
     this.collectedSignatures.push({signature: msg.signature, key});
   }
@@ -54,11 +55,11 @@ export default class PendingExecution {
   async confirmExecution(tx: string) {
     const requiredSignatures = await this.walletContract.requiredSignatures();
     if (requiredSignatures > this.collectedSignatures.length) {
-      throw 'Not enough signatures';
+      throw new NotEnoughSignatures(requiredSignatures, this.collectedSignatures.length);
     } else if (this.transactionHash !== '0x0') {
-      throw 'Transaction has already been confirmed';
+      throw new TransactionAlreadyConfirmed('0x0');
     } else if (tx.length !== 66) {
-      throw 'Invalid Tx';
+      throw new InvalidTransaction(tx);
     }
     this.transactionHash = tx;
   }

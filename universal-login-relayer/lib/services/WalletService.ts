@@ -5,6 +5,7 @@ import LegacyWallet from '@universal-login/contracts/build/LegacyWallet.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions} from '@universal-login/commons';
+import {InvalidENSDomain} from '../utils/errors';
 
 class WalletService {
   private bytecode: string;
@@ -35,7 +36,7 @@ class WalletService {
       this.hooks.emit('created', transaction);
       return transaction;
     }
-    throw new Error('domain not existing / not universal ID compatible');
+    throw new InvalidENSDomain(ensName);
   }
 }
 

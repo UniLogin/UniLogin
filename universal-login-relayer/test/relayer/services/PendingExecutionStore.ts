@@ -36,9 +36,9 @@ describe('PendingExecutionStore', () => {
     expect(store.isPresent(hash)).to.be.true;
   });
 
-  it('getStatus should trow error', async () => {
+  it('getStatus should throw error', async () => {
     const hash = calculateMessageHash(message);
-    await expect(store.getStatus(hash)).to.eventually.rejectedWith('Unable to find execution with given message hash');
+    await expect(store.getStatus(hash)).to.eventually.rejectedWith('Could not find execution with hash: 0xebe90ddbb50c7ae5bf5acee0a0779adeedcf07c30640d215e62ad9f476908a81');
   });
 
   it('should sign message', async () => {
