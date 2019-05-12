@@ -130,6 +130,7 @@ describe('Pending Execution', async () => {
             await expect(concatenatedSignatures).to.be.eq(expected);
         });
     });
+
     describe('Confirm', async () => {
         it('should confirm', async () => {
             await pendingExecution.push(msg0);
@@ -150,14 +151,14 @@ describe('Pending Execution', async () => {
             await pendingExecution.push(msg1);
             await pendingExecution.confirmExecution(sampleTx);
             await expect(pendingExecution.confirmExecution(sampleTx))
-                .to.be.rejectedWith('Transaction has already been confirmed');
+                .to.be.rejectedWith('Transaction 0x0 has already been confirmed');
         });
 
         it('should not confirm with invalid tx', async () => {
             await pendingExecution.push(msg0);
             await pendingExecution.push(msg1);
             await expect(pendingExecution.confirmExecution('0x0'))
-                .to.be.rejectedWith('Invalid Tx');
+                .to.be.rejectedWith('Invalid transaction: 0x0');
         });
     });
 });

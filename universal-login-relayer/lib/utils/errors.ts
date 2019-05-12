@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution';
+type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'TransactionAlreadyConfirmed' | 'InvalidTransaction';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -32,6 +32,21 @@ export class InvalidContract extends ValidationFailed {
     Object.setPrototypeOf(this, InvalidContract.prototype);
   }
 }
+
+export class NotEnoughSignatures extends ValidationFailed {
+  constructor(requiredSignatures: number, actualSignatures: number) {
+    super(`Not enough signatures, required ${requiredSignatures}, got only ${actualSignatures}`, 'NotEnoughSignatures');
+    Object.setPrototypeOf(this, NotEnoughSignatures.prototype);
+  }
+}
+
+export class InvalidTransaction extends ValidationFailed {
+  constructor(transactionHash: string) {
+    super(`Invalid transaction: ${transactionHash}`, 'InvalidTransaction');
+    Object.setPrototypeOf(this, InvalidTransaction.prototype);
+  }
+}
+
 
 export class NotFound extends RelayerError {
   constructor (message: string, errorType: ErrorType) {
@@ -84,7 +99,6 @@ export class NotEnoughTokens extends PaymentError {
   }
 }
 
-
 export class Conflict extends RelayerError {
   constructor (message: string, errorType: ErrorType) {
     super(message, errorType);
@@ -96,11 +110,20 @@ export class Conflict extends RelayerError {
 export class DuplicatedSignature extends Conflict {
   constructor () {
     super('Signature already collected', 'DuplicatedSignature');
+    Object.setPrototypeOf(this, DuplicatedSignature.prototype);
   }
 }
 
 export class DuplicatedExecution extends Conflict {
   constructor () {
     super('Execution request already processed', 'DuplicatedExecution');
+    Object.setPrototypeOf(this, DuplicatedExecution.prototype);
+  }
+}
+
+export class TransactionAlreadyConfirmed extends Conflict {
+  constructor(transactionHash: string) {
+    super(`Transaction ${transactionHash} has already been confirmed`, 'TransactionAlreadyConfirmed');
+    Object.setPrototypeOf(this, TransactionAlreadyConfirmed.prototype);
   }
 }
