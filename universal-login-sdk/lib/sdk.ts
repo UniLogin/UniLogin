@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature} from '@universal-login/contracts';
+import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import {waitToBeMined, waitForContractDeploy, Message} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
@@ -115,6 +115,11 @@ class UniversalLoginSDK {
     return this.execute(message, privateKey);
   }
 
+  async getMessageStatus(message: Message) {
+    const hash = calculateMessageHash(message);
+    return this.relayerApi.getStatus(hash);
+  }
+
   generatePrivateKey() {
     return Wallet.createRandom().privateKey;
   }
@@ -136,9 +141,12 @@ class UniversalLoginSDK {
       signature,
     });
 
-    const transactionHash = result.transaction.hash;
-    await waitToBeMined(this.provider, transactionHash);
-    return transactionHash;
+    if (result.transaction.hash) {
+      const transactionHash = result.transaction.hash;
+      await waitToBeMined(this.provider, transactionHash);
+      return transactionHash;
+    }
+    return result;
   }
 
   async getNonce(walletContractAddress: string, privateKey: string) {
