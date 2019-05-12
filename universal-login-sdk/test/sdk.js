@@ -57,7 +57,7 @@ describe('SDK - integration', async () => {
       });
 
       it('should throw InvalidENS exception if invalid ENS name', async () => {
-        await expect(sdk.create('alex.non-existing-id.eth')).to.be.eventually.rejectedWith('Error: domain not existing / not universal ID compatible');
+        await expect(sdk.create('alex.non-existing-id.eth')).to.be.eventually.rejectedWith('ENS domain alex.non-existing-id.eth does not exist or is not compatible with Universal Login');
       });
     });
 
