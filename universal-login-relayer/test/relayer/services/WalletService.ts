@@ -40,7 +40,8 @@ describe('Relayer - WalletService', async () => {
 
     it('should fail with not existing ENS name', async () => {
       const creationPromise = walletService.create(wallet.address, 'alex.non-existing-id.eth');
-      await expect(creationPromise).to.be.eventually.rejectedWith('domain not existing / not universal ID compatible');
+      await expect(creationPromise)
+        .to.be.eventually.rejectedWith('ENS domain alex.non-existing-id.eth does not exist or is not compatible with Universal Login');
     });
   });
 });

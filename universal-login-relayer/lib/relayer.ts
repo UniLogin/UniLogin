@@ -1,4 +1,4 @@
-import express, {Request, Response, NextFunction, Application} from 'express';
+import express, {Application} from 'express';
 import WalletRouter from './routes/wallet';
 import ConfigRouter from './routes/config';
 import RequestAuthorisationRouter from './routes/authorisation';
@@ -17,14 +17,10 @@ import {Config} from './config/relayer';
 import TransactionService from './services/transactions/TransactionService';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
+import errorHandler from './middlewares/errorHandler';
 
 const defaultPort = '3311';
 
-function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-  res.status(500)
-    .type('json')
-    .send(JSON.stringify({error: err.toString()}));
-}
 
 export type RelayerClass = {
   new (config: any, provider: providers.Provider): Relayer;

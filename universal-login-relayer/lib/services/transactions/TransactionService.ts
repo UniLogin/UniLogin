@@ -7,6 +7,7 @@ import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, getRequired
 import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
 import PendingExecutionStore from './PendingExecutionStore';
+import {NotEnoughGas, NotEnoughTokens} from '../../utils/errors';
 
 class TransactionService {
   protected executionStore: PendingExecutionStore;
@@ -69,9 +70,9 @@ class TransactionService {
         }
         return this.wallet.sendTransaction(transaction);
       }
-      throw new Error('Not enough gas');
+      throw new NotEnoughGas();
     }
-    throw new Error('Not enough tokens');
+    throw new NotEnoughTokens();
   }
 
   async getStatus(hash: string) {

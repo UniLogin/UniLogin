@@ -25,7 +25,7 @@ class AuthorisationService {
   async removeRequest(walletContractAddress: string, key: string) {
     await this.database('authorisations')
       .where('walletContractAddress', walletContractAddress)
-      .where('key', key)
+      .where('key', key.toLocaleLowerCase())
       .del();
   }
 }

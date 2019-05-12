@@ -30,8 +30,22 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         ensName: 'marek.mylogin.eth',
       });
     const {transaction} = result.body;
+    expect(result.status).to.eq(201);
     contract = await waitForContractDeploy(provider, WalletContract, transaction.hash);
     expect(contract.address).to.be.properAddress;
+  });
+
+  it('Failed to create (invalid domain)', async () => {
+    const result = await chai.request(relayer.server)
+      .post('/wallet')
+      .send({
+        managementKey: wallet.address,
+        ensName: 'marek.non-existing.eth',
+      });
+    const {status, body: {type, error}} = result;
+    expect(status).to.eq(404);
+    expect(type).to.eq('NotFound');
+    expect(error).to.eq('Error: ENS domain marek.non-existing.eth does not exist or is not compatible with Universal Login');
   });
 
   describe('Execute', async () => {
@@ -57,12 +71,13 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       };
       const balanceBefore = await provider.getBalance(otherWallet.address);
       const signature = await calculateMessageSignature(wallet.privateKey, msg);
-      await chai.request(relayer.server)
+      const {status} = await chai.request(relayer.server)
         .post('/wallet/execution')
         .send({
           ...msg,
           signature,
         });
+      expect(status).to.eq(201);
       expect(await provider.getBalance(otherWallet.address)).to.eq(balanceBefore.add(msg.value));
     });
   });

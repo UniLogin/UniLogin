@@ -27,7 +27,8 @@ describe('Relayer - MultiSignatureExecute', async () => {
     const signature0 = await calculateMessageSignature(wallet.privateKey, message);
     const signature1 = await calculateMessageSignature(actionKey, message);
     await transactionService.executeSigned({...message, signature: signature0});
-    await expect(transactionService.executeSigned({...message, signature: signature1})).to.be.eventually.rejectedWith('Not enough tokens');
+    await expect(transactionService.executeSigned({...message, signature: signature1}))
+      .to.be.eventually.rejectedWith('Not enough tokens');
   });
 
   it('Error when not enough gas', async () => {
@@ -73,7 +74,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
       });
 
       it('should fail to get pending execution status when there it is unable to find it', async () => {
-        await expect(transactionService.getStatus('0x0')).to.be.rejectedWith('Unable to find execution with given message hash');
+        await expect(transactionService.getStatus('0x0')).to.be.rejectedWith('Could not find execution with hash: 0x0');
       });
 
       afterEach(async () => {
