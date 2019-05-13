@@ -1,12 +1,12 @@
 import {utils, Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {Message, defaultDeployOptions} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {hasEnoughToken, isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../../utils/utils';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../../utils/utils';
 import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
-import {NotEnoughGas, NotEnoughTokens} from '../../utils/errors';
 import PendingExecutions from './PendingExecutions';
+import {ensureEnoughToken, ensureEnoughGas} from './validation';
+import {encodeDataForExecuteSigned} from '../../utils/transactions';
 
 class TransactionService {
   protected pendingExecutions: PendingExecutions;
@@ -42,32 +42,40 @@ class TransactionService {
   }
 
   async execute(message: Message) {
-    if (await hasEnoughToken(message.gasToken, message.from, message.gasLimit, this.provider)) {
-      const data = new utils.Interface(WalletContract.interface).functions.executeSigned.encode([message.to, message.value, message.data, message.nonce, message.gasPrice, message.gasToken, message.gasLimit, message.operationType, message.signature]);
-      const transaction = {
-        ...defaultDeployOptions,
-        value: utils.parseEther('0'),
-        to: message.from,
-        data,
-      };
-      const estimateGas = await this.provider.estimateGas({...transaction, from: this.wallet.address});
-      if (utils.bigNumberify(message.gasLimit as utils.BigNumberish).gte(estimateGas)) {
-        if (message.to === message.from && isAddKeyCall(message.data as string)) {
-          const key = getKeyFromData(message.data as string);
-          await this.authorisationService.removeRequest(message.from, key);
-          const sentTransaction = await this.wallet.sendTransaction(transaction);
-          this.hooks.emit('added', sentTransaction);
-          return sentTransaction;
-        } else if (message.to === message.from && isAddKeysCall(message.data as string)) {
-          const sentTransaction = await this.wallet.sendTransaction(transaction);
-          this.hooks.emit('keysAdded', sentTransaction);
-          return sentTransaction;
-        }
-        return this.wallet.sendTransaction(transaction);
+    await ensureEnoughToken(this.provider, message);
+    const transaction = {
+      ...defaultDeployOptions,
+      value: utils.parseEther('0'),
+      to: message.from,
+      data: encodeDataForExecuteSigned(message)
+    };
+    await ensureEnoughGas(this.provider, this.wallet.address, transaction, message);
+    if (message.to === message.from) {
+      if (isAddKeyCall(message.data as string)) {
+        return this.executeAddKey(message, transaction);
+      } else if (isAddKeysCall(message.data as string)) {
+        return this.executeAddKeys(transaction);
       }
-      throw new NotEnoughGas();
     }
-    throw new NotEnoughTokens();
+    return this.wallet.sendTransaction(transaction);
+  }
+
+  private async executeAddKeys(transaction: Partial<Message>) {
+    const sentTransaction = await this.wallet.sendTransaction(transaction);
+    this.hooks.emit('keysAdded', sentTransaction);
+    return sentTransaction;
+  }
+
+  private async executeAddKey(message: Message, transaction: Partial<Message>) {
+    await this.removeReqFromAuthService(message);
+    const sentTransaction = await this.wallet.sendTransaction(transaction);
+    this.hooks.emit('added', sentTransaction);
+    return sentTransaction;
+  }
+
+  private async removeReqFromAuthService(message: Message) {
+    const key = getKeyFromData(message.data as string);
+    await this.authorisationService.removeRequest(message.from, key);
   }
 
   async getStatus(hash: string) {
