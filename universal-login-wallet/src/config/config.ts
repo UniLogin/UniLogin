@@ -18,7 +18,7 @@ export default Object.freeze({
   },
 
   production: {
-    domains: [process.env.ENS_DOMAIN!],
+    domains: [process.env.ENS_DOMAIN_1!],
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address]
