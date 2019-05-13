@@ -15,7 +15,7 @@ export default class PendingExecutions {
     return messageHash in this.executions;
   }
 
-  private throwIfNotPresent(hash: string) {
+  private ensureExecutionExist(hash: string) {
     if (!this.isPresent(hash)) {
       throw new InvalidExecution(hash);
     }
@@ -35,9 +35,7 @@ export default class PendingExecutions {
   }
 
   async getStatus(hash: string) {
-    if (!this.isPresent(hash)) {
-      throw new InvalidExecution(hash);
-    }
+    this.ensureExecutionExist(hash);
     return this.executions[hash].getStatus();
   }
 
@@ -50,7 +48,7 @@ export default class PendingExecutions {
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {
-    this.throwIfNotPresent(hash);
+    this.ensureExecutionExist(hash);
     return this.executions[hash].isEnoughSignatures();
   }
 
