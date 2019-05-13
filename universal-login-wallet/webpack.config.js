@@ -52,7 +52,10 @@ module.exports = {
     }),
     new Dotenv(),
     new webpack.DefinePlugin({
-      'process.env.TOKEN_CONTRACT_ADDRESS': JSON.stringify(process.env.TOKEN_CONTRACT_ADDRESS)
+      'process.env.TOKEN_CONTRACT_ADDRESS': JSON.stringify(process.env.TOKEN_CONTRACT_ADDRESS),
+      'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
+      'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
+      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
     })
   ],
   devServer: {
