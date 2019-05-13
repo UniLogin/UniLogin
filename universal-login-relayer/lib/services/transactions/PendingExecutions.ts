@@ -1,8 +1,8 @@
 import PendingExecution from '../../utils/pendingExecution';
-import { Message } from '@universal-login/commons';
+import {Message} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
-import { Wallet } from 'ethers';
-import { InvalidExecution } from '../../utils/errors';
+import {Wallet} from 'ethers';
+import {InvalidExecution, InvalidTransaction} from '../../utils/errors';
 
 export default class PendingExecutions {
   public executions: Record<string, PendingExecution>;
@@ -43,8 +43,12 @@ export default class PendingExecutions {
     return  { ...message, signature: this.executions[hash].getConcatenatedSignatures()};
   }
 
-  async confirmExecution(hash: string) {
+  async confirmExecution(messageHash: string, transactionHash: string) {
+    this.executions[messageHash].confirmExecution(transactionHash);
+  }
 
+  async ensureCorrectExecution(messageHash: string) {
+    this.executions[messageHash].ensureCorrectExecution();
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {

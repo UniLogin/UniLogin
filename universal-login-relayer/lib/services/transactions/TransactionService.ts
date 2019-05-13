@@ -35,8 +35,9 @@ class TransactionService {
 
   private async executePending(hash: string, message: Message) {
     const finalMessage = this.pendingExecutions.getMessageWithSignatures(message, hash);
+    await this.pendingExecutions.ensureCorrectExecution(hash);
     const transaction: any = await this.execute(finalMessage);
-    await this.pendingExecutions.get(hash).confirmExecution(transaction.hash);
+    await this.pendingExecutions.confirmExecution(hash, transaction.hash);
     return transaction;
   }
 

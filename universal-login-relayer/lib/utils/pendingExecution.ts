@@ -52,16 +52,21 @@ export default class PendingExecution {
     return this.collectedSignatures.length >= requiredSignatures;
   }
 
-  async confirmExecution(tx: string) {
+  async confirmExecution(transactionHash: string) {
+    if (transactionHash.length !== 66) {
+      throw new InvalidTransaction(transactionHash);
+    }
+    this.transactionHash = transactionHash;
+  }
+
+  public async ensureCorrectExecution() {
     const requiredSignatures = await this.walletContract.requiredSignatures();
     if (!(await this.isEnoughSignatures())) {
       throw new NotEnoughSignatures(requiredSignatures, this.collectedSignatures.length);
-    } else if (this.transactionHash !== '0x0') {
-      throw new TransactionAlreadyConfirmed('0x0');
-    } else if (tx.length !== 66) {
-      throw new InvalidTransaction(tx);
     }
-    this.transactionHash = tx;
+    else if (this.transactionHash !== '0x0') {
+      throw new TransactionAlreadyConfirmed('0x0');
+    }
   }
 
   getConcatenatedSignatures() {
