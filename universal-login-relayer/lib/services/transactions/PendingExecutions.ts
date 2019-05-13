@@ -2,7 +2,7 @@ import PendingExecution from '../../utils/pendingExecution';
 import {Message} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import {Wallet} from 'ethers';
-import {InvalidExecution, InvalidTransaction} from '../../utils/errors';
+import {InvalidExecution} from '../../utils/errors';
 
 export default class PendingExecutions {
   public executions: Record<string, PendingExecution>;
