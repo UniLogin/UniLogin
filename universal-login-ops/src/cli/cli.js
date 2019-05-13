@@ -1,6 +1,6 @@
 const yargs = require('yargs');
 import startDevelopment from '../dev/startDevelopment';
-import deployToken from '../dev/deployToken';
+import deployToken from '../ops/deployToken';
 import connectAndExecute from './connectAndExecute';
 import deployMaster from '../ops/deployMaster';
 import {sendFunds} from '../ops/sendFunds';
@@ -22,7 +22,7 @@ const commandLineBuilder = yargs
     (argv) => {
       startDevelopment({nodeUrl: argv.nodeUrl}).catch(console.error);
     })
-  .command('deploy:token', 'Deploys a test token',
+  .command('deploy:token', 'Deploys a token',
     () => {},
     (argv) => {
       connectAndExecute(argv.nodeUrl, argv.privateKey, deployToken).catch(console.error);
