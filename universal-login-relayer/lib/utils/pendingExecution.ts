@@ -47,21 +47,26 @@ export default class PendingExecution {
     this.collectedSignatures.push({signature: msg.signature, key});
   }
 
-  async canExecute() {
+  async isEnoughSignatures() {
     const requiredSignatures = await this.walletContract.requiredSignatures();
     return this.collectedSignatures.length >= requiredSignatures;
   }
 
-  async confirmExecution(tx: string) {
-    const requiredSignatures = await this.walletContract.requiredSignatures();
-    if (requiredSignatures > this.collectedSignatures.length) {
-      throw new NotEnoughSignatures(requiredSignatures, this.collectedSignatures.length);
-    } else if (this.transactionHash !== '0x0') {
-      throw new TransactionAlreadyConfirmed('0x0');
-    } else if (tx.length !== 66) {
-      throw new InvalidTransaction(tx);
+  async confirmExecution(transactionHash: string) {
+    if (transactionHash.length !== 66) {
+      throw new InvalidTransaction(transactionHash);
     }
-    this.transactionHash = tx;
+    this.transactionHash = transactionHash;
+  }
+
+  public async ensureCorrectExecution() {
+    const requiredSignatures = await this.walletContract.requiredSignatures();
+    if (!(await this.isEnoughSignatures())) {
+      throw new NotEnoughSignatures(requiredSignatures, this.collectedSignatures.length);
+    }
+    else if (this.transactionHash !== '0x0') {
+      throw new TransactionAlreadyConfirmed('0x0');
+    }
   }
 
   getConcatenatedSignatures() {
