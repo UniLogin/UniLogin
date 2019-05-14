@@ -3,11 +3,11 @@ import {Message} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
-import PendingExecutionsStore from './PendingExecutionsStore';
+import IPendingExecutionsStore from './IPendingExecutionsStore';
 
 export default class PendingExecutions {
 
-  constructor(private wallet : Wallet, private executionsStore: PendingExecutionsStore) {
+  constructor(private wallet : Wallet, private executionsStore: IPendingExecutionsStore) {
   }
 
   isPresent(messageHash : string) {
