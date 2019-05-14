@@ -14,7 +14,7 @@ describe('UNIT: PendingExecutionsStore', async () => {
   let walletContract: Contract;
   let message: Message;
   let pendingExecution: PendingExecution;
-  let calculatedHash: string;
+  let messageHash: string;
 
   beforeEach(async () => {
     ({wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
@@ -22,31 +22,30 @@ describe('UNIT: PendingExecutionsStore', async () => {
     message = await getMessageWith(walletContract.address, wallet.privateKey);
 
     pendingExecution = new PendingExecution(message.from, wallet);
-    calculatedHash = calculateMessageHash(message);
+    messageHash = calculateMessageHash(message);
   });
 
   it('should add PendingExecution to store', () => {
-    const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
-    expect(typeof hash).to.be.eq('string');
-    expect(hash.length).to.be.eq(66);
-    expect(pendingExecutionsStore.executions[hash]).to.be.deep.eq(pendingExecution);
+    pendingExecutionsStore.add(messageHash, pendingExecution);
+    expect(typeof messageHash).to.be.eq('string');
+    expect(pendingExecutionsStore.executions[messageHash]).to.be.deep.eq(pendingExecution);
   });
 
   it('should check if pending execution with hash in store', () => {
-    expect(pendingExecutionsStore.isPresent(calculatedHash)).to.be.eq(false);
-    const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
-    expect(pendingExecutionsStore.isPresent(hash)).to.be.eq(true);
+    expect(pendingExecutionsStore.isPresent(messageHash)).to.be.eq(false);
+    pendingExecutionsStore.add(messageHash, pendingExecution);
+    expect(pendingExecutionsStore.isPresent(messageHash)).to.be.eq(true);
   });
 
   it('should get added execution', () => {
-    const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
-    expect(pendingExecutionsStore.get(hash)).to.be.deep.eq(pendingExecution);
+    pendingExecutionsStore.add(messageHash, pendingExecution);
+    expect(pendingExecutionsStore.get(messageHash)).to.be.deep.eq(pendingExecution);
   });
 
   it('should remove added execution', () => {
-    const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
-    const removedPendingExecution = pendingExecutionsStore.remove(hash);
-    expect(pendingExecutionsStore.isPresent(hash)).to.be.eq(false);
+    pendingExecutionsStore.add(messageHash, pendingExecution);
+    const removedPendingExecution = pendingExecutionsStore.remove(messageHash);
+    expect(pendingExecutionsStore.isPresent(messageHash)).to.be.eq(false);
     expect(removedPendingExecution).to.be.deep.eq(pendingExecution);
   });
 });

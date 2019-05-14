@@ -8,22 +8,21 @@ export default class PendingExecutionsStore implements IPendingExecutionsStore {
     this.executions = {};
   }
 
-  add(hash: string, execution: PendingExecution) {
-    this.executions[hash] = execution;
-    return hash;
+  add(messageHash: string, execution: PendingExecution) {
+    this.executions[messageHash] = execution;
   }
 
-  isPresent(hash: string) {
-    return hash in this.executions;
+  isPresent(messageHash: string) {
+    return messageHash in this.executions;
   }
 
-  get(hash: string): PendingExecution {
-    return this.executions[hash];
+  get(messageHash: string): PendingExecution {
+    return this.executions[messageHash];
   }
 
-  remove(hash: string): PendingExecution {
-    const pendingExecution = this.executions[hash];
-    delete this.executions[hash];
+  remove(messageHash: string): PendingExecution {
+    const pendingExecution = this.executions[messageHash];
+    delete this.executions[messageHash];
     return pendingExecution;
   }
 }
