@@ -6,10 +6,8 @@ import {InvalidExecution} from '../../utils/errors';
 import PendingExecutionsStore from './PendingExecutionsStore';
 
 export default class PendingExecutions {
-  public executionsStore: PendingExecutionsStore;
 
-  constructor(private wallet : Wallet, executionStore: PendingExecutionsStore) {
-    this.executionsStore = executionStore;
+  constructor(private wallet : Wallet, private executionsStore: PendingExecutionsStore) {
   }
 
   isPresent(messageHash : string) {
