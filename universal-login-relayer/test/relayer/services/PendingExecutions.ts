@@ -5,15 +5,9 @@ import { Message } from '@universal-login/commons';
 import { calculateMessageSignature, calculateMessageHash } from '@universal-login/contracts';
 import PendingExecution from '../../../lib/utils/pendingExecution';
 import PendingExecutions from '../../../lib/services/transactions/PendingExecutions';
-import { transferMessage } from '../../fixtures/basicWalletContract';
 import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
 import PendingExecutionsStore from '../../../lib/services/transactions/PendingExecutionsStore';
-
-const getMessageWith = async (from: string, privateKey : string) => {
-  const message = { ...transferMessage, signature: '0x', from};
-  const signature = await calculateMessageSignature(privateKey, message);
-  return {...message, signature};
-};
+import getMessageWith from '../../config/message';
 
 describe('PendingExecutions', () => {
   let executions : PendingExecutions;

@@ -25,7 +25,7 @@ export default class PendingExecutions {
   async add(message: Message) : Promise<string> {
     const hash = calculateMessageHash(message);
     if (!this.isPresent(hash)) {
-      this.executionsStore.executions[hash] = new PendingExecution(message.from, this.wallet);
+      this.executionsStore.add(hash, new PendingExecution(message.from, this.wallet));
     }
     await this.signExecution(hash, message);
     return hash;
