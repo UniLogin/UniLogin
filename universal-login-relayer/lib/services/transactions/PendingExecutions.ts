@@ -32,32 +32,32 @@ export default class PendingExecutions {
   }
 
   private async signExecution(hash: string, message: Message) {
-    await this.executionsStore.executions[hash].push(message);
+    await this.executionsStore.get(hash).push(message);
   }
 
   async getStatus(hash: string) {
     this.ensureExecutionExist(hash);
-    return this.executionsStore.executions[hash].getStatus();
+    return this.executionsStore.get(hash).getStatus();
   }
 
   getMessageWithSignatures(message: Message, hash: string) : Message {
-    return  { ...message, signature: this.executionsStore.executions[hash].getConcatenatedSignatures()};
+    return  { ...message, signature: this.executionsStore.get(hash).getConcatenatedSignatures()};
   }
 
   async confirmExecution(messageHash: string, transactionHash: string) {
-    this.executionsStore.executions[messageHash].confirmExecution(transactionHash);
+    this.executionsStore.get(messageHash).confirmExecution(transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {
-    this.executionsStore.executions[messageHash].ensureCorrectExecution();
+    this.executionsStore.get(messageHash).ensureCorrectExecution();
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {
     this.ensureExecutionExist(hash);
-    return this.executionsStore.executions[hash].isEnoughSignatures();
+    return this.executionsStore.get(hash).isEnoughSignatures();
   }
 
   get(hash: string) {
-    return this.executionsStore.executions[hash];
+    return this.executionsStore.get(hash);
   }
 }

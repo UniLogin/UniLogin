@@ -37,4 +37,16 @@ describe('UNIT: PendingExecutionsStore', async () => {
     const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
     expect(pendingExecutionsStore.isPresent(hash)).to.be.eq(true);
   });
+
+  it('should get added execution', () => {
+    const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
+    expect(pendingExecutionsStore.get(hash)).to.be.deep.eq(pendingExecution);
+  });
+
+  it('should remove added execution', () => {
+    const hash = pendingExecutionsStore.add(calculatedHash, pendingExecution);
+    const removedPendingExecution = pendingExecutionsStore.remove(hash);
+    expect(pendingExecutionsStore.isPresent(hash)).to.be.eq(false);
+    expect(removedPendingExecution).to.be.deep.eq(pendingExecution);
+  });
 });
