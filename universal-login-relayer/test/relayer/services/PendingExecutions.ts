@@ -14,7 +14,7 @@ const getMessageWith = async (from: string, privateKey : string) => {
   return {...message, signature};
 };
 
-describe('PendingExecutionStore', () => {
+describe('PendingExecutions', () => {
   let executions : PendingExecutions;
   let message : Message;
   let wallet: Wallet;
