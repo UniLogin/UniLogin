@@ -7,6 +7,7 @@ import PendingExecution from '../../../lib/utils/pendingExecution';
 import PendingExecutions from '../../../lib/services/transactions/PendingExecutions';
 import { transferMessage } from '../../fixtures/basicWalletContract';
 import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
+import PendingExecutionsStore from '../../../lib/services/transactions/PendingExecutionsStore';
 
 const getMessageWith = async (from: string, privateKey : string) => {
   const message = { ...transferMessage, signature: '0x', from};
@@ -23,7 +24,8 @@ describe('PendingExecutions', () => {
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    executions = new PendingExecutions(wallet);
+    const pendingExecutionsStore = new PendingExecutionsStore();
+    executions = new PendingExecutions(wallet, pendingExecutionsStore);
     message = await getMessageWith(walletContract.address, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
   });

@@ -7,12 +7,14 @@ import TransactionQueueService from './TransactionQueueService';
 import PendingExecutions from './PendingExecutions';
 import {ensureEnoughToken, ensureEnoughGas} from './validation';
 import {encodeDataForExecuteSigned} from '../../utils/transactions';
+import PendingExecutionsStore from './PendingExecutionsStore';
 
 class TransactionService {
   protected pendingExecutions: PendingExecutions;
 
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private transactionQueue: TransactionQueueService) {
-    this.pendingExecutions = new PendingExecutions(wallet);
+    const pendingExecutionsStore = new PendingExecutionsStore();
+    this.pendingExecutions = new PendingExecutions(wallet, pendingExecutionsStore);
   }
 
   start() {
