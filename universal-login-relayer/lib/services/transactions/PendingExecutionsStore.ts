@@ -12,4 +12,8 @@ export default class PendingExecutionsStore implements IPendingExecutionsStore {
     this.executions[hash] = execution;
     return hash;
   }
+
+  isPresent(hash: string) {
+    return hash in this.executions;
+  }
 }

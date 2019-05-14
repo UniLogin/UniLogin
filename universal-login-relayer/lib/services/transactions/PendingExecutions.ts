@@ -13,7 +13,7 @@ export default class PendingExecutions {
   }
 
   isPresent(messageHash : string) {
-    return messageHash in this.executionsStore.executions;
+    return this.executionsStore.isPresent(messageHash);
   }
 
   private ensureExecutionExist(hash: string) {
