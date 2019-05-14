@@ -3,16 +3,15 @@ import {Message} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
+import IPendingExecutionsStore from './IPendingExecutionsStore';
 
 export default class PendingExecutions {
-  public executions: Record<string, PendingExecution>;
 
-  constructor(private wallet : Wallet) {
-    this.executions = {};
+  constructor(private wallet : Wallet, private executionsStore: IPendingExecutionsStore) {
   }
 
   isPresent(messageHash : string) {
-    return messageHash in this.executions;
+    return this.executionsStore.isPresent(messageHash);
   }
 
   private ensureExecutionExist(hash: string) {
@@ -24,39 +23,39 @@ export default class PendingExecutions {
   async add(message: Message) : Promise<string> {
     const hash = calculateMessageHash(message);
     if (!this.isPresent(hash)) {
-      this.executions[hash] = new PendingExecution(message.from, this.wallet);
+      this.executionsStore.add(hash, new PendingExecution(message.from, this.wallet));
     }
     await this.signExecution(hash, message);
     return hash;
   }
 
   private async signExecution(hash: string, message: Message) {
-    await this.executions[hash].push(message);
+    await this.executionsStore.get(hash).push(message);
   }
 
   async getStatus(hash: string) {
     this.ensureExecutionExist(hash);
-    return this.executions[hash].getStatus();
+    return this.executionsStore.get(hash).getStatus();
   }
 
   getMessageWithSignatures(message: Message, hash: string) : Message {
-    return  { ...message, signature: this.executions[hash].getConcatenatedSignatures()};
+    return  { ...message, signature: this.executionsStore.get(hash).getConcatenatedSignatures()};
   }
 
   async confirmExecution(messageHash: string, transactionHash: string) {
-    this.executions[messageHash].confirmExecution(transactionHash);
+    this.executionsStore.get(messageHash).confirmExecution(transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {
-    this.executions[messageHash].ensureCorrectExecution();
+    this.executionsStore.get(messageHash).ensureCorrectExecution();
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {
     this.ensureExecutionExist(hash);
-    return this.executions[hash].isEnoughSignatures();
+    return this.executionsStore.get(hash).isEnoughSignatures();
   }
 
   get(hash: string) {
-    return this.executions[hash];
+    return this.executionsStore.get(hash);
   }
 }

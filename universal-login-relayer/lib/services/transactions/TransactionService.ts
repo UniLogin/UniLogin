@@ -9,10 +9,8 @@ import {ensureEnoughToken, ensureEnoughGas} from './validation';
 import {encodeDataForExecuteSigned} from '../../utils/transactions';
 
 class TransactionService {
-  protected pendingExecutions: PendingExecutions;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private transactionQueue: TransactionQueueService) {
-    this.pendingExecutions = new PendingExecutions(wallet);
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private transactionQueue: TransactionQueueService, private pendingExecutions: PendingExecutions) {
   }
 
   start() {

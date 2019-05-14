@@ -5,16 +5,11 @@ import { Message } from '@universal-login/commons';
 import { calculateMessageSignature, calculateMessageHash } from '@universal-login/contracts';
 import PendingExecution from '../../../lib/utils/pendingExecution';
 import PendingExecutions from '../../../lib/services/transactions/PendingExecutions';
-import { transferMessage } from '../../fixtures/basicWalletContract';
 import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
+import PendingExecutionsStore from '../../../lib/services/transactions/PendingExecutionsStore';
+import getMessageWith from '../../helpers/message';
 
-const getMessageWith = async (from: string, privateKey : string) => {
-  const message = { ...transferMessage, signature: '0x', from};
-  const signature = await calculateMessageSignature(privateKey, message);
-  return {...message, signature};
-};
-
-describe('PendingExecutionStore', () => {
+describe('PendingExecutions', () => {
   let executions : PendingExecutions;
   let message : Message;
   let wallet: Wallet;
@@ -23,7 +18,8 @@ describe('PendingExecutionStore', () => {
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    executions = new PendingExecutions(wallet);
+    const pendingExecutionsStore = new PendingExecutionsStore();
+    executions = new PendingExecutions(wallet, pendingExecutionsStore);
     message = await getMessageWith(walletContract.address, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
   });

@@ -18,6 +18,8 @@ import TransactionService from './services/transactions/TransactionService';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 import errorHandler from './middlewares/errorHandler';
+import PendingExecutions from './services/transactions/PendingExecutions';
+import PendingExecutionsStore from './services/transactions/PendingExecutionsStore';
 
 const defaultPort = '3311';
 
@@ -38,6 +40,8 @@ class Relayer {
   private transactionQueueStore: TransactionQueueStore = {} as TransactionQueueStore;
   private transactionQueueService: TransactionQueueService = {} as TransactionQueueService;
   private transactionService: TransactionService = {} as TransactionService;
+  private pendingExecutionsStore: PendingExecutionsStore = {} as PendingExecutionsStore;
+  private pendingExecutions: PendingExecutions = {} as PendingExecutions;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
 
@@ -66,9 +70,11 @@ class Relayer {
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks, this.config.legacyENS);
+    this.pendingExecutionsStore = new PendingExecutionsStore();
+    this.pendingExecutions = new PendingExecutions(this.wallet, this.pendingExecutionsStore);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
     this.transactionQueueService = new TransactionQueueService(this.wallet, this.provider, this.transactionQueueStore);
-    this.transactionService = new TransactionService(this.wallet, this.authorisationService, this.hooks, this.provider, this.transactionQueueService);
+    this.transactionService = new TransactionService(this.wallet, this.authorisationService, this.hooks, this.provider, this.transactionQueueService, this.pendingExecutions);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.transactionService));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
