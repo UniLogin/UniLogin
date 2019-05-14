@@ -15,7 +15,7 @@ const getMessageWith = async (from: string, privateKey : string) => {
 };
 
 describe('PendingExecutionStore', () => {
-  let store : PendingExecutions;
+  let executions : PendingExecutions;
   let message : Message;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -23,52 +23,52 @@ describe('PendingExecutionStore', () => {
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    store = new PendingExecutions(wallet);
+    executions = new PendingExecutions(wallet);
     message = await getMessageWith(walletContract.address, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
   });
 
   it('not present initally', () => {
-    expect(store.isPresent('0x0123')).to.be.false;
+    expect(executions.isPresent('0x0123')).to.be.false;
   });
 
   it('should be addded', async () => {
-    const hash = await store.add(message);
-    expect(store.isPresent(hash)).to.be.true;
+    const hash = await executions.add(message);
+    expect(executions.isPresent(hash)).to.be.true;
   });
 
   it('getStatus should throw error', async () => {
     const hash = calculateMessageHash(message);
-    await expect(store.getStatus(hash)).to.eventually.rejectedWith('Could not find execution with hash: 0xebe90ddbb50c7ae5bf5acee0a0779adeedcf07c30640d215e62ad9f476908a81');
+    await expect(executions.getStatus(hash)).to.eventually.rejectedWith('Could not find execution with hash: 0xebe90ddbb50c7ae5bf5acee0a0779adeedcf07c30640d215e62ad9f476908a81');
   });
 
   it('should sign message', async () => {
     const signature = await calculateMessageSignature(actionKey, message);
-    const hash1 = await store.add(message);
-    const hash2 = await store.add({ ...message, signature });
+    const hash1 = await executions.add(message);
+    const hash2 = await executions.add({ ...message, signature });
     expect(hash1).to.be.eq(hash2);
-    const collectedSignatures = (await store.getStatus(hash1)).collectedSignatures;
+    const collectedSignatures = (await executions.getStatus(hash1)).collectedSignatures;
     expect(collectedSignatures).to.be.deep.eq([message.signature, signature]);
   });
 
   it('should check if execution is ready to execute', async () => {
     const signature = await calculateMessageSignature(actionKey, message);
-    const hash1 = await store.add(message);
-    expect(await store.isEnoughSignatures(hash1)).to.eq(false);
-    const hash2 = await store.add({ ...message, signature });
-    expect(await store.isEnoughSignatures(hash2)).to.eq(true);
+    const hash1 = await executions.add(message);
+    expect(await executions.isEnoughSignatures(hash1)).to.eq(false);
+    const hash2 = await executions.add({ ...message, signature });
+    expect(await executions.isEnoughSignatures(hash2)).to.eq(true);
   });
 
   it('should return message with signature', async () => {
-    const hash = await store.add(message);
-    const messageWithSignaures = await store.getMessageWithSignatures(message, hash);
+    const hash = await executions.add(message);
+    const messageWithSignaures = await executions.getMessageWithSignatures(message, hash);
     expect(messageWithSignaures).to.deep.eq(message);
   });
 
   it('should get added signed transaction', async () => {
     const pendingExecution = new PendingExecution(message.from, wallet);
-    const hash = await store.add(message);
+    const hash = await executions.add(message);
     await pendingExecution.push(message);
-    expect(store.get(hash).toString()).to.eq(pendingExecution.toString());
+    expect(executions.get(hash).toString()).to.eq(pendingExecution.toString());
   });
 });
