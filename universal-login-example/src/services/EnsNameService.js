@@ -1,11 +1,11 @@
 import {sleep} from '@universal-login/commons';
 
 class EnsNameService {
-  constructor(ensService, historyService, tick = 500) {
-    this.ensService = ensService;
+  constructor(historyService, provider, tick = 500) {
     this.historyService = historyService;
     this.running = false;
     this.isWorking = false;
+    this.provider = provider;
     this.tick = tick;
   }
 
@@ -39,7 +39,7 @@ class EnsNameService {
   }
 
   async getEnsName(address) {
-    return await this.ensService.getEnsName(address);
+    return await this.provider.lookupAddress(address);
   }
 }
 
