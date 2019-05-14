@@ -2,6 +2,7 @@ require('dotenv').config();
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 export default Object.freeze({
+
   development: {
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
@@ -11,15 +12,15 @@ export default Object.freeze({
 
   test: {
     domains: ['mylogin.eth'],
-    relayerUrl: 'http://localhost:33111',
-    jsonRpcUrl: 'http://localhost:8545',
+    relayerUrl: 'http://localhost:3311',
+    jsonRpcUrl: 'http://localhost:18545',
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address]
   },
 
   production: {
-    domains: ['my-id.test'],
-    relayerUrl: 'https://relayer.universallogin.io',
-    jsonRpcUrl: 'https://rinkeby.infura.io',
+    domains: [process.env.ENS_DOMAIN_1!],
+    relayerUrl: process.env.RELAYER_URL!,
+    jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address]
   }
 });

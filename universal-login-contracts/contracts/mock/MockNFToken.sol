@@ -8,7 +8,7 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Burnable.sol";
 
 contract MockNFToken is ERC721Full, ERC721Mintable, ERC721MetadataMintable, ERC721Burnable {
     constructor() ERC721Mintable() ERC721Full("MockNFToken", "MNFT") public {
-        // solhint-disable-previous-line no-empty-blocks
+        // solium-disable-previous-line no-empty-blocks
     }
 
     function exists(uint256 tokenId) public view returns (bool) {

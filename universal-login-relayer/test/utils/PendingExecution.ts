@@ -142,7 +142,7 @@ describe('Pending Execution', async () => {
 
         it('should not confirm with not enough signatures', async () => {
             await pendingExecution.push(msg0);
-            await expect(pendingExecution.confirmExecution(sampleTx))
+            await expect(pendingExecution.ensureCorrectExecution())
                 .to.be.rejectedWith('Not enough signatures');
         });
 
@@ -150,7 +150,7 @@ describe('Pending Execution', async () => {
             await pendingExecution.push(msg0);
             await pendingExecution.push(msg1);
             await pendingExecution.confirmExecution(sampleTx);
-            await expect(pendingExecution.confirmExecution(sampleTx))
+            await expect(pendingExecution.ensureCorrectExecution())
                 .to.be.rejectedWith('Transaction 0x0 has already been confirmed');
         });
 
