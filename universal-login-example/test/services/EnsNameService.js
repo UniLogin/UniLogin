@@ -1,10 +1,10 @@
 import {expect} from 'chai';
+import sinon from 'sinon';
 import EnsNameService from '../../src/services/EnsNameService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 
 describe('EnsNameService', () => {
-  let ensService;
   let provider;
   let ensNameService;
   let wallet;
@@ -13,15 +13,11 @@ describe('EnsNameService', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
+    provider.lookupAddress = sinon.fake.returns('alice.mylogin.eth');
     historyService =  {
       pressers: [{address: wallet.address, name: wallet.address}]
     };
-    ensService = {
-      getEnsName() {
-        return 'alice.mylogin.eth';
-      }
-    };
-    ensNameService = new EnsNameService(ensService, historyService);
+    ensNameService = new EnsNameService(historyService, provider);
   });
 
 

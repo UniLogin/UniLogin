@@ -19,11 +19,11 @@ export interface Config {
 
 const config: Config =  Object.freeze({
   legacyENS: true,
-  jsonRpcUrl: getEnv('JSON_RPC_URL'),
+  jsonRpcUrl: getEnv('JSON_RPC_URL', ''),
   port: getEnv('PORT', ''),
-  privateKey: getEnv('PRIVATE_KEY'),
+  privateKey: getEnv('PRIVATE_KEY', ''),
   chainSpec: Object.freeze({
-    ensAddress: getEnv('ENS_ADDRESS'),
+    ensAddress: getEnv('ENS_ADDRESS', ''),
     chainId: 0,
     name: 'ganache'
   }),
