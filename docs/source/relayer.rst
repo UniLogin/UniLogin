@@ -83,7 +83,6 @@ To run relayer from your application you will need to create a relayer instance.
   Parameters:
     - **config** : object - specific config parameters, includes:
 
-      - **legacyENS** : boolean - ENS version deployed on network, for the Rinkeby testnet is ``true``, for the Ropsten testnet is ``false``
       - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
       - **port** : number - relayer endpoint
       - **privateKey** : string - private key of relayer wallet
@@ -98,7 +97,6 @@ To run relayer from your application you will need to create a relayer instance.
       import Relayer from 'unviersal-login-relayer';
 
       const config = {
-        legacyENS: true,
         jsonRpcUrl: 'https://rinkeby.infura.io',
         port: 3311,
         privateKey: 'YOUR_PRIVATE_KEY',
@@ -124,7 +122,6 @@ Example: connecting to testnet
   .. code-block:: javascript
 
     const config = {
-      legacyENS: true,
       jsonRpcUrl: process.env.JSON_RPC_URL,
       port: process.env.PORT,
       privateKey: process.env.PRIVATE_KEY,
