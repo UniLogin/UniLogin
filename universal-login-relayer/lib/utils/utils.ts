@@ -1,11 +1,6 @@
-import {providers, utils, Contract, Wallet} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {sleep} from '@universal-login/commons';
-
-const withENS = (provider : providers.Web3Provider, ensAddress : string) => {
-  const chainOptions = {name: 'ganache', ensAddress, chainId: 0} as utils.Network;
-  return new providers.Web3Provider(provider._web3Provider, chainOptions);
-};
 
 
 const isDataForFunctionCall = (data : string, contract : any, functionName: string) => {
@@ -45,4 +40,4 @@ const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
     return requiredSignatures;
 };
 
-export {sleep, withENS, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures, executionComparator};
+export {sleep, isAddKeyCall, getKeyFromData, isAddKeysCall, sortExecutionsByKey, getRequiredSignatures, executionComparator};

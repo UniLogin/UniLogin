@@ -1,7 +1,7 @@
 import Relayer from '../relayer';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 const ENSBuilder = require('ens-builder');
-import {withENS} from './utils';
+import {withENS} from '@universal-login/commons';
 import {Config} from '../config/relayer';
 import {providers, Wallet, ContractFactory} from 'ethers';
 
