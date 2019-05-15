@@ -13,3 +13,4 @@ export {parseDomain} from './utils/ens';
 export * from './constants/constants';
 export * from './models/ContractJSON';
 export {getEnv} from './utils/getEnv';
+export {withENS} from './utils/withENS';

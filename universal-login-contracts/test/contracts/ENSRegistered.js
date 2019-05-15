@@ -5,7 +5,8 @@ import Proxy from '../../build/Proxy';
 import ENSBuilder from 'ens-builder';
 import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import {utils} from 'ethers';
-import {lookupAddress, withENS} from '../utils';
+import {lookupAddress} from '../utils';
+import {withENS} from '@universal-login/commons';
 
 
 chai.use(chaiAsPromised);
