@@ -13,7 +13,7 @@ export interface Config {
     name: string,
   };
   ensRegistrars: string[];
-  walletMasterAddress?: string;
+  walletMasterAddress: string;
 }
 
 const config: Config =  Object.freeze({
