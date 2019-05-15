@@ -23,7 +23,9 @@ export default class LoginPage {
     await this.pickUsername(userName, 'connect to existing', 'Waiting for approval');
   }
 
-  getAddress() {
+  async getAddress() {
+    this.wrapper.find('#transfer-modal').simulate('click');
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Transfer one of following'));
     return this.wrapper.find('.input-copy').props().defaultValue as string;
   }
 
