@@ -1,34 +1,10 @@
 import React from 'react';
-import { useServices } from '../../hooks';
+import {getSafelloUrl} from '../utils';
+import {useServices} from '../../hooks';
 
-const APP_ID = '2d67c38a-6ddf-469a-bd9f-876a770c2474';
-const LANGUAGE = 'en';
-const COUNTRY = 'other';
-const CRYPTO = 'eth';
-
-function getSafelloProductionUrl(address: string) {
-  return 'https://app.safello.com/sdk/quickbuy.html' +
-    `?appId=${APP_ID}` +
-    '&border=true' +
-    '&address-helper=true' +
-    `&lang=${LANGUAGE}` +
-    `&country=${COUNTRY}` +
-    `&crypto=${CRYPTO}` +
-    `&address=${address}`;
-}
-
-function getSafelloUrl(address: string) {
-  return 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
-    '&border=true' +
-    '&address-helper=true' +
-    `&lang=${LANGUAGE}` +
-    `&country=${COUNTRY}` +
-    `&crypto=${CRYPTO}` +
-    `&address=${address}`;
-}
 
 const ModalSafello = () => {
-  const { walletService } = useServices();
+  const {walletService} = useServices();
   return (
     <iframe
       src={getSafelloUrl(walletService.userWallet!.contractAddress)}
