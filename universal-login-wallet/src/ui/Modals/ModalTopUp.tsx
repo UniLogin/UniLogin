@@ -10,7 +10,7 @@ const ModalTopUp = () => {
   return (
     <>
       <h2 className="modal-title">Top up your account</h2>
-      <p className="modal-subtitle">(Lorem ipsum dolor sit amet, consectetur adipisicing)</p>
+      <p className="modal-subtitle">(Lorem ipsum dolor sit amet, consectetur adipisicing DUPA)</p>
       <div className="modal-topup-row">
         <div className="modal-topup-block">
           <button className="modal-topup-btn" id="transfer-modal" onClick={() => modalService.showModal('address')}>
