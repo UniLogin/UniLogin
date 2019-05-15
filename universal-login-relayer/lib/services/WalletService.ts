@@ -21,7 +21,7 @@ class WalletService {
     if (ensArgs !== null) {
       let args = [key, ...ensArgs];
       const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode(args);
-      args = [ this.walletMasterAddress, initData ];
+      args = [this.walletMasterAddress, initData];
       const deployTransaction = {
         ...defaultDeployOptions,
         ...overrideOptions,
