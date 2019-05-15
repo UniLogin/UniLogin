@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'TransactionAlreadyConfirmed' | 'InvalidTransaction';
+type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'TransactionAlreadyConfirmed' | 'InvalidTransaction' | 'InvalidHexData';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -44,6 +44,13 @@ export class InvalidTransaction extends ValidationFailed {
   constructor(transactionHash: string) {
     super(`Invalid transaction: ${transactionHash}`, 'InvalidTransaction');
     Object.setPrototypeOf(this, InvalidTransaction.prototype);
+  }
+}
+
+export class InvalidHexData extends ValidationFailed {
+  constructor(hexData: string) {
+    super(`Invalid hex data ${hexData}`, 'InvalidHexData');
+    Object.setPrototypeOf(this, InvalidHexData.prototype);
   }
 }
 

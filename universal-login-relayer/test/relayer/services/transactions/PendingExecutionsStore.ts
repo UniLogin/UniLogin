@@ -1,12 +1,12 @@
 import {expect} from 'chai';
-import PendingExecutionsStore from '../../../lib/services/transactions/PendingExecutionsStore';
-import PendingExecution from '../../../lib/utils/pendingExecution';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import { calculateMessageHash } from '@universal-login/contracts';
-import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
-import getMessageWith from '../../helpers/message';
-import { Message } from '@universal-login/commons';
+import {Message} from '@universal-login/commons';
+import {calculateMessageHash} from '@universal-login/contracts';
+import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
+import PendingExecution from '../../../../lib/utils/pendingExecution';
+import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import createSignedMessage from '../../../helpers/message';
 
 describe('UNIT: PendingExecutionsStore', async () => {
   let pendingExecutionsStore: PendingExecutionsStore;
@@ -19,7 +19,7 @@ describe('UNIT: PendingExecutionsStore', async () => {
   beforeEach(async () => {
     ({wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     pendingExecutionsStore = new PendingExecutionsStore();
-    message = await getMessageWith(walletContract.address, wallet.privateKey);
+    message = await createSignedMessage({from: walletContract.address}, wallet.privateKey);
 
     pendingExecution = new PendingExecution(message.from, wallet);
     messageHash = calculateMessageHash(message);

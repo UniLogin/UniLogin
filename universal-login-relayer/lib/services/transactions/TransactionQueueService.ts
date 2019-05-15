@@ -6,6 +6,7 @@ type QueueState = 'running' | 'stopped' | 'stopping';
 
 class QueuedTransactionService {
   private state: QueueState;
+  private onTransactionSent?: (transaction: Partial<utils.Transaction>) => Promise<void>;
 
   constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: ITransactionQueueStore, private tick: number = 100){
     this.state = 'stopped';
@@ -15,14 +16,19 @@ class QueuedTransactionService {
     return this.queueTransactionStore.add(transaction);
   }
 
-  async execute(message: Partial<utils.Transaction>, id: string) {
+  async execute(transaction: Partial<utils.Transaction>, id: string) {
     try {
-      const {hash} = await this.wallet.sendTransaction(message);
-      await this.provider.waitForTransaction(hash!);
-      await this.queueTransactionStore.onSuccessRemove(id, hash!);
+      const sentTransaction = await this.wallet.sendTransaction(transaction);
+      await this.provider.waitForTransaction(sentTransaction.hash!);
+      await this.onTransactionSent!(sentTransaction);
+      await this.queueTransactionStore.onSuccessRemove(id, sentTransaction.hash!);
     } catch (error) {
       await this.queueTransactionStore.onErrorRemove(id, `${error.name}: ${error.message}`);
     }
+  }
+
+  setOnTransactionSent(callback?: (transaction: Partial<utils.Transaction>) => Promise<void>) {
+    this.onTransactionSent = callback;
   }
 
   start() {

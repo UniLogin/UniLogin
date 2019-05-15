@@ -5,8 +5,8 @@ import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from
 import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
 import PendingExecutions from './PendingExecutions';
-import {ensureEnoughToken, ensureEnoughGas} from './validation';
-import {encodeDataForExecuteSigned} from '../../utils/transactions';
+import {ensureEnoughToken, ensureEnoughGas} from './validations';
+import {encodeDataForExecuteSigned, decodeDataForExecuteSigned} from './serialisation';
 
 class TransactionService {
 
@@ -14,7 +14,21 @@ class TransactionService {
   }
 
   start() {
+    this.transactionQueue.setOnTransactionSent(this.onTransactionSent);
     this.transactionQueue.start();
+  }
+
+  async onTransactionSent(sentTransaction: Partial<utils.Transaction>) {
+    const {data} = sentTransaction;
+    const message = decodeDataForExecuteSigned(data!);
+    if (message.to === sentTransaction.to) {
+      if (isAddKeyCall(message.data as string)) {
+        await this.removeReqFromAuthService({...message, from: sentTransaction.to!});
+        this.hooks.emit('added', sentTransaction);
+      } else if (isAddKeysCall(message.data as string)) {
+        this.hooks.emit('keysAdded', sentTransaction);
+      }
+    }
   }
 
   async executeSigned(message: Message) {
@@ -48,26 +62,8 @@ class TransactionService {
       data: encodeDataForExecuteSigned(message)
     };
     await ensureEnoughGas(this.provider, this.wallet.address, transaction, message);
-    if (message.to === message.from) {
-      if (isAddKeyCall(message.data as string)) {
-        return this.executeAddKey(message, transaction);
-      } else if (isAddKeysCall(message.data as string)) {
-        return this.executeAddKeys(transaction);
-      }
-    }
-    return this.wallet.sendTransaction(transaction);
-  }
-
-  private async executeAddKeys(transaction: Partial<Message>) {
     const sentTransaction = await this.wallet.sendTransaction(transaction);
-    this.hooks.emit('keysAdded', sentTransaction);
-    return sentTransaction;
-  }
-
-  private async executeAddKey(message: Message, transaction: Partial<Message>) {
-    await this.removeReqFromAuthService(message);
-    const sentTransaction = await this.wallet.sendTransaction(transaction);
-    this.hooks.emit('added', sentTransaction);
+    await this.onTransactionSent(sentTransaction);
     return sentTransaction;
   }
 
@@ -82,6 +78,12 @@ class TransactionService {
 
   stop() {
     this.transactionQueue.stop();
+    this.transactionQueue.setOnTransactionSent(undefined);
+  }
+
+  async stopLater() {
+    this.transactionQueue.stopLater();
+    this.transactionQueue.setOnTransactionSent(undefined);
   }
 }
 

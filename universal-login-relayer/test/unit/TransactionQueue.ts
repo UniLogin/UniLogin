@@ -17,7 +17,7 @@ describe('UNIT: Transaction Queue Service', async () => {
 
   beforeEach(async () => {
     transactionQueueMemoryStorage = new TransactionQueueMemoryStore();
-    transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueMemoryStorage as any, 1);
+    transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueMemoryStorage, 1);
   });
 
   it('transaction round trip', async () => {
@@ -36,11 +36,19 @@ describe('UNIT: Transaction Queue Service', async () => {
   });
 
   it('should throw error when hash is null', async () => {
-    transactionQueueService = new TransactionQueueService(walletReturnsNull, provider, transactionQueueMemoryStorage as any, 1);
+    transactionQueueService = new TransactionQueueService(walletReturnsNull, provider, transactionQueueMemoryStorage, 1);
     transactionQueueService.start();
     transactionQueueMemoryStorage.onErrorRemove = sinon.spy(transactionQueueMemoryStorage.onErrorRemove);
     await transactionQueueService.add(transaction);
     await waitExpect(() => expect(transactionQueueMemoryStorage.onErrorRemove).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
+  });
+
+  it('should call calback', async () => {
+    const callback = sinon.spy();
+    transactionQueueService.setOnTransactionSent(callback);
+    transactionQueueService.start();
+    transactionQueueService.add(transaction);
+    await waitExpect(() => expect(callback).to.be.calledOnce);
   });
 
   afterEach(async () => {
