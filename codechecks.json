@@ -1,0 +1,14 @@
+{
+  "checks": [
+    {
+      "name": "build-size-watcher",
+      "options": {
+        "gzip": false,
+        "files": [
+          { "path": "./universal-login-wallet/dist/*.js" },
+          { "path": "./universal-login-wallet/dist/*.css" }
+        ]
+      }
+    }
+  ]
+}

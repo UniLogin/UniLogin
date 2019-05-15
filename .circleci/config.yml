@@ -7,6 +7,7 @@ jobs:
       - checkout
       - run: yarn install
       - run: yarn build
+      - run: yarn codechecks
       - save_cache:
             key: universal-login-{{ .Environment.CIRCLE_SHA1 }}
             paths:
