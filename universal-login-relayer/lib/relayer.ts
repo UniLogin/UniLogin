@@ -69,7 +69,7 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
-    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks, this.config.legacyENS);
+    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress!, this.ensService, this.hooks);
     this.pendingExecutionsStore = new PendingExecutionsStore();
     this.pendingExecutions = new PendingExecutions(this.wallet, this.pendingExecutionsStore);
     this.transactionQueueStore = new TransactionQueueStore(this.database);

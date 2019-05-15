@@ -24,7 +24,6 @@ export class RelayerUnderTest extends Relayer {
       },
       ensRegistrars: [DOMAIN],
       walletMasterAddress: address,
-      legacyENS: false,
     };
     return new RelayerUnderTest(config as Config, providerWithENS);
   }
