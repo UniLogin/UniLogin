@@ -1,5 +1,5 @@
 import getConfig from '../config/getConfig';
 
 export function getSafelloUrl(address: string) {
-  return getConfig().safelloUrl + `&address=${address}`;
+  return `${getConfig().safelloUrl}&address=${address}`;
 }
