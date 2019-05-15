@@ -1,11 +1,11 @@
 import { defaultDeployOptions } from '@universal-login/commons';
-import LegacyWallet from '@universal-login/contracts/build/LegacyWallet.json';
+import Wallet from '@universal-login/contracts/build/Wallet.json';
 import { ContractFactory } from 'ethers';
 
 export default async function createWalletContract(wallet, ensService) {
   const factory = new ContractFactory(
-    LegacyWallet.interface,
-    `0x${LegacyWallet.evm.bytecode.object}`,
+    Wallet.interface,
+    `0x${Wallet.evm.bytecode.object}`,
     wallet,
   );
 

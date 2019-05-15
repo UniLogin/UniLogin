@@ -4,7 +4,6 @@ import { getEnv } from '@universal-login/commons';
 dotenv.config();
 
 export interface Config {
-  legacyENS: boolean;
   jsonRpcUrl?: string;
   port?: string;
   privateKey: string;
@@ -14,11 +13,10 @@ export interface Config {
     name: string,
   };
   ensRegistrars: string[];
-  walletMasterAddress?: string;
+  walletMasterAddress: string;
 }
 
 const config: Config =  Object.freeze({
-  legacyENS: true,
   jsonRpcUrl: getEnv('JSON_RPC_URL', ''),
   port: getEnv('PORT', ''),
   privateKey: getEnv('PRIVATE_KEY', ''),
