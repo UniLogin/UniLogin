@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {walletAndErc721} from '../fixtures/walletAndToken';
+import {walletAndErc721} from '../fixtures/walletAndErc721';
 
 
 describe('WalletContract with ERC721', () => {
