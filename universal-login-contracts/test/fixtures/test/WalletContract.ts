@@ -1,19 +1,19 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {walletContract as walletContractFixture} from '../../fixtures/walletContract';
+import {walletContractFixture} from '../../fixtures/walletContract';
 import WalletMaster from '../../../build/WalletMaster.json';
 import {MANAGEMENT_KEY} from '../../../lib';
 
 
 describe('WalletContract fixture test', () => {
   let walletContract: Contract;
-  let walletOwner: Wallet;
-  let wallet: Wallet;
+  let contractOwner: Wallet;
+  let deployer: Wallet;
   let provider: providers.Provider;
 
   before(async () => {
-    ({walletContract, walletOwner, wallet, provider} = await loadFixture(walletContractFixture));
+    ({walletContract, deployer, contractOwner, provider} = await loadFixture(walletContractFixture));
   });
 
   it('should deploy wallet contract', () => {
@@ -22,9 +22,9 @@ describe('WalletContract fixture test', () => {
 
   it('walletOwner address should be managament key', async () => {
     const getKeyPurposeInterface = new utils.Interface(WalletMaster.interface).functions.getKeyPurpose;
-    const getKeyPurposeData = getKeyPurposeInterface.encode([walletOwner.address]);
+    const getKeyPurposeData = getKeyPurposeInterface.encode([contractOwner.address]);
     const callTransaction = {to: walletContract.address, data: getKeyPurposeData};
-    const resultCall = await wallet.provider.call(callTransaction);
+    const resultCall = await deployer.provider.call(callTransaction);
     expect(getKeyPurposeInterface.decode(resultCall).purpose).to.eq(MANAGEMENT_KEY);
   });
 

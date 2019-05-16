@@ -1,5 +1,6 @@
 pragma solidity ^0.5.2;
 
+import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 import "./erc1836/masters/MasterBase.sol";
 import "./erc1836/interfaces/IERC1271.sol";
 import "./ENSRegistered.sol";
@@ -7,7 +8,7 @@ import "./ERC1077.sol";
 
 
 /* solium-disable no-empty-blocks */
-contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
+contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Receiver {
     constructor()
         ERC1077(address(0))
         public
@@ -49,5 +50,9 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271 {
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
         return keyExist(_data.recover(_signature));
+    }
+
+    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 }
