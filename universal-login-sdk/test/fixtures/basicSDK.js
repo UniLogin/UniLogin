@@ -2,7 +2,7 @@ import UniversalLoginSDK from '../../lib/sdk';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {deployContract} from 'ethereum-waffle';
 import {utils, ContractFactory} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import MESSAGE_DEFAULTS from '../../lib/config';
 
