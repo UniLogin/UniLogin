@@ -4,7 +4,6 @@ import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import WalletService from '../../../lib/services/WalletService';
 import buildEnsService from '../../helpers/buildEnsService';
-import WalletContract from '@universal-login/contracts/build/Wallet';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {EventEmitter} from 'fbemitter';
 import {getKnex} from '../../../lib/utils/knexUtils';
@@ -32,7 +31,7 @@ describe('Authorisation Service', async () => {
     const walletMasterContract = await deployContract(ensDeployer, WalletMaster);
     walletContractService = new WalletService(wallet, walletMasterContract.address, ensService, new EventEmitter());
     const transaction = await walletContractService.create(managementKey.address, 'alex.mylogin.eth');
-    walletContract = await waitForContractDeploy(managementKey, WalletContract, transaction.hash);
+    walletContract = await waitForContractDeploy(managementKey, WalletMaster, transaction.hash);
   });
 
   it('Authorisation roundtrip', async () => {

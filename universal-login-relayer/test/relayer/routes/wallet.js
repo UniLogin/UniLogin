@@ -4,7 +4,7 @@ import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
-import WalletContract from '@universal-login/contracts/build/Wallet';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import {startRelayer} from './helpers';
 
