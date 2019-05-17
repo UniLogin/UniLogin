@@ -49,7 +49,7 @@ class TransactionService {
     const finalMessage = this.pendingExecutions.getMessageWithSignatures(message, hash);
     await this.pendingExecutions.ensureCorrectExecution(hash);
     const transaction: any = await this.execute(finalMessage);
-    await this.pendingExecutions.confirmExecution(hash, transaction.hash);
+    await this.pendingExecutions.remove(hash);
     return transaction;
   }
 
@@ -73,7 +73,11 @@ class TransactionService {
   }
 
   async getStatus(hash: string) {
-    return this.pendingExecutions.getStatus(hash);
+    if (this.pendingExecutions.isPresent(hash)){
+      return this.pendingExecutions.getStatus(hash);
+    } else {
+      return null;
+    }
   }
 
   stop() {

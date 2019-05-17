@@ -58,4 +58,8 @@ export default class PendingExecutions {
   get(hash: string) {
     return this.executionsStore.get(hash);
   }
+
+  remove(hash: string) {
+    return this.executionsStore.remove(hash);
+  }
 }
