@@ -1,4 +1,4 @@
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {utils, Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../utils/utils';
 import {concatenateSignatures, calculateMessageHash} from '@universal-login/contracts';
