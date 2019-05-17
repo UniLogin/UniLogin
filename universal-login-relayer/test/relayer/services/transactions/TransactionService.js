@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageSignature} from '@universal-login/contracts';
-import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
-import setupTransactionService from '../../helpers/setupTransactionService';
-import defaultDeviceInfo from '../../config/defaults';
-import {getKnex} from '../../../lib/utils/knexUtils';
+import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
+import setupTransactionService from '../../../helpers/setupTransactionService';
+import defaultDeviceInfo from '../../../config/defaults';
+import {getKnex} from '../../../../lib/utils/knexUtils';
 
 describe('Relayer - TransactionService', async () => {
   let transactionService;

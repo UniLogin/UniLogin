@@ -1,13 +1,13 @@
-import { expect } from 'chai';
-import { Wallet, Contract } from 'ethers';
-import { loadFixture } from 'ethereum-waffle';
-import { Message } from '@universal-login/commons';
-import { calculateMessageSignature, calculateMessageHash } from '@universal-login/contracts';
-import PendingExecution from '../../../lib/utils/pendingExecution';
-import PendingExecutions from '../../../lib/services/transactions/PendingExecutions';
-import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
-import PendingExecutionsStore from '../../../lib/services/transactions/PendingExecutionsStore';
-import getMessageWith from '../../helpers/message';
+import {expect} from 'chai';
+import {Wallet, Contract} from 'ethers';
+import {loadFixture} from 'ethereum-waffle';
+import {Message} from '@universal-login/commons';
+import {calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
+import PendingExecution from '../../../../lib/utils/pendingExecution';
+import PendingExecutions from '../../../../lib/services/transactions/PendingExecutions';
+import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
+import createSignedMessage from '../../../helpers/message';
 
 describe('PendingExecutions', () => {
   let executions : PendingExecutions;
@@ -20,7 +20,7 @@ describe('PendingExecutions', () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
     const pendingExecutionsStore = new PendingExecutionsStore();
     executions = new PendingExecutions(wallet, pendingExecutionsStore);
-    message = await getMessageWith(walletContract.address, wallet.privateKey);
+    message = await createSignedMessage({from: walletContract.address}, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
   });
 
