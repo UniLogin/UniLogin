@@ -99,7 +99,7 @@ describe('WalletMaster', async () => {
       it('emits ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msg);
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.emit(proxyAsWalletContract, 'ExecutedSigned') // TODO: is this OK? Don't think so
+          .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
 
