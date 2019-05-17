@@ -6,7 +6,7 @@ import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
 import {utils, Contract} from 'ethers';
 import PublicResolver from '@universal-login/contracts/build/PublicResolver';
 import sinon from 'sinon';
-import { loadFixture } from 'ethereum-waffle';
+import {loadFixture} from 'ethereum-waffle';
 
 
 chai.use(require('chai-string'));

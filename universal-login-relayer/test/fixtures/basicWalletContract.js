@@ -1,6 +1,6 @@
-import { utils } from 'ethers';
+import {utils} from 'ethers';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import { OPERATION_CALL, ACTION_KEY } from '@universal-login/contracts';
+import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
 import buildEnsService from '../helpers/buildEnsService';
