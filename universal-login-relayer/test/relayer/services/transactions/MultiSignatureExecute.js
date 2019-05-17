@@ -66,15 +66,13 @@ describe('Relayer - MultiSignatureExecute', async () => {
         const signature1 = await calculateMessageSignature(actionKey, msg);
         const messageHash = await calculateMessageHash(msg);
         await transactionService.executeSigned({...msg, signature: signature0});
-        const transaction = await transactionService.executeSigned({...msg, signature: signature1});
+        await transactionService.executeSigned({...msg, signature: signature1});
         const status = await transactionService.getStatus(messageHash);
-        const collectedSignatures = status.collectedSignatures;
-        expect(collectedSignatures).to.deep.eq([signature0, signature1]);
-        expect(status.transactionHash).to.eq(transaction.hash);
+        expect(status).to.be.null;
       });
 
       it('should fail to get pending execution status when there it is unable to find it', async () => {
-        await expect(transactionService.getStatus('0x0')).to.be.rejectedWith('Could not find execution with hash: 0x0');
+        await expect(transactionService.getStatus('0x0')).become(null);
       });
 
       afterEach(async () => {
