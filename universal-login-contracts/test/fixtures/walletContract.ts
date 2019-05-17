@@ -22,17 +22,21 @@ async function setupInitializeArgs({key, ensAddress, registrarAddress, resolverA
   return args;
 }
 
-export async function walletContract(provider: providers.Provider, [wallet, walletOwner]: Wallet[]) {
-  const {ensAddress, resolverAddress, registrarAddress} = await deployENS(wallet);
-  const walletMaster = await deployContract(wallet, WalletMaster);
-  const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
-  const args = await setupInitializeArgs({key: walletOwner.address, ensAddress, registrarAddress, resolverAddress});
+export async function setupWalletContract(deployer: Wallet, contractOwner: Wallet) {
+  const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
+  const walletMaster = await deployContract(deployer, WalletMaster);
+  const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
+  const args = await setupInitializeArgs({key: contractOwner.address, ensAddress, registrarAddress, resolverAddress});
   const initData = new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
-  const walletContract = await deployContract(wallet, ProxyContract, [walletMaster.address, initData]);
+  const walletContract = await deployContract(deployer, ProxyContract, [walletMaster.address, initData]);
   return {
     walletContract,
-    walletOwner,
-    wallet,
+    contractOwner,
+    deployer,
     provider: providerWithENS
   };
+}
+
+export function walletContractFixture(givenProvider: providers.Provider, [wallet, wallet2]: Wallet[]) {
+  return setupWalletContract(wallet, wallet2);
 }
