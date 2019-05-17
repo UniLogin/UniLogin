@@ -2,7 +2,7 @@ import {Wallet} from 'ethers';
 import {RelayerUnderTest} from '../../../lib/utils/relayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/Wallet';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import chai from 'chai';
 
 export const startRelayer = async () => {

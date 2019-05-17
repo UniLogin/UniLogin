@@ -1,5 +1,5 @@
 import {utils, Contract, Wallet} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {sleep} from '@universal-login/commons';
 
 
