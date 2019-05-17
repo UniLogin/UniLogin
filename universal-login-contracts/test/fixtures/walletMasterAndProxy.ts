@@ -8,9 +8,9 @@ import {utils, Contract, Wallet, providers} from 'ethers';
 const {parseEther} = utils;
 
 export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
-  const privateKey = wallet.privateKey;
+  const ownerWallet = Wallet.createRandom();
   const walletContractMaster = await deployContract(wallet, WalletMaster);
-  const initData = new utils.Interface(WalletMaster.interface).functions.initialize.encode([wallet.address]);
+  const initData = new utils.Interface(WalletMaster.interface).functions.initialize.encode([ownerWallet.address]);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address, initData]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
@@ -19,8 +19,8 @@ export default async function walletMasterAndProxy(unusedProvider : providers.Pr
   const proxyAsWalletContract = new Contract(walletContractProxy.address, WalletMaster.abi, wallet);
   return {
     provider: wallet.provider,
-    publicKey: wallet.address,
-    privateKey,
+    publicKey: ownerWallet.address,
+    privateKey: ownerWallet.privateKey,
     walletContractProxy,
     proxyAsWalletContract,
     mockToken,

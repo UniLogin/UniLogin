@@ -31,9 +31,10 @@ describe('WalletMaster', async () => {
   let invalidSignature;
   let relayerBalance;
   let relayerTokenBalance;
+  let publicKey;
 
   beforeEach(async () => {
-    ({provider, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
+    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
     executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = await calculateMessageSignature(privateKey, msg);
@@ -50,7 +51,7 @@ describe('WalletMaster', async () => {
 
   describe('Signing', () => {
     it('initial key exist', async () => {
-      expect(await proxyAsWalletContract.keyExist(wallet.address)).to.be.true;
+      expect(await proxyAsWalletContract.keyExist(publicKey)).to.be.true;
     });
 
     it('zero key does not exist', async () => {
@@ -83,7 +84,7 @@ describe('WalletMaster', async () => {
         msg.gasLimit,
         0,
         signature);
-      expect(recoveredAddress).to.eq(wallet.address);
+      expect(recoveredAddress).to.eq(publicKey);
     });
   });
 
