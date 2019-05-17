@@ -4,9 +4,10 @@ import ITransactionQueueStore from './ITransactionQueueStore';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
+type OnTransactionSent = (transaction: Partial<utils.Transaction>) => Promise<void>;
 class QueuedTransactionService {
   private state: QueueState;
-  private onTransactionSent?: (transaction: Partial<utils.Transaction>) => Promise<void>;
+  private onTransactionSent?: OnTransactionSent;
 
   constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: ITransactionQueueStore, private tick: number = 100){
     this.state = 'stopped';
@@ -27,7 +28,7 @@ class QueuedTransactionService {
     }
   }
 
-  setOnTransactionSent(callback?: (transaction: Partial<utils.Transaction>) => Promise<void>) {
+  setOnTransactionSent(callback?: OnTransactionSent) {
     this.onTransactionSent = callback;
   }
 
