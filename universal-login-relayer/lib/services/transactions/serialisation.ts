@@ -23,18 +23,19 @@ export const encodeDataForExecuteSigned = (message: MessageWithoutFrom) =>
 export const decodeDataForExecuteSigned = (data: string) => dataToMessage(
   new utils.AbiCoder((type, value) => value).decode(
     executeSigned.inputs,
-    removeFunctionSigFromData(4, data)
+    removeFunctionSigFromData(data)
   )
 );
 
-export const removeFunctionSigFromData = (n: number, hexData: string) => {
-  if (!hexData.startsWith('0x')) {
-    throw new InvalidHexData(hexData);
-  }
-  return removeLeadingBytes(n, hexData);
-};
+export const removeFunctionSigFromData = (hexData: string) => removeLeadingBytes(4, hexData);
 
-const removeLeadingBytes = (n: number, data: string) => `0x${data.slice(n * 2 + 2)}`;
+const removeLeadingBytes = (n: number, data: string) => {
+  if (!data.startsWith('0x')) {
+    throw new InvalidHexData(data);
+  } else {
+    return `0x${data.slice(n * 2 + 2)}`;
+  }
+};
 
 const dataToMessage = (data: any[]): MessageWithoutFrom => ({
   to: data[0],
