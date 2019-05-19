@@ -1,8 +1,8 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
-import "./erc1836/masters/MasterBase.sol";
-import "./erc1836/interfaces/IERC1271.sol";
+import "@kitsune-wallet/contracts/contracts/masters/MasterBase.sol";
+import "@kitsune-wallet/contracts/contracts/interfaces/IERC1271.sol";
 import "./ENSRegistered.sol";
 import "./ERC1077.sol";
 
@@ -46,6 +46,15 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
+    }
+
+    function updateMaster(
+        address _newMaster,
+        bytes calldata _initData,
+        bool _reset) external onlyManagementKeyOrThisContract()
+    {
+        if (_reset) revert('not-implemented');
+        // setMaster(_newMaster, _initData);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
