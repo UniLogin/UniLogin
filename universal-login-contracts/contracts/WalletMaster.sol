@@ -53,7 +53,10 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         bytes calldata _initData,
         bool _reset) external onlyManagementKeyOrThisContract()
     {
-        if (_reset) revert('not-implemented');
+        if (_reset) {
+            revert("not-implemented");
+        }
+        // For unknown reason this line causes issues (out-of-gas). Is ganache at fault?
         // setMaster(_newMaster, _initData);
     }
 
