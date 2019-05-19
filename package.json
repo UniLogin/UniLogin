@@ -6,6 +6,9 @@
   "license": "MIT",
   "version": "0.1.0",
   "devDependencies": {
+    "@codechecks/build-size-watcher": "^0.0.14",
+    "@codechecks/client": "^0.0.58",
+    "@codechecks/type-coverage-watcher": "^0.0.8",
     "chalk": "^2.0.1"
   },
   "workspaces": [
@@ -20,7 +23,8 @@
     "lint": "yarn wsrun lint --stages",
     "ci": "yarn lint && yarn test",
     "clean": "yarn wsrun clean"
-  }, "engines": {
+  },
+  "engines": {
     "node": "10.15",
     "yarn": ">=1.9.4"
   }

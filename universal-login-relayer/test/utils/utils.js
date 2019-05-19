@@ -1,13 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
+import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
 import {utils} from 'ethers';
-import MockToken from '@universal-login/contracts/build/MockToken';
-import KeyHolder from '@universal-login/contracts/build/KeyHolder.json';
 import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/contracts';
-import WalletContract from '@universal-login/contracts/build/Wallet';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -16,7 +13,6 @@ describe('Tools test', async () => {
   let provider;
   let wallet;
   let otherWallet;
-  const gasLimit = 1000000;
 
   before(async () => {
     provider = createMockProvider();

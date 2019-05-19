@@ -19,6 +19,7 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: yarn lint
+      - run: yarn codechecks
   test_commons:
     docker:
       - image: circleci/node:10.15

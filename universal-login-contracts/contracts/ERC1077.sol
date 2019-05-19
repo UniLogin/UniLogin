@@ -4,10 +4,9 @@ import "./KeyHolder/KeyHolder.sol";
 import "./IERC1077.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
-import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 
 
-contract ERC1077 is KeyHolder, IERC1077, IERC721Receiver {
+contract ERC1077 is KeyHolder, IERC1077 {
     using ECDSA for bytes32;
 
     uint public lastNonce;
@@ -118,14 +117,10 @@ contract ERC1077 is KeyHolder, IERC1077, IERC721Receiver {
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.value(value)(data);
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType);
-        emit ExecutedSigned(messageHash, lastNonce-1, success);
+        emit ExecutedSigned(messageHash, nonce, success);
         uint256 gasUsed = startingGas.sub(gasleft());
         refund(gasUsed, gasPrice, gasToken);
         return messageHash;
-    }
-
-    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
-        return this.onERC721Received.selector;
     }
 
     function refund(uint256 gasUsed, uint gasPrice, address gasToken) private {

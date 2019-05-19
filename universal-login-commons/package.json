@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/commons",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Unviersal Login Common source code",
   "main": "dist/index.js",
   "license": "MIT",
@@ -14,6 +14,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "ens-builder": "^2.0.1",
     "sinon": "^7.2.3",
     "sinon-chai": "^3.3.0",
     "ts-node": "^8.0.2",

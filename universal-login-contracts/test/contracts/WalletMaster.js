@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
+import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
 import WalletMaster from '../../build/WalletMaster';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
@@ -14,16 +14,12 @@ chai.use(solidity);
 
 const {parseEther} = utils;
 const to1 = '0x0000000000000000000000000000000000000001';
-const to2 = '0x0000000000000000000000000000000000000002';
 
 describe('WalletMaster', async () => {
   let provider;
-  let walletContractMaster;
   let walletContractProxy;
   let proxyAsWalletContract;
   let privateKey;
-  let keyAsAddress;
-  let publicKey;
   let mockToken;
   let mockContract;
   let wallet;
@@ -35,9 +31,10 @@ describe('WalletMaster', async () => {
   let invalidSignature;
   let relayerBalance;
   let relayerTokenBalance;
+  let publicKey;
 
   beforeEach(async () => {
-    ({provider, walletContractMaster, walletContractProxy, proxyAsWalletContract, privateKey, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
+    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
     executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = await calculateMessageSignature(privateKey, msg);
@@ -87,7 +84,7 @@ describe('WalletMaster', async () => {
         msg.gasLimit,
         0,
         signature);
-      expect(recoveredAddress).to.eq(keyAsAddress);
+      expect(recoveredAddress).to.eq(publicKey);
     });
   });
 
@@ -103,7 +100,7 @@ describe('WalletMaster', async () => {
       it('emits ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msg);
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.emit(walletContractMaster, 'ExecutedSigned') // TODO: is this OK? Don't think so
+          .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
 
@@ -150,7 +147,7 @@ describe('WalletMaster', async () => {
         const messageHash = calculateMessageHash(msg);
 
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.emit(walletContractMaster, 'ExecutedSigned')
+          .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
 
@@ -271,7 +268,7 @@ describe('WalletMaster', async () => {
       it('should emit ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msgToCall);
         await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-          .to.emit(walletContractMaster, 'ExecutedSigned')
+          .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
 

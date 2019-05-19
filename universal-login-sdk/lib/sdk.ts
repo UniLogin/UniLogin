@@ -1,5 +1,5 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import {waitToBeMined, waitForContractDeploy, Message} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
