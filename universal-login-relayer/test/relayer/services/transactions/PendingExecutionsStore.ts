@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {Message} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
 import PendingExecution from '../../../../lib/utils/pendingExecution';
@@ -12,7 +12,7 @@ describe('UNIT: PendingExecutionsStore', async () => {
   let pendingExecutionsStore: PendingExecutionsStore;
   let wallet: Wallet;
   let walletContract: Contract;
-  let message: Message;
+  let message: SignedMessage;
   let pendingExecution: PendingExecution;
   let messageHash: string;
 

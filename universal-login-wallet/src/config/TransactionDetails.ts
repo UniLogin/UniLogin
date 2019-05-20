@@ -1,8 +1,8 @@
 import {OPERATION_CALL} from '@universal-login/contracts';
-import {ETHER_NATIVE_TOKEN, Message} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, SignedMessage} from '@universal-login/commons';
 
 
-export const transactionDetails: Partial<Message> = {
+export const transactionDetails: Partial<SignedMessage> = {
   gasPrice: 110000000,
   gasLimit: 1000000,
   gasToken: ETHER_NATIVE_TOKEN.address,

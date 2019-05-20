@@ -1,6 +1,6 @@
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {utils, providers, Contract} from 'ethers';
-import {Message, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {SignedMessage, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {InvalidContract, NotEnoughTokens, NotEnoughGas} from '../../utils/errors';
 
 const isContract = async (provider : providers.Provider, contractAddress : string) => {
@@ -23,13 +23,13 @@ export const hasEnoughToken = async (gasToken : string, walletContractAddress : 
   }
 };
 
-export const ensureEnoughToken = async (provider: providers.Provider, message: Message) => {
+export const ensureEnoughToken = async (provider: providers.Provider, message: SignedMessage) => {
   if (!await hasEnoughToken(message.gasToken, message.from, message.gasLimit, provider)) {
     throw new NotEnoughTokens();
   }
 };
 
-export const ensureEnoughGas = async (provider: providers.Provider, walletAddress: string, transaction: providers.TransactionRequest, message: Message) => {
+export const ensureEnoughGas = async (provider: providers.Provider, walletAddress: string, transaction: providers.TransactionRequest, message: SignedMessage) => {
   const estimateGas = await provider.estimateGas({ ...transaction, from: walletAddress });
   if (!utils.bigNumberify(message.gasLimit as utils.BigNumberish).gte(estimateGas)) {
     throw new NotEnoughGas();
