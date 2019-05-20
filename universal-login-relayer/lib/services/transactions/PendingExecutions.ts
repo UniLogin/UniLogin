@@ -1,5 +1,5 @@
 import PendingExecution from '../../utils/pendingExecution';
-import {Message} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {calculateMessageHash} from '@universal-login/contracts';
 import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
@@ -20,7 +20,7 @@ export default class PendingExecutions {
     }
   }
 
-  async add(message: Message) : Promise<string> {
+  async add(message: SignedMessage) : Promise<string> {
     const hash = calculateMessageHash(message);
     if (!this.isPresent(hash)) {
       this.executionsStore.add(hash, new PendingExecution(message.from, this.wallet));
@@ -29,7 +29,7 @@ export default class PendingExecutions {
     return hash;
   }
 
-  private async signExecution(hash: string, message: Message) {
+  private async signExecution(hash: string, message: SignedMessage) {
     await this.executionsStore.get(hash).push(message);
   }
 
@@ -38,7 +38,7 @@ export default class PendingExecutions {
     return this.executionsStore.get(hash).getStatus();
   }
 
-  getMessageWithSignatures(message: Message, hash: string) : Message {
+  getMessageWithSignatures(message: SignedMessage, hash: string) : SignedMessage {
     return  { ...message, signature: this.executionsStore.get(hash).getConcatenatedSignatures()};
   }
 

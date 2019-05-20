@@ -1,6 +1,6 @@
 import {utils, Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {Message, defaultDeployOptions} from '@universal-login/commons';
+import {SignedMessage, defaultDeployOptions} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../../utils/utils';
 import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
@@ -31,7 +31,7 @@ class TransactionService {
     }
   }
 
-  async executeSigned(message: Message) {
+  async executeSigned(message: SignedMessage) {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await this.pendingExecutions.add(message);
@@ -45,7 +45,7 @@ class TransactionService {
     }
   }
 
-  private async executePending(hash: string, message: Message) {
+  private async executePending(hash: string, message: SignedMessage) {
     const finalMessage = this.pendingExecutions.getMessageWithSignatures(message, hash);
     await this.pendingExecutions.ensureCorrectExecution(hash);
     const transaction: any = await this.execute(finalMessage);
@@ -53,7 +53,7 @@ class TransactionService {
     return transaction;
   }
 
-  async execute(message: Message) {
+  async execute(message: SignedMessage) {
     await ensureEnoughToken(this.provider, message);
     const transaction: providers.TransactionRequest = {
       ...defaultDeployOptions,
@@ -67,7 +67,7 @@ class TransactionService {
     return sentTransaction;
   }
 
-  private async removeReqFromAuthService(message: Message) {
+  private async removeReqFromAuthService(message: SignedMessage) {
     const key = getKeyFromData(message.data as string);
     await this.authorisationService.removeRequest(message.from, key);
   }

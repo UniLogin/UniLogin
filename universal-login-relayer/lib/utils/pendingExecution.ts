@@ -2,8 +2,8 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {utils, Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../utils/utils';
 import {concatenateSignatures, calculateMessageHash} from '@universal-login/contracts';
-import {Message} from '@universal-login/commons';
-import { InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from './errors';
+import {SignedMessage} from '@universal-login/commons';
+import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from './errors';
 
 export default class PendingExecution {
   private wallet: Wallet;
@@ -32,7 +32,7 @@ export default class PendingExecution {
     };
   }
 
-  async push(msg: Message) {
+  async push(msg: SignedMessage) {
     if (this.transactionHash !== '0x0') {
       throw new DuplicatedExecution();
     }

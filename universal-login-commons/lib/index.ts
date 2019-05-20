@@ -2,7 +2,7 @@ export {sleep, waitToBeMined, waitUntil, waitExpect, waitForContractDeploy, send
 export {saveVariables} from './utils/save';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
-export {PartialRequired, Procedure, Predicate, Message, Notification, Omit, DeviceInfo} from './utils/types';
+export {PartialRequired, Procedure, Predicate, SignedMessage, UnsignedMessage, Notification, Omit, DeviceInfo} from './utils/types';
 export {copy} from './utils/copy';
 export {onCritical} from './utils/error';
 export {SuggestionsService} from './services/SuggestionsService';

@@ -8,7 +8,7 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type PartialRequired<T, TRequired extends keyof T> = Partial<T> & Pick<T, TRequired>;
 
-export interface Message {
+export interface SignedMessage {
   gasToken: string;
   operationType: number;
   to: string;
@@ -20,6 +20,8 @@ export interface Message {
   value: utils.BigNumberish;
   signature: string;
 }
+
+export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
 export interface Notification {
   id: number;

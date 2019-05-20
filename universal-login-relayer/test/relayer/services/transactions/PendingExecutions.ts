@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {Message} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import PendingExecution from '../../../../lib/utils/pendingExecution';
 import PendingExecutions from '../../../../lib/services/transactions/PendingExecutions';
@@ -11,7 +11,7 @@ import createSignedMessage from '../../../../lib/utils/signMessage';
 
 describe('PendingExecutions', () => {
   let executions : PendingExecutions;
-  let message : Message;
+  let message : SignedMessage;
   let wallet: Wallet;
   let walletContract: Contract;
   let actionKey: string;
