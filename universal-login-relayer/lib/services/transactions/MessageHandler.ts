@@ -18,7 +18,7 @@ class TransactionService {
     this.transactionQueue.start();
   }
 
-  async onTransactionSent(sentTransaction: Partial<utils.Transaction>) {
+  async onTransactionSent(sentTransaction: providers.TransactionResponse) {
     const {data} = sentTransaction;
     const message = decodeDataForExecuteSigned(data!);
     if (message.to === sentTransaction.to) {
@@ -55,7 +55,7 @@ class TransactionService {
 
   async execute(message: Message) {
     await ensureEnoughToken(this.provider, message);
-    const transaction = {
+    const transaction: providers.TransactionRequest = {
       ...defaultDeployOptions,
       value: utils.parseEther('0'),
       to: message.from,

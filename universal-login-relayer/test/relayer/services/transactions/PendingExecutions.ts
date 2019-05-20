@@ -7,7 +7,7 @@ import PendingExecution from '../../../../lib/utils/pendingExecution';
 import PendingExecutions from '../../../../lib/services/transactions/PendingExecutions';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
-import createSignedMessage from '../../../helpers/message';
+import createSignedMessage from '../../../../lib/utils/signMessage';
 
 describe('PendingExecutions', () => {
   let executions : PendingExecutions;

@@ -1,7 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 import WalletService from '../services/WalletService';
-import TransactionService from '../services/transactions/TransactionService';
+import MessageHandler from '../services/transactions/MessageHandler';
 
 export const create = (walletContractService : WalletService) => async (req : Request, res : Response, next : NextFunction) => {
   const {managementKey, ensName} = req.body;
@@ -16,9 +16,9 @@ export const create = (walletContractService : WalletService) => async (req : Re
 };
 
 export const execution = (
-transactionService : TransactionService) => async (req : Request, res : Response, next : NextFunction) => {
+messageHandler : MessageHandler) => async (req : Request, res : Response, next : NextFunction) => {
   try {
-    const transaction = await transactionService.executeSigned(req.body);
+    const transaction = await messageHandler.executeSigned(req.body);
     res.status(201)
       .type('json')
       .send(JSON.stringify({transaction}));
@@ -27,7 +27,7 @@ transactionService : TransactionService) => async (req : Request, res : Response
   }
 };
 
-export const getStatus = (transactionContractService: TransactionService) => async (req: Request, res: Response, next: NextFunction) => {
+export const getStatus = (transactionContractService: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {hash} = req.params;
     const status = await transactionContractService.getStatus(hash);
@@ -39,17 +39,17 @@ export const getStatus = (transactionContractService: TransactionService) => asy
   }
 };
 
-export default (walletContractService : WalletService, transactionService: TransactionService) => {
+export default (walletContractService : WalletService, messageHandler: MessageHandler) => {
   const router = Router();
 
   router.post('/',
     asyncMiddleware(create(walletContractService)));
 
   router.post('/execution',
-    asyncMiddleware(execution(transactionService)));
+    asyncMiddleware(execution(messageHandler)));
 
   router.get('/execution/:hash',
-    asyncMiddleware(getStatus(transactionService)));
+    asyncMiddleware(getStatus(messageHandler)));
 
   return router;
 };
