@@ -1,5 +1,4 @@
-import {utils, ContractFactory, Wallet} from 'ethers';
-import WalletMasterContract from '@universal-login/contracts/build/WalletMaster.json';
+import {ContractFactory, Wallet} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
