@@ -5,10 +5,12 @@ import {concatenateSignatures, calculateMessageHash} from '@universal-login/cont
 import {SignedMessage} from '@universal-login/commons';
 import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from './errors';
 
+type Execution = Record<string, string>;
+
 export default class PendingExecution {
   private wallet: Wallet;
   private walletContract: Contract;
-  private collectedSignatures: any;
+  private collectedSignatures: Execution[];
   private transactionHash: string;
 
   constructor(walletAddress: string, wallet: Wallet) {
@@ -18,9 +20,9 @@ export default class PendingExecution {
     this.transactionHash = '0x0';
   }
 
-  containSignature = (signature: any) =>
+  containSignature = (signature: string) =>
     this.collectedSignatures
-      .filter((message: any) => message.signature === signature)
+      .filter((message: Execution) => message.signature === signature)
       .length > 0
 
   async getStatus() {
@@ -71,7 +73,7 @@ export default class PendingExecution {
 
   getConcatenatedSignatures() {
     const sortedExecutions = sortExecutionsByKey([...this.collectedSignatures]);
-    const sortedSignatures = sortedExecutions.map((value: any) => value.signature);
+    const sortedSignatures = sortedExecutions.map((value: Execution) => value.signature);
     return concatenateSignatures(sortedSignatures);
   }
 }
