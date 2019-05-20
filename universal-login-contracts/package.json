@@ -2,9 +2,10 @@
   "name": "@universal-login/contracts",
   "version": "0.2.1",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "dependencies": {
+    "@universal-login/commons": "^0.2.1",
     "ens-builder": "^2.0.0"
   },
   "scripts": {
@@ -19,16 +20,16 @@
   "devDependencies": {
     "@ensdomains/ens": "^0.3.5",
     "@ensdomains/resolver": "^0.1.2",
-		"@types/chai": "^4.1.7",
+    "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "ethereum-waffle": "2.0.12",
+    "ethlint": "^1.2.3",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",
-    "ethlint": "^1.2.3",
     "ts-node": "^8.0.2",
     "tslint": "^5.16.0",
     "typescript": "^3.3.3"
