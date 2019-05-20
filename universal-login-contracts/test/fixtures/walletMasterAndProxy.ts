@@ -4,13 +4,14 @@ import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {deployContract} from 'ethereum-waffle';
 import {utils, Contract, Wallet, providers} from 'ethers';
+import {getInitData} from '../../lib';
 
 const {parseEther} = utils;
 
 export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const ownerWallet = Wallet.createRandom();
   const walletContractMaster = await deployContract(wallet, WalletMaster);
-  const initData = new utils.Interface(WalletMaster.interface).functions.initialize.encode([ownerWallet.address]);
+  const initData = getInitData(ownerWallet.address);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address, initData]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);

@@ -5,6 +5,7 @@ import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions} from '@universal-login/commons';
 import {InvalidENSDomain} from '../utils/errors';
+import {getInitWithENSData} from '@universal-login/contracts';
 
 class WalletService {
   private bytecode: string;
@@ -20,7 +21,7 @@ class WalletService {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
       let args = [key, ...ensArgs];
-      const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode(args);
+      const initData = getInitWithENSData(args);
       args = [this.walletMasterAddress, initData];
       const deployTransaction = {
         ...defaultDeployOptions,

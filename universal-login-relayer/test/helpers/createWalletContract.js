@@ -1,8 +1,9 @@
 import {defaultDeployOptions} from '@universal-login/commons';
 import WalletProxy from '@universal-login/contracts/build/Proxy.json';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import {ContractFactory, utils, Contract} from 'ethers';
+import {ContractFactory, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
+import {getInitWithENSData} from '@universal-login/contracts';
 
 export default async function createWalletContract(wallet, ensService) {
   const walletMaster = await deployContract(wallet, WalletMaster);
@@ -12,7 +13,7 @@ export default async function createWalletContract(wallet, ensService) {
     wallet,
   );
   const walletArgs = [wallet.address, ...ensService.argsFor('alex.mylogin.eth')];
-  const initData = new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(walletArgs);
+  const initData = getInitWithENSData(walletArgs);
   const proxyArgs = [walletMaster.address, initData];
   const proxyContract = await factory.deploy(...proxyArgs, defaultDeployOptions);
   return new Contract(proxyContract.address, WalletMaster.abi, wallet);
