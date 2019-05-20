@@ -6,6 +6,8 @@ export const createKey = () => {
   return {publicKey: address, privateKey};
 };
 
+export type Key = ReturnType<typeof createKey>;
+
 export const getInitWithENSData = (args: any[]) => new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
 
 export const getInitData = (publicKey: string) => new utils.Interface(WalletMaster.interface).functions.initialize.encode([publicKey]);

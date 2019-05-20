@@ -4,20 +4,20 @@ import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/test';
-import {getInitWithENSData} from '../../lib';
+import {getInitWithENSData, createKey} from '../../lib';
 
 type EnsDomainData = {
   ensAddress: string;
   registrarAddress: string;
   resolverAddress: string;
-}
+};
 
-interface SetupInitializeArgs {
+type SetupInitializeArgs = {
   key: string;
   ensDomainData: EnsDomainData;
   name?: string;
   domain?: string;
-}
+};
 
 export function setupInitializeArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeArgs) {
   const ensName = `${name}.${domain}`;
@@ -55,19 +55,20 @@ async function deployProxy(deployer: Wallet, walletMasterAddress: string, ensDom
   return proxyContract;
 }
 
-export async function setupWalletContract(deployer: Wallet, contractOwner: Wallet) {
+export async function setupWalletContract(deployer: Wallet) {
+  const key = createKey();
   const {ensDomainData, walletMaster, provider} = await setupEnsAndMaster(deployer);
-  const walletContract = await deployProxy(deployer, walletMaster.address, ensDomainData, contractOwner.address);
+  const walletContract = await deployProxy(deployer, walletMaster.address, ensDomainData, key.publicKey);
   return {
     walletContract,
-    contractOwner,
+    key,
     deployer,
     provider
   };
 }
 
-export function walletContractFixture(givenProvider: providers.Provider, [wallet, wallet2]: Wallet[]) {
-  return setupWalletContract(wallet, wallet2);
+export function walletContractFixture(givenProvider: providers.Provider, [wallet]: Wallet[]) {
+  return setupWalletContract(wallet);
 }
 
 export function ensAndMasterFixture(givenProvider: providers.Provider, [deployer]: Wallet[]) {
