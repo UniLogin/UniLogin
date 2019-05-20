@@ -2,7 +2,8 @@ export {sleep, waitToBeMined, waitUntil, waitExpect, waitForContractDeploy, send
 export {saveVariables} from './utils/save';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
-export {PartialRequired, Procedure, Predicate, SignedMessage, UnsignedMessage, Notification, Omit, DeviceInfo} from './utils/types';
+export {PartialRequired, Procedure, Predicate, Notification, Omit, DeviceInfo} from './types/common';
+export {Message, MessageWithFrom, SignedMessage, UnsignedMessage} from './types/message';
 export {copy} from './utils/copy';
 export {onCritical} from './utils/error';
 export {SuggestionsService} from './services/SuggestionsService';
@@ -11,6 +12,6 @@ export {TokenService} from './services/TokenService';
 export {classesForElement, getSuggestionId} from './utils/react';
 export {parseDomain} from './utils/ens';
 export * from './constants/constants';
-export * from './models/ContractJSON';
+export * from './types/ContractJSON';
 export {getEnv} from './utils/getEnv';
 export {withENS} from './utils/withENS';
