@@ -1,5 +1,5 @@
 import {OPERATION_CALL} from '@universal-login/contracts';
-import {ETHER_NATIVE_TOKEN, SignedMessage} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, Message} from '@universal-login/commons';
 
 
 export const transactionDetails: Message = {
