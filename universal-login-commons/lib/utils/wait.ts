@@ -1,6 +1,7 @@
 import {providers, Contract, Wallet} from 'ethers';
-import {Predicate} from './types';
+import {Predicate} from '../types/common';
 import Assertion = Chai.Assertion;
+import { ContractJSON } from '../types/ContractJSON';
 
 export const sleep = (ms : number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -35,11 +36,6 @@ export async function waitExpect(callback: () => void | Promise<void> | Assertio
     }
   }
   throw lastError;
-}
-
-interface ContractJSON {
-  abi: any;
-  evm: {bytecode: {object: any}};
 }
 
 const isWallet = (maybeWallet: any) : boolean  => {

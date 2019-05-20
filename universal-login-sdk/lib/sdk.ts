@@ -1,7 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
-import {waitToBeMined, waitForContractDeploy, SignedMessage} from '@universal-login/commons';
+import {waitToBeMined, waitForContractDeploy, Message, SignedMessage} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -13,13 +13,13 @@ class UniversalLoginSDK {
   relayerApi: RelayerApi;
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
-  defaultPaymentOptions: Partial<SignedMessage>;
+  defaultPaymentOptions: Message;
   config: any;
 
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    paymentOptions?: Partial<SignedMessage>,
+    paymentOptions?: Message,
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
@@ -45,7 +45,7 @@ class UniversalLoginSDK {
     to: string,
     publicKey: string,
     privateKey: string,
-    transactionDetails: Partial<SignedMessage>,
+    transactionDetails: Message,
     keyPurpose = MANAGEMENT_KEY,
   ) {
     const key = publicKey;
@@ -128,7 +128,7 @@ class UniversalLoginSDK {
     return this.relayerApi.getConfig();
   }
 
-  async execute(message: Partial<SignedMessage>, privateKey: string) {
+  async execute(message: Message, privateKey: string) {
     const finalMessage = {
       ...this.defaultPaymentOptions,
       ...message,
