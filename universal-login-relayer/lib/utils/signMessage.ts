@@ -1,6 +1,6 @@
 
 import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
-import {SignedMessage, PartialRequired} from '@universal-login/commons';
+import {MessageWithFrom} from '@universal-login/commons';
 import {utils} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../config/defaultPaymentOptions';
 
@@ -18,7 +18,7 @@ const emptyMessage = {
 };
 
 
-export const createSignedMessage = async (override: PartialRequired<SignedMessage, 'from'>, privateKey: string) => {
+export const createSignedMessage = async (override: MessageWithFrom, privateKey: string) => {
   const message = { ...emptyMessage, ...override};
   const signature = await calculateMessageSignature(privateKey, message);
   return {...message, signature};

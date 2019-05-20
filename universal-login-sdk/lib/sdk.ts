@@ -1,7 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
-import {waitToBeMined, waitForContractDeploy, SignedMessage} from '@universal-login/commons';
+import {waitToBeMined, waitForContractDeploy, Message, SignedMessage} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
