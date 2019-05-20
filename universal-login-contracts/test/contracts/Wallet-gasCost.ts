@@ -4,7 +4,7 @@ import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, ContractFactory, Wallet} from 'ethers';
 import {defaultDeployOptions} from '@universal-login/commons';
 import ProxyContract from '../../build/Proxy.json';
-import {ensAndMasterFixture, getDeployWithEnsArgs} from '../fixtures/walletContract';
+import {ensAndMasterFixture, getDeployWithEnsArgs, EnsDomainData} from '../fixtures/walletContract';
 import {createKey, getInitData} from '../../lib';
 
 chai.use(chaiAsPromised);
@@ -20,7 +20,7 @@ describe('Performance test', async () => {
 
   let provider: providers.Provider;
   let walletMaster: Contract;
-  let ensDomainData: any;
+  let ensDomainData: EnsDomainData;
   let deployer: Wallet;
 
   beforeEach(async () => {

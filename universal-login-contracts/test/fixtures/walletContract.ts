@@ -6,7 +6,7 @@ import {withENS} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/test';
 import {getInitWithENSData, createKey} from '../../lib';
 
-type EnsDomainData = {
+export type EnsDomainData = {
   ensAddress: string;
   registrarAddress: string;
   resolverAddress: string;
