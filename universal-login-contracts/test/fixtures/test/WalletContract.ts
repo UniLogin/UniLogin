@@ -3,17 +3,18 @@ import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import WalletMaster from '../../../build/WalletMaster.json';
-import {MANAGEMENT_KEY, Key} from '../../../lib';
+import {MANAGEMENT_KEY} from '../../../lib';
+import {KeyPair} from '@universal-login/commons';
 
 
 describe('WalletContract fixture test', () => {
   let walletContract: Contract;
-  let key: Key;
+  let keyPair: KeyPair;
   let deployer: Wallet;
   let provider: providers.Provider;
 
   before(async () => {
-    ({walletContract, deployer, key, provider} = await loadFixture(walletContractFixture));
+    ({walletContract, deployer, keyPair, provider} = await loadFixture(walletContractFixture));
   });
 
   it('should deploy wallet contract', () => {
@@ -22,7 +23,7 @@ describe('WalletContract fixture test', () => {
 
   it('walletOwner address should be managament key', async () => {
     const getKeyPurposeInterface = new utils.Interface(WalletMaster.interface).functions.getKeyPurpose;
-    const getKeyPurposeData = getKeyPurposeInterface.encode([key.publicKey]);
+    const getKeyPurposeData = getKeyPurposeInterface.encode([keyPair.publicKey]);
     const callTransaction = {to: walletContract.address, data: getKeyPurposeData};
     const resultCall = await deployer.provider.call(callTransaction);
     expect(getKeyPurposeInterface.decode(resultCall).purpose).to.eq(MANAGEMENT_KEY);

@@ -14,3 +14,4 @@ export * from './constants/constants';
 export * from './models/ContractJSON';
 export {getEnv} from './utils/getEnv';
 export {withENS} from './utils/withENS';
+export {createKeyPair, KeyPair} from './utils/keyPair';

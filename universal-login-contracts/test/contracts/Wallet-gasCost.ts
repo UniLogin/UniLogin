@@ -2,10 +2,10 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, ContractFactory, Wallet} from 'ethers';
-import {defaultDeployOptions} from '@universal-login/commons';
+import {defaultDeployOptions, createKeyPair} from '@universal-login/commons';
 import ProxyContract from '../../build/Proxy.json';
 import {ensAndMasterFixture, getDeployWithEnsArgs, EnsDomainData} from '../fixtures/walletContract';
-import {createKey, getInitData} from '../../lib';
+import {getInitData} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -16,7 +16,7 @@ const deployProxyWithENSCost = '490000';
 
 describe('Performance test', async () => {
   const gasCosts = {} as any;
-  const key = createKey();
+  const keyPair = createKeyPair();
 
   let provider: providers.Provider;
   let walletMaster: Contract;
@@ -28,7 +28,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy without ENS', async () => {
-    const initData = getInitData(key.publicKey);
+    const initData = getInitData(keyPair.publicKey);
     const deployTransaction = {
       ...defaultDeployOptions,
       ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(walletMaster.address, initData)
@@ -40,7 +40,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS', async () => {
-    const args = getDeployWithEnsArgs(key.publicKey, ensDomainData, walletMaster.address);
+    const args = getDeployWithEnsArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
     const deployTransaction = {
       ...defaultDeployOptions,
       ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(...args)

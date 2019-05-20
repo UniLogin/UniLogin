@@ -2,9 +2,9 @@ import {providers, Wallet, utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
-import {withENS} from '@universal-login/commons';
+import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/test';
-import {getInitWithENSData, createKey} from '../../lib';
+import {getInitWithENSData} from '../../lib';
 
 export type EnsDomainData = {
   ensAddress: string;
@@ -56,12 +56,12 @@ async function deployProxy(deployer: Wallet, walletMasterAddress: string, ensDom
 }
 
 export async function setupWalletContract(deployer: Wallet) {
-  const key = createKey();
+  const keyPair = createKeyPair();
   const {ensDomainData, walletMaster, provider} = await setupEnsAndMaster(deployer);
-  const walletContract = await deployProxy(deployer, walletMaster.address, ensDomainData, key.publicKey);
+  const walletContract = await deployProxy(deployer, walletMaster.address, ensDomainData, keyPair.publicKey);
   return {
     walletContract,
-    key,
+    keyPair,
     deployer,
     provider
   };

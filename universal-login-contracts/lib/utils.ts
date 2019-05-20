@@ -1,12 +1,5 @@
-import {Wallet, utils} from 'ethers';
+import {utils} from 'ethers';
 import WalletMaster from '../build/WalletMaster.json';
-
-export const createKey = () => {
-  const {address, privateKey} = Wallet.createRandom();
-  return {publicKey: address, privateKey};
-};
-
-export type Key = ReturnType<typeof createKey>;
 
 export const getInitWithENSData = (args: any[]) => new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
 
