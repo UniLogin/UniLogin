@@ -4,8 +4,8 @@ import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, ContractFactory, Wallet} from 'ethers';
 import {defaultDeployOptions} from '@universal-login/commons';
 import ProxyContract from '../../build/Proxy.json';
-import {ensAndMasterFixture, setupInitializeArgs} from '../fixtures/walletContract';
-import {createKey, getInitData, getInitWithENSData} from '../../lib';
+import {ensAndMasterFixture, getDeployWithEnsArgs} from '../fixtures/walletContract';
+import {createKey, getInitData} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -20,13 +20,11 @@ describe('Performance test', async () => {
 
   let provider: providers.Provider;
   let walletMaster: Contract;
-  let ensAddress: string;
-  let resolverAddress: string;
-  let registrarAddress: string;
+  let ensDomainData: any;
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({walletMaster, ensAddress, resolverAddress, registrarAddress, deployer, provider} = await loadFixture(ensAndMasterFixture));
+    ({walletMaster, ensDomainData, deployer, provider} = await loadFixture(ensAndMasterFixture));
   });
 
   it('Proxy deploy without ENS', async () => {
@@ -42,11 +40,10 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS', async () => {
-    const initializeArgs = setupInitializeArgs({key: key.publicKey, ensAddress, resolverAddress, registrarAddress});
-    const initData = getInitWithENSData(initializeArgs);
+    const args = getDeployWithEnsArgs(key.publicKey, ensDomainData, walletMaster.address);
     const deployTransaction = {
       ...defaultDeployOptions,
-      ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(walletMaster.address, initData)
+      ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(...args)
     };
     const transaction = await deployer.sendTransaction(deployTransaction);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
