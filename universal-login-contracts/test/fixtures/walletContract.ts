@@ -28,13 +28,13 @@ export async function setupEnsAndMaster(deployer: Wallet) {
   const walletMaster = await deployContract(deployer, WalletMaster);
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
   return {
-    ensAddress, 
-    resolverAddress, 
-    registrarAddress, 
-    walletMaster, 
-    provider: providerWithENS, 
+    ensAddress,
+    resolverAddress,
+    registrarAddress,
+    walletMaster,
+    provider: providerWithENS,
     deployer
-  }
+  };
 }
 
 export async function setupWalletContract(deployer: Wallet, contractOwner: Wallet) {
