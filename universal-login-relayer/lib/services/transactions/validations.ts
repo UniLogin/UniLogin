@@ -29,7 +29,7 @@ export const ensureEnoughToken = async (provider: providers.Provider, message: M
   }
 };
 
-export const ensureEnoughGas = async (provider: providers.Provider, walletAddress: string, transaction: Partial<Message>, message: Message) => {
+export const ensureEnoughGas = async (provider: providers.Provider, walletAddress: string, transaction: providers.TransactionRequest, message: Message) => {
   const estimateGas = await provider.estimateGas({ ...transaction, from: walletAddress });
   if (!utils.bigNumberify(message.gasLimit as utils.BigNumberish).gte(estimateGas)) {
     throw new NotEnoughGas();

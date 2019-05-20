@@ -19,8 +19,8 @@ export default async function basicWalletContract(provider, wallets) {
 export const transferMessage = {
   to: '0x0000000000000000000000000000000000000001',
   value: utils.parseEther('0.5'),
-  data: utils.formatBytes32String(0),
-  nonce: 0,
+  data: utils.formatBytes32String('0'),
+  nonce: '0',
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',

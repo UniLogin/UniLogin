@@ -4,7 +4,7 @@ import ITransactionQueueStore from './ITransactionQueueStore';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
-type OnTransactionSent = (transaction: Partial<utils.Transaction>) => Promise<void>;
+type OnTransactionSent = (transaction: providers.TransactionResponse) => Promise<void>;
 class QueuedTransactionService {
   private state: QueueState;
   private onTransactionSent?: OnTransactionSent;

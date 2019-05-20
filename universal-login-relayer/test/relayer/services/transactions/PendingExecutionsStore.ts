@@ -6,7 +6,7 @@ import {calculateMessageHash} from '@universal-login/contracts';
 import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
 import PendingExecution from '../../../../lib/utils/pendingExecution';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import createSignedMessage from '../../../helpers/message';
+import createSignedMessage from '../../../../lib/utils/signMessage';
 
 describe('UNIT: PendingExecutionsStore', async () => {
   let pendingExecutionsStore: PendingExecutionsStore;
