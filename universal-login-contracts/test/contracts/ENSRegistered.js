@@ -7,7 +7,7 @@ import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum
 import {utils} from 'ethers';
 import {lookupAddress} from '../utils';
 import {withENS} from '@universal-login/commons';
-
+import {encodeInitializeWithENSData} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -34,7 +34,7 @@ describe('WalletContract', async () => {
     const registrar = ensBuilder.registrars[domain].address;
     const args = [hashLabel, name, node, ensBuilder.ens.address, registrar, ensBuilder.resolver.address];
     walletMaster = await deployContract(wallet, WalletMaster, []);
-    const initData = new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode([wallet.address, ...args]);
+    const initData = encodeInitializeWithENSData([wallet.address, ...args]);
     walletProxy = await deployContract(wallet, Proxy, [walletMaster.address, initData]);
   });
 

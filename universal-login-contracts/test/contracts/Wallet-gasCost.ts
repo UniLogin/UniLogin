@@ -2,10 +2,10 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, ContractFactory, Wallet} from 'ethers';
-import {defaultDeployOptions} from '@universal-login/commons';
+import {defaultDeployOptions, createKeyPair} from '@universal-login/commons';
 import ProxyContract from '../../build/Proxy.json';
-import {ensAndMasterFixture, setupInitializeArgs} from '../fixtures/walletContract';
-import {createKey, getInitData, getInitWithENSData} from '../../lib';
+import {ensAndMasterFixture, createProxyDeployWithENSArgs, EnsDomainData} from '../fixtures/walletContract';
+import {encodeInitializeData} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -16,21 +16,19 @@ const deployProxyWithENSCost = '490000';
 
 describe('Performance test', async () => {
   const gasCosts = {} as any;
-  const key = createKey();
+  const keyPair = createKeyPair();
 
   let provider: providers.Provider;
   let walletMaster: Contract;
-  let ensAddress: string;
-  let resolverAddress: string;
-  let registrarAddress: string;
+  let ensDomainData: EnsDomainData;
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({walletMaster, ensAddress, resolverAddress, registrarAddress, deployer, provider} = await loadFixture(ensAndMasterFixture));
+    ({walletMaster, ensDomainData, deployer, provider} = await loadFixture(ensAndMasterFixture));
   });
 
   it('Proxy deploy without ENS', async () => {
-    const initData = getInitData(key.publicKey);
+    const initData = encodeInitializeData(keyPair.publicKey);
     const deployTransaction = {
       ...defaultDeployOptions,
       ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(walletMaster.address, initData)
@@ -42,11 +40,10 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS', async () => {
-    const initializeArgs = setupInitializeArgs({key: key.publicKey, ensAddress, resolverAddress, registrarAddress});
-    const initData = getInitWithENSData(initializeArgs);
+    const args = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
     const deployTransaction = {
       ...defaultDeployOptions,
-      ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(walletMaster.address, initData)
+      ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(...args)
     };
     const transaction = await deployer.sendTransaction(deployTransaction);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
