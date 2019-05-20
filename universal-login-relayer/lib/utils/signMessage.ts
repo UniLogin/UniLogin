@@ -19,7 +19,7 @@ const emptyMessage = {
 
 
 export const createSignedMessage = async (override: PartialRequired<SignedMessage, 'from'>, privateKey: string) => {
-  const message = { ...emptyMessage, signature: '0x', ...override};
+  const message = { ...emptyMessage, ...override};
   const signature = await calculateMessageSignature(privateKey, message);
   return {...message, signature};
 };
