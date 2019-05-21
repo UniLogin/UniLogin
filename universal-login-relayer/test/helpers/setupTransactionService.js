@@ -5,17 +5,17 @@ import TransactionQueueService from '../../lib/services/transactions/Transaction
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
 import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
-import PendingExecutionsStore from '../../lib/services/transactions/PendingExecutionsStore';
-import PendingExecutions from '../../lib/services/transactions/PendingExecutions';
+import PendingMessagesStore from '../../lib/services/transactions/PendingMessagesStore';
+import PendingMessages from '../../lib/services/transactions/PendingMessages';
 
 export default async function setupTransactionService(knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
   const hooks = new EventEmitter();
   const authorisationService = new AuthorisationService(knex);
-  const pendingExecutionsStore = new PendingExecutionsStore();
-  const pendingExecutions = new PendingExecutions(wallet, pendingExecutionsStore);
+  const pendingMessagesStore = new PendingMessagesStore();
+  const pendingMessages = new PendingMessages(wallet, pendingMessagesStore);
   const transactionQueueStore = new TransactionQueueStore(knex);
   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
-  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, provider, transactionQueueService, pendingExecutions);
+  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, provider, transactionQueueService, pendingMessages);
   return { wallet, actionKey, provider, mockToken, authorisationService, messageHandler, walletContract, otherWallet };
 }
