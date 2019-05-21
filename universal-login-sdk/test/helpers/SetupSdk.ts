@@ -1,6 +1,6 @@
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK from '../../lib/sdk';
 import {providers} from 'ethers';
 
 declare interface SetupSdkOverrides {
