@@ -1,16 +1,10 @@
-import chai, {expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import WalletMaster from '../../build/WalletMaster';
-import Proxy from '../../build/Proxy';
-import ENSBuilder from 'ens-builder';
-import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
+import {expect} from 'chai';
+import ENSRegisteredUnderTests from '../../build/ENSRegisteredUnderTests';
+import {deployContract, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {lookupAddress} from '../utils';
-import {withENS} from '@universal-login/commons';
-import {encodeInitializeWithENSData} from '../../lib';
+import {basicENS} from '@universal-login/commons/test';
 
-chai.use(chaiAsPromised);
-chai.use(solidity);
 
 const domain = 'mylogin.eth';
 const label = 'alex';
@@ -18,29 +12,24 @@ const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
 const name = `${label}.${domain}`;
 const node = utils.namehash(name);
 
-describe('WalletContract', async () => {
+describe('ENSRegistered', async () => {
   let provider;
   let wallet;
-  let ensBuilder;
-  let walletMaster;
-  let walletProxy;
+  let ensRegisteredContract;
+  let publicResolver;
+  let registrarAddress;
+  let ensAddress;
+  let args;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = await getWallets(provider);
-    ensBuilder = new ENSBuilder(wallet);
-    const ensAddress = await ensBuilder.bootstrapWith('mylogin', 'eth');
-    provider = withENS(provider, ensAddress);
-    const registrar = ensBuilder.registrars[domain].address;
-    const args = [hashLabel, name, node, ensBuilder.ens.address, registrar, ensBuilder.resolver.address];
-    walletMaster = await deployContract(wallet, WalletMaster, []);
-    const initData = encodeInitializeWithENSData([wallet.address, ...args]);
-    walletProxy = await deployContract(wallet, Proxy, [walletMaster.address, initData]);
+    ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
+    args = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
+    ensRegisteredContract = await deployContract(wallet, ENSRegisteredUnderTests);
   });
 
-
   it('resolves to given address', async () => {
-    expect(await provider.resolveName('alex.mylogin.eth')).to.eq(walletProxy.address);
-    expect(await lookupAddress(provider, walletProxy.address, ensBuilder.resolver.address)).to.eq('alex.mylogin.eth');
+    await ensRegisteredContract.registerENSUnderTests(...args);
+    expect(await provider.resolveName(name)).to.eq(ensRegisteredContract.address);
+    expect(await lookupAddress(provider, ensRegisteredContract.address, publicResolver)).to.eq(name);
   });
 });
