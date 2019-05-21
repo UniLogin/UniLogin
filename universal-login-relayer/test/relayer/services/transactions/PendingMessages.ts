@@ -6,7 +6,7 @@ import {calculateMessageSignature, calculateMessageHash} from '@universal-login/
 import PendingExecution from '../../../../lib/utils/pendingExecution';
 import PendingMessages from '../../../../lib/services/transactions/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
+import PendingMessagesStore from '../../../../lib/services/transactions/PendingMessagesStore';
 import createSignedMessage from '../../../../lib/utils/signMessage';
 
 describe('INT: PendingMessages', () => {
@@ -18,8 +18,8 @@ describe('INT: PendingMessages', () => {
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    const pendingExecutionsStore = new PendingExecutionsStore();
-    pendingMessages = new PendingMessages(wallet, pendingExecutionsStore);
+    const pendingMessagesStore = new PendingMessagesStore();
+    pendingMessages = new PendingMessages(wallet, pendingMessagesStore);
     message = await createSignedMessage({from: walletContract.address}, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
   });
