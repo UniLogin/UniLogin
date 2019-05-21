@@ -1,12 +1,12 @@
-import {utils, Wallet, providers} from 'ethers';
+import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage, defaultDeployOptions} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../../utils/utils';
+import {SignedMessage} from '@universal-login/commons';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures, messageToTransaction} from '../../utils/utils';
 import AuthorisationService from '../authorisationService';
 import TransactionQueueService from './TransactionQueueService';
 import PendingExecutions from './PendingExecutions';
 import {ensureEnoughToken, ensureEnoughGas} from './validations';
-import {encodeDataForExecuteSigned, decodeDataForExecuteSigned} from './serialisation';
+import {decodeDataForExecuteSigned} from './serialisation';
 
 class TransactionService {
 
@@ -55,12 +55,7 @@ class TransactionService {
 
   async execute(message: SignedMessage) {
     await ensureEnoughToken(this.provider, message);
-    const transaction: providers.TransactionRequest = {
-      ...defaultDeployOptions,
-      value: utils.parseEther('0'),
-      to: message.from,
-      data: encodeDataForExecuteSigned(message)
-    };
+    const transaction: providers.TransactionRequest = messageToTransaction(message);
     await ensureEnoughGas(this.provider, this.wallet.address, transaction, message);
     const sentTransaction = await this.wallet.sendTransaction(transaction);
     await this.onTransactionSent(sentTransaction);
