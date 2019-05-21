@@ -80,7 +80,7 @@ jobs:
       - restore_cache:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd universal-login-sdk && yarn test
+      - run: cd universal-login-sdk && yarn test:nobuild
   test_example:
     docker:
       - image: circleci/node:10.15
