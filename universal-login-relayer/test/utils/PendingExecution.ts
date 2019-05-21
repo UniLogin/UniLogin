@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
-import PendingExecution from '../../lib/utils/pendingExecution';
-import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
 import {utils, Wallet, Contract} from 'ethers';
+import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
+import {calculateMessageSignature, concatenateSignatures, ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
-import {ACTION_KEY, OPERATION_CALL, calculateMessageSignature, concatenateSignatures} from '@universal-login/contracts';
+import PendingExecution from '../../lib/utils/pendingExecution';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 
 chai.use(solidity);
@@ -11,7 +11,7 @@ chai.use(solidity);
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
 const baseMsg: any = {
-  to: '0x0000000000000000000000000000000000000001',
+  to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
   data: utils.formatBytes32String('0x0'),
   nonce: 0,

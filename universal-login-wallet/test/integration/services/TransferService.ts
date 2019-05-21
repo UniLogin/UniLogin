@@ -1,14 +1,14 @@
-import TransferService from '../../../src/services/TransferService';
 import chai, {expect} from 'chai';
+import {utils, providers, Contract} from 'ethers';
+import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import UniversalLoginSDK from '@universal-login/sdk';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '../helpers/setupSdk';
 import createWallet from '../../../src/services/Creation';
 import {deployMockToken} from '@universal-login/commons/test';
-import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import WalletService from '../../../src/services/WalletService';
-import {utils, providers, Contract} from 'ethers';
+import TransferService from '../../../src/services/TransferService';
 import TokenService from '../../../src/services/TokenService';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 chai.use(solidity);
 
@@ -35,7 +35,7 @@ describe('TransferService', () => {
   });
 
   it('Should transfer tokens', async () => {
-    const to = '0x0000000000000000000000000000000000000001';
+    const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
     const currency = 'Mock';
     await transferService.transfer({to, amount, currency});
@@ -43,7 +43,7 @@ describe('TransferService', () => {
   });
 
   it('Should transfer ether', async () => {
-    const to = '0x0000000000000000000000000000000000000001';
+    const to = TEST_ACCOUNT_ADDRESS;
     const amount = '0.5';
     const currency = ETHER_NATIVE_TOKEN.symbol;
     await transferService.transfer({to, amount, currency});

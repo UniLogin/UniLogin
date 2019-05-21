@@ -4,7 +4,7 @@ import {solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './utils';
 import {utils, Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
-import {concatenateSignatures} from '../lib/calculateMessageSignature';
+import {concatenateSignatures, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -57,7 +57,7 @@ describe('Tools test', async () => {
   describe('getExecutionArgs', () => {
     it('should return corect array', async () => {
       const msg = {
-        to: '0x0000000000000000000000000000000000000001',
+        to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('1.0'),
         data: 0x0,
         nonce: 0,
@@ -68,7 +68,7 @@ describe('Tools test', async () => {
       };
 
       const expectedResult = [
-        '0x0000000000000000000000000000000000000001',
+        TEST_ACCOUNT_ADDRESS,
         utils.parseEther('1.0'),
         0x0,
         0,

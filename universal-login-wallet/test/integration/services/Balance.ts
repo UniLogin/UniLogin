@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
-import {EtherBalanceService} from '../../../src/services/balance/EtherBalanceService';
-import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
-import {utils, providers, Wallet} from 'ethers';
-import {BalanceService} from '../../../src/services/balance/BalanceService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {waitUntil} from '@universal-login/commons';
+import {utils, providers, Wallet} from 'ethers';
+import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
+import {TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
+import {EtherBalanceService} from '../../../src/services/balance/EtherBalanceService';
+import {BalanceService} from '../../../src/services/balance/BalanceService';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -14,7 +14,7 @@ const testTick = 30;
 const value = utils.parseEther('1');
 const walletService = {
   userWallet: {
-    contractAddress: '0x0000000000000000000000000000000000000001',
+    contractAddress: TEST_ACCOUNT_ADDRESS,
     name: 'name',
     privateKey: '0x012345'
   },

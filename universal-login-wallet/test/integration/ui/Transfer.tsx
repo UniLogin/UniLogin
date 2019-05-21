@@ -2,9 +2,10 @@ import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
-import {setupSdk} from '../helpers/setupSdk';
+import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/test';
 import {Services} from '../../../src/services/Services';
+import {setupSdk} from '../helpers/setupSdk';
 import {setupUI} from '../helpers/setupUI';
 import {AppPage} from '../pages/AppPage';
 
@@ -15,7 +16,7 @@ describe('UI: Transfer', () => {
   let appPage: AppPage;
   let provider: providers.Provider;
   let mockTokenContract: Contract;
-  const receiverAddress = '0x0000000000000000000000000000000000000001';
+  const receiverAddress = TEST_ACCOUNT_ADDRESS;
 
   before(async () => {
     const [wallet] = await getWallets(createMockProvider());

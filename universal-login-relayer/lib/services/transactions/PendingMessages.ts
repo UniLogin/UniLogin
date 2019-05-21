@@ -1,6 +1,5 @@
 import PendingExecution from '../../utils/pendingExecution';
-import {SignedMessage} from '@universal-login/commons';
-import {calculateMessageHash} from '@universal-login/contracts';
+import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
 import IPendingMessagesStore from './IPendingMessagesStore';

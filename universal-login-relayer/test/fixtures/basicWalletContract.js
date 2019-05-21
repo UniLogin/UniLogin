@@ -1,10 +1,10 @@
 import {utils} from 'ethers';
+import {deployContract} from 'ethereum-waffle';
+import {ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import {OPERATION_CALL, ACTION_KEY} from '@universal-login/contracts';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
 import buildEnsService from '../helpers/buildEnsService';
-import {deployContract} from 'ethereum-waffle';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -17,7 +17,7 @@ export default async function basicWalletContract(provider, wallets) {
 }
 
 export const transferMessage = {
-  to: '0x0000000000000000000000000000000000000001',
+  to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
   data: utils.formatBytes32String('0'),
   nonce: '0',

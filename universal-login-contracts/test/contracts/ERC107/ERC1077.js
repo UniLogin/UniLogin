@@ -3,15 +3,15 @@ import chaiAsPromised from 'chai-as-promised';
 import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import basicWallet, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../fixtures/basicWallet';
 import {utils} from 'ethers';
-import {calculateMessageHash, calculateMessageSignature, concatenateSignatures} from '../../../lib/calculateMessageSignature';
-import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN, DEFAULT_GAS_PRICE} from '../../../lib/defaultPaymentOptions';
+import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 const {parseEther} = utils;
-const to = '0x0000000000000000000000000000000000000001';
+const to = TEST_ACCOUNT_ADDRESS;
 
 describe('CONTRACT: ERC1077 - main', async  () => {
   let provider;
