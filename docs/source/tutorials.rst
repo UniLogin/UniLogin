@@ -25,7 +25,7 @@ In your project, create the UniversalLoginSDK
 
 
   const relayerUrl = 'https://relayer.universallogin.io';
-  const jsonRpcUrl = 'https://rinkeby.infura.io';
+  const jsonRpcUrl = 'https://ropsten.infura.io';
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
 

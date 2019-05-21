@@ -55,13 +55,13 @@ Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env 
 
   .. code-block:: javascript
 
-    JSON_RPC_URL='https://rinkeby.infura.io'
+    JSON_RPC_URL='https://ropsten.infura.io'
     PORT=3311
     PRIVATE_KEY='YOUR_PRIVATE_KEY'
-    ENS_ADDRESS='0xe7410170f87102DF0055eB195163A03B7F2Bff4A'
+    ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     ENS_DOMAIN_1='poppularapp.test'
-    ENS_DOMAIN_2='my-id.test'
-    ENS_DOMAIN_3='my-super-domain.test'
+    ENS_DOMAIN_2='my-login.test'
+    ENS_DOMAIN_3='universal-login.test'
 
 **2. Run relayer**
 
@@ -88,6 +88,7 @@ To run relayer from your application you will need to create a relayer instance.
       - **privateKey** : string - private key of relayer wallet
       - **ensAddress** : string - address of ENS
       - **ensRegistrars** : array of strings - possible domains
+      - **walletMasterAddress** : string - address of WalletMaster contract
     - **provider** : object (optional) - instance of provider of an Ethereum node
   Returns:
     Relayer instance
@@ -97,18 +98,19 @@ To run relayer from your application you will need to create a relayer instance.
       import Relayer from 'unviersal-login-relayer';
 
       const config = {
-        jsonRpcUrl: 'https://rinkeby.infura.io',
+        jsonRpcUrl: 'https://ropsten.infura.io',
         port: 3311,
         privateKey: 'YOUR_PRIVATE_KEY',
         chainSpec: {
-          ensAddress: '0xe7410170f87102DF0055eB195163A03B7F2Bff4A',
+          ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
           chainId: 0
         },
         ensRegistrars: [
           'poppularapp.test',
           'my-id.test',
           'my-super-domain.test'
-        ]
+        ],
+        walletMasterAddress: '0x413a8425F38AA84DfE847F8097be03369e8164d5'
       };
 
       const relayer = new Relayer(config);
