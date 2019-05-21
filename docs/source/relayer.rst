@@ -50,6 +50,7 @@ Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env 
   - **PRIVATE_KEY** : string - private key of relayer wallet
   - **ENS_ADDRESS** : string - address of ENS
   - **ENS_DOMAIN** : string - name of domain
+  - **WALLET_MASTER_ADDRESS** : string - WalletMaster contract address
 
   example .env file
 
@@ -62,6 +63,7 @@ Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env 
     ENS_DOMAIN_1='poppularapp.test'
     ENS_DOMAIN_2='my-login.test'
     ENS_DOMAIN_3='universal-login.test'
+    WALLET_MASTER_ADDRESS='0x413a8425F38AA84DfE847F8097be03369e8164d5'
 
 **2. Run relayer**
 
@@ -135,20 +137,22 @@ Example: connecting to testnet
         process.env.ENS_DOMAIN_1,
         process.env.ENS_DOMAIN_2,
         process.env.ENS_DOMAIN_3
-      ]
+      ],
+      walletMasterAddress: process.env.WALLET_MASTER_ADDRESS
     }
 
   .env file
 
   .. code-block:: javascript
 
-    JSON_RPC_URL='https://rinkeby.infura.io'
+    JSON_RPC_URL='https://ropsten.infura.io'
     PORT=3311
     PRIVATE_KEY='YOUR_PRIVATE_KEY'
-    ENS_ADDRESS='0xe7410170f87102DF0055eB195163A03B7F2Bff4A'
+    ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     ENS_DOMAIN_1='poppularapp.test'
-    ENS_DOMAIN_2='my-id.test'
-    ENS_DOMAIN_3='my-super-domain.test'
+    ENS_DOMAIN_2='my-login.test'
+    ENS_DOMAIN_3='universal-login.test'
+    WALLET_MASTER_ADDRESS='0x413a8425F38AA84DfE847F8097be03369e8164d5'
 
 
 .. _custom-relayer:
