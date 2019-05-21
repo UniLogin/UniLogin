@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "yarn clean && tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
-    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "lint": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
     "clean": "rm -fr dist"
