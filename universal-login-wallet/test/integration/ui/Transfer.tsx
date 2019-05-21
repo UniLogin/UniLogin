@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
-import {createFixtureLoader} from 'ethereum-waffle';
-import {setupSdk} from '@universal-login/sdk/test';
+import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
+import {setupSdk} from '../helpers/setupSdk';
 import {deployMockToken} from '@universal-login/commons/test';
 import {Services} from '../../../src/services/Services';
 import {setupUI} from '../helpers/setupUI';
@@ -18,7 +18,8 @@ describe('UI: Transfer', () => {
   const receiverAddress = '0x0000000000000000000000000000000000000001';
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
+    const [wallet] = await getWallets(createMockProvider());
+    ({relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
   });

@@ -3,10 +3,10 @@ import sinon from 'sinon';
 import CreationSerivice from '../../../src/services/Creation';
 import ConnectionToWalletService from '../../../src/services/ConnectToWallet';
 import WalletService from '../../../src/services/WalletService';
-import {setupSdk} from '@universal-login/sdk/test';
 import UniversalLoginSDK, {MANAGEMENT_KEY} from '@universal-login/sdk';
+import {setupSdk} from '../helpers/setupSdk';
 import {Wallet, providers, utils} from 'ethers';
-import {getWallets} from 'ethereum-waffle';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, waitUntil} from '@universal-login/commons';
 
 
@@ -24,7 +24,8 @@ describe('Login', () => {
   let contractAddress : string;
 
   before(async () => {
-    ({sdk, relayer, provider} = await setupSdk({overridePort: '33113'}));
+    [wallet] = getWallets(createMockProvider());
+    ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     [wallet] = await getWallets(provider);
     walletService = new WalletService();
     creationService = CreationSerivice(sdk, walletService);

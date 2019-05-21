@@ -2,9 +2,10 @@ import sinon from 'sinon';
 import {expect} from 'chai';
 import {providers} from 'ethers';
 import {Services} from '../../../src/services/Services';
-import {setupSdk} from '@universal-login/sdk/test';
+import {setupSdk} from '../helpers/setupSdk';
 import {waitUntil, ETHER_NATIVE_TOKEN, Notification} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 describe('NotificationService', () => {
   let relayer: any;
@@ -14,7 +15,8 @@ describe('NotificationService', () => {
   let blockchainObserver: any;
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
+    const [wallet] = getWallets(createMockProvider());
+    ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     const name = 'ja.mylogin.eth';
     [, contractAddress] = await services.createWallet(name);
