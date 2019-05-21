@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import ENSRegistered from '../../build/ENSRegistered';
+import ENSRegisteredUnderTests from '../../build/ENSRegisteredUnderTests';
 import {deployContract, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {lookupAddress} from '../utils';
@@ -24,11 +24,11 @@ describe('WalletContract', async () => {
   beforeEach(async () => {
     ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
     args = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
-    ensRegisteredContract = await deployContract(wallet, ENSRegistered);
+    ensRegisteredContract = await deployContract(wallet, ENSRegisteredUnderTests);
   });
-  
+
   it('resolves to given address', async () => {
-    await ensRegisteredContract.registerENS(...args);
+    await ensRegisteredContract.regisgterENSUnderTests(...args);
     expect(await provider.resolveName(name)).to.eq(ensRegisteredContract.address);
     expect(await lookupAddress(provider, ensRegisteredContract.address, publicResolver)).to.eq(name);
   });
