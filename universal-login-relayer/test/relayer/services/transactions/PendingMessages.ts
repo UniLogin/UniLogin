@@ -4,13 +4,13 @@ import {loadFixture} from 'ethereum-waffle';
 import {SignedMessage} from '@universal-login/commons';
 import {calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
 import PendingExecution from '../../../../lib/utils/pendingExecution';
-import PendingExecutions from '../../../../lib/services/transactions/PendingExecutions';
+import PendingMessages from '../../../../lib/services/transactions/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingExecutionsStore from '../../../../lib/services/transactions/PendingExecutionsStore';
 import createSignedMessage from '../../../../lib/utils/signMessage';
 
-describe('PendingExecutions', () => {
-  let executions : PendingExecutions;
+describe('INT: PendingMessages', () => {
+  let pendingMessages : PendingMessages;
   let message : SignedMessage;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -19,52 +19,52 @@ describe('PendingExecutions', () => {
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
     const pendingExecutionsStore = new PendingExecutionsStore();
-    executions = new PendingExecutions(wallet, pendingExecutionsStore);
+    pendingMessages = new PendingMessages(wallet, pendingExecutionsStore);
     message = await createSignedMessage({from: walletContract.address}, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
   });
 
   it('not present initally', () => {
-    expect(executions.isPresent('0x0123')).to.be.false;
+    expect(pendingMessages.isPresent('0x0123')).to.be.false;
   });
 
   it('should be addded', async () => {
-    const hash = await executions.add(message);
-    expect(executions.isPresent(hash)).to.be.true;
+    const hash = await pendingMessages.add(message);
+    expect(pendingMessages.isPresent(hash)).to.be.true;
   });
 
   it('getStatus should throw error', async () => {
     const hash = calculateMessageHash(message);
-    await expect(executions.getStatus(hash)).to.eventually.rejectedWith(`Could not find execution with hash: ${hash}`);
+    await expect(pendingMessages.getStatus(hash)).to.eventually.rejectedWith(`Could not find execution with hash: ${hash}`);
   });
 
   it('should sign message', async () => {
     const signature = await calculateMessageSignature(actionKey, message);
-    const hash1 = await executions.add(message);
-    const hash2 = await executions.add({ ...message, signature });
+    const hash1 = await pendingMessages.add(message);
+    const hash2 = await pendingMessages.add({ ...message, signature });
     expect(hash1).to.be.eq(hash2);
-    const collectedSignatures = (await executions.getStatus(hash1)).collectedSignatures;
+    const collectedSignatures = (await pendingMessages.getStatus(hash1)).collectedSignatures;
     expect(collectedSignatures).to.be.deep.eq([message.signature, signature]);
   });
 
   it('should check if execution is ready to execute', async () => {
     const signature = await calculateMessageSignature(actionKey, message);
-    const hash1 = await executions.add(message);
-    expect(await executions.isEnoughSignatures(hash1)).to.eq(false);
-    const hash2 = await executions.add({ ...message, signature });
-    expect(await executions.isEnoughSignatures(hash2)).to.eq(true);
+    const hash1 = await pendingMessages.add(message);
+    expect(await pendingMessages.isEnoughSignatures(hash1)).to.eq(false);
+    const hash2 = await pendingMessages.add({ ...message, signature });
+    expect(await pendingMessages.isEnoughSignatures(hash2)).to.eq(true);
   });
 
   it('should return message with signature', async () => {
-    const hash = await executions.add(message);
-    const messageWithSignaures = await executions.getMessageWithSignatures(message, hash);
+    const hash = await pendingMessages.add(message);
+    const messageWithSignaures = await pendingMessages.getMessageWithSignatures(message, hash);
     expect(messageWithSignaures).to.deep.eq(message);
   });
 
   it('should get added signed transaction', async () => {
     const pendingExecution = new PendingExecution(message.from, wallet);
-    const hash = await executions.add(message);
+    const hash = await pendingMessages.add(message);
     await pendingExecution.push(message);
-    expect(executions.get(hash).toString()).to.eq(pendingExecution.toString());
+    expect(pendingMessages.get(hash).toString()).to.eq(pendingExecution.toString());
   });
 });

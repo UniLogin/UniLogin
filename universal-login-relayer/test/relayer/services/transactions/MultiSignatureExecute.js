@@ -74,10 +74,6 @@ describe('Relayer - MultiSignatureExecute', async () => {
       it('should fail to get pending execution status when there it is unable to find it', async () => {
         await expect(messageHandler.getStatus('0x0')).become(null);
       });
-
-      afterEach(async () => {
-        messageHandler.pendingExecutions = {};
-      });
     });
   });
 
@@ -99,10 +95,6 @@ describe('Relayer - MultiSignatureExecute', async () => {
       await messageHandler.executeSigned({...message, signature: signature1});
       expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
     });
-  });
-
-  afterEach(() => {
-    messageHandler.pendingExecutions = {};
   });
 
   after(async () => {

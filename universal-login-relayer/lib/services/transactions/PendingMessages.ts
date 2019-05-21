@@ -5,7 +5,7 @@ import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
 import IPendingExecutionsStore from './IPendingExecutionsStore';
 
-export default class PendingExecutions {
+export default class PendingMessages {
 
   constructor(private wallet : Wallet, private executionsStore: IPendingExecutionsStore) {
   }
