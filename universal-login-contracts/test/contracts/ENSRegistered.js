@@ -12,7 +12,7 @@ const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
 const name = `${label}.${domain}`;
 const node = utils.namehash(name);
 
-describe('WalletContract', async () => {
+describe('ENSRegistered', async () => {
   let provider;
   let wallet;
   let ensRegisteredContract;
@@ -28,7 +28,7 @@ describe('WalletContract', async () => {
   });
 
   it('resolves to given address', async () => {
-    await ensRegisteredContract.regisgterENSUnderTests(...args);
+    await ensRegisteredContract.registerENSUnderTests(...args);
     expect(await provider.resolveName(name)).to.eq(ensRegisteredContract.address);
     expect(await lookupAddress(provider, ensRegisteredContract.address, publicResolver)).to.eq(name);
   });
