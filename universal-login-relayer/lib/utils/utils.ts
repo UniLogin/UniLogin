@@ -1,6 +1,6 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {sleep, SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../services/transactions/serialisation';
 
 
@@ -41,11 +41,11 @@ export const getRequiredSignatures = async (walletAddress: string, wallet: Walle
     return requiredSignatures;
 };
 
-export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest => 
+export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>
   Object({
     gasPrice: message.gasPrice,
     gasLimit: message.gasLimit,
     to: message.from,
     value: 0,
     data: encodeDataForExecuteSigned(message)
-  })
+  });

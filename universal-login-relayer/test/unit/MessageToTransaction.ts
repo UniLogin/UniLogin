@@ -7,9 +7,9 @@ import {messageToTransaction} from '../../lib/utils/utils';
 
 describe('MessageToTransaction', () => {
   const gasLimit = utils.bigNumberify(23000);
-  const gasPrice = utils.bigNumberify(9000000)
-  const contractAddress = '0x0000000000000000000000000000000000000002'
-  
+  const gasPrice = utils.bigNumberify(9000000);
+  const contractAddress = '0x0000000000000000000000000000000000000002';
+
   it('should create transaction from transfer message', () => {
     const transferMessage = {
       from: contractAddress,
@@ -23,7 +23,7 @@ describe('MessageToTransaction', () => {
       operationType: OPERATION_CALL,
       signature: '0x592fa743889fc7f92ac2a37bb1f5ba1daf2a5c84741ca0e0061d243a2e6707ba'
     };
-    
+
     const expectedTransaction = {
       gasPrice,
       gasLimit,
