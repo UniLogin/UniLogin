@@ -1,7 +1,7 @@
 import PendingExecution from '../../utils/pendingExecution';
-import IPendingExecutionsStore from './IPendingExecutionsStore';
+import IPendingMessagesStore from './IPendingMessagesStore';
 
-export default class PendingMessagesStore implements IPendingExecutionsStore {
+export default class PendingMessagesStore implements IPendingMessagesStore {
   public executions: Record<string, PendingExecution>;
 
   constructor () {
