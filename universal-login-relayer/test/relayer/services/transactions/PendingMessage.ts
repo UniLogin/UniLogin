@@ -3,8 +3,8 @@ import {utils, Wallet, Contract} from 'ethers';
 import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
 import {calculateMessageSignature, concatenateSignatures, ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
-import PendingExecution from '../../lib/utils/pendingExecution';
-import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
+import PendingMessage from '../../../../lib/services/transactions/PendingMessage';
+import defaultPaymentOptions from '../../../../lib/config/defaultPaymentOptions';
 
 chai.use(solidity);
 
@@ -26,7 +26,7 @@ describe('Pending Execution', async () => {
     const provider = createMockProvider();
     const [, , wallet] = getWallets(provider);
     let walletContract: Contract;
-    let pendingExecution: PendingExecution;
+    let pendingMessage: PendingMessage;
     let actionPrivateKey: string;
     let actionAddress: string;
     let signature0: string;
@@ -41,7 +41,7 @@ describe('Pending Execution', async () => {
         const actionWallet = Wallet.createRandom();
         actionPrivateKey = actionWallet.privateKey;
         actionAddress = actionWallet.address;
-        pendingExecution = new PendingExecution(walletContract.address, wallet);
+        pendingMessage = new PendingMessage(walletContract.address, wallet);
         await walletContract.addKey(actionWallet.address, ACTION_KEY);
         await walletContract.setRequiredSignatures(2);
         signature0 = await calculateMessageSignature(wallet.privateKey, {...baseMsg, from: walletContract.address});
@@ -56,7 +56,7 @@ describe('Pending Execution', async () => {
         let status: any;
 
         beforeEach(async () => {
-            status = await pendingExecution.getStatus();
+            status = await pendingMessage.getStatus();
         });
 
         it('should start with correct number of collected signatures', async () => {
@@ -79,48 +79,48 @@ describe('Pending Execution', async () => {
     describe('Push', async () => {
 
         it('should push one signature', async () => {
-            await pendingExecution.push(msg0);
-            status = await pendingExecution.getStatus();
+            await pendingMessage.push(msg0);
+            status = await pendingMessage.getStatus();
             const {collectedSignatures} = status;
             expect(status.collectedSignatures.length).to.be.eq(1);
             expect(collectedSignatures[0]).to.be.eq(signature0);
         });
 
         it('should push two signatures', async () => {
-            await pendingExecution.push(msg0);
-            await pendingExecution.push(msg1);
-            status = await pendingExecution.getStatus();
+            await pendingMessage.push(msg0);
+            await pendingMessage.push(msg1);
+            status = await pendingMessage.getStatus();
             const {collectedSignatures} = status;
             expect(status.collectedSignatures.length).to.be.eq(2);
             expect(collectedSignatures).to.deep.eq([signature0, signature1]);
         });
 
         it('should not push invalid key purpose', async () => {
-            await expect(pendingExecution.push(invalidMsg))
+            await expect(pendingMessage.push(invalidMsg))
                 .to.be.rejectedWith('Invalid key purpose');
         });
 
         it('should not accept same signature twice', async () => {
-            await pendingExecution.push(msg0);
-            await expect(pendingExecution.push(msg0))
+            await pendingMessage.push(msg0);
+            await expect(pendingMessage.push(msg0))
                 .to.be.rejectedWith('Signature already collected');
         });
 
         it('should not accept same signature twice', async () => {
             await walletContract.setRequiredSignatures(1);
-            await pendingExecution.push(msg0);
-            await pendingExecution.confirmExecution(sampleTx);
-            await expect(pendingExecution.push(msg1))
+            await pendingMessage.push(msg0);
+            await pendingMessage.confirmExecution(sampleTx);
+            await expect(pendingMessage.push(msg1))
                 .to.be.rejectedWith('Execution request already processed');
         });
     });
 
     describe('Concatenate', async () => {
         it('should concatenate two signatures', async () => {
-            await pendingExecution.push(msg0);
-            await pendingExecution.push(msg1);
-            status = await pendingExecution.getStatus();
-            const concatenatedSignatures = pendingExecution.getConcatenatedSignatures();
+            await pendingMessage.push(msg0);
+            await pendingMessage.push(msg1);
+            status = await pendingMessage.getStatus();
+            const concatenatedSignatures = pendingMessage.getConcatenatedSignatures();
             let expected: string;
             if (utils.bigNumberify(wallet.address).lt(utils.bigNumberify(actionAddress))) {
                 expected = concatenateSignatures([signature0, signature1]);
@@ -133,31 +133,31 @@ describe('Pending Execution', async () => {
 
     describe('Confirm', async () => {
         it('should confirm', async () => {
-            await pendingExecution.push(msg0);
-            await pendingExecution.push(msg1);
-            await pendingExecution.confirmExecution(sampleTx);
-            status = await pendingExecution.getStatus();
+            await pendingMessage.push(msg0);
+            await pendingMessage.push(msg1);
+            await pendingMessage.confirmExecution(sampleTx);
+            status = await pendingMessage.getStatus();
             expect(status.transactionHash).to.be.eq(sampleTx);
         });
 
         it('should not confirm with not enough signatures', async () => {
-            await pendingExecution.push(msg0);
-            await expect(pendingExecution.ensureCorrectExecution())
+            await pendingMessage.push(msg0);
+            await expect(pendingMessage.ensureCorrectExecution())
                 .to.be.rejectedWith('Not enough signatures');
         });
 
         it('should not confirm if tx is already confirmed', async () => {
-            await pendingExecution.push(msg0);
-            await pendingExecution.push(msg1);
-            await pendingExecution.confirmExecution(sampleTx);
-            await expect(pendingExecution.ensureCorrectExecution())
+            await pendingMessage.push(msg0);
+            await pendingMessage.push(msg1);
+            await pendingMessage.confirmExecution(sampleTx);
+            await expect(pendingMessage.ensureCorrectExecution())
                 .to.be.rejectedWith('Transaction 0x0 has already been confirmed');
         });
 
         it('should not confirm with invalid tx', async () => {
-            await pendingExecution.push(msg0);
-            await pendingExecution.push(msg1);
-            await expect(pendingExecution.confirmExecution('0x0'))
+            await pendingMessage.push(msg0);
+            await pendingMessage.push(msg1);
+            await expect(pendingMessage.confirmExecution('0x0'))
                 .to.be.rejectedWith('Invalid transaction: 0x0');
         });
     });
