@@ -3,7 +3,7 @@ import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
 import PendingMessagesStore from '../../../../lib/services/transactions/PendingMessagesStore';
-import PendingExecution from '../../../../lib/utils/pendingExecution';
+import PendingExecution from '../../../../lib/services/transactions/pendingExecution';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 
 describe('UNIT: PendingMessagesStore', async () => {

@@ -1,8 +1,8 @@
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {utils, Contract, Wallet} from 'ethers';
-import {sortExecutionsByKey} from '../utils/utils';
+import {sortExecutionsByKey} from '../../utils/utils';
 import {concatenateSignatures, calculateMessageHash, SignedMessage} from '@universal-login/commons';
-import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from './errors';
+import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from '../../utils/errors';
 
 type Execution = Record<string, string>;
 

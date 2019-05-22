@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
-import PendingExecution from '../../../../lib/utils/pendingExecution';
+import PendingExecution from '../../../../lib/services/transactions/pendingExecution';
 import PendingMessages from '../../../../lib/services/transactions/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesStore from '../../../../lib/services/transactions/PendingMessagesStore';

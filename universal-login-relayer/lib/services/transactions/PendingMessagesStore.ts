@@ -1,4 +1,4 @@
-import PendingExecution from '../../utils/pendingExecution';
+import PendingExecution from './pendingExecution';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {

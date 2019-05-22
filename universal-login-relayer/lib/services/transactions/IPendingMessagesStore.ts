@@ -1,4 +1,4 @@
-import PendingExecution from '../../utils/pendingExecution';
+import PendingExecution from './pendingExecution';
 
 export default interface IPendingMessagesStore {
   add: (messageHash: string, pendingExecution: PendingExecution) => void;

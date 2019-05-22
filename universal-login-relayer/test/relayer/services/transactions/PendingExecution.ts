@@ -3,8 +3,8 @@ import {utils, Wallet, Contract} from 'ethers';
 import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
 import {calculateMessageSignature, concatenateSignatures, ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
-import PendingExecution from '../../lib/utils/pendingExecution';
-import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
+import PendingExecution from '../../../../lib/services/transactions/pendingExecution';
+import defaultPaymentOptions from '../../../../lib/config/defaultPaymentOptions';
 
 chai.use(solidity);
 

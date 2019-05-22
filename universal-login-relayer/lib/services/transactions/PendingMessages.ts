@@ -1,4 +1,4 @@
-import PendingExecution from '../../utils/pendingExecution';
+import PendingExecution from './pendingExecution';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
