@@ -10,7 +10,7 @@ chai.use(sinonChai);
 describe('SuggestionsService', () => {
   it('call callback with proper arguments', async () => {
     const walletSelectionService = {getSuggestions: sinon.fake.returns(Promise.resolve({connections: [], creations: []}))};
-    const service = new SuggestionsService(walletSelectionService, {debounceTime: 1});
+    const service = new SuggestionsService(walletSelectionService as any, {debounceTime: 1});
     const callback = sinon.spy();
 
     service.getSuggestions('a', callback);
