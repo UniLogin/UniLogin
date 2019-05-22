@@ -6,7 +6,7 @@ import {utils, providers, Wallet, Contract} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import KeyHolder from '@universal-login/contracts/build/KeyHolder.json';
-import {hasEnoughToken} from '../../../lib/services/transactions/validations';
+import {hasEnoughToken} from '../../../lib/services/messages/validations';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

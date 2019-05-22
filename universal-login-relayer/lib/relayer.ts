@@ -14,12 +14,12 @@ import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from './config/relayer';
-import MessageHandler from './services/transactions/MessageHandler';
+import MessageHandler from './services/MessageHandler';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 import errorHandler from './middlewares/errorHandler';
-import PendingMessages from './services/transactions/PendingMessages';
-import PendingMessagesStore from './services/transactions/PendingMessagesStore';
+import PendingMessages from './services/messages/PendingMessages';
+import PendingMessagesStore from './services/messages/PendingMessagesStore';
 
 const defaultPort = '3311';
 

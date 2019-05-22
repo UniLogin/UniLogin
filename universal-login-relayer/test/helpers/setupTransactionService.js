@@ -1,12 +1,12 @@
 import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
-import MessageHandler from '../../lib/services/transactions/MessageHandler';
+import MessageHandler from '../../lib/services/MessageHandler';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
 import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
-import PendingMessagesStore from '../../lib/services/transactions/PendingMessagesStore';
-import PendingMessages from '../../lib/services/transactions/PendingMessages';
+import PendingMessagesStore from '../../lib/services/messages/PendingMessagesStore';
+import PendingMessages from '../../lib/services/messages/PendingMessages';
 
 export default async function setupTransactionService(knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
