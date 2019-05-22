@@ -20,8 +20,8 @@ jobs:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: yarn lint
       - run: cd universal-login-contracts && yarn test
-      - run: cd ../universal-login-commons && yarn test
-      - run: cd ../universal-login-ops && yarn test
+      - run: cd universal-login-commons && yarn test
+      - run: cd universal-login-ops && yarn test
       - run: yarn codechecks
   test_sdk_relayer:
     docker:
@@ -38,7 +38,7 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-sdk && yarn test:nobuild
-      - run: cd ../universal-login-relayer && yarn test:nobuild
+      - run: cd universal-login-relayer && yarn test:nobuild
   test_wallet_example:
     docker:
       - image: circleci/node:10.15
@@ -51,7 +51,7 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
-      - run: cd ../universal-login-example && yarn test
+      - run: cd universal-login-example && yarn test
   build_klab_specs:
     docker:
       - image: circleci/node:10.15
