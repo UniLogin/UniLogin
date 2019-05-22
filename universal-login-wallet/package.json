@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development",
-    "prebuild": "rm -rf ./dist",
+    "prebuild": "yarn clean",
     "build": "webpack --mode production --progress && cp src/_redirects dist/_redirects",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "NODE_ENV=test mocha -r ts-node/register \"test/unit/**/*.{ts,tsx}\"",
