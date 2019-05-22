@@ -2,13 +2,15 @@
   "name": "@universal-login/commons",
   "version": "0.2.1",
   "description": "Unviersal Login Common source code",
-  "main": "dist/index.js",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "prebuild": "rm -rf ./dist",
-    "build": "tsc --build tsconfig.build.json",
+    "prebuild": "yarn clean",
+    "build": "tsc",
     "clean": "rm -fr dist",
-    "test": "mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
+    "pretest": "yarn build",
+    "test": "mocha -t 10000 \"dist/test/**/*.js\"",
     "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\""
   },
   "devDependencies": {

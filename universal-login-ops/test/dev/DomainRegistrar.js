@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
-import {basicENS} from '@universal-login/commons/test';
+import {basicENS} from '@universal-login/commons/testutils';
 import DomainRegistrar from '../../src/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
 import {utils, Contract} from 'ethers';

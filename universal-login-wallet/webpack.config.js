@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     filename: 'main.[hash].js',
-    path: path.join(__dirname, '/dist')
+    path: path.join(__dirname, '/dist/html')
   },
   devtool: 'source-map',
   resolve: {

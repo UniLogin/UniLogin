@@ -3,7 +3,7 @@ import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {deployMockToken} from '@universal-login/commons/test';
+import {deployMockToken} from '@universal-login/commons/testutils';
 import {Services} from '../../../src/services/Services';
 import {setupSdk} from '../helpers/setupSdk';
 import {setupUI} from '../helpers/setupUI';
