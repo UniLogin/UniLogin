@@ -51,3 +51,4 @@ const addressComparator = (privateKey1: string, privateKey2: string) =>  {
 
 export const sortPrivateKeysByAddress = (privateKeys: string[]) =>
   privateKeys.sort(addressComparator);
+  
