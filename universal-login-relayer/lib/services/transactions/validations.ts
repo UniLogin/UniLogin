@@ -35,4 +35,3 @@ export const ensureEnoughGas = async (provider: providers.Provider, walletAddres
     throw new NotEnoughGas();
   }
 };
-
