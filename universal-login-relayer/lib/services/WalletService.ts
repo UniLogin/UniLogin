@@ -1,10 +1,10 @@
-import {utils, ContractFactory, Wallet} from 'ethers';
-import WalletMasterContract from '@universal-login/contracts/build/WalletMaster.json';
+import {ContractFactory, Wallet} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions} from '@universal-login/commons';
 import {InvalidENSDomain} from '../utils/errors';
+import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
 class WalletService {
   private bytecode: string;
@@ -19,8 +19,8 @@ class WalletService {
   async create(key: string, ensName: string, overrideOptions = {}) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
-      let args = [key, ...ensArgs];
-      const initData = new utils.Interface(WalletMasterContract.interface).functions.initializeWithENS.encode(args);
+      let args = [key, ...ensArgs] as string[];
+      const initData = encodeInitializeWithENSData(args);
       args = [this.walletMasterAddress, initData];
       const deployTransaction = {
         ...defaultDeployOptions,

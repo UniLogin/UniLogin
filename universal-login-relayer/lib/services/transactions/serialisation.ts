@@ -1,11 +1,11 @@
 import {utils} from 'ethers';
-import {Message, Omit} from '@universal-login/commons';
+import {SignedMessage, Omit} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import { InvalidHexData } from '../../utils/errors';
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
 
-type MessageWithoutFrom = Omit<Message, 'from'>;
+type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
 
 export const encodeDataForExecuteSigned = (message: MessageWithoutFrom) =>
   executeSigned.encode([

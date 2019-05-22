@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {deployContract, solidity, getWallets, loadFixture} from 'ethereum-waffle';
-import {utils, Contract} from 'ethers';
+import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
+import {utils} from 'ethers';
 import MockWalletMaster from '../../build/MockWalletMaster';
 import Proxy from '../../build/Proxy';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
@@ -10,7 +10,6 @@ import basicMasterAndProxy from '../fixtures/basicMasterAndProxy';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const to = '0x0000000000000000000000000000000000000001';
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('CONTRACT: ProxyMasterCopy', async () => {
@@ -27,7 +26,7 @@ describe('CONTRACT: ProxyMasterCopy', async () => {
 
   describe('Proxy', async () => {
     xit('updates master', async () => {
-      await expect(proxyAsWallet.setMaster(to, [])).to.be.revertedWith('restricted-access');
+      await expect(proxyAsWallet.setMaster(TEST_ACCOUNT_ADDRESS, [])).to.be.revertedWith('restricted-access');
     });
 
     it('deployment fails if masterCopy is zero', async () => {

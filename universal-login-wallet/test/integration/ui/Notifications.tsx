@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, Contract} from 'ethers';
-import {createFixtureLoader} from 'ethereum-waffle';
+import {createFixtureLoader, createMockProvider, getWallets} from 'ethereum-waffle';
 import {deployMockToken} from '@universal-login/commons/test';
-import {setupSdk} from '@universal-login/sdk/test';
+import {setupSdk} from '../helpers/setupSdk';
 import {Services} from '../../../src/services/Services';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../helpers/setupUI';
@@ -17,7 +17,8 @@ describe('UI: Notifications',  () => {
   let mockTokenContract: Contract;
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
+    const [wallet] = await getWallets(createMockProvider());
+    ({relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
      await services.sdk.start();

@@ -79,13 +79,13 @@ To use existing testnet relayer create ``.env`` file in ``universal-login-exampl
 
   ::
 
-    JSON_RPC_URL='https://rinkeby.infura.io'
+    JSON_RPC_URL='https://ropsten.infura.io'
     RELAYER_URL='https://relayer.universallogin.io'
-    ENS_ADDRESS='0xe7410170f87102DF0055eB195163A03B7F2Bff4A'
+    ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     ENS_DOMAIN_1='poppularapp.test'
-    ENS_DOMAIN_2='my-id.test'
-    TOKEN_CONTRACT_ADDRESS='0x5F81E2afde8297F90b3F9179F8F3eA172f3155A8'
-    CLICKER_CONTRACT_ADDRESS='0x01Ed4566E61E3a964059c692e511f441F9B3B8B2'
+    ENS_DOMAIN_2='universal-login.test'
+    TOKEN_CONTRACT_ADDRESS='0xE5f527f02a688f7227850C890403fa35A9d8C505'
+    CLICKER_CONTRACT_ADDRESS='0x7CAa4eBc2DCaB82e44fcb003d04Fc2BCc7d31252'
 
 
 

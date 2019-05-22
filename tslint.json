@@ -10,6 +10,7 @@
       "check-space"
     ],
     "curly": true,
+    "eofline": true,
     "import-spacing": true,
     "no-console": false,
     "no-construct": true,

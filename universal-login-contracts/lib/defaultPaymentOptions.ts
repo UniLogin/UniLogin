@@ -1,6 +1,4 @@
-export const DEFAULT_GAS_PRICE = 1000000000;
-
-export const DEFAULT_GAS_LIMIT = 1000000;
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 
 export const DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN = {
   gasPrice: DEFAULT_GAS_PRICE,

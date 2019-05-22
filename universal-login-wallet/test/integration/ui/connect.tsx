@@ -4,11 +4,11 @@ import {mountWithContext} from '../helpers/CustomMount';
 import App from '../../../src/ui/App';
 import {providers, Wallet, utils} from 'ethers';
 import {Services} from '../../../src/services/Services';
-import {setupSdk} from '@universal-login/sdk/test';
+import {setupSdk} from '../helpers/setupSdk';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
-import {getWallets} from 'ethereum-waffle';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 import chai, {expect} from 'chai';
 
 chai.use(require('chai-string'));
@@ -24,8 +24,8 @@ describe('UI: Connect', () => {
   const name = 'name.mylogin.eth';
 
   before(async () => {
-    ({relayer, provider} = await setupSdk({overridePort: '33113'}));
-    const [wallet] = await getWallets(provider);
+    const [wallet] = getWallets(createMockProvider());
+    ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     services.tokenService.start();
     services.balanceService.start();

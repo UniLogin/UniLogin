@@ -1,8 +1,8 @@
-import {OPERATION_CALL} from '@universal-login/contracts';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, OPERATION_CALL} from '@universal-login/commons';
 
 const DEFAULT_PAYMENT_OPTIONS = {
-  gasPrice: 31000000000000,
-  gasLimit: 1000000,
+  gasPrice: DEFAULT_GAS_PRICE,
+  gasLimit: DEFAULT_GAS_LIMIT,
   operationType: OPERATION_CALL
 };
 

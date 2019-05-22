@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../lib/utils/utils';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/contracts';
+import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 
 chai.use(chaiAsPromised);
