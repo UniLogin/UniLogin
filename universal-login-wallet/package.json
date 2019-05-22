@@ -6,7 +6,7 @@
     "start": "webpack-dev-server --mode development",
     "prebuild": "yarn clean",
     "build": "webpack --mode production --progress && cp src/_redirects dist/html/_redirects",
-    "pretest": "rm -fr dist/src dist/test && tsc",
+    "pretest": "rm -fr dist/src dist/test && tsc && cp -r src/assets dist/src/assets",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "NODE_ENV=test mocha \"dist/test/unit/**/*.js\"",
     "test:integration": "NODE_ENV=test mocha -t 10000 -r ./dist/test/integration/register \"dist/test/integration/**/*.js\"",
