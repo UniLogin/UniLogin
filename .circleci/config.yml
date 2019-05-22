@@ -186,28 +186,13 @@ workflows:
   universal_login_all:
     jobs:
       - build
-      - test_commons:
+      - lint_test_contracts_commons_ops:
           requires:
             - build
-      - test_contracts:
+      - test_sdk_relayer:
           requires:
             - build
-      - test_example:
-          requires:
-            - build
-      - test_ops:
-          requires:
-            - build
-      - test_relayer:
-          requires:
-            - build
-      - test_sdk:
-          requires:
-            - build
-      - test_wallet:
-          requires:
-            - build
-      - lint:
+      - test_wallet_example:
           requires:
             - build
       - build_klab_specs:
