@@ -12,5 +12,9 @@
       "../node_modules/@types",
       "shims"
     ]
-  }
+  },
+  "include": [
+    "src",
+    "test"
+  ]
 }
