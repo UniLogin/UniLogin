@@ -21,6 +21,7 @@
   "scripts": {
     "start": "parcel --no-cache ./src/index.html",
     "example:build": "parcel build ./src/index.html",
+    "prebuild": "yarn clean",
     "build": "yarn contracts:build && yarn relayer:build && parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js test/**/*.js",
     "test": "NODE_ENV=test mocha --recursive --require ./test/helpers/testNullCompiler.js --require babel-register test -t 10000",
