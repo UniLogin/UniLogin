@@ -1,14 +1,13 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
+import {Wallet, providers, utils} from 'ethers';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitUntil} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
 import CreationSerivice from '../../../src/services/Creation';
 import ConnectionToWalletService from '../../../src/services/ConnectToWallet';
 import WalletService from '../../../src/services/WalletService';
-import {setupSdk} from '@universal-login/sdk/test';
-import UniversalLoginSDK, {MANAGEMENT_KEY} from '@universal-login/sdk';
-import {Wallet, providers, utils} from 'ethers';
-import {getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, waitUntil} from '@universal-login/commons';
-
+import {setupSdk} from '../helpers/setupSdk';
 
 describe('Login', () => {
   let creationService: any;
@@ -24,7 +23,8 @@ describe('Login', () => {
   let contractAddress : string;
 
   before(async () => {
-    ({sdk, relayer, provider} = await setupSdk({overridePort: '33113'}));
+    [wallet] = getWallets(createMockProvider());
+    ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     [wallet] = await getWallets(provider);
     walletService = new WalletService();
     creationService = CreationSerivice(sdk, walletService);
@@ -65,7 +65,7 @@ describe('Login', () => {
         contractAddress,
         newPublicKey,
         privateKey,
-        {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: 1000000000, gasLimit: 1000000},
+        {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT},
         MANAGEMENT_KEY);
       await waitUntil(() => !!callback.firstCall);
       expect(callback).to.have.been.calledOnce;

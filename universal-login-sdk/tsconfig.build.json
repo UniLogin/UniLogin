@@ -1,10 +1,15 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "allowJs": false,
-    "declaration": true
+    "allowJs": true,
+    "outDir": "dist",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
   },
   "include": [
-    "lib"
+    "lib",
+    "test"
   ]
 }

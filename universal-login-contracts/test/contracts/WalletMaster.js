@@ -5,15 +5,14 @@ import {constants, utils} from 'ethers';
 import WalletMaster from '../../build/WalletMaster';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
 import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
-import {calculateMessageHash, calculateMessageSignature} from '../../lib/calculateMessageSignature';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 const {parseEther} = utils;
-const to1 = '0x0000000000000000000000000000000000000001';
 
 describe('WalletMaster', async () => {
   let provider;
@@ -91,9 +90,9 @@ describe('WalletMaster', async () => {
   describe('Transfer', async () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
-        expect(await provider.getBalance(to1)).to.eq(0);
+        expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
         await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-        expect(await provider.getBalance(to1)).to.eq(parseEther('1.0'));
+        expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('1.0'));
         expect(await proxyAsWalletContract.lastNonce()).to.eq(1);
       });
 
@@ -157,7 +156,7 @@ describe('WalletMaster', async () => {
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
         await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-        expect(await provider.getBalance(to1)).to.eq(parseEther('0.0'));
+        expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
         expect(await proxyAsWalletContract.lastNonce()).to.eq(1);
       });
 
@@ -167,7 +166,7 @@ describe('WalletMaster', async () => {
           await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
             .to.be.revertedWith('Invalid signature');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
-          expect(await provider.getBalance(to1)).to.eq(parseEther('0.0'));
+          expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
         });
 
         it('invalid signature', async () => {
@@ -175,7 +174,7 @@ describe('WalletMaster', async () => {
           await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
             .to.be.revertedWith('Invalid signature');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
-          expect(await provider.getBalance(to1)).to.eq(parseEther('0.0'));
+          expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
         });
       });
 

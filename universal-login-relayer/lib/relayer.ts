@@ -14,12 +14,12 @@ import {getKnex} from './utils/knexUtils';
 import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from './config/relayer';
-import TransactionService from './services/transactions/TransactionService';
+import MessageHandler from './services/transactions/MessageHandler';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 import errorHandler from './middlewares/errorHandler';
-import PendingExecutions from './services/transactions/PendingExecutions';
-import PendingExecutionsStore from './services/transactions/PendingExecutionsStore';
+import PendingMessages from './services/transactions/PendingMessages';
+import PendingMessagesStore from './services/transactions/PendingMessagesStore';
 
 const defaultPort = '3311';
 
@@ -39,9 +39,9 @@ class Relayer {
   private walletContractService: WalletService = {} as WalletService;
   private transactionQueueStore: TransactionQueueStore = {} as TransactionQueueStore;
   private transactionQueueService: TransactionQueueService = {} as TransactionQueueService;
-  private transactionService: TransactionService = {} as TransactionService;
-  private pendingExecutionsStore: PendingExecutionsStore = {} as PendingExecutionsStore;
-  private pendingExecutions: PendingExecutions = {} as PendingExecutions;
+  private messageHandler: MessageHandler = {} as MessageHandler;
+  private pendingMessagesStore: PendingMessagesStore = {} as PendingMessagesStore;
+  private pendingMessages: PendingMessages = {} as PendingMessages;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
 
@@ -70,13 +70,13 @@ class Relayer {
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks);
-    this.pendingExecutionsStore = new PendingExecutionsStore();
-    this.pendingExecutions = new PendingExecutions(this.wallet, this.pendingExecutionsStore);
+    this.pendingMessagesStore = new PendingMessagesStore();
+    this.pendingMessages = new PendingMessages(this.wallet, this.pendingMessagesStore);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
     this.transactionQueueService = new TransactionQueueService(this.wallet, this.provider, this.transactionQueueStore);
-    this.transactionService = new TransactionService(this.wallet, this.authorisationService, this.hooks, this.provider, this.transactionQueueService, this.pendingExecutions);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.provider, this.transactionQueueService, this.pendingMessages);
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(this.walletContractService, this.transactionService));
+    this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use(errorHandler);

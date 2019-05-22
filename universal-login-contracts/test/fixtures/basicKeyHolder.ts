@@ -2,8 +2,8 @@ import KeyHolder from '../../build/KeyHolder.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {MANAGEMENT_KEY, ACTION_KEY} from '../../lib/consts';
-import { Provider } from 'ethers/providers';
+import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/commons';
+import {Provider} from 'ethers/providers';
 
 export default async function basicKeyHolder(
   provider : Provider,

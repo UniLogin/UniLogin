@@ -3,9 +3,8 @@ import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {OPERATION_CALL, ACTION_KEY} from '../../lib/consts';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
-import {sortPrivateKeysByAddress} from '../../lib/calculateMessageSignature';
+import {ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS, sortPrivateKeysByAddress} from '@universal-login/commons';
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
@@ -30,7 +29,7 @@ export default async function basicWallet(unusedProvider : providers.Provider, [
 }
 
 export const transferMessage = {
-  to: '0x0000000000000000000000000000000000000001',
+  to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('1.0'),
   data: [],
   nonce: 0,
@@ -42,7 +41,7 @@ export const transferMessage = {
 
 
 export const failedTransferMessage = {
-  to: '0x0000000000000000000000000000000000000001',
+  to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('10.0'),
   data: [],
   nonce: 0,
@@ -53,7 +52,7 @@ export const failedTransferMessage = {
 };
 
 export const callMessage = {
-  to: '0x0000000000000000000000000000000000000001',
+  to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('0.0'),
   data: new utils.Interface(MockContract.abi).functions.callMe.encode([]),
   nonce: 0,
@@ -64,7 +63,7 @@ export const callMessage = {
 };
 
 export const failedCallMessage = {
-  to: '0x0000000000000000000000000000000000000001',
+  to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('0.0'),
   data: new utils.Interface(MockContract.abi).functions.revertingFunction.encode([]),
   nonce: 0,

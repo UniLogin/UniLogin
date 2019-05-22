@@ -3,9 +3,9 @@ import React from 'react';
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils} from 'ethers';
-import {getWallets} from 'ethereum-waffle';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {setupSdk} from '@universal-login/sdk/test';
+import {setupSdk} from '../helpers/setupSdk';
 import App from '../../../src/ui/App';
 import {Services} from '../../../src/services/Services';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
@@ -19,7 +19,8 @@ describe('UI: Login', () => {
     let provider: providers.Provider;
 
     before(async () => {
-        ({relayer, provider} = await setupSdk({overridePort: '33113'}));
+        const [wallet] = await getWallets(createMockProvider());
+        ({relayer, provider} = await setupSdk(wallet, '33113'));
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
         services.tokenService.start();
         services.balanceService.start();

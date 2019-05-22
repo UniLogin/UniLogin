@@ -1,22 +1,22 @@
 import {utils, Wallet} from 'ethers';
-import {Message} from '@universal-login/commons';
+import {UnsignedMessage} from '../types/message';
 
 
-export const calculateMessageHash = (msg: Message) => {
+export const calculateMessageHash = (msg: UnsignedMessage) => {
   const dataHash = utils.solidityKeccak256(['bytes'], [msg.data]);
   return utils.solidityKeccak256(
     ['address', 'address', 'uint256', 'bytes32', 'uint256', 'uint', 'address', 'uint', 'uint'],
     [msg.from, msg.to, msg.value, dataHash, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType]);
 };
 
-export const calculateMessageSignature = async (privateKey: string, msg: Message) => {
+export const calculateMessageSignature = async (privateKey: string, msg: UnsignedMessage) => {
   const wallet = new Wallet(privateKey);
   const massageHash = calculateMessageHash(msg);
   return wallet.signMessage(utils.arrayify(massageHash));
 };
 
 
-export const calculateMessageSignatures = async (privateKeys: string[], msg: Message) => {
+export const calculateMessageSignatures = async (privateKeys: string[], msg: UnsignedMessage) => {
   const signaturesPromises = privateKeys.map((value: string) =>
     calculateMessageSignature(value, msg));
   const sortedSignatures = sortPrivateKeysByAddress(await Promise.all(signaturesPromises));

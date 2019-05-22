@@ -1,8 +1,8 @@
 {
   "name": "@universal-login/sdk",
   "version": "0.2.1",
-  "main": "dist/sdk.js",
-  "types": "dist/sdk.d.ts",
+  "main": "dist/lib/sdk.js",
+  "types": "dist/lib/sdk.d.ts",
   "license": "MIT",
   "dependencies": {
     "deep-equal": "^1.0.1",
@@ -13,9 +13,10 @@
     "@universal-login/contracts": "^0.2.1"
   },
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
-    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
-    "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
+    "build": "yarn clean && tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
+    "lint": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
+    "test": "yarn build && yarn test:nobuild",
+    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
     "clean": "rm -fr dist"
   },
   "devDependencies": {
