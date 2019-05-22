@@ -1,12 +1,12 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures, messageToTransaction} from '../../utils/utils';
-import AuthorisationService from '../authorisationService';
-import TransactionQueueService from './TransactionQueueService';
-import PendingMessages from './PendingMessages';
-import {ensureEnoughToken, ensureEnoughGas} from './validations';
-import {decodeDataForExecuteSigned} from './serialisation';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures, messageToTransaction} from '../utils/utils';
+import AuthorisationService from './authorisationService';
+import TransactionQueueService from './transactions/TransactionQueueService';
+import PendingMessages from './messages/PendingMessages';
+import {ensureEnoughToken, ensureEnoughGas} from './messages/validations';
+import {decodeDataForExecuteSigned} from './transactions/serialisation';
 
 class TransactionService {
 

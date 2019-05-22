@@ -5,8 +5,8 @@ import TransactionQueueService from '../../lib/services/transactions/Transaction
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
 import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
-import PendingMessagesStore from '../../lib/services/transactions/PendingMessagesStore';
-import PendingMessages from '../../lib/services/transactions/PendingMessages';
+import PendingMessagesStore from '../../lib/services/messages/PendingMessagesStore';
+import PendingMessages from '../../lib/services/messages/PendingMessages';
 
 export default async function setupTransactionService(knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
