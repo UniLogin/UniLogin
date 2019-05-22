@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {EMPTY_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {OPERATION_CALL} from '@universal-login/contracts';
+import {TEST_ACCOUNT_ADDRESS, OPERATION_CALL} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../../lib/services/transactions/serialisation';
 import {messageToTransaction} from '../../lib/utils/utils';
 
@@ -13,7 +12,7 @@ describe('MessageToTransaction', () => {
   it('should create transaction from transfer message', () => {
     const transferMessage = {
       from: contractAddress,
-      to: EMPTY_ACCOUNT_ADDRESS,
+      to: TEST_ACCOUNT_ADDRESS,
       value: utils.parseEther('1.0'),
       data: '0x0',
       nonce: 0,

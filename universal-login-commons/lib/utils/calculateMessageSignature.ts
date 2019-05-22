@@ -1,5 +1,5 @@
 import {utils, Wallet} from 'ethers';
-import {UnsignedMessage} from '@universal-login/commons';
+import {UnsignedMessage} from '../types/message';
 
 
 export const calculateMessageHash = (msg: UnsignedMessage) => {

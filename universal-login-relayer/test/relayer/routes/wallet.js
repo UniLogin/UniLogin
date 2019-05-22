@@ -2,8 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {waitForContractDeploy} from '@universal-login/commons';
-import {calculateMessageSignature, OPERATION_CALL} from '@universal-login/contracts';
+import {OPERATION_CALL, waitForContractDeploy, createSignedMessage} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import {startRelayer} from './helpers';
@@ -70,13 +69,10 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         operationType: OPERATION_CALL,
       };
       const balanceBefore = await provider.getBalance(otherWallet.address);
-      const signature = await calculateMessageSignature(wallet.privateKey, msg);
+      const signedMessage = await createSignedMessage(msg, wallet.privateKey);
       const {status} = await chai.request(relayer.server)
         .post('/wallet/execution')
-        .send({
-          ...msg,
-          signature,
-        });
+        .send(signedMessage);
       expect(status).to.eq(201);
       expect(await provider.getBalance(otherWallet.address)).to.eq(balanceBefore.add(msg.value));
     });

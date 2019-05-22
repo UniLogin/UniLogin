@@ -1,7 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {OPERATION_CALL, MANAGEMENT_KEY, ACTION_KEY, calculateMessageSignature, calculateMessageHash} from '@universal-login/contracts';
-import {waitToBeMined, waitForContractDeploy, Message, SignedMessage} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitToBeMined, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -129,17 +128,14 @@ class UniversalLoginSDK {
   }
 
   async execute(message: Message, privateKey: string) {
-    const finalMessage = {
+    const unsignedMessage = {
       ...this.defaultPaymentOptions,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
-    };
-    const signature = await calculateMessageSignature(privateKey, finalMessage as any);
+    } as MessageWithFrom;
+    const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
 
-    const result = await this.relayerApi.execute({
-      ...finalMessage,
-      signature,
-    });
+    const result = await this.relayerApi.execute(signedMessage);
 
     if (result.transaction.hash) {
       const transactionHash = result.transaction.hash;
@@ -215,5 +211,4 @@ class UniversalLoginSDK {
 }
 
 export default UniversalLoginSDK;
-export {MANAGEMENT_KEY, ACTION_KEY};
 export {SdkSigner} from './SdkSigner';

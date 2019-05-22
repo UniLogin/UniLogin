@@ -1,12 +1,10 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {SignedMessage} from '@universal-login/commons';
-import {calculateMessageHash} from '@universal-login/contracts';
+import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
 import PendingMessagesStore from '../../../../lib/services/transactions/PendingMessagesStore';
 import PendingExecution from '../../../../lib/utils/pendingExecution';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import createSignedMessage from '../../../../lib/utils/signMessage';
 
 describe('UNIT: PendingMessagesStore', async () => {
   let pendingMessagesStore: PendingMessagesStore;
@@ -19,7 +17,7 @@ describe('UNIT: PendingMessagesStore', async () => {
   beforeEach(async () => {
     ({wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     pendingMessagesStore = new PendingMessagesStore();
-    message = await createSignedMessage({from: walletContract.address}, wallet.privateKey);
+    message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
     pendingExecution = new PendingExecution(message.from, wallet);
     messageHash = calculateMessageHash(message);

@@ -3,8 +3,7 @@ import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import WalletMaster from '../../../build/WalletMaster.json';
-import {MANAGEMENT_KEY} from '../../../lib';
-import {KeyPair} from '@universal-login/commons';
+import {KeyPair, MANAGEMENT_KEY} from '@universal-login/commons';
 
 
 describe('WalletContract fixture test', () => {

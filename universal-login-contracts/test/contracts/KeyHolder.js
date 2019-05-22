@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY} from '../../lib/consts';
+import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/commons';
 import basicKeyHolder from '../fixtures/basicKeyHolder';
 
 chai.use(chaiAsPromised);
