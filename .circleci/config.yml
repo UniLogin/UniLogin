@@ -54,13 +54,6 @@ jobs:
   test_ops:
     docker:
       - image: circleci/node:10.15
-        environment:
-          PG_HOST: localhost
-          PG_USER: postgres
-      - image: circleci/postgres:9.6-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: universal_login_relayer_test
     steps:
       - restore_cache:
             keys:
