@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {sleep} from '@universal-login/commons';
+import {sleep} from '../../lib';
 import {SuggestionsService} from '../../lib/services/SuggestionsService';
 import {WalletSelectionService} from '../../lib/services/WalletSelectionService';
 

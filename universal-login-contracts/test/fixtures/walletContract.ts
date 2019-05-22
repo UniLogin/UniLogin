@@ -3,7 +3,7 @@ import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
-import {deployENS} from '@universal-login/commons/test';
+import {deployENS} from '@universal-login/commons/testutils';
 import {encodeInitializeWithENSData} from '../../lib';
 
 export type EnsDomainData = {

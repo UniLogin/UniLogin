@@ -3,7 +3,7 @@ import ENSRegisteredUnderTests from '../../build/ENSRegisteredUnderTests';
 import {deployContract, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {lookupAddress} from '../utils';
-import {basicENS} from '@universal-login/commons/test';
+import {basicENS} from '@universal-login/commons/testutils';
 
 
 const domain = 'mylogin.eth';
