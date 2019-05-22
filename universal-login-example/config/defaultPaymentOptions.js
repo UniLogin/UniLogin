@@ -1,4 +1,3 @@
-
 import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, OPERATION_CALL} from '@universal-login/commons';
 
 const DEFAULT_PAYMENT_OPTIONS = {
