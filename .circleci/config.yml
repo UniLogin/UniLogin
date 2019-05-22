@@ -11,7 +11,7 @@ jobs:
             key: universal-login-{{ .Environment.CIRCLE_SHA1 }}
             paths:
               - ~/project
-  lint:
+  lint_test_contracts_commons_ops:
     docker:
       - image: circleci/node:10.15
     steps:
@@ -19,47 +19,11 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: yarn lint
-      - run: yarn codechecks
-  test_commons:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - restore_cache:
-            keys:
-                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd universal-login-commons && yarn test
-  test_contracts:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - restore_cache:
-            keys:
-                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-contracts && yarn test
-  test_relayer:
-    docker:
-      - image: circleci/node:10.15
-        environment:
-          PG_HOST: localhost
-          PG_USER: postgres
-      - image: circleci/postgres:9.6-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: universal_login_relayer_test
-    steps:
-      - restore_cache:
-            keys:
-                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd universal-login-relayer && yarn test:nobuild
-  test_ops:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - restore_cache:
-            keys:
-                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd universal-login-ops && yarn test
-  test_sdk:
+      - run: cd ../universal-login-commons && yarn test
+      - run: cd ../universal-login-ops && yarn test
+      - run: yarn codechecks
+  test_sdk_relayer:
     docker:
       - image: circleci/node:10.15
         environment:
@@ -74,22 +38,8 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-sdk && yarn test:nobuild
-  test_example:
-    docker:
-      - image: circleci/node:10.15
-        environment:
-          PG_HOST: localhost
-          PG_USER: postgres
-      - image: circleci/postgres:9.6-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: universal_login_relayer_test
-    steps:
-      - restore_cache:
-            keys:
-                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd universal-login-example && yarn test
-  test_wallet:
+      - run: cd ../universal-login-relayer && yarn test:nobuild
+  test_wallet_example:
     docker:
       - image: circleci/node:10.15
       - image: circleci/postgres:9.6-alpine
@@ -101,6 +51,7 @@ jobs:
             keys:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-wallet && yarn test
+      - run: cd ../universal-login-example && yarn test
   build_klab_specs:
     docker:
       - image: circleci/node:10.15
