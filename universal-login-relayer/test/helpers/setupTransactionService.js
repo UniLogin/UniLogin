@@ -1,6 +1,6 @@
 import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
-import MessageHandler from '../../lib/services/transactions/MessageHandler';
+import MessageHandler from '../../lib/services/MessageHandler';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
