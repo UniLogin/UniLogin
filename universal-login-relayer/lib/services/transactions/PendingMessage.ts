@@ -6,7 +6,7 @@ import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSig
 
 type Execution = Record<string, string>;
 
-export default class PendingExecution {
+export default class PendingMessage {
   private wallet: Wallet;
   private walletContract: Contract;
   private collectedSignatures: Execution[];

@@ -1,4 +1,4 @@
-import PendingExecution from './pendingExecution';
+import PendingMessage from './PendingMessage';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {Wallet} from 'ethers';
 import {InvalidExecution} from '../../utils/errors';
@@ -22,7 +22,7 @@ export default class PendingMessages {
   async add(message: SignedMessage) : Promise<string> {
     const hash = calculateMessageHash(message);
     if (!this.isPresent(hash)) {
-      this.executionsStore.add(hash, new PendingExecution(message.from, this.wallet));
+      this.executionsStore.add(hash, new PendingMessage(message.from, this.wallet));
     }
     await this.signExecution(hash, message);
     return hash;

@@ -1,28 +1,28 @@
-import PendingExecution from './pendingExecution';
+import PendingMessage from './PendingMessage';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {
-  public executions: Record<string, PendingExecution>;
+  public messages: Record<string, PendingMessage>;
 
   constructor () {
-    this.executions = {};
+    this.messages = {};
   }
 
-  add(messageHash: string, execution: PendingExecution) {
-    this.executions[messageHash] = execution;
+  add(messageHash: string, pendingMessage: PendingMessage) {
+    this.messages[messageHash] = pendingMessage;
   }
 
   isPresent(messageHash: string) {
-    return messageHash in this.executions;
+    return messageHash in this.messages;
   }
 
-  get(messageHash: string): PendingExecution {
-    return this.executions[messageHash];
+  get(messageHash: string): PendingMessage {
+    return this.messages[messageHash];
   }
 
-  remove(messageHash: string): PendingExecution {
-    const pendingExecution = this.executions[messageHash];
-    delete this.executions[messageHash];
+  remove(messageHash: string): PendingMessage {
+    const pendingExecution = this.messages[messageHash];
+    delete this.messages[messageHash];
     return pendingExecution;
   }
 }

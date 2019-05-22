@@ -1,8 +1,8 @@
-import PendingExecution from './pendingExecution';
+import PendingMessage from './PendingMessage';
 
 export default interface IPendingMessagesStore {
-  add: (messageHash: string, pendingExecution: PendingExecution) => void;
-  get: (messageHash: string) => PendingExecution;
+  add: (messageHash: string, pendingMessage: PendingMessage) => void;
+  get: (messageHash: string) => PendingMessage;
   isPresent: (messageHash: string) => boolean;
-  remove: (messageHash: string) => PendingExecution;
+  remove: (messageHash: string) => PendingMessage;
 }

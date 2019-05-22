@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
-import PendingExecution from '../../../../lib/services/transactions/pendingExecution';
+import PendingMessage from '../../../../lib/services/transactions/PendingMessage';
 import PendingMessages from '../../../../lib/services/transactions/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesStore from '../../../../lib/services/transactions/PendingMessagesStore';
@@ -60,7 +60,7 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should get added signed transaction', async () => {
-    const pendingExecution = new PendingExecution(message.from, wallet);
+    const pendingExecution = new PendingMessage(message.from, wallet);
     const hash = await pendingMessages.add(message);
     await pendingExecution.push(message);
     expect(pendingMessages.get(hash).toString()).to.eq(pendingExecution.toString());
