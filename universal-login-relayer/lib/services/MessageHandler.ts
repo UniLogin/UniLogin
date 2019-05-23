@@ -6,7 +6,7 @@ import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
-import MessageExecutor from './transactions/MessageExecutor';
+import MessageExecutor from './messages/MessageExecutor';
 
 class TransactionService {
   private executor: MessageExecutor;

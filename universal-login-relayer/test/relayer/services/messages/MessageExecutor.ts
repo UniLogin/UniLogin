@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
-import MessageExecutor from '../../../../lib/services/transactions/MessageExecutor';
+import MessageExecutor from '../../../../lib/services/messages/MessageExecutor';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {SignedMessage, createSignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {providers, Wallet, Contract} from 'ethers';
