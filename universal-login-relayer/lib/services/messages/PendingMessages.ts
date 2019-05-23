@@ -33,7 +33,6 @@ export default class PendingMessages {
   }
 
   async getStatus(hash: string) {
-    this.ensureExecutionExist(hash);
     return this.executionsStore.getStatus(hash);
   }
 

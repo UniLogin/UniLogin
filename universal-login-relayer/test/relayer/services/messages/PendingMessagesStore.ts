@@ -45,7 +45,7 @@ describe('UNIT: PendingMessagesStore', async () => {
   });
 
   it('getStatus if message doesn`t exist', async () => {
-    expect(await pendingMessagesStore.getStatus(messageHash)).to.eq(null);
+    await expect(pendingMessagesStore.getStatus(messageHash)).to.be.eventually.rejectedWith(`Could not find execution with hash: ${messageHash}`)
   });
 
   it('getStatus roundtrip', async () => {

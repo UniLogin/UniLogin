@@ -8,6 +8,7 @@ import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
+import {MessageStatus} from './messages/IPendingMessagesStore';
 
 class MessageHandler {
   private executor: MessageExecutor;
@@ -46,7 +47,8 @@ class MessageHandler {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await this.pendingMessages.add(message);
-      const numberOfSignatures = (await this.pendingMessages.getStatus(hash))!.collectedSignatures.length;
+      const messageStatus = (await this.pendingMessages.getStatus(hash)) as MessageStatus;
+      const numberOfSignatures = messageStatus.totalCollected;
       if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
         return this.executePending(hash, message);
       }

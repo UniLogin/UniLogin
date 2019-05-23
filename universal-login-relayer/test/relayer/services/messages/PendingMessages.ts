@@ -6,6 +6,7 @@ import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
+import {MessageStatus} from '../../../../lib/services/messages/IPendingMessagesStore';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
@@ -41,7 +42,7 @@ describe('INT: PendingMessages', () => {
     const hash1 = await pendingMessages.add(message);
     const hash2 = await pendingMessages.add(signedMessage);
     expect(hash1).to.be.eq(hash2);
-    const collectedSignatures = (await pendingMessages.getStatus(hash1))!.collectedSignatures;
+    const collectedSignatures = (await pendingMessages.getStatus(hash1) as MessageStatus).collectedSignatures;
     expect(collectedSignatures).to.be.deep.eq([message.signature, signedMessage.signature]);
   });
 

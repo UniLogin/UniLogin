@@ -1,5 +1,6 @@
 import PendingMessage from './PendingMessage';
 import IPendingMessagesStore, {MessageStatus} from './IPendingMessagesStore';
+import {InvalidExecution} from '../../utils/errors';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {
   public messages: Record<string, PendingMessage>;
@@ -34,7 +35,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
       false;
   }
 
-  async getStatus(messageHash: string) : Promise<MessageStatus | null>  {
+  async getStatus(messageHash: string) : Promise<MessageStatus | InvalidExecution>  {
     const message = this.messages[messageHash];
     if(message) {
       const required = await message.walletContract.requiredSignatures();
@@ -45,6 +46,6 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
         transactionHash: message.transactionHash
       }
     }
-    return null;
+    throw new InvalidExecution(messageHash);
   }
 }
