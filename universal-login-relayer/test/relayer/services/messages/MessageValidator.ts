@@ -4,7 +4,7 @@ import {loadFixture} from 'ethereum-waffle';
 import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import MessageValidator from '../../../../lib/services/messages/MessageValidator';
-import { messageToTransaction } from '../../../../lib/utils/utils';
+import {messageToTransaction} from '../../../../lib/utils/utils';
 
 describe('MessageValidator', async () => {
   let message: MessageWithFrom;

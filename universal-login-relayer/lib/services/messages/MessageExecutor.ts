@@ -1,7 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage} from '@universal-login/commons';
 import {messageToTransaction} from '../../utils/utils';
-import {ensureEnoughToken, ensureEnoughGas} from './validations';
 import {OnTransactionSent} from '../transactions/TransactionQueueService';
 import MessageValidator from './MessageValidator';
 

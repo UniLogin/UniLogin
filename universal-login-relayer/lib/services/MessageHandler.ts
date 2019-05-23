@@ -8,7 +8,7 @@ import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 
-class TransactionService {
+class MessageHandler {
   private executor: MessageExecutor;
 
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
@@ -84,4 +84,4 @@ class TransactionService {
   }
 }
 
-export default TransactionService;
+export default MessageHandler;
