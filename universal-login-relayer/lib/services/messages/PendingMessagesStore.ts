@@ -1,5 +1,5 @@
 import PendingMessage from './PendingMessage';
-import IPendingMessagesStore from './IPendingMessagesStore';
+import IPendingMessagesStore, {MessageStatus} from './IPendingMessagesStore';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {
   public messages: Record<string, PendingMessage>;
@@ -32,5 +32,19 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
         .collectedSignatures.filter((collectedSignature) => collectedSignature.signature === signature)
         .length > 0 :
       false;
+  }
+
+  async getStatus(messageHash: string) : Promise<MessageStatus | null>  {
+    const message = this.messages[messageHash];
+    if(message) {
+      const required = await message.walletContract.requiredSignatures();
+      return {
+        collectedSignatures: message.collectedSignatures.map((collected) => collected.signature),
+        totalCollected: message.collectedSignatures.length,
+        required,
+        transactionHash: message.transactionHash
+      }
+    }
+    return null;
   }
 }

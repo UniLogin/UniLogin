@@ -46,7 +46,7 @@ class MessageHandler {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await this.pendingMessages.add(message);
-      const numberOfSignatures = (await this.pendingMessages.getStatus(hash)).collectedSignatures.length;
+      const numberOfSignatures = (await this.pendingMessages.getStatus(hash))!.collectedSignatures.length;
       if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
         return this.executePending(hash, message);
       }

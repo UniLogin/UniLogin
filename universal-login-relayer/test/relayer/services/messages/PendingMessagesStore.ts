@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Wallet, Contract} from 'ethers';
+import {Wallet, Contract, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
@@ -42,5 +42,28 @@ describe('UNIT: PendingMessagesStore', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
     await pendingMessage.push(message);
     expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.true;
+  });
+
+  it('getStatus if message doesn`t exist', async () => {
+    expect(await pendingMessagesStore.getStatus(messageHash)).to.eq(null);
+  });
+
+  it('getStatus roundtrip', async () => {
+    pendingMessagesStore.add(messageHash, pendingMessage);
+    let expectedStatus = {
+      collectedSignatures: [] as any,
+      totalCollected: 0,
+      required: utils.bigNumberify(1),
+      transactionHash: '0x0'
+    }
+    expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(expectedStatus);
+
+    await pendingMessage.push(message);
+    expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(
+      {
+        ...expectedStatus, 
+        collectedSignatures: [message.signature],
+        totalCollected: 1
+      })
   });
 });

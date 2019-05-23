@@ -34,7 +34,7 @@ export default class PendingMessages {
 
   async getStatus(hash: string) {
     this.ensureExecutionExist(hash);
-    return this.executionsStore.get(hash).getStatus();
+    return this.executionsStore.getStatus(hash);
   }
 
   getMessageWithSignatures(message: SignedMessage, hash: string) : SignedMessage {
