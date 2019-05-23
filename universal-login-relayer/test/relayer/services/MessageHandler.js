@@ -25,7 +25,7 @@ describe('Relayer - MessageHandler', async () => {
   it('Error when not enough tokens', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
     const signedMessage = await createSignedMessage(message, wallet.privateKey);
-    expect(messageHandler.executeSigned(signedMessage))
+    await expect(messageHandler.executeSigned(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
 

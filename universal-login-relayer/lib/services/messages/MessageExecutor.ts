@@ -3,16 +3,18 @@ import {SignedMessage} from '@universal-login/commons';
 import {messageToTransaction} from '../../utils/utils';
 import {ensureEnoughToken, ensureEnoughGas} from './validations';
 import {OnTransactionSent} from '../transactions/TransactionQueueService';
+import MessageValidator from './MessageValidator';
 
 export class MessageExecutor {
+  private messageValidator: MessageValidator;
 
   constructor(private wallet: Wallet, private onTransactionSent: OnTransactionSent) {
+    this.messageValidator = new MessageValidator(wallet);
   }
 
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
-    await ensureEnoughToken(this.wallet.provider, signedMessage);
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await ensureEnoughGas(this.wallet.provider, this.wallet.address, transactionReq, signedMessage);
+    await this.messageValidator.validate(signedMessage, transactionReq);
     const transactionRes: providers.TransactionResponse = await this.wallet.sendTransaction(transactionReq);
     this.onTransactionSent(transactionRes);
     return transactionRes;
