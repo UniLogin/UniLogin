@@ -9,7 +9,7 @@ type Execution = Record<string, string>;
 export default class PendingMessage {
   private wallet: Wallet;
   private walletContract: Contract;
-  private collectedSignatures: Execution[];
+  public collectedSignatures: Execution[];
   private transactionHash: string;
 
   constructor(walletAddress: string, wallet: Wallet) {

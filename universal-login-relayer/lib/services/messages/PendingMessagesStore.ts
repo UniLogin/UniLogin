@@ -25,4 +25,12 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
     delete this.messages[messageHash];
     return pendingExecution;
   }
+
+  containSignature(messageHash: string, signature: string) : boolean {
+    return this.messages[messageHash] ? 
+      this.messages[messageHash]
+        .collectedSignatures.filter((collectedSignature) => collectedSignature.signature === signature)
+        .length > 0 :
+      false;
+  }
 }

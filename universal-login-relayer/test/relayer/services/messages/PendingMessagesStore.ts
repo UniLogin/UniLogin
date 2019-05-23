@@ -33,4 +33,14 @@ describe('UNIT: PendingMessagesStore', async () => {
     expect(pendingMessagesStore.isPresent(messageHash)).to.be.eq(false);
     expect(removedPendingExecution).to.be.deep.eq(pendingMessage);
   });
+
+  it('containSignature should return false if signarture not collected', () => {
+    expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.false;
+  });
+
+  it('containSignature should return true if signarture already collected', async () => {
+    pendingMessagesStore.add(messageHash, pendingMessage);
+    await pendingMessage.push(message);
+    expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.true;
+  });
 });
