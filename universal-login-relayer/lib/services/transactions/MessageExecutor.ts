@@ -4,7 +4,7 @@ import {messageToTransaction} from '../../utils/utils';
 import {ensureEnoughToken, ensureEnoughGas} from '../messages/validations';
 import { OnTransactionSent } from './TransactionQueueService';
 
-export class TransactionExecutor {
+export class MessageExecutor {
 
   constructor(private wallet: Wallet, private onTransactionSent: OnTransactionSent) {
   }
@@ -19,4 +19,4 @@ export class TransactionExecutor {
   }
 }
 
-export default TransactionExecutor;
+export default MessageExecutor;

@@ -6,13 +6,13 @@ import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
-import TransactionExecutor from './transactions/TransactionExecutor';
+import MessageExecutor from './transactions/MessageExecutor';
 
 class TransactionService {
-  private executor: TransactionExecutor;
+  private executor: MessageExecutor;
 
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
-    this.executor = new TransactionExecutor(
+    this.executor = new MessageExecutor(
         this.wallet,
         this.onTransactionSent.bind(this)
       );
@@ -25,7 +25,7 @@ class TransactionService {
     this.transactionQueue.start();
   }
 
-  async onTransactionSent (sentTransaction: providers.TransactionResponse) {
+  async onTransactionSent(sentTransaction: providers.TransactionResponse) {
     const {data} = sentTransaction;
     const message = decodeDataForExecuteSigned(data!);
     if (message.to === sentTransaction.to) {
