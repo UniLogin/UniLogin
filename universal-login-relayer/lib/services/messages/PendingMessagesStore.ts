@@ -17,7 +17,14 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
     return messageHash in this.messages;
   }
 
+  throwIfInvalidMessage(messageHash: string) {
+    if(!this.messages[messageHash]) {
+      throw new InvalidExecution(messageHash);
+    }
+  }
+
   get(messageHash: string): PendingMessage {
+    this.throwIfInvalidMessage(messageHash);
     return this.messages[messageHash];
   }
 
@@ -36,16 +43,15 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
   }
 
   async getStatus(messageHash: string) : Promise<MessageStatus | InvalidExecution>  {
+    this.throwIfInvalidMessage(messageHash);
     const message = this.messages[messageHash];
-    if(message) {
-      const required = await message.walletContract.requiredSignatures();
-      return {
-        collectedSignatures: message.collectedSignatures.map((collected) => collected.signature),
-        totalCollected: message.collectedSignatures.length,
-        required,
-        transactionHash: message.transactionHash
-      }
+    const required = await message.walletContract.requiredSignatures();
+    return {
+      collectedSignatures: message.collectedSignatures.map((collected) => collected.signature),
+      totalCollected: message.collectedSignatures.length,
+      required,
+      transactionHash: message.transactionHash
     }
-    throw new InvalidExecution(messageHash);
+    
   }
 }
