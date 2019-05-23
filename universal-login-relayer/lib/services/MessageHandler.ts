@@ -6,15 +6,19 @@ import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
-import TransactionExecutor from './transactions/TransactionExecutor';
+import MessageExecutor from './messages/MessageExecutor';
+import MessageValidator from './messages/MessageValidator';
 
-class TransactionService {
-  private executor: TransactionExecutor;
+class MessageHandler {
+  private executor: MessageExecutor;
+  private validator: MessageValidator;
 
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
-    this.executor = new TransactionExecutor(
+    this.validator = new MessageValidator(this.wallet);
+    this.executor = new MessageExecutor(
         this.wallet,
-        this.onTransactionSent.bind(this)
+        this.onTransactionSent.bind(this),
+        this.validator
       );
   }
 
@@ -25,7 +29,7 @@ class TransactionService {
     this.transactionQueue.start();
   }
 
-  async onTransactionSent (sentTransaction: providers.TransactionResponse) {
+  async onTransactionSent(sentTransaction: providers.TransactionResponse) {
     const {data} = sentTransaction;
     const message = decodeDataForExecuteSigned(data!);
     if (message.to === sentTransaction.to) {
@@ -84,4 +88,4 @@ class TransactionService {
   }
 }
 
-export default TransactionService;
+export default MessageHandler;
