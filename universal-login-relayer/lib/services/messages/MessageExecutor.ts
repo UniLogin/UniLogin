@@ -5,10 +5,8 @@ import {OnTransactionSent} from '../transactions/TransactionQueueService';
 import MessageValidator from './MessageValidator';
 
 export class MessageExecutor {
-  private messageValidator: MessageValidator;
 
-  constructor(private wallet: Wallet, private onTransactionSent: OnTransactionSent) {
-    this.messageValidator = new MessageValidator(wallet);
+  constructor(private wallet: Wallet, private onTransactionSent: OnTransactionSent, private messageValidator: MessageValidator) {
   }
 
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {

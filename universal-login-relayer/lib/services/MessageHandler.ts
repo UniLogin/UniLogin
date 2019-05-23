@@ -7,14 +7,18 @@ import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
+import MessageValidator from './messages/MessageValidator';
 
 class MessageHandler {
   private executor: MessageExecutor;
+  private validator: MessageValidator;
 
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+    this.validator = new MessageValidator(this.wallet);
     this.executor = new MessageExecutor(
         this.wallet,
-        this.onTransactionSent.bind(this)
+        this.onTransactionSent.bind(this),
+        this.validator
       );
   }
 
