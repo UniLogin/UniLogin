@@ -1,24 +1,31 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures, messageToTransaction} from '../utils/utils';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
 import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
-import {ensureEnoughToken, ensureEnoughGas} from './messages/validations';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
+import TransactionExecutor from './transactions/TransactionExecutor';
 
 class TransactionService {
+  private executor: TransactionExecutor;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+    this.executor = new TransactionExecutor(
+        this.wallet,
+        this.onTransactionSent.bind(this)
+      );
   }
 
   start() {
-    this.transactionQueue.setOnTransactionSent(this.onTransactionSent);
+    this.transactionQueue.setOnTransactionSent(
+      this.onTransactionSent.bind(this)
+    );
     this.transactionQueue.start();
   }
 
-  async onTransactionSent(sentTransaction: providers.TransactionResponse) {
+  async onTransactionSent (sentTransaction: providers.TransactionResponse) {
     const {data} = sentTransaction;
     const message = decodeDataForExecuteSigned(data!);
     if (message.to === sentTransaction.to) {
@@ -41,25 +48,16 @@ class TransactionService {
       }
       return JSON.stringify(this.pendingMessages.getStatus(hash));
     } else {
-      return this.execute(message);
+      return this.executor.execute(message);
     }
   }
 
   private async executePending(hash: string, message: SignedMessage) {
     const finalMessage = this.pendingMessages.getMessageWithSignatures(message, hash);
     await this.pendingMessages.ensureCorrectExecution(hash);
-    const transaction: any = await this.execute(finalMessage);
+    const transaction: providers.TransactionRequest = await this.executor.execute(finalMessage);
     await this.pendingMessages.remove(hash);
     return transaction;
-  }
-
-  async execute(message: SignedMessage) {
-    await ensureEnoughToken(this.provider, message);
-    const transaction: providers.TransactionRequest = messageToTransaction(message);
-    await ensureEnoughGas(this.provider, this.wallet.address, transaction, message);
-    const sentTransaction = await this.wallet.sendTransaction(transaction);
-    await this.onTransactionSent(sentTransaction);
-    return sentTransaction;
   }
 
   private async removeReqFromAuthService(message: SignedMessage) {
