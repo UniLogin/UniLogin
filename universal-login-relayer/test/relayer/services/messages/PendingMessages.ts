@@ -37,6 +37,11 @@ describe('INT: PendingMessages', () => {
     await expect(pendingMessages.getStatus(hash)).to.eventually.rejectedWith(`Could not find execution with hash: ${hash}`);
   });
 
+  it('get should throw error if message doesn`t exist', async () => {
+    const hash = calculateMessageHash(message);
+    await expect(() => pendingMessages.get(hash)).to.throw(`Could not find execution with hash: ${hash}`);
+  });
+
   it('should sign message', async () => {
     const signedMessage = await createSignedMessage(message, actionKey);
     const hash1 = await pendingMessages.add(message);
