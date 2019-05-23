@@ -14,35 +14,28 @@ class TransactionService {
   constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
     this.executor = new TransactionExecutor(
         this.wallet,
-        this.onTransactionSent(
-         this.hooks,
-         this.removeReqFromAuthService(this.authorisationService)
-        )
+        this.onTransactionSent.bind(this)
       );
   }
 
   start() {
     this.transactionQueue.setOnTransactionSent(
-      this.onTransactionSent(
-        this.hooks,
-        this.removeReqFromAuthService(this.authorisationService))
+      this.onTransactionSent.bind(this)
     );
     this.transactionQueue.start();
   }
 
-  onTransactionSent(hooks: EventEmitter, removeReqFromAuthService: (message: SignedMessage) => Promise<void>) {
-    return async (sentTransaction: providers.TransactionResponse) => {
-      const {data} = sentTransaction;
-      const message = decodeDataForExecuteSigned(data!);
-      if (message.to === sentTransaction.to) {
-        if (isAddKeyCall(message.data as string)) {
-          await removeReqFromAuthService({...message, from: sentTransaction.to!});
-          hooks.emit('added', sentTransaction);
-        } else if (isAddKeysCall(message.data as string)) {
-          hooks.emit('keysAdded', sentTransaction);
-        }
+  async onTransactionSent (sentTransaction: providers.TransactionResponse) {
+    const {data} = sentTransaction;
+    const message = decodeDataForExecuteSigned(data!);
+    if (message.to === sentTransaction.to) {
+      if (isAddKeyCall(message.data as string)) {
+        await this.removeReqFromAuthService({...message, from: sentTransaction.to!});
+        this.hooks.emit('added', sentTransaction);
+      } else if (isAddKeysCall(message.data as string)) {
+        this.hooks.emit('keysAdded', sentTransaction);
       }
-    };
+    }
   }
 
   async executeSigned(message: SignedMessage) {
@@ -67,11 +60,9 @@ class TransactionService {
     return transaction;
   }
 
-  private removeReqFromAuthService(authorisationService: AuthorisationService) {
-    return async (message: SignedMessage) => {
-      const key = getKeyFromData(message.data as string);
-      await authorisationService.removeRequest(message.from, key);
-    };
+  private async removeReqFromAuthService(message: SignedMessage) {
+    const key = getKeyFromData(message.data as string);
+    await this.authorisationService.removeRequest(message.from, key);
   }
 
   async getStatus(hash: string) {
