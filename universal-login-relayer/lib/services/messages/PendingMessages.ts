@@ -1,7 +1,6 @@
 import PendingMessage from './PendingMessage';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {Wallet} from 'ethers';
-import {InvalidExecution} from '../../utils/errors';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessages {
@@ -11,12 +10,6 @@ export default class PendingMessages {
 
   isPresent(messageHash : string) {
     return this.executionsStore.isPresent(messageHash);
-  }
-
-  private ensureExecutionExist(hash: string) {
-    if (!this.isPresent(hash)) {
-      throw new InvalidExecution(hash);
-    }
   }
 
   async add(message: SignedMessage) : Promise<string> {
@@ -49,7 +42,6 @@ export default class PendingMessages {
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {
-    this.ensureExecutionExist(hash);
     return this.executionsStore.get(hash).isEnoughSignatures();
   }
 
