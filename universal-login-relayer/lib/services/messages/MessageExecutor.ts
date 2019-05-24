@@ -13,7 +13,7 @@ export class MessageExecutor {
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
     await this.messageValidator.validate(signedMessage, transactionReq);
     const transactionRes: providers.TransactionResponse = await this.wallet.sendTransaction(transactionReq);
-    this.onTransactionSent(transactionRes);
+    await this.onTransactionSent(transactionRes);
     return transactionRes;
   }
 }
