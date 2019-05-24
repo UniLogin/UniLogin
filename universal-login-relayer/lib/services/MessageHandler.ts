@@ -67,7 +67,7 @@ class MessageHandler {
 
   private async removeReqFromAuthService(message: SignedMessage) {
     const key = getKeyFromData(message.data as string);
-    await this.authorisationService.removeRequest(message.from, key);
+    return this.authorisationService.removeRequest(message.from, key);
   }
 
   async getStatus(hash: string) {

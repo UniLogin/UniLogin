@@ -9,7 +9,7 @@ export const calculateMessageHash = (msg: UnsignedMessage) => {
     [msg.from, msg.to, msg.value, dataHash, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType]);
 };
 
-export const calculateMessageSignature = async (privateKey: string, msg: UnsignedMessage) => {
+export const calculateMessageSignature = (privateKey: string, msg: UnsignedMessage) => {
   const wallet = new Wallet(privateKey);
   const massageHash = calculateMessageHash(msg);
   return wallet.signMessage(utils.arrayify(massageHash));

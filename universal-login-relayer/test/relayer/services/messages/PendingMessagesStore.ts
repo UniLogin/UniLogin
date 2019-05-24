@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, MessageStatus} from '@universal-login/commons';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -13,9 +13,10 @@ describe('UNIT: PendingMessagesStore', async () => {
   let message: SignedMessage;
   let pendingMessage: PendingMessage;
   let messageHash: string;
+  let actionKey: string;
 
   beforeEach(async () => {
-    ({wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
+    ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));
     pendingMessagesStore = new PendingMessagesStore();
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
@@ -40,7 +41,7 @@ describe('UNIT: PendingMessagesStore', async () => {
 
   it('containSignature should return true if signarture already collected', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
-    await pendingMessage.push(message);
+    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
     expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.true;
   });
 
@@ -58,12 +59,21 @@ describe('UNIT: PendingMessagesStore', async () => {
     };
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(expectedStatus);
 
-    await pendingMessage.push(message);
+    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(
       {
         ...expectedStatus,
         collectedSignatures: [message.signature],
         totalCollected: 1
       });
+  });
+
+  it('should add signature', async () => {
+    await walletContract.setRequiredSignatures(2);
+    pendingMessagesStore.add(messageHash, pendingMessage);
+    const message2 = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
+    pendingMessagesStore.addSignature(messageHash, message2.signature);
+    const status = await pendingMessagesStore.getStatus(messageHash) as MessageStatus;
+    expect(status.collectedSignatures).to.contains(message2.signature);
   });
 });

@@ -1,7 +1,8 @@
+import {MessageStatus} from '@universal-login/commons';
+import {getKeyFromHashAndSignature} from '../../utils/utils';
 import PendingMessage from './PendingMessage';
 import IPendingMessagesStore from './IPendingMessagesStore';
 import {InvalidExecution} from '../../utils/errors';
-import {MessageStatus} from '@universal-login/commons';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {
   public messages: Record<string, PendingMessage>;
@@ -53,6 +54,10 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
       required,
       transactionHash: message.transactionHash
     };
+  }
 
+  addSignature(messageHash: string, signature: string) {
+    const key = getKeyFromHashAndSignature(messageHash, signature);
+    this.messages[messageHash].collectedSignatures.push({signature, key});
   }
 }
