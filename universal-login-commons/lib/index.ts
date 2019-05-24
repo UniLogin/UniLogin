@@ -3,7 +3,7 @@ export {saveVariables} from './utils/save';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
 export {PartialRequired, Procedure, Predicate, Notification, Omit, DeviceInfo} from './types/common';
-export {Message, MessageWithFrom, SignedMessage, UnsignedMessage} from './types/message';
+export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus} from './types/message';
 export {copy} from './utils/copy';
 export {onCritical} from './utils/error';
 export {SuggestionsService} from './services/SuggestionsService';

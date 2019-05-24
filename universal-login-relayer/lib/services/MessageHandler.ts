@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, MessageStatus} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
 import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
@@ -46,7 +46,8 @@ class MessageHandler {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await this.pendingMessages.add(message);
-      const numberOfSignatures = (await this.pendingMessages.getStatus(hash)).collectedSignatures.length;
+      const messageStatus = (await this.pendingMessages.getStatus(hash)) as MessageStatus;
+      const numberOfSignatures = messageStatus.totalCollected;
       if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
         return this.executePending(hash, message);
       }

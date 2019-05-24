@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, MessageStatus} from '@universal-login/commons';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -36,12 +36,17 @@ describe('INT: PendingMessages', () => {
     await expect(pendingMessages.getStatus(hash)).to.eventually.rejectedWith(`Could not find execution with hash: ${hash}`);
   });
 
+  it('get should throw error if message doesn`t exist', async () => {
+    const hash = calculateMessageHash(message);
+    await expect(() => pendingMessages.get(hash)).to.throw(`Could not find execution with hash: ${hash}`);
+  });
+
   it('should sign message', async () => {
     const signedMessage = await createSignedMessage(message, actionKey);
     const hash1 = await pendingMessages.add(message);
     const hash2 = await pendingMessages.add(signedMessage);
     expect(hash1).to.be.eq(hash2);
-    const collectedSignatures = (await pendingMessages.getStatus(hash1)).collectedSignatures;
+    const collectedSignatures = (await pendingMessages.getStatus(hash1) as MessageStatus).collectedSignatures;
     expect(collectedSignatures).to.be.deep.eq([message.signature, signedMessage.signature]);
   });
 

@@ -4,13 +4,18 @@ import {sortExecutionsByKey} from '../../utils/utils';
 import {concatenateSignatures, calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from '../../utils/errors';
 
-type Execution = Record<string, string>;
+export type CollectedSignature = {
+  key: string;
+  signature: string;
+};
+
+export type Execution = Record<string, string>;
 
 export default class PendingMessage {
   private wallet: Wallet;
-  private walletContract: Contract;
-  private collectedSignatures: Execution[];
-  private transactionHash: string;
+  public walletContract: Contract;
+  public collectedSignatures: CollectedSignature[];
+  public transactionHash: string;
 
   constructor(walletAddress: string, wallet: Wallet) {
     this.wallet = wallet;
