@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {utils, Wallet, Contract} from 'ethers';
 import {getWallets, solidity, deployContract, createMockProvider} from 'ethereum-waffle';
-import {calculateMessageSignature, concatenateSignatures, ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {calculateMessageSignature, concatenateSignatures, ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS, calculateMessageHash} from '@universal-login/commons';
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import defaultPaymentOptions from '../../../../lib/config/defaultPaymentOptions';
@@ -33,7 +33,6 @@ describe('Pending Execution', async () => {
     let signature1: string;
     let msg0: any;
     let msg1: any;
-    let invalidMsg: any;
     let status: any;
 
     beforeEach(async () => {
@@ -46,10 +45,8 @@ describe('Pending Execution', async () => {
         await walletContract.setRequiredSignatures(2);
         signature0 = await calculateMessageSignature(wallet.privateKey, {...baseMsg, from: walletContract.address});
         signature1 = await calculateMessageSignature(actionPrivateKey, {...baseMsg, from: walletContract.address});
-        const invalidSignature = await calculateMessageSignature(actionPrivateKey, {...baseMsg, from: wallet.address});
         msg0 = {...baseMsg, from: walletContract.address, signature: signature0};
         msg1 = {...baseMsg, from: walletContract.address, signature: signature1};
-        invalidMsg = {...baseMsg, from: walletContract.address, signature: invalidSignature};
     });
 
     describe('should be correctly initialized', async () => {
@@ -76,49 +73,12 @@ describe('Pending Execution', async () => {
         });
     });
 
-    describe('Push', async () => {
-
-        it('should push one signature', async () => {
-            await pendingMessage.push(msg0);
-            status = await pendingMessage.getStatus();
-            const {collectedSignatures} = status;
-            expect(status.collectedSignatures.length).to.be.eq(1);
-            expect(collectedSignatures[0]).to.be.eq(signature0);
-        });
-
-        it('should push two signatures', async () => {
-            await pendingMessage.push(msg0);
-            await pendingMessage.push(msg1);
-            status = await pendingMessage.getStatus();
-            const {collectedSignatures} = status;
-            expect(status.collectedSignatures.length).to.be.eq(2);
-            expect(collectedSignatures).to.deep.eq([signature0, signature1]);
-        });
-
-        it('should not push invalid key purpose', async () => {
-            await expect(pendingMessage.push(invalidMsg))
-                .to.be.rejectedWith('Invalid key purpose');
-        });
-
-        it('should not accept same signature twice', async () => {
-            await pendingMessage.push(msg0);
-            await expect(pendingMessage.push(msg0))
-                .to.be.rejectedWith('Signature already collected');
-        });
-
-        it('should not accept same signature twice', async () => {
-            await walletContract.setRequiredSignatures(1);
-            await pendingMessage.push(msg0);
-            await pendingMessage.confirmExecution(sampleTx);
-            await expect(pendingMessage.push(msg1))
-                .to.be.rejectedWith('Execution request already processed');
-        });
-    });
-
     describe('Concatenate', async () => {
         it('should concatenate two signatures', async () => {
-            await pendingMessage.push(msg0);
-            await pendingMessage.push(msg1);
+            const key0 = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg0)), msg0.signature);
+            const key1 = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg1)), msg1.signature);
+            await pendingMessage.collectedSignatures.push({signature: msg0.signature, key: key0});
+            await pendingMessage.collectedSignatures.push({signature: msg1.signature, key: key1});
             status = await pendingMessage.getStatus();
             const concatenatedSignatures = pendingMessage.getConcatenatedSignatures();
             let expected: string;
@@ -133,32 +93,32 @@ describe('Pending Execution', async () => {
 
     describe('Confirm', async () => {
         it('should confirm', async () => {
-            await pendingMessage.push(msg0);
-            await pendingMessage.push(msg1);
+            await pendingMessage.collectedSignatures.push(msg0);
+            await pendingMessage.collectedSignatures.push(msg1);
             await pendingMessage.confirmExecution(sampleTx);
             status = await pendingMessage.getStatus();
             expect(status.transactionHash).to.be.eq(sampleTx);
         });
 
         it('should not confirm with not enough signatures', async () => {
-            await pendingMessage.push(msg0);
+            await pendingMessage.collectedSignatures.push(msg0);
             await expect(pendingMessage.ensureCorrectExecution())
                 .to.be.rejectedWith('Not enough signatures');
         });
 
         it('should not confirm if tx is already confirmed', async () => {
-            await pendingMessage.push(msg0);
-            await pendingMessage.push(msg1);
+            await pendingMessage.collectedSignatures.push(msg0);
+            await pendingMessage.collectedSignatures.push(msg1);
             await pendingMessage.confirmExecution(sampleTx);
             await expect(pendingMessage.ensureCorrectExecution())
                 .to.be.rejectedWith('Transaction 0x0 has already been confirmed');
         });
 
         it('should not confirm with invalid tx', async () => {
-            await pendingMessage.push(msg0);
-            await pendingMessage.push(msg1);
-            await expect(pendingMessage.confirmExecution('0x0'))
-                .to.be.rejectedWith('Invalid transaction: 0x0');
+            await pendingMessage.collectedSignatures.push(msg0);
+            await pendingMessage.collectedSignatures.push(msg1);
+            expect(() => pendingMessage.confirmExecution('0x0'))
+                .throw('Invalid transaction: 0x0');
         });
     });
 });

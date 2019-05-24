@@ -1,6 +1,7 @@
 import PendingMessage from './PendingMessage';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
-import {Wallet} from 'ethers';
+import {Wallet, utils} from 'ethers';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution} from '../../utils/errors';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessages {
@@ -17,12 +18,25 @@ export default class PendingMessages {
     if (!this.isPresent(hash)) {
       this.executionsStore.add(hash, new PendingMessage(message.from, this.wallet));
     }
-    await this.signExecution(hash, message);
+    await this.addSignatureToPendingMessage(hash, message);
     return hash;
   }
 
-  private async signExecution(hash: string, message: SignedMessage) {
-    await this.executionsStore.get(hash).push(message);
+  private async addSignatureToPendingMessage(hash: string, message: SignedMessage) {
+    const pendingMessage = this.executionsStore.get(hash);
+    if (pendingMessage.transactionHash !== '0x0') {
+      throw new DuplicatedExecution();
+    }
+    if (pendingMessage.containSignature(message.signature)) {
+      throw new DuplicatedSignature();
+    }
+    const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(message)), message.signature);
+    const keyPurpose = await pendingMessage.walletContract.getKeyPurpose(key);
+    if (keyPurpose.eq(0)) {
+      throw new InvalidSignature('Invalid key purpose');
+    }
+    pendingMessage.collectedSignatures.push({signature: message.signature, key});
+    this.executionsStore.add(hash, pendingMessage);
   }
 
   async getStatus(hash: string) {
@@ -33,7 +47,7 @@ export default class PendingMessages {
     return  { ...message, signature: this.executionsStore.get(hash).getConcatenatedSignatures()};
   }
 
-  async confirmExecution(messageHash: string, transactionHash: string) {
+  confirmExecution(messageHash: string, transactionHash: string) {
     this.executionsStore.get(messageHash).confirmExecution(transactionHash);
   }
 

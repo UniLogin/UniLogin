@@ -40,7 +40,7 @@ describe('UNIT: PendingMessagesStore', async () => {
 
   it('containSignature should return true if signarture already collected', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
-    await pendingMessage.push(message);
+    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
     expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.true;
   });
 
@@ -58,7 +58,7 @@ describe('UNIT: PendingMessagesStore', async () => {
     };
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(expectedStatus);
 
-    await pendingMessage.push(message);
+    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(
       {
         ...expectedStatus,

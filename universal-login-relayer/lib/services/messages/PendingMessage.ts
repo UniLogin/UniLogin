@@ -1,15 +1,13 @@
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {utils, Contract, Wallet} from 'ethers';
+import {Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../../utils/utils';
-import {concatenateSignatures, calculateMessageHash, SignedMessage} from '@universal-login/commons';
-import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from '../../utils/errors';
+import {concatenateSignatures} from '@universal-login/commons';
+import {NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from '../../utils/errors';
 
 export type CollectedSignature = {
   key: string;
   signature: string;
 };
-
-export type Execution = Record<string, string>;
 
 export default class PendingMessage {
   private wallet: Wallet;
@@ -26,7 +24,7 @@ export default class PendingMessage {
 
   containSignature = (signature: string) =>
     this.collectedSignatures
-      .filter((message: Execution) => message.signature === signature)
+      .filter((message: CollectedSignature) => message.signature === signature)
       .length > 0
 
   async getStatus() {
@@ -38,27 +36,12 @@ export default class PendingMessage {
     };
   }
 
-  async push(msg: SignedMessage) {
-    if (this.transactionHash !== '0x0') {
-      throw new DuplicatedExecution();
-    }
-    if (this.containSignature(msg.signature)) {
-      throw new DuplicatedSignature();
-    }
-    const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg)), msg.signature);
-    const keyPurpose = await this.walletContract.getKeyPurpose(key);
-    if (keyPurpose.eq(0)) {
-      throw new InvalidSignature('Invalid key purpose');
-    }
-    this.collectedSignatures.push({signature: msg.signature, key});
-  }
-
   async isEnoughSignatures(requiredSignatures? : Number) {
     const requiredSignaturesCount = requiredSignatures || await this.walletContract.requiredSignatures();
     return this.collectedSignatures.length >= requiredSignaturesCount;
   }
 
-  async confirmExecution(transactionHash: string) {
+  confirmExecution(transactionHash: string) {
     if (transactionHash.length !== 66) {
       throw new InvalidTransaction(transactionHash);
     }
@@ -77,7 +60,7 @@ export default class PendingMessage {
 
   getConcatenatedSignatures() {
     const sortedExecutions = sortExecutionsByKey([...this.collectedSignatures]);
-    const sortedSignatures = sortedExecutions.map((value: Execution) => value.signature);
+    const sortedSignatures = sortedExecutions.map((value: CollectedSignature) => value.signature);
     return concatenateSignatures(sortedSignatures);
   }
 }
