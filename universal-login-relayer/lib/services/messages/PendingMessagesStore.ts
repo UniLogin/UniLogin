@@ -18,7 +18,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
   }
 
   throwIfInvalidMessage(messageHash: string) {
-    if(!this.messages[messageHash]) {
+    if (!this.messages[messageHash]) {
       throw new InvalidExecution(messageHash);
     }
   }
@@ -35,7 +35,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
   }
 
   containSignature(messageHash: string, signature: string) : boolean {
-    return this.messages[messageHash] ? 
+    return this.messages[messageHash] ?
       this.messages[messageHash]
         .collectedSignatures.filter((collectedSignature) => collectedSignature.signature === signature)
         .length > 0 :
@@ -51,7 +51,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
       totalCollected: message.collectedSignatures.length,
       required,
       transactionHash: message.transactionHash
-    }
-    
+    };
+
   }
 }

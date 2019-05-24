@@ -7,7 +7,7 @@ import {InvalidSignature, DuplicatedSignature, DuplicatedExecution, NotEnoughSig
 export type CollectedSignature = {
   key: string;
   signature: string;
-}
+};
 
 export type Execution = Record<string, string>;
 

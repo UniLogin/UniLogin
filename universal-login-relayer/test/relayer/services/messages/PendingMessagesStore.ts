@@ -45,25 +45,25 @@ describe('UNIT: PendingMessagesStore', async () => {
   });
 
   it('getStatus if message doesn`t exist', async () => {
-    await expect(pendingMessagesStore.getStatus(messageHash)).to.be.eventually.rejectedWith(`Could not find execution with hash: ${messageHash}`)
+    await expect(pendingMessagesStore.getStatus(messageHash)).to.be.eventually.rejectedWith(`Could not find execution with hash: ${messageHash}`);
   });
 
   it('getStatus roundtrip', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
-    let expectedStatus = {
+    const expectedStatus = {
       collectedSignatures: [] as any,
       totalCollected: 0,
       required: utils.bigNumberify(1),
       transactionHash: '0x0'
-    }
+    };
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(expectedStatus);
 
     await pendingMessage.push(message);
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(
       {
-        ...expectedStatus, 
+        ...expectedStatus,
         collectedSignatures: [message.signature],
         totalCollected: 1
-      })
+      });
   });
 });

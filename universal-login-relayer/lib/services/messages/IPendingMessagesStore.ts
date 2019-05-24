@@ -6,7 +6,7 @@ export type MessageStatus = {
   totalCollected: number,
   required: number,
   transactionHash: string
-}
+};
 
 export default interface IPendingMessagesStore {
   add: (messageHash: string, pendingMessage: PendingMessage) => void;
