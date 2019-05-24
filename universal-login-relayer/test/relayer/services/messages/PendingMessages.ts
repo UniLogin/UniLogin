@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Wallet, Contract, utils} from 'ethers';
+import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage, MessageStatus} from '@universal-login/commons';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';

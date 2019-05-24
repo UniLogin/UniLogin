@@ -1,5 +1,5 @@
 import PendingMessage from './PendingMessage';
-import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, INVALID_KEY} from '@universal-login/commons';
 import {Wallet} from 'ethers';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution} from '../../utils/errors';
 import {getKeyFromHashAndSignature} from '../../utils/utils';
@@ -36,7 +36,7 @@ export default class PendingMessages {
       message.signature
     );
     const keyPurpose = await pendingMessage.walletContract.getKeyPurpose(key);
-    if (keyPurpose.eq(0)) {
+    if (keyPurpose.eq(INVALID_KEY)) {
       throw new InvalidSignature('Invalid key purpose');
     }
     this.messagesStore.addSignature(hash, message.signature);
