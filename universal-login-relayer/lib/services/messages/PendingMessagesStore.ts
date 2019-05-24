@@ -36,11 +36,11 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
   }
 
   containSignature(messageHash: string, signature: string) : boolean {
-    return this.messages[messageHash] ?
-      this.messages[messageHash]
-        .collectedSignatures.filter((collectedSignature) => collectedSignature.signature === signature)
-        .length > 0 :
-      false;
+    const message = this.messages[messageHash];
+    return !!message && message
+      .collectedSignatures
+      .filter((collectedSignature) => collectedSignature.signature === signature)
+      .length > 0;
   }
 
   async getStatus(messageHash: string) : Promise<MessageStatus | InvalidExecution>  {
