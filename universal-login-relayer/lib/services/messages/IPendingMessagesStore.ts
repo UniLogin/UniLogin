@@ -8,4 +8,5 @@ export default interface IPendingMessagesStore {
   isPresent: (messageHash: string) => boolean;
   remove: (messageHash: string) => PendingMessage;
   getStatus: (messageHash: string) => Promise<MessageStatus | InvalidExecution>;
+  addSignature: (messageHash: string, signature: string) => void;
 }

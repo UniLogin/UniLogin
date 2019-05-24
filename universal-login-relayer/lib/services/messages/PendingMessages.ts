@@ -35,8 +35,7 @@ export default class PendingMessages {
     if (keyPurpose.eq(0)) {
       throw new InvalidSignature('Invalid key purpose');
     }
-    pendingMessage.collectedSignatures.push({signature: message.signature, key});
-    this.messagesStore.add(hash, pendingMessage);
+    this.messagesStore.addSignature(hash, message.signature);
   }
 
   async getStatus(hash: string) {
