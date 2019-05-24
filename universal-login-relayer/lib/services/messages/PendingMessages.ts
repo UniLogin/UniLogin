@@ -6,24 +6,24 @@ import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessages {
 
-  constructor(private wallet : Wallet, private executionsStore: IPendingMessagesStore) {
+  constructor(private wallet : Wallet, private messagesStore: IPendingMessagesStore) {
   }
 
   isPresent(messageHash : string) {
-    return this.executionsStore.isPresent(messageHash);
+    return this.messagesStore.isPresent(messageHash);
   }
 
   async add(message: SignedMessage) : Promise<string> {
     const hash = calculateMessageHash(message);
     if (!this.isPresent(hash)) {
-      this.executionsStore.add(hash, new PendingMessage(message.from, this.wallet));
+      this.messagesStore.add(hash, new PendingMessage(message.from, this.wallet));
     }
     await this.addSignatureToPendingMessage(hash, message);
     return hash;
   }
 
   private async addSignatureToPendingMessage(hash: string, message: SignedMessage) {
-    const pendingMessage = this.executionsStore.get(hash);
+    const pendingMessage = this.messagesStore.get(hash);
     if (pendingMessage.transactionHash !== '0x0') {
       throw new DuplicatedExecution();
     }
@@ -36,34 +36,34 @@ export default class PendingMessages {
       throw new InvalidSignature('Invalid key purpose');
     }
     pendingMessage.collectedSignatures.push({signature: message.signature, key});
-    this.executionsStore.add(hash, pendingMessage);
+    this.messagesStore.add(hash, pendingMessage);
   }
 
   async getStatus(hash: string) {
-    return this.executionsStore.getStatus(hash);
+    return this.messagesStore.getStatus(hash);
   }
 
   getMessageWithSignatures(message: SignedMessage, hash: string) : SignedMessage {
-    return  { ...message, signature: this.executionsStore.get(hash).getConcatenatedSignatures()};
+    return  { ...message, signature: this.messagesStore.get(hash).getConcatenatedSignatures()};
   }
 
   confirmExecution(messageHash: string, transactionHash: string) {
-    this.executionsStore.get(messageHash).confirmExecution(transactionHash);
+    this.messagesStore.get(messageHash).confirmExecution(transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {
-    this.executionsStore.get(messageHash).ensureCorrectExecution();
+    this.messagesStore.get(messageHash).ensureCorrectExecution();
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {
-    return this.executionsStore.get(hash).isEnoughSignatures();
+    return this.messagesStore.get(hash).isEnoughSignatures();
   }
 
   get(hash: string) {
-    return this.executionsStore.get(hash);
+    return this.messagesStore.get(hash);
   }
 
   remove(hash: string) {
-    return this.executionsStore.remove(hash);
+    return this.messagesStore.remove(hash);
   }
 }
