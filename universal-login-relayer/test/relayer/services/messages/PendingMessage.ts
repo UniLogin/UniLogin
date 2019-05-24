@@ -5,6 +5,7 @@ import {calculateMessageSignature, concatenateSignatures, ACTION_KEY, OPERATION_
 import ERC1077 from '@universal-login/contracts/build/ERC1077.json';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import defaultPaymentOptions from '../../../../lib/config/defaultPaymentOptions';
+import {getKeyFromHashAndSignature} from '../../../../lib/utils/utils';
 
 chai.use(solidity);
 
@@ -75,8 +76,8 @@ describe('Pending Execution', async () => {
 
     describe('Concatenate', async () => {
         it('should concatenate two signatures', async () => {
-            const key0 = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg0)), msg0.signature);
-            const key1 = utils.verifyMessage(utils.arrayify(calculateMessageHash(msg1)), msg1.signature);
+            const key0 = getKeyFromHashAndSignature(calculateMessageHash(msg0), msg0.signature);
+            const key1 = getKeyFromHashAndSignature(calculateMessageHash(msg1), msg1.signature);
             await pendingMessage.collectedSignatures.push({signature: msg0.signature, key: key0});
             await pendingMessage.collectedSignatures.push({signature: msg1.signature, key: key1});
             status = await pendingMessage.getStatus();

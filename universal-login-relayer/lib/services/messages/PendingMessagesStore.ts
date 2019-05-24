@@ -1,5 +1,5 @@
-import {utils} from 'ethers';
 import {MessageStatus} from '@universal-login/commons';
+import {getKeyFromHashAndSignature} from '../../utils/utils';
 import PendingMessage from './PendingMessage';
 import IPendingMessagesStore from './IPendingMessagesStore';
 import {InvalidExecution} from '../../utils/errors';
@@ -57,7 +57,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
   }
 
   addSignature(messageHash: string, signature: string) {
-    const key = utils.verifyMessage(utils.arrayify(messageHash), signature);
+    const key = getKeyFromHashAndSignature(messageHash, signature);
     this.messages[messageHash].collectedSignatures.push({signature, key});
   }
 }

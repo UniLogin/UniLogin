@@ -6,6 +6,7 @@ import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
+import {getKeyFromHashAndSignature} from '../../../../lib/utils/utils';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
@@ -58,7 +59,8 @@ describe('INT: PendingMessages', () => {
   it('should get added signed transaction', async () => {
     const pendingMessage = new PendingMessage(message.from, wallet);
     const hash = await pendingMessages.add(message);
-    const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(message)), message.signature);
+
+    const key = getKeyFromHashAndSignature(hash, message.signature);
     await pendingMessage.collectedSignatures.push({signature: message.signature, key});
     expect(pendingMessages.get(hash).toString()).to.eq(pendingMessage.toString());
   });

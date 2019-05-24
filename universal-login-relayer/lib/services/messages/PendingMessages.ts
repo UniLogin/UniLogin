@@ -1,7 +1,8 @@
 import PendingMessage from './PendingMessage';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
-import {Wallet, utils} from 'ethers';
+import {Wallet} from 'ethers';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution} from '../../utils/errors';
+import {getKeyFromHashAndSignature} from '../../utils/utils';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessages {
@@ -30,7 +31,10 @@ export default class PendingMessages {
     if (pendingMessage.containSignature(message.signature)) {
       throw new DuplicatedSignature();
     }
-    const key = utils.verifyMessage(utils.arrayify(calculateMessageHash(message)), message.signature);
+    const key = getKeyFromHashAndSignature(
+      calculateMessageHash(message),
+      message.signature
+    );
     const keyPurpose = await pendingMessage.walletContract.getKeyPurpose(key);
     if (keyPurpose.eq(0)) {
       throw new InvalidSignature('Invalid key purpose');

@@ -49,3 +49,6 @@ export const messageToTransaction = (message: SignedMessage) : providers.Transac
     value: 0,
     data: encodeDataForExecuteSigned(message)
   });
+
+export const getKeyFromHashAndSignature = (messageHash: string, signature: string) =>
+  utils.verifyMessage(utils.arrayify(messageHash), signature);
