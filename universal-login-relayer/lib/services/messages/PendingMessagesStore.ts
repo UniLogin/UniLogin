@@ -43,7 +43,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
       .length > 0;
   }
 
-  async getStatus(messageHash: string) : Promise<MessageStatus | InvalidExecution>  {
+  async getStatus(messageHash: string) : Promise<MessageStatus>  {
     this.throwIfInvalidMessage(messageHash);
     const message = this.messages[messageHash];
     const required = await message.walletContract.requiredSignatures();
