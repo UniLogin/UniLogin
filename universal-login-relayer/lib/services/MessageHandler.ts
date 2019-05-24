@@ -8,7 +8,7 @@ import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
-import {MessageStatus} from './messages/IPendingMessagesStore';
+import {MessageStatus} from '@universal-login/commons';
 
 class MessageHandler {
   private executor: MessageExecutor;

@@ -6,7 +6,7 @@ import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
-import {MessageStatus} from '../../../../lib/services/messages/IPendingMessagesStore';
+import {MessageStatus} from '@universal-login/commons';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;

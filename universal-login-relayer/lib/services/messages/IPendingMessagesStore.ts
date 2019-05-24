@@ -1,12 +1,6 @@
 import PendingMessage from './PendingMessage';
 import {InvalidExecution} from '../../utils/errors';
-
-export type MessageStatus = {
-  collectedSignatures: string[],
-  totalCollected: number,
-  required: number,
-  transactionHash: string
-};
+import {MessageStatus} from '@universal-login/commons';
 
 export default interface IPendingMessagesStore {
   add: (messageHash: string, pendingMessage: PendingMessage) => void;

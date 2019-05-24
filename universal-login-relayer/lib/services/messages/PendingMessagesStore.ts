@@ -1,6 +1,7 @@
 import PendingMessage from './PendingMessage';
-import IPendingMessagesStore, {MessageStatus} from './IPendingMessagesStore';
+import IPendingMessagesStore from './IPendingMessagesStore';
 import {InvalidExecution} from '../../utils/errors';
+import {MessageStatus} from '@universal-login/commons';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {
   public messages: Record<string, PendingMessage>;
