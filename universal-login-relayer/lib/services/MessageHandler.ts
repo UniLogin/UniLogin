@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, MessageStatus} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
 import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
@@ -8,7 +8,6 @@ import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
-import {MessageStatus} from '@universal-login/commons';
 
 class MessageHandler {
   private executor: MessageExecutor;
