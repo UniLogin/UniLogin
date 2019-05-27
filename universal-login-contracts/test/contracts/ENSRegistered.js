@@ -29,14 +29,14 @@ describe('ENSRegistered', async () => {
     const deployTransaction = getDeployTransaction(ENSRegisteredUnderTests);
     const transaction = await wallet.sendTransaction(deployTransaction);
     const receipt = await provider.getTransactionReceipt(transaction.hash);
-    console.log('deploy ', receipt.gasUsed.toString())
+    console.log(`    deploy: ${receipt.gasUsed.toString()}`);
     ensRegisteredContract = new Contract(receipt.contractAddress, ENSRegisteredUnderTests.interface, wallet);
   });
 
   it('resolves to given address', async () => {
     const transaction = await ensRegisteredContract.registerENSUnderTests(...args);
     const receipt = await provider.getTransactionReceipt(transaction.hash);
-    console.log('register ', receipt.gasUsed.toString())
+    console.log(`    register: ${receipt.gasUsed.toString()}`);
     expect(await provider.resolveName(name)).to.eq(ensRegisteredContract.address);
     expect(await lookupAddress(provider, ensRegisteredContract.address, publicResolver)).to.eq(name);
   });
