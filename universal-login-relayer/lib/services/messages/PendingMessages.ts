@@ -1,9 +1,9 @@
 import {Wallet} from 'ethers';
-import {calculateMessageHash, SignedMessage, INVALID_KEY} from '@universal-login/commons';
+import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY} from '@universal-login/commons';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
-import {getKeyFromHashAndSignature} from '../../utils/utils';
+import {getKeyFromHashAndSignature, sortExecutionsByKey} from '../../utils/utils';
 import PendingMessage from './PendingMessage';
-import IPendingMessagesStore from './IPendingMessagesStore';
+import IPendingMessagesStore, {CollectedSignature} from './IPendingMessagesStore';
 
 export default class PendingMessages {
 
@@ -45,7 +45,11 @@ export default class PendingMessages {
   }
 
   getMessageWithSignatures(message: SignedMessage, hash: string) : SignedMessage {
-    return  { ...message, signature: this.messagesStore.get(hash).getConcatenatedSignatures()};
+    const collectedSignatures = this.messagesStore.getCollectedSignatures(hash);
+    const sortedExecutions = sortExecutionsByKey([...collectedSignatures]);
+    const sortedSignatures = sortedExecutions.map((value: CollectedSignature) => value.signature);
+    const signature = concatenateSignatures(sortedSignatures);
+    return  { ...message, signature};
   }
 
   confirmExecution(messageHash: string, transactionHash: string) {
