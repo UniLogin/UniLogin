@@ -10,6 +10,7 @@ export default interface IPendingMessagesStore {
   addSignature: (messageHash: string, signature: string) => void;
   getCollectedSignatures: (messageHash: string) => CollectedSignature[];
   updateTransactionHash: (messageHash: string, transactionHash: string) => void;
+  containSignature: (messageHash: string, signature: string) => boolean;
 }
 
 export type CollectedSignature = {

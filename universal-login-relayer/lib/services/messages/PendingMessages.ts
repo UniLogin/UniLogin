@@ -26,7 +26,7 @@ export default class PendingMessages {
   private async addSignatureToPendingMessage(hash: string, message: SignedMessage) {
     const pendingMessage = this.messagesStore.get(hash);
     this.ensureCorrectTransactionHash(pendingMessage.transactionHash);
-    if (pendingMessage.containSignature(message.signature)) {
+    if (this.messagesStore.containSignature(hash, message.signature)) {
       throw new DuplicatedSignature();
     }
     const key = getKeyFromHashAndSignature(
