@@ -33,9 +33,10 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         address _key,
         bytes32 _hashLabel,
         string calldata _name,
-        bytes32 _node, ENS ens,
-        FIFSRegistrar registrar,
-        PublicResolver resolver) external onlyInitializing()
+        bytes32 _node,
+        bytes32 _hashDomain,
+        ENS ens
+        ) external onlyInitializing()
         {
 
         // ERC1077 → KeyHolder
@@ -45,7 +46,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         requiredSignatures = 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
-        registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
+        registerENS(_hashLabel, _name, _node, _hashDomain, ens);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
