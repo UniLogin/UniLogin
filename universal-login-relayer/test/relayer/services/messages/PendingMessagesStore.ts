@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage, MessageStatus} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -73,7 +73,7 @@ describe('UNIT: PendingMessagesStore', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
     const message2 = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
     pendingMessagesStore.addSignature(messageHash, message2.signature);
-    const status = await pendingMessagesStore.getStatus(messageHash) as MessageStatus;
+    const status = await pendingMessagesStore.getStatus(messageHash);
     expect(status.collectedSignatures).to.contains(message2.signature);
   });
 
