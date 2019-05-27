@@ -60,4 +60,8 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
     const key = getKeyFromHashAndSignature(messageHash, signature);
     this.messages[messageHash].collectedSignatures.push({signature, key});
   }
+
+  updateTransactionHash(messageHash: string, transactionHash: string) {
+    this.messages[messageHash].transactionHash = transactionHash;
+  }
 }

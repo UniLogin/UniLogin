@@ -76,4 +76,12 @@ describe('UNIT: PendingMessagesStore', async () => {
     const status = await pendingMessagesStore.getStatus(messageHash) as MessageStatus;
     expect(status.collectedSignatures).to.contains(message2.signature);
   });
+
+  it('should update transcaction hash', async () => {
+    pendingMessagesStore.add(messageHash, pendingMessage);
+    const expectedTransactionHash = '0x1234';
+    pendingMessagesStore.updateTransactionHash(messageHash, expectedTransactionHash);
+    const {transactionHash} = await pendingMessagesStore.getStatus(messageHash) as MessageStatus;
+    expect(transactionHash).to.be.eq(expectedTransactionHash);
+  });
 });
