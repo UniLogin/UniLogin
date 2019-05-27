@@ -1,5 +1,4 @@
 import PendingMessage from './PendingMessage';
-import {InvalidExecution} from '../../utils/errors';
 import {MessageStatus} from '@universal-login/commons';
 
 export default interface IPendingMessagesStore {
@@ -7,6 +6,6 @@ export default interface IPendingMessagesStore {
   get: (messageHash: string) => PendingMessage;
   isPresent: (messageHash: string) => boolean;
   remove: (messageHash: string) => PendingMessage;
-  getStatus: (messageHash: string) => Promise<MessageStatus | InvalidExecution>;
+  getStatus: (messageHash: string) => Promise<MessageStatus>;
   addSignature: (messageHash: string, signature: string) => void;
 }

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage, MessageStatus} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -69,7 +69,7 @@ describe('INT: PendingMessages', () => {
 
     it('should push one signature', async () => {
       const hash = await pendingMessages.add(message);
-      const status = await pendingMessages.getStatus(hash) as MessageStatus;
+      const status = await pendingMessages.getStatus(hash);
       const {collectedSignatures} = status;
       expect(status.collectedSignatures.length).to.be.eq(1);
       expect(collectedSignatures[0]).to.be.eq(message.signature);
@@ -80,7 +80,7 @@ describe('INT: PendingMessages', () => {
       const hash1 = await pendingMessages.add(message);
       const hash2 = await pendingMessages.add(signedMessage);
       expect(hash1).to.be.eq(hash2);
-      const collectedSignatures = (await pendingMessages.getStatus(hash1) as MessageStatus).collectedSignatures;
+      const collectedSignatures = (await pendingMessages.getStatus(hash1)).collectedSignatures;
       expect(collectedSignatures).to.be.deep.eq([message.signature, signedMessage.signature]);
     });
 
