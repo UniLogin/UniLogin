@@ -1,12 +1,8 @@
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {Contract, Wallet} from 'ethers';
-import {sortExecutionsByKey} from '../../utils/utils';
 import {concatenateSignatures} from '@universal-login/commons';
-
-export type CollectedSignature = {
-  key: string;
-  signature: string;
-};
+import {sortExecutionsByKey} from '../../utils/utils';
+import {CollectedSignature} from './IPendingMessagesStore';
 
 export default class PendingMessage {
   private wallet: Wallet;

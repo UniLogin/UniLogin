@@ -1,8 +1,8 @@
 import {MessageStatus} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../utils/utils';
+import {InvalidExecution} from '../../utils/errors';
 import PendingMessage from './PendingMessage';
 import IPendingMessagesStore from './IPendingMessagesStore';
-import {InvalidExecution} from '../../utils/errors';
 
 export default class PendingMessagesStore implements IPendingMessagesStore {
   public messages: Record<string, PendingMessage>;
@@ -54,6 +54,10 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
       required,
       transactionHash: message.transactionHash
     };
+  }
+
+  getCollectedSignatures(messageHash: string) {
+    return this.messages[messageHash].collectedSignatures;
   }
 
   addSignature(messageHash: string, signature: string) {
