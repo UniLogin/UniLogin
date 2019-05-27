@@ -59,13 +59,8 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
     };
   }
 
-<<<<<<< HEAD
   getCollectedSignatureKeyPairs(messageHash: string) {
     return this.messages[messageHash].collectedSignatureKeyPairs;
-=======
-  getCollectedSignatures(messageHash: string) {
-    return this.messages[messageHash].collectedSignatures;
->>>>>>> Introduce get signatures (PendingMessagesStore)
   }
 
   addSignature(messageHash: string, signature: string) {

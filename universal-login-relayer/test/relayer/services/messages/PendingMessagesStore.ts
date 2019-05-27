@@ -5,11 +5,7 @@ import {calculateMessageHash, createSignedMessage, SignedMessage} from '@univers
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-<<<<<<< HEAD
 import {getKeyFromHashAndSignature, newPendingMessage} from '../../../../lib/utils/utils';
-=======
-import {getKeyFromHashAndSignature} from '../../../../lib/utils/utils';
->>>>>>> Introduce get signatures (PendingMessagesStore)
 
 describe('UNIT: PendingMessagesStore', async () => {
   let pendingMessagesStore: PendingMessagesStore;
