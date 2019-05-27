@@ -110,7 +110,7 @@ describe('INT: PendingMessages', () => {
       const messageHash = await pendingMessages.add(message);
       const expectedTransactionHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
       await pendingMessages.confirmExecution(messageHash, expectedTransactionHash);
-      const {transactionHash} = await pendingMessages.getStatus(messageHash) as MessageStatus;
+      const {transactionHash} = await pendingMessages.getStatus(messageHash);
       expect(transactionHash).to.be.eq(expectedTransactionHash);
     });
 

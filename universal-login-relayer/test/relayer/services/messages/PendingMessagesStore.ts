@@ -81,7 +81,7 @@ describe('UNIT: PendingMessagesStore', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
     const expectedTransactionHash = '0x1234';
     pendingMessagesStore.updateTransactionHash(messageHash, expectedTransactionHash);
-    const {transactionHash} = await pendingMessagesStore.getStatus(messageHash) as MessageStatus;
+    const {transactionHash} = await pendingMessagesStore.getStatus(messageHash);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
   });
 });
