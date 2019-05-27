@@ -2,7 +2,7 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../../utils/utils';
 import {concatenateSignatures} from '@universal-login/commons';
-import {NotEnoughSignatures, TransactionAlreadyConfirmed, InvalidTransaction} from '../../utils/errors';
+import {NotEnoughSignatures, TransactionAlreadyConfirmed} from '../../utils/errors';
 
 export type CollectedSignature = {
   key: string;
@@ -39,13 +39,6 @@ export default class PendingMessage {
   async isEnoughSignatures(requiredSignatures? : Number) {
     const requiredSignaturesCount = requiredSignatures || await this.walletContract.requiredSignatures();
     return this.collectedSignatures.length >= requiredSignaturesCount;
-  }
-
-  confirmExecution(transactionHash: string) {
-    if (transactionHash.length !== 66) {
-      throw new InvalidTransaction(transactionHash);
-    }
-    this.transactionHash = transactionHash;
   }
 
   public async ensureCorrectExecution() {

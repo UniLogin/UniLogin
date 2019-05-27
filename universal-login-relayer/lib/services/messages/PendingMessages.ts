@@ -1,7 +1,7 @@
 import PendingMessage from './PendingMessage';
 import {calculateMessageHash, SignedMessage, INVALID_KEY} from '@universal-login/commons';
 import {Wallet} from 'ethers';
-import {DuplicatedSignature, InvalidSignature, DuplicatedExecution} from '../../utils/errors';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction} from '../../utils/errors';
 import {getKeyFromHashAndSignature} from '../../utils/utils';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
@@ -51,7 +51,10 @@ export default class PendingMessages {
   }
 
   confirmExecution(messageHash: string, transactionHash: string) {
-    this.messagesStore.get(messageHash).confirmExecution(transactionHash);
+    if (transactionHash.length !== 66) {
+      throw new InvalidTransaction(transactionHash);
+    }
+    this.messagesStore.updateTransactionHash(messageHash, transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {
