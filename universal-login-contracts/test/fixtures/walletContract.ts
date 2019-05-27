@@ -14,51 +14,48 @@ export type EnsDomainData = {
 
 type SetupInitializeArgs = {
   key: string;
-  ensDomainData: EnsDomainData;
+  ensAddress: string;
   name?: string;
   domain?: string;
 };
 
-export function setupInitializeArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeArgs) {
+export function setupInitializeArgs({key, ensAddress, name = 'name', domain = 'mylogin.eth'}: SetupInitializeArgs) {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
+  const hashDomain = utils.namehash(domain);
+  const args = [key, hashLabel, ensName, node, hashDomain, ensAddress];
   return args;
 }
 
-export function createProxyDeployWithENSArgs(publicKey: string, ensDomainData: EnsDomainData, walletMasterAddress: string) {
-  const walletArgs = setupInitializeArgs({key: publicKey, ensDomainData});
+export function createProxyDeployWithENSArgs(publicKey: string, ensAddress: string, walletMasterAddress: string) {
+  const walletArgs = setupInitializeArgs({key: publicKey, ensAddress});
   const initData = encodeInitializeWithENSData(walletArgs);
   return [walletMasterAddress, initData];
 }
 
 export async function setupEnsAndMaster(deployer: Wallet) {
-  const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
+  const {ensAddress} = await deployENS(deployer);
   const walletMaster = await deployContract(deployer, WalletMaster);
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
   return {
-    ensDomainData: {
-      ensAddress,
-      registrarAddress,
-      resolverAddress
-    },
+    ensAddress,
     walletMaster,
     provider: providerWithENS,
     deployer
   };
 }
 
-async function deployProxy(deployer: Wallet, walletMasterAddress: string, ensDomainData: EnsDomainData, publicKey: string) {
-  const deployArgs = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress);
+async function deployProxy(deployer: Wallet, walletMasterAddress: string, ensAddress: string, publicKey: string) {
+  const deployArgs = createProxyDeployWithENSArgs(publicKey, ensAddress, walletMasterAddress);
   const proxyContract = await deployContract(deployer, ProxyContract, deployArgs);
   return proxyContract;
 }
 
 export async function setupWalletContract(deployer: Wallet) {
   const keyPair = createKeyPair();
-  const {ensDomainData, walletMaster, provider} = await setupEnsAndMaster(deployer);
-  const walletContract = await deployProxy(deployer, walletMaster.address, ensDomainData, keyPair.publicKey);
+  const {ensAddress, walletMaster, provider} = await setupEnsAndMaster(deployer);
+  const walletContract = await deployProxy(deployer, walletMaster.address, ensAddress, keyPair.publicKey);
   return {
     walletContract,
     keyPair,

@@ -20,11 +20,11 @@ describe('Performance test', async () => {
 
   let provider: providers.Provider;
   let walletMaster: Contract;
-  let ensDomainData: EnsDomainData;
+  let ensAddress: string;
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({walletMaster, ensDomainData, deployer, provider} = await loadFixture(ensAndMasterFixture));
+    ({walletMaster, ensAddress, deployer, provider} = await loadFixture(ensAndMasterFixture));
   });
 
   it('Proxy deploy without ENS', async () => {
@@ -40,7 +40,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS', async () => {
-    const args = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
+    const args = createProxyDeployWithENSArgs(keyPair.publicKey, ensAddress, walletMaster.address);
     const deployTransaction = {
       ...defaultDeployOptions,
       ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(...args)
