@@ -3,12 +3,12 @@ import {deployContract} from 'ethereum-waffle';
 import {ACTION_KEY} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import createWalletContract from '../helpers/createWalletContract';
-import buildEnsService from '../helpers/buildEnsService';
+import setupEnsArgsFor from '../helpers/setupEnsArgsFor';
 
 export default async function basicWalletContractWithMockToken(provider, wallets) {
   const [, otherWallet, wallet] = wallets;
-  const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
-  const walletContract = await createWalletContract(wallet, ensService);
+  const [ensArgsFor, provider] = await setupEnsArgsFor(wallet, 'mylogin.eth');
+  const walletContract = await createWalletContract(wallet, ensArgsFor);
   const actionWallet = Wallet.createRandom();
   const actionKey = actionWallet.privateKey;
   const mockToken = await deployContract(wallet, MockToken);

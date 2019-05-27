@@ -1,6 +1,6 @@
 import {ContractFactory, Wallet} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
-import ENSService from './ensService';
+import {EnsArgs} from './EnsArgs';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions} from '@universal-login/commons';
 import {InvalidENSDomain} from '../utils/errors';
@@ -10,14 +10,14 @@ class WalletService {
   private bytecode: string;
   private abi: Abi;
 
-  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter) {
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensArgsFor: EnsArgs, private hooks: EventEmitter) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
   }
 
   async create(key: string, ensName: string, overrideOptions = {}) {
-    const ensArgs = this.ensService.argsFor(ensName);
+    const ensArgs = this.ensArgsFor(ensName);
     if (ensArgs !== null) {
       let args = [key, ...ensArgs] as string[];
       const initData = encodeInitializeWithENSData(args);

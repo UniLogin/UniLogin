@@ -4,13 +4,13 @@ import {ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
-import buildEnsService from '../helpers/buildEnsService';
+import setupEnsArgsFor from '../helpers/setupEnsArgsFor';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
 export default async function basicWalletContract(provider, wallets) {
   const [ , , wallet] = wallets;
-  const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
+  const [ensService, provider] = await setupEnsArgsFor(wallet, 'mylogin.eth');
   const walletMaster = await deployContract(wallet, WalletMaster);
   const walletContract = await createWalletContract(wallet, ensService);
   return { wallet, provider, walletContract, ensService, walletMasterAddress: walletMaster.address };
