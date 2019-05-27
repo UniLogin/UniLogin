@@ -2,7 +2,6 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {Contract, Wallet} from 'ethers';
 import {sortExecutionsByKey} from '../../utils/utils';
 import {concatenateSignatures} from '@universal-login/commons';
-import {NotEnoughSignatures, TransactionAlreadyConfirmed} from '../../utils/errors';
 
 export type CollectedSignature = {
   key: string;
@@ -39,16 +38,6 @@ export default class PendingMessage {
   async isEnoughSignatures(requiredSignatures? : Number) {
     const requiredSignaturesCount = requiredSignatures || await this.walletContract.requiredSignatures();
     return this.collectedSignatures.length >= requiredSignaturesCount;
-  }
-
-  public async ensureCorrectExecution() {
-    const requiredSignatures = await this.walletContract.requiredSignatures();
-    if (!(await this.isEnoughSignatures(requiredSignatures))) {
-      throw new NotEnoughSignatures(requiredSignatures, this.collectedSignatures.length);
-    }
-    else if (this.transactionHash !== '0x0') {
-      throw new TransactionAlreadyConfirmed('0x0');
-    }
   }
 
   getConcatenatedSignatures() {

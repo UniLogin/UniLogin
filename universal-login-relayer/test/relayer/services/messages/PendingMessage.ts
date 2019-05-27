@@ -23,7 +23,6 @@ const baseMsg: any = {
 };
 
 describe('Pending Execution', async () => {
-    const sampleTx = '0x0cd49580e0e003e50dc47059bc2001f378d260ab0d8f61cdb8c4421f3635ff6d';
     const provider = createMockProvider();
     const [, , wallet] = getWallets(provider);
     let walletContract: Contract;
@@ -87,22 +86,6 @@ describe('Pending Execution', async () => {
                 expected = concatenateSignatures([signature1, signature0]);
             }
             await expect(concatenatedSignatures).to.be.eq(expected);
-        });
-    });
-
-    describe('Confirm', async () => {
-        it('should not confirm with not enough signatures', async () => {
-            await pendingMessage.collectedSignatures.push(msg0);
-            await expect(pendingMessage.ensureCorrectExecution())
-                .to.be.rejectedWith('Not enough signatures');
-        });
-
-        it('should not confirm if tx is already confirmed', async () => {
-            await pendingMessage.collectedSignatures.push(msg0);
-            await pendingMessage.collectedSignatures.push(msg1);
-            pendingMessage.transactionHash = sampleTx;
-            await expect(pendingMessage.ensureCorrectExecution())
-                .to.be.rejectedWith('Transaction 0x0 has already been confirmed');
         });
     });
 });
