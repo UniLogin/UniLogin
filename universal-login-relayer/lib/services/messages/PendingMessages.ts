@@ -1,8 +1,8 @@
-import PendingMessage from './PendingMessage';
-import {calculateMessageHash, SignedMessage, INVALID_KEY} from '@universal-login/commons';
 import {Wallet} from 'ethers';
-import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction} from '../../utils/errors';
+import {calculateMessageHash, SignedMessage, INVALID_KEY} from '@universal-login/commons';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
 import {getKeyFromHashAndSignature} from '../../utils/utils';
+import PendingMessage from './PendingMessage';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
 export default class PendingMessages {
@@ -25,9 +25,7 @@ export default class PendingMessages {
 
   private async addSignatureToPendingMessage(hash: string, message: SignedMessage) {
     const pendingMessage = this.messagesStore.get(hash);
-    if (pendingMessage.transactionHash !== '0x0') {
-      throw new DuplicatedExecution();
-    }
+    this.ensureCorrectTransactionHash(pendingMessage.transactionHash);
     if (pendingMessage.containSignature(message.signature)) {
       throw new DuplicatedSignature();
     }
@@ -58,7 +56,17 @@ export default class PendingMessages {
   }
 
   async ensureCorrectExecution(messageHash: string) {
-    this.messagesStore.get(messageHash).ensureCorrectExecution();
+    const {required, transactionHash, totalCollected} = await this.messagesStore.getStatus(messageHash);
+    this.ensureCorrectTransactionHash(transactionHash);
+    if (!(await this.isEnoughSignatures(messageHash))) {
+      throw new NotEnoughSignatures(required, totalCollected);
+    }
+  }
+
+  private ensureCorrectTransactionHash(transactionHash: string) {
+    if (transactionHash !== '0x0') {
+      throw new DuplicatedExecution();
+    }
   }
 
   async isEnoughSignatures(hash: string) : Promise<boolean> {

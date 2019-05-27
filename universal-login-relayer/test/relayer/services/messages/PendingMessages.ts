@@ -94,15 +94,6 @@ describe('INT: PendingMessages', () => {
       await expect(pendingMessages.add(message))
           .to.be.rejectedWith('Signature already collected');
     });
-
-    it('should not accept same signature twice', async () => {
-      const message2 = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
-      await walletContract.setRequiredSignatures(1);
-      const hash = await pendingMessages.add(message);
-      pendingMessages.confirmExecution(hash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
-      await expect(pendingMessages.add(message2))
-          .to.be.eventually.rejectedWith('Execution request already processed');
-    });
   });
 
   describe('Confirm message', async () => {
@@ -117,6 +108,22 @@ describe('INT: PendingMessages', () => {
     it('should throw InvalidTransaction if transactionHash is not correct', async () => {
       const messageHash = await pendingMessages.add(message);
       expect(() => pendingMessages.confirmExecution(messageHash, '0x1234')).to.throw('Invalid transaction: 0x1234');
+    });
+  });
+
+  describe('Ensure correct execution', async () =>  {
+    it('should throw when pending message already has transaction hash', async () => {
+      await walletContract.setRequiredSignatures(1);
+      const hash = await pendingMessages.add(message);
+      pendingMessages.confirmExecution(hash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
+      await expect(pendingMessages.ensureCorrectExecution(hash))
+          .to.be.eventually.rejectedWith('Execution request already processed');
+    });
+
+    it('should throw error when pending message has not enough signatures', async () => {
+      const hash = await pendingMessages.add(message);
+      await expect(pendingMessages.ensureCorrectExecution(hash))
+        .to.be.eventually.rejectedWith('Not enough signatures, required 2, got only 1');
     });
   });
 });
