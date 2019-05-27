@@ -104,4 +104,19 @@ describe('INT: PendingMessages', () => {
           .to.be.eventually.rejectedWith('Execution request already processed');
     });
   });
+
+  describe('Confirm message', async () => {
+    it('should not confirm message with invalid transaction hash', async () => {
+      const messageHash = await pendingMessages.add(message);
+      const expectedTransactionHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
+      await pendingMessages.confirmExecution(messageHash, expectedTransactionHash);
+      const {transactionHash} = await pendingMessages.getStatus(messageHash) as MessageStatus;
+      expect(transactionHash).to.be.eq(expectedTransactionHash);
+    });
+
+    it('should throw InvalidTransaction if transactionHash is not correct', async () => {
+      const messageHash = await pendingMessages.add(message);
+      expect(() => pendingMessages.confirmExecution(messageHash, '0x1234')).to.throw('Invalid transaction: 0x1234');
+    });
+  });
 });

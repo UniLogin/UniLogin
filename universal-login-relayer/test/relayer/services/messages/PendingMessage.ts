@@ -51,8 +51,6 @@ describe('Pending Execution', async () => {
     });
 
     describe('should be correctly initialized', async () => {
-        let status: any;
-
         beforeEach(async () => {
             status = await pendingMessage.getStatus();
         });
@@ -93,14 +91,6 @@ describe('Pending Execution', async () => {
     });
 
     describe('Confirm', async () => {
-        it('should confirm', async () => {
-            await pendingMessage.collectedSignatures.push(msg0);
-            await pendingMessage.collectedSignatures.push(msg1);
-            await pendingMessage.confirmExecution(sampleTx);
-            status = await pendingMessage.getStatus();
-            expect(status.transactionHash).to.be.eq(sampleTx);
-        });
-
         it('should not confirm with not enough signatures', async () => {
             await pendingMessage.collectedSignatures.push(msg0);
             await expect(pendingMessage.ensureCorrectExecution())
@@ -110,16 +100,9 @@ describe('Pending Execution', async () => {
         it('should not confirm if tx is already confirmed', async () => {
             await pendingMessage.collectedSignatures.push(msg0);
             await pendingMessage.collectedSignatures.push(msg1);
-            await pendingMessage.confirmExecution(sampleTx);
+            pendingMessage.transactionHash = sampleTx;
             await expect(pendingMessage.ensureCorrectExecution())
                 .to.be.rejectedWith('Transaction 0x0 has already been confirmed');
-        });
-
-        it('should not confirm with invalid tx', async () => {
-            await pendingMessage.collectedSignatures.push(msg0);
-            await pendingMessage.collectedSignatures.push(msg1);
-            expect(() => pendingMessage.confirmExecution('0x0'))
-                .throw('Invalid transaction: 0x0');
         });
     });
 });
