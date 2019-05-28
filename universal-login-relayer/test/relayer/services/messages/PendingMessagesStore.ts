@@ -42,7 +42,7 @@ describe('UNIT: PendingMessagesStore', async () => {
 
   it('containSignature should return true if signature already collected', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
-    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
+    await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key: '0x'});
     expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.true;
   });
 
@@ -60,7 +60,7 @@ describe('UNIT: PendingMessagesStore', async () => {
     };
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(expectedStatus);
 
-    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
+    await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key: '0x'});
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(
       {
         ...expectedStatus,
@@ -90,10 +90,10 @@ describe('UNIT: PendingMessagesStore', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
     pendingMessagesStore.addSignature(messageHash, message.signature);
     const key = getKeyFromHashAndSignature(messageHash, message.signature);
-    expect(pendingMessagesStore.getCollectedSignatures(messageHash)).to.be.deep.eq([{key, signature: message.signature}]);
+    expect(pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}]);
     const {signature} = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
     pendingMessagesStore.addSignature(messageHash, signature);
     const key2 = getKeyFromHashAndSignature(messageHash, signature);
-    expect(pendingMessagesStore.getCollectedSignatures(messageHash)).to.be.deep.eq([{key, signature: message.signature}, {key: key2, signature}]);
+    expect(pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}, {key: key2, signature}]);
   });
 });

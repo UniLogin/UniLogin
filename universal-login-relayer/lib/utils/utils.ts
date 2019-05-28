@@ -32,8 +32,8 @@ export const executionComparator = (execution1: any, execution2: any) =>  {
   }
 };
 
-export const sortExecutionsByKey = (executions: any) =>
-    executions.sort(executionComparator);
+export const sortSignatureKeyPairsByKey = (signatureKeyPairs: any) =>
+    signatureKeyPairs.sort(executionComparator);
 
 export const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
     const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);

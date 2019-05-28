@@ -39,7 +39,7 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
   containSignature(messageHash: string, signature: string) : boolean {
     const message = this.messages[messageHash];
     return !!message && message
-      .collectedSignatures
+      .collectedSignatureKeyPairs
       .filter((collectedSignature) => collectedSignature.signature === signature)
       .length > 0;
   }
@@ -49,20 +49,20 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
     const message = this.messages[messageHash];
     const required = await message.walletContract.requiredSignatures();
     return {
-      collectedSignatures: message.collectedSignatures.map((collected) => collected.signature),
-      totalCollected: message.collectedSignatures.length,
+      collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
+      totalCollected: message.collectedSignatureKeyPairs.length,
       required,
       transactionHash: message.transactionHash
     };
   }
 
-  getCollectedSignatures(messageHash: string) {
-    return this.messages[messageHash].collectedSignatures;
+  getCollectedSignatureKeyPairs(messageHash: string) {
+    return this.messages[messageHash].collectedSignatureKeyPairs;
   }
 
   addSignature(messageHash: string, signature: string) {
     const key = getKeyFromHashAndSignature(messageHash, signature);
-    this.messages[messageHash].collectedSignatures.push({signature, key});
+    this.messages[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
 
   updateTransactionHash(messageHash: string, transactionHash: string) {

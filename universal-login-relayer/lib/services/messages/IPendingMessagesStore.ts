@@ -8,12 +8,12 @@ export default interface IPendingMessagesStore {
   remove: (messageHash: string) => PendingMessage;
   getStatus: (messageHash: string) => Promise<MessageStatus>;
   addSignature: (messageHash: string, signature: string) => void;
-  getCollectedSignatures: (messageHash: string) => CollectedSignature[];
+  getCollectedSignatureKeyPairs: (messageHash: string) => CollectedSignatureKeyPair[];
   updateTransactionHash: (messageHash: string, transactionHash: string) => void;
   containSignature: (messageHash: string, signature: string) => boolean;
 }
 
-export type CollectedSignature = {
+export type CollectedSignatureKeyPair = {
   key: string;
   signature: string;
 };
