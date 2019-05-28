@@ -16,10 +16,9 @@ export default class PendingMessages {
 
   async add(message: SignedMessage) : Promise<string> {
     const messageHash = calculateMessageHash(message);
-    const hash = calculateMessageHash(message);
-    if (!this.isPresent(hash)) {
+    if (!this.isPresent(messageHash)) {
       const pendingMessage = newPendingMessage(message.from);
-      this.messagesStore.add(hash, pendingMessage);
+      this.messagesStore.add(messageHash, pendingMessage);
     }
     await this.addSignatureToPendingMessage(messageHash, message);
     return messageHash;
@@ -43,8 +42,8 @@ export default class PendingMessages {
     this.messagesStore.addSignature(messageHash, message.signature);
   }
 
-  async getStatus(hash: string) {
-    return this.messagesStore.getStatus(hash, this.wallet);
+  async getStatus(messageHash: string) {
+    return this.messagesStore.getStatus(messageHash, this.wallet);
   }
 
   getMessageWithSignatures(message: SignedMessage, messageHash: string) : SignedMessage {
@@ -76,8 +75,8 @@ export default class PendingMessages {
     }
   }
 
-  async isEnoughSignatures(hash: string) : Promise<boolean> {
-    const {totalCollected, required} = await this.messagesStore.getStatus(hash, this.wallet);
+  async isEnoughSignatures(messageHash: string) : Promise<boolean> {
+    const {totalCollected, required} = await this.messagesStore.getStatus(messageHash, this.wallet);
     return totalCollected >= required;
   }
 
