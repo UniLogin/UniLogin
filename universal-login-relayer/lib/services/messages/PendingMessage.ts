@@ -14,9 +14,4 @@ export default class PendingMessage {
     this.collectedSignatureKeyPairs = [];
     this.transactionHash = '0x0';
   }
-
-  async isEnoughSignatures(requiredSignatures? : Number) {
-    const requiredSignaturesCount = requiredSignatures || await this.walletContract.requiredSignatures();
-    return this.collectedSignatureKeyPairs.length >= requiredSignaturesCount;
-  }
 }

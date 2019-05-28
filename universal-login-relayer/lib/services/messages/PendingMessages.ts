@@ -73,8 +73,9 @@ export default class PendingMessages {
     }
   }
 
-  async isEnoughSignatures(messageHash: string) : Promise<boolean> {
-    return this.messagesStore.get(messageHash).isEnoughSignatures();
+  async isEnoughSignatures(hash: string) : Promise<boolean> {
+    const {totalCollected, required} = await this.messagesStore.getStatus(hash);
+    return totalCollected >= required;
   }
 
   get(messageHash: string) {
