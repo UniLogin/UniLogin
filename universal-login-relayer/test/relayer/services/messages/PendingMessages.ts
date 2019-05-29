@@ -61,7 +61,7 @@ describe('INT: PendingMessages', () => {
     const hash = await pendingMessages.add(message);
 
     const key = getKeyFromHashAndSignature(hash, message.signature);
-    await pendingMessage.collectedSignatures.push({signature: message.signature, key});
+    await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key});
     expect(pendingMessages.get(hash).toString()).to.eq(pendingMessage.toString());
   });
 

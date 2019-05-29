@@ -5,6 +5,7 @@ import {calculateMessageHash, createSignedMessage, SignedMessage} from '@univers
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {getKeyFromHashAndSignature} from '../../../../lib/utils/utils';
 
 describe('UNIT: PendingMessagesStore', async () => {
   let pendingMessagesStore: PendingMessagesStore;
@@ -35,13 +36,13 @@ describe('UNIT: PendingMessagesStore', async () => {
     expect(removedPendingExecution).to.be.deep.eq(pendingMessage);
   });
 
-  it('containSignature should return false if signarture not collected', () => {
+  it('containSignature should return false if signature not collected', () => {
     expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.false;
   });
 
-  it('containSignature should return true if signarture already collected', async () => {
+  it('containSignature should return true if signature already collected', async () => {
     pendingMessagesStore.add(messageHash, pendingMessage);
-    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
+    await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key: '0x'});
     expect(pendingMessagesStore.containSignature(messageHash, message.signature)).to.be.true;
   });
 
@@ -59,7 +60,7 @@ describe('UNIT: PendingMessagesStore', async () => {
     };
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(expectedStatus);
 
-    await pendingMessage.collectedSignatures.push({signature: message.signature, key: '0x'});
+    await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key: '0x'});
     expect(await pendingMessagesStore.getStatus(messageHash)).to.deep.eq(
       {
         ...expectedStatus,
@@ -83,5 +84,16 @@ describe('UNIT: PendingMessagesStore', async () => {
     pendingMessagesStore.updateTransactionHash(messageHash, expectedTransactionHash);
     const {transactionHash} = await pendingMessagesStore.getStatus(messageHash);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
+  });
+
+  it('should get signatures', async () => {
+    pendingMessagesStore.add(messageHash, pendingMessage);
+    pendingMessagesStore.addSignature(messageHash, message.signature);
+    const key = getKeyFromHashAndSignature(messageHash, message.signature);
+    expect(pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}]);
+    const {signature} = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
+    pendingMessagesStore.addSignature(messageHash, signature);
+    const key2 = getKeyFromHashAndSignature(messageHash, signature);
+    expect(pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}, {key: key2, signature}]);
   });
 });
