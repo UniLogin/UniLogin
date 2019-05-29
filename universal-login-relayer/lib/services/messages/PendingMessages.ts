@@ -1,9 +1,9 @@
-import {Wallet} from 'ethers';
+import {Wallet, Contract} from 'ethers';
 import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY} from '@universal-login/commons';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
-import {getKeyFromHashAndSignature, sortSignatureKeyPairsByKey} from '../../utils/utils';
-import PendingMessage from './PendingMessage';
 import IPendingMessagesStore, {CollectedSignatureKeyPair} from './IPendingMessagesStore';
+import {getKeyFromHashAndSignature, sortSignatureKeyPairsByKey, newPendingMessage} from '../../utils/utils';
 
 export default class PendingMessages {
 
@@ -16,8 +16,10 @@ export default class PendingMessages {
 
   async add(message: SignedMessage) : Promise<string> {
     const messageHash = calculateMessageHash(message);
-    if (!this.isPresent(messageHash)) {
-      this.messagesStore.add(messageHash, new PendingMessage(message.from, this.wallet));
+    const hash = calculateMessageHash(message);
+    if (!this.isPresent(hash)) {
+      const pendingMessage = newPendingMessage(message.from);
+      this.messagesStore.add(hash, pendingMessage);
     }
     await this.addSignatureToPendingMessage(messageHash, message);
     return messageHash;
@@ -33,15 +35,16 @@ export default class PendingMessages {
       calculateMessageHash(message),
       message.signature
     );
-    const keyPurpose = await pendingMessage.walletContract.getKeyPurpose(key);
+    const walletContract = new Contract(pendingMessage.walletAddress, WalletContract.interface, this.wallet);
+    const keyPurpose = await walletContract.getKeyPurpose(key);
     if (keyPurpose.eq(INVALID_KEY)) {
       throw new InvalidSignature('Invalid key purpose');
     }
     this.messagesStore.addSignature(messageHash, message.signature);
   }
 
-  async getStatus(messageHash: string) {
-    return this.messagesStore.getStatus(messageHash);
+  async getStatus(hash: string) {
+    return this.messagesStore.getStatus(hash, this.wallet);
   }
 
   getMessageWithSignatures(message: SignedMessage, messageHash: string) : SignedMessage {
@@ -60,7 +63,7 @@ export default class PendingMessages {
   }
 
   async ensureCorrectExecution(messageHash: string) {
-    const {required, transactionHash, totalCollected} = await this.messagesStore.getStatus(messageHash);
+    const {required, transactionHash, totalCollected} = await this.messagesStore.getStatus(messageHash, this.wallet);
     this.ensureCorrectTransactionHash(transactionHash);
     if (!(await this.isEnoughSignatures(messageHash))) {
       throw new NotEnoughSignatures(required, totalCollected);
@@ -73,8 +76,9 @@ export default class PendingMessages {
     }
   }
 
-  async isEnoughSignatures(messageHash: string) : Promise<boolean> {
-    return this.messagesStore.get(messageHash).isEnoughSignatures();
+  async isEnoughSignatures(hash: string) : Promise<boolean> {
+    const {totalCollected, required} = await this.messagesStore.getStatus(hash, this.wallet);
+    return totalCollected >= required;
   }
 
   get(messageHash: string) {

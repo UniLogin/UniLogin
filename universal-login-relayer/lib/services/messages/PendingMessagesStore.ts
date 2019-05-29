@@ -1,4 +1,6 @@
+import {Contract, Wallet} from 'ethers';
 import {MessageStatus} from '@universal-login/commons';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../utils/utils';
 import {InvalidExecution} from '../../utils/errors';
 import PendingMessage from './PendingMessage';
@@ -44,10 +46,11 @@ export default class PendingMessagesStore implements IPendingMessagesStore {
       .length > 0;
   }
 
-  async getStatus(messageHash: string) : Promise<MessageStatus>  {
+  async getStatus(messageHash: string, wallet: Wallet) : Promise<MessageStatus>  {
     this.throwIfInvalidMessage(messageHash);
     const message = this.messages[messageHash];
-    const required = await message.walletContract.requiredSignatures();
+    const walletContract = new Contract(message.walletAddress, WalletContract.interface, wallet);
+    const required = await walletContract.requiredSignatures();
     return {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,

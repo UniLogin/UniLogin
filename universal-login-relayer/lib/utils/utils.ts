@@ -2,6 +2,7 @@ import {utils, Contract, Wallet, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {SignedMessage} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../services/transactions/serialisation';
+import PendingMessage from '../services/messages/PendingMessage';
 
 
 export const isDataForFunctionCall = (data : string, contract : any, functionName: string) => {
@@ -52,3 +53,9 @@ export const messageToTransaction = (message: SignedMessage) : providers.Transac
 
 export const getKeyFromHashAndSignature = (messageHash: string, signature: string) =>
   utils.verifyMessage(utils.arrayify(messageHash), signature);
+
+export const newPendingMessage = (walletAddress: string) : PendingMessage => ({
+  walletAddress,
+  collectedSignatureKeyPairs: [],
+  transactionHash: '0x0'
+});

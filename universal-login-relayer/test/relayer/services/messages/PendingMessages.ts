@@ -2,11 +2,10 @@ import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
-import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
-import {getKeyFromHashAndSignature} from '../../../../lib/utils/utils';
+import {getKeyFromHashAndSignature, newPendingMessage} from '../../../../lib/utils/utils';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
@@ -57,7 +56,7 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should get added signed transaction', async () => {
-    const pendingMessage = new PendingMessage(message.from, wallet);
+    const pendingMessage = newPendingMessage(message.from);
     const hash = await pendingMessages.add(message);
 
     const key = getKeyFromHashAndSignature(hash, message.signature);
