@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
 import WalletMaster from '../../build/WalletMaster';
-import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../fixtures/basicWallet';
+import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../utils/ExampleMessages';
 import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
