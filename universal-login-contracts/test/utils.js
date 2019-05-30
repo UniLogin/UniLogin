@@ -1,5 +1,5 @@
 import {utils, Contract} from 'ethers';
-import PublicResolver from '../build/PublicResolver';
+import PublicResolver from '../build/PublicResolver.json';
 
 const messageSignature = (wallet, to, from, value, data, nonce, gasToken, gasPrice, gasLimit) =>
   wallet.signMessage(

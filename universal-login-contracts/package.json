@@ -10,10 +10,13 @@
   },
   "scripts": {
     "prepublishOnly": "rm -rf build dist && yarn build",
-    "build": "waffle .waffle.js && tsc --build tsconfig.build.json",
-    "test": "mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
+    "build": "yarn build:contracts && yarn build:ts",
+    "build:contracts": "waffle .waffle.js",
+    "build:ts": "tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
+    "test": "yarn build:ts && yarn test:nobuild",
+    "test:nobuild": "mocha -t 10000 \"dist/test/**/*.js\"",
     "lint": "yarn lint:js && yarn lint:sol",
-    "lint:js": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "lint:js": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "lint:sol": "solium -d contracts",
     "clean": "rm -fr build dist"
   },
