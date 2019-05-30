@@ -63,10 +63,10 @@ export class NotFound extends RelayerError {
   }
 }
 
-export class InvalidExecution extends NotFound {
+export class InvalidMessage extends NotFound {
   constructor (hash: string) {
-    super(`Could not find execution with hash: ${hash}` , 'InvalidExecution');
-    Object.setPrototypeOf(this, InvalidExecution.prototype);
+    super(`Could not find message with hash: ${hash}` , 'InvalidExecution');
+    Object.setPrototypeOf(this, InvalidMessage.prototype);
   }
 }
 

@@ -19,7 +19,7 @@ import TransactionQueueService from './services/transactions/TransactionQueueSer
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 import errorHandler from './middlewares/errorHandler';
 import PendingMessages from './services/messages/PendingMessages';
-import PendingMessagesStore from './services/messages/PendingMessagesStore';
+import PendingMessagesSQLStore from './services/messages/PendingMessagesSQLStore';
 
 const defaultPort = '3311';
 
@@ -40,7 +40,7 @@ class Relayer {
   private transactionQueueStore: TransactionQueueStore = {} as TransactionQueueStore;
   private transactionQueueService: TransactionQueueService = {} as TransactionQueueService;
   private messageHandler: MessageHandler = {} as MessageHandler;
-  private pendingMessagesStore: PendingMessagesStore = {} as PendingMessagesStore;
+  private pendingMessagesStore: PendingMessagesSQLStore = {} as PendingMessagesSQLStore;
   private pendingMessages: PendingMessages = {} as PendingMessages;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
@@ -70,7 +70,7 @@ class Relayer {
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks);
-    this.pendingMessagesStore = new PendingMessagesStore();
+    this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
     this.pendingMessages = new PendingMessages(this.wallet, this.pendingMessagesStore);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
     this.transactionQueueService = new TransactionQueueService(this.wallet, this.provider, this.transactionQueueStore);

@@ -51,14 +51,14 @@ class MessageHandler {
       if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
         return this.executePending(hash, message);
       }
-      return JSON.stringify(this.pendingMessages.getStatus(hash));
+      return JSON.stringify(await this.pendingMessages.getStatus(hash));
     } else {
       return this.executor.execute(message);
     }
   }
 
   private async executePending(hash: string, message: SignedMessage) {
-    const finalMessage = this.pendingMessages.getMessageWithSignatures(message, hash);
+    const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, hash);
     await this.pendingMessages.ensureCorrectExecution(hash);
     const transaction: providers.TransactionRequest = await this.executor.execute(finalMessage);
     await this.pendingMessages.remove(hash);
@@ -71,7 +71,7 @@ class MessageHandler {
   }
 
   async getStatus(hash: string) {
-    if (this.pendingMessages.isPresent(hash)){
+    if (await this.pendingMessages.isPresent(hash)){
       return this.pendingMessages.getStatus(hash);
     } else {
       return null;
