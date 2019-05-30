@@ -4,8 +4,9 @@ import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
-import {getKeyFromHashAndSignature, newPendingMessage} from '../../../../lib/utils/utils';
+import PendingMessagesSQLStore from '../../../../lib/services/messages/PendingMessagesSQLStore';
+import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../lib/utils/utils';
+import { getKnex } from '../../../../lib/utils/knexUtils';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
@@ -13,32 +14,35 @@ describe('INT: PendingMessages', () => {
   let wallet: Wallet;
   let walletContract: Contract;
   let actionKey: string;
+  const knex = getKnex();
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    const pendingMessagesStore = new PendingMessagesStore();
+    const pendingMessagesStore = new PendingMessagesSQLStore(knex);
     pendingMessages = new PendingMessages(wallet, pendingMessagesStore);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
+    await knex.delete().from('signature_key_pairs');
+    await knex.delete().from('messages');
   });
 
-  it('not present initally', () => {
-    expect(pendingMessages.isPresent('0x0123')).to.be.false;
+  it('not present initally', async () => {
+    expect(await pendingMessages.isPresent('0x0123')).to.be.false;
   });
 
   it('should be addded', async () => {
     const hash = await pendingMessages.add(message);
-    expect(pendingMessages.isPresent(hash)).to.be.true;
+    expect(await pendingMessages.isPresent(hash)).to.be.true;
   });
 
   it('getStatus should throw error', async () => {
     const hash = calculateMessageHash(message);
-    await expect(pendingMessages.getStatus(hash)).to.eventually.rejectedWith(`Could not find execution with hash: ${hash}`);
+    await expect(pendingMessages.getStatus(hash)).to.eventually.rejectedWith(`Could not find message with hash: ${hash}`);
   });
 
   it('get should throw error if message doesn`t exist', async () => {
     const hash = calculateMessageHash(message);
-    await expect(() => pendingMessages.get(hash)).to.throw(`Could not find execution with hash: ${hash}`);
+    await expect(pendingMessages.get(hash)).to.eventually.rejectedWith(`Could not find message with hash: ${hash}`);
   });
 
   it('should check if execution is ready to execute', async () => {
@@ -56,12 +60,12 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should get added signed transaction', async () => {
-    const pendingMessage = newPendingMessage(message.from);
+    const pendingMessage = createPendingMessage(message.from);
     const hash = await pendingMessages.add(message);
 
     const key = getKeyFromHashAndSignature(hash, message.signature);
     await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key});
-    expect(pendingMessages.get(hash).toString()).to.eq(pendingMessage.toString());
+    expect((await pendingMessages.get(hash)).toString()).to.eq(pendingMessage.toString());
   });
 
   describe('Add', async () => {
@@ -106,7 +110,7 @@ describe('INT: PendingMessages', () => {
 
     it('should throw InvalidTransaction if transactionHash is not correct', async () => {
       const messageHash = await pendingMessages.add(message);
-      expect(() => pendingMessages.confirmExecution(messageHash, '0x1234')).to.throw('Invalid transaction: 0x1234');
+      await expect(pendingMessages.confirmExecution(messageHash, '0x1234')).to.eventually.be.rejectedWith('Invalid transaction: 0x1234');
     });
   });
 
@@ -114,7 +118,7 @@ describe('INT: PendingMessages', () => {
     it('should throw when pending message already has transaction hash', async () => {
       await walletContract.setRequiredSignatures(1);
       const hash = await pendingMessages.add(message);
-      pendingMessages.confirmExecution(hash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
+      await pendingMessages.confirmExecution(hash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       await expect(pendingMessages.ensureCorrectExecution(hash))
           .to.be.eventually.rejectedWith('Execution request already processed');
     });
@@ -124,5 +128,11 @@ describe('INT: PendingMessages', () => {
       await expect(pendingMessages.ensureCorrectExecution(hash))
         .to.be.eventually.rejectedWith('Not enough signatures, required 2, got only 1');
     });
+  });
+
+  after(async () => {
+    await knex.delete().from('signature_key_pairs');
+    await knex.delete().from('messages');
+    await knex.destroy();
   });
 });

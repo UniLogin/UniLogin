@@ -3,15 +3,15 @@ import {MessageStatus} from '@universal-login/commons';
 import PendingMessage from './PendingMessage';
 
 export default interface IPendingMessagesStore {
-  add: (messageHash: string, pendingMessage: PendingMessage) => void;
-  get: (messageHash: string) => PendingMessage;
-  isPresent: (messageHash: string) => boolean;
-  remove: (messageHash: string) => PendingMessage;
+  add: (messageHash: string, pendingMessage: PendingMessage) => Promise<void>;
+  get: (messageHash: string) => Promise<PendingMessage>;
+  isPresent: (messageHash: string) => Promise<boolean>;
+  remove: (messageHash: string) => Promise<PendingMessage>;
   getStatus: (messageHash: string, wallet: Wallet) => Promise<MessageStatus>;
-  addSignature: (messageHash: string, signature: string) => void;
-  getCollectedSignatureKeyPairs: (messageHash: string) => CollectedSignatureKeyPair[];
-  updateTransactionHash: (messageHash: string, transactionHash: string) => void;
-  containSignature: (messageHash: string, signature: string) => boolean;
+  addSignature: (messageHash: string, signature: string) => Promise<void>;
+  getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
+  setTransactionHash: (messageHash: string, transactionHash: string) => Promise<void>;
+  containSignature: (messageHash: string, signature: string) => Promise<boolean>;
 }
 
 export type CollectedSignatureKeyPair = {

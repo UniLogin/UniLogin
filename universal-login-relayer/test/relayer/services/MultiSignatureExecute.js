@@ -20,6 +20,8 @@ describe('Relayer - MultiSignatureExecute', async () => {
     ({wallet, actionKey, provider, messageHandler, mockToken, walletContract, otherWallet} = await setupTransactionService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
     await walletContract.setRequiredSignatures(2);
+    await knex.delete().from('signature_key_pairs');
+    await knex.delete().from('messages');
   });
 
   it('Error when not enough tokens', async () => {
@@ -98,6 +100,8 @@ describe('Relayer - MultiSignatureExecute', async () => {
   });
 
   after(async () => {
+    await knex.delete().from('signature_key_pairs');
+    await knex.delete().from('messages');
     await knex.delete().from('authorisations');
     await knex.destroy();
   });
