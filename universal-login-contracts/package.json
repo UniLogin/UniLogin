@@ -16,7 +16,7 @@
     "test": "yarn build:ts && yarn test:nobuild",
     "test:nobuild": "mocha -t 10000 \"dist/test/**/*.js\"",
     "lint": "yarn lint:js && yarn lint:sol",
-    "lint:js": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "lint:js": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "lint:sol": "solium -d contracts",
     "clean": "rm -fr build dist"
   },
