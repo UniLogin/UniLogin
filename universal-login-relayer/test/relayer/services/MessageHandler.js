@@ -25,21 +25,21 @@ describe('Relayer - MessageHandler', async () => {
   it('Error when not enough tokens', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
     const signedMessage = await createSignedMessage(message, wallet.privateKey);
-    await expect(messageHandler.executeSigned(signedMessage))
+    await expect(messageHandler.handleMessage(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
 
   it('Error when not enough gas', async () => {
     const message = {...msg, gasLimit: 100};
     const signedMessage = await createSignedMessage(message, wallet.privateKey);
-    await expect(messageHandler.executeSigned(signedMessage)).to.be.rejectedWith('Not enough gas');
+    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith('Not enough gas');
   });
 
   describe('Transfer', async () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = await createSignedMessage(msg, wallet.privateKey);
-      await messageHandler.executeSigned(signedMessage);
+      await messageHandler.handleMessage(signedMessage);
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
     });
   });
@@ -49,7 +49,7 @@ describe('Relayer - MessageHandler', async () => {
       msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
       const signedMessage = await createSignedMessage(msg, wallet.privateKey);
 
-      await messageHandler.executeSigned(signedMessage);
+      await messageHandler.handleMessage(signedMessage);
       expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
     });
 
@@ -59,7 +59,7 @@ describe('Relayer - MessageHandler', async () => {
         await authorisationService.addRequest(request);
         msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
         const signedMessage = await createSignedMessage(msg, wallet.privateKey);
-        await messageHandler.executeSigned(signedMessage);
+        await messageHandler.handleMessage(signedMessage);
         const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);
         expect(authorisations).to.deep.eq([]);
       });
@@ -71,7 +71,7 @@ describe('Relayer - MessageHandler', async () => {
       const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
       const signedMessage = await createSignedMessage(message, wallet.privateKey);
 
-      await messageHandler.executeSigned(signedMessage);
+      await messageHandler.handleMessage(signedMessage);
     });
 
     it('should remove key', async () => {
@@ -79,7 +79,7 @@ describe('Relayer - MessageHandler', async () => {
       const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
       const signedMessage = await createSignedMessage(message, wallet.privateKey);
 
-      await messageHandler.executeSigned(signedMessage);
+      await messageHandler.handleMessage(signedMessage);
       expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
     });
   });

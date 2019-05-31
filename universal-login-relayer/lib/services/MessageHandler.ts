@@ -42,7 +42,7 @@ class MessageHandler {
     }
   }
 
-  async executeSigned(message: SignedMessage) {
+  async handleMessage(message: SignedMessage) {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await this.pendingMessages.add(message);
