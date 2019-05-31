@@ -28,6 +28,7 @@ describe('SDK: BlockchainObserver', async () => {
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 50;
     blockchainObserver.lastBlock = 0;
+    await relayer.cleanDatabase();
   });
 
   it('subscribe: should emit AddKey on construction', async () => {

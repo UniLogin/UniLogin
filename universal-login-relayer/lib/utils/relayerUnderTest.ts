@@ -32,8 +32,13 @@ export class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  async stop() {
+  async cleanDatabase() {
+    await this.database.delete().from('signature_key_pairs');
+    await this.database.delete().from('messages');
     await this.database.delete().from('authorisations');
+  }
+  async stop() {
+    await this.cleanDatabase();
     await super.stop();
   }
 }

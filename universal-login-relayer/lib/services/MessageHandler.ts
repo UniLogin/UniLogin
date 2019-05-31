@@ -43,18 +43,11 @@ class MessageHandler {
   }
 
   async handleMessage(message: SignedMessage) {
-    const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
-    if (requiredSignatures > 1) {
-      const hash = await this.pendingMessages.add(message);
-      const messageStatus = await this.pendingMessages.getStatus(hash);
-      const numberOfSignatures = messageStatus.totalCollected;
-      if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
-        return this.executePending(hash, message);
-      }
-      return JSON.stringify(await this.pendingMessages.getStatus(hash));
-    } else {
-      return this.executor.execute(message);
+    const hash = await this.pendingMessages.add(message);
+    if (await this.pendingMessages.isEnoughSignatures(hash)) {
+      return this.executePending(hash, message);
     }
+    return JSON.stringify(await this.pendingMessages.getStatus(hash));
   }
 
   private async executePending(messageHash: string, message: SignedMessage) {
