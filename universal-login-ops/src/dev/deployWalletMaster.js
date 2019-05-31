@@ -5,7 +5,7 @@ import {utils} from 'ethers';
 export default async function deployWalletMaster(deployWallet) {
   const {address} = await deployContract(deployWallet, WalletMaster);
   console.log(`WalletMaster address: ${address}`);
-  const masterContractHash = utils.keccak256(`0x${WalletMaster.bytecode}`);
+  const masterContractHash = utils.keccak256(`0x${WalletMaster.evm.deployedBytecode.object}`);
   console.log(`WalletMaster hash: ${masterContractHash}`)
   return {address, masterContractHash};
 }
