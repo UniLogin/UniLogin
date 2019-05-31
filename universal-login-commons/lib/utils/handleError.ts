@@ -3,7 +3,11 @@ export function onCritical(err: Error) {
   process.exit(1);
 }
 
-export function ensure(condition: boolean, error: any, ...errorArgs: any) {
+interface ErrorConstructor<T extends any[]> {
+  new (...args: T): Error;
+}
+
+export function ensure<T extends any[]>(condition: boolean, error: ErrorConstructor<T>, ...errorArgs: T) {
   if (!condition) {
     throw new error(...errorArgs);
   }
