@@ -57,11 +57,11 @@ class MessageHandler {
     }
   }
 
-  private async executePending(hash: string, message: SignedMessage) {
-    const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, hash);
-    await this.pendingMessages.ensureCorrectExecution(hash);
-    const transaction: providers.TransactionRequest = await this.executor.execute(finalMessage);
-    await this.pendingMessages.remove(hash);
+  private async executePending(messageHash: string, message: SignedMessage) {
+    const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, messageHash);
+    await this.pendingMessages.ensureCorrectExecution(messageHash);
+    const transaction: providers.TransactionResponse = await this.executor.execute(finalMessage);
+    await this.pendingMessages.confirmExecution(messageHash, transaction.hash!);
     return transaction;
   }
 

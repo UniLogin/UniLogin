@@ -70,7 +70,8 @@ describe('Relayer - MultiSignatureExecute', async () => {
         await messageHandler.handleMessage(signedMessage0);
         await messageHandler.handleMessage(signedMessage1);
         const status = await messageHandler.getStatus(messageHash);
-        expect(status).to.be.null;
+        expect(status.required).to.be.eq(2);
+        expect(status.totalCollected).to.be.eq(status.required);
       });
 
       it('should fail to get pending execution status when there it is unable to find it', async () => {
