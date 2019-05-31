@@ -1,5 +1,5 @@
 import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY} from '@universal-login/commons';
+import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
 import IPendingMessagesStore, {CollectedSignatureKeyPair} from './IPendingMessagesStore';
@@ -26,19 +26,16 @@ export default class PendingMessages {
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {
     const pendingMessage = await this.messagesStore.get(messageHash);
-    this.ensureCorrectTransactionHash(pendingMessage.transactionHash);
-    if (await this.messagesStore.containSignature(messageHash, message.signature)) {
-      throw new DuplicatedSignature();
-    }
+    ensure(pendingMessage.transactionHash === '0x0', DuplicatedExecution);
+    const isContainSignature = await this.messagesStore.containSignature(messageHash, message.signature);
+    ensure(!isContainSignature, DuplicatedSignature);
     const key = getKeyFromHashAndSignature(
       calculateMessageHash(message),
       message.signature
     );
     const walletContract = new Contract(pendingMessage.walletAddress, WalletContract.interface, this.wallet);
     const keyPurpose = await walletContract.getKeyPurpose(key);
-    if (keyPurpose.eq(INVALID_KEY)) {
-      throw new InvalidSignature('Invalid key purpose');
-    }
+    ensure(!keyPurpose.eq(INVALID_KEY), InvalidSignature, 'Invalid key purpose');
     await this.messagesStore.addSignature(messageHash, message.signature);
   }
 
@@ -55,24 +52,14 @@ export default class PendingMessages {
   }
 
   async confirmExecution(messageHash: string, transactionHash: string) {
-    if (transactionHash.length !== 66) {
-      throw new InvalidTransaction(transactionHash);
-    }
+    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
     await this.messagesStore.setTransactionHash(messageHash, transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {
     const {required, transactionHash, totalCollected} = await this.messagesStore.getStatus(messageHash, this.wallet);
-    this.ensureCorrectTransactionHash(transactionHash);
-    if (!(await this.isEnoughSignatures(messageHash))) {
-      throw new NotEnoughSignatures(required, totalCollected);
-    }
-  }
-
-  private ensureCorrectTransactionHash(transactionHash: string) {
-    if (transactionHash !== '0x0') {
-      throw new DuplicatedExecution();
-    }
+    ensure(transactionHash === '0x0', DuplicatedExecution);
+    ensure(await this.isEnoughSignatures(messageHash), NotEnoughSignatures, required, totalCollected);
   }
 
   async isEnoughSignatures(messageHash: string) : Promise<boolean> {

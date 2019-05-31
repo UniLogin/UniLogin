@@ -5,7 +5,7 @@ export {debounce} from './utils/debounce';
 export {PartialRequired, Procedure, Predicate, Notification, Omit, DeviceInfo} from './types/common';
 export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus} from './types/message';
 export {copy} from './utils/copy';
-export {onCritical} from './utils/error';
+export {ensure, onCritical} from './utils/handleError';
 export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';
 export {TokenService} from './services/TokenService';
