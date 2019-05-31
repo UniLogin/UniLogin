@@ -29,14 +29,18 @@ export default class PendingMessages {
     ensure(pendingMessage.transactionHash === '0x0', DuplicatedExecution);
     const isContainSignature = await this.messagesStore.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
+    await this.ensureCorrectKeyPurpose(message, pendingMessage.walletAddress, this.wallet);
+    await this.messagesStore.addSignature(messageHash, message.signature);
+  }
+
+  private async ensureCorrectKeyPurpose(message: SignedMessage, walletAddress: string, wallet: Wallet) {
     const key = getKeyFromHashAndSignature(
       calculateMessageHash(message),
       message.signature
     );
-    const walletContract = new Contract(pendingMessage.walletAddress, WalletContract.interface, this.wallet);
+    const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
     const keyPurpose = await walletContract.getKeyPurpose(key);
     ensure(!keyPurpose.eq(INVALID_KEY), InvalidSignature, 'Invalid key purpose');
-    await this.messagesStore.addSignature(messageHash, message.signature);
   }
 
   async getStatus(messageHash: string) {
