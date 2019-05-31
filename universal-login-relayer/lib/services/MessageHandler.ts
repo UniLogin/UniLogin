@@ -1,7 +1,7 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
