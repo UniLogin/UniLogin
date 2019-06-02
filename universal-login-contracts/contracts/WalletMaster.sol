@@ -57,7 +57,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
             revert("not-implemented");
         }
         // For unknown reason this line causes issues (out-of-gas). Is ganache at fault?
-        // setMaster(_newMaster, _initData);
+        setMaster(_newMaster, _initData);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
