@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, createSignedMessage} from '@universal-login/commons';
-import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
-import setupTransactionService from '../../../helpers/setupTransactionService';
-import defaultDeviceInfo from '../../../config/defaults';
-import {getKnex} from '../../../../lib/utils/knexUtils';
+import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
+import setupTransactionService from '../../helpers/setupTransactionService';
+import defaultDeviceInfo from '../../config/defaults';
+import {getKnex} from '../../../lib/utils/knexUtils';
 
 describe('Relayer - MessageHandler', async () => {
   let messageHandler;
@@ -25,7 +25,7 @@ describe('Relayer - MessageHandler', async () => {
   it('Error when not enough tokens', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
     const signedMessage = await createSignedMessage(message, wallet.privateKey);
-    expect(messageHandler.executeSigned(signedMessage))
+    await expect(messageHandler.executeSigned(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
 

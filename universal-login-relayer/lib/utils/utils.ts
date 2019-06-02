@@ -2,6 +2,7 @@ import {utils, Contract, Wallet, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {SignedMessage} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../services/transactions/serialisation';
+import PendingMessage from '../services/messages/PendingMessage';
 
 
 export const isDataForFunctionCall = (data : string, contract : any, functionName: string) => {
@@ -32,8 +33,8 @@ export const executionComparator = (execution1: any, execution2: any) =>  {
   }
 };
 
-export const sortExecutionsByKey = (executions: any) =>
-    executions.sort(executionComparator);
+export const sortSignatureKeyPairsByKey = (signatureKeyPairs: any) =>
+    signatureKeyPairs.sort(executionComparator);
 
 export const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
     const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
@@ -49,3 +50,12 @@ export const messageToTransaction = (message: SignedMessage) : providers.Transac
     value: 0,
     data: encodeDataForExecuteSigned(message)
   });
+
+export const getKeyFromHashAndSignature = (messageHash: string, signature: string) =>
+  utils.verifyMessage(utils.arrayify(messageHash), signature);
+
+export const createPendingMessage = (walletAddress: string) : PendingMessage => ({
+  walletAddress,
+  collectedSignatureKeyPairs: [],
+  transactionHash: '0x0'
+});

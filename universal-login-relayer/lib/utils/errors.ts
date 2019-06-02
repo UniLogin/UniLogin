@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'TransactionAlreadyConfirmed' | 'InvalidTransaction' | 'InvalidHexData';
+type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -63,10 +63,10 @@ export class NotFound extends RelayerError {
   }
 }
 
-export class InvalidExecution extends NotFound {
+export class InvalidMessage extends NotFound {
   constructor (hash: string) {
-    super(`Could not find execution with hash: ${hash}` , 'InvalidExecution');
-    Object.setPrototypeOf(this, InvalidExecution.prototype);
+    super(`Could not find message with hash: ${hash}` , 'InvalidExecution');
+    Object.setPrototypeOf(this, InvalidMessage.prototype);
   }
 }
 
@@ -125,12 +125,5 @@ export class DuplicatedExecution extends Conflict {
   constructor () {
     super('Execution request already processed', 'DuplicatedExecution');
     Object.setPrototypeOf(this, DuplicatedExecution.prototype);
-  }
-}
-
-export class TransactionAlreadyConfirmed extends Conflict {
-  constructor(transactionHash: string) {
-    super(`Transaction ${transactionHash} has already been confirmed`, 'TransactionAlreadyConfirmed');
-    Object.setPrototypeOf(this, TransactionAlreadyConfirmed.prototype);
   }
 }

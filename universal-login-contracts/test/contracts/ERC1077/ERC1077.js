@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
-import basicWallet, {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../fixtures/basicWallet';
+import basicERC1077 from '../../fixtures/basicERC1077';
+import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../utils/ExampleMessages';
 import {utils} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
@@ -16,9 +17,6 @@ const to = TEST_ACCOUNT_ADDRESS;
 describe('CONTRACT: ERC1077 - main', async  () => {
   let provider;
   let walletContract;
-  let privateKey;
-  let keyAsAddress;
-  let publicKey;
   let signature;
   let msg;
   let mockContract;
@@ -29,11 +27,12 @@ describe('CONTRACT: ERC1077 - main', async  () => {
   let relayerBalance;
   let relayerTokenBalance;
   let sortedKeys;
+  let managementKeyPair;
 
   beforeEach(async () => {
-    ({provider, walletContract, privateKey, sortedKeys, keyAsAddress, publicKey, mockToken, mockContract, wallet} = await loadFixture(basicWallet));
+    ({provider, walletContract, managementKeyPair, sortedKeys, mockToken, mockContract, wallet} = await loadFixture(basicERC1077));
     msg = {...transferMessage, from: walletContract.address};
-    signature = await calculateMessageSignature(privateKey, msg);
+    signature = await calculateMessageSignature(managementKeyPair.privateKey, msg);
     [anotherWallet] = await getWallets(provider);
     invalidSignature = await calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
@@ -47,7 +46,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
     });
 
     it('first key exist', async () => {
-      expect(await walletContract.keyExist(publicKey)).to.be.true;
+      expect(await walletContract.keyExist(managementKeyPair.publicKey)).to.be.true;
     });
 
     it('empty key does exist', async () => {
@@ -105,7 +104,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
         msg.gasLimit,
         0,
         signature);
-      expect(recoveredAddress).to.eq(keyAsAddress);
+      expect(recoveredAddress).to.eq(managementKeyPair.publicKey);
     });
   });
 
@@ -128,7 +127,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       describe('refund', () => {
         it('should refund in token after execute transfer ethers', async () => {
           msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
-          signature = calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
 
           await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
@@ -161,7 +160,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
       it('emits ExecutedSigned event', async () => {
         msg = {...failedTransferMessage, from: walletContract.address};
-        signature = calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
         const messageHash = calculateMessageHash(msg);
 
         await expect(walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
@@ -171,7 +170,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
       it('should increase nonce, even if transfer fails', async () => {
         msg = {...failedTransferMessage, from: walletContract.address};
-        signature = calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
 
         await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         expect(await provider.getBalance(to)).to.eq(parseEther('0.0'));
@@ -207,7 +206,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       describe('refund', () => {
         it('should refund ether', async () => {
           msg = {...failedTransferMessage, from: walletContract.address};
-          signature = calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
 
           const transaction = await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
@@ -219,7 +218,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
         it('should refund tokens', async () => {
           msg = {...failedTransferMessage, from: walletContract.address, gasToken: mockToken.address};
-          signature = calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
           await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
@@ -429,7 +428,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
     describe('successful execution of call', () => {
       before(() => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+        signatureToCall = calculateMessageSignature(managementKeyPair.privateKey, msgToCall);
       });
 
       it('called method', async () => {
@@ -453,7 +452,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       describe('refund', () => {
         it('should refund ether', async () => {
           msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-          signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+          signatureToCall = calculateMessageSignature(managementKeyPair.privateKey, msgToCall);
 
           const transaction = await walletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
@@ -465,7 +464,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
         it('should refund tokens', async () => {
           msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address, gasToken: mockToken.address};
-          signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+          signatureToCall = calculateMessageSignature(managementKeyPair.privateKey, msgToCall);
           await walletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
@@ -475,7 +474,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
     describe('failed execution of call', () => {
       before(() => {
         msgToCall = {...failedCallMessage, from: walletContract.address, to: mockContract.address};
-        signatureToCall = calculateMessageSignature(privateKey, msgToCall);
+        signatureToCall = calculateMessageSignature(managementKeyPair.privateKey, msgToCall);
       });
 
       it('should increase nonce', async () => {
@@ -492,7 +491,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
       it('invalid nonce', async () => {
         msg = {...msgToCall, nonce: 2};
-        signature = calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
 
         await expect(walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid nonce');
@@ -510,7 +509,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
         it('should refund tokens', async () => {
           msg = {...msgToCall, gasToken: mockToken.address};
-          signature = calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
           await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });

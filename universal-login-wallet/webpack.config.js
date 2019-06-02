@@ -2,12 +2,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const Dotenv = require("dotenv-webpack")
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
     filename: 'main.[hash].js',
-    path: __dirname + '/dist'
+    path: path.join(__dirname, '/dist/html')
   },
   devtool: 'source-map',
   resolve: {
@@ -17,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         exclude: /node_modules/
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },

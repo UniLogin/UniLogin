@@ -1,0 +1,77 @@
+import {Wallet, Contract} from 'ethers';
+import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure} from '@universal-login/commons';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
+import IPendingMessagesStore, {CollectedSignatureKeyPair} from './IPendingMessagesStore';
+import {getKeyFromHashAndSignature, sortSignatureKeyPairsByKey, createPendingMessage} from '../../utils/utils';
+
+export default class PendingMessages {
+
+  constructor(private wallet : Wallet, private messagesStore: IPendingMessagesStore) {
+  }
+
+  async isPresent(messageHash : string) {
+    return this.messagesStore.isPresent(messageHash);
+  }
+
+  async add(message: SignedMessage) : Promise<string> {
+    const messageHash = calculateMessageHash(message);
+    if (!await this.isPresent(messageHash)) {
+      const pendingMessage = createPendingMessage(message.from);
+      await this.messagesStore.add(messageHash, pendingMessage);
+    }
+    await this.addSignatureToPendingMessage(messageHash, message);
+    return messageHash;
+  }
+
+  private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {
+    const pendingMessage = await this.messagesStore.get(messageHash);
+    ensure(pendingMessage.transactionHash === '0x0', DuplicatedExecution);
+    const isContainSignature = await this.messagesStore.containSignature(messageHash, message.signature);
+    ensure(!isContainSignature, DuplicatedSignature);
+    const key = getKeyFromHashAndSignature(
+      calculateMessageHash(message),
+      message.signature
+    );
+    const walletContract = new Contract(pendingMessage.walletAddress, WalletContract.interface, this.wallet);
+    const keyPurpose = await walletContract.getKeyPurpose(key);
+    ensure(!keyPurpose.eq(INVALID_KEY), InvalidSignature, 'Invalid key purpose');
+    await this.messagesStore.addSignature(messageHash, message.signature);
+  }
+
+  async getStatus(messageHash: string) {
+    return this.messagesStore.getStatus(messageHash, this.wallet);
+  }
+
+  async getMessageWithSignatures(message: SignedMessage, messageHash: string) : Promise<SignedMessage> {
+    const collectedSignatureKeyPairs = await this.messagesStore.getCollectedSignatureKeyPairs(messageHash);
+    const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
+    const sortedSignatures = sortedSignatureKeyPairs.map((value: CollectedSignatureKeyPair) => value.signature);
+    const signature = concatenateSignatures(sortedSignatures);
+    return  { ...message, signature};
+  }
+
+  async confirmExecution(messageHash: string, transactionHash: string) {
+    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
+    await this.messagesStore.setTransactionHash(messageHash, transactionHash);
+  }
+
+  async ensureCorrectExecution(messageHash: string) {
+    const {required, transactionHash, totalCollected} = await this.messagesStore.getStatus(messageHash, this.wallet);
+    ensure(transactionHash === '0x0', DuplicatedExecution);
+    ensure(await this.isEnoughSignatures(messageHash), NotEnoughSignatures, required, totalCollected);
+  }
+
+  async isEnoughSignatures(messageHash: string) : Promise<boolean> {
+    const {totalCollected, required} = await this.messagesStore.getStatus(messageHash, this.wallet);
+    return totalCollected >= required;
+  }
+
+  async get(messageHash: string) {
+    return this.messagesStore.get(messageHash);
+  }
+
+  async remove(messageHash: string) {
+    return this.messagesStore.remove(messageHash);
+  }
+}

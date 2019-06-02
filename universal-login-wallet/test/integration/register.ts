@@ -1,3 +1,3 @@
-import './helpers/configuration.ts';
-import './helpers/nullCompiler.ts';
-import './helpers/reactMock.ts';
+import './helpers/configuration';
+import './helpers/nullCompiler';
+import './helpers/reactMock';

@@ -5,7 +5,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '../helpers/setupSdk';
 import createWallet from '../../../src/services/Creation';
-import {deployMockToken} from '@universal-login/commons/test';
+import {deployMockToken} from '@universal-login/commons/testutils';
 import WalletService from '../../../src/services/WalletService';
 import TransferService from '../../../src/services/TransferService';
 import TokenService from '../../../src/services/TokenService';

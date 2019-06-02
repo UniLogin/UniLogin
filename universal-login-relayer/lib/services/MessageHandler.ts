@@ -1,20 +1,31 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures, messageToTransaction} from '../../utils/utils';
-import AuthorisationService from '../authorisationService';
-import TransactionQueueService from './TransactionQueueService';
-import PendingMessages from './PendingMessages';
-import {ensureEnoughToken, ensureEnoughGas} from './validations';
-import {decodeDataForExecuteSigned} from './serialisation';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
+import AuthorisationService from './authorisationService';
+import TransactionQueueService from './transactions/TransactionQueueService';
+import PendingMessages from './messages/PendingMessages';
+import {decodeDataForExecuteSigned} from './transactions/serialisation';
+import MessageExecutor from './messages/MessageExecutor';
+import MessageValidator from './messages/MessageValidator';
 
-class TransactionService {
+class MessageHandler {
+  private executor: MessageExecutor;
+  private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private provider: providers.Provider, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+    this.validator = new MessageValidator(this.wallet);
+    this.executor = new MessageExecutor(
+        this.wallet,
+        this.onTransactionSent.bind(this),
+        this.validator
+      );
   }
 
   start() {
-    this.transactionQueue.setOnTransactionSent(this.onTransactionSent);
+    this.transactionQueue.setOnTransactionSent(
+      this.onTransactionSent.bind(this)
+    );
     this.transactionQueue.start();
   }
 
@@ -35,40 +46,32 @@ class TransactionService {
     const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
     if (requiredSignatures > 1) {
       const hash = await this.pendingMessages.add(message);
-      const numberOfSignatures = (await this.pendingMessages.getStatus(hash)).collectedSignatures.length;
+      const messageStatus = await this.pendingMessages.getStatus(hash);
+      const numberOfSignatures = messageStatus.totalCollected;
       if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
         return this.executePending(hash, message);
       }
-      return JSON.stringify(this.pendingMessages.getStatus(hash));
+      return JSON.stringify(await this.pendingMessages.getStatus(hash));
     } else {
-      return this.execute(message);
+      return this.executor.execute(message);
     }
   }
 
   private async executePending(hash: string, message: SignedMessage) {
-    const finalMessage = this.pendingMessages.getMessageWithSignatures(message, hash);
+    const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, hash);
     await this.pendingMessages.ensureCorrectExecution(hash);
-    const transaction: any = await this.execute(finalMessage);
+    const transaction: providers.TransactionRequest = await this.executor.execute(finalMessage);
     await this.pendingMessages.remove(hash);
     return transaction;
   }
 
-  async execute(message: SignedMessage) {
-    await ensureEnoughToken(this.provider, message);
-    const transaction: providers.TransactionRequest = messageToTransaction(message);
-    await ensureEnoughGas(this.provider, this.wallet.address, transaction, message);
-    const sentTransaction = await this.wallet.sendTransaction(transaction);
-    await this.onTransactionSent(sentTransaction);
-    return sentTransaction;
-  }
-
   private async removeReqFromAuthService(message: SignedMessage) {
     const key = getKeyFromData(message.data as string);
-    await this.authorisationService.removeRequest(message.from, key);
+    return this.authorisationService.removeRequest(message.from, key);
   }
 
   async getStatus(hash: string) {
-    if (this.pendingMessages.isPresent(hash)){
+    if (await this.pendingMessages.isPresent(hash)){
       return this.pendingMessages.getStatus(hash);
     } else {
       return null;
@@ -86,4 +89,4 @@ class TransactionService {
   }
 }
 
-export default TransactionService;
+export default MessageHandler;

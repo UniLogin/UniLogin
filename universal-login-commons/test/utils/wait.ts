@@ -26,7 +26,7 @@ describe('waitUntil', async () => {
   });
 
   it('should return true with arguments', async () => {
-    const func = (args) => args === true;
+    const func = (args: any) => args === true;
     expect(await waitUntil(func, 1, 10, [true])).to.be.true;
     await expect(waitUntil(func, 1, 10)).to.be.eventually.rejectedWith('Timeout');
   });
