@@ -117,7 +117,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint256 startingGas = gasleft();
         bytes memory _data;
         bool success;
-        if(gasToken == address(0)){
+        if (gasToken == address(0)) {
             /* solium-disable-next-line security/no-call-value */
             (success, _data) = to.call.gas(gasleft().sub(ETHER_REFUND_CHARGE)).value(value)(data);
         } else {
