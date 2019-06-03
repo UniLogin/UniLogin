@@ -47,7 +47,7 @@ class MessageHandler {
     if (await this.pendingMessages.isEnoughSignatures(hash)) {
       return this.executePending(hash, message);
     }
-    return JSON.stringify(await this.pendingMessages.getStatus(hash));
+    return this.pendingMessages.getStatus(hash);
   }
 
   private async executePending(messageHash: string, message: SignedMessage) {
