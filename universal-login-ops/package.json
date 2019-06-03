@@ -16,7 +16,7 @@
     "clean": "rm -fr dist"
   },
   "dependencies": {
-    "@universal-login/commons": "0.2.1",
+    "@universal-login/commons": "0.2.2",
     "@universal-login/contracts": "^0.2.1",
     "@universal-login/relayer": "^0.2.1",
     "@universal-login/sdk": "^0.2.1",
