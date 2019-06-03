@@ -43,7 +43,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
   };
 }
 
-function getHashDeployedProxyAbicode() {
+function getProxyContractHash() {
   const proxyContractHash = utils.keccak256(`0x${Proxy.evm.deployedBytecode.object}`);
   console.log(`ProxyContract hash: ${proxyContractHash}`);
   return proxyContractHash;
@@ -70,7 +70,7 @@ async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverri
   const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, masterContractHash} = await deployWalletMaster(deployWallet);
-  const proxyContractHash = getHashDeployedProxyAbicode();
+  const proxyContractHash = getProxyContractHash();
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
