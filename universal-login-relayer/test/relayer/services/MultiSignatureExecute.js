@@ -4,6 +4,7 @@ import {ACTION_KEY, calculateMessageHash, createSignedMessage} from '@universal-
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
 import setupTransactionService from '../../helpers/setupTransactionService';
 import {getKnex} from '../../../lib/utils/knexUtils';
+import {clearDatabase} from '../../../lib/utils/relayerUnderTest';
 
 describe('Relayer - MultiSignatureExecute', async () => {
   let messageHandler;
@@ -20,8 +21,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
     ({wallet, actionKey, provider, messageHandler, mockToken, walletContract, otherWallet} = await setupTransactionService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
     await walletContract.setRequiredSignatures(2);
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
+    await clearDatabase(knex);
   });
 
   it('Error when not enough tokens', async () => {
@@ -101,9 +101,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
   });
 
   after(async () => {
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
-    await knex.delete().from('authorisations');
+    await clearDatabase(knex);
     await knex.destroy();
   });
 });

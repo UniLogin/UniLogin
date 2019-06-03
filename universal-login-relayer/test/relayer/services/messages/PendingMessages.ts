@@ -7,6 +7,7 @@ import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContr
 import PendingMessagesSQLStore from '../../../../lib/services/messages/PendingMessagesSQLStore';
 import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../lib/utils/utils';
 import { getKnex } from '../../../../lib/utils/knexUtils';
+import {clearDatabase} from '../../../../lib/utils/relayerUnderTest';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
@@ -22,8 +23,7 @@ describe('INT: PendingMessages', () => {
     pendingMessages = new PendingMessages(wallet, pendingMessagesStore);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
+    await clearDatabase(knex);
   });
 
   it('not present initally', async () => {
@@ -131,8 +131,7 @@ describe('INT: PendingMessages', () => {
   });
 
   after(async () => {
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
+    await clearDatabase(knex);
     await knex.destroy();
   });
 });

@@ -30,7 +30,7 @@ describe('SDK - integration', async () => {
   beforeEach(async () => {
     ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address};
-    await relayer.cleanDatabase();
+    await relayer.clearDatabase();
   });
 
   describe('Create', async () => {

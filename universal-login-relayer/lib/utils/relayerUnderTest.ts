@@ -1,9 +1,10 @@
-import Relayer from '../relayer';
-import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import Knex from 'knex';
+import {providers, Wallet, ContractFactory} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS} from '@universal-login/commons';
+import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import {Config} from '../config/relayer';
-import {providers, Wallet, ContractFactory} from 'ethers';
+import Relayer from '../relayer';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -32,13 +33,12 @@ export class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
-  async cleanDatabase() {
-    await this.database.delete().from('signature_key_pairs');
-    await this.database.delete().from('messages');
-    await this.database.delete().from('authorisations');
+  async clearDatabase() {
+    return clearDatabase(this.database);
   }
+
   async stop() {
-    await this.cleanDatabase();
+    await clearDatabase(this.database);
     await super.stop();
   }
 }
@@ -46,4 +46,10 @@ export class RelayerUnderTest extends Relayer {
 async function deployContract(wallet: Wallet) {
   const factory = new ContractFactory(WalletMaster.abi, WalletMaster.bytecode, wallet);
   return factory.deploy();
+}
+
+export async function clearDatabase(knex: Knex) {
+  await knex.delete().from('signature_key_pairs');
+  await knex.delete().from('messages');
+  await knex.delete().from('authorisations');
 }
