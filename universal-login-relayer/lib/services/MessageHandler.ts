@@ -45,12 +45,12 @@ class MessageHandler {
   async handleMessage(message: SignedMessage) {
     const hash = await this.pendingMessages.add(message);
     if (await this.pendingMessages.isEnoughSignatures(hash)) {
-      return this.executePending(hash, message);
+      return this.doExecute(hash, message);
     }
     return this.pendingMessages.getStatus(hash);
   }
 
-  private async executePending(messageHash: string, message: SignedMessage) {
+  private async doExecute(messageHash: string, message: SignedMessage) {
     const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, messageHash);
     await this.pendingMessages.ensureCorrectExecution(messageHash);
     const transaction: providers.TransactionResponse = await this.executor.execute(finalMessage);
