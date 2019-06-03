@@ -33,7 +33,7 @@ describe('UI: Transfer', () => {
     appPage.transfer().enterTransferDetails(receiverAddress, '1');
 
     const tokenBalance = await appPage.dashboard().getBalance(mockTokenContract, walletAddress);
-    expect(tokenBalance).to.eq('999967821000000000');
+    expect(tokenBalance).to.eq('999967463000000000');
   });
 
   after(async () => {
