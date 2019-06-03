@@ -8,18 +8,25 @@ import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
+import IPendingMessagesStore from './messages/IPendingMessagesStore';
 
 class MessageHandler {
+  private pendingMessages: PendingMessages;
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessagesStore: IPendingMessagesStore) {
     this.validator = new MessageValidator(this.wallet);
     this.executor = new MessageExecutor(
-        this.wallet,
-        this.onTransactionSent.bind(this),
-        this.validator
+      this.wallet,
+      this.onTransactionSent.bind(this),
+      this.validator
       );
+    this.pendingMessages = new PendingMessages(this.wallet, this.pendingMessagesStore, this.doExecute.bind(this));
+  }
+
+  private doExecute(message: SignedMessage) {
+    return this.executor.execute(message);
   }
 
   start() {
@@ -43,19 +50,7 @@ class MessageHandler {
   }
 
   async handleMessage(message: SignedMessage) {
-    const hash = await this.pendingMessages.add(message);
-    if (await this.pendingMessages.isEnoughSignatures(hash)) {
-      return this.doExecute(hash, message);
-    }
-    return this.pendingMessages.getStatus(hash);
-  }
-
-  private async doExecute(messageHash: string, message: SignedMessage) {
-    const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, messageHash);
-    await this.pendingMessages.ensureCorrectExecution(messageHash);
-    const transaction: providers.TransactionResponse = await this.executor.execute(finalMessage);
-    await this.pendingMessages.confirmExecution(messageHash, transaction.hash!);
-    return transaction;
+    return this.pendingMessages.add(message);
   }
 
   private async removeReqFromAuthService(message: SignedMessage) {
