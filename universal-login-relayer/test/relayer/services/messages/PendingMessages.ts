@@ -23,6 +23,9 @@ describe('INT: PendingMessages', () => {
     pendingMessages = new PendingMessages(wallet, pendingMessagesStore);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     await walletContract.setRequiredSignatures(2);
+  });
+
+  afterEach(async () => {
     await clearDatabase(knex);
   });
 
@@ -131,7 +134,6 @@ describe('INT: PendingMessages', () => {
   });
 
   after(async () => {
-    await clearDatabase(knex);
     await knex.destroy();
   });
 });

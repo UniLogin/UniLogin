@@ -21,6 +21,9 @@ describe('Relayer - MessageHandler', async () => {
   beforeEach(async () => {
     ({wallet, provider, messageHandler, mockToken, authorisationService, walletContract, otherWallet} = await setupTransactionService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
+  });
+
+  afterEach(async () => {
     await clearDatabase(knex);
   });
 
@@ -87,7 +90,6 @@ describe('Relayer - MessageHandler', async () => {
   });
 
   after(async () => {
-    await clearDatabase(knex);
     await knex.destroy();
   });
 });

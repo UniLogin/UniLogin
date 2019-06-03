@@ -34,13 +34,16 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     let args: any;
     if (config.name.includes('SQL')) {
       args = knex;
-      await clearDatabase(knex);
     }
     pendingMessagesStore = new config.type(args);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
     pendingMessage = createPendingMessage(message.from);
     messageHash = calculateMessageHash(message);
+  });
+
+  afterEach(async () => {
+    config.name.includes('SQL') && await clearDatabase(knex);
   });
 
   it('roundtrip', async () => {
@@ -115,7 +118,6 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
   });
 
   after(async () => {
-    await clearDatabase(knex);
     await knex.destroy();
   });
 });
