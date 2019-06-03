@@ -9,6 +9,7 @@ import Proxy from '@universal-login/contracts/build/Proxy.json';
 import {startDevelopmentRelayer} from './startRelayer';
 import {RelayerClass} from '@universal-login/relayer';
 import {dirname, join} from 'path';
+import getContractHash from '../common/contractHeplers.js';
 
 const ganachePort = 18545;
 
@@ -44,7 +45,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
 }
 
 function getProxyContractHash() {
-  const proxyContractHash = utils.keccak256(`0x${Proxy.evm.deployedBytecode.object}`);
+  const proxyContractHash = getContractHash(Proxy);
   console.log(`ProxyContract hash: ${proxyContractHash}`);
   return proxyContractHash;
 }
