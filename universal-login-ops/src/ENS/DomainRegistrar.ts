@@ -2,7 +2,8 @@ import {utils, Contract} from 'ethers';
 import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
 import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
 import TestRegistrar from '@universal-login/contracts/build/TestRegistrar.json';
-import {waitToBeMined, sendAndWaitForTransaction, saveVariables, getDeployTransaction} from '@universal-login/commons';
+import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction} from '@universal-login/commons';
+import {saveVariables} from '../utils/save';
 import ENSRegistrarBase from './ENSRegistrarBase';
 
 class DomainRegistrar extends ENSRegistrarBase {
