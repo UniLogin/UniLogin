@@ -30,6 +30,10 @@ describe('SDK: BlockchainObserver', async () => {
     blockchainObserver.lastBlock = 0;
   });
 
+  afterEach(async () => {
+    await relayer.clearDatabase();
+  });
+
   it('subscribe: should emit AddKey on construction', async () => {
     [privateKey, contractAddress] = await sdk.create('me.mylogin.eth');
     await mockToken.transfer(contractAddress, utils.parseEther('20'));

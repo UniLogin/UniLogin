@@ -1,25 +1,32 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, getRequiredSignatures} from '../utils/utils';
+import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
+import IPendingMessagesStore from './messages/IPendingMessagesStore';
 
 class MessageHandler {
+  private pendingMessages: PendingMessages;
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessages: PendingMessages) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessagesStore: IPendingMessagesStore) {
     this.validator = new MessageValidator(this.wallet);
     this.executor = new MessageExecutor(
-        this.wallet,
-        this.onTransactionSent.bind(this),
-        this.validator
+      this.wallet,
+      this.onTransactionSent.bind(this),
+      this.validator
       );
+    this.pendingMessages = new PendingMessages(this.wallet, this.pendingMessagesStore, this.doExecute.bind(this));
+  }
+
+  private doExecute(message: SignedMessage) {
+    return this.executor.execute(message);
   }
 
   start() {
@@ -42,27 +49,8 @@ class MessageHandler {
     }
   }
 
-  async executeSigned(message: SignedMessage) {
-    const requiredSignatures = await getRequiredSignatures(message.from, this.wallet);
-    if (requiredSignatures > 1) {
-      const hash = await this.pendingMessages.add(message);
-      const messageStatus = await this.pendingMessages.getStatus(hash);
-      const numberOfSignatures = messageStatus.totalCollected;
-      if (await this.pendingMessages.isEnoughSignatures(hash) && numberOfSignatures !== 1) {
-        return this.executePending(hash, message);
-      }
-      return JSON.stringify(await this.pendingMessages.getStatus(hash));
-    } else {
-      return this.executor.execute(message);
-    }
-  }
-
-  private async executePending(hash: string, message: SignedMessage) {
-    const finalMessage = await this.pendingMessages.getMessageWithSignatures(message, hash);
-    await this.pendingMessages.ensureCorrectExecution(hash);
-    const transaction: providers.TransactionRequest = await this.executor.execute(finalMessage);
-    await this.pendingMessages.remove(hash);
-    return transaction;
+  async handleMessage(message: SignedMessage) {
+    return this.pendingMessages.add(message);
   }
 
   private async removeReqFromAuthService(message: SignedMessage) {

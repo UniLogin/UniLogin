@@ -9,6 +9,7 @@ import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../lib/
 import {getKnex} from '../../../../lib/utils/knexUtils';
 import PendingMessagesSQLStore from '../../../../lib/services/messages/PendingMessagesSQLStore';
 import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
+import {clearDatabase} from '../../../../lib/utils/relayerUnderTest';
 
 for (const config of [{
     name: 'PendingMessagesSQLStore',
@@ -33,14 +34,16 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     let args: any;
     if (config.name.includes('SQL')) {
       args = knex;
-      await knex.delete().from('signature_key_pairs');
-      await knex.delete().from('messages');
     }
     pendingMessagesStore = new config.type(args);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
     pendingMessage = createPendingMessage(message.from);
     messageHash = calculateMessageHash(message);
+  });
+
+  afterEach(async () => {
+    config.name.includes('SQL') && await clearDatabase(knex);
   });
 
   it('roundtrip', async () => {
@@ -115,8 +118,6 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
   });
 
   after(async () => {
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
     await knex.destroy();
   });
 });
