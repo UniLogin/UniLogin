@@ -27,7 +27,7 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[], validCodeHashes: ValidCodeHashes) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList) {
   return {
     port: 3311,
     jsonRpcUrl,
@@ -39,7 +39,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
       chainId: 0
     },
     ensRegistrars,
-    validCodeHashes
+    contractWhiteList
   };
 }
 
@@ -59,7 +59,7 @@ declare interface startDevelopmentOverrides {
   relayerClass?: RelayerClass;
 }
 
-declare interface ValidCodeHashes {
+declare interface ContractWhiteList {
   master: string[];
   proxy: string[];
 }
@@ -73,11 +73,11 @@ async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverri
   const proxyContractHash = getHashDeployedProxyAbicode();
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
-  const validCodeHashes = {
+  const contractWhiteList = {
     master:  [masterContractHash],
     proxy: [proxyContractHash]
   };
-  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains, validCodeHashes);
+  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains, contractWhiteList);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains};
 }
