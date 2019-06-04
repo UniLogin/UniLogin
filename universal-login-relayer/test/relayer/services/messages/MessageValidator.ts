@@ -16,7 +16,10 @@ describe('MessageValidator', async () => {
   before(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
-    messageValidator = new MessageValidator(wallet);
+    messageValidator = new MessageValidator(wallet, {
+      master: [],
+      proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
+    });
   });
 
   it('throw error when not enough gas', async () => {
@@ -30,5 +33,15 @@ describe('MessageValidator', async () => {
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidator.validate(signedMessage, transactionReq))
       .to.be.eventually.rejectedWith('Not enough tokens');
+  });
+
+  it('throw error when not correct proxy', async () => {
+    messageValidator = new MessageValidator(wallet, {
+      master: [],
+      proxy: []
+    });
+    const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
+    const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
+    await expect(messageValidator.validate(signedMessage, transactionReq)).to.be.eventually.rejectedWith('Invalid proxy hash: 0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb');
   });
 });

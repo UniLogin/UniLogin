@@ -16,17 +16,22 @@ export class RelayerUnderTest extends Relayer {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
-    const config = {
+    const config: Config = {
       port,
       privateKey: wallet.privateKey,
       chainSpec: {
+        name: 'test',
         ensAddress: ensBuilder.ens.address,
         chainId: 0,
       },
       ensRegistrars: [DOMAIN],
       walletMasterAddress: address,
+      contractWhiteList: {
+        master: [],
+        proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
+      }
     };
-    return new RelayerUnderTest(config as Config, providerWithENS);
+    return new RelayerUnderTest(config, providerWithENS);
   }
 
   url() {

@@ -25,6 +25,10 @@ async function startRelayer(wallet, relayerConstructor) {
     ensRegistrars: ['mylogin.eth'],
     walletMasterAddress: walletMaster.address,
     tokenContractAddress: tokenContract.address,
+    contractWhiteList: {
+      master: [],
+      proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
+    }
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();

@@ -14,6 +14,6 @@ export default async function setupTransactionService(knex) {
   const pendingMessagesStore = new PendingMessagesSQLStore(knex);
   const transactionQueueStore = new TransactionQueueStore(knex);
   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
-  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, transactionQueueService, pendingMessagesStore);
+  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, transactionQueueService, pendingMessagesStore, {proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']});
   return { wallet, actionKey, provider, mockToken, authorisationService, messageHandler, walletContract, otherWallet };
 }
