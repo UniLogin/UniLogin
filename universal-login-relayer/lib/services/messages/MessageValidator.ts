@@ -19,7 +19,9 @@ export class MessageValidator {
     ensure(
       this.contractWhiteList.proxy.includes(proxyContractHash),
       InvalidProxy,
-      proxyContractHash);
+      from,
+      proxyContractHash,
+      this.contractWhiteList.proxy);
   }
 }
 

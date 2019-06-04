@@ -38,10 +38,10 @@ describe('MessageValidator', async () => {
   it('throw error when not correct proxy', async () => {
     messageValidator = new MessageValidator(wallet, {
       master: [],
-      proxy: []
+      proxy: ['0x1234']
     });
     const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionReq)).to.be.eventually.rejectedWith('Invalid proxy hash: 0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb');
+    await expect(messageValidator.validate(signedMessage, transactionReq)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb'. Supported bytecode hashes: 0x1234`);
   });
 });
