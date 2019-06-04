@@ -35,7 +35,7 @@ export class InvalidContract extends ValidationFailed {
 
 export class InvalidProxy extends ValidationFailed {
   constructor (address: string, proxyHash: string, supportedProxyHashes: string[]) {
-    super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: ${supportedProxyHashes}`, 'InvalidSignature');
+    super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidSignature');
     Object.setPrototypeOf(this, InvalidContract.prototype);
   }
 }
