@@ -34,7 +34,7 @@ const config: Config =  Object.freeze({
   walletMasterAddress: getEnv('WALLET_MASTER_ADDRESS', ''),
   contractWhiteList: {
     master: [],
-    proxy: []
+    proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
   }
 });
 
