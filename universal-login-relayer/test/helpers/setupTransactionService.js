@@ -6,6 +6,7 @@ import TransactionQueueStore from '../../lib/services/transactions/TransactionQu
 import AuthorisationService from '../../lib/services/authorisationService';
 import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesSQLStore from '../../lib/services/messages/PendingMessagesSQLStore';
+import {getContractWhiteList} from '../../lib/utils/relayerUnderTest';
 
 export default async function setupTransactionService(knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -14,6 +15,6 @@ export default async function setupTransactionService(knex) {
   const pendingMessagesStore = new PendingMessagesSQLStore(knex);
   const transactionQueueStore = new TransactionQueueStore(knex);
   const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
-  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, transactionQueueService, pendingMessagesStore, {proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']});
+  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, transactionQueueService, pendingMessagesStore, getContractWhiteList());
   return { wallet, actionKey, provider, mockToken, authorisationService, messageHandler, walletContract, otherWallet };
 }
