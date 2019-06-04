@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {ContractJSON} from '@universal-login/commons';
+import {ContractJSON} from '../types/ContractJSON';
 
 export const getDeployedBytecode = (contract: ContractJSON) => contract.evm.deployedBytecode.object;
 

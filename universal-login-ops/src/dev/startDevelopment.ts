@@ -1,7 +1,7 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
-import {ContractWhiteList} from '@universal-login/commons';
+import {ContractWhiteList, getContractHash} from '@universal-login/commons';
 import {RelayerClass} from '@universal-login/relayer';
 import Proxy from '@universal-login/contracts/build/Proxy.json';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
@@ -10,7 +10,6 @@ import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
 import deployWalletMaster from './deployWalletMaster';
 import deployToken from './deployToken';
-import getContractHash from '../common/contractHeplers.js';
 
 const ganachePort = 18545;
 
