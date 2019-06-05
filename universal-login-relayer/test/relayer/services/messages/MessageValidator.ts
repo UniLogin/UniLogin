@@ -21,26 +21,32 @@ describe('MessageValidator', async () => {
     messageValidator = new MessageValidator(wallet, contractWhiteList);
   });
 
-  it('throw error when not enough gas', async () => {
+  it('throws when not enough gas', async () => {
     const signedMessage = await createSignedMessage({...message, gasLimit: 100}, wallet.privateKey);
-    const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionReq)).to.be.eventually.rejectedWith('Not enough gas');
+    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
+    await expect(messageValidator.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
-  it('Error when not enough tokens', async () => {
+  it('throws when not enough tokens', async () => {
     const signedMessage = await createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
-    const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionReq))
+    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
+    await expect(messageValidator.validate(signedMessage, transactionRequest))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
 
-  it('throw error when not correct proxy', async () => {
-    messageValidator = new MessageValidator(wallet, {
+  it('throws when invalid proxy', async () => {
+    const messageValidatorWithInvalidProxy = new MessageValidator(wallet, {
       master: [],
       proxy: ['0x1234']
     });
     const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
-    const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionReq)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [0x1234]`);
+    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
+    await expect(messageValidatorWithInvalidProxy.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [0x1234]`);
+  });
+
+  it('successfully pass the validation', async () => {
+    const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
+    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
+    await expect(messageValidator.validate(signedMessage, transactionRequest)).to.not.rejected;
   });
 });
