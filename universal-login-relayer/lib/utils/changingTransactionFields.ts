@@ -1,19 +1,20 @@
 import {utils} from 'ethers';
+import {SignedMessage} from '@universal-login/commons';
 
-export function stringifyTransactionFields(transaction: Partial<utils.Transaction>) {
+export function stringifySignedMessageFields(signedMessage: SignedMessage) {
   return {
-    ...transaction,
-    value: transaction.value && transaction.value.toString(),
-    gasLimit: transaction.gasLimit && transaction.gasLimit.toString(),
-    gasPrice: transaction.gasPrice && transaction.gasPrice.toString()
+    ...signedMessage,
+    value: signedMessage.value && signedMessage.value.toString(),
+    gasLimit: signedMessage.gasLimit && signedMessage.gasLimit.toString(),
+    gasPrice: signedMessage.gasPrice && signedMessage.gasPrice.toString()
   };
 }
 
-export function bignumberifyTransactionFields(transaction: any) {
+export function bignumberifySignedMessageFields(signedMessage: any) {
   return {
-    ...transaction,
-    value:  utils.bigNumberify(transaction.value),
-    gasLimit: utils.bigNumberify(transaction.gasLimit),
-    gasPrice:  utils.bigNumberify(transaction.gasPrice)
+    ...signedMessage,
+    value:  utils.bigNumberify(signedMessage.value),
+    gasLimit: utils.bigNumberify(signedMessage.gasLimit),
+    gasPrice:  utils.bigNumberify(signedMessage.gasPrice)
   };
 }

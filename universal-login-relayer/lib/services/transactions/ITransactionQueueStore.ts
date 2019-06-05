@@ -1,17 +1,17 @@
-import {utils} from 'ethers';
+import {SignedMessage} from '@universal-login/commons';
 
 export interface ITransactionQueueStore {
-  add: (transaction: Partial<utils.Transaction>) => Promise<string>;
-  getNext: () => Promise<TransactionEntity | undefined>;
+  add: (transaction: SignedMessage) => Promise<string>;
+  getNext: () => Promise<MessageEntity | undefined>;
   onSuccessRemove: (id: string, hash: string) => Promise<void>;
   onErrorRemove: (id: string, error: string) => Promise<void>;
 }
 
-export interface TransactionEntity {
+export interface MessageEntity {
   id: string;
   hash: string | undefined;
   error: string | undefined;
-  message: Partial<utils.Transaction>;
+  message: SignedMessage;
 }
 
 export default ITransactionQueueStore;

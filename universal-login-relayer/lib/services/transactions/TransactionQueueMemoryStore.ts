@@ -1,19 +1,19 @@
-import {utils} from 'ethers';
-import {ITransactionQueueStore, TransactionEntity} from './ITransactionQueueStore';
+import {SignedMessage} from '@universal-login/commons';
+import {ITransactionQueueStore, MessageEntity} from './ITransactionQueueStore';
 
 export default class TransactionQueueMemoryStore implements ITransactionQueueStore {
   private counter: number;
-  public transactionEntries: TransactionEntity[];
+  public messageEntries: MessageEntity[];
 
   constructor() {
     this.counter = 0;
-    this.transactionEntries = [];
+    this.messageEntries = [];
   }
 
-  async add (transaction: Partial<utils.Transaction>) {
+  async add (signedMessage: SignedMessage) {
     this.counter++;
-    this.transactionEntries.push({
-      message: transaction,
+    this.messageEntries.push({
+      message: signedMessage,
       id: this.counter.toString(),
       hash: 'hash',
       error: undefined
@@ -22,14 +22,14 @@ export default class TransactionQueueMemoryStore implements ITransactionQueueSto
   }
 
   async getNext () {
-    return this.transactionEntries[0];
+    return this.messageEntries[0];
   }
 
   async onSuccessRemove (id: string, hash: string) {
-    this.transactionEntries.pop();
+    this.messageEntries.pop();
   }
 
   async onErrorRemove (id: string, error: string) {
-    this.transactionEntries.pop();
+    this.messageEntries.pop();
   }
 }

@@ -15,7 +15,6 @@ import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from './config/relayer';
 import MessageHandler from './services/MessageHandler';
-import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 import errorHandler from './middlewares/errorHandler';
 import PendingMessagesSQLStore from './services/messages/PendingMessagesSQLStore';
@@ -37,7 +36,6 @@ class Relayer {
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
   private transactionQueueStore: TransactionQueueStore = {} as TransactionQueueStore;
-  private transactionQueueService: TransactionQueueService = {} as TransactionQueueService;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private pendingMessagesStore: PendingMessagesSQLStore = {} as PendingMessagesSQLStore;
   private app: Application = {} as Application;

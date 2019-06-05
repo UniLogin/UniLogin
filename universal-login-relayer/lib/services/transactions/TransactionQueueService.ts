@@ -1,6 +1,7 @@
-import {Wallet, utils, providers} from 'ethers';
-import {sleep, onCritical} from '@universal-login/commons';
+import {Wallet, providers} from 'ethers';
+import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
 import ITransactionQueueStore from './ITransactionQueueStore';
+import {messageToTransaction} from '../../utils/utils';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
@@ -14,12 +15,13 @@ class QueuedTransactionService {
     this.state = 'stopped';
   }
 
-  async add(transaction: Partial<utils.Transaction>) {
-    return this.queueTransactionStore.add(transaction);
+  async add(signedMessage: SignedMessage) {
+    return this.queueTransactionStore.add(signedMessage);
   }
 
-  async execute(transaction: Partial<utils.Transaction>, id: string) {
+  async execute(signedMessage: SignedMessage, id: string) {
     try {
+      const transaction: providers.TransactionRequest = messageToTransaction(signedMessage);
       const sentTransaction = await this.wallet.sendTransaction(transaction);
       await this.provider.waitForTransaction(sentTransaction.hash!);
       await this.onTransactionSent!(sentTransaction);
