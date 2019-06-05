@@ -1,7 +1,6 @@
 import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
 import MessageHandler from '../../lib/services/MessageHandler';
-import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueStore from '../../lib/services/transactions/TransactionQueueStore';
 import AuthorisationService from '../../lib/services/authorisationService';
 import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
@@ -14,7 +13,6 @@ export default async function setupTransactionService(knex) {
   const authorisationService = new AuthorisationService(knex);
   const pendingMessagesStore = new PendingMessagesSQLStore(knex);
   const transactionQueueStore = new TransactionQueueStore(knex);
-  const transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueStore);
-  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, transactionQueueService, pendingMessagesStore, getContractWhiteList());
+  const messageHandler = new MessageHandler(wallet, authorisationService, hooks, pendingMessagesStore, transactionQueueStore, getContractWhiteList(), provider);
   return { wallet, actionKey, provider, mockToken, authorisationService, messageHandler, walletContract, otherWallet };
 }

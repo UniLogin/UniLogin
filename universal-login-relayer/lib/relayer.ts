@@ -55,7 +55,7 @@ class Relayer {
     await this.database.migrate.latest();
     this.runServer();
     await this.ensService.start();
-    this.transactionQueueService.start();
+    this.messageHandler.start();
   }
 
   runServer() {
@@ -70,8 +70,7 @@ class Relayer {
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
-    this.transactionQueueService = new TransactionQueueService(this.wallet, this.provider, this.transactionQueueStore);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.transactionQueueService, this.pendingMessagesStore, this.config.contractWhiteList);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.transactionQueueStore, this.config.contractWhiteList, this.provider);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
@@ -81,7 +80,7 @@ class Relayer {
   }
 
   async stop() {
-    await this.transactionQueueService.stop();
+    await this.messageHandler.stop();
     await this.database.destroy();
     await this.server.close();
   }

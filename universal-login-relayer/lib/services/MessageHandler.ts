@@ -9,19 +9,22 @@ import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
 import IPendingMessagesStore from './messages/IPendingMessagesStore';
+import ITransactionQueueStore from './transactions/ITransactionQueueStore';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
+  private messageQueue: TransactionQueueService;
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, pendingMessagesStore: IPendingMessagesStore, contractWhiteList: ContractWhiteList) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, transactionQueueStore: ITransactionQueueStore, contractWhiteList: ContractWhiteList, provider: providers.Provider) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
+    this.messageQueue = new TransactionQueueService(this.wallet, provider, transactionQueueStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 
@@ -30,10 +33,10 @@ class MessageHandler {
   }
 
   start() {
-    this.transactionQueue.setOnTransactionSent(
+    this.messageQueue.setOnTransactionSent(
       this.onTransactionSent.bind(this)
     );
-    this.transactionQueue.start();
+    this.messageQueue.start();
   }
 
   async onTransactionSent(sentTransaction: providers.TransactionResponse) {
@@ -67,13 +70,13 @@ class MessageHandler {
   }
 
   stop() {
-    this.transactionQueue.stop();
-    this.transactionQueue.setOnTransactionSent(undefined);
+    this.messageQueue.stop();
+    this.messageQueue.setOnTransactionSent(undefined);
   }
 
   async stopLater() {
-    this.transactionQueue.stopLater();
-    this.transactionQueue.setOnTransactionSent(undefined);
+    this.messageQueue.stopLater();
+    this.messageQueue.setOnTransactionSent(undefined);
   }
 }
 
