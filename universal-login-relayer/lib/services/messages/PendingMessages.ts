@@ -1,27 +1,41 @@
-import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure} from '@universal-login/commons';
+import {Wallet, Contract, providers} from 'ethers';
+import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
 import IPendingMessagesStore, {CollectedSignatureKeyPair} from './IPendingMessagesStore';
 import {getKeyFromHashAndSignature, sortSignatureKeyPairsByKey, createPendingMessage} from '../../utils/utils';
 
+declare type DoExecute = (message: SignedMessage) => Promise<providers.TransactionResponse>;
+
 export default class PendingMessages {
 
-  constructor(private wallet : Wallet, private messagesStore: IPendingMessagesStore) {
+  constructor(private wallet : Wallet, private messagesStore: IPendingMessagesStore, public doExecute: DoExecute) {
   }
 
   async isPresent(messageHash : string) {
     return this.messagesStore.isPresent(messageHash);
   }
 
-  async add(message: SignedMessage) : Promise<string> {
+  async add(message: SignedMessage) : Promise<providers.TransactionResponse | MessageStatus> {
     const messageHash = calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
       const pendingMessage = createPendingMessage(message.from);
       await this.messagesStore.add(messageHash, pendingMessage);
     }
     await this.addSignatureToPendingMessage(messageHash, message);
-    return messageHash;
+    if (await this.isEnoughSignatures(messageHash)) {
+      return this.onReadyToExecute(messageHash, message);
+    } else {
+      return this.getStatus(messageHash);
+    }
+  }
+
+  private async onReadyToExecute(messageHash: string, message: SignedMessage) {
+    const finalMessage = await this.getMessageWithSignatures(message, messageHash);
+    await this.ensureCorrectExecution(messageHash);
+    const transaction: providers.TransactionResponse = await this.doExecute(finalMessage);
+    await this.confirmExecution(messageHash, transaction.hash!);
+    return transaction;
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {
@@ -29,14 +43,18 @@ export default class PendingMessages {
     ensure(pendingMessage.transactionHash === '0x0', DuplicatedExecution);
     const isContainSignature = await this.messagesStore.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
+    await this.ensureCorrectKeyPurpose(message, pendingMessage.walletAddress, this.wallet);
+    await this.messagesStore.addSignature(messageHash, message.signature);
+  }
+
+  private async ensureCorrectKeyPurpose(message: SignedMessage, walletAddress: string, wallet: Wallet) {
     const key = getKeyFromHashAndSignature(
       calculateMessageHash(message),
       message.signature
     );
-    const walletContract = new Contract(pendingMessage.walletAddress, WalletContract.interface, this.wallet);
+    const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
     const keyPurpose = await walletContract.getKeyPurpose(key);
     ensure(!keyPurpose.eq(INVALID_KEY), InvalidSignature, 'Invalid key purpose');
-    await this.messagesStore.addSignature(messageHash, message.signature);
   }
 
   async getStatus(messageHash: string) {

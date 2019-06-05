@@ -18,7 +18,6 @@ import MessageHandler from './services/MessageHandler';
 import TransactionQueueService from './services/transactions/TransactionQueueService';
 import TransactionQueueStore from './services/transactions/TransactionQueueStore';
 import errorHandler from './middlewares/errorHandler';
-import PendingMessages from './services/messages/PendingMessages';
 import PendingMessagesSQLStore from './services/messages/PendingMessagesSQLStore';
 
 const defaultPort = '3311';
@@ -41,7 +40,6 @@ class Relayer {
   private transactionQueueService: TransactionQueueService = {} as TransactionQueueService;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private pendingMessagesStore: PendingMessagesSQLStore = {} as PendingMessagesSQLStore;
-  private pendingMessages: PendingMessages = {} as PendingMessages;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
 
@@ -71,10 +69,9 @@ class Relayer {
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
-    this.pendingMessages = new PendingMessages(this.wallet, this.pendingMessagesStore);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
     this.transactionQueueService = new TransactionQueueService(this.wallet, this.provider, this.transactionQueueStore);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.transactionQueueService, this.pendingMessages);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.transactionQueueService, this.pendingMessagesStore, this.config.contractWhiteList);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));

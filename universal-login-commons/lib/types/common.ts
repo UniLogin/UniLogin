@@ -21,3 +21,8 @@ export interface DeviceInfo {
   browser: string;
   time: string;
 }
+
+export declare interface ContractWhiteList {
+  master: string[];
+  proxy: string[];
+}

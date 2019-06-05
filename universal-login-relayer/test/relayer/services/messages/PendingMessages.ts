@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
@@ -7,6 +8,7 @@ import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContr
 import PendingMessagesSQLStore from '../../../../lib/services/messages/PendingMessagesSQLStore';
 import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../lib/utils/utils';
 import { getKnex } from '../../../../lib/utils/knexUtils';
+import {clearDatabase} from '../../../../lib/utils/relayerUnderTest';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
@@ -15,15 +17,21 @@ describe('INT: PendingMessages', () => {
   let walletContract: Contract;
   let actionKey: string;
   const knex = getKnex();
+  let spy: SinonSpy;
+  let messageHash: string;
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
     const pendingMessagesStore = new PendingMessagesSQLStore(knex);
-    pendingMessages = new PendingMessages(wallet, pendingMessagesStore);
+    spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
+    pendingMessages = new PendingMessages(wallet, pendingMessagesStore, spy);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
+    messageHash = calculateMessageHash(message);
     await walletContract.setRequiredSignatures(2);
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
+  });
+
+  afterEach(async () => {
+    await clearDatabase(knex);
   });
 
   it('not present initally', async () => {
@@ -31,48 +39,46 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should be addded', async () => {
-    const hash = await pendingMessages.add(message);
-    expect(await pendingMessages.isPresent(hash)).to.be.true;
+    await pendingMessages.add(message);
+    expect(await pendingMessages.isPresent(messageHash)).to.be.true;
   });
 
   it('getStatus should throw error', async () => {
-    const hash = calculateMessageHash(message);
-    await expect(pendingMessages.getStatus(hash)).to.eventually.rejectedWith(`Could not find message with hash: ${hash}`);
+    await expect(pendingMessages.getStatus(messageHash)).to.eventually.rejectedWith(`Could not find message with hash: ${messageHash}`);
   });
 
   it('get should throw error if message doesn`t exist', async () => {
-    const hash = calculateMessageHash(message);
-    await expect(pendingMessages.get(hash)).to.eventually.rejectedWith(`Could not find message with hash: ${hash}`);
+    await expect(pendingMessages.get(messageHash)).to.eventually.rejectedWith(`Could not find message with hash: ${messageHash}`);
   });
 
-  it('should check if execution is ready to execute', async () => {
+  it('should check if execution is ready to execute and execution callback', async () => {
     const signedMessage = await createSignedMessage(message, actionKey);
-    const hash1 = await pendingMessages.add(message);
-    expect(await pendingMessages.isEnoughSignatures(hash1)).to.eq(false);
-    const hash2 = await pendingMessages.add(signedMessage);
-    expect(await pendingMessages.isEnoughSignatures(hash2)).to.eq(true);
+    await pendingMessages.add(message);
+    expect(await pendingMessages.isEnoughSignatures(messageHash)).to.eq(false);
+    expect(spy.calledOnce).to.be.false;
+    await pendingMessages.add(signedMessage);
+    expect(spy.calledOnce).to.be.true;
   });
 
   it('should return message with signature', async () => {
-    const hash = await pendingMessages.add(message);
-    const messageWithSignaures = await pendingMessages.getMessageWithSignatures(message, hash);
+    await pendingMessages.add(message);
+    const messageWithSignaures = await pendingMessages.getMessageWithSignatures(message, messageHash);
     expect(messageWithSignaures).to.deep.eq(message);
   });
 
   it('should get added signed transaction', async () => {
     const pendingMessage = createPendingMessage(message.from);
-    const hash = await pendingMessages.add(message);
-
-    const key = getKeyFromHashAndSignature(hash, message.signature);
+    await pendingMessages.add(message);
+    const key = getKeyFromHashAndSignature(messageHash, message.signature);
     await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key});
-    expect((await pendingMessages.get(hash)).toString()).to.eq(pendingMessage.toString());
+    expect((await pendingMessages.get(messageHash)).toString()).to.eq(pendingMessage.toString());
   });
 
   describe('Add', async () => {
 
     it('should push one signature', async () => {
-      const hash = await pendingMessages.add(message);
-      const status = await pendingMessages.getStatus(hash);
+      await pendingMessages.add(message);
+      const status = await pendingMessages.getStatus(messageHash);
       const {collectedSignatures} = status;
       expect(status.collectedSignatures.length).to.be.eq(1);
       expect(collectedSignatures[0]).to.be.eq(message.signature);
@@ -80,10 +86,9 @@ describe('INT: PendingMessages', () => {
 
     it('should sign message', async () => {
       const signedMessage = await createSignedMessage(message, actionKey);
-      const hash1 = await pendingMessages.add(message);
-      const hash2 = await pendingMessages.add(signedMessage);
-      expect(hash1).to.be.eq(hash2);
-      const collectedSignatures = (await pendingMessages.getStatus(hash1)).collectedSignatures;
+      await pendingMessages.add(message);
+      await pendingMessages.add(signedMessage);
+      const collectedSignatures = (await pendingMessages.getStatus(messageHash)).collectedSignatures;
       expect(collectedSignatures).to.be.deep.eq([message.signature, signedMessage.signature]);
     });
 
@@ -101,15 +106,15 @@ describe('INT: PendingMessages', () => {
 
   describe('Confirm message', async () => {
     it('should not confirm message with invalid transaction hash', async () => {
-      const messageHash = await pendingMessages.add(message);
-      const expectedTransactionHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
+      await pendingMessages.add(message);
+      const expectedTransactionHash = '0x0000000000000000000000000000000000000000000000000000000000000123';
       await pendingMessages.confirmExecution(messageHash, expectedTransactionHash);
       const {transactionHash} = await pendingMessages.getStatus(messageHash);
       expect(transactionHash).to.be.eq(expectedTransactionHash);
     });
 
     it('should throw InvalidTransaction if transactionHash is not correct', async () => {
-      const messageHash = await pendingMessages.add(message);
+      await pendingMessages.add(message);
       await expect(pendingMessages.confirmExecution(messageHash, '0x1234')).to.eventually.be.rejectedWith('Invalid transaction: 0x1234');
     });
   });
@@ -117,22 +122,20 @@ describe('INT: PendingMessages', () => {
   describe('Ensure correct execution', async () =>  {
     it('should throw when pending message already has transaction hash', async () => {
       await walletContract.setRequiredSignatures(1);
-      const hash = await pendingMessages.add(message);
-      await pendingMessages.confirmExecution(hash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
-      await expect(pendingMessages.ensureCorrectExecution(hash))
+      await pendingMessages.add(message);
+      await pendingMessages.confirmExecution(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
+      await expect(pendingMessages.ensureCorrectExecution(messageHash))
           .to.be.eventually.rejectedWith('Execution request already processed');
     });
 
     it('should throw error when pending message has not enough signatures', async () => {
-      const hash = await pendingMessages.add(message);
-      await expect(pendingMessages.ensureCorrectExecution(hash))
+      await pendingMessages.add(message);
+      await expect(pendingMessages.ensureCorrectExecution(messageHash))
         .to.be.eventually.rejectedWith('Not enough signatures, required 2, got only 1');
     });
   });
 
   after(async () => {
-    await knex.delete().from('signature_key_pairs');
-    await knex.delete().from('messages');
     await knex.destroy();
   });
 });
