@@ -19,7 +19,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
     }
 
     function initialize(address _key) external onlyInitializing() {
-        // TODO: sync from kitsune store
+        // TODO: sync persistent nonce
         // lastNonce = _nonce;
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
@@ -29,7 +29,6 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
     }
 
-    // Disabled upgradability: persistent nonce not sync
     function initializeWithENS(
         address _key,
         bytes32 _hashLabel,
@@ -38,7 +37,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         FIFSRegistrar registrar,
         PublicResolver resolver) external onlyInitializing()
     {
-        // TODO: sync from kitsune store
+        // TODO: sync persistent nonce
         // lastNonce = _nonce;
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
@@ -55,7 +54,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         bytes calldata _initData,
         bool _reset) external onlyManagementKeyOrThisContract()
     {
-        // TODO: sync to kitsune store
+        // TODO: sync persistent nonce
         // _nonce = lastNonce;
         // reset
         if (_reset) {
