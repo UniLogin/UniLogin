@@ -1,6 +1,6 @@
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import {getContractHash} from '@universal-login/commons';
 import {deployContract} from 'ethereum-waffle';
-import getContractHash from '../common/contractHeplers';
 
 export default async function deployWalletMaster(deployWallet) {
   const {address} = await deployContract(deployWallet, WalletMaster);

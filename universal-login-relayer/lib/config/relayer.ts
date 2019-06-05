@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { getEnv } from '@universal-login/commons';
+import { getEnv, ContractWhiteList } from '@universal-login/commons';
 
 dotenv.config();
 
@@ -14,6 +14,7 @@ export interface Config {
   };
   ensRegistrars: string[];
   walletMasterAddress: string;
+  contractWhiteList: ContractWhiteList;
 }
 
 const config: Config =  Object.freeze({
@@ -30,7 +31,11 @@ const config: Config =  Object.freeze({
     getEnv('ENS_DOMAIN_2', ''),
     getEnv('ENS_DOMAIN_3', ''),
   ],
-  walletMasterAddress: getEnv('WALLET_MASTER_ADDRESS', '')
+  walletMasterAddress: getEnv('WALLET_MASTER_ADDRESS', ''),
+  contractWhiteList: {
+    master: [],
+    proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
+  }
 });
 
 export default config;

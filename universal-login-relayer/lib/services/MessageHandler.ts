@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, ContractWhiteList} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationService from './authorisationService';
 import TransactionQueueService from './transactions/TransactionQueueService';
@@ -15,14 +15,14 @@ class MessageHandler {
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, private pendingMessagesStore: IPendingMessagesStore) {
-    this.validator = new MessageValidator(this.wallet);
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, pendingMessagesStore: IPendingMessagesStore, contractWhiteList: ContractWhiteList) {
+    this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.pendingMessages = new PendingMessages(this.wallet, this.pendingMessagesStore, this.doExecute.bind(this));
+    this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 
   private doExecute(message: SignedMessage) {

@@ -1,7 +1,7 @@
 export {sleep, waitToBeMined, waitUntil, waitExpect, waitForContractDeploy, sendAndWaitForTransaction} from './utils/wait';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
-export {PartialRequired, Procedure, Predicate, Notification, Omit, DeviceInfo} from './types/common';
+export {DeviceInfo, ContractWhiteList, Notification, Omit, PartialRequired, Procedure, Predicate} from './types/common';
 export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus} from './types/message';
 export {copy} from './utils/copy';
 export {ensure, onCritical} from './utils/handleError';
@@ -18,3 +18,4 @@ export {withENS} from './utils/withENS';
 export {createKeyPair, KeyPair} from './utils/keyPair';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './utils/calculateMessageSignature';
 export {createSignedMessage} from './utils/signMessage';
+export {getContractHash, getDeployedBytecode} from './utils/contractHeplers';

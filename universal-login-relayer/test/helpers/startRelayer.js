@@ -2,6 +2,7 @@ import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster';
 import Token from '../../lib/dev/Token.json';
 import ENSBuilder from 'ens-builder';
+import {getContractWhiteList} from '../../lib/utils/relayerUnderTest';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -25,6 +26,7 @@ async function startRelayer(wallet, relayerConstructor) {
     ensRegistrars: ['mylogin.eth'],
     walletMasterAddress: walletMaster.address,
     tokenContractAddress: tokenContract.address,
+    contractWhiteList: getContractWhiteList()
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();

@@ -1,8 +1,9 @@
 import Knex from 'knex';
 import {providers, Wallet, ContractFactory} from 'ethers';
 const ENSBuilder = require('ens-builder');
-import {withENS} from '@universal-login/commons';
+import {withENS, getContractHash} from '@universal-login/commons';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import Proxy from '@universal-login/contracts/build/Proxy.json';
 import {Config} from '../config/relayer';
 import Relayer from '../relayer';
 
@@ -16,17 +17,19 @@ export class RelayerUnderTest extends Relayer {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
-    const config = {
+    const config: Config = {
       port,
       privateKey: wallet.privateKey,
       chainSpec: {
+        name: 'test',
         ensAddress: ensBuilder.ens.address,
         chainId: 0,
       },
       ensRegistrars: [DOMAIN],
       walletMasterAddress: address,
+      contractWhiteList: getContractWhiteList()
     };
-    return new RelayerUnderTest(config as Config, providerWithENS);
+    return new RelayerUnderTest(config, providerWithENS);
   }
 
   url() {
@@ -53,3 +56,8 @@ export async function clearDatabase(knex: Knex) {
   await knex.delete().from('messages');
   await knex.delete().from('authorisations');
 }
+
+export const getContractWhiteList = () => ({
+  master: [],
+  proxy: [getContractHash(Proxy)]
+});

@@ -1,15 +1,15 @@
+import {dirname, join} from 'path';
+import {getWallets} from 'ethereum-waffle';
+import {providers, Wallet} from 'ethers';
+import {ContractWhiteList, getContractHash} from '@universal-login/commons';
+import {RelayerClass} from '@universal-login/relayer';
+import Proxy from '@universal-login/contracts/build/Proxy.json';
+import ensureDatabaseExist from '../common/ensureDatabaseExist';
+import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
 import deployWalletMaster from './deployWalletMaster';
 import deployToken from './deployToken';
-import {getWallets} from 'ethereum-waffle';
-import {providers, Wallet, utils} from 'ethers';
-import ensureDatabaseExist from '../common/ensureDatabaseExist';
-import Proxy from '@universal-login/contracts/build/Proxy.json';
-import {startDevelopmentRelayer} from './startRelayer';
-import {RelayerClass} from '@universal-login/relayer';
-import {dirname, join} from 'path';
-import getContractHash from '../common/contractHeplers.js';
 
 const ganachePort = 18545;
 
@@ -58,11 +58,6 @@ function getMigrationPath() {
 declare interface startDevelopmentOverrides {
   nodeUrl?: string;
   relayerClass?: RelayerClass;
-}
-
-declare interface ContractWhiteList {
-  master: string[];
-  proxy: string[];
 }
 
 async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverrides = {}) {
