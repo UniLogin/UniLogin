@@ -13,7 +13,7 @@ async function depolyEns(wallet) {
 }
 
 async function startRelayer(wallet, relayerConstructor) {
-  const walletMaster = await deployContract(wallet, WalletMaster);
+  const walletMaster = await deployContract(wallet, WalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const tokenContract = await deployContract(wallet, Token, []);
   const ensAddress = await depolyEns(wallet);
   const config = Object.freeze({

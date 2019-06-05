@@ -6,7 +6,7 @@ import {deployContract} from 'ethereum-waffle';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
 export default async function createWalletContract(wallet, ensService) {
-  const walletMaster = await deployContract(wallet, WalletMaster);
+  const walletMaster = await deployContract(wallet, WalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const factory = new ContractFactory(
     WalletProxy.interface,
     `0x${WalletProxy.evm.bytecode.object}`,
