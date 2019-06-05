@@ -35,7 +35,7 @@ export function createProxyDeployWithENSArgs(publicKey: string, ensDomainData: E
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
-  const walletMaster = await deployContract(deployer, WalletMaster);
+  const walletMaster = await deployContract(deployer, WalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
   return {
     ensDomainData: {

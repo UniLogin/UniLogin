@@ -10,7 +10,7 @@ const {parseEther} = utils;
 
 export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const ownerWallet = Wallet.createRandom();
-  const walletContractMaster = await deployContract(wallet, WalletMaster);
+  const walletContractMaster = await deployContract(wallet, WalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const initData = encodeInitializeData(ownerWallet.address);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address, initData]);
   const mockToken = await deployContract(wallet, MockToken);

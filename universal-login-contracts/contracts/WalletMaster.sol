@@ -18,8 +18,9 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         return address(this);
     }
 
-    // Disabled upgradability: persistent nonce not sync
     function initialize(address _key) external onlyInitializing() {
+        // TODO: sync from kitsune store
+        // lastNonce = _nonce;
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
@@ -36,8 +37,9 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         bytes32 _node, ENS ens,
         FIFSRegistrar registrar,
         PublicResolver resolver) external onlyInitializing()
-        {
-
+    {
+        // TODO: sync from kitsune store
+        // lastNonce = _nonce;
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
@@ -53,10 +55,12 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         bytes calldata _initData,
         bool _reset) external onlyManagementKeyOrThisContract()
     {
+        // TODO: sync to kitsune store
+        // _nonce = lastNonce;
+        // reset
         if (_reset) {
             revert("not-implemented");
         }
-        // For unknown reason this line causes issues (out-of-gas). Is ganache at fault?
         setMaster(_newMaster, _initData);
     }
 

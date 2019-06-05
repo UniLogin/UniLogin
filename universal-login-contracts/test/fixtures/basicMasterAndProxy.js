@@ -9,7 +9,7 @@ export default async function basicMasterAndProxy(provider, [, , , , , , , , , w
   const keyAsAddress = wallet.address;
   const {provider} = wallet;
   const privateKey = wallet.privateKey;
-  const walletMaster = await deployContract(wallet, MockWalletMaster);
+  const walletMaster = await deployContract(wallet, MockWalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const walletProxy = await deployContract(wallet, Proxy, [walletMaster.address, []]);
   const mockToken = await deployContract(wallet, MockToken);
   const proxyAsWallet = new Contract(walletProxy.address, MockWalletMaster.abi, wallet);
