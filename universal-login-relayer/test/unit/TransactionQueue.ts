@@ -1,14 +1,14 @@
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {waitExpect, SignedMessage, createSignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {waitExpect, SignedMessage} from '@universal-login/commons';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueMemoryStore from '../../lib/services/transactions/TransactionQueueMemoryStore';
+import getSignedMessage from '../config/message';
 
 use(sinonChai);
 
 describe('UNIT: Transaction Queue Service', async () => {
-  const privateKey = '0x63f01680950dc70f2eb8f373de0c360fcbb89ef437f2f6f2f0a1797979e490a4';
   let transactionQueueService: TransactionQueueService;
   let transactionQueueMemoryStorage: TransactionQueueMemoryStore;
   const provider: any = {waitForTransaction: sinon.fake()};
@@ -19,7 +19,7 @@ describe('UNIT: Transaction Queue Service', async () => {
   beforeEach(async () => {
     transactionQueueMemoryStorage = new TransactionQueueMemoryStore();
     transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueMemoryStorage, 1);
-    signedMessage = await createSignedMessage({from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS}, privateKey);
+    signedMessage = await getSignedMessage();
   });
 
   it('signedMessage round trip', async () => {

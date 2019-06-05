@@ -3,14 +3,14 @@ import {utils} from 'ethers';
 import {getKnex} from '../../../../lib/utils/knexUtils';
 import TransactionQueueStore from '../../../../lib/services/transactions/TransactionQueueStore';
 import {SignedMessage, createSignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {getSignedMessage, testPrivateKey} from '../../../config/message';
 
 describe('INT: Transaction Queue Store', async () => {
   let transactionQueueStore: TransactionQueueStore;
   let signedMessage: SignedMessage;
-  const privateKey = '0x63f01680950dc70f2eb8f373de0c360fcbb89ef437f2f6f2f0a1797979e490a4';
 
   before(async () => {
-    signedMessage = await createSignedMessage({from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS}, privateKey);
+    signedMessage = await getSignedMessage();
   });
 
   beforeEach(async () => {
@@ -31,7 +31,7 @@ describe('INT: Transaction Queue Store', async () => {
 
   it('transaction round trip', async () => {
     const [idFirst] = await transactionQueueStore.add(signedMessage);
-    const signedMessage2 = await await createSignedMessage({from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('2')}, privateKey);
+    const signedMessage2 = await createSignedMessage({from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('2')}, testPrivateKey);
     const [idSecond] = await transactionQueueStore.add(signedMessage2);
     const id = (await transactionQueueStore.getNext()).id;
     expect(id).to.be.equal(idFirst);
