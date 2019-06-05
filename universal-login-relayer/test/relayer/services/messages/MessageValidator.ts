@@ -21,6 +21,12 @@ describe('MessageValidator', async () => {
     messageValidator = new MessageValidator(wallet, contractWhiteList);
   });
 
+  it('successfully pass the validation', async () => {
+    const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
+    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
+    await expect(messageValidator.validate(signedMessage, transactionRequest)).to.not.be.rejected;
+  });
+
   it('throws when not enough gas', async () => {
     const signedMessage = await createSignedMessage({...message, gasLimit: 100}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
@@ -37,16 +43,10 @@ describe('MessageValidator', async () => {
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new MessageValidator(wallet, {
       master: [],
-      proxy: ['0x1234']
+      proxy: [TEST_ACCOUNT_ADDRESS]
     });
     const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidatorWithInvalidProxy.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [0x1234]`);
-  });
-
-  it('successfully pass the validation', async () => {
-    const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
-    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionRequest)).to.not.rejected;
+    await expect(messageValidatorWithInvalidProxy.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });
