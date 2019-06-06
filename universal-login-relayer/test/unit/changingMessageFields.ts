@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, OPERATION_CALL} from '@universal-login/commons';
-import {bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../lib/utils/changingTransactionFields';
+import {bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../lib/utils/changingMessageFields';
 import {testPrivateKey} from '../config/message';
 
 describe('UNIT: Parsing Transaction', () => {

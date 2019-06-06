@@ -1,7 +1,7 @@
 import {SignedMessage} from '@universal-login/commons';
 
-export interface ITransactionQueueStore {
-  add: (transaction: SignedMessage) => Promise<string>;
+export interface IMessageQueueStore {
+  add: (message: SignedMessage) => Promise<string>;
   getNext: () => Promise<MessageEntity | undefined>;
   onSuccessRemove: (id: string, hash: string) => Promise<void>;
   onErrorRemove: (id: string, error: string) => Promise<void>;
@@ -14,4 +14,4 @@ export interface MessageEntity {
   message: SignedMessage;
 }
 
-export default ITransactionQueueStore;
+export default IMessageQueueStore;

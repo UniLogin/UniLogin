@@ -15,7 +15,7 @@ import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from './config/relayer';
 import MessageHandler from './services/MessageHandler';
-import TransactionQueueStore from './services/transactions/TransactionQueueStore';
+import MessageQueueStore from './services/messages/MessageQueueStore';
 import errorHandler from './middlewares/errorHandler';
 import PendingMessagesSQLStore from './services/messages/PendingMessagesSQLStore';
 
@@ -35,7 +35,7 @@ class Relayer {
   private ensService: ENSService = {} as ENSService;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
-  private transactionQueueStore: TransactionQueueStore = {} as TransactionQueueStore;
+  private messageQueueStore: MessageQueueStore = {} as MessageQueueStore;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private pendingMessagesStore: PendingMessagesSQLStore = {} as PendingMessagesSQLStore;
   private app: Application = {} as Application;
@@ -67,8 +67,8 @@ class Relayer {
     this.authorisationService = new AuthorisationService(this.database);
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
-    this.transactionQueueStore = new TransactionQueueStore(this.database);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.transactionQueueStore, this.config.contractWhiteList);
+    this.messageQueueStore = new MessageQueueStore(this.database);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));

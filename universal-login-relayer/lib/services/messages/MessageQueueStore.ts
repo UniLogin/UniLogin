@@ -1,14 +1,14 @@
 import Knex from 'knex';
 import {SignedMessage} from '@universal-login/commons';
-import {ITransactionQueueStore} from '../messages/IMessageQueueStore';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingTransactionFields';
+import {IMessageQueueStore} from './IMessageQueueStore';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingMessageFields';
 
 interface QueueItem {
   hash?: string;
   error?: string;
 }
 
-export default class TransactionQueueStore implements ITransactionQueueStore {
+export default class MessageQueueStore implements IMessageQueueStore {
   public tableName: string;
 
   constructor(public database: Knex) {

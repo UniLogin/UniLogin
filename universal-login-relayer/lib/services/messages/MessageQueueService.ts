@@ -1,22 +1,22 @@
 import {Wallet, providers} from 'ethers';
 import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
-import ITransactionQueueStore from '../messages/IMessageQueueStore';
+import IMessageQueueStore from './IMessageQueueStore';
 import {messageToTransaction} from '../../utils/utils';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
 export type OnTransactionSent = (transaction: providers.TransactionResponse) => Promise<void>;
 
-class QueuedTransactionService {
+class QueuedMessageService {
   private state: QueueState;
   private onTransactionSent?: OnTransactionSent;
 
-  constructor(private wallet: Wallet, private provider: providers.Provider, private queueTransactionStore: ITransactionQueueStore, private tick: number = 100){
+  constructor(private wallet: Wallet, private provider: providers.Provider, private queueMessageStore: IMessageQueueStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
   async add(signedMessage: SignedMessage) {
-    return this.queueTransactionStore.add(signedMessage);
+    return this.queueMessageStore.add(signedMessage);
   }
 
   async execute(signedMessage: SignedMessage, id: string) {
@@ -25,9 +25,9 @@ class QueuedTransactionService {
       const sentTransaction = await this.wallet.sendTransaction(transaction);
       await this.provider.waitForTransaction(sentTransaction.hash!);
       await this.onTransactionSent!(sentTransaction);
-      await this.queueTransactionStore.onSuccessRemove(id, sentTransaction.hash!);
+      await this.queueMessageStore.onSuccessRemove(id, sentTransaction.hash!);
     } catch (error) {
-      await this.queueTransactionStore.onErrorRemove(id, `${error.name}: ${error.message}`);
+      await this.queueMessageStore.onErrorRemove(id, `${error.name}: ${error.message}`);
     }
   }
 
@@ -44,9 +44,9 @@ class QueuedTransactionService {
 
   async loop() {
     do {
-      const nextTransaction = await this.queueTransactionStore.getNext();
-      if (nextTransaction){
-        await this.execute(nextTransaction.message, nextTransaction.id);
+      const nextMessage = await this.queueMessageStore.getNext();
+      if (nextMessage){
+        await this.execute(nextMessage.message, nextMessage.id);
       } else {
         if (this.state === 'stopping'){
           this.state = 'stopped';
@@ -73,4 +73,4 @@ class QueuedTransactionService {
   }
 }
 
-export default QueuedTransactionService;
+export default QueuedMessageService;
