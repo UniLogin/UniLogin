@@ -1,24 +1,24 @@
 import Knex from 'knex';
-import {utils} from 'ethers';
-import {ITransactionQueueStore} from './ITransactionQueueStore';
-import {stringifyTransactionFields, bignumberifyTransactionFields} from '../../utils/changingTransactionFields';
+import {SignedMessage} from '@universal-login/commons';
+import {IMessageQueueStore} from './IMessageQueueStore';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingMessageFields';
 
 interface QueueItem {
   hash?: string;
   error?: string;
 }
 
-export default class TransactionQueueStore implements ITransactionQueueStore {
+export default class MessageQueueStore implements IMessageQueueStore {
   public tableName: string;
 
   constructor(public database: Knex) {
     this.tableName = 'transactions';
   }
 
-  async add(transaction: Partial<utils.Transaction>) {
+  async add(signedMessage: SignedMessage) {
     return this.database
       .insert({
-        message: stringifyTransactionFields(transaction),
+        message: stringifySignedMessageFields(signedMessage),
         created_at: this.database.fn.now()
       })
       .into(this.tableName)
@@ -33,7 +33,7 @@ export default class TransactionQueueStore implements ITransactionQueueStore {
       .orderBy('created_at', 'asc')
       .select();
     if (next) {
-      next.message = bignumberifyTransactionFields(next.message);
+      next.message = bignumberifySignedMessageFields(next.message);
     }
     return next;
   }

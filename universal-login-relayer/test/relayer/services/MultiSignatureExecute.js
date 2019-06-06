@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageHash, createSignedMessage} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
-import setupTransactionService from '../../helpers/setupTransactionService';
+import setupMessageService from '../../helpers/setupMessageService';
 import {getKnex} from '../../../lib/utils/knexUtils';
 import {clearDatabase} from '../../../lib/utils/relayerUnderTest';
 
@@ -18,7 +18,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
   const knex = getKnex();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, messageHandler, mockToken, walletContract, otherWallet} = await setupTransactionService(knex));
+    ({wallet, actionKey, provider, messageHandler, mockToken, walletContract, otherWallet} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
     await walletContract.setRequiredSignatures(2);
   });
@@ -65,7 +65,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
       expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
     });
 
-    describe('Query transaction status', async () => {
+    describe('Query message status', async () => {
       it('should get pending execution status', async () => {
         const signedMessage0 = await createSignedMessage(msg, wallet.privateKey);
         const signedMessage1 = await createSignedMessage(msg, actionKey);

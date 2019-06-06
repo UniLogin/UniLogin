@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {ACTION_KEY, createSignedMessage} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../fixtures/basicWalletContract';
-import setupTransactionService from '../../helpers/setupTransactionService';
+import setupMessageService from '../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../config/defaults';
 import {getKnex} from '../../../lib/utils/knexUtils';
 import {clearDatabase} from '../../../lib/utils/relayerUnderTest';
@@ -19,7 +19,7 @@ describe('Relayer - MessageHandler', async () => {
   const knex = getKnex();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, mockToken, authorisationService, walletContract, otherWallet} = await setupTransactionService(knex));
+    ({wallet, provider, messageHandler, mockToken, authorisationService, walletContract, otherWallet} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
   });
 
