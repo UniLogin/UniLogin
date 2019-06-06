@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
-import ITransactionQueueStore from './ITransactionQueueStore';
+import ITransactionQueueStore from '../messages/IMessageQueueStore';
 import {messageToTransaction} from '../../utils/utils';
 
 type QueueState = 'running' | 'stopped' | 'stopping';

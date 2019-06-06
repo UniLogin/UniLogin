@@ -9,7 +9,7 @@ import {decodeDataForExecuteSigned} from './transactions/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
 import IPendingMessagesStore from './messages/IPendingMessagesStore';
-import ITransactionQueueStore from './transactions/ITransactionQueueStore';
+import ITransactionQueueStore from './messages/IMessageQueueStore';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;

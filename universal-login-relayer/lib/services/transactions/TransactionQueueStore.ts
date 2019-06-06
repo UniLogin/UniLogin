@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {SignedMessage} from '@universal-login/commons';
-import {ITransactionQueueStore} from './ITransactionQueueStore';
+import {ITransactionQueueStore} from '../messages/IMessageQueueStore';
 import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingTransactionFields';
 
 interface QueueItem {
