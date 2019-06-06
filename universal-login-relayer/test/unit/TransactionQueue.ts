@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {waitExpect, SignedMessage} from '@universal-login/commons';
 import TransactionQueueService from '../../lib/services/transactions/TransactionQueueService';
 import TransactionQueueMemoryStore from '../../lib/services/transactions/TransactionQueueMemoryStore';
-import getSignedMessage from '../config/message';
+import getTestSignedMessage from '../config/message';
 
 use(sinonChai);
 
@@ -19,7 +19,7 @@ describe('UNIT: Transaction Queue Service', async () => {
   beforeEach(async () => {
     transactionQueueMemoryStorage = new TransactionQueueMemoryStore();
     transactionQueueService = new TransactionQueueService(wallet, provider, transactionQueueMemoryStorage, 1);
-    signedMessage = await getSignedMessage();
+    signedMessage = await getTestSignedMessage();
   });
 
   it('signedMessage round trip', async () => {
