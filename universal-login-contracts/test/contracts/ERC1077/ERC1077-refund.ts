@@ -2,12 +2,12 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
 import basicERC1077 from '../../fixtures/basicERC1077';
-import ERC1077 from '../../../build/ERC1077.json';
 import {transferMessage} from '../../utils/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
 import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, OPERATION_CALL} from '@universal-login/commons';
-import {getExecutionArgs} from '../../utils';
 import Loop from '../../../build/Loop.json';
+import {encodeFunction} from '../../utils';
+import {encodeDataForExecuteSigned} from '../../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -25,7 +25,7 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicERC1077));
     loopContract = await deployContract(wallet, Loop);
-    const loopFunctionData = new utils.Interface(Loop.interface).functions.loop.encode([]);
+    const loopFunctionData = encodeFunction(Loop, 'loop');
     infiniteCallMessage = {
       from: walletContract.address,
       to: loopContract.address,
@@ -43,7 +43,7 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
     const initialBalance = await wallet.getBalance();
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address};
     signature = await calculateMessageSignature(managementKeyPair.privateKey, message);
-    const executeData = new utils.Interface(ERC1077.interface).functions.executeSigned.encode([...getExecutionArgs(message), signature]);
+    const executeData = encodeDataForExecuteSigned({...message, signature});
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
@@ -54,14 +54,14 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
   it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
     signature = await calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
-    const executeData = new utils.Interface(ERC1077.interface).functions.executeSigned.encode([...getExecutionArgs(infiniteCallMessage), signature]);
+    const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
     expect(wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit})).not.to.be.reverted;
   });
 
   it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
     signature = await calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
-    const executeData = new utils.Interface(ERC1077.interface).functions.executeSigned.encode([...getExecutionArgs(infiniteCallMessage), signature]);
+    const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
     expect(wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit})).not.to.be.reverted;
   });
 });

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, OPERATION_CALL} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '../../lib/services/messages/serialisation';
+import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {messageToTransaction} from '../../lib/utils/utils';
 
 describe('MessageToTransaction', () => {

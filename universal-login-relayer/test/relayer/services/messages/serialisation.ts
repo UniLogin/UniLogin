@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {createSignedMessage, SignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {encodeDataForExecuteSigned, decodeDataForExecuteSigned} from '../../../../lib/services/messages/serialisation';
+import {encodeDataForExecuteSigned} from '@universal-login/contracts';
+import {decodeDataForExecuteSigned} from '../../../../lib/services/transactions/serialisation';
 
 describe('Coding transaction data', () => {
   let message: SignedMessage;
