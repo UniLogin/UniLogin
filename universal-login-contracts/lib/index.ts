@@ -1,1 +1,1 @@
-export {encodeInitializeWithENSData, encodeInitializeData} from './encode';
+export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned} from './encode';

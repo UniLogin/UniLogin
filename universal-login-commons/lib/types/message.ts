@@ -26,3 +26,5 @@ export type MessageStatus = {
   required: number,
   transactionHash: string
 };
+
+export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
