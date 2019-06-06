@@ -17,14 +17,14 @@ class MessageHandler {
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, transactionQueueStore: ITransactionQueueStore, contractWhiteList: ContractWhiteList, provider: providers.Provider) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, transactionQueueStore: ITransactionQueueStore, contractWhiteList: ContractWhiteList) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new TransactionQueueService(this.wallet, provider, transactionQueueStore);
+    this.messageQueue = new TransactionQueueService(this.wallet, this.wallet.provider, transactionQueueStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 

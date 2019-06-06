@@ -68,7 +68,7 @@ class Relayer {
     this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
     this.transactionQueueStore = new TransactionQueueStore(this.database);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.transactionQueueStore, this.config.contractWhiteList, this.provider);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.transactionQueueStore, this.config.contractWhiteList);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.config.chainSpec));
