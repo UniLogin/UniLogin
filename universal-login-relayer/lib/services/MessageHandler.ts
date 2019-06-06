@@ -71,7 +71,7 @@ class MessageHandler {
   }
 
   async stopLater() {
-    this.messageQueue.stopLater();
+    await this.messageQueue.stopLater();
   }
 }
 

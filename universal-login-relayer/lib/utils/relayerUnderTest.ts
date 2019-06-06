@@ -42,7 +42,7 @@ export class RelayerUnderTest extends Relayer {
 
   async stop() {
     await clearDatabase(this.database);
-    await super.stop();
+    await super.stopLater();
   }
 }
 
@@ -52,6 +52,7 @@ async function deployContract(wallet: Wallet) {
 }
 
 export async function clearDatabase(knex: Knex) {
+  await knex.delete().from('transactions');
   await knex.delete().from('signature_key_pairs');
   await knex.delete().from('messages');
   await knex.delete().from('authorisations');
