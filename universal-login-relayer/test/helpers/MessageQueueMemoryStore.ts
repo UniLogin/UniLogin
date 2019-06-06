@@ -1,5 +1,5 @@
 import {SignedMessage} from '@universal-login/commons';
-import {IMessageQueueStore, MessageEntity} from './IMessageQueueStore';
+import {IMessageQueueStore, MessageEntity} from '../../lib/services/messages/IMessageQueueStore';
 
 export default class MessageQueueMemoryStore implements IMessageQueueStore {
   private counter: number;

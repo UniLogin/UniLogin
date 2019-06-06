@@ -8,15 +8,15 @@ import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContr
 import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../lib/utils/utils';
 import {getKnex} from '../../../../lib/utils/knexUtils';
 import PendingMessagesSQLStore from '../../../../lib/services/messages/PendingMessagesSQLStore';
-import PendingMessagesStore from '../../../../lib/services/messages/PendingMessagesStore';
+import PendingMessagesMemoryStore from '../../../helpers/PendingMessagesMemoryStore';
 import {clearDatabase} from '../../../../lib/utils/relayerUnderTest';
 
 for (const config of [{
     name: 'PendingMessagesSQLStore',
     type: PendingMessagesSQLStore,
   }, {
-    type: PendingMessagesStore,
-    name: 'PendingMessagesStore',
+    type: PendingMessagesMemoryStore,
+    name: 'PendingMessageMemoryStore',
   }]
 ) {
 describe(`INT: IPendingMessageStore (${config.name})`, async () => {

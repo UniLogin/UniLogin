@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {waitExpect, SignedMessage} from '@universal-login/commons';
 import MessageQueueService from '../../lib/services/messages/MessageQueueService';
-import MessageQueueMemoryStore from '../../lib/services/messages/MessageQueueMemoryStore';
+import MessageQueueMemoryStore from '../helpers/MessageQueueMemoryStore';
 import getTestSignedMessage from '../config/message';
 
 use(sinonChai);
