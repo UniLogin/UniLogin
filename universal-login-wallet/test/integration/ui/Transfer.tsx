@@ -9,6 +9,7 @@ import {setupSdk} from '../helpers/setupSdk';
 import {setupUI} from '../helpers/setupUI';
 import {AppPage} from '../pages/AppPage';
 
+
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
   let services: Services;
@@ -33,7 +34,7 @@ describe('UI: Transfer', () => {
     appPage.transfer().enterTransferDetails(receiverAddress, '1');
 
     const tokenBalance = await appPage.dashboard().getBalance(mockTokenContract, walletAddress);
-    expect(tokenBalance).to.eq('999967463000000000');
+    expect(tokenBalance).to.match(/^[9999|0-9]{18}/);
   });
 
   after(async () => {
