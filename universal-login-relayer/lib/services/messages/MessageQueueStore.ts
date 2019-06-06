@@ -1,7 +1,6 @@
 import Knex from 'knex';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, calculateMessageHash, stringifySignedMessageFields, bignumberifySignedMessageFields} from '@universal-login/commons';
 import {IMessageQueueStore} from './IMessageQueueStore';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingMessageFields';
 
 interface QueueItem {
   hash?: string;
@@ -39,11 +38,15 @@ export default class MessageQueueStore implements IMessageQueueStore {
   }
 
   async markAsSuccess (messageId: string, transactionHash: string) {
-    await this.remove(messageId, {hash: transactionHash});
+    await this.markAs(messageId, {hash: transactionHash});
   }
 
-  async markAsError (messageId: string, error: string) {
-    await this.remove(messageId, {error});
+  async markAsError (messageId: string, inputError: string) {
+    let error: string = inputError;
+    if (error.length > 255) {
+      error = error.substr(0, 255);
+    }
+    await this.markAs(messageId, {error});
   }
 
   async get(id: string) {
@@ -53,7 +56,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
       .first();
   }
 
-  private remove(id: string, data: QueueItem) {
+  private markAs(id: string, data: QueueItem) {
     return this.database(this.tableName)
       .where('id', id)
       .update(data);

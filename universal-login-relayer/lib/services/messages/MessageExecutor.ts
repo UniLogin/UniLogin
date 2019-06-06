@@ -6,7 +6,7 @@ import MessageValidator from './MessageValidator';
 
 export class MessageExecutor {
 
-  constructor(private wallet: Wallet, private onTransactionSent: OnTransactionSent, private messageValidator: MessageValidator) {
+  constructor(public wallet: Wallet, private onTransactionSent: OnTransactionSent, private messageValidator: MessageValidator) {
   }
 
   async executeAndWait(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {

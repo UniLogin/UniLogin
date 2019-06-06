@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitToBeMined, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitToBeMined, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -127,6 +127,23 @@ class UniversalLoginSDK {
     return this.relayerApi.getConfig();
   }
 
+  async waitForStatus(messageId: string, timeout: number = 1000, tick: number = 20) {
+    let elapsed = 0;
+    let status;
+    do {
+      if (elapsed > timeout) {
+        throw Error('Timeout');
+      }
+      await sleep(tick);
+      elapsed += tick;
+      status =  await this.relayerApi.getStatusById(messageId);
+    } while (status && !status.transactionHash && !status.error);
+    if (status.error) {
+      throw Error(status.error);
+    }
+    return status;
+  }
+
   async execute(message: Message, privateKey: string) {
     const unsignedMessage = {
       ...this.defaultPaymentOptions,
@@ -134,11 +151,10 @@ class UniversalLoginSDK {
       nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
-
-    const result = await this.relayerApi.execute(signedMessage);
-
-    if (result.transaction.hash) {
-      const transactionHash = result.transaction.hash;
+    const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
+    if (typeof result.transaction === 'number') {
+      const status = await this.waitForStatus(result.transaction);
+      const {transactionHash} = status;
       await waitToBeMined(this.provider, transactionHash);
       return transactionHash;
     }

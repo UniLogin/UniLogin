@@ -67,7 +67,8 @@ describe('SDK - integration', async () => {
     describe('Execute signed message', async () => {
       it('Should execute signed message', async () => {
         const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-        await sdk.execute({...message, to: otherWallet.address}, privateKey);
+        const transactionHash = await sdk.execute({...message, to: otherWallet.address}, privateKey);
+        expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 
