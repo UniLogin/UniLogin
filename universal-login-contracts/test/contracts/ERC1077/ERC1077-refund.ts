@@ -21,10 +21,12 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
   let managementKeyPair: KeyPair;
   let loopContract: Contract;
   let infiniteCallMessage: UnsignedMessage;
+  let initialBalance: utils.BigNumber;
 
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicERC1077));
     loopContract = await deployContract(wallet, Loop);
+    initialBalance = await wallet.getBalance();
     const loopFunctionData = encodeFunction(Loop, 'loop');
     infiniteCallMessage = {
       from: walletContract.address,
@@ -40,7 +42,6 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
   });
 
   it('refund works', async () => {
-    const initialBalance = await wallet.getBalance();
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address};
     signature = await calculateMessageSignature(managementKeyPair.privateKey, message);
     const executeData = encodeDataForExecuteSigned({...message, signature});
@@ -55,13 +56,20 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
     signature = await calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    expect(wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit})).not.to.be.reverted;
+    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
+    const receipt = await provider.getTransactionReceipt(transaction.hash as string);
+    const balanceAfter = await wallet.getBalance();
+    expect(balanceAfter).to.be.above(initialBalance.sub(receipt.gasUsed as utils.BigNumber));
   });
 
   it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
+    const initialTokenBalance = await mockToken.balanceOf(wallet.address);
     infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
     signature = await calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    expect(wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit})).not.to.be.reverted;
+    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
+    const receipt = await provider.getTransactionReceipt(transaction.hash as string);
+    const balanceAfter = await mockToken.balanceOf(wallet.address);
+    expect(balanceAfter).to.be.above(initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber));
   });
 });
