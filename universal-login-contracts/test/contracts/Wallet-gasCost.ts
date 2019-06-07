@@ -10,8 +10,8 @@ import {encodeInitializeData} from '../../lib';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const deployProxyCost = '290000';
-const deployProxyWithENSCost = '490000';
+const deployProxyCost = '330000';
+const deployProxyWithENSCost = '510000';
 
 
 describe('Performance test', async () => {

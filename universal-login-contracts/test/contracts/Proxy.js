@@ -34,7 +34,7 @@ describe('CONTRACT: ProxyMasterCopy', async () => {
     });
 
     it('should be properly constructed', async () => {
-			expect(await proxyAsWallet.master()).to.eq(walletMaster.address);
+      expect(await proxyAsWallet.implementation()).to.eq(walletMaster.address);
     });
 
     it('should be able to send transaction to wallet', async () => {
