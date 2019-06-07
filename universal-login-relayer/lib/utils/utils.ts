@@ -1,7 +1,7 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {SignedMessage} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '../services/transactions/serialisation';
 import PendingMessage from '../services/messages/PendingMessage';
 
 

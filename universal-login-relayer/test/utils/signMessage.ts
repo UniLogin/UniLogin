@@ -4,7 +4,7 @@ import {createSignedMessage, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@univer
 import {transferMessage} from '../fixtures/basicWalletContract';
 
 
-describe('UNIT: signTransaction', async () => {
+describe('UNIT: signMessage', async () => {
   it('sign a message', async () => {
     const privateKey = '0x899d97b42f840d59d60f3a18514b28042a1d86fa400d6cf9425ec3a9217d0cea';
     const expectedMessage = {

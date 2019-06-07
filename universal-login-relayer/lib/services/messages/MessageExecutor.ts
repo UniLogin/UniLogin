@@ -1,7 +1,7 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage} from '@universal-login/commons';
 import {messageToTransaction} from '../../utils/utils';
-import {OnTransactionSent} from '../transactions/TransactionQueueService';
+import {OnTransactionSent} from './MessageQueueService';
 import MessageValidator from './MessageValidator';
 
 export class MessageExecutor {
