@@ -1,24 +1,9 @@
 import {utils} from 'ethers';
-import {SignedMessage, Omit} from '@universal-login/commons';
+import {MessageWithoutFrom} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {InvalidHexData} from '../../utils/errors';
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
-
-type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
-
-export const encodeDataForExecuteSigned = (message: MessageWithoutFrom) =>
-  executeSigned.encode([
-    message.to,
-    message.value,
-    message.data,
-    message.nonce,
-    message.gasPrice,
-    message.gasToken,
-    message.gasLimit,
-    message.operationType,
-    message.signature
-  ]);
 
 export const decodeDataForExecuteSigned = (data: string) => dataToMessage(
   new utils.AbiCoder((type, value) => value).decode(

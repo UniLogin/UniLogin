@@ -12,6 +12,9 @@ contract ERC1077 is KeyHolder, IERC1077 {
     uint public lastNonce;
     uint public requiredSignatures;
 
+    uint ETHER_REFUND_CHARGE = 14000;
+    uint TOKEN_REFUND_CHARGE = 19500;
+
     constructor(address _key) KeyHolder(_key) public {
         requiredSignatures = 1;
     }
@@ -95,6 +98,14 @@ contract ERC1077 is KeyHolder, IERC1077 {
             operationType).toEthSignedMessageHash().recover(signatures);
     }
 
+    function refundGas(address gasToken) private view returns(uint) {
+        if (gasToken == address(0)) {
+            return ETHER_REFUND_CHARGE;
+        } else {
+            return TOKEN_REFUND_CHARGE;
+        }
+    }
+
     function executeSigned(
         address to,
         uint256 value,
@@ -115,7 +126,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
-        (success, _data) = to.call.value(value)(data);
+        (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType);
         emit ExecutedSigned(messageHash, nonce, success);
         uint256 gasUsed = startingGas.sub(gasleft());

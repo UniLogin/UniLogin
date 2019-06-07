@@ -3,25 +3,28 @@ import {EventEmitter} from 'fbemitter';
 import {SignedMessage, ContractWhiteList} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationService from './authorisationService';
-import TransactionQueueService from './transactions/TransactionQueueService';
+import MessageQueueService from './messages/MessageQueueService';
 import PendingMessages from './messages/PendingMessages';
-import {decodeDataForExecuteSigned} from './transactions/serialisation';
+import {decodeDataForExecuteSigned} from './messages/serialisation';
 import MessageExecutor from './messages/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
 import IPendingMessagesStore from './messages/IPendingMessagesStore';
+import IMessageQueueStore from './messages/IMessageQueueStore';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
+  private messageQueue: MessageQueueService;
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, private transactionQueue: TransactionQueueService, pendingMessagesStore: IPendingMessagesStore, contractWhiteList: ContractWhiteList) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
+    this.messageQueue = new MessageQueueService(this.wallet, this.wallet.provider, messageQueueStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 
@@ -30,10 +33,10 @@ class MessageHandler {
   }
 
   start() {
-    this.transactionQueue.setOnTransactionSent(
+    this.messageQueue.setOnTransactionSent(
       this.onTransactionSent.bind(this)
     );
-    this.transactionQueue.start();
+    this.messageQueue.start();
   }
 
   async onTransactionSent(sentTransaction: providers.TransactionResponse) {
@@ -67,13 +70,13 @@ class MessageHandler {
   }
 
   stop() {
-    this.transactionQueue.stop();
-    this.transactionQueue.setOnTransactionSent(undefined);
+    this.messageQueue.stop();
+    this.messageQueue.setOnTransactionSent(undefined);
   }
 
   async stopLater() {
-    this.transactionQueue.stopLater();
-    this.transactionQueue.setOnTransactionSent(undefined);
+    this.messageQueue.stopLater();
+    this.messageQueue.setOnTransactionSent(undefined);
   }
 }
 

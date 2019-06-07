@@ -1,16 +1,17 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {getKnex} from '../../../../lib/utils/knexUtils';
-import TransactionQueueStore from '../../../../lib/services/transactions/TransactionQueueStore';
-import transaction from '../../../config/transaction';
-
-const transaction2 = {
-  ...transaction,
-  value: utils.parseEther('2')
-};
+import TransactionQueueStore from '../../../../lib/services/messages/MessageQueueStore';
+import {SignedMessage} from '@universal-login/commons';
+import {getTestSignedMessage} from '../../../config/message';
 
 describe('INT: Transaction Queue Store', async () => {
   let transactionQueueStore: TransactionQueueStore;
+  let signedMessage: SignedMessage;
+
+  before(async () => {
+    signedMessage = await getTestSignedMessage();
+  });
 
   beforeEach(async () => {
     transactionQueueStore = new TransactionQueueStore(getKnex());
@@ -22,15 +23,16 @@ describe('INT: Transaction Queue Store', async () => {
   });
 
   it('addTransaction', async () =>  {
-    const [idFirst] = await transactionQueueStore.add(transaction);
+    const [idFirst] = await transactionQueueStore.add(signedMessage);
 
     expect(idFirst).to.be.a('number');
     expect(idFirst).to.be.at.least(1);
   });
 
   it('transaction round trip', async () => {
-    const [idFirst] = await transactionQueueStore.add(transaction);
-    const [idSecond] = await transactionQueueStore.add(transaction2);
+    const [idFirst] = await transactionQueueStore.add(signedMessage);
+    const signedMessage2 = await getTestSignedMessage({value: utils.parseEther('2')});
+    const [idSecond] = await transactionQueueStore.add(signedMessage2);
     const id = (await transactionQueueStore.getNext()).id;
     expect(id).to.be.equal(idFirst);
     expect(id).to.be.a('number');
