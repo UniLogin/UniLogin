@@ -156,10 +156,10 @@
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@ensdomains/resolver/-/resolver-0.1.3.tgz#e347031dc08f822d39364585e9f9ab2ac1147621"
 
-"@kitsune-wallet/contracts@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@kitsune-wallet/contracts/-/contracts-0.1.12.tgz#f5385837d3075cf12bff5f14f9f224223524e7b4"
-  integrity sha512-myfjWYD1e7BclkKGzTpNDL9wi9fqKG39zX0zGfFfiMzfUerQjjghucJNFetNUicb8LeVpFYyNlBibrZaUZAkZw==
+"@kitsune-wallet/contracts@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@kitsune-wallet/contracts/-/contracts-0.2.0.tgz#30fbc705ee15d56c181ac0648e115c4b648c1bb0"
+  integrity sha512-yfFfUrbehvycJbo1/oC5yOjiji1c/4z3g4SOca69vFNeRfk0h2K1O9IEqIFvzzdwVFcZ+jKXeCg+Le1c0xqH5Q==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

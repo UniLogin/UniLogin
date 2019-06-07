@@ -49,9 +49,9 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
     }
 
-    function updateMaster(
-        address _newMaster,
-        bytes calldata _initData,
+    function updateImplementation(
+        address _newImplementation,
+        bytes calldata _initializationData,
         bool _reset) external onlyManagementKeyOrThisContract()
     {
         // TODO: sync persistent nonce
@@ -60,7 +60,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         if (_reset) {
             revert("not-implemented");
         }
-        setMaster(_newMaster, _initData);
+        setImplementation(_newImplementation, _initializationData);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
