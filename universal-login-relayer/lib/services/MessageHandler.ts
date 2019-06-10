@@ -24,18 +24,15 @@ class MessageHandler {
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new MessageQueueService(this.wallet, this.wallet.provider, messageQueueStore);
+    this.messageQueue = new MessageQueueService(this.executor, messageQueueStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 
   private doExecute(message: SignedMessage) {
-    return this.executor.execute(message);
+    return this.executor.executeAndWait(message);
   }
 
   start() {
-    this.messageQueue.setOnTransactionSent(
-      this.onTransactionSent.bind(this)
-    );
     this.messageQueue.start();
   }
 
@@ -71,12 +68,10 @@ class MessageHandler {
 
   stop() {
     this.messageQueue.stop();
-    this.messageQueue.setOnTransactionSent(undefined);
   }
 
   async stopLater() {
     this.messageQueue.stopLater();
-    this.messageQueue.setOnTransactionSent(undefined);
   }
 }
 

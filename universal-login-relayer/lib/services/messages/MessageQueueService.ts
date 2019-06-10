@@ -1,7 +1,7 @@
-import {Wallet, providers} from 'ethers';
+import {providers} from 'ethers';
 import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
 import IMessageQueueStore from './IMessageQueueStore';
-import {messageToTransaction} from '../../utils/utils';
+import MessageExecutor from './MessageExecutor';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
@@ -9,9 +9,8 @@ export type OnTransactionSent = (transaction: providers.TransactionResponse) => 
 
 class QueuedMessageService {
   private state: QueueState;
-  private onTransactionSent?: OnTransactionSent;
 
-  constructor(private wallet: Wallet, private provider: providers.Provider, private queueMessageStore: IMessageQueueStore, private tick: number = 100){
+  constructor(private messageExecutor: MessageExecutor, private queueMessageStore: IMessageQueueStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
@@ -21,18 +20,11 @@ class QueuedMessageService {
 
   async execute(signedMessage: SignedMessage, id: string) {
     try {
-      const transaction: providers.TransactionRequest = messageToTransaction(signedMessage);
-      const sentTransaction = await this.wallet.sendTransaction(transaction);
-      await this.provider.waitForTransaction(sentTransaction.hash!);
-      await this.onTransactionSent!(sentTransaction);
+      const sentTransaction = await this.messageExecutor.executeAndWait(signedMessage);
       await this.queueMessageStore.onSuccessRemove(id, sentTransaction.hash!);
     } catch (error) {
       await this.queueMessageStore.onErrorRemove(id, `${error.name}: ${error.message}`);
     }
-  }
-
-  setOnTransactionSent(callback?: OnTransactionSent) {
-    this.onTransactionSent = callback;
   }
 
   start() {
