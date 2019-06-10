@@ -17,7 +17,7 @@ class MessageHandler {
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, private messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
+  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
