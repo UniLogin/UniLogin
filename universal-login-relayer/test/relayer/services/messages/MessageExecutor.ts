@@ -24,7 +24,7 @@ describe('MessageExecutor', async () => {
 
   it('should execute transaction', async () =>  {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
-    await messageExecutor.execute(signedMessage);
+    await messageExecutor.executeAndWait(signedMessage);
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.be.eq(expectedBalance);
   });

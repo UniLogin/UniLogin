@@ -1,17 +1,18 @@
-import {Wallet, providers} from 'ethers';
-import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
+import {providers} from 'ethers';
+import {sleep, onCritical, SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import IMessageQueueStore from './IMessageQueueStore';
-import {messageToTransaction} from '../../utils/utils';
+import MessageExecutor from './MessageExecutor';
+import IPendingMessagesStore from './IPendingMessagesStore';
+import { bignumberifySignedMessageFields } from '../../utils/changingMessageFields';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
 export type OnTransactionSent = (transaction: providers.TransactionResponse) => Promise<void>;
 
-class QueuedMessageService {
+class MessageQueueService {
   private state: QueueState;
-  private onTransactionSent?: OnTransactionSent;
 
-  constructor(private wallet: Wallet, private provider: providers.Provider, private queueMessageStore: IMessageQueueStore, private tick: number = 100){
+  constructor(private messageExecutor: MessageExecutor, private queueMessageStore: IMessageQueueStore, private pendingMessagesStore: IPendingMessagesStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
@@ -21,18 +22,14 @@ class QueuedMessageService {
 
   async execute(signedMessage: SignedMessage, id: string) {
     try {
-      const transaction: providers.TransactionRequest = messageToTransaction(signedMessage);
-      const sentTransaction = await this.wallet.sendTransaction(transaction);
-      await this.provider.waitForTransaction(sentTransaction.hash!);
-      await this.onTransactionSent!(sentTransaction);
-      await this.queueMessageStore.onSuccessRemove(id, sentTransaction.hash!);
+      const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
+      const messageEntity = await this.queueMessageStore.get(id);
+      const messageHash = await calculateMessageHash(bignumberifySignedMessageFields(messageEntity!.message));
+      await this.pendingMessagesStore.setTransactionHash(messageHash, hash!);
+      await this.queueMessageStore.markAsSuccess(id, hash!);
     } catch (error) {
-      await this.queueMessageStore.onErrorRemove(id, `${error.name}: ${error.message}`);
+      await this.queueMessageStore.markAsError(id, `${error.name}: ${error.message}`);
     }
-  }
-
-  setOnTransactionSent(callback?: OnTransactionSent) {
-    this.onTransactionSent = callback;
   }
 
   start() {
@@ -71,6 +68,10 @@ class QueuedMessageService {
   private isStopped() {
     return this.state === 'stopped';
   }
+
+  async getStatus(id: string) {
+    return this.queueMessageStore.get(id);
+  }
 }
 
-export default QueuedMessageService;
+export default MessageQueueService;

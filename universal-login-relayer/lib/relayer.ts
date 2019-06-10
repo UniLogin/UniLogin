@@ -82,6 +82,12 @@ class Relayer {
     await this.database.destroy();
     await this.server.close();
   }
+
+  async stopLater() {
+    await this.messageHandler.stopLater();
+    await this.database.destroy();
+    await this.server.close();
+  }
 }
 
 export default Relayer;

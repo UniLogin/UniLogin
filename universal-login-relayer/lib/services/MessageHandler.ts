@@ -24,27 +24,24 @@ class MessageHandler {
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new MessageQueueService(this.wallet, this.wallet.provider, messageQueueStore);
+    this.messageQueue = new MessageQueueService(this.executor, messageQueueStore, pendingMessagesStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 
   private doExecute(message: SignedMessage) {
-    return this.executor.execute(message);
+    return this.executor.executeAndWait(message);
   }
 
   start() {
-    this.messageQueue.setOnTransactionSent(
-      this.onTransactionSent.bind(this)
-    );
     this.messageQueue.start();
   }
 
   async onTransactionSent(sentTransaction: providers.TransactionResponse) {
-    const {data} = sentTransaction;
-    const message = decodeDataForExecuteSigned(data!);
-    if (message.to === sentTransaction.to) {
+    const {data, to} = sentTransaction;
+    const message = decodeDataForExecuteSigned(data);
+    if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
-        await this.removeReqFromAuthService({...message, from: sentTransaction.to!});
+        await this.removeReqFromAuthService({...message, from: to});
         this.hooks.emit('added', sentTransaction);
       } else if (isAddKeysCall(message.data as string)) {
         this.hooks.emit('keysAdded', sentTransaction);
@@ -69,14 +66,16 @@ class MessageHandler {
     }
   }
 
+  async getQueueStatus(id: string) {
+    return this.messageQueue.getStatus(id);
+  }
+
   stop() {
     this.messageQueue.stop();
-    this.messageQueue.setOnTransactionSent(undefined);
   }
 
   async stopLater() {
-    this.messageQueue.stopLater();
-    this.messageQueue.setOnTransactionSent(undefined);
+    await this.messageQueue.stopLater();
   }
 }
 
