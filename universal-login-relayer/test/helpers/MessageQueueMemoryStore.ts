@@ -25,6 +25,10 @@ export default class MessageQueueMemoryStore implements IMessageQueueStore {
     return this.messageEntries[0];
   }
 
+  async get(id: string) {
+    return this.messageEntries[0];
+  }
+
   async onSuccessRemove (id: string, hash: string) {
     this.messageEntries.pop();
   }

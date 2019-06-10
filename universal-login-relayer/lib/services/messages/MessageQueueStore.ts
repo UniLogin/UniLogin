@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {IMessageQueueStore} from './IMessageQueueStore';
 import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingMessageFields';
 
@@ -44,6 +44,13 @@ export default class MessageQueueStore implements IMessageQueueStore {
 
   async onErrorRemove (id: string, error: string) {
     await this.remove(id, {error});
+  }
+
+  async get(id: string) {
+    return this.database(this.tableName)
+      .where('id', id)
+      .select()
+      .first();
   }
 
   private remove(id: string, data: QueueItem) {

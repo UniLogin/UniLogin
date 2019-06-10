@@ -22,14 +22,27 @@ describe('INT: Message Queue Store', async () => {
     expect(nextTransaction).to.be.undefined;
   });
 
-  it('addTransaction', async () =>  {
+  it('add message', async () =>  {
     const [idFirst] = await messageQueueStore.add(signedMessage);
 
     expect(idFirst).to.be.a('number');
     expect(idFirst).to.be.at.least(1);
   });
 
-  it('transaction round trip', async () => {
+  it('get message', async () => {
+    const [id] = await messageQueueStore.add(signedMessage);
+    const messageEntity = await messageQueueStore.get(id);
+    expect(messageEntity.message.gasLimit.toString()).to.deep.eq(signedMessage.gasLimit);
+    expect(messageEntity.message.gasPrice.toString()).to.deep.eq(signedMessage.gasPrice);
+    expect(messageEntity.message.value.toString()).to.deep.eq(signedMessage.value);
+    expect(messageEntity.message.gasToken).to.deep.eq(signedMessage.gasToken);
+    expect(messageEntity.message.data).to.deep.eq(signedMessage.data);
+    expect(messageEntity.message.from).to.deep.eq(signedMessage.from);
+    expect(messageEntity.message.to).to.deep.eq(signedMessage.to);
+    expect(messageEntity.message.signature).to.deep.eq(signedMessage.signature);
+  });
+
+  it('message round trip', async () => {
     const [idFirst] = await messageQueueStore.add(signedMessage);
     const signedMessage2 = await getTestSignedMessage({value: utils.parseEther('2')});
     const [idSecond] = await messageQueueStore.add(signedMessage2);

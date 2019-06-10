@@ -37,11 +37,11 @@ class MessageHandler {
   }
 
   async onTransactionSent(sentTransaction: providers.TransactionResponse) {
-    const {data} = sentTransaction;
-    const message = decodeDataForExecuteSigned(data!);
-    if (message.to === sentTransaction.to) {
+    const {data, to} = sentTransaction;
+    const message = decodeDataForExecuteSigned(data);
+    if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
-        await this.removeReqFromAuthService({...message, from: sentTransaction.to!});
+        await this.removeReqFromAuthService({...message, from: to});
         this.hooks.emit('added', sentTransaction);
       } else if (isAddKeysCall(message.data as string)) {
         this.hooks.emit('keysAdded', sentTransaction);
@@ -64,6 +64,10 @@ class MessageHandler {
     } else {
       return null;
     }
+  }
+
+  async getQueueStatus(id: string) {
+    return this.messageQueue.getStatus(id);
   }
 
   stop() {
