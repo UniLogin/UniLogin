@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {IMessageQueueStore} from './IMessageQueueStore';
 import {stringifySignedMessageFields, bignumberifySignedMessageFields} from '../../utils/changingMessageFields';
 
