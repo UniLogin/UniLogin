@@ -29,11 +29,11 @@ export default class MessageQueueMemoryStore implements IMessageQueueStore {
     return this.messageEntries[0];
   }
 
-  async onSuccessRemove (id: string, hash: string) {
+  async markAsSuccess (id: string, hash: string) {
     this.messageEntries.pop();
   }
 
-  async onErrorRemove (id: string, error: string) {
+  async markAsError (id: string, error: string) {
     this.messageEntries.pop();
   }
 }

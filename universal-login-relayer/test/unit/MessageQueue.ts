@@ -46,9 +46,9 @@ describe('UNIT: Message Queue Service', async () => {
   it('should throw error when hash is null', async () => {
     messageQueueService = new MessageQueueService(executorReturnsNull, messageQueueMemoryStorage, 1);
     messageQueueService.start();
-    messageQueueMemoryStorage.onErrorRemove = sinon.spy(messageQueueMemoryStorage.onErrorRemove);
+    messageQueueMemoryStorage.markAsError = sinon.spy(messageQueueMemoryStorage.markAsError);
     await messageQueueService.add(signedMessage);
-    await waitExpect(() => expect(messageQueueMemoryStorage.onErrorRemove).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
+    await waitExpect(() => expect(messageQueueMemoryStorage.markAsError).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
   });
 
   afterEach(async () => {

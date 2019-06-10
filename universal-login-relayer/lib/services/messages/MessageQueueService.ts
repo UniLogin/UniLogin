@@ -21,9 +21,9 @@ class MessageQueueService {
   async execute(signedMessage: SignedMessage, id: string) {
     try {
       const sentTransaction = await this.messageExecutor.executeAndWait(signedMessage);
-      await this.queueMessageStore.onSuccessRemove(id, sentTransaction.hash!);
+      await this.queueMessageStore.markAsSuccess(id, sentTransaction.hash!);
     } catch (error) {
-      await this.queueMessageStore.onErrorRemove(id, `${error.name}: ${error.message}`);
+      await this.queueMessageStore.markAsError(id, `${error.name}: ${error.message}`);
     }
   }
 

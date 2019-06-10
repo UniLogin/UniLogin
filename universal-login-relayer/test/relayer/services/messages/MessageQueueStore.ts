@@ -50,12 +50,12 @@ describe('INT: Message Queue Store', async () => {
     expect(id).to.be.equal(idFirst);
     expect(id).to.be.a('number');
     expect(id).to.be.at.least(1);
-    await messageQueueStore.onSuccessRemove(idFirst, '0x000');
+    await messageQueueStore.markAsSuccess(idFirst, '0x000');
     const id2 = (await messageQueueStore.getNext()).id;
     expect(id2).to.be.equal(idSecond);
     expect(id2).to.be.a('number');
     expect(id2).to.be.at.least(2);
-    await messageQueueStore.onSuccessRemove(idSecond, '0x000');
+    await messageQueueStore.markAsSuccess(idSecond, '0x000');
     expect(await messageQueueStore.getNext()).to.be.undefined;
   });
 

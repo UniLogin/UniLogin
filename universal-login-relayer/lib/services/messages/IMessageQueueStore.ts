@@ -4,8 +4,8 @@ export interface IMessageQueueStore {
   add: (message: SignedMessage) => Promise<string>;
   get: (id: string) => Promise<MessageEntity | undefined>;
   getNext: () => Promise<MessageEntity | undefined>;
-  onSuccessRemove: (id: string, hash: string) => Promise<void>;
-  onErrorRemove: (id: string, error: string) => Promise<void>;
+  markAsSuccess: (id: string, transactionHash: string) => Promise<void>;
+  markAsError: (id: string, error: string) => Promise<void>;
 }
 
 export interface MessageEntity {

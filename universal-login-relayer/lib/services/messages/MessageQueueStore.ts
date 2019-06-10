@@ -38,12 +38,12 @@ export default class MessageQueueStore implements IMessageQueueStore {
     return next;
   }
 
-  async onSuccessRemove (id: string, hash: string) {
-    await this.remove(id, {hash});
+  async markAsSuccess (messageId: string, transactionHash: string) {
+    await this.remove(messageId, {hash: transactionHash});
   }
 
-  async onErrorRemove (id: string, error: string) {
-    await this.remove(id, {error});
+  async markAsError (messageId: string, error: string) {
+    await this.remove(messageId, {error});
   }
 
   async get(id: string) {
