@@ -5,12 +5,14 @@ import {waitExpect, SignedMessage} from '@universal-login/commons';
 import MessageQueueService from '../../lib/services/messages/MessageQueueService';
 import MessageQueueMemoryStore from '../helpers/MessageQueueMemoryStore';
 import getTestSignedMessage from '../config/message';
+import PendingMessagesMemoryStore from '../helpers/PendingMessagesMemoryStore';
 
 use(sinonChai);
 
 describe('UNIT: Message Queue Service', async () => {
   let messageQueueService: MessageQueueService;
   let messageQueueMemoryStorage: MessageQueueMemoryStore;
+  let pendingMessagesMemoryStorage: PendingMessagesMemoryStore;
   const wallet = {
     provider: {waitForTransaction: sinon.fake()}
   };
@@ -26,7 +28,8 @@ describe('UNIT: Message Queue Service', async () => {
 
   beforeEach(async () => {
     messageQueueMemoryStorage = new MessageQueueMemoryStore();
-    messageQueueService = new MessageQueueService(executor, messageQueueMemoryStorage, 1);
+    pendingMessagesMemoryStorage = new PendingMessagesMemoryStore();
+    messageQueueService = new MessageQueueService(executor, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
     signedMessage = await getTestSignedMessage();
   });
 
@@ -44,7 +47,7 @@ describe('UNIT: Message Queue Service', async () => {
   });
 
   it('should throw error when hash is null', async () => {
-    messageQueueService = new MessageQueueService(executorReturnsNull, messageQueueMemoryStorage, 1);
+    messageQueueService = new MessageQueueService(executorReturnsNull, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
     messageQueueService.start();
     messageQueueMemoryStorage.markAsError = sinon.spy(messageQueueMemoryStorage.markAsError);
     await messageQueueService.add(signedMessage);

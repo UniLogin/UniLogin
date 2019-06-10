@@ -24,7 +24,7 @@ class MessageHandler {
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new MessageQueueService(this.executor, messageQueueStore);
+    this.messageQueue = new MessageQueueService(this.executor, messageQueueStore, pendingMessagesStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
   }
 

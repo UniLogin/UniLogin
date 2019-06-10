@@ -1,7 +1,9 @@
 import {providers} from 'ethers';
-import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
+import {sleep, onCritical, SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import IMessageQueueStore from './IMessageQueueStore';
 import MessageExecutor from './MessageExecutor';
+import IPendingMessagesStore from './IPendingMessagesStore';
+import { bignumberifySignedMessageFields } from '../../utils/changingMessageFields';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
@@ -10,7 +12,7 @@ export type OnTransactionSent = (transaction: providers.TransactionResponse) => 
 class MessageQueueService {
   private state: QueueState;
 
-  constructor(private messageExecutor: MessageExecutor, private queueMessageStore: IMessageQueueStore, private tick: number = 100){
+  constructor(private messageExecutor: MessageExecutor, private queueMessageStore: IMessageQueueStore, private pendingMessagesStore: IPendingMessagesStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
@@ -20,8 +22,11 @@ class MessageQueueService {
 
   async execute(signedMessage: SignedMessage, id: string) {
     try {
-      const sentTransaction = await this.messageExecutor.executeAndWait(signedMessage);
-      await this.queueMessageStore.markAsSuccess(id, sentTransaction.hash!);
+      const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
+      const messageEntity = await this.queueMessageStore.get(id);
+      const messageHash = await calculateMessageHash(bignumberifySignedMessageFields(messageEntity!.message));
+      await this.pendingMessagesStore.setTransactionHash(messageHash, hash!);
+      await this.queueMessageStore.markAsSuccess(id, hash!);
     } catch (error) {
       await this.queueMessageStore.markAsError(id, `${error.name}: ${error.message}`);
     }
