@@ -18,7 +18,7 @@ export default class MessageQueueMemoryStore implements IMessageQueueStore {
       hash: 'hash',
       error: undefined
     });
-    return [this.counter.toString()];
+    return this.counter.toString();
   }
 
   async getNext () {

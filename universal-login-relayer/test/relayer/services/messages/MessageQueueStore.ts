@@ -23,14 +23,13 @@ describe('INT: Message Queue Store', async () => {
   });
 
   it('add message', async () =>  {
-    const [idFirst] = await messageQueueStore.add(signedMessage);
-
+    const idFirst = await messageQueueStore.add(signedMessage);
     expect(idFirst).to.be.a('number');
     expect(idFirst).to.be.at.least(1);
   });
 
   it('get message', async () => {
-    const [id] = await messageQueueStore.add(signedMessage);
+    const id = await messageQueueStore.add(signedMessage);
     const messageEntity = await messageQueueStore.get(id);
     expect(messageEntity.message.gasLimit.toString()).to.deep.eq(signedMessage.gasLimit);
     expect(messageEntity.message.gasPrice.toString()).to.deep.eq(signedMessage.gasPrice);
@@ -43,9 +42,9 @@ describe('INT: Message Queue Store', async () => {
   });
 
   it('message round trip', async () => {
-    const [idFirst] = await messageQueueStore.add(signedMessage);
+    const idFirst = await messageQueueStore.add(signedMessage);
     const signedMessage2 = await getTestSignedMessage({value: utils.parseEther('2')});
-    const [idSecond] = await messageQueueStore.add(signedMessage2);
+    const idSecond = await messageQueueStore.add(signedMessage2);
     const id = (await messageQueueStore.getNext()).id;
     expect(id).to.be.equal(idFirst);
     expect(id).to.be.a('number');

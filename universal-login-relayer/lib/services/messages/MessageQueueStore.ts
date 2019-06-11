@@ -15,13 +15,14 @@ export default class MessageQueueStore implements IMessageQueueStore {
   }
 
   async add(signedMessage: SignedMessage) {
-    return this.database
+    const [id] = await this.database
       .insert({
         message: stringifySignedMessageFields(signedMessage),
         created_at: this.database.fn.now()
       })
       .into(this.tableName)
       .returning('id');
+    return id;
   }
 
   async getNext() {

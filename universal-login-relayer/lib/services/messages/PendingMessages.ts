@@ -32,8 +32,7 @@ export default class PendingMessages {
   private async onReadyToExecute(messageHash: string, message: SignedMessage) {
     const finalMessage = await this.getMessageWithSignatures(message, messageHash);
     await this.ensureCorrectExecution(messageHash);
-    const [id] = await this.messageQueue.add(finalMessage);
-    return id;
+    return this.messageQueue.add(finalMessage);
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {
