@@ -1,9 +1,8 @@
 import {providers} from 'ethers';
-import {sleep, onCritical, SignedMessage, calculateMessageHash} from '@universal-login/commons';
+import {sleep, onCritical, SignedMessage, calculateMessageHash, bignumberifySignedMessageFields} from '@universal-login/commons';
 import IMessageQueueStore from './IMessageQueueStore';
 import MessageExecutor from './MessageExecutor';
 import IPendingMessagesStore from './IPendingMessagesStore';
-import { bignumberifySignedMessageFields } from '../../utils/changingMessageFields';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 

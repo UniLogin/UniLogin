@@ -18,19 +18,35 @@ export const create = (walletContractService : WalletService) => async (req : Re
 export const execution = (
 messageHandler : MessageHandler) => async (req : Request, res : Response, next : NextFunction) => {
   try {
-    const transaction = await messageHandler.handleMessage(req.body);
+    const status = await messageHandler.handleMessage(req.body);
     res.status(201)
       .type('json')
-      .send(JSON.stringify({transaction}));
+      .send(JSON.stringify({status}));
   } catch (err) {
     next(err);
   }
 };
 
-export const getStatus = (transactionContractService: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
+export const getStatus = (messageHandler: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {hash} = req.params;
-    const status = await transactionContractService.getStatus(hash);
+    const status = await messageHandler.getStatus(hash);
+    res.status(200)
+      .type('json')
+      .send(JSON.stringify(status));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getStatusById = (messageHandler: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {id} = req.params;
+    const messageEntity = await messageHandler.getQueueStatus(id);
+    const status = messageEntity && {
+      transactionHash: messageEntity.hash,
+      error: messageEntity.error
+    };
     res.status(200)
       .type('json')
       .send(JSON.stringify(status));
@@ -50,6 +66,9 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
 
   router.get('/execution/:hash',
     asyncMiddleware(getStatus(messageHandler)));
+
+  router.get('/execution/status/:id',
+    asyncMiddleware(getStatusById(messageHandler)));
 
   return router;
 };

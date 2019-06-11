@@ -19,3 +19,4 @@ export {createKeyPair, KeyPair} from './utils/keyPair';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './utils/calculateMessageSignature';
 export {createSignedMessage} from './utils/signMessage';
 export {getContractHash, getDeployedBytecode} from './utils/contractHeplers';
+export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';

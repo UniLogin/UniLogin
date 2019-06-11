@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet, providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitUntil} from '@universal-login/commons';
+import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitExpect} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import CreationSerivice from '../../../src/services/Creation';
 import ConnectionToWalletService from '../../../src/services/ConnectToWallet';
@@ -67,8 +67,7 @@ describe('Login', () => {
         privateKey,
         {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT},
         MANAGEMENT_KEY);
-      await waitUntil(() => !!callback.firstCall);
-      expect(callback).to.have.been.calledOnce;
+      await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       unsubscribe();
     });
   });

@@ -25,11 +25,7 @@ class MessageHandler {
       this.validator
       );
     this.messageQueue = new MessageQueueService(this.executor, messageQueueStore, pendingMessagesStore);
-    this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.doExecute.bind(this));
-  }
-
-  private doExecute(message: SignedMessage) {
-    return this.executor.executeAndWait(message);
+    this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.messageQueue);
   }
 
   start() {

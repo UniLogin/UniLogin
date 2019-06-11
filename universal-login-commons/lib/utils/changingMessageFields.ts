@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from '../.';
 
 export function stringifySignedMessageFields(signedMessage: SignedMessage) {
   return {

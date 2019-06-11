@@ -1,8 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, OPERATION_CALL} from '@universal-login/commons';
-import {bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../lib/utils/changingMessageFields';
-import {testPrivateKey} from '../config/message';
+import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, OPERATION_CALL, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../lib';
 
 describe('UNIT: Parsing Transaction', () => {
   const message: MessageWithFrom = {
@@ -33,7 +31,7 @@ describe('UNIT: Parsing Transaction', () => {
   let signedMessage: SignedMessage;
 
   before(async () => {
-    signedMessage = await createSignedMessage(message, testPrivateKey);
+    signedMessage = await createSignedMessage(message, TEST_PRIVATE_KEY);
   });
 
   it('should parse BigNumber to string', () => {

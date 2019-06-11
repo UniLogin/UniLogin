@@ -32,6 +32,10 @@ export class RelayerApi {
     return this.http('GET', `/wallet/execution/${hash}`);
   }
 
+  async getStatusById(id: string) {
+    return this.http('GET', `/wallet/execution/status/${id}`);
+  }
+
   async connect(walletContractAddress: string, key: string) {
     return this.http('POST', '/authorisation', {
       walletContractAddress,

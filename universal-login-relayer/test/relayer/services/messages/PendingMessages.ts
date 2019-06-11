@@ -24,7 +24,7 @@ describe('INT: PendingMessages', () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
     const pendingMessagesStore = new PendingMessagesSQLStore(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    pendingMessages = new PendingMessages(wallet, pendingMessagesStore, spy);
+    pendingMessages = new PendingMessages(wallet, pendingMessagesStore, {add: spy} as any);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
     await walletContract.setRequiredSignatures(2);
