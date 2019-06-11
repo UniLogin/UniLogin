@@ -38,7 +38,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
   }
 
   async markAsSuccess (messageId: string, transactionHash: string) {
-    await this.markAs(messageId, {hash: transactionHash});
+    await this.update(messageId, {hash: transactionHash});
   }
 
   async markAsError (messageId: string, inputError: string) {
@@ -46,7 +46,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
     if (error.length > 255) {
       error = error.substr(0, 255);
     }
-    await this.markAs(messageId, {error});
+    await this.update(messageId, {error});
   }
 
   async get(id: string) {
@@ -56,7 +56,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
       .first();
   }
 
-  private markAs(id: string, data: QueueItem) {
+  private update(id: string, data: QueueItem) {
     return this.database(this.tableName)
       .where('id', id)
       .update(data);
