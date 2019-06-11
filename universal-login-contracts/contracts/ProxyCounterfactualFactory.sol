@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-contract Factory {
+contract ProxyCounterfactualFactory {
     address public contractAddress;
 
     function createContract(address signer, bytes32 salt, bytes memory initCode) public {

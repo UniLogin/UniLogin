@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
 import {deployContract, getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY} from '@universal-login/commons';
-import Factory from '../../build/Factory.json';
+import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
 import {getDeployData} from '../../lib';
@@ -27,7 +27,7 @@ describe('Counterfactual Factory', () => {
     ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
     [wallet] = getWallets(provider);
     proxyArgs = createProxyDeployWithENSArgs(wallet.address, ensDomainData, walletMaster.address);
-    factoryContract = await deployContract(deployer, Factory);
+    factoryContract = await deployContract(deployer, ProxyCounterfactualFactory);
     initData = getDeployData(ProxyContract, proxyArgs);
   });
 
