@@ -1,7 +1,6 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {RelayerUnderTest} from '@universal-login/relayer';
 import deployCounterfactualFactory from '../../src/ops/deployCounterfactualFactory';
 
 chai.use(solidity);
