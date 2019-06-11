@@ -33,7 +33,7 @@ const commandLineBuilder = yargs
     (argv) => {
       connectAndExecute(argv.nodeUrl, argv.privateKey, deployMaster).catch(console.error);
     })
-  .command('deploy:counterfactual-factory', 'Deploys counterfactual factory contract',
+  .command('deploy:factory', 'Deploys counterfactual factory contract',
     () => {
     },
     (argv) => {
