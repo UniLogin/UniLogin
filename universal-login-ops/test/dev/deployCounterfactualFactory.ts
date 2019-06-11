@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import deployCounterfactualFactory from '../../src/ops/deployCounterfactualFactory';
+import deployFactory from '../../src/ops/deployFactory';
 
 chai.use(solidity);
 
@@ -15,10 +15,7 @@ describe('Counterfactual factory contract', async () => {
   });
 
   it('should deploy contract', async () => {
-    const {counterfactualHash, counterfactualAddress} = await deployCounterfactualFactory(wallet);
-    expect(counterfactualAddress).to.be.properAddress;
-    expect(counterfactualHash).to.be.properHex(64);
-    const transactionReceipt = await provider.getTransactionReceipt(counterfactualHash!);
-    expect(transactionReceipt.contractAddress).to.be.eq(counterfactualAddress);
+    const factoryAddress = await deployFactory(wallet);
+    expect(factoryAddress).to.be.properAddress;
   });
 });
