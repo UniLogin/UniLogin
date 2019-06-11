@@ -3,19 +3,15 @@ pragma solidity ^0.5.2;
 contract Factory {
     address public contractAddress;
 
-    function createContract(address signer, bytes32 salt, bytes memory initCode) public returns(address newContract) {
+    function createContract(address signer, bytes32 salt, bytes memory initCode) public {
         bytes32 finalSalt = keccak256(abi.encodePacked(salt, signer));
-        // address newContract = 0; 
+        address newContractAddress;
+        // solium-disable-next-line security/no-inline-assembly
         assembly {
-            newContract := create2(0, add(initCode, 0x20), mload(initCode), finalSalt)
-            if iszero(extcodesize(newContract)) {revert(0, 0)}
+            newContractAddress := create2(0, add(initCode, 0x20), mload(initCode), finalSalt)
+            if iszero(extcodesize(newContractAddress)) {revert(0, 0)}
         }
-        contractAddress = newContract;
-        return newContract;
-    }
-
-    function getContractAddress() public view returns(address) {
-        return contractAddress;
+        contractAddress = newContractAddress;
     }
 
     function computeContractAddress(address signer, bytes32 salt, bytes memory initCode) public view returns(address futureContractAddress) {

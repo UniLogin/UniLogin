@@ -17,7 +17,7 @@ describe('Counterfactual Factory', () => {
   let deployer: Wallet;
   let wallet: Wallet;
   let factoryContract: Contract;
-  let salt = utils.randomBytes(32);
+  const salt = utils.randomBytes(32);
   let ensDomainData: EnsDomainData;
   let walletMaster: Contract;
   let proxyArgs: string[];
@@ -41,11 +41,12 @@ describe('Counterfactual Factory', () => {
     const futureContractAddress = await factoryContract.computeContractAddress(deployer.address, salt, initData);
     expect(futureContractAddress).to.be.properAddress;
     expect(computedContractAddress).to.eq(futureContractAddress.toLowerCase());
-  })
+  });
 
   it('should deploy contract with computed address', async () => {
     const computedContractAddress = computeContractAddress(factoryContract.address, deployer.address, salt, initData);
     await factoryContract.createContract(deployer.address, salt, initData);
+    expect((await factoryContract.contractAddress()).toLowerCase()).to.eq(computedContractAddress);
     const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, wallet);
     expect(await proxyContract.getKeyPurpose(wallet.address)).to.eq(MANAGEMENT_KEY);
   });
