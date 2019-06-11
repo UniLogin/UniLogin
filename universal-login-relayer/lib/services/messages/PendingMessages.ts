@@ -8,7 +8,7 @@ import MessageQueueService from './MessageQueueService';
 
 export default class PendingMessages {
 
-  constructor(private wallet : Wallet, private messagesStore: IPendingMessagesStore, public messageQueue: MessageQueueService) {
+  constructor(private wallet : Wallet, private messagesStore: IPendingMessagesStore, private messageQueue: MessageQueueService) {
   }
 
   async isPresent(messageHash : string) {
