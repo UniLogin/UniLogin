@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitToBeMined, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitToBeMined, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -144,7 +144,7 @@ class UniversalLoginSDK {
     return status;
   }
 
-  async execute(message: Message, privateKey: string) {
+  async execute(message: Message, privateKey: string): Promise<MessageStatus> {
     const unsignedMessage = {
       ...this.defaultPaymentOptions,
       ...message,
@@ -152,13 +152,13 @@ class UniversalLoginSDK {
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
-    if (typeof result.transaction === 'number') {
-      const status = await this.waitForStatus(result.transaction);
+    if (result.status.id) {
+      const status = await this.waitForStatus(result.status.id);
       const {transactionHash} = status;
       await waitToBeMined(this.provider, transactionHash);
-      return transactionHash;
+      result.status.transactionHash = transactionHash;
     }
-    return result;
+    return result.status;
   }
 
   async getNonce(walletContractAddress: string, privateKey: string) {

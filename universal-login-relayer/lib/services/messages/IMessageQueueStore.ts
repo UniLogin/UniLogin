@@ -1,7 +1,7 @@
 import {SignedMessage} from '@universal-login/commons';
 
 export interface IMessageQueueStore {
-  add: (message: SignedMessage) => Promise<string>;
+  add: (message: SignedMessage) => Promise<string[]>;
   get: (id: string) => Promise<MessageEntity | undefined>;
   getNext: () => Promise<MessageEntity | undefined>;
   markAsSuccess: (id: string, transactionHash: string) => Promise<void>;

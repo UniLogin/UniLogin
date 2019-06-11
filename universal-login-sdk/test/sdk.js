@@ -67,14 +67,14 @@ describe('SDK - integration', async () => {
     describe('Execute signed message', async () => {
       it('Should execute signed message', async () => {
         const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-        const transactionHash = await sdk.execute({...message, to: otherWallet.address}, privateKey);
+        const {transactionHash} = await sdk.execute({...message, to: otherWallet.address}, privateKey);
         expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
         expect(await otherWallet.getBalance()).to.eq(expectedBalance);
       });
 
       it('Should return transaction hash', async () => {
-        const hash = await sdk.execute(message, privateKey);
-        expect(hash).to.be.properHex(64);
+        const {transactionHash} = await sdk.execute(message, privateKey);
+        expect(transactionHash).to.be.properHex(64);
       });
 
       it('Should increment nonce', async () => {
@@ -98,8 +98,8 @@ describe('SDK - integration', async () => {
 
     describe('Add key', async () => {
       it('should return transaction hash', async () => {
-        const hash = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-        expect(hash).to.be.properHex(64);
+        const {transactionHash} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+        expect(transactionHash).to.be.properHex(64);
         expect(await walletContract.lastNonce()).to.be.eq(1);
       });
 
@@ -135,8 +135,8 @@ describe('SDK - integration', async () => {
 
     describe('Add keys', async () => {
       it('should return transaction hash', async () => {
-        const hash = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
-        expect(hash).to.be.properHex(64);
+        const {transactionHash} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
+        expect(transactionHash).to.be.properHex(64);
       });
     });
 
@@ -198,9 +198,9 @@ describe('SDK - integration', async () => {
     describe('change required signatures', async () => {
       it('should change required signatures', async () => {
         await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-        const hash = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
+        const {transactionHash} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
         expect(await walletContract.requiredSignatures()).to.eq(2);
-        expect(hash).to.be.properHex(64);
+        expect(transactionHash).to.be.properHex(64);
       });
     });
 

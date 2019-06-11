@@ -18,10 +18,10 @@ export const create = (walletContractService : WalletService) => async (req : Re
 export const execution = (
 messageHandler : MessageHandler) => async (req : Request, res : Response, next : NextFunction) => {
   try {
-    const transaction = await messageHandler.handleMessage(req.body);
+    const status = await messageHandler.handleMessage(req.body);
     res.status(201)
       .type('json')
-      .send(JSON.stringify({transaction}));
+      .send(JSON.stringify({status}));
   } catch (err) {
     next(err);
   }

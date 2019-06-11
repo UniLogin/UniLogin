@@ -15,25 +15,25 @@ export default class PendingMessages {
     return this.messagesStore.isPresent(messageHash);
   }
 
-  async add(message: SignedMessage) : Promise<string | MessageStatus> {
+  async add(message: SignedMessage) : Promise<MessageStatus> {
     const messageHash = calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
       const pendingMessage = createPendingMessage(message.from);
       await this.messagesStore.add(messageHash, pendingMessage);
     }
     await this.addSignatureToPendingMessage(messageHash, message);
+    const status = await this.getStatus(messageHash);
     if (await this.isEnoughSignatures(messageHash)) {
-      return this.onReadyToExecute(messageHash, message);
-    } else {
-      return this.getStatus(messageHash);
+      status.id = await this.onReadyToExecute(messageHash, message);
     }
+    return status;
   }
 
   private async onReadyToExecute(messageHash: string, message: SignedMessage) {
     const finalMessage = await this.getMessageWithSignatures(message, messageHash);
     await this.ensureCorrectExecution(messageHash);
-    const id = await this.messageQueue.add(finalMessage);
-    return id && id[0];
+    const [id] = await this.messageQueue.add(finalMessage);
+    return id;
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {

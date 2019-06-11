@@ -33,7 +33,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
     const signedMessage0 = await createSignedMessage(message, wallet.privateKey);
     const signedMessage1 = await createSignedMessage(message, actionKey);
     await messageHandler.handleMessage(signedMessage0);
-    const id = await messageHandler.handleMessage(signedMessage1);
+    const {id} = await messageHandler.handleMessage(signedMessage1);
     await messageHandler.stopLater();
     const messageEntry = await messageHandler.getQueueStatus(id);
     expect(messageEntry.error).to.be.eq('Error: Not enough tokens');
@@ -44,7 +44,7 @@ describe('Relayer - MultiSignatureExecute', async () => {
     const signedMessage0 = await createSignedMessage(message, wallet.privateKey);
     const signedMessage1 = await createSignedMessage(message, actionKey);
     await messageHandler.handleMessage(signedMessage0);
-    const id = await messageHandler.handleMessage(signedMessage1);
+    const {id} = await messageHandler.handleMessage(signedMessage1);
     await messageHandler.stopLater();
     const messageEntry = await messageHandler.getQueueStatus(id);
     expect(messageEntry.error).to.be.eq('Error: Not enough gas');

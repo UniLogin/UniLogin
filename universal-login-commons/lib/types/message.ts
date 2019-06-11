@@ -21,6 +21,7 @@ export interface SignedMessage {
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
 export type MessageStatus = {
+  id?: string,
   collectedSignatures: string[],
   totalCollected: number,
   required: number,

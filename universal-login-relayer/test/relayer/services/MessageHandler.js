@@ -31,7 +31,7 @@ describe('Relayer - MessageHandler', async () => {
   it('Error when not enough tokens', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
     const signedMessage = await createSignedMessage(message, wallet.privateKey);
-    const id = await messageHandler.handleMessage(signedMessage);
+    const {id} = await messageHandler.handleMessage(signedMessage);
     await messageHandler.stopLater();
     const messageEntry = await messageHandler.getQueueStatus(id);
     expect(messageEntry.error).to.be.eq('Error: Not enough tokens');
@@ -40,7 +40,7 @@ describe('Relayer - MessageHandler', async () => {
   it('Error when not enough gas', async () => {
     const message = {...msg, gasLimit: 100};
     const signedMessage = await createSignedMessage(message, wallet.privateKey);
-    const id = await messageHandler.handleMessage(signedMessage);
+    const {id} = await messageHandler.handleMessage(signedMessage);
     await messageHandler.stopLater();
     const messageEntry = await messageHandler.getQueueStatus(id);
     expect(messageEntry.error).to.be.eq('Error: Not enough gas');
