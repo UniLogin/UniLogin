@@ -9,7 +9,7 @@ export default async function deployFactory(wallet: Wallet): Promise<string> {
     ...new ContractFactory(Factory.abi, Factory.bytecode).getDeployTransaction(),
   };
   const {hash} = await wallet.sendTransaction(deployTransaction);
-  console.log(`Transaction hash: ${hash}`);
+  console.log(`Factory deployment transaction hash: ${hash}`);
   const {contractAddress} = await wallet.provider.waitForTransaction(hash!);
   console.log(`Factory contract address: ${contractAddress}`);
   return contractAddress!;
