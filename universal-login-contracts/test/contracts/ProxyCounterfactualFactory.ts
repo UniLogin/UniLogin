@@ -25,7 +25,7 @@ describe('Counterfactual Factory', () => {
   let initData: string;
   let initializeWithENS: any;
 
-  before(async () => {
+  beforeEach(async () => {
     ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
@@ -53,14 +53,16 @@ describe('Counterfactual Factory', () => {
     expect(await proxyContract.getKeyPurpose(keyPair.publicKey)).to.eq(MANAGEMENT_KEY);
   });
 
-  // it('deploy with the same ens name', async () => {
-  //   [, initializeWithENS] = createProxyDeployWithENSArgs(anotherWallet.address, ensDomainData, walletMaster.address);
-  //   const computedContractAddress = computeContractAddress(factoryContract.address, deployer.address, keyPair.publicKey, initData);
-  //   await factoryContract.createContract(deployer.address, keyPair.publicKey, initData, initializeWithENS);
-  //   expect((await factoryContract.contractAddress()).toLowerCase()).to.eq(computedContractAddress);
-  //   const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, wallet);
-  //   expect(await proxyContract.getKeyPurpose(wallet.address)).to.eq(MANAGEMENT_KEY);
-  // });
+  it('deploy with the same ens name', async () => {
+    await factoryContract.createContract(deployer.address, keyPair.publicKey, initData, initializeWithENS);
+    const newKeyPair = createKeyPair();
+    [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
+    await factoryContract.createContract(deployer.address, newKeyPair.publicKey, initData, initializeWithENS);
+    const proxyContract = new Contract(await factoryContract.contractAddress(), WalletMaster.abi, wallet);
+    const initializeArgs = setupInitializeArgs({key: newKeyPair.publicKey, ensDomainData, name: 'newname'})
+    await proxyContract.initializeWithENS(...initializeArgs);
+    expect(await proxyContract.getKeyPurpose(newKeyPair.publicKey)).to.eq(MANAGEMENT_KEY);
+  });
 
   it('only owner can create contract', async () => {
     const factoryWithAnotherWallet = new Contract(factoryContract.address, ProxyCounterfactualFactory.abi, anotherWallet);
