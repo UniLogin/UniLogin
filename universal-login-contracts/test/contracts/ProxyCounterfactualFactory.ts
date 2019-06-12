@@ -39,15 +39,11 @@ describe('Counterfactual Factory', () => {
   it('computeContractAddress function works', async () => {
     const computedContractAddress = computeContractAddress(factoryContract.address, deployer.address, keyPair.publicKey, initData);
     expect(computedContractAddress).to.be.properAddress;
-    const futureContractAddress = await factoryContract.computeContractAddress(deployer.address, keyPair.publicKey, initData);
-    expect(futureContractAddress).to.be.properAddress;
-    expect(computedContractAddress).to.eq(futureContractAddress.toLowerCase());
   });
 
   it('should deploy contract with computed address', async () => {
     const computedContractAddress = computeContractAddress(factoryContract.address, deployer.address, keyPair.publicKey, initData);
     await factoryContract.createContract(deployer.address, keyPair.publicKey, initData, initializeWithENS);
-    expect((await factoryContract.contractAddress()).toLowerCase()).to.eq(computedContractAddress);
     const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, wallet);
     expect(await proxyContract.getKeyPurpose(keyPair.publicKey)).to.eq(MANAGEMENT_KEY);
   });
