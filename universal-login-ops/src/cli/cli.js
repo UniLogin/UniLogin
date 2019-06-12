@@ -3,6 +3,7 @@ import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../ops/deployToken';
 import connectAndExecute from './connectAndExecute';
 import deployMaster from '../ops/deployMaster';
+import deployFactory from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
 
@@ -31,6 +32,12 @@ const commandLineBuilder = yargs
     () => {},
     (argv) => {
       connectAndExecute(argv.nodeUrl, argv.privateKey, deployMaster).catch(console.error);
+    })
+  .command('deploy:factory', 'Deploys counterfactual factory contract',
+    () => {
+    },
+    (argv) => {
+      connectAndExecute(argv.nodeUrl, argv.privateKey, deployFactory).catch(console.error);
     })
   .command('send [to] [amount] [currency]', 'Sends funds to specified address',
     (yargs) => {

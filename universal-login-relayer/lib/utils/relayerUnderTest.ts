@@ -1,8 +1,9 @@
 import Knex from 'knex';
 import {providers, Wallet, ContractFactory} from 'ethers';
 const ENSBuilder = require('ens-builder');
-import {withENS, getContractHash} from '@universal-login/commons';
+import {withENS, getContractHash, ContractJSON} from '@universal-login/commons';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import Factory from '@universal-login/contracts/build/Factory.json';
 import Proxy from '@universal-login/contracts/build/Proxy.json';
 import {Config} from '../config/relayer';
 import Relayer from '../relayer';
@@ -13,7 +14,8 @@ const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const { address } = await deployContract(wallet);
+    const { address } = await deployContract(wallet, WalletMaster);
+    const factoryContract = await deployContract(wallet, Factory);
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
@@ -27,7 +29,8 @@ export class RelayerUnderTest extends Relayer {
       },
       ensRegistrars: [DOMAIN],
       walletMasterAddress: address,
-      contractWhiteList: getContractWhiteList()
+      contractWhiteList: getContractWhiteList(),
+      factoryAddress: factoryContract.address
     };
     return new RelayerUnderTest(config, providerWithENS);
   }
@@ -46,8 +49,8 @@ export class RelayerUnderTest extends Relayer {
   }
 }
 
-async function deployContract(wallet: Wallet) {
-  const factory = new ContractFactory(WalletMaster.abi, WalletMaster.bytecode, wallet);
+async function deployContract(wallet: Wallet, contractJSON: ContractJSON) {
+  const factory = new ContractFactory(contractJSON.abi, contractJSON.bytecode, wallet);
   return factory.deploy();
 }
 
