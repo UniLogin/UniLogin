@@ -10,6 +10,7 @@ import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
 import deployWalletMaster from './deployWalletMaster';
 import deployToken from './deployToken';
+import deployFactory from '../ops/deployFactory';
 
 const ganachePort = 18545;
 
@@ -28,7 +29,7 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string) {
   return {
     port: 3311,
     jsonRpcUrl,
@@ -40,7 +41,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
       chainId: 0
     },
     ensRegistrars,
-    contractWhiteList
+    contractWhiteList,
+    factoryAddress
   };
 }
 
@@ -67,13 +69,14 @@ async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverri
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, masterContractHash} = await deployWalletMaster(deployWallet);
   const proxyContractHash = getProxyContractHash();
+  const factoryAddress = await deployFactory(deployWallet);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
     master:  [masterContractHash],
     proxy: [proxyContractHash]
   };
-  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains, contractWhiteList);
+  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains, contractWhiteList, factoryAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains};
 }
