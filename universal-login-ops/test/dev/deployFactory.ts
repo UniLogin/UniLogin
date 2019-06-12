@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet, Contract} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import deployFactory from '../../src/ops/deployFactory';
 import deployWalletMaster from '../../src/dev/deployWalletMaster';
