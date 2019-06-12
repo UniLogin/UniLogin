@@ -1,9 +1,12 @@
 pragma solidity ^0.5.2;
 
-contract ProxyCounterfactualFactory {
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+
+
+contract ProxyCounterfactualFactory is Ownable {
     address public contractAddress;
 
-    function createContract(address signer, bytes32 salt, bytes memory initCode, bytes memory initializeWithENS) public returns(bool success) {
+    function createContract(address signer, bytes32 salt, bytes memory initCode, bytes memory initializeWithENS) public onlyOwner returns(bool success) {
         bytes32 finalSalt = keccak256(abi.encodePacked(salt, signer));
         address newContractAddress;
         // solium-disable-next-line security/no-inline-assembly

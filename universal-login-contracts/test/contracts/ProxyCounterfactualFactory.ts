@@ -16,6 +16,7 @@ describe('Counterfactual Factory', () => {
   let provider: providers.Provider;
   let deployer: Wallet;
   let wallet: Wallet;
+  let anotherWallet: Wallet;
   let factoryContract: Contract;
   const salt = utils.randomBytes(32);
   let ensDomainData: EnsDomainData;
@@ -25,7 +26,7 @@ describe('Counterfactual Factory', () => {
 
   before(async () => {
     ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
-    [wallet] = getWallets(provider);
+    [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(wallet.address, ensDomainData, walletMaster.address);
     factoryContract = await deployContract(deployer, ProxyCounterfactualFactory);
     initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
@@ -45,10 +46,14 @@ describe('Counterfactual Factory', () => {
 
   it('should deploy contract with computed address', async () => {
     const computedContractAddress = computeContractAddress(factoryContract.address, deployer.address, salt, initData);
-    const tx = await factoryContract.createContract(deployer.address, salt, initData, initializeWithENS);
-    console.log((await provider.getTransactionReceipt(tx.hash))!.gasUsed!.toString())
+    await factoryContract.createContract(deployer.address, salt, initData, initializeWithENS);
     expect((await factoryContract.contractAddress()).toLowerCase()).to.eq(computedContractAddress);
     const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, wallet);
     expect(await proxyContract.getKeyPurpose(wallet.address)).to.eq(MANAGEMENT_KEY);
+  });
+
+  it('only owner can create contract', async () => {
+    const factoryWithAnotherWallet = new Contract(factoryContract.address, ProxyCounterfactualFactory.abi, anotherWallet);
+    await expect(factoryWithAnotherWallet.createContract(deployer.address, salt, initData, initializeWithENS)).to.be.reverted;
   });
 });
