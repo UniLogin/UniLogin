@@ -6,8 +6,8 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 contract ProxyCounterfactualFactory is Ownable {
     address public contractAddress;
 
-    function createContract(address signer, bytes32 salt, bytes memory initCode, bytes memory initializeWithENS) public onlyOwner returns(bool success) {
-        bytes32 finalSalt = keccak256(abi.encodePacked(salt, signer));
+    function createContract(address signer, address publicKey, bytes memory initCode, bytes memory initializeWithENS) public onlyOwner returns(bool success) {
+        bytes32 finalSalt = keccak256(abi.encodePacked(publicKey, signer));
         address newContractAddress;
         // solium-disable-next-line security/no-inline-assembly
         assembly {
@@ -20,8 +20,8 @@ contract ProxyCounterfactualFactory is Ownable {
         return success;
     }
 
-    function computeContractAddress(address signer, bytes32 salt, bytes memory initCode) public view returns(address futureContractAddress) {
-        bytes32 finalSalt = keccak256(abi.encodePacked(salt, signer));
+    function computeContractAddress(address signer, address publicKey, bytes memory initCode) public view returns(address futureContractAddress) {
+        bytes32 finalSalt = keccak256(abi.encodePacked(publicKey, signer));
         bytes32 hashedData = keccak256(abi.encodePacked(bytes1(0xff), address(this), finalSalt, keccak256(initCode)));
         futureContractAddress = convertDataToAddress(hashedData);
         return futureContractAddress;
