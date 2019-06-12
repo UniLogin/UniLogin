@@ -1,12 +1,12 @@
 import chai, {expect} from 'chai';
-import {Contract, providers, Wallet, utils} from 'ethers';
+import {Contract, providers, Wallet} from 'ethers';
 import {deployContract, getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
 import {getDeployData} from '../../lib';
-import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData, setupInitializeArgs} from '../fixtures/walletContract';
+import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData} from '../fixtures/walletContract';
 import {computeContractAddress} from '../utils/computeContractAddress';
 
 chai.use(solidity);
@@ -19,7 +19,6 @@ describe('Counterfactual Factory', () => {
   let wallet: Wallet;
   let anotherWallet: Wallet;
   let factoryContract: Contract;
-  const salt = utils.randomBytes(32);
   let ensDomainData: EnsDomainData;
   let walletMaster: Contract;
   let initData: string;
@@ -57,11 +56,7 @@ describe('Counterfactual Factory', () => {
     await factoryContract.createContract(deployer.address, keyPair.publicKey, initData, initializeWithENS);
     const newKeyPair = createKeyPair();
     [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
-    await factoryContract.createContract(deployer.address, newKeyPair.publicKey, initData, initializeWithENS);
-    const proxyContract = new Contract(await factoryContract.contractAddress(), WalletMaster.abi, wallet);
-    const initializeArgs = setupInitializeArgs({key: newKeyPair.publicKey, ensDomainData, name: 'newname'})
-    await proxyContract.initializeWithENS(...initializeArgs);
-    expect(await proxyContract.getKeyPurpose(newKeyPair.publicKey)).to.eq(MANAGEMENT_KEY);
+    await expect(factoryContract.createContract(deployer.address, newKeyPair.publicKey, initData, initializeWithENS)).to.be.revertedWith('Unable to register ENS domain');
   });
 
   it('only owner can create contract', async () => {

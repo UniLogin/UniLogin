@@ -16,6 +16,7 @@ contract ProxyCounterfactualFactory is Ownable {
         }
         bytes memory _data;
         (success, _data) = newContractAddress.call(initializeWithENS);
+        require(success, "Unable to register ENS domain");
         contractAddress = newContractAddress;
         return success;
     }
