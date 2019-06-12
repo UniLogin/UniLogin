@@ -4,6 +4,15 @@ import {Config} from '../config/relayer';
 
 export type PublicConfig = Pick<Config, 'chainSpec' | 'supportedTokens' | 'factoryAddress'>;
 
+export function getPublicConfig(config: Config): PublicConfig {
+  const {chainSpec, supportedTokens, factoryAddress} = config;
+  return {
+      chainSpec,
+      supportedTokens,
+      factoryAddress
+    };
+}
+
 export const network = (config : PublicConfig) => async (req : Request, res : Response) => {
   res.status(200)
     .type('json')
