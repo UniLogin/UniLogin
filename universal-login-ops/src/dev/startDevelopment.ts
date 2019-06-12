@@ -1,9 +1,9 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
-import {ContractWhiteList, getContractHash} from '@universal-login/commons';
+import {ContractWhiteList, getContractHash, ContractJSON} from '@universal-login/commons';
 import {RelayerClass} from '@universal-login/relayer';
-import Proxy from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache.js';
@@ -11,6 +11,7 @@ import {deployENS} from './deployEns.js';
 import deployWalletMaster from './deployWalletMaster';
 import deployToken from './deployToken';
 import deployFactory from '../ops/deployFactory';
+
 
 const ganachePort = 18545;
 
@@ -47,7 +48,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
 }
 
 function getProxyContractHash() {
-  const proxyContractHash = getContractHash(Proxy);
+  const proxyContractHash = getContractHash(ProxyContract as ContractJSON);
   console.log(`ProxyContract hash: ${proxyContractHash}`);
   return proxyContractHash;
 }
@@ -69,7 +70,7 @@ async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverri
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, masterContractHash} = await deployWalletMaster(deployWallet);
   const proxyContractHash = getProxyContractHash();
-  const factoryAddress = await deployFactory(deployWallet);
+  const factoryAddress = await deployFactory(deployWallet, address);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {

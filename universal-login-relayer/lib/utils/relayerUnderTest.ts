@@ -2,9 +2,10 @@ import Knex from 'knex';
 import {providers, Wallet, ContractFactory} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON} from '@universal-login/commons';
+import {getDeployData} from '@universal-login/contracts';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import Factory from '@universal-login/contracts/build/Factory.json';
-import Proxy from '@universal-login/contracts/build/Proxy.json';
+import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {Config} from '../config/relayer';
 import Relayer from '../relayer';
 
@@ -15,7 +16,8 @@ const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
     const { address } = await deployContract(wallet, WalletMaster);
-    const factoryContract = await deployContract(wallet, Factory);
+    const initCode = getDeployData(ProxyContract, [address, '0x0']);
+    const factoryContract = await deployContract(wallet, Factory, [initCode]);
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
@@ -49,9 +51,9 @@ export class RelayerUnderTest extends Relayer {
   }
 }
 
-async function deployContract(wallet: Wallet, contractJSON: ContractJSON) {
+async function deployContract(wallet: Wallet, contractJSON: ContractJSON, args = []) {
   const factory = new ContractFactory(contractJSON.abi, contractJSON.bytecode, wallet);
-  return factory.deploy();
+  return factory.deploy(...args);
 }
 
 export async function clearDatabase(knex: Knex) {
@@ -63,5 +65,5 @@ export async function clearDatabase(knex: Knex) {
 
 export const getContractWhiteList = () => ({
   master: [],
-  proxy: [getContractHash(Proxy)]
+  proxy: [getContractHash(ProxyContract as ContractJSON)]
 });
