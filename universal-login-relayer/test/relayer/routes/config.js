@@ -12,10 +12,15 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('Config', async () => {
-    const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
+    const {supportedTokens, chainSpec, factoryAddress} = relayer.config;
+    const expectedConfig = {
+      supportedTokens,
+      chainSpec,
+      factoryAddress
+    };
     const result = await chai.request(relayer.server)
       .get('/config');
-    expect(result.body.config.ensAddress).to.eq(expectedEnsAddress);
+    expect(result.body.config).to.be.deep.eq(expectedConfig);
   });
 
   after(async () => {
