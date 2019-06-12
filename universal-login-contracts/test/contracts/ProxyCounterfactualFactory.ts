@@ -6,7 +6,7 @@ import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.j
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
 import {getDeployData} from '../../lib';
-import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData} from '../fixtures/walletContract';
+import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData, setupInitializeArgs} from '../fixtures/walletContract';
 import {computeContractAddress} from '../utils/computeContractAddress';
 
 chai.use(solidity);
@@ -20,15 +20,15 @@ describe('Counterfactual Factory', () => {
   const salt = utils.randomBytes(32);
   let ensDomainData: EnsDomainData;
   let walletMaster: Contract;
-  let proxyArgs: string[];
   let initData: string;
+  let initializeWithENS: any;
 
   before(async () => {
     ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
     [wallet] = getWallets(provider);
-    proxyArgs = createProxyDeployWithENSArgs(wallet.address, ensDomainData, walletMaster.address);
+    [, initializeWithENS] = createProxyDeployWithENSArgs(wallet.address, ensDomainData, walletMaster.address);
     factoryContract = await deployContract(deployer, ProxyCounterfactualFactory);
-    initData = getDeployData(ProxyContract, proxyArgs);
+    initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
   });
 
   it('factory contract address should be proper address', () => {
@@ -45,7 +45,8 @@ describe('Counterfactual Factory', () => {
 
   it('should deploy contract with computed address', async () => {
     const computedContractAddress = computeContractAddress(factoryContract.address, deployer.address, salt, initData);
-    await factoryContract.createContract(deployer.address, salt, initData);
+    const tx = await factoryContract.createContract(deployer.address, salt, initData, initializeWithENS);
+    console.log((await provider.getTransactionReceipt(tx.hash))!.gasUsed!.toString())
     expect((await factoryContract.contractAddress()).toLowerCase()).to.eq(computedContractAddress);
     const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, wallet);
     expect(await proxyContract.getKeyPurpose(wallet.address)).to.eq(MANAGEMENT_KEY);

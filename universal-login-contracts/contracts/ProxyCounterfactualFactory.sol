@@ -3,7 +3,7 @@ pragma solidity ^0.5.2;
 contract ProxyCounterfactualFactory {
     address public contractAddress;
 
-    function createContract(address signer, bytes32 salt, bytes memory initCode) public {
+    function createContract(address signer, bytes32 salt, bytes memory initCode, bytes memory initializeWithENS) public returns(bool success) {
         bytes32 finalSalt = keccak256(abi.encodePacked(salt, signer));
         address newContractAddress;
         // solium-disable-next-line security/no-inline-assembly
@@ -11,7 +11,10 @@ contract ProxyCounterfactualFactory {
             newContractAddress := create2(0, add(initCode, 0x20), mload(initCode), finalSalt)
             if iszero(extcodesize(newContractAddress)) {revert(0, 0)}
         }
+        bytes memory _data;
+        (success, _data) = newContractAddress.call(initializeWithENS);
         contractAddress = newContractAddress;
+        return success;
     }
 
     function computeContractAddress(address signer, bytes32 salt, bytes memory initCode) public view returns(address futureContractAddress) {
