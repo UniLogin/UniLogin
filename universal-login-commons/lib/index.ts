@@ -20,3 +20,4 @@ export {calculateMessageSignature, calculateMessageSignatures, concatenateSignat
 export {createSignedMessage} from './utils/signMessage';
 export {getContractHash, getDeployedBytecode} from './utils/contractHeplers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';
+export {computeContractAddress} from './utils/computeContractAddress';

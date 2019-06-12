@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message} from '@universal-login/commons';
+import {Message, ContractJSON} from '@universal-login/commons';
 import WalletMaster from '../build/WalletMaster.json';
 
 export const encodeInitializeWithENSData = (args: string[]) => new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
@@ -21,3 +21,6 @@ export const encodeDataForExecuteSigned = (message: Message) =>
     message.operationType,
     message.signature
   ]);
+
+export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
+  new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
