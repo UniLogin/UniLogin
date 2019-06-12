@@ -1,6 +1,6 @@
 import {Wallet, ContractFactory} from 'ethers';
 import {defaultDeployOptions} from '@universal-login/commons';
-import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
+import Factory from '@universal-login/contracts/build/Factory.json';
 
 export default async function deployFactory(wallet: Wallet): Promise<string> {
   console.log('Deploying factory contract...');

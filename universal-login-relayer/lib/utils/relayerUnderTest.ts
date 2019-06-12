@@ -3,7 +3,7 @@ import {providers, Wallet, ContractFactory} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON} from '@universal-login/commons';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
+import Factory from '@universal-login/contracts/build/Factory.json';
 import Proxy from '@universal-login/contracts/build/Proxy.json';
 import {Config} from '../config/relayer';
 import Relayer from '../relayer';
