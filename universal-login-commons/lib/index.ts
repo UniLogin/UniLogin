@@ -1,7 +1,7 @@
 export {sleep, waitToBeMined, waitUntil, waitExpect, waitForContractDeploy, sendAndWaitForTransaction} from './utils/wait';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
-export {DeviceInfo, ContractWhiteList, Notification, Omit, PartialRequired, Procedure, Predicate, SupportedToken} from './types/common';
+export {DeviceInfo, ChainSpec, ContractWhiteList, Notification, Omit, PartialRequired, Procedure, Predicate, SupportedToken} from './types/common';
 export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageWithoutFrom} from './types/message';
 export {copy} from './utils/copy';
 export {ensure, onCritical} from './utils/handleError';

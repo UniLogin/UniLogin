@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import {getEnv, ContractWhiteList, SupportedToken} from '@universal-login/commons';
+import {getEnv, ContractWhiteList, SupportedToken, ChainSpec} from '@universal-login/commons';
 
 dotenv.config();
 
@@ -7,11 +7,7 @@ export interface Config {
   jsonRpcUrl?: string;
   port?: string;
   privateKey: string;
-  chainSpec: {
-    ensAddress: string,
-    chainId: number,
-    name: string,
-  };
+  chainSpec: ChainSpec;
   ensRegistrars: string[];
   walletMasterAddress: string;
   contractWhiteList: ContractWhiteList;
