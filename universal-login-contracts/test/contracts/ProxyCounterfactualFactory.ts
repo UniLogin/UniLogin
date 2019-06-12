@@ -28,8 +28,8 @@ describe('Counterfactual Factory', () => {
     ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
-    factoryContract = await deployContract(deployer, ProxyCounterfactualFactory);
     initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
+    factoryContract = await deployContract(deployer, ProxyCounterfactualFactory, [initData]);
   });
 
   it('factory contract address should be proper address', () => {
@@ -43,20 +43,20 @@ describe('Counterfactual Factory', () => {
 
   it('should deploy contract with computed address', async () => {
     const computedContractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initData);
-    await factoryContract.createContract(keyPair.publicKey, initData, initializeWithENS);
+    await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
     const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, wallet);
     expect(await proxyContract.getKeyPurpose(keyPair.publicKey)).to.eq(MANAGEMENT_KEY);
   });
 
   it('deploy with the same ens name', async () => {
-    await factoryContract.createContract(keyPair.publicKey, initData, initializeWithENS);
+    await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
     const newKeyPair = createKeyPair();
     [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
-    await expect(factoryContract.createContract(newKeyPair.publicKey, initData, initializeWithENS)).to.be.revertedWith('Unable to register ENS domain');
+    await expect(factoryContract.createContract(newKeyPair.publicKey, initializeWithENS)).to.be.revertedWith('Unable to register ENS domain');
   });
 
   it('only owner can create contract', async () => {
     const factoryWithAnotherWallet = new Contract(factoryContract.address, ProxyCounterfactualFactory.abi, anotherWallet);
-    await expect(factoryWithAnotherWallet.createContract(keyPair.publicKey, initData, initializeWithENS)).to.be.reverted;
+    await expect(factoryWithAnotherWallet.createContract(keyPair.publicKey, initializeWithENS)).to.be.reverted;
   });
 });
