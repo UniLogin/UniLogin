@@ -1,7 +1,11 @@
+import chai, {expect} from 'chai';
 import {providers, Wallet} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversaLoginSDK from '../lib/sdk';
+
+chai.use(solidity);
+
 
 describe('SDK counterfactual', () => {
   let provider: providers.Provider;
@@ -17,8 +21,10 @@ describe('SDK counterfactual', () => {
     sdk = new UniversaLoginSDK(relayer.url(), provider);
   });
 
-  it('wo9rks', async () => {
-    console.log(await sdk.create('dupa.mylogin.eth'));
+  it('getFutureWallet returns private key and contract address', async () => {
+    const [privateKey, futureContractAddress] = (await sdk.getFutureWallet());
+    expect(privateKey).to.be.properPrivateKey;
+    expect(futureContractAddress).to.be.properAddress;    
   });
 
   after(async () => {
