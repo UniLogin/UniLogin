@@ -5,7 +5,7 @@ import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDep
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import MESSAGE_DEFAULTS from './config';
+import MESSAGE_DEFAULTS, {RelayerConfig} from './config';
 import {RelayerApi} from './RelayerApi';
 
 class UniversalLoginSDK {
@@ -14,7 +14,7 @@ class UniversalLoginSDK {
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
   defaultPaymentOptions: Message;
-  config: any;
+  config?: RelayerConfig;
   factoryAddress: string;
 
   constructor(
@@ -45,6 +45,8 @@ class UniversalLoginSDK {
 
   async getFutureWallet() {
     const {address, privateKey} = Wallet.createRandom();
+    this.config = this.config || (await this.getRelayerConfig()).config;
+    this.factoryAddress = this.config!.factoryAddress;
     const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
     const futureContractAddress = computeContractAddress(this.factoryAddress, address, await factoryContract.initCode());
     return [privateKey, futureContractAddress];
@@ -191,7 +193,7 @@ class UniversalLoginSDK {
 
   async resolveName(ensName: string) {
     this.config = this.config || (await this.getRelayerConfig()).config;
-    const {ensAddress} = this.config.chainSpec;
+    const {ensAddress} = this.config!.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }
 

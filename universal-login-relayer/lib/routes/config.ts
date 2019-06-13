@@ -1,8 +1,6 @@
 import {Router, Request, Response} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
-import {Config} from '../config/relayer';
-
-export type PublicConfig = Pick<Config, 'chainSpec' | 'supportedTokens' | 'factoryAddress'>;
+import {Config, PublicConfig} from '../config/relayer';
 
 export function getPublicConfig(config: Config): PublicConfig {
   const {chainSpec, supportedTokens, factoryAddress} = config;

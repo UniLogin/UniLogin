@@ -1,4 +1,4 @@
-import {OPERATION_CALL} from '@universal-login/commons';
+import {OPERATION_CALL, SupportedToken, ChainSpec} from '@universal-login/commons';
 
 const MESSAGE_DEFAULTS = {
   gasPrice: 1000000000,
@@ -7,5 +7,11 @@ const MESSAGE_DEFAULTS = {
   value: 0,
   data: '0x0',
 };
+
+export type RelayerConfig = {
+  supportedTokens: SupportedToken[];
+  factoryAddress: string;
+  chainSpec: ChainSpec;
+}
 
 export default MESSAGE_DEFAULTS;

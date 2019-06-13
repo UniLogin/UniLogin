@@ -33,3 +33,9 @@ export interface SupportedToken {
   address: string;
   minimalAmount: utils.BigNumber;
 }
+
+export type ChainSpec = {
+  ensAddress: string,
+  chainId: number,
+  name: string
+};
