@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {sleep, onCritical, SignedMessage, calculateMessageHash, bignumberifySignedMessageFields} from '@universal-login/commons';
+import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
 import IMessageQueueStore from './IMessageQueueStore';
 import MessageExecutor from './MessageExecutor';
 import IPendingMessagesStore from './IPendingMessagesStore';
@@ -19,15 +19,13 @@ class MessageQueueService {
     return this.queueMessageStore.add(signedMessage);
   }
 
-  async execute(signedMessage: SignedMessage, id: string) {
+  async execute(signedMessage: SignedMessage, messageHash: string) {
     try {
       const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
-      const messageEntity = await this.queueMessageStore.get(id);
-      const messageHash = await calculateMessageHash(bignumberifySignedMessageFields(messageEntity!.message));
       await this.pendingMessagesStore.setTransactionHash(messageHash, hash!);
-      await this.queueMessageStore.markAsSuccess(id, hash!);
+      await this.queueMessageStore.markAsSuccess(messageHash, hash!);
     } catch (error) {
-      await this.queueMessageStore.markAsError(id, `${error.name}: ${error.message}`);
+      await this.queueMessageStore.markAsError(messageHash, `${error.name}: ${error.message}`);
     }
   }
 
@@ -42,7 +40,7 @@ class MessageQueueService {
     do {
       const nextMessage = await this.queueMessageStore.getNext();
       if (nextMessage){
-        await this.execute(nextMessage.message, nextMessage.id);
+        await this.execute(nextMessage.message, nextMessage.messageHash);
       } else {
         if (this.state === 'stopping'){
           this.state = 'stopped';
@@ -68,8 +66,8 @@ class MessageQueueService {
     return this.state === 'stopped';
   }
 
-  async getStatus(id: string) {
-    return this.queueMessageStore.get(id);
+  async getStatus(messageHash: string) {
+    return this.queueMessageStore.getStatus(messageHash);
   }
 }
 

@@ -1,7 +1,7 @@
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {waitExpect, SignedMessage} from '@universal-login/commons';
+import {waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import MessageQueueService from '../../lib/services/messages/MessageQueueService';
 import MessageQueueMemoryStore from '../helpers/MessageQueueMemoryStore';
 import getTestSignedMessage from '../config/message';
@@ -17,7 +17,7 @@ describe('UNIT: Message Queue Service', async () => {
     provider: {waitForTransaction: sinon.fake()}
   };
   const executor: any = {
-    executeAndWait: sinon.fake.returns({hash: 'hash'}),
+    executeAndWait: sinon.fake.returns({transactionHash: TEST_TRANSACTION_HASH}),
     wallet
   };
   const executorReturnsNull: any = {
@@ -40,7 +40,7 @@ describe('UNIT: Message Queue Service', async () => {
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledOnce);
   });
 
-  it('should execute signedMessage if id added before start', async () => {
+  it('should execute pending signedMessage after start', async () => {
     await messageQueueService.add(signedMessage);
     messageQueueService.start();
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledTwice);
@@ -50,8 +50,8 @@ describe('UNIT: Message Queue Service', async () => {
     messageQueueService = new MessageQueueService(executorReturnsNull, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
     messageQueueService.start();
     messageQueueMemoryStorage.markAsError = sinon.spy(messageQueueMemoryStorage.markAsError);
-    await messageQueueService.add(signedMessage);
-    await waitExpect(() => expect(messageQueueMemoryStorage.markAsError).calledWith('1', 'TypeError: Cannot read property \'hash\' of null'));
+    const messageHash = await messageQueueService.add(signedMessage);
+    await waitExpect(() => expect(messageQueueMemoryStorage.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
   });
 
   afterEach(async () => {

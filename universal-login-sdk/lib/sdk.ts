@@ -7,6 +7,8 @@ import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
+import {retry} from './utils/retry';
+import { ensure } from '@universal-login/commons/lib';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -122,8 +124,8 @@ class UniversalLoginSDK {
   }
 
   async getMessageStatus(message: SignedMessage) {
-    const hash = calculateMessageHash(message);
-    return this.relayerApi.getStatus(hash);
+    const messageHash = calculateMessageHash(message);
+    return this.relayerApi.getStatus(messageHash);
   }
 
   generatePrivateKey() {
@@ -134,17 +136,14 @@ class UniversalLoginSDK {
     return this.config = this.config || (await this.relayerApi.getConfig()).config;
   }
 
-  async waitForStatus(messageId: string, timeout: number = 1000, tick: number = 20) {
-    let elapsed = 0;
-    let status;
-    do {
-      if (elapsed > timeout) {
-        throw Error('Timeout');
-      }
-      await sleep(tick);
-      elapsed += tick;
-      status =  await this.relayerApi.getStatusById(messageId);
-    } while (status && !status.transactionHash && !status.error);
+  private isExecuted (messageStatus: MessageStatus){
+    return !!messageStatus.transactionHash || !!messageStatus.error;
+  }
+
+  async waitForStatus(messageHash: string) {
+    const getStatus = async () => this.relayerApi.getStatus(messageHash);
+    const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
+    const status = await retry(getStatus, isNotExecuted);
     if (status.error) {
       throw Error(status.error);
     }
@@ -159,8 +158,9 @@ class UniversalLoginSDK {
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
-    if (result.status.id) {
-      const status = await this.waitForStatus(result.status.id);
+    if (result.status.messageHash) {
+      const status = await this.waitForStatus(result.status.messageHash);
+      ensure(!status.error, Error, status.error);
       const {transactionHash} = status;
       result.status.transactionHash = transactionHash;
     }

@@ -54,16 +54,16 @@ class MessageHandler {
     return this.authorisationService.removeRequest(message.from, key);
   }
 
-  async getStatus(hash: string) {
-    if (await this.pendingMessages.isPresent(hash)){
-      return this.pendingMessages.getStatus(hash);
-    } else {
+  async getStatus(messageHash: string) {
+    if (!await this.pendingMessages.isPresent(messageHash)) {
       return null;
     }
-  }
-
-  async getQueueStatus(id: string) {
-    return this.messageQueue.getStatus(id);
+    const pendingStatus = await this.pendingMessages.getStatus(messageHash);
+    const queueStatus = await this.messageQueue.getStatus(messageHash) || {};
+    return {
+      ...pendingStatus,
+      ...queueStatus
+    };
   }
 
   stop() {
@@ -71,7 +71,7 @@ class MessageHandler {
   }
 
   async stopLater() {
-    await this.messageQueue.stopLater();
+    return this.messageQueue.stopLater();
   }
 }
 

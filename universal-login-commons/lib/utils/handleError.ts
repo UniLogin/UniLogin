@@ -12,3 +12,7 @@ export function ensure<T extends any[]>(condition: boolean, error: ErrorConstruc
     throw new error(...errorArgs);
   }
 }
+
+export function ensureNotNull<T extends any[]>(value: unknown | null, error: ErrorConstructor<T>, ...errorArgs: T) {
+  return ensure(!!value, error, ...errorArgs);
+}

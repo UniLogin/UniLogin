@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import PendingMessages from '../../../../lib/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesSQLStore from '../../../../lib/services/messages/PendingMessagesSQLStore';
@@ -35,7 +35,7 @@ describe('INT: PendingMessages', () => {
   });
 
   it('not present initally', async () => {
-    expect(await pendingMessages.isPresent('0x0123')).to.be.false;
+    expect(await pendingMessages.isPresent(TEST_MESSAGE_HASH)).to.be.false;
   });
 
   it('should be addded', async () => {
@@ -107,7 +107,7 @@ describe('INT: PendingMessages', () => {
   describe('Confirm message', async () => {
     it('should not confirm message with invalid transaction hash', async () => {
       await pendingMessages.add(message);
-      const expectedTransactionHash = '0x0000000000000000000000000000000000000000000000000000000000000123';
+      const expectedTransactionHash = TEST_TRANSACTION_HASH;
       await pendingMessages.confirmExecution(messageHash, expectedTransactionHash);
       const {transactionHash} = await pendingMessages.getStatus(messageHash);
       expect(transactionHash).to.be.eq(expectedTransactionHash);

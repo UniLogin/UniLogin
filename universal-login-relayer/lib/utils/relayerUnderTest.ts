@@ -69,7 +69,7 @@ async function deployContract(wallet: Wallet, contractJSON: ContractJSON, args =
 }
 
 export async function clearDatabase(knex: Knex) {
-  await knex.delete().from('transactions');
+  await knex.delete().from('finalMessages');
   await knex.delete().from('signature_key_pairs');
   await knex.delete().from('messages');
   await knex.delete().from('authorisations');

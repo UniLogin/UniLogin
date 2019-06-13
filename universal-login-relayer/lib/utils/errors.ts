@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'InvalidENSDomain' | 'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -83,6 +83,12 @@ export class InvalidENSDomain extends NotFound {
   }
 }
 
+export class StatusNotFound extends NotFound {
+  constructor() {
+    super('Status not found', 'NotFound');
+    Object.setPrototypeOf(this, StatusNotFound.prototype);
+  }
+}
 
 export class PaymentError extends RelayerError {
   constructor (message: string, errorType: ErrorType) {

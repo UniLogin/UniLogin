@@ -21,11 +21,17 @@ export interface SignedMessage {
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
 export type MessageStatus = {
-  id?: string,
+  messageHash?: string,
+  error?: string,
   collectedSignatures: string[],
   totalCollected: number,
   required: number,
-  transactionHash: string
+  transactionHash: string | null
+};
+
+export type MessageQueueStatus = {
+  transactionHash?: string,
+  error?: string
 };
 
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
