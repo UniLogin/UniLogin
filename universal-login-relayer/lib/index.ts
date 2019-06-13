@@ -1,7 +1,7 @@
 import Relayer, {RelayerClass} from './relayer';
 export default Relayer;
-import config from './config/relayer';
-export {RelayerClass, config};
+export {config, Config} from './config/relayer';
+export {RelayerClass};
 export {DevelopmentRelayer} from './dev/DevelopmentRelayer';
 export {TokenGrantingRelayer} from './dev/TokenGrantingRelayer';
 export {RelayerUnderTest} from './utils/relayerUnderTest';

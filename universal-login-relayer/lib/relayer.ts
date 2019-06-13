@@ -1,6 +1,6 @@
 import express, {Application} from 'express';
 import WalletRouter from './routes/wallet';
-import ConfigRouter from './routes/config';
+import ConfigRouter, {getPublicConfig} from './routes/config';
 import RequestAuthorisationRouter from './routes/authorisation';
 import WalletService from './services/WalletService';
 import ENSService from './services/ensService';
@@ -69,9 +69,10 @@ class Relayer {
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
     this.messageQueueStore = new MessageQueueStore(this.database);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);
+    const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
-    this.app.use('/config', ConfigRouter(this.config.chainSpec));
+    this.app.use('/config', ConfigRouter(publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);

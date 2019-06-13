@@ -1,8 +1,8 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
-import {providers, Wallet} from 'ethers';
-import {ContractWhiteList, getContractHash, ContractJSON} from '@universal-login/commons';
-import {RelayerClass} from '@universal-login/relayer';
+import {providers, Wallet, utils} from 'ethers';
+import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON} from '@universal-login/commons';
+import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
@@ -30,20 +30,25 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, tokenContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
+  const supportedTokens: SupportedToken[] = [{
+    address: tokenAddress,
+    minimalAmount: utils.parseEther('0.05')
+   }];
   return {
-    port: 3311,
+    port: '3311',
     jsonRpcUrl,
     privateKey: wallet.privateKey,
     walletMasterAddress,
-    tokenContractAddress,
     chainSpec: {
+      name: 'development',
       ensAddress,
       chainId: 0
     },
     ensRegistrars,
     contractWhiteList,
-    factoryAddress
+    factoryAddress,
+    supportedTokens
   };
 }
 
@@ -77,7 +82,7 @@ async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverri
     master:  [masterContractHash],
     proxy: [proxyContractHash]
   };
-  const relayerConfig = getRelayerConfig(jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains, contractWhiteList, factoryAddress);
+  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains};
 }

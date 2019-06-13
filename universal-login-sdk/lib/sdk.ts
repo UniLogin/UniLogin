@@ -181,7 +181,7 @@ class UniversalLoginSDK {
 
   async resolveName(ensName: string) {
     this.config = this.config || (await this.getRelayerConfig()).config;
-    const {ensAddress} = this.config;
+    const {ensAddress} = this.config.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }
 
