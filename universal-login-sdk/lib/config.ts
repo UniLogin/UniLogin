@@ -12,6 +12,6 @@ export type RelayerConfig = {
   supportedTokens: SupportedToken[];
   factoryAddress: string;
   chainSpec: ChainSpec;
-}
+};
 
 export default MESSAGE_DEFAULTS;

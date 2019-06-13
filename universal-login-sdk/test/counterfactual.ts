@@ -24,7 +24,7 @@ describe('SDK counterfactual', () => {
   it('getFutureWallet returns private key and contract address', async () => {
     const [privateKey, futureContractAddress] = (await sdk.getFutureWallet());
     expect(privateKey).to.be.properPrivateKey;
-    expect(futureContractAddress).to.be.properAddress;    
+    expect(futureContractAddress).to.be.properAddress;
   });
 
   after(async () => {
