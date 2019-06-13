@@ -23,7 +23,7 @@ describe('E2E: Relayer - Config routes', async () => {
     const result = await chai.request(relayer.server)
       .get('/config');
     const config = {
-      ...result.body.config, 
+      ...result.body.config,
       supportedTokens: normalizeSupportedTokens(result.body.config.supportedTokens)
     };
     expect(config).to.be.deep.eq(expectedConfig);
