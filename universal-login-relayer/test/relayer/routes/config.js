@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
+import {normalizeSupportedTokens} from '@universal-login/commons';
 import {startRelayer} from './helpers';
-import { getPublicConfig } from '../../../lib/routes/config';
+import {getPublicConfig} from '../../../lib/routes/config';
 
 chai.use(chaiHttp);
 
@@ -12,7 +13,7 @@ describe('E2E: Relayer - Config routes', async () => {
     ({relayer} = await startRelayer());
   });
 
-  it('Config', async () => {
+  it('should return public config', async () => {
     const {supportedTokens, chainSpec, factoryAddress} = relayer.config;
     const expectedConfig = {
       supportedTokens,
@@ -21,7 +22,11 @@ describe('E2E: Relayer - Config routes', async () => {
     };
     const result = await chai.request(relayer.server)
       .get('/config');
-    expect(result.body.config).to.be.deep.eq(expectedConfig);
+    const config = {
+      ...result.body.config, 
+      supportedTokens: normalizeSupportedTokens(result.body.config.supportedTokens)
+    };
+    expect(config).to.be.deep.eq(expectedConfig);
   });
 
 
