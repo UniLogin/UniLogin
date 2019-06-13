@@ -1,6 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus} from '@universal-login/commons';
+import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, computeContractAddress} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
@@ -14,6 +15,7 @@ class UniversalLoginSDK {
   blockchainObserver: BlockchainObserver;
   defaultPaymentOptions: Message;
   config: any;
+  factoryAddress: string;
 
   constructor(
     relayerUrl: string,
@@ -27,6 +29,7 @@ class UniversalLoginSDK {
     this.relayerObserver = new RelayerObserver(this.relayerApi);
     this.blockchainObserver = new BlockchainObserver(this.provider);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
+    this.factoryAddress = '0x0';
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -38,6 +41,13 @@ class UniversalLoginSDK {
       result.transaction.hash,
     );
     return [privateKey, contract.address];
+  }
+
+  async getFutureWallet() {
+    const {address, privateKey} = Wallet.createRandom();
+    const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
+    const futureContractAddress = computeContractAddress(this.factoryAddress, address, await factoryContract.initCode());
+    return [privateKey, futureContractAddress];
   }
 
   async addKey(
