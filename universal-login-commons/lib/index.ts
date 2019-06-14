@@ -2,9 +2,9 @@ export {sleep, waitToBeMined, waitUntil, waitExpect, waitForContractDeploy, send
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
 export {DeviceInfo, ContractWhiteList, Notification, Omit, PartialRequired, Procedure, Predicate} from './types/common';
-export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageWithoutFrom} from './types/message';
+export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageQueueStatus, MessageWithoutFrom} from './types/message';
 export {copy} from './utils/copy';
-export {ensure, onCritical} from './utils/handleError';
+export {ensure, ensureNotNull, onCritical} from './utils/handleError';
 export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';
 export {TokenService} from './services/TokenService';

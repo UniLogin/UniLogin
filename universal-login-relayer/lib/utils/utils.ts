@@ -57,5 +57,5 @@ export const getKeyFromHashAndSignature = (messageHash: string, signature: strin
 export const createPendingMessage = (walletAddress: string) : PendingMessage => ({
   walletAddress,
   collectedSignatureKeyPairs: [],
-  transactionHash: '0x0'
+  transactionHash: null
 });

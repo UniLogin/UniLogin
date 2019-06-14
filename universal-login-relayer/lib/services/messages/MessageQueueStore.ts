@@ -1,9 +1,9 @@
 import Knex from 'knex';
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields} from '@universal-login/commons';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, calculateMessageHash} from '@universal-login/commons';
 import {IMessageQueueStore} from './IMessageQueueStore';
 
 interface QueueItem {
-  hash?: string;
+  transactionHash?: string;
   error?: string;
 }
 
@@ -11,24 +11,25 @@ export default class MessageQueueStore implements IMessageQueueStore {
   public tableName: string;
 
   constructor(public database: Knex) {
-    this.tableName = 'transactions';
+    this.tableName = 'finalMessages';
   }
 
   async add(signedMessage: SignedMessage) {
-    const [id] = await this.database
+    const messageHash = calculateMessageHash(signedMessage);
+    await this.database
       .insert({
+        messageHash,
         message: stringifySignedMessageFields(signedMessage),
         created_at: this.database.fn.now()
       })
-      .into(this.tableName)
-      .returning('id');
-    return id;
+      .into(this.tableName);
+    return messageHash;
   }
 
   async getNext() {
     const next = await this.database(this.tableName)
       .first()
-      .where('hash', null)
+      .where('transactionHash', null)
       .andWhere('error', null)
       .orderBy('created_at', 'asc')
       .select();
@@ -38,28 +39,31 @@ export default class MessageQueueStore implements IMessageQueueStore {
     return next;
   }
 
-  async markAsSuccess (messageId: string, transactionHash: string) {
-    await this.update(messageId, {hash: transactionHash});
+  async markAsSuccess (messageHash: string, transactionHash: string) {
+    await this.update(messageHash, {transactionHash});
   }
 
-  async markAsError (messageId: string, inputError: string) {
-    let error: string = inputError;
-    if (error.length > 255) {
-      error = error.substr(0, 255);
-    }
-    await this.update(messageId, {error});
+  async markAsError (messageHash: string, error: string) {
+    await this.update(messageHash, {error});
   }
 
-  async get(id: string) {
+  async get(messageHash: string) {
     return this.database(this.tableName)
-      .where('id', id)
+      .where('messageHash', messageHash)
       .select()
       .first();
   }
 
-  private update(id: string, data: QueueItem) {
+  async getStatus(messageHash: string) {
     return this.database(this.tableName)
-      .where('id', id)
+      .first()
+      .where('messageHash', messageHash)
+      .select(['messageHash', 'transactionHash', 'error']);
+  }
+
+  private update(messageHash: string, data: QueueItem) {
+    return this.database(this.tableName)
+      .where('messageHash', messageHash)
       .update(data);
   }
 }

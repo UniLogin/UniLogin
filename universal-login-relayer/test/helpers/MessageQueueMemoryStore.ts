@@ -1,39 +1,55 @@
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {IMessageQueueStore, MessageEntity} from '../../lib/services/messages/IMessageQueueStore';
 
 export default class MessageQueueMemoryStore implements IMessageQueueStore {
-  private counter: number;
   public messageEntries: MessageEntity[];
 
   constructor() {
-    this.counter = 0;
     this.messageEntries = [];
   }
 
-  async add (signedMessage: SignedMessage) {
-    this.counter++;
+  async add(signedMessage: SignedMessage) {
+    const messageHash = calculateMessageHash(signedMessage);
     this.messageEntries.push({
       message: signedMessage,
-      id: this.counter.toString(),
-      hash: 'hash',
+      messageHash,
+      transactionHash: undefined,
       error: undefined
     });
-    return this.counter.toString();
+    return messageHash;
   }
 
-  async getNext () {
-    return this.messageEntries[0];
+  async getNext() {
+    return this.messageEntries.filter((messageEntity: MessageEntity) => !messageEntity.error && !messageEntity.transactionHash)[0];
   }
 
-  async get(id: string) {
-    return this.messageEntries[0];
+  async get(messageHash: string) {
+    return this.find(messageHash);
   }
 
-  async markAsSuccess (id: string, hash: string) {
-    this.messageEntries.pop();
+  async getStatus(messageHash: string) {
+    const {transactionHash, error} = this.find(messageHash)!;
+    return {
+      transactionHash,
+      error
+    };
   }
 
-  async markAsError (id: string, error: string) {
-    this.messageEntries.pop();
+  async markAsSuccess(messageHash: string, transactionHash: string) {
+    const messageEntityId = this.findIndex(messageHash);
+    this.messageEntries[messageEntityId].transactionHash = transactionHash;
+  }
+
+  async markAsError(messageHash: string, error: string) {
+    const messageEntityId = this.findIndex(messageHash);
+    this.messageEntries[messageEntityId].error = error;
+  }
+
+  private find(messageHash: string) {
+    return this.messageEntries.find((messageEntity: MessageEntity) => messageEntity.messageHash === messageHash);
+  }
+
+  private findIndex(messageHash: string) {
+    return this.messageEntries.findIndex((messageEntity: MessageEntity) => messageEntity.messageHash === messageHash);
   }
 }

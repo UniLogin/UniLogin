@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import IPendingMessagesStore from '../../../../lib/services/messages/IPendingMessagesStore';
 import PendingMessage from '../../../../lib/services/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -77,7 +77,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
       collectedSignatures: [] as any,
       totalCollected: 0,
       required: utils.bigNumberify(1),
-      transactionHash: '0x0'
+      transactionHash: null
     };
     expect(await pendingMessagesStore.getStatus(messageHash, wallet)).to.deep.eq(expectedStatus);
     await pendingMessagesStore.addSignature(messageHash, message.signature);
@@ -100,7 +100,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
 
   it('should update transcaction hash', async () => {
     await pendingMessagesStore.add(messageHash, pendingMessage);
-    const expectedTransactionHash = '0x1234';
+    const expectedTransactionHash = TEST_TRANSACTION_HASH;
     await pendingMessagesStore.setTransactionHash(messageHash, expectedTransactionHash);
     const {transactionHash} = await pendingMessagesStore.getStatus(messageHash, wallet);
     expect(transactionHash).to.be.eq(expectedTransactionHash);

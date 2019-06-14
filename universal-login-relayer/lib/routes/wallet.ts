@@ -29,24 +29,8 @@ messageHandler : MessageHandler) => async (req : Request, res : Response, next :
 
 export const getStatus = (messageHandler: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {hash} = req.params;
-    const status = await messageHandler.getStatus(hash);
-    res.status(200)
-      .type('json')
-      .send(JSON.stringify(status));
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const getStatusById = (messageHandler: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const {id} = req.params;
-    const messageEntity = await messageHandler.getQueueStatus(id);
-    const status = messageEntity && {
-      transactionHash: messageEntity.hash,
-      error: messageEntity.error
-    };
+    const {messageHash} = req.params;
+    const status = await messageHandler.getStatus(messageHash);
     res.status(200)
       .type('json')
       .send(JSON.stringify(status));
@@ -64,11 +48,8 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
   router.post('/execution',
     asyncMiddleware(execution(messageHandler)));
 
-  router.get('/execution/:hash',
+  router.get('/execution/:messageHash',
     asyncMiddleware(getStatus(messageHandler)));
-
-  router.get('/execution/status/:id',
-    asyncMiddleware(getStatusById(messageHandler)));
 
   return router;
 };

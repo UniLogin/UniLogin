@@ -24,7 +24,7 @@ export default class PendingMessages {
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
     if (await this.isEnoughSignatures(messageHash)) {
-      status.id = await this.onReadyToExecute(messageHash, message);
+      status.messageHash = await this.onReadyToExecute(messageHash, message);
     }
     return status;
   }
@@ -37,7 +37,7 @@ export default class PendingMessages {
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {
     const pendingMessage = await this.messagesStore.get(messageHash);
-    ensure(pendingMessage.transactionHash === '0x0', DuplicatedExecution);
+    ensure(!pendingMessage.transactionHash, DuplicatedExecution);
     const isContainSignature = await this.messagesStore.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
     await this.ensureCorrectKeyPurpose(message, pendingMessage.walletAddress, this.wallet);
@@ -58,10 +58,6 @@ export default class PendingMessages {
     return this.messagesStore.getStatus(messageHash, this.wallet);
   }
 
-  async getQueueStatus(id: string) {
-    return this.messageQueue.getStatus(id);
-  }
-
   async getMessageWithSignatures(message: SignedMessage, messageHash: string) : Promise<SignedMessage> {
     const collectedSignatureKeyPairs = await this.messagesStore.getCollectedSignatureKeyPairs(messageHash);
     const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
@@ -77,7 +73,7 @@ export default class PendingMessages {
 
   async ensureCorrectExecution(messageHash: string) {
     const {required, transactionHash, totalCollected} = await this.messagesStore.getStatus(messageHash, this.wallet);
-    ensure(transactionHash === '0x0', DuplicatedExecution);
+    ensure(!transactionHash, DuplicatedExecution);
     ensure(await this.isEnoughSignatures(messageHash), NotEnoughSignatures, required, totalCollected);
   }
 

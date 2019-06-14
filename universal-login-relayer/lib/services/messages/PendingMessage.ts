@@ -2,6 +2,6 @@ import {CollectedSignatureKeyPair} from './IPendingMessagesStore';
 
 export default interface PendingMessage {
   collectedSignatureKeyPairs: CollectedSignatureKeyPair[];
-  transactionHash: string;
+  transactionHash: string | null;
   walletAddress: string;
 }
