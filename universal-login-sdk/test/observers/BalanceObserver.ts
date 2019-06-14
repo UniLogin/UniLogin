@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, SupportedToken, sleep, waitUntil} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {BalanceObserver} from '../../lib/observers/BalanceObserver';
 
@@ -18,7 +18,7 @@ describe('SDK: BalanceObserver', () => {
       minimalAmount
     }
   ];
-  let callback: any;
+  let callback: sinon.SinonSpy;
 
   
   beforeEach(async () => {

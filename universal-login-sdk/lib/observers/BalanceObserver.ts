@@ -1,12 +1,12 @@
-import {providers, Contract, utils} from 'ethers';
+import {providers, Contract} from 'ethers';
 import ObserverBase from './ObserverBase';
-import {sleep, SupportedToken, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {SupportedToken, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 
 const BALANCE_CHANGED = 'balance_changed';
 
 export class BalanceObserver extends ObserverBase {
-  constructor(private supportedTokens: any[], private provider: providers.Provider) {
+  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
     super();
   }
 
