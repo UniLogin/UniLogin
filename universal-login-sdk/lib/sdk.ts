@@ -1,8 +1,8 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, computeContractAddress, PublicRelayerConfig} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
-import {doGetInitCode} from './utils/utils';
+import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import MESSAGE_DEFAULTS from './config';
@@ -44,14 +44,8 @@ class UniversalLoginSDK {
   }
 
   async getFutureWallet() {
-    const {address, privateKey} = Wallet.createRandom();
-    this.factoryAddress = (await this.getRelayerConfig()).factoryAddress;
-    const futureContractAddress = computeContractAddress(this.factoryAddress!, address, await this.getInitCode());
-    return [privateKey, futureContractAddress];
-  }
-
-  async getInitCode() {
-    return this.initCode = this.initCode || await doGetInitCode(this.factoryAddress!, this.provider);
+    await this.getRelayerConfig();
+    return createFutureWallet(this.config!.factoryAddress, this.provider);
   }
 
   async addKey(
@@ -197,7 +191,7 @@ class UniversalLoginSDK {
   }
 
   async resolveName(ensName: string) {
-    this.config = await this.getRelayerConfig();
+    await this.getRelayerConfig();
     const {ensAddress} = this.config!.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }
