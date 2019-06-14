@@ -21,7 +21,7 @@ describe('SDK: BalanceObserver', () => {
   let callback: any;
 
   
-  before(async () => {
+  beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     mockToken = await deployContract(wallet, MockToken);
@@ -44,11 +44,20 @@ describe('SDK: BalanceObserver', () => {
     const unsubscribe = balanceObserver.subscribeBalanceChanged(TEST_ACCOUNT_ADDRESS, callback);
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('1.0'));
     await waitUntil(() => !!callback.firstCall);
-    expect(callback).to.have.been.calledWith(ETHER_NATIVE_TOKEN.address);
+
+    expect(callback).to.have.been.calledWith(mockToken.address);
     unsubscribe();
   });
 
-  after(async () => {
+  it('shouldn`t call callback if token balance is smaller than minimalAmount', async () => {
+    const unsubscribe = balanceObserver.subscribeBalanceChanged(TEST_ACCOUNT_ADDRESS, callback);
+    await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('0.49'));
+    await sleep(50);
+    expect(callback).to.not.have.been.called;
+    unsubscribe();
+  });
+
+  afterEach(async () => {
     await balanceObserver.finalizeAndStop();
   });
 });

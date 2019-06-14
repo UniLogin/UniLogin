@@ -1,4 +1,4 @@
-import {providers, Contract} from 'ethers';
+import {providers, Contract, utils} from 'ethers';
 import ObserverBase from './ObserverBase';
 import {sleep, SupportedToken, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
@@ -21,35 +21,38 @@ export class BalanceObserver extends ObserverBase {
 
   async doTick() {
     for(const filter of Object.keys(this.emitters)) {
-      const [balanceChanged, tokenAddress] = await this.checkBalances(filter);
-      if(balanceChanged) {
-        this.emitters[filter].emit(BALANCE_CHANGED, tokenAddress)
-      }
+      await this.checkBalances(filter);
     }
   }
 
   async checkBalances(contractAddress: string) {
     for(let count = 0; count < this.supportedTokens.length; count++) {
       const {address, minimalAmount} = this.supportedTokens[count];
-
       if(address === ETHER_NATIVE_TOKEN.address) {
-        return this.etherBalanceChanged(JSON.parse(contractAddress))
+        await this.etherBalanceChanged(JSON.parse(contractAddress), minimalAmount)
       } else {
-        const token = new Contract(address, ERC20.interface, this.provider);
-        const balance = await token.balanceOf(JSON.parse(contractAddress));
-        return [balance.gte(minimalAmount), address];
+        await this.tokenBalanceChanged(JSON.parse(contractAddress), address, minimalAmount);
       }
     }
     return [false, '0x0']
   }
 
-  async etherBalanceChanged(contractAddress, minimalAmount) {
+  async etherBalanceChanged(contractAddress: string, minimalAmount: string) {
     const balance = await this.provider.getBalance(contractAddress);
-    return [balance.gte(minimalAmount), address];
+    if(balance.gte(minimalAmount)) {
+      this.onBalanceChanged(contractAddress, ETHER_NATIVE_TOKEN.address);
+    }
   }
 
-  async tokenBalanceChanged(contractAddress, tokenAddress, minimalAmount) {
-    const balance = await this.provider.getBalance(contractAddress);
-    return [balance.gte(minimalAmount), address];
+  async tokenBalanceChanged(contractAddress: string, tokenAddress: string, minimalAmount: string) {
+    const token = new Contract(tokenAddress, ERC20.interface, this.provider);
+    const balance = await token.balanceOf(contractAddress);
+    if(balance.gte(minimalAmount)) {
+      this.onBalanceChanged(contractAddress, tokenAddress);
+    }
+  }
+
+  onBalanceChanged(contractAddress: string, tokenAddress: string) {
+    this.emitters[JSON.stringify(contractAddress)].emit(BALANCE_CHANGED, tokenAddress)
   }
 }
