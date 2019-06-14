@@ -2,7 +2,7 @@ import {utils} from 'ethers';
 
 export interface SupportedToken {
   address: string;
-  minimalAmount: utils.BigNumber;
+  minimalAmount: string;
 }
 
 export type ChainSpec = {
