@@ -5,7 +5,7 @@ type ObserverBaseState = 'stop' | 'stopping' | 'running';
 
 abstract class ObserverBase {
   private state: ObserverBaseState = 'stop';
-  private step = 1000;
+  step = 1000;
   protected emitters: Record<string, EventEmitter> = {};
 
   subscribe(eventType: string, filter: any, callback: Function) {
