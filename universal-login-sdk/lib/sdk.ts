@@ -16,7 +16,6 @@ class UniversalLoginSDK {
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress?: string;
-  initCode?: string;
 
   constructor(
     relayerUrl: string,
@@ -132,11 +131,8 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
-    return this.config = this.config || (await this.doGetRelayerConfig()).config;
+    return this.config = this.config || (await this.relayerApi.getConfig()).config;
   }
-
-  doGetRelayerConfig = async () =>
-    this.relayerApi.getConfig()
 
   async waitForStatus(messageId: string, timeout: number = 1000, tick: number = 20) {
     let elapsed = 0;
