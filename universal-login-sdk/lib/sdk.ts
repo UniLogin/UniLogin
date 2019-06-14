@@ -16,7 +16,7 @@ class UniversalLoginSDK {
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress: string;
-  initCode: any
+  initCode: any;
 
   constructor(
     relayerUrl: string,
@@ -57,7 +57,7 @@ class UniversalLoginSDK {
 
   async doGetInitCode() {
     const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
-    return await factoryContract.initCode();
+    return factoryContract.initCode();
   }
 
   async addKey(
