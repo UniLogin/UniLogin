@@ -11,7 +11,7 @@ export class BalanceObserver extends ObserverBase {
   }
 
   tick() {
-    return this.doTick();
+    return this.checkBalances();
   }
 
   subscribeBalanceChanged(contractAddress: string, callback: Function) {
@@ -19,13 +19,13 @@ export class BalanceObserver extends ObserverBase {
     return () => listener.remove();
   }
 
-  async doTick() {
+  async checkBalances() {
     for (const contractAddress of Object.keys(this.emitters)) {
-      await this.checkBalances(contractAddress);
+      await this.checkBalancesFor(contractAddress);
     }
   }
 
-  async checkBalances(contractAddress: string) {
+  async checkBalancesFor(contractAddress: string) {
     for (let count = 0; count < this.supportedTokens.length; count++) {
       const {address, minimalAmount} = this.supportedTokens[count];
       if (address === ETHER_NATIVE_TOKEN.address) {
