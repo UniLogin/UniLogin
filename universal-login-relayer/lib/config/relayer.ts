@@ -3,9 +3,6 @@ import {getEnv, ContractWhiteList, SupportedToken, ChainSpec} from '@universal-l
 
 dotenv.config();
 
-
-export type PublicConfig = Pick<Config, 'chainSpec' | 'supportedTokens' | 'factoryAddress'>;
-
 export interface Config {
   jsonRpcUrl?: string;
   port?: string;
