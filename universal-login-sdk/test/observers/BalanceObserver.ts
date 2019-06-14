@@ -14,24 +14,24 @@ describe('SDK: BalanceObserver', () => {
   const minimalAmount =  utils.parseEther('0.5').toString();
   let supportedTokens = [
     {
-      address: ETHER_NATIVE_TOKEN.address, 
+      address: ETHER_NATIVE_TOKEN.address,
       minimalAmount
     }
   ];
   let callback: sinon.SinonSpy;
 
-  
+
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     mockToken = await deployContract(wallet, MockToken);
-    supportedTokens = [...supportedTokens, {address: mockToken.address, minimalAmount}]
+    supportedTokens = [...supportedTokens, {address: mockToken.address, minimalAmount}];
     balanceObserver = new BalanceObserver(supportedTokens, provider);
     balanceObserver.step = 10;
     balanceObserver.start();
     callback = sinon.spy();
   });
-  
+
   it('calls callback if ether balance changed', async () => {
     const unsubscribe = balanceObserver.subscribeBalanceChanged(TEST_ACCOUNT_ADDRESS, callback);
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1.0')});
