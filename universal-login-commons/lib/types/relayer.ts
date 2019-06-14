@@ -1,5 +1,3 @@
-import {utils} from 'ethers';
-
 export interface SupportedToken {
   address: string;
   minimalAmount: string;
