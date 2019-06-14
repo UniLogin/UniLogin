@@ -1,8 +1,8 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, computeContractAddress, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
+import {doGetInitCode} from './utils/utils';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import MESSAGE_DEFAULTS from './config';
@@ -51,12 +51,7 @@ class UniversalLoginSDK {
   }
 
   async getInitCode() {
-    return this.initCode = this.initCode || await this.doGetInitCode();
-  }
-
-  async doGetInitCode() {
-    const factoryContract = new Contract(this.factoryAddress!, ProxyCounterfactualFactory.interface, this.provider);
-    return factoryContract.initCode();
+    return this.initCode = this.initCode || await doGetInitCode(this.factoryAddress!, this.provider);
   }
 
   async addKey(
@@ -147,7 +142,7 @@ class UniversalLoginSDK {
   }
 
   doGetRelayerConfig = async () =>
-    this.relayerApi.getConfig();
+    this.relayerApi.getConfig()
 
   async waitForStatus(messageId: string, timeout: number = 1000, tick: number = 20) {
     let elapsed = 0;
