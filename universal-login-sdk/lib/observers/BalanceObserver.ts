@@ -34,7 +34,6 @@ export class BalanceObserver extends ObserverBase {
         await this.tokenBalanceChanged(JSON.parse(contractAddress), address, minimalAmount);
       }
     }
-    return [false, '0x0'];
   }
 
   async etherBalanceChanged(contractAddress: string, minimalAmount: string) {
