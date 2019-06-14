@@ -1,5 +1,3 @@
-import {utils} from 'ethers';
-
 export type Procedure = (...args: any[]) => void;
 
 export type Predicate = (...args: any[]) => boolean;
@@ -27,9 +25,4 @@ export interface DeviceInfo {
 export declare interface ContractWhiteList {
   master: string[];
   proxy: string[];
-}
-
-export interface SupportedToken {
-  address: string;
-  minimalAmount: utils.BigNumber;
 }

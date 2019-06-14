@@ -1,7 +1,8 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
+import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import MESSAGE_DEFAULTS from './config';
@@ -13,7 +14,8 @@ class UniversalLoginSDK {
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
   defaultPaymentOptions: Message;
-  config: any;
+  config?: PublicRelayerConfig;
+  factoryAddress?: string;
 
   constructor(
     relayerUrl: string,
@@ -38,6 +40,11 @@ class UniversalLoginSDK {
       result.transaction.hash,
     );
     return [privateKey, contract.address];
+  }
+
+  async getFutureWallet() {
+    await this.getRelayerConfig();
+    return createFutureWallet(this.config!.factoryAddress, this.provider);
   }
 
   async addKey(
@@ -124,7 +131,7 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
-    return this.relayerApi.getConfig();
+    return this.config = this.config || (await this.relayerApi.getConfig()).config;
   }
 
   async waitForStatus(messageId: string, timeout: number = 1000, tick: number = 20) {
@@ -180,8 +187,8 @@ class UniversalLoginSDK {
   }
 
   async resolveName(ensName: string) {
-    this.config = this.config || (await this.getRelayerConfig()).config;
-    const {ensAddress} = this.config.chainSpec;
+    await this.getRelayerConfig();
+    const {ensAddress} = this.config!.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }
 

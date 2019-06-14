@@ -1,13 +1,7 @@
 import dotenv from 'dotenv';
-import {getEnv, ContractWhiteList, SupportedToken} from '@universal-login/commons';
+import {getEnv, ContractWhiteList, SupportedToken, ChainSpec} from '@universal-login/commons';
 
 dotenv.config();
-
-export type ChainSpec = {
-  ensAddress: string,
-  chainId: number,
-  name: string
-};
 
 export interface Config {
   jsonRpcUrl?: string;
