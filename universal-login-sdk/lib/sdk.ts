@@ -16,6 +16,7 @@ class UniversalLoginSDK {
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress: string;
+  initCode: any
 
   constructor(
     relayerUrl: string,
@@ -45,11 +46,18 @@ class UniversalLoginSDK {
 
   async getFutureWallet() {
     const {address, privateKey} = Wallet.createRandom();
-    this.config = await this.getRelayerConfig();
-    this.factoryAddress = this.config!.factoryAddress;
-    const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
-    const futureContractAddress = computeContractAddress(this.factoryAddress, address, await factoryContract.initCode());
+    this.factoryAddress = (await this.getRelayerConfig()).factoryAddress;
+    const futureContractAddress = computeContractAddress(this.factoryAddress, address, await this.getInitCode());
     return [privateKey, futureContractAddress];
+  }
+
+  async getInitCode() {
+    return this.initCode = this.initCode || this.doGetInitCode();
+  }
+
+  async doGetInitCode() {
+    const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
+    return await factoryContract.initCode();
   }
 
   async addKey(
@@ -136,9 +144,9 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
-    return this.config || (await this.doGetRelayerConfig()).config;
+    return this.config = this.config || (await this.doGetRelayerConfig()).config;
   }
-  
+
   async doGetRelayerConfig() {
     return this.relayerApi.getConfig();
   }
