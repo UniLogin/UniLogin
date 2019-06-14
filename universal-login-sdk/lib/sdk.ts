@@ -15,8 +15,8 @@ class UniversalLoginSDK {
   blockchainObserver: BlockchainObserver;
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
-  factoryAddress: string;
-  initCode: any;
+  factoryAddress?: string;
+  initCode?: string;
 
   constructor(
     relayerUrl: string,
@@ -30,7 +30,6 @@ class UniversalLoginSDK {
     this.relayerObserver = new RelayerObserver(this.relayerApi);
     this.blockchainObserver = new BlockchainObserver(this.provider);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
-    this.factoryAddress = '0x0';
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -47,16 +46,16 @@ class UniversalLoginSDK {
   async getFutureWallet() {
     const {address, privateKey} = Wallet.createRandom();
     this.factoryAddress = (await this.getRelayerConfig()).factoryAddress;
-    const futureContractAddress = computeContractAddress(this.factoryAddress, address, await this.getInitCode());
+    const futureContractAddress = computeContractAddress(this.factoryAddress!, address, await this.getInitCode());
     return [privateKey, futureContractAddress];
   }
 
   async getInitCode() {
-    return this.initCode = this.initCode || this.doGetInitCode();
+    return this.initCode = this.initCode || await this.doGetInitCode();
   }
 
   async doGetInitCode() {
-    const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
+    const factoryContract = new Contract(this.factoryAddress!, ProxyCounterfactualFactory.interface, this.provider);
     return factoryContract.initCode();
   }
 
@@ -147,9 +146,8 @@ class UniversalLoginSDK {
     return this.config = this.config || (await this.doGetRelayerConfig()).config;
   }
 
-  async doGetRelayerConfig() {
-    return this.relayerApi.getConfig();
-  }
+  doGetRelayerConfig = async () =>
+    this.relayerApi.getConfig();
 
   async waitForStatus(messageId: string, timeout: number = 1000, tick: number = 20) {
     let elapsed = 0;
