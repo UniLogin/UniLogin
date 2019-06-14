@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayer} from './helpers';
-import { getPublicConfig } from '../../../lib/routes/config';
+import {getPublicConfig} from '../../../lib/routes/config';
 
 chai.use(chaiHttp);
 
@@ -12,7 +12,7 @@ describe('E2E: Relayer - Config routes', async () => {
     ({relayer} = await startRelayer());
   });
 
-  it('Config', async () => {
+  it('should return public config', async () => {
     const {supportedTokens, chainSpec, factoryAddress} = relayer.config;
     const expectedConfig = {
       supportedTokens,

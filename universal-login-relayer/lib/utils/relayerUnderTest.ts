@@ -1,11 +1,12 @@
 import Knex from 'knex';
-import {providers, Wallet, ContractFactory} from 'ethers';
+import {providers, Wallet, ContractFactory, utils} from 'ethers';
 const ENSBuilder = require('ens-builder');
-import {withENS, getContractHash, ContractJSON} from '@universal-login/commons';
+import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {getDeployData} from '@universal-login/contracts';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../config/relayer';
 import Relayer from '../relayer';
 
@@ -21,6 +22,7 @@ export class RelayerUnderTest extends Relayer {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
+    const mockToken = await deployContract(wallet, MockToken);
     const config: Config = {
       port,
       privateKey: wallet.privateKey,
@@ -33,7 +35,16 @@ export class RelayerUnderTest extends Relayer {
       walletMasterAddress: address,
       contractWhiteList: getContractWhiteList(),
       factoryAddress: factoryContract.address,
-      supportedTokens: []
+      supportedTokens: [
+        {
+          address: mockToken.address,
+          minimalAmount: utils.parseEther('0.05').toString()
+        },
+        {
+          address: ETHER_NATIVE_TOKEN.address,
+          minimalAmount: utils.parseEther('0.05').toString()
+        }
+      ]
     };
     return new RelayerUnderTest(config, providerWithENS);
   }
