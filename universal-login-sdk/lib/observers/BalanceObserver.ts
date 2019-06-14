@@ -20,8 +20,8 @@ export class BalanceObserver extends ObserverBase {
   }
 
   async doTick() {
-    for (const filter of Object.keys(this.emitters)) {
-      await this.checkBalances(filter);
+    for (const contractAddress of Object.keys(this.emitters)) {
+      await this.checkBalances(contractAddress);
     }
   }
 
