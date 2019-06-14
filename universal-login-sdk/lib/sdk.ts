@@ -45,7 +45,7 @@ class UniversalLoginSDK {
 
   async getFutureWallet() {
     const {address, privateKey} = Wallet.createRandom();
-    this.config = this.config || (await this.getRelayerConfig()).config;
+    this.config = await this.getRelayerConfig();
     this.factoryAddress = this.config!.factoryAddress;
     const factoryContract = new Contract(this.factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
     const futureContractAddress = computeContractAddress(this.factoryAddress, address, await factoryContract.initCode());
@@ -136,6 +136,10 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
+    return this.config || (await this.doGetRelayerConfig()).config;
+  }
+  
+  async doGetRelayerConfig() {
     return this.relayerApi.getConfig();
   }
 
@@ -192,7 +196,7 @@ class UniversalLoginSDK {
   }
 
   async resolveName(ensName: string) {
-    this.config = this.config || (await this.getRelayerConfig()).config;
+    this.config = await this.getRelayerConfig();
     const {ensAddress} = this.config!.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }

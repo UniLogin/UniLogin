@@ -55,7 +55,7 @@ describe('SDK - integration', async () => {
 
       it('should return ens config', async () => {
         const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
-        const response = await sdk.getRelayerConfig();
+        const response = await sdk.doGetRelayerConfig();
         expect(response.config.chainSpec.ensAddress).to.eq(expectedEnsAddress);
       });
 
