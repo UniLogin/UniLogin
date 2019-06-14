@@ -1,7 +1,7 @@
 export {sleep, waitToBeMined, waitUntil, waitExpect, waitForContractDeploy, sendAndWaitForTransaction} from './utils/wait';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
 export {debounce} from './utils/debounce';
-export {DeviceInfo, ContractWhiteList, Notification, Omit, PartialRequired, Procedure, Predicate, SupportedToken, ChainSpec} from './types/common';
+export {DeviceInfo, ContractWhiteList, Notification, Omit, PartialRequired, Procedure, Predicate} from './types/common';
 export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageWithoutFrom} from './types/message';
 export {copy} from './utils/copy';
 export {ensure, onCritical} from './utils/handleError';
@@ -21,3 +21,4 @@ export {createSignedMessage} from './utils/signMessage';
 export {getContractHash, getDeployedBytecode} from './utils/contractHeplers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';
 export {computeContractAddress} from './utils/computeContractAddress';
+export {SupportedToken, ChainSpec, PublicRelayerConfig} from './types/relayer';

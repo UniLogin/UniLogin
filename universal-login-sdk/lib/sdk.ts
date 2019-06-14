@@ -1,11 +1,11 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, computeContractAddress} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, sleep, stringifySignedMessageFields, MessageStatus, computeContractAddress, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import MESSAGE_DEFAULTS, {RelayerConfig} from './config';
+import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 
 class UniversalLoginSDK {
@@ -14,7 +14,7 @@ class UniversalLoginSDK {
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
   defaultPaymentOptions: Message;
-  config?: RelayerConfig;
+  config?: PublicRelayerConfig;
   factoryAddress: string;
 
   constructor(
