@@ -33,7 +33,7 @@ const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
     address: tokenAddress,
-    minimalAmount: utils.parseEther('0.05')
+    minimalAmount: utils.parseEther('0.05').toString()
    }];
   return {
     port: '3311',

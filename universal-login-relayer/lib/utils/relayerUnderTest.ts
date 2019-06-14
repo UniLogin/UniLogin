@@ -38,11 +38,11 @@ export class RelayerUnderTest extends Relayer {
       supportedTokens: [
         {
           address: mockToken.address,
-          minimalAmount: utils.parseEther('0.05')
+          minimalAmount: utils.parseEther('0.05').toString()
         },
         {
           address: ETHER_NATIVE_TOKEN.address,
-          minimalAmount: utils.parseEther('0.05')
+          minimalAmount: utils.parseEther('0.05').toString()
         }
       ]
     };
