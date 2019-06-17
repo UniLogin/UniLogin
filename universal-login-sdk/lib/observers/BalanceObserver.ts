@@ -36,7 +36,7 @@ export class BalanceObserver extends ObserverRunner {
   async checkBalancesFor(contractAddress: string) {
     for (let count = 0; count < this.supportedTokens.length; count++) {
       const {address, minimalAmount} = this.supportedTokens[count];
-      const balance = await getBalance(this.provider, contractAddress, address)
+      const balance = await getBalance(this.provider, contractAddress, address);
       if (balance.gte(minimalAmount)) {
         this.onBalanceChanged(contractAddress, address);
       }
