@@ -19,9 +19,14 @@ export class BalanceObserver extends ObserverBase {
     return this.checkBalances();
   }
 
-  async start() {
+  async startObserveBalance(contractAddress: string, callback: BalanceChangedCallback) {
     this.ensureObserverNotRunning();
+    this.listeners[contractAddress] = callback;
     super.start();
+    return () => {
+      this.listeners[contractAddress] = null;
+      this.stop();
+    }
   }
 
   ensureObserverNotRunning() {
@@ -29,15 +34,7 @@ export class BalanceObserver extends ObserverBase {
       throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.')
     }
   }
-
-  subscribeBalanceChanged(contractAddress: string, callback: BalanceChangedCallback) {
-    this.listeners[contractAddress] = callback;
-    return () => {
-      this.listeners[contractAddress] = null;
-      this.stop();
-    }
-  }
-
+  
   async checkBalances() {
     for (const contractAddress of Object.keys(this.listeners)) {
       await this.checkBalancesFor(contractAddress);
