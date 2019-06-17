@@ -4,8 +4,8 @@ import {EventEmitter} from 'fbemitter';
 type ObserverBaseState = 'stop' | 'stopping' | 'running';
 
 abstract class ObserverBase {
-  private state: ObserverBaseState = 'stop';
-  private step = 1000;
+  protected state: ObserverBaseState = 'stop';
+  step = 1000;
   protected emitters: Record<string, EventEmitter> = {};
 
   subscribe(eventType: string, filter: any, callback: Function) {
@@ -50,7 +50,7 @@ abstract class ObserverBase {
     } while (this.isRunning());
   }
 
-  private isRunning() {
+  protected isRunning() {
     return this.state !== 'stop';
   }
 }

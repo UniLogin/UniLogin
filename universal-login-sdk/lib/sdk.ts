@@ -5,6 +5,7 @@ import {resolveName} from './utils/ethereum';
 import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
+import {BalanceObserver} from './observers/BalanceObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 import {retry} from './utils/retry';
@@ -14,6 +15,7 @@ class UniversalLoginSDK {
   relayerApi: RelayerApi;
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
+  balanceObserver?: BalanceObserver;
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress?: string;
@@ -45,7 +47,14 @@ class UniversalLoginSDK {
 
   async getFutureWallet() {
     await this.getRelayerConfig();
-    return createFutureWallet(this.config!.factoryAddress, this.provider);
+    const [privateKey, contractAddress] = await createFutureWallet(this.config!.factoryAddress, this.provider);
+    this.observeBalance(contractAddress);
+    return [privateKey, contractAddress];
+  }
+
+  observeBalance(contractAddress: string) {
+    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider, () => {/*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/});
+    this.balanceObserver.startAndSubscribe(contractAddress);
   }
 
   async addKey(
