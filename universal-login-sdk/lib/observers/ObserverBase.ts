@@ -13,13 +13,6 @@ abstract class ObserverBase extends ObserverRunner {
     this.emitters[filterString] = emitter;
     return emitter.addListener(eventType, callback);
   }
-
-  async start() {
-    if (this.state === 'stop') {
-      this.state = 'running';
-      this.loop();
-    }
-  }
 }
 
 export default ObserverBase;

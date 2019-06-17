@@ -53,8 +53,8 @@ class UniversalLoginSDK {
   }
 
   observeBalance(contractAddress: string) {
-    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider, () => {/*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/});
-    this.balanceObserver.startAndSubscribe(contractAddress);
+    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
+    this.balanceObserver.startAndSubscribe(contractAddress, () => {/*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/});
   }
 
   async addKey(
