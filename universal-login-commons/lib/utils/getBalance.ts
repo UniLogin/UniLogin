@@ -1,5 +1,5 @@
 import {providers, Contract} from 'ethers';
-import ERC20 from '@universal-login/contracts/build/ERC20.json';
+import ERC20 from '../contracts/Token.json';
 import {ETHER_NATIVE_TOKEN} from '..';
 
 export async function getBalance(provider: providers.Provider, contractAddress: string, tokenAddress: string) {
