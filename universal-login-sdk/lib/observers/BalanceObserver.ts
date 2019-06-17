@@ -3,36 +3,31 @@ import ObserverBase from './ObserverBase';
 import {SupportedToken, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 
-export type BalanceChangedCallback = ({tokenAddress, contractAddress} : {contractAddress: string, tokenAddress: string}) => void;
+export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
 
-export type Listeners = {
-  [id: string]: BalanceChangedCallback | null;
-};
+export type Listeners = Record<string, BalanceChangedCallback>;
 
 export class BalanceObserver extends ObserverBase {
-  private listeners = {} as Listeners;
+  private listeners: Listeners;
   constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
     super();
-  }
-
-  tick() {
-    return this.checkBalances();
+    this.listeners = {};
   }
 
   async startObserveBalance(contractAddress: string, callback: BalanceChangedCallback) {
-    this.ensureObserverNotRunning();
+    if (this.isRunning()) {
+      throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
+    }
     this.listeners[contractAddress] = callback;
     super.start();
     return () => {
-      this.listeners[contractAddress] = null;
+      delete this.listeners[contractAddress];
       this.stop();
     };
   }
 
-  ensureObserverNotRunning() {
-    if (this.state === `running`) {
-      throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
-    }
+  tick() {
+    return this.checkBalances();
   }
 
   async checkBalances() {
@@ -68,10 +63,8 @@ export class BalanceObserver extends ObserverBase {
   }
 
   onBalanceChanged(contractAddress: string, tokenAddress: string) {
-    if (this.listeners[contractAddress]) {
-      this.listeners[contractAddress]!({tokenAddress, contractAddress});
-      this.listeners[contractAddress] = null;
-      this.stop();
-    }
+    this.listeners[contractAddress](tokenAddress, contractAddress);
+    delete this.listeners[contractAddress];
+    this.stop();
   }
 }

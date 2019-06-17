@@ -50,7 +50,7 @@ abstract class ObserverBase {
     } while (this.isRunning());
   }
 
-  private isRunning() {
+  protected isRunning() {
     return this.state !== 'stop';
   }
 }

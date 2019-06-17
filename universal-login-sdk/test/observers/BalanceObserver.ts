@@ -36,7 +36,7 @@ describe('SDK: BalanceObserver', () => {
   it('calls callback if ether balance changed', async () => {
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1.0')});
     await waitUntil(() => !!callback.firstCall);
-    expect(callback).to.have.been.calledWith({tokenAddress: ETHER_NATIVE_TOKEN.address, contractAddress: TEST_ACCOUNT_ADDRESS});
+    expect(callback).to.have.been.calledWith(ETHER_NATIVE_TOKEN.address, TEST_ACCOUNT_ADDRESS);
     unsubscribe();
   });
 
@@ -44,7 +44,7 @@ describe('SDK: BalanceObserver', () => {
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('1.0'));
     await waitUntil(() => !!callback.firstCall);
 
-    expect(callback).to.have.been.calledWith({tokenAddress: mockToken.address, contractAddress: TEST_ACCOUNT_ADDRESS});
+    expect(callback).to.have.been.calledWith(mockToken.address, TEST_ACCOUNT_ADDRESS);
     unsubscribe();
   });
 
