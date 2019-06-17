@@ -1,7 +1,6 @@
-import {providers, Contract} from 'ethers';
+import {providers} from 'ethers';
 import ObserverRunner from './ObserverRunner';
-import {SupportedToken, ETHER_NATIVE_TOKEN, ensure} from '@universal-login/commons';
-import ERC20 from '@universal-login/contracts/build/ERC20.json';
+import {SupportedToken, getBalance, ensure} from '@universal-login/commons';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
 
@@ -37,28 +36,11 @@ export class BalanceObserver extends ObserverRunner {
   async checkBalancesFor(contractAddress: string) {
     for (let count = 0; count < this.supportedTokens.length; count++) {
       const {address, minimalAmount} = this.supportedTokens[count];
-      const balance = await this.getBalance(contractAddress, address)
+      const balance = await getBalance(this.provider, contractAddress, address)
       if (balance.gte(minimalAmount)) {
         this.onBalanceChanged(contractAddress, address);
       }
     }
-  }
-
-  async getBalance(contractAddress: string, tokenAddress: string) {
-    if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
-      return this.getEtherBalance(contractAddress);
-    } else {
-      return this.getTokenBalance(contractAddress, tokenAddress);
-    }
-  }
-
-  async getEtherBalance(contractAddress: string) {
-    return this.provider.getBalance(contractAddress);
-  }
-
-  async getTokenBalance(contractAddress: string, tokenAddress: string) {
-    const token = new Contract(tokenAddress, ERC20.interface, this.provider);
-    return token.balanceOf(contractAddress);
   }
 
   onBalanceChanged(contractAddress: string, tokenAddress: string) {
