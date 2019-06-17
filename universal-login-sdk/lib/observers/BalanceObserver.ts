@@ -1,6 +1,6 @@
 import {providers, Contract} from 'ethers';
 import ObserverBase from './ObserverBase';
-import {SupportedToken, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {SupportedToken, ETHER_NATIVE_TOKEN, ensure} from '@universal-login/commons';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
@@ -13,9 +13,7 @@ export class BalanceObserver extends ObserverBase {
   }
 
   async startAndSubscribe(contractAddress: string) {
-    if (this.isRunning()) {
-      throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
-    }
+    ensure(!this.isRunning(), Error, 'Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
     this.contractAddress = contractAddress;
     super.start();
     return () => {
