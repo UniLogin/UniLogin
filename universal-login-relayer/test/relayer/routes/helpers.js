@@ -5,12 +5,12 @@ import {waitForContractDeploy} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import chai from 'chai';
 
-export const startRelayer = async () => {
+export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
   const wallet = Wallet.createRandom();
   const otherWallet = Wallet.createRandom();
-  const relayer = await RelayerUnderTest.createPreconfigured(deployer);
+  const relayer = await RelayerUnderTest.createPreconfigured(deployer, port);
   await relayer.start();
   return {provider, wallet, otherWallet, relayer, deployer};
 };
