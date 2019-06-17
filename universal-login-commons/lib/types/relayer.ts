@@ -18,4 +18,5 @@ export interface PublicRelayerConfig {
   supportedTokens: SupportedToken[];
   factoryAddress: string;
   chainSpec: ChainSpec;
+  contractWhiteList: ContractWhiteList;
 }
