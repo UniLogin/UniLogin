@@ -7,7 +7,6 @@ abstract class ObserverRunner {
   abstract async tick(): Promise<void>;
 
   constructor(private step = 1000) {}
-  
 
   async loop() {
     if (this.state === 'stop') {
