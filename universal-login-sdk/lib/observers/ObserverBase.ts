@@ -4,7 +4,7 @@ import {EventEmitter} from 'fbemitter';
 type ObserverBaseState = 'stop' | 'stopping' | 'running';
 
 abstract class ObserverBase {
-  private state: ObserverBaseState = 'stop';
+  protected state: ObserverBaseState = 'stop';
   step = 1000;
   protected emitters: Record<string, EventEmitter> = {};
 

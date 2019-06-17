@@ -48,19 +48,14 @@ class UniversalLoginSDK {
   async getFutureWallet() {
     await this.getRelayerConfig();
     const [privateKey, contractAddress] = await createFutureWallet(this.config!.factoryAddress, this.provider);
-    this.onGetFutureWallet(contractAddress);
+    this.observeBalance(contractAddress);
     return [privateKey, contractAddress];
   }
 
-  onGetFutureWallet(contractAddress: string) {
+  observeBalance(contractAddress: string) {
     this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
+    this.balanceObserver.subscribeBalanceChanged(contractAddress, () => {/*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/});
     this.balanceObserver.start();
-    this.balanceObserver.subscribeBalanceChanged(contractAddress, this.onBalanceChanged);
-  }
-
-  onBalanceChanged(tokenAddress: string) {
-    this.balanceObserver!.stop();
-    // TODO: add relayerApi.balanceChanged() and deploymentObserver.start()
   }
 
   async addKey(

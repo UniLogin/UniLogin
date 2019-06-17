@@ -36,7 +36,7 @@ describe('SDK: BalanceObserver', () => {
     const unsubscribe = balanceObserver.subscribeBalanceChanged(TEST_ACCOUNT_ADDRESS, callback);
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1.0')});
     await waitUntil(() => !!callback.firstCall);
-    expect(callback).to.have.been.calledWith(ETHER_NATIVE_TOKEN.address);
+    expect(callback).to.have.been.calledWith({tokenAddress: ETHER_NATIVE_TOKEN.address, contractAddress: TEST_ACCOUNT_ADDRESS});
     unsubscribe();
   });
 
@@ -45,7 +45,7 @@ describe('SDK: BalanceObserver', () => {
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('1.0'));
     await waitUntil(() => !!callback.firstCall);
 
-    expect(callback).to.have.been.calledWith(mockToken.address);
+    expect(callback).to.have.been.calledWith({tokenAddress: mockToken.address, contractAddress: TEST_ACCOUNT_ADDRESS});
     unsubscribe();
   });
 
@@ -55,6 +55,10 @@ describe('SDK: BalanceObserver', () => {
     await sleep(50);
     expect(callback).to.not.have.been.called;
     unsubscribe();
+  });
+
+  it('should throw error if is already started', () => {
+    expect(balanceObserver.start()).to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
   });
 
   afterEach(async () => {

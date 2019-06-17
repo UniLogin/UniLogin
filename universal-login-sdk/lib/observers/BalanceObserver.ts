@@ -3,9 +3,14 @@ import ObserverBase from './ObserverBase';
 import {SupportedToken, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 
-const BALANCE_CHANGED = 'balance_changed';
+export type BalanceChangedCallback = ({tokenAddress, contractAddress} : {contractAddress: string, tokenAddress: string}) => void;
+
+export type Listeners = {
+  [id: string]: BalanceChangedCallback | null;
+}
 
 export class BalanceObserver extends ObserverBase {
+  private listeners = {} as Listeners;
   constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
     super();
   }
@@ -14,13 +19,27 @@ export class BalanceObserver extends ObserverBase {
     return this.checkBalances();
   }
 
-  subscribeBalanceChanged(contractAddress: string, callback: Function) {
-    const listener = this.subscribe(BALANCE_CHANGED, contractAddress, callback);
-    return () => listener.remove();
+  async start() {
+    this.ensureObserverNotRunning();
+    super.start();
+  }
+
+  ensureObserverNotRunning() {
+    if(this.state === `running`) {
+      throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.')
+    }
+  }
+
+  subscribeBalanceChanged(contractAddress: string, callback: BalanceChangedCallback) {
+    this.listeners[contractAddress] = callback;
+    return () => {
+      this.listeners[contractAddress] = null;
+      this.stop();
+    }
   }
 
   async checkBalances() {
-    for (const contractAddress of Object.keys(this.emitters)) {
+    for (const contractAddress of Object.keys(this.listeners)) {
       await this.checkBalancesFor(contractAddress);
     }
   }
@@ -29,9 +48,9 @@ export class BalanceObserver extends ObserverBase {
     for (let count = 0; count < this.supportedTokens.length; count++) {
       const {address, minimalAmount} = this.supportedTokens[count];
       if (address === ETHER_NATIVE_TOKEN.address) {
-        await this.etherBalanceChanged(JSON.parse(contractAddress), minimalAmount);
+        await this.etherBalanceChanged(contractAddress, minimalAmount);
       } else {
-        await this.tokenBalanceChanged(JSON.parse(contractAddress), address, minimalAmount);
+        await this.tokenBalanceChanged(contractAddress, address, minimalAmount);
       }
     }
   }
@@ -47,11 +66,15 @@ export class BalanceObserver extends ObserverBase {
     const token = new Contract(tokenAddress, ERC20.interface, this.provider);
     const balance = await token.balanceOf(contractAddress);
     if (balance.gte(minimalAmount)) {
-      this.onBalanceChanged(contractAddress, tokenAddress);
+      this.onBalanceChanged(contractAddress, tokenAddress)
     }
   }
 
   onBalanceChanged(contractAddress: string, tokenAddress: string) {
-    this.emitters[JSON.stringify(contractAddress)].emit(BALANCE_CHANGED, tokenAddress);
+    if(this.listeners[contractAddress]) {
+      this.listeners[contractAddress]!({tokenAddress, contractAddress});
+      this.listeners[contractAddress] = null;
+      this.stop();
+    }
   }
 }
