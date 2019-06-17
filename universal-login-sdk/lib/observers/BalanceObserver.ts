@@ -7,17 +7,16 @@ export type BalanceChangedCallback = (tokenAddress: string, contractAddress: str
 
 export class BalanceObserver extends ObserverBase {
   private contractAddress?: string;
-  private callback?: BalanceChangedCallback;
-  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
+
+  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider, private callback: BalanceChangedCallback) {
     super();
   }
 
-  async startObserveBalance(contractAddress: string, callback: BalanceChangedCallback) {
+  async startAndSubscribe(contractAddress: string) {
     if (this.isRunning()) {
       throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
     }
     this.contractAddress = contractAddress;
-    this.callback = callback;
     super.start();
     return () => {
       this.contractAddress = undefined;
@@ -30,7 +29,7 @@ export class BalanceObserver extends ObserverBase {
   }
 
   async checkBalances() {
-    if(this.contractAddress) {
+    if (this.contractAddress) {
       await this.checkBalancesFor(this.contractAddress);
     }
   }
@@ -62,7 +61,7 @@ export class BalanceObserver extends ObserverBase {
   }
 
   onBalanceChanged(contractAddress: string, tokenAddress: string) {
-    this.callback!(tokenAddress, contractAddress);
+    this.callback(tokenAddress, contractAddress);
     this.contractAddress = undefined;
     this.stop();
   }
