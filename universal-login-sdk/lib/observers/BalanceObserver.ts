@@ -7,7 +7,7 @@ export type BalanceChangedCallback = ({tokenAddress, contractAddress} : {contrac
 
 export type Listeners = {
   [id: string]: BalanceChangedCallback | null;
-}
+};
 
 export class BalanceObserver extends ObserverBase {
   private listeners = {} as Listeners;
@@ -26,15 +26,15 @@ export class BalanceObserver extends ObserverBase {
     return () => {
       this.listeners[contractAddress] = null;
       this.stop();
-    }
+    };
   }
 
   ensureObserverNotRunning() {
-    if(this.state === `running`) {
-      throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.')
+    if (this.state === `running`) {
+      throw new Error('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
     }
   }
-  
+
   async checkBalances() {
     for (const contractAddress of Object.keys(this.listeners)) {
       await this.checkBalancesFor(contractAddress);
@@ -63,12 +63,12 @@ export class BalanceObserver extends ObserverBase {
     const token = new Contract(tokenAddress, ERC20.interface, this.provider);
     const balance = await token.balanceOf(contractAddress);
     if (balance.gte(minimalAmount)) {
-      this.onBalanceChanged(contractAddress, tokenAddress)
+      this.onBalanceChanged(contractAddress, tokenAddress);
     }
   }
 
   onBalanceChanged(contractAddress: string, tokenAddress: string) {
-    if(this.listeners[contractAddress]) {
+    if (this.listeners[contractAddress]) {
       this.listeners[contractAddress]!({tokenAddress, contractAddress});
       this.listeners[contractAddress] = null;
       this.stop();
