@@ -1,21 +1,22 @@
-import {providers, Contract} from 'ethers';
-import ObserverBase from './ObserverBase';
-import {SupportedToken, ETHER_NATIVE_TOKEN, ensure} from '@universal-login/commons';
-import ERC20 from '@universal-login/contracts/build/ERC20.json';
+import {providers} from 'ethers';
+import ObserverRunner from './ObserverRunner';
+import {SupportedToken, getBalance, ensure} from '@universal-login/commons';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
 
-export class BalanceObserver extends ObserverBase {
+export class BalanceObserver extends ObserverRunner {
   private contractAddress?: string;
+  private callback?: BalanceChangedCallback;
 
-  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider, private callback: BalanceChangedCallback) {
+  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
     super();
   }
 
-  async startAndSubscribe(contractAddress: string) {
+  async startAndSubscribe(contractAddress: string, callback: BalanceChangedCallback) {
     ensure(!this.isRunning(), Error, 'Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
     this.contractAddress = contractAddress;
-    super.start();
+    this.callback = callback;
+    this.start();
     return () => {
       this.contractAddress = undefined;
       this.stop();
@@ -35,31 +36,15 @@ export class BalanceObserver extends ObserverBase {
   async checkBalancesFor(contractAddress: string) {
     for (let count = 0; count < this.supportedTokens.length; count++) {
       const {address, minimalAmount} = this.supportedTokens[count];
-      if (address === ETHER_NATIVE_TOKEN.address) {
-        await this.etherBalanceChanged(contractAddress, minimalAmount);
-      } else {
-        await this.tokenBalanceChanged(contractAddress, address, minimalAmount);
+      const balance = await getBalance(this.provider, contractAddress, address);
+      if (balance.gte(minimalAmount)) {
+        this.onBalanceChanged(contractAddress, address);
       }
     }
   }
 
-  async etherBalanceChanged(contractAddress: string, minimalAmount: string) {
-    const balance = await this.provider.getBalance(contractAddress);
-    if (balance.gte(minimalAmount)) {
-      this.onBalanceChanged(contractAddress, ETHER_NATIVE_TOKEN.address);
-    }
-  }
-
-  async tokenBalanceChanged(contractAddress: string, tokenAddress: string, minimalAmount: string) {
-    const token = new Contract(tokenAddress, ERC20.interface, this.provider);
-    const balance = await token.balanceOf(contractAddress);
-    if (balance.gte(minimalAmount)) {
-      this.onBalanceChanged(contractAddress, tokenAddress);
-    }
-  }
-
   onBalanceChanged(contractAddress: string, tokenAddress: string) {
-    this.callback(tokenAddress, contractAddress);
+    this.callback!(tokenAddress, contractAddress);
     this.contractAddress = undefined;
     this.stop();
   }

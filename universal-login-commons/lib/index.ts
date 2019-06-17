@@ -22,3 +22,4 @@ export {getContractHash, getDeployedBytecode} from './utils/contractHeplers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';
 export {computeContractAddress} from './utils/computeContractAddress';
 export {SupportedToken, ChainSpec, PublicRelayerConfig} from './types/relayer';
+export {getBalance} from './utils/getBalance';

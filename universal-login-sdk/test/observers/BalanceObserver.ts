@@ -28,9 +28,9 @@ describe('SDK: BalanceObserver', () => {
     mockToken = await deployContract(wallet, MockToken);
     supportedTokens = [...supportedTokens, {address: mockToken.address, minimalAmount}];
     callback = sinon.spy();
-    balanceObserver = new BalanceObserver(supportedTokens, provider, callback);
+    balanceObserver = new BalanceObserver(supportedTokens, provider);
     balanceObserver.step = 10;
-    unsubscribe = await balanceObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS);
+    unsubscribe = await balanceObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
   });
 
   it('calls callback if ether balance changed', async () => {
@@ -56,7 +56,7 @@ describe('SDK: BalanceObserver', () => {
   });
 
   it('should throw error if is already started', () => {
-    expect(balanceObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS)).to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
+    expect(balanceObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
   });
 
   afterEach(async () => {

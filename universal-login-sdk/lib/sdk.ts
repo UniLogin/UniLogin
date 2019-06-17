@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
@@ -48,13 +48,13 @@ class UniversalLoginSDK {
   async getFutureWallet() {
     await this.getRelayerConfig();
     const [privateKey, contractAddress] = await createFutureWallet(this.config!.factoryAddress, this.provider);
-    this.observeBalance(contractAddress);
+    this.getBalanceObserver();
+    this.balanceObserver!.startAndSubscribe(contractAddress, this.onBalanceChanged);
     return [privateKey, contractAddress];
   }
 
-  observeBalance(contractAddress: string) {
-    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider, () => {/*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/});
-    this.balanceObserver.startAndSubscribe(contractAddress);
+  onBalanceChanged() {
+    /*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/
   }
 
   async addKey(
@@ -142,6 +142,11 @@ class UniversalLoginSDK {
 
   async getRelayerConfig() {
     return this.config = this.config || (await this.relayerApi.getConfig()).config;
+  }
+
+  async getBalanceObserver() {
+    ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
+    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
   }
 
   private isExecuted (messageStatus: MessageStatus){
