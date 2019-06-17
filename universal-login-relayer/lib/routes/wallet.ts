@@ -39,6 +39,12 @@ export const getStatus = (messageHandler: MessageHandler) => async (req: Request
   }
 };
 
+const deploy = () => async (req: Request, res: Response, net: NextFunction) => {
+  res.status(201)
+    .type('json')
+    .send();
+}
+
 export default (walletContractService : WalletService, messageHandler: MessageHandler) => {
   const router = Router();
 
@@ -50,6 +56,9 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
 
   router.get('/execution/:messageHash',
     asyncMiddleware(getStatus(messageHandler)));
+
+  router.post('/deploy',
+    asyncMiddleware(deploy()));
 
   return router;
 };
