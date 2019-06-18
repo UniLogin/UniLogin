@@ -4,4 +4,4 @@ export {config, Config} from './config/relayer';
 export {RelayerClass};
 export {DevelopmentRelayer} from './dev/DevelopmentRelayer';
 export {TokenGrantingRelayer} from './dev/TokenGrantingRelayer';
-export {RelayerUnderTest} from './utils/relayerUnderTest';
+export {getContractWhiteList, RelayerUnderTest} from './utils/relayerUnderTest';
