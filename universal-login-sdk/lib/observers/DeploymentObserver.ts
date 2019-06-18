@@ -1,8 +1,7 @@
-import {ContractWhiteList, ensure} from '@universal-login/commons';
+import {ContractWhiteList, ensure, isContractExist} from '@universal-login/commons';
 import {BlockchainService} from '../services/BlockchainService';
 import ObserverRunner from './ObserverRunner';
 import {utils} from 'ethers';
-import { isContractExist } from '@universal-login/commons/lib';
 
 export type OnContractDeployed = (
   contractAddress: string,

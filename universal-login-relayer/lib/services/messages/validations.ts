@@ -1,12 +1,12 @@
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {utils, providers, Contract} from 'ethers';
-import {SignedMessage, ETHER_NATIVE_TOKEN, ensure} from '@universal-login/commons';
+import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContractExist} from '@universal-login/commons';
 import {InvalidContract, NotEnoughTokens, NotEnoughGas} from '../../utils/errors';
 
-const isContract = async (provider : providers.Provider, contractAddress : string) => {
+export const isContract = async (provider : providers.Provider, contractAddress : string) => {
   // TODO: Only whitelisted contracts
-  const code = await provider.getCode(contractAddress);
-  return !!code;
+  const bytecode = await provider.getCode(contractAddress);
+  return isContractExist(bytecode);
 };
 
 export const hasEnoughToken = async (gasToken : string, walletContractAddress : string, gasLimit : utils.BigNumberish, provider : providers.Provider) => {
