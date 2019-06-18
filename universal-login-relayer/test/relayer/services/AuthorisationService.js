@@ -8,6 +8,7 @@ import {waitForContractDeploy} from '@universal-login/commons';
 import {EventEmitter} from 'fbemitter';
 import {getKnex} from '../../../lib/utils/knexUtils';
 import deviceInfo from '../../config/defaults';
+import {deployFactory} from '@universal-login/contracts';
 
 chai.use(require('chai-string'));
 
@@ -29,7 +30,8 @@ describe('Authorisation Service', async () => {
     const database = getKnex();
     authorisationService = new AuthorisationService(database);
     const walletMasterContract = await deployContract(ensDeployer, WalletMaster);
-    walletContractService = new WalletService(wallet, walletMasterContract.address, ensService, new EventEmitter());
+    const factoryContract = await deployFactory(wallet, walletMasterContract.address);
+    walletContractService = new WalletService(wallet, walletMasterContract.address, ensService, new EventEmitter(), factoryContract.address);
     const transaction = await walletContractService.create(managementKey.address, 'alex.mylogin.eth');
     walletContract = await waitForContractDeploy(managementKey, WalletMaster, transaction.hash);
   });
