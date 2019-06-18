@@ -5,7 +5,7 @@ import {MANAGEMENT_KEY, createKeyPair, computeContractAddress} from '@universal-
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {getDeployData, deployFactory} from '../../lib';
+import {getDeployData} from '../../lib';
 import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData} from '../fixtures/walletContract';
 
 chai.use(solidity);
@@ -14,7 +14,6 @@ chai.use(solidity);
 describe('Counterfactual Factory', () => {
   const keyPair = createKeyPair();
   let provider: providers.Provider;
-  let deployer: Wallet;
   let wallet: Wallet;
   let anotherWallet: Wallet;
   let factoryContract: Contract;
@@ -24,10 +23,9 @@ describe('Counterfactual Factory', () => {
   let initializeWithENS: any;
 
   beforeEach(async () => {
-    ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, walletMaster, provider, factoryContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
-    factoryContract = await deployFactory(deployer, walletMaster.address);
     initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
   });
 
