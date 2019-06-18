@@ -7,6 +7,7 @@ import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
 import {getDeployData} from '../../lib';
 import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData} from '../fixtures/walletContract';
+import {deployFactory} from '../../lib';
 
 chai.use(solidity);
 
@@ -27,8 +28,8 @@ describe('Counterfactual Factory', () => {
     ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
+    factoryContract = await deployFactory(deployer, walletMaster.address);
     initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
-    factoryContract = await deployContract(deployer, ProxyCounterfactualFactory, [initData]);
   });
 
   it('factory contract address should be proper address', () => {

@@ -11,9 +11,7 @@ export const deployFactory = async (wallet: Wallet, walletMasterAddress: string,
     ProxyCounterfactualFactory.evm.bytecode,
     wallet
   );
-  const contract = await factory.deploy(initCode, {
-    ...overrideOptions
-  });
+  const contract = await factory.deploy(initCode, {...overrideOptions});
   await contract.deployed();
   return contract;
 }
