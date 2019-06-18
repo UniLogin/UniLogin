@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet, Contract} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversaLoginSDK from '../lib/sdk';
@@ -12,7 +12,6 @@ describe('SDK counterfactual', () => {
   let sdk: UniversaLoginSDK;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
-  let factoryContract: Contract;
 
   before(async () => {
     provider = createMockProvider();

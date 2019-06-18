@@ -14,4 +14,4 @@ export const deployFactory = async (wallet: Wallet, walletMasterAddress: string,
   const contract = await factory.deploy(initCode, {...overrideOptions});
   await contract.deployed();
   return contract;
-}
+};

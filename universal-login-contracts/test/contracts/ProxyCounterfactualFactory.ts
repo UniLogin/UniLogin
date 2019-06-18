@@ -1,13 +1,12 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet} from 'ethers';
-import {deployContract, getWallets, solidity, loadFixture} from 'ethereum-waffle';
+import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {getDeployData} from '../../lib';
+import {getDeployData, deployFactory} from '../../lib';
 import {createProxyDeployWithENSArgs, ensAndMasterFixture, EnsDomainData} from '../fixtures/walletContract';
-import {deployFactory} from '../../lib';
 
 chai.use(solidity);
 
