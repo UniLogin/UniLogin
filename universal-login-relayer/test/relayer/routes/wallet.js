@@ -65,6 +65,20 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract)}`);
   });
 
+  it('Counterfactual deployment fail if invalid ENS name', async () => {
+    const keyPair = createKeyPair();
+    const invalidEnsName = 'myname.non-existing.eth';
+    const result = await chai.request(relayer.server)
+      .post(`/wallet/deploy/`)
+      .send({
+        publicKey: keyPair.publicKey,
+        ensName: invalidEnsName
+      });
+      expect(result.status).to.eq(404);
+      expect(result.body.type).to.eq('NotFound');
+      expect(result.body.error).to.eq(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
+  });
+
   describe('Execute', async () => {
     let token;
 

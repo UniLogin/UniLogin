@@ -3,7 +3,7 @@ import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
-import {Abi, defaultDeployOptions} from '@universal-login/commons';
+import {Abi, defaultDeployOptions, ensureNotNull} from '@universal-login/commons';
 import {InvalidENSDomain} from '../utils/errors';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
@@ -39,13 +39,11 @@ class WalletService {
 
   async deploy(key: string, ensName: string) {
     const ensArgs = this.ensService.argsFor(ensName);
-    if (ensArgs !== null) {
-      const args = [key, ...ensArgs] as string[];
-      const initWithENS = encodeInitializeWithENSData(args);
-      const transaction = await this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
-      return transaction;
-    }
-    throw new InvalidENSDomain(ensName);
+    ensureNotNull(ensArgs, InvalidENSDomain, ensName);
+    const args = [key, ...ensArgs as string[]];
+    const initWithENS = encodeInitializeWithENSData(args);
+    const transaction = await this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
+    return transaction;
   }
 }
 
