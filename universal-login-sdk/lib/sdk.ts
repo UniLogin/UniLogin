@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {TEST_ACCOUNT_ADDRESS, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
+import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
 import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
@@ -59,12 +59,12 @@ class UniversalLoginSDK {
     return [privateKey, contractAddress];
   }
 
-  onBalanceChanged() {
+  onBalanceChanged(contractAddress: string) {
     const onContractDeployed: OnContractDeployed = (
       contractAdress: string,
       bytecode: string
     ) => { /* TODO implementation of onContractDeployed, */};
-    this.deploymentObserver!.startAndSubscribe(TEST_ACCOUNT_ADDRESS, onContractDeployed);
+    this.deploymentObserver!.startAndSubscribe(contractAddress, onContractDeployed);
     /*TODO add relayerApi.balanceChanged()*/
   }
 
