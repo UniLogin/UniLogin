@@ -5,7 +5,6 @@ import {utils} from 'ethers';
 
 export type OnContractDeployed = (
   contractAddress: string,
-  bytecode: string
  ) => void;
 
 export class DeploymentObserver extends ObserverRunner {
@@ -38,7 +37,7 @@ export class DeploymentObserver extends ObserverRunner {
     const bytecode = await this.blockchainService.getCode(futureContractAddress);
     if (this.isContractDeployed(bytecode)){
       ensure(this.contractWhiteList.proxy.includes(utils.keccak256(bytecode)), Error, 'Proxy Bytecode is not supported by relayer');
-      await this.onContractDeployed!(futureContractAddress, bytecode);
+      await this.onContractDeployed!(futureContractAddress);
       this.stop();
     }
   }

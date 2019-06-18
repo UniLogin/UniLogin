@@ -62,7 +62,6 @@ class UniversalLoginSDK {
   onBalanceChanged(contractAddress: string) {
     const onContractDeployed: OnContractDeployed = (
       contractAdress: string,
-      bytecode: string
     ) => { /* TODO implementation of onContractDeployed, */};
     this.deploymentObserver!.startAndSubscribe(contractAddress, onContractDeployed);
     /*TODO add relayerApi.balanceChanged()*/
