@@ -19,7 +19,7 @@ describe('UNIT: DeploymentObserver', async () => {
   it('calls calback if contract deployed', async () => {
     const callback = sinon.spy();
     deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
-    await waitExpect(() => expect(callback).calledWith(TEST_ACCOUNT_ADDRESS, expectedBytecode));
+    await waitExpect(() => expect(callback).calledWith(TEST_ACCOUNT_ADDRESS));
   });
 
   it('throws if observer already is started', async () => {

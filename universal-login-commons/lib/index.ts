@@ -18,7 +18,7 @@ export {withENS} from './utils/withENS';
 export {createKeyPair, KeyPair} from './utils/keyPair';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './utils/calculateMessageSignature';
 export {createSignedMessage} from './utils/signMessage';
-export {getContractHash, getDeployedBytecode} from './utils/contractHeplers';
+export {getContractHash, getDeployedBytecode, isContractExist} from './utils/contractHeplers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';
 export {computeContractAddress} from './utils/computeContractAddress';
 export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './types/relayer';
