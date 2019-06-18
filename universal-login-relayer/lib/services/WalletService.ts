@@ -42,8 +42,7 @@ class WalletService {
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const args = [key, ...ensArgs as string[]];
     const initWithENS = encodeInitializeWithENSData(args);
-    const transaction = await this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
-    return transaction;
+    return this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
   }
 }
 
