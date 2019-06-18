@@ -23,3 +23,4 @@ export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './u
 export {computeContractAddress} from './utils/computeContractAddress';
 export {SupportedToken, ChainSpec, PublicRelayerConfig} from './types/relayer';
 export {getBalance} from './utils/getBalance';
+export {TransactionOverrides} from './types/transactions';

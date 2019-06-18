@@ -16,7 +16,7 @@ describe('SDK counterfactual', () => {
   before(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
-    relayer = await RelayerUnderTest.createPreconfigured(wallet);
+    ({relayer} = await RelayerUnderTest.createPreconfigured(wallet));
     await relayer.start();
     sdk = new UniversaLoginSDK(relayer.url(), provider);
   });

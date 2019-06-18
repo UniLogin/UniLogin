@@ -16,8 +16,8 @@ const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const { address } = await deployContract(wallet, WalletMaster);
-    const initCode = getDeployData(ProxyContract, [address, '0x0']);
+    const walletMaster = await deployContract(wallet, WalletMaster);
+    const initCode = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
     const factoryContract = await deployContract(wallet, Factory, [initCode]);
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
@@ -32,7 +32,7 @@ export class RelayerUnderTest extends Relayer {
         chainId: 0,
       },
       ensRegistrars: [DOMAIN],
-      walletMasterAddress: address,
+      walletMasterAddress: walletMaster.address,
       contractWhiteList: getContractWhiteList(),
       factoryAddress: factoryContract.address,
       supportedTokens: [
@@ -46,7 +46,8 @@ export class RelayerUnderTest extends Relayer {
         }
       ]
     };
-    return new RelayerUnderTest(config, providerWithENS);
+    const relayer = new RelayerUnderTest(config, providerWithENS);
+    return {relayer, factoryContract, walletMaster};
   }
 
   url() {

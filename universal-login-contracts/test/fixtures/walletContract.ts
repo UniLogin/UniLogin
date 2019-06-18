@@ -4,7 +4,7 @@ import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {encodeInitializeWithENSData} from '../../lib';
+import {encodeInitializeWithENSData, deployFactory} from '../../lib';
 
 export type EnsDomainData = {
   ensAddress: string;
@@ -37,6 +37,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
   const walletMaster = await deployContract(deployer, WalletMaster);
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
+  const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     ensDomainData: {
       ensAddress,
@@ -45,7 +46,8 @@ export async function setupEnsAndMaster(deployer: Wallet) {
     },
     walletMaster,
     provider: providerWithENS,
-    deployer
+    deployer,
+    factoryContract
   };
 }
 

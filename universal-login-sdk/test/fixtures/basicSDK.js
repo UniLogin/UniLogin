@@ -9,7 +9,7 @@ import MESSAGE_DEFAULTS from '../../lib/config';
 
 export default async function basicWalletService(givenProvider, wallets) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
-  const relayer = await RelayerUnderTest.createPreconfigured(deployer);
+  const {relayer} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
   const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider);

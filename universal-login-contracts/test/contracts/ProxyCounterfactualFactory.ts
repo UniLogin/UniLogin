@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet} from 'ethers';
-import {deployContract, getWallets, solidity, loadFixture} from 'ethereum-waffle';
+import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
@@ -14,7 +14,6 @@ chai.use(solidity);
 describe('Counterfactual Factory', () => {
   const keyPair = createKeyPair();
   let provider: providers.Provider;
-  let deployer: Wallet;
   let wallet: Wallet;
   let anotherWallet: Wallet;
   let factoryContract: Contract;
@@ -24,11 +23,10 @@ describe('Counterfactual Factory', () => {
   let initializeWithENS: any;
 
   beforeEach(async () => {
-    ({deployer, ensDomainData, walletMaster, provider} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, walletMaster, provider, factoryContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
     initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
-    factoryContract = await deployContract(deployer, ProxyCounterfactualFactory, [initData]);
   });
 
   it('factory contract address should be proper address', () => {
