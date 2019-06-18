@@ -6,7 +6,6 @@ import UniversaLoginSDK from '../lib/sdk';
 
 chai.use(solidity);
 
-
 describe('SDK counterfactual', () => {
   let provider: providers.Provider;
   let sdk: UniversaLoginSDK;
@@ -22,7 +21,7 @@ describe('SDK counterfactual', () => {
   });
 
   it('getFutureWallet returns private key and contract address', async () => {
-    const [privateKey, futureContractAddress] = (await sdk.getFutureWallet());
+    const [privateKey, futureContractAddress] = (await sdk.getFutureWallet(() => {}, () => {}));
     expect(privateKey).to.be.properPrivateKey;
     expect(futureContractAddress).to.be.properAddress;
   });
