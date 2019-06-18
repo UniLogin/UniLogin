@@ -16,10 +16,6 @@ describe('UNIT: DeploymentObserver', async () => {
     deploymentObserver.step = 10;
   });
 
-  afterEach(() => {
-    blockchainService.getCode.resetHistory();
-  });
-
   it('calls calback if contract deployed', async () => {
     const callback = sinon.spy();
     deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
@@ -30,5 +26,9 @@ describe('UNIT: DeploymentObserver', async () => {
     const callback = sinon.spy();
     deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
     expect(() => deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).throws('DeploymentObserver is waiting for contract deployment. Stop observer to cancel waiting');
+  });
+
+  afterEach(() => {
+    blockchainService.getCode.resetHistory();
   });
 });
