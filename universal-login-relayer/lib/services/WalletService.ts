@@ -36,11 +36,11 @@ class WalletService {
     }
     throw new InvalidENSDomain(ensName);
   }
-  
+
   async deploy(key: string, ensName: string) {
     const ensArgs = this.ensService.argsFor(ensName);
     if (ensArgs !== null) {
-      let args = [key, ...ensArgs] as string[];
+      const args = [key, ...ensArgs] as string[];
       const initWithENS = encodeInitializeWithENSData(args);
       const transaction = await this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
       return transaction;

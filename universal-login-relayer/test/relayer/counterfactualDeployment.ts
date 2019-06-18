@@ -1,10 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {providers, Wallet, Contract} from 'ethers';
+import {providers, Contract} from 'ethers';
 import Relayer from '../../lib/relayer';
-import {createKeyPair, computeContractAddress, ContractJSON, getDeployedBytecode} from '@universal-login/commons';
+import {createKeyPair, computeContractAddress, getDeployedBytecode} from '@universal-login/commons';
 import {getDeployData} from '@universal-login/contracts';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json'
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {startRelayer} from './routes/helpers';
 
 
@@ -12,16 +12,15 @@ chai.use(chaiHttp);
 
 describe('Counterfactual deployment', () => {
   let relayer: Relayer;
-  let keyPair = createKeyPair();
+  const keyPair = createKeyPair();
   let provider: providers.Provider;
-  let wallet: Wallet;
   let factoryContract: Contract;
   let walletMaster: Contract;
   const port = '33511';
   let initCode: string;
 
   before(async () => {
-    ({provider, wallet, relayer, factoryContract, walletMaster} = await startRelayer(port));
+    ({provider, relayer, factoryContract, walletMaster} = await startRelayer(port));
     initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
   });
 
@@ -30,7 +29,7 @@ describe('Counterfactual deployment', () => {
   });
 
   it('Deploy', async () => {
-    const contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode)
+    const contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
     const result = await chai.request(`http://localhost:${port}`)
       .post(`/wallet/deploy/`)
       .send({
