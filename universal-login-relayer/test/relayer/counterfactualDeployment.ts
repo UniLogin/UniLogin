@@ -38,6 +38,6 @@ describe('Counterfactual deployment', () => {
         ensName: 'myname.mylogin.eth'
       });
     expect(result.status).to.eq(201);
-    // expect(await provider.getCode(contractAddress)).to.eq(getDeployedBytecode(ProxyContract as any));
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
   });
 });

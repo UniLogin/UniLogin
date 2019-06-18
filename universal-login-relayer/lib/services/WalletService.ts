@@ -1,5 +1,6 @@
-import {ContractFactory, Wallet} from 'ethers';
+import {ContractFactory, Wallet, Contract} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions} from '@universal-login/commons';
@@ -9,11 +10,13 @@ import {encodeInitializeWithENSData} from '@universal-login/contracts';
 class WalletService {
   private bytecode: string;
   private abi: Abi;
+  private factoryContract: Contract;
 
-  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter) {
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter, factoryAddress: string) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
+    this.factoryContract = new Contract(factoryAddress, ProxyCounterfactualFactory.interface, this.wallet);
   }
 
   async create(key: string, ensName: string, overrideOptions = {}) {
@@ -29,6 +32,17 @@ class WalletService {
       };
       const transaction = await this.wallet.sendTransaction(deployTransaction);
       this.hooks.emit('created', transaction);
+      return transaction;
+    }
+    throw new InvalidENSDomain(ensName);
+  }
+  
+  async deploy(key: string, ensName: string) {
+    const ensArgs = this.ensService.argsFor(ensName);
+    if (ensArgs !== null) {
+      let args = [key, ...ensArgs] as string[];
+      const initWithENS = encodeInitializeWithENSData(args);
+      const transaction = await this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
       return transaction;
     }
     throw new InvalidENSDomain(ensName);

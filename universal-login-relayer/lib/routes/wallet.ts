@@ -39,10 +39,11 @@ export const getStatus = (messageHandler: MessageHandler) => async (req: Request
   }
 };
 
-const deploy = () => async (req: Request, res: Response, net: NextFunction) => {
+const deploy = (walletContractService : WalletService) => async (req: Request, res: Response, next: NextFunction) => {
+  const trans = await walletContractService.deploy(req.body.publicKey, req.body.ensName);
   res.status(201)
     .type('json')
-    .send();
+    .send(trans);
 }
 
 export default (walletContractService : WalletService, messageHandler: MessageHandler) => {
@@ -58,7 +59,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
     asyncMiddleware(getStatus(messageHandler)));
 
   router.post('/deploy',
-    asyncMiddleware(deploy()));
+    asyncMiddleware(deploy(walletContractService)));
 
   return router;
 };
