@@ -3,14 +3,20 @@ export interface SupportedToken {
   minimalAmount: string;
 }
 
-export type ChainSpec = {
-  ensAddress: string,
-  chainId: number,
-  name: string
-};
+export interface ChainSpec {
+  ensAddress: string;
+  chainId: number;
+  name: string;
+}
 
-export type PublicRelayerConfig = {
+export interface ContractWhiteList {
+  master: string[];
+  proxy: string[];
+}
+
+export interface PublicRelayerConfig {
   supportedTokens: SupportedToken[];
   factoryAddress: string;
   chainSpec: ChainSpec;
-};
+  contractWhiteList: ContractWhiteList;
+}

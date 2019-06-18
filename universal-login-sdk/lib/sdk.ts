@@ -5,10 +5,12 @@ import {resolveName} from './utils/ethereum';
 import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import {BalanceObserver} from './observers/BalanceObserver';
+import {BalanceObserver, BalanceChangedCallback} from './observers/BalanceObserver';
+import {DeploymentObserver, OnContractDeployed} from './observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 import {retry} from './utils/retry';
+import {BlockchainService} from './services/BlockchainService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -16,6 +18,8 @@ class UniversalLoginSDK {
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
   balanceObserver?: BalanceObserver;
+  deploymentObserver?: DeploymentObserver;
+  blockchainService: BlockchainService;
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress?: string;
@@ -31,6 +35,7 @@ class UniversalLoginSDK {
     this.relayerApi = new RelayerApi(relayerUrl);
     this.relayerObserver = new RelayerObserver(this.relayerApi);
     this.blockchainObserver = new BlockchainObserver(this.provider);
+    this.blockchainService = new BlockchainService(this.provider);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
@@ -45,16 +50,19 @@ class UniversalLoginSDK {
     return [privateKey, contract.address];
   }
 
-  async getFutureWallet() {
+  async getFutureWallet(onContractDeployed: OnContractDeployed, onBalanceChanged?: BalanceChangedCallback) {
     await this.getRelayerConfig();
     const [privateKey, contractAddress] = await createFutureWallet(this.config!.factoryAddress, this.provider);
     this.getBalanceObserver();
-    this.balanceObserver!.startAndSubscribe(contractAddress, this.onBalanceChanged);
+    this.balanceObserver!.startAndSubscribe(contractAddress, (tokenAddress, contractAddress) => this.onBalanceChanged(tokenAddress, contractAddress, onContractDeployed, onBalanceChanged));
     return [privateKey, contractAddress];
   }
 
-  onBalanceChanged() {
-    /*TODO add relayerApi.balanceChanged() and deploymentObserver.start()*/
+  onBalanceChanged(tokenAddress: string, contractAddress: string, onContractDeployed: OnContractDeployed, onBalanceChanged?: BalanceChangedCallback) {
+    onBalanceChanged && onBalanceChanged(tokenAddress, contractAddress);
+    this.getDeploymentObserver();
+    this.deploymentObserver!.startAndSubscribe(contractAddress, onContractDeployed);
+    /*TODO add relayerApi.balanceChanged()*/
   }
 
   async addKey(
@@ -147,6 +155,11 @@ class UniversalLoginSDK {
   async getBalanceObserver() {
     ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
     this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
+  }
+
+  async getDeploymentObserver() {
+    ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
+    this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.config!.contractWhiteList);
   }
 
   private isExecuted (messageStatus: MessageStatus){
