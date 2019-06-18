@@ -2,7 +2,6 @@ import {Router, Request, Response, NextFunction} from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 import WalletService from '../services/WalletService';
 import MessageHandler from '../services/MessageHandler';
-import {SupportedToken} from '@universal-login/commons';
 
 export const create = (walletContractService : WalletService) => async (req : Request, res : Response, next : NextFunction) => {
   const {managementKey, ensName} = req.body;
@@ -47,11 +46,7 @@ const deploy = (walletContractService : WalletService) => async (req: Request, r
     .send(trans);
 };
 
-// const validateBalance = (supportedTokens: SupportedToken[]) => async (req: Request, res: Response, next: NextFunction) => {
-//   next();
-// }
-
-export default (walletContractService : WalletService, messageHandler: MessageHandler/*, supportedTokens: SupportedToken[]*/) => {
+export default (walletContractService : WalletService, messageHandler: MessageHandler) => {
   const router = Router();
 
   router.post('/',
@@ -64,7 +59,6 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
     asyncMiddleware(getStatus(messageHandler)));
 
   router.post('/deploy',
-    // validateBalance(supportedTokens),
     asyncMiddleware(deploy(walletContractService)));
 
   return router;

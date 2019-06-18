@@ -71,7 +71,7 @@ class Relayer {
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);
     const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler/*, this.config.supportedTokens*/));
+    this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use(errorHandler);
