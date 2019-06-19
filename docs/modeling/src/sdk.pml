@@ -13,7 +13,7 @@ package UserInterface {
     privateKey: address
     contractAddress: address
     waitForBalance()
-    waitForDeploy()
+    deploy(ensName)
   }
 }
 
