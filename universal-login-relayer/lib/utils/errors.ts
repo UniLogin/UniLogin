@@ -107,7 +107,7 @@ export class NotEnoughGas extends PaymentError {
 
 export class NotEnoughBalance extends PaymentError {
   constructor () {
-    super('Not enough ether', 'NotEnoughBalance');
+    super('Not enough balance', 'NotEnoughBalance');
     Object.setPrototypeOf(this, NotEnoughBalance.prototype);
   }
 }

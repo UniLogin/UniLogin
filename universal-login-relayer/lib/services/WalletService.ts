@@ -3,8 +3,8 @@ import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
-import {Abi, defaultDeployOptions, ensureNotNull} from '@universal-login/commons';
-import {InvalidENSDomain} from '../utils/errors';
+import {Abi, defaultDeployOptions, ensureNotNull, ensure, balanceChangedFor, computeContractAddress, SupportedToken} from '@universal-login/commons';
+import {InvalidENSDomain, NotEnoughBalance} from '../utils/errors';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
 class WalletService {
@@ -12,7 +12,7 @@ class WalletService {
   private abi: Abi;
   private factoryContract: Contract;
 
-  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter, factoryAddress: string) {
+  constructor(private wallet: Wallet, private walletMasterAddress: string, private ensService: ENSService, private hooks: EventEmitter, private factoryAddress: string, private supportedTokens: SupportedToken[]) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
@@ -40,6 +40,8 @@ class WalletService {
   async deploy(key: string, ensName: string) {
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
+    const contractAddress = computeContractAddress(this.factoryAddress, key, await this.factoryContract.initCode());
+    ensure(!!await balanceChangedFor(this.wallet.provider, this.supportedTokens, contractAddress), NotEnoughBalance);
     const args = [key, ...ensArgs as string[]];
     const initWithENS = encodeInitializeWithENSData(args);
     return this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
