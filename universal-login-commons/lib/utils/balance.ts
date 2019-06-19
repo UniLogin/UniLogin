@@ -19,7 +19,7 @@ async function getTokenBalance(provider: providers.Provider, contractAddress: st
   return token.balanceOf(contractAddress);
 }
 
-export const balanceChangedFor = async (provider: providers.Provider, supportedTokens: SupportedToken[], contractAddress: string) => {
+export const findTokenWithRequiredBalance = async (provider: providers.Provider, supportedTokens: SupportedToken[], contractAddress: string) => {
   for (let i = 0; i < supportedTokens.length; i++) {
     const {address, minimalAmount} = supportedTokens[i];
     const balance = await getBalance(provider, contractAddress, address);

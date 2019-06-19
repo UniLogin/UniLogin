@@ -22,5 +22,5 @@ export {getContractHash, getDeployedBytecode, isContractExist} from './utils/con
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';
 export {computeContractAddress} from './utils/computeContractAddress';
 export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './types/relayer';
-export {getBalance, balanceChangedFor} from './utils/balance';
+export {getBalance, findTokenWithRequiredBalance} from './utils/balance';
 export {TransactionOverrides} from './types/transactions';
