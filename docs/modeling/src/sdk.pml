@@ -2,36 +2,101 @@
 
 title SDK
 
-class SDK {
-  getFutureWallet() : [privateKey, contractAddress]
-  intatializeWallet(privateKey, ensName)
-  createWallet() : [privateKey, contractAddress]
+package UserInterface {
+  class SDK {
+    getFutureWallet() : [privateKey, contractAddress]
+    intatializeWallet(privateKey, ensName)
+    createWallet() : [privateKey, contractAddress]
+  }
+
+  class FutureWallet {
+    privateKey: address
+    contractAddress: address
+    waitForBalance()
+    deploy(ensName)
+  }
 }
 
-class SupportedToken {
-  address: string
-  minimalAmount: BigNumber
+package Core {
+  class PublicRelayerConfig {
+    supportedTokens: SupportedToken[];
+    factoryAddress: string;
+    chainSpec: ChainSpec;
+    contractWhiteList: ContractWhiteList;
+  }
+
+  class SupportedToken {
+    address: string
+    minimalAmount: BigNumber
+  }
 }
 
-class ObserverBase {
-  start()
-  stop()
+package Domain {
+  class ObserverRunner {
+    start()
+    stop()
+  }
+
+  class ObserverBase {
+    subscribe(...)
+  }
+
+  class BalanceObserver {
+    constructor(walletAddress, SupportedToken [])
+    tick()
+  }
+
+  class DeploymentObserver {
+    constructor(walletAddress)
+    tick()
+  }
+
+  class BlockchainObserver {
+    fetchEvents();
+  }
+
+  class RelayerObserver {
+    checkAuthorisationRequests();
+  }
 }
 
-class BalanceObserver {
-  constructor(walletAddress, SupportedToken [])
-  tick()
+package Integration {
+  class RelayerApi {
+    createWallet(managementKey: string, ensName: string)
+    getConfig()
+    execute(message: any)
+    getStatus(messageHash: string)
+    connect(walletContractAddress: string, key: string)
+    denyConnection(walletContractAddress: string, key: string)
+    getPendingAuthorisations(walletContractAddress: string)
+  }
+
+  class BlockchainService {
+    getCode(contractAddress: string)
+    getBlockNumber()
+    getLogs(eventsFilter)
+    getBalance(token)
+  }
 }
 
-class DeploymentObserver {
-  constructor(walletAddress)
-  tick()
-}
+SDK .. FutureWallet
 
-ObserverBase <|-- BalanceObserver
-ObserverBase <|-- DeploymentObserver
+ObserverRunner <|-- BalanceObserver
+ObserverRunner <|-- DeploymentObserver
+ObserverRunner <|-- ObserverBase
+ObserverBase <|-- BlockchainObserver
+ObserverBase <|-- RelayerObserver
 
-SDK *-- BalanceObserver
-SDK *-- DeploymentObserver
+FutureWallet *-- BalanceObserver
+FutureWallet *-- DeploymentObserver
+BalanceObserver *-- BlockchainService
+DeploymentObserver *-- BlockchainService
+BlockchainObserver *-- BlockchainService
+RelayerObserver *-- RelayerApi
+
+SDK *-- BlockchainObserver
+SDK *-- RelayerObserver
+PublicRelayerConfig o-- SupportedToken
+
 
 @enduml

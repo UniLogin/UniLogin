@@ -33,7 +33,8 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         address _key,
         bytes32 _hashLabel,
         string calldata _name,
-        bytes32 _node, ENS ens,
+        bytes32 _node,
+        ENS ens,
         FIFSRegistrar registrar,
         PublicResolver resolver) external onlyInitializing()
         {
