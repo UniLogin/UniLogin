@@ -40,10 +40,14 @@ export const getStatus = (messageHandler: MessageHandler) => async (req: Request
 };
 
 const deploy = (walletContractService : WalletService) => async (req: Request, res: Response, next: NextFunction) => {
-  const trans = await walletContractService.deploy(req.body.publicKey, req.body.ensName);
-  res.status(201)
-    .type('json')
-    .send(trans);
+  try {
+    const trans = await walletContractService.deploy(req.body.publicKey, req.body.ensName);
+    res.status(201)
+      .type('json')
+      .send(trans);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default (walletContractService : WalletService, messageHandler: MessageHandler) => {

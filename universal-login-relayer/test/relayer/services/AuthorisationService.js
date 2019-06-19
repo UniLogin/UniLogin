@@ -31,7 +31,8 @@ describe('Authorisation Service', async () => {
     authorisationService = new AuthorisationService(database);
     const walletMasterContract = await deployContract(ensDeployer, WalletMaster);
     const factoryContract = await deployFactory(wallet, walletMasterContract.address);
-    walletContractService = new WalletService(wallet, walletMasterContract.address, ensService, new EventEmitter(), factoryContract.address);
+    const config = {walletMasterAddress: walletMasterContract.address, factoryAddress: factoryContract.address};
+    walletContractService = new WalletService(wallet, config, ensService, new EventEmitter());
     const transaction = await walletContractService.create(managementKey.address, 'alex.mylogin.eth');
     walletContract = await waitForContractDeploy(managementKey, WalletMaster, transaction.hash);
   });

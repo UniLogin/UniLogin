@@ -65,7 +65,7 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationService = new AuthorisationService(this.database);
-    this.walletContractService = new WalletService(this.wallet, this.config.walletMasterAddress, this.ensService, this.hooks, this.config.factoryAddress);
+    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
     this.messageQueueStore = new MessageQueueStore(this.database);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);

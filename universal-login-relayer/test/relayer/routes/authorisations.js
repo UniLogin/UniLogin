@@ -31,7 +31,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
 
   beforeEach(async () => {
     ({provider, wallet, otherWallet, relayer} = await startRelayer());
-    contract = await createWalletContract(provider, relayer, wallet);
+    contract = await createWalletContract(provider, relayer.server, wallet.address);
   });
 
   it('create and get authorisation', async () => {
