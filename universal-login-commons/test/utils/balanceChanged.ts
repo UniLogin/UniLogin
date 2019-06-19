@@ -2,9 +2,9 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '../../lib';
-import {balanceChangedFor} from '../../lib/utils/BalanceChecker';
+import {balanceChangedFor} from '../../lib/utils/balance';
 
-describe('BalanceChecker', () => {
+describe('BalanceChecked', () => {
   const provider = createMockProvider();
   const [wallet] = getWallets(provider);
 
