@@ -24,3 +24,4 @@ export {computeContractAddress} from './utils/computeContractAddress';
 export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './types/relayer';
 export {getBalance} from './utils/getBalance';
 export {TransactionOverrides} from './types/transactions';
+export {balanceChangedFor} from './utils/balanceChecker';
