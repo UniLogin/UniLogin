@@ -5,7 +5,7 @@ import {resolveName} from './utils/ethereum';
 import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import {BalanceObserver, BalanceChangedCallback} from './observers/BalanceObserver';
+import {BalanceObserver, ReadyToDeployCallback} from './observers/BalanceObserver';
 import {DeploymentObserver, OnContractDeployed} from './observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
@@ -51,16 +51,16 @@ class UniversalLoginSDK {
     return [privateKey, contract.address];
   }
 
-  async getFutureWallet(onContractDeployed: OnContractDeployed, onBalanceChanged?: BalanceChangedCallback) {
+  async getFutureWallet(onContractDeployed: OnContractDeployed, onReadyToDeploy?: ReadyToDeployCallback) {
     await this.getRelayerConfig();
     const [privateKey, contractAddress] = await createFutureWallet(this.config!.factoryAddress, this.provider);
     this.getBalanceObserver();
-    this.balanceObserver!.startAndSubscribe(contractAddress, (tokenAddress, contractAddress) => this.onReadyToDeploy(tokenAddress, contractAddress, onContractDeployed, onBalanceChanged));
+    this.balanceObserver!.startAndSubscribe(contractAddress, (tokenAddress, contractAddress) => this.onReadyToDeploy(tokenAddress, contractAddress, onContractDeployed, onReadyToDeploy));
     return [privateKey, contractAddress];
   }
 
-  onReadyToDeploy(tokenAddress: string, contractAddress: string, onContractDeployed: OnContractDeployed, onBalanceChanged?: BalanceChangedCallback) {
-    onBalanceChanged && onBalanceChanged(tokenAddress, contractAddress);
+  onReadyToDeploy(tokenAddress: string, contractAddress: string, onContractDeployed: OnContractDeployed, onReadyToDeploy?: ReadyToDeployCallback) {
+    onReadyToDeploy && onReadyToDeploy(tokenAddress, contractAddress);
     this.getDeploymentObserver();
     this.deploymentObserver!.startAndSubscribe(contractAddress, onContractDeployed);
     /*TODO add relayerApi.balanceChanged()*/
