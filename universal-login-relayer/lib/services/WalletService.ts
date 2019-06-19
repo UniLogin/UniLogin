@@ -4,7 +4,7 @@ import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCo
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions, ensureNotNull, ensure, balanceChangedFor, computeContractAddress, SupportedToken} from '@universal-login/commons';
-import {InvalidENSDomain, NotEnoughBalance} from '../utils/errors';
+import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken} from '../utils/errors';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
 class WalletService {
@@ -38,6 +38,7 @@ class WalletService {
   }
 
   async deploy(key: string, ensName: string) {
+    ensure(!await this.wallet.provider.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.factoryAddress, key, await this.factoryContract.initCode());

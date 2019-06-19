@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -124,6 +124,13 @@ export class Conflict extends RelayerError {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, Conflict.prototype);
+  }
+}
+
+export class EnsNameTaken extends Conflict {
+  constructor (ensName: string) {
+    super(`ENS name ${ensName} already taken`, 'DuplicatedEnsName');
+    Object.setPrototypeOf(this, DuplicatedSignature.prototype);
   }
 }
 

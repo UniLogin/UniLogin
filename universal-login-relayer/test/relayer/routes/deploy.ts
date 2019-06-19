@@ -4,7 +4,7 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
 import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
-import {startRelayer} from './helpers';
+import {startRelayer, createWalletContract} from './helpers';
 import Relayer from '../../../lib';
 
 chai.use(chaiHttp);
@@ -18,13 +18,14 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let mockToken: Contract;
   let keyPair: KeyPair;
   let contractAddress: string;
+  let initCode: string;
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
 
   beforeEach(async () => {
     ({provider, relayer, deployer, walletMaster, factoryContract, mockToken} = await startRelayer(relayerPort));
     keyPair = createKeyPair();
-    const initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
+    initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
     contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
   });
 
@@ -38,6 +39,22 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+  });
+
+
+  it('Counterfactual deployment fail if ENS name is taken', async () => {
+    const ensName = 'myname.mylogin.eth';
+    await createWalletContract(provider, relayerUrl, keyPair.publicKey, ensName);
+    const newKeyPair = createKeyPair();
+    contractAddress = computeContractAddress(factoryContract.address, newKeyPair.publicKey, initCode);
+    await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
+    const result = await chai.request(relayerUrl)
+      .post(`/wallet/deploy/`)
+      .send({
+        publicKey: newKeyPair.publicKey,
+        ensName
+      });
+    expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
   });
 
 

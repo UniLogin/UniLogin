@@ -15,12 +15,12 @@ export const startRelayer = async (port = '33111') => {
   return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletMaster, mockToken};
 };
 
-export const createWalletContract = async (provider, relayer, wallet) => {
-  const result = await chai.request(relayer.server)
+export const createWalletContract = async (provider, relayerUrlOrServer, publicKey, ensName = 'marek.mylogin.eth') => {
+  const result = await chai.request(relayerUrlOrServer)
   .post('/wallet')
   .send({
-    managementKey: wallet.address,
-    ensName: 'marek.mylogin.eth',
+    managementKey: publicKey,
+    ensName
   });
   const {transaction} = result.body;
   return waitForContractDeploy(provider, WalletContract, transaction.hash);
