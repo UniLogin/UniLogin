@@ -2,11 +2,9 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {getDeployData} from '@universal-login/contracts';
-import {OPERATION_CALL, waitForContractDeploy, createSignedMessage, waitExpect, createKeyPair, getDeployedBytecode, computeContractAddress} from '@universal-login/commons';
+import {OPERATION_CALL, waitForContractDeploy, createSignedMessage, waitExpect} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {startRelayer} from './helpers';
 
 chai.use(chaiHttp);
@@ -18,11 +16,9 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   let otherWallet;
   let contract;
   let deployer;
-  let walletMaster;
-  let factoryContract;
 
   before(async () => {
-    ({provider, wallet, otherWallet, relayer, deployer, walletMaster, factoryContract} = await startRelayer());
+    ({provider, wallet, otherWallet, relayer, deployer} = await startRelayer());
   });
 
   it('Create', async () => {
@@ -49,48 +45,6 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     expect(status).to.eq(404);
     expect(type).to.eq('NotFound');
     expect(error).to.eq('Error: ENS domain marek.non-existing.eth does not exist or is not compatible with Universal Login');
-  });
-
-  it('Counterfactual deployment', async () => {
-    const keyPair = createKeyPair();
-    const initCode = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
-    const contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
-    await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
-    const result = await chai.request(relayer.server)
-      .post(`/wallet/deploy/`)
-      .send({
-        publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth'
-      });
-    expect(result.status).to.eq(201);
-    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract)}`);
-  });
-
-  it('Counterfactual deployment fail if not enough balance', async () => {
-    const keyPair = createKeyPair();
-    const result = await chai.request(relayer.server)
-      .post(`/wallet/deploy/`)
-      .send({
-        publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth'
-      });
-    expect(result.status).to.eq(402);
-    expect(result.body.type).to.eq('NotEnoughBalance');
-    expect(result.body.error).to.eq(`Error: Not enough balance`);
-  });
-
-  it('Counterfactual deployment fail if invalid ENS name', async () => {
-    const keyPair = createKeyPair();
-    const invalidEnsName = 'myname.non-existing.eth';
-    const result = await chai.request(relayer.server)
-      .post(`/wallet/deploy/`)
-      .send({
-        publicKey: keyPair.publicKey,
-        ensName: invalidEnsName
-      });
-      expect(result.status).to.eq(404);
-      expect(result.body.type).to.eq('NotFound');
-      expect(result.body.error).to.eq(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
   });
 
   describe('Execute', async () => {
