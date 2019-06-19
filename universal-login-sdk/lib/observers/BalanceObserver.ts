@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import ObserverRunner from './ObserverRunner';
-import {SupportedToken, getBalance, ensure} from '@universal-login/commons';
+import {SupportedToken, ensure, balanceChangedFor} from '@universal-login/commons';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
 
@@ -24,21 +24,14 @@ export class BalanceObserver extends ObserverRunner {
   }
 
   tick() {
-    return this.checkBalances();
+    return this.checkBalance();
   }
 
-  async checkBalances() {
+  async checkBalance() {
     if (this.contractAddress) {
-      await this.checkBalancesFor(this.contractAddress);
-    }
-  }
-
-  async checkBalancesFor(contractAddress: string) {
-    for (let count = 0; count < this.supportedTokens.length; count++) {
-      const {address, minimalAmount} = this.supportedTokens[count];
-      const balance = await getBalance(this.provider, contractAddress, address);
-      if (balance.gte(minimalAmount)) {
-        this.onBalanceChanged(contractAddress, address);
+      const tokenAddress = await balanceChangedFor(this.provider, this.supportedTokens, this.contractAddress);
+      if(tokenAddress) {
+        this.onBalanceChanged(this.contractAddress, tokenAddress);
       }
     }
   }
