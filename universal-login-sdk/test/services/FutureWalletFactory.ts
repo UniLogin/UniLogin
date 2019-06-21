@@ -1,29 +1,40 @@
 import {expect} from 'chai';
-import {utils, Contract} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
+import {getContractWhiteList} from '@universal-login/relayer';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {getDeployData} from '@universal-login/contracts';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {FutureWalletFactory} from '../../lib/services/FutureWalletFactory';
+import {BlockchainService} from '../../lib/services/BlockchainService';
 
 describe('INT: FutureWalletFactory', async () => {
-  const provider = createMockProvider();
-  const [wallet] = getWallets(provider);
-  const supportedTokens = [{
-    address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: utils.parseEther('0.05').toString()
-  }];
-  let walletMaster: Contract;
-  let factoryContract: Contract;
+  let wallet: Wallet;
   let futureWalletFactory: FutureWalletFactory;
 
   before(async () => {
-    walletMaster = await deployContract(wallet, WalletMaster);
+    const provider = createMockProvider();
+    [wallet] = getWallets(provider);
+    const supportedTokens = [{
+      address: ETHER_NATIVE_TOKEN.address,
+      minimalAmount: utils.parseEther('0.05').toString()
+    }];
+    const walletMaster = await deployContract(wallet, WalletMaster);
     const initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
-    factoryContract = await deployContract(wallet, Factory, [initCode]);
-    futureWalletFactory = new FutureWalletFactory(factoryContract.address, provider, supportedTokens);
+    const factoryContract = await deployContract(wallet, Factory, [initCode]);
+    const blockchainService = new BlockchainService(provider);
+    const contractWhiteList = getContractWhiteList();
+    const deployCallback =  () => {};
+    futureWalletFactory = new FutureWalletFactory(
+      factoryContract.address,
+      provider,
+      supportedTokens,
+      blockchainService,
+      contractWhiteList,
+      deployCallback as any
+    );
   });
 
   it('resolve promise when address will have balance', async () => {

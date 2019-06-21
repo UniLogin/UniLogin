@@ -35,6 +35,14 @@ describe('SDK counterfactual', () => {
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
   });
 
+  it('should deploy contract with future address', async () => {
+    const {deploy, contractAddress, waitForBalance} = (await sdk.getFutureWallet());
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
+    await waitForBalance();
+    const deployedContractAddress = await deploy('name.mylogin.eth');
+    expect(deployedContractAddress).to.be.eq(contractAddress);
+  });
+
   after(async () => {
     await relayer.stop();
   });
