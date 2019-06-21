@@ -3,7 +3,7 @@ import {BalanceObserver} from '../observers/BalanceObserver';
 import {createFutureWallet} from '../utils/counterfactual';
 import {SupportedToken} from '@universal-login/commons';
 
-type CallbackResult = {
+type BalanceDetails = {
   tokenAddress: string,
   contractAddress: string
 };
@@ -11,7 +11,7 @@ type CallbackResult = {
 type FutureWallet = {
   privateKey: string,
   contractAddress: string,
-  waitForBalance: () => Promise<CallbackResult>,
+  waitForBalance: () => Promise<BalanceDetails>,
 };
 
 export class FutureWalletFactory {
@@ -27,7 +27,7 @@ export class FutureWalletFactory {
         const balanceObserver = new BalanceObserver(this.supportedTokens, this.provider);
         balanceObserver.startAndSubscribe(contractAddress, onReadyToDeploy);
       }
-    ) as Promise<CallbackResult>;
+    ) as Promise<BalanceDetails>;
     return {
       privateKey,
       contractAddress,
