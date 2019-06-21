@@ -56,7 +56,7 @@ describe('SDK: BalanceObserver', () => {
   });
 
   it('should throw error if is already started', () => {
-    expect(balanceObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
+    expect(balanceObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
   afterEach(async () => {

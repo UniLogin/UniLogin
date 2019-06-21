@@ -1,6 +1,7 @@
 import UniversalLoginSDK from './sdk';
 import {ethers, Wallet, utils, providers} from 'ethers';
 import {ensureNotNull} from '@universal-login/commons';
+import { TransactionHashNotFound } from './utils/errors';
 
 export class SdkSigner extends ethers.Signer {
   private wallet: Wallet;
@@ -44,7 +45,7 @@ export class SdkSigner extends ethers.Signer {
       message.value = await transaction.value;
     }
     const {transactionHash} = await this.sdk.execute(message, this.wallet.privateKey);
-    ensureNotNull(transactionHash, Error, 'Transaction hash is not found in Message Status');
+    ensureNotNull(transactionHash, TransactionHashNotFound);
     return this.provider.getTransaction(transactionHash!);
   }
 }
