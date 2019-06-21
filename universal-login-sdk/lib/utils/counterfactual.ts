@@ -10,5 +10,5 @@ export const getInitCode = async (factoryAddress: string, provider: providers.Pr
 export const createFutureWallet = async (factoryAddress: string, provider: providers.Provider) => {
   const {address, privateKey} = Wallet.createRandom();
   const futureContractAddress = computeContractAddress(factoryAddress, address, await getInitCode(factoryAddress, provider));
-  return [privateKey, futureContractAddress];
+  return [privateKey, futureContractAddress, address];
 };
