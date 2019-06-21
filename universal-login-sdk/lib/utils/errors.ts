@@ -1,4 +1,4 @@
-type ErrorType = 'DeploymentObserverConflict' | 'BalanceObserverConfilct' | 'InvalidBytecode' | 'RelayerConfigNotFound' | 'TransactionHashNotFound';
+type ErrorType = 'DeploymentObserverConflict' | 'ConcurrentDeployment' | 'InvalidBytecode' | 'RelayerConfigNotFound' | 'TransactionHashNotFound';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -25,10 +25,10 @@ export class DeploymentObserverConfilct extends Conflict {
   }
 }
 
-export class BalanceObserverConfilct extends Conflict {
+export class ConcurrentDeployment extends Conflict {
   constructor () {
-    super('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.', 'BalanceObserverConfilct');
-    Object.setPrototypeOf(this, BalanceObserverConfilct.prototype);
+    super('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.', 'ConcurrentDeployment');
+    Object.setPrototypeOf(this, ConcurrentDeployment.prototype);
   }
 }
 

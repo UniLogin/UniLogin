@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import {SupportedToken, ensure, findTokenWithRequiredBalance} from '@universal-login/commons';
-import {BalanceObserverConfilct} from '../utils/errors';
+import {ConcurrentDeployment} from '../utils/errors';
 import ObserverRunner from './ObserverRunner';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
@@ -14,7 +14,7 @@ export class BalanceObserver extends ObserverRunner {
   }
 
   async startAndSubscribe(contractAddress: string, callback: BalanceChangedCallback) {
-    ensure(!this.isRunning(), BalanceObserverConfilct);
+    ensure(!this.isRunning(), ConcurrentDeployment);
     this.contractAddress = contractAddress;
     this.callback = callback;
     this.start();
