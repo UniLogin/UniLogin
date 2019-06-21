@@ -4,8 +4,8 @@ import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDep
 import {resolveName} from './utils/ethereum';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
-import {BalanceObserver, ReadyToDeployCallback} from './observers/BalanceObserver';
-import {DeploymentObserver, OnContractDeployed} from './observers/DeploymentObserver';
+import {BalanceObserver} from './observers/BalanceObserver';
+import {DeploymentObserver} from './observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 import {retry} from './utils/retry';
@@ -157,7 +157,7 @@ class UniversalLoginSDK {
 
   private getFutureWalletFactory() {
     ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
-    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(this.config!.factoryAddress, this.provider, this.config!.supportedTokens, this.blockchainService, this.config!.contractWhiteList, (...args) => this.relayerApi.deploy(...args));
+    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(this.config!.factoryAddress, this.provider, this.config!.supportedTokens, this.blockchainService, this.config!.contractWhiteList, this.relayerApi);
   }
 
   private isExecuted (messageStatus: MessageStatus){

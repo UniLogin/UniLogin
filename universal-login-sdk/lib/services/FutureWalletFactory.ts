@@ -4,6 +4,7 @@ import {createFutureWallet} from '../utils/counterfactual';
 import {BalanceObserver} from '../observers/BalanceObserver';
 import {DeploymentObserver} from '../observers/DeploymentObserver';
 import {BlockchainService} from './BlockchainService';
+import { RelayerApi } from '../RelayerApi';
 
 type BalanceDetails = {
   tokenAddress: string,
@@ -25,7 +26,7 @@ export class FutureWalletFactory {
     private supportedTokens: SupportedToken[],
     private blockchainService: BlockchainService,
     private contractWhiteList: ContractWhiteList,
-    private deployCallback: (publicKey: string, ensName: string) => Promise<string>) {
+    private relayerApi: RelayerApi) {
   }
 
   async createFutureWallet(): Promise<FutureWallet> {
@@ -39,7 +40,7 @@ export class FutureWalletFactory {
     ) as Promise<BalanceDetails>;
 
     const deploy = async (ensName: string) => {
-      await this.deployCallback(address, ensName);
+      await this.relayerApi.deploy(address, ensName);
       return new Promise(
         (resolve) => {
           const deploymentObserver = new DeploymentObserver(this.blockchainService, this.contractWhiteList);
