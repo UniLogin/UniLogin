@@ -17,7 +17,7 @@ class WalletService {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
-    if(this.config.factoryAddress) {
+    if (this.config.factoryAddress) {
       this.factoryContract = new Contract(this.config.factoryAddress, ProxyCounterfactualFactory.interface, this.wallet);
     }
   }
