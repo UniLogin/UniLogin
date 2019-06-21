@@ -56,4 +56,10 @@ describe('Counterfactual Factory', () => {
     const factoryWithAnotherWallet = new Contract(factoryContract.address, ProxyCounterfactualFactory.abi, anotherWallet);
     await expect(factoryWithAnotherWallet.createContract(keyPair.publicKey, initializeWithENS)).to.be.reverted;
   });
+
+  it('createContract should fail if publicKey and publicKey in initializeWithENS are diffrent', async () => {
+    const newKeyPair = createKeyPair();
+    [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
+    await expect(factoryContract.createContract(keyPair.publicKey, initializeWithENS)).to.be.revertedWith('Public key and initialize public key are different');
+  });
 });

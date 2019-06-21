@@ -11,6 +11,8 @@ contract ProxyCounterfactualFactory is Ownable {
     }
 
     function createContract(address publicKey, bytes memory initializeWithENS) public onlyOwner returns(bool success) {
+        bytes20 initializePublicKey = getKeyFromInitializeData(initializeWithENS);
+        require(bytes20(publicKey) == initializePublicKey, "Public key and initialize public key are different");
         bytes32 finalSalt = keccak256(abi.encodePacked(publicKey));
         bytes memory _initCode = initCode;
         address contractAddress;
@@ -23,5 +25,12 @@ contract ProxyCounterfactualFactory is Ownable {
         (success, ) = contractAddress.call(initializeWithENS);
         require(success, "Unable to register ENS domain");
         return success;
+    }
+
+    function getKeyFromInitializeData(bytes memory initializeData) private pure returns(bytes20 publicKey) {
+        // solium-disable-next-line security/no-inline-assembly
+        assembly {
+            publicKey := mload(add(initializeData, 0x30))
+        }
     }
 }
