@@ -43,7 +43,7 @@ export class ValidationFailed extends SDKError {
 export class InvalidBytecode extends ValidationFailed {
   constructor () {
     super('Proxy Bytecode is not supported by relayer', 'InvalidBytecode');
-    Object.setPrototypeOf(this, BalanceObserverConfilct.prototype);
+    Object.setPrototypeOf(this, InvalidBytecode.prototype);
   }
 }
 
