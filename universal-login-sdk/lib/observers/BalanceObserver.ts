@@ -1,6 +1,7 @@
 import {providers} from 'ethers';
 import ObserverRunner from './ObserverRunner';
 import {SupportedToken, ensure, findTokenWithRequiredBalance} from '@universal-login/commons';
+import { BalanceObserverConfilct } from '../utils/errors';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
 
@@ -13,7 +14,7 @@ export class BalanceObserver extends ObserverRunner {
   }
 
   async startAndSubscribe(contractAddress: string, callback: BalanceChangedCallback) {
-    ensure(!this.isRunning(), Error, 'Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.');
+    ensure(!this.isRunning(), BalanceObserverConfilct);
     this.contractAddress = contractAddress;
     this.callback = callback;
     this.start();

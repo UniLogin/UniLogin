@@ -24,3 +24,10 @@ export class DeploymentObserverConfilct extends Conflict {
     Object.setPrototypeOf(this, DeploymentObserverConfilct.prototype);
   }
 }
+
+export class BalanceObserverConfilct extends Conflict {
+  constructor () {
+    super('Other wallet waiting for counterfactual deployment. Stop BalanceObserver to cancel old wallet instantialisation.', 'ObserverStarted');
+    Object.setPrototypeOf(this, BalanceObserverConfilct.prototype);
+  }
+}
