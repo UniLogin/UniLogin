@@ -1,4 +1,4 @@
-type ErrorType = 'DeploymentObserverConflict' | 'ConcurrentDeployment' | 'InvalidBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'TimeoutError';
+type ErrorType = 'DeploymentObserverConflict' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'TimeoutError';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -40,10 +40,10 @@ export class ValidationFailed extends SDKError {
   }
 }
 
-export class InvalidBytecode extends ValidationFailed {
+export class UnsupportedBytecode extends ValidationFailed {
   constructor () {
-    super('Proxy Bytecode is not supported by relayer', 'InvalidBytecode');
-    Object.setPrototypeOf(this, InvalidBytecode.prototype);
+    super('Proxy Bytecode is not supported by relayer', 'UnsupportedBytecode');
+    Object.setPrototypeOf(this, UnsupportedBytecode.prototype);
   }
 }
 
