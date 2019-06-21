@@ -20,11 +20,11 @@ SDK -> user: Promise<FutureWallet>: {contractAddress, privateKey, waitForBalance
 deactivate SDK
 user -> Blockchain: await waitForBalance()
 activate Blockchain
-Blockchain -> user: Promise<string>
+Blockchain -> user: Promise<BalanceDetails>
 deactivate Blockchain
 user -> Relayer: await deploy(ensName)
 activate Relayer
-Relayer -> user: Promise<Contract>
+Relayer -> user: Promise<string>
 actor Relayer
 actor Blockchain
 deactivate Relayer
