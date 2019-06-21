@@ -11,13 +11,15 @@ import {Config} from '../config/relayer';
 class WalletService {
   private bytecode: string;
   private abi: Abi;
-  private factoryContract: Contract;
+  private factoryContract?: Contract;
 
   constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
-    this.factoryContract = new Contract(this.config.factoryAddress, ProxyCounterfactualFactory.interface, this.wallet);
+    if (this.config.factoryAddress) {
+      this.factoryContract = new Contract(this.config.factoryAddress, ProxyCounterfactualFactory.interface, this.wallet);
+    }
   }
 
   async create(key: string, ensName: string, overrideOptions = {}) {
@@ -42,11 +44,11 @@ class WalletService {
     ensure(!await this.wallet.provider.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
-    const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract.initCode());
+    const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
     const args = [key, ...ensArgs as string[]];
     const initWithENS = encodeInitializeWithENSData(args);
-    return this.factoryContract.createContract(key, initWithENS, {...defaultDeployOptions});
+    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions});
   }
 }
 
