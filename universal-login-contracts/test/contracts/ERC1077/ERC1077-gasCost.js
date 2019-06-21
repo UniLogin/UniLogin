@@ -51,7 +51,7 @@ describe('ERC1077 - gas cost', async () => {
 
   it('Token transfer', async () => {
     const transferTokenData = new utils.Interface(MockToken.abi).functions.transfer.encode([wallet.address, utils.parseEther('0.5')]);
-    const transferTokenMsg = {...transferMessage, to: mockToken.address, data: transferTokenData, from: walletContract.address}
+    const transferTokenMsg = {...transferMessage, to: mockToken.address, data: transferTokenData, from: walletContract.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, transferTokenMsg);
     const transaction = await walletContract.executeSigned(...getExecutionArgs(transferTokenMsg), signature, overrideOptions);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
