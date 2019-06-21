@@ -12,7 +12,8 @@ chai.use(chaiAsPromised);
 chai.use(solidity);
 
 const callCost = 90000;
-const transferCost = 105000;
+const etherTransferCost = 105000;
+const tokenTransferCost = 80000;
 
 const overrideOptions = {gasLimit: 120000};
 
@@ -46,7 +47,7 @@ describe('ERC1077 - gas cost', async () => {
     const transaction = await walletContract.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
     gasCosts['Ether transfer'] = gasUsed;
-    expect(gasUsed).to.be.below(transferCost);
+    expect(gasUsed).to.be.below(etherTransferCost);
   });
 
   it('Token transfer', async () => {
@@ -56,7 +57,7 @@ describe('ERC1077 - gas cost', async () => {
     const transaction = await walletContract.executeSigned(...getExecutionArgs(transferTokenMsg), signature, overrideOptions);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
     gasCosts['Token transfer'] = gasUsed;
-    expect(gasUsed).to.be.below(transferCost);
+    expect(gasUsed).to.be.below(tokenTransferCost);
   });
 
   after(() => {
