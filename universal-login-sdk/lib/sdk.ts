@@ -11,6 +11,7 @@ import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 import {retry} from './utils/retry';
 import {BlockchainService} from './services/BlockchainService';
+import {RelayerConfigNotFound} from './utils/errors';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -153,12 +154,12 @@ class UniversalLoginSDK {
   }
 
   async getBalanceObserver() {
-    ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
+    ensureNotNull(this.config, RelayerConfigNotFound);
     this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
   }
 
   async getDeploymentObserver() {
-    ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
+    ensureNotNull(this.config, RelayerConfigNotFound);
     this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.config!.contractWhiteList);
   }
 

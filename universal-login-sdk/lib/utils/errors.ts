@@ -1,4 +1,4 @@
-type ErrorType = 'DeploymentObserverConflict' | 'BalanceObserverConfilct' | 'InvalidBytecode';
+type ErrorType = 'DeploymentObserverConflict' | 'BalanceObserverConfilct' | 'InvalidBytecode' | 'RelayerConfigNotFound';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -44,5 +44,20 @@ export class InvalidBytecode extends ValidationFailed {
   constructor () {
     super('Proxy Bytecode is not supported by relayer', 'InvalidBytecode');
     Object.setPrototypeOf(this, BalanceObserverConfilct.prototype);
+  }
+}
+
+export class NotFound extends SDKError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, NotFound.prototype);
+  }
+}
+
+export class RelayerConfigNotFound extends NotFound {
+  constructor () {
+    super('Relayer configuration not yet loadedr', 'RelayerConfigNotFound');
+    Object.setPrototypeOf(this, RelayerConfigNotFound.prototype);
   }
 }

@@ -1,7 +1,7 @@
 import {providers} from 'ethers';
-import ObserverRunner from './ObserverRunner';
 import {SupportedToken, ensure, findTokenWithRequiredBalance} from '@universal-login/commons';
-import { BalanceObserverConfilct } from '../utils/errors';
+import {BalanceObserverConfilct} from '../utils/errors';
+import ObserverRunner from './ObserverRunner';
 
 export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
 
