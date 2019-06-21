@@ -52,10 +52,10 @@ class UniversalLoginSDK {
     return [privateKey, contract.address];
   }
 
-  async getFutureWallet() {
+  async createFutureWallet() {
     await this.getRelayerConfig();
     this.getFutureWalletFactory();
-    return this.futureWalletFactory!.getFutureWallet();
+    return this.futureWalletFactory!.createFutureWallet();
   }
 
   onReadyToDeploy(tokenAddress: string, contractAddress: string, onContractDeployed: OnContractDeployed, onReadyToDeploy?: ReadyToDeployCallback) {

@@ -21,14 +21,14 @@ describe('SDK counterfactual', () => {
     sdk = new UniversaLoginSDK(relayer.url(), provider);
   });
 
-  it('getFutureWallet returns private key and contract address', async () => {
-    const {privateKey, contractAddress} = await sdk.getFutureWallet();
+  it('createFutureWallet returns private key and contract address', async () => {
+    const {privateKey, contractAddress} = await sdk.createFutureWallet();
     expect(privateKey).to.be.properPrivateKey;
     expect(contractAddress).to.be.properAddress;
   });
 
   it('waitForBalance returns promise, which resolves when balance update', async () => {
-    const {waitForBalance, contractAddress} = (await sdk.getFutureWallet());
+    const {waitForBalance, contractAddress} = (await sdk.createFutureWallet());
     setTimeout(() => wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')}), 50);
     const result = await waitForBalance();
     expect(result.contractAddress).be.eq(contractAddress);
@@ -36,7 +36,7 @@ describe('SDK counterfactual', () => {
   });
 
   it('should deploy contract with future address', async () => {
-    const {deploy, contractAddress, waitForBalance} = (await sdk.getFutureWallet());
+    const {deploy, contractAddress, waitForBalance} = (await sdk.createFutureWallet());
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
     const deployedContractAddress = await deploy('name.mylogin.eth');

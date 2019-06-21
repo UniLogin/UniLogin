@@ -38,7 +38,7 @@ describe('INT: FutureWalletFactory', async () => {
   });
 
   it('resolve promise when address will have balance', async () => {
-    const {waitForBalance, contractAddress} = (await futureWalletFactory.getFutureWallet());
+    const {waitForBalance, contractAddress} = (await futureWalletFactory.createFutureWallet());
     setTimeout(() => wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')}), 50);
     const result = await waitForBalance();
     expect(result.contractAddress).be.eq(contractAddress);

@@ -28,7 +28,7 @@ export class FutureWalletFactory {
     private deployCallback: (publicKey: string, ensName: string) => Promise<string>) {
   }
 
-  async getFutureWallet(): Promise<FutureWallet> {
+  async createFutureWallet(): Promise<FutureWallet> {
     const [privateKey, contractAddress, address] = await createFutureWallet(this.factoryAddress, this.provider);
     const waitForBalance = async () => new Promise(
       (resolve) => {
