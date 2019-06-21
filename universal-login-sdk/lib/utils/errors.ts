@@ -67,3 +67,10 @@ export class TransactionHashNotFound extends NotFound {
     Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
   }
 }
+
+export class TimeoutError extends SDKError {
+  constructor () {
+    super('Timeout exceeded', 'TransactionHashNotFound');
+    Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
+  }
+}

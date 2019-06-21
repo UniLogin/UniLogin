@@ -22,6 +22,6 @@ describe('Retry function', async () => {
   });
 
   it('throw Timeout', async () => {
-    await expect(retry(callback, retryWhile, 5, 2)).to.be.eventually.rejectedWith('Timeout');
+    await expect(retry(callback, retryWhile, 5, 2)).to.be.eventually.rejectedWith('Timeout exceeded');
   });
 });

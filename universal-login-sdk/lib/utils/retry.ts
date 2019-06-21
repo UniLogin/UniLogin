@@ -1,4 +1,5 @@
 import {ensure, sleep} from '@universal-login/commons';
+import {TimeoutError} from './errors';
 
 export async function retry<R>(
   callback: () => R | Promise<R>,
@@ -9,7 +10,7 @@ export async function retry<R>(
   const stopTime = Date.now() + timeout;
   let result: R;
   do {
-    ensure(stopTime > Date.now(), Error, 'Timeout');
+    ensure(stopTime > Date.now(), TimeoutError);
     result = await callback();
     await sleep(tick);
   } while (predicate(result));
