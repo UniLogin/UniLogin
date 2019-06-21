@@ -1,4 +1,4 @@
-type ErrorType = 'DeploymentObserverConflict' | 'ConcurrentDeployment' | 'InvalidBytecode' | 'RelayerConfigNotFound' | 'TransactionHashNotFound';
+type ErrorType = 'DeploymentObserverConflict' | 'ConcurrentDeployment' | 'InvalidBytecode' | 'RelayerConfigNotFound' | 'TransactionHashNotFound' | 'TimeoutError';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -70,7 +70,7 @@ export class TransactionHashNotFound extends NotFound {
 
 export class TimeoutError extends SDKError {
   constructor () {
-    super('Timeout exceeded', 'TransactionHashNotFound');
-    Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
+    super('Timeout exceeded', 'TimeoutError');
+    Object.setPrototypeOf(this, TimeoutError.prototype);
   }
 }
