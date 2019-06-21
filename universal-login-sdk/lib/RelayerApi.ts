@@ -51,7 +51,7 @@ export class RelayerApi {
   }
 
   async deploy(publicKey: string, ensName: string) {
-    return this.http('POST', `/deploy`, {
+    return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName
     });
