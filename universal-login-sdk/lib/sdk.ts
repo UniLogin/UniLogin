@@ -2,7 +2,6 @@ import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
 import {resolveName} from './utils/ethereum';
-import {createFutureWallet} from './utils/counterfactual';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver, ReadyToDeployCallback} from './observers/BalanceObserver';
@@ -12,6 +11,7 @@ import {RelayerApi} from './RelayerApi';
 import {retry} from './utils/retry';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
+import {FutureWalletFactory} from './services/FutureWalletFactory';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -21,6 +21,7 @@ class UniversalLoginSDK {
   balanceObserver?: BalanceObserver;
   deploymentObserver?: DeploymentObserver;
   blockchainService: BlockchainService;
+  futureWalletFactory?: FutureWalletFactory;
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress?: string;
@@ -51,12 +52,10 @@ class UniversalLoginSDK {
     return [privateKey, contract.address];
   }
 
-  async getFutureWallet(onContractDeployed: OnContractDeployed, onReadyToDeploy?: ReadyToDeployCallback) {
+  async getFutureWallet() {
     await this.getRelayerConfig();
-    const [privateKey, contractAddress] = await createFutureWallet(this.config!.factoryAddress, this.provider);
-    this.getBalanceObserver();
-    this.balanceObserver!.startAndSubscribe(contractAddress, (tokenAddress, contractAddress) => this.onReadyToDeploy(tokenAddress, contractAddress, onContractDeployed, onReadyToDeploy));
-    return [privateKey, contractAddress];
+    this.getFutureWalletFactory();
+    return this.futureWalletFactory!.getFutureWallet();
   }
 
   onReadyToDeploy(tokenAddress: string, contractAddress: string, onContractDeployed: OnContractDeployed, onReadyToDeploy?: ReadyToDeployCallback) {
@@ -161,6 +160,11 @@ class UniversalLoginSDK {
   async getDeploymentObserver() {
     ensureNotNull(this.config, MissingConfiguration);
     this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.config!.contractWhiteList);
+  }
+
+  private getFutureWalletFactory() {
+    ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
+    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(this.config!.factoryAddress, this.provider, this.config!.supportedTokens);
   }
 
   private isExecuted (messageStatus: MessageStatus){

@@ -1,8 +1,9 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversaLoginSDK from '../lib/sdk';
+import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 chai.use(solidity);
 
@@ -21,9 +22,17 @@ describe('SDK counterfactual', () => {
   });
 
   it('getFutureWallet returns private key and contract address', async () => {
-    const [privateKey, futureContractAddress] = (await sdk.getFutureWallet(() => {}, () => {}));
+    const {privateKey, contractAddress} = await sdk.getFutureWallet();
     expect(privateKey).to.be.properPrivateKey;
-    expect(futureContractAddress).to.be.properAddress;
+    expect(contractAddress).to.be.properAddress;
+  });
+
+  it('waitForBalance returns promise, which resolves when balance update', async () => {
+    const {waitForBalance, contractAddress} = (await sdk.getFutureWallet());
+    setTimeout(() => wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')}), 50);
+    const result = await waitForBalance();
+    expect(result.contractAddress).be.eq(contractAddress);
+    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
   });
 
   after(async () => {
