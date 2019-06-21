@@ -1,4 +1,4 @@
-type ErrorType = 'DeploymentObserverConflict' | 'BalanceObserverConfilct' | 'InvalidBytecode' | 'RelayerConfigNotFound';
+type ErrorType = 'DeploymentObserverConflict' | 'BalanceObserverConfilct' | 'InvalidBytecode' | 'RelayerConfigNotFound' | 'TransactionHashNotFound';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -20,7 +20,7 @@ export class Conflict extends SDKError {
 
 export class DeploymentObserverConfilct extends Conflict {
   constructor () {
-    super('DeploymentObserver is waiting for contract deployment. Stop observer to cancel waiting', 'DeploymentObserverConfilct');
+    super('DeploymentObserver is waiting for contract deployment. Stop observer to cancel waiting', 'DeploymentObserverConflict');
     Object.setPrototypeOf(this, DeploymentObserverConfilct.prototype);
   }
 }
@@ -59,5 +59,11 @@ export class RelayerConfigNotFound extends NotFound {
   constructor () {
     super('Relayer configuration not yet loadedr', 'RelayerConfigNotFound');
     Object.setPrototypeOf(this, RelayerConfigNotFound.prototype);
+  }
+}
+export class TransactionHashNotFound extends NotFound {
+  constructor () {
+    super('Transaction hash is not found in Message Status', 'TransactionHashNotFound');
+    Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
   }
 }
