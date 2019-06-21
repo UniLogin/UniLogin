@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {ContractWhiteList, ensure, isContractExist} from '@universal-login/commons';
-import {DeploymentObserverConfilct} from '../utils/errors';
+import {DeploymentObserverConfilct, InvalidBytecode} from '../utils/errors';
 import {BlockchainService} from '../services/BlockchainService';
 import ObserverRunner from './ObserverRunner';
 
@@ -33,7 +33,7 @@ export class DeploymentObserver extends ObserverRunner {
   private async checkContract(futureContractAddress: string){
     const bytecode = await this.blockchainService.getCode(futureContractAddress);
     if (isContractExist(bytecode)){
-      ensure(this.contractWhiteList.proxy.includes(utils.keccak256(bytecode)), Error, 'Proxy Bytecode is not supported by relayer');
+      ensure(this.contractWhiteList.proxy.includes(utils.keccak256(bytecode)), InvalidBytecode);
       await this.onContractDeployed!(futureContractAddress);
       this.stop();
     }
