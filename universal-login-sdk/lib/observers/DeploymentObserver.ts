@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {ContractWhiteList, ensure, isContractExist} from '@universal-login/commons';
-import {DeploymentObserverConfilct, UnsupportedBytecode} from '../utils/errors';
+import {ConcurrentDeployment, UnsupportedBytecode} from '../utils/errors';
 import {BlockchainService} from '../services/BlockchainService';
 import ObserverRunner from './ObserverRunner';
 
@@ -17,7 +17,7 @@ export class DeploymentObserver extends ObserverRunner {
   }
 
   startAndSubscribe(futureContractAddress: string, callback: OnContractDeployed) {
-    ensure(!this.isRunning(), DeploymentObserverConfilct);
+    ensure(!this.isRunning(), ConcurrentDeployment);
     this.futureContractAddress = futureContractAddress;
     this.onContractDeployed = callback;
     this.start();

@@ -25,7 +25,7 @@ describe('UNIT: DeploymentObserver', async () => {
   it('throws if observer already is started', async () => {
     const callback = sinon.spy();
     deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
-    expect(() => deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).throws('DeploymentObserver is waiting for contract deployment. Stop observer to cancel waiting');
+    expect(() => deploymentObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).throws('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
   afterEach(() => {
