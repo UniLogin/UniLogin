@@ -1,7 +1,8 @@
+import {utils} from 'ethers';
 import {ContractWhiteList, ensure, isContractExist} from '@universal-login/commons';
+import {DeploymentObserverConfilct} from '../utils/errors';
 import {BlockchainService} from '../services/BlockchainService';
 import ObserverRunner from './ObserverRunner';
-import {utils} from 'ethers';
 
 export type OnContractDeployed = (
   contractAddress: string,
@@ -16,7 +17,7 @@ export class DeploymentObserver extends ObserverRunner {
   }
 
   startAndSubscribe(futureContractAddress: string, callback: OnContractDeployed) {
-    ensure(!this.isRunning(), Error, 'DeploymentObserver is waiting for contract deployment. Stop observer to cancel waiting');
+    ensure(!this.isRunning(), DeploymentObserverConfilct);
     this.futureContractAddress = futureContractAddress;
     this.onContractDeployed = callback;
     this.start();
