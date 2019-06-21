@@ -58,13 +58,6 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!.createFutureWallet();
   }
 
-  onReadyToDeploy(tokenAddress: string, contractAddress: string, onContractDeployed: OnContractDeployed, onReadyToDeploy?: ReadyToDeployCallback) {
-    onReadyToDeploy && onReadyToDeploy(tokenAddress, contractAddress);
-    this.getDeploymentObserver();
-    this.deploymentObserver!.startAndSubscribe(contractAddress, onContractDeployed);
-    /*TODO add relayerApi.balanceChanged()*/
-  }
-
   async addKey(
     to: string,
     publicKey: string,
