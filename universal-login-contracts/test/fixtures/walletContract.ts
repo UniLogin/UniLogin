@@ -52,12 +52,6 @@ export async function setupEnsAndMaster(deployer: Wallet) {
   };
 }
 
-async function deployProxy(deployer: Wallet, walletMasterAddress: string, ensDomainData: EnsDomainData, publicKey: string) {
-  const deployArgs = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress);
-  const proxyContract = await deployContract(deployer, ProxyContract, deployArgs);
-  return proxyContract;
-}
-
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
@@ -86,7 +80,7 @@ export async function walletContractWithTokenAndEther(deployer: Wallet) {
     keyPair,
     deployer,
     mockToken
-  }
+  };
 }
 
 export function walletContractFixture(givenProvider: providers.Provider, [wallet]: Wallet[]) {
