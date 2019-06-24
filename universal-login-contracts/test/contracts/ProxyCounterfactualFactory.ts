@@ -26,7 +26,7 @@ describe('Counterfactual Factory', () => {
     ({ensDomainData, walletMaster, provider, factoryContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
-    initData = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
+    initData = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
   });
 
   it('factory contract address should be proper address', () => {

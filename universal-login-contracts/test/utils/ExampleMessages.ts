@@ -1,7 +1,10 @@
-import {OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {utils} from 'ethers';
+import {OPERATION_CALL, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {utils, Wallet} from 'ethers';
+import {deployContract} from 'ethereum-waffle';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import MockContract from '../../build/MockContract.json';
+import {encodeFunction} from '../utils';
+import Loop from '../../build/Loop.json';
 
 const {parseEther} = utils;
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
@@ -49,4 +52,25 @@ export const failedCallMessage = {
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
   operationType: OPERATION_CALL,
+};
+
+type InfiniteCallOverrides = {
+  from: string;
+  gasToken?: string;
+};
+
+export const createInfiniteCallMessage = async (deployer: Wallet, overrides: InfiniteCallOverrides): Promise<UnsignedMessage> => {
+  const loopContract = await deployContract(deployer, Loop);
+  const loopFunctionData = encodeFunction(Loop, 'loop');
+  return {
+    to: loopContract.address,
+    value: utils.parseEther('0'),
+    data: loopFunctionData,
+    nonce: 0,
+    gasPrice: 1,
+    gasToken: '0x0',
+    gasLimit: utils.bigNumberify('240000'),
+    operationType: OPERATION_CALL,
+    ...overrides
+  };
 };

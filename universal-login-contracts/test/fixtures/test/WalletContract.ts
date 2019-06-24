@@ -30,7 +30,7 @@ describe('WalletContract fixture test', () => {
 
   it('has proper ens name', async () => {
     const defaultEnsName = 'name.mylogin.eth';
-    expect(await provider.resolveName(defaultEnsName)).to.eq(walletContract.address);
+    expect((await provider.resolveName(defaultEnsName)).toLowerCase()).to.eq(walletContract.address);
     expect(await provider.lookupAddress(walletContract.address)).to.eq(defaultEnsName);
   });
 });

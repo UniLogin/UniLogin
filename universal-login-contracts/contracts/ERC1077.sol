@@ -12,11 +12,16 @@ contract ERC1077 is KeyHolder, IERC1077 {
     uint public lastNonce;
     uint public requiredSignatures;
 
-    uint ETHER_REFUND_CHARGE = 14000;
-    uint TOKEN_REFUND_CHARGE = 19500;
-
     constructor(address _key) KeyHolder(_key) public {
         requiredSignatures = 1;
+    }
+
+    function etherRefundCharge() public pure returns(uint) {
+        return 14000;
+    }
+
+    function tokenRefundCharge() public pure returns(uint) {
+        return 19500;
     }
 
     function canExecute(
@@ -98,11 +103,11 @@ contract ERC1077 is KeyHolder, IERC1077 {
             operationType).toEthSignedMessageHash().recover(signatures);
     }
 
-    function refundGas(address gasToken) private view returns(uint) {
+    function refundGas(address gasToken) private view returns(uint refundCharge) {
         if (gasToken == address(0)) {
-            return ETHER_REFUND_CHARGE;
+            return etherRefundCharge();
         } else {
-            return TOKEN_REFUND_CHARGE;
+            return tokenRefundCharge();
         }
     }
 
