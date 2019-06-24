@@ -2,11 +2,11 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList} from '@universal-login/commons';
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {FutureWalletFactory} from '../../lib/services/FutureWalletFactory';
 import {BlockchainService} from '../../lib/services/BlockchainService';
-import { SupportedToken } from '@universal-login/commons/lib';
 
 chai.use(chaiHttp);
 
@@ -48,21 +48,16 @@ describe('INT: FutureWalletFactory', async () => {
     );
   });
 
-  it('resolve promise when address will have balance', async () => {
-    const {waitForBalance, contractAddress} = (await futureWalletFactory.createFutureWallet());
-    wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    const result = await waitForBalance();
-    expect(result.contractAddress).be.eq(contractAddress);
-    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
-  });
-
   it('deploy contract', async () => {
     const ensName = 'name.mylogin.eth';
     const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createFutureWallet());
     wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    await waitForBalance();
+    const result = await waitForBalance();
+    expect(result.contractAddress).be.eq(contractAddress);
+    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
+    wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await deploy(ensName);
-    expect(provider.getCode(contractAddress)).to.not.be.eq('0x');
+    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as ContractJSON)}`);
   });
 
   after(async () => {
