@@ -157,7 +157,8 @@ class UniversalLoginSDK {
 
   private getFutureWalletFactory() {
     ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
-    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(this.config!.factoryAddress, this.provider, this.config!.supportedTokens, this.blockchainService, this.config!.contractWhiteList, this.relayerApi);
+    const {chainSpec, ...futureWalletConfig} = this.config!;
+    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(futureWalletConfig, this.provider, this.blockchainService, this.relayerApi);
   }
 
   private isExecuted (messageStatus: MessageStatus){

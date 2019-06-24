@@ -27,12 +27,15 @@ describe('INT: FutureWalletFactory', async () => {
     const blockchainService = new BlockchainService(provider);
     const contractWhiteList = getContractWhiteList();
     const deployCallback =  () => {};
-    futureWalletFactory = new FutureWalletFactory(
-      factoryContract.address,
-      provider,
+    const futureWalletConfig = {
+      factoryAddress: factoryContract.address,
       supportedTokens,
+      contractWhiteList
+    };
+    futureWalletFactory = new FutureWalletFactory(
+      futureWalletConfig,
+      provider,
       blockchainService,
-      contractWhiteList,
       deployCallback as any
     );
   });
