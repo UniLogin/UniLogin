@@ -4,7 +4,7 @@
   "repository": "git@github.com:UniversalLogin/UniversalLoginSDK.git",
   "author": "Marek Kirejczyk <marek.kirejczyk@gmail.com>",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "1.0.10",
   "devDependencies": {
     "@codechecks/build-size-watcher": "^0.0.14",
     "@codechecks/client": "^0.0.58",
