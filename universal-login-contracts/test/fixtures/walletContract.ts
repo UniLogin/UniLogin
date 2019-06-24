@@ -5,6 +5,7 @@ import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
 import {encodeInitializeWithENSData, deployFactory, getDeployData} from '../../lib';
+import MockToken from '../../build/MockToken.json';
 
 export type EnsDomainData = {
   ensAddress: string;
@@ -66,7 +67,6 @@ export async function setupWalletContract(deployer: Wallet) {
   await deployer.sendTransaction({to: computedContractAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
   const walletContract = new Contract(computedContractAddress, WalletMaster.interface, provider);
-  // const walletContract = await deployProxy(deployer, walletMaster.address, ensDomainData, keyPair.publicKey);
   return {
     walletContract,
     keyPair,
@@ -75,10 +75,28 @@ export async function setupWalletContract(deployer: Wallet) {
   };
 }
 
+export async function walletContractWithTokenAndEther(deployer: Wallet) {
+  const {provider, walletContract, keyPair} = await setupWalletContract(deployer);
+  const mockToken = await deployContract(deployer, MockToken);
+  await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
+  await deployer.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+  return {
+    provider,
+    walletContract,
+    keyPair,
+    deployer,
+    mockToken
+  }
+}
+
 export function walletContractFixture(givenProvider: providers.Provider, [wallet]: Wallet[]) {
   return setupWalletContract(wallet);
 }
 
 export function ensAndMasterFixture(givenProvider: providers.Provider, [deployer]: Wallet[]) {
   return setupEnsAndMaster(deployer);
+}
+
+export function walletContractWithFundsFixture(givenProvider: providers.Provider, [wallet]: Wallet[]) {
+  return walletContractWithTokenAndEther(wallet);
 }
