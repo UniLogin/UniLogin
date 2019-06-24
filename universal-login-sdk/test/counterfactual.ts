@@ -43,6 +43,11 @@ describe('SDK counterfactual', () => {
     expect(deployedContractAddress).to.be.eq(contractAddress);
   });
 
+  it('should not deploy contract which does not have balance', async () => {
+    const {deploy} = (await sdk.createFutureWallet());
+    await expect(deploy('login.mylogin.eth')).to.be.rejected;
+  });
+
   after(async () => {
     await relayer.stop();
   });
