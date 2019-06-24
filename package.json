@@ -22,7 +22,9 @@
     "test": "yarn wsrun test --stages --fast-exit",
     "lint": "yarn wsrun lint --stages",
     "ci": "yarn lint && yarn test",
-    "clean": "yarn wsrun clean"
+    "clean": "yarn wsrun clean",
+    "bump-version": "yarn wsrun bump-version $1",
+    "publish-all": "yarn wsrun publish-all"
   },
   "engines": {
     "node": "10.15",

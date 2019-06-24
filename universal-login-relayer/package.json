@@ -31,7 +31,9 @@
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
     "relayer:start": "yarn start",
     "ganache:start": "ts-node scripts/ganache.js",
-    "clean": "rm -fr build"
+    "clean": "rm -fr build",
+    "bump-version": "yarn version --new-version $1",
+    "publish-all": "npm publish"
   },
   "engines": {
     "node": ">=10.9"

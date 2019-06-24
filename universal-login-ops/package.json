@@ -13,7 +13,9 @@
     "cli": "ts-node ./scripts/cli",
     "register:domain": "ts-node ./scripts/domainRegister.ts",
     "register:name": "ts-node ./scripts/ENSNameRegister.ts",
-    "clean": "rm -fr dist"
+    "clean": "rm -fr dist",
+    "bump-version": "yarn version --new-version $1",
+    "publish-all": "npm publish"
   },
   "dependencies": {
     "@universal-login/commons": "0.2.2",

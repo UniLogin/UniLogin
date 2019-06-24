@@ -18,7 +18,10 @@
     "lint": "yarn lint:js && yarn lint:sol",
     "lint:js": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "lint:sol": "solium -d contracts",
-    "clean": "rm -fr build dist"
+    "clean": "rm -fr build dist",
+    "bump-version": "yarn version --new-version $1",
+    "publish-all": "npm publish"
+
   },
   "devDependencies": {
     "@ensdomains/ens": "^0.3.5",

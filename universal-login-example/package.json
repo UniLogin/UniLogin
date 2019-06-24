@@ -30,7 +30,9 @@
     "contracts:deploy": "babel-node scripts/deployContracts.js",
     "start:dev": "babel-node scripts/dev-start.js",
     "relayer:build": "babel src/relayer --out-dir dist/relayer",
-    "relayer:start": "node dist/relayer/startRelayer.js"
+    "relayer:start": "node dist/relayer/startRelayer.js",
+    "bump-version": "yarn version --new-version $1",
+    "publish-all": "echo Example will not be published"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

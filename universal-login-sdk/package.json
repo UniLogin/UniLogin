@@ -17,7 +17,10 @@
     "lint": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
-    "clean": "rm -fr dist"
+    "clean": "rm -fr dist",
+    "bump-version": "yarn version --new-version $1",
+    "publish-all": "npm publish"
+
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
