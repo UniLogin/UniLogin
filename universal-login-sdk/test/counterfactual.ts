@@ -1,9 +1,10 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {ETHER_NATIVE_TOKEN, getDeployedBytecode} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import UniversaLoginSDK from '../lib/sdk';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 chai.use(solidity);
 
@@ -41,6 +42,7 @@ describe('SDK counterfactual', () => {
     await waitForBalance();
     const deployedContractAddress = await deploy('name.mylogin.eth');
     expect(deployedContractAddress).to.be.eq(contractAddress);
+    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
   });
 
   it('should not deploy contract which does not have balance', async () => {
