@@ -1,11 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
-import {transferMessage} from '../utils/ExampleMessages';
+import {loadFixture, solidity} from 'ethereum-waffle';
+import {transferMessage, createInfiniteCallMessage} from '../utils/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
-import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, OPERATION_CALL, KeyPair} from '@universal-login/commons';
-import Loop from '../../build/Loop.json';
-import {encodeFunction} from '../utils';
+import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../../lib';
 import {walletContractWithFundsFixture} from '../fixtures/walletContract';
 
@@ -17,7 +15,6 @@ describe('CONTRACT: Proxy - refund', async  () => {
   let signature: string;
   let deployer: Wallet;
   let mockToken: Contract;
-  let loopContract: Contract;
   let infiniteCallMessage: UnsignedMessage;
   let initialBalance: utils.BigNumber;
   let keyPair: KeyPair;
@@ -26,19 +23,6 @@ describe('CONTRACT: Proxy - refund', async  () => {
 
   beforeEach(async () => {
     ({provider, deployer, walletContract, keyPair, mockToken} = await loadFixture(walletContractWithFundsFixture));
-    loopContract = await deployContract(deployer, Loop);
-    const loopFunctionData = encodeFunction(Loop, 'loop');
-    infiniteCallMessage = {
-      from: walletContract.address,
-      to: loopContract.address,
-      value: utils.parseEther('0'),
-      data: loopFunctionData,
-      nonce: 0,
-      gasPrice: 1,
-      gasToken: '0x0',
-      gasLimit: utils.bigNumberify('240000'),
-      operationType: OPERATION_CALL
-    };
     initialBalance = await deployer.getBalance();
   });
 
@@ -49,28 +33,29 @@ describe('CONTRACT: Proxy - refund', async  () => {
     const transaction = await deployer.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
-    const balanceAfter = await deployer.getBalance();
-    expect(balanceAfter).to.be.above(initialBalance.sub(receipt.gasUsed as utils.BigNumber));
+    const expectedBalance = initialBalance.sub(receipt.gasUsed as utils.BigNumber);
+    expect(await deployer.getBalance()).to.be.above(expectedBalance);
   });
 
   it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
-    infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
+    infiniteCallMessage = await createInfiniteCallMessage(deployer, {from: walletContract.address, gasToken: ETHER_NATIVE_TOKEN.address});
+    initialBalance = await deployer.getBalance();
     signature = await calculateMessageSignature(keyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
     const transaction = await deployer.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
-    const balanceAfter = await deployer.getBalance();
-    expect(balanceAfter).to.be.above(initialBalance.sub(receipt.gasUsed as utils.BigNumber));
+    const expectedBalance = initialBalance.sub(receipt.gasUsed as utils.BigNumber);
+    expect(await deployer.getBalance()).to.be.above(expectedBalance);
   });
 
   it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
     const initialTokenBalance = await mockToken.balanceOf(deployer.address);
-    infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
+    infiniteCallMessage = await createInfiniteCallMessage(deployer, {gasToken: mockToken.address, from: walletContract.address});
     signature = await calculateMessageSignature(keyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
     const transaction = await deployer.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
-    const balanceAfter = await mockToken.balanceOf(deployer.address);
-    expect(balanceAfter).to.be.above(initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber));
+    const expectedBalance = initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber);
+    expect(await mockToken.balanceOf(deployer.address)).to.be.above(expectedBalance);
   });
 });
