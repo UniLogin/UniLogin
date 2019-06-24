@@ -23,6 +23,17 @@ export class RelayerUnderTest extends Relayer {
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const mockToken = await deployContract(wallet, MockToken);
+    const supportedTokens = [
+      {
+        address: mockToken.address,
+        minimalAmount: utils.parseEther('0.05').toString()
+      },
+      {
+        address: ETHER_NATIVE_TOKEN.address,
+        minimalAmount: utils.parseEther('0.05').toString()
+      }
+    ];
+    const contractWhiteList = getContractWhiteList();
     const config: Config = {
       port,
       privateKey: wallet.privateKey,
@@ -33,21 +44,12 @@ export class RelayerUnderTest extends Relayer {
       },
       ensRegistrars: [DOMAIN],
       walletMasterAddress: walletMaster.address,
-      contractWhiteList: getContractWhiteList(),
+      contractWhiteList,
       factoryAddress: factoryContract.address,
-      supportedTokens: [
-        {
-          address: mockToken.address,
-          minimalAmount: utils.parseEther('0.05').toString()
-        },
-        {
-          address: ETHER_NATIVE_TOKEN.address,
-          minimalAmount: utils.parseEther('0.05').toString()
-        }
-      ]
+      supportedTokens
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
-    return {relayer, factoryContract, walletMaster, mockToken};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster, mockToken};
   }
 
   url() {

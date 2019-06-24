@@ -3,17 +3,17 @@ import {SupportedToken, ensure, findTokenWithRequiredBalance} from '@universal-l
 import {ConcurrentDeployment} from '../utils/errors';
 import ObserverRunner from './ObserverRunner';
 
-export type BalanceChangedCallback = (tokenAddress: string, contractAddress: string) => void;
+export type ReadyToDeployCallback = (tokenAddress: string, contractAddress: string) => void;
 
 export class BalanceObserver extends ObserverRunner {
   private contractAddress?: string;
-  private callback?: BalanceChangedCallback;
+  private callback?: ReadyToDeployCallback;
 
   constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
     super();
   }
 
-  async startAndSubscribe(contractAddress: string, callback: BalanceChangedCallback) {
+  async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
     ensure(!this.isRunning(), ConcurrentDeployment);
     this.contractAddress = contractAddress;
     this.callback = callback;

@@ -49,4 +49,11 @@ export class RelayerApi {
   async getPendingAuthorisations(walletContractAddress: string) {
     return this.http('GET', `/authorisation/${walletContractAddress}`);
   }
+
+  async deploy(publicKey: string, ensName: string) {
+    return this.http('POST', '/wallet/deploy', {
+      publicKey,
+      ensName
+    });
+  }
 }

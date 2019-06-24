@@ -1,7 +1,9 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {ETHER_NATIVE_TOKEN, getDeployedBytecode} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
+import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import UniversaLoginSDK from '../lib/sdk';
 
 chai.use(solidity);
@@ -20,10 +22,32 @@ describe('SDK counterfactual', () => {
     sdk = new UniversaLoginSDK(relayer.url(), provider);
   });
 
-  it('getFutureWallet returns private key and contract address', async () => {
-    const [privateKey, futureContractAddress] = (await sdk.getFutureWallet(() => {}, () => {}));
+  it('createFutureWallet returns private key and contract address', async () => {
+    const {privateKey, contractAddress} = await sdk.createFutureWallet();
     expect(privateKey).to.be.properPrivateKey;
-    expect(futureContractAddress).to.be.properAddress;
+    expect(contractAddress).to.be.properAddress;
+  });
+
+  it('waitForBalance returns promise, which resolves when balance update', async () => {
+    const {waitForBalance, contractAddress} = (await sdk.createFutureWallet());
+    wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
+    const result = await waitForBalance();
+    expect(result.contractAddress).be.eq(contractAddress);
+    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
+  });
+
+  it('should deploy contract with future address', async () => {
+    const {deploy, contractAddress, waitForBalance} = (await sdk.createFutureWallet());
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
+    await waitForBalance();
+    const deployedContractAddress = await deploy('name.mylogin.eth');
+    expect(deployedContractAddress).to.be.eq(contractAddress);
+    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+  });
+
+  it('should not deploy contract which does not have balance', async () => {
+    const {deploy} = (await sdk.createFutureWallet());
+    await expect(deploy('login.mylogin.eth')).to.be.rejected;
   });
 
   after(async () => {
