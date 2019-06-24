@@ -11,7 +11,9 @@
     "clean": "rm -fr dist",
     "pretest": "yarn build",
     "test": "mocha -t 10000 \"dist/test/**/*.js\"",
-    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\""
+    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "bump-version": "yarn version --new-version $1",
+    "publish-all": "npm publish"
   },
   "devDependencies": {
     "chai": "^4.1.2",

@@ -96,6 +96,13 @@ make html
 
 Documentation will be compile to `docs/build/html`.
 
+## Releasing
+
+```sh
+yarn bump-version 10.10.20
+yarn publish-all
+```
+
 ## License
 
 Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT) except for smart contracts in [common](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts/contracts/common) and [proxies](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts/contracts/proxies) released under the [LGPL-v3 License](https://opensource.org/licenses/lgpl-3.0.html).
