@@ -139,7 +139,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         return messageHash;
     }
 
-    function refund(uint256 gasUsed, uint gasPrice, address gasToken) private {
+    function refund(uint256 gasUsed, uint gasPrice, address gasToken) internal {
         if (gasToken != address(0)) {
             ERC20 token = ERC20(gasToken);
             token.transfer(msg.sender, gasUsed.mul(gasPrice));

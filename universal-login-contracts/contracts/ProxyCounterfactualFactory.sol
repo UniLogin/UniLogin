@@ -5,7 +5,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract ProxyCounterfactualFactory is Ownable {
     bytes public initCode;
-
+    
     constructor(bytes memory _initCode) public {
         initCode = _initCode;
     }
@@ -32,5 +32,9 @@ contract ProxyCounterfactualFactory is Ownable {
         assembly {
             publicKey := mload(add(initializeData, 0x30))
         }
+    }
+    
+    function() external payable {
+
     }
 }

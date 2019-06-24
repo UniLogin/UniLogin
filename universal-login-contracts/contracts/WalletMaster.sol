@@ -9,6 +9,8 @@ import "./ERC1077.sol";
 
 /* solium-disable no-empty-blocks */
 contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Receiver {
+    address public msgsender;
+
     constructor()
         ERC1077(address(0))
         public
@@ -16,6 +18,10 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
 
     function owner() external view returns (address) {
         return address(this);
+    }
+
+    function getDeploymentCost() private pure returns(uint) {
+        return 500000;
     }
 
     // Disabled upgradability: persistent nonce not sync
@@ -38,7 +44,6 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         FIFSRegistrar registrar,
         PublicResolver resolver) external onlyInitializing()
         {
-
         // ERC1077 → KeyHolder
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
@@ -47,6 +52,8 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
+        msgsender = msg.sender;
+        refund(getDeploymentCost(), 1, address(0));
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
