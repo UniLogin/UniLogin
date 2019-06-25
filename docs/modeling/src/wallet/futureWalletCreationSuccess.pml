@@ -2,19 +2,25 @@
 
 actor user
 
-box "Wallet UI" #LightBlue
+box "Wallet UI"
   participant Login 
-  participant Deploy
-  participant Modal #LightGrey
   participant HomeScreen
+  participant Modal #LightGrey  
 endBox
-actor SDK
-box "Wallet Services"
-  participant Creation
+
+box "Core"
   participant ModalService
   participant WalletService
 end box
-actor blockchain
+
+box "Integration"
+  participant WalletStore
+end box
+
+box "SDK" #LightBlue
+  actor SDK
+  participant FutureWallet
+end box
 
 == Creation ==
 
@@ -22,11 +28,14 @@ activate Login
 
 user -> Login: ensName
 
-Login -> SDK: await getFutureWallet()
-SDK -> Login: Promise<FutureWallet: {contractAddress, waitForBalance, deploy, privateKey}>
-Login -> WalletService: {FutureWallet}
+Login -> WalletService: await createFutureWallet()
+WalletService -> SDK: await createFutureWallet()
+SDK -> FutureWallet: new(...)
+WalletService -> WalletStore: setWallet()
+WalletService -> Login: Promise<FutureWallet>
 Login -> ModalService: showModal('topUpAccount')
-Login -> blockchain: await waitForBalance() 
+Login -> FutureWallet: await waitForBalance() 
+activate FutureWallet
 ModalService -> Modal: ModalTopUp
 
 
@@ -42,18 +51,18 @@ ModalService -> Modal: ModalAddress
 
 activate Modal
 
-user -> blockchain: "transfer"
 Login -> ModalService: showModal('deploying')
 deactivate Modal
 
 ModalService -> Modal: ModalDeploing
 activate Modal
-Login -> blockchain: await deploy(ensName)
+FutureWallet -> Login
+deactivate FutureWallet
+Login -> FutureWallet: await deploy(ensName)
 
 Login -> HomeScreen: changeScreen()
 deactivate Login
 deactivate Modal
-deactivate Deploy
 activate HomeScreen
 
 

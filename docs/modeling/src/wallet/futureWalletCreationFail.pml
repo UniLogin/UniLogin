@@ -2,19 +2,26 @@
 
 actor user
 
-box "Wallet UI" #LightBlue
+box "Wallet UI"
   participant Login 
   participant Deploy
-  participant Modal #LightGrey
   participant HomeScreen
+  participant Modal #LightGrey  
 endBox
-actor SDK
-box "Wallet Services"
-  participant Creation
+
+box "Core"
   participant ModalService
   participant WalletService
 end box
-actor blockchain
+
+box "Integration"
+  participant WalletStore
+end box
+
+box "SDK" #LightBlue
+  actor SDK
+  participant FutureWallet
+end box
 
 == Creation ==
 
@@ -22,11 +29,14 @@ activate Login
 
 user -> Login: ensName
 
-Login -> SDK: await getFutureWallet()
-SDK -> Login: Promise<FutureWallet: {contractAddress, waitForBalance, deploy, privateKey}>
-Login -> WalletService: {FutureWallet}
+Login -> WalletService: await createFutureWallet()
+WalletService -> SDK: await createFutureWallet()
+SDK -> FutureWallet: new(...)
+WalletService -> WalletStore: setWallet()
+WalletService -> Login: Promise<FutureWallet>
 Login -> ModalService: showModal('topUpAccount')
-Login -> blockchain: await waitForBalance() 
+Login -> FutureWallet: await waitForBalance() 
+activate FutureWallet
 ModalService -> Modal: ModalTopUp
 
 
@@ -42,26 +52,45 @@ ModalService -> Modal: ModalAddress
 
 activate Modal
 
-user -> blockchain: "transfer"
 Login -> ModalService: showModal('deploying')
 deactivate Modal
 
 ModalService -> Modal: ModalDeploing
 activate Modal
-Login -> blockchain: await deploy(ensName)
-destroy blockchain
+FutureWallet -> Login
+deactivate FutureWallet
+Login -> FutureWallet: await deploy(ensName)
 
+destroy FutureWallet
 
 Login -> Deploy: redirect('/deploy')
 
 deactivate Login
 deactivate Modal
+
+Deploy -> ModalService: showModal('deploying')
+activate Deploy
+
+ModalService -> Modal: ModalDeploing
+activate Modal
+FutureWallet -> Deploy
+deactivate FutureWallet
+Deploy -> FutureWallet: await deploy(ensName)
+
+Deploy -> HomeScreen: changeScreen()
+deactivate Deploy
+deactivate Modal
+activate HomeScreen
+
+@enduml
+
+
+
 activate Deploy
 
 WalletService -> Deploy: {deploy}
 user -> Deploy: ensName
 
-Deploy -> ModalService: showModal('deploying')
 
 Deploy -> blockchain: await deploy(ensName)
 ModalService -> Modal: ModalDeploying
