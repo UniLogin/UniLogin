@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
 import {createKeyPair} from '@universal-login/commons';
-import {ensAndMasterFixture, EnsDomainData, setupInitializeWithEnsAndFutureAddress, setupInitializeAndFutureAddress} from '../fixtures/walletContract';
+import {ensAndMasterFixture, EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../fixtures/walletContract';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -27,7 +27,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy without ENS using factory contract', async () => {
-    const {futureAddress, initializeData} = setupInitializeAndFutureAddress(keyPair.publicKey, walletMaster.address, factoryContract);
+    const {futureAddress, initializeData} = createFutureDeployment(keyPair.publicKey, walletMaster.address, factoryContract);
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
@@ -36,7 +36,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS using factory contract', async () => {
-    const {futureAddress, initializeWithENS} = setupInitializeWithEnsAndFutureAddress(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, deployer.address);
+    const {futureAddress, initializeWithENS} = createFutureDeploymentWithENS(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, deployer.address);
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const transaction = await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
