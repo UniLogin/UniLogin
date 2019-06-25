@@ -5,8 +5,8 @@ import {MANAGEMENT_KEY, createKeyPair, computeContractAddress} from '@universal-
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {getDeployData, EnsDomainData} from '../../lib';
-import {createProxyDeployWithENSArgs, ensAndMasterFixture} from '../fixtures/walletContract';
+import {getDeployData, EnsDomainData, createProxyDeployWithENSArgs} from '../../lib';
+import {ensAndMasterFixture} from '../fixtures/walletContract';
 
 chai.use(solidity);
 

@@ -28,6 +28,7 @@ export const encodeDataForExecuteSigned = (message: Message) =>
     message.signature
   ]);
 
+// TODO move getDeployData to commons
 export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
   new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
 
