@@ -18,7 +18,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         return address(this);
     }
 
-    function getDeploymentCost() private pure returns(uint) {
+    function getDeploymentGasUsed() private pure returns(uint) {
         return 500000;
     }
 
@@ -51,7 +51,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
-        refund(getDeploymentCost(), 1, address(0), relayer);
+        refund(getDeploymentGasUsed(), 1, address(0), relayer);
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
