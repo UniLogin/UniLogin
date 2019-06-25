@@ -6,7 +6,7 @@ import {EnsDomainData, createProxyDeployWithENSArgs, getDeployData, encodeInitia
 type FutureDeployment = {
   initializeData: string;
   futureAddress: string;
-}
+};
 
 export function createFutureDeploymentWithENS(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract, relayerAddress: string): FutureDeployment {
   const [, initializeData] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress, relayerAddress);
@@ -15,7 +15,7 @@ export function createFutureDeploymentWithENS(publicKey: string, walletMasterAdd
   return {
     initializeData,
     futureAddress
-  }
+  };
 }
 
 export function createFutureDeployment(publicKey: string, walletMasterAddress: string, factoryContract: Contract): FutureDeployment {
@@ -25,5 +25,5 @@ export function createFutureDeployment(publicKey: string, walletMasterAddress: s
   return {
     initializeData,
     futureAddress
-  }
+  };
 }

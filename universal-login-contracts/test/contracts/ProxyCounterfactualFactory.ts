@@ -68,6 +68,6 @@ describe('Counterfactual Factory', () => {
     await anotherWallet.sendTransaction({to: computedContractAddress, value: utils.parseEther('10.0')});
     const relayerBalance = await deployer.getBalance();
     await factoryContract.createContract(keyPair.publicKey, initializeWithENS, {gasPrice: 1});
-    expect(await deployer.getBalance()).to.be.above(relayerBalance)
+    expect(await deployer.getBalance()).to.be.above(relayerBalance);
   });
 });
