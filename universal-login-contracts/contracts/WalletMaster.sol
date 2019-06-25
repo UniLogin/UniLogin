@@ -9,8 +9,6 @@ import "./ERC1077.sol";
 
 /* solium-disable no-empty-blocks */
 contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Receiver {
-    address public msgsender;
-
     constructor()
         ERC1077(address(0))
         public

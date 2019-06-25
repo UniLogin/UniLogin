@@ -33,8 +33,4 @@ contract ProxyCounterfactualFactory is Ownable {
             publicKey := mload(add(initializeData, 0x30))
         }
     }
-    
-    function() external payable {
-
-    }
 }
