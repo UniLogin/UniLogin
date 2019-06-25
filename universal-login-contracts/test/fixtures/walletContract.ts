@@ -1,10 +1,9 @@
 import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
-import ProxyContract from '../../build/Proxy.json';
-import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
+import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {encodeInitializeData, deployFactory, getDeployData, EnsDomainData, createProxyDeployWithENSArgs} from '../../lib';
+import {deployFactory, createFutureDeploymentWithENS} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
@@ -24,31 +23,6 @@ export async function setupEnsAndMaster(deployer: Wallet) {
     deployer,
     factoryContract
   };
-}
-
-type FutureDeployment = {
-  initializeData: string;
-  futureAddress: string;
-}
-
-export function createFutureDeploymentWithENS(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract, relayerAddress: string): FutureDeployment {
-  const [, initializeData] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress, relayerAddress);
-  const initData = getDeployData(ProxyContract as any, [walletMasterAddress, '0x0']);
-  const futureAddress = computeContractAddress(factoryContract.address, publicKey, initData);
-  return {
-    initializeData,
-    futureAddress
-  }
-}
-
-export function createFutureDeployment(publicKey: string, walletMasterAddress: string, factoryContract: Contract): FutureDeployment {
-  const initializeData = encodeInitializeData(publicKey);
-  const initData = getDeployData(ProxyContract as any, [walletMasterAddress, '0x0']);
-  const futureAddress = computeContractAddress(factoryContract.address, publicKey, initData);
-  return {
-    initializeData,
-    futureAddress
-  }
 }
 
 export async function setupWalletContract(deployer: Wallet) {
