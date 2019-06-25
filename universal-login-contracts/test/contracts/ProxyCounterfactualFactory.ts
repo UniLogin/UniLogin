@@ -25,7 +25,7 @@ describe('Counterfactual Factory', () => {
   beforeEach(async () => {
     ({ensDomainData, walletMaster, provider, factoryContract, deployer} = await loadFixture(ensAndMasterFixture));
     [, anotherWallet] = getWallets(provider);
-    [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
+    [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address, deployer.address);
     initData = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
     computedContractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initData);
   });
@@ -49,7 +49,7 @@ describe('Counterfactual Factory', () => {
     await anotherWallet.sendTransaction({to: computedContractAddress, value: utils.parseEther('10.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
     const newKeyPair = createKeyPair();
-    [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
+    [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address, deployer.address);
     await expect(factoryContract.createContract(newKeyPair.publicKey, initializeWithENS)).to.be.revertedWith('Unable to register ENS domain');
   });
 
@@ -60,20 +60,14 @@ describe('Counterfactual Factory', () => {
 
   it('createContract should fail if publicKey and publicKey in initializeWithENS are diffrent', async () => {
     const newKeyPair = createKeyPair();
-    [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
+    [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address, deployer.address);
     await expect(factoryContract.createContract(keyPair.publicKey, initializeWithENS)).to.be.revertedWith('Public key and initialize public key are different');
   });
 
-  xit('Wallet refund after deploy', async () => {
+  it('Wallet refund after deploy', async () => {
     await anotherWallet.sendTransaction({to: computedContractAddress, value: utils.parseEther('10.0')});
-    console.log((await provider.getBalance(computedContractAddress)).toString());
     const relayerBalance = await deployer.getBalance();
     await factoryContract.createContract(keyPair.publicKey, initializeWithENS, {gasPrice: 1});
-    // const proxyContract = new Contract(computedContractAddress, WalletMaster.abi, deployer);
-    // // console.log(await proxyContract.msgsender());
-    // // console.log(factoryContract.address)
-    // console.log('factory', (await provider.getBalance(factoryContract.address)).toString())
-    // console.log((await provider.getBalance(computedContractAddress)).toString())
     expect(await deployer.getBalance()).to.be.above(relayerBalance)
   });
 });

@@ -18,18 +18,19 @@ type SetupInitializeArgs = {
   ensDomainData: EnsDomainData;
   name?: string;
   domain?: string;
+  relayerAddress: string;
 };
 
-export function setupInitializeArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeArgs) {
+export function setupInitializeArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress}: SetupInitializeArgs) {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
+  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress, relayerAddress];
   return args;
 }
 
-export function createProxyDeployWithENSArgs(publicKey: string, ensDomainData: EnsDomainData, walletMasterAddress: string, name: string = 'name') {
-  const walletArgs = setupInitializeArgs({key: publicKey, ensDomainData, name});
+export function createProxyDeployWithENSArgs(publicKey: string, ensDomainData: EnsDomainData, walletMasterAddress: string, relayerAddress: string, name: string = 'name') {
+  const walletArgs = setupInitializeArgs({key: publicKey, ensDomainData, name, relayerAddress});
   const initData = encodeInitializeWithENSData(walletArgs);
   return [walletMasterAddress, initData];
 }
@@ -52,8 +53,8 @@ export async function setupEnsAndMaster(deployer: Wallet) {
   };
 }
 
-export function setupInitializeWithEnsAndFutureAddress(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract) {
-  const [, initializeWithENS] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress);
+export function setupInitializeWithEnsAndFutureAddress(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract, relayerAddress: string) {
+  const [, initializeWithENS] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress, relayerAddress);
   const initData = getDeployData(ProxyContract as any, [walletMasterAddress, '0x0']);
   const computedContractAddress = computeContractAddress(factoryContract.address, publicKey, initData);
   return {
@@ -77,7 +78,7 @@ export function setupInitializeAndFutureAddress(publicKey: string, walletMasterA
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const {initializeWithENS, futureAddress} = setupInitializeWithEnsAndFutureAddress(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract);
+  const {initializeWithENS, futureAddress} = setupInitializeWithEnsAndFutureAddress(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, deployer.address);
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
   const walletContract = new Contract(futureAddress, WalletMaster.interface, provider);
