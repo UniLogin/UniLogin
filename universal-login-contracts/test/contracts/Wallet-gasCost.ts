@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
 import {createKeyPair} from '@universal-login/commons';
-import {ensAndMasterFixture, setupMasterWithRefundAndFactory} from '../fixtures/walletContract';
+import {ensAndMasterFixture} from '../fixtures/walletContract';
 import {EnsDomainData, createFutureDeploymentWithRefund, createFutureDeployment} from '../../lib';
 
 chai.use(chaiAsPromised);
@@ -24,8 +24,7 @@ describe('Performance test', async () => {
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({ensDomainData, deployer, provider} = await loadFixture(ensAndMasterFixture));
-    ({factoryContract, walletMaster} = await setupMasterWithRefundAndFactory(deployer));
+    ({ensDomainData, deployer, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
   });
 
   it('Proxy deploy without ENS', async () => {

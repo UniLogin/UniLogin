@@ -5,7 +5,7 @@ import {MANAGEMENT_KEY, createKeyPair} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import WalletMaster from '../../build/WalletMaster.json';
 import {EnsDomainData, createFutureDeploymentWithRefund} from '../../lib';
-import {ensAndMasterFixture, setupMasterWithRefundAndFactory} from '../fixtures/walletContract';
+import {ensAndMasterFixture} from '../fixtures/walletContract';
 
 chai.use(solidity);
 
@@ -22,9 +22,8 @@ describe('Counterfactual Factory', () => {
   let futureAddress: string;
 
   beforeEach(async () => {
-    ({ensDomainData, provider} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    ({factoryContract, walletMaster} = await setupMasterWithRefundAndFactory(wallet));
     ({initializeData, futureAddress} = createFutureDeploymentWithRefund(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, wallet.address));
   });
 
