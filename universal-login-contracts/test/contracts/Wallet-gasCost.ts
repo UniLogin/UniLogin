@@ -1,11 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
-import {providers, Contract, ContractFactory, Wallet} from 'ethers';
-import {defaultDeployOptions, createKeyPair} from '@universal-login/commons';
-import ProxyContract from '../../build/Proxy.json';
-import {ensAndMasterFixture, createProxyDeployWithENSArgs, EnsDomainData} from '../fixtures/walletContract';
-import {encodeInitializeData} from '../../lib';
+import {providers, Contract, Wallet, utils} from 'ethers';
+import {createKeyPair} from '@universal-login/commons';
+import {ensAndMasterFixture} from '../fixtures/walletContract';
+import {EnsDomainData, createFutureDeploymentWithRefund, createFutureDeployment} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -20,32 +19,27 @@ describe('Performance test', async () => {
 
   let provider: providers.Provider;
   let walletMaster: Contract;
+  let factoryContract: Contract;
   let ensDomainData: EnsDomainData;
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({walletMaster, ensDomainData, deployer, provider} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, deployer, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
   });
 
   it('Proxy deploy without ENS', async () => {
-    const initData = encodeInitializeData(keyPair.publicKey);
-    const deployTransaction = {
-      ...defaultDeployOptions,
-      ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(walletMaster.address, initData)
-    };
-    const transaction = await deployer.sendTransaction(deployTransaction);
+    const {futureAddress, initializeData} = createFutureDeployment(keyPair.publicKey, walletMaster.address, factoryContract);
+    await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
+    const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy without ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyCost);
   });
 
   it('Proxy deploy with ENS', async () => {
-    const args = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
-    const deployTransaction = {
-      ...defaultDeployOptions,
-      ...new ContractFactory(ProxyContract.abi, ProxyContract.bytecode).getDeployTransaction(...args)
-    };
-    const transaction = await deployer.sendTransaction(deployTransaction);
+    const {futureAddress, initializeData} = createFutureDeploymentWithRefund(keyPair.publicKey, walletMaster.address, ensDomainData,  factoryContract, deployer.address);
+    await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
+    const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy with ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyWithENSCost);

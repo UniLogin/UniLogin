@@ -5,7 +5,7 @@ import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions, ensureNotNull, ensure, findTokenWithRequiredBalance, computeContractAddress} from '@universal-login/commons';
 import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken} from '../utils/errors';
-import {encodeInitializeWithENSData} from '@universal-login/contracts';
+import {encodeInitializeWithENSData, encodeInitializeWithRefundData} from '@universal-login/contracts';
 import {Config} from '../config/relayer';
 
 class WalletService {
@@ -40,15 +40,15 @@ class WalletService {
     throw new InvalidENSDomain(ensName);
   }
 
-  async deploy(key: string, ensName: string) {
+  async deploy(key: string, ensName: string, overrideOptions = {}) {
     ensure(!await this.wallet.provider.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
-    const args = [key, ...ensArgs as string[]];
-    const initWithENS = encodeInitializeWithENSData(args);
-    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions});
+    const args = [key, ...ensArgs as string[], this.wallet.address];
+    const initWithENS = encodeInitializeWithRefundData(args);
+    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions, ...overrideOptions});
   }
 }
 
