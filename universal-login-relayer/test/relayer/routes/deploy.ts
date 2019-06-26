@@ -4,7 +4,7 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
 import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
-import {startRelayerWithCustomMaster, createWalletCounterfactually} from './helpers';
+import {startRelayerWithRefund, createWalletCounterfactually} from './helpers';
 import Relayer from '../../../lib';
 
 chai.use(chaiHttp);
@@ -23,7 +23,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
 
   beforeEach(async () => {
-    ({provider, relayer, deployer, walletMaster, factoryContract, mockToken} = await startRelayerWithCustomMaster(relayerPort));
+    ({provider, relayer, deployer, walletMaster, factoryContract, mockToken} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
     contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);

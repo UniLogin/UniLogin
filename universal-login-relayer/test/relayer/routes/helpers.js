@@ -41,7 +41,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, p
 };
 
 
-export const startRelayerWithCustomMaster = async (port = '33111') => {
+export const startRelayerWithRefund = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
   const walletMaster = await deployContract(deployer, WalletMasterWithRefund);
