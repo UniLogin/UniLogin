@@ -40,14 +40,14 @@ describe('Counterfactual Factory', () => {
   });
 
   it('should deploy contract with computed address', async () => {
-    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')})
+    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData);
     const proxyContract = new Contract(futureAddress, WalletMaster.abi, wallet);
     expect(await proxyContract.getKeyPurpose(keyPair.publicKey)).to.eq(MANAGEMENT_KEY);
   });
 
   it('deploy with the same ens name', async () => {
-    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')})
+    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData);
     const newKeyPair = createKeyPair();
     ({initializeData} = createFutureDeploymentWithRefund(newKeyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, wallet.address));
