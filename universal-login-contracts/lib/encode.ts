@@ -30,3 +30,18 @@ export const encodeDataForExecuteSigned = (message: Message) =>
 
 export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
   new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
+
+type SetupInitializeWithENSArgs = {
+  key: string;
+  ensDomainData: EnsDomainData;
+  name?: string;
+  domain?: string;
+};
+
+export function setupInitializeWithENSArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
+  const ensName = `${name}.${domain}`;
+  const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
+  const node = utils.namehash(ensName);
+  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
+  return args;
+}

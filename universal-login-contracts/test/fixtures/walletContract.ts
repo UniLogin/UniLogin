@@ -4,27 +4,14 @@ import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {encodeInitializeWithENSData, deployFactory, getDeployData, EnsDomainData} from '../../lib';
+import {encodeInitializeWithENSData, deployFactory, getDeployData, EnsDomainData, setupInitializeWithENSArgs} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
-type SetupInitializeArgs = {
-  key: string;
-  ensDomainData: EnsDomainData;
-  name?: string;
-  domain?: string;
-};
 
-export function setupInitializeArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeArgs) {
-  const ensName = `${name}.${domain}`;
-  const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
-  const node = utils.namehash(ensName);
-  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
-  return args;
-}
 
 export function createProxyDeployWithENSArgs(publicKey: string, ensDomainData: EnsDomainData, walletMasterAddress: string, name: string = 'name') {
-  const walletArgs = setupInitializeArgs({key: publicKey, ensDomainData, name});
+  const walletArgs = setupInitializeWithENSArgs({key: publicKey, ensDomainData, name});
   const initData = encodeInitializeWithENSData(walletArgs);
   return [walletMasterAddress, initData];
 }
