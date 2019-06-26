@@ -4,7 +4,7 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
 import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
-import {startRelayer, createWalletContract} from './helpers';
+import {startRelayerWithCustomMaster, createWalletCounterfactually} from './helpers';
 import Relayer from '../../../lib';
 
 chai.use(chaiHttp);
@@ -23,28 +23,31 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
 
   beforeEach(async () => {
-    ({provider, relayer, deployer, walletMaster, factoryContract, mockToken} = await startRelayer(relayerPort));
+    ({provider, relayer, deployer, walletMaster, factoryContract, mockToken} = await startRelayerWithCustomMaster(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
     contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
   });
 
-  it('Counterfactual deployment with ether payment', async () => {
+  it('Counterfactual deployment with ether payment and refund', async () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
+    const initialRelayerBalance = await deployer.getBalance();
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth'
+        ensName: 'myname.mylogin.eth',
+        overrideOptions: {gasPrice: 1}
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+    expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
   });
 
 
   it('Counterfactual deployment fail if ENS name is taken', async () => {
     const ensName = 'myname.mylogin.eth';
-    await createWalletContract(provider, relayerUrl, keyPair.publicKey, ensName);
+    await createWalletCounterfactually(deployer, relayerUrl, keyPair.publicKey, walletMaster.address, factoryContract.address, ensName);
     const newKeyPair = createKeyPair();
     contractAddress = computeContractAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
@@ -59,6 +62,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
 
   it('Counterfactual deployment with token payment', async () => {
+    await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)

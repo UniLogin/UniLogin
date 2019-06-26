@@ -41,7 +41,7 @@ export const getStatus = (messageHandler: MessageHandler) => async (req: Request
 
 const deploy = (walletContractService : WalletService) => async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const trans = await walletContractService.deploy(req.body.publicKey, req.body.ensName);
+    const trans = await walletContractService.deploy(req.body.publicKey, req.body.ensName, req.body.overrideOptions);
     res.status(201)
       .type('json')
       .send(trans);

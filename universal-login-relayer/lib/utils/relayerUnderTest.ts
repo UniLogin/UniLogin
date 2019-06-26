@@ -2,9 +2,8 @@ import Knex from 'knex';
 import {providers, Wallet, ContractFactory, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {getDeployData} from '@universal-login/contracts';
+import {deployFactory} from '@universal-login/contracts';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../config/relayer';
@@ -19,13 +18,12 @@ type CreateRelayerArgs = {
   wallet: Wallet;
   walletMaster: Contract;
   factoryContract: Contract;
-}
+};
 
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
     const walletMaster = await deployContract(wallet, WalletMaster);
-    const initCode = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
-    const factoryContract = await deployContract(wallet, Factory, [initCode]);
+    const factoryContract = await deployFactory(wallet, walletMaster.address);
     return this.createPreconfiguredRelayer({port, wallet, walletMaster, factoryContract});
   }
 
@@ -60,7 +58,7 @@ export class RelayerUnderTest extends Relayer {
       supportedTokens
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
-    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster, mockToken};
   }
 
   url() {
