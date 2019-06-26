@@ -2,18 +2,16 @@ import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
 import WalletMasterWithRefund from '../../build/WalletMasterWithRefund.json';
-import ProxyContract from '../../build/Proxy.json';
-import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
+import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {deployFactory, getDeployData, createProxyDeployWithENSArgs} from '../../lib';
+import {deployFactory, createFutureDeploymentWithRefund} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
-  const walletMaster = await deployContract(deployer, WalletMaster);
+  const {factoryContract, walletMaster} = await setupMasterWithRefundAndFactory(deployer);
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
-  const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     ensDomainData: {
       ensAddress,
@@ -39,12 +37,10 @@ export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const [, initializeWithENS] = createProxyDeployWithENSArgs(keyPair.publicKey, ensDomainData, walletMaster.address);
-  const initData = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
-  const computedContractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initData);
-  await deployer.sendTransaction({to: computedContractAddress, value: utils.parseEther('10.0')});
-  await factoryContract.createContract(keyPair.publicKey, initializeWithENS);
-  const walletContract = new Contract(computedContractAddress, WalletMaster.interface, provider);
+  const {initializeData, futureAddress} = createFutureDeploymentWithRefund(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, deployer.address);
+  await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
+  await factoryContract.createContract(keyPair.publicKey, initializeData);
+  const walletContract = new Contract(futureAddress, WalletMaster.interface, provider);
   return {
     walletContract,
     keyPair,
