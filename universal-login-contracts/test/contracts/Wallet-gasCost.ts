@@ -4,8 +4,8 @@ import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, ContractFactory, Wallet} from 'ethers';
 import {defaultDeployOptions, createKeyPair} from '@universal-login/commons';
 import ProxyContract from '../../build/Proxy.json';
-import {ensAndMasterFixture, createProxyDeployWithENSArgs, EnsDomainData} from '../fixtures/walletContract';
-import {encodeInitializeData} from '../../lib';
+import {ensAndMasterFixture, createProxyDeployWithENSArgs} from '../fixtures/walletContract';
+import {encodeInitializeData, EnsDomainData} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

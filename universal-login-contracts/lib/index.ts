@@ -1,2 +1,2 @@
-export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned, getDeployData} from './encode';
+export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned, getDeployData, EnsDomainData} from './encode';
 export {deployFactory} from './deployFactory';

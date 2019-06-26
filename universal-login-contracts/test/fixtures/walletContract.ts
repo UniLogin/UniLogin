@@ -4,14 +4,9 @@ import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {encodeInitializeWithENSData, deployFactory, getDeployData} from '../../lib';
+import {encodeInitializeWithENSData, deployFactory, getDeployData, EnsDomainData} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
-export type EnsDomainData = {
-  ensAddress: string;
-  registrarAddress: string;
-  resolverAddress: string;
-};
 
 type SetupInitializeArgs = {
   key: string;
