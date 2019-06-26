@@ -1,6 +1,7 @@
 import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
+import WalletMasterWithRefund from '../../build/WalletMasterWithRefund.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
@@ -22,6 +23,15 @@ export async function setupEnsAndMaster(deployer: Wallet) {
     walletMaster,
     provider: providerWithENS,
     deployer,
+    factoryContract
+  };
+}
+
+export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
+  const walletMaster = await deployContract(deployer, WalletMasterWithRefund);
+  const factoryContract = await deployFactory(deployer, walletMaster.address);
+  return {
+    walletMaster,
     factoryContract
   };
 }

@@ -1,4 +1,4 @@
-export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned, getDeployData, EnsDomainData, setupInitializeWithENSArgs} from './encode';
+export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned, getDeployData, EnsDomainData, setupInitializeWithENSArgs, encodeInitializeWithRefundData} from './encode';
 export {deployFactory} from './deployFactory';
-export {createProxyDeployWithENSArgs} from './ProxyUtils';
-export {createFutureDeployment, createFutureDeploymentWithENS} from './FutureDeployment';
+export {createProxyDeployWithENSArgs, createProxyDeployWithRefundArgs} from './ProxyUtils';
+export {createFutureDeployment, createFutureDeploymentWithENS, createFutureDeploymentWithRefund} from './FutureDeployment';

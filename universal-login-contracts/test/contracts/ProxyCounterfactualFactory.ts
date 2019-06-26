@@ -1,12 +1,12 @@
 import chai, {expect} from 'chai';
-import {Contract, providers, Wallet} from 'ethers';
+import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import ProxyContract from '../../build/Proxy.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {getDeployData, EnsDomainData, createProxyDeployWithENSArgs} from '../../lib';
-import {ensAndMasterFixture} from '../fixtures/walletContract';
+import {getDeployData, EnsDomainData, createProxyDeployWithENSArgs, createFutureDeploymentWithRefund} from '../../lib';
+import {ensAndMasterFixture, setupMasterWithRefundAndFactory} from '../fixtures/walletContract';
 
 chai.use(solidity);
 
@@ -61,5 +61,14 @@ describe('Counterfactual Factory', () => {
     const newKeyPair = createKeyPair();
     [, initializeWithENS] = createProxyDeployWithENSArgs(newKeyPair.publicKey, ensDomainData, walletMaster.address);
     await expect(factoryContract.createContract(keyPair.publicKey, initializeWithENS)).to.be.revertedWith('Public key and initialize public key are different');
+  });
+
+  it('wallet refund after deploy', async () => {
+    ({factoryContract, walletMaster} = await setupMasterWithRefundAndFactory(wallet));
+    const {initializeData, futureAddress} = createFutureDeploymentWithRefund(keyPair.publicKey, walletMaster.address, ensDomainData, factoryContract, wallet.address);
+    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
+    const initBalance = await wallet.getBalance();
+    await factoryContract.createContract(keyPair.publicKey, initializeData, {gasPrice: 1});
+    expect(await wallet.getBalance()).to.be.above(initBalance);
   });
 });

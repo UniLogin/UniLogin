@@ -1,6 +1,7 @@
 import {utils} from 'ethers';
 import {Message, ContractJSON} from '@universal-login/commons';
 import WalletMaster from '../build/WalletMaster.json';
+import WalletMasterWithRefund from '../build/WalletMasterWithRefund.json';
 
 export type EnsDomainData = {
   ensAddress: string;
@@ -9,6 +10,8 @@ export type EnsDomainData = {
 };
 
 export const encodeInitializeWithENSData = (args: string[]) => new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
+
+export const encodeInitializeWithRefundData = (args: string[]) => new utils.Interface(WalletMasterWithRefund.interface).functions.initializeWithENS.encode(args);
 
 export const encodeInitializeData = (publicKey: string) => new utils.Interface(WalletMaster.interface).functions.initialize.encode([publicKey]);
 
