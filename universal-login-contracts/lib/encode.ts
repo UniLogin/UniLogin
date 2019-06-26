@@ -11,7 +11,7 @@ export type EnsDomainData = {
 
 export const encodeInitializeWithENSData = (args: string[]) => new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
 
-export const encodeInitializeWithRefundData = (args: string[]) => new utils.Interface(WalletMasterWithRefund.interface).functions.initializeWithENS.encode(args);
+export const encodeInitializeWithRefundData = (args: string[]) => new utils.Interface(WalletMasterWithRefund.interface).functions.initializeWithRefund.encode(args);
 
 export const encodeInitializeData = (publicKey: string) => new utils.Interface(WalletMaster.interface).functions.initialize.encode([publicKey]);
 
