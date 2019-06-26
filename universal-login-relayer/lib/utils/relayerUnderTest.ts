@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {providers, Wallet, ContractFactory, utils} from 'ethers';
+import {providers, Wallet, ContractFactory, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {getDeployData} from '@universal-login/contracts';
@@ -14,14 +14,26 @@ const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
 const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 
+type CreateRelayerArgs = {
+  port: string;
+  wallet: Wallet;
+  walletMaster: Contract;
+  factoryContract: Contract;
+}
+
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
     const walletMaster = await deployContract(wallet, WalletMaster);
     const initCode = getDeployData(ProxyContract, [walletMaster.address, '0x0']);
     const factoryContract = await deployContract(wallet, Factory, [initCode]);
+    return this.createPreconfiguredRelayer({port, wallet, walletMaster, factoryContract});
+  }
+
+  static async createPreconfiguredRelayer({port, wallet, walletMaster, factoryContract}: CreateRelayerArgs) {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
+    const contractWhiteList = getContractWhiteList();
     const mockToken = await deployContract(wallet, MockToken);
     const supportedTokens = [
       {
@@ -33,7 +45,6 @@ export class RelayerUnderTest extends Relayer {
         minimalAmount: utils.parseEther('0.05').toString()
       }
     ];
-    const contractWhiteList = getContractWhiteList();
     const config: Config = {
       port,
       privateKey: wallet.privateKey,
@@ -49,7 +60,7 @@ export class RelayerUnderTest extends Relayer {
       supportedTokens
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
-    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster, mockToken};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster};
   }
 
   url() {
