@@ -4,17 +4,9 @@ import WalletMaster from '../../build/WalletMaster.json';
 import ProxyContract from '../../build/Proxy.json';
 import {withENS, createKeyPair, computeContractAddress} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {encodeInitializeWithENSData, deployFactory, getDeployData, EnsDomainData, setupInitializeWithENSArgs} from '../../lib';
+import {deployFactory, getDeployData, createProxyDeployWithENSArgs} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
-
-
-
-export function createProxyDeployWithENSArgs(publicKey: string, ensDomainData: EnsDomainData, walletMasterAddress: string, name: string = 'name') {
-  const walletArgs = setupInitializeWithENSArgs({key: publicKey, ensDomainData, name});
-  const initData = encodeInitializeWithENSData(walletArgs);
-  return [walletMasterAddress, initData];
-}
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
