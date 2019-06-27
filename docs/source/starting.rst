@@ -106,20 +106,24 @@ The first solution is pretty straightforward. New device transfers it's public k
 
 There are two possible ways of transferring the public key.
 
-The seed for the key has 128bits or 16 bytes.
+Note: this is a public key, so we don't worry about intercepting.
+Note: The seed for ecliptic curve key that we use has 128bits or 16 bytes.
 
-* Scan the QR code 
+* Scan the QR code
 * Manually copy public key by typing. That might have different shades.
 
-  * Retype the letters (32 chars if hex or 26 with just mix cased letters + digits)
-  * Use emojis (12 emojis with 1000 emoji base)
-  * If on one device -> copy paste. (or in some cases even send by e-mail) 
-  
-Note: this is a public key, so we don't worry about intercepting.
+  * Retype the letters (32 chars if hex or 26 with just mix cased letters + digits).
+  * Use emojis (12 emojis with 1000 emoji base), see example interface below.
+
+  .. image:: static/connect/emoji.png
+
+  * If both applications are on the some on one device -> copy paste. (or in some cases even send by e-mail)
+
+
 
 The second solution might be useful if, for some reason, we want to transfer information from the old device to the new device. That might make a difference in the case of using QR codes and old device does not possess a camera.
 
-The process goes like this:
+The process goes as follows:
 
 * old device generate temporary key pair
 * private key gets transferred to new device
