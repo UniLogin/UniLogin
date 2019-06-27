@@ -6,9 +6,14 @@ export class WalletFormatter {
     private walletService: WalletService
   ) {}
 
-  getName(): string | null {
+  getName(): string {
     ensure(!!this.walletService.userWallet, Error, 'UserWallet not found');
     return this.walletService.userWallet!.name;
+  }
+
+  getContractAddress(): string {
+    ensure(!!this.walletService.userWallet, Error, 'UserWallet not found');
+    return this.walletService.userWallet!.contractAddress;
   }
 }
 

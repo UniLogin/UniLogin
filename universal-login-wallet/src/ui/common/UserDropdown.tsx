@@ -21,7 +21,7 @@ const UserDropdown = () => {
           <img className="user-dropdown-avatar" src={avatar} alt="avatar"/>
           <div>
             <p className="user-dropdown-name">{walletFormatter.getName()}</p>
-            <p className="user-dropdown-nickname">{walletService.userWallet ? walletService.userWallet.contractAddress : null}</p>
+            <p className="user-dropdown-nickname">{walletFormatter.getContractAddress()}</p>
           </div>
           <button onClick={isExpanded ?  collapseDropdown : expandDropdown} className="user-dropdown-btn" />
         </div>

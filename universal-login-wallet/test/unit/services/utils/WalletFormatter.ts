@@ -21,4 +21,14 @@ describe('WalletFormatter', async () => {
     walletService.userWallet = null;
     expect(() => walletFormatter.getName()).throws('UserWallet not found');
   });
+
+  it('return contract address if userWallet exist', () => {
+    walletService.userWallet = userWallet;
+    expect(walletFormatter.getContractAddress()).to.be.eq(userWallet.contractAddress);
+  });
+
+  it('return empty string if userWallet not exist', () => {
+    walletService.userWallet = null;
+    expect(() => walletFormatter.getContractAddress()).throws('UserWallet not found');
+  });
 });
