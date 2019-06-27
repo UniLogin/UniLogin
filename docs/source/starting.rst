@@ -60,13 +60,11 @@ Key activities
 Connecting
 ^^^^^^^^^^
 
-- connect newly created public key to existing smart contract wallet
-- the new public key is created on device application that never interacted with smart contract wallet before
+One of the key activities is connecting newly created public key to existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
 
 .. image:: static/connect/setup.png
 
-- the new public key is added using meta-transaction
-- meta-transaction needs to be signed with the private key from a device that already is authorized in the smart contract
+The new public key is added using meta-transaction. Meta-transaction needs to be signed with the private key from a device that already is authorized in the wallet smart contract. After signing, meta-transaction is sent to the relayer, which propagates it to the blockchain. Below picture shows this process.
 
 .. image:: static/connect/expected.png
 
@@ -125,11 +123,15 @@ The second solution might be useful if, for some reason, we want to transfer inf
 
 The process goes as follows:
 
-* old device generate temporary key pair
-* private key gets transferred to new device
-* new device encrypts new public key using temporary private key
-* sends via relayer
-* on successful decription, the old device sends meta-transaction to relayer to add the new public key to wallet smart contract
+1. Old device generate temporary key pair.
+
+2. Private key gets transferred to new device.
+
+3. New device encrypts new public key using temporary private key.
+
+4. Sends via relayer.
+
+5. On successful decription, the old device sends meta-transaction to relayer to add the new public key to wallet smart contract.
 
 .. image:: static/connect/solution-2.png
 
