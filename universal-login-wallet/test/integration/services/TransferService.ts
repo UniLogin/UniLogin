@@ -25,7 +25,7 @@ describe('TransferService', () => {
     const [wallet] = await getWallets(createMockProvider());
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
-    const walletService = new WalletService();
+    const walletService = new WalletService(sdk);
     [, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));

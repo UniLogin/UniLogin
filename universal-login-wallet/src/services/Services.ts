@@ -32,7 +32,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const suggestionsService = new SuggestionsService(walletSelectionService);
   const modalService = new ModalService();
   const userDropdownService = new UserDropdownService();
-  const walletService = new WalletService();
+  const walletService = new WalletService(sdk);
   const walletFormatter = new WalletFormatter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
   const _createWallet = createWallet(sdk, walletService);
