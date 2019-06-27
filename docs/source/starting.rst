@@ -136,6 +136,13 @@ The process goes as follows:
 .. image:: static/connect/solution-2.png
 
 
+The third solution is an alternative to previous solutions. The new device generates a new key pair and shows to user emojis based on a hash of the new public key to later use on an old device. The newly generated public key is sent to the relayer and forwarded to the old device. To finalize connecting a new device, the user has to arrange emojis in the exact order. See below.
+
+.. image:: static/connect/solution-3.png
+
+In the case of spamming, the user has to type exact emojis unlike arranging.
+
+
 Quickstart
 -----------
 
