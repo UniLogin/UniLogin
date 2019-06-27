@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import WalletSelector from './WalletSelector';
-import { renderBusyIndicator } from '../common/BusyIndicator'
+import {renderBusyIndicator} from '../common/BusyIndicator';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
-import {DEFAULT_LOCATION, Procedure, sleep} from '@universal-login/commons';
+import {DEFAULT_LOCATION, Procedure} from '@universal-login/commons';
 import {utils} from 'ethers';
 
 const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
