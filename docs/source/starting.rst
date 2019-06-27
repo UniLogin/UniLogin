@@ -60,7 +60,7 @@ Key activities
 Connecting
 ^^^^^^^^^^
 
-One of the key activities is connecting newly created public key to existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
+One of the key activities is connecting the newly created public key to the existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
 
 .. image:: static/connect/setup.png
 
@@ -70,9 +70,9 @@ The new public key is added using meta-transaction. Meta-transaction needs to be
 
 There are four key actors in the process:
 
-- **Old device** or application, that is already authorized. Authorized means there is a public and private key pair, where the private key is stored on the device and public key is in the wallet smart contract on the blockchain.
+- **Old device** or application that is already authorized. Authorized means there is a public and private key pair, where the private key is stored on the device and public key is in the wallet smart contract on the blockchain.
 - **New device** (or new application) that we want to authorize to use wallet smart contract. To do that we need to generate **new key pair** (new public key and private key) and add the new public key to wallet contract as management or action key. Adding key is creating meta-transaction signed by the old device (old private key) and sending to relayer.
-- **Relayer** - relays meta-transaction sent from old device
+- **Relayer** - relays meta-transaction sent from an old device to blockchain
 - **Smart Contract Wallet** - smart contract that stores keys and executes meta-transactions.
 
 
@@ -123,15 +123,15 @@ The second solution might be useful if, for some reason, we want to transfer inf
 
 The process goes as follows:
 
-1. Old device generate temporary key pair.
+1. The old device generates a temporary key pair.
 
-2. Private key gets transferred to new device.
+2. The private key gets transferred to the new device.
 
-3. New device encrypts new public key using temporary private key.
+3. The new device encrypts a new public key using a temporary private key.
 
-4. Sends via relayer.
+4. The old device sends meta-transaction via relayer to the wallet smart contract.
 
-5. On successful decription, the old device sends meta-transaction to relayer to add the new public key to wallet smart contract.
+5. On successful decryption, the old device sends meta-transaction to relayer to add the new public key to wallet smart contract.
 
 .. image:: static/connect/solution-2.png
 
