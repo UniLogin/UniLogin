@@ -6,7 +6,7 @@ import InputLabel from '../common/InputLabel';
 import {useServices} from '../../hooks';
 
 const ModalAddress = () => {
-  const {walletService} = useServices();
+  const {walletFormatter} = useServices();
   return(
   <div className="modal-body address-modal">
     <h2 className="modal-title">Transfer one of following </h2>
@@ -22,7 +22,7 @@ const ModalAddress = () => {
       </div>
     </div>
       <InputLabel htmlFor="addressButton">To following address:</InputLabel>
-      <InputWithButton id="addressButton" value={walletService.userWallet!.contractAddress} autoFocus/>
+      <InputWithButton id="addressButton" value={walletFormatter.getContractAddress()} autoFocus/>
       <p className="modal-text address-modal-text">The cost of wallet creation will be: 0,002 ETH or 0,5 dai  Transfer will be automatically discovered.</p>
   </div>
   );
