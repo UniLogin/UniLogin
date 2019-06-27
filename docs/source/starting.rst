@@ -30,39 +30,6 @@ Additionally, there is one more package in the repository:
 
 - `Example <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-example>`_ - an example app, that demonstrates, used for testing and experimentation.
 
-
-Connecting new device
-^^^^^^^^^^^^^^^^^^^^^
-
-**Old device** is device or application, that create wallet contract. To connect **new device** (or new application) to wallet contract, you need to generate **new key pair** (new public key and new private key) and add new public key to wallet contract as managament or action key. Adding key is creating meta transaction signed by old device (old private key) and sending to relayer.
-
-.. image:: static/connect/setup.png
-
-.. image:: static/connect/expected.png
-
-**Possible attacks**
-
-* man in the middle
-
-Man-in-the-middle attack can happen, when new device send new public key to old device. Attacker can switch new public key with its new public key and as a result can take control of wallet contract.
-
-.. image:: static/connect/man-in-the-middle.png
-
-* spamming
-
-.. image:: static/connect/spamming.png
-
-Spam attack can happen when a lof of new devices request connect to an old device, therefore old device is spamming with many notifications.
-
-  *picture spammming*
-
-* **solution**
-
-.. image:: static/connect/solution-1.png
-
-.. image:: static/connect/solution-2.png
-
-
 Dependencies
 ^^^^^^^^^^^^
 The diagram below shows dependencies between components.
@@ -85,6 +52,83 @@ The internal interfaces defined within the Universal Login system are identified
   this interface is a message hash and signature JS facility API for ERC #1077
 <<IF-5>> ERC1077 IF / ERC1078 IF
   this interface is made up of ERC #1077 and #1078 smart contracts ABI
+
+
+Key activities
+--------------
+
+Connecting
+^^^^^^^^^^
+
+- connect newly created public key to existing smart contract wallet
+- the new public key is created on device application that never interacted with smart contract wallet before
+
+.. image:: static/connect/setup.png
+
+- the new public key is added using meta-transaction
+- meta-transaction needs to be signed with the private key from a device that already is authorized in the smart contract
+
+.. image:: static/connect/expected.png
+
+There are four key actors in the process:
+
+- **Old device** or application, that is already authorized. Authorized means there is a public and private key pair, where the private key is stored on the device and public key is in the wallet smart contract on the blockchain.
+- **New device** (or new application) that we want to authorize to use wallet smart contract. To do that we need to generate **new key pair** (new public key and private key) and add the new public key to wallet contract as management or action key. Adding key is creating meta-transaction signed by the old device (old private key) and sending to relayer.
+- **Relayer** - relays meta-transaction sent from old device
+- **Smart Contract Wallet** - smart contract that stores keys and executes meta-transactions.
+
+
+**Possible attacks**
+
+The problem might seem pretty straightforward, but there are some complexities to consider. In particular, we should avoid introducing the possibility of the following attacks:
+
+* Man in the middle
+
+A man-in-the-middle attack can happen when a new device sends the new public key to the old device. A malicious actor that intercepts communication (e.g. relayer) can switch new public key with its new public key and as a result, can take over control of the wallet contract.
+
+.. image:: static/connect/man-in-the-middle.png
+
+* Spamming
+
+Spam attack can happen when a lot of new devices request connect to an old device, therefore the old device is spamming with many notifications.
+
+.. image:: static/connect/spamming.png
+
+
+**Solution**
+
+The first solution is pretty straightforward. New device transfers it's public key to the old device.
+
+.. image:: static/connect/solution-1.png
+
+
+**Transfer means**
+
+There are two possible ways of transferring the public key.
+
+The seed for the key has 128bits or 16 bytes.
+
+* Scan the QR code 
+* Manually copy public key by typing. That might have different shades.
+
+  * Retype the letters (32 chars if hex or 26 with just mix cased letters + digits)
+  * Use emojis (12 emojis with 1000 emoji base)
+  * If on one device -> copy paste. (or in some cases even send by e-mail) 
+  
+Note: this is a public key, so we don't worry about intercepting.
+
+The second solution might be useful if, for some reason, we want to transfer information from the old device to the new device. That might make a difference in the case of using QR codes and old device does not possess a camera.
+
+The process goes like this:
+
+* old device generate temporary key pair
+* private key gets transferred to new device
+* new device encrypts new public key using temporary private key
+* sends via relayer
+* on successful decription, the old device sends meta-transaction to relayer to add the new public key to wallet smart contract
+
+.. image:: static/connect/solution-2.png
+
 
 Quickstart
 -----------
