@@ -3,7 +3,8 @@
     "allowJs": true,
     "esModuleInterop": true,
     "lib": [
-      "esnext"
+      "esnext",
+      "dom"
     ],
     "module": "commonjs",
     "resolveJsonModule": true,
