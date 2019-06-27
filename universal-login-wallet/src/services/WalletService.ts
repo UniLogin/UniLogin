@@ -1,4 +1,4 @@
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 
 export interface UserWallet {
   name: string;
@@ -6,23 +6,11 @@ export interface UserWallet {
   privateKey: string;
 }
 
-type BalanceDetails = {
-  tokenAddress: string,
-  contractAddress: string
-};
-
-export type FutureWallet = {
-  privateKey: string,
-  contractAddress: string,
-  waitForBalance: () => Promise<BalanceDetails>,
-  deploy: (ensName: string) => Promise<any>
-};
-
 type WalletState = 'None' | 'Future' | 'Deployed';
 
 
 export default class WalletService {
-  public userWallet?: null | UserWallet;
+  public userWallet?: null | FutureWallet | UserWallet;
   public state: WalletState = 'None';
 
   constructor(private sdk: UniversalLoginSDK) {
@@ -34,6 +22,11 @@ export default class WalletService {
 
   isAuthorized(): boolean {
     return this.walletExists();
+  }
+
+  setUserWallet(userWallet: UserWallet) {
+    this.state = 'Deployed';
+    this.userWallet = userWallet;
   }
 
   disconnect(): void {

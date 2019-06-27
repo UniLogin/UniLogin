@@ -18,7 +18,7 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
 
   const [privateKey, contractAddress] = await services.sdk.create(name);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
-  services.walletService.userWallet = {name, contractAddress, privateKey};
+  services.walletService.setUserWallet({name, contractAddress, privateKey});
 
   const appWrapper = mountWithContext(<App/>, services, ['/']);
   const appPage = new AppPage(appWrapper);

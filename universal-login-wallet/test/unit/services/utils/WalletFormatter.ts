@@ -14,7 +14,7 @@ describe('WalletFormatter', async () => {
   };
 
   it('return name if userWallet exist', () => {
-    walletService.userWallet = userWallet;
+    walletService.setUserWallet(userWallet);
     expect(walletFormatter.getName()).to.be.eq(userWallet.name);
   });
 
