@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import {useServices} from '../../hooks';
 
 const ApproveScreen = () => {
-  const {walletService} = useServices();
+  const {walletFormatter} = useServices();
 
   return(
   <div className="start">
@@ -16,7 +16,7 @@ const ApproveScreen = () => {
     <p className="start-subtitle">Open your device that controls this ID and approve this connection</p>
     <div className="user-row aprove-screen-user">
       <img src={avatar} alt="user avatar" className="user-img"/>
-      <p className="user-id">{walletService.userWallet ? walletService.userWallet.name : ''}</p>
+      <p className="user-id">{walletFormatter.getName()}</p>
     </div>
     <div className="devices">
       <img src={devices} alt="devices that controls this ID" className="devices-img"/>

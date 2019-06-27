@@ -4,7 +4,7 @@ import {useRouter, useServices, useSubscription} from '../../hooks';
 
 
 const UserDropdown = () => {
-  const {walletService, userDropdownService} = useServices();
+  const {walletService, userDropdownService, walletFormatter} = useServices();
   const isExpanded = useSubscription(userDropdownService);
   const collapseDropdown = () => userDropdownService.setDropdownVisibility(false);
   const expandDropdown = () => userDropdownService.setDropdownVisibility(true);
@@ -20,7 +20,7 @@ const UserDropdown = () => {
         <div className="user-dropdown-header">
           <img className="user-dropdown-avatar" src={avatar} alt="avatar"/>
           <div>
-            <p className="user-dropdown-name">{walletService.userWallet ? walletService.userWallet.name : null}</p>
+            <p className="user-dropdown-name">{walletFormatter.getName()}</p>
             <p className="user-dropdown-nickname">{walletService.userWallet ? walletService.userWallet.contractAddress : null}</p>
           </div>
           <button onClick={isExpanded ?  collapseDropdown : expandDropdown} className="user-dropdown-btn" />
