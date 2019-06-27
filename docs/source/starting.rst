@@ -36,21 +36,31 @@ Connecting new device
 
 **Old device** is device or application, that create wallet contract. To connect **new device** (or new application) to wallet contract, you need to generate **new key pair** (new public key and new private key) and add new public key to wallet contract as managament or action key. Adding key is creating meta transaction signed by old device (old private key) and sending to relayer.
 
+.. image:: static/connect/setup.png
+
+.. image:: static/connect/expected.png
+
 **Possible attacks**
 
 * man in the middle
 
 Man-in-the-middle attack can happen, when new device send new public key to old device. Attacker can switch new public key with its new public key and as a result can take control of wallet contract.
 
-  *picture MAN-IN-THE-MIDDLE*
+.. image:: static/connect/man-in-the-middle.png
 
 * spamming
+
+.. image:: static/connect/spamming.png
 
 Spam attack can happen when a lof of new devices request connect to an old device, therefore old device is spamming with many notifications.
 
   *picture spammming*
 
 * **solution**
+
+.. image:: static/connect/solution-1.png
+
+.. image:: static/connect/solution-2.png
 
 
 Dependencies
