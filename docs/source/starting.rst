@@ -30,6 +30,25 @@ Additionally, there is one more package in the repository:
 
 - `Example <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-example>`_ - an example app, that demonstrates, used for testing and experimentation.
 
+
+Connecting new device
+^^^^^^^^^^^^^^^^^^^^^
+
+* **summary**
+
+To connect new device to wallet contract, you need to generate new key pair (new public key and new private key) in new device and add new public key to wallet contract as for example managament key. Adding key is creating meta transaction signed by old device (old private key).
+
+* **man in the middle**
+
+  *picture MAN-IN-THE-MIDDLE*
+
+* **spamming**
+
+  *picture spammming*
+
+* **solution**
+
+
 Dependencies
 ^^^^^^^^^^^^
 The diagram below shows dependencies between components.
