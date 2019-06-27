@@ -29,12 +29,11 @@ describe('UI: Transfer', () => {
   it('Creates wallet and transfers tokens', async () => {
     const walletAddress = services.walletService.userWallet ? services.walletService.userWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
-
     appPage.dashboard().clickTransferButton();
     appPage.transfer().enterTransferDetails(receiverAddress, '1');
 
-    const tokenBalance = await appPage.dashboard().getBalance(mockTokenContract, walletAddress);
-    expect(tokenBalance).to.match(/^[9999|0-9]{18}/);
+    await appPage.dashboard().waitForHideModal();
+    expect(await appPage.dashboard().getBalance(mockTokenContract, walletAddress)).to.match(/^9{4}[0-9]{14}/);
   });
 
   after(async () => {

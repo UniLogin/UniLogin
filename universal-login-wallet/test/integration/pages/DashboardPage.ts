@@ -23,6 +23,10 @@ export default class DashboardPage {
     return tokenBalance.toString();
   }
 
+  async waitForHideModal() {
+    await waitForUI(this.wrapper, () => !this.wrapper.exists('.modal-wrapper'));
+  }
+
   getWalletBalance() : string {
     return this.wrapper.find('span.balance-amount-highlighted').text();
   }
