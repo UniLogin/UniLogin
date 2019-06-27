@@ -34,7 +34,7 @@ Additionally, there is one more package in the repository:
 Connecting new device
 ^^^^^^^^^^^^^^^^^^^^^
 
-Old device is device or application, that create wallet contract. To connect new device (or new application) to wallet contract, you need to generate new key pair (new public key and new private key) and add new public key to wallet contract as managament or action key. Adding key is creating meta transaction signed by old device (old private key) and sending to relayer.
+**Old device** is device or application, that create wallet contract. To connect **new device** (or new application) to wallet contract, you need to generate **new key pair** (new public key and new private key) and add new public key to wallet contract as managament or action key. Adding key is creating meta transaction signed by old device (old private key) and sending to relayer.
 
 **Possible attacks**
 
