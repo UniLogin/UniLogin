@@ -7,7 +7,6 @@ import {useServices} from '../../hooks';
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
-  setLoader: (arg: boolean) => void;
 }
 
 const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {

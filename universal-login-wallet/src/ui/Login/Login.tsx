@@ -22,7 +22,6 @@ const Login = ({location} : LoginProps) => {
 
   const onCreateCLick = async (name: string) => {
     setBusy(true);
-    await sleep(1000)
     await createWallet(name);
     setBusy(false);
     modalService.showModal('address');
