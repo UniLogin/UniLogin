@@ -17,12 +17,12 @@ export default class WalletService {
   constructor(private sdk: UniversalLoginSDK) {
   }
 
-  walletExists(): boolean {
+  walletDeployed(): boolean {
     return this.state === 'Deployed';
   }
 
   isAuthorized(): boolean {
-    return this.walletExists();
+    return this.walletDeployed();
   }
 
   async createFutureWallet(): Promise<FutureWallet> {

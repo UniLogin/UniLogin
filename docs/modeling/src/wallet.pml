@@ -120,7 +120,7 @@ package Integration {
 
   class WalletService {
     userWallet: UserWallet
-    walletExists(): boolean
+    walletDeployed(): boolean
     isAuthorized(): boolean
     disconnect(): void
   }

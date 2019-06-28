@@ -19,7 +19,7 @@ const walletService = {
     name: 'name',
     privateKey: '0x012345'
   },
-  walletExists: () => true,
+  walletDeployed: () => true,
   disconnect: () => {},
   isAuthorized: () => true
 } as WalletService;
