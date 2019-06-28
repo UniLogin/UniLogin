@@ -1,7 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import ENS from '@universal-login/contracts/build/ENS.json';
-import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
-import {parseDomain} from '@universal-login/commons';
+import {parseDomain, resolveName} from '@universal-login/commons';
 
 
 interface DomainInfo {
@@ -48,13 +47,7 @@ class ENSService {
   }
 
   resolveName = async (ensName: string) => {
-    const node = utils.namehash(ensName);
-    const resolverAddress = await this.ens.resolver(node);
-    if (resolverAddress !== '0x0000000000000000000000000000000000000000') {
-      const resolverContract = new Contract(resolverAddress, PublicResolver.interface, this.provider);
-      return resolverContract.addr(node);
-    }
-    return false;
+    return resolveName(this.provider, this.ensAddress, ensName);
   }
 }
 
