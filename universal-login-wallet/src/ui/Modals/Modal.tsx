@@ -11,6 +11,7 @@ import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaiting from './ModalWaiting';
 import ModalSafello from './ModalSafello';
+import ModalWaitingForDeploy from './ModalWaitingForDeploy';
 
 const Modal = () => {
   const {modalService} = useServices();
@@ -64,6 +65,12 @@ const Modal = () => {
       return (
         <ModalWrapper>
           <ModalWaiting />
+        </ModalWrapper>
+      );
+    case 'waitingForDeploy':
+      return (
+        <ModalWrapper>
+          <ModalWaitingForDeploy />
         </ModalWrapper>
       );
     case 'safello':
