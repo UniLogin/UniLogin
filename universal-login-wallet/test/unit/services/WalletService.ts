@@ -26,7 +26,7 @@ describe('WalletService', () => {
   });
 
   it('should set state and userWallet', () => {
-    walletService.setUserWallet(userWallet);
+    walletService.connect(userWallet);
     expect(walletService.userWallet).to.deep.eq(userWallet);
     expect(walletService.state).to.be.eq('Deployed');
   });
@@ -37,7 +37,7 @@ describe('WalletService', () => {
     walletService.setFutureWallet(futureWallet);
     expect(walletService.userWallet).to.deep.eq(futureWallet);
     expect(walletService.state).to.be.eq('Future');
-    walletService.setUserWallet(userWallet);
+    walletService.connect(userWallet);
     expect(walletService.userWallet).to.deep.eq(userWallet);
     expect(walletService.state).to.be.eq('Deployed');
     walletService.disconnect();

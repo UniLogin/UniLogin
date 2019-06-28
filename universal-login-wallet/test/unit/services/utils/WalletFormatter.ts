@@ -19,7 +19,7 @@ describe('WalletFormatter', async () => {
   });
 
   it('return name if userWallet exist', () => {
-    walletService.setUserWallet(userWallet);
+    walletService.connect(userWallet);
     expect(walletFormatter.getName()).to.be.eq(userWallet.name);
   });
 

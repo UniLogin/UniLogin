@@ -1,4 +1,5 @@
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
+import { ensure } from '@universal-login/commons/lib';
 
 export interface UserWallet {
   name: string;
@@ -35,7 +36,7 @@ export default class WalletService {
     this.userWallet = userWallet;
   }
 
-  setUserWallet(userWallet: UserWallet) {
+  connect(userWallet: UserWallet) {
     this.state = 'Deployed';
     this.userWallet = userWallet;
   }
