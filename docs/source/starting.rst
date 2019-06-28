@@ -93,7 +93,7 @@ Spam attack can happen when a lot of new devices request connect to an old devic
 .. image:: static/connect/spamming.png
 
 
-**Solution**
+**Solution 1**
 
 The first solution is pretty straightforward. New device transfers it's public key to the old device.
 
@@ -118,6 +118,7 @@ Note: The seed for ecliptic curve key that we use has 128bits or 16 bytes.
   * If both applications are on the some on one device -> copy paste. (or in some cases even send by e-mail)
 
 
+**Solution 2**
 
 The second solution might be useful if, for some reason, we want to transfer information from the old device to the new device. That might make a difference in the case of using QR codes and old device does not possess a camera.
 
@@ -135,6 +136,7 @@ The process goes as follows:
 
 .. image:: static/connect/solution-2.png
 
+**Solution 3**
 
 The third solution is an alternative to previous solutions. The new device generates a new key pair and shows to user emojis based on a hash of the new public key to later use on an old device. The newly generated public key is sent to the relayer and forwarded to the old device. To finalize connecting a new device, the user has to arrange emojis in the exact order. See below.
 
