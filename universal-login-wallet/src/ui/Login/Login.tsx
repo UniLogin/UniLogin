@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import WalletSelector from './WalletSelector';
-import {renderBusyIndicator} from '../common/BusyIndicator';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
@@ -14,25 +13,20 @@ interface LoginProps {
 }
 
 const Login = ({location} : LoginProps) => {
-  const [busy, setBusy] = useState(false);
   const {createWallet, modalService, balanceService, connectToWallet} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
 
   const onCreateCLick = async (name: string) => {
-    setBusy(true);
     await createWallet(name);
-    setBusy(false);
     modalService.showModal('address');
     unsubscribe = balanceService.subscribe(onBalanceChange);
     modalService.showModal('topUpAccount');
   };
 
   const onConnectionClick = async (name: string) => {
-    setBusy(true);
     unsubscribe = await connectToWallet(name, loginAndChangeScreen);
-    setBusy(false);
     history.push('/approve');
   };
 
@@ -53,7 +47,6 @@ const Login = ({location} : LoginProps) => {
       <p className="start-subtitle login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
       <WalletSelector onCreateClick={(name: string) => onCreateCLick(name)} onConnectionClick={onConnectionClick}/>
       <Modal />
-      {renderBusyIndicator(busy)}
     </div>
   );
 };

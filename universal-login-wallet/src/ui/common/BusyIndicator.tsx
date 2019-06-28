@@ -1,6 +1,7 @@
 import React from 'react';
+import Spinner from '../Login/Spinner';
 
 export const renderBusyIndicator = (busy: boolean) =>
   busy ?
-    <div className="circle-loader input-loader"/> :
+    <Spinner className={"spinner-busy-indicator"}/> :
     null;

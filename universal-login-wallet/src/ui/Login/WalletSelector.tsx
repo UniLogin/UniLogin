@@ -29,7 +29,7 @@ const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
 
   const renderSuggestions = () =>
     !busy && (connections.length || creations.length) ?
-      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick} /> :
+      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick}/> :
       null;
 
   return(
@@ -38,13 +38,13 @@ const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
         <p className="login-input-label-title">Type a nickname you want</p>
         <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
       </label>
+      {renderBusyIndicator(busy)}
       <Input
           id="loginInput"
           onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
           placeholder="bob.example.eth"
           autoFocus
       />
-      {renderBusyIndicator(busy)}
       {renderSuggestions()}
     </>
   );
