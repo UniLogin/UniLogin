@@ -13,7 +13,7 @@ export async function startDevelopmentRelayer(
   relayerConstructor: RelayerClass = DevelopmentRelayer
 ) {
   const providerWithENS = withENS(provider, configuration.chainSpec.ensAddress);
-  const relayer = new relayerConstructor(configuration, providerWithENS)
+  const relayer = new relayerConstructor(configuration, providerWithENS);
   await relayer.start();
   console.log(`         Relayer url: http://localhost:${configuration.port}`);
   return relayer;

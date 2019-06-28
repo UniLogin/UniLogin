@@ -52,7 +52,7 @@ const commandLineBuilder = yargs
         .positional('currency', {
           describe: 'Currency of transfer',
           default: ETHER_NATIVE_TOKEN.symbol
-        })
+        });
     },
     (argv) => {
       sendFunds(argv).catch(console.error);

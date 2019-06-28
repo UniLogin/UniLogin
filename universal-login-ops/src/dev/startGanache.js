@@ -1,11 +1,10 @@
 import {promisify} from 'util';
 import Ganache from 'ganache-core';
-import {defaultAccounts} from 'ethereum-waffle';
-import {getWallets} from 'ethereum-waffle';
+import {defaultAccounts, getWallets} from 'ethereum-waffle';
 import {providers} from 'ethers';
 
 function printWallets(wallets) {
-  console.log('  Wallets:')
+  console.log('  Wallets:');
   for (const wallet of wallets) {
     console.log(`    ${wallet.address} - ${wallet.privateKey}`);
   }

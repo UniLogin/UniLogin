@@ -5,6 +5,6 @@ export async function deployENS(wallet, registrars) {
   await deployer.deployRegistrars(registrars);
   const {variables} = deployer;
   console.log(`         ENS address: ${variables.ENS_ADDRESS}`);
-  console.log(`  Registered domains: ${registrars.join(', ')}`)
+  console.log(`  Registered domains: ${registrars.join(', ')}`);
   return variables.ENS_ADDRESS;
 }

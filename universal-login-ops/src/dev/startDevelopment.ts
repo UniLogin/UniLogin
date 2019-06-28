@@ -1,7 +1,7 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet, utils} from 'ethers';
-import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, withENS} from '@universal-login/commons';
+import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
@@ -64,15 +64,15 @@ function getMigrationPath() {
   return join(dirname(packagePath), 'migrations');
 }
 
-declare interface startDevelopmentOverrides {
+declare interface StartDevelopmentOverrides {
   nodeUrl?: string;
   relayerClass?: RelayerClass;
 }
 
-async function startDevelopment({nodeUrl, relayerClass} : startDevelopmentOverrides = {}) {
+async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverrides = {}) {
   const jsonRpcUrl = nodeUrl ? nodeUrl : await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
-  const [,,,, ensDeployer, deployWallet] = await getWallets(provider);
+  const [, , , , ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, masterContractHash} = await deployWalletMaster(deployWallet);
   const proxyContractHash = getProxyContractHash();
