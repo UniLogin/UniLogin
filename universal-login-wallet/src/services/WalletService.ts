@@ -18,7 +18,7 @@ export default class WalletService {
   }
 
   walletExists(): boolean {
-    return !!this.userWallet;
+    return this.state === 'Deployed';
   }
 
   isAuthorized(): boolean {
