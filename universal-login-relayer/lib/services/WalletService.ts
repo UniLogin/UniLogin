@@ -41,7 +41,7 @@ class WalletService {
   }
 
   async deploy(key: string, ensName: string, overrideOptions = {}) {
-    ensure(!await this.wallet.provider.resolveName(ensName), EnsNameTaken, ensName);
+    ensure(!await this.ensService.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());

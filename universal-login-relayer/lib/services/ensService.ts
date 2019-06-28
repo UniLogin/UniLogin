@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import ENS from '@universal-login/contracts/build/ENS.json';
-import {parseDomain} from '@universal-login/commons';
+import {parseDomain, resolveName} from '@universal-login/commons';
 
 
 interface DomainInfo {
@@ -44,6 +44,10 @@ class ENSService {
     const {resolverAddress} = registrarConfig;
     const {registrarAddress} = registrarConfig;
     return [hashLabel, ensName, node, this.ensAddress, registrarAddress, resolverAddress];
+  }
+
+  resolveName = async (ensName: string) => {
+    return resolveName(this.provider, this.ensAddress, ensName);
   }
 }
 
