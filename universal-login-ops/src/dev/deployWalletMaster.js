@@ -6,6 +6,6 @@ export default async function deployWalletMaster(deployWallet) {
   const {address} = await deployContract(deployWallet, WalletMaster);
   console.log(`WalletMaster address: ${address}`);
   const masterContractHash = getContractHash(WalletMaster);
-  console.log(`WalletMaster hash: ${masterContractHash}`)
+  console.log(`WalletMaster hash: ${masterContractHash}`);
   return {address, masterContractHash};
 }

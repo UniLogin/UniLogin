@@ -4,14 +4,14 @@ import { getEnv } from '@universal-login/commons';
 dotenv.config();
 
 export interface Config {
-  jsonRpcUrl: string,
-  privateKey: string,
+  jsonRpcUrl: string;
+  privateKey: string;
   chainSpec: {
     ensAddress: string,
     publicResolverAddress: string,
     chainId: number,
     name: string,
-  },
+  };
 }
 
 const getConfig = (): Config => Object.freeze({

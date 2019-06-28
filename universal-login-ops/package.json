@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json && cp -r src/contracts dist",
-    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "lint": "tslint -p tsconfig.json \"{src,test}/**/*.{ts,js}\"",
     "test": "NODE_ENV=test mocha -r ts-node/register test -t 10000 \"test/**/*.{js,ts}\"",
     "cli": "ts-node ./scripts/cli",
     "register:domain": "ts-node ./scripts/domainRegister.ts",
