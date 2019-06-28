@@ -5,13 +5,18 @@ import WalletService from '../../../../src/services/WalletService';
 import WalletFormatter from '../../../../src/services/utils/WalletFormatter';
 
 describe('WalletFormatter', async () => {
-  const walletService = new WalletService({} as UniversalLoginSDK);
-  const walletFormatter = new WalletFormatter(walletService);
+  let walletService: WalletService;
+  let walletFormatter: WalletFormatter;
   const userWallet = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY
   };
+
+  beforeEach(() => {
+    walletService = new WalletService({} as UniversalLoginSDK);
+    walletFormatter = new WalletFormatter(walletService);
+  });
 
   it('return name if userWallet exist', () => {
     walletService.setUserWallet(userWallet);
@@ -19,7 +24,6 @@ describe('WalletFormatter', async () => {
   });
 
   it('return empty string if userWallet not exist', () => {
-    walletService.userWallet = null;
     expect(() => walletFormatter.getName()).throws('UserWallet not found');
   });
 
@@ -29,7 +33,6 @@ describe('WalletFormatter', async () => {
   });
 
   it('return empty string if userWallet not exist', () => {
-    walletService.userWallet = null;
     expect(() => walletFormatter.getContractAddress()).throws('UserWallet not found');
   });
 });

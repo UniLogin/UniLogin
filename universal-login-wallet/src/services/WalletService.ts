@@ -10,7 +10,7 @@ type WalletState = 'None' | 'Future' | 'Deployed';
 
 
 export default class WalletService {
-  public userWallet?: null | FutureWallet | UserWallet;
+  public userWallet?: FutureWallet | UserWallet;
   public state: WalletState = 'None';
 
   constructor(private sdk: UniversalLoginSDK) {
@@ -41,6 +41,7 @@ export default class WalletService {
   }
 
   disconnect(): void {
-    this.userWallet = null;
+    this.state = 'None';
+    this.userWallet = undefined;
   }
 }

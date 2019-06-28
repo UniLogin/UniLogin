@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import UniversalLoginSDK, { FutureWallet } from '@universal-login/sdk';
-import WalletService, { UserWallet } from '../../../src/services/WalletService';
-import { TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY } from '@universal-login/commons';
+import {expect} from 'chai';
+import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
+import WalletService, {UserWallet} from '../../../src/services/WalletService';
+import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 
 describe('WalletService', () => {
   const userWallet: UserWallet = { name: 'justyna.nylogin.eth', contractAddress: '0x123', privateKey: '0x5422' };
@@ -21,7 +21,7 @@ describe('WalletService', () => {
     walletService.userWallet = userWallet;
     expect(walletService.userWallet).to.deep.eq(userWallet);
     walletService.disconnect();
-    expect(walletService.userWallet).to.be.null;
+    expect(walletService.userWallet).to.be.undefined;
     expect(walletService.state).to.be.eq('None');
   });
 
@@ -32,8 +32,8 @@ describe('WalletService', () => {
   });
 
   it('roundtrip', () => {
-    expect(walletService.state).to.be.eq('None');
-    expect(walletService.userWallet).to.be.null;
+    expect(walletService.state).to.be.eq('None', 'Initial WalletService state does not equal None');
+    expect(walletService.userWallet).to.be.undefined;
     walletService.setFutureWallet(futureWallet);
     expect(walletService.userWallet).to.deep.eq(futureWallet);
     expect(walletService.state).to.be.eq('Future');
@@ -41,7 +41,7 @@ describe('WalletService', () => {
     expect(walletService.userWallet).to.deep.eq(userWallet);
     expect(walletService.state).to.be.eq('Deployed');
     walletService.disconnect();
-    expect(walletService.userWallet).to.be.null;
+    expect(walletService.userWallet).to.be.undefined;
     expect(walletService.state).to.be.eq('None');
   });
 });
