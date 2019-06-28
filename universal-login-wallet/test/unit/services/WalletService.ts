@@ -37,11 +37,18 @@ describe('WalletService', () => {
     walletService.setFutureWallet(futureWallet);
     expect(walletService.userWallet).to.deep.eq(futureWallet);
     expect(walletService.state).to.be.eq('Future');
-    walletService.connect(userWallet);
-    expect(walletService.userWallet).to.deep.eq(userWallet);
+    walletService.setDeployed(userWallet.name);
+    expect(walletService.userWallet).to.deep.eq({
+      contractAddress: futureWallet.contractAddress,
+      privateKey: futureWallet.privateKey,
+      name: userWallet.name
+    });
     expect(walletService.state).to.be.eq('Deployed');
     walletService.disconnect();
     expect(walletService.userWallet).to.be.undefined;
     expect(walletService.state).to.be.eq('None');
+    walletService.connect(userWallet);
+    expect(walletService.userWallet).to.deep.eq(userWallet);
+    expect(walletService.state).to.be.eq('Deployed');
   });
 });
