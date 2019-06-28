@@ -1,6 +1,5 @@
 import WalletService, { UserWallet } from '../WalletService';
 import {ensure} from '@universal-login/commons';
-import {FutureWallet} from '@universal-login/sdk';
 
 export class WalletFormatter {
   constructor(
