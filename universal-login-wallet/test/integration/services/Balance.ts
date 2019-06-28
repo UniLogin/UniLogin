@@ -6,6 +6,7 @@ import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
 import {EtherBalanceService} from '../../../src/services/balance/EtherBalanceService';
 import {BalanceService} from '../../../src/services/balance/BalanceService';
+import WalletService from '../../../src/services/WalletService';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -18,10 +19,10 @@ const walletService = {
     name: 'name',
     privateKey: '0x012345'
   },
-  walletExists: () => true,
+  walletDeployed: () => true,
   disconnect: () => {},
   isAuthorized: () => true
-};
+} as WalletService;
 
 describe('Balance', () => {
   let provider: providers.Provider;
@@ -40,7 +41,7 @@ describe('Balance', () => {
   describe('EtherBalanceService', () => {
     it('should return correct balance', async () => {
       expect(await etherBalanceService.getBalance()).to.eq(0);
-      await wallet.sendTransaction({to: walletService.userWallet.contractAddress, value});
+      await wallet.sendTransaction({to: walletService.userWallet!.contractAddress, value});
       expect(await etherBalanceService.getBalance()).to.eq(value);
     });
   });
@@ -53,7 +54,7 @@ describe('Balance', () => {
       expect(callback).to.have.been.called;
       expect(callback.firstCall.args[0]).to.eq(utils.bigNumberify(0));
 
-      await wallet.sendTransaction({to: walletService.userWallet.contractAddress, value});
+      await wallet.sendTransaction({to: walletService.userWallet!.contractAddress, value});
       await waitUntil(() => !!callback.secondCall);
       expect(callback).to.have.been.calledTwice;
       expect(callback.lastCall.args[0]).to.deep.eq(utils.bigNumberify(value));

@@ -7,12 +7,12 @@ import {BlockchainService} from './BlockchainService';
 import {RelayerApi} from '../RelayerApi';
 import {PublicRelayerConfig} from '@universal-login/commons/lib';
 
-type BalanceDetails = {
+export type BalanceDetails = {
   tokenAddress: string,
   contractAddress: string
 };
 
-type FutureWallet = {
+export type FutureWallet = {
   privateKey: string,
   contractAddress: string,
   waitForBalance: () => Promise<BalanceDetails>,

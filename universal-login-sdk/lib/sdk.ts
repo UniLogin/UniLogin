@@ -259,3 +259,4 @@ class UniversalLoginSDK {
 
 export default UniversalLoginSDK;
 export {SdkSigner} from './SdkSigner';
+export {FutureWallet, BalanceDetails} from './services/FutureWalletFactory';

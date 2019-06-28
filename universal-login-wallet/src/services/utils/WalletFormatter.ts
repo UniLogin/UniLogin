@@ -1,4 +1,4 @@
-import WalletService from '../WalletService';
+import WalletService, { UserWallet } from '../WalletService';
 import {ensure} from '@universal-login/commons';
 
 export class WalletFormatter {
@@ -8,7 +8,8 @@ export class WalletFormatter {
 
   getName(): string {
     ensure(!!this.walletService.userWallet, Error, 'UserWallet not found');
-    return this.walletService.userWallet!.name;
+    ensure(this.walletService.state === 'Deployed', Error, 'UserWallet is not deployed yet');
+    return (this.walletService.userWallet! as UserWallet).name;
   }
 
   getContractAddress(): string {
