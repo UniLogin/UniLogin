@@ -13,6 +13,7 @@ describe('Login', () => {
   let creationService: any;
   let connectToWalletService: any;
   let walletService: any;
+  let walletServiceForConnect: any;
   let sdk: UniversalLoginSDK;
   let relayer: any;
   let wallet: Wallet;
@@ -27,8 +28,9 @@ describe('Login', () => {
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     [wallet] = await getWallets(provider);
     walletService = new WalletService(sdk);
+    walletServiceForConnect = new WalletService(sdk);
     creationService = CreationSerivice(sdk, walletService);
-    connectToWalletService = ConnectionToWalletService(sdk, walletService);
+    connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 10;
     blockchainObserver.lastBlock = 0;
@@ -59,7 +61,7 @@ describe('Login', () => {
     it('should request connect to existing wallet and call callback when add key', async () => {
       const callback = sinon.spy();
       const unsubscribe = await connectToWalletService(name, callback);
-      const newPublicKey = (new Wallet(walletService.userWallet.privateKey)).address;
+      const newPublicKey = (new Wallet(walletServiceForConnect.userWallet.privateKey)).address;
       expect(unsubscribe).to.not.be.null;
       await sdk.addKey(
         contractAddress,
@@ -70,6 +72,11 @@ describe('Login', () => {
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       unsubscribe();
     });
+  });
+
+  afterEach(async () => {
+    walletService.disconnect();
+    walletServiceForConnect.disconnect();
   });
 
   after(async () => {

@@ -32,12 +32,13 @@ export default class WalletService {
   }
 
   setFutureWallet(userWallet: FutureWallet) {
+    ensure(this.state === 'None', Error, 'Wallet cannot be overrided');
     this.state = 'Future';
     this.userWallet = userWallet;
   }
 
   setDeployed(name: string) {
-    ensure(this.state === 'Future', Error, 'Wallet');
+    ensure(this.state === 'Future', Error, 'Future wallet was not setted');
     const {contractAddress, privateKey} = this.userWallet!;
     this.state = 'Deployed';
     this.userWallet = {
@@ -48,6 +49,7 @@ export default class WalletService {
   }
 
   connect(userWallet: UserWallet) {
+    ensure(this.state === 'None', Error, 'Wallet cannot be overrided');
     this.state = 'Deployed';
     this.userWallet = userWallet;
   }
