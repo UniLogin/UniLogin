@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
-import ENS from '@universal-login/contracts/build/ENS.json';
-import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
+import ENS from '../contracts/ENS.json';
+import PublicResolver from '../contracts/PublicResolver.json';
 
 
 export const resolveName = async (
