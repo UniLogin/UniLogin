@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import MockWalletMaster from '../../build/MockWalletMaster.json';
-import Proxy from '../../build/Proxy.json';
+import Proxy from '../../build/KitsuneProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import basicMasterAndProxy from '../fixtures/basicMasterAndProxy';
 
@@ -34,7 +34,7 @@ describe('CONTRACT: ProxyMasterCopy', async () => {
     });
 
     it('should be properly constructed', async () => {
-			expect(await proxyAsWallet.master()).to.eq(walletMaster.address);
+      expect(await proxyAsWallet.implementation()).to.eq(walletMaster.address);
     });
 
     it('should be able to send transaction to wallet', async () => {

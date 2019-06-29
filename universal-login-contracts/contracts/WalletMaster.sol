@@ -1,8 +1,8 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
-import "./erc1836/masters/MasterBase.sol";
-import "./erc1836/interfaces/IERC1271.sol";
+import "@kitsune-wallet/contracts/contracts/masters/MasterBase.sol";
+import "@kitsune-wallet/contracts/contracts/interfaces/IERC1271.sol";
 import "./ENSRegistered.sol";
 import "./ERC1077.sol";
 
@@ -13,10 +13,6 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         ERC1077(address(0))
         public
     {}
-
-    function owner() external view returns (address) {
-        return address(this);
-    }
 
     // Disabled upgradability: persistent nonce not sync
     function initialize(address _key) external onlyInitializing() {
@@ -56,4 +52,12 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
     function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
         return this.onERC721Received.selector;
     }
+
+    // Update built-in by default → update controller
+    function _controller() internal view returns(address) {
+        return address(this);
+    }
+
+    // Update built-in by default → default internal cleanup function reverts
+    // function cleanup() internal { ... }
 }

@@ -1,7 +1,7 @@
 import {Wallet, ContractFactory} from 'ethers';
 import {TransactionOverrides, ContractJSON} from '@universal-login/commons';
 import {getDeployData} from './encode';
-import ProxyContract from '../build/Proxy.json';
+import ProxyContract from '../build/KitsuneProxy.json';
 import ProxyCounterfactualFactory from '../build/ProxyCounterfactualFactory.json';
 
 export const deployFactory = async (wallet: Wallet, walletMasterAddress: string, overrideOptions?: TransactionOverrides) => {

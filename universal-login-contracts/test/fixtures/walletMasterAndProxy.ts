@@ -1,5 +1,5 @@
 import WalletMaster from '../../build/WalletMaster.json';
-import Proxy from '../../build/Proxy.json';
+import Proxy from '../../build/KitsuneProxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {deployContract} from 'ethereum-waffle';
@@ -10,7 +10,7 @@ const {parseEther} = utils;
 
 export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const ownerWallet = Wallet.createRandom();
-  const walletContractMaster = await deployContract(wallet, WalletMaster);
+  const walletContractMaster = await deployContract(wallet, WalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const initData = encodeInitializeData(ownerWallet.address);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address, initData]);
   const mockToken = await deployContract(wallet, MockToken);

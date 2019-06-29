@@ -26,7 +26,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
 }
 
 export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
-  const walletMaster = await deployContract(deployer, WalletMasterWithRefund);
+  const walletMaster = await deployContract(deployer, WalletMasterWithRefund, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     walletMaster,
