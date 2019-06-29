@@ -1,7 +1,7 @@
 import {providers, Wallet, utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
-import ProxyContract from '../../build/Proxy.json';
+import ProxyContract from '../../build/KitsuneProxy.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
 import {encodeInitializeWithENSData} from '../../lib';

@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, ContractFactory, Wallet} from 'ethers';
 import {defaultDeployOptions, createKeyPair} from '@universal-login/commons';
-import ProxyContract from '../../build/Proxy.json';
+import ProxyContract from '../../build/KitsuneProxy.json';
 import {ensAndMasterFixture, createProxyDeployWithENSArgs, EnsDomainData} from '../fixtures/walletContract';
 import {encodeInitializeData} from '../../lib';
 

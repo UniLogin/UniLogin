@@ -14,10 +14,6 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         public
     {}
 
-    function owner() external view returns (address) {
-        return address(this);
-    }
-
     function initialize(address _key) external onlyInitializing() {
         // TODO: sync persistent nonce
         // lastNonce = _nonce;
@@ -50,7 +46,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
     }
 
     // Update built-in by default → update controller
-    function controller() public view returns(address) {
+    function _controller() internal view returns(address) {
       return address(this);
     }
 

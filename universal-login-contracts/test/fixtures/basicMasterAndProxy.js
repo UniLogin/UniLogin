@@ -1,7 +1,7 @@
 import {deployContract} from 'ethereum-waffle';
 import MockToken from '../../build/MockToken.json';
 import MockWalletMaster from '../../build/MockWalletMaster.json';
-import Proxy from '../../build/Proxy.json';
+import Proxy from '../../build/KitsuneProxy.json';
 import {Contract} from 'ethers';
 
 export default async function basicMasterAndProxy(provider, [, , , , , , , , , wallet]) {

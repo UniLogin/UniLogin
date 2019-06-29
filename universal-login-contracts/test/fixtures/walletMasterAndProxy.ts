@@ -1,5 +1,5 @@
 import WalletMaster from '../../build/WalletMaster.json';
-import Proxy from '../../build/Proxy.json';
+import Proxy from '../../build/KitsuneProxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {deployContract} from 'ethereum-waffle';
