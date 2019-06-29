@@ -3,7 +3,7 @@ import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, getDeployedBytecode} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/KitsuneProxy.json';
 import UniversaLoginSDK from '../lib/sdk';
 
 chai.use(solidity);

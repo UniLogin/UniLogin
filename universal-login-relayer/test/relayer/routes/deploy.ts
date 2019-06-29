@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
 import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair} from '@universal-login/commons';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/KitsuneProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually} from './helpers';
 import Relayer from '../../../lib';
 

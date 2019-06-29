@@ -4,7 +4,7 @@ const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/KitsuneProxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../config/relayer';
 import Relayer from '../relayer';

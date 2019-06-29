@@ -44,7 +44,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, p
 export const startRelayerWithRefund = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
-  const walletMaster = await deployContract(deployer, WalletMasterWithRefund);
+  const walletMaster = await deployContract(deployer, WalletMasterWithRefund, [], {gasLimit: 5000000}); // Bad gas estimation by default
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   const {relayer, mockToken} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletMaster, factoryContract});
   await relayer.start();

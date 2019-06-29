@@ -1,5 +1,5 @@
 import {ContractFactory, Wallet, Contract} from 'ethers';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/KitsuneProxy.json';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';

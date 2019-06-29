@@ -16,7 +16,7 @@ describe('INT: BlockchainService', async () => {
   });
 
   it('getCode returns bytecode of existing contract', async () => {
-    const {address} = await deployContract(deployer, WalletMaster);
+    const {address} = await deployContract(deployer, WalletMaster, [], {gasLimit: 5000000}); // Bad gas estimation by default
     expect(await blockchainService.getCode(address)).to.be.eq(expectedBytecode);
   });
 });
