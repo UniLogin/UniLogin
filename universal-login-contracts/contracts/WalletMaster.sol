@@ -45,14 +45,6 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
     }
 
-    // Update built-in by default → update controller
-    function _controller() internal view returns(address) {
-      return address(this);
-    }
-
-    // Update built-in by default → default internal cleanup function reverts
-    // function cleanup() internal { ... }
-
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
         return keyExist(_data.recover(_signature));
     }
@@ -60,4 +52,12 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
     function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
         return this.onERC721Received.selector;
     }
+
+    // Update built-in by default → update controller
+    function _controller() internal view returns(address) {
+        return address(this);
+    }
+
+    // Update built-in by default → default internal cleanup function reverts
+    // function cleanup() internal { ... }
 }
