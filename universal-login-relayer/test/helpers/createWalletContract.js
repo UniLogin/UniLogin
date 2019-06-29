@@ -1,5 +1,5 @@
 import {defaultDeployOptions} from '@universal-login/commons';
-import WalletProxy from '@universal-login/contracts/build/Proxy.json';
+import WalletProxy from '@universal-login/contracts/build/KitsuneProxy.json';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import {ContractFactory, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';

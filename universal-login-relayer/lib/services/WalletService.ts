@@ -1,5 +1,5 @@
 import {ContractFactory, Wallet} from 'ethers';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/KitsuneProxy.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
 import {Abi, defaultDeployOptions} from '@universal-login/commons';
