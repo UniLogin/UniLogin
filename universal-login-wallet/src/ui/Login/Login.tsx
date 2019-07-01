@@ -3,10 +3,7 @@ import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
-import {DEFAULT_LOCATION, Procedure, sleep} from '@universal-login/commons';
-import {utils} from 'ethers';
-
-const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
+import {DEFAULT_LOCATION, Procedure} from '@universal-login/commons';
 
 interface LoginProps {
   location? : {state: {from: {pathname : string}}};
@@ -36,12 +33,6 @@ const Login = ({location} : LoginProps) => {
   const loginAndChangeScreen = () => {
     unsubscribe();
     history.push(from);
-  };
-
-  const onBalanceChange = (amount: utils.BigNumber) => {
-    if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
-      loginAndChangeScreen();
-    }
   };
 
   return(
