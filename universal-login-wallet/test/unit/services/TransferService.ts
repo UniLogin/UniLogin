@@ -56,7 +56,7 @@ describe('TransferService', () => {
       to: 'RECIPIENT',
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
-    })).to.be.rejectedWith('No user wallet provided!');
+    })).to.be.rejectedWith('User wallet not found');
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
 
@@ -91,7 +91,7 @@ describe('TransferService', () => {
       to: 'RECIPIENT',
       amount: '123',
       currency: 'TOKEN_SYMBOL'
-    })).to.be.rejectedWith('No user wallet provided!');
+    })).to.be.rejectedWith('User wallet not found');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
   });

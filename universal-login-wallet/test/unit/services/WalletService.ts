@@ -51,4 +51,13 @@ describe('WalletService', () => {
     expect(walletService.userWallet).to.deep.eq(userWallet);
     expect(walletService.state).to.be.eq('Deployed');
   });
+
+  it('should throw if future wallet is not set', () => {
+    expect(() => walletService.setDeployed(userWallet.name)).throws('Future wallet was not set');
+  });
+
+  it('should throw if wallet is overriden', () => {
+    walletService.connect(userWallet);
+    expect(() => walletService.setFutureWallet(futureWallet)).throws('Wallet cannot be overrided');
+  });
 });

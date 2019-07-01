@@ -4,6 +4,7 @@ import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import TokenService from './TokenService';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {UserWalletNotFound} from './utils/errors';
 
 export interface TransferDetails {
   to: string;
@@ -22,7 +23,7 @@ class TransferService {
         return this.transferTokens(transferDetails);
       }
     }
-    throw new Error('No user wallet provided!');
+    throw new UserWalletNotFound();
   }
 
   private async transferTokens({to, amount, currency} : TransferDetails) {
