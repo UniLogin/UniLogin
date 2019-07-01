@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import logo from '../../assets/logo.svg';
+import logo from '../assets/logo.svg';
 import { NavLink } from 'react-router-dom';
-import avatar from '../../assets/avatar.svg';
+import avatar from '../assets/avatar.svg';
 import { useServices } from '../../hooks';
 
 function Sidebar() {
