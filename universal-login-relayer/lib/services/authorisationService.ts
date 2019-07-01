@@ -18,13 +18,13 @@ class AuthorisationService {
 
   getPendingAuthorisations(walletContractAddress: string) {
     return this.database('authorisations')
-      .where({walletContractAddress})
+      .where({walletContractAddress: walletContractAddress.toLowerCase()})
       .select();
   }
 
   async removeRequest(walletContractAddress: string, key: string) {
     await this.database('authorisations')
-      .where('walletContractAddress', walletContractAddress)
+      .where('walletContractAddress', walletContractAddress.toLowerCase())
       .where('key', key.toLocaleLowerCase())
       .del();
   }
