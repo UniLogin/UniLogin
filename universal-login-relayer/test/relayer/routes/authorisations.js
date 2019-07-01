@@ -40,7 +40,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     expect(result.status).to.eq(200);
     expect(response[0]).to.include({
       key: wallet.address.toLowerCase(),
-      walletContractAddress: contract.address,
+      walletContractAddress: contract.address.toLowerCase(),
     });
     expect(response[0].deviceInfo).to.deep.include({
       city: 'unknown',

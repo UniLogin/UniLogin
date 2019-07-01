@@ -43,7 +43,7 @@ describe('NotificationService', () => {
     await waitUntil(() => callback.secondCall !== null);
 
     expect(notification!).to.deep.include({
-      walletContractAddress: services.walletService.userWallet!.contractAddress,
+      walletContractAddress: services.walletService.userWallet!.contractAddress.toLowerCase(),
       key: address,
     });
 

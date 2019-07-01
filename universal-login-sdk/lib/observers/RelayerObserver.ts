@@ -16,7 +16,7 @@ class RelayerObserver extends ObserverBase {
   async checkAuthorisationsChangedFor(filter: string) {
     const {contractAddress} = JSON.parse(filter);
     const emitter = this.emitters[filter as any];
-    const authorisations = await this.fetchPendingAuthorisations(contractAddress);
+    const authorisations = await this.fetchPendingAuthorisations(contractAddress.toLowerCase());
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
       emitter.emit('AuthorisationsChanged', authorisations);
