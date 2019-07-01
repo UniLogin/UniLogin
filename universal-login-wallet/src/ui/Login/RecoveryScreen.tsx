@@ -1,6 +1,6 @@
 import React, {useState, ChangeEvent} from 'react';
-import Logo from './../../assets/logo-with-text.svg';
-import avatar from './../../assets/avatar.svg';
+import Logo from './../assets/logo-with-text.svg';
+import avatar from './../assets/avatar.svg';
 import InputLabel from '../common/InputLabel';
 import Input from '../common/Input';
 import { Link } from 'react-router-dom';
