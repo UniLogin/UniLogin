@@ -3,7 +3,7 @@ import {providers, Wallet, ContractFactory, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
-import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../config/relayer';
@@ -22,7 +22,7 @@ type CreateRelayerArgs = {
 
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const walletMaster = await deployContract(wallet, WalletMaster);
+    const walletMaster = await deployContract(wallet, WalletMasterWithRefund);
     const factoryContract = await deployFactory(wallet, walletMaster.address);
     return this.createPreconfiguredRelayer({port, wallet, walletMaster, factoryContract});
   }

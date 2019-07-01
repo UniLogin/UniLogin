@@ -1,7 +1,7 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet, utils} from 'ethers';
-import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON} from '@universal-login/commons';
+import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ensureDatabaseExist from '../common/ensureDatabaseExist';
@@ -33,6 +33,10 @@ const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
     address: tokenAddress,
+    minimalAmount: utils.parseEther('0.05').toString()
+   },
+   {
+    address: ETHER_NATIVE_TOKEN.address,
     minimalAmount: utils.parseEther('0.05').toString()
    }];
   return {

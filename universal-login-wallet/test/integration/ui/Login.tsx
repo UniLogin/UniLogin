@@ -17,6 +17,7 @@ describe('UI: Login', () => {
     let services: Services;
     let relayer: any;
     let provider: providers.Provider;
+    const expectedHomeBalance = '1.99999';
 
     before(async () => {
         const [wallet] = await getWallets(createMockProvider());
@@ -33,8 +34,8 @@ describe('UI: Login', () => {
         const address = await appPage.login().getAddress();
         const [wallet] = await getWallets(provider);
         await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
-        await appPage.login().waitForHomeView('2.0');
-        expect(appWrapper.text().includes('2.0')).to.be.true;
+        await appPage.login().waitForHomeView(expectedHomeBalance);
+        expect(appWrapper.text().includes(expectedHomeBalance)).to.be.true;
         appPage.dashboard().disconnect();
         expect(appWrapper.text().includes('Type a nickname you want')).to.be.true;
     });

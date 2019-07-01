@@ -4,24 +4,25 @@ import Logo from './../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
 import {DEFAULT_LOCATION, Procedure} from '@universal-login/commons';
-import {utils} from 'ethers';
-
-const MINIMUM_TOPUP_AMOUNT = utils.parseEther('0.005');
 
 interface LoginProps {
   location? : {state: {from: {pathname : string}}};
 }
 
 const Login = ({location} : LoginProps) => {
-  const {createWallet, modalService, balanceService, connectToWallet} = useServices();
+  const {modalService, connectToWallet, walletService} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
 
   const onCreateCLick = async (name: string) => {
-    await createWallet(name);
-    unsubscribe = balanceService.subscribe(onBalanceChange);
+    const {deploy, waitForBalance} = await walletService.createFutureWallet();
     modalService.showModal('topUpAccount');
+    await waitForBalance();
+    modalService.showModal('waitingForDeploy');
+    await deploy(name);
+    walletService.setDeployed(name);
+    history.push(from);
   };
 
   const onConnectionClick = async (name: string) => {
@@ -32,12 +33,6 @@ const Login = ({location} : LoginProps) => {
   const loginAndChangeScreen = () => {
     unsubscribe();
     history.push(from);
-  };
-
-  const onBalanceChange = (amount: utils.BigNumber) => {
-    if (amount.gte(MINIMUM_TOPUP_AMOUNT)) {
-      loginAndChangeScreen();
-    }
   };
 
   return(
