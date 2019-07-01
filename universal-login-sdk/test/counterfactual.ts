@@ -36,21 +36,12 @@ describe('SDK counterfactual', () => {
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
   });
 
-  it('should deploy contract with future address', async () => {
-    const {deploy, contractAddress, waitForBalance} = (await sdk.createFutureWallet());
-    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    await waitForBalance();
-    const deployedContractAddress = await deploy('name.mylogin.eth');
-    expect(deployedContractAddress).to.be.eq(contractAddress);
-    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
-  });
-
   it('should not deploy contract which does not have balance', async () => {
     const {deploy} = (await sdk.createFutureWallet());
     await expect(deploy('login.mylogin.eth')).to.be.rejected;
   });
 
-  it('counterfactual roundtrip', async () => {
+  it('counterfactual deployment roundtrip', async () => {
     const ensName = 'name.mylogin.eth';
     const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet());
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
