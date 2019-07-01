@@ -11,7 +11,7 @@ class AuthorisationService {
 
   async addRequest(request: AuthorisationRequest) {
     const {walletContractAddress, key, deviceInfo} = request;
-    return this.database.insert({walletContractAddress, key: key.toLowerCase(), deviceInfo})
+    return this.database.insert({walletContractAddress: walletContractAddress.toLowerCase(), key: key.toLowerCase(), deviceInfo})
       .into('authorisations')
       .returning('id');
   }
