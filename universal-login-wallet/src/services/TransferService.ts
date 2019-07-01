@@ -3,9 +3,8 @@ import WalletService from './WalletService';
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import TokenService from './TokenService';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, ensureNotNull} from '@universal-login/commons';
 import {UserWalletNotFound} from './utils/errors';
-import { ensureNotNull } from '@universal-login/commons/lib';
 
 export interface TransferDetails {
   to: string;
