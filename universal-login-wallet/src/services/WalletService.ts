@@ -1,5 +1,6 @@
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 import {ensure} from '@universal-login/commons';
+import {WalletOverriden, FutureWalletNotSet} from './utils/errors';
 
 export interface UserWallet {
   name: string;
@@ -32,13 +33,13 @@ export default class WalletService {
   }
 
   setFutureWallet(userWallet: FutureWallet) {
-    ensure(this.state === 'None', Error, 'Wallet cannot be overrided');
+    ensure(this.state === 'None', WalletOverriden);
     this.state = 'Future';
     this.userWallet = userWallet;
   }
 
   setDeployed(name: string) {
-    ensure(this.state === 'Future', Error, 'Future wallet was not setted');
+    ensure(this.state === 'Future', FutureWalletNotSet);
     const {contractAddress, privateKey} = this.userWallet!;
     this.state = 'Deployed';
     this.userWallet = {
@@ -49,7 +50,7 @@ export default class WalletService {
   }
 
   connect(userWallet: UserWallet) {
-    ensure(this.state === 'None', Error, 'Wallet cannot be overrided');
+    ensure(this.state === 'None', WalletOverriden);
     this.state = 'Deployed';
     this.userWallet = userWallet;
   }

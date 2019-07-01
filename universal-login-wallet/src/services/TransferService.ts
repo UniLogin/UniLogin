@@ -3,7 +3,8 @@ import WalletService from './WalletService';
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import TokenService from './TokenService';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, ensureNotNull} from '@universal-login/commons';
+import {UserWalletNotFound} from './utils/errors';
 
 export interface TransferDetails {
   to: string;
@@ -15,14 +16,12 @@ class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}
 
   async transfer(transferDetails: TransferDetails) {
-    if (this.walletService.userWallet) {
-      if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
-        return this.transferEther(transferDetails);
-      } else {
-        return this.transferTokens(transferDetails);
-      }
+    ensureNotNull(this.walletService.userWallet, UserWalletNotFound);
+    if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
+      return this.transferEther(transferDetails);
+    } else {
+      return this.transferTokens(transferDetails);
     }
-    throw new Error('No user wallet provided!');
   }
 
   private async transferTokens({to, amount, currency} : TransferDetails) {
