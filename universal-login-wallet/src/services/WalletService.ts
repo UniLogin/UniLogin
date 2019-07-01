@@ -33,7 +33,7 @@ export default class WalletService {
   }
 
   setFutureWallet(userWallet: FutureWallet) {
-    ensure( this.state === 'None', WalletOverriden);
+    ensure(this.state === 'None', WalletOverriden);
     this.state = 'Future';
     this.userWallet = userWallet;
   }
