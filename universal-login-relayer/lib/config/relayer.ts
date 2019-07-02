@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-import {getEnv, ContractWhiteList, SupportedToken, ChainSpec} from '@universal-login/commons';
+import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {utils} from 'ethers';
 
 dotenv.config();
 
@@ -35,7 +36,10 @@ export const config: Config =  Object.freeze({
     proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
   },
   factoryAddress: getEnv('FACTORY_ADDRESS', ''),
-  supportedTokens: []
+  supportedTokens: [{
+    address: ETHER_NATIVE_TOKEN.address,
+    minimalAmount: utils.parseEther('0.005').toString()
+  }]
 });
 
 export default config;

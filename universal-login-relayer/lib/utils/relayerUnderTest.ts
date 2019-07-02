@@ -1,7 +1,7 @@
 import Knex from 'knex';
-import {providers, Wallet, ContractFactory, utils, Contract} from 'ethers';
+import {providers, Wallet, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
-import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN, deployContract} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
@@ -73,11 +73,6 @@ export class RelayerUnderTest extends Relayer {
     await clearDatabase(this.database);
     await super.stopLater();
   }
-}
-
-async function deployContract(wallet: Wallet, contractJSON: ContractJSON, args = []) {
-  const factory = new ContractFactory(contractJSON.abi, contractJSON.bytecode, wallet);
-  return factory.deploy(...args);
 }
 
 export async function clearDatabase(knex: Knex) {
