@@ -11,7 +11,7 @@ import TokenService from '../integration/ethereum/TokenService';
 import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../core/services/BalanceService';
 import {providers} from 'ethers';
-import WalletPresenter from '../core/utils/WalletPresenter';
+import WalletPresenter from '../core/presenters/WalletPresenter';
 
 interface Config {
   domains: string[];
