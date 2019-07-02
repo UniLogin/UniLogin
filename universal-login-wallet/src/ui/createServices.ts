@@ -9,7 +9,7 @@ import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../services/TransferService';
 import NotificationsService from '../core/services/Notifications';
 import TokenService from '../services/TokenService';
-import {EtherBalanceService} from '../services/balance/EtherBalanceService';
+import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../core/services/BalanceService';
 import {providers} from 'ethers';
 import WalletFormatter from '../services/utils/WalletFormatter';

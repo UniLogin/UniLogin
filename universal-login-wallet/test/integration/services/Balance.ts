@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {utils, providers, Wallet} from 'ethers';
 import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
-import {EtherBalanceService} from '../../../src/services/balance/EtherBalanceService';
+import {EtherBalanceService} from '../../../src/integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../../../src/core/services/BalanceService';
 import WalletService from '../../../src/services/WalletService';
 
