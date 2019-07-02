@@ -4,7 +4,7 @@ import avatar from './../assets/avatar.svg';
 import devices from './../assets/devices.svg';
 import Spinner from './Spinner';
 import { Link } from 'react-router-dom';
-import {useServices} from '../../hooks';
+import {useServices} from '../hooks';
 
 const ApproveScreen = () => {
   const {walletFormatter} = useServices();

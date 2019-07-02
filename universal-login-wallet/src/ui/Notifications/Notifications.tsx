@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NotificationConnection from './NotificationConnection';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { useServices } from '../../hooks';
+import { useServices } from '../hooks';
 import {Notification} from '@universal-login/commons';
 
 const Notifications = () => {
