@@ -11,7 +11,7 @@ import TokenService from '../integration/ethereum/TokenService';
 import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../core/services/BalanceService';
 import {providers} from 'ethers';
-import WalletFormatter from '../core/utils/WalletFormatter';
+import WalletPresenter from '../core/utils/WalletPresenter';
 
 interface Config {
   domains: string[];
@@ -32,7 +32,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const modalService = new ModalService();
   const userDropdownService = new UserDropdownService();
   const walletService = new WalletService(sdk);
-  const walletFormatter = new WalletFormatter(walletService);
+  const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
   const transferService = new TransferService(sdk, walletService, tokenService);
@@ -47,7 +47,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     userDropdownService,
     connectToWallet: _connectToWallet,
     walletService,
-    walletFormatter,
+    walletPresenter,
     tokenService,
     transferService,
     balanceService,

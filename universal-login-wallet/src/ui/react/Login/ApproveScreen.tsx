@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import {useServices} from '../../hooks';
 
 const ApproveScreen = () => {
-  const {walletFormatter} = useServices();
+  const {walletPresenter: walletFormatter} = useServices();
 
   return(
   <div className="start">
