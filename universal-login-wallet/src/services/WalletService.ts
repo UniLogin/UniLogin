@@ -1,15 +1,9 @@
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 import {ensure} from '@universal-login/commons';
 import {WalletOverriden, FutureWalletNotSet} from './utils/errors';
-
-export interface UserWallet {
-  name: string;
-  contractAddress: string;
-  privateKey: string;
-}
+import UserWallet from '../core/entities/UserWallet';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
-
 
 export default class WalletService {
   public userWallet?: FutureWallet | UserWallet;
