@@ -3,7 +3,7 @@ import React from 'react';
 import {mountWithContext} from '../helpers/CustomMount';
 import App from '../../../src/ui/react/App';
 import {providers, Wallet, utils} from 'ethers';
-import {Services} from '../../../src/services/Services';
+import {Services} from '../../../src/ui/Services';
 import {setupSdk} from '../helpers/setupSdk';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';

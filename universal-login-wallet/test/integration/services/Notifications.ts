@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import {expect} from 'chai';
 import {providers} from 'ethers';
-import {Services} from '../../../src/services/Services';
+import {Services} from '../../../src/ui/Services';
 import {setupSdk} from '../helpers/setupSdk';
 import {waitUntil, ETHER_NATIVE_TOKEN, Notification} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';

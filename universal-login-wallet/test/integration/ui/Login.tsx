@@ -7,7 +7,7 @@ import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '../helpers/setupSdk';
 import App from '../../../src/ui/react/App';
-import {Services} from '../../../src/services/Services';
+import {Services} from '../../../src/ui/Services';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
 import {AppPage} from '../pages/AppPage';

@@ -2,17 +2,17 @@ import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelectionService, SuggestionsService} from '@universal-login/commons';
 import ModalService from './ModalService';
-import UserDropdownService from './UserDropdownService';
-import WalletService from './WalletService';
-import createWallet from './Creation';
-import connectToWallet from './ConnectToWallet';
-import TransferService from './TransferService';
-import NotificationsService from './Notifications';
-import TokenService from './TokenService';
-import {EtherBalanceService} from './balance/EtherBalanceService';
-import {BalanceService} from './balance/BalanceService';
+import UserDropdownService from '../services/UserDropdownService';
+import WalletService from '../services/WalletService';
+import createWallet from '../services/Creation';
+import connectToWallet from '../services/ConnectToWallet';
+import TransferService from '../services/TransferService';
+import NotificationsService from '../services/Notifications';
+import TokenService from '../services/TokenService';
+import {EtherBalanceService} from '../services/balance/EtherBalanceService';
+import {BalanceService} from '../services/balance/BalanceService';
 import {providers} from 'ethers';
-import WalletFormatter from './utils/WalletFormatter';
+import WalletFormatter from '../services/utils/WalletFormatter';
 
 interface Config {
   domains: string[];
