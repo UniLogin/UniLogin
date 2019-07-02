@@ -1,6 +1,6 @@
 import React from 'react';
 import Accordion from './Accordion';
-import Phone from '../assets/icons/phone.svg';
+import Phone from '../../assets/icons/phone.svg';
 
 const ManageDevices = () => (
   <Accordion

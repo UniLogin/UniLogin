@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useToggler } from '../hooks';
+import { useToggler } from '../../hooks';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 interface AccordionProps {

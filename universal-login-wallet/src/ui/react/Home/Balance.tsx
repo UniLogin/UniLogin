@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {useServices} from '../hooks';
+import {useServices} from '../../hooks';
 import {utils} from 'ethers';
-import EthereumIcon from './../assets/icons/ethereum.svg';
+import EthereumIcon from './../../assets/icons/ethereum.svg';
 
 interface BalanceProps {
   className?: string;

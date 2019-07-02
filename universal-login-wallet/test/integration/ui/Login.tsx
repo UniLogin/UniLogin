@@ -6,7 +6,7 @@ import {providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '../helpers/setupSdk';
-import App from '../../../src/ui/App';
+import App from '../../../src/ui/react/App';
 import {Services} from '../../../src/services/Services';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';

@@ -3,8 +3,8 @@ import Input from '../common/Input';
 import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
-import {useServices} from '../hooks';
-import {TransferDetails} from '../../services/TransferService';
+import {useServices} from '../../hooks';
+import {TransferDetails} from '../../../services/TransferService';
 
 
 interface ModalTransferProps {

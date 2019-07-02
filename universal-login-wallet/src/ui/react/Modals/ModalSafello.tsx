@@ -1,6 +1,6 @@
 import React from 'react';
-import {getSafelloUrl} from '../utils';
-import {useServices} from '../hooks';
+import {getSafelloUrl} from '../../utils';
+import {useServices} from '../../hooks';
 
 
 const ModalSafello = () => {

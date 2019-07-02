@@ -1,6 +1,6 @@
 import React from 'react';
-import arrowIcon from './../assets/icons/arrow.svg';
-import infoIcon from './../assets/icons/info.svg';
+import arrowIcon from './../../assets/icons/arrow.svg';
+import infoIcon from './../../assets/icons/info.svg';
 
 interface NotificationTransactionProps {
   data: {

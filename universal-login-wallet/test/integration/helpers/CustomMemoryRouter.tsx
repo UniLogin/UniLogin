@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {MemoryRouter, Route, RouteComponentProps} from 'react-router-dom';
-import {RouterContext} from '../../../src/ui/CustomBrowserRouter';
+import {RouterContext} from '../../../src/ui/react/CustomBrowserRouter';
 
 export interface CustomMemoryRouterProps {
   children: ReactNode;

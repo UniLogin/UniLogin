@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from '../../assets/avatar.svg';
+import Avatar from '../../../assets/avatar.svg';
 import BackupCodesLoader from './BackupCodesLoader';
 
 interface BackupCodesViewProps {

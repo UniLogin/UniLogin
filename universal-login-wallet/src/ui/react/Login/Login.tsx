@@ -1,8 +1,8 @@
 import React from 'react';
 import WalletSelector from './WalletSelector';
-import Logo from './../assets/logo-with-text.svg';
+import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
-import {useServices, useRouter} from '../hooks';
+import {useServices, useRouter} from '../../hooks';
 import {DEFAULT_LOCATION, Procedure} from '@universal-login/commons';
 
 interface LoginProps {

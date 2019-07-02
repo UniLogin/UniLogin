@@ -1,10 +1,10 @@
 import React from 'react';
-import Logo from './../assets/logo-with-text.svg';
-import avatar from './../assets/avatar.svg';
-import devices from './../assets/devices.svg';
+import Logo from './../../assets/logo-with-text.svg';
+import avatar from './../../assets/avatar.svg';
+import devices from './../../assets/devices.svg';
 import Spinner from './Spinner';
 import { Link } from 'react-router-dom';
-import {useServices} from '../hooks';
+import {useServices} from '../../hooks';
 
 const ApproveScreen = () => {
   const {walletFormatter} = useServices();
