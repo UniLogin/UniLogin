@@ -82,17 +82,9 @@ class UniversalLoginSDK {
     transactionDetails: SignedMessage,
     keyPurpose = MANAGEMENT_KEY,
   ) {
-    console.log('to ', to)
-    console.log('publicKeys ', publicKeys)
-    console.log('privateKey ', privateKey)
-    console.log('transactionDetails ', transactionDetails)
-    console.log('keyPurpose ', keyPurpose)
     const keys = publicKeys.map((publicKey) => publicKey);
-    console.log('keys ', keys)
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
-    console.log('keyRoles ', keyRoles)
     const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys, keyRoles]);
-    console.log('data ', data)
     const message = {
       ...transactionDetails,
       to,
