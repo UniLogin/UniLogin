@@ -4,7 +4,7 @@ import moment from 'moment';
 import AuthorisationService from '../services/authorisationService';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 
-const request = (authorisationService : AuthorisationService) => async (data: any, req: any) => {
+const request = (authorisationService : AuthorisationService) => async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
   const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   const deviceInfo = {
@@ -20,12 +20,12 @@ const request = (authorisationService : AuthorisationService) => async (data: an
   return responseOf({response: result}, 201);
 }
 
-const getPending = (authorisationService : any) => async (data: any) => {
+const getPending = (authorisationService : any) => async (data: {walletContractAddress: string}) => {
   const result = await authorisationService.getPendingAuthorisations(data.walletContractAddress);
   return responseOf({ response: result });
 };
 
-const denyRequest = (authorisationService : any) => async (data: any) => {
+const denyRequest = (authorisationService : any) => async (data: {walletContractAddress: string, body: {key: string}}) => {
   const result = await authorisationService.removeRequest(data.walletContractAddress, data.body.key);
   return responseOf(result, 204);
 };
