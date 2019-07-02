@@ -5,7 +5,7 @@ import {utils, providers, Wallet} from 'ethers';
 import {createMockProvider, solidity, getWallets} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
 import {EtherBalanceService} from '../../../src/services/balance/EtherBalanceService';
-import {BalanceService} from '../../../src/services/balance/BalanceService';
+import {BalanceService} from '../../../src/core/services/BalanceService';
 import WalletService from '../../../src/services/WalletService';
 
 chai.use(solidity);

@@ -1,7 +1,7 @@
 import {Notification} from '@universal-login/commons';
-import WalletService from '../services/WalletService';
+import WalletService from '../../services/WalletService';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {transactionDetails} from '../config/TransactionDetails';
+import {transactionDetails} from '../../config/TransactionDetails';
 
 export default class NotificationsService {
   notifications: Notification[] = [];
