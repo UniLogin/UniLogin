@@ -1,12 +1,7 @@
 import {providers} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {getTokenDetails} from './utils/utils';
-
-declare type TokenDetails = {
-  name: string;
-  symbol: string;
-  address: string;
-};
+import {TokenDetails} from '../core/entities/TokenDetails';
 
 class TokenService {
   tokensDetails: TokenDetails[];
