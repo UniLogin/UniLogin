@@ -5,7 +5,7 @@ import ModalService from './ModalService';
 import UserDropdownService from '../services/UserDropdownService';
 import WalletService from '../services/WalletService';
 import createWallet from '../services/Creation';
-import connectToWallet from '../services/ConnectToWallet';
+import connectToWallet from '../core/ConnectToWallet';
 import TransferService from '../services/TransferService';
 import NotificationsService from '../services/Notifications';
 import TokenService from '../services/TokenService';
