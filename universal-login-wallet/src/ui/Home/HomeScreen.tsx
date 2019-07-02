@@ -3,7 +3,7 @@ import Sidebar from '../common/Sidebar';
 import UserDropdown from '../common/UserDropdown';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
-import { useServices } from '../../hooks';
+import { useServices } from '../hooks';
 
 const HomeScreen = () => {
   const {modalService} = useServices();

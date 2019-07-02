@@ -2,7 +2,7 @@ import React, {useState, ChangeEvent} from 'react';
 import Input from '../common/Input';
 import {renderBusyIndicator} from '../common/BusyIndicator';
 import Suggestions from './Suggestions';
-import {useServices} from '../../hooks';
+import {useServices} from '../hooks';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;

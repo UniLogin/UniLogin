@@ -1,6 +1,6 @@
 import React from 'react';
 import {classesForElement} from '@universal-login/commons';
-import {useToggler, useServices} from '../../hooks';
+import {useToggler, useServices} from '../hooks';
 
 interface InputProps {
   onChange: (...args: any[]) => void;

@@ -3,7 +3,7 @@ import ModalWrapper from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
-import {useSubscription, useServices} from '../../hooks';
+import {useSubscription, useServices} from '../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalTopUp from './ModalTopUp';
 import ModalAddress from './ModalAddress';

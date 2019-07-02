@@ -3,7 +3,7 @@ import etherIcon from '../assets/icons/ether.svg';
 import bitmapIcon from '../assets/icons/bitmap.svg';
 import InputWithButton from '../common/InputWithButton';
 import InputLabel from '../common/InputLabel';
-import {useServices} from '../../hooks';
+import {useServices} from '../hooks';
 
 const ModalAddress = () => {
   const {walletFormatter} = useServices();
