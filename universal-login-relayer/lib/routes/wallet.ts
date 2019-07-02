@@ -6,7 +6,7 @@ import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber, asArra
 import {asBigNumberish, asAny, asArrayish} from '../utils/restlessHelper';
 
 const create = (walletContractService : WalletService) =>
-  async (data: any) => {
+  async (data: {body: {managementKey: string, ensName: string}}) => {
     const transaction = await walletContractService.create(data.body.managementKey, data.body.ensName);
     return responseOf({transaction}, 201);
   };
