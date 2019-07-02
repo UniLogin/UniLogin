@@ -1,5 +1,5 @@
 export type Unsubscribe = () => void;
 
-export interface Subject<T> {
+export interface Subscriber<T> {
   subscribe (callback: (event: T) => void): Unsubscribe;
 }
