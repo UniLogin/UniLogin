@@ -10,7 +10,7 @@ export type ConnectAndDeployFactory = {
   privateKey: string;
   walletMasterAddress: string;
   provider?: providers.Provider;
-}
+};
 
 export async function connectAndDeployFactory({nodeUrl, privateKey, provider, walletMasterAddress}: ConnectAndDeployFactory) {
   const {wallet} = connect(nodeUrl, privateKey, provider);
