@@ -6,7 +6,7 @@ import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons
 import {setupSdk} from '../helpers/setupSdk';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import WalletService from '../../../src/services/WalletService';
-import TransferService from '../../../src/services/TransferService';
+import TransferService from '../../../src/integration/ethereum/TransferService';
 import TokenService from '../../../src/services/TokenService';
 import {createWallet} from '../helpers/createWallet';
 
