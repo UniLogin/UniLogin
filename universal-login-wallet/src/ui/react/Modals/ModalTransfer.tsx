@@ -4,7 +4,7 @@ import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
-import {TransferDetails} from '../../../services/TransferService';
+import TransferDetails from '../../../core/entities/TransferDetails';
 
 
 interface ModalTransferProps {

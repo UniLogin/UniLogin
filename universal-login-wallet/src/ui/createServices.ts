@@ -5,12 +5,12 @@ import ModalService from './ModalService';
 import UserDropdownService from '../services/UserDropdownService';
 import WalletService from '../services/WalletService';
 import createWallet from '../services/Creation';
-import connectToWallet from '../services/ConnectToWallet';
+import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../services/TransferService';
-import NotificationsService from '../services/Notifications';
+import NotificationsService from '../core/services/Notifications';
 import TokenService from '../services/TokenService';
 import {EtherBalanceService} from '../services/balance/EtherBalanceService';
-import {BalanceService} from '../services/balance/BalanceService';
+import {BalanceService} from '../core/services/BalanceService';
 import {providers} from 'ethers';
 import WalletFormatter from '../services/utils/WalletFormatter';
 
