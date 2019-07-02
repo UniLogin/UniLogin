@@ -7,7 +7,7 @@ import WalletService from '../services/WalletService';
 import createWallet from '../services/Creation';
 import connectToWallet from '../core/ConnectToWallet';
 import TransferService from '../services/TransferService';
-import NotificationsService from '../services/Notifications';
+import NotificationsService from '../core/Notifications';
 import TokenService from '../services/TokenService';
 import {EtherBalanceService} from '../services/balance/EtherBalanceService';
 import {BalanceService} from '../services/balance/BalanceService';
