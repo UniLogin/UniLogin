@@ -3,7 +3,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelectionService, SuggestionsService} from '@universal-login/commons';
 import ModalService from './ModalService';
 import UserDropdownService from '../services/UserDropdownService';
-import WalletService from '../services/WalletService';
+import WalletService from '../integration/storage/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../integration/ethereum/TransferService';
 import NotificationsService from '../core/services/Notifications';

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
-import WalletService from '../../../src/services/WalletService';
+import WalletService from '../../../src/integration/storage/WalletService';
 import UserWallet from '../../../src/core/entities/UserWallet';
 
 describe('WalletService', () => {
