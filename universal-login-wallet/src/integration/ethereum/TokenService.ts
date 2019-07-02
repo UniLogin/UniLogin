@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {getTokenDetails} from '../../core/utils/getTokenDetails';
+import {getTokenDetails} from '../utils/getTokenDetails';
 import {TokenDetails} from '../../core/entities/TokenDetails';
 
 class TokenService {
