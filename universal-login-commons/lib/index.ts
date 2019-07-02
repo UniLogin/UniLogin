@@ -25,4 +25,4 @@ export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from 
 export {getBalance, findTokenWithRequiredBalance} from './utils/balance';
 export {TransactionOverrides} from './types/transactions';
 export {resolveName} from './utils/resolveName';
-export {deployContract} from './utils/deployContract';
+export {deployContract, deployContractAndWait} from './utils/deployContract';

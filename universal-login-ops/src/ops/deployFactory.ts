@@ -1,5 +1,5 @@
 import {Wallet, providers} from 'ethers';
-import {deployContract} from '@universal-login/commons';
+import {deployContractAndWait} from '@universal-login/commons';
 import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {getDeployData} from '@universal-login/contracts';
@@ -20,7 +20,7 @@ export async function connectAndDeployFactory({nodeUrl, privateKey, provider, wa
 export default async function deployFactory(wallet: Wallet, walletMasterAddress: string): Promise<string> {
   const initData = getDeployData(ProxyContract, [walletMasterAddress, '0x0']);
   console.log('Deploying factory contract...');
-  const contract = await deployContract(wallet, Factory, [initData]);
-  console.log(`Factory contract address: ${contract.address}`);
-  return contract.address;
+  const contractAddress = await deployContractAndWait(wallet, Factory, [initData]);
+  console.log(`Factory contract address: ${contractAddress}`);
+  return contractAddress;
 }
