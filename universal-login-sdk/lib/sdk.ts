@@ -82,15 +82,24 @@ class UniversalLoginSDK {
     transactionDetails: SignedMessage,
     keyPurpose = MANAGEMENT_KEY,
   ) {
+    console.log('to ', to)
+    console.log('publicKeys ', publicKeys)
+    console.log('privateKey ', privateKey)
+    console.log('transactionDetails ', transactionDetails)
+    console.log('keyPurpose ', keyPurpose)
     const keys = publicKeys.map((publicKey) => publicKey);
+    console.log('keys ', keys)
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
+    console.log('keyRoles ', keyRoles)
     const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys, keyRoles]);
+    console.log('data ', data)
     const message = {
       ...transactionDetails,
       to,
       from: to,
       data,
     };
+    console.log('message ', message)
     return this.execute(message, privateKey);
   }
 
@@ -180,8 +189,13 @@ class UniversalLoginSDK {
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
     } as MessageWithFrom;
+    console.log('DUPA100')
+    // console.log('unisgined message', unsignedMessage)
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
+    // console.log('signed message', signedMessage)
+    console.log('DUPA101')
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
+    console.log('DUPA102')
     if (result.status.messageHash) {
       const status = await this.waitForStatus(result.status.messageHash);
       ensure(!status.error, Error, status.error);
