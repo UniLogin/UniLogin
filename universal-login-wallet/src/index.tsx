@@ -1,4 +1,4 @@
-import './styles/main.sass';
+import './ui/styles/main.sass';
 
 import React from 'react';
 import {render} from 'react-dom';
