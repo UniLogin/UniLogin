@@ -5,7 +5,7 @@ import moment from 'moment';
 import AuthorisationService from '../services/authorisationService';
 import {asyncHandler, responseOf, sanitize, asString} from '@restless/restless';
 
-const request = (authorisationService : AuthorisationService) => async (req : Request, res : Response) => {
+const request = (authorisationService : AuthorisationService, walletContractAddress: string, key: string) => async (req : Request, res : Response) => {
   const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   const deviceInfo = {
@@ -16,39 +16,54 @@ const request = (authorisationService : AuthorisationService) => async (req : Re
     browser,
     time: moment().format('h:mm'),
   };
-  const requestAuthorisation = {...req.body, deviceInfo};
+  const requestAuthorisation = {walletContractAddress, key, deviceInfo};
   await authorisationService.addRequest(requestAuthorisation);
   res.status(201).send();
 };
 
-const getPending = (authorisationService : any) => async (req : Request, res : Response) => {
-  const {walletContractAddress} = req.params;
-  const response = await authorisationService.getPendingAuthorisations(walletContractAddress);
-  res.status(200)
-    .type('json')
-    .send(JSON.stringify({response}));
-};
+const getPending = (authorisationService : any, walletContractAddress: string) =>
+  async (req : Request, res : Response) => {
+    const response = await authorisationService.getPendingAuthorisations(walletContractAddress);
+    res.status(200)
+      .type('json')
+      .send(JSON.stringify({response}));
+  };
 
-const denyRequest = (authorisationService : any) => async (req : Request, res : Response) => {
-  const {walletContractAddress} = req.params;
-  const {key} = req.body;
-  await authorisationService.removeRequest(walletContractAddress, key);
-  res.status(204)
-    .type('json')
-    .send();
-};
+const denyRequest = (authorisationService : any, walletContractAddress: string, key: string) =>
+  async (req : Request, res : Response) => {
+    await authorisationService.removeRequest(walletContractAddress, key);
+    res.status(204)
+      .type('json')
+      .send();
+  };
 
 export default (authorisationService : any) => {
   const router = Router();
 
-  router.post('/',
-    asyncMiddleware(request(authorisationService)));
+  router.post('/', asyncHandler(
+    sanitize({
+      walletContractAddress: asString,
+      key: asString
+    }),
+    ({walletContractAddress, key}) =>
+      responseOf(asyncMiddleware(request(authorisationService, walletContractAddress, key)))));
 
-  router.get('/:walletContractAddress',
-    asyncMiddleware(getPending(authorisationService)));
+  router.get('/:walletContractAddress', asyncHandler(
+    sanitize({
+      walletContractAddress: asString
+    }),
+    ({walletContractAddress}) =>
+      responseOf(asyncMiddleware(getPending(authorisationService, walletContractAddress)))
+  ));
 
-  router.post('/:walletContractAddress',
-    asyncMiddleware(denyRequest(authorisationService)));
+  router.post('/:walletContractAddress', asyncHandler(
+    sanitize({
+      walletContractAddress: asString,
+      key: asString
+    }),
+    ({walletContractAddress, key}) =>
+      responseOf(asyncMiddleware(denyRequest(authorisationService, walletContractAddress, key)))
+  ));
 
   return router;
 };
