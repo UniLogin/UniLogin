@@ -4,13 +4,12 @@ import {Wallet, providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitExpect} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
-import CreationSerivice from '../../../src/services/Creation';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import WalletService from '../../../src/services/WalletService';
+import WalletService from '../../../src/integration/storage/WalletService';
 import {setupSdk} from '../helpers/setupSdk';
+import {createWallet} from '../helpers/createWallet';
 
 describe('Login', () => {
-  let creationService: any;
   let connectToWalletService: any;
   let walletService: any;
   let walletServiceForConnect: any;
@@ -29,7 +28,7 @@ describe('Login', () => {
     [wallet] = await getWallets(provider);
     walletService = new WalletService(sdk);
     walletServiceForConnect = new WalletService(sdk);
-    creationService = CreationSerivice(sdk, walletService);
+
     connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 10;
@@ -40,7 +39,11 @@ describe('Login', () => {
   describe('CreationService', () => {
     it('should create contract wallet', async () => {
       name = 'name.mylogin.eth';
-      [privateKey, contractAddress] = await creationService(name);
+      const {contractAddress, waitForBalance, deploy, privateKey} = await walletService.createFutureWallet();
+      wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
+      await waitForBalance();
+      await deploy(name);
+      walletService.setDeployed(name);
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
 
@@ -54,7 +57,7 @@ describe('Login', () => {
   describe('ConnectionService', () => {
     before(async () => {
       name = 'super-name.mylogin.eth';
-      [privateKey, contractAddress] = await creationService(name);
+      ({privateKey, contractAddress} = await createWallet(name, walletService, wallet));
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     });
 

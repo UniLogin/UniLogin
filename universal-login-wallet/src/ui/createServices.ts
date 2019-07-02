@@ -1,18 +1,17 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelectionService, SuggestionsService} from '@universal-login/commons';
-import ModalService from './ModalService';
-import UserDropdownService from '../services/UserDropdownService';
-import WalletService from '../services/WalletService';
-import createWallet from '../services/Creation';
+import ModalService from '../core/app/ModalService';
+import UserDropdownService from '../core/app/UserDropdownService';
+import WalletService from '../integration/storage/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
-import TransferService from '../services/TransferService';
+import TransferService from '../integration/ethereum/TransferService';
 import NotificationsService from '../core/services/Notifications';
-import TokenService from '../services/TokenService';
-import {EtherBalanceService} from '../services/balance/EtherBalanceService';
+import TokenService from '../integration/ethereum/TokenService';
+import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../core/services/BalanceService';
 import {providers} from 'ethers';
-import WalletFormatter from '../services/utils/WalletFormatter';
+import WalletPresenter from '../core/presenters/WalletPresenter';
 
 interface Config {
   domains: string[];
@@ -33,9 +32,8 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const modalService = new ModalService();
   const userDropdownService = new UserDropdownService();
   const walletService = new WalletService(sdk);
-  const walletFormatter = new WalletFormatter(walletService);
+  const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
-  const _createWallet = createWallet(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
   const transferService = new TransferService(sdk, walletService, tokenService);
   const etherBalanceService = new EtherBalanceService(sdk.provider, walletService);
@@ -47,10 +45,9 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     walletSelectionService,
     modalService,
     userDropdownService,
-    createWallet: _createWallet,
     connectToWallet: _connectToWallet,
     walletService,
-    walletFormatter,
+    walletPresenter,
     tokenService,
     transferService,
     balanceService,

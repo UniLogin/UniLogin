@@ -6,6 +6,7 @@ import {setupSdk} from '../helpers/setupSdk';
 import {waitUntil, ETHER_NATIVE_TOKEN, Notification} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {createWallet} from '../helpers/createWallet';
 
 describe('NotificationService', () => {
   let relayer: any;
@@ -19,7 +20,7 @@ describe('NotificationService', () => {
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     const name = 'ja.mylogin.eth';
-    [, contractAddress] = await services.createWallet(name);
+    ({contractAddress} = await createWallet(name, services.walletService, wallet));
     ({blockchainObserver} = services.sdk);
     blockchainObserver.step = 10;
     blockchainObserver.lastBlock = 0;

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import ModalService from '../../../src/ui/ModalService';
+import ModalService from '../../../src/core/app/ModalService';
 
 describe('ModalService', () => {
   it('notifies subscribers', () => {

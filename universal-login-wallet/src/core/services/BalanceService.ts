@@ -1,4 +1,4 @@
-import {EtherBalanceService} from '../../services/balance/EtherBalanceService';
+import {EtherBalanceService} from '../../integration/ethereum/EtherBalanceService';
 import {sleep} from '@universal-login/commons';
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';

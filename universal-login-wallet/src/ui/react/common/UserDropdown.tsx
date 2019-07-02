@@ -4,7 +4,7 @@ import {useRouter, useServices, useSubscription} from '../../hooks';
 
 
 const UserDropdown = () => {
-  const {walletService, userDropdownService, walletFormatter} = useServices();
+  const {walletService, userDropdownService, walletPresenter: walletFormatter} = useServices();
   const isExpanded = useSubscription(userDropdownService);
   const collapseDropdown = () => userDropdownService.setDropdownVisibility(false);
   const expandDropdown = () => userDropdownService.setDropdownVisibility(true);

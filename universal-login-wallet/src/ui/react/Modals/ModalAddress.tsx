@@ -6,7 +6,7 @@ import InputLabel from '../common/InputLabel';
 import {useServices} from '../../hooks';
 
 const ModalAddress = () => {
-  const {walletFormatter} = useServices();
+  const {walletPresenter: walletFormatter} = useServices();
   return(
   <div className="modal-body address-modal">
     <h2 className="modal-title">Transfer one of following </h2>
