@@ -1,8 +1,8 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelectionService, SuggestionsService} from '@universal-login/commons';
-import ModalService from './ModalService';
-import UserDropdownService from './UserDropdownService';
+import ModalService from '../core/app/ModalService';
+import UserDropdownService from '../core/app/UserDropdownService';
 import WalletService from '../integration/storage/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../integration/ethereum/TransferService';
