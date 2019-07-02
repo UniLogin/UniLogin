@@ -4,7 +4,7 @@ import {providers, Contract} from 'ethers';
 import {createFixtureLoader, createMockProvider, getWallets} from 'ethereum-waffle';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import {setupSdk} from '../helpers/setupSdk';
-import {Services} from '../../../src/ui/Services';
+import {Services} from '../../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../helpers/setupUI';
 

@@ -1,4 +1,4 @@
-import {createServices} from '../../../src/ui/Services';
+import {createServices} from '../../../src/ui/createServices';
 import {providers} from 'ethers';
 import {testJsonRpcUrl} from '@universal-login/commons';
 
