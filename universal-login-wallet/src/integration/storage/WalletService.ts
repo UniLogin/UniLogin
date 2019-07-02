@@ -1,6 +1,6 @@
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 import {ensure} from '@universal-login/commons';
-import {WalletOverriden, FutureWalletNotSet} from '../../core/utils/errors';
+import {WalletOverriden, FutureWalletNotSet} from '../../core/errors';
 import UserWallet from '../../core/entities/UserWallet';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
