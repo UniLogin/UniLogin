@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {ServiceContext} from '../../services/Services';
+import {ServiceContext} from '../createServices';
 
 export function useServices() {
   return useContext(ServiceContext);

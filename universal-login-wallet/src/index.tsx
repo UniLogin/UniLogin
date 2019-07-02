@@ -2,10 +2,10 @@ import './ui/styles/main.sass';
 
 import React from 'react';
 import {render} from 'react-dom';
-import App from './ui/App';
-import {createServices, ServiceContext} from './services/Services';
+import App from './ui/react/App';
+import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
-import {CustomBrowserRouter} from './ui/CustomBrowserRouter';
+import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
 
 const config = getConfig();
 

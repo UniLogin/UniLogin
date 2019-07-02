@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {getWallets} from 'ethereum-waffle';
 import Relayer from '@universal-login/relayer';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import App from '../../../src/ui/App';
+import App from '../../../src/ui/react/App';
 import {AppPage} from '../pages/AppPage';
 import {mountWithContext} from './CustomMount';
 import {createPreconfiguredServices} from './ServicesUnderTests';
