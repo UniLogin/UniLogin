@@ -4,7 +4,6 @@ import {WalletSelectionService, SuggestionsService} from '@universal-login/commo
 import ModalService from './ModalService';
 import UserDropdownService from '../services/UserDropdownService';
 import WalletService from '../services/WalletService';
-import createWallet from '../services/Creation';
 import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../services/TransferService';
 import NotificationsService from '../core/services/Notifications';
@@ -35,7 +34,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const walletService = new WalletService(sdk);
   const walletFormatter = new WalletFormatter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
-  const _createWallet = createWallet(sdk, walletService);
   const tokenService = new TokenService(config.tokens, sdk.provider);
   const transferService = new TransferService(sdk, walletService, tokenService);
   const etherBalanceService = new EtherBalanceService(sdk.provider, walletService);
@@ -47,7 +45,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     walletSelectionService,
     modalService,
     userDropdownService,
-    createWallet: _createWallet,
     connectToWallet: _connectToWallet,
     walletService,
     walletFormatter,

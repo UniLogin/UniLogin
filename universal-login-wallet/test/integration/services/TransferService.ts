@@ -4,11 +4,11 @@ import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'eth
 import UniversalLoginSDK from '@universal-login/sdk';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '../helpers/setupSdk';
-import createWallet from '../../../src/services/Creation';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import WalletService from '../../../src/services/WalletService';
 import TransferService from '../../../src/services/TransferService';
 import TokenService from '../../../src/services/TokenService';
+import {createWallet} from '../helpers/createWallet';
 
 chai.use(solidity);
 
@@ -18,7 +18,6 @@ describe('TransferService', () => {
   let relayer: any;
   let sdk: UniversalLoginSDK;
   let mockTokenContract: Contract;
-  let contractAddress: string;
   let tokenService: TokenService;
 
   before(async () => {
@@ -26,8 +25,7 @@ describe('TransferService', () => {
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     const walletService = new WalletService(sdk);
-    [, contractAddress] = await createWallet(sdk, walletService)('name.mylogin.eth');
-    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
+    const {contractAddress} = await createWallet('name.mylogin.eth', walletService, wallet);
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
     tokenService = new TokenService([mockTokenContract.address], provider);
     await tokenService.start();
