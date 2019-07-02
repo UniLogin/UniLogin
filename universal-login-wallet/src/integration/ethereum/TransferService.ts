@@ -5,7 +5,7 @@ import {ETHER_NATIVE_TOKEN, ensureNotNull} from '@universal-login/commons';
 import {UserWalletNotFound} from '../../services/utils/errors';
 import TransferDetails from '../../core/entities/TransferDetails';
 import WalletService from '../../services/WalletService';
-import TokenService from '../../services/TokenService';
+import TokenService from './TokenService';
 
 class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}

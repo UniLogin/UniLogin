@@ -7,7 +7,7 @@ import {setupSdk} from '../helpers/setupSdk';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import WalletService from '../../../src/services/WalletService';
 import TransferService from '../../../src/integration/ethereum/TransferService';
-import TokenService from '../../../src/services/TokenService';
+import TokenService from '../../../src/integration/ethereum/TokenService';
 import {createWallet} from '../helpers/createWallet';
 
 chai.use(solidity);

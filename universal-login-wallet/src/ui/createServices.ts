@@ -7,7 +7,7 @@ import WalletService from '../services/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../integration/ethereum/TransferService';
 import NotificationsService from '../core/services/Notifications';
-import TokenService from '../services/TokenService';
+import TokenService from '../integration/ethereum/TokenService';
 import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../core/services/BalanceService';
 import {providers} from 'ethers';
