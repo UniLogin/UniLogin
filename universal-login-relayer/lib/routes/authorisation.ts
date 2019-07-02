@@ -3,8 +3,9 @@ import asyncMiddleware from '../middlewares/async_middleware';
 import geoip from 'geoip-lite';
 import moment from 'moment';
 import AuthorisationService from '../services/authorisationService';
+import {asyncHandler, responseOf, sanitize, asString} from '@restless/restless';
 
-export const request = (authorisationService : AuthorisationService) => async (req : Request, res : Response) => {
+const request = (authorisationService : AuthorisationService) => async (req : Request, res : Response) => {
   const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   const deviceInfo = {
@@ -20,7 +21,7 @@ export const request = (authorisationService : AuthorisationService) => async (r
   res.status(201).send();
 };
 
-export const getPending = (authorisationService : any) => async (req : Request, res : Response) => {
+const getPending = (authorisationService : any) => async (req : Request, res : Response) => {
   const {walletContractAddress} = req.params;
   const response = await authorisationService.getPendingAuthorisations(walletContractAddress);
   res.status(200)
@@ -28,7 +29,7 @@ export const getPending = (authorisationService : any) => async (req : Request, 
     .send(JSON.stringify({response}));
 };
 
-export const denyRequest = (authorisationService : any) => async (req : Request, res : Response) => {
+const denyRequest = (authorisationService : any) => async (req : Request, res : Response) => {
   const {walletContractAddress} = req.params;
   const {key} = req.body;
   await authorisationService.removeRequest(walletContractAddress, key);
