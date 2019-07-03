@@ -11,4 +11,8 @@ export class BlockchainService {
   getBlockNumber() {
     return this.provider.getBlockNumber();
   }
+
+  getLogs(filter: providers.Filter) {
+    return this.provider.getLogs(filter);
+  }
 }

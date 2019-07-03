@@ -9,7 +9,7 @@ const eventInterface = new utils.Interface(WalletContract.interface).events;
 class BlockchainObserver extends ObserverBase {
   private lastBlock?: number;
 
-  constructor(private blockchainService: BlockchainService, private provider: providers.Provider) {
+  constructor(private blockchainService: BlockchainService) {
     super();
   }
 
@@ -33,7 +33,7 @@ class BlockchainObserver extends ObserverBase {
     for (const emitter of Object.keys(this.emitters)) {
       const filter = JSON.parse(emitter);
       const eventsFilter = {fromBlock: this.lastBlock, address: filter.contractAddress, topics};
-      const events = await this.provider.getLogs(eventsFilter);
+      const events = await this.blockchainService.getLogs(eventsFilter);
       for (const event of events) {
         const {key} = this.parseArgs(type, event);
         if (filter.key === 'undefined' || filter.key === key) {
