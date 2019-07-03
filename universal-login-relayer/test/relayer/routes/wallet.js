@@ -62,7 +62,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         to: otherWallet.address,
         value: 1000000000,
         data: [],
-        nonce: 0,
+        nonce: '0',
         gasToken: token.address,
         gasPrice: 110000000,
         gasLimit: 1000000,
@@ -101,7 +101,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       .post('/wallet/execution')
       .send(message);
     expect(status).to.eq(400);
-    expect(body.error).to.deep.eq([{path: 'body.nonce', expected: 'number'}]);
+    expect(body.error).to.deep.eq([{path: 'body.nonce', expected: 'string'}]);
   });
 
   after(async () => {
