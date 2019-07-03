@@ -101,7 +101,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       .post('/wallet/execution')
       .send(message);
     expect(status).to.eq(400);
-    expect(body.error).to.deep.eq([{path: 'body.nonce',expected: 'number'}]);
+    expect(body.error).to.deep.eq([{path: 'body.nonce', expected: 'number'}]);
   });
 
   after(async () => {
