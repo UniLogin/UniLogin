@@ -2,12 +2,13 @@ import {Router} from 'express';
 import WalletService from '../services/WalletService';
 import MessageHandler from '../services/MessageHandler';
 import {SignedMessage} from '@universal-login/commons';
-import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber} from '@restless/restless';
-import {asBigNumberish, asAny, asArrayish} from '../utils/restlessHelper';
+import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber, asOptional} from '@restless/restless';
+import {asBigNumberish, asOverrideOptions, asArrayish} from '../utils/restlessHelper';
 
 const create = (walletContractService : WalletService) =>
-  async (data: {body: {managementKey: string, ensName: string}}) => {
-    const transaction = await walletContractService.create(data.body.managementKey, data.body.ensName);
+  async (data: {body: {managementKey: string, ensName: string, overrideOptions?: {}}}) => {
+    const {managementKey, ensName, overrideOptions} = data.body;
+    const transaction = await walletContractService.create(managementKey, ensName, overrideOptions);
     return responseOf({transaction}, 201);
   };
 
@@ -24,8 +25,9 @@ const getStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploy = (walletContractService: WalletService) =>
-  async (data: {body: {publicKey: string, ensName: string,  overrideOptions: {}}}) => {
-    const trans = await walletContractService.deploy(data.body.publicKey, data.body.ensName, data.body.overrideOptions);
+  async (data: {body: {publicKey: string, ensName: string,  overrideOptions?: {}}}) => {
+    const {publicKey, ensName, overrideOptions} = data.body;
+    const trans = await walletContractService.deploy(publicKey, ensName, overrideOptions);
     return responseOf(trans, 201);
   };
 
@@ -37,7 +39,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
       body: asObject({
         managementKey: asString,
         ensName: asString,
-        overrideOptions: asAny
+        overrideOptions: asOptional(asOverrideOptions)
       })
     }),
     create(walletContractService)
@@ -73,7 +75,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
       body: asObject({
         publicKey: asString,
         ensName: asString,
-        overrideOptions: asAny
+        overrideOptions: asOptional(asOverrideOptions)
       })
     }),
     deploy(walletContractService)
