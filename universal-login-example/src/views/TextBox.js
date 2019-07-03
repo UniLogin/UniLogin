@@ -9,6 +9,7 @@ const TextBox = React.forwardRef((props, ref) => (
     onChange={props.onChange}
     onKeyDown={props.onKeyDown.bind(this)}
     type="text"
+    autoCapitalize="none"
     autoFocus
     placeholder={props.placeholder}
     maxLength={props.maxlength}
