@@ -16,7 +16,7 @@ const Notifications = () => {
 
   return (
     <div className="subscreen">
-      <h2 className="subscreen-title">Notifications:</h2>
+      <h2 className="subscreen-title">Connection requests:</h2>
       <TransitionGroup className="notifications-list">
         {notifications.map((notification: Notification) =>
           <CSSTransition key={notification.id} timeout={200} classNames="move" >

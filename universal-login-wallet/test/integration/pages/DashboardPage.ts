@@ -38,7 +38,7 @@ export default class DashboardPage {
 
   async clickNotificationButton() {
     this.wrapper.find('a#notificationsLink').simulate('click', { button: 0 });
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Notifications'));
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Connection requests'));
   }
 
   async waitForNewNotifications() {

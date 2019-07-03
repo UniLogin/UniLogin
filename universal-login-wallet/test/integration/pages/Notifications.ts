@@ -17,7 +17,7 @@ export default class NotificationsPage {
   }
 
   async waitForNotificationDisappear() {
-    await waitForUI(this.wrapper, () => !this.wrapper.text().includes('Connected'));
+    await waitForUI(this.wrapper, () => !this.wrapper.text().includes('unknown'));
   }
 
   isNotificationAlert(): boolean {
