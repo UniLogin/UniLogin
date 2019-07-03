@@ -5,7 +5,7 @@ import {deployContract} from 'ethereum-waffle';
 import {OPERATION_CALL, waitForContractDeploy, createSignedMessage, waitExpect} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import {startRelayer} from './helpers';
+import {startRelayer, createWalletContract} from './helpers';
 
 chai.use(chaiHttp);
 
@@ -51,6 +51,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     let token;
 
     before(async () => {
+      contract = await createWalletContract(provider, relayer.server, wallet.address, 'marek2.mylogin.eth');
       await deployer.sendTransaction({to: contract.address, value: utils.parseEther('1.0')});
       token = await deployContract(deployer, MockToken, []);
       await token.transfer(contract.address, utils.parseEther('1.0'));
