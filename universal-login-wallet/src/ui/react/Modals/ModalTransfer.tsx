@@ -12,11 +12,14 @@ interface ModalTransferProps {
 }
 
 const ModalTransfer = ({hideModal}: ModalTransferProps) => {
-  const {transferService, tokenService} = useServices();
+  const {transferService, tokenService, modalService} = useServices();
   const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[0].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {
-    await transferService.transfer(transferDetalis);
+    hideModal();
+    modalService.showModal('waitingForTransfer')
+    const {transactionHash} = await transferService.transfer(transferDetalis);
+    await transferService.waitForTransaction(transactionHash!);
     hideModal();
   };
 

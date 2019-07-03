@@ -41,6 +41,10 @@ class TransferService {
       };
       return this.sdk.execute(message, this.walletService.userWallet!.privateKey);
   }
+
+  async waitForTransaction(transactionHash: string) {
+    await this.sdk.provider.waitForTransaction(transactionHash);
+  }
 }
 
 export function encodeTransfer(to: string, amount: string) {
