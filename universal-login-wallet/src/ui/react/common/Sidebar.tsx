@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import logo from '../../assets/logo.svg';
-import { NavLink } from 'react-router-dom';
-import avatar from '../../assets/avatar.svg';
-import { useServices } from '../../hooks';
+import {NavLink} from 'react-router-dom';
+const Blockies = require('react-blockies').default;
+import {useServices} from '../../hooks';
 
 function Sidebar() {
-  const {userDropdownService, notificationService} = useServices();
+  const {userDropdownService, notificationService, walletPresenter} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
 
   useEffect(() => notificationService.subscribe(notifications => setNewNotifications(notifications.length !== 0)));
@@ -29,7 +29,7 @@ function Sidebar() {
         </li>
         <li className="sidebar-button sidebar-list-item">
           <button onClick={() => userDropdownService.setDropdownVisibility(true)} className="user-btn">
-            <img src={avatar} alt="user avatar"/>
+            <Blockies seed={walletPresenter.getContractAddress()} size={8} scale={4} />
           </button>
         </li>
       </ul>

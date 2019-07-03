@@ -1,10 +1,10 @@
 import React from 'react';
 import Logo from './../../assets/logo-with-text.svg';
-import avatar from './../../assets/avatar.svg';
 import devices from './../../assets/devices.svg';
 import Spinner from './Spinner';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
+const Blockies = require('react-blockies').default;
 
 const ApproveScreen = () => {
   const {walletPresenter: walletFormatter} = useServices();
@@ -15,7 +15,9 @@ const ApproveScreen = () => {
     <h1 className="start-title">Waiting for approval</h1>
     <p className="start-subtitle">Open your device that controls this ID and approve this connection</p>
     <div className="user-row aprove-screen-user">
-      <img src={avatar} alt="user avatar" className="user-img"/>
+      <div className="user-avatar">
+        <Blockies seed={walletFormatter.getContractAddress()} size={8} scale={4} />
+      </div>
       <p className="user-id">{walletFormatter.getName()}</p>
     </div>
     <div className="devices">
