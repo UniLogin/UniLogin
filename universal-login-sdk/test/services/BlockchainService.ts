@@ -19,4 +19,13 @@ describe('INT: BlockchainService', async () => {
     const {address} = await deployContract(deployer, WalletMaster);
     expect(await blockchainService.getCode(address)).to.be.eq(expectedBytecode);
   });
+
+  it('getBlockNumber should return block number', async () => {
+    const blockNumber = await blockchainService.getBlockNumber();
+    expect(blockNumber).at.least(0);
+    await deployContract(deployer, WalletMaster);
+    const blockNumber2 = await blockchainService.getBlockNumber();
+    expect(blockNumber2).greaterThan(blockNumber);
+    expect(blockNumber2).to.be.eq(blockNumber + 1);
+  });
 });

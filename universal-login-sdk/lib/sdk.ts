@@ -35,8 +35,8 @@ class UniversalLoginSDK {
       : providerOrUrl;
     this.relayerApi = new RelayerApi(relayerUrl);
     this.relayerObserver = new RelayerObserver(this.relayerApi);
-    this.blockchainObserver = new BlockchainObserver(this.provider);
     this.blockchainService = new BlockchainService(this.provider);
+    this.blockchainObserver = new BlockchainObserver(this.blockchainService, this.provider);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
