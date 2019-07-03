@@ -35,8 +35,8 @@ class UniversalLoginSDK {
       : providerOrUrl;
     this.relayerApi = new RelayerApi(relayerUrl);
     this.relayerObserver = new RelayerObserver(this.relayerApi);
-    this.blockchainObserver = new BlockchainObserver(this.provider);
     this.blockchainService = new BlockchainService(this.provider);
+    this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
@@ -199,7 +199,7 @@ class UniversalLoginSDK {
 
   async getWalletContractAddress(ensName: string) {
     const walletContractAddress = await this.resolveName(ensName);
-    if (walletContractAddress && await this.provider.getCode(walletContractAddress)) {
+    if (walletContractAddress && await this.blockchainService.getCode(walletContractAddress)) {
       return walletContractAddress;
     }
     return null;

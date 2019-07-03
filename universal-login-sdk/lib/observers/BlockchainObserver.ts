@@ -1,6 +1,7 @@
-import {utils, providers} from 'ethers';
-import ObserverBase from './ObserverBase';
+import {utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import {BlockchainService} from '../services/BlockchainService';
+import ObserverBase from './ObserverBase';
 
 const walletContractInterface = new utils.Interface(WalletContract.interface);
 const eventInterface = new utils.Interface(WalletContract.interface).events;
@@ -8,12 +9,12 @@ const eventInterface = new utils.Interface(WalletContract.interface).events;
 class BlockchainObserver extends ObserverBase {
   private lastBlock?: number;
 
-  constructor(private provider: providers.Provider) {
+  constructor(private blockchainService: BlockchainService) {
     super();
   }
 
   async start() {
-    this.lastBlock = await this.provider.getBlockNumber();
+    this.lastBlock = await this.blockchainService.getBlockNumber();
     await super.start();
   }
 
@@ -24,7 +25,7 @@ class BlockchainObserver extends ObserverBase {
   async fetchEvents() {
     await this.fetchEventsOfType('KeyAdded');
     await this.fetchEventsOfType('KeyRemoved');
-    this.lastBlock = await this.provider.getBlockNumber();
+    this.lastBlock = await this.blockchainService.getBlockNumber();
   }
 
   async fetchEventsOfType(type: string) {
@@ -32,7 +33,7 @@ class BlockchainObserver extends ObserverBase {
     for (const emitter of Object.keys(this.emitters)) {
       const filter = JSON.parse(emitter);
       const eventsFilter = {fromBlock: this.lastBlock, address: filter.contractAddress, topics};
-      const events = await this.provider.getLogs(eventsFilter);
+      const events = await this.blockchainService.getLogs(eventsFilter);
       for (const event of events) {
         const {key} = this.parseArgs(type, event);
         if (filter.key === 'undefined' || filter.key === key) {
