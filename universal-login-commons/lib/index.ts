@@ -24,6 +24,6 @@ export {copy} from './utils/copy';
 export {withENS} from './utils/withENS';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './utils/calculateMessageSignature';
 export {createSignedMessage} from './utils/signMessage';
-export {getContractHash, getDeployedBytecode, isContractExist} from './utils/contractHeplers';
+export {getContractHash, getDeployedBytecode, isContractExist} from './integration/ethereum/contractHeplers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './utils/changingMessageFields';
 export {resolveName} from './utils/resolveName';
