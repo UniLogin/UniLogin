@@ -1,5 +1,5 @@
 import {utils, ContractFactory} from 'ethers';
-import {ContractJSON} from '..';
+import {ContractJSON} from '../..';
 
 export const defaultDeployOptions = {
   gasLimit: utils.bigNumberify(3500000),

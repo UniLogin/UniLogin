@@ -21,7 +21,7 @@ export {calculateMessageSignature, calculateMessageSignatures, concatenateSignat
 export {createSignedMessage} from './integration/ethereum/signMessage';
 export {waitToBeMined, waitForContractDeploy, sendAndWaitForTransaction} from './integration/ethereum/wait';
 export {sleep, waitUntil, waitExpect} from './utils/wait';
-export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
+export {getDeployTransaction, defaultDeployOptions} from './integration/ethereum/transaction';
 export {debounce} from './utils/debounce';
 export {parseDomain} from './utils/ens';
 export * from './core/constants/constants';
