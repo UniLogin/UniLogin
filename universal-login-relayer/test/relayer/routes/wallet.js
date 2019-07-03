@@ -51,7 +51,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     let token;
 
     before(async () => {
-      contract = await createWalletContract(provider, relayer.server, wallet.address, 'marek2.mylogin.eth')
+      contract = await createWalletContract(provider, relayer.server, wallet.address, 'marek2.mylogin.eth');
       await deployer.sendTransaction({to: contract.address, value: utils.parseEther('1.0')});
       token = await deployContract(deployer, MockToken, []);
       await token.transfer(contract.address, utils.parseEther('1.0'));
