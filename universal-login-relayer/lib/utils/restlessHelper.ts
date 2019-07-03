@@ -1,4 +1,5 @@
 import { Sanitizer, Either, asObject, asOptional } from '@restless/restless';
+import {TransactionOverrides} from '@universal-login/commons';
 import { utils } from 'ethers';
 
 export const asBigNumberish: Sanitizer<utils.BigNumber> = (value, path) => {
@@ -23,7 +24,7 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   }
 };
 
-export const asOverrideOptions = asObject({
+export const asOverrideOptions: Sanitizer<TransactionOverrides> = asObject({
   gasLimit: asOptional(asBigNumberish),
   gasPrice: asOptional(asBigNumberish)
 });
