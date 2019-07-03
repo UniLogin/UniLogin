@@ -3,16 +3,16 @@ import Spinner from '../Login/Spinner';
 import ProgressBar from '../common/ProgressBar';
 
 
-const ModalWaitingForDeploy = () => {
+const ModalWaitingFor = ({action}: {action: string}) => {
   return (
       <div className="modal-deploying-content">
         <div className="modal-deploying-content-loader">
           <Spinner />
         </div>
-        <h1 className="modal-deploying-title">Creating wallet</h1>
+        <h1 className="modal-deploying-title">{action}</h1>
         <ProgressBar />
       </div>
   );
 };
 
-export default ModalWaitingForDeploy;
+export default ModalWaitingFor;

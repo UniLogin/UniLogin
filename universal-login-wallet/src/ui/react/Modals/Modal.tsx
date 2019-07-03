@@ -9,9 +9,8 @@ import ModalTopUp from './ModalTopUp';
 import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
-import ModalWaiting from './ModalWaiting';
 import ModalSafello from './ModalSafello';
-import ModalWaitingForDeploy from './ModalWaitingForDeploy';
+import ModalWaitingFor from './ModalWaitingFor';
 
 const Modal = () => {
   const {modalService} = useServices();
@@ -61,16 +60,16 @@ const Modal = () => {
           <ModalCardInfo />
         </ModalWrapper>
       );
-    case 'waiting':
-      return (
-        <ModalWrapper>
-          <ModalWaiting />
-        </ModalWrapper>
-      );
     case 'waitingForDeploy':
       return (
         <ModalWrapper>
-          <ModalWaitingForDeploy />
+          <ModalWaitingFor action={'Creating wallet'}/>
+        </ModalWrapper>
+      );
+    case 'waitingForTransfer':
+      return (
+        <ModalWrapper>
+          <ModalWaitingFor action={'Transferring funds'}/>
         </ModalWrapper>
       );
     case 'safello':
