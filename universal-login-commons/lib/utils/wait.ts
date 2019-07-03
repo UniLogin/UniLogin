@@ -1,7 +1,7 @@
 import {providers, Contract, Wallet} from 'ethers';
-import {Predicate} from '../types/common';
+import {Predicate} from '../core/types/common';
 import Assertion = Chai.Assertion;
-import { ContractJSON } from '../types/ContractJSON';
+import { ContractJSON } from '../core/types/ContractJSON';
 
 export const sleep = (ms : number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
