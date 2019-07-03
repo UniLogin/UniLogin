@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import {NotFound, PaymentError, Conflict, ValidationFailed, RelayerError} from '../utils/errors';
+import {SanitizeError} from '@restless/restless';
 
 export default function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     const status = getCodeForException(err);
@@ -16,6 +17,10 @@ function getContentForException(err: Error) {
       error: err.toString(),
       type: relayerError.errorType
     };
+  } else if (err instanceof SanitizeError) {
+    return {
+      error: err.errors
+    };
   } else {
     return {
       error: err.toString()
@@ -24,7 +29,7 @@ function getContentForException(err: Error) {
 }
 
 export function getCodeForException(err: Error) {
-  if (err instanceof ValidationFailed) {
+  if (err instanceof ValidationFailed || err instanceof SanitizeError) {
     return 400;
   } else if (err instanceof PaymentError) {
     return 402;

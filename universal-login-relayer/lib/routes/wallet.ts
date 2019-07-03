@@ -1,69 +1,83 @@
-import {Router, Request, Response, NextFunction} from 'express';
-import asyncMiddleware from '../middlewares/async_middleware';
+import {Router} from 'express';
 import WalletService from '../services/WalletService';
 import MessageHandler from '../services/MessageHandler';
+import {SignedMessage} from '@universal-login/commons';
+import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber} from '@restless/restless';
+import {asBigNumberish, asAny, asArrayish} from '../utils/restlessHelper';
 
-export const create = (walletContractService : WalletService) => async (req : Request, res : Response, next : NextFunction) => {
-  const {managementKey, ensName} = req.body;
-  try {
-    const transaction = await walletContractService.create(managementKey, ensName);
-    res.status(201)
-      .type('json')
-      .send(JSON.stringify({transaction}));
-  } catch (err) {
-    next(err);
-  }
-};
+const create = (walletContractService : WalletService) =>
+  async (data: {body: {managementKey: string, ensName: string}}) => {
+    const transaction = await walletContractService.create(data.body.managementKey, data.body.ensName);
+    return responseOf({transaction}, 201);
+  };
 
-export const execution = (
-messageHandler : MessageHandler) => async (req : Request, res : Response, next : NextFunction) => {
-  try {
-    const status = await messageHandler.handleMessage(req.body);
-    res.status(201)
-      .type('json')
-      .send(JSON.stringify({status}));
-  } catch (err) {
-    next(err);
-  }
-};
+const execution = (messageHandler : MessageHandler) =>
+  async (data: {body: SignedMessage}) => {
+    const status = await messageHandler.handleMessage(data.body);
+    return responseOf({status}, 201);
+  };
 
-export const getStatus = (messageHandler: MessageHandler) => async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const {messageHash} = req.params;
-    const status = await messageHandler.getStatus(messageHash);
-    res.status(200)
-      .type('json')
-      .send(JSON.stringify(status));
-  } catch (err) {
-    next(err);
-  }
-};
+const getStatus = (messageHandler: MessageHandler) =>
+  async (data: {messageHash: string}) => {
+    const status = await messageHandler.getStatus(data.messageHash);
+    return responseOf(status);
+  };
 
-const deploy = (walletContractService : WalletService) => async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const trans = await walletContractService.deploy(req.body.publicKey, req.body.ensName, req.body.overrideOptions);
-    res.status(201)
-      .type('json')
-      .send(trans);
-  } catch (err) {
-    next(err);
-  }
-};
+const deploy = (walletContractService: WalletService) =>
+  async (data: {body: {publicKey: string, ensName: string,  overrideOptions: {}}}) => {
+    const trans = await walletContractService.deploy(data.body.publicKey, data.body.ensName, data.body.overrideOptions);
+    return responseOf(trans, 201);
+  };
 
 export default (walletContractService : WalletService, messageHandler: MessageHandler) => {
   const router = Router();
 
-  router.post('/',
-    asyncMiddleware(create(walletContractService)));
+  router.post('/', asyncHandler(
+    sanitize({
+      body: asObject({
+        managementKey: asString,
+        ensName: asString,
+        overrideOptions: asAny
+      })
+    }),
+    create(walletContractService)
+  ));
 
-  router.post('/execution',
-    asyncMiddleware(execution(messageHandler)));
+  router.post('/execution', asyncHandler(
+    sanitize({
+      body: asObject({
+        gasToken: asString,
+        operationType: asNumber,
+        to: asString,
+        from: asString,
+        nonce: asString,
+        gasLimit: asBigNumberish,
+        gasPrice: asBigNumberish,
+        data: asArrayish,
+        value: asBigNumberish,
+        signature: asString
+      })
+    }),
+    execution(messageHandler)
+  ));
 
-  router.get('/execution/:messageHash',
-    asyncMiddleware(getStatus(messageHandler)));
+  router.get('/execution/:messageHash', asyncHandler(
+    sanitize({
+      messageHash: asString,
+    }),
+    getStatus(messageHandler)
+  ));
 
-  router.post('/deploy',
-    asyncMiddleware(deploy(walletContractService)));
+  router.post('/deploy', asyncHandler(
+    sanitize({
+      body: asObject({
+        publicKey: asString,
+        ensName: asString,
+        overrideOptions: asAny
+      })
+    }),
+    deploy(walletContractService)
+  ));
 
   return router;
 };

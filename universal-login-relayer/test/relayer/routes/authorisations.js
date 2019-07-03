@@ -46,7 +46,6 @@ describe('E2E: Relayer - Authorisation routes', async () => {
       city: 'unknown',
       ipAddress: '::ffff:127.0.0.1'
     });
-
   });
 
   it('get non-existing pending authorisations', async () => {

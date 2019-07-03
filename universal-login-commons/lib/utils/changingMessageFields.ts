@@ -6,7 +6,8 @@ export function stringifySignedMessageFields(signedMessage: SignedMessage) {
     ...signedMessage,
     value: signedMessage.value && signedMessage.value.toString(),
     gasLimit: signedMessage.gasLimit && signedMessage.gasLimit.toString(),
-    gasPrice: signedMessage.gasPrice && signedMessage.gasPrice.toString()
+    gasPrice: signedMessage.gasPrice && signedMessage.gasPrice.toString(),
+    nonce: signedMessage.nonce.toString()
   };
 }
 
