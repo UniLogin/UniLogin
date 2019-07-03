@@ -34,7 +34,7 @@ Dependencies
 ^^^^^^^^^^^^
 The diagram below shows dependencies between components.
 
-.. image:: ../modeling/subsystems.png
+.. image:: ../modeling/img/subsystems.png
 
 
 The external interfaces present in the Universal Login system are identified by the lollipop use symbol:
