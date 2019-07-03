@@ -1,8 +1,8 @@
 import {utils} from 'ethers';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../core/constants/constants';
-import {OPERATION_CALL} from '../core/constants/contracts';
-import {MessageWithFrom, UnsignedMessage} from '../core/types/message';
-import {calculateMessageSignature} from '../integration/ethereum/calculateMessageSignature';
+import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../core/constants/constants';
+import {OPERATION_CALL} from '../../core/constants/contracts';
+import {MessageWithFrom, UnsignedMessage} from '../../core/types/message';
+import {calculateMessageSignature} from './calculateMessageSignature';
 
 
 const emptyMessage = {

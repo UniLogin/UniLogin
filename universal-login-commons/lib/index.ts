@@ -18,6 +18,7 @@ export {getContractHash, getDeployedBytecode, isContractExist} from './integrati
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './integration/ethereum/changingMessageFields';
 export {resolveName} from './integration/ethereum/resolveName';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './integration/ethereum/calculateMessageSignature';
+export {createSignedMessage} from './integration/ethereum/signMessage';
 export {waitToBeMined, waitForContractDeploy, sendAndWaitForTransaction} from './integration/ethereum/wait';
 export {sleep, waitUntil, waitExpect} from './utils/wait';
 export {getDeployTransaction, defaultDeployOptions} from './utils/transaction';
@@ -27,4 +28,3 @@ export * from './core/constants/constants';
 export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXECUTION_TYPE_MANAGEMENT, EXECUTION_TYPE_ACTION, OPERATION_CALL, OPERATION_DELEGATECALL, OPERATION_CREATE} from './core/constants/contracts';
 export {getEnv} from './utils/getEnv';
 export {copy} from './utils/copy';
-export {createSignedMessage} from './utils/signMessage';
