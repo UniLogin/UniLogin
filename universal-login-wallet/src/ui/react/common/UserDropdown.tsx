@@ -1,7 +1,6 @@
 import React from 'react';
-import avatar from './../../assets/avatar.svg';
 import {useRouter, useServices, useSubscription} from '../../hooks';
-
+const Blockies = require('react-blockies').default;
 
 const UserDropdown = () => {
   const {walletService, userDropdownService, walletPresenter: walletFormatter} = useServices();
@@ -18,7 +17,9 @@ const UserDropdown = () => {
     <div className={`user-dropdown-wrapper ${isExpanded ? 'expanded' : ''}`}>
       <div className="user-dropdown">
         <div className="user-dropdown-header">
-          <img className="user-dropdown-avatar" src={avatar} alt="avatar"/>
+          <div className="user-dropdown-avatar">
+            <Blockies seed={walletFormatter.getContractAddress()} size={8} scale={4} />
+          </div>
           <div>
             <p className="user-dropdown-name">{walletFormatter.getName()}</p>
             <p className="user-dropdown-nickname">{walletFormatter.getContractAddress()}</p>
