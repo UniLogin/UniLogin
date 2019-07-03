@@ -66,11 +66,6 @@ const App = () => {
           authorized={authorized}
           render={() => <SettingsScreen />}
         />
-        <PrivateRoute
-          path="/compound"
-          authorized={authorized}
-          render={() => <h1>Hello World</h1>}
-        />
         <Route component={NotFound}/>
       </Switch>
   );
