@@ -6,11 +6,11 @@ export {Message, MessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus,
 export * from './core/types/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './core/types/relayer';
 export {TransactionOverrides} from './core/types/transactions';
+export {SuggestionsService} from './core/services/SuggestionsService';
+export {WalletExistenceVerifier, WalletSelectionService} from './core/services/WalletSelectionService';
+export {TokenService} from './core/services/TokenService';
 export {copy} from './utils/copy';
 export {ensure, ensureNotNull, onCritical} from './utils/handleError';
-export {SuggestionsService} from './services/SuggestionsService';
-export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';
-export {TokenService} from './services/TokenService';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {parseDomain} from './utils/ens';

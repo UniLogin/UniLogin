@@ -1,5 +1,5 @@
 import {providers, Contract, utils} from 'ethers';
-import Token from '../contracts/Token.json';
+import Token from '../../contracts/Token.json';
 
 
 export class TokenService {

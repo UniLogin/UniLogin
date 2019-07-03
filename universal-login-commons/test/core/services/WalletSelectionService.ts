@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {WalletSelectionService} from '../../lib/services/WalletSelectionService';
+import {WalletSelectionService} from '../../../lib/core/services/WalletSelectionService';
 import sinon from 'sinon';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
