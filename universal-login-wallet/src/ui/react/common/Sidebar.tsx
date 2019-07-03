@@ -28,13 +28,6 @@ function Sidebar() {
           />
         </li>
         <li className="sidebar-button sidebar-list-item">
-          <NavLink
-            to="/compound"
-            id="compoundLink"
-            className={`sidebar-link compound-link`}
-          />
-        </li>
-        <li className="sidebar-button sidebar-list-item">
           <button onClick={() => userDropdownService.setDropdownVisibility(true)} className="user-btn">
             <img src={avatar} alt="user avatar"/>
           </button>
