@@ -2,7 +2,7 @@ import {Router} from 'express';
 import WalletService from '../services/WalletService';
 import MessageHandler from '../services/MessageHandler';
 import {SignedMessage} from '@universal-login/commons';
-import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber, asArray, Either} from '@restless/restless';
+import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber} from '@restless/restless';
 import {asBigNumberish, asAny, asArrayish} from '../utils/restlessHelper';
 
 const create = (walletContractService : WalletService) =>
