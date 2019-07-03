@@ -70,7 +70,7 @@ const Modal = () => {
     case 'waitingForDeploy':
       return (
         <ModalWrapper>
-          <ModalWaitingFor action={'Create wallet'}/>
+          <ModalWaitingFor action={'Creating wallet'}/>
         </ModalWrapper>
       );
     case 'waitingForTransfer':
