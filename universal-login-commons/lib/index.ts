@@ -8,7 +8,7 @@ export {ensure, ensureNotNull, onCritical} from './utils/handleError';
 export {SuggestionsService} from './services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './services/WalletSelectionService';
 export {TokenService} from './services/TokenService';
-export {classesForElement, getSuggestionId} from './utils/react';
+export {classesForElement, getSuggestionId} from './react/react';
 export {parseDomain} from './utils/ens';
 export * from './constants/constants';
 export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXECUTION_TYPE_MANAGEMENT, EXECUTION_TYPE_ACTION, OPERATION_CALL, OPERATION_DELEGATECALL, OPERATION_CREATE} from './constants/contracts';

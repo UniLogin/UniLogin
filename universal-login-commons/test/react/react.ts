@@ -1,4 +1,4 @@
-import {classesForElement, getSuggestionId} from '../../lib/utils/react';
+import {classesForElement, getSuggestionId} from '../../lib/react/react';
 import {expect} from 'chai';
 
 const classesForInput = classesForElement('input', 'input');
