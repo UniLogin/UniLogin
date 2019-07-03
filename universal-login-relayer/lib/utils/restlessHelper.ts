@@ -18,9 +18,19 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   if (typeof value === 'string') {
     return Either.right(value);
   } else if (Array.isArray(value)) {
-      return Either.right(value);
+    return Either.right(value);
   } else {
     return Either.left([{ path, expected: 'arrayish' }]);
+  }
+};
+
+export const asStringOrNumber: Sanitizer<string | number> = (value, path) => {
+  if (typeof value === 'string') {
+    return Either.right(value);
+  } else if (typeof value === 'number') {
+    return Either.right(value);
+  } else {
+    return Either.left([{ path, expected: 'string or number' }]);
   }
 };
 

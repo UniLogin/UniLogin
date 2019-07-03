@@ -3,7 +3,7 @@ import WalletService from '../services/WalletService';
 import MessageHandler from '../services/MessageHandler';
 import {SignedMessage} from '@universal-login/commons';
 import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber} from '@restless/restless';
-import {asBigNumberish, asAny, asArrayish} from '../utils/restlessHelper';
+import {asBigNumberish, asAny, asArrayish, asStringOrNumber} from '../utils/restlessHelper';
 
 const create = (walletContractService : WalletService) =>
   async (data: {body: {managementKey: string, ensName: string}}) => {
@@ -50,7 +50,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
         operationType: asNumber,
         to: asString,
         from: asString,
-        nonce: asNumber,
+        nonce: asStringOrNumber,
         gasLimit: asBigNumberish,
         gasPrice: asBigNumberish,
         data: asArrayish,
