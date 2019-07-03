@@ -18,8 +18,7 @@ const ModalTransfer = ({hideModal}: ModalTransferProps) => {
   const onGenerateClick = async () => {
     hideModal();
     modalService.showModal('waitingForTransfer');
-    const {transactionHash} = await transferService.transfer(transferDetalis);
-    await transferService.waitForTransaction(transactionHash!);
+    await transferService.transfer(transferDetalis);
     hideModal();
   };
 
