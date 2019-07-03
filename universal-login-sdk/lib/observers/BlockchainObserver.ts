@@ -1,4 +1,4 @@
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {BlockchainService} from '../services/BlockchainService';
 import ObserverBase from './ObserverBase';

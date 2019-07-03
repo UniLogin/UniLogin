@@ -199,7 +199,7 @@ class UniversalLoginSDK {
 
   async getWalletContractAddress(ensName: string) {
     const walletContractAddress = await this.resolveName(ensName);
-    if (walletContractAddress && await this.provider.getCode(walletContractAddress)) {
+    if (walletContractAddress && await this.blockchainService.getCode(walletContractAddress)) {
       return walletContractAddress;
     }
     return null;
