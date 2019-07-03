@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '../../lib';
-import {findTokenWithRequiredBalance} from '../../lib/utils/balance';
+import {findTokenWithRequiredBalance} from '../../lib/integration/ethereum/balance';
 
 describe('BalanceChecked', () => {
   const provider = createMockProvider();

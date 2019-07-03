@@ -1,6 +1,6 @@
 import {providers, Contract} from 'ethers';
-import ERC20 from '../contracts/Token.json';
-import {ETHER_NATIVE_TOKEN, SupportedToken} from '..';
+import ERC20 from '../../contracts/Token.json';
+import {ETHER_NATIVE_TOKEN, SupportedToken} from '../..';
 
 export async function getBalance(provider: providers.Provider, contractAddress: string, tokenAddress: string) {
   if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
