@@ -1,4 +1,4 @@
-import { Sanitizer, Either } from '@restless/restless';
+import { Sanitizer, Either, asObject, asOptional } from '@restless/restless';
 import { utils } from 'ethers';
 
 export const asBigNumberish: Sanitizer<utils.BigNumber> = (value, path) => {
@@ -13,7 +13,6 @@ export const asBigNumberish: Sanitizer<utils.BigNumber> = (value, path) => {
   return Either.left([{ path, expected: 'bigNumber' }]);
 };
 
-
 export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   if (typeof value === 'string') {
     return Either.right(value);
@@ -24,14 +23,7 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   }
 };
 
-export const asStringOrNumber: Sanitizer<string | number> = (value, path) => {
-  if (typeof value === 'string') {
-    return Either.right(value);
-  } else if (typeof value === 'number') {
-    return Either.right(value);
-  } else {
-    return Either.left([{ path, expected: 'string or number' }]);
-  }
-};
-
-export const asAny = (value: any) => Either.right(value);
+export const asOverrideOptions = asObject({
+  gasLimit: asOptional(asBigNumberish),
+  gasPrice: asOptional(asBigNumberish)
+});
