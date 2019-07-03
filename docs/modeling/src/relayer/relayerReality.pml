@@ -60,9 +60,9 @@ object DeployAgregate {
 
 
 Message ---* MessageAgregate
-MessageAgregate --* Transaction
+MessageAgregate *-- Transaction
 MessageSignatures --* MessageAgregate
-DeployAgregate *-- Deployment
-Transaction *-- DeployAgregate
+Deployment --* DeployAgregate 
+DeployAgregate *-- Transaction 
 
 @enduml
