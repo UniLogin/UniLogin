@@ -6,7 +6,7 @@ export {TransactionOverrides} from './core/types/transactions';
 export {SuggestionsService} from './core/services/SuggestionsService';
 export {WalletExistenceVerifier, WalletSelectionService} from './core/services/WalletSelectionService';
 export {TokenService} from './core/services/TokenService';
-export {ensure, ensureNotNull, onCritical} from './utils/handleError';
+export {ensure, ensureNotNull, onCritical} from './core/handleError';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {createKeyPair, KeyPair} from './integration/ethereum/keyPair';
