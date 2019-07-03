@@ -50,7 +50,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
         operationType: asNumber,
         to: asString,
         from: asString,
-        nonce: asStringOrNumber,
+        nonce: asString,
         gasLimit: asBigNumberish,
         gasPrice: asBigNumberish,
         data: asArrayish,
