@@ -2,9 +2,9 @@ import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import {deployFactory} from '@universal-login/contracts';
-import Token from '../../lib/dev/Token.json';
+import Token from '../../lib/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
-import {getContractWhiteList} from '../../lib/utils/relayerUnderTest';
+import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 
 const defaultDomain = 'mylogin.eth';
 

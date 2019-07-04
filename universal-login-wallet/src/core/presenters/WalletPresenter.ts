@@ -2,7 +2,7 @@ import {ensure} from '@universal-login/commons';
 import UserWallet from '../entities/UserWallet';
 import WalletService from '../../integration/storage/WalletService';
 
-export class WalletFormatter {
+export class WalletPresenter {
   constructor(
     private walletService: WalletService
   ) {}
@@ -19,4 +19,4 @@ export class WalletFormatter {
   }
 }
 
-export default WalletFormatter;
+export default WalletPresenter;

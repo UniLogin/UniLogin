@@ -1,10 +1,10 @@
 import {Contract, Wallet} from 'ethers';
 import {MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {getKeyFromHashAndSignature} from '../../lib/utils/utils';
-import {InvalidMessage} from '../../lib/utils/errors';
-import PendingMessage from '../../lib/services/messages/PendingMessage';
-import IPendingMessagesStore from '../../lib/services/messages/IPendingMessagesStore';
+import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
+import {InvalidMessage} from '../../lib/core/utils/errors';
+import PendingMessage from '../../lib/core/models/messages/PendingMessage';
+import IPendingMessagesStore from '../../lib/core/services/messages/IPendingMessagesStore';
 
 export default class PendingMessagesMemoryStore implements IPendingMessagesStore {
   public messages: Record<string, PendingMessage>;

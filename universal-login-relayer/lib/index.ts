@@ -1,7 +1,7 @@
-import Relayer, {RelayerClass} from './relayer';
+import Relayer, {RelayerClass} from './http/relayers/Relayer';
 export default Relayer;
 export {config, Config} from './config/relayer';
 export {RelayerClass};
-export {DevelopmentRelayer} from './dev/DevelopmentRelayer';
-export {TokenGrantingRelayer} from './dev/TokenGrantingRelayer';
-export {getContractWhiteList, RelayerUnderTest} from './utils/relayerUnderTest';
+export {DevelopmentRelayer} from './http/relayers/DevelopmentRelayer';
+export {TokenGrantingRelayer} from './http/relayers/TokenGrantingRelayer';
+export {getContractWhiteList, RelayerUnderTest} from './http/relayers/RelayerUnderTest';
