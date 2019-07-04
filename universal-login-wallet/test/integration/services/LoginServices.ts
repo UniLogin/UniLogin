@@ -42,7 +42,7 @@ describe('Login', () => {
       const {contractAddress, waitForBalance, deploy, privateKey} = await walletService.createFutureWallet();
       wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
       await waitForBalance();
-      await deploy(name);
+      await deploy(name, '1');
       walletService.setDeployed(name);
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;

@@ -17,7 +17,7 @@ describe('UI: Login', () => {
     let services: Services;
     let relayer: any;
     let provider: providers.Provider;
-    const expectedHomeBalance = '1.99999';
+    const expectedHomeBalance = '1.9955';
 
     before(async () => {
         const [wallet] = await getWallets(createMockProvider());
