@@ -9,7 +9,8 @@
     "@codechecks/build-size-watcher": "^0.0.14",
     "@codechecks/client": "^0.0.58",
     "@codechecks/type-coverage-watcher": "^0.0.8",
-    "chalk": "^2.0.1"
+    "chalk": "^2.0.1",
+    "lerna": "^3.15.0"
   },
   "workspaces": [
     "universal-login-*"
@@ -22,7 +23,9 @@
     "test": "yarn wsrun test --stages --fast-exit",
     "lint": "yarn wsrun lint --stages",
     "ci": "yarn lint && yarn test",
-    "clean": "yarn wsrun clean"
+    "clean": "yarn wsrun clean",
+    "bump:version": "yarn lerna version --no-push",
+    "publish:packages": "yarn lerna publish from-package"
   },
   "engines": {
     "node": "10.15",

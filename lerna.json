@@ -1,0 +1,12 @@
+{
+  "packages": [
+    "universal-login-commons",
+    "universal-login-contracts",
+    "universal-login-example",
+    "universal-login-ops",
+    "universal-login-relayer",
+    "universal-login-sdk",
+    "universal-login-wallet"
+  ],
+  "version": "0.2.2"
+}
