@@ -15,6 +15,7 @@
     "universal-login-*"
   ],
   "dependencies": {
+    "lerna": "^3.15.0",
     "wsrun": "^2.2.1"
   },
   "scripts": {
