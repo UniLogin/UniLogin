@@ -1,4 +1,4 @@
-import {Procedure} from '../core/types/common';
+import {Procedure} from '../types/common';
 
 export function debounce<F extends Procedure>(
   func: F,

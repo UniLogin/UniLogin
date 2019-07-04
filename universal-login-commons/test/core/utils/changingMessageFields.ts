@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, OPERATION_CALL, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../lib';
+import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, OPERATION_CALL, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../../lib';
 
 describe('UNIT: Parsing Transaction', () => {
   const message: MessageWithFrom = {

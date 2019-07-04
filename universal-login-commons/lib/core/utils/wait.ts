@@ -1,4 +1,4 @@
-import {Predicate} from '../core/types/common';
+import {Predicate} from '../types/common';
 import Assertion = Chai.Assertion;
 
 export const sleep = (ms : number) =>

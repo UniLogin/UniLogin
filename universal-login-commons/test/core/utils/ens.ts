@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {parseDomain} from '../../lib/utils/ens';
+import {parseDomain} from '../../../lib';
 
 describe('parseDomain', () => {
     it('simple', () => {
