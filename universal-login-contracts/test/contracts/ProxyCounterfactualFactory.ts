@@ -52,7 +52,6 @@ describe('Counterfactual Factory', () => {
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData);
     const newKeyPair = createKeyPair();
-    
     ({initializeData} = createFutureDeploymentWithRefund({...createFutureDeploymentArgs, publicKey: newKeyPair.publicKey}));
     await expect(factoryContract.createContract(newKeyPair.publicKey, initializeData)).to.be.revertedWith('Unable to register ENS domain');
   });

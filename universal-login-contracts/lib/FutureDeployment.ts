@@ -15,7 +15,7 @@ export type CreateFutureDeploymentWithRefundArgs = {
   factoryContract: Contract;
   relayerAddress: string;
   gasPrice: string;
-}
+};
 
 export function createFutureDeploymentWithENS(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract): FutureDeployment {
   const [, initializeData] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress);
