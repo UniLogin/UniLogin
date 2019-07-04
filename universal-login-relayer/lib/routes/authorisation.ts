@@ -1,11 +1,12 @@
 import {Router, Request} from 'express';
-import AuthorisationService from '../services/authorisationService';
+import AuthorisationService, {AuthorisationRequest} from '../services/authorisationService';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
-import {createAuthorisationRequest} from '../utils/httpUtils';
+import {getDeviceInfo} from '../utils/httpUtils';
 
 const request = (authorisationService : AuthorisationService) =>
   async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
-    const requestAuthorisation = createAuthorisationRequest(data, req);
+    const deviceInfo = getDeviceInfo(req);
+    const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo};
     const result = await authorisationService.addRequest(requestAuthorisation);
     return responseOf({response: result}, 201);
   };
