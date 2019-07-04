@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
-import {ContractJSON} from '../../core/types/ContractJSON';
-import {ensure} from '../../core/handleError';
+import {ContractJSON} from '../../models/ContractJSON';
+import {ensure} from '../../../core/utils/errors';
 
 export const getDeployedBytecode = (contract: ContractJSON) => contract.evm.deployedBytecode.object;
 

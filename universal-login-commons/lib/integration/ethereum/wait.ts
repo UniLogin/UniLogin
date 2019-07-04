@@ -1,5 +1,5 @@
 import {providers, Contract, Wallet} from 'ethers';
-import {ContractJSON} from '../../core/types/ContractJSON';
+import {ContractJSON} from '../../core/models/ContractJSON';
 
 export const waitToBeMined = (provider : providers.Provider, transactionHash : string, tick = 1000) =>
   provider.waitForTransaction(transactionHash);

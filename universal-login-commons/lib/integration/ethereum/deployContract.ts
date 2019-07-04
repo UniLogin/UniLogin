@@ -1,6 +1,6 @@
 import {ContractFactory, Wallet} from 'ethers';
-import {ContractJSON} from '../../core/types/ContractJSON';
-import {TransactionOverrides} from '../../core/types/transactions';
+import {ContractJSON} from '../../core/models/ContractJSON';
+import {TransactionOverrides} from '../../core/models/transactions';
 import {defaultDeployOptions} from './transaction';
 
 export async function deployContract(wallet: Wallet, contractJSON: ContractJSON, args = [], overrides?: TransactionOverrides) {

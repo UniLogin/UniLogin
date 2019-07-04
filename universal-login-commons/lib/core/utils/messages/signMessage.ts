@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../core/constants/constants';
-import {OPERATION_CALL} from '../../core/constants/contracts';
-import {MessageWithFrom, UnsignedMessage} from '../../core/types/message';
+import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../constants/constants';
+import {OPERATION_CALL} from '../../constants/contracts';
+import {MessageWithFrom, UnsignedMessage} from '../../models/message';
 import {calculateMessageSignature} from './calculateMessageSignature';
 
 

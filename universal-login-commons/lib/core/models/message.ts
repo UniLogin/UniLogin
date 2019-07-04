@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Omit, PartialRequired} from './common';
+import {Omit, PartialRequired} from '../types/common';
 
 export type Message = Partial<SignedMessage>;
 
