@@ -5,8 +5,7 @@ import {getDeviceInfo} from '../utils/httpUtils';
 
 const request = (authorisationService : AuthorisationService) =>
   async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
-    const deviceInfo = getDeviceInfo(req);
-    const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo};
+    const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
     const result = await authorisationService.addRequest(requestAuthorisation);
     return responseOf({response: result}, 201);
   };
