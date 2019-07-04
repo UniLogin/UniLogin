@@ -8,6 +8,15 @@ type FutureDeployment = {
   futureAddress: string;
 };
 
+export type CreateFutureDeploymentWithRefundArgs = {
+  publicKey: string;
+  walletMasterAddress: string;
+  ensDomainData: EnsDomainData;
+  factoryContract: Contract;
+  relayerAddress: string;
+  gasPrice: string;
+}
+
 export function createFutureDeploymentWithENS(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract): FutureDeployment {
   const [, initializeData] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress);
   const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, publicKey);
@@ -26,8 +35,8 @@ export function createFutureDeployment(publicKey: string, walletMasterAddress: s
   };
 }
 
-export function createFutureDeploymentWithRefund(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract, relayerAddress: string): FutureDeployment {
-  const [, initializeData] = createProxyDeployWithRefundArgs(publicKey, ensDomainData, walletMasterAddress, relayerAddress);
+export function createFutureDeploymentWithRefund({publicKey, walletMasterAddress, ensDomainData, factoryContract, relayerAddress, gasPrice}: CreateFutureDeploymentWithRefundArgs): FutureDeployment {
+  const [, initializeData] = createProxyDeployWithRefundArgs(publicKey, ensDomainData, walletMasterAddress, relayerAddress, gasPrice);
   const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, publicKey);
   return {
     initializeData,

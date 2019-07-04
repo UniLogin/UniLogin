@@ -37,7 +37,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS', async () => {
-    const {futureAddress, initializeData} = createFutureDeploymentWithRefund(keyPair.publicKey, walletMaster.address, ensDomainData,  factoryContract, deployer.address);
+    const {futureAddress, initializeData} = createFutureDeploymentWithRefund({publicKey: keyPair.publicKey, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: utils.bigNumberify('1000000').toString(), relayerAddress: deployer.address});
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
