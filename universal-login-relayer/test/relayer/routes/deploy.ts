@@ -37,7 +37,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .send({
         publicKey: keyPair.publicKey,
         ensName: 'myname.mylogin.eth',
-        overrideOptions: {gasPrice: 1}
+        gasPrice: '1'
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -55,7 +55,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .post(`/wallet/deploy/`)
       .send({
         publicKey: newKeyPair.publicKey,
-        ensName
+        ensName,
+        gasPrice: '1'
       });
     expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
   });
@@ -68,7 +69,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth'
+        ensName: 'myname.mylogin.eth',
+        gasPrice: '1'
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -79,7 +81,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth'
+        ensName: 'myname.mylogin.eth',
+        gasPrice: '1'
       });
     expect(result.status).to.eq(402);
     expect(result.body.type).to.eq('NotEnoughBalance');
@@ -92,7 +95,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: invalidEnsName
+        ensName: invalidEnsName,
+        gasPrice: '1'
       });
       expect(result.status).to.eq(404);
       expect(result.body.type).to.eq('NotFound');

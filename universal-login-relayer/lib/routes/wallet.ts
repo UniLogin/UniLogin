@@ -25,9 +25,9 @@ const getStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploy = (walletContractService: WalletService) =>
-  async (data: {body: {publicKey: string, ensName: string,  overrideOptions?: {}}}) => {
-    const {publicKey, ensName, overrideOptions} = data.body;
-    const transaction = await walletContractService.deploy(publicKey, ensName, overrideOptions);
+  async (data: {body: {publicKey: string, ensName: string,  gasPrice: string}}) => {
+    const {publicKey, ensName, gasPrice} = data.body;
+    const transaction = await walletContractService.deploy(publicKey, ensName, gasPrice);
     return responseOf(transaction, 201);
   };
 
@@ -75,7 +75,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
       body: asObject({
         publicKey: asString,
         ensName: asString,
-        overrideOptions: asOptional(asOverrideOptions)
+        gasPrice: asString
       })
     }),
     deploy(walletContractService)
