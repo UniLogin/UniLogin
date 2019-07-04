@@ -7,6 +7,7 @@ import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {FutureWalletFactory} from '../../lib/services/FutureWalletFactory';
 import {BlockchainService} from '../../lib/services/BlockchainService';
+import {RelayerApi} from '../../lib/RelayerApi';
 
 chai.use(chaiHttp);
 
@@ -32,19 +33,12 @@ describe('INT: FutureWalletFactory', async () => {
       contractWhiteList
     };
     const blockchainService = new BlockchainService(provider);
-    const relayerApi = {
-      deploy: (address: string, ensName: string) => chai.request(relayerUrl)
-        .post(`/wallet/deploy/`)
-        .send({
-          publicKey: address,
-          ensName
-        })
-    };
+    const relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
       provider,
       blockchainService,
-      relayerApi as any
+      relayerApi
     );
   });
 
@@ -56,7 +50,7 @@ describe('INT: FutureWalletFactory', async () => {
     expect(result.contractAddress).be.eq(contractAddress);
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
     wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    await deploy(ensName);
+    await deploy(ensName, '1');
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as ContractJSON)}`);
   });
 

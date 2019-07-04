@@ -38,7 +38,7 @@ describe('SDK counterfactual', () => {
 
   it('should not deploy contract which does not have balance', async () => {
     const {deploy} = (await sdk.createFutureWallet());
-    await expect(deploy('login.mylogin.eth')).to.be.rejected;
+    await expect(deploy('login.mylogin.eth', '1')).to.be.rejected;
   });
 
   it('counterfactual deployment roundtrip', async () => {
@@ -46,12 +46,12 @@ describe('SDK counterfactual', () => {
     const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet());
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
-    const deployedContractAddress = await deploy(ensName);
+    const deployedContractAddress = await deploy(ensName, '1');
     expect(deployedContractAddress).to.be.eq(contractAddress);
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     const signedMessage = await createSignedMessage({from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1')}, privateKey);
     await expect(sdk.execute(signedMessage, privateKey)).to.be.fulfilled;
-    await expect(deploy(ensName)).to.be.rejected;
+    await expect(deploy(ensName, '1')).to.be.rejected;
   });
 
   afterEach(async () => {
