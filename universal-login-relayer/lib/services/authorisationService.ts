@@ -1,6 +1,6 @@
 import Knex from 'knex';
 
-interface AuthorisationRequest {
+export interface AuthorisationRequest {
   walletContractAddress: string;
   key: string;
   deviceInfo: object;

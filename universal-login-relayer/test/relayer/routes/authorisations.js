@@ -22,6 +22,7 @@ async function getAuthorisation(relayer, contract, wallet) {
     });
   return {result, response: result.body.response};
 }
+
 describe('E2E: Relayer - Authorisation routes', async () => {
   let relayer;
   let provider;

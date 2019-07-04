@@ -1,22 +1,11 @@
 import {Router, Request} from 'express';
-import geoip from 'geoip-lite';
-import moment from 'moment';
-import AuthorisationService from '../services/authorisationService';
+import AuthorisationService, {AuthorisationRequest} from '../services/authorisationService';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
+import {getDeviceInfo} from '../utils/httpUtils';
 
 const request = (authorisationService : AuthorisationService) =>
   async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
-    const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
-    const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
-    const deviceInfo = {
-      ipAddress,
-      name: platform,
-      city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
-      os,
-      browser,
-      time: moment().format('h:mm'),
-    };
-    const requestAuthorisation = {...data.body, deviceInfo};
+    const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
     const result = await authorisationService.addRequest(requestAuthorisation);
     return responseOf({response: result}, 201);
   };
