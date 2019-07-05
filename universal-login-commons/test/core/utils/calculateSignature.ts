@@ -8,13 +8,11 @@ describe('Calculate Signature', () => {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const relayerAddress = '0x123939393';
   const gasPrice = '10000';
   const args = {
     ensName,
     hashLabel,
     node,
-    relayerAddress,
     gasPrice
   };
   const signer = Wallet.createRandom();
@@ -22,8 +20,8 @@ describe('Calculate Signature', () => {
   it('Should calculate initialize with ENS signature correctly', async () => {
     const signature = await calculateInitializeWithENSSignature(signer.privateKey, args);
     const message = utils.arrayify(utils.solidityKeccak256(
-      ['bytes32', 'string', 'bytes32', 'address', 'uint'],
-      [hashLabel, ensName, node, relayerAddress, gasPrice]));
+      ['bytes32', 'string', 'bytes32', 'uint'],
+      [hashLabel, ensName, node, gasPrice]));
     expect(utils.verifyMessage(message, signature)).to.eq(signer.address);
   });
 });
