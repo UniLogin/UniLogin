@@ -16,7 +16,7 @@ describe('Calculate Signature', () => {
     gasPrice
   };
   const signer = Wallet.createRandom();
-  
+
   it('Should calculate initialize with ENS signature correctly', async () => {
     const signature = await calculateInitializeWithENSSignature(signer.privateKey, args);
     const message = utils.arrayify(utils.solidityKeccak256(
