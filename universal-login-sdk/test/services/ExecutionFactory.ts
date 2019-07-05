@@ -10,13 +10,14 @@ describe('UNIT: ExecutionFactory', async () => {
   let executionFactory: ExecutionFactory;
   let relayerApi: RelayerApi;
   let signedMessage: SignedMessage;
+  let status: MessageStatus;
   let getStatus: SinonSpy;
   const callCount = 3;
 
   before(async () => {
     signedMessage = await createSignedMessage({from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
     const messageHash = await calculateMessageHash(signedMessage);
-    const status: MessageStatus = {
+    status = {
       transactionHash: TEST_TRANSACTION_HASH,
       required: 1,
       totalCollected: 1,
@@ -33,10 +34,23 @@ describe('UNIT: ExecutionFactory', async () => {
     executionFactory = new ExecutionFactory(relayerApi);
   });
 
-  it('ExecutionFactory roundtrip', async () => {
+  it('waitForMined success', async () => {
     const result = await relayerApi.execute(stringifySignedMessageFields(signedMessage));
     const execution = executionFactory.createExecution(result.status.messageHash);
     await execution.waitForMined();
     expect(getStatus.callCount).be.eq(callCount);
+  });
+
+  it('waitForMined error', async () => {
+    status.transactionHash = null;
+    status.error = 'Error: waitForMined';
+    const result = await relayerApi.execute(stringifySignedMessageFields(signedMessage));
+    const execution = executionFactory.createExecution(result.status.messageHash);
+    await expect(execution.waitForMined()).to.be.rejectedWith('Error: waitForMined');
+    expect(getStatus.callCount).be.eq(callCount);
+  });
+
+  afterEach(() => {
+    getStatus.resetHistory();
   });
 });

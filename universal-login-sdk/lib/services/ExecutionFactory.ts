@@ -1,4 +1,4 @@
-import {MessageStatus} from '@universal-login/commons';
+import {MessageStatus, ensure} from '@universal-login/commons';
 import {RelayerApi} from '../RelayerApi';
 import {retry} from '../utils/retry';
 
@@ -34,9 +34,7 @@ export class ExecutionFactory {
       const getStatus = () => this.relayerApi.getStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
       const status = await retry(getStatus, isNotExecuted);
-      if (status.error) {
-        throw Error(status.error);
-      }
+      ensure(!status.error, Error, status.error);
       return status;
     };
   }
