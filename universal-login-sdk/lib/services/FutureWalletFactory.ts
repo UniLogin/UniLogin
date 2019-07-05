@@ -1,11 +1,10 @@
 import {providers} from 'ethers';
-import {Omit} from '@universal-login/commons';
+import {Omit, calculateDeploySignature, PublicRelayerConfig} from '@universal-login/commons';
 import {createFutureWallet} from '../utils/counterfactual';
 import {BalanceObserver} from '../observers/BalanceObserver';
 import {DeploymentObserver} from '../observers/DeploymentObserver';
 import {BlockchainService} from './BlockchainService';
 import {RelayerApi} from '../RelayerApi';
-import {PublicRelayerConfig} from '@universal-login/commons/lib';
 
 export type BalanceDetails = {
   tokenAddress: string,
@@ -39,7 +38,8 @@ export class FutureWalletFactory {
     ) as Promise<BalanceDetails>;
 
     const deploy = async (ensName: string, gasPrice: string) => {
-      await this.relayerApi.deploy(publicKey, ensName, gasPrice);
+      const signature = await calculateDeploySignature(privateKey, ensName, gasPrice);
+      await this.relayerApi.deploy(publicKey, ensName, gasPrice, signature);
       return new Promise(
         (resolve) => {
           const deploymentObserver = new DeploymentObserver(this.blockchainService, this.config.contractWhiteList);
