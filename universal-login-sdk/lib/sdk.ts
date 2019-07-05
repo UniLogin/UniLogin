@@ -8,7 +8,7 @@ import {DeploymentObserver} from './observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 import {BlockchainService} from './services/BlockchainService';
-import {MissingConfiguration} from './utils/errors';
+import {MissingConfiguration, MissingMessageHash} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
 import {ExecutionFactory} from './services/ExecutionFactory';
 
@@ -166,6 +166,7 @@ class UniversalLoginSDK {
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
+    ensureNotNull(result.status.messageHash, MissingMessageHash);
     if (result.status.totalCollected >= result.status.required) {
       const execution = await this.executionFactory.createExecution(result.status.messageHash);
       const status = await execution.waitForMined();
