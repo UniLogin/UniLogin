@@ -5,3 +5,4 @@ export {RelayerClass};
 export {DevelopmentRelayer} from './dev/DevelopmentRelayer';
 export {TokenGrantingRelayer} from './dev/TokenGrantingRelayer';
 export {getContractWhiteList, RelayerUnderTest} from './utils/relayerUnderTest';
+export {InvalidAddress, InvalidSignature} from './utils/errors';

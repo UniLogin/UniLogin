@@ -77,6 +77,13 @@ export class InvalidMessage extends NotFound {
   }
 }
 
+export class InvalidAddress extends NotFound {
+  constructor (address: string) {
+    super(`Could not find address: ${address} in Multisig Wallet` , 'InvalidExecution');
+    Object.setPrototypeOf(this, InvalidAddress.prototype);
+  }
+}
+
 export class InvalidENSDomain extends NotFound {
   constructor (ensDomain: string) {
     super(`ENS domain ${ensDomain} does not exist or is not compatible with Universal Login`, 'NotFound');
