@@ -4,8 +4,9 @@ import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {EnsDomainData, createFutureDeploymentWithRefund, CreateFutureDeploymentWithRefundArgs, encodeInitializeWithRefundData, createProxyDeployWithRefundArgs, setupInitializeWithENSAndRefundArgs} from '../../lib';
+import {EnsDomainData, createFutureDeploymentWithRefund, CreateFutureDeploymentWithRefundArgs, encodeInitializeWithRefundData, setupInitializeWithENSAndRefundArgs} from '../../lib';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
+import {switchENSNameInInitializeArgs} from '../utils/utils';
 
 chai.use(solidity);
 
@@ -75,22 +76,12 @@ describe('Counterfactual Factory', () => {
     expect(await wallet.getBalance()).to.be.above(initBalance);
   });
 
-  it('should fail if different ens name was signed', async () => {
+  it('should fail if signed ens name and passed in initialize data are different', async () => {
     const {futureAddress} = await createFutureDeploymentWithRefund(createFutureDeploymentArgs);
-    let argsWithCorrectName = await setupInitializeWithENSAndRefundArgs(createFutureDeploymentArgs);
+    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
+    const argsWithCorrectName = await setupInitializeWithENSAndRefundArgs(createFutureDeploymentArgs);
     const argsWithInvalidName = switchENSNameInInitializeArgs(argsWithCorrectName, 'invalid-name');
     const initData = encodeInitializeWithRefundData(argsWithInvalidName);
-    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await expect(factoryContract.createContract(keyPair.publicKey, initData)).to.be.revertedWith('Unable to register ENS domain');
   });
 });
-
-const switchENSNameInInitializeArgs = (initializeArgs: string[], name: string, domain = 'mylogin.eth') => {
-  const ensName = `${name}.${domain}`;
-  const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
-  const node = utils.namehash(ensName);
-  initializeArgs[1] = hashLabel;
-  initializeArgs[2] = ensName;
-  initializeArgs[3] = node;
-  return initializeArgs;
-}
