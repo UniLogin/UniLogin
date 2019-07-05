@@ -23,7 +23,7 @@ contract WalletMasterWithRefund is WalletMaster {
         bytes calldata signature) external onlyInitializing()
     {
         require(signature.length == 65, "Invalid signature");
-        require(isValidInitializeSignature(_key, _hashLabel, _name, _node, gasPrice, signature), "");
+        require(isValidInitializeSignature(_key, _hashLabel, _name, _node, gasPrice, signature), "Invalid signature");
         this.initializeWithENS(_key, _hashLabel, _name, _node, ens, registrar, resolver);
         refund(getDeploymentGasUsed(), gasPrice, address(0), relayer);
     }
