@@ -166,7 +166,7 @@ class UniversalLoginSDK {
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
-    if (result.status.messageHash) {
+    if (result.status.totalCollected >= result.status.required) {
       const execution = await this.executionFactory.createExecution(result.status.messageHash);
       const status = await execution.waitForMined();
       result.status.transactionHash = status.transactionHash;
