@@ -35,7 +35,8 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, p
   .post('/wallet/deploy')
   .send({
     publicKey,
-    ensName
+    ensName,
+    gasPrice: '1'
   });
   return new Contract(futureAddress, WalletContract.interface, wallet);
 };

@@ -1,4 +1,4 @@
-import {ContractFactory, Wallet, Contract} from 'ethers';
+import {ContractFactory, Wallet, Contract, utils} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from './ensService';
@@ -40,15 +40,15 @@ class WalletService {
     throw new InvalidENSDomain(ensName);
   }
 
-  async deploy(key: string, ensName: string, overrideOptions = {}) {
+  async deploy(key: string, ensName: string, gasPrice: string) {
     ensure(!await this.ensService.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
-    const args = [key, ...ensArgs as string[], this.wallet.address];
+    const args = [key, ...ensArgs as string[], this.wallet.address, gasPrice];
     const initWithENS = encodeInitializeWithRefundData(args);
-    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions, ...overrideOptions});
+    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions, gasPrice: utils.bigNumberify(gasPrice)});
   }
 }
 

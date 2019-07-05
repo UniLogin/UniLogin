@@ -3,7 +3,7 @@ import WalletSelector from './WalletSelector';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
-import {DEFAULT_LOCATION, Procedure} from '@universal-login/commons';
+import {DEFAULT_LOCATION, Procedure, defaultDeployOptions} from '@universal-login/commons';
 
 interface LoginProps {
   location? : {state: {from: {pathname : string}}};
@@ -20,7 +20,7 @@ const Login = ({location} : LoginProps) => {
     modalService.showModal('topUpAccount');
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
-    await deploy(name);
+    await deploy(name, defaultDeployOptions.gasPrice.toString());
     walletService.setDeployed(name);
     history.push(from);
   };
