@@ -19,9 +19,45 @@ contract WalletMasterWithRefund is WalletMaster {
         FIFSRegistrar registrar,
         PublicResolver resolver,
         address payable relayer,
-        uint gasPrice) external onlyInitializing()
-        {
+        uint gasPrice,
+        bytes calldata signature) external onlyInitializing()
+    {
+        require(signature.length == 65, "Invalid signature");
+        require(isValidInitializeSignature(_key, _hashLabel, _name, _node, relayer, gasPrice, signature), "");
         this.initializeWithENS(_key, _hashLabel, _name, _node, ens, registrar, resolver);
         refund(getDeploymentGasUsed(), gasPrice, address(0), relayer);
+    }
+
+    function isValidInitializeSignature(
+        address key,
+        bytes32 _hashLabel,
+        string memory _name,
+        bytes32 _node,
+        address payable relayer,
+        uint gasPrice,
+        bytes memory signature) public pure returns(bool) 
+    {
+        return key == getSigner(_hashLabel, _name, _node, relayer, gasPrice, signature);
+    }
+
+    function calculateInitializeHash(
+        bytes32 _hashLabel,
+        string memory _name,
+        bytes32 _node,
+        address payable relayer,
+        uint gasPrice) public pure returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(_hashLabel, _name, _node, relayer, gasPrice));
+    }
+
+    function getSigner(
+        bytes32 _hashLabel,
+        string memory _name,
+        bytes32 _node,
+        address payable relayer,
+        uint gasPrice,
+        bytes memory signature) public pure returns (address)
+    {
+        return calculateInitializeHash(_hashLabel, _name, _node, relayer, gasPrice).toEthSignedMessageHash().recover(signature);
     }
 }
