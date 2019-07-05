@@ -11,7 +11,7 @@ describe('Calculate Signature', () => {
   const relayerAddress = '0x123939393';
   const gasPrice = '10000';
   const args = {
-    name: ensName,
+    ensName,
     hashLabel,
     node,
     relayerAddress,
