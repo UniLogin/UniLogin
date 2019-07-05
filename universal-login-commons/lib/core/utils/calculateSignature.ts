@@ -5,7 +5,7 @@ export type InitializeWithENSArgs = {
   hashLabel: string;
   node: string;
   relayerAddress: string;
-  gasPrice: utils.BigNumber;
+  gasPrice: string;
 }
 export const calculateInitializeWithENSSignature = (privateKey: string, args: InitializeWithENSArgs) => {
   const wallet = new Wallet(privateKey);

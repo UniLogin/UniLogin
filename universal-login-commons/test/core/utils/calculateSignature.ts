@@ -9,7 +9,7 @@ describe('Calculate Signature', () => {
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
   const relayerAddress = '0x123939393';
-  const gasPrice = utils.bigNumberify('10000');
+  const gasPrice = '10000';
   const args = {
     name: ensName,
     hashLabel,
