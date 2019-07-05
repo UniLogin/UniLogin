@@ -1,5 +1,5 @@
 import ENSBuilder from 'ens-builder';
-import ENSService from '../../lib/services/ensService';
+import ENSService from '../../lib/integration/ethereum/ensService';
 import {withENS} from '@universal-login/commons';
 
 const buildEnsService = async (wallet, domain) => {

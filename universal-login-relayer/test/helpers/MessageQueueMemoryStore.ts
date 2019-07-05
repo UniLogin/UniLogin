@@ -1,5 +1,6 @@
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IMessageQueueStore, MessageEntity} from '../../lib/services/messages/IMessageQueueStore';
+import {IMessageQueueStore} from '../../lib/core/services/messages/IMessageQueueStore';
+import {MessageEntity} from '../../lib/core/models/messages/MessageEntity';
 
 export default class MessageQueueMemoryStore implements IMessageQueueStore {
   public messageEntries: MessageEntity[];

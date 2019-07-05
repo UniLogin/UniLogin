@@ -2,7 +2,7 @@ import path from 'path';
 import { KnexConfig } from './KnexConfig';
 import { getEnv } from '@universal-login/commons';
 
-const migrationDir = path.join(__dirname, '../../../migrations');
+const migrationDir = path.join(__dirname, '../integration/sql/migrations');
 
 function getDevelopmentKnexConfig(): KnexConfig {
   return {

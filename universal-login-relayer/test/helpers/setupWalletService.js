@@ -1,7 +1,7 @@
 import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {loadFixture} from 'ethereum-waffle';
-import WalletService from '../../lib/services/WalletService';
+import WalletService from '../../lib/integration/ethereum/WalletService';
 import basicWalletContract from '../fixtures/basicWalletContract';
 
 
