@@ -11,12 +11,14 @@ import {retry} from './utils/retry';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
+import { ExecutionFactory } from './services/ExecutionFactory';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
   relayerApi: RelayerApi;
   relayerObserver: RelayerObserver;
   blockchainObserver: BlockchainObserver;
+  executionFactory: ExecutionFactory;
   balanceObserver?: BalanceObserver;
   deploymentObserver?: DeploymentObserver;
   blockchainService: BlockchainService;
@@ -35,6 +37,7 @@ class UniversalLoginSDK {
       : providerOrUrl;
     this.relayerApi = new RelayerApi(relayerUrl);
     this.relayerObserver = new RelayerObserver(this.relayerApi);
+    this.executionFactory = new ExecutionFactory(this.relayerApi);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
@@ -156,20 +159,6 @@ class UniversalLoginSDK {
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(futureWalletConfig, this.provider, this.blockchainService, this.relayerApi);
   }
 
-  private isExecuted (messageStatus: MessageStatus){
-    return !!messageStatus.transactionHash || !!messageStatus.error;
-  }
-
-  async waitForStatus(messageHash: string) {
-    const getStatus = async () => this.relayerApi.getStatus(messageHash);
-    const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
-    const status = await retry(getStatus, isNotExecuted);
-    if (status.error) {
-      throw Error(status.error);
-    }
-    return status;
-  }
-
   async execute(message: Message, privateKey: string): Promise<MessageStatus> {
     const unsignedMessage = {
       ...this.defaultPaymentOptions,
@@ -179,7 +168,8 @@ class UniversalLoginSDK {
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
     if (result.status.messageHash) {
-      const status = await this.waitForStatus(result.status.messageHash);
+      const execution = await this.executionFactory.createExecution(result.status.messageHash);
+      const status = await execution.waitForMined();
       ensure(!status.error, Error, status.error);
       const {transactionHash} = status;
       result.status.transactionHash = transactionHash;
