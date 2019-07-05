@@ -6,12 +6,13 @@ export type InitializeWithENSArgs = {
   hashLabel: string;
   node: string;
   gasPrice: string;
-}
+};
+
 export const calculateInitializeWithENSSignature = (privateKey: string, args: InitializeWithENSArgs) => {
   const wallet = new Wallet(privateKey);
   const initializeHash = calculateInitializeWithENSHash(args);
   return wallet.signMessage(utils.arrayify(initializeHash));
-}
+};
 
 export const calculateInitializeWithENSHash = (args: InitializeWithENSArgs) => utils.solidityKeccak256(
   ['bytes32', 'string', 'bytes32', 'uint'],

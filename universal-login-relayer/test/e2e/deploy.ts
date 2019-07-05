@@ -33,7 +33,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   it('Counterfactual deployment with ether payment and refund', async () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     const initialRelayerBalance = await deployer.getBalance();
-    
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)
       .send({

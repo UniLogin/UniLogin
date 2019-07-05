@@ -8,4 +8,4 @@ export const switchENSNameInInitializeArgs = (initializeArgs: string[], name: st
   initializeArgs[2] = ensName;
   initializeArgs[3] = node;
   return initializeArgs;
-}
+};
