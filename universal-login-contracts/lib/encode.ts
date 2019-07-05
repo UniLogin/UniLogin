@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, ContractJSON} from '@universal-login/commons';
+import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
 import WalletMaster from '../build/WalletMaster.json';
 import WalletMasterWithRefund from '../build/WalletMasterWithRefund.json';
 
@@ -35,7 +35,7 @@ export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
   new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
 
 type SetupInitializeWithENSArgs = {
-  key: string;
+  keyPair: KeyPair;
   ensDomainData: EnsDomainData;
   name?: string;
   domain?: string;
@@ -46,15 +46,15 @@ interface SetupInitializeWithENSAndRefundArgs extends SetupInitializeWithENSArgs
   gasPrice: string;
 }
 
-export function setupInitializeWithENSArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
+export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
+  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
   return args;
 }
 
-export function setupInitializeWithENSAndRefundArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
-  const args = setupInitializeWithENSArgs({key, ensDomainData, name, domain});
+export function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
+  const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
   return [...args, relayerAddress, gasPrice];
 }
