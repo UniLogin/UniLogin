@@ -73,7 +73,7 @@ class Relayer {
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(publicConfig));
-    this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
+    this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService, this.provider));
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
   }

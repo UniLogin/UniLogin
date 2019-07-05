@@ -11,6 +11,7 @@ import {retry} from './utils/retry';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
+import {CancelAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -218,9 +219,17 @@ class UniversalLoginSDK {
     return privateKey;
   }
 
-  async denyRequest(walletContractAddress: string, key: string) {
-    await this.relayerApi.denyConnection(walletContractAddress, key);
-    return key;
+  async denyRequest(walletContractAddress: string, publicKey: string, privateKey: string) {
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
+      walletContractAddress,
+      key: publicKey
+    };
+    await this.relayerApi.denyConnection(
+      walletContractAddress,
+      publicKey,
+      signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey)
+    );
+    return publicKey;
   }
 
   async fetchPendingAuthorisations(walletContractAddress: string) {

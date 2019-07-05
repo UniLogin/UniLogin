@@ -1,4 +1,5 @@
 import {http, HttpFunction} from './utils/http';
+import { utils } from 'ethers';
 
 export class RelayerApi {
   private http: HttpFunction;
@@ -39,10 +40,14 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(walletContractAddress: string, key: string) {
+  async denyConnection(walletContractAddress: string, key: string, signedCancelAuthorisationRequest: utils.Signature) {
     return this.http('POST', `/authorisation/${walletContractAddress}`, {
       walletContractAddress,
       key,
+      signedCancelAuthorisationRequest
+    }).catch((e) => {
+      console.log(e)
+      throw new Error(e)
     });
   }
 
