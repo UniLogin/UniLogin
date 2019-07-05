@@ -25,7 +25,7 @@ describe('Counterfactual Factory', () => {
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {publicKey: keyPair.publicKey, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, relayerAddress: wallet.address, gasPrice: utils.bigNumberify('1000000').toString()};
+    createFutureDeploymentArgs = {keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, relayerAddress: wallet.address, gasPrice: utils.bigNumberify('1000000').toString()};
     ({initializeData, futureAddress} = createFutureDeploymentWithRefund(createFutureDeploymentArgs));
   });
 
@@ -52,7 +52,7 @@ describe('Counterfactual Factory', () => {
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData);
     const newKeyPair = createKeyPair();
-    ({initializeData} = createFutureDeploymentWithRefund({...createFutureDeploymentArgs, publicKey: newKeyPair.publicKey}));
+    ({initializeData} = createFutureDeploymentWithRefund({...createFutureDeploymentArgs, keyPair: newKeyPair}));
     await expect(factoryContract.createContract(newKeyPair.publicKey, initializeData)).to.be.revertedWith('Unable to register ENS domain');
   });
 
@@ -63,7 +63,7 @@ describe('Counterfactual Factory', () => {
 
   it('createContract should fail if publicKey and publicKey in initializeData are diffrent', async () => {
     const newKeyPair = createKeyPair();
-    ({initializeData} = createFutureDeploymentWithRefund({...createFutureDeploymentArgs, publicKey: newKeyPair.publicKey}));
+    ({initializeData} = createFutureDeploymentWithRefund({...createFutureDeploymentArgs, keyPair: newKeyPair}));
     await expect(factoryContract.createContract(keyPair.publicKey, initializeData)).to.be.revertedWith('Public key and initialize public key are different');
   });
 

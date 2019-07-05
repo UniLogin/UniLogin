@@ -37,7 +37,7 @@ export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const {initializeData, futureAddress} = createFutureDeploymentWithRefund({publicKey: keyPair.publicKey, walletMasterAddress: walletMaster.address, gasPrice: utils.bigNumberify('1000000').toString(), ensDomainData, factoryContract, relayerAddress: deployer.address});
+  const {initializeData, futureAddress} = createFutureDeploymentWithRefund({keyPair, walletMasterAddress: walletMaster.address, gasPrice: utils.bigNumberify('1000000').toString(), ensDomainData, factoryContract, relayerAddress: deployer.address});
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeData);
   const walletContract = new Contract(futureAddress, WalletMaster.interface, provider);

@@ -41,10 +41,20 @@ type SetupInitializeWithENSArgs = {
   domain?: string;
 };
 
+interface SetupInitializeWithENSAndRefundArgs extends SetupInitializeWithENSArgs {
+  relayerAddress: string;
+  gasPrice: string;
+}
+
 export function setupInitializeWithENSArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
   const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
   return args;
+}
+
+export function setupInitializeWithENSAndRefundArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
+  const args = setupInitializeWithENSArgs({key, ensDomainData, name, domain});
+  return [...args, relayerAddress, gasPrice];
 }
