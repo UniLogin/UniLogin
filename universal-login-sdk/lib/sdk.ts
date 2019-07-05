@@ -7,11 +7,10 @@ import {BalanceObserver} from './observers/BalanceObserver';
 import {DeploymentObserver} from './observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
-import {retry} from './utils/retry';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
-import { ExecutionFactory } from './services/ExecutionFactory';
+import {ExecutionFactory} from './services/ExecutionFactory';
 
 class UniversalLoginSDK {
   provider: providers.Provider;

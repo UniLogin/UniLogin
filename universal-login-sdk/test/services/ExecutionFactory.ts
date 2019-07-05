@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import sinon, { SinonSpy } from 'sinon';
-import {providers, Wallet, utils} from 'ethers';
+import sinon, {SinonSpy} from 'sinon';
+import {utils} from 'ethers';
 import {createSignedMessage, stringifySignedMessageFields, TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH} from '@universal-login/commons';
 
 import {ExecutionFactory} from '../../lib/services/ExecutionFactory';
