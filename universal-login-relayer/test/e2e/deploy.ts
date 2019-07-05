@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
-import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair} from '@universal-login/commons';
+import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair, calculateDeploySignature} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
 import Relayer from '../../lib';
@@ -21,6 +21,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let initCode: string;
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
+  const ensName = 'myname.mylogin.eth';
 
   beforeEach(async () => {
     ({provider, relayer, deployer, walletMaster, factoryContract, mockToken} = await startRelayerWithRefund(relayerPort));
@@ -32,12 +33,14 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   it('Counterfactual deployment with ether payment and refund', async () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     const initialRelayerBalance = await deployer.getBalance();
+    
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth',
-        gasPrice: '1'
+        ensName,
+        gasPrice: '1',
+        signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -46,8 +49,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
 
   it('Counterfactual deployment fail if ENS name is taken', async () => {
-    const ensName = 'myname.mylogin.eth';
-    await createWalletCounterfactually(deployer, relayerUrl, keyPair.publicKey, walletMaster.address, factoryContract.address, ensName);
+    await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletMaster.address, factoryContract.address, ensName);
     const newKeyPair = createKeyPair();
     contractAddress = computeContractAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
@@ -56,7 +58,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .send({
         publicKey: newKeyPair.publicKey,
         ensName,
-        gasPrice: '1'
+        gasPrice: '1',
+        signature: await calculateDeploySignature(newKeyPair.privateKey, ensName, '1')
       });
     expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
   });
@@ -69,8 +72,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth',
-        gasPrice: '1'
+        ensName,
+        gasPrice: '1',
+        signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -81,8 +85,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
-        ensName: 'myname.mylogin.eth',
-        gasPrice: '1'
+        ensName,
+        gasPrice: '1',
+        signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
       });
     expect(result.status).to.eq(402);
     expect(result.body.type).to.eq('NotEnoughBalance');
@@ -96,7 +101,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .send({
         publicKey: keyPair.publicKey,
         ensName: invalidEnsName,
-        gasPrice: '1'
+        gasPrice: '1',
+        signature: await calculateDeploySignature(keyPair.privateKey, invalidEnsName, '1')
       });
       expect(result.status).to.eq(404);
       expect(result.body.type).to.eq('NotFound');

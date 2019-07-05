@@ -1,12 +1,12 @@
 import {defaultDeployOptions} from '@universal-login/commons';
 import WalletProxy from '@universal-login/contracts/build/Proxy.json';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
-import {ContractFactory, Contract} from 'ethers';
+import {ContractFactory, Contract, utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
 export default async function createWalletContract(wallet, ensService) {
-  const walletMaster = await deployContract(wallet, WalletMaster);
+  const walletMaster = await deployContract(wallet, WalletMaster, [], {gasLimit: utils.bigNumberify('5000000')});
   const factory = new ContractFactory(
     WalletProxy.interface,
     `0x${WalletProxy.evm.bytecode.object}`,
