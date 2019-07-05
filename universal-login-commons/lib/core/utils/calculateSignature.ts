@@ -17,7 +17,7 @@ export const calculateInitializeWithENSHash = (args: InitializeWithENSArgs) => u
   ['bytes32', 'string', 'bytes32', 'uint'],
   [args.hashLabel, args.ensName, args.node, args.gasPrice]);
 
-export const calculateSignature = (privateKey: string, ensName: string, gasPrice: string, relayerAddress: string) => {
+export const calculateDeploySignature = (privateKey: string, ensName: string, gasPrice: string) => {
   const [name] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
