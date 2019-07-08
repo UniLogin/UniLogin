@@ -1,8 +1,7 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnathorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
-
   constructor (message: string, errorType: ErrorType) {
     super(message);
     this.errorType = errorType;
@@ -10,6 +9,20 @@ export class RelayerError extends Error {
   }
 }
 
+export class Unauthorised extends RelayerError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, Unauthorised.prototype);
+  }
+}
+
+export class UnathorisedAddress extends Unauthorised {
+  constructor (address: string) {
+    super(`Unauthorised address: ${address}` , 'UnathorisedAddress');
+    Object.setPrototypeOf(this, UnathorisedAddress.prototype);
+  }
+}
 
 export class ValidationFailed extends RelayerError {
   constructor (message: string, errorType: ErrorType) {
@@ -25,6 +38,7 @@ export class InvalidSignature extends ValidationFailed {
     Object.setPrototypeOf(this, InvalidSignature.prototype);
   }
 }
+
 
 export class InvalidContract extends ValidationFailed {
   constructor (contractAddress: string) {
@@ -74,13 +88,6 @@ export class InvalidMessage extends NotFound {
   constructor (hash: string) {
     super(`Could not find message with hash: ${hash}` , 'InvalidExecution');
     Object.setPrototypeOf(this, InvalidMessage.prototype);
-  }
-}
-
-export class InvalidAddress extends NotFound {
-  constructor (address: string) {
-    super(`Could not find address: ${address} in Multisig Wallet` , 'InvalidExecution');
-    Object.setPrototypeOf(this, InvalidAddress.prototype);
   }
 }
 
