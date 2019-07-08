@@ -20,7 +20,7 @@ export class ExecutionFactory {
     const {messageHash, totalCollected, required} = result.status;
     const waitForMined = totalCollected >= required ? this.createWaitForMined(messageHash) : async () => result.status;
     const waitForPending = async () => {
-      return {} as MessageStatus;
+      throw Error('Not implemented');
     };
     return {
       messageStatus: {} as MessageStatus,
