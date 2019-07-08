@@ -2,10 +2,10 @@ import {Router, Request} from 'express';
 import AuthorisationService, {AuthorisationRequest} from '../../integration/sql/services/authorisationService';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {verifyCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
+import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
 import { ethers, providers, utils} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
-import { InvalidSignature, InvalidAddress } from '../../core/utils/errors';
+import { UnathorisedAddress } from '../../core/utils/errors';
 import { asSignature } from '../utils/sanitizers';
 
 
@@ -28,17 +28,14 @@ const denyRequest = (authorisationService : AuthorisationService, provider: prov
     const {key, signature} = data.body;
 
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, key};
-    const [isValid, computedAddress] = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, signature, key);
-    if (!isValid) {
-      throw new InvalidSignature(`cancelAuthorisationRequest failed due to invalid signature`);
-    }
+    const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest, signature);
 
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, provider);
     const flatSignature = ethers.utils.joinSignature(signature);
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, flatSignature);
     if (!isCorrectAddress) {
-      throw new InvalidAddress(computedAddress);
+      throw new UnathorisedAddress(recoveredAddress);
     }
 
     const result = await authorisationService.removeRequest(data.walletContractAddress, data.body.key);

@@ -35,5 +35,3 @@ export const asOverrideOptions: Sanitizer<TransactionOverrides> = asObject({
   gasLimit: asOptional(asBigNumberish),
   gasPrice: asOptional(asBigNumberish)
 });
-
-export const asAny = (value: any) => Either.right(value);

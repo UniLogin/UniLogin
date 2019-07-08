@@ -25,18 +25,11 @@ describe('E2E authorization - sdk <=> relayer', async () => {
     await expect(sdk.denyRequest(contractAddress, userAddress, privateKey)).to.be.eventually.fulfilled;
   });
 
-  it('Send forged cancel request with valid signature', async () => {
+  it('Send forged cancel request', async () => {
     const attackerPrivateKey = Wallet.createRandom().privateKey;
     const attackerAddress = utils.computeAddress(attackerPrivateKey);
     await expect(sdk.denyRequest(contractAddress, attackerAddress, attackerPrivateKey))
-      .to.be.eventually.rejectedWith(`Error: Could not find address: ${attackerAddress} in Multisig Wallet`);
-  });
-
-  it('Send cancel request with invalid signature', async () => {
-    const userAddress = utils.computeAddress(privateKey);
-    const attackerPrivateKey = Wallet.createRandom().privateKey;
-    await expect(sdk.denyRequest(contractAddress, userAddress, attackerPrivateKey))
-      .to.be.eventually.rejectedWith(`Invalid signature cancelAuthorisationRequest failed due to invalid signature`);
+      .to.be.eventually.rejectedWith(`Error: Unauthorised address: ${attackerAddress}`);
   });
 
   after(async () => {

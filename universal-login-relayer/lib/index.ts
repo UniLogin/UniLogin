@@ -5,4 +5,4 @@ export {RelayerClass};
 export {DevelopmentRelayer} from './http/relayers/DevelopmentRelayer';
 export {TokenGrantingRelayer} from './http/relayers/TokenGrantingRelayer';
 export {getContractWhiteList, RelayerUnderTest} from './http/relayers/RelayerUnderTest';
-export {InvalidAddress, InvalidSignature} from './core/utils/errors';
+export {UnathorisedAddress} from './core/utils/errors';
