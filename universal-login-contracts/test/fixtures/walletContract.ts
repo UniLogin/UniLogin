@@ -1,10 +1,9 @@
 import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
-import WalletMasterWithRefund from '../../build/WalletMasterWithRefund.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {deployFactory, createFutureDeploymentWithRefund} from '../../lib';
+import {deployFactory, createFutureDeploymentWithRefund, deployWalletMasterWithRefund} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
@@ -26,7 +25,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
 }
 
 export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
-  const walletMaster = await deployContract(deployer, WalletMasterWithRefund, [], {gasLimit: utils.bigNumberify('5000000')});
+  const walletMaster = await deployWalletMasterWithRefund(deployer);
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     walletMaster,

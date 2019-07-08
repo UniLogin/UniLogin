@@ -1,11 +1,10 @@
 import {Wallet, utils, Contract} from 'ethers';
 import {RelayerUnderTest} from '../../lib/http/relayers/RelayerUnderTest';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy, calculateDeploySignature} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import chai from 'chai';
-import {deployFactory, getFutureAddress} from '@universal-login/contracts';
+import {deployFactory, getFutureAddress, deployWalletMasterWithRefund} from '@universal-login/contracts';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -46,7 +45,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
 export const startRelayerWithRefund = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
-  const walletMaster = await deployContract(deployer, WalletMasterWithRefund, [], {gasLimit: utils.bigNumberify('5000000')});
+  const walletMaster = await deployWalletMasterWithRefund(deployer);
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   const {relayer, mockToken} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletMaster, factoryContract});
   await relayer.start();
