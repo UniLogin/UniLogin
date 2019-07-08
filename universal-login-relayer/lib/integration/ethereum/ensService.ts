@@ -1,14 +1,9 @@
 import {utils, Contract, providers} from 'ethers';
 import ENS from '@universal-login/contracts/build/ENS.json';
-import {parseDomain, resolveName} from '@universal-login/commons';
-
-interface DomainInfo {
-  resolverAddress? : string;
-  registrarAddress? : string;
-}
+import {parseDomain, resolveName, ENSDomainInfo} from '@universal-login/commons';
 
 class ENSService {
-  private domainsInfo : Record<string, DomainInfo>  = {};
+  private domainsInfo : Record<string, ENSDomainInfo>  = {};
 
   private ens: Contract;
 

@@ -58,7 +58,7 @@ export class RelayerUnderTest extends Relayer {
       supportedTokens
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
-    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster, mockToken};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, walletMaster, mockToken, provider: providerWithENS};
   }
 
   url() {

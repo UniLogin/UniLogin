@@ -36,3 +36,4 @@ export {copy} from './react/copy';
 export {calculateInitializeWithENSSignature, calculateDeploySignature} from './core/utils/calculateSignature';
 export {CancelAuthorisationRequest} from './core/models/authorisation';
 export {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from './core/utils/authorisation';
+export {ENSDomainInfo} from './core/models/ENSDomainInfo';
