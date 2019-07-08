@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig, createKeyPair} from '@universal-login/commons';
+import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -11,7 +11,6 @@ import {retry} from './utils/retry';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
-import {CancelAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
