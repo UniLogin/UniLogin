@@ -1,12 +1,6 @@
 import {Wallet, utils} from 'ethers';
 import {parseDomain} from '../utils/ens';
-
-export type InitializeWithENSArgs = {
-  ensName: string;
-  hashLabel: string;
-  node: string;
-  gasPrice: string;
-};
+import {InitializeWithENSArgs} from '../models/InitializeWithENSArgs';
 
 export const calculateInitializeWithENSSignature = (args: InitializeWithENSArgs, privateKey: string) => {
   const wallet = new Wallet(privateKey);
