@@ -78,7 +78,7 @@ class WalletService {
   }
 
   async execute(message) {
-    await this.sdk.execute(
+    return this.sdk.execute(
       message,
       this.walletContract.privateKey
     );
