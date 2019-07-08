@@ -11,6 +11,7 @@ describe('UNIT: ExecutionFactory', async () => {
   let relayerApi: RelayerApi;
   let signedMessage: SignedMessage;
   let status: MessageStatus;
+  let executionStatus: MessageStatus;
   let getStatus: SinonSpy;
   const callCount = 2;
 
@@ -24,11 +25,15 @@ describe('UNIT: ExecutionFactory', async () => {
       messageHash,
       collectedSignatures: [signedMessage.signature]
     };
+    executionStatus = {
+      ...status,
+      transactionHash: null
+    };
     getStatus = sinon.stub()
       .returns({status: {}})
       .onCall(callCount - 1).returns(status);
     relayerApi = {
-      execute: sinon.stub().returns({status: {messageHash, required: 1, totalCollected: 1}}),
+      execute: sinon.stub().returns({status: executionStatus}),
       getStatus
     } as any;
     executionFactory = new ExecutionFactory(relayerApi);
@@ -37,6 +42,7 @@ describe('UNIT: ExecutionFactory', async () => {
   it('waitForMined success', async () => {
     const execution = await executionFactory.createExecution(signedMessage);
     await execution.waitForMined();
+    expect(execution.messageStatus).to.be.deep.eq(executionStatus);
     expect(getStatus.callCount).be.eq(callCount);
   });
 
@@ -44,6 +50,7 @@ describe('UNIT: ExecutionFactory', async () => {
     status.transactionHash = null;
     status.error = 'Error: waitForMined';
     const execution = await executionFactory.createExecution(signedMessage);
+    expect(execution.messageStatus).to.be.deep.eq(executionStatus);
     await expect(execution.waitForMined()).to.be.rejectedWith('Error: waitForMined');
     expect(getStatus.callCount).be.eq(callCount);
   });

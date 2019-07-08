@@ -23,7 +23,7 @@ export class ExecutionFactory {
       throw Error('Not implemented');
     };
     return {
-      messageStatus: {} as MessageStatus,
+      messageStatus: result.status,
       waitForMined,
       waitForPending
     };
