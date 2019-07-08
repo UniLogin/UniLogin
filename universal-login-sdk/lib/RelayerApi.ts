@@ -46,8 +46,7 @@ export class RelayerApi {
       key,
       signedCancelAuthorisationRequest
     }).catch((e) => {
-      console.log(e)
-      throw new Error(e)
+      throw new Error(e.error);
     });
   }
 

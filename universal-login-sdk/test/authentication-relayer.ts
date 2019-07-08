@@ -3,7 +3,6 @@ import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import basicSDK from './fixtures/basicSDK';
 import UniversalLoginSDK from '../lib/sdk';
-// import {InvalidSignature, InvalidAddress} from '@universal-login/relayer';
 
 const loadFixture = createFixtureLoader();
 
@@ -30,16 +29,14 @@ describe('E2E authorization - sdk <=> relayer', async () => {
     const attackerPrivateKey = Wallet.createRandom().privateKey;
     const attackerAddress = utils.computeAddress(attackerPrivateKey);
     await expect(sdk.denyRequest(contractAddress, attackerAddress, attackerPrivateKey))
-      .to.be.eventually.rejected;
-      // With(`Error: Could not find address: ${attackerAddress} in Multisig Wallet`);
+      .to.be.eventually.rejectedWith(`Error: Could not find address: ${attackerAddress} in Multisig Wallet`);
   });
 
   it('Send cancel request with invalid signature', async () => {
     const userAddress = utils.computeAddress(privateKey);
     const attackerPrivateKey = Wallet.createRandom().privateKey;
     await expect(sdk.denyRequest(contractAddress, userAddress, attackerPrivateKey))
-      .to.be.eventually.rejected;
-      // With(`Invalid signature cancelAuthorisationRequest failed due to invalid signature`);
+      .to.be.eventually.rejectedWith(`Invalid signature cancelAuthorisationRequest failed due to invalid signature`);
   });
 
   after(async () => {
