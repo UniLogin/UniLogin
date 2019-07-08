@@ -3,10 +3,10 @@ import AuthorisationService, {AuthorisationRequest} from '../../integration/sql/
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {verifyCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
-import { ethers, providers} from 'ethers';
+import { ethers, providers, utils} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { InvalidSignature, InvalidAddress } from '../../core/utils/errors';
-import { asSignature, MySignature } from '../utils/sanitizers';
+import { asSignature } from '../utils/sanitizers';
 
 
 const request = (authorisationService : AuthorisationService) =>
@@ -23,7 +23,7 @@ const getPending = (authorisationService : AuthorisationService) =>
   };
 
 const denyRequest = (authorisationService : AuthorisationService, provider: providers.Provider) =>
-  async (data: {walletContractAddress: string, body: {key: string, signature: MySignature}}) => {
+  async (data: {walletContractAddress: string, body: {key: string, signature: utils.Signature}}) => {
     const {walletContractAddress} = data;
     const {key, signature} = data.body;
 
