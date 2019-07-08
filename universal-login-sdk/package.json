@@ -1,16 +1,16 @@
 {
   "name": "@universal-login/sdk",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main": "dist/lib/sdk.js",
   "types": "dist/lib/sdk.d.ts",
   "license": "MIT",
   "dependencies": {
+    "@universal-login/commons": "^0.3.0",
+    "@universal-login/contracts": "^0.3.0",
     "deep-equal": "^1.0.1",
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
-    "node-fetch": "^2.2.0",
-    "@universal-login/commons": "^0.2.1",
-    "@universal-login/contracts": "^0.2.1"
+    "node-fetch": "^2.2.0"
   },
   "scripts": {
     "build": "yarn clean && tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
@@ -25,6 +25,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^5.2.5",
     "@types/node-fetch": "^2.1.6",
+    "@universal-login/relayer": "^0.3.0",
     "chai": "^4.1.2",
     "ethereum-waffle": "2.0.12",
     "ganache-core": "^2.2.1",
@@ -33,7 +34,6 @@
     "sinon-chai": "^3.2.0",
     "ts-node": "^8.0.2",
     "tslint": "^5.16.0",
-    "typescript": "^3.3.3",
-    "@universal-login/relayer": "^0.2.1"
+    "typescript": "^3.3.3"
   }
 }
