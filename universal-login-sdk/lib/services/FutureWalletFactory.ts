@@ -38,7 +38,7 @@ export class FutureWalletFactory {
     ) as Promise<BalanceDetails>;
 
     const deploy = async (ensName: string, gasPrice: string) => {
-      const signature = await calculateDeploySignature(privateKey, ensName, gasPrice);
+      const signature = await calculateDeploySignature(ensName, gasPrice, privateKey);
       await this.relayerApi.deploy(publicKey, ensName, gasPrice, signature);
       return new Promise(
         (resolve) => {

@@ -37,7 +37,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
     publicKey: keyPair.publicKey,
     ensName,
     gasPrice: '1',
-    signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
+    signature: await calculateDeploySignature(ensName, '1', keyPair.privateKey)
   });
   return new Contract(futureAddress, WalletContract.interface, wallet);
 };

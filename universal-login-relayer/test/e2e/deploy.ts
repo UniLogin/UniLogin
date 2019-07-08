@@ -39,7 +39,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: '1',
-        signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
+        signature: await calculateDeploySignature(ensName, '1', keyPair.privateKey)
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -58,7 +58,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: newKeyPair.publicKey,
         ensName,
         gasPrice: '1',
-        signature: await calculateDeploySignature(newKeyPair.privateKey, ensName, '1')
+        signature: await calculateDeploySignature(ensName, '1', newKeyPair.privateKey)
       });
     expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
   });
@@ -73,7 +73,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: '1',
-        signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
+        signature: await calculateDeploySignature(ensName, '1', keyPair.privateKey)
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -86,7 +86,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: '1',
-        signature: await calculateDeploySignature(keyPair.privateKey, ensName, '1')
+        signature: await calculateDeploySignature(ensName, '1', keyPair.privateKey)
       });
     expect(result.status).to.eq(402);
     expect(result.body.type).to.eq('NotEnoughBalance');
@@ -101,7 +101,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName: invalidEnsName,
         gasPrice: '1',
-        signature: await calculateDeploySignature(keyPair.privateKey, invalidEnsName, '1')
+        signature: await calculateDeploySignature(invalidEnsName, '1', keyPair.privateKey)
       });
       expect(result.status).to.eq(404);
       expect(result.body.type).to.eq('NotFound');

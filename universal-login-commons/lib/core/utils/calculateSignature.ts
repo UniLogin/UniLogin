@@ -8,7 +8,7 @@ export type InitializeWithENSArgs = {
   gasPrice: string;
 };
 
-export const calculateInitializeWithENSSignature = (privateKey: string, args: InitializeWithENSArgs) => {
+export const calculateInitializeWithENSSignature = (args: InitializeWithENSArgs, privateKey: string) => {
   const wallet = new Wallet(privateKey);
   const initializeHash = calculateInitializeWithENSHash(args);
   return wallet.signMessage(utils.arrayify(initializeHash));
@@ -18,9 +18,9 @@ export const calculateInitializeWithENSHash = (args: InitializeWithENSArgs) => u
   ['bytes32', 'string', 'bytes32', 'uint'],
   [args.hashLabel, args.ensName, args.node, args.gasPrice]);
 
-export const calculateDeploySignature = (privateKey: string, ensName: string, gasPrice: string) => {
+export const calculateDeploySignature = (ensName: string, gasPrice: string, privateKey: string) => {
   const [name] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  return calculateInitializeWithENSSignature(privateKey, {ensName, node, hashLabel, gasPrice});
+  return calculateInitializeWithENSSignature({ensName, node, hashLabel, gasPrice}, privateKey);
 };
