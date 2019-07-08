@@ -17,7 +17,8 @@ class ClickService {
       gasToken: this.addresses.token,
       ...this.defaultPaymentOptions
     };
-    await this.walletContractService.execute(message);
+    const {waitToBeMined} = await this.walletContractService.execute(message);
+    await waitToBeMined();
     callback();
   }
 }

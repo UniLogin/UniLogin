@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Wallet, Contract, utils} from 'ethers';
+import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import IPendingMessagesStore from '../../../../lib/core/services/messages/IPendingMessagesStore';
@@ -76,7 +76,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     const expectedStatus = {
       collectedSignatures: [] as any,
       totalCollected: 0,
-      required: utils.bigNumberify(1),
+      required: 1,
       transactionHash: null
     };
     expect(await pendingMessagesStore.getStatus(messageHash, wallet)).to.deep.eq(expectedStatus);

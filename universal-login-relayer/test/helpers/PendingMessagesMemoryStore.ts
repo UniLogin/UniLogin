@@ -54,7 +54,7 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
     return {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
-      required,
+      required: required.toNumber(),
       transactionHash: message.transactionHash
     };
   }

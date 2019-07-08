@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'TimeoutError';
+type ErrorType = 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -50,7 +50,7 @@ export class NotFound extends SDKError {
 
 export class MissingConfiguration extends NotFound {
   constructor () {
-    super('Relayer configuration not yet loadedr', 'MissingConfiguration');
+    super('Relayer configuration not yet loaded', 'MissingConfiguration');
     Object.setPrototypeOf(this, MissingConfiguration.prototype);
   }
 }
@@ -58,6 +58,13 @@ export class TransactionHashNotFound extends NotFound {
   constructor () {
     super('Transaction hash is not found in Message Status', 'TransactionHashNotFound');
     Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
+  }
+}
+
+export class MissingMessageHash extends NotFound {
+  constructor () {
+    super('Message hash is missing in Message Status', 'MissingMessageHash');
+    Object.setPrototypeOf(this, MissingMessageHash.prototype);
   }
 }
 

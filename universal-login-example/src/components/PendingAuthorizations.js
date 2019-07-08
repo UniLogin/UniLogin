@@ -53,7 +53,8 @@ class PendingAuthorizations extends Component {
       ...DEFAULT_PAYMENT_OPTIONS,
       gasToken: tokenContractAddress
     };
-    await sdk.addKey(to, publicKey, privateKey, addKeyPaymentOptions);
+    const {waitToBeMined} = await sdk.addKey(to, publicKey, privateKey, addKeyPaymentOptions);
+    await waitToBeMined();
   }
 
   async onDenyClick(publicKey) {
