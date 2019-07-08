@@ -8,17 +8,17 @@ describe('authorisation sign verify', async () => {
   const privateKey = '0x9e0f0ab35e7b8d8efc554fa0e9db29235e7c52ea5e2bb53ed50d24ff7a4a6f65';
   const address = '0xa67131F4640294a209fdFF9Ad15a409D22EEB3Dd';
   const expectedSignature: utils.Signature = {
-    recoveryParam: 0,
-    r: '0x9e7a71072e325f28b36027296dae75e73b74d0e0f684047b72862229a7d4fae2',
-    s: '0x745c49528b42b6ff026d1aed5b87e612f083f2dd87ad211879fccca44caafd70',
-    v: 27
+    recoveryParam: 1,
+    r: '0x3acc5bc294c2ab3a3469e32efe4dd87df8793e3737314fba64837d26dbec1c31',
+    s: '0x4bdfa4c2f26cc09571f1b7336e2daca5bb1c46417a80da11e90b3306b8c8e7e6',
+    v: 28
   };
-  const expectedPayloadDigest = '0x2d0177d23495e90de42405735b860ec1837aa8afcfc6ee6a45b638598db933bc';
+  const expectedPayloadDigest = '0x41a2afe40ed413e2fff512455eab332900c7591e46280498e7f7c69e15bbd862';
 
   it('Hash cancel authorisation request', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address.toLowerCase()
+      key: address
     };
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     expect(payloadDigest).to.equal(expectedPayloadDigest);
@@ -27,7 +27,7 @@ describe('authorisation sign verify', async () => {
   it('Sign cancel authorisation request payload', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address.toLowerCase()
+      key: address
     };
     const signature = signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
     expect(signature).to.deep.equal(expectedSignature);
@@ -36,7 +36,7 @@ describe('authorisation sign verify', async () => {
   it('Verify cancel authorisation request payload', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address.toLowerCase()
+      key: address
     };
     const [result, computedAddress] = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, expectedSignature, address);
     expect(result).to.deep.equal(true);
@@ -48,7 +48,7 @@ describe('authorisation sign verify', async () => {
 
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address.toLowerCase()
+      key: address
     };
 
     const forgedSignature = signCancelAuthorisationRequest(cancelAuthorisationRequest, attackerPrivateKey);

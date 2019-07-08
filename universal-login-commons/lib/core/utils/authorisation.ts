@@ -4,16 +4,19 @@ import {CancelAuthorisationRequest} from '../models/authorisation';
 
 export const hashCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {
-    const payloadString = JSON.stringify(cancelAuthorisationRequest);
-    const payloadBytes = utils.toUtf8Bytes(payloadString);
-    return utils.keccak256(payloadBytes);
+    const {walletContractAddress, key} = cancelAuthorisationRequest;
+    return utils.solidityKeccak256(['bytes20', 'bytes20'], [walletContractAddress.toLowerCase(), key.toLowerCase()]);
   };
+
+export const sign = (payload: string, privateKey: string): utils.Signature => {
+  const signingKey = new utils.SigningKey(privateKey);
+  return signingKey.signDigest(payload);
+}
 
 export const signCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string): utils.Signature => {
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
-    const signingKey = new utils.SigningKey(privateKey);
-    return signingKey.signDigest(payloadDigest);
+    return sign(payloadDigest, privateKey);
   };
 
 export const verifyCancelAuthorisationRequest =
