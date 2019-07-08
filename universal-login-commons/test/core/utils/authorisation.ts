@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {CancelAuthorisationRequest} from '../../../lib/core/models/authorisation';
-import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation';
+import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation';
 
 describe('authorisation sign verify', async () => {
   const contractAddress: string = '0x14791697260E4c9A71f18484C9f997B308e59325';
@@ -38,8 +38,10 @@ describe('authorisation sign verify', async () => {
       walletContractAddress: contractAddress,
       key: address
     };
-    const [result, computedAddress] = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, expectedSignature, address);
+    const result = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, expectedSignature, address);
     expect(result).to.deep.equal(true);
+
+    const computedAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest, expectedSignature);
     expect(computedAddress).to.deep.equal(address);
   });
 

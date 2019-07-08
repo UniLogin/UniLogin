@@ -34,4 +34,4 @@ export {getSuggestionId} from './react/getSuggestionId';
 export {copy} from './react/copy';
 export {calculateInitializeWithENSSignature, calculateDeploySignature} from './core/utils/calculateSignature';
 export {CancelAuthorisationRequest} from './core/models/authorisation';
-export {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest} from './core/utils/authorisation';
+export {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from './core/utils/authorisation';
