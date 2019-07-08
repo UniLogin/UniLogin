@@ -1,6 +1,6 @@
-import {Contract, providers, Wallet} from 'ethers';
+import {Contract, providers} from 'ethers';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
-import {computeContractAddress} from '@universal-login/commons';
+import {computeContractAddress, createKeyPair} from '@universal-login/commons';
 
 export const getInitCode = async (factoryAddress: string, provider: providers.Provider) => {
   const factoryContract = new Contract(factoryAddress, ProxyCounterfactualFactory.interface, provider);
@@ -8,7 +8,7 @@ export const getInitCode = async (factoryAddress: string, provider: providers.Pr
 };
 
 export const createFutureWallet = async (factoryAddress: string, provider: providers.Provider) => {
-  const {address, privateKey} = Wallet.createRandom();
-  const futureContractAddress = computeContractAddress(factoryAddress, address, await getInitCode(factoryAddress, provider));
-  return [privateKey, futureContractAddress, address];
+  const {privateKey, publicKey} = createKeyPair();
+  const futureContractAddress = computeContractAddress(factoryAddress, publicKey, await getInitCode(factoryAddress, provider));
+  return [privateKey, futureContractAddress, publicKey];
 };

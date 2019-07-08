@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
+import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensure, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig, createKeyPair} from '@universal-login/commons';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -41,8 +41,8 @@ class UniversalLoginSDK {
   }
 
   async create(ensName: string): Promise<[string, string]> {
-    const {address, privateKey} = Wallet.createRandom();
-    const result = await this.relayerApi.createWallet(address, ensName);
+    const {publicKey, privateKey} = createKeyPair();
+    const result = await this.relayerApi.createWallet(publicKey, ensName);
     const contract = await waitForContractDeploy(
       this.provider,
       WalletContract,
@@ -136,10 +136,6 @@ class UniversalLoginSDK {
     return this.relayerApi.getStatus(messageHash);
   }
 
-  generatePrivateKey() {
-    return Wallet.createRandom().privateKey;
-  }
-
   async getRelayerConfig() {
     return this.config = this.config || (await this.relayerApi.getConfig()).config;
   }
@@ -217,8 +213,8 @@ class UniversalLoginSDK {
   }
 
   async connect(walletContractAddress: string) {
-    const {address, privateKey} = Wallet.createRandom();
-    await this.relayerApi.connect(walletContractAddress, address.toLowerCase());
+    const {publicKey, privateKey} = createKeyPair();
+    await this.relayerApi.connect(walletContractAddress, publicKey.toLowerCase());
     return privateKey;
   }
 

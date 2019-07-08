@@ -29,7 +29,7 @@ export class FutureWalletFactory {
   }
 
   async createFutureWallet(): Promise<FutureWallet> {
-    const [privateKey, contractAddress, address] = await createFutureWallet(this.config.factoryAddress, this.provider);
+    const [privateKey, contractAddress, publicKey] = await createFutureWallet(this.config.factoryAddress, this.provider);
     const waitForBalance = async () => new Promise(
       (resolve) => {
         const onReadyToDeploy = (tokenAddress: string, contractAddress: string) => resolve({tokenAddress, contractAddress});
@@ -39,7 +39,7 @@ export class FutureWalletFactory {
     ) as Promise<BalanceDetails>;
 
     const deploy = async (ensName: string, gasPrice: string) => {
-      await this.relayerApi.deploy(address, ensName, gasPrice);
+      await this.relayerApi.deploy(publicKey, ensName, gasPrice);
       return new Promise(
         (resolve) => {
           const deploymentObserver = new DeploymentObserver(this.blockchainService, this.config.contractWhiteList);
