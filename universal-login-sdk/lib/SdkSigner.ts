@@ -44,7 +44,8 @@ export class SdkSigner extends ethers.Signer {
     if (transaction.value !== undefined) {
       message.value = await transaction.value;
     }
-    const {transactionHash} = await this.sdk.execute(message, this.wallet.privateKey);
+    const execution = await this.sdk.execute(message, this.wallet.privateKey);
+    const {transactionHash} = await execution.waitToBeMined();
     ensureNotNull(transactionHash, TransactionHashNotFound);
     return this.provider.getTransaction(transactionHash!);
   }

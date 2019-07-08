@@ -9,7 +9,7 @@ describe('WalletService', () => {
   const futureWallet: FutureWallet = {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
-    deploy: async () => { },
+    deploy: async () => '',
     waitForBalance: (async () => { }) as any
   };
   let walletService: WalletService;

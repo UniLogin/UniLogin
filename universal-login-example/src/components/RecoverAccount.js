@@ -41,7 +41,8 @@ class RecoverAccount extends Component {
     const wallet = await fromBrainWallet(this.walletContractService.walletContract.name, this.state.backupCode);
     const addKeysPaymentOptions = {...DEFAULT_PAYMENT_OPTIONS, gasToken: tokenContractAddress};
     try {
-      await sdk.addKey(walletContractService.walletContract.address, walletContractService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);
+      const {waitToBeMined} = await sdk.addKey(walletContractService.walletContract.address, walletContractService.deviceAddress, wallet.privateKey, addKeysPaymentOptions);
+      await waitToBeMined();
     } catch (error) {
       this.setState({isLoading: false, message: 'Incorrect backup code, please retry'});
     }

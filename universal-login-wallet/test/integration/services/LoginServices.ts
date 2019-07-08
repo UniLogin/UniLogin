@@ -66,12 +66,13 @@ describe('Login', () => {
       const unsubscribe = await connectToWalletService(name, callback);
       const newPublicKey = (new Wallet(walletServiceForConnect.userWallet.privateKey)).address;
       expect(unsubscribe).to.not.be.null;
-      await sdk.addKey(
+      const {waitToBeMined} = await sdk.addKey(
         contractAddress,
         newPublicKey,
         privateKey,
         {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT},
         MANAGEMENT_KEY);
+      await waitToBeMined();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       unsubscribe();
     });
