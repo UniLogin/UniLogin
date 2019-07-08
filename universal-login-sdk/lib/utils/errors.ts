@@ -67,6 +67,7 @@ export class MissingMessageHash extends NotFound {
     Object.setPrototypeOf(this, MissingMessageHash.prototype);
   }
 }
+
 export class TimeoutError extends SDKError {
   constructor () {
     super('Timeout exceeded', 'TimeoutError');
