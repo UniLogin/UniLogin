@@ -16,8 +16,9 @@ export const signCancelAuthorisationRequest =
     return signingKey.signDigest(payloadDigest);
   };
 
-export const verifyCancelAuthroisationRequest =
-  (payloadDigest: string, signature: utils.Signature, address: string): [boolean, string] => {
+export const verifyCancelAuthorisationRequest =
+  (cancelAuthorisationRequest: CancelAuthorisationRequest, signature: utils.Signature, address: string): [boolean, string] => {
+    const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     const computedAddress = utils.recoverAddress(payloadDigest, signature);
     return [computedAddress === address, computedAddress];
   };

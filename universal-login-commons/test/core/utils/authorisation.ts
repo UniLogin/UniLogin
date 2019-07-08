@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {CancelAuthorisationRequest} from '../../../lib/core/models/authorisation';
-import {signCancelAuthorisationRequest, verifyCancelAuthroisationRequest, hashCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation';
+import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation';
 
-describe('authorization sign verify', async () => {
+describe('authorisation sign verify', async () => {
   const contractAddress: string = '0x14791697260E4c9A71f18484C9f997B308e59325';
   const privateKey = '0x9e0f0ab35e7b8d8efc554fa0e9db29235e7c52ea5e2bb53ed50d24ff7a4a6f65';
   const address = '0xa67131F4640294a209fdFF9Ad15a409D22EEB3Dd';
@@ -34,7 +34,11 @@ describe('authorization sign verify', async () => {
   });
 
   it('Verify cancel authorisation request payload', async () => {
-    const [result, computedAddress] = verifyCancelAuthroisationRequest(correctPayloadDigest, correctSignature, address);
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
+      walletContractAddress: contractAddress,
+      key: address.toLowerCase()
+    };
+    const [result, computedAddress] = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, correctSignature, address);
     expect(result).to.deep.equal(true);
     expect(computedAddress).to.deep.equal(address);
   });

@@ -4,11 +4,11 @@ import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {verifyCancelAuthroisationRequest, CancelAuthorisationRequest} from '@universal-login/commons';
 import { hashCancelAuthorisationRequest } from '@universal-login/commons/dist/lib/core/utils/authorisation';
-import {} from '@universal-login/contracts';
 import { ethers } from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { InvalidSignature, InvalidAddress } from '../../core/utils/errors';
 import { asSignature, MySignature } from '../utils/sanitizers';
+import {providers} from 'ethers';
 
 
 const request = (authorisationService : AuthorisationService) =>
@@ -24,10 +24,11 @@ const getPending = (authorisationService : AuthorisationService) =>
     return responseOf({ response: result });
   };
 
-const denyRequest = (authorisationService : AuthorisationService, provider: any) =>
-  async (data: {walletContractAddress: string, body: {key: string, signedCancelAuthorisationRequest: MySignature}}) => {
+const denyRequest = (authorisationService : AuthorisationService, provider: providers.Provider) =>
+  async (data: {walletContractAddress: string, body: {key: string, signature: MySignature}}) => {
     const {walletContractAddress} = data;
-    const {key, signedCancelAuthorisationRequest: signature} = data.body;
+    const {key, signature} = data.body;
+
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, key};
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     const [isValid, computedAddress] = verifyCancelAuthroisationRequest(payloadDigest, signature, key);
@@ -72,7 +73,7 @@ export default (authorisationService : AuthorisationService, provider: any) => {
       walletContractAddress: asString,
       body: asObject({
         key: asString,
-        signedCancelAuthorisationRequest: asSignature
+        signature: asSignature
       })
     }),
     denyRequest(authorisationService, provider)
