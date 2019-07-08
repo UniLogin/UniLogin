@@ -18,7 +18,7 @@ export class ExecutionFactory {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
-    const waitToBeMined = totalCollected >= required ? this.createWaitForMined(messageHash) : async () => result.status;
+    const waitToBeMined = totalCollected >= required ? this.createWaitToBeMined(messageHash) : async () => result.status;
     const waitForPending = async () => {
       throw Error('Not implemented');
     };
@@ -33,7 +33,7 @@ export class ExecutionFactory {
     return !!messageStatus.transactionHash || !!messageStatus.error;
   }
 
-  private createWaitForMined(messageHash: string){
+  private createWaitToBeMined(messageHash: string){
     return async () => {
       const getStatus = () => this.relayerApi.getStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
