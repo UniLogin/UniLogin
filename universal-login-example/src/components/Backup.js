@@ -50,12 +50,13 @@ class Backup extends Component {
       ...DEFAULT_PAYMENT_OPTIONS,
       gasToken: tokenContractAddress
     };
-    await sdk.addKeys(
+    const {waitToBeMined} = await sdk.addKeys(
       walletContractService.walletContract.address,
       this.state.publicKeys,
       walletContractService.walletContract.privateKey,
       addKeysPaymentOptions
     );
+    await waitToBeMined();
     emitter.emit('setView', 'Greeting', {greetMode: 'backupKeys'});
   }
 

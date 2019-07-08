@@ -26,7 +26,7 @@ describe('INT: FutureWalletFactory', async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({relayer, factoryContract, supportedTokens, contractWhiteList} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
-    relayer.start();
+    await relayer.start();
     const futureWalletConfig = {
       factoryAddress: factoryContract.address,
       supportedTokens,
