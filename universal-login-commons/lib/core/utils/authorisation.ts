@@ -11,7 +11,7 @@ export const hashCancelAuthorisationRequest =
 export const sign = (payload: string, privateKey: string): utils.Signature => {
   const signingKey = new utils.SigningKey(privateKey);
   return signingKey.signDigest(payload);
-}
+};
 
 export const signCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string): utils.Signature => {
