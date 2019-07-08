@@ -4,7 +4,7 @@ import {retry} from '../utils/retry';
 import {MissingMessageHash} from '../utils/errors';
 
 export interface Execution {
-  waitForPending: () => Promise<MessageStatus>;
+  waitToBePending: () => Promise<MessageStatus>;
   waitToBeMined: () => Promise<MessageStatus>;
   messageStatus: MessageStatus;
 }
@@ -19,13 +19,13 @@ export class ExecutionFactory {
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
     const waitToBeMined = totalCollected >= required ? this.createWaitToBeMined(messageHash) : async () => result.status;
-    const waitForPending = async () => {
+    const waitToBePending = async () => {
       throw Error('Not implemented');
     };
     return {
       messageStatus: result.status,
       waitToBeMined,
-      waitForPending
+      waitToBePending
     };
   }
 
