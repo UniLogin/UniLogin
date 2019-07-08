@@ -2,7 +2,7 @@ import {Router, Request} from 'express';
 import AuthorisationService, {AuthorisationRequest} from '../../integration/sql/services/authorisationService';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {verifyCancelAuthroisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
+import {verifyCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
 import { ethers, providers} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { InvalidSignature, InvalidAddress } from '../../core/utils/errors';
@@ -28,7 +28,7 @@ const denyRequest = (authorisationService : AuthorisationService, provider: prov
     const {key, signature} = data.body;
 
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, key};
-    const [isValid, computedAddress] = verifyCancelAuthroisationRequest(cancelAuthorisationRequest, signature, key);
+    const [isValid, computedAddress] = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, signature, key);
     if (!isValid) {
       throw new InvalidSignature(`cancelAuthorisationRequest failed due to invalid signature`);
     }
