@@ -187,10 +187,10 @@ describe('SDK - integration', async () => {
         });
 
         it('should return public key when deny request', async () => {
-          const privateKey = await sdk.connect(contractAddress);
-          const wallet = new Wallet(privateKey);
-          const response = await sdk.denyRequest(contractAddress, wallet.address);
-          expect(response).to.eq(wallet.address);
+          await sdk.connect(contractAddress);
+          const address = utils.computeAddress(privateKey);
+          const response = await sdk.denyRequest(contractAddress, address, privateKey);
+          expect(response).to.eq(address);
         });
       });
     });
