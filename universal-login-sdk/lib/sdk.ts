@@ -5,7 +5,7 @@ import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
 import {DeploymentObserver} from './observers/DeploymentObserver';
-import MESSAGE_DEFAULTS from './config';
+import MESSAGE_DEFAULTS from './MessageDefaults';
 import {RelayerApi} from './RelayerApi';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
