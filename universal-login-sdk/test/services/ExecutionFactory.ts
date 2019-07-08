@@ -39,23 +39,23 @@ describe('UNIT: ExecutionFactory', async () => {
     executionFactory = new ExecutionFactory(relayerApi);
   });
 
-  it('waitForMined success', async () => {
+  it('waitToBeMined success', async () => {
     const execution = await executionFactory.createExecution(signedMessage);
-    await execution.waitForMined();
+    await execution.waitToBeMined();
     expect(execution.messageStatus).to.be.deep.eq(executionStatus);
     expect(getStatus.callCount).be.eq(callCount);
   });
 
-  it('waitForMined error', async () => {
+  it('waitToBeMined error', async () => {
     status.transactionHash = null;
-    status.error = 'Error: waitForMined';
+    status.error = 'Error: waitToBeMined';
     const execution = await executionFactory.createExecution(signedMessage);
     expect(execution.messageStatus).to.be.deep.eq(executionStatus);
-    await expect(execution.waitForMined()).to.be.rejectedWith('Error: waitForMined');
+    await expect(execution.waitToBeMined()).to.be.rejectedWith('Error: waitToBeMined');
     expect(getStatus.callCount).be.eq(callCount);
   });
 
-  it('waitForMined for message with no enough signatures', async () => {
+  it('waitToBeMined for message with no enough signatures', async () => {
     const expectedStatus = {
       ...status,
       transactionHash: null,
@@ -64,7 +64,7 @@ describe('UNIT: ExecutionFactory', async () => {
     };
     relayerApi.execute = sinon.stub().returns({status: expectedStatus});
     const execution = await executionFactory.createExecution(signedMessage);
-    expect(await execution.waitForMined()).to.be.deep.eq(expectedStatus);
+    expect(await execution.waitToBeMined()).to.be.deep.eq(expectedStatus);
     expect(getStatus.callCount).be.eq(0);
   });
 

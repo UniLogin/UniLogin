@@ -51,7 +51,7 @@ describe('SDK: BlockchainObserver', async () => {
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
-    await execution.waitForMined();
+    await execution.waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
     expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });
@@ -67,7 +67,7 @@ describe('SDK: BlockchainObserver', async () => {
     await blockchainObserver.subscribe('KeyAdded', filter2, callback2);
 
     const execution = await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);
-    await execution.waitForMined();
+    await execution.waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
     expect(callback).to.have.been.calledWith({key: otherWallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
@@ -78,12 +78,12 @@ describe('SDK: BlockchainObserver', async () => {
     const callback = sinon.spy();
     const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
-    await execution.waitForMined();
+    await execution.waitToBeMined();
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyRemoved', filter, callback);
     const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
-    const {waitForMined} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
-    await waitForMined();
+    const {waitToBeMined} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
+    await waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
     expect(callback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: MANAGEMENT_KEY});
   });

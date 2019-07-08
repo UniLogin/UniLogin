@@ -11,9 +11,9 @@ chai.use(chaiAsPromised);
 
 describe('TransferService', () => {
   function setup() {
-    const waitForMined = sinon.fake();
+    const waitToBeMined = sinon.fake();
     const sdk = {
-      execute: sinon.stub().returns({waitForMined})
+      execute: sinon.stub().returns({waitToBeMined})
     } as any;
     const walletService = {
       userWallet: {
@@ -25,11 +25,11 @@ describe('TransferService', () => {
       getTokenAddress: sinon.fake(() => 'TOKEN_ADDRESS')
     };
     const transferService = new TransferService(sdk as any, walletService as any, tokenService as any);
-    return { sdk, walletService, tokenService, transferService, waitForMined };
+    return { sdk, walletService, tokenService, transferService, waitToBeMined };
   }
 
   it('can transfer ether', async () => {
-    const {sdk, transferService, tokenService, waitForMined} = setup();
+    const {sdk, transferService, tokenService, waitToBeMined} = setup();
 
     await transferService.transfer({
       to: 'RECIPIENT',
@@ -48,7 +48,7 @@ describe('TransferService', () => {
       },
       'PRIVATE_KEY',
     );
-    expect(waitForMined).to.be.calledOnce;
+    expect(waitToBeMined).to.be.calledOnce;
   });
 
   it('throw an error if wallet missing and transferring ETH', async () => {
@@ -63,7 +63,7 @@ describe('TransferService', () => {
   });
 
   it('can transfer tokens', async () => {
-    const {sdk, transferService, tokenService, waitForMined} = setup();
+    const {sdk, transferService, tokenService, waitToBeMined} = setup();
     const recipient = Wallet.createRandom().address;
 
     await transferService.transfer({
@@ -83,7 +83,7 @@ describe('TransferService', () => {
       },
       'PRIVATE_KEY',
     );
-    expect(waitForMined).to.be.calledOnce;
+    expect(waitToBeMined).to.be.calledOnce;
   });
 
   it('throw an error if wallet is missing and transfering tokens', async () => {

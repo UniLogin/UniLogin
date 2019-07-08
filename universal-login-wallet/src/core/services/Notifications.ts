@@ -24,8 +24,8 @@ export default class NotificationsService {
 
   async confirm (publicKey: string) {
     const {contractAddress, privateKey} =  this.walletService.userWallet!;
-    const {waitForMined} = await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
-    return waitForMined();
+    const {waitToBeMined} = await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
+    return waitToBeMined();
   }
 
   async reject (publicKey: string) {

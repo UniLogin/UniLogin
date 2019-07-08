@@ -5,7 +5,7 @@ import {MissingMessageHash} from '../utils/errors';
 
 export interface Execution {
   waitForPending: () => Promise<MessageStatus>;
-  waitForMined: () => Promise<MessageStatus>;
+  waitToBeMined: () => Promise<MessageStatus>;
   messageStatus: MessageStatus;
 }
 
@@ -18,13 +18,13 @@ export class ExecutionFactory {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
-    const waitForMined = totalCollected >= required ? this.createWaitForMined(messageHash) : async () => result.status;
+    const waitToBeMined = totalCollected >= required ? this.createWaitForMined(messageHash) : async () => result.status;
     const waitForPending = async () => {
       throw Error('Not implemented');
     };
     return {
       messageStatus: result.status,
-      waitForMined,
+      waitToBeMined,
       waitForPending
     };
   }
