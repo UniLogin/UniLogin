@@ -57,6 +57,6 @@ export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name
 export async function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
   const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
   const argsToSign = {hashLabel: args[1], ensName: args[2], node: args[3], gasPrice};
-  const signature = await calculateInitializeWithENSSignature(keyPair.privateKey, argsToSign);
+  const signature = await calculateInitializeWithENSSignature(argsToSign, keyPair.privateKey);
   return [...args, relayerAddress, gasPrice, signature];
 }

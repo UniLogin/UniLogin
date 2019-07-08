@@ -23,29 +23,9 @@ contract WalletMasterWithRefund is WalletMaster {
         bytes calldata signature) external onlyInitializing()
     {
         require(signature.length == 65, "Invalid signature");
-        require(isValidInitializeSignature(_key, _hashLabel, _name, _node, gasPrice, signature), "Invalid signature");
+        require(_key == getSigner(_hashLabel, _name, _node, gasPrice, signature), "Invalid signature");
         this.initializeWithENS(_key, _hashLabel, _name, _node, ens, registrar, resolver);
         refund(getDeploymentGasUsed(), gasPrice, address(0), relayer);
-    }
-
-    function isValidInitializeSignature(
-        address key,
-        bytes32 _hashLabel,
-        string memory _name,
-        bytes32 _node,
-        uint gasPrice,
-        bytes memory signature) public pure returns(bool) 
-    {
-        return key == getSigner(_hashLabel, _name, _node, gasPrice, signature);
-    }
-
-    function calculateInitializeHash(
-        bytes32 _hashLabel,
-        string memory _name,
-        bytes32 _node,
-        uint gasPrice) public pure returns (bytes32)
-    {
-        return keccak256(abi.encodePacked(_hashLabel, _name, _node, gasPrice));
     }
 
     function getSigner(
@@ -56,5 +36,14 @@ contract WalletMasterWithRefund is WalletMaster {
         bytes memory signature) public pure returns (address)
     {
         return calculateInitializeHash(_hashLabel, _name, _node, gasPrice).toEthSignedMessageHash().recover(signature);
+    }
+
+    function calculateInitializeHash(
+        bytes32 _hashLabel,
+        string memory _name,
+        bytes32 _node,
+        uint gasPrice) public pure returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(_hashLabel, _name, _node, gasPrice));
     }
 }
