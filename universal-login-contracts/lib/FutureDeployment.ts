@@ -1,5 +1,5 @@
 import {Contract} from 'ethers';
-import {computeContractAddress} from '@universal-login/commons';
+import {computeContractAddress, KeyPair} from '@universal-login/commons';
 import ProxyContract from '../build/Proxy.json';
 import {EnsDomainData, createProxyDeployWithENSArgs, getDeployData, encodeInitializeData, createProxyDeployWithRefundArgs} from '.';
 
@@ -9,7 +9,7 @@ type FutureDeployment = {
 };
 
 export type CreateFutureDeploymentWithRefundArgs = {
-  publicKey: string;
+  keyPair: KeyPair;
   walletMasterAddress: string;
   ensDomainData: EnsDomainData;
   factoryContract: Contract;
@@ -17,9 +17,9 @@ export type CreateFutureDeploymentWithRefundArgs = {
   gasPrice: string;
 };
 
-export function createFutureDeploymentWithENS(publicKey: string, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract): FutureDeployment {
-  const [, initializeData] = createProxyDeployWithENSArgs(publicKey, ensDomainData, walletMasterAddress);
-  const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, publicKey);
+export function createFutureDeploymentWithENS(keyPair: KeyPair, walletMasterAddress: string, ensDomainData: EnsDomainData, factoryContract: Contract): FutureDeployment {
+  const [, initializeData] = createProxyDeployWithENSArgs(keyPair, ensDomainData, walletMasterAddress);
+  const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, keyPair.publicKey);
   return {
     initializeData,
     futureAddress
@@ -35,9 +35,9 @@ export function createFutureDeployment(publicKey: string, walletMasterAddress: s
   };
 }
 
-export function createFutureDeploymentWithRefund({publicKey, walletMasterAddress, ensDomainData, factoryContract, relayerAddress, gasPrice}: CreateFutureDeploymentWithRefundArgs): FutureDeployment {
-  const [, initializeData] = createProxyDeployWithRefundArgs(publicKey, ensDomainData, walletMasterAddress, relayerAddress, gasPrice);
-  const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, publicKey);
+export async function createFutureDeploymentWithRefund({keyPair, walletMasterAddress, ensDomainData, factoryContract, relayerAddress, gasPrice}: CreateFutureDeploymentWithRefundArgs): Promise<FutureDeployment> {
+  const [, initializeData] = await createProxyDeployWithRefundArgs(keyPair, ensDomainData, walletMasterAddress, relayerAddress, gasPrice);
+  const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, keyPair.publicKey);
   return {
     initializeData,
     futureAddress

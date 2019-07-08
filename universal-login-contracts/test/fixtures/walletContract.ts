@@ -1,10 +1,9 @@
 import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
-import WalletMasterWithRefund from '../../build/WalletMasterWithRefund.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {deployFactory, createFutureDeploymentWithRefund} from '../../lib';
+import {deployFactory, createFutureDeploymentWithRefund, deployWalletMasterWithRefund} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
@@ -26,7 +25,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
 }
 
 export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
-  const walletMaster = await deployContract(deployer, WalletMasterWithRefund);
+  const walletMaster = await deployWalletMasterWithRefund(deployer);
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     walletMaster,
@@ -37,7 +36,7 @@ export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const {initializeData, futureAddress} = createFutureDeploymentWithRefund({publicKey: keyPair.publicKey, walletMasterAddress: walletMaster.address, gasPrice: utils.bigNumberify('1000000').toString(), ensDomainData, factoryContract, relayerAddress: deployer.address});
+  const {initializeData, futureAddress} = await createFutureDeploymentWithRefund({keyPair, walletMasterAddress: walletMaster.address, gasPrice: '1000000', ensDomainData, factoryContract, relayerAddress: deployer.address});
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeData);
   const walletContract = new Contract(futureAddress, WalletMaster.interface, provider);

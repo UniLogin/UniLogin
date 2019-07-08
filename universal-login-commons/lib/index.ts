@@ -32,3 +32,4 @@ export {getEnv} from './core/utils/getEnv';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {copy} from './react/copy';
+export {calculateInitializeWithENSSignature, calculateDeploySignature} from './core/utils/calculateSignature';

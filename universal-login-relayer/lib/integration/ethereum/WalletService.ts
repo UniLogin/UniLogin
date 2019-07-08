@@ -40,13 +40,13 @@ class WalletService {
     throw new InvalidENSDomain(ensName);
   }
 
-  async deploy(key: string, ensName: string, gasPrice: string) {
+  async deploy(key: string, ensName: string, gasPrice: string, signature: string) {
     ensure(!await this.ensService.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
-    const args = [key, ...ensArgs as string[], this.wallet.address, gasPrice];
+    const args = [key, ...ensArgs as string[], this.wallet.address, gasPrice, signature];
     const initWithENS = encodeInitializeWithRefundData(args);
     return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions, gasPrice: utils.bigNumberify(gasPrice)});
   }

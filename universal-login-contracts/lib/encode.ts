@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, ContractJSON} from '@universal-login/commons';
+import {Message, ContractJSON, KeyPair, calculateInitializeWithENSSignature} from '@universal-login/commons';
 import WalletMaster from '../build/WalletMaster.json';
 import WalletMasterWithRefund from '../build/WalletMasterWithRefund.json';
 
@@ -35,16 +35,28 @@ export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
   new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
 
 type SetupInitializeWithENSArgs = {
-  key: string;
+  keyPair: KeyPair;
   ensDomainData: EnsDomainData;
   name?: string;
   domain?: string;
 };
 
-export function setupInitializeWithENSArgs({key, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
+interface SetupInitializeWithENSAndRefundArgs extends SetupInitializeWithENSArgs {
+  relayerAddress: string;
+  gasPrice: string;
+}
+
+export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args = [key, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
+  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
   return args;
+}
+
+export async function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
+  const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
+  const argsToSign = {hashLabel: args[1], ensName: args[2], node: args[3], gasPrice};
+  const signature = await calculateInitializeWithENSSignature(argsToSign, keyPair.privateKey);
+  return [...args, relayerAddress, gasPrice, signature];
 }

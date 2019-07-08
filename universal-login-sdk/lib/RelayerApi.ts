@@ -50,11 +50,12 @@ export class RelayerApi {
     return this.http('GET', `/authorisation/${walletContractAddress}`);
   }
 
-  async deploy(publicKey: string, ensName: string, gasPrice: string) {
+  async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
-      gasPrice
+      gasPrice,
+      signature
     });
   }
 }
