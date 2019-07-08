@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
+import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig} from '@universal-login/commons';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -10,7 +10,7 @@ import {RelayerApi} from './RelayerApi';
 import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
-import {ExecutionFactory} from './services/ExecutionFactory';
+import {ExecutionFactory, Execution} from './services/ExecutionFactory';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -158,16 +158,14 @@ class UniversalLoginSDK {
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(futureWalletConfig, this.provider, this.blockchainService, this.relayerApi);
   }
 
-  async execute(message: Message, privateKey: string): Promise<MessageStatus> {
+  async execute(message: Message, privateKey: string): Promise<Execution> {
     const unsignedMessage = {
       ...this.defaultPaymentOptions,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
-    const execution = await this.executionFactory.createExecution(signedMessage);
-    const status = await execution.waitForMined();
-    return status;
+    return this.executionFactory.createExecution(signedMessage);
   }
 
   async getNonce(walletContractAddress: string, privateKey: string) {
