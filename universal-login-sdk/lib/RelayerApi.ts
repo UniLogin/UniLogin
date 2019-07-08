@@ -40,11 +40,11 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(walletContractAddress: string, key: string, signedCancelAuthorisationRequest: utils.Signature) {
+  async denyConnection(walletContractAddress: string, key: string, signature: utils.Signature) {
     return this.http('POST', `/authorisation/${walletContractAddress}`, {
       walletContractAddress,
       key,
-      signedCancelAuthorisationRequest
+      signature
     }).catch((e) => {
       throw new Error(e.error);
     });
