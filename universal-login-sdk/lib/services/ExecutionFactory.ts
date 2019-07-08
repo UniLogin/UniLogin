@@ -1,6 +1,7 @@
-import {MessageStatus, ensure} from '@universal-login/commons';
+import {MessageStatus, ensure, SignedMessage, stringifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
 import {RelayerApi} from '../RelayerApi';
 import {retry} from '../utils/retry';
+import {MissingMessageHash} from '../utils/errors';
 
 export interface Execution {
   waitForPending: () => Promise<MessageStatus>;
@@ -13,8 +14,11 @@ export class ExecutionFactory {
 
   }
 
-  createExecution(messageHash: string): Execution {
-    const waitForMined = this.createWaitForMined(messageHash);
+  async createExecution(signedMessage: SignedMessage): Promise<Execution> {
+    const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
+    ensureNotNull(result.status.messageHash, MissingMessageHash);
+    const {messageHash, totalCollected, required} = result.status;
+    const waitForMined = totalCollected >= required ? this.createWaitForMined(messageHash) : async () => result.status;
     const waitForPending = async () => {
       return {} as MessageStatus;
     };

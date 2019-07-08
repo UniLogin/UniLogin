@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, stringifySignedMessageFields, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
+import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, MessageStatus, PublicRelayerConfig} from '@universal-login/commons';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -8,7 +8,7 @@ import {DeploymentObserver} from './observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from './config';
 import {RelayerApi} from './RelayerApi';
 import {BlockchainService} from './services/BlockchainService';
-import {MissingConfiguration, MissingMessageHash} from './utils/errors';
+import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
 import {ExecutionFactory} from './services/ExecutionFactory';
 
@@ -165,14 +165,9 @@ class UniversalLoginSDK {
       nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
     } as MessageWithFrom;
     const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
-    const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
-    ensureNotNull(result.status.messageHash, MissingMessageHash);
-    if (result.status.totalCollected >= result.status.required) {
-      const execution = await this.executionFactory.createExecution(result.status.messageHash);
-      const status = await execution.waitForMined();
-      result.status.transactionHash = status.transactionHash;
-    }
-    return result.status;
+    const execution = await this.executionFactory.createExecution(signedMessage);
+    const status = await execution.waitForMined();
+    return status;
   }
 
   async getNonce(walletContractAddress: string, privateKey: string) {
