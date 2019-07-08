@@ -28,7 +28,7 @@ export default class NotificationsService {
   }
 
   async reject (publicKey: string) {
-    await this.sdk.denyRequest(this.walletService.userWallet!.contractAddress, publicKey);
+    const {privateKey} =  this.walletService.userWallet!;
+    await this.sdk.denyRequest(this.walletService.userWallet!.contractAddress, publicKey, privateKey);
   }
-
 }

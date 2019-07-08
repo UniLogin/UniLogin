@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import {expect} from 'chai';
-import {providers} from 'ethers';
+import {providers, utils, Wallet} from 'ethers';
 import {Services} from '../../../src/ui/createServices';
 import {setupSdk} from '../helpers/setupSdk';
 import {waitUntil, ETHER_NATIVE_TOKEN, Notification} from '@universal-login/commons';
@@ -14,9 +14,10 @@ describe('NotificationService', () => {
   let contractAddress: string;
   let provider : providers.Provider;
   let blockchainObserver: any;
+  let wallet: Wallet;
 
   before(async () => {
-    const [wallet] = getWallets(createMockProvider());
+    [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     const name = 'ja.mylogin.eth';
@@ -34,11 +35,12 @@ describe('NotificationService', () => {
 
     expect(callback).has.been.calledOnceWithExactly([]);
 
-    const address = '0x29e466855094d46a59921ca023a711aa8ebd816d';
+    const privateKey = wallet.privateKey;
+    const address = utils.computeAddress(privateKey).toLowerCase();
+
     services.sdk.connect = async (walletContractAddress: string) => {
-      const privateKey = '0x0000000000000000000000000000000000000000';
       await services.sdk.relayerApi.connect(walletContractAddress, address.toLowerCase());
-      return privateKey;
+      return address;
     };
     await services.sdk.connect(contractAddress);
     await waitUntil(() => callback.secondCall !== null);
