@@ -1,5 +1,4 @@
 import {utils} from 'ethers';
-
 import {CancelAuthorisationRequest} from '../models/authorisation';
 
 export const hashCancelAuthorisationRequest =
@@ -8,26 +7,26 @@ export const hashCancelAuthorisationRequest =
     return utils.solidityKeccak256(['bytes20', 'bytes20'], [walletContractAddress.toLowerCase(), publicKey.toLowerCase()]);
   };
 
-export const sign = (payload: string, privateKey: string): utils.Signature => {
+export const sign = (payload: string, privateKey: string): string => {
   const signingKey = new utils.SigningKey(privateKey);
-  return signingKey.signDigest(payload);
+  const signature = signingKey.signDigest(payload);
+  return utils.joinSignature(signature);
 };
 
 export const signCancelAuthorisationRequest =
-  (cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string): utils.Signature => {
+  (cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string): void => {
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
-    return sign(payloadDigest, privateKey);
+    cancelAuthorisationRequest.signature = sign(payloadDigest, privateKey);
   };
 
 export const recoverFromCancelAuthorisationRequest =
-  (cancelAuthorisationRequest: CancelAuthorisationRequest, signature: utils.Signature): string => {
+  (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
-    const computedAddress = utils.recoverAddress(payloadDigest, signature);
-    return computedAddress;
+    return utils.recoverAddress(payloadDigest, cancelAuthorisationRequest.signature);
   };
 
 export const verifyCancelAuthorisationRequest =
-  (cancelAuthorisationRequest: CancelAuthorisationRequest, signature: utils.Signature, address: string): boolean => {
-    const computedAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest, signature);
+  (cancelAuthorisationRequest: CancelAuthorisationRequest, address: string): boolean => {
+    const computedAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest);
     return computedAddress === address;
   };

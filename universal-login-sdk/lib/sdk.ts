@@ -202,12 +202,15 @@ class UniversalLoginSDK {
   async denyRequest(walletContractAddress: string, publicKey: string, privateKey: string) {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress,
-      publicKey
+      publicKey,
+      signature: ''
     };
+    signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
+
     await this.relayerApi.denyConnection(
       walletContractAddress,
       publicKey,
-      signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey)
+      cancelAuthorisationRequest.signature
     );
     return publicKey;
   }

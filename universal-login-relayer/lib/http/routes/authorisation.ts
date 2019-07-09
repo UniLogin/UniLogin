@@ -6,7 +6,6 @@ import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashC
 import { ethers, providers, utils} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { UnauthorisedAddress } from '../../core/utils/errors';
-import { asSignature } from '../utils/sanitizers';
 
 
 const request = (authorisationService : AuthorisationService) =>
@@ -23,17 +22,15 @@ const getPending = (authorisationService : AuthorisationService) =>
   };
 
 const denyRequest = (authorisationService : AuthorisationService, provider: providers.Provider) =>
-  async (data: {walletContractAddress: string, body: {publicKey: string, signature: utils.Signature}}) => {
+  async (data: {walletContractAddress: string, body: {publicKey: string, signature: string}}) => {
     const {walletContractAddress} = data;
     const {publicKey, signature} = data.body;
-
-    const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, publicKey};
-    const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest, signature);
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, publicKey, signature};
+    const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest);
 
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, provider);
-    const flatSignature = ethers.utils.joinSignature(signature);
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
-    const isCorrectAddress = await contract.isValidSignature(payloadDigest, flatSignature);
+    const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
     if (!isCorrectAddress) {
       throw new UnauthorisedAddress(recoveredAddress);
     }
@@ -67,7 +64,7 @@ export default (authorisationService : AuthorisationService, provider: any) => {
       walletContractAddress: asString,
       body: asObject({
         publicKey: asString,
-        signature: asSignature
+        signature: asString
       })
     }),
     denyRequest(authorisationService, provider)

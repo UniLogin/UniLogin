@@ -40,7 +40,7 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(walletContractAddress: string, publicKey: string, signature: utils.Signature) {
+  async denyConnection(walletContractAddress: string, publicKey: string, signature: string) {
     return this.http('POST', `/authorisation/${walletContractAddress}`, {
       walletContractAddress,
       publicKey,
