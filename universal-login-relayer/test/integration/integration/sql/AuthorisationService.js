@@ -10,6 +10,7 @@ import {getKnex} from '../../../../lib/core/utils/knexUtils';
 import deviceInfo from '../../../config/defaults';
 import {deployFactory} from '@universal-login/contracts';
 
+
 chai.use(require('chai-string'));
 
 describe('INT: Authorisation Service', async () => {
