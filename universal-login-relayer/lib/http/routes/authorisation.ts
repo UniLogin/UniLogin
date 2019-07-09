@@ -5,7 +5,7 @@ import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
 import { ethers, providers, utils} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
-import { UnathorisedAddress } from '../../core/utils/errors';
+import { UnauthorisedAddress } from '../../core/utils/errors';
 import { asSignature } from '../utils/sanitizers';
 
 
@@ -35,7 +35,7 @@ const denyRequest = (authorisationService : AuthorisationService, provider: prov
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, flatSignature);
     if (!isCorrectAddress) {
-      throw new UnathorisedAddress(recoveredAddress);
+      throw new UnauthorisedAddress(recoveredAddress);
     }
 
     const result = await authorisationService.removeRequest(data.walletContractAddress, data.body.key);

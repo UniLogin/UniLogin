@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnathorisedAddress';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -17,10 +17,10 @@ export class Unauthorised extends RelayerError {
   }
 }
 
-export class UnathorisedAddress extends Unauthorised {
+export class UnauthorisedAddress extends Unauthorised {
   constructor (address: string) {
-    super(`Unauthorised address: ${address}` , 'UnathorisedAddress');
-    Object.setPrototypeOf(this, UnathorisedAddress.prototype);
+    super(`Unauthorised address: ${address}` , 'UnauthorisedAddress');
+    Object.setPrototypeOf(this, UnauthorisedAddress.prototype);
   }
 }
 
