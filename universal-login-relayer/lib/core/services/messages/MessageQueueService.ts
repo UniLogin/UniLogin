@@ -22,7 +22,7 @@ class MessageQueueService {
   async execute(signedMessage: SignedMessage, messageHash: string) {
     try {
       const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
-      await this.pendingMessagesStore.setTransactionHash(messageHash, hash!);
+      await this.pendingMessagesStore.markAsSuccess(messageHash, hash!);
       await this.queueMessageStore.markAsSuccess(messageHash, hash!);
     } catch (error) {
       await this.queueMessageStore.markAsError(messageHash, `${error.name}: ${error.message}`);

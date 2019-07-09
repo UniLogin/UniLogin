@@ -101,7 +101,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
   it('should update transcaction hash', async () => {
     await pendingMessagesStore.add(messageHash, pendingMessage);
     const expectedTransactionHash = TEST_TRANSACTION_HASH;
-    await pendingMessagesStore.setTransactionHash(messageHash, expectedTransactionHash);
+    await pendingMessagesStore.markAsSuccess(messageHash, expectedTransactionHash);
     const {transactionHash} = await pendingMessagesStore.getStatus(messageHash, wallet);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
   });

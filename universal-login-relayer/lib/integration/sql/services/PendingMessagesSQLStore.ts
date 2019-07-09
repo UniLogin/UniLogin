@@ -88,7 +88,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
       .select(['key', 'signature']);
   }
 
-  async setTransactionHash(messageHash: string, transactionHash: string) {
+  async markAsSuccess(messageHash: string, transactionHash: string) {
     return this.knex('messages')
       .where('messageHash', messageHash)
       .update('transactionHash', transactionHash);

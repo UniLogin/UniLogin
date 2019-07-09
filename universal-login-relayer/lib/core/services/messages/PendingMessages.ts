@@ -69,7 +69,7 @@ export default class PendingMessages {
 
   async confirmExecution(messageHash: string, transactionHash: string) {
     ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
-    await this.messagesStore.setTransactionHash(messageHash, transactionHash);
+    await this.messagesStore.markAsSuccess(messageHash, transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {

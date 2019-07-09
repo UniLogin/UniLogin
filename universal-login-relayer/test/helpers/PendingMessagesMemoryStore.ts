@@ -68,7 +68,7 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
     this.messages[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
 
-  async setTransactionHash(messageHash: string, transactionHash: string) {
+  async markAsSuccess(messageHash: string, transactionHash: string) {
     this.messages[messageHash].transactionHash = transactionHash;
   }
 }

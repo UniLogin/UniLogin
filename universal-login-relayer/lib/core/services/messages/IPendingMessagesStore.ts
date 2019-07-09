@@ -10,7 +10,7 @@ export default interface IPendingMessagesStore {
   getStatus: (messageHash: string, wallet: Wallet) => Promise<MessageStatus>;
   addSignature: (messageHash: string, signature: string) => Promise<void>;
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
-  setTransactionHash: (messageHash: string, transactionHash: string) => Promise<void>;
+  markAsSuccess: (messageHash: string, transactionHash: string) => Promise<void>;
   containSignature: (messageHash: string, signature: string) => Promise<boolean>;
 }
 
