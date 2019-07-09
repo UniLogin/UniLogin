@@ -2,7 +2,7 @@ import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
 import MessageHandler from '../../lib/core/services/MessageHandler';
 import MessageQueueStore from '../../lib/integration/sql/services/MessageQueueSQLStore';
-import AuthorisationStore from '../../lib/integration/sql/services/authorisationStore';
+import AuthorisationStore from '../../lib/integration/sql/services/AuthorisationStore';
 import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesSQLStore from '../../lib/integration/sql/services/PendingMessagesSQLStore';
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
