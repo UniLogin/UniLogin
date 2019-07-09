@@ -1,5 +1,4 @@
 import {expect} from 'chai';
-import {utils} from 'ethers';
 import {CancelAuthorisationRequest} from '../../../lib/core/models/authorisation';
 import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation';
 
