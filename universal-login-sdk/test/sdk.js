@@ -201,9 +201,13 @@ describe('SDK - integration', async () => {
 
         it('should return public key when deny request', async () => {
           await sdk.connect(contractAddress);
-          const address = utils.computeAddress(privateKey);
-          const response = await sdk.denyRequest(contractAddress, address, privateKey);
-          expect(response).to.eq(address);
+          const cancelAuthorisationRequest = {
+            walletContractAddress: contractAddress,
+            publicKey: contractAddress,
+            signature: ''
+          };
+          const response = await sdk.denyRequest(cancelAuthorisationRequest, privateKey);
+          expect(response).to.eq(contractAddress);
         });
       });
     });
