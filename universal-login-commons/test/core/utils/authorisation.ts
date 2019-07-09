@@ -18,7 +18,7 @@ describe('authorisation sign verify', async () => {
   it('Hash cancel authorisation request', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address
+      publicKey: address
     };
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     expect(payloadDigest).to.equal(expectedPayloadDigest);
@@ -27,7 +27,7 @@ describe('authorisation sign verify', async () => {
   it('Sign cancel authorisation request payload', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address
+      publicKey: address
     };
     const signature = signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
     expect(signature).to.deep.equal(expectedSignature);
@@ -36,7 +36,7 @@ describe('authorisation sign verify', async () => {
   it('Verify cancel authorisation request payload', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address
+      publicKey: address
     };
     const result = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, expectedSignature, address);
     expect(result).to.deep.equal(true);
@@ -50,7 +50,7 @@ describe('authorisation sign verify', async () => {
 
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      key: address
+      publicKey: address
     };
 
     const forgedSignature = signCancelAuthorisationRequest(cancelAuthorisationRequest, attackerPrivateKey);

@@ -4,8 +4,8 @@ import {CancelAuthorisationRequest} from '../models/authorisation';
 
 export const hashCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {
-    const {walletContractAddress, key} = cancelAuthorisationRequest;
-    return utils.solidityKeccak256(['bytes20', 'bytes20'], [walletContractAddress.toLowerCase(), key.toLowerCase()]);
+    const {walletContractAddress, publicKey} = cancelAuthorisationRequest;
+    return utils.solidityKeccak256(['bytes20', 'bytes20'], [walletContractAddress.toLowerCase(), publicKey.toLowerCase()]);
   };
 
 export const sign = (payload: string, privateKey: string): utils.Signature => {

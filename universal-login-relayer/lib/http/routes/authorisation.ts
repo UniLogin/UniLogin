@@ -23,11 +23,11 @@ const getPending = (authorisationService : AuthorisationService) =>
   };
 
 const denyRequest = (authorisationService : AuthorisationService, provider: providers.Provider) =>
-  async (data: {walletContractAddress: string, body: {key: string, signature: utils.Signature}}) => {
+  async (data: {walletContractAddress: string, body: {publicKey: string, signature: utils.Signature}}) => {
     const {walletContractAddress} = data;
-    const {key, signature} = data.body;
+    const {publicKey, signature} = data.body;
 
-    const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, key};
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {walletContractAddress, publicKey};
     const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest, signature);
 
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, provider);
@@ -38,7 +38,7 @@ const denyRequest = (authorisationService : AuthorisationService, provider: prov
       throw new UnauthorisedAddress(recoveredAddress);
     }
 
-    const result = await authorisationService.removeRequest(data.walletContractAddress, data.body.key);
+    const result = await authorisationService.removeRequest(data.walletContractAddress, data.body.publicKey);
     return responseOf(result, 204);
   };
 
@@ -66,7 +66,7 @@ export default (authorisationService : AuthorisationService, provider: any) => {
     sanitize({
       walletContractAddress: asString,
       body: asObject({
-        key: asString,
+        publicKey: asString,
         signature: asSignature
       })
     }),
