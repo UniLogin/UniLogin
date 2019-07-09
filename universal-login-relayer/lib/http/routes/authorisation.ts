@@ -2,10 +2,7 @@ import {Router, Request} from 'express';
 import AuthorisationStore, {AuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
-import { ethers } from 'ethers';
-import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
-import { UnauthorisedAddress } from '../../core/utils/errors';
+import {CancelAuthorisationRequest} from '@universal-login/commons';
 import { asCancelAuthorisationRequest } from '../utils/sanitizers';
 import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
 
@@ -25,8 +22,7 @@ const getPending = (authorisationStore : AuthorisationStore) =>
 
 const denyRequest = (authorisationStore : AuthorisationStore, authorisationService: AuthorisationService) =>
   async (data: {body: {cancelAuthorisationRequest: CancelAuthorisationRequest}}) => {
-    authorisationService.isValidSignature(data.body.cancelAuthorisationRequest);
-
+    await authorisationService.isValidSignature(data.body.cancelAuthorisationRequest);
 
     const {walletContractAddress, publicKey} = data.body.cancelAuthorisationRequest;
     const result = await authorisationStore.removeRequest(walletContractAddress, publicKey);
