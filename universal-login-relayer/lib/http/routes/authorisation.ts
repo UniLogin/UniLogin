@@ -3,10 +3,11 @@ import AuthorisationStore, {AuthorisationRequest} from '../../integration/sql/se
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
-import { ethers, providers} from 'ethers';
+import { ethers } from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { UnauthorisedAddress } from '../../core/utils/errors';
 import { asCancelAuthorisationRequest } from '../utils/sanitizers';
+import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
 
 
 const request = (authorisationStore : AuthorisationStore) =>
@@ -22,23 +23,17 @@ const getPending = (authorisationStore : AuthorisationStore) =>
     return responseOf({ response: result });
   };
 
-const denyRequest = (authorisationStore : AuthorisationStore, provider: providers.Provider) =>
+const denyRequest = (authorisationStore : AuthorisationStore, authorisationService: AuthorisationService) =>
   async (data: {body: {cancelAuthorisationRequest: CancelAuthorisationRequest}}) => {
-    const recoveredAddress = recoverFromCancelAuthorisationRequest(data.body.cancelAuthorisationRequest);
-    const {walletContractAddress, publicKey, signature} = data.body.cancelAuthorisationRequest;
+    authorisationService.isValidSignature(data.body.cancelAuthorisationRequest);
 
-    const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, provider);
-    const payloadDigest = hashCancelAuthorisationRequest(data.body.cancelAuthorisationRequest);
-    const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
-    if (!isCorrectAddress) {
-      throw new UnauthorisedAddress(recoveredAddress);
-    }
 
+    const {walletContractAddress, publicKey} = data.body.cancelAuthorisationRequest;
     const result = await authorisationStore.removeRequest(walletContractAddress, publicKey);
     return responseOf(result, 204);
   };
 
-export default (authorisationStore : AuthorisationStore, provider: any) => {
+export default (authorisationStore : AuthorisationStore, authorisationService: AuthorisationService) => {
   const router = Router();
 
   router.post('/', asyncHandler(
@@ -64,7 +59,7 @@ export default (authorisationStore : AuthorisationStore, provider: any) => {
         cancelAuthorisationRequest: asCancelAuthorisationRequest
       })
     }),
-    denyRequest(authorisationStore, provider)
+    denyRequest(authorisationStore, authorisationService)
   ));
 
   return router;
