@@ -11,14 +11,14 @@ export default class MessageQueueStore implements IMessageQueueStore {
   public tableName: string;
 
   constructor(public database: Knex) {
-    this.tableName = 'finalMessages';
+    this.tableName = 'queue_items';
   }
 
   async add(signedMessage: SignedMessage) {
     const messageHash = calculateMessageHash(signedMessage);
     await this.database
       .insert({
-        messageHash,
+        hash: messageHash,
         message: stringifySignedMessageFields(signedMessage),
         created_at: this.database.fn.now()
       })
@@ -32,6 +32,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
       .where('transactionHash', null)
       .andWhere('error', null)
       .orderBy('created_at', 'asc')
+      .column('message', {messageHash: 'hash'}, 'error', 'transactionHash')
       .select();
     if (next) {
       next.message = bignumberifySignedMessageFields(next.message);
@@ -39,31 +40,31 @@ export default class MessageQueueStore implements IMessageQueueStore {
     return next;
   }
 
-  async markAsSuccess (messageHash: string, transactionHash: string) {
-    await this.update(messageHash, {transactionHash});
+  async markAsSuccess (hash: string, transactionHash: string) {
+    await this.update(hash, {transactionHash});
   }
 
-  async markAsError (messageHash: string, error: string) {
-    await this.update(messageHash, {error});
+  async markAsError (hash: string, error: string) {
+    await this.update(hash, {error});
   }
 
-  async get(messageHash: string) {
+  async get(hash: string) {
     return this.database(this.tableName)
-      .where('messageHash', messageHash)
+      .where('hash', hash)
       .select()
       .first();
   }
 
-  async getStatus(messageHash: string) {
+  async getStatus(hash: string) {
     return this.database(this.tableName)
       .first()
-      .where('messageHash', messageHash)
-      .select(['messageHash', 'transactionHash', 'error']);
+      .where('hash', hash)
+      .select(['hash', 'transactionHash', 'error']);
   }
 
-  private update(messageHash: string, data: QueueItem) {
+  private async update(hash: string, data: QueueItem) {
     return this.database(this.tableName)
-      .where('messageHash', messageHash)
+      .where('hash', hash)
       .update(data);
   }
 }
