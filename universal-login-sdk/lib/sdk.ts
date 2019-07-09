@@ -11,6 +11,7 @@ import {BlockchainService} from './services/BlockchainService';
 import {MissingConfiguration} from './utils/errors';
 import {FutureWalletFactory} from './services/FutureWalletFactory';
 import {ExecutionFactory, Execution} from './services/ExecutionFactory';
+import {ENSService} from './services/ENSService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -25,10 +26,12 @@ class UniversalLoginSDK {
   defaultPaymentOptions: Message;
   config?: PublicRelayerConfig;
   factoryAddress?: string;
+  ensService: ENSService;
 
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
+    ensAddress?: string,
     paymentOptions?: Message,
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
@@ -39,6 +42,7 @@ class UniversalLoginSDK {
     this.executionFactory = new ExecutionFactory(this.relayerApi);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
+    this.ensService = new ENSService(this.provider, ensAddress);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
@@ -155,7 +159,7 @@ class UniversalLoginSDK {
   private getFutureWalletFactory() {
     ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
     const {chainSpec, ...futureWalletConfig} = this.config!;
-    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(futureWalletConfig, this.provider, this.blockchainService, this.relayerApi);
+    this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(futureWalletConfig, this.provider, this.blockchainService, this.relayerApi, this.ensService);
   }
 
   async execute(message: Message, privateKey: string): Promise<Execution> {

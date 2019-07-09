@@ -28,18 +28,18 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy without ENS', async () => {
-    const {futureAddress, initializeData} = createFutureDeployment(keyPair.publicKey, walletMaster.address, factoryContract);
+    const {futureAddress, initializeData, signature} = await createFutureDeployment(keyPair, walletMaster.address, factoryContract);
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
-    const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData);
+    const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy without ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyCost);
   });
 
   it('Proxy deploy with ENS', async () => {
-    const {futureAddress, initializeData} = await createFutureDeploymentWithRefund({keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: utils.bigNumberify('1000000').toString(), relayerAddress: deployer.address});
+    const {futureAddress, initializeData, signature} = await createFutureDeploymentWithRefund({keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: utils.bigNumberify('1000000').toString(), relayerAddress: deployer.address});
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
-    const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData);
+    const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy with ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyWithENSCost);

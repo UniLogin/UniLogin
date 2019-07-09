@@ -19,4 +19,5 @@ export interface PublicRelayerConfig {
   factoryAddress: string;
   chainSpec: ChainSpec;
   contractWhiteList: ContractWhiteList;
+  relayerAddress: string;
 }

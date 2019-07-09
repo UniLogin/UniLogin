@@ -46,9 +46,9 @@ class WalletService {
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
-    const args = [key, ...ensArgs as string[], this.wallet.address, gasPrice, signature];
+    const args = [key, ...ensArgs as string[], this.wallet.address, gasPrice];
     const initWithENS = encodeInitializeWithRefundData(args);
-    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions, gasPrice: utils.bigNumberify(gasPrice)});
+    return this.factoryContract!.createContract(key, initWithENS, signature, {...defaultDeployOptions, gasPrice: utils.bigNumberify(gasPrice)});
   }
 }
 

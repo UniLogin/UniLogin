@@ -18,7 +18,8 @@ describe('E2E: Relayer - Config routes', async () => {
       supportedTokens,
       chainSpec,
       factoryAddress,
-      contractWhiteList
+      contractWhiteList,
+      relayerAddress: relayer.wallet.address
     };
     const result = await chai.request(relayer.server)
       .get('/config');
@@ -32,9 +33,11 @@ describe('E2E: Relayer - Config routes', async () => {
       supportedTokens,
       chainSpec,
       factoryAddress,
-      contractWhiteList
+      contractWhiteList,
+      relayerAddress: relayer.wallet.address
     };
-    const publicConfig = getPublicConfig(relayer.config);
+    const publicConfig = getPublicConfig(relayer.config, relayer.wallet.address);
+
     expect(publicConfig).to.be.deep.eq(expectedConfig);
   });
 

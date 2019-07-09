@@ -1,18 +1,19 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 
 
 contract ProxyCounterfactualFactory is Ownable {
     bytes public initCode;
+    using ECDSA for bytes32;
 
     constructor(bytes memory _initCode) public {
         initCode = _initCode;
     }
 
-    function createContract(address publicKey, bytes memory initializeWithENS) public onlyOwner returns(bool success) {
-        bytes20 initializePublicKey = getKeyFromInitializeData(initializeWithENS);
-        require(bytes20(publicKey) == initializePublicKey, "Public key and initialize public key are different");
+    function createContract(address publicKey, bytes memory initializeWithENS, bytes memory signature) public onlyOwner returns(bool success) {
+        require(publicKey == getSigner(initializeWithENS, signature), "Invalid signature");
         bytes32 finalSalt = keccak256(abi.encodePacked(publicKey));
         bytes memory _initCode = initCode;
         address contractAddress;
@@ -32,5 +33,9 @@ contract ProxyCounterfactualFactory is Ownable {
         assembly {
             publicKey := mload(add(initializeData, 0x30))
         }
+    }
+
+    function getSigner(bytes memory initializeWithENS, bytes memory signature) public pure returns (address) {
+        return keccak256(abi.encodePacked(initializeWithENS)).toEthSignedMessageHash().recover(signature);
     }
 }

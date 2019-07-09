@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, ContractJSON, KeyPair, calculateInitializeWithENSSignature} from '@universal-login/commons';
+import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
 import WalletMaster from '../build/WalletMaster.json';
 import WalletMasterWithRefund from '../build/WalletMasterWithRefund.json';
 
@@ -56,7 +56,5 @@ export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name
 
 export async function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
   const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
-  const argsToSign = {hashLabel: args[1], ensName: args[2], node: args[3], gasPrice};
-  const signature = await calculateInitializeWithENSSignature(argsToSign, keyPair.privateKey);
-  return [...args, relayerAddress, gasPrice, signature];
+  return [...args, relayerAddress, gasPrice];
 }
