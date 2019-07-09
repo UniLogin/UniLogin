@@ -67,10 +67,8 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     signCancelAuthorisationRequest(cancelAuthorisationRequest, wallet.privateKey);
     const result = await chai.request(relayer.server)
       .post(`/authorisation/${contract.address}`)
-      .send({
-        publicKey: wallet.address,
-        signature: cancelAuthorisationRequest.signature
-      });
+      .send({cancelAuthorisationRequest});
+
     expect(result.status).to.eq(204);
     const {result, response} = await getAuthorisation(relayer, contract, wallet);
     expect(response).to.deep.eq([]);
