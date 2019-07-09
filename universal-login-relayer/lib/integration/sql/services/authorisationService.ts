@@ -22,10 +22,10 @@ class AuthorisationService {
       .select();
   }
 
-  async removeRequest(walletContractAddress: string, key: string) {
+  async removeRequest(walletContractAddress: string, publicKey: string) {
     await this.database('authorisations')
       .where('walletContractAddress', walletContractAddress.toLowerCase())
-      .where('key', key.toLocaleLowerCase())
+      .where('key', publicKey.toLocaleLowerCase())
       .del();
   }
 }
