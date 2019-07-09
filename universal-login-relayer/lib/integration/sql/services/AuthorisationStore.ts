@@ -6,7 +6,7 @@ export interface AuthorisationRequest {
   deviceInfo: object;
 }
 
-class AuthorisationService {
+class AuthorisationStore {
   constructor(private database : Knex) {}
 
   async addRequest(request: AuthorisationRequest) {
@@ -30,4 +30,4 @@ class AuthorisationService {
   }
 }
 
-export default AuthorisationService;
+export default AuthorisationStore;

@@ -10,7 +10,7 @@ import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 describe('INT: MessageHandler', async () => {
   let messageHandler;
   let provider;
-  let authorisationService;
+  let authorisationStore;
   let wallet;
   let mockToken;
   let walletContract;
@@ -19,7 +19,7 @@ describe('INT: MessageHandler', async () => {
   const knex = getKnex();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, mockToken, authorisationService, walletContract, otherWallet} = await setupMessageService(knex));
+    ({wallet, provider, messageHandler, mockToken, authorisationStore, walletContract, otherWallet} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
     messageHandler.start();
   });
@@ -69,12 +69,12 @@ describe('INT: MessageHandler', async () => {
     describe('Collaboration with Authorisation Service', async () => {
       it('should remove request from pending authorisations if addKey', async () => {
         const request = {walletContractAddress: walletContract.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
-        await authorisationService.addRequest(request);
+        await authorisationStore.addRequest(request);
         msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
         const signedMessage = await createSignedMessage(msg, wallet.privateKey);
         await messageHandler.handleMessage(signedMessage);
         await messageHandler.stopLater();
-        const authorisations = await authorisationService.getPendingAuthorisations(walletContract.address);
+        const authorisations = await authorisationStore.getPendingAuthorisations(walletContract.address);
         expect(authorisations).to.deep.eq([]);
       });
     });
