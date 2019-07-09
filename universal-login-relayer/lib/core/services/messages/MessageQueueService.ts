@@ -25,7 +25,9 @@ class MessageQueueService {
       await this.pendingMessagesStore.markAsSuccess(messageHash, hash!);
       await this.queueMessageStore.markAsSuccess(messageHash, hash!);
     } catch (error) {
-      await this.queueMessageStore.markAsError(messageHash, `${error.name}: ${error.message}`);
+      const errorMessage = `${error.name}: ${error.message}`;
+      await this.pendingMessagesStore.markAsError(messageHash, errorMessage);
+      await this.queueMessageStore.markAsError(messageHash, errorMessage);
     }
   }
 

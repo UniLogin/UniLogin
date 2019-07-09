@@ -77,6 +77,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
       collectedSignatures: [] as any,
       totalCollected: 0,
       required: 1,
+      error: null,
       transactionHash: null
     };
     expect(await pendingMessagesStore.getStatus(messageHash, wallet)).to.deep.eq(expectedStatus);
@@ -98,12 +99,20 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     expect(status.collectedSignatures).to.contains(message2.signature);
   });
 
-  it('should update transcaction hash', async () => {
+  it('should update transaction hash', async () => {
     await pendingMessagesStore.add(messageHash, pendingMessage);
     const expectedTransactionHash = TEST_TRANSACTION_HASH;
     await pendingMessagesStore.markAsSuccess(messageHash, expectedTransactionHash);
     const {transactionHash} = await pendingMessagesStore.getStatus(messageHash, wallet);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
+  });
+
+  it('should update error', async () => {
+    await pendingMessagesStore.add(messageHash, pendingMessage);
+    const expectedMessageError = 'Pending Message Store Error';
+    await pendingMessagesStore.markAsError(messageHash, expectedMessageError);
+    const {error} = await pendingMessagesStore.getStatus(messageHash, wallet);
+    expect(error).to.be.eq(expectedMessageError);
   });
 
   it('should get signatures', async () => {

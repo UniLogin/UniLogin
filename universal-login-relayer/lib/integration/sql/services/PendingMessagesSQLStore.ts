@@ -29,6 +29,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     const pendingMessage: PendingMessage = message && {
       transactionHash: message.transactionHash,
+      error: message.error,
       walletAddress: message.walletAddress,
       collectedSignatureKeyPairs: signatureKeyPairs
     };
@@ -67,7 +68,8 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
       required: required.toNumber(),
-      transactionHash: message.transactionHash
+      transactionHash: message.transactionHash,
+      error: message.error
     };
   }
 
@@ -92,6 +94,12 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     return this.knex('messages')
       .where('messageHash', messageHash)
       .update('transactionHash', transactionHash);
+  }
+
+  async markAsError(messageHash: string, error: string) {
+    return this.knex('messages')
+      .where('messageHash', messageHash)
+      .update('error', error);
   }
 
   async containSignature(messageHash: string, signature: string) {

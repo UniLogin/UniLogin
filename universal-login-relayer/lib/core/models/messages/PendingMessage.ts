@@ -3,5 +3,6 @@ import {CollectedSignatureKeyPair} from '../../services/messages/IPendingMessage
 export default interface PendingMessage {
   collectedSignatureKeyPairs: CollectedSignatureKeyPair[];
   transactionHash: string | null;
+  error: string | null;
   walletAddress: string;
 }

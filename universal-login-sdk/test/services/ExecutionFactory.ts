@@ -20,6 +20,7 @@ describe('UNIT: ExecutionFactory', async () => {
     const messageHash = await calculateMessageHash(signedMessage);
     status = {
       transactionHash: TEST_TRANSACTION_HASH,
+      error: null,
       required: 1,
       totalCollected: 1,
       messageHash,

@@ -1,11 +1,12 @@
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {calculateMessageHash, waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import MessageQueueService from '../../../lib/core/services/messages/MessageQueueService';
 import MessageQueueMemoryStore from '../../helpers/MessageQueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import PendingMessagesMemoryStore from '../../helpers/PendingMessagesMemoryStore';
+import {createPendingMessage} from '../../../lib/core/utils/utils';
 
 use(sinonChai);
 
@@ -17,7 +18,7 @@ describe('UNIT: Message Queue Service', async () => {
     provider: {waitForTransaction: sinon.fake()}
   };
   const executor: any = {
-    executeAndWait: sinon.fake.returns({transactionHash: TEST_TRANSACTION_HASH}),
+    executeAndWait: sinon.fake.returns({hash: TEST_TRANSACTION_HASH}),
     wallet
   };
   const executorReturnsNull: any = {
@@ -31,6 +32,10 @@ describe('UNIT: Message Queue Service', async () => {
     pendingMessagesMemoryStorage = new PendingMessagesMemoryStore();
     messageQueueService = new MessageQueueService(executor, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
     signedMessage = await getTestSignedMessage();
+    await pendingMessagesMemoryStorage.add(
+      calculateMessageHash(signedMessage),
+      createPendingMessage(signedMessage.from)
+    );
   });
 
   it('signedMessage round trip', async () => {

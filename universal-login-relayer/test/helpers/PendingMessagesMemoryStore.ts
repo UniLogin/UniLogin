@@ -55,7 +55,8 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
       required: required.toNumber(),
-      transactionHash: message.transactionHash
+      transactionHash: message.transactionHash,
+      error: message.error
     };
   }
 
@@ -70,5 +71,9 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
     this.messages[messageHash].transactionHash = transactionHash;
+  }
+
+  async markAsError(messageHash: string, error: string) {
+    this.messages[messageHash].error = error;
   }
 }

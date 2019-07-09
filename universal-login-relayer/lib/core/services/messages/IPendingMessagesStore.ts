@@ -11,6 +11,7 @@ export default interface IPendingMessagesStore {
   addSignature: (messageHash: string, signature: string) => Promise<void>;
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
   markAsSuccess: (messageHash: string, transactionHash: string) => Promise<void>;
+  markAsError: (messageHash: string, error: string) => Promise<void>;
   containSignature: (messageHash: string, signature: string) => Promise<boolean>;
 }
 

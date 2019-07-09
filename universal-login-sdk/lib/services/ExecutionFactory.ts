@@ -38,7 +38,7 @@ export class ExecutionFactory {
       const getStatus = () => this.relayerApi.getStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
       const status = await retry(getStatus, isNotExecuted);
-      ensure(!status.error, Error, status.error);
+      ensure(!status.error, Error, status.error!);
       return status;
     };
   }
