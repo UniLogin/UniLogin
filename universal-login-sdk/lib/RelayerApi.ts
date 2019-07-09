@@ -1,4 +1,5 @@
 import {http, HttpFunction} from './utils/http';
+import { CancelAuthorisationRequest } from '@universal-login/commons';
 
 export class RelayerApi {
   private http: HttpFunction;
@@ -39,10 +40,12 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(walletContractAddress: string, key: string) {
+  async denyConnection(cancelAuthorisationRequest: CancelAuthorisationRequest) {
+    const {walletContractAddress} = cancelAuthorisationRequest;
     return this.http('POST', `/authorisation/${walletContractAddress}`, {
-      walletContractAddress,
-      key,
+      cancelAuthorisationRequest
+    }).catch((e) => {
+      throw new Error(e.error);
     });
   }
 

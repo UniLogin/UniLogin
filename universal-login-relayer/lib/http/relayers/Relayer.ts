@@ -7,7 +7,7 @@ import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
 import {Wallet, providers} from 'ethers';
 import cors from 'cors';
-import AuthorisationService from '../../integration/sql/services/authorisationService';
+import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
 import {getKnex} from '../../core/utils/knexUtils';
@@ -18,6 +18,7 @@ import MessageHandler from '../../core/services/MessageHandler';
 import MessageQueueStore from '../../integration/sql/services/MessageQueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';
 import PendingMessagesSQLStore from '../../integration/sql/services/PendingMessagesSQLStore';
+import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
 
 const defaultPort = '3311';
 
@@ -33,6 +34,7 @@ class Relayer {
   protected readonly wallet: Wallet;
   public readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
+  private authorisationStore: AuthorisationStore = {} as AuthorisationStore;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
   private messageQueueStore: MessageQueueStore = {} as MessageQueueStore;
@@ -64,16 +66,17 @@ class Relayer {
       credentials: true,
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
-    this.authorisationService = new AuthorisationService(this.database);
+    this.authorisationStore = new AuthorisationStore(this.database);
+    this.authorisationService = new AuthorisationService(this.provider);
     this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
     this.messageQueueStore = new MessageQueueStore(this.database);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationService, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);
     const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(publicConfig));
-    this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
+    this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationStore, this.authorisationService));
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
   }

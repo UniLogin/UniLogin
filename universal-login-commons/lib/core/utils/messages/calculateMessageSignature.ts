@@ -15,7 +15,6 @@ export const calculateMessageSignature = (privateKey: string, msg: UnsignedMessa
   return wallet.signMessage(utils.arrayify(massageHash));
 };
 
-
 export const calculateMessageSignatures = async (privateKeys: string[], msg: UnsignedMessage) => {
   const signaturesPromises = privateKeys.map((value: string) =>
     calculateMessageSignature(value, msg));
