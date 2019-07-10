@@ -50,7 +50,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
     }
 
     function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
-        return keyExist(_data.recover(_signature));
+        return keyExist(_data.toEthSignedMessageHash().recover(_signature));
     }
 
     function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {

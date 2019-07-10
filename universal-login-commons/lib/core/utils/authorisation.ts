@@ -17,7 +17,7 @@ export const signCancelAuthorisationRequest =
 export const recoverFromCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
-    return utils.recoverAddress(payloadDigest, cancelAuthorisationRequest.signature);
+    return utils.verifyMessage(utils.arrayify(payloadDigest), cancelAuthorisationRequest.signature);
   };
 
 export const verifyCancelAuthorisationRequest =
