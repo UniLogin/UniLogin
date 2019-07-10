@@ -28,13 +28,6 @@ contract ProxyCounterfactualFactory is Ownable {
         return success;
     }
 
-    function getKeyFromInitializeData(bytes memory initializeData) private pure returns(bytes20 publicKey) {
-        // solium-disable-next-line security/no-inline-assembly
-        assembly {
-            publicKey := mload(add(initializeData, 0x30))
-        }
-    }
-
     function getSigner(bytes memory initializeWithENS, bytes memory signature) public pure returns (address) {
         return keccak256(abi.encodePacked(initializeWithENS)).toEthSignedMessageHash().recover(signature);
     }
