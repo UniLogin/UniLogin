@@ -4,9 +4,9 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/Proxy';
-import basicSDK, {transferMessage} from './fixtures/basicSDK';
+import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY} from '@universal-login/commons';
-import UniversalLoginSDK from '../lib/sdk';
+import UniversalLoginSDK from '../../lib/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
