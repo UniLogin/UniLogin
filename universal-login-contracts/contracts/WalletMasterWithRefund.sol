@@ -18,10 +18,9 @@ contract WalletMasterWithRefund is WalletMaster {
         ENS ens,
         FIFSRegistrar registrar,
         PublicResolver resolver,
-        address payable relayer,
         uint gasPrice) external onlyInitializing()
     {
         this.initializeWithENS(_key, _hashLabel, _name, _node, ens, registrar, resolver);
-        refund(getDeploymentGasUsed(), gasPrice, address(0), relayer);
+        refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
     }
 }

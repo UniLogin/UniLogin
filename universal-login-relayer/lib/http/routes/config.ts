@@ -3,14 +3,13 @@ import asyncMiddleware from '../middlewares/async_middleware';
 import {Config} from '../../config/relayer';
 import {PublicRelayerConfig} from '@universal-login/commons';
 
-export function getPublicConfig(config: Config, relayerAddress: string): PublicRelayerConfig {
+export function getPublicConfig(config: Config): PublicRelayerConfig {
   const {chainSpec, supportedTokens, factoryAddress, contractWhiteList} = config;
   return {
       chainSpec,
       supportedTokens,
       factoryAddress,
-      contractWhiteList,
-      relayerAddress
+      contractWhiteList
     };
 }
 

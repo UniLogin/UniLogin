@@ -31,7 +31,7 @@ export const createWalletContract = async (provider, relayerUrlOrServer, publicK
 export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, keyPair, walletMasterAddress, factoryContractAddress, ensAddress, ensName = 'marek.mylogin.eth') => {
   const futureAddress = getFutureAddress(walletMasterAddress, factoryContractAddress, keyPair.publicKey);
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
-  const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, wallet.address, TEST_GAS_PRICE);
+  const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);
   const signature = await calculateInitializeSignature(initData, keyPair.privateKey);
   await chai.request(relayerUrlOrServer)
   .post('/wallet/deploy')
@@ -55,12 +55,12 @@ export const startRelayerWithRefund = async (port = '33111') => {
   return {provider, relayer, mockToken, factoryContract, walletMaster, deployer, ensAddress};
 };
 
-export const getInitData = async (keyPair, ensName, ensAddress, provider, relayerAddress, gasPrice) => {
+export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice) => {
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);
   const ens = new Contract(ensAddress, ENS.interface, provider);
   const resolverAddress = await ens.resolver(utils.namehash(domain));
   const registrarAddress = await ens.owner(utils.namehash(domain));
-  return encodeInitializeWithRefundData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, relayerAddress, gasPrice]);
+  return encodeInitializeWithRefundData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice]);
 };

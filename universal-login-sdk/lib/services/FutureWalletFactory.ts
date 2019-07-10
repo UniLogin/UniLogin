@@ -32,8 +32,7 @@ export class FutureWalletFactory {
 
   async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
     const args = await this.ensService.argsFor(ensName) as string[];
-    const {relayerAddress} = this.config;
-    const initArgs = [publicKey, ...args, relayerAddress, gasPrice];
+    const initArgs = [publicKey, ...args, gasPrice];
     return encodeInitializeWithRefundData(initArgs);
   }
 

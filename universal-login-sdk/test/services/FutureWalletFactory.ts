@@ -31,8 +31,7 @@ describe('INT: FutureWalletFactory', async () => {
     const futureWalletConfig = {
       factoryAddress: factoryContract.address,
       supportedTokens,
-      contractWhiteList,
-      relayerAddress: wallet.address
+      contractWhiteList
     };
     const blockchainService = new BlockchainService(provider);
     const relayerApi = new RelayerApi(relayerUrl);

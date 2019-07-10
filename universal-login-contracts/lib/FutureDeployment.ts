@@ -14,7 +14,6 @@ export type CreateFutureDeploymentWithRefundArgs = {
   walletMasterAddress: string;
   ensDomainData: EnsDomainData;
   factoryContract: Contract;
-  relayerAddress: string;
   gasPrice: string;
 };
 
@@ -40,8 +39,8 @@ export async function createFutureDeployment(keyPair: KeyPair, walletMasterAddre
   };
 }
 
-export async function createFutureDeploymentWithRefund({keyPair, walletMasterAddress, ensDomainData, factoryContract, relayerAddress, gasPrice}: CreateFutureDeploymentWithRefundArgs): Promise<FutureDeployment> {
-  const [, initializeData] = await createProxyDeployWithRefundArgs(keyPair, ensDomainData, walletMasterAddress, relayerAddress, gasPrice);
+export async function createFutureDeploymentWithRefund({keyPair, walletMasterAddress, ensDomainData, factoryContract, gasPrice}: CreateFutureDeploymentWithRefundArgs): Promise<FutureDeployment> {
+  const [, initializeData] = await createProxyDeployWithRefundArgs(keyPair, ensDomainData, walletMasterAddress, gasPrice);
   const signature = await calculateInitializeSignature(initializeData, keyPair.privateKey);
   const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, keyPair.publicKey);
   return {

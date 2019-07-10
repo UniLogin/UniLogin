@@ -30,7 +30,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     keyPair = createKeyPair();
     initCode = getDeployData(ProxyContract as any, [walletMaster.address, '0x0']);
     contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
-    const initData = await getInitData(keyPair, ensName, ensAddress, provider, deployer.address, TEST_GAS_PRICE);
+    const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
   });
 
@@ -56,7 +56,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     const newKeyPair = createKeyPair();
     contractAddress = computeContractAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
-    const initData = await getInitData(newKeyPair, ensName, ensAddress, provider, deployer.address, TEST_GAS_PRICE);
+    const initData = await getInitData(newKeyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, newKeyPair.privateKey);
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)
@@ -101,7 +101,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
   it('Counterfactual deployment fail if invalid ENS name', async () => {
     const invalidEnsName = 'myname.non-existing.eth';
-    const initData = await getInitData(keyPair, invalidEnsName, ensAddress, provider, deployer.address, TEST_GAS_PRICE);
+    const initData = await getInitData(keyPair, invalidEnsName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)

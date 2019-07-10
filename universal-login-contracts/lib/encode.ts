@@ -42,7 +42,6 @@ type SetupInitializeWithENSArgs = {
 };
 
 interface SetupInitializeWithENSAndRefundArgs extends SetupInitializeWithENSArgs {
-  relayerAddress: string;
   gasPrice: string;
 }
 
@@ -54,7 +53,7 @@ export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name
   return args;
 }
 
-export async function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', relayerAddress, gasPrice}: SetupInitializeWithENSAndRefundArgs) {
+export async function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', gasPrice}: SetupInitializeWithENSAndRefundArgs) {
   const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
-  return [...args, relayerAddress, gasPrice];
+  return [...args, gasPrice];
 }
