@@ -23,7 +23,7 @@ const getPending = (authorisationStore: AuthorisationStore) =>
 
 const denyRequest = (authorisationService: AuthorisationService) =>
   async (data: {body: {cancelAuthorisationRequest: CancelAuthorisationRequest}}) => {
-    const result = await authorisationService.ensureValidSignature(data.body.cancelAuthorisationRequest);
+    const result = await authorisationService.removeAuthorisationRequest(data.body.cancelAuthorisationRequest);
     return responseOf(result, 204);
   };
 

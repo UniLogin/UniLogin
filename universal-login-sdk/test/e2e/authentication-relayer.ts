@@ -3,7 +3,7 @@ import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/sdk';
-import { CancelAuthorisationRequest, signCancelAuthorisationRequest } from '@universal-login/commons';
+import { CancelAuthorisationRequest, signCancelAuthorisationRequest, createKeyPair } from '@universal-login/commons';
 import { RelayerUnderTest } from '@universal-login/relayer';
 
 const loadFixture = createFixtureLoader();
@@ -13,21 +13,47 @@ describe('E2E authorization - sdk <=> relayer', async () => {
   let sdk: UniversalLoginSDK;
   let contractAddress: string;
   let privateKey: string;
-
+  let otherWallet: any;
+  let mockToken: any;
+  let walletContract: any;
 
   beforeEach(async () => {
-    ({sdk, privateKey, contractAddress, relayer} = await loadFixture(basicSDK));
+    ({sdk, privateKey, contractAddress, relayer, otherWallet, walletContract, mockToken} = await loadFixture(basicSDK));
   });
 
   afterEach(async () => {
     await relayer.clearDatabase();
   });
 
-  it('Send valid cancel request', async () => {
-    const userAddress = utils.computeAddress(privateKey);
+  after(async () => {
+    await relayer.stop();
+  });
+
+  it('Send cancel request but no added key before canceling it.', async () => {
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      publicKey: userAddress,
+      publicKey: otherWallet.address,
+      signature: ''
+    };
+
+    signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
+    const {body, status} = await chai.request(relayer.url())
+      .post(`/authorisation/${contractAddress}`)
+      .send({cancelAuthorisationRequest});
+
+    expect(status).to.eq(401);
+    expect(body.type).to.eq('AuthorisationKeyNotfound');
+    expect(body.error).to.eq(`Error: Could not find key ${otherWallet.address} to authorise`);
+  });
+
+  it('Send valid cancel request', async () => {
+    const {publicKey} = createKeyPair();
+    await sdk.relayerApi.connect(contractAddress, publicKey.toLowerCase());
+    await sdk.connect(contractAddress);
+
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
+      walletContractAddress: contractAddress,
+      publicKey,
       signature: ''
     };
 
@@ -45,21 +71,18 @@ describe('E2E authorization - sdk <=> relayer', async () => {
     const attackerAddress = utils.computeAddress(attackerPrivateKey);
     const cancelAuthorisationRequest: CancelAuthorisationRequest = {
       walletContractAddress: contractAddress,
-      publicKey: attackerAddress,
+      publicKey: otherWallet.address,
       signature: ''
     };
 
     signCancelAuthorisationRequest(cancelAuthorisationRequest, attackerPrivateKey);
-    const result = await chai.request(relayer.url())
+    const {body, status} = await chai.request(relayer.url())
       .post(`/authorisation/${contractAddress}`)
       .send({cancelAuthorisationRequest});
 
-    expect(result.status).to.eq(401);
-    expect(result.body.type).to.eq('UnauthorisedAddress');
-    expect(result.body.error).to.eq(`Error: Unauthorised address: ${attackerAddress}`);
-  });
-
-  after(async () => {
-    await relayer.stop();
+    expect(status).to.eq(401);
+    expect(body.type).to.eq('UnauthorisedAddress');
+    expect(body.error).to.eq(`Error: Unauthorised address: ${attackerAddress}`);
   });
 });
+
