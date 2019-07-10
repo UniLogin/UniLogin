@@ -37,3 +37,4 @@ export {calculateInitializeWithENSSignature, calculateInitializeSignature} from 
 export {CancelAuthorisationRequest} from './core/models/authorisation';
 export {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from './core/utils/authorisation';
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
+export {DeployArgs} from './core/models/deploy';
