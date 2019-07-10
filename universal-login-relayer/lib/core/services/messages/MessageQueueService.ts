@@ -19,8 +19,9 @@ class MessageQueueService {
     return this.queueMessageStore.add(signedMessage);
   }
 
-  async execute(signedMessage: SignedMessage, messageHash: string) {
+  async execute(messageHash: string) {
     try {
+      const signedMessage = await this.pendingMessagesStore.getSignedMessage(messageHash);
       const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
       await this.pendingMessagesStore.markAsSuccess(messageHash, hash!);
       await this.queueMessageStore.markAsSuccess(messageHash, hash!);
@@ -42,7 +43,7 @@ class MessageQueueService {
     do {
       const nextMessage = await this.queueMessageStore.getNext();
       if (nextMessage){
-        await this.execute(nextMessage.message, nextMessage.messageHash);
+        await this.execute(nextMessage.messageHash);
       } else {
         if (this.state === 'stopping'){
           this.state = 'stopped';

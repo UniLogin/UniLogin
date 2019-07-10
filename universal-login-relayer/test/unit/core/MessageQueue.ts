@@ -26,26 +26,29 @@ describe('UNIT: Message Queue Service', async () => {
     wallet
   };
   let signedMessage: SignedMessage;
+  let messageHash: string;
 
   beforeEach(async () => {
     messageQueueMemoryStorage = new MessageQueueMemoryStore();
     pendingMessagesMemoryStorage = new PendingMessagesMemoryStore();
     messageQueueService = new MessageQueueService(executor, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
     signedMessage = await getTestSignedMessage();
+    messageHash = calculateMessageHash(signedMessage);
     await pendingMessagesMemoryStorage.add(
-      calculateMessageHash(signedMessage),
+      messageHash,
       createPendingMessage(signedMessage.from)
     );
   });
 
   it('signedMessage round trip', async () => {
     messageQueueService.start();
+    await pendingMessagesMemoryStorage.addSignedMessage(messageHash, signedMessage);
     await messageQueueService.add(signedMessage);
-
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledOnce);
   });
 
   it('should execute pending signedMessage after start', async () => {
+    await pendingMessagesMemoryStorage.addSignedMessage(messageHash, signedMessage);
     await messageQueueService.add(signedMessage);
     messageQueueService.start();
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledTwice);
@@ -55,7 +58,8 @@ describe('UNIT: Message Queue Service', async () => {
     messageQueueService = new MessageQueueService(executorReturnsNull, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
     messageQueueService.start();
     messageQueueMemoryStorage.markAsError = sinon.spy(messageQueueMemoryStorage.markAsError);
-    const messageHash = await messageQueueService.add(signedMessage);
+    await pendingMessagesMemoryStorage.addSignedMessage(messageHash, signedMessage);
+    messageHash = await messageQueueService.add(signedMessage);
     await waitExpect(() => expect(messageQueueMemoryStorage.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
   });
 
