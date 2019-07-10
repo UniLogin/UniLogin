@@ -1,8 +1,8 @@
 import {Contract, Wallet} from 'ethers';
-import {MessageStatus, SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields} from '@universal-login/commons';
+import {MessageStatus, SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
-import {InvalidMessage} from '../../lib/core/utils/errors';
+import {InvalidMessage, SignedMessageNotFound} from '../../lib/core/utils/errors';
 import PendingMessage from '../../lib/core/models/messages/PendingMessage';
 import IPendingMessagesStore from '../../lib/core/services/messages/IPendingMessagesStore';
 
@@ -66,6 +66,12 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
 
   async addSignedMessage(messageHash: string, signedMessage: SignedMessage) {
     this.messages[messageHash].message = bignumberifySignedMessageFields(stringifySignedMessageFields(signedMessage));
+  }
+
+  async getSignedMessage(messageHash: string) {
+    const message = (await this.get(messageHash)).message;
+    ensureNotNull(message, SignedMessageNotFound, messageHash);
+    return message as SignedMessage;
   }
 
   async addSignature(messageHash: string, signature: string) {

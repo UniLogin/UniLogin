@@ -118,10 +118,18 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
 
   it('should update message', async () => {
     await pendingMessagesStore.add(messageHash, pendingMessage);
-    const expectedMessage = await getTestSignedMessage();
-    await pendingMessagesStore.addSignedMessage(messageHash, expectedMessage);
+    const testSignedMessage = await getTestSignedMessage();
+    const expectedMessage = bignumberifySignedMessageFields(stringifySignedMessageFields(testSignedMessage));
+    await pendingMessagesStore.addSignedMessage(messageHash, testSignedMessage);
     const {message} = await pendingMessagesStore.get(messageHash);
-    expect(message).to.be.deep.eq(bignumberifySignedMessageFields(stringifySignedMessageFields(expectedMessage)));
+    expect(message).to.be.deep.eq(expectedMessage, 'Message returned by "get" is not deep equal expectedMessage');
+    const signedMessage = await pendingMessagesStore.getSignedMessage(messageHash);
+    expect(signedMessage).to.be.deep.eq(expectedMessage, 'Message returned by "getSignedMessage" is not deep equal expectedMessage');
+  });
+
+  it('should throw error if signed message is missed', async () => {
+    await pendingMessagesStore.add(messageHash, pendingMessage);
+    await expect(pendingMessagesStore.getSignedMessage(messageHash)).to.rejectedWith(`SignedMessage not found for hash: ${messageHash}`);
   });
 
   it('should get signatures', async () => {
