@@ -1,5 +1,6 @@
 import Knex from 'knex';
 import {Wallet, Contract} from 'ethers';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
 import {InvalidMessage} from '../../../core/utils/errors';
@@ -16,7 +17,8 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
         messageHash,
         transactionHash: pendingMessage.transactionHash,
         walletAddress: pendingMessage.walletAddress,
-        createdAt: this.knex.fn.now()
+        createdAt: this.knex.fn.now(),
+        state: pendingMessage.state
       })
       .into('messages');
   }
@@ -26,11 +28,12 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     if (!message) {
       throw new InvalidMessage(messageHash);
     }
+    if (message.message) {
+      message.message = bignumberifySignedMessageFields(message.message);
+    }
     const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     const pendingMessage: PendingMessage = message && {
-      transactionHash: message.transactionHash,
-      error: message.error,
-      walletAddress: message.walletAddress,
+      ...message,
       collectedSignatureKeyPairs: signatureKeyPairs
     };
     return pendingMessage;
@@ -39,6 +42,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   private getMessage(messageHash: string) {
     return this.knex('messages')
       .where('messageHash', messageHash)
+      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state'])
       .first();
   }
 
@@ -108,6 +112,12 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
       .andWhere('signature', signature)
       .first();
     return !!foundSignature;
+  }
+
+  async addSignedMessage(messageHash: string, signedMessage: SignedMessage) {
+    return this.knex('messages')
+      .where('messageHash', messageHash)
+      .update({message: stringifySignedMessageFields(signedMessage)});
   }
 
 }

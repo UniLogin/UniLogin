@@ -58,5 +58,7 @@ export const createPendingMessage = (walletAddress: string) : PendingMessage => 
   walletAddress,
   collectedSignatureKeyPairs: [],
   transactionHash: null,
-  error: null
+  error: null,
+  message: null,
+  state: 'AwaitSignature'
 });

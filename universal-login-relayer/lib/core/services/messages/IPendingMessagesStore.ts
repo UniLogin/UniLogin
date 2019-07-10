@@ -1,5 +1,5 @@
 import {Wallet} from 'ethers';
-import {MessageStatus} from '@universal-login/commons';
+import {MessageStatus, SignedMessage} from '@universal-login/commons';
 import PendingMessage from '../../models/messages/PendingMessage';
 
 export default interface IPendingMessagesStore {
@@ -9,6 +9,7 @@ export default interface IPendingMessagesStore {
   remove: (messageHash: string) => Promise<PendingMessage>;
   getStatus: (messageHash: string, wallet: Wallet) => Promise<MessageStatus>;
   addSignature: (messageHash: string, signature: string) => Promise<void>;
+  addSignedMessage: (messageHash: string, signedMessage: SignedMessage) => Promise<void>;
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
   markAsSuccess: (messageHash: string, transactionHash: string) => Promise<void>;
   markAsError: (messageHash: string, error: string) => Promise<void>;

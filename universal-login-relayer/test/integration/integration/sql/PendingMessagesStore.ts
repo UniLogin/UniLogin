@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields} from '@universal-login/commons';
 import IPendingMessagesStore from '../../../../lib/core/services/messages/IPendingMessagesStore';
 import PendingMessage from '../../../../lib/core/models/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -10,6 +10,7 @@ import {getKnex} from '../../../../lib/core/utils/knexUtils';
 import PendingMessagesSQLStore from '../../../../lib/integration/sql/services/PendingMessagesSQLStore';
 import PendingMessagesMemoryStore from '../../../helpers/PendingMessagesMemoryStore';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
+import getTestSignedMessage from '../../../config/message';
 
 for (const config of [{
     name: 'PendingMessagesSQLStore',
@@ -113,6 +114,14 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     await pendingMessagesStore.markAsError(messageHash, expectedMessageError);
     const {error} = await pendingMessagesStore.getStatus(messageHash, wallet);
     expect(error).to.be.eq(expectedMessageError);
+  });
+
+  it('should update message', async () => {
+    await pendingMessagesStore.add(messageHash, pendingMessage);
+    const expectedMessage = await getTestSignedMessage();
+    await pendingMessagesStore.addSignedMessage(messageHash, expectedMessage);
+    const {message} = await pendingMessagesStore.get(messageHash);
+    expect(message).to.be.deep.eq(bignumberifySignedMessageFields(stringifySignedMessageFields(expectedMessage)));
   });
 
   it('should get signatures', async () => {

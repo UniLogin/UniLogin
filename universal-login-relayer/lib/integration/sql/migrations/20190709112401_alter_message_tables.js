@@ -12,6 +12,7 @@ exports.up = async (knex) => {
   await knex.schema.alterTable('messages', (table) => {
     table.text('error');
     table.json('message');
+    table.string('state', 30);
   });
 };
 
@@ -23,5 +24,6 @@ exports.down = async (knex) => {
   await knex.schema.alterTable('messages', (table) => {
     table.dropColumn('error');
     table.dropColumn('message');
+    table.dropColumn('state');
   });
 };
