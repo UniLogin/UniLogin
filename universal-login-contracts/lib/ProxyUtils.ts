@@ -7,8 +7,8 @@ export function createProxyDeployWithENSArgs(keyPair: KeyPair, ensDomainData: En
   return [walletMasterAddress, initData];
 }
 
-export async function createProxyDeployWithRefundArgs(keyPair: KeyPair, ensDomainData: EnsDomainData, walletMasterAddress: string, gasPrice: string, name: string = 'name') {
-  const walletArgs = await setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name, gasPrice});
+export function createProxyDeployWithRefundArgs(keyPair: KeyPair, ensDomainData: EnsDomainData, walletMasterAddress: string, gasPrice: string, name: string = 'name') {
+  const walletArgs = setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name, gasPrice});
   const initData = encodeInitializeWithRefundData(walletArgs);
   return [walletMasterAddress, initData];
 }

@@ -53,7 +53,7 @@ export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name
   return args;
 }
 
-export async function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', gasPrice}: SetupInitializeWithENSAndRefundArgs) {
+export function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', gasPrice}: SetupInitializeWithENSAndRefundArgs) {
   const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
   return [...args, gasPrice];
 }
