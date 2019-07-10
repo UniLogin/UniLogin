@@ -2,22 +2,19 @@ import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashC
 import { ethers, providers} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { UnauthorisedAddress } from '../../../core/utils/errors';
-import AuthorisationStore from '../../sql/services/AuthorisationStore';
 
-class AuthorisationService {
+class WalletMasterContractService {
   constructor(private provider: providers.Provider) {}
 
-  async ensureValidSignature(cancelAuthorisationRequest: CancelAuthorisationRequest, authorisationStore: AuthorisationStore) {
+  async ensureValidSignature(cancelAuthorisationRequest: CancelAuthorisationRequest) {
     const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest);
-    const {walletContractAddress, signature, publicKey} = cancelAuthorisationRequest;
+    const {walletContractAddress, signature} = cancelAuthorisationRequest;
 
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, this.provider);
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
     ensure(isCorrectAddress, UnauthorisedAddress, recoveredAddress);
-
-    return authorisationStore.removeRequest(walletContractAddress, publicKey);
   }
 }
 
-export default AuthorisationService;
+export default WalletMasterContractService;

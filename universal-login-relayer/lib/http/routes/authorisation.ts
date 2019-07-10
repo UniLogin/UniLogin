@@ -4,7 +4,8 @@ import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {CancelAuthorisationRequest} from '@universal-login/commons';
 import { asCancelAuthorisationRequest } from '../utils/sanitizers';
-import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
+import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
+import AuthorisationService from '../../core/services/AuthorisationService';
 
 
 const request = (authorisationStore: AuthorisationStore) =>
@@ -20,9 +21,9 @@ const getPending = (authorisationStore: AuthorisationStore) =>
     return responseOf({ response: result });
   };
 
-const denyRequest = (authorisationStore: AuthorisationStore, authorisationService: AuthorisationService) =>
+const denyRequest = (authorisationService: AuthorisationService) =>
   async (data: {body: {cancelAuthorisationRequest: CancelAuthorisationRequest}}) => {
-    const result = await authorisationService.ensureValidSignature(data.body.cancelAuthorisationRequest, authorisationStore);
+    const result = await authorisationService.ensureValidSignature(data.body.cancelAuthorisationRequest);
     return responseOf(result, 204);
   };
 
@@ -52,7 +53,7 @@ export default (authorisationStore: AuthorisationStore, authorisationService: Au
         cancelAuthorisationRequest: asCancelAuthorisationRequest
       })
     }),
-    denyRequest(authorisationStore, authorisationService)
+    denyRequest(authorisationService)
   ));
 
   return router;
