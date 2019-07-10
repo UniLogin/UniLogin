@@ -2,11 +2,6 @@ import Knex from 'knex';
 import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, calculateMessageHash} from '@universal-login/commons';
 import {IMessageQueueStore} from '../../../core/services/messages/IMessageQueueStore';
 
-interface QueueItem {
-  transactionHash?: string;
-  error?: string;
-}
-
 export default class MessageQueueStore implements IMessageQueueStore {
   public tableName: string;
 
@@ -40,12 +35,10 @@ export default class MessageQueueStore implements IMessageQueueStore {
     return next;
   }
 
-  async markAsSuccess (hash: string, transactionHash: string) {
-    await this.update(hash, {transactionHash});
-  }
-
-  async markAsError (hash: string, error: string) {
-    await this.update(hash, {error});
+  async remove(hash: string) {
+    return this.database(this.tableName)
+      .where('hash', hash)
+      .delete();
   }
 
   async get(hash: string) {
@@ -60,11 +53,5 @@ export default class MessageQueueStore implements IMessageQueueStore {
       .first()
       .where('hash', hash)
       .select(['hash', 'transactionHash', 'error']);
-  }
-
-  private async update(hash: string, data: QueueItem) {
-    return this.database(this.tableName)
-      .where('hash', hash)
-      .update(data);
   }
 }

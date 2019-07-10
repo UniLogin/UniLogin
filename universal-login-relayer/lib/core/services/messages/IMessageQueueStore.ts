@@ -6,8 +6,7 @@ export interface IMessageQueueStore {
   get: (messageHash: string) => Promise<MessageEntity | undefined>;
   getStatus: (messageHash: string) => Promise<MessageQueueStatus | undefined>;
   getNext: () => Promise<MessageEntity | undefined>;
-  markAsSuccess: (messageHash: string, transactionHash: string) => Promise<void>;
-  markAsError: (messageHash: string, error: string) => Promise<void>;
+  remove: (messageHash: string) => Promise<void>;
 }
 
 

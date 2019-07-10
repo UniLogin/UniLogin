@@ -36,14 +36,8 @@ export default class MessageQueueMemoryStore implements IMessageQueueStore {
     };
   }
 
-  async markAsSuccess(messageHash: string, transactionHash: string) {
-    const messageEntityId = this.findIndex(messageHash);
-    this.messageEntries[messageEntityId].transactionHash = transactionHash;
-  }
-
-  async markAsError(messageHash: string, error: string) {
-    const messageEntityId = this.findIndex(messageHash);
-    this.messageEntries[messageEntityId].error = error;
+  async remove(messageHash: string) {
+    this.messageEntries.splice(this.findIndex(messageHash), 1);
   }
 
   private find(messageHash: string) {

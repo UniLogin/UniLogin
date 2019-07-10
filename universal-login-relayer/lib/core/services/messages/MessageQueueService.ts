@@ -24,12 +24,11 @@ class MessageQueueService {
       const signedMessage = await this.pendingMessagesStore.getSignedMessage(messageHash);
       const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
       await this.pendingMessagesStore.markAsSuccess(messageHash, hash!);
-      await this.queueMessageStore.markAsSuccess(messageHash, hash!);
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.pendingMessagesStore.markAsError(messageHash, errorMessage);
-      await this.queueMessageStore.markAsError(messageHash, errorMessage);
     }
+    await this.queueMessageStore.remove(messageHash);
   }
 
   start() {
