@@ -1,17 +1,19 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
-import {CancelAuthorisationRequest} from '@universal-login/commons';
+import {CancelAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
 import basicSDK from './fixtures/basicSDK';
 import UniversalLoginSDK from '../lib/sdk';
+import { RelayerUnderTest } from '@universal-login/relayer';
 
 const loadFixture = createFixtureLoader();
 
 describe('E2E authorization - sdk <=> relayer', async () => {
-  let relayer: any;
+  let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
-  let contractAddress: any;
-  let privateKey: any;
+  let contractAddress: string;
+  let privateKey: string;
+
 
   beforeEach(async () => {
     ({sdk, privateKey, contractAddress, relayer} = await loadFixture(basicSDK));
@@ -28,7 +30,14 @@ describe('E2E authorization - sdk <=> relayer', async () => {
       publicKey: userAddress,
       signature: ''
     };
-    await expect(sdk.denyRequest(cancelAuthorisationRequest, privateKey)).to.be.eventually.fulfilled;
+
+    signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
+    const {body, status} = await chai.request(relayer.url())
+      .post(`/authorisation/${contractAddress}`)
+      .send({cancelAuthorisationRequest});
+
+    expect(status).to.eq(204);
+    expect(body).to.deep.eq({});
   });
 
   it('Send forged cancel request', async () => {
@@ -39,8 +48,15 @@ describe('E2E authorization - sdk <=> relayer', async () => {
       publicKey: attackerAddress,
       signature: ''
     };
-    await expect(sdk.denyRequest(cancelAuthorisationRequest, attackerPrivateKey))
-      .to.be.eventually.rejectedWith(`Error: Unauthorised address: ${attackerAddress}`);
+
+    signCancelAuthorisationRequest(cancelAuthorisationRequest, attackerPrivateKey);
+    const result = await chai.request(relayer.url())
+      .post(`/authorisation/${contractAddress}`)
+      .send({cancelAuthorisationRequest});
+
+    expect(result.status).to.eq(401);
+    expect(result.body.type).to.eq('UnauthorisedAddress');
+    expect(result.body.error).to.eq(`Error: Unauthorised address: ${attackerAddress}`);
   });
 
   after(async () => {
