@@ -1,21 +1,22 @@
-import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest} from '@universal-login/commons';
+import {recoverFromCancelAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest, ensure} from '@universal-login/commons';
 import { ethers, providers} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import { UnauthorisedAddress } from '../../../core/utils/errors';
+import AuthorisationStore from '../../sql/services/AuthorisationStore';
 
 class AuthorisationService {
   constructor(private provider: providers.Provider) {}
 
-  async isValidSignature(cancelAuthorisationRequest: CancelAuthorisationRequest) {
+  async ensureValidSignature(cancelAuthorisationRequest: CancelAuthorisationRequest, authorisationStore: AuthorisationStore) {
     const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest);
-    const {walletContractAddress, signature} = cancelAuthorisationRequest;
+    const {walletContractAddress, signature, publicKey} = cancelAuthorisationRequest;
 
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, this.provider);
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
-    if (!isCorrectAddress) {
-        throw new UnauthorisedAddress(recoveredAddress);
-    }
+    ensure(isCorrectAddress, UnauthorisedAddress, recoveredAddress);
+
+    return authorisationStore.removeRequest(walletContractAddress, publicKey);
   }
 }
 

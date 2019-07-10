@@ -7,29 +7,26 @@ import { asCancelAuthorisationRequest } from '../utils/sanitizers';
 import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
 
 
-const request = (authorisationStore : AuthorisationStore) =>
+const request = (authorisationStore: AuthorisationStore) =>
   async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
     const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
     const result = await authorisationStore.addRequest(requestAuthorisation);
     return responseOf({response: result}, 201);
   };
 
-const getPending = (authorisationStore : AuthorisationStore) =>
+const getPending = (authorisationStore: AuthorisationStore) =>
   async (data: {walletContractAddress: string}) => {
     const result = await authorisationStore.getPendingAuthorisations(data.walletContractAddress);
     return responseOf({ response: result });
   };
 
-const denyRequest = (authorisationStore : AuthorisationStore, authorisationService: AuthorisationService) =>
+const denyRequest = (authorisationStore: AuthorisationStore, authorisationService: AuthorisationService) =>
   async (data: {body: {cancelAuthorisationRequest: CancelAuthorisationRequest}}) => {
-    await authorisationService.isValidSignature(data.body.cancelAuthorisationRequest);
-
-    const {walletContractAddress, publicKey} = data.body.cancelAuthorisationRequest;
-    const result = await authorisationStore.removeRequest(walletContractAddress, publicKey);
+    const result = await authorisationService.ensureValidSignature(data.body.cancelAuthorisationRequest, authorisationStore);
     return responseOf(result, 204);
   };
 
-export default (authorisationStore : AuthorisationStore, authorisationService: AuthorisationService) => {
+export default (authorisationStore: AuthorisationStore, authorisationService: AuthorisationService) => {
   const router = Router();
 
   router.post('/', asyncHandler(
