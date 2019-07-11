@@ -27,7 +27,7 @@ export class ConcurrentDeployment extends Conflict {
 
 export class ConcurrentAuthorisation extends Conflict {
   constructor () {
-    super('Another subscription is running. Ensure you unsubscribed previous one.', 'ConcurrentAuthorisation');
+    super('Another wallet is subscribed.', 'ConcurrentAuthorisation');
     Object.setPrototypeOf(this, ConcurrentAuthorisation.prototype);
   }
 }

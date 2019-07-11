@@ -15,25 +15,37 @@ describe('Unit: RelayerObserver', () => {
   it('should call callback with authorisation', async () => {
     const callback = sinon.spy();
     relayerObserver.subscribe(TEST_ACCOUNT_ADDRESS, callback);
-    await relayerObserver.tick();
-    expect(callback).to.have.been.calledWith('authorisation');
+    expect(callback).to.have.been.calledWith([]);
   });
 
   it('new subscription request should be rejected', async () => {
     const callback = sinon.spy();
-    relayerObserver.subscribeAndStart(TEST_ACCOUNT_ADDRESS, callback);
-    expect(() => relayerObserver.subscribe('0x1234', callback)).to.throw('Another subscription is running. Ensure you unsubscribed previous one.');
-    await waitUntil(() => !!callback.firstCall);
+    relayerObserver.subscribe(TEST_ACCOUNT_ADDRESS, callback);
+    expect(() => relayerObserver.subscribe('0x1234', callback)).to.throw('Another wallet is subscribed.');
+    await waitUntil(() => !!callback.secondCall);
+    expect(callback).to.have.been.calledWith([]);
     expect(callback).to.have.been.calledWith('authorisation');
   });
 
   it('Subscribe. Unsubscribe', async () => {
     const callback = sinon.spy();
     const callback2 = sinon.spy();
-    const unsubscribe = relayerObserver.subscribeAndStart(TEST_ACCOUNT_ADDRESS, callback);
+    const unsubscribe = relayerObserver.subscribe(TEST_ACCOUNT_ADDRESS, callback);
     await unsubscribe();
-    relayerObserver.subscribeAndStart('0x1234', callback2);
+    relayerObserver.subscribe('0x1234', callback2);
     await waitUntil(() => !!callback2.firstCall);
     expect(callback2).to.have.been.calledOnce;
   });
+  
+  it('2 subscriptions', async () => {
+    const callback1 = sinon.spy();
+    const callback2 = sinon.spy();
+    const unsubscribe1 = relayerObserver.subscribe(TEST_ACCOUNT_ADDRESS, callback1);
+    expect(callback1).to.have.been.calledWith([]);
+    await waitUntil(() => !!callback1.secondCall);
+    const unsubscribe2 = relayerObserver.subscribe(TEST_ACCOUNT_ADDRESS, callback2);
+    expect(callback2).to.have.been.calledWith('authorisation');
+    unsubscribe1();
+    unsubscribe2();
+  })
 });

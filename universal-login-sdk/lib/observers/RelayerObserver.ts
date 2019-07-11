@@ -6,22 +6,24 @@ import {ConcurrentAuthorisation} from '../utils/errors';
 
 class RelayerObserver extends ObserverRunner {
   private lastAuthorisations: Notification[] = [];
-  private contracAddress?: string;
-  private callback?: Function;
+  private contractAddress?: string;
+  private callbacks: Function[] = [];
 
   constructor(private relayerApi: RelayerApi) {
     super();
   }
 
   async tick() {
-    return this.checkAuthorisationsChangedFor(this.contracAddress!);
+    return this.checkAuthorisationsChangedFor(this.contractAddress!);
   }
 
   private async checkAuthorisationsChangedFor(contractAddress: string) {
     const authorisations = await this.fetchPendingAuthorisations(contractAddress.toLowerCase());
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
-      this.callback!(authorisations);
+      for (let callback of this.callbacks) {
+        callback(authorisations);
+      }
     }
   }
 
@@ -30,20 +32,22 @@ class RelayerObserver extends ObserverRunner {
     return response;
   }
 
-  subscribeAndStart(contractAddress: string, callback: Function) {
-    this.subscribe(contractAddress, callback);
-    this.start();
-    return () => {
-      this.contracAddress = undefined;
-      this.lastAuthorisations = [];
-      this.stop();
-    };
-  }
-
   subscribe(contractAddress: string, callback: Function) {
-    ensure(!this.isRunning(), ConcurrentAuthorisation);
-    this.contracAddress = contractAddress;
-    this.callback = callback;
+    ensure(!this.contractAddress || (this.contractAddress === contractAddress), ConcurrentAuthorisation);
+    callback(this.lastAuthorisations);
+    this.contractAddress = contractAddress;
+    this.callbacks.push(callback);
+    if (!this.isRunning()) {
+      this.start();
+    }
+    return () => {
+      this.callbacks = this.callbacks.filter((element) => {return callback !== element});
+      if (this.callbacks.length === 0) {
+        this.contractAddress = undefined;
+        this.lastAuthorisations = [];
+        this.stop();
+      }
+    }
   }
 }
 

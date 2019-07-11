@@ -27,35 +27,40 @@ describe('SDK: RelayerObserver', async () => {
 
   it('should not emit events if no connection requests', async () => {
     const callback = sinon.spy();
-    const unsubscribe = relayerObserver.subscribeAndStart(contractAddress, callback);
-    await relayerObserver.tick();
+    const unsubscribe = relayerObserver.subscribe(contractAddress, callback);
     unsubscribe();
-    expect(callback).to.have.not.been.called;
+    expect(callback).to.have.been.calledWith([]);
   });
 
   it('should emit AuthorisationsChanged event if connected called', async () => {
     const callback = sinon.spy();
-    const unsubscribe = relayerObserver.subscribeAndStart(contractAddress, callback);
+    const unsubscribe = relayerObserver.subscribe(contractAddress, callback);
+    expect(callback).to.have.been.calledWith([]);
     await sdk.connect(contractAddress);
-    await waitUntil(() => !!callback.firstCall);
+    await waitUntil(() => !!callback.secondCall);
     unsubscribe();
-    expect(callback).to.have.been.called;
+    expect(callback).to.have.been.calledTwice;
   });
 
   it('AuthorisationChanged for multiple identities', async () => {
     const [, newContractAddress] = await sdk.create('newlogin.mylogin.eth');
-    const callback = sinon.spy();
+    const callback1 = sinon.spy();
+    const callback2 = sinon.spy();
 
-    let unsubscribe = relayerObserver.subscribeAndStart(contractAddress, callback);
+    const unsubscribe1 = relayerObserver.subscribe(contractAddress, callback1);
+    const unsubscribe2 = await relayerObserver.subscribe(contractAddress, callback2);
+
     await sdk.connect(contractAddress);
-    await waitUntil(() => !!callback.firstCall);
-    unsubscribe();
-
-    unsubscribe = await relayerObserver.subscribeAndStart(contractAddress, callback);
     await sdk.connect(newContractAddress);
-    await waitUntil(() => !!callback.secondCall);
-    unsubscribe();
-    expect(callback).to.have.been.calledTwice;
+
+    unsubscribe1();
+    unsubscribe2();
+    
+    await waitUntil(() => !!callback1.secondCall);
+    await waitUntil(() => !!callback2.secondCall);
+
+    expect(callback1).to.have.been.calledTwice;
+    expect(callback2).to.have.been.calledTwice;
   });
 
   after(async () => {
