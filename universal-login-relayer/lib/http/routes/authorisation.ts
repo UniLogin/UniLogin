@@ -2,9 +2,8 @@ import {Router, Request} from 'express';
 import AuthorisationStore, {AuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {CancelAuthorisationRequest} from '@universal-login/commons';
+import {CancelAuthorisationRequest, GetAuthorisationRequest, recoverFromGetAuthorisationRequest} from '@universal-login/commons';
 import { asCancelAuthorisationRequest } from '../utils/sanitizers';
-import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 import AuthorisationService from '../../core/services/AuthorisationService';
 
 
@@ -15,10 +14,14 @@ const request = (authorisationStore: AuthorisationStore) =>
     return responseOf({response: result}, 201);
   };
 
-const getPending = (authorisationStore: AuthorisationStore) =>
-  async (data: {walletContractAddress: string}) => {
-    const result = await authorisationStore.getPendingAuthorisations(data.walletContractAddress);
-    return responseOf({ response: result });
+const getPending = (authorisationService: AuthorisationService) =>
+  async (data: {walletContractAddress: string,  query: {signature: string}}) => {
+    const getAuthorisationRequest: GetAuthorisationRequest = {
+      walletContractAddress: data.walletContractAddress,
+      signature: data.query.signature
+    };
+    const result = await authorisationService.getAuthorisationRequests(getAuthorisationRequest);
+    return responseOf(result);
   };
 
 const denyRequest = (authorisationService: AuthorisationService) =>
@@ -43,8 +46,11 @@ export default (authorisationStore: AuthorisationStore, authorisationService: Au
   router.get('/:walletContractAddress', asyncHandler(
     sanitize({
       walletContractAddress: asString,
+      query: asObject({
+        signature: asString
+      })
     }),
-    getPending(authorisationStore)
+    getPending(authorisationService)
   ));
 
   router.post('/:walletContractAddress', asyncHandler(

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {CancelAuthorisationRequest} from '../../../lib/core/models/authorisation';
-import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation';
+import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation/cancelAuthorisationRequest';
 
 describe('authorisation sign verify', async () => {
   const contractAddress: string = '0x14791697260E4c9A71f18484C9f997B308e59325';

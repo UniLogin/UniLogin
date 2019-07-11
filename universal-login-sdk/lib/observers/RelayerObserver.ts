@@ -1,8 +1,7 @@
 import {RelayerApi} from '../RelayerApi';
 import deepEqual from 'deep-equal';
 import ObserverRunner from './ObserverRunner';
-import {ensure, Notification} from '@universal-login/commons';
-import {ConcurrentAuthorisation} from '../utils/errors';
+import {ensure, Notification, GetAuthorisationRequest} from '@universal-login/commons';
 
 class RelayerObserver extends ObserverRunner {
   private lastAuthorisations: Notification[] = [];
@@ -19,7 +18,17 @@ class RelayerObserver extends ObserverRunner {
 
   private async checkAuthorisationsChangedFor(contractAddress: string) {
     const authorisations = await this.fetchPendingAuthorisations(contractAddress.toLowerCase());
+    // const {contractAddress, signature} = JSON.parse(filter);
+    // const getAuthorisationRequest: GetAuthorisationRequest = {
+    //   walletContractAddress: contractAddress,
+    //   signature
+    // };
+    // const emitter = this.emitters[filter as any];
+    // const authorisations = await this.fetchPendingAuthorisations(getAuthorisationRequest);
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
+      // console.log('emit event');
+      // console.log(authorisations);
+      // console.log(this.lastAuthorisations);
       this.lastAuthorisations = authorisations;
       for (const callback of this.callbacks) {
         callback(authorisations);
