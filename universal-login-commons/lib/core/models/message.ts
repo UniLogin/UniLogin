@@ -5,6 +5,8 @@ export type Message = Partial<SignedMessage>;
 
 export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 
+export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
+
 export interface SignedMessage {
   gasToken: string;
   operationType: number;
@@ -29,4 +31,5 @@ export type MessageStatus = {
   required: number
 };
 
-export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
+export type MessageState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
+
