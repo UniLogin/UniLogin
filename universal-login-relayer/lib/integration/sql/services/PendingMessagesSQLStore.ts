@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {Wallet, Contract} from 'ethers';
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
 import {InvalidMessage, SignedMessageNotFound} from '../../../core/utils/errors';
@@ -124,9 +124,10 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   }
 
   async getMessage(messageHash: string) {
-    const signedMessage = (await this.get(messageHash)).message;
-    ensureNotNull(signedMessage, SignedMessageNotFound, messageHash);
-    return signedMessage as SignedMessage;
+    const message = (await this.get(messageHash)).message;
+    ensureNotNull(message, SignedMessageNotFound, messageHash);
+    const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
+    return getMessageWithSignatures(message, collectedSignatureKeyPairs);
   }
 }
 

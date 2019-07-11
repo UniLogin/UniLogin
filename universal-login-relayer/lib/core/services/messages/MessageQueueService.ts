@@ -3,7 +3,6 @@ import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
 import IMessageQueueStore from './IMessageQueueStore';
 import MessageExecutor from '../../../integration/ethereum/MessageExecutor';
 import IPendingMessagesStore from './IPendingMessagesStore';
-import { getMessageWithSignatures } from '@universal-login/commons/dist/lib/core/utils/messages/signMessage';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
@@ -23,9 +22,7 @@ class MessageQueueService {
   async execute(messageHash: string) {
     try {
       const signedMessage = await this.pendingMessagesStore.getMessage(messageHash);
-      const collectedSignatureKeyPairs = await this.pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash);
-      const finalMessage = await getMessageWithSignatures(signedMessage, collectedSignatureKeyPairs);
-      const {hash} = await this.messageExecutor.executeAndWait(finalMessage);
+      const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
       await this.pendingMessagesStore.markAsSuccess(messageHash, hash!);
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
