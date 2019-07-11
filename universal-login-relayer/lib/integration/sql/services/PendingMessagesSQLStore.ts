@@ -26,7 +26,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   }
 
   async get(messageHash: string) {
-    const message = await this.getMessage(messageHash);
+    const message = await this.getMessageEntry(messageHash);
     if (!message) {
       throw new InvalidMessage(messageHash);
     }
@@ -41,7 +41,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     return pendingMessage;
   }
 
-  private getMessage(messageHash: string) {
+  private getMessageEntry(messageHash: string) {
     return this.knex('messages')
       .where('messageHash', messageHash)
       .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state'])
@@ -49,7 +49,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   }
 
   async isPresent(messageHash: string) {
-    const message = await this.getMessage(messageHash);
+    const message = await this.getMessageEntry(messageHash);
     const signatureKeyPairs = await this.knex('signature_key_pairs')
       .where('messageHash', messageHash);
     return !!message || signatureKeyPairs.length !== 0;
