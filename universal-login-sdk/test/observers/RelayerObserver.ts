@@ -6,6 +6,7 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/sdk';
 import RelayerObserver from '../../lib/observers/RelayerObserver';
+import { waitUntil } from '@universal-login/commons';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -26,48 +27,34 @@ describe('SDK: RelayerObserver', async () => {
 
   it('should not emit events if no connection requests', async () => {
     const callback = sinon.spy();
-    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
-    await relayerObserver.checkAuthorisationRequests();
+    const unsubscribe = relayerObserver.subscribeAndStart(contractAddress, callback);
+    await relayerObserver.tick();
+    unsubscribe();
     expect(callback).to.have.not.been.called;
   });
 
   it('should emit AuthorisationsChanged event if connected called', async () => {
     const callback = sinon.spy();
-    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
+    const unsubscribe = relayerObserver.subscribeAndStart(contractAddress, callback);
     await sdk.connect(contractAddress);
-    await relayerObserver.checkAuthorisationRequests();
-    expect(callback).to.have.been.called;
-  });
-
-  it('observation: no new reuqests', async () => {
-    const callback = sinon.spy();
-    relayerObserver.start();
-    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
-    await relayerObserver.finalizeAndStop();
-    expect(callback).to.have.not.been.called;
-  });
-
-  it('observation: one new request', async () => {
-    const callback = sinon.spy();
-    relayerObserver.start();
-    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
-    await sdk.connect(contractAddress);
-    await relayerObserver.finalizeAndStop();
+    await waitUntil(() => !!callback.firstCall);
+    unsubscribe();
     expect(callback).to.have.been.called;
   });
 
   it('AuthorisationChanged for multiple identities', async () => {
     const [, newContractAddress] = await sdk.create('newlogin.mylogin.eth');
     const callback = sinon.spy();
-    sdk.relayerObserver.start();
 
-    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress}, callback);
-    await relayerObserver.subscribe('AuthorisationsChanged', {contractAddress: newContractAddress}, callback);
-
+    let unsubscribe = relayerObserver.subscribeAndStart(contractAddress, callback);
     await sdk.connect(contractAddress);
-    await sdk.connect(newContractAddress);
+    await waitUntil(() => !!callback.firstCall);
+    unsubscribe();
 
-    await relayerObserver.finalizeAndStop();
+    unsubscribe = await relayerObserver.subscribeAndStart(contractAddress, callback);
+    await sdk.connect(newContractAddress);
+    await waitUntil(() => !!callback.secondCall);
+    unsubscribe();
     expect(callback).to.have.been.calledTwice;
   });
 

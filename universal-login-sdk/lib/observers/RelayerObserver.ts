@@ -1,37 +1,49 @@
-import ObserverBase from './ObserverBase';
 import {RelayerApi} from '../RelayerApi';
 import deepEqual from 'deep-equal';
+import ObserverRunner from './ObserverRunner';
+import {ensure, Notification} from '@universal-login/commons';
+import {ConcurrentAuthorisation} from '../utils/errors';
 
+class RelayerObserver extends ObserverRunner {
+  private lastAuthorisations: Notification[] = [];
+  private contracAddress?: string;
+  private callback?: Function;
 
-class RelayerObserver extends ObserverBase {
-  lastAuthorisations: any = {};
   constructor(private relayerApi: RelayerApi) {
     super();
   }
 
   async tick() {
-    return this.checkAuthorisationRequests();
+    return this.checkAuthorisationsChangedFor(this.contracAddress!);
   }
 
-  async checkAuthorisationsChangedFor(filter: string) {
-    const {contractAddress} = JSON.parse(filter);
-    const emitter = this.emitters[filter as any];
+  private async checkAuthorisationsChangedFor(contractAddress: string) {
     const authorisations = await this.fetchPendingAuthorisations(contractAddress.toLowerCase());
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
-      emitter.emit('AuthorisationsChanged', authorisations);
+      this.callback!(authorisations);
     }
   }
 
-  async checkAuthorisationRequests() {
-    for (const filter of Object.keys(this.emitters)) {
-      await this.checkAuthorisationsChangedFor(filter);
-    }
-  }
-
-  async fetchPendingAuthorisations(contractAddress: string) {
+  private async fetchPendingAuthorisations(contractAddress: string) {
     const {response} = await this.relayerApi.getPendingAuthorisations(contractAddress);
     return response;
+  }
+
+  subscribeAndStart(contractAddress: string, callback: Function) {
+    this.subscribe(contractAddress, callback);
+    this.start();
+    return () => {
+      this.contracAddress = undefined;
+      this.lastAuthorisations = [];
+      this.stop();
+    };
+  }
+
+  subscribe(contractAddress: string, callback: Function) {
+    ensure(!this.isRunning(), ConcurrentAuthorisation);
+    this.contracAddress = contractAddress;
+    this.callback = callback;
   }
 }
 
