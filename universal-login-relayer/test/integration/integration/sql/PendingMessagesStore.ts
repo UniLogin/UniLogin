@@ -77,9 +77,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     const expectedStatus = {
       collectedSignatures: [] as any,
       totalCollected: 0,
-      required: 1,
-      error: null,
-      transactionHash: null
+      required: 1
     };
     expect(await pendingMessagesStore.getStatus(messageHash, wallet)).to.deep.eq(expectedStatus);
     await pendingMessagesStore.addSignature(messageHash, message.signature);

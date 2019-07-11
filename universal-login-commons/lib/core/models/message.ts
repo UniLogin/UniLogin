@@ -22,11 +22,11 @@ export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
 export type MessageStatus = {
   messageHash?: string,
-  error: string | null,
+  error?: string,
+  transactionHash?: string,
   collectedSignatures: string[],
   totalCollected: number,
-  required: number,
-  transactionHash: string | null
+  required: number
 };
 
 export type MessageQueueStatus = {

@@ -68,13 +68,19 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     const message = await this.get(messageHash);
     const walletContract = new Contract(message.walletAddress, WalletContract.interface, wallet);
     const required = await walletContract.requiredSignatures();
-    return {
+    const status: MessageStatus =  {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
-      required: required.toNumber(),
-      transactionHash: message.transactionHash,
-      error: message.error
+      required: required.toNumber()
     };
+    const {error, transactionHash} = message;
+    if (error) {
+      status.error = error;
+    }
+    if (transactionHash) {
+      status.transactionHash = transactionHash;
+    }
+    return status;
   }
 
   async addSignature(messageHash: string, signature: string) {
