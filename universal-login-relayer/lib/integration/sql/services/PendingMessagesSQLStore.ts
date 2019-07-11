@@ -71,7 +71,8 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     const status: MessageStatus =  {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
-      required: required.toNumber()
+      required: required.toNumber(),
+      state: message.state
     };
     const {error, transactionHash} = message;
     if (error) {

@@ -55,6 +55,7 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
       required: required.toNumber(),
+      state: message.state
     };
     const {error, transactionHash} = message;
     if (error) {

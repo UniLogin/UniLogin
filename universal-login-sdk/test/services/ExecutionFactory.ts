@@ -22,6 +22,7 @@ describe('UNIT: ExecutionFactory', async () => {
       transactionHash: TEST_TRANSACTION_HASH,
       required: 1,
       totalCollected: 1,
+      state: 'AwaitSignature',
       messageHash,
       collectedSignatures: [signedMessage.signature]
     };
