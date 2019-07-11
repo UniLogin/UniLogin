@@ -29,9 +29,4 @@ export type MessageStatus = {
   required: number
 };
 
-export type MessageQueueStatus = {
-  transactionHash?: string,
-  error?: string
-};
-
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
