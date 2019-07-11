@@ -54,11 +54,11 @@ export const messageToTransaction = (message: SignedMessage) : providers.Transac
 export const getKeyFromHashAndSignature = (messageHash: string, signature: string) =>
   utils.verifyMessage(utils.arrayify(messageHash), signature);
 
-export const createPendingMessage = (walletAddress: string) : PendingMessage => ({
-  walletAddress,
+export const createPendingMessage = (signedMessage: SignedMessage) : PendingMessage => ({
+  walletAddress: signedMessage.from,
   collectedSignatureKeyPairs: [],
   transactionHash: null,
   error: null,
-  message: null,
+  message: signedMessage,
   state: 'AwaitSignature'
 });

@@ -18,7 +18,7 @@ export default class PendingMessages {
   async add(message: SignedMessage) : Promise<MessageStatus> {
     const messageHash = calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
-      const pendingMessage = createPendingMessage(message.from);
+      const pendingMessage = createPendingMessage(message);
       await this.messagesStore.add(messageHash, pendingMessage);
     }
     await this.addSignatureToPendingMessage(messageHash, message);

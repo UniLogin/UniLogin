@@ -12,13 +12,15 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   }
 
   async add(messageHash: string, pendingMessage: PendingMessage) {
+    ensureNotNull(pendingMessage.message, SignedMessageNotFound, messageHash);
     return this.knex
       .insert({
         messageHash,
         transactionHash: pendingMessage.transactionHash,
         walletAddress: pendingMessage.walletAddress,
         createdAt: this.knex.fn.now(),
-        state: pendingMessage.state
+        state: pendingMessage.state,
+        message: stringifySignedMessageFields(pendingMessage.message)
       })
       .into('messages');
   }

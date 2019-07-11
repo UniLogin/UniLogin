@@ -14,6 +14,8 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
   }
 
   async add(messageHash: string, pendingMessage: PendingMessage) {
+    ensureNotNull(pendingMessage.message, SignedMessageNotFound, messageHash);
+    pendingMessage.message = bignumberifySignedMessageFields(stringifySignedMessageFields(pendingMessage.message));
     this.messages[messageHash] = pendingMessage;
   }
 

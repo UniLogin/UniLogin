@@ -36,19 +36,17 @@ describe('UNIT: Message Queue Service', async () => {
     messageHash = calculateMessageHash(signedMessage);
     await pendingMessagesMemoryStorage.add(
       messageHash,
-      createPendingMessage(signedMessage.from)
+      createPendingMessage(signedMessage)
     );
   });
 
   it('signedMessage round trip', async () => {
     messageQueueService.start();
-    await pendingMessagesMemoryStorage.addSignedMessage(messageHash, signedMessage);
     await messageQueueService.add(signedMessage);
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledOnce);
   });
 
   it('should execute pending signedMessage after start', async () => {
-    await pendingMessagesMemoryStorage.addSignedMessage(messageHash, signedMessage);
     await messageQueueService.add(signedMessage);
     messageQueueService.start();
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledTwice);
@@ -60,7 +58,7 @@ describe('UNIT: Message Queue Service', async () => {
     const markAsErrorSpy = sinon.spy(pendingMessagesMemoryStorage.markAsError);
     pendingMessagesMemoryStorage.markAsError = markAsErrorSpy;
     messageQueueMemoryStorage.remove = sinon.spy(messageQueueMemoryStorage.remove);
-    await pendingMessagesMemoryStorage.addSignedMessage(messageHash, signedMessage);
+    await pendingMessagesMemoryStorage.add(messageHash, createPendingMessage(signedMessage));
     messageHash = await messageQueueService.add(signedMessage);
     await waitExpect(() => expect(pendingMessagesMemoryStorage.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
     expect(messageQueueMemoryStorage.remove).to.be.calledOnce;

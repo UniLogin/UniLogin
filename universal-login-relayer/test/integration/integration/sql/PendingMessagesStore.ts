@@ -39,7 +39,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     pendingMessagesStore = new config.type(args);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
-    pendingMessage = createPendingMessage(message.from);
+    pendingMessage = createPendingMessage(message);
     messageHash = calculateMessageHash(message);
   });
 
@@ -51,6 +51,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     expect(await pendingMessagesStore.isPresent(messageHash)).to.be.eq(false, 'store is not initially empty');
     await pendingMessagesStore.add(messageHash, pendingMessage);
     expect(await pendingMessagesStore.isPresent(messageHash)).to.be.eq(true);
+    pendingMessage.message = bignumberifySignedMessageFields(stringifySignedMessageFields(pendingMessage.message));
     expect(await pendingMessagesStore.get(messageHash)).to.be.deep.eq(pendingMessage);
     expect(await pendingMessagesStore.isPresent(messageHash)).to.be.eq(true);
     const removedPendingExecution = await pendingMessagesStore.remove(messageHash);
@@ -127,8 +128,8 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
   });
 
   it('should throw error if signed message is missed', async () => {
-    await pendingMessagesStore.add(messageHash, pendingMessage);
-    await expect(pendingMessagesStore.getSignedMessage(messageHash)).to.rejectedWith(`SignedMessage not found for hash: ${messageHash}`);
+    delete pendingMessage.message;
+    await expect(pendingMessagesStore.add(messageHash, pendingMessage)).to.rejectedWith(`SignedMessage not found for hash: ${messageHash}`);
   });
 
   it('should get signatures', async () => {

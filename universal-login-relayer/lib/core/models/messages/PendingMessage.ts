@@ -6,6 +6,6 @@ export default interface PendingMessage {
   transactionHash: string | null;
   error: string | null;
   walletAddress: string;
-  message: SignedMessage | null;
+  message: SignedMessage;
   state: MessageState;
 }
