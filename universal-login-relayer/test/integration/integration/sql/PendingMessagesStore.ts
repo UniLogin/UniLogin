@@ -10,7 +10,6 @@ import {getKnex} from '../../../../lib/core/utils/knexUtils';
 import PendingMessagesSQLStore from '../../../../lib/integration/sql/services/PendingMessagesSQLStore';
 import PendingMessagesMemoryStore from '../../../helpers/PendingMessagesMemoryStore';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
-import getTestSignedMessage from '../../../config/message';
 
 for (const config of [{
     name: 'PendingMessagesSQLStore',
@@ -114,17 +113,6 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     await pendingMessagesStore.markAsError(messageHash, expectedMessageError);
     const {error} = await pendingMessagesStore.getStatus(messageHash, wallet);
     expect(error).to.be.eq(expectedMessageError);
-  });
-
-  it('should update message', async () => {
-    await pendingMessagesStore.add(messageHash, pendingMessage);
-    const testSignedMessage = await getTestSignedMessage();
-    const expectedMessage = bignumberifySignedMessageFields(stringifySignedMessageFields(testSignedMessage));
-    await pendingMessagesStore.addSignedMessage(messageHash, testSignedMessage);
-    const {message} = await pendingMessagesStore.get(messageHash);
-    expect(message).to.be.deep.eq(expectedMessage, 'Message returned by "get" is not deep equal expectedMessage');
-    const signedMessage = await pendingMessagesStore.getSignedMessage(messageHash);
-    expect(signedMessage).to.be.deep.eq(expectedMessage, 'Message returned by "getSignedMessage" is not deep equal expectedMessage');
   });
 
   it('should throw error if signed message is missed', async () => {

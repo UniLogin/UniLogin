@@ -123,18 +123,11 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     return !!foundSignature;
   }
 
-  async addSignedMessage(messageHash: string, signedMessage: SignedMessage) {
-    return this.knex('messages')
-      .where('messageHash', messageHash)
-      .update({message: stringifySignedMessageFields(signedMessage)});
-  }
-
   async getSignedMessage(messageHash: string) {
     const signedMessage = (await this.get(messageHash)).message;
     ensureNotNull(signedMessage, SignedMessageNotFound, messageHash);
     return signedMessage as SignedMessage;
   }
-
 }
 
 export default PendingMessagesSQLStore;

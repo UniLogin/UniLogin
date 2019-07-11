@@ -34,7 +34,6 @@ export default class PendingMessages {
     const collectedSignatureKeyPairs = await this.messagesStore.getCollectedSignatureKeyPairs(messageHash);
     const finalMessage = await getMessageWithSignatures(message, collectedSignatureKeyPairs);
     await this.ensureCorrectExecution(messageHash);
-    await this.messagesStore.addSignedMessage(messageHash, finalMessage);
     return this.messageQueue.add(finalMessage);
   }
 
