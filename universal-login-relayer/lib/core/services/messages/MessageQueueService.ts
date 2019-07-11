@@ -67,10 +67,6 @@ class MessageQueueService {
   private isStopped() {
     return this.state === 'stopped';
   }
-
-  async getStatus(messageHash: string) {
-    return this.queueMessageStore.getStatus(messageHash);
-  }
 }
 
 export default MessageQueueService;

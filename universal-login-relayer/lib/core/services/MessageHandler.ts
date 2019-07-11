@@ -58,12 +58,7 @@ class MessageHandler {
     if (!await this.pendingMessages.isPresent(messageHash)) {
       return null;
     }
-    const pendingStatus = await this.pendingMessages.getStatus(messageHash);
-    const queueStatus = await this.messageQueue.getStatus(messageHash) || {};
-    return {
-      ...pendingStatus,
-      ...queueStatus
-    };
+    return this.pendingMessages.getStatus(messageHash);
   }
 
   stop() {

@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {Wallet, Contract} from 'ethers';
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
 import {InvalidMessage, SignedMessageNotFound} from '../../../core/utils/errors';

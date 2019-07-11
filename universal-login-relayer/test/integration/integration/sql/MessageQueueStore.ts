@@ -46,19 +46,6 @@ describe(`INT: IMessageQueueStore: ${config.name}`, async () => {
     expect(messageHash).to.be.eq(expectedMessageHash);
   });
 
-  it('get message', async () => {
-    const messageHash = await messageQueueStore.add(signedMessage);
-    const messageEntity = await messageQueueStore.get(messageHash);
-    expect(messageEntity!.message.gasLimit.toString()).to.deep.eq(signedMessage.gasLimit);
-    expect(messageEntity!.message.gasPrice.toString()).to.deep.eq(signedMessage.gasPrice);
-    expect(messageEntity!.message.value.toString()).to.deep.eq(signedMessage.value);
-    expect(messageEntity!.message.gasToken).to.deep.eq(signedMessage.gasToken);
-    expect(messageEntity!.message.data).to.deep.eq(signedMessage.data);
-    expect(messageEntity!.message.from).to.deep.eq(signedMessage.from);
-    expect(messageEntity!.message.to).to.deep.eq(signedMessage.to);
-    expect(messageEntity!.message.signature).to.deep.eq(signedMessage.signature);
-  });
-
   it('message round trip', async () => {
     const messageHash1 = await messageQueueStore.add(signedMessage);
     const signedMessage2 = await getTestSignedMessage({value: utils.parseEther('2')});
