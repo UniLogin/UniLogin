@@ -2,7 +2,10 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
+import Relayer from '@universal-login/relayer';
 import basicSDK from '../fixtures/basicSDK';
+import UniversalLoginSDK from '../../lib/sdk';
+import RelayerObserver from '../../lib/observers/RelayerObserver';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -10,10 +13,10 @@ chai.use(sinonChai);
 const loadFixture = createFixtureLoader();
 
 describe('SDK: RelayerObserver', async () => {
-  let relayer;
-  let sdk;
-  let contractAddress;
-  let relayerObserver;
+  let relayer: Relayer;
+  let sdk: UniversalLoginSDK;
+  let contractAddress: string;
+  let relayerObserver: RelayerObserver;
 
   beforeEach(async () => {
     ({sdk, relayer, contractAddress} = await loadFixture(basicSDK));
