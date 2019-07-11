@@ -76,7 +76,7 @@ export class RelayerUnderTest extends Relayer {
 }
 
 export async function clearDatabase(knex: Knex) {
-  await knex.delete().from('finalMessages');
+  await knex.delete().from('queue_items');
   await knex.delete().from('signature_key_pairs');
   await knex.delete().from('messages');
   await knex.delete().from('authorisations');

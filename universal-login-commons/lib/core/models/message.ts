@@ -5,6 +5,8 @@ export type Message = Partial<SignedMessage>;
 
 export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 
+export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
+
 export interface SignedMessage {
   gasToken: string;
   operationType: number;
@@ -23,15 +25,16 @@ export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 export type MessageStatus = {
   messageHash?: string,
   error?: string,
+  transactionHash?: string,
   collectedSignatures: string[],
   totalCollected: number,
   required: number,
-  transactionHash: string | null
+  state: MessageState
 };
 
-export type MessageQueueStatus = {
-  transactionHash?: string,
-  error?: string
-};
+export type MessageState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
 
-export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
+export type CollectedSignatureKeyPair = {
+  key: string;
+  signature: string;
+};

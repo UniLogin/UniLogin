@@ -22,12 +22,12 @@ describe('UNIT: ExecutionFactory', async () => {
       transactionHash: TEST_TRANSACTION_HASH,
       required: 1,
       totalCollected: 1,
+      state: 'AwaitSignature',
       messageHash,
       collectedSignatures: [signedMessage.signature]
     };
     executionStatus = {
       ...status,
-      transactionHash: null
     };
     getStatus = sinon.stub()
       .returns({status: {}})
@@ -47,7 +47,7 @@ describe('UNIT: ExecutionFactory', async () => {
   });
 
   it('waitToBeMined error', async () => {
-    status.transactionHash = null;
+    delete status.transactionHash;
     status.error = 'Error: waitToBeMined';
     const execution = await executionFactory.createExecution(signedMessage);
     expect(execution.messageStatus).to.be.deep.eq(executionStatus);
@@ -58,10 +58,10 @@ describe('UNIT: ExecutionFactory', async () => {
   it('waitToBeMined for message with no enough signatures', async () => {
     const expectedStatus = {
       ...status,
-      transactionHash: null,
-      error: undefined,
       required: 2
     };
+    delete expectedStatus.transactionHash;
+    delete expectedStatus.error;
     relayerApi.execute = sinon.stub().returns({status: expectedStatus});
     const execution = await executionFactory.createExecution(signedMessage);
     expect(await execution.waitToBeMined()).to.be.deep.eq(expectedStatus);

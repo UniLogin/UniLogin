@@ -19,14 +19,16 @@ class MessageQueueService {
     return this.queueMessageStore.add(signedMessage);
   }
 
-  async execute(signedMessage: SignedMessage, messageHash: string) {
+  async execute(messageHash: string) {
     try {
+      const signedMessage = await this.pendingMessagesStore.getMessage(messageHash);
       const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
-      await this.pendingMessagesStore.setTransactionHash(messageHash, hash!);
-      await this.queueMessageStore.markAsSuccess(messageHash, hash!);
+      await this.pendingMessagesStore.markAsSuccess(messageHash, hash!);
     } catch (error) {
-      await this.queueMessageStore.markAsError(messageHash, `${error.name}: ${error.message}`);
+      const errorMessage = `${error.name}: ${error.message}`;
+      await this.pendingMessagesStore.markAsError(messageHash, errorMessage);
     }
+    await this.queueMessageStore.remove(messageHash);
   }
 
   start() {
@@ -40,7 +42,7 @@ class MessageQueueService {
     do {
       const nextMessage = await this.queueMessageStore.getNext();
       if (nextMessage){
-        await this.execute(nextMessage.message, nextMessage.messageHash);
+        await this.execute(nextMessage.messageHash);
       } else {
         if (this.state === 'stopping'){
           this.state = 'stopped';
@@ -64,10 +66,6 @@ class MessageQueueService {
 
   private isStopped() {
     return this.state === 'stopped';
-  }
-
-  async getStatus(messageHash: string) {
-    return this.queueMessageStore.getStatus(messageHash);
   }
 }
 

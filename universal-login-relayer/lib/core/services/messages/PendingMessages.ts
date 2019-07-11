@@ -1,9 +1,9 @@
 import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
-import IPendingMessagesStore, {CollectedSignatureKeyPair} from './IPendingMessagesStore';
-import {getKeyFromHashAndSignature, sortSignatureKeyPairsByKey, createPendingMessage} from '../../utils/utils';
+import IPendingMessagesStore from './IPendingMessagesStore';
+import {getKeyFromHashAndSignature, createPendingMessage} from '../../utils/utils';
 import MessageQueueService from './MessageQueueService';
 
 export default class PendingMessages {
@@ -18,7 +18,7 @@ export default class PendingMessages {
   async add(message: SignedMessage) : Promise<MessageStatus> {
     const messageHash = calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
-      const pendingMessage = createPendingMessage(message.from);
+      const pendingMessage = createPendingMessage(message);
       await this.messagesStore.add(messageHash, pendingMessage);
     }
     await this.addSignatureToPendingMessage(messageHash, message);
@@ -31,9 +31,8 @@ export default class PendingMessages {
   }
 
   private async onReadyToExecute(messageHash: string, message: SignedMessage) {
-    const finalMessage = await this.getMessageWithSignatures(message, messageHash);
     await this.ensureCorrectExecution(messageHash);
-    return this.messageQueue.add(finalMessage);
+    return this.messageQueue.add(message);
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {
@@ -59,17 +58,9 @@ export default class PendingMessages {
     return this.messagesStore.getStatus(messageHash, this.wallet);
   }
 
-  async getMessageWithSignatures(message: SignedMessage, messageHash: string) : Promise<SignedMessage> {
-    const collectedSignatureKeyPairs = await this.messagesStore.getCollectedSignatureKeyPairs(messageHash);
-    const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
-    const sortedSignatures = sortedSignatureKeyPairs.map((value: CollectedSignatureKeyPair) => value.signature);
-    const signature = concatenateSignatures(sortedSignatures);
-    return  { ...message, signature};
-  }
-
   async confirmExecution(messageHash: string, transactionHash: string) {
     ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
-    await this.messagesStore.setTransactionHash(messageHash, transactionHash);
+    await this.messagesStore.markAsSuccess(messageHash, transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {

@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {CancelAuthorisationRequest} from '../models/authorisation';
-import { sign } from './sign';
+import {sign} from './signatures';
 
 export const hashCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {

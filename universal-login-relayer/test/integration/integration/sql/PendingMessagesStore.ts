@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields} from '@universal-login/commons';
 import IPendingMessagesStore from '../../../../lib/core/services/messages/IPendingMessagesStore';
 import PendingMessage from '../../../../lib/core/models/messages/PendingMessage';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -38,7 +38,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     pendingMessagesStore = new config.type(args);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
-    pendingMessage = createPendingMessage(message.from);
+    pendingMessage = createPendingMessage(message);
     messageHash = calculateMessageHash(message);
   });
 
@@ -50,6 +50,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     expect(await pendingMessagesStore.isPresent(messageHash)).to.be.eq(false, 'store is not initially empty');
     await pendingMessagesStore.add(messageHash, pendingMessage);
     expect(await pendingMessagesStore.isPresent(messageHash)).to.be.eq(true);
+    pendingMessage.message = bignumberifySignedMessageFields(stringifySignedMessageFields(pendingMessage.message));
     expect(await pendingMessagesStore.get(messageHash)).to.be.deep.eq(pendingMessage);
     expect(await pendingMessagesStore.isPresent(messageHash)).to.be.eq(true);
     const removedPendingExecution = await pendingMessagesStore.remove(messageHash);
@@ -77,7 +78,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
       collectedSignatures: [] as any,
       totalCollected: 0,
       required: 1,
-      transactionHash: null
+      state: 'AwaitSignature'
     };
     expect(await pendingMessagesStore.getStatus(messageHash, wallet)).to.deep.eq(expectedStatus);
     await pendingMessagesStore.addSignature(messageHash, message.signature);
@@ -98,12 +99,25 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
     expect(status.collectedSignatures).to.contains(message2.signature);
   });
 
-  it('should update transcaction hash', async () => {
+  it('should update transaction hash', async () => {
     await pendingMessagesStore.add(messageHash, pendingMessage);
     const expectedTransactionHash = TEST_TRANSACTION_HASH;
-    await pendingMessagesStore.setTransactionHash(messageHash, expectedTransactionHash);
+    await pendingMessagesStore.markAsSuccess(messageHash, expectedTransactionHash);
     const {transactionHash} = await pendingMessagesStore.getStatus(messageHash, wallet);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
+  });
+
+  it('should update error', async () => {
+    await pendingMessagesStore.add(messageHash, pendingMessage);
+    const expectedMessageError = 'Pending Message Store Error';
+    await pendingMessagesStore.markAsError(messageHash, expectedMessageError);
+    const {error} = await pendingMessagesStore.getStatus(messageHash, wallet);
+    expect(error).to.be.eq(expectedMessageError);
+  });
+
+  it('should throw error if signed message is missed', async () => {
+    delete pendingMessage.message;
+    await expect(pendingMessagesStore.add(messageHash, pendingMessage)).to.rejectedWith(`SignedMessage not found for hash: ${messageHash}`);
   });
 
   it('should get signatures', async () => {
