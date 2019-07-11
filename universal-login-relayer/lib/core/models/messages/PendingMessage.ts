@@ -1,5 +1,4 @@
-import {SignedMessage, MessageState} from '@universal-login/commons';
-import {CollectedSignatureKeyPair} from '../../services/messages/IPendingMessagesStore';
+import {SignedMessage, MessageState, CollectedSignatureKeyPair} from '@universal-login/commons';
 
 export default interface PendingMessage {
   collectedSignatureKeyPairs: CollectedSignatureKeyPair[];

@@ -1,5 +1,5 @@
 import {Wallet} from 'ethers';
-import {MessageStatus, SignedMessage} from '@universal-login/commons';
+import {CollectedSignatureKeyPair, MessageStatus, SignedMessage} from '@universal-login/commons';
 import PendingMessage from '../../models/messages/PendingMessage';
 
 export default interface IPendingMessagesStore {
@@ -16,8 +16,3 @@ export default interface IPendingMessagesStore {
   markAsError: (messageHash: string, error: string) => Promise<void>;
   containSignature: (messageHash: string, signature: string) => Promise<boolean>;
 }
-
-export type CollectedSignatureKeyPair = {
-  key: string;
-  signature: string;
-};

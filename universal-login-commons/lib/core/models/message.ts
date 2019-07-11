@@ -34,3 +34,7 @@ export type MessageStatus = {
 
 export type MessageState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
 
+export type CollectedSignatureKeyPair = {
+  key: string;
+  signature: string;
+};

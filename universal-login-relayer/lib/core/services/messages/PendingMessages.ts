@@ -1,8 +1,8 @@
 import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
+import {calculateMessageHash, concatenateSignatures, SignedMessage, INVALID_KEY, ensure, MessageStatus, CollectedSignatureKeyPair} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
-import IPendingMessagesStore, {CollectedSignatureKeyPair} from './IPendingMessagesStore';
+import IPendingMessagesStore from './IPendingMessagesStore';
 import {getKeyFromHashAndSignature, sortSignatureKeyPairsByKey, createPendingMessage} from '../../utils/utils';
 import MessageQueueService from './MessageQueueService';
 
