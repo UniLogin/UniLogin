@@ -48,7 +48,7 @@ RelayerApi -> Relayer: GET /execution/:messageHash
 Execution -> User: Promise<MessageStatus>
 deactivate Execution
 
-User -> Execution: await waitForMined()
+User -> Execution: await waitToBeMined()
 activate Execution
 Execution -> RelayerApi:getStatus
 RelayerApi -> Relayer: GET /execution/:messageHash

@@ -6,7 +6,7 @@ export interface AuthorisationRequest {
   deviceInfo: object;
 }
 
-class AuthorisationService {
+class AuthorisationStore {
   constructor(private database : Knex) {}
 
   async addRequest(request: AuthorisationRequest) {
@@ -22,12 +22,12 @@ class AuthorisationService {
       .select();
   }
 
-  async removeRequest(walletContractAddress: string, key: string) {
+  async removeRequest(walletContractAddress: string, publicKey: string) {
     await this.database('authorisations')
       .where('walletContractAddress', walletContractAddress.toLowerCase())
-      .where('key', key.toLocaleLowerCase())
+      .where('key', publicKey.toLocaleLowerCase())
       .del();
   }
 }
 
-export default AuthorisationService;
+export default AuthorisationStore;

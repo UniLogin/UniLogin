@@ -2,7 +2,7 @@ import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage, ContractWhiteList} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
-import AuthorisationService from '../../integration/sql/services/authorisationService';
+import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import MessageQueueService from './messages/MessageQueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
@@ -17,7 +17,7 @@ class MessageHandler {
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationService: AuthorisationService, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
+  constructor(private wallet: Wallet, private authorisationStore: AuthorisationStore, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
@@ -51,7 +51,7 @@ class MessageHandler {
 
   private async removeReqFromAuthService(message: SignedMessage) {
     const key = getKeyFromData(message.data as string);
-    return this.authorisationService.removeRequest(message.from, key);
+    return this.authorisationStore.removeRequest(message.from, key);
   }
 
   async getStatus(messageHash: string) {

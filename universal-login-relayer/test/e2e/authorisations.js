@@ -1,6 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayer, createWalletContract} from '../helpers/http';
+import {signCancelAuthorisationRequest} from '@universal-login/commons';
 
 chai.use(chaiHttp);
 
@@ -58,11 +59,16 @@ describe('E2E: Relayer - Authorisation routes', async () => {
 
   it('deny request', async () => {
     await postAuthorisationRequest(relayer, contract, wallet);
+    const cancelAuthorisationRequest = {
+      walletContractAddress: contract.address,
+      publicKey: wallet.address,
+      signature: ''
+    };
+    signCancelAuthorisationRequest(cancelAuthorisationRequest, wallet.privateKey);
     const result = await chai.request(relayer.server)
       .post(`/authorisation/${contract.address}`)
-      .send({
-        key: wallet.address,
-      });
+      .send({cancelAuthorisationRequest});
+
     expect(result.status).to.eq(204);
     const {result, response} = await getAuthorisation(relayer, contract, wallet);
     expect(response).to.deep.eq([]);

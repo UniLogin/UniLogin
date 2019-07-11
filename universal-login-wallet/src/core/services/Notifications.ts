@@ -2,6 +2,7 @@ import {Notification} from '@universal-login/commons';
 import WalletService from '../../integration/storage/WalletService';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {transactionDetails} from '../../config/TransactionDetails';
+import { CancelAuthorisationRequest } from '@universal-login/commons/lib';
 
 export default class NotificationsService {
   notifications: Notification[] = [];
@@ -24,11 +25,17 @@ export default class NotificationsService {
 
   async confirm (publicKey: string) {
     const {contractAddress, privateKey} =  this.walletService.userWallet!;
-    await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
+    const {waitToBeMined} = await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
+    return waitToBeMined();
   }
 
   async reject (publicKey: string) {
-    await this.sdk.denyRequest(this.walletService.userWallet!.contractAddress, publicKey);
+    const {privateKey} =  this.walletService.userWallet!;
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
+      walletContractAddress: this.walletService.userWallet!.contractAddress,
+      publicKey,
+      signature: ''
+    };
+    await this.sdk.denyRequest(cancelAuthorisationRequest, privateKey);
   }
-
 }

@@ -1,5 +1,5 @@
-import { Sanitizer, Either, asObject, asOptional } from '@restless/restless';
-import {TransactionOverrides} from '@universal-login/commons';
+import { Sanitizer, Either, asObject, asOptional, asString } from '@restless/restless';
+import {TransactionOverrides, CancelAuthorisationRequest} from '@universal-login/commons';
 import { utils } from 'ethers';
 
 export const asBigNumberish: Sanitizer<utils.BigNumber> = (value, path) => {
@@ -23,6 +23,12 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
     return Either.left([{ path, expected: 'arrayish' }]);
   }
 };
+
+export const asCancelAuthorisationRequest: Sanitizer<CancelAuthorisationRequest> = asObject({
+  walletContractAddress: asString,
+  publicKey: asString,
+  signature: asString
+});
 
 export const asOverrideOptions: Sanitizer<TransactionOverrides> = asObject({
   gasLimit: asOptional(asBigNumberish),

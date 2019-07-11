@@ -15,7 +15,7 @@ export type FutureWallet = {
   privateKey: string,
   contractAddress: string,
   waitForBalance: () => Promise<BalanceDetails>,
-  deploy: (ensName: string, gasPrice: string) => Promise<any>
+  deploy: (ensName: string, gasPrice: string) => Promise<string>
 };
 
 export class FutureWalletFactory {
