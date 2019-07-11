@@ -123,7 +123,7 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
     return !!foundSignature;
   }
 
-  async getSignedMessage(messageHash: string) {
+  async getMessage(messageHash: string) {
     const signedMessage = (await this.get(messageHash)).message;
     ensureNotNull(signedMessage, SignedMessageNotFound, messageHash);
     return signedMessage as SignedMessage;

@@ -77,7 +77,7 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
     this.messages[messageHash].message = bignumberifySignedMessageFields(stringifySignedMessageFields(signedMessage));
   }
 
-  async getSignedMessage(messageHash: string) {
+  async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
     ensureNotNull(message, SignedMessageNotFound, messageHash);
     return message as SignedMessage;

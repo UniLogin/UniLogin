@@ -22,7 +22,7 @@ class MessageQueueService {
 
   async execute(messageHash: string) {
     try {
-      const signedMessage = await this.pendingMessagesStore.getSignedMessage(messageHash);
+      const signedMessage = await this.pendingMessagesStore.getMessage(messageHash);
       const collectedSignatureKeyPairs = await this.pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash);
       const finalMessage = await getMessageWithSignatures(signedMessage, collectedSignatureKeyPairs);
       const {hash} = await this.messageExecutor.executeAndWait(finalMessage);
