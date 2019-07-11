@@ -1,8 +1,9 @@
 import {utils} from 'ethers';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../constants/constants';
 import {OPERATION_CALL} from '../../constants/contracts';
-import {MessageWithFrom, UnsignedMessage} from '../../models/message';
-import {calculateMessageSignature} from './calculateMessageSignature';
+import {MessageWithFrom, UnsignedMessage, CollectedSignatureKeyPair, SignedMessage} from '../../models/message';
+import {calculateMessageSignature, concatenateSignatures} from './calculateMessageSignature';
+import { sortSignatureKeyPairsByKey } from '../signatures';
 
 
 const emptyMessage = {
@@ -21,4 +22,11 @@ export const createSignedMessage = async (override: MessageWithFrom, privateKey:
   const message: UnsignedMessage = {...emptyMessage, ...override};
   const signature = await calculateMessageSignature(privateKey, message);
   return {...message, signature};
+};
+
+export const getMessageWithSignatures = async (message: SignedMessage, collectedSignatureKeyPairs: CollectedSignatureKeyPair[]) : Promise<SignedMessage> => {
+  const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
+  const sortedSignatures = sortedSignatureKeyPairs.map((value: CollectedSignatureKeyPair) => value.signature);
+  const signature = concatenateSignatures(sortedSignatures);
+  return  { ...message, signature};
 };

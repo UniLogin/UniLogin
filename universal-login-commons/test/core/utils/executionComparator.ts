@@ -1,6 +1,5 @@
-
 import {expect} from 'chai';
-import {executionComparator} from '../../../lib/core/utils/utils';
+import {executionComparator} from '../../../lib';
 
 
 describe('UNIT: Execution Comparator', () => {

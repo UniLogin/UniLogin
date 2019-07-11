@@ -22,7 +22,8 @@ export {getContractHash, getDeployedBytecode, isContractExist} from './core/util
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
 export {resolveName} from './integration/ethereum/resolveName';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './core/utils/messages/calculateMessageSignature';
-export {createSignedMessage} from './core/utils/messages/signMessage';
+export {createSignedMessage, getMessageWithSignatures} from './core/utils/messages/signMessage';
+export {executionComparator, sortSignatureKeyPairsByKey} from './core/utils/signatures';
 export {waitToBeMined, waitForContractDeploy, sendAndWaitForTransaction} from './integration/ethereum/wait';
 export {getDeployTransaction, defaultDeployOptions} from './integration/ethereum/transaction';
 export {sleep, waitUntil, waitExpect} from './core/utils/wait';

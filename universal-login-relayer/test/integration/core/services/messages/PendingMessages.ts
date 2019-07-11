@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, getMessageWithSignatures, SignedMessage, TEST_TRANSACTION_HASH, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import PendingMessagesSQLStore from '../../../../../lib/integration/sql/services/PendingMessagesSQLStore';
@@ -12,6 +12,7 @@ import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
+  let pendingMessagesStore: PendingMessagesSQLStore;
   let message : SignedMessage;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -22,7 +23,7 @@ describe('INT: PendingMessages', () => {
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    const pendingMessagesStore = new PendingMessagesSQLStore(knex);
+    pendingMessagesStore = new PendingMessagesSQLStore(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
     pendingMessages = new PendingMessages(wallet, pendingMessagesStore, {add: spy} as any);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
@@ -62,7 +63,8 @@ describe('INT: PendingMessages', () => {
 
   it('should return message with signature', async () => {
     await pendingMessages.add(message);
-    const messageWithSignaures = await pendingMessages.getMessageWithSignatures(message, messageHash);
+    const collectedSignatureKeyPairs = await pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash);
+    const messageWithSignaures = await getMessageWithSignatures(message, collectedSignatureKeyPairs);
     expect(messageWithSignaures).to.deep.eq(message);
   });
 
