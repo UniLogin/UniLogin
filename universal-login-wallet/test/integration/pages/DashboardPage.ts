@@ -42,6 +42,6 @@ export default class DashboardPage {
   }
 
   async waitForNewNotifications() {
-    await waitForUI(this.wrapper, () => this.wrapper.exists('.new-notifications'), 1000);
+    await waitForUI(this.wrapper, () => this.wrapper.exists('.new-notifications'), 3000, 100);
   }
 }

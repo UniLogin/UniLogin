@@ -1,9 +1,9 @@
 import sinon from 'sinon';
 import {expect} from 'chai';
-import {providers, utils, Wallet} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {Services} from '../../../src/ui/createServices';
 import {setupSdk} from '../helpers/setupSdk';
-import {waitUntil, ETHER_NATIVE_TOKEN, Notification} from '@universal-login/commons';
+import {waitUntil, ETHER_NATIVE_TOKEN, Notification, KeyPair, createKeyPair} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {createWallet} from '../helpers/createWallet';
@@ -15,6 +15,7 @@ describe('NotificationService', () => {
   let provider : providers.Provider;
   let blockchainObserver: any;
   let wallet: Wallet;
+  let keyPair: KeyPair;
 
   before(async () => {
     [wallet] = getWallets(createMockProvider());
@@ -26,6 +27,11 @@ describe('NotificationService', () => {
     blockchainObserver.step = 10;
     blockchainObserver.lastBlock = 0;
     services.sdk.start();
+    keyPair = createKeyPair();
+    services.sdk.connect = async (walletContractAddress: string) => {
+      await services.sdk.relayerApi.connect(walletContractAddress, keyPair.publicKey.toLowerCase());
+      return keyPair.publicKey.toLowerCase();
+    };
   });
 
   it('should call callback when new device connecting', async () => {
@@ -34,20 +40,13 @@ describe('NotificationService', () => {
     const unsubscribe = services.notificationService.subscribe(callback);
 
     expect(callback).has.been.calledOnceWithExactly([]);
-
-    const privateKey = wallet.privateKey;
-    const address = utils.computeAddress(privateKey).toLowerCase();
-
-    services.sdk.connect = async (walletContractAddress: string) => {
-      await services.sdk.relayerApi.connect(walletContractAddress, address.toLowerCase());
-      return address;
-    };
-    await services.sdk.connect(contractAddress);
+    
+    const publicKey = await services.sdk.connect(contractAddress);
     await waitUntil(() => callback.secondCall !== null);
 
     expect(notification!).to.deep.include({
       walletContractAddress: services.walletService.userWallet!.contractAddress.toLowerCase(),
-      key: address,
+      key: publicKey,
     });
 
     await services.notificationService.reject(notification!.key);
@@ -56,6 +55,21 @@ describe('NotificationService', () => {
     expect(callback.thirdCall).calledWithExactly([]);
 
     unsubscribe();
+  });
+
+  it('should call all callbacks', async () => {
+    const callback1 = sinon.spy();
+    const callback2 = sinon.spy();
+
+    const unsubscribe1 = services.notificationService.subscribe(callback1);
+    const unsubscribe2 = services.notificationService.subscribe(callback2);
+    await services.sdk.connect(contractAddress);
+    
+    await waitUntil(() => !!callback1.firstCall);
+    expect(callback1).to.have.been.called;
+    expect(callback2).to.have.been.called;
+    unsubscribe1();
+    unsubscribe2();
   });
 
   after(async () => {

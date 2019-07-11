@@ -23,15 +23,11 @@ class PendingAuthorizations extends Component {
     this.setState({
       authorisations: this.sdk.relayerObserver.lastAuthorisations
     });
-    this.subscription = this.sdk.subscribe(
-      'AuthorisationsChanged',
-      {contractAddress: address},
-      this.onAuthorisationChanged.bind(this)
-    );
+    this.unsubscribe = this.sdk.subscribeAuthorisations(address, this.onAuthorisationChanged.bind(this));
   }
 
   componentWillUnmount() {
-    this.subscription.remove();
+    this.unsubscribe();
   }
 
   onAuthorisationChanged(authorisations) {
