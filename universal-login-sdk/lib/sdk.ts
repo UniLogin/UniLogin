@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
+import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -216,8 +216,9 @@ class UniversalLoginSDK {
     throw `Unknown event type: ${eventType}`;
   }
 
-  subscribeAuthorisations(walletContractAddress: string, callback: Function): () => void {
-    return this.relayerObserver.subscribe(walletContractAddress, callback);
+  subscribeAuthorisations(getAuthorisationRequest: GetAuthorisationRequest, callback: Function) {
+
+    return this.relayerObserver.subscribe(getAuthorisationRequest, callback);
   }
 
   async start() {

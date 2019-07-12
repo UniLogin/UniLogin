@@ -1,11 +1,10 @@
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chai, {expect} from 'chai';
 import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/sdk';
-import { waitUntil, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest, createKeyPair , recoverFromGetAuthorisationRequest} from '@universal-login/commons';
+import { CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import { RelayerUnderTest } from '@universal-login/relayer';
 
 const loadFixture = createFixtureLoader();
@@ -20,7 +19,7 @@ describe('E2E authorization - sdk <=> relayer', async () => {
   let otherWallet: any;
 
   const createGetAuthorisationRequest = (walletContractAddress: string, privateKey: string) => {
-    walletContractAddress.toLowerCase()
+    walletContractAddress.toLowerCase();
     const getauthorisationRequest: GetAuthorisationRequest = {
       walletContractAddress,
       signature: ''

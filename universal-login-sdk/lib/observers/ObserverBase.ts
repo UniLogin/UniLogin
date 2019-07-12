@@ -22,7 +22,7 @@ abstract class ObserverBase extends ObserverRunner {
         delete this.emitters[filterString];
         token.remove();
       }
-    }
+    };
   }
 }
 

@@ -21,7 +21,7 @@ async function getAuthorisation(relayer, contract, wallet) {
     signature: ''
   };
   signGetAuthorisationRequest(getAuthorisationRequest, wallet.privateKey);
-  const {signature} = getAuthorisationRequest
+  const {signature} = getAuthorisationRequest;
 
   const result = await chai.request(relayer.server)
     .get(`/authorisation/${contract.address}?signature=${signature}`)

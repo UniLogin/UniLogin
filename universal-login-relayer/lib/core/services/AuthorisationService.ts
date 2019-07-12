@@ -1,4 +1,4 @@
-import {CancelAuthorisationRequest, GetAuthorisationRequest, ensure} from '@universal-login/commons';
+import {CancelAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 

@@ -6,7 +6,7 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/sdk';
 import RelayerObserver from '../../lib/observers/RelayerObserver';
-import {TEST_ACCOUNT_ADDRESS, waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
+import {waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
 
 
 chai.use(solidity);
