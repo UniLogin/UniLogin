@@ -10,6 +10,7 @@ import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
 import IMessageRepository from './messages/IMessagesRepository';
 import IQueueStore from './messages/IQueueStore';
+import {MessageStatusService} from './messages/MessageStatusService';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
@@ -18,21 +19,22 @@ class MessageHandler {
   private validator: MessageValidator;
 
   constructor(
-    private wallet: Wallet,
+    wallet: Wallet,
     private authorisationStore: AuthorisationStore,
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
     queueStore: IQueueStore,
-    contractWhiteList: ContractWhiteList
+    contractWhiteList: ContractWhiteList,
+    statusService: MessageStatusService
   ) {
-    this.validator = new MessageValidator(this.wallet, contractWhiteList);
+    this.validator = new MessageValidator(wallet, contractWhiteList);
     this.executor = new MessageExecutor(
-      this.wallet,
+      wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
     this.queueService = new QueueService(this.executor, queueStore, messageRepository);
-    this.pendingMessages = new PendingMessages(this.wallet, messageRepository, this.queueService);
+    this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
   }
 
   start() {

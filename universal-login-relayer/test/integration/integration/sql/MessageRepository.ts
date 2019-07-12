@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair} from '@universal-login/commons';
 import IMessageRepository from '../../../../lib/core/services/messages/IMessagesRepository';
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
@@ -66,26 +66,8 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     expect(await messageRepository.containSignature(messageHash, message.signature)).to.be.true;
   });
 
-  it('getStatus if message doesn`t exist', async () => {
-    await expect(messageRepository.getStatus(messageHash, wallet)).to.be.eventually.rejectedWith(`Could not find message with hash: ${messageHash}`);
-  });
-
-  it('getStatus roundtrip', async () => {
-    await messageRepository.add(messageHash, messageItem);
-    const expectedStatus = {
-      collectedSignatures: [] as any,
-      totalCollected: 0,
-      required: 1,
-      state: 'AwaitSignature'
-    };
-    expect(await messageRepository.getStatus(messageHash, wallet)).to.deep.eq(expectedStatus);
-    await messageRepository.addSignature(messageHash, message.signature);
-    expect(await messageRepository.getStatus(messageHash, wallet)).to.deep.eq(
-      {
-        ...expectedStatus,
-        collectedSignatures: [message.signature],
-        totalCollected: 1
-      });
+  it('get throws error if message doesn`t exist', async () => {
+    await expect(messageRepository.get(messageHash)).to.be.eventually.rejectedWith(`Could not find message with hash: ${messageHash}`);
   });
 
   it('should add signature', async () => {
@@ -93,15 +75,16 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     await messageRepository.add(messageHash, messageItem);
     const message2 = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
     await messageRepository.addSignature(messageHash, message2.signature);
-    const status = await messageRepository.getStatus(messageHash, wallet);
-    expect(status.collectedSignatures).to.contains(message2.signature);
+    const returnedMessageItem = await messageRepository.get(messageHash);
+    const signatures = returnedMessageItem.collectedSignatureKeyPairs.map((signatureKeyPair: CollectedSignatureKeyPair) => signatureKeyPair.signature);
+    expect(signatures).to.contains(message2.signature);
   });
 
   it('should update transaction hash', async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedTransactionHash = TEST_TRANSACTION_HASH;
     await messageRepository.markAsSuccess(messageHash, expectedTransactionHash);
-    const {transactionHash} = await messageRepository.getStatus(messageHash, wallet);
+    const {transactionHash} = await messageRepository.get(messageHash);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
   });
 
@@ -115,7 +98,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedMessageError = 'Pending Message Store Error';
     await messageRepository.markAsError(messageHash, expectedMessageError);
-    const {error} = await messageRepository.getStatus(messageHash, wallet);
+    const {error} = await messageRepository.get(messageHash);
     expect(error).to.be.eq(expectedMessageError);
   });
 

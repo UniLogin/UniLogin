@@ -24,7 +24,7 @@ export const createSignedMessage = async (override: MessageWithFrom, privateKey:
   return {...message, signature};
 };
 
-export const getMessageWithSignatures = async (message: SignedMessage, collectedSignatureKeyPairs: CollectedSignatureKeyPair[]) : Promise<SignedMessage> => {
+export const getMessageWithSignatures = async (message: UnsignedMessage, collectedSignatureKeyPairs: CollectedSignatureKeyPair[]) : Promise<SignedMessage> => {
   const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
   const sortedSignatures = sortedSignatureKeyPairs.map((value: CollectedSignatureKeyPair) => value.signature);
   const signature = concatenateSignatures(sortedSignatures);

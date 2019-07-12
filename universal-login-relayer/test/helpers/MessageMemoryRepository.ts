@@ -1,10 +1,9 @@
-import {Contract, Wallet} from 'ethers';
-import {MessageStatus, SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, ensure} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
-import {InvalidMessage, MessageNotFound, InvalidTransaction} from '../../lib/core/utils/errors';
+import {InvalidMessage, MessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
+import {ensureProperTransactionHash} from '../../lib/core/utils/validations';
 
 export default class MessageMemoryRepository implements IMessageRepository {
   public messageItems: Record<string, MessageItem>;
@@ -48,27 +47,6 @@ export default class MessageMemoryRepository implements IMessageRepository {
       .length > 0;
   }
 
-  async getStatus(messageHash: string, wallet: Wallet) : Promise<MessageStatus>  {
-    this.throwIfInvalidMessage(messageHash);
-    const message = this.messageItems[messageHash];
-    const walletContract = new Contract(message.walletAddress, WalletContract.interface, wallet);
-    const required = await walletContract.requiredSignatures();
-    const status: MessageStatus = {
-      collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
-      totalCollected: message.collectedSignatureKeyPairs.length,
-      required: required.toNumber(),
-      state: message.state
-    };
-    const {error, transactionHash} = message;
-    if (error) {
-      status.error = error;
-    }
-    if (transactionHash) {
-      status.transactionHash = transactionHash;
-    }
-    return status;
-  }
-
   async getCollectedSignatureKeyPairs(messageHash: string) {
     return this.messageItems[messageHash].collectedSignatureKeyPairs;
   }
@@ -89,7 +67,7 @@ export default class MessageMemoryRepository implements IMessageRepository {
   }
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
-    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
+    ensureProperTransactionHash(transactionHash);
     this.messageItems[messageHash].transactionHash = transactionHash;
   }
 
