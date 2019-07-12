@@ -6,7 +6,7 @@ import {InvalidMessage, SignedMessageNotFound} from '../../lib/core/utils/errors
 import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
 
-export default class PendingMessagesMemoryStore implements IMessageRepository {
+export default class MessageMemoryRepository implements IMessageRepository {
   public messageItems: Record<string, MessageItem>;
 
   constructor () {

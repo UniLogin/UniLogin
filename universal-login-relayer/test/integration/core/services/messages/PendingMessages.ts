@@ -6,7 +6,7 @@ import {calculateMessageHash, createSignedMessage, getMessageWithSignatures, Sig
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
-import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../../lib/core/utils/utils';
+import {getKeyFromHashAndSignature, createMessageItem} from '../../../../../lib/core/utils/utils';
 import {getKnex} from '../../../../../lib/core/utils/knexUtils';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
@@ -69,11 +69,11 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should get added signed transaction', async () => {
-    const pendingMessage = createPendingMessage(message);
+    const messageItem = createMessageItem(message);
     await pendingMessages.add(message);
     const key = getKeyFromHashAndSignature(messageHash, message.signature);
-    await pendingMessage.collectedSignatureKeyPairs.push({signature: message.signature, key});
-    expect((await pendingMessages.get(messageHash)).toString()).to.eq(pendingMessage.toString());
+    await messageItem.collectedSignatureKeyPairs.push({signature: message.signature, key});
+    expect((await pendingMessages.get(messageHash)).toString()).to.eq(messageItem.toString());
   });
 
   describe('Add', async () => {

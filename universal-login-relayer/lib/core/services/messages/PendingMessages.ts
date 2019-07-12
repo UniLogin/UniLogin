@@ -3,7 +3,7 @@ import {calculateMessageHash, SignedMessage, INVALID_KEY, ensure, MessageStatus}
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
 import IMessageRepository from './IMessagesRepository';
-import {getKeyFromHashAndSignature, createPendingMessage} from '../../utils/utils';
+import {getKeyFromHashAndSignature, createMessageItem} from '../../utils/utils';
 import MessageQueueService from './MessageQueueService';
 
 export default class PendingMessages {
@@ -21,7 +21,7 @@ export default class PendingMessages {
   async add(message: SignedMessage) : Promise<MessageStatus> {
     const messageHash = calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
-      const messageItem = createPendingMessage(message);
+      const messageItem = createMessageItem(message);
       await this.messagesRepository.add(messageHash, messageItem);
     }
     await this.addSignatureToPendingMessage(messageHash, message);
