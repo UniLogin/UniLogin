@@ -2,10 +2,11 @@ import {RelayerApi} from '../RelayerApi';
 import deepEqual from 'deep-equal';
 import ObserverRunner from './ObserverRunner';
 import {ensure, Notification, GetAuthorisationRequest} from '@universal-login/commons';
+import {ConcurrentAuthorisation} from '../utils/errors';
 
 class RelayerObserver extends ObserverRunner {
   private lastAuthorisations: Notification[] = [];
-  private contractAddress?: string;
+  private getAuthorisationRequest?: GetAuthorisationRequest;
   private callbacks: Function[] = [];
 
   constructor(private relayerApi: RelayerApi) {
@@ -13,22 +14,13 @@ class RelayerObserver extends ObserverRunner {
   }
 
   async tick() {
-    return this.checkAuthorisationsChangedFor(this.contractAddress!);
+    return this.checkAuthorisationsChangedFor(this.getAuthorisationRequest!);
   }
 
-  private async checkAuthorisationsChangedFor(contractAddress: string) {
-    const authorisations = await this.fetchPendingAuthorisations(contractAddress.toLowerCase());
-    // const {contractAddress, signature} = JSON.parse(filter);
-    // const getAuthorisationRequest: GetAuthorisationRequest = {
-    //   walletContractAddress: contractAddress,
-    //   signature
-    // };
-    // const emitter = this.emitters[filter as any];
-    // const authorisations = await this.fetchPendingAuthorisations(getAuthorisationRequest);
+  private async checkAuthorisationsChangedFor(getAuthorisationRequest: GetAuthorisationRequest) {
+    const authorisations = await this.fetchPendingAuthorisations(getAuthorisationRequest);
+
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
-      // console.log('emit event');
-      // console.log(authorisations);
-      // console.log(this.lastAuthorisations);
       this.lastAuthorisations = authorisations;
       for (const callback of this.callbacks) {
         callback(authorisations);
@@ -36,23 +28,29 @@ class RelayerObserver extends ObserverRunner {
     }
   }
 
-  private async fetchPendingAuthorisations(contractAddress: string) {
-    const {response} = await this.relayerApi.getPendingAuthorisations(contractAddress);
+  private async fetchPendingAuthorisations(getAuthorisationRequest: GetAuthorisationRequest) {
+    const {response} = await this.relayerApi.getPendingAuthorisations(getAuthorisationRequest);
     return response;
   }
 
-  subscribe(contractAddress: string, callback: Function) {
-    ensure(!this.contractAddress || (this.contractAddress === contractAddress), ConcurrentAuthorisation);
+  subscribe(getAuthorisationRequest: GetAuthorisationRequest, callback: Function) {
+    ensure(
+      !this.getAuthorisationRequest ||
+      (this.getAuthorisationRequest.walletContractAddress === getAuthorisationRequest.walletContractAddress),
+      ConcurrentAuthorisation
+    );
+
     callback(this.lastAuthorisations);
-    this.contractAddress = contractAddress;
+    this.getAuthorisationRequest = getAuthorisationRequest;
     this.callbacks.push(callback);
     if (!this.isRunning()) {
       this.start();
     }
+
     return () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
-        this.contractAddress = undefined;
+        this.getAuthorisationRequest = undefined;
         this.lastAuthorisations = [];
         this.stop();
       }
