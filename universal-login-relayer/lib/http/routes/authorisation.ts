@@ -2,15 +2,15 @@ import {Router, Request} from 'express';
 import AuthorisationStore, {AuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {CancelAuthorisationRequest, GetAuthorisationRequest, recoverFromGetAuthorisationRequest} from '@universal-login/commons';
+import {CancelAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
 import { asCancelAuthorisationRequest } from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
 
 
-const request = (authorisationStore: AuthorisationStore) =>
+const request = (authorisationService: AuthorisationService) =>
   async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
     const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
-    const result = await authorisationStore.addRequest(requestAuthorisation);
+    const result = await authorisationService.addRequest(requestAuthorisation);
     return responseOf({response: result}, 201);
   };
 
@@ -30,7 +30,7 @@ const denyRequest = (authorisationService: AuthorisationService) =>
     return responseOf(result, 204);
   };
 
-export default (authorisationStore: AuthorisationStore, authorisationService: AuthorisationService) => {
+export default (authorisationService: AuthorisationService) => {
   const router = Router();
 
   router.post('/', asyncHandler(
@@ -40,7 +40,7 @@ export default (authorisationStore: AuthorisationStore, authorisationService: Au
         key: asString
       })
     }),
-    request(authorisationStore)
+    request(authorisationService)
   ));
 
   router.get('/:walletContractAddress', asyncHandler(

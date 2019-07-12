@@ -24,23 +24,6 @@ describe('E2E authorization - sdk <=> relayer', async () => {
     sdk.relayerObserver.step = 10;
   });
 
-  // it('Send cancel request but no added key before canceling it.', async () => {
-  //   const cancelAuthorisationRequest: CancelAuthorisationRequest = {
-  //     walletContractAddress: contractAddress,
-  //     publicKey: otherWallet.address,
-  //     signature: ''
-  //   };
-
-  //   signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
-  //   const {body, status} = await chai.request(relayer.url())
-  //     .post(`/authorisation/${contractAddress}`)
-  //     .send({cancelAuthorisationRequest});
-
-  //   expect(status).to.eq(401);
-  //   expect(body.type).to.eq('AuthorisationKeyNotfound');
-  //   expect(body.error).to.eq(`Error: Could not find key ${otherWallet.address} to authorise`);
-  // });
-
   // it('Send valid cancel request', async () => {
   //   const {publicKey} = createKeyPair();
   //   await sdk.relayerApi.connect(contractAddress, publicKey.toLowerCase());
