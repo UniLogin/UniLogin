@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {InitializeWithENSArgs} from '../models/InitializeWithENSArgs';
-import {sign} from './sign';
+import {sign} from './signatures';
 
 export const calculateInitializeWithENSSignature = (args: InitializeWithENSArgs, privateKey: string) => {
   const initializeHash = utils.solidityKeccak256(

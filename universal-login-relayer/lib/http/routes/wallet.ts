@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import WalletService from '../../integration/ethereum/WalletService';
 import MessageHandler from '../../core/services/MessageHandler';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, DeployArgs} from '@universal-login/commons';
 import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber, asOptional} from '@restless/restless';
 import {asBigNumberish, asOverrideOptions, asArrayish} from '../utils/sanitizers';
 
@@ -25,7 +25,7 @@ const getStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploy = (walletContractService: WalletService) =>
-  async (data: {body: {publicKey: string, ensName: string,  gasPrice: string, signature: string}}) => {
+  async (data: {body: DeployArgs}) => {
     const {publicKey, ensName, gasPrice, signature} = data.body;
     const transaction = await walletContractService.deploy({publicKey, ensName, gasPrice, signature});
     return responseOf(transaction, 201);
