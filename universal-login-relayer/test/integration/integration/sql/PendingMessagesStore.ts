@@ -12,14 +12,12 @@ import PendingMessagesMemoryStore from '../../../helpers/PendingMessagesMemorySt
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 for (const config of [{
-    name: 'PendingMessagesSQLStore',
     type: PendingMessagesSQLStore,
   }, {
     type: PendingMessagesMemoryStore,
-    name: 'PendingMessageMemoryStore',
   }]
 ) {
-describe(`INT: IPendingMessageStore (${config.name})`, async () => {
+describe(`INT: IPendingMessageStore (${config.type.name})`, async () => {
   let pendingMessagesStore: IPendingMessagesStore;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -32,7 +30,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
   beforeEach(async () => {
     ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));
     let args: any;
-    if (config.name.includes('SQL')) {
+    if (config.type.name.includes('SQL')) {
       args = knex;
     }
     pendingMessagesStore = new config.type(args);
@@ -43,7 +41,7 @@ describe(`INT: IPendingMessageStore (${config.name})`, async () => {
   });
 
   afterEach(async () => {
-    config.name.includes('SQL') && await clearDatabase(knex);
+    config.type.name.includes('SQL') && await clearDatabase(knex);
   });
 
   it('roundtrip', async () => {

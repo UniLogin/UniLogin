@@ -9,14 +9,12 @@ import IQueueStore from '../../../../lib/core/services/messages/IQueueStore';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 for (const config of [{
-  name: 'MessageQueueSQLStore',
   type: QueueSQLStore,
 }, {
   type: QueueMemoryStore,
-  name: 'MessageQueueMemoryStore',
 }]
 ) {
-describe(`INT: IQueueStore: ${config.name}`, async () => {
+describe(`INT: IQueueStore: ${config.type.name}`, async () => {
   let queueStore: IQueueStore;
   let signedMessage: SignedMessage;
   let expectedMessageHash: string;
@@ -29,7 +27,7 @@ describe(`INT: IQueueStore: ${config.name}`, async () => {
 
   beforeEach(async () => {
     let args: any;
-    if (config.name.includes('SQL')) {
+    if (config.type.name.includes('SQL')) {
       args = knex;
     }
     queueStore = new config.type(args);
@@ -62,7 +60,7 @@ describe(`INT: IQueueStore: ${config.name}`, async () => {
   });
 
   afterEach(async () => {
-    config.name.includes('SQL') && await clearDatabase(knex);
+    config.type.name.includes('SQL') && await clearDatabase(knex);
   });
 
   after(async () => {
