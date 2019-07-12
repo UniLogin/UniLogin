@@ -26,15 +26,11 @@ describe('UI: Notifications',  () => {
 
   it('Should get notification when new device connect and confirm request', async () => {
     expect(appPage.dashboard().isNotificationAlert()).to.be.false;
-
     await services.sdk.connect(services.walletService.userWallet!.contractAddress);
     await appPage.dashboard().waitForNewNotifications();
-
     expect(appPage.dashboard().isNotificationAlert()).to.be.true;
-
     await appPage.dashboard().clickNotificationButton();
     await appPage.notifications().clickConfirmButton();
-
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });
 
@@ -53,5 +49,4 @@ describe('UI: Notifications',  () => {
     await services.sdk.finalizeAndStop();
     await relayer.stop();
   });
-
 });

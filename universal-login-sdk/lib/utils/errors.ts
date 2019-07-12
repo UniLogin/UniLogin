@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -22,6 +22,13 @@ export class ConcurrentDeployment extends Conflict {
   constructor () {
     super('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.', 'ConcurrentDeployment');
     Object.setPrototypeOf(this, ConcurrentDeployment.prototype);
+  }
+}
+
+export class ConcurrentAuthorisation extends Conflict {
+  constructor () {
+    super('Another wallet is subscribed.', 'ConcurrentAuthorisation');
+    Object.setPrototypeOf(this, ConcurrentAuthorisation.prototype);
   }
 }
 

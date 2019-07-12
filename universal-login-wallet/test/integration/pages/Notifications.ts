@@ -5,6 +5,7 @@ export default class NotificationsPage {
   constructor(private wrapper: ReactWrapper) {}
 
   async clickConfirmButton () {
+    await waitForUI(this.wrapper, () => this.wrapper.exists('.btn-confirm'));
     const button = this.wrapper.find('button.btn-confirm');
     button.simulate('click');
     await this.waitForNotificationDisappear();

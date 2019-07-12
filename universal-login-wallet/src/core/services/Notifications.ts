@@ -1,8 +1,7 @@
-import {Notification} from '@universal-login/commons';
+import {Notification, CancelAuthorisationRequest} from '@universal-login/commons';
 import WalletService from '../../integration/storage/WalletService';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {transactionDetails} from '../../config/TransactionDetails';
-import { CancelAuthorisationRequest } from '@universal-login/commons/lib';
 
 export default class NotificationsService {
   notifications: Notification[] = [];
@@ -12,15 +11,10 @@ export default class NotificationsService {
 
   subscribe (callback: (args: Notification[]) => void) {
     const contractAddress: string = this.walletService.userWallet!.contractAddress;
-    callback(this.notifications);
-    const subscription = this.sdk.subscribe(
-      'AuthorisationsChanged',
-      {contractAddress},
-      (authorisations: Notification[]) => {
-        this.notifications = authorisations;
-        callback(this.notifications);
-      });
-    return () => { subscription.remove(); };
+    const unsubscribe = this.sdk.subscribeAuthorisations(
+      contractAddress,
+      callback);
+    return unsubscribe;
   }
 
   async confirm (publicKey: string) {

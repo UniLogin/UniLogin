@@ -8,7 +8,7 @@ const Notifications = () => {
   const {notificationService} = useServices();
   const [notifications, setNotifications] = useState([] as Notification[]);
 
-  useEffect(() => notificationService.subscribe(setNotifications));
+  useEffect(() => notificationService.subscribe(setNotifications), []);
 
   const confirmRequest = (key : string) => notificationService.confirm(key);
 

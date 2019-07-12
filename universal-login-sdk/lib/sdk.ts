@@ -205,31 +205,26 @@ class UniversalLoginSDK {
     return cancelAuthorisationRequest.publicKey;
   }
 
-  async fetchPendingAuthorisations(walletContractAddress: string) {
-    return this.relayerObserver.fetchPendingAuthorisations(walletContractAddress);
-  }
-
   subscribe(eventType: string, filter: any, callback: Function) {
-    if (['AuthorisationsChanged'].includes(eventType)) {
-      return this.relayerObserver.subscribe(eventType, filter, callback);
-    } else if (['KeyAdded', 'KeyRemoved'].includes(eventType)) {
+    if (['KeyAdded', 'KeyRemoved'].includes(eventType)) {
       return this.blockchainObserver.subscribe(eventType, filter, callback);
     }
     throw `Unknown event type: ${eventType}`;
   }
 
+  subscribeAuthorisations(walletContractAddress: string, callback: Function): () => void {
+    return this.relayerObserver.subscribe(walletContractAddress, callback);
+  }
+
   async start() {
-    await this.relayerObserver.start();
     await this.blockchainObserver.start();
   }
 
   stop() {
-    this.relayerObserver.stop();
     this.blockchainObserver.stop();
   }
 
   async finalizeAndStop() {
-    await this.relayerObserver.finalizeAndStop();
     await this.blockchainObserver.finalizeAndStop();
   }
 }
