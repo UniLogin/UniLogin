@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'SignedMessageNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'MessageNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -104,10 +104,10 @@ export class StatusNotFound extends NotFound {
   }
 }
 
-export class SignedMessageNotFound extends NotFound {
+export class MessageNotFound extends NotFound {
   constructor(messageHash: string) {
-    super(`SignedMessage not found for hash: ${messageHash}`, 'SignedMessageNotFound');
-    Object.setPrototypeOf(this, SignedMessageNotFound.prototype);
+    super(`Message not found for hash: ${messageHash}`, 'MessageNotFound');
+    Object.setPrototypeOf(this, MessageNotFound.prototype);
   }
 }
 

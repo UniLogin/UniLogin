@@ -121,7 +121,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
 
   it('should throw error if signed message is missed', async () => {
     delete messageItem.message;
-    await expect(messageRepository.add(messageHash, messageItem)).to.rejectedWith(`SignedMessage not found for hash: ${messageHash}`);
+    await expect(messageRepository.add(messageHash, messageItem)).to.rejectedWith(`Message not found for hash: ${messageHash}`);
   });
 
   it('should get signatures', async () => {

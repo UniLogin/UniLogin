@@ -3,7 +3,7 @@ import {Wallet, Contract} from 'ethers';
 import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures, ensure} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
-import {InvalidMessage, SignedMessageNotFound, InvalidTransaction} from '../../../core/utils/errors';
+import {InvalidMessage, MessageNotFound, InvalidTransaction} from '../../../core/utils/errors';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import MessageItem from '../../../core/models/messages/MessageItem';
 
@@ -12,7 +12,7 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   async add(messageHash: string, messageItem: MessageItem) {
-    ensureNotNull(messageItem.message, SignedMessageNotFound, messageHash);
+    ensureNotNull(messageItem.message, MessageNotFound, messageHash);
     return this.knex
       .insert({
         messageHash,
@@ -126,7 +126,7 @@ export class MessageSQLRepository implements IMessageRepository {
 
   async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
-    ensureNotNull(message, SignedMessageNotFound, messageHash);
+    ensureNotNull(message, MessageNotFound, messageHash);
     const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     return getMessageWithSignatures(message, collectedSignatureKeyPairs);
   }
