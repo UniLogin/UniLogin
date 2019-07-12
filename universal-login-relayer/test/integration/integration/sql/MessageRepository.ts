@@ -2,23 +2,23 @@ import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields} from '@universal-login/commons';
-import IPendingMessagesStore from '../../../../lib/core/services/messages/IPendingMessagesStore';
+import IMessageRepository from '../../../../lib/core/services/messages/IMessagesRepository';
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../lib/core/utils/utils';
 import {getKnex} from '../../../../lib/core/utils/knexUtils';
-import PendingMessagesSQLStore from '../../../../lib/integration/sql/services/PendingMessagesSQLStore';
+import MessageSQLRepository from '../../../../lib/integration/sql/services/MessageSQLRepository';
 import PendingMessagesMemoryStore from '../../../helpers/PendingMessagesMemoryStore';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 for (const config of [{
-    type: PendingMessagesSQLStore,
+    type: MessageSQLRepository,
   }, {
     type: PendingMessagesMemoryStore,
   }]
 ) {
-describe(`INT: IPendingMessageStore (${config.type.name})`, async () => {
-  let pendingMessagesStore: IPendingMessagesStore;
+describe(`INT: IMessageRepository (${config.type.name})`, async () => {
+  let pendingMessagesStore: IMessageRepository;
   let wallet: Wallet;
   let walletContract: Contract;
   let message: SignedMessage;

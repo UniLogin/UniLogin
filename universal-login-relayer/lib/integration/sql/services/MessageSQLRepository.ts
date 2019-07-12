@@ -4,10 +4,10 @@ import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNot
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
 import {InvalidMessage, SignedMessageNotFound} from '../../../core/utils/errors';
-import IPendingMessagesStore from '../../../core/services/messages/IPendingMessagesStore';
+import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import MessageItem from '../../../core/models/messages/MessageItem';
 
-export class PendingMessagesSQLStore implements IPendingMessagesStore {
+export class MessageSQLRepository implements IMessageRepository {
   constructor(public knex: Knex) {
   }
 
@@ -131,4 +131,4 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   }
 }
 
-export default PendingMessagesSQLStore;
+export default MessageSQLRepository;

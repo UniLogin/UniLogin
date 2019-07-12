@@ -5,14 +5,14 @@ import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, getMessageWithSignatures, SignedMessage, TEST_TRANSACTION_HASH, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import PendingMessagesSQLStore from '../../../../../lib/integration/sql/services/PendingMessagesSQLStore';
+import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
 import {getKeyFromHashAndSignature, createPendingMessage} from '../../../../../lib/core/utils/utils';
-import { getKnex } from '../../../../../lib/core/utils/knexUtils';
+import {getKnex} from '../../../../../lib/core/utils/knexUtils';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
-  let pendingMessagesStore: PendingMessagesSQLStore;
+  let messageRepository: MessageSQLRepository;
   let message : SignedMessage;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -23,9 +23,9 @@ describe('INT: PendingMessages', () => {
 
   beforeEach(async () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
-    pendingMessagesStore = new PendingMessagesSQLStore(knex);
+    messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    pendingMessages = new PendingMessages(wallet, pendingMessagesStore, {add: spy} as any);
+    pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
     await walletContract.setRequiredSignatures(2);
@@ -63,7 +63,7 @@ describe('INT: PendingMessages', () => {
 
   it('should return message with signature', async () => {
     await pendingMessages.add(message);
-    const collectedSignatureKeyPairs = await pendingMessagesStore.getCollectedSignatureKeyPairs(messageHash);
+    const collectedSignatureKeyPairs = await messageRepository.getCollectedSignatureKeyPairs(messageHash);
     const messageWithSignaures = await getMessageWithSignatures(message, collectedSignatureKeyPairs);
     expect(messageWithSignaures).to.deep.eq(message);
   });

@@ -4,9 +4,9 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
 import {InvalidMessage, SignedMessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
-import IPendingMessagesStore from '../../lib/core/services/messages/IPendingMessagesStore';
+import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
 
-export default class PendingMessagesMemoryStore implements IPendingMessagesStore {
+export default class PendingMessagesMemoryStore implements IMessageRepository {
   public messageItems: Record<string, MessageItem>;
 
   constructor () {
