@@ -1,9 +1,9 @@
 import {SignedMessage} from '@universal-login/commons';
-import {MessageEntity} from '../../models/messages/MessageEntity';
+import {QueueItem} from '../../models/messages/QueueItem';
 
 export interface IMessageQueueStore {
   add: (message: SignedMessage) => Promise<string>;
-  getNext: () => Promise<MessageEntity | undefined>;
+  getNext: () => Promise<QueueItem | undefined>;
   remove: (messageHash: string) => Promise<void>;
 }
 

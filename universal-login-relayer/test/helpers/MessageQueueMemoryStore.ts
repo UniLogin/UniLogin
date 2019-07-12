@@ -1,9 +1,9 @@
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {IMessageQueueStore} from '../../lib/core/services/messages/IMessageQueueStore';
-import {MessageEntity} from '../../lib/core/models/messages/MessageEntity';
+import {QueueItem} from '../../lib/core/models/messages/QueueItem';
 
 export default class MessageQueueMemoryStore implements IMessageQueueStore {
-  public messageEntries: MessageEntity[];
+  public messageEntries: QueueItem[];
 
   constructor() {
     this.messageEntries = [];
@@ -26,6 +26,6 @@ export default class MessageQueueMemoryStore implements IMessageQueueStore {
   }
 
   private findIndex(messageHash: string) {
-    return this.messageEntries.findIndex((messageEntity: MessageEntity) => messageEntity.messageHash === messageHash);
+    return this.messageEntries.findIndex((messageEntity: QueueItem) => messageEntity.messageHash === messageHash);
   }
 }
