@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {GetAuthorisationRequest} from '../../models/authorisation';
-import { sign } from '../sign';
+import { sign } from '../signatures';
 
 export const hashGetAuthorisationRequest =
   (getAuthorisationRequest: GetAuthorisationRequest): string => {
