@@ -1,8 +1,8 @@
 import {Contract, Wallet} from 'ethers';
-import {MessageStatus, SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
+import {MessageStatus, SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, ensure} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
-import {InvalidMessage, SignedMessageNotFound} from '../../lib/core/utils/errors';
+import {InvalidMessage, SignedMessageNotFound, InvalidTransaction} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
 
@@ -89,6 +89,7 @@ export default class MessageMemoryRepository implements IMessageRepository {
   }
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
+    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
     this.messageItems[messageHash].transactionHash = transactionHash;
   }
 

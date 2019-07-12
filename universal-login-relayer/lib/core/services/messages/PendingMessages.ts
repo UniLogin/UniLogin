@@ -1,7 +1,7 @@
 import {Wallet, Contract} from 'ethers';
 import {calculateMessageHash, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
 import IMessageRepository from './IMessagesRepository';
 import {getKeyFromHashAndSignature, createMessageItem} from '../../utils/utils';
 import QueueService from './QueueService';
@@ -59,11 +59,6 @@ export default class PendingMessages {
 
   async getStatus(messageHash: string) {
     return this.messagesRepository.getStatus(messageHash, this.wallet);
-  }
-
-  async confirmExecution(messageHash: string, transactionHash: string) {
-    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
-    await this.messagesRepository.markAsSuccess(messageHash, transactionHash);
   }
 
   async ensureCorrectExecution(messageHash: string) {

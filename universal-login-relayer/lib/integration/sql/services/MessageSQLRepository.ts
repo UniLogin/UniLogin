@@ -1,9 +1,9 @@
 import Knex from 'knex';
 import {Wallet, Contract} from 'ethers';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures, ensure} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
-import {InvalidMessage, SignedMessageNotFound} from '../../../core/utils/errors';
+import {InvalidMessage, SignedMessageNotFound, InvalidTransaction} from '../../../core/utils/errors';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import MessageItem from '../../../core/models/messages/MessageItem';
 
@@ -104,6 +104,7 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
+    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
     return this.knex('messages')
       .where('messageHash', messageHash)
       .update('transactionHash', transactionHash);
