@@ -8,7 +8,7 @@ type QueueState = 'running' | 'stopped' | 'stopping';
 
 export type OnTransactionSent = (transaction: providers.TransactionResponse) => Promise<void>;
 
-class MessageQueueService {
+class QueueService {
   private state: QueueState;
 
   constructor(
@@ -74,4 +74,4 @@ class MessageQueueService {
   }
 }
 
-export default MessageQueueService;
+export default QueueService;

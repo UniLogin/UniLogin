@@ -4,14 +4,14 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, InvalidTransaction, NotEnoughSignatures} from '../../utils/errors';
 import IMessageRepository from './IMessagesRepository';
 import {getKeyFromHashAndSignature, createMessageItem} from '../../utils/utils';
-import MessageQueueService from './MessageQueueService';
+import QueueService from './QueueService';
 
 export default class PendingMessages {
 
   constructor(
     private wallet : Wallet,
     private messagesRepository: IMessageRepository,
-    private messageQueue: MessageQueueService
+    private queueService: QueueService
   ) {}
 
   async isPresent(messageHash : string) {
@@ -35,7 +35,7 @@ export default class PendingMessages {
 
   private async onReadyToExecute(messageHash: string, message: SignedMessage) {
     await this.ensureCorrectExecution(messageHash);
-    return this.messageQueue.add(message);
+    return this.queueService.add(message);
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {

@@ -3,7 +3,7 @@ import {EventEmitter} from 'fbemitter';
 import {SignedMessage, ContractWhiteList} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
-import MessageQueueService from './messages/MessageQueueService';
+import QueueService from './messages/QueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
@@ -13,7 +13,7 @@ import IQueueStore from './messages/IQueueStore';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
-  private messageQueue: MessageQueueService;
+  private queueService: QueueService;
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
@@ -31,12 +31,12 @@ class MessageHandler {
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new MessageQueueService(this.executor, queueStore, messageRepository);
-    this.pendingMessages = new PendingMessages(this.wallet, messageRepository, this.messageQueue);
+    this.queueService = new QueueService(this.executor, queueStore, messageRepository);
+    this.pendingMessages = new PendingMessages(this.wallet, messageRepository, this.queueService);
   }
 
   start() {
-    this.messageQueue.start();
+    this.queueService.start();
   }
 
   async onTransactionSent(sentTransaction: providers.TransactionResponse) {
@@ -69,11 +69,11 @@ class MessageHandler {
   }
 
   stop() {
-    this.messageQueue.stop();
+    this.queueService.stop();
   }
 
   async stopLater() {
-    return this.messageQueue.stopLater();
+    return this.queueService.stopLater();
   }
 }
 

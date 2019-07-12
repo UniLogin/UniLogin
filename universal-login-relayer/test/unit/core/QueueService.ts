@@ -2,7 +2,7 @@ import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {calculateMessageHash, waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import MessageQueueService from '../../../lib/core/services/messages/MessageQueueService';
+import QueueService from '../../../lib/core/services/messages/QueueService';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
@@ -11,8 +11,8 @@ import IMessageRepository from '../../../lib/core/services/messages/IMessagesRep
 
 use(sinonChai);
 
-describe('UNIT: Message Queue Service', async () => {
-  let messageQueueService: MessageQueueService;
+describe('UNIT: Queue Service', async () => {
+  let queueService: QueueService;
   let queueMemoryStore: QueueMemoryStore;
   let messageRepository: IMessageRepository;
   const wallet = {
@@ -32,7 +32,7 @@ describe('UNIT: Message Queue Service', async () => {
   beforeEach(async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
-    messageQueueService = new MessageQueueService(executor, queueMemoryStore, messageRepository, 1);
+    queueService = new QueueService(executor, queueMemoryStore, messageRepository, 1);
     signedMessage = await getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
@@ -42,31 +42,31 @@ describe('UNIT: Message Queue Service', async () => {
   });
 
   it('signedMessage round trip', async () => {
-    messageQueueService.start();
-    await messageQueueService.add(signedMessage);
+    queueService.start();
+    await queueService.add(signedMessage);
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledOnce);
   });
 
   it('should execute pending signedMessage after start', async () => {
-    await messageQueueService.add(signedMessage);
-    messageQueueService.start();
+    await queueService.add(signedMessage);
+    queueService.start();
     await waitExpect(() => expect(executor.executeAndWait).to.be.calledTwice);
   });
 
   it('should throw error when hash is null', async () => {
-    messageQueueService = new MessageQueueService(executorReturnsNull, queueMemoryStore, messageRepository, 1);
-    messageQueueService.start();
+    queueService = new QueueService(executorReturnsNull, queueMemoryStore, messageRepository, 1);
+    queueService.start();
     const markAsErrorSpy = sinon.spy(messageRepository.markAsError);
     messageRepository.markAsError = markAsErrorSpy;
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
     await messageRepository.add(messageHash, createMessageItem(signedMessage));
-    messageHash = await messageQueueService.add(signedMessage);
+    messageHash = await queueService.add(signedMessage);
     await waitExpect(() => expect(messageRepository.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
     expect(queueMemoryStore.remove).to.be.calledOnce;
     expect(queueMemoryStore.remove).to.be.calledAfter(markAsErrorSpy);
   });
 
   afterEach(async () => {
-    await messageQueueService.stopLater();
+    await queueService.stopLater();
   });
 });
