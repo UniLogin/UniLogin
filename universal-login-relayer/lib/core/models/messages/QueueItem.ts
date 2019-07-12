@@ -1,3 +1,3 @@
 export interface QueueItem {
-  messageHash: string;
+  hash: string;
 }

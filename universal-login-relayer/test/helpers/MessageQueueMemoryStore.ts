@@ -3,29 +3,29 @@ import {IMessageQueueStore} from '../../lib/core/services/messages/IMessageQueue
 import {QueueItem} from '../../lib/core/models/messages/QueueItem';
 
 export default class MessageQueueMemoryStore implements IMessageQueueStore {
-  public messageEntries: QueueItem[];
+  public queueItems: QueueItem[];
 
   constructor() {
-    this.messageEntries = [];
+    this.queueItems = [];
   }
 
   async add(signedMessage: SignedMessage) {
-    const messageHash = calculateMessageHash(signedMessage);
-    this.messageEntries.push({
-      messageHash
+    const hash = calculateMessageHash(signedMessage);
+    this.queueItems.push({
+      hash
     });
-    return messageHash;
+    return hash;
   }
 
   async getNext() {
-    return this.messageEntries[0];
+    return this.queueItems[0];
   }
 
-  async remove(messageHash: string) {
-    this.messageEntries.splice(this.findIndex(messageHash), 1);
+  async remove(hash: string) {
+    this.queueItems.splice(this.findIndex(hash), 1);
   }
 
-  private findIndex(messageHash: string) {
-    return this.messageEntries.findIndex((messageEntity: QueueItem) => messageEntity.messageHash === messageHash);
+  private findIndex(hash: string) {
+    return this.queueItems.findIndex((messageEntity: QueueItem) => messageEntity.hash === hash);
   }
 }

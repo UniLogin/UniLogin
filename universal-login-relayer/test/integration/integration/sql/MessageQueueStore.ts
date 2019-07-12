@@ -50,11 +50,11 @@ describe(`INT: IMessageQueueStore: ${config.name}`, async () => {
     const messageHash1 = await messageQueueStore.add(signedMessage);
     const signedMessage2 = await getTestSignedMessage({value: utils.parseEther('2')});
     const messageHash2 = await messageQueueStore.add(signedMessage2);
-    const nextMessageHash = (await messageQueueStore.getNext())!.messageHash;
+    const nextMessageHash = (await messageQueueStore.getNext())!.hash;
     expect(nextMessageHash).to.be.equal(messageHash1);
     expect(nextMessageHash).to.be.eq(expectedMessageHash);
     await messageQueueStore.remove(messageHash1);
-    const nextMessageHash2 = (await messageQueueStore.getNext())!.messageHash;
+    const nextMessageHash2 = (await messageQueueStore.getNext())!.hash;
     expect(nextMessageHash2).to.be.equal(messageHash2);
     expect(nextMessageHash2).to.be.eq(calculateMessageHash(signedMessage2));
     await messageQueueStore.remove(messageHash2);

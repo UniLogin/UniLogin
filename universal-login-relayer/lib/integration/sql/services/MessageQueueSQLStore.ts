@@ -24,7 +24,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
     const next = await this.database(this.tableName)
       .first()
       .orderBy('created_at', 'asc')
-      .column({messageHash: 'hash'})
+      .column('hash')
       .select();
     return next;
   }

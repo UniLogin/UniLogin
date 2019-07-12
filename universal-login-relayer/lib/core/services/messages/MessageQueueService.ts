@@ -42,7 +42,7 @@ class MessageQueueService {
     do {
       const nextMessage = await this.queueMessageStore.getNext();
       if (nextMessage){
-        await this.execute(nextMessage.messageHash);
+        await this.execute(nextMessage.hash);
       } else {
         if (this.state === 'stopping'){
           this.state = 'stopped';
