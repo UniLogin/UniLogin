@@ -8,7 +8,7 @@ function Sidebar() {
   const {userDropdownService, notificationService, walletPresenter} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
 
-  useEffect(() => notificationService.subscribe(notifications => setNewNotifications(notifications.length !== 0)));
+  useEffect(() => notificationService.subscribe(notifications => setNewNotifications(notifications.length !== 0)), []);
 
   return (
     <div className="sidebar">

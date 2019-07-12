@@ -36,7 +36,7 @@ describe('Unit: RelayerObserver', () => {
     await waitUntil(() => !!callback2.firstCall);
     expect(callback2).to.have.been.calledOnce;
   });
-  
+
   it('2 subscriptions', async () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
@@ -47,5 +47,5 @@ describe('Unit: RelayerObserver', () => {
     expect(callback2).to.have.been.calledWith('authorisation');
     unsubscribe1();
     unsubscribe2();
-  })
+  });
 });

@@ -12,4 +12,4 @@ export const waitForUI = async (wrapper : ReactWrapper, predicate: Predicate, ti
     return predicate();
   }, tick, timeout);
 };
- 
+

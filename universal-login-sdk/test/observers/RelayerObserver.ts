@@ -55,7 +55,7 @@ describe('SDK: RelayerObserver', async () => {
 
     unsubscribe1();
     unsubscribe2();
-    
+
     await waitUntil(() => !!callback1.secondCall);
     await waitUntil(() => !!callback2.secondCall);
 

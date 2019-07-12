@@ -40,7 +40,7 @@ describe('NotificationService', () => {
     const unsubscribe = services.notificationService.subscribe(callback);
 
     expect(callback).has.been.calledOnceWithExactly([]);
-    
+
     const publicKey = await services.sdk.connect(contractAddress);
     await waitUntil(() => callback.secondCall !== null);
 
@@ -64,7 +64,7 @@ describe('NotificationService', () => {
     const unsubscribe1 = services.notificationService.subscribe(callback1);
     const unsubscribe2 = services.notificationService.subscribe(callback2);
     await services.sdk.connect(contractAddress);
-    
+
     await waitUntil(() => !!callback1.firstCall);
     expect(callback1).to.have.been.called;
     expect(callback2).to.have.been.called;

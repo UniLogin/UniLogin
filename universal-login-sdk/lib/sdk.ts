@@ -211,7 +211,7 @@ class UniversalLoginSDK {
     }
     throw `Unknown event type: ${eventType}`;
   }
-  
+
   subscribeAuthorisations(walletContractAddress: string, callback: Function): () => void {
     return this.relayerObserver.subscribe(walletContractAddress, callback);
   }

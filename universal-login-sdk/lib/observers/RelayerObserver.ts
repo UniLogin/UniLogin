@@ -21,7 +21,7 @@ class RelayerObserver extends ObserverRunner {
     const authorisations = await this.fetchPendingAuthorisations(contractAddress.toLowerCase());
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
-      for (let callback of this.callbacks) {
+      for (const callback of this.callbacks) {
         callback(authorisations);
       }
     }
@@ -41,13 +41,13 @@ class RelayerObserver extends ObserverRunner {
       this.start();
     }
     return () => {
-      this.callbacks = this.callbacks.filter((element) => {return callback !== element});
+      this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
         this.contractAddress = undefined;
         this.lastAuthorisations = [];
         this.stop();
       }
-    }
+    };
   }
 }
 
