@@ -6,7 +6,8 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/sdk';
 import RelayerObserver from '../../lib/observers/RelayerObserver';
-import { waitUntil } from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
+
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -18,23 +19,35 @@ describe('SDK: RelayerObserver', async () => {
   let sdk: UniversalLoginSDK;
   let contractAddress: string;
   let relayerObserver: RelayerObserver;
+  let privateKey: string;
+  let getAuthorisationRequest: GetAuthorisationRequest;
+
+  const createGetAuthorisationRequest = (walletContractAddress: string, privateKey: string) => {
+    const getauthorisationRequest: GetAuthorisationRequest = {
+      walletContractAddress,
+      signature: ''
+    };
+    signGetAuthorisationRequest(getauthorisationRequest, privateKey);
+    return getauthorisationRequest;
+  };
 
   beforeEach(async () => {
-    ({sdk, relayer, contractAddress} = await loadFixture(basicSDK));
+    ({sdk, relayer, contractAddress, privateKey} = await loadFixture(basicSDK));
+    getAuthorisationRequest = createGetAuthorisationRequest(contractAddress, privateKey);
     ({relayerObserver} = sdk);
     relayerObserver.step = 50;
   });
 
   it('should not emit events if no connection requests', async () => {
     const callback = sinon.spy();
-    const unsubscribe = relayerObserver.subscribe(contractAddress, callback);
+    const unsubscribe = relayerObserver.subscribe(getAuthorisationRequest, callback);
     unsubscribe();
     expect(callback).to.have.been.calledWith([]);
   });
 
   it('should emit AuthorisationsChanged event if connected called', async () => {
     const callback = sinon.spy();
-    const unsubscribe = relayerObserver.subscribe(contractAddress, callback);
+    const unsubscribe = relayerObserver.subscribe(getAuthorisationRequest, callback);
     expect(callback).to.have.been.calledWith([]);
     await sdk.connect(contractAddress);
     await waitUntil(() => !!callback.secondCall);
@@ -47,17 +60,17 @@ describe('SDK: RelayerObserver', async () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
-    const unsubscribe1 = relayerObserver.subscribe(contractAddress, callback1);
-    const unsubscribe2 = await relayerObserver.subscribe(contractAddress, callback2);
+    const unsubscribe1 = relayerObserver.subscribe(getAuthorisationRequest, callback1);
+    const unsubscribe2 = await relayerObserver.subscribe(getAuthorisationRequest, callback2);
 
     await sdk.connect(contractAddress);
     await sdk.connect(newContractAddress);
 
-    unsubscribe1();
-    unsubscribe2();
-
     await waitUntil(() => !!callback1.secondCall);
     await waitUntil(() => !!callback2.secondCall);
+
+    unsubscribe1();
+    unsubscribe2();
 
     expect(callback1).to.have.been.calledTwice;
     expect(callback2).to.have.been.calledTwice;
