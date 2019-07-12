@@ -1,8 +1,8 @@
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IMessageQueueStore} from '../../lib/core/services/messages/IMessageQueueStore';
+import {IQueueStore} from '../../lib/core/services/messages/IQueueStore';
 import {QueueItem} from '../../lib/core/models/messages/QueueItem';
 
-export default class MessageQueueMemoryStore implements IMessageQueueStore {
+export default class QueueMemoryStore implements IQueueStore {
   public queueItems: QueueItem[];
 
   constructor() {

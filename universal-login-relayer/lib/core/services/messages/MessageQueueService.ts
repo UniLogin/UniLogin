@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
-import IMessageQueueStore from './IMessageQueueStore';
+import IQueueStore from './IQueueStore';
 import MessageExecutor from '../../../integration/ethereum/MessageExecutor';
 import IPendingMessagesStore from './IPendingMessagesStore';
 
@@ -11,12 +11,12 @@ export type OnTransactionSent = (transaction: providers.TransactionResponse) => 
 class MessageQueueService {
   private state: QueueState;
 
-  constructor(private messageExecutor: MessageExecutor, private queueMessageStore: IMessageQueueStore, private pendingMessagesStore: IPendingMessagesStore, private tick: number = 100){
+  constructor(private messageExecutor: MessageExecutor, private queueStore: IQueueStore, private pendingMessagesStore: IPendingMessagesStore, private tick: number = 100){
     this.state = 'stopped';
   }
 
   async add(signedMessage: SignedMessage) {
-    return this.queueMessageStore.add(signedMessage);
+    return this.queueStore.add(signedMessage);
   }
 
   async execute(messageHash: string) {
@@ -28,7 +28,7 @@ class MessageQueueService {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.pendingMessagesStore.markAsError(messageHash, errorMessage);
     }
-    await this.queueMessageStore.remove(messageHash);
+    await this.queueStore.remove(messageHash);
   }
 
   start() {
@@ -40,7 +40,7 @@ class MessageQueueService {
 
   async loop() {
     do {
-      const nextMessage = await this.queueMessageStore.getNext();
+      const nextMessage = await this.queueStore.getNext();
       if (nextMessage){
         await this.execute(nextMessage.hash);
       } else {

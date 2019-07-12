@@ -15,10 +15,11 @@ import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from '../../config/relayer';
 import MessageHandler from '../../core/services/MessageHandler';
-import MessageQueueStore from '../../integration/sql/services/MessageQueueSQLStore';
+import QueueSQLStore from '../../integration/sql/services/QueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';
 import PendingMessagesSQLStore from '../../integration/sql/services/PendingMessagesSQLStore';
 import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
+import IQueueStore from '../../core/services/messages/IQueueStore';
 
 const defaultPort = '3311';
 
@@ -37,7 +38,7 @@ class Relayer {
   private authorisationStore: AuthorisationStore = {} as AuthorisationStore;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletContractService: WalletService = {} as WalletService;
-  private messageQueueStore: MessageQueueStore = {} as MessageQueueStore;
+  private queueStore: IQueueStore = {} as IQueueStore;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private pendingMessagesStore: PendingMessagesSQLStore = {} as PendingMessagesSQLStore;
   private app: Application = {} as Application;
@@ -70,8 +71,8 @@ class Relayer {
     this.authorisationService = new AuthorisationService(this.provider);
     this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks);
     this.pendingMessagesStore = new PendingMessagesSQLStore(this.database);
-    this.messageQueueStore = new MessageQueueStore(this.database);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.pendingMessagesStore, this.messageQueueStore, this.config.contractWhiteList);
+    this.queueStore = new QueueSQLStore(this.database);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.pendingMessagesStore, this.queueStore, this.config.contractWhiteList);
     const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));

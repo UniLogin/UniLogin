@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {calculateMessageHash, waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import MessageQueueService from '../../../lib/core/services/messages/MessageQueueService';
-import MessageQueueMemoryStore from '../../helpers/MessageQueueMemoryStore';
+import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import PendingMessagesMemoryStore from '../../helpers/PendingMessagesMemoryStore';
 import {createPendingMessage} from '../../../lib/core/utils/utils';
@@ -12,7 +12,7 @@ use(sinonChai);
 
 describe('UNIT: Message Queue Service', async () => {
   let messageQueueService: MessageQueueService;
-  let messageQueueMemoryStorage: MessageQueueMemoryStore;
+  let queueMemoryStore: QueueMemoryStore;
   let pendingMessagesMemoryStorage: PendingMessagesMemoryStore;
   const wallet = {
     provider: {waitForTransaction: sinon.fake()}
@@ -29,9 +29,9 @@ describe('UNIT: Message Queue Service', async () => {
   let messageHash: string;
 
   beforeEach(async () => {
-    messageQueueMemoryStorage = new MessageQueueMemoryStore();
+    queueMemoryStore = new QueueMemoryStore();
     pendingMessagesMemoryStorage = new PendingMessagesMemoryStore();
-    messageQueueService = new MessageQueueService(executor, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
+    messageQueueService = new MessageQueueService(executor, queueMemoryStore, pendingMessagesMemoryStorage, 1);
     signedMessage = await getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);
     await pendingMessagesMemoryStorage.add(
@@ -53,16 +53,16 @@ describe('UNIT: Message Queue Service', async () => {
   });
 
   it('should throw error when hash is null', async () => {
-    messageQueueService = new MessageQueueService(executorReturnsNull, messageQueueMemoryStorage, pendingMessagesMemoryStorage, 1);
+    messageQueueService = new MessageQueueService(executorReturnsNull, queueMemoryStore, pendingMessagesMemoryStorage, 1);
     messageQueueService.start();
     const markAsErrorSpy = sinon.spy(pendingMessagesMemoryStorage.markAsError);
     pendingMessagesMemoryStorage.markAsError = markAsErrorSpy;
-    messageQueueMemoryStorage.remove = sinon.spy(messageQueueMemoryStorage.remove);
+    queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
     await pendingMessagesMemoryStorage.add(messageHash, createPendingMessage(signedMessage));
     messageHash = await messageQueueService.add(signedMessage);
     await waitExpect(() => expect(pendingMessagesMemoryStorage.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
-    expect(messageQueueMemoryStorage.remove).to.be.calledOnce;
-    expect(messageQueueMemoryStorage.remove).to.be.calledAfter(markAsErrorSpy);
+    expect(queueMemoryStore.remove).to.be.calledOnce;
+    expect(queueMemoryStore.remove).to.be.calledAfter(markAsErrorSpy);
   });
 
   afterEach(async () => {

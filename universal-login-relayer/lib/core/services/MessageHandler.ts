@@ -9,7 +9,7 @@ import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
 import IPendingMessagesStore from './messages/IPendingMessagesStore';
-import IMessageQueueStore from './messages/IMessageQueueStore';
+import IQueueStore from './messages/IQueueStore';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
@@ -17,14 +17,14 @@ class MessageHandler {
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationStore: AuthorisationStore, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
+  constructor(private wallet: Wallet, private authorisationStore: AuthorisationStore, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, queueStore: IQueueStore, contractWhiteList: ContractWhiteList) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new MessageQueueService(this.executor, messageQueueStore, pendingMessagesStore);
+    this.messageQueue = new MessageQueueService(this.executor, queueStore, pendingMessagesStore);
     this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.messageQueue);
   }
 
