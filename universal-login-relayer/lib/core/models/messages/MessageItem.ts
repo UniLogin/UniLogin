@@ -1,6 +1,6 @@
 import {SignedMessage, MessageState, CollectedSignatureKeyPair} from '@universal-login/commons';
 
-export default interface PendingMessage {
+export default interface MessageItem {
   collectedSignatureKeyPairs: CollectedSignatureKeyPair[];
   transactionHash: string | null;
   error: string | null;

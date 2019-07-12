@@ -1,12 +1,12 @@
 import {Wallet} from 'ethers';
 import {CollectedSignatureKeyPair, MessageStatus, SignedMessage} from '@universal-login/commons';
-import PendingMessage from '../../models/messages/PendingMessage';
+import MessageItem from '../../models/messages/MessageItem';
 
 export default interface IPendingMessagesStore {
-  add: (messageHash: string, pendingMessage: PendingMessage) => Promise<void>;
-  get: (messageHash: string) => Promise<PendingMessage>;
+  add: (messageHash: string, pendingMessage: MessageItem) => Promise<void>;
+  get: (messageHash: string) => Promise<MessageItem>;
   isPresent: (messageHash: string) => Promise<boolean>;
-  remove: (messageHash: string) => Promise<PendingMessage>;
+  remove: (messageHash: string) => Promise<MessageItem>;
   getStatus: (messageHash: string, wallet: Wallet) => Promise<MessageStatus>;
   addSignature: (messageHash: string, signature: string) => Promise<void>;
   getMessage: (messageHash: string) => Promise<SignedMessage>;

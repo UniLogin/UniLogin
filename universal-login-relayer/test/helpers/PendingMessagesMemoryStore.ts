@@ -3,45 +3,45 @@ import {MessageStatus, SignedMessage, stringifySignedMessageFields, bignumberify
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
 import {InvalidMessage, SignedMessageNotFound} from '../../lib/core/utils/errors';
-import PendingMessage from '../../lib/core/models/messages/PendingMessage';
+import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IPendingMessagesStore from '../../lib/core/services/messages/IPendingMessagesStore';
 
 export default class PendingMessagesMemoryStore implements IPendingMessagesStore {
-  public messages: Record<string, PendingMessage>;
+  public messageItems: Record<string, MessageItem>;
 
   constructor () {
-    this.messages = {};
+    this.messageItems = {};
   }
 
-  async add(messageHash: string, pendingMessage: PendingMessage) {
-    ensureNotNull(pendingMessage.message, SignedMessageNotFound, messageHash);
-    pendingMessage.message = bignumberifySignedMessageFields(stringifySignedMessageFields(pendingMessage.message));
-    this.messages[messageHash] = pendingMessage;
+  async add(messageHash: string, messageItem: MessageItem) {
+    ensureNotNull(messageItem.message, SignedMessageNotFound, messageHash);
+    messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
+    this.messageItems[messageHash] = messageItem;
   }
 
   async isPresent(messageHash: string) {
-    return messageHash in this.messages;
+    return messageHash in this.messageItems;
   }
 
   throwIfInvalidMessage(messageHash: string) {
-    if (!this.messages[messageHash]) {
+    if (!this.messageItems[messageHash]) {
       throw new InvalidMessage(messageHash);
     }
   }
 
-  async get(messageHash: string): Promise<PendingMessage> {
+  async get(messageHash: string): Promise<MessageItem> {
     this.throwIfInvalidMessage(messageHash);
-    return this.messages[messageHash];
+    return this.messageItems[messageHash];
   }
 
-  async remove(messageHash: string): Promise<PendingMessage> {
-    const pendingExecution = this.messages[messageHash];
-    delete this.messages[messageHash];
-    return pendingExecution;
+  async remove(messageHash: string): Promise<MessageItem> {
+    const messageItem = this.messageItems[messageHash];
+    delete this.messageItems[messageHash];
+    return messageItem;
   }
 
   async containSignature(messageHash: string, signature: string) : Promise<boolean> {
-    const message = this.messages[messageHash];
+    const message = this.messageItems[messageHash];
     return !!message && message
       .collectedSignatureKeyPairs
       .filter((collectedSignature) => collectedSignature.signature === signature)
@@ -50,7 +50,7 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
 
   async getStatus(messageHash: string, wallet: Wallet) : Promise<MessageStatus>  {
     this.throwIfInvalidMessage(messageHash);
-    const message = this.messages[messageHash];
+    const message = this.messageItems[messageHash];
     const walletContract = new Contract(message.walletAddress, WalletContract.interface, wallet);
     const required = await walletContract.requiredSignatures();
     const status: MessageStatus = {
@@ -70,11 +70,11 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
   }
 
   async getCollectedSignatureKeyPairs(messageHash: string) {
-    return this.messages[messageHash].collectedSignatureKeyPairs;
+    return this.messageItems[messageHash].collectedSignatureKeyPairs;
   }
 
   async addSignedMessage(messageHash: string, signedMessage: SignedMessage) {
-    this.messages[messageHash].message = bignumberifySignedMessageFields(stringifySignedMessageFields(signedMessage));
+    this.messageItems[messageHash].message = bignumberifySignedMessageFields(stringifySignedMessageFields(signedMessage));
   }
 
   async getMessage(messageHash: string) {
@@ -85,14 +85,14 @@ export default class PendingMessagesMemoryStore implements IPendingMessagesStore
 
   async addSignature(messageHash: string, signature: string) {
     const key = getKeyFromHashAndSignature(messageHash, signature);
-    this.messages[messageHash].collectedSignatureKeyPairs.push({signature, key});
+    this.messageItems[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
-    this.messages[messageHash].transactionHash = transactionHash;
+    this.messageItems[messageHash].transactionHash = transactionHash;
   }
 
   async markAsError(messageHash: string, error: string) {
-    this.messages[messageHash].error = error;
+    this.messageItems[messageHash].error = error;
   }
 }

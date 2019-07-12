@@ -5,22 +5,22 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
 import {InvalidMessage, SignedMessageNotFound} from '../../../core/utils/errors';
 import IPendingMessagesStore from '../../../core/services/messages/IPendingMessagesStore';
-import PendingMessage from '../../../core/models/messages/PendingMessage';
+import MessageItem from '../../../core/models/messages/MessageItem';
 
 export class PendingMessagesSQLStore implements IPendingMessagesStore {
   constructor(public knex: Knex) {
   }
 
-  async add(messageHash: string, pendingMessage: PendingMessage) {
-    ensureNotNull(pendingMessage.message, SignedMessageNotFound, messageHash);
+  async add(messageHash: string, messageItem: MessageItem) {
+    ensureNotNull(messageItem.message, SignedMessageNotFound, messageHash);
     return this.knex
       .insert({
         messageHash,
-        transactionHash: pendingMessage.transactionHash,
-        walletAddress: pendingMessage.walletAddress,
+        transactionHash: messageItem.transactionHash,
+        walletAddress: messageItem.walletAddress,
         createdAt: this.knex.fn.now(),
-        state: pendingMessage.state,
-        message: stringifySignedMessageFields(pendingMessage.message)
+        state: messageItem.state,
+        message: stringifySignedMessageFields(messageItem.message)
       })
       .into('messages');
   }
@@ -34,11 +34,11 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
       message.message = bignumberifySignedMessageFields(message.message);
     }
     const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
-    const pendingMessage: PendingMessage = message && {
+    const messageItem: MessageItem = message && {
       ...message,
       collectedSignatureKeyPairs: signatureKeyPairs
     };
-    return pendingMessage;
+    return messageItem;
   }
 
   private getMessageEntry(messageHash: string) {
@@ -56,14 +56,14 @@ export class PendingMessagesSQLStore implements IPendingMessagesStore {
   }
 
   async remove(messageHash: string) {
-    const pendingMessage: PendingMessage = await this.get(messageHash);
+    const messageItem: MessageItem = await this.get(messageHash);
     await this.knex('signature_key_pairs')
       .delete()
       .where('messageHash', messageHash);
     await this.knex('messages')
       .delete()
       .where('messageHash', messageHash);
-    return pendingMessage;
+    return messageItem;
   }
 
   async getStatus(messageHash: string, wallet: Wallet) {
