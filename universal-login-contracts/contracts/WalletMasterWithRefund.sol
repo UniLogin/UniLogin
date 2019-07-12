@@ -21,6 +21,7 @@ contract WalletMasterWithRefund is WalletMaster {
         uint gasPrice) external onlyInitializing()
     {
         this.initializeWithENS(_key, _hashLabel, _name, _node, ens, registrar, resolver);
+        /* solium-disable security/no-tx-origin*/
         refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
     }
 }

@@ -2,8 +2,8 @@ import {ContractFactory, Wallet, utils} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
-import {Abi, defaultDeployOptions, ensureNotNull, ensure, findTokenWithRequiredBalance, computeContractAddress, DeployArgs} from '@universal-login/commons';
-import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken} from '../../core/utils/errors';
+import {Abi, defaultDeployOptions, ensureNotNull, ensure, findTokenWithRequiredBalance, computeContractAddress, DeployArgs, getInitializeSigner} from '@universal-login/commons';
+import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from '../../core/utils/errors';
 import {encodeInitializeWithENSData, encodeInitializeWithRefundData} from '@universal-login/contracts';
 import {Config} from '../../config/relayer';
 import {WalletDeployer} from '../ethereum/WalletDeployer';
@@ -44,6 +44,7 @@ class WalletService {
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
     const args = [publicKey, ...ensArgs as string[], gasPrice];
     const initWithENS = encodeInitializeWithRefundData(args);
+    ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     return this.walletDeployer.deploy({publicKey, signature, intializeData: initWithENS}, {gasPrice: utils.bigNumberify(gasPrice)});
   }
 }

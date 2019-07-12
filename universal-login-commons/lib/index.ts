@@ -33,7 +33,7 @@ export {getEnv} from './core/utils/getEnv';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {copy} from './react/copy';
-export {calculateInitializeWithENSSignature, calculateInitializeSignature} from './core/utils/calculateSignature';
+export {calculateInitializeWithENSSignature, calculateInitializeSignature, getInitializeSigner} from './core/utils/calculateSignature';
 export {CancelAuthorisationRequest} from './core/models/authorisation';
 export {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from './core/utils/authorisation';
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';

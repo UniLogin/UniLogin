@@ -3,9 +3,9 @@ import {TransactionOverrides} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 
 interface DeployFactoryArgs {
-  publicKey: string, 
-  intializeData: string, 
-  signature: string
+  publicKey: string;
+  intializeData: string;
+  signature: string;
 }
 
 export class WalletDeployer {

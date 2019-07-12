@@ -13,3 +13,9 @@ export const calculateInitializeSignature = (initializeData: string, privateKey:
   const dataHash = utils.solidityKeccak256(['bytes'], [initializeData]);
   return sign(dataHash, privateKey);
 };
+
+export const getInitializeSigner = (initializeData: string, signature: string) => {
+  const dataHash = utils.solidityKeccak256(['bytes'], [initializeData]);
+  return utils.verifyMessage(utils.arrayify(dataHash), signature);
+};
+

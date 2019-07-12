@@ -116,6 +116,23 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.body.error).to.eq(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
   });
 
+  it('Counterfactual deployment fail if invalid signature', async () => {
+    await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
+    const newKeyPair = createKeyPair();
+    const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
+    signature = await calculateInitializeSignature(initData, newKeyPair.privateKey);
+    const result = await chai.request(relayerUrl)
+      .post(`/wallet/deploy/`)
+      .send({
+        publicKey: keyPair.publicKey,
+        ensName,
+        gasPrice: TEST_GAS_PRICE,
+        signature
+      });
+    expect(result.body.type).to.eq('InvalidSignature');
+    expect(result.body.error).to.eq(`Error: Invalid signature `);
+  });
+
   afterEach(async () => {
     await relayer.stop();
   });
