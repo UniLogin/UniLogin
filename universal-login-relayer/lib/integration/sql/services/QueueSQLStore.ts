@@ -1,8 +1,8 @@
 import Knex from 'knex';
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IMessageQueueStore} from '../../../core/services/messages/IMessageQueueStore';
+import {IQueueStore} from '../../../core/services/messages/IQueueStore';
 
-export default class MessageQueueStore implements IMessageQueueStore {
+export default class QueueSQLStore implements IQueueStore {
   public tableName: string;
 
   constructor(public database: Knex) {
@@ -24,7 +24,7 @@ export default class MessageQueueStore implements IMessageQueueStore {
     const next = await this.database(this.tableName)
       .first()
       .orderBy('created_at', 'asc')
-      .column({messageHash: 'hash'})
+      .column('hash')
       .select();
     return next;
   }

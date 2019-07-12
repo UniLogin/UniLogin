@@ -3,33 +3,40 @@ import {EventEmitter} from 'fbemitter';
 import {SignedMessage, ContractWhiteList} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
-import MessageQueueService from './messages/MessageQueueService';
+import QueueService from './messages/QueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import MessageValidator from './messages/MessageValidator';
-import IPendingMessagesStore from './messages/IPendingMessagesStore';
-import IMessageQueueStore from './messages/IMessageQueueStore';
+import IMessageRepository from './messages/IMessagesRepository';
+import IQueueStore from './messages/IQueueStore';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
-  private messageQueue: MessageQueueService;
+  private queueService: QueueService;
   private executor: MessageExecutor;
   private validator: MessageValidator;
 
-  constructor(private wallet: Wallet, private authorisationStore: AuthorisationStore, private hooks: EventEmitter, pendingMessagesStore: IPendingMessagesStore, messageQueueStore: IMessageQueueStore, contractWhiteList: ContractWhiteList) {
+  constructor(
+    private wallet: Wallet,
+    private authorisationStore: AuthorisationStore,
+    private hooks: EventEmitter,
+    messageRepository: IMessageRepository,
+    queueStore: IQueueStore,
+    contractWhiteList: ContractWhiteList
+  ) {
     this.validator = new MessageValidator(this.wallet, contractWhiteList);
     this.executor = new MessageExecutor(
       this.wallet,
       this.onTransactionSent.bind(this),
       this.validator
       );
-    this.messageQueue = new MessageQueueService(this.executor, messageQueueStore, pendingMessagesStore);
-    this.pendingMessages = new PendingMessages(this.wallet, pendingMessagesStore, this.messageQueue);
+    this.queueService = new QueueService(this.executor, queueStore, messageRepository);
+    this.pendingMessages = new PendingMessages(this.wallet, messageRepository, this.queueService);
   }
 
   start() {
-    this.messageQueue.start();
+    this.queueService.start();
   }
 
   async onTransactionSent(sentTransaction: providers.TransactionResponse) {
@@ -62,11 +69,11 @@ class MessageHandler {
   }
 
   stop() {
-    this.messageQueue.stop();
+    this.queueService.stop();
   }
 
   async stopLater() {
-    return this.messageQueue.stopLater();
+    return this.queueService.stopLater();
   }
 }
 
