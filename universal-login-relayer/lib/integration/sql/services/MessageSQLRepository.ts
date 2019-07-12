@@ -18,7 +18,6 @@ export class MessageSQLRepository implements IMessageRepository {
         messageHash,
         transactionHash: messageItem.transactionHash,
         walletAddress: messageItem.walletAddress,
-        createdAt: this.knex.fn.now(),
         state: messageItem.state,
         message: stringifySignedMessageFields(messageItem.message)
       })

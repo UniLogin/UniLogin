@@ -14,6 +14,7 @@ export default class QueueSQLStore implements IQueueStore {
     await this.database
       .insert({
         hash: messageHash,
+        type: 'Mesasge',
         created_at: this.database.fn.now()
       })
       .into(this.tableName);
@@ -24,7 +25,7 @@ export default class QueueSQLStore implements IQueueStore {
     const next = await this.database(this.tableName)
       .first()
       .orderBy('created_at', 'asc')
-      .column('hash')
+      .column('hash', 'type')
       .select();
     return next;
   }
