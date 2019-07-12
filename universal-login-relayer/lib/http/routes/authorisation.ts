@@ -1,5 +1,5 @@
 import {Router, Request} from 'express';
-import AuthorisationStore, {AuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
+import {AuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {CancelAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
@@ -21,7 +21,7 @@ const getPending = (authorisationService: AuthorisationService) =>
       signature: data.query.signature
     };
     const result = await authorisationService.getAuthorisationRequests(getAuthorisationRequest);
-    return responseOf(result);
+    return responseOf({response: result});
   };
 
 const denyRequest = (authorisationService: AuthorisationService) =>

@@ -9,7 +9,7 @@ export interface AuthorisationRequest {
 class AuthorisationStore {
   constructor(private database : Knex) {}
 
-  async addRequest(request: AuthorisationRequest) {
+  addRequest(request: AuthorisationRequest) {
     const {walletContractAddress, key, deviceInfo} = request;
     return this.database.insert({walletContractAddress: walletContractAddress.toLowerCase(), key: key.toLowerCase(), deviceInfo})
       .into('authorisations')
@@ -22,8 +22,8 @@ class AuthorisationStore {
       .select();
   }
 
-  async removeRequest(walletContractAddress: string, publicKey: string) {
-    await this.database('authorisations')
+  removeRequest(walletContractAddress: string, publicKey: string) {
+    return this.database('authorisations')
       .where('walletContractAddress', walletContractAddress.toLowerCase())
       .where('key', publicKey.toLocaleLowerCase())
       .del();

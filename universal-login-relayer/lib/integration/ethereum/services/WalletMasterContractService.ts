@@ -9,7 +9,6 @@ class WalletMasterContractService {
   async ensureValidSignature(walletContractAddress: string, signature: string, payloadDigest: string, recoveredAddress: string) {
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, this.provider);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
-    console.log(isCorrectAddress);
     ensure(isCorrectAddress, UnauthorisedAddress, recoveredAddress);
   }
 
