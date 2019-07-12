@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayer, createWalletContract} from '../helpers/http';
-import {signCancelAuthorisationRequest, CancelAuthorisationRequest, GetAuthorisationRequest, signGetAuthorisationRequest} from '@universal-login/commons';
+import {signCancelAuthorisationRequest, signGetAuthorisationRequest} from '@universal-login/commons';
 
 chai.use(chaiHttp);
 
