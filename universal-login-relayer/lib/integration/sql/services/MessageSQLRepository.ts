@@ -1,9 +1,9 @@
 import Knex from 'knex';
 import {Wallet, Contract} from 'ethers';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures, ensure} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
-import {InvalidMessage, SignedMessageNotFound} from '../../../core/utils/errors';
+import {InvalidMessage, MessageNotFound, InvalidTransaction} from '../../../core/utils/errors';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import MessageItem from '../../../core/models/messages/MessageItem';
 
@@ -12,13 +12,12 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   async add(messageHash: string, messageItem: MessageItem) {
-    ensureNotNull(messageItem.message, SignedMessageNotFound, messageHash);
+    ensureNotNull(messageItem.message, MessageNotFound, messageHash);
     return this.knex
       .insert({
         messageHash,
         transactionHash: messageItem.transactionHash,
         walletAddress: messageItem.walletAddress,
-        createdAt: this.knex.fn.now(),
         state: messageItem.state,
         message: stringifySignedMessageFields(messageItem.message)
       })
@@ -104,6 +103,7 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
+    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
     return this.knex('messages')
       .where('messageHash', messageHash)
       .update('transactionHash', transactionHash);
@@ -125,7 +125,7 @@ export class MessageSQLRepository implements IMessageRepository {
 
   async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
-    ensureNotNull(message, SignedMessageNotFound, messageHash);
+    ensureNotNull(message, MessageNotFound, messageHash);
     const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     return getMessageWithSignatures(message, collectedSignatureKeyPairs);
   }

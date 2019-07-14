@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, getMessageWithSignatures, SignedMessage, TEST_TRANSACTION_HASH, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, getMessageWithSignatures, SignedMessage, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
@@ -106,26 +106,11 @@ describe('INT: PendingMessages', () => {
     });
   });
 
-  describe('Confirm message', async () => {
-    it('should not confirm message with invalid transaction hash', async () => {
-      await pendingMessages.add(message);
-      const expectedTransactionHash = TEST_TRANSACTION_HASH;
-      await pendingMessages.confirmExecution(messageHash, expectedTransactionHash);
-      const {transactionHash} = await pendingMessages.getStatus(messageHash);
-      expect(transactionHash).to.be.eq(expectedTransactionHash);
-    });
-
-    it('should throw InvalidTransaction if transactionHash is not correct', async () => {
-      await pendingMessages.add(message);
-      await expect(pendingMessages.confirmExecution(messageHash, '0x1234')).to.eventually.be.rejectedWith('Invalid transaction: 0x1234');
-    });
-  });
-
   describe('Ensure correct execution', async () =>  {
     it('should throw when pending message already has transaction hash', async () => {
       await walletContract.setRequiredSignatures(1);
       await pendingMessages.add(message);
-      await pendingMessages.confirmExecution(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
+      await messageRepository.markAsSuccess(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       await expect(pendingMessages.ensureCorrectExecution(messageHash))
           .to.be.eventually.rejectedWith('Execution request already processed');
     });

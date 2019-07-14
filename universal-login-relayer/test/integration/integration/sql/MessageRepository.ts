@@ -105,6 +105,12 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     expect(transactionHash).to.be.eq(expectedTransactionHash);
   });
 
+  it('should throw error if transactionHash is invalid', async () => {
+    await messageRepository.add(messageHash, messageItem);
+    const invalidTransactionHash = '0x0';
+    await expect(messageRepository.markAsSuccess(messageHash, invalidTransactionHash)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
+  });
+
   it('should update error', async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedMessageError = 'Pending Message Store Error';
@@ -115,7 +121,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
 
   it('should throw error if signed message is missed', async () => {
     delete messageItem.message;
-    await expect(messageRepository.add(messageHash, messageItem)).to.rejectedWith(`SignedMessage not found for hash: ${messageHash}`);
+    await expect(messageRepository.add(messageHash, messageItem)).to.rejectedWith(`Message not found for hash: ${messageHash}`);
   });
 
   it('should get signatures', async () => {
