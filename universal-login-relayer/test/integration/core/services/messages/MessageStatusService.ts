@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
-import {SignedMessage, createSignedMessage, calculateMessageHash} from '@universal-login/commons';
+import {SignedMessage, createSignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH, MessageStatus} from '@universal-login/commons';
 import MessageMemoryRepository from '../../../../helpers/MessageMemoryRepository';
 import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
@@ -31,7 +31,7 @@ describe('INT: MessageStatusService', async () => {
 
   it('getStatus roundtrip', async () => {
     await messageRepository.add(messageHash, messageItem);
-    const expectedStatus = {
+    let expectedStatus: MessageStatus = {
       collectedSignatures: [] as any,
       totalCollected: 0,
       required: 1,
@@ -39,11 +39,18 @@ describe('INT: MessageStatusService', async () => {
     };
     expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
     await messageRepository.addSignature(messageHash, message.signature);
-    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(
-      {
-        ...expectedStatus,
-        collectedSignatures: [message.signature],
-        totalCollected: 1
-      });
+    expectedStatus = {
+      ...expectedStatus,
+      collectedSignatures: [message.signature],
+      totalCollected: 1
+    };
+    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
+    await messageRepository.setMessageState(messageHash, 'Queued');
+    expectedStatus.state = 'Queued';
+    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
+    await messageRepository.markAsSuccess(messageHash, TEST_TRANSACTION_HASH);
+    expectedStatus.state = 'Success';
+    expectedStatus.transactionHash = TEST_TRANSACTION_HASH;
+    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
   });
 });

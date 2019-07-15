@@ -1,4 +1,4 @@
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageState} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
 import {InvalidMessage, MessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
@@ -69,9 +69,15 @@ export default class MessageMemoryRepository implements IMessageRepository {
   async markAsSuccess(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
     this.messageItems[messageHash].transactionHash = transactionHash;
+    this.messageItems[messageHash].state = 'Success';
   }
 
   async markAsError(messageHash: string, error: string) {
     this.messageItems[messageHash].error = error;
+    this.messageItems[messageHash].state = 'Error';
+  }
+
+  async setMessageState(messageHash: string, state: MessageState) {
+    this.messageItems[messageHash].state = state;
   }
 }

@@ -1,8 +1,8 @@
 import Knex from 'knex';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures, MessageState} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
-import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
+import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import MessageItem from '../../../core/models/messages/MessageItem';
 import {ensureProperTransactionHash} from '../../../core/utils/validations';
 
@@ -17,7 +17,7 @@ export class MessageSQLRepository implements IMessageRepository {
         messageHash,
         transactionHash: messageItem.transactionHash,
         walletAddress: messageItem.walletAddress,
-        state: messageItem.state,
+        state: 'AwaitSignature',
         message: stringifySignedMessageFields(messageItem.message)
       })
       .into('messages');
@@ -39,7 +39,7 @@ export class MessageSQLRepository implements IMessageRepository {
     return messageItem;
   }
 
-  private getMessageEntry(messageHash: string) {
+  private async getMessageEntry(messageHash: string) {
     return this.knex('messages')
       .where('messageHash', messageHash)
       .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state'])
@@ -81,17 +81,25 @@ export class MessageSQLRepository implements IMessageRepository {
       .select(['key', 'signature']);
   }
 
+  async setMessageState(messageHash: string, state: MessageState) {
+    return this.knex('messages')
+      .where('messageHash', messageHash)
+      .update('state', state);
+  }
+
   async markAsSuccess(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
     return this.knex('messages')
       .where('messageHash', messageHash)
-      .update('transactionHash', transactionHash);
-  }
+      .update('transactionHash', transactionHash)
+      .update('state', 'Success');
+    }
 
-  async markAsError(messageHash: string, error: string) {
-    return this.knex('messages')
+    async markAsError(messageHash: string, error: string) {
+      return this.knex('messages')
       .where('messageHash', messageHash)
-      .update('error', error);
+      .update('error', error)
+      .update('state', 'Error');
   }
 
   async containSignature(messageHash: string, signature: string) {

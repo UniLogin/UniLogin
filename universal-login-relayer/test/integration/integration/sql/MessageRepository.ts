@@ -80,12 +80,21 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     expect(signatures).to.contains(message2.signature);
   });
 
-  it('should update transaction hash', async () => {
+  it('should mark message item as success', async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedTransactionHash = TEST_TRANSACTION_HASH;
     await messageRepository.markAsSuccess(messageHash, expectedTransactionHash);
-    const {transactionHash} = await messageRepository.get(messageHash);
+    const {transactionHash, state} = await messageRepository.get(messageHash);
     expect(transactionHash).to.be.eq(expectedTransactionHash);
+    expect(state).to.be.eq('Success');
+  });
+
+  it('should set message state', async () => {
+    await messageRepository.add(messageHash, messageItem);
+    const expectedState = 'Queued';
+    await messageRepository.setMessageState(messageHash, expectedState);
+    const {state} = await messageRepository.get(messageHash);
+    expect(state).to.be.eq(expectedState);
   });
 
   it('should throw error if transactionHash is invalid', async () => {
@@ -94,12 +103,13 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     await expect(messageRepository.markAsSuccess(messageHash, invalidTransactionHash)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
   });
 
-  it('should update error', async () => {
+  it('should mark message item as error', async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedMessageError = 'Pending Message Store Error';
     await messageRepository.markAsError(messageHash, expectedMessageError);
-    const {error} = await messageRepository.get(messageHash);
+    const {error, state} = await messageRepository.get(messageHash);
     expect(error).to.be.eq(expectedMessageError);
+    expect(state).to.be.eq('Error');
   });
 
   it('should throw error if signed message is missed', async () => {
