@@ -40,16 +40,16 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
     minimalAmount: utils.parseEther('0.05').toString()
    }];
   return {
-    port: '3311',
     jsonRpcUrl,
+    port: '3311',
     privateKey: wallet.privateKey,
-    walletMasterAddress,
     chainSpec: {
       name: 'development',
       ensAddress,
       chainId: 0
     },
     ensRegistrars,
+    walletMasterAddress,
     contractWhiteList,
     factoryAddress,
     supportedTokens,
