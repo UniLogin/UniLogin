@@ -3,3 +3,8 @@ export interface CancelAuthorisationRequest {
   publicKey: string;
   signature: string;
 }
+
+export interface GetAuthorisationRequest {
+  walletContractAddress: string;
+  signature: string;
+}

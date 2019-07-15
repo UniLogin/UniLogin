@@ -1,6 +1,6 @@
-import {Notification, CancelAuthorisationRequest} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {Notification} from '@universal-login/commons';
 import WalletService from '../../integration/storage/WalletService';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {transactionDetails} from '../../config/TransactionDetails';
 
 export default class NotificationsService {
@@ -10,10 +10,8 @@ export default class NotificationsService {
   }
 
   subscribe (callback: (args: Notification[]) => void) {
-    const contractAddress: string = this.walletService.userWallet!.contractAddress;
-    const unsubscribe = this.sdk.subscribeAuthorisations(
-      contractAddress,
-      callback);
+    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    const unsubscribe = this.sdk.subscribeAuthorisations(contractAddress, privateKey, callback);
     return unsubscribe;
   }
 
@@ -24,12 +22,7 @@ export default class NotificationsService {
   }
 
   async reject (publicKey: string) {
-    const {privateKey} =  this.walletService.userWallet!;
-    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
-      walletContractAddress: this.walletService.userWallet!.contractAddress,
-      publicKey,
-      signature: ''
-    };
-    await this.sdk.denyRequest(cancelAuthorisationRequest, privateKey);
+    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    await this.sdk.denyRequest(contractAddress, publicKey, privateKey);
   }
 }

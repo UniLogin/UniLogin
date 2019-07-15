@@ -14,8 +14,8 @@ class RequestsBadge extends Component {
   }
 
   componentDidMount() {
-    const {address} = this.walletContractService.walletContract;
-    this.unsubscribe = this.sdk.subscribeAuthorisations(address, this.onAuthorisationChanged.bind(this));
+    const {address, privateKey} = this.walletContractService.walletContract;
+    this.unsubscribe = this.sdk.subscribeAuthorisations(address, privateKey, this.onAuthorisationChanged.bind(this));
   }
 
   componentWillUnmount() {

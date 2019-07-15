@@ -1,5 +1,5 @@
 import {http, HttpFunction} from './utils/http';
-import { CancelAuthorisationRequest } from '@universal-login/commons';
+import { CancelAuthorisationRequest, GetAuthorisationRequest } from '@universal-login/commons';
 
 export class RelayerApi {
   private http: HttpFunction;
@@ -49,8 +49,9 @@ export class RelayerApi {
     });
   }
 
-  async getPendingAuthorisations(walletContractAddress: string) {
-    return this.http('GET', `/authorisation/${walletContractAddress}`);
+  async getPendingAuthorisations(getAuthorisationRequest: GetAuthorisationRequest) {
+    const {walletContractAddress, signature} = getAuthorisationRequest;
+    return this.http('GET', `/authorisation/${walletContractAddress}?signature=${signature}`);
   }
 
   async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {

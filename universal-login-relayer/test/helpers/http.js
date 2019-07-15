@@ -12,9 +12,9 @@ export const startRelayer = async (port = '33111') => {
   const [deployer] = getWallets(provider);
   const wallet = Wallet.createRandom();
   const otherWallet = Wallet.createRandom();
-  const {relayer, factoryContract, walletMaster, mockToken} = await RelayerUnderTest.createPreconfigured(deployer, port);
+  const {relayer, factoryContract, walletMaster, mockToken, ensAddress} = await RelayerUnderTest.createPreconfigured(deployer, port);
   await relayer.start();
-  return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletMaster, mockToken};
+  return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletMaster, mockToken, ensAddress};
 };
 
 export const createWalletContract = async (provider, relayerUrlOrServer, publicKey, ensName = 'marek.mylogin.eth') => {

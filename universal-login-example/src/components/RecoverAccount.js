@@ -32,7 +32,7 @@ class RecoverAccount extends Component {
     const walletContractAddress = walletContractService.walletContract.address;
     const {address} = new Wallet(walletContractService.privateKey);
     const {sdk} = walletContractService;
-    await sdk.denyRequest(walletContractAddress, address);
+    await sdk.denyRequest(walletContractAddress, walletContractService.privateKey, address);
   }
 
   async onRecoverClick() {

@@ -4,9 +4,9 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/Proxy';
-import basicSDK, {transferMessage} from './fixtures/basicSDK';
-import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY} from '@universal-login/commons';
-import UniversalLoginSDK from '../lib/sdk';
+import basicSDK, {transferMessage} from '../fixtures/basicSDK';
+import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
+import UniversalLoginSDK from '../../lib/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -185,13 +185,25 @@ describe('SDK - integration', async () => {
 
       describe('Authorisation', async () => {
         it('no pending authorisations', async () => {
-          expect(await sdk.relayerObserver.fetchPendingAuthorisations(contractAddress)).to.deep.eq([]);
+          const getAuthorisationRequest = {
+            walletContractAddress: contractAddress.toLowerCase(),
+            signature: ''
+          };
+          signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
+
+          expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest)).to.deep.eq([]);
         });
 
         it('should return pending authorisations', async () => {
-          const privateKey = await sdk.connect(contractAddress);
-          const wallet = new Wallet(privateKey);
-          const response = await sdk.relayerObserver.fetchPendingAuthorisations(contractAddress);
+          const devicePrivateKey = await sdk.connect(contractAddress);
+          const wallet = new Wallet(devicePrivateKey);
+          const getAuthorisationRequest = {
+            walletContractAddress: contractAddress.toLowerCase(),
+            signature: ''
+          };
+          signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
+
+          const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest);
           expect(response[response.length - 1]).to.deep.include({key: wallet.address.toLowerCase()});
         });
 
@@ -201,13 +213,9 @@ describe('SDK - integration', async () => {
 
         it('should return public key when deny request', async () => {
           await sdk.connect(contractAddress);
-          const cancelAuthorisationRequest = {
-            walletContractAddress: contractAddress,
-            publicKey: contractAddress,
-            signature: ''
-          };
-          const response = await sdk.denyRequest(cancelAuthorisationRequest, privateKey);
-          expect(response).to.eq(contractAddress);
+          const {publicKey} = createKeyPair();
+          const response = await sdk.denyRequest(contractAddress, publicKey, privateKey);
+          expect(response).to.eq(publicKey);
         });
       });
     });
