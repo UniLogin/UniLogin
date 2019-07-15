@@ -7,6 +7,7 @@ import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from
 import {encodeInitializeWithENSData, encodeInitializeWithRefundData} from '@universal-login/contracts';
 import {Config} from '../../config/relayer';
 import {WalletDeployer} from '../ethereum/WalletDeployer';
+import {getRequiredSignatures} from '../../core/utils/utils';
 
 class WalletService {
   private bytecode: string;

@@ -10,10 +10,12 @@ import {getKeyFromHashAndSignature, createMessageItem} from '../../../../../lib/
 import {getKnex} from '../../../../../lib/core/utils/knexUtils';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
+import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
   let messageRepository: MessageSQLRepository;
+  let signaturesService: SignaturesService;
   let statusService: MessageStatusService;
   let message : SignedMessage;
   let wallet: Wallet;
@@ -27,7 +29,8 @@ describe('INT: PendingMessages', () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    statusService = new MessageStatusService(messageRepository, wallet);
+    signaturesService = new SignaturesService(wallet);
+    statusService = new MessageStatusService(messageRepository, signaturesService);
     pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any, statusService);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);

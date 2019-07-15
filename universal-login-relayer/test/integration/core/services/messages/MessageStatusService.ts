@@ -6,10 +6,12 @@ import {MessageStatusService} from '../../../../../lib/core/services/messages/Me
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageItem from '../../../../../lib/core/models/messages/MessageItem';
 import {createMessageItem} from '../../../../../lib/core/utils/utils';
+import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
 
 describe('INT: MessageStatusService', async () => {
   let messageRepository: MessageMemoryRepository;
   let messageStatusService: MessageStatusService;
+  let signaturesService: SignaturesService;
   let message: SignedMessage;
   let messageItem: MessageItem;
   let messageHash: string;
@@ -18,7 +20,8 @@ describe('INT: MessageStatusService', async () => {
     const {wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken);
 
     messageRepository = new MessageMemoryRepository();
-    messageStatusService = new MessageStatusService(messageRepository, wallet);
+    signaturesService = new SignaturesService(wallet);
+    messageStatusService = new MessageStatusService(messageRepository, signaturesService);
 
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 

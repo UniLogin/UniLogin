@@ -1,15 +1,14 @@
-import {Wallet} from 'ethers';
 import {MessageStatus} from '@universal-login/commons';
 import IMessageRepository from './IMessagesRepository';
-import {getRequiredSignatures} from '../../utils/utils';
+import {SignaturesService} from '../../../integration/ethereum/SignaturesService';
 
 export class MessageStatusService {
-  constructor(private messageRepository: IMessageRepository, private wallet: Wallet) {
+  constructor(private messageRepository: IMessageRepository, private signaturesService: SignaturesService) {
   }
 
   async getStatus(messageHash: string) {
     const message = await this.messageRepository.get(messageHash);
-    const required = await getRequiredSignatures(message.walletAddress, this.wallet);
+    const required = await this.signaturesService.getRequiredSignatures(message.walletAddress);
     const status: MessageStatus =  {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
