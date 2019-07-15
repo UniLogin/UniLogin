@@ -12,7 +12,6 @@ abstract class ObserverBase extends ObserverRunner {
     const emitter = this.emitters[filterString] || new EventEmitter();
     this.emitters[filterString] = emitter;
     const token = emitter.addListener(eventType, callback);
-    // return token;
     return this.unsubscribe(token, filterString);
   }
 

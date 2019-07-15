@@ -57,7 +57,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     });
   });
 
-  it('get non-existing pending authorisations', async () => {
+  it('get empty pending authorisations', async () => {
     const {result, response} = await getAuthorisation(relayer, contract, wallet);
     expect(result.status).to.eq(200);
     expect(result.body.response).to.deep.eq([]);

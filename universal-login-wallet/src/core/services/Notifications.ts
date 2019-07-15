@@ -10,15 +10,8 @@ export default class NotificationsService {
   }
 
   subscribe (callback: (args: Notification[]) => void) {
-    const getAuthorisationRequest: GetAuthorisationRequest = {
-      walletContractAddress: this.walletService.userWallet!.contractAddress,
-      signature: ''
-    };
-    signGetAuthorisationRequest(getAuthorisationRequest, this.walletService.userWallet!.privateKey);
-
-    const unsubscribe = this.sdk.subscribeAuthorisations(
-      getAuthorisationRequest,
-      callback);
+    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    const unsubscribe = this.sdk.subscribeAuthorisations(contractAddress, privateKey, callback);
     return unsubscribe;
   }
 
@@ -29,12 +22,7 @@ export default class NotificationsService {
   }
 
   async reject (publicKey: string) {
-    const {privateKey} =  this.walletService.userWallet!;
-    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
-      walletContractAddress: this.walletService.userWallet!.contractAddress,
-      publicKey,
-      signature: ''
-    };
-    await this.sdk.denyRequest(cancelAuthorisationRequest, privateKey);
+    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    await this.sdk.denyRequest(contractAddress, publicKey, privateKey);
   }
 }

@@ -51,10 +51,7 @@ export class RelayerApi {
 
   async getPendingAuthorisations(getAuthorisationRequest: GetAuthorisationRequest) {
     const {walletContractAddress, signature} = getAuthorisationRequest;
-    return this.http('GET', `/authorisation/${walletContractAddress}?signature=${signature}`)
-      .catch((e) => {
-        return {};
-      });
+    return this.http('GET', `/authorisation/${walletContractAddress}?signature=${signature}`);
   }
 
   async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {

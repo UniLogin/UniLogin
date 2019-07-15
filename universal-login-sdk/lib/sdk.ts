@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest} from '@universal-login/commons';
+import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest} from '@universal-login/commons';
 import RelayerObserver from './observers/RelayerObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -203,10 +203,15 @@ class UniversalLoginSDK {
     return privateKey;
   }
 
-  async denyRequest(cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string) {
+  async denyRequest(walletContractAddress: string, publicKey: string, privateKey: string) {
+    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
+      walletContractAddress,
+      publicKey,
+      signature: ''
+    };
     signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
     await this.relayerApi.denyConnection(cancelAuthorisationRequest);
-    return cancelAuthorisationRequest.publicKey;
+    return publicKey;
   }
 
   subscribe(eventType: string, filter: any, callback: Function) {
@@ -216,8 +221,12 @@ class UniversalLoginSDK {
     throw `Unknown event type: ${eventType}`;
   }
 
-  subscribeAuthorisations(getAuthorisationRequest: GetAuthorisationRequest, callback: Function) {
-
+  subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
+    const getAuthorisationRequest: GetAuthorisationRequest = {
+      walletContractAddress,
+      signature: ''
+    };
+    signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
     return this.relayerObserver.subscribe(getAuthorisationRequest, callback);
   }
 

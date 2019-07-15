@@ -20,7 +20,7 @@ class ApproveConnection extends Component {
 
     const walletContractAddress = walletContractService.walletContract.address;
     const {address} = new Wallet(walletContractService.privateKey);
-    await sdk.denyRequest(walletContractAddress, address);
+    await sdk.denyRequest(walletContractAddress, walletContractService.privateKey, address);
   }
 
   async onCancelClick() {

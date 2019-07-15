@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/Proxy';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, signGetAuthorisationRequest} from '@universal-login/commons';
+import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/sdk';
 
 chai.use(solidity);
@@ -213,13 +213,9 @@ describe('SDK - integration', async () => {
 
         it('should return public key when deny request', async () => {
           await sdk.connect(contractAddress);
-          const cancelAuthorisationRequest = {
-            walletContractAddress: contractAddress,
-            publicKey: contractAddress,
-            signature: ''
-          };
-          const response = await sdk.denyRequest(cancelAuthorisationRequest, privateKey);
-          expect(response).to.eq(contractAddress);
+          const {publicKey} = createKeyPair();
+          const response = await sdk.denyRequest(contractAddress, publicKey, privateKey);
+          expect(response).to.eq(publicKey);
         });
       });
     });

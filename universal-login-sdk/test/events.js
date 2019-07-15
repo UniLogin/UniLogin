@@ -29,7 +29,7 @@ describe('SDK - events', async () => {
 
     sdk.start();
 
-    const unsubscribe = await sdk.subscribeAuthorisations(contractAddress, connectionCallback);
+    const unsubscribe = await sdk.subscribeAuthorisations(contractAddress, privateKey, connectionCallback);
     await sdk.subscribe('KeyAdded', {contractAddress, key: wallet.address}, keyCallback);
 
     await sdk.connect(contractAddress);

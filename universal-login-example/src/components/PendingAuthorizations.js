@@ -19,11 +19,11 @@ class PendingAuthorizations extends Component {
   }
 
   componentDidMount() {
-    const {address} = this.walletContractService.walletContract;
+    const {address, privateKey} = this.walletContractService.walletContract;
     this.setState({
       authorisations: this.sdk.relayerObserver.lastAuthorisations
     });
-    this.unsubscribe = this.sdk.subscribeAuthorisations(address, this.onAuthorisationChanged.bind(this));
+    this.unsubscribe = this.sdk.subscribeAuthorisations(address, privateKey,this.onAuthorisationChanged.bind(this));
   }
 
   componentWillUnmount() {
@@ -57,7 +57,7 @@ class PendingAuthorizations extends Component {
     const {walletContractService} = this.props.services;
     const walletContractAddress = walletContractService.walletContract.address;
     const {sdk} = walletContractService;
-    await sdk.denyRequest(walletContractAddress, publicKey);
+    await sdk.denyRequest(walletContractAddress, walletContractService.privateKey, publicKey);
   }
 
   render() {
