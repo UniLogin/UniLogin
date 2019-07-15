@@ -1,4 +1,4 @@
-import {Notification, CancelAuthorisationRequest, GetAuthorisationRequest, signGetAuthorisationRequest} from '@universal-login/commons';
+import {Notification} from '@universal-login/commons';
 import WalletService from '../../integration/storage/WalletService';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {transactionDetails} from '../../config/TransactionDetails';
