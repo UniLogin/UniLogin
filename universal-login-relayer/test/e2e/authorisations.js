@@ -43,6 +43,12 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     ({provider, wallet, otherWallet, relayer} = await startRelayer());
     contract = await createWalletContract(provider, relayer.server, wallet.address);
   });
+  
+  it('get empty pending authorisations', async () => {
+    const {result, response} = await getAuthorisation(relayer, contract, wallet);
+    expect(result.status).to.eq(200);
+    expect(result.body.response).to.deep.eq([]);
+  });
 
   it('create and get authorisation', async () => {
     await postAuthorisationRequest(relayer, contract, wallet);
@@ -56,12 +62,6 @@ describe('E2E: Relayer - Authorisation routes', async () => {
       city: 'unknown',
       ipAddress: '::ffff:127.0.0.1'
     });
-  });
-
-  it('get empty pending authorisations', async () => {
-    const {result, response} = await getAuthorisation(relayer, contract, wallet);
-    expect(result.status).to.eq(200);
-    expect(result.body.response).to.deep.eq([]);
   });
 
   it('deny request', async () => {
