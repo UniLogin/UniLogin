@@ -14,7 +14,7 @@ class ENSService {
   async start() {
     for (let count = 0; count < this.ensRegistrars.length; count++) {
       const domain = this.ensRegistrars[count];
-      this.domainsInfo[`${domain}`] = {};
+      this.domainsInfo[`${domain}`] = {} as ENSDomainInfo;
       this.domainsInfo[`${domain}`].resolverAddress = await this.ens.resolver(utils.namehash(`${domain}`));
       this.domainsInfo[`${domain}`].registrarAddress = await this.ens.owner(utils.namehash(`${domain}`));
     }

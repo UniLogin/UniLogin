@@ -1,4 +1,4 @@
 export interface ENSDomainInfo {
-  resolverAddress? : string;
-  registrarAddress? : string;
+  resolverAddress : string;
+  registrarAddress : string;
 }
