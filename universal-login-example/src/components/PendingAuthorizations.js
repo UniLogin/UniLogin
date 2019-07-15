@@ -14,16 +14,17 @@ class PendingAuthorizations extends Component {
     this.walletContractService = this.props.services.walletContractService;
     this.sdk = this.props.services.sdk;
     this.state = {
-      authorisations: this.sdk.relayerObserver.lastAuthorisations
+      authorisations: this.sdk.authorisationsObserver.lastAuthorisations
     };
   }
 
   componentDidMount() {
     const {address, privateKey} = this.walletContractService.walletContract;
+    this.unsubscribe = this.sdk.subscribeAuthorisations(address, privateKey, this.onAuthorisationChanged.bind(this));
+    
     this.setState({
-      authorisations: this.sdk.relayerObserver.lastAuthorisations
+      authorisations: this.sdk.authorisationsObserver.lastAuthorisations
     });
-    this.unsubscribe = this.sdk.subscribeAuthorisations(address, privateKey,this.onAuthorisationChanged.bind(this));
   }
 
   componentWillUnmount() {
@@ -31,13 +32,7 @@ class PendingAuthorizations extends Component {
   }
 
   onAuthorisationChanged(authorisations) {
-    const {emitter} = this.props.services;
-
     this.setState({authorisations});
-
-    if (authorisations.length === 0) {
-      emitter.emit('setView', 'MainScreen');
-    }
   }
 
   async onAcceptClick(publicKey) {
@@ -62,7 +57,7 @@ class PendingAuthorizations extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{color: 'yellow'}}>
         <HeaderView>
           <Profile
             type="walletContractHeader"
