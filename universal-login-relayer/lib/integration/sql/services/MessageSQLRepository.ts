@@ -1,11 +1,10 @@
 import Knex from 'knex';
-import {Wallet, Contract} from 'ethers';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageStatus, getMessageWithSignatures, ensure} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../../core/utils/utils';
-import {InvalidMessage, MessageNotFound, InvalidTransaction} from '../../../core/utils/errors';
+import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import MessageItem from '../../../core/models/messages/MessageItem';
+import {ensureProperTransactionHash} from '../../../core/utils/validations';
 
 export class MessageSQLRepository implements IMessageRepository {
   constructor(public knex: Knex) {
@@ -65,26 +64,6 @@ export class MessageSQLRepository implements IMessageRepository {
     return messageItem;
   }
 
-  async getStatus(messageHash: string, wallet: Wallet) {
-    const message = await this.get(messageHash);
-    const walletContract = new Contract(message.walletAddress, WalletContract.interface, wallet);
-    const required = await walletContract.requiredSignatures();
-    const status: MessageStatus =  {
-      collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
-      totalCollected: message.collectedSignatureKeyPairs.length,
-      required: required.toNumber(),
-      state: message.state
-    };
-    const {error, transactionHash} = message;
-    if (error) {
-      status.error = error;
-    }
-    if (transactionHash) {
-      status.transactionHash = transactionHash;
-    }
-    return status;
-  }
-
   async addSignature(messageHash: string, signature: string) {
     const key = getKeyFromHashAndSignature(messageHash, signature);
     await this.knex
@@ -103,7 +82,7 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   async markAsSuccess(messageHash: string, transactionHash: string) {
-    ensure(transactionHash.length === 66, InvalidTransaction, transactionHash);
+    ensureProperTransactionHash(transactionHash);
     return this.knex('messages')
       .where('messageHash', messageHash)
       .update('transactionHash', transactionHash);

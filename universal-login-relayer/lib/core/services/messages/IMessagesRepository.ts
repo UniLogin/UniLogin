@@ -1,5 +1,4 @@
-import {Wallet} from 'ethers';
-import {CollectedSignatureKeyPair, MessageStatus, SignedMessage} from '@universal-login/commons';
+import {CollectedSignatureKeyPair, SignedMessage} from '@universal-login/commons';
 import MessageItem from '../../models/messages/MessageItem';
 
 export default interface IMessageRepository {
@@ -7,7 +6,6 @@ export default interface IMessageRepository {
   get: (messageHash: string) => Promise<MessageItem>;
   isPresent: (messageHash: string) => Promise<boolean>;
   remove: (messageHash: string) => Promise<MessageItem>;
-  getStatus: (messageHash: string, wallet: Wallet) => Promise<MessageStatus>;
   addSignature: (messageHash: string, signature: string) => Promise<void>;
   getMessage: (messageHash: string) => Promise<SignedMessage>;
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;

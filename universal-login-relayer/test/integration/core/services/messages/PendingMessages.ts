@@ -2,17 +2,21 @@ import {expect} from 'chai';
 import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, createSignedMessage, getMessageWithSignatures, SignedMessage, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
 import {getKeyFromHashAndSignature, createMessageItem} from '../../../../../lib/core/utils/utils';
 import {getKnex} from '../../../../../lib/core/utils/knexUtils';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
+import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
+import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;
   let messageRepository: MessageSQLRepository;
+  let signaturesService: SignaturesService;
+  let statusService: MessageStatusService;
   let message : SignedMessage;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -25,7 +29,9 @@ describe('INT: PendingMessages', () => {
     ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any);
+    signaturesService = new SignaturesService(wallet);
+    statusService = new MessageStatusService(messageRepository, signaturesService);
+    pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any, statusService);
     message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
     await walletContract.setRequiredSignatures(2);
@@ -48,10 +54,6 @@ describe('INT: PendingMessages', () => {
     await expect(pendingMessages.getStatus(messageHash)).to.eventually.rejectedWith(`Could not find message with hash: ${messageHash}`);
   });
 
-  it('get should throw error if message doesn`t exist', async () => {
-    await expect(pendingMessages.get(messageHash)).to.eventually.rejectedWith(`Could not find message with hash: ${messageHash}`);
-  });
-
   it('should check if execution is ready to execute and execution callback', async () => {
     const signedMessage = await createSignedMessage(message, actionKey);
     await pendingMessages.add(message);
@@ -61,19 +63,12 @@ describe('INT: PendingMessages', () => {
     expect(spy.calledOnce).to.be.true;
   });
 
-  it('should return message with signature', async () => {
-    await pendingMessages.add(message);
-    const collectedSignatureKeyPairs = await messageRepository.getCollectedSignatureKeyPairs(messageHash);
-    const messageWithSignaures = await getMessageWithSignatures(message, collectedSignatureKeyPairs);
-    expect(messageWithSignaures).to.deep.eq(message);
-  });
-
   it('should get added signed transaction', async () => {
     const messageItem = createMessageItem(message);
     await pendingMessages.add(message);
     const key = getKeyFromHashAndSignature(messageHash, message.signature);
     await messageItem.collectedSignatureKeyPairs.push({signature: message.signature, key});
-    expect((await pendingMessages.get(messageHash)).toString()).to.eq(messageItem.toString());
+    expect((await messageRepository.get(messageHash)).toString()).to.eq(messageItem.toString());
   });
 
   describe('Add', async () => {

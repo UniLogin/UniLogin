@@ -23,6 +23,8 @@ import IMessageRepository from '../../core/services/messages/IMessagesRepository
 import {WalletDeployer} from '../../integration/ethereum/WalletDeployer';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
+import {MessageStatusService} from '../../core/services/messages/MessageStatusService';
+import {SignaturesService} from '../../integration/ethereum/SignaturesService';
 
 const defaultPort = '3311';
 
@@ -45,6 +47,8 @@ class Relayer {
   private queueStore: IQueueStore = {} as IQueueStore;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private messageRepository: IMessageRepository = {} as IMessageRepository;
+  private signaturesService: SignaturesService = {} as SignaturesService;
+  private statusService: MessageStatusService = {} as MessageStatusService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
@@ -80,7 +84,9 @@ class Relayer {
     this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer);
     this.messageRepository = new MessageSQLRepository(this.database);
     this.queueStore = new QueueSQLStore(this.database);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.messageRepository, this.queueStore, this.config.contractWhiteList);
+    this.signaturesService = new SignaturesService(this.wallet);
+    this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.messageRepository, this.queueStore, this.config.contractWhiteList, this.statusService);
     const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));

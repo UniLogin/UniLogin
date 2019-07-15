@@ -1,4 +1,4 @@
-import {utils, Contract, Wallet, providers} from 'ethers';
+import {utils, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {SignedMessage} from '@universal-login/commons';
@@ -18,12 +18,6 @@ export const getKeyFromData = (data : string) => {
   const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
   const [address] = (codec.decode(['bytes32', 'uint256'], data.replace(addKeySighash.slice(2), '')));
   return utils.hexlify(utils.stripZeros(address));
-};
-
-export const getRequiredSignatures = async (walletAddress: string, wallet: Wallet) => {
-    const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
-    const requiredSignatures = await walletContract.requiredSignatures();
-    return requiredSignatures;
 };
 
 export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>

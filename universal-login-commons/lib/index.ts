@@ -5,7 +5,7 @@ export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './core/models/relayer';
 export {createKeyPair, KeyPair} from './core/models/keyPair';
 export {TransactionOverrides} from './core/models/transactions';
-export {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, testJsonRpcUrl, TEST_GAS_PRICE} from './core/constants/test';
+export {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE} from './core/constants/test';
 export {DEV_DEFAULT_PRIVATE_KEY, devJsonRpcUrl} from './core/constants/dev';
 export {KEY_CODE_ESCAPE, DEFAULT_LOCATION} from './core/constants/ui';
 export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from './core/constants/constants';
