@@ -1,7 +1,7 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest} from '@universal-login/commons';
-import RelayerObserver from './observers/RelayerObserver';
+import AuthorisationsObserver from './observers/AuthorisationsObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
 import {DeploymentObserver} from './observers/DeploymentObserver';
@@ -16,7 +16,7 @@ import {ENSService} from './services/ENSService';
 class UniversalLoginSDK {
   provider: providers.Provider;
   relayerApi: RelayerApi;
-  relayerObserver: RelayerObserver;
+  authorisationsObserver: AuthorisationsObserver;
   blockchainObserver: BlockchainObserver;
   executionFactory: ExecutionFactory;
   balanceObserver?: BalanceObserver;
@@ -38,7 +38,7 @@ class UniversalLoginSDK {
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
       : providerOrUrl;
     this.relayerApi = new RelayerApi(relayerUrl);
-    this.relayerObserver = new RelayerObserver(this.relayerApi);
+    this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi);
     this.executionFactory = new ExecutionFactory(this.relayerApi);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
@@ -227,7 +227,7 @@ class UniversalLoginSDK {
       signature: ''
     };
     signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
-    return this.relayerObserver.subscribe(getAuthorisationRequest, callback);
+    return this.authorisationsObserver.subscribe(getAuthorisationRequest, callback);
   }
 
   async start() {

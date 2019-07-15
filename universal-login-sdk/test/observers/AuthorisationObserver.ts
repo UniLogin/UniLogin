@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import Relayer from '@universal-login/relayer';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/sdk';
-import RelayerObserver from '../../lib/observers/RelayerObserver';
+import AuthorisationsObserver from '../../lib/observers/AuthorisationsObserver';
 import {waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
 
 
@@ -18,7 +18,7 @@ describe('SDK: RelayerObserver', async () => {
   let relayer: Relayer;
   let sdk: UniversalLoginSDK;
   let contractAddress: string;
-  let relayerObserver: RelayerObserver;
+  let authorisationsObserver: AuthorisationsObserver;
   let privateKey: string;
   let getAuthorisationRequest: GetAuthorisationRequest;
 
@@ -34,20 +34,20 @@ describe('SDK: RelayerObserver', async () => {
   beforeEach(async () => {
     ({sdk, relayer, contractAddress, privateKey} = await loadFixture(basicSDK));
     getAuthorisationRequest = createGetAuthorisationRequest(contractAddress, privateKey);
-    ({relayerObserver} = sdk);
-    relayerObserver.step = 50;
+    ({authorisationsObserver} = sdk);
+    authorisationsObserver.step = 50;
   });
 
   it('should not emit events if no connection requests', async () => {
     const callback = sinon.spy();
-    const unsubscribe = relayerObserver.subscribe(getAuthorisationRequest, callback);
+    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
     unsubscribe();
     expect(callback).to.have.been.calledWith([]);
   });
 
   it('should emit AuthorisationsChanged event if connected called', async () => {
     const callback = sinon.spy();
-    const unsubscribe = relayerObserver.subscribe(getAuthorisationRequest, callback);
+    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
     expect(callback).to.have.been.calledWith([]);
     await sdk.connect(contractAddress);
     await waitUntil(() => !!callback.secondCall);
@@ -60,8 +60,8 @@ describe('SDK: RelayerObserver', async () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
-    const unsubscribe1 = relayerObserver.subscribe(getAuthorisationRequest, callback1);
-    const unsubscribe2 = await relayerObserver.subscribe(getAuthorisationRequest, callback2);
+    const unsubscribe1 = authorisationsObserver.subscribe(getAuthorisationRequest, callback1);
+    const unsubscribe2 = await authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
 
     await sdk.connect(contractAddress);
     await sdk.connect(newContractAddress);

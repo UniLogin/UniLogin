@@ -191,7 +191,7 @@ describe('SDK - integration', async () => {
           };
           signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
 
-          expect(await sdk.relayerObserver.fetchPendingAuthorisations(getAuthorisationRequest)).to.deep.eq([]);
+          expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest)).to.deep.eq([]);
         });
 
         it('should return pending authorisations', async () => {
@@ -203,7 +203,7 @@ describe('SDK - integration', async () => {
           };
           signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
 
-          const response = await sdk.relayerObserver.fetchPendingAuthorisations(getAuthorisationRequest);
+          const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest);
           expect(response[response.length - 1]).to.deep.include({key: wallet.address.toLowerCase()});
         });
 

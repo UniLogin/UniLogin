@@ -4,7 +4,7 @@ import ObserverRunner from './ObserverRunner';
 import {ensure, Notification, GetAuthorisationRequest} from '@universal-login/commons';
 import {ConcurrentAuthorisation} from '../utils/errors';
 
-class RelayerObserver extends ObserverRunner {
+class AuthorisationsObserver extends ObserverRunner {
   private lastAuthorisations: Notification[] = [];
   private getAuthorisationRequest?: GetAuthorisationRequest;
   private callbacks: Function[] = [];
@@ -58,4 +58,4 @@ class RelayerObserver extends ObserverRunner {
   }
 }
 
-export default RelayerObserver;
+export default AuthorisationsObserver;
