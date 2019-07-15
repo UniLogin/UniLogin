@@ -1,14 +1,9 @@
 import {utils, Contract, providers} from 'ethers';
 import ENS from '@universal-login/contracts/build/ENS.json';
-import {parseDomain, resolveName} from '@universal-login/commons';
-
-interface DomainInfo {
-  resolverAddress? : string;
-  registrarAddress? : string;
-}
+import {parseDomain, resolveName, ENSDomainInfo} from '@universal-login/commons';
 
 class ENSService {
-  private domainsInfo : Record<string, DomainInfo>  = {};
+  private domainsInfo : Record<string, ENSDomainInfo>  = {};
 
   private ens: Contract;
 
@@ -19,9 +14,9 @@ class ENSService {
   async start() {
     for (let count = 0; count < this.ensRegistrars.length; count++) {
       const domain = this.ensRegistrars[count];
-      this.domainsInfo[`${domain}`] = {};
-      this.domainsInfo[`${domain}`].resolverAddress = await this.ens.resolver(utils.namehash(`${domain}`));
-      this.domainsInfo[`${domain}`].registrarAddress = await this.ens.owner(utils.namehash(`${domain}`));
+      const resolverAddress = await this.ens.resolver(utils.namehash(domain));
+      const registrarAddress = await this.ens.owner(utils.namehash(domain));
+      this.domainsInfo[domain] = {registrarAddress, resolverAddress};
     }
   }
 

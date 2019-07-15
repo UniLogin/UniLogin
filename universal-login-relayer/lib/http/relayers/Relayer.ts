@@ -21,6 +21,7 @@ import MessageSQLRepository from '../../integration/sql/services/MessageSQLRepos
 import AuthorisationService from '../../integration/ethereum/services/AuthorisationService';
 import IQueueStore from '../../core/services/messages/IQueueStore';
 import IMessageRepository from '../../core/services/messages/IMessagesRepository';
+import {WalletDeployer} from '../../integration/ethereum/WalletDeployer';
 
 const defaultPort = '3311';
 
@@ -44,6 +45,7 @@ class Relayer {
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
+  private walletDeployer: WalletDeployer = {} as WalletDeployer;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -70,7 +72,8 @@ class Relayer {
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationStore = new AuthorisationStore(this.database);
     this.authorisationService = new AuthorisationService(this.provider);
-    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks);
+    this.walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
+    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer);
     this.messageRepository = new MessageSQLRepository(this.database);
     this.queueStore = new QueueSQLStore(this.database);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.messageRepository, this.queueStore, this.config.contractWhiteList);

@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
+import {CancelAuthorisationRequest} from '@universal-login/commons';
 import basicSDK from './fixtures/basicSDK';
 import UniversalLoginSDK from '../lib/sdk';
-import { CancelAuthorisationRequest } from '@universal-login/commons/lib';
 
 const loadFixture = createFixtureLoader();
 

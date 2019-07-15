@@ -35,6 +35,7 @@ describe('E2E: Relayer - Config routes', async () => {
       contractWhiteList
     };
     const publicConfig = getPublicConfig(relayer.config);
+
     expect(publicConfig).to.be.deep.eq(expectedConfig);
   });
 

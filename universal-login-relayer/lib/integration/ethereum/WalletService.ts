@@ -1,25 +1,21 @@
-import {ContractFactory, Wallet, Contract, utils} from 'ethers';
+import {ContractFactory, Wallet, utils} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
-import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
-import {Abi, defaultDeployOptions, ensureNotNull, ensure, findTokenWithRequiredBalance, computeContractAddress} from '@universal-login/commons';
-import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken} from '../../core/utils/errors';
+import {Abi, defaultDeployOptions, ensureNotNull, ensure, findTokenWithRequiredBalance, computeContractAddress, DeployArgs, getInitializeSigner} from '@universal-login/commons';
+import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from '../../core/utils/errors';
 import {encodeInitializeWithENSData, encodeInitializeWithRefundData} from '@universal-login/contracts';
 import {Config} from '../../config/relayer';
+import {WalletDeployer} from '../ethereum/WalletDeployer';
 
 class WalletService {
   private bytecode: string;
   private abi: Abi;
-  private factoryContract?: Contract;
 
-  constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter) {
+  constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
-    if (this.config.factoryAddress) {
-      this.factoryContract = new Contract(this.config.factoryAddress, ProxyCounterfactualFactory.interface, this.wallet);
-    }
   }
 
   async create(key: string, ensName: string, overrideOptions = {}) {
@@ -40,15 +36,16 @@ class WalletService {
     throw new InvalidENSDomain(ensName);
   }
 
-  async deploy(key: string, ensName: string, gasPrice: string, signature: string) {
+  async deploy({publicKey, ensName, gasPrice, signature}: DeployArgs) {
     ensure(!await this.ensService.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
-    const contractAddress = computeContractAddress(this.config.factoryAddress, key, await this.factoryContract!.initCode());
+    const contractAddress = computeContractAddress(this.config.factoryAddress, publicKey, await this.walletDeployer.getInitCode());
     ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
-    const args = [key, ...ensArgs as string[], this.wallet.address, gasPrice, signature];
+    const args = [publicKey, ...ensArgs as string[], gasPrice];
     const initWithENS = encodeInitializeWithRefundData(args);
-    return this.factoryContract!.createContract(key, initWithENS, {...defaultDeployOptions, gasPrice: utils.bigNumberify(gasPrice)});
+    ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
+    return this.walletDeployer.deploy({publicKey, signature, intializeData: initWithENS}, {gasPrice: utils.bigNumberify(gasPrice)});
   }
 }
 

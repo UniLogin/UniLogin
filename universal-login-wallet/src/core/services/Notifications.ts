@@ -1,6 +1,6 @@
 import {Notification, CancelAuthorisationRequest} from '@universal-login/commons';
-import WalletService from '../../integration/storage/WalletService';
 import UniversalLoginSDK from '@universal-login/sdk';
+import WalletService from '../../integration/storage/WalletService';
 import {transactionDetails} from '../../config/TransactionDetails';
 
 export default class NotificationsService {

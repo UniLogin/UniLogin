@@ -7,3 +7,5 @@ export const TEST_MESSAGE_HASH = '0xjfasd89yhfoi3hpuhfaif3hfasoihf89ph3faoihfouh
 export const TEST_TRANSACTION_HASH = '0x9djflkdasjfijfiao73f46dbefoniasiofjiefh37ka3hdakdu378h2euh33jmvb';
 
 export const testJsonRpcUrl = 'http://localhost:8545';
+
+export const TEST_GAS_PRICE = '1';
