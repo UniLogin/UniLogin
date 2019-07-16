@@ -1,7 +1,7 @@
-.. _tutorials:
+.. _tutorial:
 
-Tutorials
-=========
+Tutorial
+========
 
 
 Quickstart
