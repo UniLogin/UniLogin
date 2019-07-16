@@ -44,15 +44,21 @@ describe('INT: MessageHandler', async () => {
     await messageHandler.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
     expect(messageEntry.error).to.be.eq('Error: Not enough gas');
+    const {state} = await messageHandler.getStatus(messageHash);
+    expect(state).to.be.eq('Error');
   });
 
   describe('Transfer', async () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = await createSignedMessage(msg, wallet.privateKey);
-      await messageHandler.handleMessage(signedMessage);
+      const {messageHash} = await messageHandler.handleMessage(signedMessage);
+      const {state} = await messageHandler.getStatus(messageHash);
+      expect(state).to.be.eq('Queued');
       await messageHandler.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
+      const {state} = await messageHandler.getStatus(messageHash);
+      expect(state).to.be.eq('Success');
     });
   });
 
