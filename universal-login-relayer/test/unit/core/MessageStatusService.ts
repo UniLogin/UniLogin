@@ -1,55 +1,69 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils} from 'ethers';
-import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH, MessageStatus} from '@universal-login/commons';
+import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
 import {MessageStatusService} from '../../../lib/core/services/messages/MessageStatusService';
 import MessageItem from '../../../lib/core/models/messages/MessageItem';
 import {createMessageItem} from '../../../lib/core/utils/utils';
-import {SignaturesService} from '../../../lib/integration/ethereum/SignaturesService';
 import getTestSignedMessage from '../../config/message';
 
 describe('UNIT: MessageStatusService', async () => {
-  let messageRepository: MessageMemoryRepository;
-  let messageStatusService: MessageStatusService;
-  let signaturesService: SignaturesService;
+  const signaturesService : any = {
+    getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1))
+  };
+  let messageRepository : MessageMemoryRepository;
+  let messageStatusService : MessageStatusService;
   let message: SignedMessage;
   let messageItem: MessageItem;
   let messageHash: string;
 
-  before(async () => {
+  beforeEach(async () => {
     messageRepository = new MessageMemoryRepository();
-    signaturesService = {
-      getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1))
-    } as any;
     messageStatusService = new MessageStatusService(messageRepository, signaturesService);
     message = await getTestSignedMessage();
     messageItem = createMessageItem(message);
     messageHash = calculateMessageHash(message);
+    await messageRepository.add(messageHash, messageItem);
   });
 
-  it('getStatus roundtrip', async () => {
-    await messageRepository.add(messageHash, messageItem);
-    let expectedStatus: MessageStatus = {
-      collectedSignatures: [] as any,
+  it('getStatus for newly created Message', async () => {
+    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq({
+      collectedSignatures: [],
       totalCollected: 0,
       required: 1,
       state: 'AwaitSignature'
-    };
-    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
+    });
+  });
+
+  it('getStatus after adding a signature', async () => {
     await messageRepository.addSignature(messageHash, message.signature);
-    expectedStatus = {
-      ...expectedStatus,
+    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq({
       collectedSignatures: [message.signature],
-      totalCollected: 1
-    };
-    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
+      totalCollected: 1,
+      required: 1,
+      state: 'AwaitSignature'
+    });
+  });
+
+  it('getStatus after being queued', async () => {
     await messageRepository.setMessageState(messageHash, 'Queued');
-    expectedStatus.state = 'Queued';
-    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
+    expect(await messageStatusService.getStatus(messageHash)).to.include({state: 'Queued'});
+  });
+
+  it('getStatus after success', async () => {
     await messageRepository.markAsSuccess(messageHash, TEST_TRANSACTION_HASH);
-    expectedStatus.state = 'Success';
-    expectedStatus.transactionHash = TEST_TRANSACTION_HASH;
-    expect(await messageStatusService.getStatus(messageHash)).to.deep.eq(expectedStatus);
+    expect(await messageStatusService.getStatus(messageHash)).to.deep.include({
+      state: 'Success',
+      transactionHash: TEST_TRANSACTION_HASH
+    });
+  });
+
+  it('getStatus after error', async () => {
+    await messageRepository.markAsError(messageHash, 'Error message');
+    expect(await messageStatusService.getStatus(messageHash)).to.include({
+      state: 'Error',
+      error: 'Error message'
+    });
   });
 });
