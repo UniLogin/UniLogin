@@ -4,6 +4,7 @@ module.exports = {
   legacyOutput: true,
   outputType: 'all',
   compilerOptions: {
+    evmVersion: "constantinople",
     outputSelection: {
       "*": {
         "*": [ "evm.bytecode.object", "evm.deployedBytecode.object",
