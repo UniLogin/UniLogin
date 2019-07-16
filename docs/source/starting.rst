@@ -6,7 +6,7 @@ Getting started
 
 Universal Login help you build user-friendly ethereum based applications.
 
-To quick start building application go to one of :ref:`Tutorial<tutorial>` sections:
+To quick start building application go to one of :ref:`tutorial<tutorial>` sections:
 
 - :ref:`Quickstart<quickstart>`
 - :ref:`Using SDK<using_sdk>`
@@ -15,11 +15,11 @@ To quick start building application go to one of :ref:`Tutorial<tutorial>` secti
 - :ref:`ENS registration<ens-registration>`
 
 
-To learn Universal Login concepts and architecture got to one of :ref:`Overview<overview>` sections:
+To learn Universal Login concepts and architecture got to one of :ref:`overview<overview>` sections:
 
 - :ref:`Introduction<introduction>`
 - :ref:`Main concepts<main_concepts>`
-- :ref:`Development<development>`
+- :ref:`Development environment<development>`
 
 
 To get API reference go to one of following sections:

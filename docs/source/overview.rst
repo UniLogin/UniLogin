@@ -162,22 +162,19 @@ In the case of spamming, the user has to type exact emojis unlike arranging.
 
 .. _development: 
 
-Development
------------
-
 Development environment
-^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  Development environment helps quickly develop and test applications using universal login.
-  The script that starts development environment can be run from ``@universal-login/ops`` project.
-  The script does a bunch of helpful things:
+-----------------------
 
-  - creates a mock blockchain (ganache)
-  - deploys mock ENS
-  - registers three testing ENS domains: ``mylogin.eth``, ``universal-id.eth``, ``popularapp.eth``
-  - deploys example ERC20 Token that can be used to pay for transactions
-  - creates a database for a relayer
-  - starts local relayer
+Development environment helps quickly develop and test applications using universal login.
+The script that starts development environment can be run from ``@universal-login/ops`` project.
+The script does a bunch of helpful things:
+
+- creates a mock blockchain (ganache)
+- deploys mock ENS
+- registers three testing ENS domains: ``mylogin.eth``, ``universal-id.eth``, ``popularapp.eth``
+- deploys example ERC20 Token that can be used to pay for transactions
+- creates a database for a relayer
+- starts local relayer
 
 For more go to :ref:`tutorial<development_environment>`
 
