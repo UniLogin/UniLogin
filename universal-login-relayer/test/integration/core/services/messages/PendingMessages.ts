@@ -76,8 +76,9 @@ describe('INT: PendingMessages', () => {
     it('should push one signature', async () => {
       await pendingMessages.add(message);
       const status = await pendingMessages.getStatus(messageHash);
-      const {collectedSignatures} = status;
+      const {collectedSignatures, state} = status;
       expect(status.collectedSignatures.length).to.be.eq(1);
+      expect(state).to.be.eq('AwaitSignature');
       expect(collectedSignatures[0]).to.be.eq(message.signature);
     });
 
@@ -85,7 +86,7 @@ describe('INT: PendingMessages', () => {
       const signedMessage = await createSignedMessage(message, actionKey);
       await pendingMessages.add(message);
       await pendingMessages.add(signedMessage);
-      const collectedSignatures = (await pendingMessages.getStatus(messageHash)).collectedSignatures;
+      const {collectedSignatures} = await pendingMessages.getStatus(messageHash);
       expect(collectedSignatures).to.be.deep.eq([message.signature, signedMessage.signature]);
     });
 

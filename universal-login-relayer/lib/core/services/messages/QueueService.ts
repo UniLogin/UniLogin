@@ -21,10 +21,13 @@ class QueueService {
   }
 
   async add(signedMessage: SignedMessage) {
-    return this.queueStore.add(signedMessage);
+    const messageHash = await this.queueStore.add(signedMessage);
+    await this.messageRepository.setMessageState(messageHash, 'Queued');
+    return messageHash;
   }
 
   async execute(messageHash: string) {
+    await this.messageRepository.setMessageState(messageHash, 'Pending');
     try {
       const signedMessage = await this.messageRepository.getMessage(messageHash);
       const {hash} = await this.messageExecutor.executeAndWait(signedMessage);

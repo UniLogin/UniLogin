@@ -1,4 +1,4 @@
-import {CollectedSignatureKeyPair, SignedMessage} from '@universal-login/commons';
+import {CollectedSignatureKeyPair, SignedMessage, MessageState} from '@universal-login/commons';
 import MessageItem from '../../models/messages/MessageItem';
 
 export default interface IMessageRepository {
@@ -11,5 +11,6 @@ export default interface IMessageRepository {
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
   markAsSuccess: (messageHash: string, transactionHash: string) => Promise<void>;
   markAsError: (messageHash: string, error: string) => Promise<void>;
+  setMessageState: (messageHash: string, state: MessageState) => Promise<void>;
   containSignature: (messageHash: string, signature: string) => Promise<boolean>;
 }
