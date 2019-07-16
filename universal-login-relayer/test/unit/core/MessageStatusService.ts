@@ -21,7 +21,7 @@ describe('UNIT: MessageStatusService', async () => {
   beforeEach(async () => {
     messageRepository = new MessageMemoryRepository();
     messageStatusService = new MessageStatusService(messageRepository, signaturesService);
-    message = await getTestSignedMessage();
+    message = getTestSignedMessage();
     messageItem = createMessageItem(message);
     messageHash = calculateMessageHash(message);
     await messageRepository.add(messageHash, messageItem);

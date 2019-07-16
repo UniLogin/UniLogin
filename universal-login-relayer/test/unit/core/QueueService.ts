@@ -33,7 +33,7 @@ describe('UNIT: Queue Service', async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
     queueService = new QueueService(executor, queueMemoryStore, messageRepository, 1);
-    signedMessage = await getTestSignedMessage();
+    signedMessage = getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
       messageHash,
