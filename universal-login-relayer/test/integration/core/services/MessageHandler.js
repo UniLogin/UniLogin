@@ -53,8 +53,6 @@ describe('INT: MessageHandler', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = await createSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
-      const {state} = await messageHandler.getStatus(messageHash);
-      expect(state).to.be.eq('Queued');
       await messageHandler.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const {state} = await messageHandler.getStatus(messageHash);
