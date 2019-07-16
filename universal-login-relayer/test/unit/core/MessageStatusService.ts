@@ -2,12 +2,12 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils} from 'ethers';
 import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH, MessageStatus} from '@universal-login/commons';
-import MessageMemoryRepository from '../../../../helpers/MessageMemoryRepository';
-import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
-import MessageItem from '../../../../../lib/core/models/messages/MessageItem';
-import {createMessageItem} from '../../../../../lib/core/utils/utils';
-import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
-import getTestSignedMessage from '../../../../config/message';
+import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
+import {MessageStatusService} from '../../../lib/core/services/messages/MessageStatusService';
+import MessageItem from '../../../lib/core/models/messages/MessageItem';
+import {createMessageItem} from '../../../lib/core/utils/utils';
+import {SignaturesService} from '../../../lib/integration/ethereum/SignaturesService';
+import getTestSignedMessage from '../../config/message';
 
 describe('UNIT: MessageStatusService', async () => {
   let messageRepository: MessageMemoryRepository;
