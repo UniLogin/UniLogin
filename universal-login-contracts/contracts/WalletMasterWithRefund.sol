@@ -5,10 +5,6 @@ import "./WalletMaster.sol";
 
 /* solium-disable no-empty-blocks */
 contract WalletMasterWithRefund is WalletMaster {
-    function getDeploymentGasUsed() private pure returns(uint) {
-        return 500000;
-    }
-
     // Disabled upgradability: persistent nonce not sync
     function initializeWithRefund(
         address _key,
@@ -23,5 +19,9 @@ contract WalletMasterWithRefund is WalletMaster {
         this.initializeWithENS(_key, _hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/
         refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
+    }
+
+    function getDeploymentGasUsed() private pure returns(uint) {
+        return 500000;
     }
 }

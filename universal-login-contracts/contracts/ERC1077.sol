@@ -103,14 +103,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
             operationType).toEthSignedMessageHash().recover(signatures);
     }
 
-    function refundGas(address gasToken) private view returns(uint refundCharge) {
-        if (gasToken == address(0)) {
-            return etherRefundCharge();
-        } else {
-            return tokenRefundCharge();
-        }
-    }
-
     function executeSigned(
         address to,
         uint256 value,
@@ -148,6 +140,14 @@ contract ERC1077 is KeyHolder, IERC1077 {
         }
     }
 
+    function refundGas(address gasToken) private pure returns(uint refundCharge) {
+        if (gasToken == address(0)) {
+            return etherRefundCharge();
+        } else {
+            return tokenRefundCharge();
+        }
+    }
+    
     function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
         uint sigCount = signatures.length / 65;
