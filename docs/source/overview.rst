@@ -4,8 +4,13 @@
 Overview
 ========
 
+.. _introduction:
+
+Introduction
+------------
+
 Technical concepts
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Technically Universal Login utilizes four major concepts:
 
@@ -15,20 +20,18 @@ Technically Universal Login utilizes four major concepts:
 - **Universal login** - wallet name can be used to log in to dapps, web, and native applications
 
 Components
-----------
+^^^^^^^^^^
 Universal Login has three components. All components are stored in one monorepo `available here <https://github.com/universallogin>`_.
 Components are listed below:
 
 - `Contracts <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts>`_ - smart contracts used by Universal Login, along with some helper functions
 - `Relayer <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-relayer>`_ - HTTP REST server that relays meta-transactions to Universal Login smart contracts
 - `SDK <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-sdk>`_ - javascript API, a thin communication layer that interacts with the Universal Login ecosystem, via both relayer and Ethereum node.
+- `React <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-react>`_ - typescript library, that contains Universal Login main components to use in react applications.
 
-Additionally, there is one more package in the repository:
-
-- `Example <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-example>`_ - an example app, that demonstrates, used for testing and experimentation.
 
 Dependencies
-------------
+^^^^^^^^^^^^
 The diagram below shows dependencies between components.
 
 .. image:: ../modeling/img/subsystems.png
@@ -51,30 +54,25 @@ The internal interfaces defined within the Universal Login system are identified
   this interface is made up of ERC #1077 and #1078 smart contracts ABI
 
 
+.. _main_concepts:
 
-Development environment
------------------------
-Summary
-  Development environment helps quickly develop and test applications using universal login.
-  The script that starts development environment can be run from ``@universal-login/ops`` project.
-  The script does a bunch of helpful things:
-
-  - creates a mock blockchain (ganache)
-  - deploys mock ENS
-  - registers three testing ENS domains: ``mylogin.eth``, ``universal-id.eth``, ``popularapp.eth``
-  - deploys example ERC20 Token that can be used to pay for transactions
-  - creates a database for a relayer
-  - starts local relayer
-
-For more go to :ref:`tutorial<development_environment>`
+Main concepts
+-------------
 
 
+Deploy
+^^^^^^
 
-Key activities
---------------
+will be added soon
 
-Connecting
-^^^^^^^^^^
+Meta-transactions
+^^^^^^^^^^^^^^^^^
+
+will be added soon
+
+
+Connection new device
+^^^^^^^^^^^^^^^^^^^^^
 
 One of the key activities is connecting the newly created public key to the existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
 
@@ -92,8 +90,8 @@ There are four key actors in the process:
 - **Smart Contract Wallet** - smart contract that stores keys and executes meta-transactions.
 
 
-Possible attacks
-^^^^^^^^^^^^^^^^
+**Possible attacks**
+
 
 The problem might seem pretty straightforward, but there are some complexities to consider. In particular, we should avoid introducing the possibility of the following attacks:
 
@@ -117,8 +115,7 @@ The first solution is pretty straightforward. New device transfers it's public k
 .. image:: static/connect/solution-1.png
 
 
-Transfer means
-^^^^^^^^^^^^^^
+**Transfer means**
 
 There are two possible ways of transferring the public key.
 
@@ -161,4 +158,26 @@ The third solution is an alternative to previous solutions. The new device gener
 .. image:: static/connect/solution-3.png
 
 In the case of spamming, the user has to type exact emojis unlike arranging.
+
+
+.. _development: 
+
+Development
+-----------
+
+Development environment
+^^^^^^^^^^^^^^^^^^^^^^^
+Summary
+  Development environment helps quickly develop and test applications using universal login.
+  The script that starts development environment can be run from ``@universal-login/ops`` project.
+  The script does a bunch of helpful things:
+
+  - creates a mock blockchain (ganache)
+  - deploys mock ENS
+  - registers three testing ENS domains: ``mylogin.eth``, ``universal-id.eth``, ``popularapp.eth``
+  - deploys example ERC20 Token that can be used to pay for transactions
+  - creates a database for a relayer
+  - starts local relayer
+
+For more go to :ref:`tutorial<development_environment>`
 
