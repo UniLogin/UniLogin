@@ -1,8 +1,9 @@
-.. _tutorials:
+.. _tutorial:
 
-Tutorials
-=========
+Tutorial
+========
 
+.. _quickstart:
 
 Quickstart
 -----------
@@ -87,10 +88,10 @@ Which will start the development environment. The output should look somewhat li
 
 
 
-
+.. _using_sdk:
 
 Using SDK
--------------------------
+---------
 
 Creating a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -138,7 +139,7 @@ Wallet needs to have enough token balance to refund transaction.
 A detailed explanation of each method can be found in subsections of :ref:`SDK documentation<sdk>`: :ref:`creating SDK<sdk_create>`, :ref:`creating wallet contract<sdk_create_contract>` and :ref:`execute<sdk_execute>`.
 
 
-.. _sdk-example-testnet:
+.. _sdk_example_testnet:
 
 
 Connecting to existing app on testnet
@@ -215,19 +216,22 @@ Remember about stop listening relayer and blockchain events
   sdk.stop();
 
 
+.. _helpers:
 
-Deployment
-----------
+Helpers
+-------
 
 Prerequisites
-  Install universal-login toolkit:
+^^^^^^^^^^^^^
 
-  ::
+Install universal-login toolkit:
 
-    yarn global add @universal-login/ops
+::
+
+  yarn global add @universal-login/ops
 
 Test token
-----------
+^^^^^^^^^^
 
 To deploy test token use deploy token
 ``universal-login deploy:token --nodeUrl [url] --privateKey [privateKey]``
@@ -240,7 +244,7 @@ Example:
 
 
 Sending funds
--------------
+^^^^^^^^^^^^^
 
 To send funds to an address
 ``universal-login send [to] [amount] [currency] --nodeUrl [url] --privateKey [privateKey]``
