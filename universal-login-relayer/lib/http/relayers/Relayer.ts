@@ -25,6 +25,7 @@ import AuthorisationStore from '../../integration/sql/services/AuthorisationStor
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 import {MessageStatusService} from '../../core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
+import MessageValidator from '../../core/services/messages/MessageValidator';
 
 const defaultPort = '3311';
 
@@ -49,6 +50,7 @@ class Relayer {
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
+  private messageValidator: MessageValidator = {} as MessageValidator;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
@@ -86,7 +88,8 @@ class Relayer {
     this.queueStore = new QueueSQLStore(this.database);
     this.signaturesService = new SignaturesService(this.wallet);
     this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.messageRepository, this.queueStore, this.config.contractWhiteList, this.statusService);
+    this.messageValidator = new MessageValidator(this.wallet, this.config.contractWhiteList);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.messageRepository, this.queueStore, this.messageValidator, this.statusService);
     const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
