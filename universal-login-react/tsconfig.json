@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types",
+      "../node_modules/@types",
+      "shims"
+    ],
+    "allowJs": false
+  },
+  "include": [
+    "src",
+    "test"
+  ]
+}

@@ -39,6 +39,11 @@ jobs:
                 - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-sdk && yarn test:nobuild
       - run: cd universal-login-relayer && yarn test:nobuild
+  test_react:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - run: cd universal-login-react && yarn test
   test_wallet_example:
     docker:
       - image: circleci/node:10.15
