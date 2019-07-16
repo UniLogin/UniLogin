@@ -1,14 +1,15 @@
 import {expect} from 'chai';
-import {loadFixture} from 'ethereum-waffle';
-import {SignedMessage, createSignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH, MessageStatus} from '@universal-login/commons';
+import sinon from 'sinon';
+import {utils} from 'ethers';
+import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH, MessageStatus} from '@universal-login/commons';
 import MessageMemoryRepository from '../../../../helpers/MessageMemoryRepository';
 import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
-import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageItem from '../../../../../lib/core/models/messages/MessageItem';
 import {createMessageItem} from '../../../../../lib/core/utils/utils';
 import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
+import getTestSignedMessage from '../../../../config/message';
 
-describe('INT: MessageStatusService', async () => {
+describe('UNIT: MessageStatusService', async () => {
   let messageRepository: MessageMemoryRepository;
   let messageStatusService: MessageStatusService;
   let signaturesService: SignaturesService;
@@ -17,14 +18,12 @@ describe('INT: MessageStatusService', async () => {
   let messageHash: string;
 
   before(async () => {
-    const {wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken);
-
     messageRepository = new MessageMemoryRepository();
-    signaturesService = new SignaturesService(wallet);
+    signaturesService = {
+      getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1))
+    } as any;
     messageStatusService = new MessageStatusService(messageRepository, signaturesService);
-
-    message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
-
+    message = await getTestSignedMessage();
     messageItem = createMessageItem(message);
     messageHash = calculateMessageHash(message);
   });
