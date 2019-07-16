@@ -1,3 +1,3 @@
 import React from 'react';
 
-export const testDiv = () => <div> Test div</div>;
+export const TestDiv = () => <div> Test div </div>;
