@@ -1,6 +1,6 @@
 import {utils, Wallet} from 'ethers';
 import {UnsignedMessage} from '../../models/message';
-import { sign } from '../signatures';
+import {sign} from '../signatures';
 
 
 export const calculateMessageHash = (msg: UnsignedMessage) => {
