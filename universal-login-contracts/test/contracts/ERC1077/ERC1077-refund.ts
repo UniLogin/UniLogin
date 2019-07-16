@@ -43,7 +43,7 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
 
   it('refund works', async () => {
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address};
-    signature = await calculateMessageSignature(managementKeyPair.privateKey, message);
+    signature = calculateMessageSignature(managementKeyPair.privateKey, message);
     const executeData = encodeDataForExecuteSigned({...message, signature});
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
@@ -54,7 +54,7 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
 
   it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
-    signature = await calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
+    signature = calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
@@ -65,7 +65,7 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
   it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
     const initialTokenBalance = await mockToken.balanceOf(wallet.address);
     infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
-    signature = await calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
+    signature = calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);

@@ -31,7 +31,7 @@ describe('UNIT: Parsing Transaction', () => {
   let signedMessage: SignedMessage;
 
   before(async () => {
-    signedMessage = await createSignedMessage(message, TEST_PRIVATE_KEY);
+    signedMessage = createSignedMessage(message, TEST_PRIVATE_KEY);
   });
 
   it('should parse BigNumber to string', () => {

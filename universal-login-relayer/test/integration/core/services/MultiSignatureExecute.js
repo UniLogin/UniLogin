@@ -30,8 +30,8 @@ describe('INT: MultiSignatureExecute', async () => {
 
   it('Error when not enough tokens', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
-    const signedMessage0 = await createSignedMessage(message, wallet.privateKey);
-    const signedMessage1 = await createSignedMessage(message, actionKey);
+    const signedMessage0 = createSignedMessage(message, wallet.privateKey);
+    const signedMessage1 = createSignedMessage(message, actionKey);
     await messageHandler.handleMessage(signedMessage0);
     const {messageHash} = await messageHandler.handleMessage(signedMessage1);
     await messageHandler.stopLater();
@@ -41,8 +41,8 @@ describe('INT: MultiSignatureExecute', async () => {
 
   it('Error when not enough gas', async () => {
     const message = {...msg, gasLimit: 100};
-    const signedMessage0 = await createSignedMessage(message, wallet.privateKey);
-    const signedMessage1 = await createSignedMessage(message, actionKey);
+    const signedMessage0 = createSignedMessage(message, wallet.privateKey);
+    const signedMessage1 = createSignedMessage(message, actionKey);
     await messageHandler.handleMessage(signedMessage0);
     const {messageHash} = await messageHandler.handleMessage(signedMessage1);
     await messageHandler.stopLater();
@@ -53,8 +53,8 @@ describe('INT: MultiSignatureExecute', async () => {
   describe('Transfer', async () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
-      const signedMessage0 = await createSignedMessage(msg, wallet.privateKey);
-      const signedMessage1 = await createSignedMessage(msg, actionKey);
+      const signedMessage0 = createSignedMessage(msg, wallet.privateKey);
+      const signedMessage1 = createSignedMessage(msg, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
       await messageHandler.stopLater();
@@ -65,8 +65,8 @@ describe('INT: MultiSignatureExecute', async () => {
   describe('Add Key', async () => {
     it('execute add key', async () => {
       msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
-      const signedMessage0 = await createSignedMessage(msg, wallet.privateKey);
-      const signedMessage1 = await createSignedMessage(msg, actionKey);
+      const signedMessage0 = createSignedMessage(msg, wallet.privateKey);
+      const signedMessage1 = createSignedMessage(msg, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
       await messageHandler.stopLater();
@@ -75,8 +75,8 @@ describe('INT: MultiSignatureExecute', async () => {
 
     describe('Query message status', async () => {
       it('should get pending execution status', async () => {
-        const signedMessage0 = await createSignedMessage(msg, wallet.privateKey);
-        const signedMessage1 = await createSignedMessage(msg, actionKey);
+        const signedMessage0 = createSignedMessage(msg, wallet.privateKey);
+        const signedMessage1 = createSignedMessage(msg, actionKey);
         const messageHash = await calculateMessageHash(msg);
         await messageHandler.handleMessage(signedMessage0);
         await messageHandler.handleMessage(signedMessage1);
@@ -96,8 +96,8 @@ describe('INT: MultiSignatureExecute', async () => {
   describe('Remove key ', async () => {
     beforeEach(async () => {
       const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
-      const signedMessage0 = await createSignedMessage(message, wallet.privateKey);
-      const signedMessage1 = await createSignedMessage(message, actionKey);
+      const signedMessage0 = createSignedMessage(message, wallet.privateKey);
+      const signedMessage1 = createSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
     });
@@ -105,8 +105,8 @@ describe('INT: MultiSignatureExecute', async () => {
     it('should remove key', async () => {
       await waitExpect(async () => expect((await walletContract.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY));
       const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
-      const signedMessage0 = await createSignedMessage(message, wallet.privateKey);
-      const signedMessage1 = await createSignedMessage(message, actionKey);
+      const signedMessage0 = createSignedMessage(message, wallet.privateKey);
+      const signedMessage1 = createSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
       await messageHandler.stopLater();

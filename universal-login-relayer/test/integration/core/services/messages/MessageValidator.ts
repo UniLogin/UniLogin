@@ -22,19 +22,19 @@ describe('INT: MessageValidator', async () => {
   });
 
   it('successfully pass the validation', async () => {
-    const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidator.validate(signedMessage, transactionRequest)).to.not.be.rejected;
   });
 
   it('throws when not enough gas', async () => {
-    const signedMessage = await createSignedMessage({...message, gasLimit: 100}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message, gasLimit: 100}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidator.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
   it('throws when not enough tokens', async () => {
-    const signedMessage = await createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidator.validate(signedMessage, transactionRequest))
       .to.be.eventually.rejectedWith('Not enough tokens');
@@ -45,7 +45,7 @@ describe('INT: MessageValidator', async () => {
       master: [],
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
-    const signedMessage = await createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
