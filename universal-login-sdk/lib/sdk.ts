@@ -168,7 +168,7 @@ class UniversalLoginSDK {
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
     } as MessageWithFrom;
-    const signedMessage = await createSignedMessage(unsignedMessage, privateKey);
+    const signedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
   }
 

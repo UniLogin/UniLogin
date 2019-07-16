@@ -16,7 +16,7 @@ describe('UNIT: ExecutionFactory', async () => {
   const callCount = 2;
 
   before(async () => {
-    signedMessage = await createSignedMessage({from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
+    signedMessage = createSignedMessage({from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
     const messageHash = await calculateMessageHash(signedMessage);
     status = {
       transactionHash: TEST_TRANSACTION_HASH,

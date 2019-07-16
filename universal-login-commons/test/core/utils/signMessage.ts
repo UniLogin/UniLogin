@@ -30,7 +30,7 @@ describe('UNIT: signMessage', async () => {
     it('sign a message', async () => {
       const privateKey = '0x899d97b42f840d59d60f3a18514b28042a1d86fa400d6cf9425ec3a9217d0cea';
 
-      const signedMessage = await createSignedMessage({...transferMessage, from: '0x'}, privateKey);
+      const signedMessage = createSignedMessage({...transferMessage, from: '0x'}, privateKey);
       expect(signedMessage).to.deep.eq(expectedMessage);
     });
   });

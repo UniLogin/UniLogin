@@ -32,9 +32,9 @@ describe('CONTRACT: ERC1077 - main', async  () => {
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, sortedKeys, mockToken, mockContract, wallet} = await loadFixture(basicERC1077));
     msg = {...transferMessage, from: walletContract.address};
-    signature = await calculateMessageSignature(managementKeyPair.privateKey, msg);
+    signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
     [anotherWallet] = await getWallets(provider);
-    invalidSignature = await calculateMessageSignature(anotherWallet.privateKey, msg);
+    invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);
   });
@@ -233,8 +233,8 @@ describe('CONTRACT: ERC1077 - main', async  () => {
     describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         signatures = concatenateSignatures([signature1, signature2]);
       });
 
@@ -270,22 +270,22 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       });
 
       it('should fail with a least an invalid signature', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const corruptedSignatures = concatenateSignatures([signature1, invalidSignature]);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
       });
 
       it('should fail if there are two equal singatures', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const corruptedSignatures = concatenateSignatures([signature1, signature1]);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
       });
 
       it('should fail with invalid signature size', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
@@ -297,7 +297,7 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       });
 
       it('called method with not enough signatures', async () => {
-        signatures = await calculateMessageSignature(sortedKeys[0], msgToCall);
+        signatures = calculateMessageSignature(sortedKeys[0], msgToCall);
         await walletContract.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
@@ -306,8 +306,8 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       });
 
       it('called method with duplicated signatures', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         signatures = await concatenateSignatures([signature1, signature2, signature2]);
         await walletContract.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
@@ -325,9 +325,9 @@ describe('CONTRACT: ERC1077 - main', async  () => {
     describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
-        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
         signatures = concatenateSignatures([signature1, signature2, signature3]);
       });
 
@@ -365,9 +365,9 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
       it('should fail with not sorted signatures', async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
-        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
         signatures = concatenateSignatures([signature2, signature1, signature3]);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
@@ -380,25 +380,25 @@ describe('CONTRACT: ERC1077 - main', async  () => {
       });
 
       it('should fail with a least an invalid signature', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const corruptedSignatures = concatenateSignatures([signature1, signature2, invalidSignature]);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
       });
 
       it('should fail if there are two equal singatures', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const corruptedSignatures = concatenateSignatures([signature1, signature1, signature2]);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
       });
 
       it('should fail with invalid signature size', async () => {
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
-        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
         const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
@@ -411,9 +411,9 @@ describe('CONTRACT: ERC1077 - main', async  () => {
 
       it('should fail with not sorted signatures', async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        const signature1 = await calculateMessageSignature(sortedKeys[0], msgToCall);
-        const signature2 = await calculateMessageSignature(sortedKeys[1], msgToCall);
-        const signature3 = await calculateMessageSignature(sortedKeys[2], msgToCall);
+        const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
+        const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
+        const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
         signatures = concatenateSignatures([signature1, signature3, signature2]);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), signatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');

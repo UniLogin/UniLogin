@@ -19,7 +19,7 @@ describe('INT: MessageExecutor', async () => {
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
     messageExecutor = new MessageExecutor(wallet, async (tx: providers.TransactionResponse) => {}, validator as any);
-    signedMessage = await createSignedMessage({from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2)}, wallet.privateKey);
+    signedMessage = createSignedMessage({from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2)}, wallet.privateKey);
   });
 
   it('should execute transaction', async () =>  {

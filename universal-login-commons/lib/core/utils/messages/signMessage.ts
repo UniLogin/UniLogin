@@ -18,9 +18,9 @@ const emptyMessage = {
 };
 
 
-export const createSignedMessage = async (override: MessageWithFrom, privateKey: string) => {
+export const createSignedMessage = (override: MessageWithFrom, privateKey: string) => {
   const message: UnsignedMessage = {...emptyMessage, ...override};
-  const signature = await calculateMessageSignature(privateKey, message);
+  const signature = calculateMessageSignature(privateKey, message);
   return {...message, signature};
 };
 

@@ -32,7 +32,7 @@ describe('INT: PendingMessages', () => {
     signaturesService = new SignaturesService(wallet);
     statusService = new MessageStatusService(messageRepository, signaturesService);
     pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any, statusService);
-    message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
+    message = createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
     await walletContract.setRequiredSignatures(2);
   });
@@ -55,7 +55,7 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should check if execution is ready to execute and execution callback', async () => {
-    const signedMessage = await createSignedMessage(message, actionKey);
+    const signedMessage = createSignedMessage(message, actionKey);
     await pendingMessages.add(message);
     expect(await pendingMessages.isEnoughSignatures(messageHash)).to.eq(false);
     expect(spy.calledOnce).to.be.false;
@@ -83,7 +83,7 @@ describe('INT: PendingMessages', () => {
     });
 
     it('should sign message', async () => {
-      const signedMessage = await createSignedMessage(message, actionKey);
+      const signedMessage = createSignedMessage(message, actionKey);
       await pendingMessages.add(message);
       await pendingMessages.add(signedMessage);
       const {collectedSignatures} = await pendingMessages.getStatus(messageHash);
@@ -91,7 +91,7 @@ describe('INT: PendingMessages', () => {
     });
 
     it('should not push invalid key purpose', async () => {
-      const message2 = await createSignedMessage({from: wallet.address, to: '0x'}, actionKey);
+      const message2 = createSignedMessage({from: wallet.address, to: '0x'}, actionKey);
       await expect(pendingMessages.add({...message, signature: message2.signature})).to.be.rejectedWith('Invalid key purpose');
     });
 

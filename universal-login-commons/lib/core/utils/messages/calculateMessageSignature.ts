@@ -1,5 +1,6 @@
 import {utils, Wallet} from 'ethers';
 import {UnsignedMessage} from '../../models/message';
+import {sign} from '../signatures';
 
 
 export const calculateMessageHash = (msg: UnsignedMessage) => {
@@ -10,9 +11,7 @@ export const calculateMessageHash = (msg: UnsignedMessage) => {
 };
 
 export const calculateMessageSignature = (privateKey: string, msg: UnsignedMessage) => {
-  const wallet = new Wallet(privateKey);
-  const massageHash = calculateMessageHash(msg);
-  return wallet.signMessage(utils.arrayify(massageHash));
+  return sign(calculateMessageHash(msg), privateKey);
 };
 
 export const calculateMessageSignatures = async (privateKeys: string[], msg: UnsignedMessage) => {

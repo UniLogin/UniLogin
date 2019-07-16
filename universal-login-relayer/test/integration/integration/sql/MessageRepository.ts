@@ -34,7 +34,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
       args = knex;
     }
     messageRepository = new config.type(args);
-    message = await createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
+    message = createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
 
     messageItem = createMessageItem(message);
     messageHash = calculateMessageHash(message);
@@ -73,7 +73,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
   it('should add signature', async () => {
     await walletContract.setRequiredSignatures(2);
     await messageRepository.add(messageHash, messageItem);
-    const message2 = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
+    const message2 = createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
     await messageRepository.addSignature(messageHash, message2.signature);
     const returnedMessageItem = await messageRepository.get(messageHash);
     const signatures = returnedMessageItem.collectedSignatureKeyPairs.map((signatureKeyPair: CollectedSignatureKeyPair) => signatureKeyPair.signature);
@@ -122,7 +122,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     await messageRepository.addSignature(messageHash, message.signature);
     const key = getKeyFromHashAndSignature(messageHash, message.signature);
     expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}]);
-    const {signature} = await createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
+    const {signature} = createSignedMessage({from: walletContract.address, to: '0x'}, actionKey);
     await messageRepository.addSignature(messageHash, signature);
     const key2 = getKeyFromHashAndSignature(messageHash, signature);
     expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}, {key: key2, signature}]);

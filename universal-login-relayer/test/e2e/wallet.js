@@ -70,7 +70,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
         operationType: OPERATION_CALL,
       };
       const balanceBefore = await provider.getBalance(otherWallet.address);
-      const signedMessage = await createSignedMessage(msg, wallet.privateKey);
+      const signedMessage = createSignedMessage(msg, wallet.privateKey);
       const {status, body} = await chai.request(relayer.server)
         .post('/wallet/execution')
         .send(signedMessage);

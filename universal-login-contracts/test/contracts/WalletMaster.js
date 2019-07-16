@@ -36,10 +36,10 @@ describe('WalletMaster', async () => {
     ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
     executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
-    signature = await calculateMessageSignature(privateKey, msg);
+    signature = calculateMessageSignature(privateKey, msg);
     data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
     [anotherWallet] = await getWallets(provider);
-    invalidSignature = await calculateMessageSignature(anotherWallet.privateKey, msg);
+    invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);
   });
@@ -106,7 +106,7 @@ describe('WalletMaster', async () => {
       describe('refund', () => {
         it('should refund in token after execute transfer ethers', async () => {
           msg = {...transferMessage, from: walletContractProxy.address, gasToken: mockToken.address};
-          signature = await calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
           await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
@@ -132,7 +132,7 @@ describe('WalletMaster', async () => {
 
       it('nonce too high', async () => {
         msg = {...transferMessage, from: walletContractProxy.address, nonce: 2};
-        signature = await calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
@@ -141,7 +141,7 @@ describe('WalletMaster', async () => {
 
       it('emits ExecutedSigned event', async () => {
         msg = {...failedTransferMessage, from: walletContractProxy.address};
-        signature = await calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
         const messageHash = calculateMessageHash(msg);
 
@@ -152,7 +152,7 @@ describe('WalletMaster', async () => {
 
       it('should increase nonce, even if transfer fails', async () => {
         msg = {...failedTransferMessage, from: walletContractProxy.address};
-        signature = await calculateMessageSignature(privateKey, msg);
+        signature = calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
         await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
@@ -181,7 +181,7 @@ describe('WalletMaster', async () => {
       describe('refund', () => {
         it('should refund ether', async () => {
           msg = {...failedTransferMessage, from: walletContractProxy.address};
-          signature = await calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
           const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
@@ -194,7 +194,7 @@ describe('WalletMaster', async () => {
 
         it('should refund tokens', async () => {
           msg = {...failedTransferMessage, from: walletContractProxy.address, gasToken: mockToken.address};
-          signature = await calculateMessageSignature(privateKey, msg);
+          signature = calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
           await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
