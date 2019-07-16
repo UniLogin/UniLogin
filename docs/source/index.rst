@@ -24,11 +24,10 @@ Universal Login is a work in progress and is at the experimental stage. Expect b
   :caption: Contents:
 
   starting.rst
+  tutorials.rst
   sdk.rst
   relayer.rst
   example.rst
-  devops.rst
-  tutorials.rst
 
 
 Indices and tables
