@@ -72,3 +72,6 @@ workflows:
       - test_wallet_example:
           requires:
             - build
+      - test_react:
+          requires:
+            - build
