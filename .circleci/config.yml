@@ -43,6 +43,9 @@ jobs:
     docker:
       - image: circleci/node:10.15
     steps:
+      - restore_cache:
+            keys:
+                - universal-login-{{ .Environment.CIRCLE_SHA1 }}
       - run: cd universal-login-react && yarn test
   test_wallet_example:
     docker:
