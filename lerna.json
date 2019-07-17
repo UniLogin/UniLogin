@@ -6,7 +6,8 @@
     "universal-login-ops",
     "universal-login-relayer",
     "universal-login-sdk",
-    "universal-login-wallet"
+    "universal-login-wallet",
+    "universal-login-react"
   ],
   "version": "0.3.1"
 }
