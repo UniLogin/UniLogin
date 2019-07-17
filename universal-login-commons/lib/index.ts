@@ -40,4 +40,4 @@ export {calculateInitializeWithENSSignature, calculateInitializeSignature, getIn
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
 export {DeployArgs} from './core/models/deploy';
 export {isProperAddress} from './core/utils/isProperAddress';
-export {slices} from './core/utils/slices';
+export {slices, shuffle} from './core/utils/arrays';

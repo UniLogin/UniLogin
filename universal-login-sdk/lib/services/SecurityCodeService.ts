@@ -1,27 +1,22 @@
 import {utils} from 'ethers';
 import deepEqual from 'deep-equal';
 import {InvalidAddress} from '../utils/errors';
-import {ensure, isProperAddress} from '@universal-login/commons';
+import {ensure, isProperAddress, slices, shuffle} from '@universal-login/commons';
 
-function *slices(array: Uint8Array, sliceSize: number) {
-  for (let i = 0; i < array.length; i++) {
-    if (i % sliceSize === 0) {
-      yield array.slice(i, i + sliceSize);
-    }
-  }
-}
+
 
 export class SecurityCodeService {
-  highNumberMask = 0x03;
-  lowNumberMask =  0xFF;
   alphabetSize = 1024;
   securityCodeLength = 6;
   securityKeyboardSize = 30;
-  mask = 0x03FF;
+  mask: number;
+
+  constructor() {
+    this.mask = this.alphabetSize - 1;
+  }
 
   encode(address: string): number[] {
     ensure(isProperAddress(address), InvalidAddress, address);
-
     return this.generateCode(address)
       .slice(0, this.securityCodeLength)
       .map((codeElement) => codeElement & this.mask);
@@ -34,15 +29,7 @@ export class SecurityCodeService {
       () => Math.floor(Math.random() * this.alphabetSize)
     );
     const securityCode = encoding.concat(randomNumbers);
-    return this.shuffle(securityCode);
-  }
-
-  private shuffle(encoding: number[]): number[] {
-    for (let i = encoding.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [encoding[i], encoding[j]] = [encoding[j], encoding[i]];
-    }
-    return encoding;
+    return shuffle(securityCode);
   }
 
   isCodeValid(encoding: number[], address: string): boolean {
@@ -50,13 +37,9 @@ export class SecurityCodeService {
     return deepEqual(encodedAddress, encoding);
   }
 
-  to10bitNumber = (high: number, low: number): number => {
-    return ((high & this.highNumberMask) << 8) | (low & this.lowNumberMask);
-  }
-
   generateCode = (address: string) => {
-    const addressBytes = utils.arrayify(address);
+    const addressBytes = Array.from(utils.arrayify(address));
     return Array.from(slices(addressBytes, 2))
-      .map((element) => this.to10bitNumber(element[0], element[1]));
+      .map(([hi, low]) => ((hi << 8) | low) & this.mask);
   }
 }

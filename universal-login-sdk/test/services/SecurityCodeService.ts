@@ -1,22 +1,9 @@
 import {expect} from 'chai';
-import {SecurityCodeService} from '../../lib/services/SecurityCodeService';
+import {SecurityCodeService, shuffle} from '../../lib/services/SecurityCodeService';
 
 describe('UNIT: SecurityCodeService', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
   const securityCodeService = new SecurityCodeService();
-
-  describe('8bit numbers -> 10bit number conversion', () => {
-    const high = 3;
-    const low = 255;
-    const longNumber =  1023;
-    it('8bit numbers -> 10bit conversion', () => {
-      expect(securityCodeService.to10bitNumber(high, low)).to.eq(longNumber);
-    });
-
-    it('trunked 8bit -> 10bit conversion', () => {
-      expect(securityCodeService.to10bitNumber(1024 + high, 2048 + low)).to.eq(longNumber);
-    });
-  });
 
   it('return should be 6 (10bit) numbers', () => {
     const encoding = securityCodeService.encode(mockedAddress);
