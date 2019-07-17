@@ -49,7 +49,7 @@ describe('UNIT: Arrays', () => {
     it('[0] -> [0]', () => {
       expect(array8bitTo16bit([0])).to.deep.eq([0]);
     });
-    
+
     it('[1024] -> [0]', () => {
       expect(array8bitTo16bit([1024])).to.deep.eq([0]);
     });

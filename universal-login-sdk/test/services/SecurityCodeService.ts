@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {SecurityCodeService} from '../../lib/services/SecurityCodeService'
+import {SecurityCodeService} from '../../lib/services/SecurityCodeService';
 
 describe('UNIT: SecurityCodeService', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
