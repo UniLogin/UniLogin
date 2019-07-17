@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {Omit, PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
+import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
 import {createFutureWallet} from '../utils/counterfactual';
 import {BalanceObserver} from '../observers/BalanceObserver';
 import {DeploymentObserver} from '../observers/DeploymentObserver';
@@ -23,7 +23,7 @@ export type FutureWallet = {
 export class FutureWalletFactory {
 
   constructor(
-    private config: Omit<PublicRelayerConfig, 'chainSpec'>,
+    private config: Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' >,
     private provider: providers.Provider,
     private blockchainService: BlockchainService,
     private relayerApi: RelayerApi,

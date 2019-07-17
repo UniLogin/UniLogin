@@ -4,12 +4,13 @@ import {Config} from '../../config/relayer';
 import {PublicRelayerConfig} from '@universal-login/commons';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
-  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList} = config;
+  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, safelloUrl} = config;
   return {
       chainSpec,
       supportedTokens,
       factoryAddress,
-      contractWhiteList
+      contractWhiteList,
+      safelloUrl
     };
 }
 

@@ -19,5 +19,5 @@ export interface PublicRelayerConfig {
   factoryAddress: string;
   chainSpec: ChainSpec;
   contractWhiteList: ContractWhiteList;
-  safelloUrl?: string;
+  safelloUrl: string;
 }

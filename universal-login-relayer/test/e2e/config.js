@@ -13,12 +13,13 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('should return public config', async () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList} = relayer.config;
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, safelloUrl} = relayer.config;
     const expectedConfig = {
       supportedTokens,
       chainSpec,
       factoryAddress,
-      contractWhiteList
+      contractWhiteList,
+      safelloUrl
     };
     const result = await chai.request(relayer.server)
       .get('/config');
@@ -27,12 +28,13 @@ describe('E2E: Relayer - Config routes', async () => {
 
 
   it('getPublicConfig should return PublicConfig', () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList} = relayer.config;
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, safelloUrl} = relayer.config;
     const expectedConfig = {
       supportedTokens,
       chainSpec,
       factoryAddress,
-      contractWhiteList
+      contractWhiteList,
+      safelloUrl
     };
     const publicConfig = getPublicConfig(relayer.config);
 
