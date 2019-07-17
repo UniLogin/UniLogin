@@ -1,4 +1,11 @@
 {
   "plantuml.diagramsRoot": "docs/modeling/src",
-  "plantuml.exportOutDir": "docs/modeling/img"
+  "plantuml.exportOutDir": "docs/modeling/img",
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true
 }
