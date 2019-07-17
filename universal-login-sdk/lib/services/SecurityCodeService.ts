@@ -1,44 +1,37 @@
-import { utils } from 'ethers';
+import {utils} from 'ethers';
 import deepEqual from 'deep-equal';
-import { InvalidAddress } from '../utils/errors';
+import {InvalidAddress} from '../utils/errors';
+import {ensure, isProperAddress} from '@universal-login/commons';
+
+function *slices(array: Uint8Array, sliceSize: number) {
+  for (let i = 0; i < array.length; i++) {
+    if (i % sliceSize === 0) {
+      yield array.slice(i, i + sliceSize);
+    }
+  }
+}
 
 export class SecurityCodeService {
-  maxCodeNumber: number;
-  securityCodeLength: number;
-  securityKeyboardSize: number;
-  mask: number;
-  highNumberMask: number;
-  lowNumberMask: number;
-
-  constructor() {
-    this.maxCodeNumber = 1024;
-    this.securityCodeLength = 6;
-    this.securityKeyboardSize = 30;
-    this.mask = 0x03FF;
-    this.highNumberMask = 0x03;
-    this.lowNumberMask = 0xFF;
-  }
+  highNumberMask = 0x03;
+  lowNumberMask =  0xFF;
+  alphabetSize = 1024;
+  securityCodeLength = 6;
+  securityKeyboardSize = 30;
+  mask = 0x03FF;
 
   encode(address: string): number[] {
-    if (!address.match(/0x[0-9A-Fa-f]{40}/)) {
-      throw new InvalidAddress(address);
-    }
-    const addressBytes = utils.arrayify(address);
-    const code = [];
-    for (let i = 0; i !== addressBytes.length; i += 2) {
-      code.push(this.to10bitNumber(addressBytes[i], addressBytes[i + 1]));
-    }
+    ensure(isProperAddress(address), InvalidAddress, address);
 
-    return code
+    return this.generateCode(address)
       .slice(0, this.securityCodeLength)
-      .map((codeElement) => codeElement & 0x03FF);
+      .map((codeElement) => codeElement & this.mask);
   }
 
   getSecurityCode(address: string): number[] {
     const encoding = this.encode(address);
     const randomNumbers = Array.from(
       {length: this.securityKeyboardSize - this.securityCodeLength},
-      () => Math.floor(Math.random() * this.maxCodeNumber)
+      () => Math.floor(Math.random() * this.alphabetSize)
     );
     const securityCode = encoding.concat(randomNumbers);
     return this.shuffle(securityCode);
@@ -57,7 +50,13 @@ export class SecurityCodeService {
     return deepEqual(encodedAddress, encoding);
   }
 
-  to10bitNumber(high: number, low: number): number {
+  to10bitNumber = (high: number, low: number): number => {
     return ((high & this.highNumberMask) << 8) | (low & this.lowNumberMask);
+  }
+
+  generateCode = (address: string) => {
+    const addressBytes = utils.arrayify(address);
+    return Array.from(slices(addressBytes, 2))
+      .map((element) => this.to10bitNumber(element[0], element[1]));
   }
 }

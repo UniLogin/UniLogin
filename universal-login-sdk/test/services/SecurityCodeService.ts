@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import { SecurityCodeService } from '../../lib/services/SecurityCodeService';
+import {SecurityCodeService} from '../../lib/services/SecurityCodeService';
 
 describe('UNIT: SecurityCodeService', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
@@ -16,20 +16,6 @@ describe('UNIT: SecurityCodeService', () => {
     it('trunked 8bit -> 10bit conversion', () => {
       expect(securityCodeService.to10bitNumber(1024 + high, 2048 + low)).to.eq(longNumber);
     });
-  });
-
-  it('argument should be valid address', () => {
-    const invalidAddress1 = mockedAddress.slice(0, 16);
-    expect(() => securityCodeService.encode(invalidAddress1)).to.throw;
-
-    const invalidAddress2 = mockedAddress.slice(2, 40);
-    expect(() => securityCodeService.encode(invalidAddress2)).to.throw;
-
-    const invalidAddress3 = '0xXFFFFe7d45c34110B34Ed269AD86248884E78C7';
-    expect(() => securityCodeService.encode(invalidAddress3)).to.throw;
-
-    const invalidAddress4 = '0xFFFFFe7d45c34110B34Ed269AD86248884E78C74534545';
-    expect(() => securityCodeService.encode(invalidAddress4)).to.throw;
   });
 
   it('return should be 6 (10bit) numbers', () => {
