@@ -1,33 +1,56 @@
 import {expect} from 'chai';
-import {SecurityCodeService} from '../../lib/services/SecurityCodeService';
+import {SecurityCodeService} from '../../lib/services/SecurityCodeService'
 
 describe('UNIT: SecurityCodeService', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
   const securityCodeService = new SecurityCodeService();
 
-  it('return should be 6 (10bit) numbers', () => {
-    const encoding = securityCodeService.encode(mockedAddress);
-    expect(encoding.length).to.eq(securityCodeService.securityCodeLength);
-    expect(typeof encoding[0]).to.eq('number');
-    expect(encoding[0] & 0xFC00).to.eq(0);
-    expect(encoding[0]).to.eq(1023);
+  describe('generateCode', () => {
+    it('returns 6 numbers', () => {
+      const encoding = securityCodeService.generateCode(mockedAddress);
+      expect(encoding).to.deep.eq([ 619, 192, 20, 934, 264, 392 ]);
+    });
+
+    it('returns 6 numbers', () => {
+      const encoding = securityCodeService.generateCode('0x0aFFFFe7d45c34110B34Ed269AD86248884E78C7');
+      expect(encoding).to.deep.eq([350, 506, 372, 483, 576, 48]);
+    });
+
+    it('encoded numbers should by in [0, 1024)', () => {
+      const encoding = securityCodeService.generateCode(mockedAddress);
+      expect(encoding).to.satisfy((a: number[]) => a.every((e: number) => e < 1024));
+      expect(encoding).to.satisfy((a: number[]) => a.every((e: number) => e >= 0));
+    });
   });
 
-  it('extend should return code with specific length', () => {
-    const securityCode = securityCodeService.getSecurityCode(mockedAddress);
-    expect(securityCode.length).to.eq(securityCodeService.securityKeyboardSize);
+  describe('isValidCode', () => {
+    it('correct code entered', () => {
+      const encodedAddress = securityCodeService.generateCode(mockedAddress);
+      const isValid = securityCodeService.isValidCode(encodedAddress, mockedAddress);
+      expect(isValid).to.be.true;
+    });
+
+    it('wrong code entered', () => {
+      const codeKeyboard = securityCodeService.generateCodeWithFakes(mockedAddress);
+      const wrongCodePickedByUser = codeKeyboard.splice(0, 6);
+      const isValid = securityCodeService.isValidCode(wrongCodePickedByUser, mockedAddress);
+      expect(isValid).to.be.false;
+    });
   });
 
-  it('address before encoding should match addres after decoding', () => {
-    const encodedAddress = securityCodeService.encode(mockedAddress);
-    const isValid = securityCodeService.isCodeValid(encodedAddress, mockedAddress);
-    expect(isValid).to.be.true;
-  });
+  describe('generateCodeWithFakes', () => {
+    it('security code length should equal 12', () => {
+      const securityCode = securityCodeService.generateCodeWithFakes(mockedAddress);
+      expect(securityCode).to.satisfy((a: number[]) =>
+        a.every((e) => [614, 619, 163, 392, 133, 934, 208, 264, 20, 366, 337, 192].includes(e))
+      );
+    });
 
-  it('wrong code entered', () => {
-    const codeKeyboard = securityCodeService.getSecurityCode(mockedAddress);
-    const wrongCodePickedByUser = codeKeyboard.splice(0, 6);
-    const isValid = securityCodeService.isCodeValid(wrongCodePickedByUser, mockedAddress);
-    expect(isValid).to.be.false;
+    it('security code length should equal 12', () => {
+      const securityCode = securityCodeService.generateCodeWithFakes('0x0aFFFFe7d45c34110B34Ed269AD86248884E78C7');
+      expect(securityCode).to.satisfy((a: number[]) =>
+        a.every((e) => [483, 48, 576, 372, 901, 454, 1016, 802, 350, 335, 311, 506].includes(e))
+      );
+    });
   });
 });

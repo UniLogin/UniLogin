@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {slices, shuffle} from '../../../lib/core/utils/arrays';
+import {slices, shuffle, array8bitTo16bit} from '../../../lib/core/utils/arrays';
 
 describe('UNIT: Arrays', () => {
   describe('slices', () => {
@@ -22,6 +22,36 @@ describe('UNIT: Arrays', () => {
       const output = shuffle(input);
       expect(input).not.to.eq(output);
       expect(input.sort()).to.deep.eq(output.sort());
+    });
+  });
+
+  describe('array8bitTo16bit', () => {
+    it('[] -> []', () => {
+      expect(array8bitTo16bit([])).to.deep.eq([]);
+    });
+
+    it('[1] -> [256]', () => {
+      expect(array8bitTo16bit([1])).to.deep.eq([256]);
+    });
+
+    it('[1, 1] -> [257]', () => {
+      expect(array8bitTo16bit([1, 1])).to.deep.eq([257]);
+    });
+
+    it('[1, 0] -> [256]', () => {
+      expect(array8bitTo16bit([1, 0])).to.deep.eq([256]);
+    });
+
+    it('[1, 1, 1] -> [257, 256]', () => {
+      expect(array8bitTo16bit([1, 1, 1])).to.deep.eq([257, 256]);
+    });
+
+    it('[0] -> [0]', () => {
+      expect(array8bitTo16bit([0])).to.deep.eq([0]);
+    });
+    
+    it('[1024] -> [0]', () => {
+      expect(array8bitTo16bit([1024])).to.deep.eq([0]);
     });
   });
 });

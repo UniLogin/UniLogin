@@ -39,5 +39,5 @@ export {copy} from './react/copy';
 export {calculateInitializeWithENSSignature, calculateInitializeSignature, getInitializeSigner} from './core/utils/calculateSignature';
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
 export {DeployArgs} from './core/models/deploy';
-export {isProperAddress} from './core/utils/isProperAddress';
-export {slices, shuffle} from './core/utils/arrays';
+export {isProperAddress, reverseHexString} from './core/utils/hexStrings';
+export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';

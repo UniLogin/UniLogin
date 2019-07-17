@@ -14,3 +14,10 @@ export const shuffle = (array: number[]): number[] => {
   }
   return result;
 };
+
+export const array8bitTo16bit = (numbers: number[]) => {
+  return Array.from(
+    slices(numbers, 2),
+    ([high, low]) => ((high << 8) | low & 0xFF) & 0xFFFF
+  );
+};
