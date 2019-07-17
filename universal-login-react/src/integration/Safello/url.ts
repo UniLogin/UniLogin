@@ -1,8 +1,3 @@
-const LANGUAGE = 'en';
-const COUNTRY = 'other';
-const CRYPTO = 'eth';
-
-
 export interface UrlConfig {
   contractAddress: string;
   language: string;
