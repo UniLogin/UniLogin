@@ -63,7 +63,51 @@ Main concepts
 Deploy
 ^^^^^^
 
-will be added soon
+
+Deployment is designed in the way, that user pays for himself. To do that, we use counterfactual deployment. (``create2`` function to deploy contract)
+
+The process looks like follows:
+
+- **computing contract address** - SDK computes deterministic contract address. Contract address is unique and is obtained from the users public key and factory contract address connected to particular relayer.
+
+- **waiting for balance** - User sends funds on this address. He can transfer ether on his own or use on-ramp provider. SDK waits for future contract address balance change. If SDK discovers, that required funds are on this balance, sends deploy request to relayer.
+
+- **deploy** - Relayer deploys the contract and immediately gets the refund from the contract.
+
+- **refund** - During deployment contract will refund the cost of the transaction to the relayer address.
+
+
+Deploy in-depth
+^^^^^^^^^^^^^^^
+
+
+SDK create deploy. Deploy contains the following parameters:
+
+.. image:: ../modeling/img/concepts/Deployment.png
+
+- **ensName** - ENS name chosen by user. It is the only parameter provided by the user.
+- **publicKey** - the public key of newly generated key pair on a users device.
+- **ensAddress** - address of ENS contract. It is required to properly register the ENS name.
+- **resolverAddress** - address of Resolver contract. It is required to properly register the ENS name.
+- **registrarAddress** - address of Registrar contract. It is required to properly register the ENS name.
+- **gasPrice** - gas price used in the refund process.
+- **signature** - the signature of all of the arguments above. Signature ensures parameters comes from the owner of the private key (paired to the public key). In particular, it prevents against malicious ENS name registration and gas price replacement.
+
+
+**ENS name collision**
+
+Deploy contains ENS name so it could fail (for example when ens name is taken). That's why we require success on register ENS name. If it fails, the contract won't be deployed, so the user can choose ENS name once again and register it on the same contract address.
+
+
+**Deployment lifecycle**
+
+It starts when the user generates contract address signed to him. The first half of deployment is waiting for the user to send funds to the computed contract address.
+
+.. image:: ../modeling/img/concepts/DeploymentStates.png
+
+
+
+
 
 Meta-transactions
 ^^^^^^^^^^^^^^^^^
@@ -119,7 +163,8 @@ The first solution is pretty straightforward. New device transfers it's public k
 
 There are two possible ways of transferring the public key.
 
-Note: this is a public key, so we don't worry about intercepting.
+Note: This is a public key, so we don't worry about intercepting.
+
 Note: The seed for ecliptic curve key that we use has 128bits or 16 bytes.
 
 * Scan the QR code
