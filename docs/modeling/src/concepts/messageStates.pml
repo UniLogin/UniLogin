@@ -1,4 +1,4 @@
-@startuml
+@startuml MessageStates
 
 title Message States
 
