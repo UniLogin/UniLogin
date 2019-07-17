@@ -68,11 +68,13 @@ Deployment is designed in the way, that user pays for himself. To do that, we us
 
 The process looks like follows:
 
-- **computing contract address** - SDK computes deterministic contract address. Contract address is unique and is signed to the users public key.
+- **computing contract address** - SDK computes deterministic contract address. Contract address is unique and is obtained from the users public key and factory contract address connected to particular relayer.
 
-- **waiting for balance** - User needs to send funds on this address. He can transfer ether on his own or use on-ramp provider. SDK wait for future contract address balance change. If SDK discovers, that required funds are on this balance, sends DEPLOY request to relayer.
+- **waiting for balance** - User sends funds on this address. He can transfer ether on his own or use on-ramp provider. SDK waits for future contract address balance change. If SDK discovers, that required funds are on this balance, sends deploy request to relayer.
 
 - **deploy** - Relayer deploys the contract and immediately gets the refund from the contract.
+
+- **refund** - During deployment contract will refund the cost of the transaction to the relayer address.
 
 
 Deploy in-depth
@@ -88,11 +90,13 @@ SDK create deploy. Deploy contains the following parameters:
 - **ensAddress** - address of ENS contract. It is required to properly register the ENS name.
 - **resolverAddress** - address of Resolver contract. It is required to properly register the ENS name.
 - **registrarAddress** - address of Registrar contract. It is required to properly register the ENS name.
-- **gasPrice** - gas price used in the refund.
-- **signature** - the signature of the arguments above. Signature prevents against unproperly ENS name registration and potential vulnerabilities like switch public key or gas price.
+- **gasPrice** - gas price used in the refund process.
+- **signature** - the signature of all of the arguments above. Signature ensures parameters comes from the owner of the private key (paired to the public key). In particular, it prevents against malicious ENS name registration and gas price replacement.
 
 
-Note: Deploy contains ENS name so it could fail (for example when ens name is taken). That's why we require success on register ENS name. If it fails, the contract won't be deployed, so the user can choose ENS name once again and register it on the same contract address.
+**ENS name collision**
+
+Deploy contains ENS name so it could fail (for example when ens name is taken). That's why we require success on register ENS name. If it fails, the contract won't be deployed, so the user can choose ENS name once again and register it on the same contract address.
 
 
 **Deployment lifecycle**
