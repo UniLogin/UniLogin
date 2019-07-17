@@ -4,13 +4,13 @@ export const safelloUrlConfig = {
   crypto: 'eth',
 };
 
-export interface UrlConfig {
+export interface SafelloConfig {
   language: string;
   country: string;
   crypto: string;
 }
 
-export const getSafelloUrl = (urlConfig: UrlConfig) => 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
+export const getSafelloUrl = (urlConfig: SafelloConfig) => 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
   '&border=true' +
   '&address-helper=true' +
   `&lang=${urlConfig.language}` +
