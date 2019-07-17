@@ -57,7 +57,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
     safelloUrl: 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678&border=true' +
     '&address-helper=true' +
     '&lang=en' +
-    '&country=any' +
+    '&country=other' +
     '&crypto=eth'
   };
 }

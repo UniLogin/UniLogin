@@ -146,6 +146,17 @@ describe('E2E: SDK', async () => {
     });
   });
 
+  describe('Get safello address' , async () => {
+    it('getSafelloUrl should return correct url', async () => {
+      const expectedUrl = 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678&border=true' +
+        '&address-helper=true' +
+        '&lang=en' +
+        '&country=other' +
+        '&crypto=eth';
+      expect(await sdk.getSafelloUrl()).to.be.eq(expectedUrl);
+    });
+  });
+
   describe('Add keys', async () => {
     it('should return transaction hash', async () => {
       const {waitToBeMined} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});

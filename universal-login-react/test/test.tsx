@@ -19,7 +19,7 @@ describe('Test congiguration', () => {
       '&border=true' +
       '&address-helper=true' +
       '&lang=en' +
-      '&country=$any' +
+      '&country=$other' +
       '&crypto=$eth';
     expect(() => mount(<Safello url={safelloUrl} />)).to.not.throw;
   });

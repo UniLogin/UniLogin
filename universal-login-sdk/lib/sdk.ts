@@ -146,6 +146,11 @@ class UniversalLoginSDK {
     return this.config = this.config || (await this.relayerApi.getConfig()).config;
   }
 
+  async getSafelloUrl() {
+    await this.getRelayerConfig();
+    return this.config!.safelloUrl;
+  }
+
   async getBalanceObserver() {
     ensureNotNull(this.config, MissingConfiguration);
     this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
