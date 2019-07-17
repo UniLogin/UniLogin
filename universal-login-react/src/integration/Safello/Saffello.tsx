@@ -1,13 +1,12 @@
+
 import React from 'react';
-import {getSafelloUrl} from '../../utils';
-import {useServices} from '../../hooks';
+import {getSafelloUrl, UrlConfig} from './url';
 
 
-const ModalSafello = () => {
-  const {walletService} = useServices();
+export const Safello = (urlConfig: UrlConfig) => {
   return (
     <iframe
-      src={getSafelloUrl(walletService.userWallet!.contractAddress)}
+      src={`${getSafelloUrl(urlConfig)}`}
       width="500px"
       height="650px"
       sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups"
@@ -16,4 +15,4 @@ const ModalSafello = () => {
   );
 };
 
-export default ModalSafello;
+export default Safello;

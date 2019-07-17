@@ -9,11 +9,13 @@ import ModalTopUp from './ModalTopUp';
 import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
-import ModalSafello from './ModalSafello';
 import ModalWaitingFor from './ModalWaitingFor';
+import {Safello} from '@universal-login/react';
+import getConfig from '../../../config/getConfig';
+
 
 const Modal = () => {
-  const {modalService} = useServices();
+  const {modalService, walletPresenter} = useServices();
   const openModal = useSubscription(modalService);
   const hideModal = () => modalService.hideModal();
 
@@ -75,7 +77,7 @@ const Modal = () => {
     case 'safello':
       return (
         <ModalWrapper>
-          <ModalSafello />
+          <Safello {...getConfig().safelloUrl} contractAddress={walletPresenter.getContractAddress()}/>
         </ModalWrapper>
       );
     default:
