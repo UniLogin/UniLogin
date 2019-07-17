@@ -19,8 +19,8 @@ describe('Test congiguration', () => {
       '&border=true' +
       '&address-helper=true' +
       '&lang=en' +
-      '&country=${any}' +
-      '&crypto=${eth}';
+      '&country=$any' +
+      '&crypto=$eth';
     expect(() => mount(<Safello url={safelloUrl} />)).to.not.throw;
   });
 });
