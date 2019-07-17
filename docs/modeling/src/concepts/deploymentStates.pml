@@ -1,4 +1,4 @@
-@startuml
+@startuml DeploymentStates
 
 title Deployment States
 

@@ -34,7 +34,7 @@ Dependencies
 ^^^^^^^^^^^^
 The diagram below shows dependencies between components.
 
-.. image:: ../modeling/img/subsystems.png
+.. image:: ../modeling/img/concepts/Packages.png
 
 
 The external interfaces present in the Universal Login system are identified by the lollipop use symbol:
@@ -160,7 +160,7 @@ The third solution is an alternative to previous solutions. The new device gener
 In the case of spamming, the user has to type exact emojis unlike arranging.
 
 
-.. _development: 
+.. _development:
 
 Development environment
 -----------------------
