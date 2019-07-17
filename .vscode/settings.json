@@ -1,6 +1,8 @@
 {
   "plantuml.diagramsRoot": "docs/modeling/src",
   "plantuml.exportOutDir": "docs/modeling/img",
+  "plantuml.exportSubFolder": false,
+  "plantuml.exportFormat": "png",
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "javascript.preferences.quoteStyle": "single",
