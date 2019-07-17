@@ -1,6 +1,5 @@
 .DS_Store
 .idea
-/.vscode
 /docs/build/
 /node_modules
 /sdk/*

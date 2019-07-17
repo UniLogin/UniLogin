@@ -1,4 +1,6 @@
 @startuml
+
+title Packages
 skinparam componentStyle uml2
 
 interface "ETHERS IF" <<IF-1>> as ETHERS_IF
