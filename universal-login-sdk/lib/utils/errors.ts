@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -37,6 +37,13 @@ export class ValidationFailed extends SDKError {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, ValidationFailed.prototype);
+  }
+}
+
+export class InvalidAddress extends ValidationFailed {
+  constructor (address: string) {
+    super(`Address ${address} is not valid.`, 'InvalidAddress');
+    Object.setPrototypeOf(this, InvalidAddress.prototype);
   }
 }
 
