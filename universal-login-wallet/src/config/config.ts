@@ -1,6 +1,6 @@
 require('dotenv').config();
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {safelloUrlConfig} from './safello';
+import {safelloUrlConfig, getSafelloUrl} from './safello';
 
 
 export default Object.freeze({
@@ -10,7 +10,7 @@ export default Object.freeze({
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address],
-    safelloUrl: safelloUrlConfig
+    safelloUrl: getSafelloUrl(safelloUrlConfig)
   },
 
   test: {
@@ -18,7 +18,7 @@ export default Object.freeze({
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address],
-    safelloUrl: safelloUrlConfig
+    safelloUrl: getSafelloUrl(safelloUrlConfig)
   },
 
   production: {
@@ -26,6 +26,6 @@ export default Object.freeze({
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address],
-    safelloUrl: safelloUrlConfig
+    safelloUrl: getSafelloUrl(safelloUrlConfig)
   }
 });

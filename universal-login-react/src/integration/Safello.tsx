@@ -1,12 +1,15 @@
 
 import React from 'react';
-import {getSafelloUrl, UrlConfig} from './url';
 
+interface Safello {
+  url: string;
+}
 
-export const Safello = (urlConfig: UrlConfig) => {
+export const Safello = (props: Safello) => {
+  const {url} = props;
   return (
     <iframe
-      src={`${getSafelloUrl(urlConfig)}`}
+      src={url}
       width="500px"
       height="650px"
       sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups"

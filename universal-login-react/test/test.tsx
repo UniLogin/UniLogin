@@ -15,12 +15,12 @@ describe('Test congiguration', () => {
   });
 
   it('should be mounted', async () => {
-    const safelloUrlConfig = {
-      language: 'en',
-      crypto: 'eth',
-      country: 'other',
-      contractAddress: '0x'
-    };
-    expect(() => mount(<Safello {...safelloUrlConfig} />)).to.not.throw;
+    const safelloUrl = 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
+      '&border=true' +
+      '&address-helper=true' +
+      '&lang=en' +
+      '&country=${any}' +
+      '&crypto=${eth}';
+    expect(() => mount(<Safello url={safelloUrl} />)).to.not.throw;
   });
 });

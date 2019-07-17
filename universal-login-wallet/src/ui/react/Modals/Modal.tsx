@@ -77,7 +77,7 @@ const Modal = () => {
     case 'safello':
       return (
         <ModalWrapper>
-          <Safello {...getConfig().safelloUrl} contractAddress={walletPresenter.getContractAddress()}/>
+          <Safello url={`${getConfig().safelloUrl}&address=${walletPresenter.getContractAddress()}`}/>
         </ModalWrapper>
       );
     default:
