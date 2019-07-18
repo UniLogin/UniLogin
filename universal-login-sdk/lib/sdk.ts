@@ -143,7 +143,8 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
-    return this.config = this.config || (await this.relayerApi.getConfig()).config;
+    this.config = this.config || (await this.relayerApi.getConfig()).config;
+    return this.config;
   }
 
   async getBalanceObserver() {
