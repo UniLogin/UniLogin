@@ -2,14 +2,14 @@
 import React from 'react';
 import {LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 
-interface Safello {
+interface SafelloProps {
   localizationConfig: LocalizationConfig;
   safelloConfig: SafelloConfig;
   crypto: string;
   contractAddress: string;
 }
 
-export const Safello = (props: Safello) => {
+export const Safello = (props: SafelloProps) => {
   const {localizationConfig, crypto, contractAddress, safelloConfig} = props;
   const url = getSafelloUrl(localizationConfig, safelloConfig, crypto, contractAddress);
   return (
@@ -37,4 +37,4 @@ export const getSafelloUrl = (
     `&crypto=${crypto}` +
     `&address=${contractAddress}`;
 
-export default Safello;
+export default SafelloProps;
