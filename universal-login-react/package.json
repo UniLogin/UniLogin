@@ -12,6 +12,7 @@
     "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\""
   },
   "dependencies": {
+    "@universal-login/commons": "^0.3.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
