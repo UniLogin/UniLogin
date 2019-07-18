@@ -3,6 +3,7 @@ import deepEqual from 'deep-equal';
 import {ensure} from './errors';
 import {isProperAddress, reverseHexString} from './hexStrings';
 import {shuffle, array8bitTo16bit} from './arrays';
+import {Notification} from '../models/notifications';
 
 export const ALPHABET_SIZE = 1024;
 export const SECURITY_CODE_LENGTH = 6;
@@ -28,4 +29,12 @@ export const generateCode = (publicKey: string): number[] => {
 export const isValidCode = (code: number[], publicKey: string) => {
   const expectedCode = generateCode(publicKey);
   return deepEqual(expectedCode, code);
+};
+
+export const addCodesToNotifications = (notifications: Notification[]) => {
+  for (const notification of notifications) {
+    const publicKey = notification.key;
+    notification.securityCodeWithFakes = generateCodeWithFakes(publicKey);
+  }
+  return notifications;
 };

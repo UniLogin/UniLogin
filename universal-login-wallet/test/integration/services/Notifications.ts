@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import {expect} from 'chai';
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, utils} from 'ethers';
 import {Services} from '../../../src/ui/createServices';
 import {setupSdk} from '../helpers/setupSdk';
 import {waitUntil, ETHER_NATIVE_TOKEN, Notification, KeyPair, createKeyPair} from '@universal-login/commons';
@@ -30,7 +30,10 @@ describe('NotificationService', () => {
     keyPair = createKeyPair();
     services.sdk.connect = async (walletContractAddress: string) => {
       await services.sdk.relayerApi.connect(walletContractAddress, keyPair.publicKey.toLowerCase());
-      return keyPair.publicKey.toLowerCase();
+      return {
+        privateKey: keyPair.privateKey.toLowerCase(),
+        securityCode: []
+      };
     };
   });
 
@@ -41,12 +44,12 @@ describe('NotificationService', () => {
 
     expect(callback).has.been.calledOnceWithExactly([]);
 
-    const publicKey = await services.sdk.connect(contractAddress);
+    const {privateKey} = await services.sdk.connect(contractAddress);
     await waitUntil(() => callback.secondCall !== null);
 
     expect(notification!).to.deep.include({
       walletContractAddress: services.walletService.userWallet!.contractAddress.toLowerCase(),
-      key: publicKey,
+      key: utils.computeAddress(privateKey).toLowerCase(),
     });
 
     await services.notificationService.reject(notification!.key);

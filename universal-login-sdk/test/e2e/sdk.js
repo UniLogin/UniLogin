@@ -195,7 +195,7 @@ describe('SDK - integration', async () => {
         });
 
         it('should return pending authorisations', async () => {
-          const devicePrivateKey = await sdk.connect(contractAddress);
+          const {privateKey: devicePrivateKey} = await sdk.connect(contractAddress);
           const wallet = new Wallet(devicePrivateKey);
           const getAuthorisationRequest = {
             walletContractAddress: contractAddress.toLowerCase(),
@@ -208,7 +208,8 @@ describe('SDK - integration', async () => {
         });
 
         it('should return private key', async () => {
-          expect(await sdk.connect(contractAddress)).to.be.properPrivateKey;
+          const {privateKey: newDevicePrivateKey} = await sdk.connect(contractAddress);
+          expect(newDevicePrivateKey).to.be.properPrivateKey;
         });
 
         it('should return public key when deny request', async () => {
