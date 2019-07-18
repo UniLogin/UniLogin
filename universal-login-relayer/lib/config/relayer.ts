@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
-import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN, LocalizationConfig} from '@universal-login/commons';
+import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN, LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {localization} from './localization';
+import {saffelloConfig} from './safello';
 
 dotenv.config();
 
@@ -16,6 +17,9 @@ export interface Config {
   factoryAddress: string;
   supportedTokens: SupportedToken[];
   localization: LocalizationConfig;
+  onRampProviders: {
+    safello: SafelloConfig;
+  };
 }
 
 export const config: Config =  Object.freeze({
@@ -42,7 +46,10 @@ export const config: Config =  Object.freeze({
     address: ETHER_NATIVE_TOKEN.address,
     minimalAmount: utils.parseEther('0.005').toString()
   }],
-  localization
+  localization,
+  onRampProviders: {
+    safello: saffelloConfig
+  }
 });
 
 export default config;
