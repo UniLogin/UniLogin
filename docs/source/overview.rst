@@ -110,32 +110,32 @@ It starts when the user generates contract address signed to him. The first half
 Meta-transactions
 ^^^^^^^^^^^^^^^^^
 
-Message (also known as meta-transaction) is a contract execution request (funds sending, external call, operation in contract etc.), that is sent to relayer and wrap into ethereum transaction. Message in the contract is processed as a call. The message contains the following parameters:
+Message (also known as meta-transaction or signed messages) is a way to trigger ethereum transaction from an application or device that does not possess any ether. The message states the intention of the user. It requests a wallet contract to execute a transaction. (eg.: funds transfer, external function call or internal function call - i.e. operation in wallet contract itself). An application sends message signed with one or more of the keys whitelisted in the contract to the relayer server. Relayer than wraps message into ethereum transaction. The message is then processed by the contract as a function call. Relayer wallet is paying for transaction gas. Wallet refunds cost of execution back to the relayer in Ether or ERC20 token. The message contains the following parameters:
 
 .. image:: ../modeling/img/concepts/Message.png
 
-- **to** - beneficient of this message call.
-- **from** - address of a contract that executes message.
-- **value** - value to send.
-- **data** - data to process.
-- **gasToken** - token address to refund.
-- **gasLimit** - maximum gas to use in a specific transaction.
-- **gasPrice** - gas price to use in the refund process.
-- **nonce** - current nonce in contract. It is increment after each execution of the message.
-- **operationType** - type of execution.
-- **signature** - the signature of all of the arguments above. Signature ensures parameters comes from the owner of the private key (paired to the public key).
+- **to** - recipient of a message call
+- **from** - address of a contract that executes message
+- **value** - value to send
+- **data** - data for the transaction (i.e. encoded function call)
+- **gasToken** - token address to refund
+- **gasLimit** - maximum gas to use in for a specific transaction
+- **gasPrice** - gas price to use in the refund process
+- **nonce** - internal nounce of the transaction relative to the contract wallet
+- **operationType** - type of execution (call, delegatecall, create)
+- **signature** - the signature of all of the arguments above, which ensures parameters comes from the owner of the allowed private-public key pair
 
 
 **Message lifecycle**
 
-The message is created and signed by the user and then sent to relayer. In relayer it goes through the following states:
+The message starts it's journey when it is created and signed by the user (i.e. application or SDK) and then sent to relayer. In relayer it goes through the following states:
 
 .. image:: ../modeling/img/concepts/MessageStates.png
 
-- **await signature** ``optional``- it is present when more than one signature is required to execute message.
-- **queued** - right before send, every message is queued.
-- **pending** - wrapped in ethereum transaction, waits to be mined.
-- **sucess** / **error** - transaction ends with success or error. In success state message has transaction hash. In error state message has error log.
+- **await signature** ``optional``- Relayer waits to collect all required signatures if the message requires more than one signature.
+- **queued** - Message is queued to be sent.
+- **pending** - Message is propagated to the network and waits to be mined.
+- **sucess** / **error** - Mined transaction is a success or an error. In a success state, the message has a transaction hash. In an error state, the message has an error message.
 
 
 
