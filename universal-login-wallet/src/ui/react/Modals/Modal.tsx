@@ -11,13 +11,14 @@ import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello} from '@universal-login/react';
-import getConfig from '../../../config/getConfig';
+import {useConfig} from '../../hooks/useConfig';
 
 
 const Modal = () => {
   const {modalService, walletPresenter} = useServices();
   const openModal = useSubscription(modalService);
   const hideModal = () => modalService.hideModal();
+  const config = useConfig();
 
   switch (openModal) {
     case 'transfer':
@@ -75,11 +76,16 @@ const Modal = () => {
         </ModalWrapper>
       );
     case 'safello':
-      return (
+      return config ?  (
         <ModalWrapper>
-          <Safello {...getConfig().safelloUrl} contractAddress={walletPresenter.getContractAddress()}/>
+          <Safello
+            localizationConfig={config.localization}
+            safelloConfig={config.onRampProviders.safello}
+            contractAddress={walletPresenter.getContractAddress()}
+            crypto="eth"
+          />
         </ModalWrapper>
-      );
+      ) : null;
     default:
       return null;
   }

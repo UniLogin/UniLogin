@@ -1,3 +1,5 @@
+import {LocalizationConfig, SafelloConfig} from './onRamp';
+
 export interface SupportedToken {
   address: string;
   minimalAmount: string;
@@ -19,4 +21,8 @@ export interface PublicRelayerConfig {
   factoryAddress: string;
   chainSpec: ChainSpec;
   contractWhiteList: ContractWhiteList;
+  localization: LocalizationConfig;
+  onRampProviders: {
+    safello: SafelloConfig;
+  };
 }
