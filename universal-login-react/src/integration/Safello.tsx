@@ -28,12 +28,13 @@ export const getSafelloUrl = (
     safelloConfig: SafelloConfig,
     crypto: string,
     contractAddress: string
-  ) => 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
-  '&border=true' +
-  '&address-helper=true' +
-  `&lang=${localizationConfig.language}` +
-  `&country=${localizationConfig.country}` +
-  `&crypto=${crypto}` +
-  `&address=${contractAddress}`;
+  ) => `${safelloConfig.baseAddress}?` +
+    `appId=${safelloConfig.appId}` +
+    `&border=true` +
+    `&address-helper=${safelloConfig.addressHelper}` +
+    `&lang=${localizationConfig.language}` +
+    `&country=${localizationConfig.country}` +
+    `&crypto=${crypto}` +
+    `&address=${contractAddress}`;
 
 export default Safello;
