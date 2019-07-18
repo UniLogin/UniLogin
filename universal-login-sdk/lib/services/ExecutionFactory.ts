@@ -10,8 +10,10 @@ export interface Execution {
 }
 
 export class ExecutionFactory {
-  constructor(private relayerApi: RelayerApi) {
+  private timeout: number = 600000;
+  private tick: number = 1000;
 
+  constructor(private relayerApi: RelayerApi) {
   }
 
   async createExecution(signedMessage: SignedMessage): Promise<Execution> {
@@ -37,7 +39,7 @@ export class ExecutionFactory {
     return async () => {
       const getStatus = () => this.relayerApi.getStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
-      const status = await retry(getStatus, isNotExecuted);
+      const status = await retry(getStatus, isNotExecuted, this.timeout, this.tick);
       ensure(!status.error, Error, status.error!);
       return status;
     };
