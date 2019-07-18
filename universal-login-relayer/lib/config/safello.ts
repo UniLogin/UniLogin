@@ -1,18 +1,7 @@
-export const safelloUrlConfig = {
-  language: 'en',
-  country: 'other',
-  crypto: 'eth',
+import {SafelloConfig} from '@universal-login/commons';
+
+export const saffelloConfig: SafelloConfig = {
+  appId: '',
+  baseAddress: '',
+  addressHelper: true
 };
-
-export interface SafelloConfig {
-  language: string;
-  country: string;
-  crypto: string;
-}
-
-export const getSafelloUrl = (urlConfig: SafelloConfig) => 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
-  '&border=true' +
-  '&address-helper=true' +
-  `&lang=${urlConfig.language}` +
-  `&country=${urlConfig.country}` +
-  `&crypto=${urlConfig.crypto}`;
