@@ -3,7 +3,7 @@ export {DeviceInfo, Notification} from './core/models/notifications';
 export {Message, MessageWithFrom, MessageWithoutFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageState, CollectedSignatureKeyPair} from './core/models/message';
 export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './core/models/relayer';
-export {LocalizationConfig} from './core/models/onRamp';
+export {LocalizationConfig, SafelloConfig} from './core/models/onRamp';
 export {createKeyPair, KeyPair} from './core/models/keyPair';
 export {TransactionOverrides} from './core/models/transactions';
 export {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE} from './core/constants/test';
