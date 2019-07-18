@@ -17,7 +17,7 @@ export {TokenService} from './integration/ethereum/TokenService';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {getBalance, findTokenWithRequiredBalance} from './integration/ethereum/balance';
-export {deployContract, deployContractAndWait} from './integration/ethereum/deployContract';
+export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/withENS';
 export {getContractHash, getDeployedBytecode, isContractExist} from './core/utils/contracts/contractHelpers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
