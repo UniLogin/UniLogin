@@ -1,7 +1,5 @@
 @startuml
 
-title Message
-
 class Message {
   to: address
   from: address
