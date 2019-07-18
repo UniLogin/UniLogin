@@ -1,16 +1,17 @@
 
 import React from 'react';
-import {LocalizationConfig} from '@universal-login/commons';
+import {LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 
 interface Safello {
   localizationConfig: LocalizationConfig;
+  safelloConfig: SafelloConfig;
   crypto: string;
   contractAddress: string;
 }
 
 export const Safello = (props: Safello) => {
-  const {localizationConfig, crypto, contractAddress} = props;
-  const url = getSafelloUrl(localizationConfig, crypto, contractAddress);
+  const {localizationConfig, crypto, contractAddress, safelloConfig} = props;
+  const url = getSafelloUrl(localizationConfig, safelloConfig, crypto, contractAddress);
   return (
     <iframe
       src={url}
@@ -22,7 +23,12 @@ export const Safello = (props: Safello) => {
   );
 };
 
-export const getSafelloUrl = (localizationConfig: LocalizationConfig, crypto: string, contractAddress: string) => 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
+export const getSafelloUrl = (
+    localizationConfig: LocalizationConfig,
+    safelloConfig: SafelloConfig,
+    crypto: string,
+    contractAddress: string
+  ) => 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
   '&border=true' +
   '&address-helper=true' +
   `&lang=${localizationConfig.language}` +
