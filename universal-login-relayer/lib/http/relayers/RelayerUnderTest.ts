@@ -9,6 +9,7 @@ import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getSafelloUrl, safelloUrlConfig} from '../../config/safello';
+import {localization} from '../../config/localization';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -57,7 +58,8 @@ export class RelayerUnderTest extends Relayer {
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
-      safelloUrl: getSafelloUrl(safelloUrlConfig)
+      safelloUrl: getSafelloUrl(safelloUrlConfig),
+      localization
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};

@@ -58,7 +58,11 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
     '&address-helper=true' +
     '&lang=en' +
     '&country=other' +
-    '&crypto=eth'
+    '&crypto=eth',
+    localization: {
+      language: 'en',
+      country: 'any'
+    }
   };
 }
 
