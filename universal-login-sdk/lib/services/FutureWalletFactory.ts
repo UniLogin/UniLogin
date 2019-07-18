@@ -20,10 +20,12 @@ export type FutureWallet = {
   deploy: (ensName: string, gasPrice: string) => Promise<string>
 };
 
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' >;
+
 export class FutureWalletFactory {
 
   constructor(
-    private config: Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' >,
+    private config: FutureFactoryConfig,
     private provider: providers.Provider,
     private blockchainService: BlockchainService,
     private relayerApi: RelayerApi,
