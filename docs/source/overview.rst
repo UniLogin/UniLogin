@@ -107,12 +107,37 @@ It starts when the user generates contract address signed to him. The first half
 
 
 
-
-
 Meta-transactions
 ^^^^^^^^^^^^^^^^^
 
-will be added soon
+Message (also known as meta-transaction) is a contract execution request (funds sending, external call, operation in contract etc.), that is sent to relayer and wrap into ethereum transaction. Message in the contract is processed as a call. The message contains the following parameters:
+
+.. image:: ../modeling/img/concepts/Message.png
+
+- **to** - beneficient of this message call.
+- **from** - address of a contract that executes message.
+- **value** - value to send.
+- **data** - data to process.
+- **gasToken** - token address to refund.
+- **gasLimit** - maximum gas to use in a specific transaction.
+- **gasPrice** - gas price to use in the refund process.
+- **nonce** - current nonce in contract. It is increment after each execution of the message.
+- **operationType** - type of execution.
+- **signature** - the signature of all of the arguments above. Signature ensures parameters comes from the owner of the private key (paired to the public key).
+
+
+**Message lifecycle**
+
+The message is created and signed by the user and then sent to relayer. In relayer it goes through the following states:
+
+.. image:: ../modeling/img/concepts/MessageStates.png
+
+- **await signature** ``optional``- it is present when more than one signature is required to execute message.
+- **queued** - right before send, every message is queued.
+- **pending** - wrapped in ethereum transaction, waits to be mined.
+- **sucess** / **error** - transaction ends with success or error. In success state message has transaction hash. In error state message has error log.
+
+
 
 
 Connection new device
