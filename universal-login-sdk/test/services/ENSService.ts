@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {providers, utils} from 'ethers';
-import {loadFixture, createMockProvider} from 'ethereum-waffle';
+import {loadFixture} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {ENSService} from '../../lib/services/ENSService';
 
