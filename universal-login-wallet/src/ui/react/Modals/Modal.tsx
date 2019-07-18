@@ -11,7 +11,6 @@ import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello} from '@universal-login/react';
-import getConfig from '../../../config/getConfig';
 
 
 const Modal = () => {
