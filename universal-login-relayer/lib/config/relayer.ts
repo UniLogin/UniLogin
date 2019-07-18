@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN, LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 import {utils} from 'ethers';
-import {localization} from './localization';
-import {saffelloConfig} from './safello';
 
 dotenv.config();
 
@@ -46,9 +44,16 @@ export const config: Config =  Object.freeze({
     address: ETHER_NATIVE_TOKEN.address,
     minimalAmount: utils.parseEther('0.005').toString()
   }],
-  localization,
+  localization: {
+    language: 'en',
+    country: 'any'
+  },
   onRampProviders: {
-    safello: saffelloConfig
+    safello: {
+      appId: '1234-5678',
+      baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+      addressHelper: true
+    }
   }
 });
 

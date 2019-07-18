@@ -8,8 +8,6 @@ import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
-import {localization} from '../../config/localization';
-import {saffelloConfig} from '../../config/safello';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -58,9 +56,16 @@ export class RelayerUnderTest extends Relayer {
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
-      localization,
+      localization: {
+        language: 'en',
+        country: 'any'
+      },
       onRampProviders: {
-        safello: saffelloConfig
+        safello: {
+          appId: '1234-5678',
+          baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+          addressHelper: true
+        }
       }
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
