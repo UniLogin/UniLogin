@@ -146,6 +146,18 @@ describe('E2E: SDK', async () => {
     });
   });
 
+  describe('Get relayer config', async () => {
+    it('getRelayerConfig return config which should have properties', async () => {
+      const relayerConfig = await sdk.getRelayerConfig();
+      expect(relayerConfig).to.haveOwnProperty('supportedTokens');
+      expect(relayerConfig).to.haveOwnProperty('chainSpec');
+      expect(relayerConfig).to.haveOwnProperty('factoryAddress');
+      expect(relayerConfig).to.haveOwnProperty('contractWhiteList');
+      expect(relayerConfig).to.haveOwnProperty('localization');
+      expect(relayerConfig).to.haveOwnProperty('onRampProviders');
+    });
+  });
+
   describe('Add keys', async () => {
     it('should return transaction hash', async () => {
       const {waitToBeMined} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
