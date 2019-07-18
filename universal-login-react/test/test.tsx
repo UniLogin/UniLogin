@@ -5,6 +5,7 @@ import {TestDiv} from '../src/test';
 import {configure, ReactWrapper, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import {Safello} from '../src';
+import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 
 configure({adapter: new Adapter()});
 
@@ -15,12 +16,6 @@ describe('Test congiguration', () => {
   });
 
   it('should be mounted', async () => {
-    const safelloUrl = 'https://app.s4f3.io/sdk/quickbuy.html?appId=1234-5678' +
-      '&border=true' +
-      '&address-helper=true' +
-      '&lang=en' +
-      '&country=$other' +
-      '&crypto=$eth';
-    expect(() => mount(<Safello url={safelloUrl} />)).to.not.throw;
+    expect(() => mount(<Safello localizationConfig={{country: 'other', language: 'en'}} contractAddress={TEST_ACCOUNT_ADDRESS} crypto="eth" />)).to.not.throw;
   });
 });

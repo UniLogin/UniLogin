@@ -77,7 +77,7 @@ const Modal = () => {
     case 'safello':
       return (
         <ModalWrapper>
-          <Safello url={`${getConfig().safelloUrl}&address=${walletPresenter.getContractAddress()}`}/>
+          <Safello localizationConfig={{country: 'other', language: 'en'}} contractAddress={walletPresenter.getContractAddress()} crypto="eth" />
         </ModalWrapper>
       );
     default:
