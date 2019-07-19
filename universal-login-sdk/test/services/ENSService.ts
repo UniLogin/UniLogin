@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {providers, utils} from 'ethers';
-import {loadFixture, createMockProvider} from 'ethereum-waffle';
+import {loadFixture} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {ENSService} from '../../lib/services/ENSService';
 
@@ -34,11 +34,5 @@ describe('ENS Service', async () => {
     const node = utils.namehash(ensName);
     const expectedArgs = [hashLabel, ensName, node, ensAddress, registrarAddress, publicResolver];
     expect(await ensService.argsFor(ensName)).to.deep.eq(expectedArgs);
-  });
-
-  it('should throw error if ensAddress wasn`t passed in constructor and provider doesn`t have ensAddress', async () => {
-    const providerWithoutENS = createMockProvider();
-    ensService = new ENSService(providerWithoutENS);
-    await expect(ensService.argsFor('justyna.mylogin.eth')).to.be.rejectedWith('Can not find ENS address');
   });
 });

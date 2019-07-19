@@ -53,7 +53,18 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
     contractWhiteList,
     factoryAddress,
     supportedTokens,
-    tokenContractAddress: tokenAddress
+    tokenContractAddress: tokenAddress,
+    localization: {
+      language: 'en',
+      country: 'any'
+    },
+    onRampProviders: {
+      safello: {
+        appId: '1234-5678',
+        baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+        addressHelper: true
+      }
+    }
   };
 }
 

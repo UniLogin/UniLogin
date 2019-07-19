@@ -4,22 +4,24 @@ import {Config} from '../../config/relayer';
 import {PublicRelayerConfig} from '@universal-login/commons';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
-  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList} = config;
+  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders} = config;
   return {
-      chainSpec,
-      supportedTokens,
-      factoryAddress,
-      contractWhiteList
-    };
+    chainSpec,
+    supportedTokens,
+    factoryAddress,
+    contractWhiteList,
+    localization,
+    onRampProviders
+  };
 }
 
-export const network = (config : PublicRelayerConfig) => async (req : Request, res : Response) => {
+export const network = (config: PublicRelayerConfig) => async (req: Request, res: Response) => {
   res.status(200)
     .type('json')
     .send(JSON.stringify({config}));
 };
 
-export default (config : PublicRelayerConfig) => {
+export default (config: PublicRelayerConfig) => {
   const router = Router();
 
   router.get('/',

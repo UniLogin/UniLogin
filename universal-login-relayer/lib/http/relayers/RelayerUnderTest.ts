@@ -55,7 +55,18 @@ export class RelayerUnderTest extends Relayer {
       walletMasterAddress: walletMaster.address,
       contractWhiteList,
       factoryAddress: factoryContract.address,
-      supportedTokens
+      supportedTokens,
+      localization: {
+        language: 'en',
+        country: 'any'
+      },
+      onRampProviders: {
+        safello: {
+          appId: '1234-5678',
+          baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+          addressHelper: true
+        }
+      }
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};

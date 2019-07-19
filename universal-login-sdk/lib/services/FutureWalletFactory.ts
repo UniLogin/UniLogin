@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {Omit, PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
+import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
 import {createFutureWallet} from '../utils/counterfactual';
 import {BalanceObserver} from '../observers/BalanceObserver';
 import {DeploymentObserver} from '../observers/DeploymentObserver';
@@ -20,14 +20,17 @@ export type FutureWallet = {
   deploy: (ensName: string, gasPrice: string) => Promise<string>
 };
 
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
+
 export class FutureWalletFactory {
+  private ensService: ENSService;
 
   constructor(
-    private config: Omit<PublicRelayerConfig, 'chainSpec'>,
+    private config: FutureFactoryConfig,
     private provider: providers.Provider,
     private blockchainService: BlockchainService,
-    private relayerApi: RelayerApi,
-    private ensService: ENSService) {
+    private relayerApi: RelayerApi) {
+      this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
   async setupInitData(publicKey: string, ensName: string, gasPrice: string) {

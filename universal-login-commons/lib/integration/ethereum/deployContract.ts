@@ -1,4 +1,4 @@
-import {ContractFactory, Wallet} from 'ethers';
+import {ContractFactory, Wallet, utils} from 'ethers';
 import {ContractJSON} from '../../core/models/ContractJSON';
 import {TransactionOverrides} from '../../core/models/transactions';
 import {defaultDeployOptions} from './transaction';
@@ -19,3 +19,5 @@ export async function deployContractAndWait(wallet: Wallet, contractJSON: Contra
   const {contractAddress} = await wallet.provider.waitForTransaction(hash!);
   return contractAddress!;
 }
+
+export const DEPLOY_GAS_LIMIT = utils.bigNumberify('500000');

@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN, LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 import {utils} from 'ethers';
 
 dotenv.config();
@@ -14,6 +14,10 @@ export interface Config {
   contractWhiteList: ContractWhiteList;
   factoryAddress: string;
   supportedTokens: SupportedToken[];
+  localization: LocalizationConfig;
+  onRampProviders: {
+    safello: SafelloConfig;
+  };
 }
 
 export const config: Config =  Object.freeze({
@@ -33,13 +37,24 @@ export const config: Config =  Object.freeze({
   walletMasterAddress: getEnv('WALLET_MASTER_ADDRESS', ''),
   contractWhiteList: {
     master: [],
-    proxy: ['0x70aa6ef04860e3effad48a2e513965ff76c08c96b7586dfd9e01d4da08e00ccb']
+    proxy: ['0xca33d06bff615ad98056f8f720c57042cd3e820985235a3f77b73067c451cd3e']
   },
   factoryAddress: getEnv('FACTORY_ADDRESS', ''),
   supportedTokens: [{
     address: ETHER_NATIVE_TOKEN.address,
     minimalAmount: utils.parseEther('0.005').toString()
-  }]
+  }],
+  localization: {
+    language: 'en',
+    country: 'any'
+  },
+  onRampProviders: {
+    safello: {
+      appId: '1234-5678',
+      baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+      addressHelper: true
+    }
+  }
 });
 
 export default config;
