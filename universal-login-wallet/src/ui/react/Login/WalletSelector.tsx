@@ -1,18 +1,18 @@
 import React, {useState, ChangeEvent} from 'react';
 import {Input, Suggestions, renderBusyIndicator} from '@universal-login/react';
-import {useServices} from '../../hooks';
+import {SuggestionsService} from '@universal-login/commons';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
+  suggestionsService: SuggestionsService;
 }
 
-const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
+const WalletSelector = ({onCreateClick, onConnectionClick, suggestionsService}: WalletSelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
   const [, setName] = useState('');
-  const {suggestionsService} = useServices();
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
