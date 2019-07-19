@@ -14,7 +14,7 @@ chai.use(sinonChai);
 
 const loadFixture = createFixtureLoader();
 
-describe('SDK: RelayerObserver', async () => {
+describe('INT: AuthorisationsObserver', async () => {
   let relayer: Relayer;
   let sdk: UniversalLoginSDK;
   let contractAddress: string;
@@ -61,7 +61,7 @@ describe('SDK: RelayerObserver', async () => {
     const callback2 = sinon.spy();
 
     const unsubscribe1 = authorisationsObserver.subscribe(getAuthorisationRequest, callback1);
-    const unsubscribe2 = await authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
+    const unsubscribe2 = authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
 
     await sdk.connect(contractAddress);
     await sdk.connect(newContractAddress);

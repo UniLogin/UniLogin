@@ -27,7 +27,7 @@ describe('authorisation sign verify', async () => {
   it('Sign cancel authorisation request payload', async () => {
     signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
     expect(cancelAuthorisationRequest.signature).to.deep.equal(expectedSignature);
-    expect(utils.verifyMessage(utils.arrayify(hashCancelAuthorisationRequest(cancelAuthorisationRequest)), cancelAuthorisationRequest.signature)).to.eq(address);
+    expect(utils.verifyMessage(utils.arrayify(hashCancelAuthorisationRequest(cancelAuthorisationRequest)), cancelAuthorisationRequest.signature!)).to.eq(address);
   });
 
   it('Verify cancel authorisation request payload', async () => {

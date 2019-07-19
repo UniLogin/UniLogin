@@ -2,6 +2,7 @@ export interface Notification {
   id: number;
   key: string;
   walletContractAddress: string;
+  securityCodeWithFakes?: number[];
   deviceInfo: DeviceInfo;
 }
 

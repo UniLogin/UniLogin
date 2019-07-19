@@ -9,15 +9,16 @@ export const hashCancelAuthorisationRequest =
   };
 
 export const signCancelAuthorisationRequest =
-  (cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string): void => {
+  (cancelAuthorisationRequest: CancelAuthorisationRequest, privateKey: string) => {
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
     cancelAuthorisationRequest.signature = sign(payloadDigest, privateKey);
+    return cancelAuthorisationRequest;
   };
 
 export const recoverFromCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
-    return utils.verifyMessage(utils.arrayify(payloadDigest), cancelAuthorisationRequest.signature);
+    return utils.verifyMessage(utils.arrayify(payloadDigest), cancelAuthorisationRequest.signature!);
   };
 
 export const verifyCancelAuthorisationRequest =

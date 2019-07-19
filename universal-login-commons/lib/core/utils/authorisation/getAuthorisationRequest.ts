@@ -9,15 +9,16 @@ export const hashGetAuthorisationRequest =
   };
 
 export const signGetAuthorisationRequest =
-  (getAuthorisationRequest: GetAuthorisationRequest, privateKey: string): void => {
+  (getAuthorisationRequest: GetAuthorisationRequest, privateKey: string) => {
     const payloadDigest = hashGetAuthorisationRequest(getAuthorisationRequest);
     getAuthorisationRequest.signature = sign(payloadDigest, privateKey);
+    return getAuthorisationRequest;
   };
 
 export const recoverFromGetAuthorisationRequest =
   (getAuthorisationRequest: GetAuthorisationRequest): string => {
     const payloadDigest = hashGetAuthorisationRequest(getAuthorisationRequest);
-    return utils.recoverAddress(payloadDigest, getAuthorisationRequest.signature);
+    return utils.verifyMessage(utils.arrayify(payloadDigest), getAuthorisationRequest.signature!);
   };
 
 export const verifyGetAuthorisationRequest =

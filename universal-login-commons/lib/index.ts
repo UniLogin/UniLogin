@@ -42,3 +42,4 @@ export {ENSDomainInfo} from './core/models/ENSDomainInfo';
 export {DeployArgs} from './core/models/deploy';
 export {isProperAddress, reverseHexString} from './core/utils/hexStrings';
 export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';
+export {generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';

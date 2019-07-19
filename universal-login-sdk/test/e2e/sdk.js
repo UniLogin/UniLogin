@@ -198,30 +198,24 @@ describe('E2E: SDK', async () => {
 
     describe('Authorisation', async () => {
       it('no pending authorisations', async () => {
-        const getAuthorisationRequest = {
-          walletContractAddress: contractAddress.toLowerCase(),
-          signature: ''
-        };
-        signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
-
+        const getAuthorisationRequest = signGetAuthorisationRequest({walletContractAddress: contractAddress.toLowerCase()}, privateKey);
         expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest)).to.deep.eq([]);
       });
 
+
       it('should return pending authorisations', async () => {
-        const devicePrivateKey = await sdk.connect(contractAddress);
+        const {privateKey: devicePrivateKey} = await sdk.connect(contractAddress);
         const wallet = new Wallet(devicePrivateKey);
-        const getAuthorisationRequest = {
-          walletContractAddress: contractAddress.toLowerCase(),
-          signature: ''
-        };
-        signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
+
+        const getAuthorisationRequest = signGetAuthorisationRequest({walletContractAddress: contractAddress.toLowerCase()}, privateKey);
 
         const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest);
         expect(response[response.length - 1]).to.deep.include({key: wallet.address.toLowerCase()});
       });
 
       it('should return private key', async () => {
-        expect(await sdk.connect(contractAddress)).to.be.properPrivateKey;
+        const {privateKey: newDevicePrivateKey} = await sdk.connect(contractAddress);
+        expect(newDevicePrivateKey).to.be.properPrivateKey;
       });
 
       it('should return public key when deny request', async () => {

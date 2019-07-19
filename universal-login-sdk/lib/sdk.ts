@@ -1,6 +1,6 @@
 import {utils, Wallet, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest} from '@universal-login/commons';
+import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest, } from '@universal-login/commons';
 import AuthorisationsObserver from './observers/AuthorisationsObserver';
 import BlockchainObserver from './observers/BlockchainObserver';
 import {BalanceObserver} from './observers/BalanceObserver';
@@ -203,7 +203,10 @@ class UniversalLoginSDK {
   async connect(walletContractAddress: string) {
     const {publicKey, privateKey} = createKeyPair();
     await this.relayerApi.connect(walletContractAddress, publicKey.toLowerCase());
-    return privateKey;
+    return {
+      privateKey,
+      securityCode: generateCode(publicKey)
+    };
   }
 
   async denyRequest(walletContractAddress: string, publicKey: string, privateKey: string) {
@@ -230,7 +233,10 @@ class UniversalLoginSDK {
       signature: ''
     };
     signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
-    return this.authorisationsObserver.subscribe(getAuthorisationRequest, callback);
+    return this.authorisationsObserver.subscribe(
+      getAuthorisationRequest,
+      (notifications: Notification[]) => callback(addCodesToNotifications(notifications))
+    );
   }
 
   async start() {
