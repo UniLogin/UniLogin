@@ -22,7 +22,7 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
   )
 );
 
-const Suggestions = ({connections, creations, onCreateClick, onConnectionClick}: SuggestionsProps) => {
+export const Suggestions = ({connections, creations, onCreateClick, onConnectionClick}: SuggestionsProps) => {
   const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, onConnectionClick);
   const creationsSuggestions = getSuggestionsItems('create new', creations, onCreateClick);
   const recoversSuggestions = getSuggestionsItems('recover', connections, () => alert('not implemented'));
