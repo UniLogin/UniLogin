@@ -1,6 +1,5 @@
 import React, {useState, ChangeEvent} from 'react';
-import {Input, Suggestions} from '@universal-login/react';
-import {renderBusyIndicator} from '../common/BusyIndicator';
+import {Input, Suggestions, renderBusyIndicator} from '@universal-login/react';
 import {useServices} from '../../hooks';
 
 interface WalletSelector {
