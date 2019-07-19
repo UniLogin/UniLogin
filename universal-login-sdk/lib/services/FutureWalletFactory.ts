@@ -20,16 +20,17 @@ export type FutureWallet = {
   deploy: (ensName: string, gasPrice: string) => Promise<string>
 };
 
-type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' >;
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
 export class FutureWalletFactory {
+  private ensService: ENSService;
 
   constructor(
     private config: FutureFactoryConfig,
     private provider: providers.Provider,
     private blockchainService: BlockchainService,
-    private relayerApi: RelayerApi,
-    private ensService: ENSService) {
+    private relayerApi: RelayerApi) {
+      this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
   async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
