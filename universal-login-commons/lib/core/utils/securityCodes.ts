@@ -38,3 +38,17 @@ export const addCodesToNotifications = (notifications: Notification[]) => {
   }
   return notifications;
 };
+
+export const isProperCodeNumber = (code: number) => {
+  return 0 <= code && code < 1024;
+};
+
+export const isProperSecurityCode = (securityCode: number[]) => {
+  return securityCode.length === 6 &&
+          securityCode.every((e: number) => isProperCodeNumber(e));
+};
+
+export const isProperSecurityCodeWithFakes = (securityCode: number[]) => {
+  return securityCode.length === 12 &&
+          securityCode.every((e: number) => isProperCodeNumber(e));
+};

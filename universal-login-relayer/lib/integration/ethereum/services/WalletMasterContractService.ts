@@ -17,7 +17,7 @@ class WalletMasterContractService {
     const {walletContractAddress, signature} = cancelAuthorisationRequest;
     const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
 
-    await this.ensureValidSignature(walletContractAddress, signature, payloadDigest, recoveredAddress);
+    await this.ensureValidSignature(walletContractAddress, signature!, payloadDigest, recoveredAddress);
   }
 
   async ensureValidGetAuthorisationRequestSignature(getAuthorisationRequest: GetAuthorisationRequest) {
@@ -25,7 +25,7 @@ class WalletMasterContractService {
     const {walletContractAddress, signature} = getAuthorisationRequest;
     const payloadDigest = hashGetAuthorisationRequest(getAuthorisationRequest);
 
-    await this.ensureValidSignature(walletContractAddress, signature, payloadDigest, recoveredAddress);
+    await this.ensureValidSignature(walletContractAddress, signature!, payloadDigest, recoveredAddress);
   }
 }
 

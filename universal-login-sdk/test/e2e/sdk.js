@@ -185,27 +185,20 @@ describe('SDK - integration', async () => {
 
       describe('Authorisation', async () => {
         it('no pending authorisations', async () => {
-          const getAuthorisationRequest = {
-            walletContractAddress: contractAddress.toLowerCase(),
-            signature: ''
-          };
-          signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
-
+          const getAuthorisationRequest = signGetAuthorisationRequest({walletContractAddress: contractAddress.toLowerCase()}, privateKey);
           expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest)).to.deep.eq([]);
         });
 
         it('should return pending authorisations', async () => {
           const {privateKey: devicePrivateKey} = await sdk.connect(contractAddress);
           const wallet = new Wallet(devicePrivateKey);
-          const getAuthorisationRequest = {
-            walletContractAddress: contractAddress.toLowerCase(),
-            signature: ''
-          };
-          signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
+
+          const getAuthorisationRequest = signGetAuthorisationRequest({walletContractAddress: contractAddress.toLowerCase()}, privateKey);
 
           const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest);
           expect(response[response.length - 1]).to.deep.include({key: wallet.address.toLowerCase()});
         });
+
 
         it('should return private key', async () => {
           const {privateKey: newDevicePrivateKey} = await sdk.connect(contractAddress);
@@ -221,26 +214,33 @@ describe('SDK - integration', async () => {
       });
     });
 
-    describe('change required signatures', async () => {
-      it('should change required signatures', async () => {
-        const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-        await waitToBeMined();
-        ({waitToBeMined} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
-        const {transactionHash} = await waitToBeMined();
-        expect(await walletContract.requiredSignatures()).to.eq(2);
-        expect(transactionHash).to.be.properHex(64);
-      });
+    it('should return public key when deny request', async () => {
+      await sdk.connect(contractAddress);
+      const {publicKey} = createKeyPair();
+      const response = await sdk.denyRequest(contractAddress, publicKey, privateKey);
+      expect(response).to.eq(publicKey);
     });
+  });
 
-    describe('get message status', async () => {
-      it('should return message status', async () => {
-        await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-        await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
-        const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
-        await sdk.execute(msg, privateKey);
-        const status = await sdk.getMessageStatus(msg);
-        expect(status.collectedSignatures.length).to.eq(1);
-      });
+  describe('change required signatures', async () => {
+    it('should change required signatures', async () => {
+      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+      await waitToBeMined();
+      ({waitToBeMined} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
+      const {transactionHash} = await waitToBeMined();
+      expect(await walletContract.requiredSignatures()).to.eq(2);
+      expect(transactionHash).to.be.properHex(64);
+    });
+  });
+
+  describe('get message status', async () => {
+    it('should return message status', async () => {
+      await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+      await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
+      const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
+      await sdk.execute(msg, privateKey);
+      const status = await sdk.getMessageStatus(msg);
+      expect(status.collectedSignatures.length).to.eq(1);
     });
 
     after(async () => {
