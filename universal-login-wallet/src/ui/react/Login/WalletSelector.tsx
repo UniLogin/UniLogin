@@ -1,5 +1,5 @@
 import React, {useState, ChangeEvent} from 'react';
-import Input from '../common/Input';
+import {Input} from '@universal-login/react';
 import {renderBusyIndicator} from '../common/BusyIndicator';
 import Suggestions from './Suggestions';
 import {useServices} from '../../hooks';

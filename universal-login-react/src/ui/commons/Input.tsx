@@ -13,7 +13,7 @@ interface InputProps {
 
 const classesForInput = classesForElement('input', 'input');
 
-const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => {
+export const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => {
   return(
     <input
       id={id}
