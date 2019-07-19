@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Spinner from './Spinner';
+import {Spinner} from '@universal-login/react';
 import ProgressBar from '../common/ProgressBar';
 
 

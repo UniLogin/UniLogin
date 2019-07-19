@@ -18,7 +18,8 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
         <p className="suggestions-item-text">{element}</p>
         <p className="suggestions-item-btn-text">{operationType}</p>
       </button>
-    </li>)
+    </li>
+    )
   )
 );
 
