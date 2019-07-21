@@ -8,7 +8,7 @@ import {isValidCode, isProperSecurityCode} from '@universal-login/commons';
 
 const loadFixture = createFixtureLoader();
 
-describe('E2E: connecting', async () => {
+describe('E2E: SDK connecting', async () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
