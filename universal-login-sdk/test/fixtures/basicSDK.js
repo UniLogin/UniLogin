@@ -1,11 +1,11 @@
-import UniversalLoginSDK from '../../lib/sdk';
+import UniversalLoginSDK from '../../lib/api/sdk';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {deployContract} from 'ethereum-waffle';
 import {utils, Contract} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import MESSAGE_DEFAULTS from '../../lib/MessageDefaults';
+import MESSAGE_DEFAULTS from '../../lib/api/utils/MessageDefaults';
 
 export default async function basicWalletService(givenProvider, wallets) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;

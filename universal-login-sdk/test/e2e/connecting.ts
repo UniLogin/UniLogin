@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {createFixtureLoader} from 'ethereum-waffle';
 import {utils, providers} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
-import UniversalLoginSDK from '../../lib/sdk';
+import UniversalLoginSDK from '../../lib/api/sdk';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {isValidCode, isProperSecurityCode} from '@universal-login/commons';
 
