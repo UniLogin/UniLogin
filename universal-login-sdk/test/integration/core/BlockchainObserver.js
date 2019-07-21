@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
-import MESSAGE_DEFAULTS from '../../../lib/api/utils/MessageDefaults';
+import MESSAGE_DEFAULTS from '../../../lib/core/utils/MessageDefaults';
 import {MANAGEMENT_KEY} from '@universal-login/commons';
 import basicSDK from '../../fixtures/basicSDK';
 

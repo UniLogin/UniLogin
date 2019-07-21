@@ -5,7 +5,7 @@ import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
-import MESSAGE_DEFAULTS from './utils/MessageDefaults';
+import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {MissingConfiguration} from '../core/utils/errors';
@@ -253,5 +253,3 @@ class UniversalLoginSDK {
 }
 
 export default UniversalLoginSDK;
-export {SdkSigner} from './SdkSigner';
-export {FutureWallet, BalanceDetails} from './FutureWalletFactory';

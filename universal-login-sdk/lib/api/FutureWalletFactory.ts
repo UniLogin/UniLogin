@@ -1,6 +1,5 @@
 import {providers} from 'ethers';
 import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
-import {createFutureWallet} from './utils/counterfactual';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
@@ -40,7 +39,7 @@ export class FutureWalletFactory {
   }
 
   async createFutureWallet(): Promise<FutureWallet> {
-    const [privateKey, contractAddress, publicKey] = await createFutureWallet(this.config.factoryAddress, this.provider);
+    const [privateKey, contractAddress, publicKey] = await this.blockchainService.createFutureWallet(this.config.factoryAddress, this.provider);
     const waitForBalance = async () => new Promise(
       (resolve) => {
         const onReadyToDeploy = (tokenAddress: string, contractAddress: string) => resolve({tokenAddress, contractAddress});

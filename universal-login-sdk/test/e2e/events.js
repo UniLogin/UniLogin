@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import sinon from 'sinon';
-import MESSAGE_DEFAULTS from '../../lib/api/utils/MessageDefaults';
+import MESSAGE_DEFAULTS from '../../lib/core/utils/MessageDefaults';
 import basicSDK from '../fixtures/basicSDK';
 
 chai.use(solidity);

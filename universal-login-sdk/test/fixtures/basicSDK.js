@@ -5,7 +5,7 @@ import {utils, Contract} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import MESSAGE_DEFAULTS from '../../lib/api/utils/MessageDefaults';
+import MESSAGE_DEFAULTS from '../../lib/core/utils/MessageDefaults';
 
 export default async function basicWalletService(givenProvider, wallets) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
