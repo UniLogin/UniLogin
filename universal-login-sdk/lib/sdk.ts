@@ -63,78 +63,21 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!.createFutureWallet();
   }
 
-  async addKey(
-    to: string,
-    publicKey: string,
-    privateKey: string,
-    transactionDetails: Message,
-    keyPurpose = MANAGEMENT_KEY,
-  ) {
-    const key = publicKey;
-    const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([key, keyPurpose]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      data,
-    };
-    return this.execute(message, privateKey);
+  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
+    return this.selfExecute(to, 'addKey', [publicKey, keyPurpose], privateKey, transactionDetails);
   }
 
-  async addKeys(
-    to: string,
-    publicKeys: string[],
-    privateKey: string,
-    transactionDetails: SignedMessage,
-    keyPurpose = MANAGEMENT_KEY,
-  ) {
-    const keys = publicKeys.map((publicKey) => publicKey);
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: SignedMessage, keyPurpose = MANAGEMENT_KEY) {
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
-    const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys, keyRoles]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      data,
-    };
-    return this.execute(message, privateKey);
+    return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
   }
 
-  async removeKey(
-    to: string,
-    address: string,
-    privateKey: string,
-    transactionDetails: SignedMessage,
-  ) {
-    const key = address;
-    const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      value: 0,
-      data,
-      operationType: OPERATION_CALL,
-    };
-    return this.execute(message, privateKey);
+  async removeKey(to: string, key: string, privateKey: string, transactionDetails: SignedMessage) {
+    return this.selfExecute(to, 'removeKey', [key, MANAGEMENT_KEY], privateKey, transactionDetails);
   }
 
-  async setRequiredSignatures(
-    to: string,
-    requiredSignatures: number,
-    privateKey: string,
-    transactionDetails: SignedMessage,
-  ) {
-    const data = new utils.Interface(WalletContract.interface).functions.setRequiredSignatures.encode([requiredSignatures]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      value: 0,
-      data,
-      operationType: OPERATION_CALL,
-    };
-    return this.execute(message, privateKey);
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: SignedMessage) {
+    return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
   async getMessageStatus(message: SignedMessage) {
@@ -170,6 +113,17 @@ class UniversalLoginSDK {
     } as MessageWithFrom;
     const signedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
+  }
+
+  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Message) {
+    const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
+    const message = {
+      ...transactionDetails,
+      to,
+      from: to,
+      data
+    };
+    return this.execute(message, privateKey);
   }
 
   async getNonce(walletContractAddress: string, privateKey: string) {
