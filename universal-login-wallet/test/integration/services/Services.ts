@@ -15,6 +15,5 @@ describe('Services', () => {
     expect(services.tokenService).to.not.be.null;
     expect(services.transferService).to.not.be.null;
     expect(services.balanceService).to.not.be.null;
-    expect(services.notificationService).to.not.be.null;
   });
 });
