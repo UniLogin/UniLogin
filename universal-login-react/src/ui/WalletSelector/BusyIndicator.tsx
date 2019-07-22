@@ -1,5 +1,5 @@
 import React from 'react';
-import {Spinner} from '../../main';
+import {Spinner} from '../..';
 
 export const renderBusyIndicator = (busy: boolean) =>
   busy ?
