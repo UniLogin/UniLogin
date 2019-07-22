@@ -1,6 +1,6 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
-import Notifications from './Notifications';
+import {Notifications} from '@universal-login/react';
 import UserDropdown from '../common/UserDropdown';
 import {useServices} from '../../hooks';
 

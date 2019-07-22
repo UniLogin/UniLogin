@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {NotificationConnection, transactionDetails} from '@universal-login/react';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {Notification} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
+import {NotificationConnection} from './NotificationConnection';
+import {transactionDetails} from '../../core/constants/TransactionDetails';
 
 interface NotificationsProps {
   sdk: UniversalLoginSDK;
@@ -10,7 +11,7 @@ interface NotificationsProps {
   contractAddress: string;
 }
 
-const Notifications = ({sdk, contractAddress, privateKey}: NotificationsProps) => {
+export const Notifications = ({sdk, contractAddress, privateKey}: NotificationsProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
 
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNotifications), []);
@@ -37,6 +38,3 @@ const Notifications = ({sdk, contractAddress, privateKey}: NotificationsProps) =
     </div>
   );
 };
-
-
-export default Notifications;
