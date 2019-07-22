@@ -1,0 +1,28 @@
+.checkbox input
+  position: absolute
+  z-index: -1
+  opacity: 0
+  margin: 10px 0 0 20px
+
+.checkbox-text
+  position: relative
+  padding: 0 0 0 35px
+  font-size: 14px
+  cursor: pointer
+
+.checkbox-text:before
+  content: ''
+  position: absolute
+  top: -3px
+  left: 0
+  width: 17px
+  height: 17px
+  background: #f9f9f9
+  border: 1px solid #dadada
+  border-radius: 3px
+
+.checkbox input:checked + .checkbox-text:before
+  background: #0fb1ef url('./../assets/icons/checkmark.svg') center no-repeat
+  border-color: transparent
+
+

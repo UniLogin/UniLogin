@@ -11,6 +11,7 @@ import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
 import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
+import { TermsAndConditionsScreen } from './Home/TermsAndConditionsScreen';
 
 const App = () => {
   const {walletService} = useServices();
@@ -23,6 +24,13 @@ const App = () => {
           path="/welcome"
           render={props =>
             <WelcomeScreen />
+          }
+        />
+        <Route
+          exact
+          path="/terms"
+          render={props =>
+            <TermsAndConditionsScreen />
           }
         />
         <Route
