@@ -11,14 +11,14 @@ import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello} from '@universal-login/react';
-import {useConfig} from '../../hooks/useConfig';
+import {useRelayerConfig} from '../../hooks/useRelayerConfig';
 
 
 const Modal = () => {
   const {modalService, walletPresenter} = useServices();
   const openModal = useSubscription(modalService);
   const hideModal = () => modalService.hideModal();
-  const config = useConfig();
+  const config = useRelayerConfig();
 
   switch (openModal) {
     case 'transfer':
