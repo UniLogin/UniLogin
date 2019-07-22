@@ -10,7 +10,7 @@ interface LoginProps {
 }
 
 const Login = ({location} : LoginProps) => {
-  const {modalService, connectToWallet, walletService, suggestionsService} = useServices();
+  const {modalService, connectToWallet, walletService, sdk} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
@@ -42,7 +42,8 @@ const Login = ({location} : LoginProps) => {
         <WalletSelector
           onCreateClick={(name: string) => onCreateCLick(name)}
           onConnectionClick={onConnectionClick}
-          suggestionsService={suggestionsService}
+          sdk={sdk}
+          domains={['mylogin.eth']}
         />
       <Modal />
     </div>
