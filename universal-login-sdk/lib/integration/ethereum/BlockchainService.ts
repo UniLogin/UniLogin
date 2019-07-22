@@ -19,14 +19,14 @@ export class BlockchainService {
     return this.provider.getLogs(filter);
   }
 
-  getInitCode = async (factoryAddress: string, provider: providers.Provider) => {
-    const factoryContract = new Contract(factoryAddress, ProxyCounterfactualFactory.interface, provider);
+  getInitCode = async (factoryAddress: string) => {
+    const factoryContract = new Contract(factoryAddress, ProxyCounterfactualFactory.interface, this.provider);
     return factoryContract.initCode();
   }
 
-  createFutureWallet = async (factoryAddress: string, provider: providers.Provider) => {
+  createFutureWallet = async (factoryAddress: string) => {
     const {privateKey, publicKey} = createKeyPair();
-    const futureContractAddress = computeContractAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress, provider));
+    const futureContractAddress = computeContractAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
     return [privateKey, futureContractAddress, publicKey];
   }
 }
