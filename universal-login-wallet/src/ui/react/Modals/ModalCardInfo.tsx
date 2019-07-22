@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../common/Input';
+import {Input} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import { Link } from 'react-router-dom';
 

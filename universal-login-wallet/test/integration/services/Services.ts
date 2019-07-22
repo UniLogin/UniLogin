@@ -7,7 +7,14 @@ describe('Services', () => {
     const services = createServices(getConfig());
     expect(services).to.not.be.null;
     expect(services.sdk).to.not.be.null;
-    expect(services.walletSelectionService).to.not.be.null;
-    expect(services.suggestionsService).to.not.be.null;
+    expect(services.modalService).to.not.be.null;
+    expect(services.userDropdownService).to.not.be.null;
+    expect(services.connectToWallet).to.not.be.null;
+    expect(services.walletService).to.not.be.null;
+    expect(services.walletPresenter).to.not.be.null;
+    expect(services.tokenService).to.not.be.null;
+    expect(services.transferService).to.not.be.null;
+    expect(services.balanceService).to.not.be.null;
+    expect(services.notificationService).to.not.be.null;
   });
 });

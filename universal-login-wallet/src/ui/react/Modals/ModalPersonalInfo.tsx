@@ -1,6 +1,6 @@
 import React from 'react';
 import { useServices } from '../../hooks/useServices';
-import Input from '../common/Input';
+import {Input} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 
