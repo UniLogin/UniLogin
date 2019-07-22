@@ -1,16 +1,20 @@
 import React, {useState, ChangeEvent} from 'react';
-import {SuggestionsService } from '@universal-login/commons';
-import {Input} from '../..';
+import {SuggestionsService, WalletSelectionService } from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
+import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
-  suggestionsService: SuggestionsService;
+  sdk: UniversalLoginSDK;
+  domains: string[];
 }
 
-export const WalletSelector = ({onCreateClick, onConnectionClick, suggestionsService}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains}: WalletSelector) => {
+  const walletSelectionService = new WalletSelectionService(sdk, domains);
+  const suggestionsService = new SuggestionsService(walletSelectionService);
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
