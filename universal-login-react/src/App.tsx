@@ -13,12 +13,12 @@ export const App = () => {
 
   const left = {
     left: '0',
-    backgroundColor: 'blue'
+    backgroundColor: '#e3d3c2'
   };
 
   const right = {
     right: '0',
-    backgroundColor: 'red'
+    backgroundColor: '#91a3f5'
   };
 
   const centered = {

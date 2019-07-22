@@ -1,6 +1,6 @@
 import React, {useState, ChangeEvent} from 'react';
 import {SuggestionsService } from '@universal-login/commons';
-import {Input} from '../..';
+import {Input} from '../../main';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
 

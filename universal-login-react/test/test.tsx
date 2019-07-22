@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {TestDiv} from '../src/test';
 import {configure, ReactWrapper, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import {Safello} from '../src';
+import {Safello} from '../src/main';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 
 configure({adapter: new Adapter()});
