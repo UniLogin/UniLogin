@@ -10,6 +10,7 @@ import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
 import {useServices} from '../hooks';
+import {WelcomeScreen} from './Home/WelcomeScreen';
 
 const App = () => {
   const {walletService} = useServices();
@@ -17,6 +18,13 @@ const App = () => {
 
   return(
       <Switch>
+        <Route
+          exact
+          path="/welcome"
+          render={props =>
+            <WelcomeScreen />
+          }
+        />
         <Route
           exact
           path="/login"
