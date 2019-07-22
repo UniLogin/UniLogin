@@ -1,5 +1,5 @@
 import React from 'react';
-import WalletSelector from './WalletSelector';
+import {WalletSelector} from '@universal-login/react';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';
@@ -10,7 +10,7 @@ interface LoginProps {
 }
 
 const Login = ({location} : LoginProps) => {
-  const {modalService, connectToWallet, walletService} = useServices();
+  const {modalService, connectToWallet, walletService, suggestionsService} = useServices();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
@@ -39,7 +39,11 @@ const Login = ({location} : LoginProps) => {
     <div className="start login">
       <img src={Logo} alt="Logo" className="start-logo login-logo"/>
       <p className="start-subtitle login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
-      <WalletSelector onCreateClick={(name: string) => onCreateCLick(name)} onConnectionClick={onConnectionClick}/>
+        <WalletSelector
+          onCreateClick={(name: string) => onCreateCLick(name)}
+          onConnectionClick={onConnectionClick}
+          suggestionsService={suggestionsService}
+        />
       <Modal />
     </div>
   );

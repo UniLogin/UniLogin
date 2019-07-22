@@ -18,11 +18,12 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
         <p className="suggestions-item-text">{element}</p>
         <p className="suggestions-item-btn-text">{operationType}</p>
       </button>
-    </li>)
+    </li>
+    )
   )
 );
 
-const Suggestions = ({connections, creations, onCreateClick, onConnectionClick}: SuggestionsProps) => {
+export const Suggestions = ({connections, creations, onCreateClick, onConnectionClick}: SuggestionsProps) => {
   const connectionsSuggestions = getSuggestionsItems('connect to existing', connections, onConnectionClick);
   const creationsSuggestions = getSuggestionsItems('create new', creations, onCreateClick);
   const recoversSuggestions = getSuggestionsItems('recover', connections, () => alert('not implemented'));

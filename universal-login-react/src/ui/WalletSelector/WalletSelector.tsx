@@ -1,20 +1,20 @@
 import React, {useState, ChangeEvent} from 'react';
-import Input from '../common/Input';
-import {renderBusyIndicator} from '../common/BusyIndicator';
-import Suggestions from './Suggestions';
-import {useServices} from '../../hooks';
+import {SuggestionsService } from '@universal-login/commons';
+import {Input} from '../..';
+import {Suggestions} from './Suggestions';
+import {renderBusyIndicator} from './BusyIndicator';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
+  suggestionsService: SuggestionsService;
 }
 
-const WalletSelector = ({onCreateClick, onConnectionClick}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, suggestionsService}: WalletSelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
   const [, setName] = useState('');
-  const {suggestionsService} = useServices();
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;

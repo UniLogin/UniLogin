@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from '../Login/Spinner';
+import {Spinner} from '@universal-login/react';
 import ProgressBar from '../common/ProgressBar';
 
 

@@ -2,7 +2,7 @@ import React, {useState, ChangeEvent} from 'react';
 import Logo from './../../assets/logo-with-text.svg';
 import avatar from './../../assets/avatar.svg';
 import InputLabel from '../common/InputLabel';
-import Input from '../common/Input';
+import {Input} from '@universal-login/react';
 import { Link } from 'react-router-dom';
 
 const RecoveryScreen = () => {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Input from '../common/Input';
+import {Input} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
