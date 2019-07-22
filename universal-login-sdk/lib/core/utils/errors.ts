@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError' | 'InvalidEvent';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -54,6 +54,13 @@ export class UnsupportedBytecode extends ValidationFailed {
   }
 }
 
+export class InvalidEvent extends ValidationFailed {
+  constructor (eventType: string) {
+    super(`Unknown event type: ${eventType}`, 'InvalidEvent');
+    Object.setPrototypeOf(this, InvalidEvent.prototype);
+  }
+}
+
 export class NotFound extends SDKError {
   constructor (message: string, errorType: ErrorType) {
     super(message, errorType);
@@ -68,6 +75,7 @@ export class MissingConfiguration extends NotFound {
     Object.setPrototypeOf(this, MissingConfiguration.prototype);
   }
 }
+
 export class TransactionHashNotFound extends NotFound {
   constructor () {
     super('Transaction hash is not found in Message Status', 'TransactionHashNotFound');

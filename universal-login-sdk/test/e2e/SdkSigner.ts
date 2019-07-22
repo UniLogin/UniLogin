@@ -4,7 +4,7 @@ import {loadFixture} from 'ethereum-waffle';
 import basicWalletService from '../fixtures/basicSDK';
 import {SdkSigner} from '../../lib/api/SdkSigner';
 
-describe('E2E: SDKSigner', () => {
+describe('E2E: SdkSigner', () => {
   let relayer: any;
 
   before(async () => {

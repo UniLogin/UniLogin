@@ -1,6 +1,6 @@
-import {utils, Wallet, Contract, providers} from 'ethers';
+import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, OPERATION_CALL, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, CancelAuthorisationRequest, GetAuthorisationRequest, signCancelAuthorisationRequest, signGetAuthorisationRequest, } from '@universal-login/commons';
+import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, calculateMessageHash, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
@@ -8,7 +8,7 @@ import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {MissingConfiguration} from '../core/utils/errors';
+import {MissingConfiguration, InvalidEvent} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 
@@ -60,78 +60,21 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!.createFutureWallet();
   }
 
-  async addKey(
-    to: string,
-    publicKey: string,
-    privateKey: string,
-    transactionDetails: Message,
-    keyPurpose = MANAGEMENT_KEY,
-  ) {
-    const key = publicKey;
-    const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([key, keyPurpose]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      data,
-    };
-    return this.execute(message, privateKey);
+  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
+    return this.selfExecute(to, 'addKey', [publicKey, keyPurpose], privateKey, transactionDetails);
   }
 
-  async addKeys(
-    to: string,
-    publicKeys: string[],
-    privateKey: string,
-    transactionDetails: SignedMessage,
-    keyPurpose = MANAGEMENT_KEY,
-  ) {
-    const keys = publicKeys.map((publicKey) => publicKey);
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: SignedMessage, keyPurpose = MANAGEMENT_KEY) {
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
-    const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys, keyRoles]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      data,
-    };
-    return this.execute(message, privateKey);
+    return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
   }
 
-  async removeKey(
-    to: string,
-    address: string,
-    privateKey: string,
-    transactionDetails: SignedMessage,
-  ) {
-    const key = address;
-    const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([key, MANAGEMENT_KEY]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      value: 0,
-      data,
-      operationType: OPERATION_CALL,
-    };
-    return this.execute(message, privateKey);
+  async removeKey(to: string, key: string, privateKey: string, transactionDetails: SignedMessage) {
+    return this.selfExecute(to, 'removeKey', [key, MANAGEMENT_KEY], privateKey, transactionDetails);
   }
 
-  async setRequiredSignatures(
-    to: string,
-    requiredSignatures: number,
-    privateKey: string,
-    transactionDetails: SignedMessage,
-  ) {
-    const data = new utils.Interface(WalletContract.interface).functions.setRequiredSignatures.encode([requiredSignatures]);
-    const message = {
-      ...transactionDetails,
-      to,
-      from: to,
-      value: 0,
-      data,
-      operationType: OPERATION_CALL,
-    };
-    return this.execute(message, privateKey);
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: SignedMessage) {
+    return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
   async getMessageStatus(message: SignedMessage) {
@@ -169,15 +112,25 @@ class UniversalLoginSDK {
     const unsignedMessage = {
       ...this.defaultPaymentOptions,
       ...message,
-      nonce: message.nonce || parseInt(await this.getNonce(message.from!, privateKey), 10),
+      nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
     } as MessageWithFrom;
     const signedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
   }
 
-  async getNonce(walletContractAddress: string, privateKey: string) {
-    const wallet = new Wallet(privateKey, this.provider);
-    const contract = new Contract(walletContractAddress, WalletContract.interface, wallet);
+  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Message) {
+    const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
+    const message = {
+      ...transactionDetails,
+      to,
+      from: to,
+      data
+    };
+    return this.execute(message, privateKey);
+  }
+
+  async getNonce(walletContractAddress: string) {
+    const contract = new Contract(walletContractAddress, WalletContract.interface, this.provider);
     return contract.lastNonce();
   }
 
@@ -210,31 +163,20 @@ class UniversalLoginSDK {
   }
 
   async denyRequest(walletContractAddress: string, publicKey: string, privateKey: string) {
-    const cancelAuthorisationRequest: CancelAuthorisationRequest = {
-      walletContractAddress,
-      publicKey,
-      signature: ''
-    };
+    const cancelAuthorisationRequest = {walletContractAddress, publicKey};
     signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
     await this.relayerApi.denyConnection(cancelAuthorisationRequest);
     return publicKey;
   }
 
   subscribe(eventType: string, filter: any, callback: Function) {
-    if (['KeyAdded', 'KeyRemoved'].includes(eventType)) {
-      return this.blockchainObserver.subscribe(eventType, filter, callback);
-    }
-    throw `Unknown event type: ${eventType}`;
+    ensure(['KeyAdded', 'KeyRemoved'].includes(eventType), InvalidEvent, eventType);
+    return this.blockchainObserver.subscribe(eventType, filter, callback);
   }
 
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
-    const getAuthorisationRequest: GetAuthorisationRequest = {
-      walletContractAddress,
-      signature: ''
-    };
-    signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
     return this.authorisationsObserver.subscribe(
-      getAuthorisationRequest,
+      signGetAuthorisationRequest({walletContractAddress}, privateKey),
       (notifications: Notification[]) => callback(addCodesToNotifications(notifications))
     );
   }
