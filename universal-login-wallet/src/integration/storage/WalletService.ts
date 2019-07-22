@@ -1,11 +1,11 @@
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
-import {ensure, UserWallet} from '@universal-login/commons';
+import {ensure, ApplicationWallet} from '@universal-login/commons';
 import {WalletOverriden, FutureWalletNotSet} from '../../core/errors';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
 
 export default class WalletService {
-  public userWallet?: FutureWallet | UserWallet;
+  public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
   constructor(private sdk: UniversalLoginSDK) {
@@ -25,31 +25,31 @@ export default class WalletService {
     return futureWallet;
   }
 
-  setFutureWallet(userWallet: FutureWallet) {
+  setFutureWallet(applicationWallet: FutureWallet) {
     ensure(this.state === 'None', WalletOverriden);
     this.state = 'Future';
-    this.userWallet = userWallet;
+    this.applicationWallet = applicationWallet;
   }
 
   setDeployed(name: string) {
     ensure(this.state === 'Future', FutureWalletNotSet);
-    const {contractAddress, privateKey} = this.userWallet!;
+    const {contractAddress, privateKey} = this.applicationWallet!;
     this.state = 'Deployed';
-    this.userWallet = {
+    this.applicationWallet = {
       name,
       contractAddress,
       privateKey
     };
   }
 
-  connect(userWallet: UserWallet) {
+  connect(applicationWallet: ApplicationWallet) {
     ensure(this.state === 'None', WalletOverriden);
     this.state = 'Deployed';
-    this.userWallet = userWallet;
+    this.applicationWallet = applicationWallet;
   }
 
   disconnect(): void {
     this.state = 'None';
-    this.userWallet = undefined;
+    this.applicationWallet = undefined;
   }
 }

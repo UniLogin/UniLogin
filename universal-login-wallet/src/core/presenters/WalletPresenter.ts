@@ -1,5 +1,6 @@
-import {ensure, UserWallet} from '@universal-login/commons';
+import {ensure, ApplicationWallet} from '@universal-login/commons';
 import WalletService from '../../integration/storage/WalletService';
+import {ApplicationWalletNotFound} from '../errors';
 
 export class WalletPresenter {
   constructor(
@@ -7,14 +8,14 @@ export class WalletPresenter {
   ) {}
 
   getName(): string {
-    ensure(!!this.walletService.userWallet, Error, 'UserWallet not found');
-    ensure(this.walletService.state === 'Deployed', Error, 'UserWallet is not deployed yet');
-    return (this.walletService.userWallet! as UserWallet).name;
+    ensure(!!this.walletService.applicationWallet, ApplicationWalletNotFound);
+    ensure(this.walletService.state === 'Deployed', Error, 'ApplicationWallet is not deployed yet');
+    return (this.walletService.applicationWallet! as ApplicationWallet).name;
   }
 
   getContractAddress(): string {
-    ensure(!!this.walletService.userWallet, Error, 'UserWallet not found');
-    return this.walletService.userWallet!.contractAddress;
+    ensure(!!this.walletService.applicationWallet, ApplicationWalletNotFound);
+    return this.walletService.applicationWallet!.contractAddress;
   }
 }
 

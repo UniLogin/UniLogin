@@ -6,6 +6,6 @@ export class EtherBalanceService {
 
   getBalance = () =>
     this.walletService.walletDeployed() ?
-      this.provider.getBalance(this.walletService.userWallet!.contractAddress) :
+      this.provider.getBalance(this.walletService.applicationWallet!.contractAddress) :
       utils.bigNumberify(0)
 }

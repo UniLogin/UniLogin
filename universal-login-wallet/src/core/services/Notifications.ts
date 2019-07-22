@@ -10,19 +10,19 @@ export default class NotificationsService {
   }
 
   subscribe (callback: (args: Notification[]) => void) {
-    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    const {contractAddress, privateKey} =  this.walletService.applicationWallet!;
     const unsubscribe = this.sdk.subscribeAuthorisations(contractAddress, privateKey, callback);
     return unsubscribe;
   }
 
   async confirm (publicKey: string) {
-    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    const {contractAddress, privateKey} =  this.walletService.applicationWallet!;
     const {waitToBeMined} = await this.sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
     return waitToBeMined();
   }
 
   async reject (publicKey: string) {
-    const {contractAddress, privateKey} =  this.walletService.userWallet!;
+    const {contractAddress, privateKey} =  this.walletService.applicationWallet!;
     await this.sdk.denyRequest(contractAddress, publicKey, privateKey);
   }
 }

@@ -47,10 +47,10 @@ describe('Login', () => {
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
 
-      const userWallet = walletService.userWallet;
-      expect(userWallet.name).to.eq(name);
-      expect(userWallet.privateKey).to.eq(privateKey);
-      expect(userWallet.contractAddress).to.eq(contractAddress);
+      const applicationWallet = walletService.applicationWallet;
+      expect(applicationWallet.name).to.eq(name);
+      expect(applicationWallet.privateKey).to.eq(privateKey);
+      expect(applicationWallet.contractAddress).to.eq(contractAddress);
     });
   });
 
@@ -64,7 +64,7 @@ describe('Login', () => {
     it('should request connect to existing wallet and call callback when add key', async () => {
       const callback = sinon.spy();
       const unsubscribe = await connectToWalletService(name, callback);
-      const newPublicKey = (new Wallet(walletServiceForConnect.userWallet.privateKey)).address;
+      const newPublicKey = (new Wallet(walletServiceForConnect.applicationWallet.privateKey)).address;
       expect(unsubscribe).to.not.be.null;
       const {waitToBeMined} = await sdk.addKey(
         contractAddress,

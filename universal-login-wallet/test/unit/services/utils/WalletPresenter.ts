@@ -7,7 +7,7 @@ import WalletPresenter from '../../../../src/core/presenters/WalletPresenter';
 describe('WalletFormatter', async () => {
   let walletService: WalletService;
   let walletPresenter: WalletPresenter;
-  const userWallet = {
+  const applicationWallet = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY
@@ -18,21 +18,21 @@ describe('WalletFormatter', async () => {
     walletPresenter = new WalletPresenter(walletService);
   });
 
-  it('return name if userWallet exist', () => {
-    walletService.connect(userWallet);
-    expect(walletPresenter.getName()).to.be.eq(userWallet.name);
+  it('return name if applicationWallet exist', () => {
+    walletService.connect(applicationWallet);
+    expect(walletPresenter.getName()).to.be.eq(applicationWallet.name);
   });
 
-  it('return empty string if userWallet not exist', () => {
-    expect(() => walletPresenter.getName()).throws('UserWallet not found');
+  it('return empty string if applicationWallet not exist', () => {
+    expect(() => walletPresenter.getName()).throws('Application wallet not found');
   });
 
-  it('return contract address if userWallet exist', () => {
-    walletService.userWallet = userWallet;
-    expect(walletPresenter.getContractAddress()).to.be.eq(userWallet.contractAddress);
+  it('return contract address if applicationWallet exist', () => {
+    walletService.applicationWallet = applicationWallet;
+    expect(walletPresenter.getContractAddress()).to.be.eq(applicationWallet.contractAddress);
   });
 
-  it('return empty string if userWallet not exist', () => {
-    expect(() => walletPresenter.getContractAddress()).throws('UserWallet not found');
+  it('return empty string if applicationWallet not exist', () => {
+    expect(() => walletPresenter.getContractAddress()).throws('Application wallet not found');
   });
 });

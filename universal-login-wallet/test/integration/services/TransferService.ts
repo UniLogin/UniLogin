@@ -12,7 +12,7 @@ import {createWallet} from '../helpers/createWallet';
 
 chai.use(solidity);
 
-describe('TransferService', () => {
+describe('INT: TransferService', () => {
   let transferService: TransferService;
   let provider: providers.Provider;
   let relayer: any;

@@ -1,4 +1,4 @@
-type ErrorType = 'UserWalletNotFound' | 'NotFound' | 'Overriden' | 'WalletOverriden' | 'FutureWalletNotSet' | 'NoSet';
+type ErrorType = 'ApplicationWalletNotFound' | 'NotFound' | 'Overriden' | 'WalletOverriden' | 'FutureWalletNotSet' | 'NoSet';
 
 export class WalletError extends Error {
   errorType : ErrorType;
@@ -34,10 +34,10 @@ export class Overriden extends WalletError {
   }
 }
 
-export class UserWalletNotFound extends NotFound {
+export class ApplicationWalletNotFound extends NotFound {
   constructor() {
-    super('User wallet not found', 'NotFound');
-    Object.setPrototypeOf(this, UserWalletNotFound.prototype);
+    super('Application wallet not found', 'ApplicationWalletNotFound');
+    Object.setPrototypeOf(this, ApplicationWalletNotFound.prototype);
   }
 }
 

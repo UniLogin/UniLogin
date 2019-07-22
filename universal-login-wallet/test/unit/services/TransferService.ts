@@ -9,14 +9,14 @@ import TransferService, {encodeTransfer} from '../../../src/integration/ethereum
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-describe('TransferService', () => {
+describe('UNIT: TransferService', () => {
   function setup() {
     const waitToBeMined = sinon.fake();
     const sdk = {
       execute: sinon.stub().returns({waitToBeMined})
     } as any;
     const walletService = {
-      userWallet: {
+      applicationWallet: {
         privateKey: 'PRIVATE_KEY',
         contractAddress: 'CONTRACT_ADDRESS',
       } as any
@@ -25,7 +25,7 @@ describe('TransferService', () => {
       getTokenAddress: sinon.fake(() => 'TOKEN_ADDRESS')
     };
     const transferService = new TransferService(sdk as any, walletService as any, tokenService as any);
-    return { sdk, walletService, tokenService, transferService, waitToBeMined };
+    return {sdk, walletService, tokenService, transferService, waitToBeMined};
   }
 
   it('can transfer ether', async () => {
@@ -53,12 +53,12 @@ describe('TransferService', () => {
 
   it('throw an error if wallet missing and transferring ETH', async () => {
     const {transferService, tokenService, walletService} = setup();
-    walletService.userWallet = undefined;
+    walletService.applicationWallet = undefined;
     await expect(transferService.transfer({
       to: 'RECIPIENT',
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
-    })).to.be.rejectedWith('User wallet not found');
+    })).to.be.rejectedWith('Application wallet not found');
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
 
@@ -88,13 +88,13 @@ describe('TransferService', () => {
 
   it('throw an error if wallet is missing and transfering tokens', async () => {
     const {transferService, tokenService, walletService} = setup();
-    walletService.userWallet = undefined;
+    walletService.applicationWallet = undefined;
 
     await expect(transferService.transfer({
       to: 'RECIPIENT',
       amount: '123',
       currency: 'TOKEN_SYMBOL'
-    })).to.be.rejectedWith('User wallet not found');
+    })).to.be.rejectedWith('Application wallet not found');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
