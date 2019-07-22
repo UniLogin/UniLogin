@@ -38,6 +38,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const notificationService = new NotificationsService(sdk, walletService);
   return {
     sdk,
+    config,
     modalService,
     userDropdownService,
     connectToWallet: _connectToWallet,
