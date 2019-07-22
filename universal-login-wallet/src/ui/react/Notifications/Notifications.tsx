@@ -3,16 +3,18 @@ import NotificationConnection from './NotificationConnection';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useServices } from '../../hooks';
 import {Notification} from '@universal-login/commons';
+import {transactionDetails} from '../../../config/TransactionDetails';
 
 const Notifications = () => {
-  const {notificationService} = useServices();
+  const {walletService, sdk} = useServices();
   const [notifications, setNotifications] = useState([] as Notification[]);
+  const {contractAddress, privateKey} = walletService.applicationWallet!;
 
-  useEffect(() => notificationService.subscribe(setNotifications), []);
+  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNotifications), []);
 
-  const confirmRequest = (key : string) => notificationService.confirm(key);
+  const confirmRequest = (publicKey : string) => sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
 
-  const rejectRequest = (key: string) => notificationService.reject(key);
+  const rejectRequest = (publicKey: string) => sdk.denyRequest(contractAddress, publicKey, privateKey);
 
   return (
     <div className="subscreen">
