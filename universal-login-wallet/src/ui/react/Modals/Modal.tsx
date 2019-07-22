@@ -3,7 +3,7 @@ import ModalWrapper from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
-import {useSubscription, useServices} from '../../hooks';
+import {useSubscription, useServices, useRelayerConfig} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalTopUp from './ModalTopUp';
 import ModalAddress from './ModalAddress';
@@ -11,8 +11,6 @@ import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello} from '@universal-login/react';
-import {useRelayerConfig} from '../../hooks';
-
 
 const Modal = () => {
   const {modalService, walletPresenter} = useServices();

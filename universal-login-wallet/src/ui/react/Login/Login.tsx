@@ -2,7 +2,7 @@ import React from 'react';
 import {WalletSelector} from '@universal-login/react';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
-import {useServices, useRouter} from '../../hooks';
+import {useServices, useRouter, useWalletConfig} from '../../hooks';
 import {DEFAULT_LOCATION, Procedure, defaultDeployOptions} from '@universal-login/commons';
 
 interface LoginProps {
@@ -10,7 +10,8 @@ interface LoginProps {
 }
 
 const Login = ({location} : LoginProps) => {
-  const {modalService, connectToWallet, walletService, sdk, config} = useServices();
+  const {modalService, connectToWallet, walletService, sdk} = useServices();
+  const walletConfig = useWalletConfig();
   const {history} = useRouter();
   const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
   let unsubscribe: Procedure;
@@ -43,7 +44,7 @@ const Login = ({location} : LoginProps) => {
           onCreateClick={(name: string) => onCreateCLick(name)}
           onConnectionClick={onConnectionClick}
           sdk={sdk}
-          domains={config.domains}
+          domains={walletConfig.domains}
         />
       <Modal />
     </div>
