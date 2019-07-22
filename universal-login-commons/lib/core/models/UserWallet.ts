@@ -3,5 +3,3 @@ export interface UserWallet {
   contractAddress: string;
   privateKey: string;
 }
-
-export default UserWallet;

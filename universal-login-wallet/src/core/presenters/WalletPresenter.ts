@@ -1,5 +1,4 @@
-import {ensure} from '@universal-login/commons';
-import UserWallet from '../entities/UserWallet';
+import {ensure, UserWallet} from '@universal-login/commons';
 import WalletService from '../../integration/storage/WalletService';
 
 export class WalletPresenter {

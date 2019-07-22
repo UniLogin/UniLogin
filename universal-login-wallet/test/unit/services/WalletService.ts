@@ -1,8 +1,7 @@
 import {expect} from 'chai';
 import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
-import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {UserWallet, TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import WalletService from '../../../src/integration/storage/WalletService';
-import UserWallet from '../../../src/core/entities/UserWallet';
 
 describe('WalletService', () => {
   const userWallet: UserWallet = { name: 'justyna.nylogin.eth', contractAddress: '0x123', privateKey: '0x5422' };
