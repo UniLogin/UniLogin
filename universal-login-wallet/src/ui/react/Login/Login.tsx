@@ -1,5 +1,5 @@
 import React from 'react';
-import WalletSelector from './WalletSelector';
+import {WalletSelector} from '@universal-login/react';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter} from '../../hooks';

@@ -1,6 +1,8 @@
 import React, {useState, ChangeEvent} from 'react';
-import {Input, Suggestions, renderBusyIndicator} from '@universal-login/react';
-import {SuggestionsService} from '@universal-login/commons';
+import {SuggestionsService } from '@universal-login/commons';
+import {Input} from '../..';
+import {Suggestions} from './Suggestions';
+import {renderBusyIndicator} from './BusyIndicator';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
@@ -8,7 +10,7 @@ interface WalletSelector {
   suggestionsService: SuggestionsService;
 }
 
-const WalletSelector = ({onCreateClick, onConnectionClick, suggestionsService}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, suggestionsService}: WalletSelector) => {
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
