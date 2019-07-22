@@ -5,7 +5,7 @@ import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
 import Login from './Login/Login';
 import {PrivateRoute} from './PrivateRoute';
-import NotificationsScreen from './Notifications/NotificationsScreen';
+import NotificationsScreen from './NotificationsScreen';
 import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';

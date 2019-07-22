@@ -1,8 +1,8 @@
 import React from 'react';
-import Sidebar from '../common/Sidebar';
+import Sidebar from './common/Sidebar';
 import {Notifications} from '@universal-login/react';
-import UserDropdown from '../common/UserDropdown';
-import {useServices} from '../../hooks';
+import UserDropdown from './common/UserDropdown';
+import {useServices} from '../hooks';
 
 const NotificationsScreen = () => {
   const {sdk, walletService} = useServices();
