@@ -6,5 +6,6 @@ export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {Notifications} from './ui/Notifications/Notifications';
 export {Accordion} from './ui/Settings/Accordion';
 export {BackupCodes} from './ui/Settings/BackupCodes/BackupCodes';
+export {ManageDevices} from './ui/Settings/ManageDevices';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
