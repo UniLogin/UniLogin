@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
+import {Settings} from '@universal-login/react';
 import UserDropdown from '../common/UserDropdown';
-import {Settings} from './Settings';
 
 const SettingsScreen = () => (
   <div className="dashboard">
