@@ -39,7 +39,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
       <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick}/> :
       null;
 
-  const getWalletSelectorClass = (className?: string) => className ? '' : 'ul-default';
+  const getWalletSelectorClass = (className?: string) => className ? className : 'ul-default';
 
   return(
     <div className={getWalletSelectorClass(className)}>
