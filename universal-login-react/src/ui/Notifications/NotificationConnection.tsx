@@ -1,7 +1,6 @@
 import React from 'react';
 import {Notification} from '@universal-login/commons';
 
-
 interface NotificationConnectionProps {
   data: Notification;
   device: string;
@@ -9,8 +8,8 @@ interface NotificationConnectionProps {
   reject: (key: string) => void;
 }
 
-const NotificationConnection = ({data, device, confirm, reject}: NotificationConnectionProps) => {
-  return(
+export const NotificationConnection = ({data, device, confirm, reject}: NotificationConnectionProps) => {
+  return (
     <div className="notifications-item">
       <div className={`notification-connected ${device}`}>
         <h3 className="notification-title">{data.deviceInfo.name}</h3>
@@ -24,5 +23,3 @@ const NotificationConnection = ({data, device, confirm, reject}: NotificationCon
     </div>
   );
 };
-
-export default NotificationConnection;

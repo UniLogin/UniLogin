@@ -38,7 +38,7 @@ describe('UI: Connect', () => {
   it('Should connect to existing wallet', async () => {
     const appPage = new AppPage(appWrapper);
     await appPage.login().connect(name);
-    const publicKey = (new Wallet(services.walletService.userWallet!.privateKey)).address;
+    const publicKey = (new Wallet(services.walletService.applicationWallet!.privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
     await appPage.login().waitForHomeView('');
     expect(appPage.dashboard().getWalletBalance()).to.startWith('1.99');

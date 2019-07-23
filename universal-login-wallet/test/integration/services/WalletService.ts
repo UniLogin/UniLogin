@@ -25,7 +25,7 @@ describe('WalletService', async () => {
     expect(futureWallet.privateKey).to.be.properPrivateKey;
     expect(futureWallet.deploy).to.be.a('function');
     expect(futureWallet.waitForBalance).to.be.a('function');
-    expect(futureWallet).to.deep.eq(walletService.userWallet);
+    expect(futureWallet).to.deep.eq(walletService.applicationWallet);
     expect(walletService.state).to.be.eq('Future');
   });
 

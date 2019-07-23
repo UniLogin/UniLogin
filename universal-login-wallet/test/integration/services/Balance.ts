@@ -14,7 +14,7 @@ chai.use(sinonChai);
 const testTick = 30;
 const value = utils.parseEther('1');
 const walletService = {
-  userWallet: {
+  applicationWallet: {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     name: 'name',
     privateKey: '0x012345'
@@ -41,7 +41,7 @@ describe('Balance', () => {
   describe('EtherBalanceService', () => {
     it('should return correct balance', async () => {
       expect(await etherBalanceService.getBalance()).to.eq(0);
-      await wallet.sendTransaction({to: walletService.userWallet!.contractAddress, value});
+      await wallet.sendTransaction({to: walletService.applicationWallet!.contractAddress, value});
       expect(await etherBalanceService.getBalance()).to.eq(value);
     });
   });
@@ -54,7 +54,7 @@ describe('Balance', () => {
       expect(callback).to.have.been.called;
       expect(callback.firstCall.args[0]).to.eq(utils.bigNumberify(0));
 
-      await wallet.sendTransaction({to: walletService.userWallet!.contractAddress, value});
+      await wallet.sendTransaction({to: walletService.applicationWallet!.contractAddress, value});
       await waitUntil(() => !!callback.secondCall);
       expect(callback).to.have.been.calledTwice;
       expect(callback.lastCall.args[0]).to.deep.eq(utils.bigNumberify(value));

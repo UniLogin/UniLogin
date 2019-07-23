@@ -5,7 +5,6 @@ import UserDropdownService from '../core/app/UserDropdownService';
 import WalletService from '../integration/storage/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../integration/ethereum/TransferService';
-import NotificationsService from '../core/services/Notifications';
 import TokenService from '../integration/ethereum/TokenService';
 import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 import {BalanceService} from '../core/services/BalanceService';
@@ -35,7 +34,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const transferService = new TransferService(sdk, walletService, tokenService);
   const etherBalanceService = new EtherBalanceService(sdk.provider, walletService);
   const balanceService = new BalanceService(etherBalanceService);
-  const notificationService = new NotificationsService(sdk, walletService);
   return {
     sdk,
     config,
@@ -47,7 +45,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     tokenService,
     transferService,
     balanceService,
-    notificationService
   };
 };
 

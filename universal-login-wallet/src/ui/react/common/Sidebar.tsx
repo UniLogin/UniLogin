@@ -5,10 +5,13 @@ const Blockies = require('react-blockies').default;
 import {useServices} from '../../hooks';
 
 function Sidebar() {
-  const {userDropdownService, notificationService, walletPresenter} = useServices();
+  const {userDropdownService, walletPresenter, sdk, walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
+  const {contractAddress, privateKey} = walletService.applicationWallet!;
 
-  useEffect(() => notificationService.subscribe(notifications => setNewNotifications(notifications.length !== 0)), []);
+  const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
+
+  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifictions), []);
 
   return (
     <div className="sidebar">
