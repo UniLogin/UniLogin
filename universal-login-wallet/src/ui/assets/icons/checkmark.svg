@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
-    <title>Shape</title>
+<svg width="9px" height="5px" viewBox="0 0 9 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56 (81588) - https://sketch.com -->
+    <title>Stroke 140</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="GUI" transform="translate(-1039.000000, -5014.000000)" fill="#FFFFFF" fill-rule="nonzero">
-            <g id="Group-4-Copy-5" transform="translate(60.000000, 4855.000000)">
-                <g id="Group-10" transform="translate(0.000000, 64.000000)">
-                    <g id="Group-9" transform="translate(172.000000, 87.000000)">
-                        <g id="Group-5-Copy-17" transform="translate(801.000000, 0.000000)">
-                            <g id="Group-25">
-                                <g id="Group-12" transform="translate(6.000000, 8.000000)">
-                                    <path d="M4.33333333,7.32862138 L11.7670895,0.202772228 C12.0491349,-0.0675907428 12.5064207,-0.0675907428 12.788466,0.202772228 C13.0705113,0.4731352 13.0705113,0.911480185 12.788466,1.18184316 L4.84402156,8.79722777 C4.56197624,9.06759074 4.10469042,9.06759074 3.8226451,8.79722777 L0.211533991,5.33568931 C-0.0705113305,5.06532634 -0.0705113305,4.62698135 0.211533991,4.35661838 C0.493579313,4.08625541 0.950865131,4.08625541 1.23291045,4.35661838 L4.33333333,7.32862138 Z" id="Shape"></path>
-                                </g>
-                            </g>
+        <g id="Artboard-Copy" transform="translate(-364.000000, -670.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="Group-3" transform="translate(360.000000, 662.000000)">
+                <g id="bixik/mini-accept" transform="translate(0.000000, 1.000000)">
+                    <g id="Group-2">
+                        <g id="Group" transform="translate(4.722222, 7.000000)">
+                            <path d="M6.04468095,0.199812251 C6.46206069,-0.131420299 7.05401324,-0.0416810769 7.36684399,0.400250414 C7.67967473,0.842181905 7.59492102,1.4689552 7.17754128,1.80018775 L3.3997635,4.79823208 C3.02385614,5.09655214 2.49801667,5.05698729 2.16572804,4.70538163 L0.276839154,2.70668541 C-0.0921095817,2.31628847 -0.092304557,1.68312352 0.276403664,1.29247192 C0.645111885,0.901820317 1.243101,0.901613873 1.61204974,1.29201081 L2.92192383,2.6780322 L6.04468095,0.199812251 Z" id="Stroke-140"></path>
                         </g>
                     </g>
                 </g>
