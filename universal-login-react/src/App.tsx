@@ -1,9 +1,7 @@
-// import UniversalLoginSDK from '@universal-login/sdk';
 import React from 'react';
 
 export const App = () => {
 
-  // const sdk = new UniversalLoginSDK();
   const splitStyle = {
     height: '100%',
     width: '50%',
@@ -34,14 +32,12 @@ export const App = () => {
       <div style={{...splitStyle, ...left}}>
         <div style={centered}>
           <p>WalletSelector</p>
-          {/* <WalletSelector sdk={sdk}/> */}
         </div>
       </div>
 
       <div style={{...splitStyle, ...right}}>
         <div style={centered}>
           <p>Notifications</p>
-          {/* <Notifications sdk={sdk}/> */}
         </div>
       </div>
     </div>
