@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from '../../hooks';
 
 export const TermsAndConditionsScreen = () => {
+  const [isRead, setIsRead] = useState(false);
   const {history} = useRouter();
 
   return (
@@ -36,12 +37,12 @@ export const TermsAndConditionsScreen = () => {
           <div className="terms-box-footer">
             <p className="terms-text">Read the full text above. When you have scrolled the bottom, click the check box below to mark that you understand and agree</p>
             <label className="checkbox terms-checkbox">
-              <input type="checkbox" />
+              <input type="checkbox" checked={isRead} onChange={() => setIsRead(!isRead)} />
               <div className="checkbox-text terms-checkbox-text">I have read and understood the above</div>
             </label>
             <div className="row">
               <button onClick={() => history.push('/welcome')} className="terms-btn button-secondary">I refuse</button>
-              <button className="terms-btn button-secondary" disabled>I agree</button>
+              <button onClick={() => history.push('/login')} className="terms-btn button-secondary" disabled={!isRead}>I agree</button>
             </div>
           </div>
         </div>
