@@ -4,7 +4,7 @@ interface EmptyBackupCodesViewProps {
   generateBackupCodes: () => void;
 }
 
-const EmptyBackupCodesView = ({generateBackupCodes}: EmptyBackupCodesViewProps) => (
+export const EmptyBackupCodesView = ({generateBackupCodes}: EmptyBackupCodesViewProps) => (
   <>
     <p className="backup-text">If you lose all your devices you may not have other ways to recover your account. Generate a recovery code and keep it safe</p>
     <div className="backup-codes-buttons">

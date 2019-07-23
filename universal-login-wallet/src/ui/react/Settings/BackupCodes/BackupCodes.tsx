@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {Accordion} from '@universal-login/react';
+import {Accordion, EmptyBackupCodesView} from '@universal-login/react';
 import Printer from '../../../assets/icons/printer.svg';
-import EmptyBackupCodesView from './EmptyBackupCodesView';
 import BackupCodesView from './BackupCodesView';
 import BackupCodesLoader from './BackupCodesLoader';
 
