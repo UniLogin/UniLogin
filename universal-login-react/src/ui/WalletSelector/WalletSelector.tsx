@@ -4,6 +4,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
+import './../styles/main.css';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
