@@ -6,7 +6,8 @@
 
 .spinner-busy-indicator {
   position: absolute;
-  right: 25px;
+  right: 10px;
+  top: 2px;
   width: 37px;
   height: 37px;
 }

@@ -11,6 +11,10 @@
   margin-bottom: 2px;
 }
 
+.input-wrapper {
+  position: relative;
+}
+
 .input {
   width: 100%;
   height: 45px;

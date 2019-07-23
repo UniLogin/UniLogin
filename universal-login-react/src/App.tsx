@@ -5,20 +5,16 @@ import {WalletSelector} from '.';
 export const App = () => {
   const sdk = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
   const splitStyle = {
-    height: '50%',
+    height: '500px',
     padding: '20px'
   };
-
-  const container = {
-    height: '100vh'
-  }
 
   const top = {
     left: '0',
     backgroundColor: '#e3d3c2',
     display: 'flex',
+    paddingTop: '100px',
     justifyContent: 'center',
-    alignItems: 'center',
   };
 
   const bottom = {
@@ -27,7 +23,7 @@ export const App = () => {
   };
 
   return (
-    <div style={container}>
+    <div>
       <div style={{...splitStyle, ...top}}>
         <div style={{maxWidth: '320px'}}>
           <p>WalletSelector</p>
