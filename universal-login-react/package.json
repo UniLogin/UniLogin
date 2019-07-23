@@ -10,7 +10,7 @@
     "clean": "rm -fr dist",
     "build": "yarn clean && tsc -p tsconfig.json && cp -r src/ui/assets dist/src/ui/assets && cp -r src/ui/styles dist/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:nobuild": "NODE_ENV=test mocha -r ./dist/test/helpers/nullCompiler -t 10000 --exit \"dist/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "@types/mocha": "^5.2.5",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
+    "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "css-loader": "^3.1.0",
     "enzyme": "^3.10.0",
