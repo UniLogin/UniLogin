@@ -22,9 +22,8 @@ class AuthorisationsObserver extends ObserverRunner {
 
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
-      const authorisationsCopy = authorisations.map((a: Notification) => ({...a}));
       for (const callback of this.callbacks) {
-        callback(authorisationsCopy);
+        callback(Object.freeze(authorisations));
       }
     }
   }

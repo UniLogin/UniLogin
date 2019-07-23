@@ -31,13 +31,11 @@ export const isValidCode = (code: number[], publicKey: string) => {
   return deepEqual(expectedCode, code);
 };
 
-export const addCodesToNotifications = (notifications: Notification[]) => {
-  for (const notification of notifications) {
-    const publicKey = notification.key;
-    notification.securityCodeWithFakes = generateCodeWithFakes(publicKey);
-  }
-  return notifications;
-};
+const addCodeWithFakes = (notification: Notification) =>
+  ({...notification, securityCodeWithFakes: generateCodeWithFakes(notification.key)});
+
+export const addCodesToNotifications = (notifications: Notification[]) =>
+  notifications.map((notification) => addCodeWithFakes(notification));
 
 export const isProperCodeNumber = (code: number) => {
   return 0 <= code && code < 1024;
