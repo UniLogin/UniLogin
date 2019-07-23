@@ -42,20 +42,20 @@ Creating SDK
 Creating wallet contract
 ------------------------
 
-create
-^^^^^^
+createFutureWallet
+^^^^^^^^^^^^^^^^^^
 
-**sdk.create(ensName)**
+**sdk.createFutureWallet()**
 
-  creates new wallet contract.
+  creates future wallet.
 
-  Parameters:
-    - **ensName** : string - choosen ENS name with existing domain (ENS domain supported by relayer)
   Returns:
     `promise`, that resolves to a pair ``[privateKey, contractAddress]``, where:
 
     - *privateKey* - private key assigend to the wallet contract for signing future transactions
     - *contract address* - address of newly deployed wallet contract, with choosen ENS name assigned
+    - *waitForBalance* - promise, that resolves, when balance  to
+    - *deploy* -
 
   Example:
     ::
