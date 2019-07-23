@@ -40,7 +40,7 @@ const addCodeWithFakes = (notification: Notification) =>
 export const addCodesToNotifications = (notifications: Notification[]) =>
   notifications.map((notification) => {
     const notificationCopy = copyNotification(notification);
-    return addCodeWithFakes(notification);
+    return addCodeWithFakes(notificationCopy);
   });
 
 export const isProperCodeNumber = (code: number) => {
