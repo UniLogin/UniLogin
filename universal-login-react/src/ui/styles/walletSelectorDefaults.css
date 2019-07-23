@@ -1,18 +1,18 @@
 
-.ul-default .login-input-label-title {
+.universal-login-default .login-input-label-title {
   font-size: 15px;
   color: #FFFFFF;
   font-family: 'Poppins-Medium', sans-serif;
   line-height: 25px;
 }
 
-.ul-default .login-input-label-text {
+.universal-login-default .login-input-label-text {
   opacity: 0.75;
   font-size: 13px;
   color: #FFFFFF;
 }
 
-.ul-default .input {
+.universal-login-default .input {
   font-weight: 500;
   font-size: 14px;
   color: #FFFFFF;
@@ -22,30 +22,30 @@
   text-shadow: none;
 }
 
-.ul-default input:focus {
+.universal-login-default input:focus {
   border: 1px solid #0FB989;
   outline: none;
 }
 
-.ul-default .suggestions-list {
+.universal-login-default .suggestions-list {
   background: #262053;
   box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
 }
 
-.ul-default .suggestions-item-btn:hover,
-.ul-default .suggestions-item-btn:focus {
+.universal-login-default .suggestions-item-btn:hover,
+.universal-login-default .suggestions-item-btn:focus {
   background: #19143D;
   outline: none;
 }
 
-.ul-default .suggestions-item-btn-text {
+.universal-login-default .suggestions-item-btn-text {
   font-weight: 600;
   font-size: 13px;
   color: #0FB989;
   text-transform: uppercase;
 }
 
-.ul-default .suggestions-item-text {
+.universal-login-default .suggestions-item-text {
   font-weight: 600;
   font-size: 14px;
   color: #FFFFFF;
