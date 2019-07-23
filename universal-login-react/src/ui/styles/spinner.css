@@ -1,86 +1,3 @@
-* {
-  box-sizing: border-box
-}
-
-.login-input-label {
-  display: block;
-  margin-bottom: 16px;
-}
-
-.login-input-label-title {
-  margin-bottom: 2px;
-  font-family: 'Poppins-Medium', sans-serif;
-  font-size: 15px;
-  color: #FFFFFF;
-  line-height: 25px;
-
-}
-
-.login-input-label-text {
-  opacity: 0.75;
-  font-size: 13px;
-  color: #FFFFFF;
-}
-
-.input {
-  width: 100%;
-  height: 45px;
-  padding: 12px 20.5px;
-  font-weight: 500;
-  font-size: 14px;
-  color: #FFFFFF;
-  background: #262053;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
-  border: none;
-  text-shadow: none;
-}
-
-input:focus {
-  border: 1px solid #0FB989;
-  outline: none;
-}
-
-.suggestions-list {
-  padding: 8px 0;
-  margin-top: 8px;
-  border-radius: 5px;
-  background: #262053;
-  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
-  list-style: none;
-}
-
-.suggestions-item-btn {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 10px 20.5px;
-  background: none;
-  border: none;
-}
-
-.suggestions-item-btn:hover,
-.suggestions-item-btn:focus {
-  background: #19143D;
-  outline: none;
-}
-
-.suggestions-item-btn-text {
-  font-weight: 600;
-  font-size: 13px;
-  color: #0FB989;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.suggestions-item-text {
-  font-weight: 600;
-  font-size: 14px;
-  color: #FFFFFF;
-  margin: 0;
-}
-
 .spinner {
   position: relative;
   width: 65px;
@@ -98,15 +15,18 @@ input:focus {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: #fff;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
+  background: #000;
+}
+
+.ul-default .spinner-dot {
+  background: #ffffff;
 }
 
 .spinner-dot-desktop {
   width: 3px;
   height: 3px;
-
 }
 
 .spinner-dot-tablet,

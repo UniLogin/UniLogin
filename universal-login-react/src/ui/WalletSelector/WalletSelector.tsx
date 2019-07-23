@@ -4,16 +4,18 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
-import './../styles/main.css';
+import './../styles/walletSelector.css';
+import './../styles/walletSelectorDefaults.css';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
   sdk: UniversalLoginSDK;
   domains: string[];
+  customStyles?: string;
 }
 
-export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, customStyles}: WalletSelector) => {
   const walletSelectionService = new WalletSelectionService(sdk, domains);
   const suggestionsService = new SuggestionsService(walletSelectionService);
   const [busy, setBusy] = useState(false);
@@ -38,8 +40,8 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains}:
       null;
 
   return(
-    <>
-      <label htmlFor="loginInput" className="login-input-label">
+    <div className={customStyles ? '' : 'ul-default'}>
+      <label htmlFor="loginInput" className= "login-input-label">
         <p className="login-input-label-title">Type a nickname you want</p>
         <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
       </label>
@@ -51,7 +53,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains}:
           autoFocus
       />
       {renderSuggestions()}
-    </>
+    </div>
   );
 };
 
