@@ -28,8 +28,8 @@ export const App = () => {
         <div style={{maxWidth: '320px'}}>
           <p>WalletSelector</p>
           <WalletSelector
-            onCreateClick={() => {console.log('create')}}
-            onConnectionClick={() => {console.log('connect')}}
+            onCreateClick={() => { console.log('create'); }}
+            onConnectionClick={() => { console.log('connect'); }}
             sdk={sdk}
             domains={['mylogin.eth']}
           />

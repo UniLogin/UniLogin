@@ -43,7 +43,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
 
   return(
     <div className={getWalletSelectorClass(customStyles)}>
-      <label htmlFor="loginInput" className= "login-input-label">
+      <label htmlFor="loginInput" className="login-input-label">
         <p className="login-input-label-title">Type a nickname you want</p>
         <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
       </label>
