@@ -31,11 +31,17 @@ export const isValidCode = (code: number[], publicKey: string) => {
   return deepEqual(expectedCode, code);
 };
 
+const copyNotification = (notification: Notification) =>
+  ({...notification, deviceInfo: {...notification.deviceInfo}});
+
 const addCodeWithFakes = (notification: Notification) =>
   ({...notification, securityCodeWithFakes: generateCodeWithFakes(notification.key)});
 
 export const addCodesToNotifications = (notifications: Notification[]) =>
-  notifications.map((notification) => addCodeWithFakes(notification));
+  notifications.map((notification) => {
+    const notificationCopy = copyNotification(notification);
+    return addCodeWithFakes(notification);
+  });
 
 export const isProperCodeNumber = (code: number) => {
   return 0 <= code && code < 1024;
