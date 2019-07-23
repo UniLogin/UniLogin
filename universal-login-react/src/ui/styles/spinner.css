@@ -11,6 +11,30 @@
   height: 37px;
 }
 
+.spinner-desktop {
+  position: absolute;
+  top: 31px;
+  right: 50px;
+  width: 35px;
+  height: 35px;
+}
+
+.spinner-tablet {
+  position: absolute;
+  top: 62px;
+  left: 42px;
+  width: 30px;
+  height: 30px;
+}
+
+.spinner-mob {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  bottom: 21px;
+  left: 7px;
+}
+
 .spinner-dot {
   position: absolute;
   width: 8px;
@@ -27,12 +51,14 @@
 .spinner-dot-desktop {
   width: 3px;
   height: 3px;
+  background: #ffffff;
 }
 
 .spinner-dot-tablet,
 .spinner-dot-mob {
   height: 2px;
   width: 2px;
+  background: #ffffff;
 }
 
 .spinner-dot:nth-child(1) {
