@@ -54,7 +54,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
             onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
             placeholder="bob.example.eth"
             autoFocus
-            />
+          />
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}
