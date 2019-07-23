@@ -12,10 +12,10 @@ interface WalletSelector {
   onConnectionClick: (...args: any[]) => void;
   sdk: UniversalLoginSDK;
   domains: string[];
-  customStyles?: string;
+  className?: string;
 }
 
-export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, customStyles}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, className}: WalletSelector) => {
   const walletSelectionService = new WalletSelectionService(sdk, domains);
   const suggestionsService = new SuggestionsService(walletSelectionService);
   const [busy, setBusy] = useState(false);
@@ -39,10 +39,10 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
       <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick}/> :
       null;
 
-  const getWalletSelectorClass = (customStyles?: string) => customStyles ? '' : 'ul-default';
+  const getWalletSelectorClass = (className?: string) => className ? '' : 'ul-default';
 
   return(
-    <div className={getWalletSelectorClass(customStyles)}>
+    <div className={getWalletSelectorClass(className)}>
       <label htmlFor="loginInput" className="login-input-label">
         <p className="login-input-label-title">Type a nickname you want</p>
         <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
