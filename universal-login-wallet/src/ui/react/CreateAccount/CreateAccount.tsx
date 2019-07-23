@@ -23,4 +23,4 @@ export const CreateAccount = () => {
       </div>
     </div>
   );
-}
+};
