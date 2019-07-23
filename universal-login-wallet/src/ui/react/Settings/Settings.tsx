@@ -1,6 +1,6 @@
 import React from 'react';
 import ManageDevices from './ManageDevices';
-import BackupCodes from './BackupCodes/BackupCodes';
+import {BackupCodes} from '@universal-login/react';
 
 export const Settings = () => (
   <div className="subscreen">
