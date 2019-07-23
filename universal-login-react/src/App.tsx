@@ -1,48 +1,43 @@
-// import UniversalLoginSDK from '@universal-login/sdk';
 import React from 'react';
+import UniversalLoginSDK from '@universal-login/sdk';
+import {WalletSelector} from '.';
 
 export const App = () => {
-
-  // const sdk = new UniversalLoginSDK();
+  const sdk = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
   const splitStyle = {
-    height: '100%',
-    width: '50%',
-    position: 'fixed' as 'fixed',
-    paddingTop: '20px'
+    height: '500px',
+    padding: '20px'
   };
 
-  const left = {
+  const top = {
     left: '0',
-    backgroundColor: '#e3d3c2'
+    backgroundColor: '#e3d3c2',
+    display: 'flex',
+    paddingTop: '100px',
+    justifyContent: 'center',
   };
 
-  const right = {
+  const bottom = {
     right: '0',
     backgroundColor: '#91a3f5'
   };
 
-  const centered = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    textAlign: 'center' as 'center'
-  };
-
-
   return (
     <div>
-      <div style={{...splitStyle, ...left}}>
-        <div style={centered}>
+      <div style={{...splitStyle, ...top}}>
+        <div style={{maxWidth: '320px'}}>
           <p>WalletSelector</p>
-          {/* <WalletSelector sdk={sdk}/> */}
+          <WalletSelector
+            onCreateClick={() => { console.log('create'); }}
+            onConnectionClick={() => { console.log('connect'); }}
+            sdk={sdk}
+            domains={['mylogin.eth']}
+          />
         </div>
       </div>
 
-      <div style={{...splitStyle, ...right}}>
-        <div style={centered}>
-          <p>Notifications</p>
-          {/* <Notifications sdk={sdk}/> */}
-        </div>
+      <div style={{...splitStyle, ...bottom}}>
+        <p>Notifications</p>
       </div>
     </div>
   );

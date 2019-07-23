@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box
+}
+
+.universal-login .login-input-label {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.universal-login .login-input-label-title {
+  margin-bottom: 2px;
+}
+
+.universal-login .input-wrapper {
+  position: relative;
+}
+
+.universal-login .input {
+  width: 100%;
+  height: 45px;
+  padding: 12px 20.5px;
+  border-radius: 5px;
+}
+
+.universal-login .suggestions-list {
+  padding: 8px 0;
+  margin-top: 8px;
+  border-radius: 5px;
+  list-style: none;
+  background: #fff;
+}
+
+.universal-login .suggestions-item-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20.5px;
+  background: none;
+  border: none;
+}
+
+.universal-login .suggestions-item-btn-text {
+  margin: 0;
+}
+
+.universal-login .suggestions-item-text {
+  margin: 0;
+}
+
