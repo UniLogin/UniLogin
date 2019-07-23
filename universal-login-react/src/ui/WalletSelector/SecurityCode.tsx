@@ -6,7 +6,7 @@ interface SecurityCodeProps {
 
 export const SecurityCode = ({securityCode}: SecurityCodeProps) => {
   const codes = securityCode.map((element: number, index: number) => (
-    <li key={`securityCode_${index}`} className="emoji" style={{display: 'inline'}}> {element} </li>
+    <li key={`securityCode_${index}`} style={{display: 'inline'}}> {element} </li>
   ));
 
   return (

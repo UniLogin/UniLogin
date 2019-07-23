@@ -6,7 +6,7 @@ interface SecurityCodeWithFakesProps {
 
 export const SecurityCodeWithFakes = ({securityCode}: SecurityCodeWithFakesProps) => {
   const code = securityCode.map((element: number, index: number) => (
-    <li key={`securityCodeWithFakes_${index}`} className="emoji" style={{display: 'inline'}}> {element} </li>
+    <li key={`securityCodeWithFakes_${index}`} style={{display: 'inline'}}> {element} </li>
   ));
 
   return (
