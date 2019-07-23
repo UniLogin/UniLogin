@@ -7,5 +7,8 @@ export {Notifications} from './ui/Notifications/Notifications';
 export {Settings} from './ui/Settings/Settings';
 export {TopUp} from './ui/TopUp/TopUp';
 export {ModalWrapper} from './ui/ModalWrapper';
+export {SecurityCode} from './ui/WalletSelector/SecurityCode';
+export {SecurityCodeWithFakes} from './ui/Notifications/SecurityCodeWithFakes';
+export {Placeholders} from './ui/Notifications/Placeholders';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
