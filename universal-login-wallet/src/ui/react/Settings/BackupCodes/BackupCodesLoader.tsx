@@ -1,5 +1,5 @@
 import React from 'react';
-import ProgressBar from '../../common/ProgressBar';
+import {ProgressBar} from '@universal-login/react';
 
 interface BackupCodesLoaderProps {
   title: string;

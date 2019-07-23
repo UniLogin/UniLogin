@@ -1,7 +1,5 @@
 import React from 'react';
-import {Spinner} from '@universal-login/react';
-import ProgressBar from '../common/ProgressBar';
-
+import {ProgressBar, Spinner} from '@universal-login/react';
 
 const ModalWaitingFor = ({action}: {action: string}) => {
   return (
