@@ -1,6 +1,6 @@
 import React from 'react';
 import Avatar from '../../../assets/avatar.svg';
-import BackupCodesLoader from './BackupCodesLoader';
+import {BackupCodesLoader} from '@universal-login/react';
 
 interface BackupCodesViewProps {
   codes: string[];

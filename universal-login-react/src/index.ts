@@ -6,3 +6,4 @@ export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {Notifications} from './ui/Notifications/Notifications';
 export {Accordion} from './ui/Settings/Accordion';
 export {EmptyBackupCodesView} from './ui/Settings/BackupCodes/EmptyBackupCodesView';
+export {BackupCodesLoader} from './ui/Settings/BackupCodes/BackupCodesLoader';

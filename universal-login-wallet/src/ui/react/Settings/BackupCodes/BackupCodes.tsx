@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {Accordion, EmptyBackupCodesView} from '@universal-login/react';
+import {Accordion, BackupCodesLoader, EmptyBackupCodesView} from '@universal-login/react';
 import Printer from '../../../assets/icons/printer.svg';
 import BackupCodesView from './BackupCodesView';
-import BackupCodesLoader from './BackupCodesLoader';
 
 const BackupCodes = () => {
   const [codes, setCodes] = useState<string[] | []>([]);
