@@ -1,8 +1,7 @@
 import React, {useState, ChangeEvent} from 'react';
 import Logo from './../../assets/logo-with-text.svg';
-import avatar from './../../assets/avatar.svg';
 import InputLabel from '../common/InputLabel';
-import {Input} from '@universal-login/react';
+import {Avatar, Input} from '@universal-login/react';
 import { Link } from 'react-router-dom';
 
 const RecoveryScreen = () => {
@@ -14,7 +13,7 @@ const RecoveryScreen = () => {
       <h1 className="start-title">Waiting for approval</h1>
       <p className="start-subtitle">Open your device that controls this ID and approve this connection</p>
       <div className="user-row recovery-screen-user">
-        <img src={avatar} alt="user avatar" className="user-img"/>
+        <img src={Avatar} alt="user avatar" className="user-img"/>
         <p className="user-id">marek.universalogin.eth</p>
       </div>
       <div className="recovery-screen-input">

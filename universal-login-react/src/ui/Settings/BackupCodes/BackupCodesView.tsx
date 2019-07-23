@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from '../../../assets/avatar.svg';
+import Avatar from '../../assets/avatar.svg';
 import BackupCodesLoader from './BackupCodesLoader';
 
 interface BackupCodesViewProps {
@@ -11,7 +11,7 @@ interface BackupCodesViewProps {
   loading: boolean;
 }
 
-const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, loading, generateBackupCodes}: BackupCodesViewProps) => {
+export const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, loading, generateBackupCodes}: BackupCodesViewProps) => {
   return (
     <>
       <p className="backup-text">Print these, cut them apart and keep them safe locations apart from each other. Keep them away from computers until you want to use them.</p>
