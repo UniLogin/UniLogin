@@ -1,5 +1,5 @@
 import React from 'react';
-import {WalletSelector} from '@universal-login/react';
+import {WalletSelector, WalletSelectorAction} from '@universal-login/react';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter, useWalletConfig} from '../../hooks';
@@ -45,6 +45,11 @@ const Login = ({location} : LoginProps) => {
           onConnectionClick={onConnectionClick}
           sdk={sdk}
           domains={walletConfig.domains}
+          actions={[
+            WalletSelectorAction.create,
+            WalletSelectorAction.connect,
+            WalletSelectorAction.recover
+          ]}
         />
       <Modal />
     </div>
