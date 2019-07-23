@@ -1,5 +1,5 @@
 import React from 'react';
-import Accordion from './Accordion';
+import {Accordion} from '@universal-login/react';
 import Phone from '../../assets/icons/phone.svg';
 
 const ManageDevices = () => (
