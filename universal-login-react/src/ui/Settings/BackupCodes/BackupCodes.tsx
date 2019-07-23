@@ -6,7 +6,7 @@ import EmptyBackupCodesView from './EmptyBackupCodesView';
 import Accordion from '../Accordion';
 
 export const BackupCodes = () => {
-  const [codes, setCodes] = useState([] as string[]);
+  const [codes, setCodes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const walletContract = 'liam.universal-id.eth';
 
