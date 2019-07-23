@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import Accordion from '../Accordion';
-import Printer from '../../../assets/icons/printer.svg';
-import EmptyBackupCodesView from './EmptyBackupCodesView';
-import BackupCodesView from './BackupCodesView';
+import Printer from '../../assets/icons/printer.svg';
 import BackupCodesLoader from './BackupCodesLoader';
+import BackupCodesView from './BackupCodesView';
+import EmptyBackupCodesView from './EmptyBackupCodesView';
+import Accordion from '../Accordion';
 
-const BackupCodes = () => {
-  const [codes, setCodes] = useState<string[] | []>([]);
+export const BackupCodes = () => {
+  const [codes, setCodes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const walletContract = 'liam.universal-id.eth';
 
@@ -31,7 +31,7 @@ const BackupCodes = () => {
     if (loading && !codes.length) {
       return (
         <>
-          <BackupCodesLoader title="Generating backup codes, please wait"/>
+          <BackupCodesLoader title="Generating backup codes, please wait" />
           <div className="backup-buttons-row">
             <button className="btn btn-secondary">Cancel backup code</button>
           </div>
@@ -39,17 +39,17 @@ const BackupCodes = () => {
       );
     } else if (codes.length) {
       return (
-              <BackupCodesView
-                codes={codes}
-                printCodes={window.print}
-                walletContract={walletContract}
-                removeBackupCodes={removeBackupCodes}
-                generateBackupCodes={generateBackupCodes}
-                loading={loading}
-              />
-            );
+        <BackupCodesView
+          codes={codes}
+          printCodes={window.print}
+          walletContract={walletContract}
+          removeBackupCodes={removeBackupCodes}
+          generateBackupCodes={generateBackupCodes}
+          loading={loading}
+        />
+      );
     }
-    return <EmptyBackupCodesView generateBackupCodes={generateBackupCodes}/>;
+    return <EmptyBackupCodesView generateBackupCodes={generateBackupCodes} />;
   };
 
   return (

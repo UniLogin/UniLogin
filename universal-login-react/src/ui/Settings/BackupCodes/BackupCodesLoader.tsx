@@ -1,11 +1,11 @@
 import React from 'react';
-import ProgressBar from '../../common/ProgressBar';
+import ProgressBar from '../../commons/ProgressBar';
 
 interface BackupCodesLoaderProps {
   title: string;
 }
 
-const BackupCodesLoader = ({title}: BackupCodesLoaderProps) => (
+export const BackupCodesLoader = ({title}: BackupCodesLoaderProps) => (
   <>
     <p className="backup-codes-loader-text">{title}</p>
     <div className="backup-codes-loader-wrapper">

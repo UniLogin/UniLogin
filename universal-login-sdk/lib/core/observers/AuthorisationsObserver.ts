@@ -19,7 +19,6 @@ class AuthorisationsObserver extends ObserverRunner {
 
   private async checkAuthorisationsChangedFor(getAuthorisationRequest: GetAuthorisationRequest) {
     const authorisations = await this.fetchPendingAuthorisations(getAuthorisationRequest);
-
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
       for (const callback of this.callbacks) {

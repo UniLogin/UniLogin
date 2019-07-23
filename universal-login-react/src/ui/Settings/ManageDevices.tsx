@@ -1,8 +1,8 @@
 import React from 'react';
+import Phone from '../assets/icons/phone.svg';
 import Accordion from './Accordion';
-import Phone from '../../assets/icons/phone.svg';
 
-const ManageDevices = () => (
+export const ManageDevices = () => (
   <Accordion
     title="Manage devices"
     subtitle="You currently have 3 authorized devices"
