@@ -8,7 +8,7 @@ export interface Suggestions {
 
 type SuggestionsCallback = (suggestions: Suggestions) => void;
 
-export class SuggestionsService  {
+export class DebouncedSuggestionsService  {
   private debouncedGetSuggestions: any;
 
   constructor(
