@@ -22,7 +22,7 @@ package UserInterface {
       onCreateClick()
       onConnectionClick()
     }
-    
+
     class RecoveryScreen {
 
     }
@@ -76,10 +76,10 @@ package Core {
   }
 
   package commons {
-    class SuggestionsService {
+    class DebouncedSuggestionsService {
 
     }
-    class WalletSelectionService {
+    class SuggestionsService {
 
     }
 
@@ -90,7 +90,7 @@ package Core {
     reject()
     confirm()
   }
-  
+
 }
 
 package Integration {
@@ -110,7 +110,7 @@ package Integration {
     createWallet(ensName)
   }
 
-  
+
   class TokenService {
     tokenDetails: TokenDetails[]
     start()
@@ -144,7 +144,7 @@ Login --|> WalletSelector
 TransferringFundsScreen --|> Spinner
 
 
-WalletSelector --|> SuggestionsService
+WalletSelector --|> DebouncedSuggestionsService
 WalletSelector --|> Suggestions
 
 BalanceService --|> EtherBalanceService
@@ -162,8 +162,8 @@ TransferService --|> WalletService
 
 TransferService --|> SDK
 
-SuggestionsService --|> SDK
-SuggestionsService --|> WalletSelectionService
+DebouncedSuggestionsService --|> SDK
+DebouncedSuggestionsService --|> SuggestionsService
 
 
 @enduml

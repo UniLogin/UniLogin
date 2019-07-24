@@ -1,5 +1,5 @@
 import React, {useState, ChangeEvent} from 'react';
-import {SuggestionsService, WalletSelectionService } from '@universal-login/commons';
+import {DebouncedSuggestionsService, WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, SuggestionsService} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
@@ -12,12 +12,14 @@ interface WalletSelector {
   onConnectionClick: (...args: any[]) => void;
   sdk: UniversalLoginSDK;
   domains: string[];
+  actions?: WalletSuggestionAction[];
   className?: string;
 }
 
-export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, className}: WalletSelector) => {
-  const walletSelectionService = new WalletSelectionService(sdk, domains);
-  const suggestionsService = new SuggestionsService(walletSelectionService);
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = WALLET_SUGGESTION_ALL_ACTIONS, className}: WalletSelector) => {
+  const [debouncedSuggestionsService] = useState(
+    new DebouncedSuggestionsService(new SuggestionsService(sdk, domains, actions))
+  );
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
@@ -27,7 +29,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
     const name = event.target.value;
     setName(name);
     setBusy(true);
-    suggestionsService.getSuggestions(name, suggestions => {
+    debouncedSuggestionsService.getSuggestions(name, suggestions => {
       setConnections(suggestions.connections);
       setCreations(suggestions.creations);
       setBusy(false);
@@ -36,7 +38,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
 
   const renderSuggestions = () =>
     !busy && (connections.length || creations.length) ?
-      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick}/> :
+      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick} /> :
       null;
 
   const getWalletSelectorClass = (className?: string) => className ? className : 'universal-login-default';

@@ -6,14 +6,15 @@ export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from 
 export {LocalizationConfig, SafelloConfig} from './core/models/onRamp';
 export {createKeyPair, KeyPair} from './core/models/keyPair';
 export {TransactionOverrides} from './core/models/transactions';
+export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {ApplicationWallet} from './core/models/ApplicationWallet';
 export {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE} from './core/constants/test';
 export {DEV_DEFAULT_PRIVATE_KEY, devJsonRpcUrl} from './core/constants/dev';
 export {KEY_CODE_ESCAPE, DEFAULT_LOCATION} from './core/constants/ui';
 export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from './core/constants/constants';
 export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXECUTION_TYPE_MANAGEMENT, EXECUTION_TYPE_ACTION, OPERATION_CALL, OPERATION_DELEGATECALL, OPERATION_CREATE} from './core/constants/contracts';
-export {SuggestionsService} from './core/services/SuggestionsService';
-export {WalletExistenceVerifier, WalletSelectionService} from './core/services/WalletSelectionService';
+export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
+export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
 export {TokenService} from './integration/ethereum/TokenService';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeContractAddress} from './core/utils/contracts/computeContractAddress';
