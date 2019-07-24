@@ -1,5 +1,5 @@
 import React, {useState, ChangeEvent} from 'react';
-import {SuggestionsService, WalletSelectionAction, WalletSelectionService} from '@universal-login/commons';
+import {SuggestionsService, WalletSelectionAction, WALLET_SELECTION_ALL_ACTIONS, WalletSelectionService} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
@@ -16,15 +16,9 @@ interface WalletSelector {
   className?: string;
 }
 
-const DEFAULT_ACTIONS: WalletSelectionAction[] = [
-  WalletSelectionAction.create,
-  WalletSelectionAction.connect,
-  WalletSelectionAction.recover
-];
-
-export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = DEFAULT_ACTIONS, className}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = WALLET_SELECTION_ALL_ACTIONS, className}: WalletSelector) => {
   const [suggestionsService] = useState(
-    new SuggestionsService(new WalletSelectionService(sdk, domains))
+    new SuggestionsService(new WalletSelectionService(sdk, domains, actions))
   );
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
