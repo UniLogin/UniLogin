@@ -1,13 +1,13 @@
 import React, {ReactNode} from 'react';
-import {TopUpClassName} from '../core/models/TopUpClassName';
+import {ModalName} from '../core/models/ModalName';
 
 interface ModalWrapperProps {
-  topUpClassName: TopUpClassName;
+  modalName: ModalName;
   children: ReactNode;
 }
 
-export const ModalWrapper = ({topUpClassName, children}: ModalWrapperProps) => (
-  <div className={`modal-wrapper ${topUpClassName}`}>
+export const ModalWrapper = ({modalName, children}: ModalWrapperProps) => (
+  <div className={`modal-wrapper ${modalName}`}>
     {children}
   </div>
 );
