@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import {Placeholders} from './Placeholders';
-import {SecurityCodeWithFakes} from './SecurityCodeWithFakes';
+import {EmojiPlaceholders} from './EmojiPlaceholders';
+import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
 import {isValidCode} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 
-interface SecurityFormProps {
+interface EmojiFormProps {
   sdk: UniversalLoginSDK;
   publicKey: string;
   securityCodeWithFakes: number[];
 }
 
-export const SecurityForm = ({sdk, publicKey, securityCodeWithFakes}: SecurityFormProps) => {
+export const EmojiForm = ({sdk, publicKey, securityCodeWithFakes}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState([] as number[]);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -22,10 +22,24 @@ export const SecurityForm = ({sdk, publicKey, securityCodeWithFakes}: SecurityFo
     }
   };
 
+  const onEmojiAdd = (code: number) => {
+    if (enteredCode.length < 6) {
+      enteredCode.push(code);
+      setEnteredCode([...enteredCode]);
+    }
+  };
+
+  const onEmojiRemove = (index: number) => {
+    if (enteredCode.length >= 0) {
+      enteredCode.splice(index, 1);
+      setEnteredCode([...enteredCode]);
+    }
+  };
+
   return (
     <div>
-      <Placeholders code={enteredCode} setCode={setEnteredCode} />
-      <SecurityCodeWithFakes securityCodeWithFakes={securityCodeWithFakes} code={enteredCode} setCode={setEnteredCode} />
+      <EmojiPlaceholders code={enteredCode} onEmojiClicked={onEmojiRemove} />
+      <EmojiPanelWithFakes securityCodeWithFakes={securityCodeWithFakes} onEmojiClicked={onEmojiAdd} />
       <div className="notification-buttons-row">
         <button onClick={() => console.log('rejecrted lcicked')} className="notification-reject-btn">Reject</button>
         <button onClick={() => confirmWithCodeCheck(publicKey)} className="btn btn-secondary btn-confirm">Confirm</button>

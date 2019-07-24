@@ -1,9 +1,9 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelector} from '.';
-import {SecurityForm} from './ui/Notifications/SecurityForm';
+import {EmojiForm} from './ui/Notifications/EmojiForm';
 import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes} from '@universal-login/commons';
-import {SecurityCode} from './ui/WalletSelector/SecurityCode';
+import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 
 export const App = () => {
   const sdk = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
@@ -39,13 +39,13 @@ export const App = () => {
             sdk={sdk}
             domains={['mylogin.eth']}
           />
-          <SecurityCode code={securityCode}/>
+          <EmojiPanel code={securityCode}/>
         </div>
       </div>
 
       <div style={{...splitStyle, ...bottom}}>
         <p>Notifications</p>
-        <SecurityForm
+        <EmojiForm
           sdk={sdk}
           publicKey={TEST_ACCOUNT_ADDRESS}
           securityCodeWithFakes={securityCodeWithFakes}

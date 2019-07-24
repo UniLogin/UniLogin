@@ -1,13 +1,13 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
 
-interface SecurityCodeProps {
+interface EmojiPanelProps {
   code: number[];
 }
 
-export const SecurityCode = ({code}: SecurityCodeProps) => {
+export const EmojiPanel = ({code}: EmojiPanelProps) => {
   const emojis = code.map((code: number, index: number) => (
-    <li key={`securityCode_${index}`}>
+    <li key={`emojiPanel_${index}`}>
       <Emoji code={code}/>
     </li>
   ));
