@@ -1,3 +1,5 @@
+import {WalletSelectionAction, WALLET_SELECTION_ALL_ACTIONS} from '../models/WalletSelectionAction';
+
 export interface WalletExistenceVerifier {
   walletContractExist(domain: string): Promise<boolean>;
 }
@@ -5,13 +7,11 @@ export interface WalletExistenceVerifier {
 const ensDomains = ['mylogin.eth'];
 
 export class WalletSelectionService {
-  domains: string[];
-  sdk: WalletExistenceVerifier;
-
-  constructor(sdk: WalletExistenceVerifier, domains: string[] = ensDomains) {
-    this.domains = domains;
-    this.sdk = sdk;
-  }
+  constructor(
+    private sdk: WalletExistenceVerifier,
+    private domains: string[] = ensDomains,
+    private actions: WalletSelectionAction[] = WALLET_SELECTION_ALL_ACTIONS
+    ) {}
 
   isCorrectDomainPrefix(domain: string) {
     return this.domains
@@ -43,14 +43,22 @@ export class WalletSelectionService {
     return true;
   }
 
+  private includeCreates() {
+    return this.actions.includes(WalletSelectionAction.create);
+  }
+
+  private includeConnections() {
+    return this.actions.includes(WalletSelectionAction.connect) || this.actions.includes(WalletSelectionAction.recover);
+  }
+
   async splitByExistence(domains: string[]) {
     const connections = [];
     const creations = [];
     for (const domain of domains) {
       if (await this.sdk.walletContractExist(domain)) {
-        connections.push(domain);
+        this.includeConnections() && connections.push(domain);
       } else {
-        creations.push(domain);
+        this.includeCreates() && creations.push(domain);
       }
     }
     return {connections, creations};

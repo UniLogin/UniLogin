@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {WalletSelectionService} from '../../../lib/core/services/WalletSelectionService';
 import sinon from 'sinon';
+import {WalletSelectionAction} from '../../../lib';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
 
@@ -233,5 +234,57 @@ describe('WalletSelectionService', () => {
       expect(service.isCorrectPrefix('a.my-super-')).to.be.true;
       expect(service.isCorrectPrefix('a.my-super-domain')).to.be.true;
     });
+  });
+
+  describe('With custom actions', () => {
+    const walletContractExist = sinon.stub();
+    const sdk = {walletContractExist};
+
+    before(() => {
+      walletContractExist.withArgs('a.my.eth').returns(Promise.resolve(true));
+      walletContractExist.withArgs('a.you.eth').returns(Promise.resolve(false));
+      walletContractExist.withArgs('a.them.eth').returns(Promise.resolve(true));
+    });
+
+    it('none', async () => {
+      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], []);
+      expect(await service.getSuggestions('a')).to.deep.eq({
+        connections: [],
+        creations: []
+      });
+    });
+
+    it('default (all)', async () => {
+      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth']);
+      expect(await service.getSuggestions('a')).to.deep.eq({
+        connections: ['a.my.eth', 'a.them.eth'],
+        creations: ['a.you.eth']
+      });
+    });
+
+    it('only connect', async () => {
+      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.connect]);
+      expect(await service.getSuggestions('a')).to.deep.eq({
+        connections: ['a.my.eth', 'a.them.eth'],
+        creations: []
+      });
+    });
+
+    it('only create', async () => {
+      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.create]);
+      expect(await service.getSuggestions('a')).to.deep.eq({
+        connections: [],
+        creations: ['a.you.eth']
+      });
+    });
+
+    it('only recover', async () => {
+      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.recover]);
+      expect(await service.getSuggestions('a')).to.deep.eq({
+        connections: ['a.my.eth', 'a.them.eth'],
+        creations: []
+      });
+    });
+
   });
 });
