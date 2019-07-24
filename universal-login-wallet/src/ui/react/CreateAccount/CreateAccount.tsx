@@ -3,6 +3,7 @@ import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import { useServices, useWalletConfig } from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
+import {WalletSuggestionAction} from '@universal-login/commons';
 
 export const CreateAccount = () => {
   const {sdk} = useServices();
@@ -18,11 +19,13 @@ export const CreateAccount = () => {
           <div className="create-account-content">
             <img src={vaultImage} srcSet={vaultImage2x} alt="vault" className="create-account-img"/>
             <div className="create-accoutn-selector-block">
+              <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
               <WalletSelector
                 onCreateClick={() => console.log('create')}
                 onConnectionClick={() => null}
                 sdk={sdk}
                 domains={walletConfig.domains}
+                actions={[WalletSuggestionAction.create]}
                 className="jarvis"
               />
               <button className="button-primary">Create your wallet</button>
