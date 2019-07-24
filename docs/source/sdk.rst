@@ -52,8 +52,8 @@ prepares wallet contract deployment.
 Returns:
   `promise`, that resolves to ``{privateKey, contractAddress, waitForBalance, deploy}``, where:
 
-  - *privateKey* - private key assigend to the wallet contract for signing future transactions
-  - *contract address* - address of newly deployed wallet contract, with choosen ENS name assigned
+  - *privateKey* - private key assigned to the wallet contract for signing future transactions
+  - *contract address* - address of newly deployed wallet contract, with chosen ENS name assigned
   - *waitForBalance* - function that waits for contract address balance change in acceptable by relayer token
 
       Returns:
@@ -65,7 +65,7 @@ Returns:
         - **gasPrice** : string - gas price of deployment transaction
 
       Returns:
-        `promise`, that resolves to deployed wallet contract address
+        `promise`, that resolves to the deployed wallet contract address
 
 Example:
   ::
