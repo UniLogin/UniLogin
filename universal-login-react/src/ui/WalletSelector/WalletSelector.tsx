@@ -4,6 +4,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
+import Logo from './../assets/logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 
@@ -46,11 +47,8 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
   return(
     <div className="universal-login">
       <div className={getWalletSelectorClass(className)}>
-        <label htmlFor="loginInput" className="login-input-label">
-          <p className="login-input-label-title">Type a nickname you want</p>
-          <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
-        </label>
-        <div className="input-wrapper">
+        <div className="selector-input-wrapper">
+          <img src={Logo} alt="Universal login logo" className="selector-input-img" />
           <Input
             id="loginInput"
             onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
