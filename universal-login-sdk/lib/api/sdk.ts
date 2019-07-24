@@ -29,7 +29,6 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    ensAddress?: string,
     paymentOptions?: Message,
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?

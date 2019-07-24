@@ -42,25 +42,39 @@ Creating SDK
 Creating wallet contract
 ------------------------
 
-create
-^^^^^^
+createFutureWallet
+^^^^^^^^^^^^^^^^^^
 
-**sdk.create(ensName)**
+**sdk.createFutureWallet()**
 
-  creates new wallet contract.
+Creates a FutureWallet, which contains all information required to deploy and use Wallet in the future.
 
-  Parameters:
-    - **ensName** : string - choosen ENS name with existing domain (ENS domain supported by relayer)
-  Returns:
-    `promise`, that resolves to a pair ``[privateKey, contractAddress]``, where:
+Returns:
+  `promise`, that resolves to ``FutureWallet``.
 
-    - *privateKey* - private key assigend to the wallet contract for signing future transactions
-    - *contract address* - address of newly deployed wallet contract, with choosen ENS name assigned
+**FutureWallet** contains:
 
-  Example:
-    ::
+  - *privateKey* - that will be connected to ContractWallet. Key will be used to sign transactions once the wallet is deployed.
+  - *contract address* - address under which wallet will be deployed in the future.
+  - *waitForBalance* - function that waits for contract address balance change in a way that will allow the wallet contract to be deployed.
 
-      const [privateKey, contractAddress] = await sdk.create('myname.example-domain.eth');
+      Returns:
+        `promise`, that resolves (only when wallet contract balance is changed to satisfy relayer requirements) to ``{tokenAddress, contractAddress}``
+  - *deploy* - function, that requests wallet contract deployment.
+
+      Parameters:
+        - **ensName** : string - chosen ENS name
+        - **gasPrice** : string - gas price of deployment transaction
+
+      Returns:
+        `promise`, that resolves to the deployed wallet contract address
+
+Example:
+  ::
+
+    const {privateKey, contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet();
+    await waitForBalance();
+    await deploy('myname.example-domain.eth');
 
 connect
 ^^^^^^^
@@ -300,6 +314,10 @@ removeKey
 Events
 ------
 
+
+Key added and key removed
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
 **sdk.start()**
 
   Starts to listen relayer and blockchain events.
@@ -308,19 +326,17 @@ Events
 
   Stops to listen relayer and blockchain events.
 
-Subscribe
-^^^^^^^^^
 
 **sdk.subscribe(eventType, filter, callback)**
 
-  subscribes an event.
+  subscribes KeyAdded or KeyRemoved event.
 
   Parameters:
-    - **eventType** : string - type of event, possible event types: ``KeyAdded``, ``KeyRemoved`` and  ``AuthorisationsChanged``
+    - **eventType** : string - type of event, possible event types: ``KeyAdded``, ``KeyRemoved``
     - **filter** : object - filter for events, includes:
 
       * contractAddress : string - address of contract to observe
-      * key (optional) : string - public key, using when subscribe to events with specific key (only for ``KeyAdded`` and ``KeyRemoved``)
+      * key : string - public key, using when subscribe to events with specific key
     - **callback**
   Returns:
     event listener
@@ -345,35 +361,6 @@ Subscribe
 
       0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A was added
 
-  Example:
-    .. code-block:: javascript
-
-      const filter = {
-        contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA'
-      };
-      const subscription = sdk.subscribe(
-        'AuthorisationsChanged',
-        filter,
-        (authorisations) => {
-          console.log(`${authorisations}`);
-        }
-      );
-
-    Result
-    ::
-
-      [{deviceInfo:
-          {
-            ipAddress: '89.67.68.130',
-            browser: 'Safari',
-            city: 'Warsaw'
-          },
-        id: 1,
-        walletContractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-        key: ''}]
-
-Unsubscribe
-^^^^^^^^^^^
 
 **subscription.remove()**
 
@@ -390,24 +377,44 @@ Unsubscribe
         }
       );
 
-Example
-^^^^^^^
 
-  ::
+Authorisations
+^^^^^^^^^^^^^^
 
-    import {Wallet} from 'ethers';
+**sdk.subscribeAuthorisations(walletContractAddress, privateKey, callback)**
 
-    const privateKey = await sdk.connect('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA');
-    const wallet = new Wallet(privateKey);
-    const filter = {
-      contractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-      key: wallet.address
-    };
-    const subscription = sdk.subscribe(
-      'KeyAdded',
-      filter,
-      (keyInfo) => {
-        this.myWallet = wallet;
-        subscription.remove();
-      }
-    );
+  subscribes AuthorisationChanged event
+
+  Parameters:
+    - **walletContractAddress** : string - address of contract to observe
+    - **privateKey** : string - the private key used to sign get authorization request
+    - **callback**
+
+  Returns:
+    unsubscribe function
+
+  Example:
+    .. code-block:: javascript
+
+      const unsubscribe = sdk.subscribe(
+        '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74',
+        (authorisations) => {
+          console.log(`${authorisations}`);
+          unsubscribe();
+        }
+      );
+
+    Result
+    ::
+
+      [{deviceInfo:
+          {
+            ipAddress: '89.67.68.130',
+            browser: 'Safari',
+            city: 'Warsaw'
+          },
+        id: 1,
+        walletContractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+        key: ''}]
+
