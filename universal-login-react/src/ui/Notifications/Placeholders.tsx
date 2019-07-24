@@ -1,25 +1,27 @@
-import React, {useState, useEffect} from 'react';
-import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
+import React from 'react';
+import {Emoji} from '../commons/Emoji';
 
 interface PlaceholdersProps {
-  setSecurityCode: (code: number[]) => void;
+  code: number[];
+  setCode: (code: number[]) => void;
 }
 
-export const Placeholders = ({setSecurityCode}: PlaceholdersProps) => {
-  const [code, setCode] = useState([0, 0, 0, 0, 0, 0]);
+export const Placeholders = ({code, setCode}: PlaceholdersProps) => {
+  const onEmojiClicked = (index: number, codeValue: number) => {
+    if (code.length >= 0) {
+      code.splice(index, 1);
+      setCode([...code]);
+    }
+  };
 
-  useEffect(() => {
-    
-  })
-
-  const placeholders = [...Array(SECURITY_CODE_LENGTH).keys()].map((element: number, index: number) => (
-    <li key={`placeholder_${index}`} style={{display: 'inline'}}>
-      {element}
+  const placeholders = code.map((code: number, index: number) => (
+    <li key={`placeholder_${index}`}  onClick={() => onEmojiClicked(index, code)} >
+      <Emoji code={code}/>
     </li>
   ));
 
   return (
-    <ul>
+    <ul style={{display: 'flex', listStyle: 'none'}}>
       {placeholders}
     </ul>
   );

@@ -2,20 +2,21 @@ import React, {useState} from 'react';
 import {Placeholders} from './Placeholders';
 import {SecurityCodeWithFakes} from './SecurityCodeWithFakes';
 import {isValidCode} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
 
 interface SecurityFormProps {
-  confirm: (key: string) => void;
-  reject: (key: string) => void;
+  sdk: UniversalLoginSDK;
   publicKey: string;
+  securityCodeWithFakes: number[];
 }
 
-export const SecurityForm = ({confirm, reject, publicKey}: SecurityFormProps) => {
-  const [securityCode, setSecurityCode] = useState([0, 0, 0, 0, 0, 0]);
+export const SecurityForm = ({sdk, publicKey, securityCodeWithFakes}: SecurityFormProps) => {
+  const [enteredCode, setEnteredCode] = useState([] as number[]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const confirmWithCodeCheck = (publicKey: string) => {
-    if (isValidCode(securityCode, publicKey)) {
-      confirm(publicKey);
+    if (isValidCode(enteredCode, publicKey)) {
+      setErrorMessage('');
     } else {
       setErrorMessage('Wrong security code. Try again or deny request.');
     }
@@ -23,10 +24,10 @@ export const SecurityForm = ({confirm, reject, publicKey}: SecurityFormProps) =>
 
   return (
     <div>
-      <Placeholders setSecurityCode={setSecurityCode} />
-      <SecurityCodeWithFakes publicKey={publicKey} />
+      <Placeholders code={enteredCode} setCode={setEnteredCode} />
+      <SecurityCodeWithFakes securityCodeWithFakes={securityCodeWithFakes} code={enteredCode} setCode={setEnteredCode} />
       <div className="notification-buttons-row">
-        <button onClick={() => reject(publicKey)} className="notification-reject-btn">Reject</button>
+        <button onClick={() => console.log('rejecrted lcicked')} className="notification-reject-btn">Reject</button>
         <button onClick={() => confirmWithCodeCheck(publicKey)} className="btn btn-secondary btn-confirm">Confirm</button>
         <p>{errorMessage}</p>
       </div>

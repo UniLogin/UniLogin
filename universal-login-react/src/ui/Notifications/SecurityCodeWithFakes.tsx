@@ -1,21 +1,32 @@
 import React from 'react';
-import {generateCodeWithFakes} from '@universal-login/commons';
+import {Emoji} from '../commons/Emoji';
 
 interface SecurityCodeWithFakesProps {
-  publicKey: string;
+  securityCodeWithFakes: number[];
+  code: number[];
+  setCode: (code: number[]) => void;
 }
 
-export const SecurityCodeWithFakes = ({publicKey}: SecurityCodeWithFakesProps) => {
-  const securityCode = generateCodeWithFakes(publicKey);
-  const code = securityCode.map((element: number, index: number) => (
-    <li key={`securityCodeWithFakes_${index}`} style={{display: 'inline'}}>
-      {element}
+export const SecurityCodeWithFakes = ({securityCodeWithFakes, code, setCode}: SecurityCodeWithFakesProps) => {
+  const onEmojiClicked = (index: number, codeValue: number) => {
+    if (code.length < 6) {
+      code.push(codeValue);
+      setCode([...code]);
+    }
+  };
+
+  const emojis = securityCodeWithFakes.map((code: number, index: number) => (
+    <li key={`securityCodeWithFakes_${index}`} onClick={() => onEmojiClicked(index, code)} >
+      <Emoji code={code}/>
     </li>
   ));
 
   return (
-    <ul>
-      {code}
-    </ul>
+    <div>
+      <p>Security code</p>
+      <ul style={{display: 'flex', listStyle: 'none'}}>
+        {emojis}
+      </ul>
+    </div>
   );
 };

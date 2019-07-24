@@ -1,19 +1,22 @@
 import React from 'react';
+import {Emoji} from '../commons/Emoji';
 
 interface SecurityCodeProps {
-  securityCode: number[];
+  code: number[];
 }
 
-export const SecurityCode = ({securityCode}: SecurityCodeProps) => {
-  const codes = securityCode.map((element: number, index: number) => (
-    <li key={`securityCode_${index}`} style={{display: 'inline'}}>
-      {element}
+export const SecurityCode = ({code}: SecurityCodeProps) => {
+  const emojis = code.map((code: number, index: number) => (
+    <li key={`securityCode_${index}`}>
+      <Emoji code={code}/>
     </li>
   ));
 
   return (
-    <ul>
-      {codes}
-    </ul>
+    <div>
+      <ul style={{display: 'flex', listStyle: 'none'}}>
+        {emojis}
+      </ul>
+    </div>
   );
 };
