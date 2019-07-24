@@ -1,5 +1,5 @@
 import React, {useState, ChangeEvent} from 'react';
-import {DebouncedSuggestionsService, WalletSelectionAction, WALLET_SELECTION_ALL_ACTIONS, SuggestionsService} from '@universal-login/commons';
+import {DebouncedSuggestionsService, WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, SuggestionsService} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
@@ -12,11 +12,11 @@ interface WalletSelector {
   onConnectionClick: (...args: any[]) => void;
   sdk: UniversalLoginSDK;
   domains: string[];
-  actions?: WalletSelectionAction[];
+  actions?: WalletSuggestionAction[];
   className?: string;
 }
 
-export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = WALLET_SELECTION_ALL_ACTIONS, className}: WalletSelector) => {
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = WALLET_SUGGESTION_ALL_ACTIONS, className}: WalletSelector) => {
   const [debouncedSuggestionsService] = useState(
     new DebouncedSuggestionsService(new SuggestionsService(sdk, domains, actions))
   );

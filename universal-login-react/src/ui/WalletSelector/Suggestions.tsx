@@ -1,12 +1,12 @@
 import React from 'react';
-import {getSuggestionId, WalletSelectionAction, WALLET_SELECTION_ALL_ACTIONS} from '@universal-login/commons';
+import {getSuggestionId, WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
 
 interface SuggestionsProps {
   connections: string[];
   creations: string[];
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
-  actions?: WalletSelectionAction[];
+  actions?: WalletSuggestionAction[];
 }
 
 const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void) =>
@@ -22,13 +22,13 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (.
     </li>
   )));
 
-const getSuggestions = (suggestions: string[], actions: WalletSelectionAction[] = WALLET_SELECTION_ALL_ACTIONS, flag: WalletSelectionAction): string[] =>
+const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS, flag: WalletSuggestionAction): string[] =>
   actions.includes(flag) ? suggestions : [];
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectionClick, actions}: SuggestionsProps) => {
-  const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSelectionAction.connect), onConnectionClick);
-  const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSelectionAction.create), onCreateClick);
-  const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSelectionAction.recover), () => alert('not implemented'));
+  const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectionClick);
+  const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick);
+  const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSuggestionAction.recover), () => alert('not implemented'));
   return (
     <ul className="suggestions-list">
       {connectionsSuggestions}

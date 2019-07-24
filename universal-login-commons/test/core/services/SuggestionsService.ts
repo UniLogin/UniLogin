@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {SuggestionsService} from '../../../lib/core/services/SuggestionsService';
 import sinon from 'sinon';
-import {WalletSelectionAction} from '../../../lib';
+import {WalletSuggestionAction} from '../../../lib';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
 
@@ -263,7 +263,7 @@ describe('SuggestionsService', () => {
     });
 
     it('only connect', async () => {
-      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.connect]);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.connect]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
         creations: []
@@ -271,7 +271,7 @@ describe('SuggestionsService', () => {
     });
 
     it('only create', async () => {
-      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.create]);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.create]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: [],
         creations: ['a.you.eth']
@@ -279,7 +279,7 @@ describe('SuggestionsService', () => {
     });
 
     it('only recover', async () => {
-      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.recover]);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.recover]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
         creations: []

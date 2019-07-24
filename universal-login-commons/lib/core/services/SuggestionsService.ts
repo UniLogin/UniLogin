@@ -1,4 +1,4 @@
-import {WalletSelectionAction, WALLET_SELECTION_ALL_ACTIONS} from '../models/WalletSelectionAction';
+import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '../models/WalletSuggestionAction';
 
 export interface WalletExistenceVerifier {
   walletContractExist(domain: string): Promise<boolean>;
@@ -10,7 +10,7 @@ export class SuggestionsService {
   constructor(
     private sdk: WalletExistenceVerifier,
     private domains: string[] = ensDomains,
-    private actions: WalletSelectionAction[] = WALLET_SELECTION_ALL_ACTIONS
+    private actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS
     ) {}
 
   isCorrectDomainPrefix(domain: string) {
@@ -44,11 +44,11 @@ export class SuggestionsService {
   }
 
   private includeCreates() {
-    return this.actions.includes(WalletSelectionAction.create);
+    return this.actions.includes(WalletSuggestionAction.create);
   }
 
   private includeConnections() {
-    return this.actions.includes(WalletSelectionAction.connect) || this.actions.includes(WalletSelectionAction.recover);
+    return this.actions.includes(WalletSuggestionAction.connect) || this.actions.includes(WalletSuggestionAction.recover);
   }
 
   async splitByExistence(domains: string[]) {
