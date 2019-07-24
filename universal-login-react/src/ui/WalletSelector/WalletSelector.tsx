@@ -1,7 +1,6 @@
 import React, {useState, ChangeEvent} from 'react';
-import {SuggestionsService, WalletSelectionService} from '@universal-login/commons';
+import {SuggestionsService, WalletSelectionAction, WalletSelectionService} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {WalletSelectorAction} from '../../core/models/WalletSelectorAction';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
@@ -13,14 +12,14 @@ interface WalletSelector {
   onConnectionClick: (...args: any[]) => void;
   sdk: UniversalLoginSDK;
   domains: string[];
-  actions?: WalletSelectorAction[];
+  actions?: WalletSelectionAction[];
   className?: string;
 }
 
-const DEFAULT_ACTIONS: WalletSelectorAction[] = [
-  WalletSelectorAction.create,
-  WalletSelectorAction.connect,
-  WalletSelectorAction.recover
+const DEFAULT_ACTIONS: WalletSelectionAction[] = [
+  WalletSelectionAction.create,
+  WalletSelectionAction.connect,
+  WalletSelectionAction.recover
 ];
 
 export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = DEFAULT_ACTIONS, className}: WalletSelector) => {

@@ -1,4 +1,4 @@
-export enum WalletSelectorAction {
+export enum WalletSelectionAction {
   'create',
   'connect',
   'recover'
