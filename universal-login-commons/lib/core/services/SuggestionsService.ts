@@ -6,7 +6,7 @@ export interface WalletExistenceVerifier {
 
 const ensDomains = ['mylogin.eth'];
 
-export class WalletSelectionService {
+export class SuggestionsService {
   constructor(
     private sdk: WalletExistenceVerifier,
     private domains: string[] = ensDomains,

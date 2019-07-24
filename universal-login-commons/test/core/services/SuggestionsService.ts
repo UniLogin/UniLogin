@@ -1,22 +1,22 @@
 import {expect} from 'chai';
-import {WalletSelectionService} from '../../../lib/core/services/WalletSelectionService';
+import {SuggestionsService} from '../../../lib/core/services/SuggestionsService';
 import sinon from 'sinon';
 import {WalletSelectionAction} from '../../../lib';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
 
-describe('WalletSelectionService', () => {
+describe('SuggestionsService', () => {
   describe('Connections', () => {
     it('gets all possible connections', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a'))!.connections).to.deep.eq(['a.my.eth', 'a.uni.eth', 'a.app.eth']);
       expect((await service.getSuggestions('bb'))!.connections).to.deep.eq(['bb.my.eth', 'bb.uni.eth', 'bb.app.eth']);
     });
 
     it('gets connections with . at the end', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.'))!.connections).to.deep.eq(['a.my.eth', 'a.uni.eth', 'a.app.eth']);
       expect((await service.getSuggestions('bb.'))!.connections).to.deep.eq(['bb.my.eth', 'bb.uni.eth', 'bb.app.eth']);
     });
@@ -26,25 +26,25 @@ describe('WalletSelectionService', () => {
       walletContractExist.withArgs('a.my.eth').returns(Promise.resolve(true));
       walletContractExist.withArgs('a.uni.eth').returns(Promise.resolve(false));
       walletContractExist.withArgs('a.app.eth').returns(Promise.resolve(true));
-      const service = new WalletSelectionService({walletContractExist}, domains);
+      const service = new SuggestionsService({walletContractExist}, domains);
       expect((await service.getSuggestions('a'))!.connections).to.deep.eq(['a.my.eth', 'a.app.eth']);
     });
 
     it('return full domain that exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.my.eth'))!.connections).to.deep.eq(['a.my.eth']);
     });
 
     it('returns empty for full domain that does not exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.my.eth'))!.connections).to.deep.eq([]);
     });
 
     it('returns empty for invalid prefix ', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.m.a'))!.connections).to.be.empty;
       expect((await service.getSuggestions('a..u'))!.connections).to.be.empty;
       expect((await service.getSuggestions('a.app.etha'))!.connections).to.be.empty;
@@ -53,7 +53,7 @@ describe('WalletSelectionService', () => {
 
     it('returns domains for partially entered domains', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.m'))!.connections).to.deep.eq(['a.my.eth']);
       expect((await service.getSuggestions('a.u'))!.connections).to.deep.eq(['a.uni.eth']);
       expect((await service.getSuggestions('a.ap'))!.connections).to.deep.eq(['a.app.eth']);
@@ -65,14 +65,14 @@ describe('WalletSelectionService', () => {
   describe('Creations', () => {
     it('gets all possible creations', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a'))!.creations).to.deep.eq(['a.my.eth', 'a.uni.eth', 'a.app.eth']);
       expect((await service.getSuggestions('bb'))!.creations).to.deep.eq(['bb.my.eth', 'bb.uni.eth', 'bb.app.eth']);
     });
 
     it('gets connections with . at the end', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.'))!.creations).to.deep.eq(['a.my.eth', 'a.uni.eth', 'a.app.eth']);
       expect((await service.getSuggestions('bb.'))!.creations).to.deep.eq(['bb.my.eth', 'bb.uni.eth', 'bb.app.eth']);
     });
@@ -82,25 +82,25 @@ describe('WalletSelectionService', () => {
       walletContractExist.withArgs('a.my.eth').returns(Promise.resolve(true));
       walletContractExist.withArgs('a.uni.eth').returns(Promise.resolve(false));
       walletContractExist.withArgs('a.app.eth').returns(Promise.resolve(true));
-      const service = new WalletSelectionService({walletContractExist}, domains);
+      const service = new SuggestionsService({walletContractExist}, domains);
       expect((await service.getSuggestions('a'))!.creations).to.deep.eq(['a.uni.eth']);
     });
 
     it('return full domain that does not exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.my.eth'))!.creations).to.deep.eq(['a.my.eth']);
     });
 
     it('returns empty for domain that does exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.my.eth'))!.creations).to.deep.eq([]);
     });
 
     it('returns empty for invalid prefix ', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.m.a'))!.creations).to.be.empty;
       expect((await service.getSuggestions('a..u'))!.creations).to.be.empty;
       expect((await service.getSuggestions('a.app.etha'))!.creations).to.be.empty;
@@ -109,7 +109,7 @@ describe('WalletSelectionService', () => {
 
     it('returns domains for partially entered domains', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect((await service.getSuggestions('a.m'))!.connections).to.deep.eq(['a.my.eth']);
       expect((await service.getSuggestions('a.u'))!.connections).to.deep.eq(['a.uni.eth']);
       expect((await service.getSuggestions('a.ap'))!.connections).to.deep.eq(['a.app.eth']);
@@ -120,32 +120,32 @@ describe('WalletSelectionService', () => {
 
   describe('Get all suggestions', () => {
     it('incorrect prefix', async () => {
-      const service = new WalletSelectionService({} as any, domains);
+      const service = new SuggestionsService({} as any, domains);
       expect(await service.getSuggestions('..')).to.deep.eq({connections: [], creations: []});
     });
 
     it('full domain exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
+      const service = new SuggestionsService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: ['a.my.eth'], creations: []});
       expect(await service.getSuggestions('a.my.test')).to.deep.eq({connections: ['a.my.test'], creations: []});
     });
 
     it('full domain create', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, domains);
+      const service = new SuggestionsService(sdk, domains);
       expect(await service.getSuggestions('a.my.eth')).to.deep.eq({connections: [], creations: ['a.my.eth']});
     });
 
     it('with secondary domain prefix, wallet contract exists', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-      const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
+      const service = new SuggestionsService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my')).to.deep.eq({connections: ['a.my.eth', 'a.my.test'], creations: []});
     });
 
     it('with secondary domain prefix, wallet contract doesn`t exist', async () => {
       const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(false))};
-      const service = new WalletSelectionService(sdk, [...domains, 'my.test']);
+      const service = new SuggestionsService(sdk, [...domains, 'my.test']);
       expect(await service.getSuggestions('a.my')).to.deep.eq({connections: [], creations: ['a.my.eth', 'a.my.test']});
     });
 
@@ -154,7 +154,7 @@ describe('WalletSelectionService', () => {
       walletContractExist.withArgs('a.my.eth').returns(Promise.resolve(true));
       walletContractExist.withArgs('a.uni.eth').returns(Promise.resolve(false));
       walletContractExist.withArgs('a.app.eth').returns(Promise.resolve(true));
-      const service = new WalletSelectionService({walletContractExist}, domains);
+      const service = new SuggestionsService({walletContractExist}, domains);
       expect(await service.getSuggestions('a')).to.deep.eq({connections: ['a.my.eth', 'a.app.eth'], creations: ['a.uni.eth']});
     });
 
@@ -163,17 +163,17 @@ describe('WalletSelectionService', () => {
       walletContractExist.withArgs('a.nothing.eth').returns(Promise.resolve(false));
       walletContractExist.withArgs('a.nothing.eth').returns(Promise.resolve(false));
       walletContractExist.withArgs('a.nothing.eth').returns(Promise.resolve(false));
-      const service = new WalletSelectionService({walletContractExist}, domains);
+      const service = new SuggestionsService({walletContractExist}, domains);
       expect(await service.getSuggestions('a.nothing.eth')).to.deep.eq({connections: [], creations: []});
       expect(await service.getSuggestions('a.un.eth')).to.deep.eq({connections: [], creations: []});
     });
   });
 
   describe('Prefix check', () => {
-    let service: WalletSelectionService;
+    let service: SuggestionsService;
 
     before(() => {
-      service = new WalletSelectionService({} as any, []);
+      service = new SuggestionsService({} as any, []);
     });
 
     it('returns true if there is no domain', () => {
@@ -247,7 +247,7 @@ describe('WalletSelectionService', () => {
     });
 
     it('none', async () => {
-      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], []);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], []);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: [],
         creations: []
@@ -255,7 +255,7 @@ describe('WalletSelectionService', () => {
     });
 
     it('default (all)', async () => {
-      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth']);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth']);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
         creations: ['a.you.eth']
@@ -263,7 +263,7 @@ describe('WalletSelectionService', () => {
     });
 
     it('only connect', async () => {
-      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.connect]);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.connect]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
         creations: []
@@ -271,7 +271,7 @@ describe('WalletSelectionService', () => {
     });
 
     it('only create', async () => {
-      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.create]);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.create]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: [],
         creations: ['a.you.eth']
@@ -279,7 +279,7 @@ describe('WalletSelectionService', () => {
     });
 
     it('only recover', async () => {
-      const service = new WalletSelectionService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.recover]);
+      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSelectionAction.recover]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
         creations: []

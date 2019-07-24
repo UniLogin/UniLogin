@@ -1,5 +1,5 @@
 import {debounce} from '../utils/debounce';
-import {WalletSelectionService} from './WalletSelectionService';
+import {SuggestionsService} from './SuggestionsService';
 
 export interface Suggestions {
   connections: string[];
@@ -12,7 +12,7 @@ export class DebouncedSuggestionsService  {
   private debouncedGetSuggestions: any;
 
   constructor(
-    private walletSelectionService: WalletSelectionService,
+    private walletSelectionService: SuggestionsService,
     {debounceTime} = {debounceTime: 1000},
   ) {
     this.debouncedGetSuggestions = debounce(this.doGetSuggestions.bind(this), debounceTime);

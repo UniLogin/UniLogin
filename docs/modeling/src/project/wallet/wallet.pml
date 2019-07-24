@@ -79,7 +79,7 @@ package Core {
     class DebouncedSuggestionsService {
 
     }
-    class WalletSelectionService {
+    class SuggestionsService {
 
     }
 
@@ -163,7 +163,7 @@ TransferService --|> WalletService
 TransferService --|> SDK
 
 DebouncedSuggestionsService --|> SDK
-DebouncedSuggestionsService --|> WalletSelectionService
+DebouncedSuggestionsService --|> SuggestionsService
 
 
 @enduml

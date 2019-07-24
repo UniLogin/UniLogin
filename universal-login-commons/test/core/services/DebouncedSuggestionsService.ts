@@ -3,14 +3,14 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {sleep} from '../../../lib';
 import {DebouncedSuggestionsService} from '../../../lib/core/services/DebouncedSuggestionsService';
-import {WalletSelectionService} from '../../../lib/core/services/WalletSelectionService';
+import {SuggestionsService} from '../../../lib/core/services/SuggestionsService';
 
 chai.use(sinonChai);
 
 describe('DebouncedSuggestionsService', () => {
   it('call callback with proper arguments', async () => {
-    const walletSelectionService = {getSuggestions: sinon.fake.returns(Promise.resolve({connections: [], creations: []}))};
-    const debouncedSuggestionsService = new DebouncedSuggestionsService(walletSelectionService as any, {debounceTime: 1});
+    const suggestionsService = {getSuggestions: sinon.fake.returns(Promise.resolve({connections: [], creations: []}))};
+    const debouncedSuggestionsService = new DebouncedSuggestionsService(suggestionsService as any, {debounceTime: 1});
     const callback = sinon.spy();
 
     debouncedSuggestionsService.getSuggestions('a', callback);
@@ -18,10 +18,10 @@ describe('DebouncedSuggestionsService', () => {
     expect(callback).to.have.been.calledWith({connections: [], creations: []});
   });
 
-  it('works fine with WalletSelectionService', async () => {
+  it('works fine with SuggestionsService', async () => {
     const sdk = {walletContractExist: sinon.fake.returns(Promise.resolve(true))};
-    const walletSelectionService = new WalletSelectionService(sdk, ['mylogin.eth']);
-    const debouncedSuggestionsService = new DebouncedSuggestionsService(walletSelectionService, {debounceTime: 1});
+    const suggestionsService = new SuggestionsService(sdk, ['mylogin.eth']);
+    const debouncedSuggestionsService = new DebouncedSuggestionsService(suggestionsService, {debounceTime: 1});
     const callback = sinon.spy();
 
     debouncedSuggestionsService.getSuggestions('a', callback);
