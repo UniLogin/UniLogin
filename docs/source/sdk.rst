@@ -3,7 +3,7 @@
 SDK
 ===
 
-SDK is a JS library, that helps to communicate with relayer. SDK makes easy to manage contract, by creating basic contract-calling messages. It uses private key to sign that messages and sends it to relayer, which propagates it to network.
+SDK is a JS library, that helps to communicate with relayer. The SDK makes it easy to manage contract, by creating basic contract-calling messages. It uses private key to sign these messages and send them to relayer, which propagates them to the network.
 
 .. _sdk_create:
 
