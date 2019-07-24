@@ -47,20 +47,32 @@ createFutureWallet
 
 **sdk.createFutureWallet()**
 
-  creates future wallet.
+prepares wallet contract deployment.
 
-  Returns:
-    `promise`, that resolves to a pair ``[privateKey, contractAddress]``, where:
+Returns:
+  `promise`, that resolves to ``{privateKey, contractAddress, waitForBalance, deploy}``, where:
 
-    - *privateKey* - private key assigend to the wallet contract for signing future transactions
-    - *contract address* - address of newly deployed wallet contract, with choosen ENS name assigned
-    - *waitForBalance* - promise, that resolves, when balance  to
-    - *deploy* -
+  - *privateKey* - private key assigend to the wallet contract for signing future transactions
+  - *contract address* - address of newly deployed wallet contract, with choosen ENS name assigned
+  - *waitForBalance* - function that waits for contract address balance change in acceptable by relayer token
 
-  Example:
-    ::
+      Returns:
+        `promise`, that resolves (only when wallet contract address balance changes) to ``{tokenAddress, contractAddress}``
+  - *deploy* - function, that requests wallet contract deployment.
 
-      const [privateKey, contractAddress] = await sdk.create('myname.example-domain.eth');
+      Parameters:
+        - **ensName** : string - chosen ENS name
+        - **gasPrice** : string - gas price of deployment transaction
+
+      Returns:
+        `promise`, that resolves to deployed wallet contract address
+
+Example:
+  ::
+
+    const {privateKey, contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet();
+    await waitForBalance();
+    await deploy('myname.example-domain.eth');
 
 connect
 ^^^^^^^
