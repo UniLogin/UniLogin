@@ -12,12 +12,18 @@ interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
   onConnectionClick: (...args: any[]) => void;
   sdk: UniversalLoginSDK;
-  actions: WalletSelectorAction[];
   domains: string[];
+  actions?: WalletSelectorAction[];
   className?: string;
 }
 
-export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions, className}: WalletSelector) => {
+const DEFAULT_ACTIONS: WalletSelectorAction[] = [
+  WalletSelectorAction.create,
+  WalletSelectorAction.connect,
+  WalletSelectorAction.recover
+];
+
+export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, actions = DEFAULT_ACTIONS, className}: WalletSelector) => {
   const [suggestionsService] = useState(
     new SuggestionsService(new WalletSelectionService(sdk, domains))
   );
