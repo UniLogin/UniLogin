@@ -50,6 +50,7 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
         <div className="selector-input-wrapper">
           <img src={Logo} alt="Universal login logo" className="selector-input-img" />
           <Input
+            className="wallet-selector"
             id="loginInput"
             onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
             placeholder="bob.example.eth"
