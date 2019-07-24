@@ -47,17 +47,19 @@ createFutureWallet
 
 **sdk.createFutureWallet()**
 
-prepares wallet contract deployment.
+Creates a FutureWallet, which contains all information required to deploy and use Wallet in the future.
 
 Returns:
-  `promise`, that resolves to ``{privateKey, contractAddress, waitForBalance, deploy}``, where:
+  `promise`, that resolves to ``FutureWallet``.
 
-  - *privateKey* - private key assigned to the wallet contract for signing future transactions
-  - *contract address* - address of newly deployed wallet contract, with chosen ENS name assigned
-  - *waitForBalance* - function that waits for contract address balance change in acceptable by relayer token
+**FutureWallet** contains:
+
+  - *privateKey* - that will be connected to ContractWallet. Key will be used to sign transactions once the wallet is deployed.
+  - *contract address* - address under which wallet will be deployed in the future.
+  - *waitForBalance* - function that waits for contract address balance change in a way that will allow the wallet contract to be deployed.
 
       Returns:
-        `promise`, that resolves (only when wallet contract address balance changes) to ``{tokenAddress, contractAddress}``
+        `promise`, that resolves (only when wallet contract balance is changed to satisfy relayer requirements) to ``{tokenAddress, contractAddress}``
   - *deploy* - function, that requests wallet contract deployment.
 
       Parameters:
@@ -385,7 +387,7 @@ Authorisations
 
   Parameters:
     - **walletContractAddress** : string - address of contract to observe
-    - **privateKey** : string - to sign get authorisation request
+    - **privateKey** : string - the private key used to sign get authorization request
     - **callback**
 
   Returns:
