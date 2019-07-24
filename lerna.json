@@ -4,10 +4,10 @@
     "universal-login-contracts",
     "universal-login-example",
     "universal-login-ops",
+    "universal-login-react",
     "universal-login-relayer",
     "universal-login-sdk",
-    "universal-login-wallet",
-    "universal-login-react"
+    "universal-login-wallet"
   ],
-  "version": "0.3.1"
+  "version": "0.3.2"
 }
