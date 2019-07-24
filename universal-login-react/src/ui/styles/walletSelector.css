@@ -2,23 +2,21 @@
   box-sizing: border-box
 }
 
-.universal-login .login-input-label {
-  display: block;
-  margin-bottom: 16px;
-}
-
-.universal-login .login-input-label-title {
-  margin-bottom: 2px;
-}
-
-.universal-login .input-wrapper {
+.universal-login .selector-input-wrapper {
   position: relative;
 }
 
-.universal-login .input {
+.universal-login .selector-input-img {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+}
+
+.universal-login .input-wallet-selector {
   width: 100%;
   height: 45px;
-  padding: 12px 20.5px;
+  padding: 12px 46px 12px 42px;
   border-radius: 5px;
 }
 
@@ -46,5 +44,7 @@
 
 .universal-login .suggestions-item-text {
   margin: 0;
+  word-break: break-word;
+  text-align: left;
 }
 

@@ -40,6 +40,10 @@ const Login = ({location} : LoginProps) => {
     <div className="start login">
       <img src={Logo} alt="Logo" className="start-logo login-logo"/>
       <p className="start-subtitle login-subtitle">The best place to put your money anywhere on the planet. Universal finance for everyone.</p>
+        <label htmlFor="loginInput" className="login-input-label">
+          <p className="login-input-label-title">Type a nickname you want</p>
+          <p className="login-input-label-text">(Or your current username if you’re already own one)</p>
+        </label>
         <WalletSelector
           onCreateClick={(name: string) => onCreateCLick(name)}
           onConnectionClick={onConnectionClick}

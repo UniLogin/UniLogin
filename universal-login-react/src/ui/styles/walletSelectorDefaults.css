@@ -1,18 +1,4 @@
-
-.universal-login-default .login-input-label-title {
-  font-size: 15px;
-  color: #FFFFFF;
-  font-family: 'Poppins-Medium', sans-serif;
-  line-height: 25px;
-}
-
-.universal-login-default .login-input-label-text {
-  opacity: 0.75;
-  font-size: 13px;
-  color: #FFFFFF;
-}
-
-.universal-login-default .input {
+.universal-login-default .input-wallet-selector {
   font-weight: 500;
   font-size: 14px;
   color: #FFFFFF;
