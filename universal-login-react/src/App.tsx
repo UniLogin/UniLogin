@@ -32,7 +32,6 @@ export const App = () => {
             onConnectionClick={() => { console.log('connect'); }}
             sdk={sdk}
             domains={['mylogin.eth']}
-            className="asdsd"
           />
         </div>
       </div>
