@@ -25,13 +25,14 @@ export const App = () => {
   return (
     <div>
       <div style={{...splitStyle, ...top}}>
-        <div style={{maxWidth: '320px'}}>
+        <div style={{maxWidth: '400px', width: '100%'}}>
           <p>WalletSelector</p>
           <WalletSelector
             onCreateClick={() => { console.log('create'); }}
             onConnectionClick={() => { console.log('connect'); }}
             sdk={sdk}
             domains={['mylogin.eth']}
+            className="asdsd"
           />
         </div>
       </div>
