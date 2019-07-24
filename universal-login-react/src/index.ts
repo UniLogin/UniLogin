@@ -5,5 +5,7 @@ export {Spinner} from './ui/commons/Spinner';
 export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {Notifications} from './ui/Notifications/Notifications';
 export {Settings} from './ui/Settings/Settings';
+export {TopUp} from './ui/TopUp/TopUp';
+export {ModalWrapper} from './ui/ModalWrapper';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};

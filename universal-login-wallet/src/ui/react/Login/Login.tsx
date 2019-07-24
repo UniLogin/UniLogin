@@ -1,5 +1,5 @@
 import React from 'react';
-import {DEFAULT_LOCATION, WalletSuggestionAction, Procedure, defaultDeployOptions} from '@universal-login/commons';
+import {DEFAULT_LOCATION, Procedure, defaultDeployOptions, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
 import {WalletSelector} from '@universal-login/react';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
@@ -49,11 +49,7 @@ const Login = ({location} : LoginProps) => {
           onConnectionClick={onConnectionClick}
           sdk={sdk}
           domains={walletConfig.domains}
-          actions={[
-            WalletSuggestionAction.create,
-            WalletSuggestionAction.connect,
-            WalletSuggestionAction.recover
-          ]}
+          actions={WALLET_SUGGESTION_ALL_ACTIONS}
         />
       <Modal />
     </div>
