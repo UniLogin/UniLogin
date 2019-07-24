@@ -1,8 +1,9 @@
+const path = require('path');
+const webpack = require('webpack');
+const Dotenv = require("dotenv-webpack")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const Dotenv = require("dotenv-webpack")
-const webpack = require('webpack');
-const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/main.tsx',
@@ -56,7 +57,10 @@ module.exports = {
       'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
       'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
       'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
-    })
+    }),
+    new CopyPlugin([
+      {from: './src/ui/assets/emojis', to: 'emojis'}
+    ])
   ],
   devServer: {
     historyApiFallback: true,
