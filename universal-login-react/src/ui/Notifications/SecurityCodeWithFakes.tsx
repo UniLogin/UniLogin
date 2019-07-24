@@ -1,10 +1,12 @@
 import React from 'react';
+import {generateCodeWithFakes} from '@universal-login/commons';
 
 interface SecurityCodeWithFakesProps {
-  securityCode: number[];
+  publicKey: string;
 }
 
-export const SecurityCodeWithFakes = ({securityCode}: SecurityCodeWithFakesProps) => {
+export const SecurityCodeWithFakes = ({publicKey}: SecurityCodeWithFakesProps) => {
+  const securityCode = generateCodeWithFakes(publicKey);
   const code = securityCode.map((element: number, index: number) => (
     <li key={`securityCodeWithFakes_${index}`} style={{display: 'inline'}}>
       {element}
