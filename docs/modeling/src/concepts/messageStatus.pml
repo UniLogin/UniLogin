@@ -1,9 +1,9 @@
 @startuml
 
 class MessageStatus {
+  required: number
   collectedSignatures: string[]
   totalCollected: number
-  required: number
 
   messageHash: string
   state: MessageState
