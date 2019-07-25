@@ -243,8 +243,8 @@ describe('E2E: SDK', async () => {
       await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
       await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
       const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
-      await sdk.execute(msg, privateKey);
-      const status = await sdk.getMessageStatus(msg);
+      const {messageStatus} = await sdk.execute(msg, privateKey);
+      const status = await sdk.getMessageStatus(messageStatus.messageHash);
       expect(status.collectedSignatures.length).to.eq(1);
     });
   });

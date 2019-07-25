@@ -76,8 +76,7 @@ class UniversalLoginSDK {
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
-  async getMessageStatus(message: SignedMessage) {
-    const messageHash = calculateMessageHash(message);
+  async getMessageStatus(messageHash: string) {
     return this.relayerApi.getStatus(messageHash);
   }
 
