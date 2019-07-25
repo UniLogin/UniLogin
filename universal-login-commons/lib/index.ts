@@ -2,7 +2,7 @@ export {Omit, PartialRequired, Procedure, Predicate} from './core/types/common';
 export {DeviceInfo, Notification} from './core/models/notifications';
 export {Message, MessageWithFrom, MessageWithoutFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageState, CollectedSignatureKeyPair} from './core/models/message';
 export * from './core/models/ContractJSON';
-export {SupportedToken, ContractWhiteList, ChainSpec, PublicRelayerConfig} from './core/models/relayer';
+export {SupportedToken, ContractWhiteList, ChainSpec, OnRampConfig, PublicRelayerConfig} from './core/models/relayer';
 export {LocalizationConfig, SafelloConfig} from './core/models/onRamp';
 export {createKeyPair, KeyPair} from './core/models/keyPair';
 export {TransactionOverrides} from './core/models/transactions';

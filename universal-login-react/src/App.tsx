@@ -4,6 +4,7 @@ import {WalletSelector} from '.';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
 import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
+import {TopUp} from './ui/TopUp/TopUp';
 
 export const App = () => {
   const sdk = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
@@ -51,6 +52,14 @@ export const App = () => {
           securityCodeWithFakes={securityCodeWithFakes}
         />
       </div>
+      <TopUp
+        contractAddress={TEST_ACCOUNT_ADDRESS}
+        onRampConfig={{safello: {
+          appId: '1234-5678',
+          baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+          addressHelper: true
+        }}}
+      />
     </div>
   );
 };
