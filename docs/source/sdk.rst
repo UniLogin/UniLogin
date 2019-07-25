@@ -100,7 +100,7 @@ denyRequest
 
 **sdk.denyRequest(contractAddress, publicKey, privateKey)**
 
-  removes the request of adding a new key from pending authorizations.
+  removes the request for adding a new key from pending authorizations.
 
   Parameters:
     - **contractAddress** : string - address of contract to remove request
@@ -147,7 +147,7 @@ execute
   **Execution** contains:
 
   - **messageStatus** - current status of sent message (:ref:`learn more<messageStatus>`)
-  - **waitToBeMined** - a function that returns a promise, that resolves to MessageStatus as soon as transaction that contains this message is mined
+  - **waitToBeMined** - a function that returns a promise, that resolves to MessageStatus once transaction enclosed with Message is mined
 
   Example:
     ::
@@ -178,13 +178,13 @@ messageStatus
 
   .. image:: ../modeling/img/concepts/messageStatus.png
 
-  - **required** : number -  number of required signatures to execute message
-  - **collectedSignatures** : string[] - all collected by relayer signatures
-  - **totalCollected** : number - number of collected signatures
+  - **required** : number - the amount of required signatures to execute message
+  - **collectedSignatures** : string[] - signatures collected by relayer
+  - **totalCollected** : number - the amount of collected signatures
   - **messageHash** : string - hash of message
   - **state** : MessageState - one of message state: ``AwaitSignatures``, ``Queued``, ``Pending``, ``Error``, ``Success``
-  - **transactionHash** : string - transaction hash is only possible, when message state is ``Success``
-  - **eroor** : string - possible only when message state is ``Error``
+  - **transactionHash** (optional) : string - transaction hash is only possible, when message state is ``Success``
+  - **error** (optional) : string - only when message state is ``Error``
 
 **sdk.getMessageStatus(messageHash)**
 
