@@ -1,23 +1,21 @@
 import React from 'react';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapperWithoutClose from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {useSubscription, useServices, useRelayerConfig} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import ModalTopUp from './ModalTopUp';
 import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
-import {Safello} from '@universal-login/react';
+import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 
 const Modal = () => {
   const {modalService, walletPresenter} = useServices();
   const openModal = useSubscription(modalService);
   const hideModal = () => modalService.hideModal();
   const config = useRelayerConfig();
-
   switch (openModal) {
     case 'transfer':
       return (
@@ -39,50 +37,53 @@ const Modal = () => {
       );
     case 'topUpAccount':
       return (
-        <ModalWrapper>
-          <ModalTopUp />
+        <ModalWrapper isVisible modalPosition="bottom">
+          <TopUp
+            onRampConfig={config!.onRampProviders}
+            contractAddress={walletPresenter.getContractAddress()}
+          />
         </ModalWrapper>
       );
     case 'address':
       return (
-        <ModalWrapper>
+        <ModalWrapperWithoutClose>
           <ModalAddress />
-        </ModalWrapper>
+        </ModalWrapperWithoutClose>
       );
     case 'personalInfo':
       return (
-        <ModalWrapper>
+        <ModalWrapperWithoutClose>
           <ModalPersonalInfo />
-        </ModalWrapper>
+        </ModalWrapperWithoutClose>
       );
     case 'cardInfo':
       return (
-        <ModalWrapper>
+        <ModalWrapperWithoutClose>
           <ModalCardInfo />
-        </ModalWrapper>
+        </ModalWrapperWithoutClose>
       );
     case 'waitingForDeploy':
       return (
-        <ModalWrapper>
+        <ModalWrapperWithoutClose>
           <ModalWaitingFor action={'Creating wallet'}/>
-        </ModalWrapper>
+        </ModalWrapperWithoutClose>
       );
     case 'waitingForTransfer':
       return (
-        <ModalWrapper>
+        <ModalWrapperWithoutClose>
           <ModalWaitingFor action={'Transferring funds'}/>
-        </ModalWrapper>
+        </ModalWrapperWithoutClose>
       );
     case 'safello':
       return config ?  (
-        <ModalWrapper>
+        <ModalWrapperWithoutClose>
           <Safello
             localizationConfig={config.localization}
             safelloConfig={config.onRampProviders.safello}
             contractAddress={walletPresenter.getContractAddress()}
             crypto="eth"
           />
-        </ModalWrapper>
+        </ModalWrapperWithoutClose>
       ) : null;
     default:
       return null;

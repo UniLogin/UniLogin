@@ -1,13 +1,30 @@
 import React from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
-import { useServices, useWalletConfig } from '../../hooks';
+import {useServices, useWalletConfig, useRouter} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
-import {WalletSuggestionAction} from '@universal-login/commons';
+import {WalletSuggestionAction, defaultDeployOptions, DEFAULT_LOCATION} from '@universal-login/commons';
+import Modal from '../Modals/Modal';
 
-export const CreateAccount = () => {
-  const {sdk} = useServices();
+interface CreateAccountProps {
+  location?: {state: {from: {pathname: string}}};
+}
+
+export const CreateAccount = ({location}: CreateAccountProps) => {
+  const {sdk, modalService, walletService} = useServices();
+  const {history} = useRouter();
   const walletConfig = useWalletConfig();
+  const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
+
+  const onCreateClick = async (name: string) => {
+    const {deploy, waitForBalance} = await walletService.createFutureWallet();
+    modalService.showModal('topUpAccount');
+    await waitForBalance();
+    modalService.showModal('waitingForDeploy');
+    await deploy(name, defaultDeployOptions.gasPrice.toString());
+    walletService.setDeployed(name);
+    history.push(from);
+  };
 
   return (
     <div className="main-bg">
@@ -17,11 +34,11 @@ export const CreateAccount = () => {
             <h1 className="box-title">Create account</h1>
           </div>
           <div className="create-account-content">
-            <img src={vaultImage} srcSet={vaultImage2x} alt="vault" className="create-account-img"/>
+            <img src={vaultImage} srcSet={vaultImage2x} alt="vault" className="create-account-img" />
             <div className="create-accoutn-selector-block">
               <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
               <WalletSelector
-                onCreateClick={() => console.log('create')}
+                onCreateClick={onCreateClick}
                 onConnectionClick={() => null}
                 sdk={sdk}
                 domains={walletConfig.domains}
@@ -34,6 +51,7 @@ export const CreateAccount = () => {
           </div>
         </div>
       </div>
+      <Modal />
     </div>
   );
 };

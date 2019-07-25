@@ -38,7 +38,7 @@ const App = () => {
           exact
           path="/create"
           render={props =>
-            <CreateAccount />
+            <CreateAccount {...props}/>
           }
         />
         <Route

@@ -21,6 +21,8 @@
   transform: translate(0, 0);
   display: flex;
   justify-content: center;
+  overflow-y: unset;
+  max-height: unset;
 }
 
 .universal-login-defaults .modal-overlay {
