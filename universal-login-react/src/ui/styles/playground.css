@@ -1,0 +1,41 @@
+.playground {
+  display: flex;
+}
+
+.playground-navigation {
+  width: 20%;
+  padding: 20px;
+  background: lightskyblue;
+}
+
+.playground-navigation-list {
+  list-style: none;
+  padding: 0;
+}
+
+.playground-navigation-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  border: 1px solid;
+  text-decoration: none;
+}
+
+.playground-navigation-link:active {
+  transform: translateY(1px)
+}
+
+.playground-navigation li + li {
+  margin-top: 10px;
+}
+
+.playground-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  background: lightblue;
+  padding: 20px;
+}

@@ -16,6 +16,7 @@ export const EmojiForm = ({sdk, publicKey, securityCodeWithFakes}: EmojiFormProp
 
   const confirmWithCodeCheck = (publicKey: string) => {
     if (isValidCode(enteredCode, publicKey)) {
+      console.log('OK: confirmed');
       setErrorMessage('');
     } else {
       setErrorMessage('Wrong security code. Try again or deny request.');
@@ -41,8 +42,8 @@ export const EmojiForm = ({sdk, publicKey, securityCodeWithFakes}: EmojiFormProp
       <EmojiPlaceholders code={enteredCode} onEmojiClicked={onEmojiRemove} />
       <EmojiPanelWithFakes securityCodeWithFakes={securityCodeWithFakes} onEmojiClicked={onEmojiAdd} />
       <div className="notification-buttons-row">
-        <button onClick={() => console.log('rejecrted lcicked')} className="notification-reject-btn">Reject</button>
-        <button onClick={() => confirmWithCodeCheck(publicKey)} className="btn btn-secondary btn-confirm">Confirm</button>
+        <button onClick={() => console.log('Rejected clicked')}>Reject</button>
+        <button onClick={() => confirmWithCodeCheck(publicKey)}>Confirm</button>
         <p>{errorMessage}</p>
       </div>
     </div>
