@@ -4,7 +4,6 @@ import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from '.';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {OnBoarding} from './OnBoarding';
 import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {TopUp} from './ui/TopUp/TopUp';

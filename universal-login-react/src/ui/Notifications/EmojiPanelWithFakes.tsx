@@ -8,7 +8,7 @@ interface EmojiPanelWithFakesProps {
 
 export const EmojiPanelWithFakes = ({securityCodeWithFakes, onEmojiClicked}: EmojiPanelWithFakesProps) => {
   const emojis = securityCodeWithFakes.map((code: number, index: number) => (
-    <li key={`securityCodeWithFakes_${index}`} onClick={() => onEmojiClicked(code)} >
+    <li style={{margin: '10px'}} key={`securityCodeWithFakes_${index}`} onClick={() => onEmojiClicked(code)} >
       <Emoji code={code}/>
     </li>
   ));
