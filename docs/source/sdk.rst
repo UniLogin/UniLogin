@@ -98,13 +98,14 @@ connect
 denyRequest
 ^^^^^^^^^^^
 
-**sdk.denyRequest(contractAddress, publicKey)**
+**sdk.denyRequest(contractAddress, publicKey, privateKey)**
 
-  removes request of adding new key from pending authorisations.
+  removes the request of adding a new key from pending authorizations.
 
   Parameters:
     - **contractAddress** : string - address of contract to remove request
     - **publicKey** : string - address to remove from add requests
+    - **privateKey** : string - private key to sign request
   Returns:
     `promise`, that resolves to ``publicKey``, where:
 
@@ -139,7 +140,14 @@ execute
       * gasLimit : number - limit of gas to refund
     - **privateKey** : string - a private key to be used to sign the transaction and has permission to execute message
   Returns:
-    `promise`, that resolves to the hash of the on-chain transaction
+    `promise`, that resolves to the ``Execution``
+
+.. _execution:
+
+  **Execution** contains:
+
+  - **messageStatus** - current status of sent message (:ref:`learn more<messageStatus>`)
+  - **waitToBeMined** - a function that returns a promise, that resolves to MessageStatus as soon as transaction that contains this message is mined
 
   Example:
     ::
@@ -162,6 +170,32 @@ execute
 
 
   In this case contract ``0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA`` sends 0.5 eth to ``0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A``.
+
+.. _messageStatus:
+
+messageStatus
+^^^^^^^^^^^^^
+
+  .. image:: ../modeling/img/concepts/messageStatus.png
+
+  - **required** : number -  number of required signatures to execute message
+  - **collectedSignatures** : string[] - all collected by relayer signatures
+  - **totalCollected** : number - number of collected signatures
+  - **messageHash** : string - hash of message
+  - **state** : MessageState - one of message state: ``AwaitSignatures``, ``Queued``, ``Pending``, ``Error``, ``Success``
+  - **transactionHash** : string - transaction hash is only possible, when message state is ``Success``
+  - **eroor** : string - possible only when message state is ``Error``
+
+**sdk.getMessageStatus(messageHash)**
+
+  requests of message status of a specific message
+
+  Parameters:
+    - **messageHash** - hash of message
+
+  Returns:
+    `promise` that resolves to ``MessageStatus``
+
 
 .. _signer:
 
@@ -196,7 +230,7 @@ addKey
     - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT_KEY - ``1``, ACTION_KEY - ``2``, set to MANAGAMENT_KEY by default
   Returns:
-    `promise`, that resolves to the hash of the on-chain transaction
+    `promise`, that resolves to the :ref:`Execution<execution>`
 
   Example:
     ::
@@ -229,7 +263,7 @@ addKeys
     - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
-    `promise`, that resolves to the hash of the on-chain transaction
+    `promise`, that resolves to the :ref:`Execution<execution>`
 
   Example:
     ::
@@ -264,7 +298,7 @@ removeKey
     - **privateKey** : string - private key with permission of removing key
     - **transactionDetails** : object - optional parameter, that includes details of transactions for example gasLimit or gasPrice
   Returns:
-    `promise`, that resolves to the hash of the on-chain transaction
+    `promise`, that resolves to the :ref:`Execution<execution>`
 
   Example
     ::
