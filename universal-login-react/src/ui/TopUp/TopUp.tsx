@@ -4,6 +4,7 @@ import {Safello} from '../../integration/Safello';
 import {OnRampConfig} from '@universal-login/commons';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import {ModalWrapper} from '../Modals/ModalWrapper';
 
 interface TopUpProps {
   contractAddress: string;
@@ -14,7 +15,11 @@ interface TopUpProps {
 export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   if (modal === TopUpComponentType.choose) {
-    return (<TopUpChoose onMethodChoose={setModal}/>);
+    return (
+      <ModalWrapper isVisible modalPosition="bottom">
+        <TopUpChoose onMethodChoose={setModal}/>
+      </ModalWrapper>
+    );
   } else if (modal === TopUpComponentType.crypto) {
     return (<TopUpWithCrypto contractAddress={contractAddress}/>);
   } else if (modal === TopUpComponentType.bank) {

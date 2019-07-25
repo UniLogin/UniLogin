@@ -9,7 +9,7 @@ export {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 export {EmojiForm} from './ui/Notifications/EmojiForm';
 export {EmojiPanelWithFakes} from './ui/Notifications/EmojiPanelWithFakes';
 export {EmojiPlaceholders} from './ui/Notifications/EmojiPlaceholders';
-export {TopUpChooseModal} from './ui/Modals/TopUpChooseModal';
+export {TopUp} from './ui/TopUp/TopUp';
 export {ModalWrapper} from './ui/Modals/ModalWrapper';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
