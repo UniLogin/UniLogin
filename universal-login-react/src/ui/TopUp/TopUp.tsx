@@ -3,13 +3,7 @@ import TopUpChoose from './TopUpChoose';
 import {Safello} from '../../integration/Safello';
 import {OnRampConfig} from '@universal-login/commons';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
-
-export enum TopUpComponentType {
-  'choose',
-  'creditcard',
-  'bank',
-  'crypto'
-}
+import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 interface TopUpProps {
   contractAddress: string;

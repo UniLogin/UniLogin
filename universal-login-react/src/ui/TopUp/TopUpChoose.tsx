@@ -1,6 +1,5 @@
 import React from 'react';
-import {TopUpComponentType} from './TopUp';
-
+import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 interface TopUpChooseProps {
   onMethodChoose: (topUpModalType: TopUpComponentType) => void;
