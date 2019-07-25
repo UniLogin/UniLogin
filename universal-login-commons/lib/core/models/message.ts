@@ -23,7 +23,7 @@ export interface SignedMessage {
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
 export type MessageStatus = {
-  messageHash?: string,
+  messageHash: string,
   error?: string,
   transactionHash?: string,
   collectedSignatures: string[],

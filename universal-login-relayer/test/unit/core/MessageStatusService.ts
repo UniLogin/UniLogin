@@ -32,7 +32,8 @@ describe('UNIT: MessageStatusService', async () => {
       collectedSignatures: [],
       totalCollected: 0,
       required: 1,
-      state: 'AwaitSignature'
+      state: 'AwaitSignature',
+      messageHash
     });
   });
 
@@ -42,7 +43,8 @@ describe('UNIT: MessageStatusService', async () => {
       collectedSignatures: [message.signature],
       totalCollected: 1,
       required: 1,
-      state: 'AwaitSignature'
+      state: 'AwaitSignature',
+      messageHash
     });
   });
 
