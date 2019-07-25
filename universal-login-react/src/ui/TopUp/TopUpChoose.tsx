@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import TopUpModalService, {TopUpModalType} from '../../core/services/TopUpModalService';
+import {Safello} from '../../integration/Safello';
 
 interface TopUpChooseProps {
   topUpModalService: TopUpModalService;
@@ -19,7 +20,21 @@ export const TopUpChoose = ({contractAddress, topUpModalService}: TopUpChoosePro
         </div>
       );
     case TopUpModalType.bank:
-      return(<div onClick={() => topUpModalService.showModal(TopUpModalType.choose)}> bank</div>);
+      return(
+        <div>
+          <Safello
+            localizationConfig={{} as any}
+            safelloConfig={{
+              appId: '1234-5678',
+              baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+              addressHelper: true
+            }}
+            contractAddress={contractAddress}
+            crypto="eth"
+          />
+          <div onClick={() => topUpModalService.showModal(TopUpModalType.choose)}> Menu</div>
+        </div>
+      );
     case TopUpModalType.creditcard:
       return(<div onClick={() => topUpModalService.showModal(TopUpModalType.choose)}> creditcard</div>);
     case TopUpModalType.crypto:
