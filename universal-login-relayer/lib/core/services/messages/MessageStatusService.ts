@@ -13,7 +13,8 @@ export class MessageStatusService {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
       required: required.toNumber(),
-      state: message.state
+      state: message.state,
+      messageHash
     };
     const {error, transactionHash} = message;
     if (error) {
