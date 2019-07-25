@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import TopUpChoose from './TopUpChoose';
 import {Safello} from '../../integration/Safello';
 import {OnRampConfig} from '@universal-login/commons';
+import {TopUpWithCrypto} from './TopUpWithCrypto';
 
 export enum TopUpComponentType {
   'choose',
@@ -34,13 +35,4 @@ export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) =
   } else {
     throw new Error(`Unsupported type: ${modal}`);
   }
-};
-
-
-interface TopUpWithCryptoProps {
-  contractAddress: string;
-}
-
-export const TopUpWithCrypto = ({contractAddress}: TopUpWithCryptoProps) => {
-  return(<div> Transfer crypto to your wallet: {contractAddress} </div>);
 };
