@@ -2,10 +2,14 @@ import React from 'react';
 import Ether from './../assets/icons/ether.svg';
 import Card from './../assets/icons/card.svg';
 import Bank from './../assets/icons/bank.svg';
-import './../styles/topUpChooseModal.css';
+import './../styles/topUpModalDefaults.css';
 
-export const TopUpChooseModal = () => (
-  <div className="topup">
+export interface TopUpChooseModalProps {
+  className?: string;
+}
+
+export const TopUpChooseModal = ({ className }: TopUpChooseModalProps) => (
+  <div className={`topup ${className ? className : 'universal-login-topup'}`}>
     <h2 className="topup-title">Choose a top-up method</h2>
     <Button
       image={Ether}

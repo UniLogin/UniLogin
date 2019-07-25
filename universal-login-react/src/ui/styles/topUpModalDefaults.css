@@ -1,9 +1,9 @@
-.topup {
+.universal-login-topup.topup {
   width: 570px;
   max-width: 100%;
   margin: 0 auto;
 }
-.topup-title {
+.universal-login-topup .topup-title {
   margin: 0 0 30px;
   font-family: inherit;
   font-weight: 700;
@@ -11,7 +11,7 @@
   color: #31405E;
   text-align: center;
 }
-.topup-btn {
+.universal-login-topup .topup-btn {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,39 +24,39 @@
   background: #FAFAFA;
   cursor: pointer;
 }
-.topup-btn + .topup-btn {
+.universal-login-topup .topup-btn + .topup-btn {
   margin-top: 10px;
 }
-.topup-btn-title {
+.universal-login-topup .topup-btn-title {
   margin: 8px 0 7px;
   font-weight: 500;
   font-size: 14px;
   color: #31405E;
 }
-.topup-btn-text {
+.universal-login-topup .topup-btn-text {
   margin: 0;
   font-size: 12px;
   color: #A4A8B4;
 }
 
 @media only screen and (max-width: 600px) {
-  .topup-title {
+  .universal-login-topup .topup-title {
     margin-bottom: 40px;
     text-align: left;
   }
-  .topup-btn + .topup-btn {
+  .universal-login-topup .topup-btn + .topup-btn {
     margin-top: 20px;
   }
-  .topup-btn {
+  .universal-login-topup .topup-btn {
     flex-direction: row;
     justify-content: flex-start;
     text-align: left;
     padding: 20px;
   }
-  .topup-btn-img {
+  .universal-login-topup .topup-btn-img {
     margin-right: 20px;
   }
-  .topup-btn-title {
+  .universal-login-topup .topup-btn-title {
     margin: 0 0 5px;
   }
 }
