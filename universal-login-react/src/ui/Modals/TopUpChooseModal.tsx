@@ -43,4 +43,4 @@ const Button = ({ image, title, text }: ButtonProps) => (
       <p className="topup-btn-text">{text}</p>
     </div>
   </button>
-)
+);
