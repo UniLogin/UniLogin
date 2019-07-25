@@ -4,12 +4,14 @@
   background: #fff;
   max-width: 100%;
 }
+
 .universal-login .modal-wrapper.center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 30px;
 }
+
 .universal-login .modal-wrapper.bottom {
   bottom: 0;
   left: 0;
@@ -19,6 +21,7 @@
   padding: 30px;
   transform: translate(0, 0);
 }
+
 .universal-login .modal-overlay {
   position: fixed;
   top: 0;
