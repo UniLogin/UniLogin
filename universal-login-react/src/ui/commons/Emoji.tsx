@@ -1,5 +1,5 @@
 import React from 'react';
-import {getIconFilename} from './iconDictionary';
+import {getIconFilename} from '../../core/utils/iconDictionary';
 
 interface EmojiProps {
   code: number;
