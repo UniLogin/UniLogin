@@ -5,5 +5,5 @@ interface TopUpWithCryptoProps {
 }
 
 export const TopUpWithCrypto = ({contractAddress}: TopUpWithCryptoProps) => {
-  return(<div> Transfer crypto to your wallet: {contractAddress} </div>);
+  return(<div> Transfer crypto to your wallet: <span id="contract-address">{contractAddress}</span> </div>);
 };

@@ -30,7 +30,8 @@ describe('UI: Login', () => {
     it('create wallet and disconnect roundtrip', async () => {
         appWrapper = mountWithContext(<App/>, services, ['/']);
         const appPage = new AppPage(appWrapper);
-        await appPage.login().pickUsername('super-name', 'create new', 'Top up your account');
+        await appPage.login().createNew('super-name');
+        await appPage.login().chooseTopUpMethod();
         const address = await appPage.login().getAddress();
         const [wallet] = await getWallets(provider);
         await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
