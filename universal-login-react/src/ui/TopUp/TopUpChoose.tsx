@@ -3,8 +3,9 @@ import TopUpModalService, {TopUpModalType} from '../../core/services/TopUpModalS
 
 interface TopUpChooseProps {
   topUpModalService: TopUpModalService;
+  contractAddress: string;
 }
-export const TopUpChoose = ({topUpModalService}: TopUpChooseProps) => {
+export const TopUpChoose = ({contractAddress, topUpModalService}: TopUpChooseProps) => {
   const [openModal, setEvent] = useState<TopUpModalType>(TopUpModalType.choose);
   useEffect(() => topUpModalService.subscribe(setEvent), []);
 
@@ -22,7 +23,7 @@ export const TopUpChoose = ({topUpModalService}: TopUpChooseProps) => {
     case TopUpModalType.creditcard:
       return(<div onClick={() => topUpModalService.showModal(TopUpModalType.choose)}> creditcard</div>);
     case TopUpModalType.crypto:
-      return(<div onClick={() => topUpModalService.showModal(TopUpModalType.choose)}> crypto</div>);
+      return(<div onClick={() => topUpModalService.showModal(TopUpModalType.choose)}> Transfer crypto to your wallet: {contractAddress} </div>);
     default:
       return(null);
   }
