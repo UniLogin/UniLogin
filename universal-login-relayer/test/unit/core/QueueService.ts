@@ -19,11 +19,13 @@ describe('UNIT: Queue Service', async () => {
     provider: {waitForTransaction: sinon.fake()}
   };
   const executor: any = {
-    executeAndWait: sinon.fake.returns({hash: TEST_TRANSACTION_HASH}),
+    execute: sinon.fake.returns({hash: TEST_TRANSACTION_HASH}),
+    waitForTransaction: sinon.spy(),
     wallet
   };
   const executorReturnsNull: any = {
-    executeAndWait: sinon.fake.returns(null),
+    execute: sinon.fake.returns(null),
+    waitForTransaction: sinon.spy(),
     wallet
   };
   let signedMessage: SignedMessage;
@@ -39,18 +41,20 @@ describe('UNIT: Queue Service', async () => {
       messageHash,
       createMessageItem(signedMessage)
     );
+    sinon.resetHistory();
   });
-
   it('signedMessage round trip', async () => {
     queueService.start();
     await queueService.add(signedMessage);
-    await waitExpect(() => expect(executor.executeAndWait).to.be.calledOnce);
+    await waitExpect(() => expect(executor.execute).to.be.calledOnce);
+    expect(executor.waitForTransaction).to.be.calledAfter(executor.execute);
+    expect(executor.waitForTransaction).to.be.calledOnce;
   });
 
   it('should execute pending signedMessage after start', async () => {
     await queueService.add(signedMessage);
     queueService.start();
-    await waitExpect(() => expect(executor.executeAndWait).to.be.calledTwice);
+    await waitExpect(() => expect(executor.execute).to.be.calledOnce);
   });
 
   it('should throw error when hash is null', async () => {

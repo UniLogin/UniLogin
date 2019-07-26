@@ -28,11 +28,13 @@ class QueueService {
   }
 
   async execute(messageHash: string) {
-    await this.messageRepository.setMessageState(messageHash, 'Pending');
     try {
       const signedMessage = await this.messageRepository.getMessage(messageHash);
-      const {hash} = await this.messageExecutor.executeAndWait(signedMessage);
+      const transactionResponse = await this.messageExecutor.execute(signedMessage);
+      const {hash} = transactionResponse;
       ensureNotNull(hash, TransactionHashNotFound);
+      await this.messageRepository.setMessageState(messageHash, 'Pending');
+      await this.messageExecutor.waitForTransaction(transactionResponse);
       await this.messageRepository.markAsSuccess(messageHash, hash!);
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;

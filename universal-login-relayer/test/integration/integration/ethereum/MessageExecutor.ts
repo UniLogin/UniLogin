@@ -22,9 +22,10 @@ describe('INT: MessageExecutor', async () => {
     signedMessage = createSignedMessage({from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2)}, wallet.privateKey);
   });
 
-  it('should execute transaction', async () =>  {
+  it('should execute transaction and wait for it', async () =>  {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
-    await messageExecutor.executeAndWait(signedMessage);
+    const transactionResponse = await messageExecutor.execute(signedMessage);
+    await messageExecutor.waitForTransaction(transactionResponse);
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.be.eq(expectedBalance);
   });
