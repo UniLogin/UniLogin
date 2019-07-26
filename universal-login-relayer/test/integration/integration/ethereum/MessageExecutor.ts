@@ -25,7 +25,10 @@ describe('INT: MessageExecutor', async () => {
   it('should execute transaction and wait for it', async () =>  {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
     const transactionResponse = await messageExecutor.execute(signedMessage);
-    await messageExecutor.waitForTransaction(transactionResponse);
+    const transactionReceipt = await messageExecutor.waitForTransaction(transactionResponse);
+    expect(transactionReceipt).to.haveOwnProperty('gasUsed');
+    expect(transactionReceipt).to.haveOwnProperty('blockHash');
+    expect(transactionReceipt).to.haveOwnProperty('blockNumber');
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.be.eq(expectedBalance);
   });

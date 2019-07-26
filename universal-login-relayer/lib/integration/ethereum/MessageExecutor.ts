@@ -12,12 +12,11 @@ export class MessageExecutor {
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
     await this.messageValidator.validate(signedMessage, transactionReq);
-    const transactionRes: providers.TransactionResponse = await this.wallet.sendTransaction(transactionReq);
-    return transactionRes;
+    return this.wallet.sendTransaction(transactionReq);
   }
 
   async waitForTransaction(transactionResponse: providers.TransactionResponse) {
-    await this.wallet.provider.waitForTransaction(transactionResponse.hash!);
+    await transactionResponse.wait();
     await this.onTransactionSent(transactionResponse);
   }
 }
