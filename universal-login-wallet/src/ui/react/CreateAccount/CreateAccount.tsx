@@ -46,7 +46,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
                 className="jarvis"
               />
             </div>
-            <p className="info-text">Your username is a human-readable address. Like Domain Name Service (DNS) allows website address to be facebook.com and not 66.220.144.0., Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not Oxeefc.. 0843.</p>
+            <p className="info-text create-account-info-text">Your username is a human-readable address. Like Domain Name Service (DNS) allows website address to be facebook.com and not 66.220.144.0., Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not Oxeefc.. 0843.</p>
             <button className="button-secondary create-account-cancel">Cancel</button>
           </div>
         </div>

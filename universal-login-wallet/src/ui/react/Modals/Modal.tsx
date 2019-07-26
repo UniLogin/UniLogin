@@ -10,6 +10,7 @@ import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
+import {ModalTxnSuccess} from './ModalTxnSuccess';
 
 const Modal = () => {
   const {modalService, walletPresenter} = useServices();
@@ -64,15 +65,21 @@ const Modal = () => {
       );
     case 'waitingForDeploy':
       return (
-        <ModalWrapperWithoutClose>
-          <ModalWaitingFor action={'Creating wallet'}/>
-        </ModalWrapperWithoutClose>
+        <ModalWrapper isVisible className="jarvis-modal">
+          <ModalWaitingFor action={'Txn pending'}/>
+        </ModalWrapper>
       );
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>
           <ModalWaitingFor action={'Transferring funds'}/>
         </ModalWrapperWithoutClose>
+      );
+    case 'TransactionSuccess':
+      return (
+        <ModalWrapper isVisible>
+          <ModalTxnSuccess />
+        </ModalWrapper>
       );
     case 'safello':
       return config ?  (
