@@ -17,11 +17,11 @@ Technically Universal Login utilizes four major concepts:
 - **Personal multi-sig wallet** - a smart contract used to store personal funds. A user gets his wallet created in a barely noticeable manner. The user then gets engaged incrementally to add authorization factors and recovery options.
 - **Meta-transactions** - that gives user ability to interact with the smart contract from multiple devices easily, without a need to store ether on each of those devices. Meta-transactions enable payments for execution with tokens.
 - **ENS names** - naming your wallet with easy-to-remember human-readable name
-- **Universal login** - wallet name can be used to log in to dapps, web, and native applications
+- **Universal login** - a wallet name can be used to log in to dapps, web, and native applications
 
 Components
 ^^^^^^^^^^
-Universal Login has three components. All components are stored in one monorepo `available here <https://github.com/universallogin>`_.
+Universal Login has four components. All components are stored in one monorepo `available here <https://github.com/universallogin>`_.
 Components are listed below:
 
 - `Contracts <https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts>`_ - smart contracts used by Universal Login, along with some helper functions
@@ -66,42 +66,42 @@ Deploy
 
 Deployment is designed in the way, that user pays for himself. To do that, we use counterfactual deployment. (``create2`` function to deploy contract)
 
-The process looks like follows:
+The process looks as follows:
 
-- **computing contract address** - SDK computes deterministic contract address. Contract address is unique and is obtained from the users public key and factory contract address connected to particular relayer.
+- **computing contract address** - An SDK computes a deterministic contract address. A contract address is unique and is obtained from the user's public key and a factory contract address connected to a particular relayer.
 
-- **waiting for balance** - User sends funds on this address. He can transfer ether on his own or use on-ramp provider. SDK waits for future contract address balance change. If SDK discovers, that required funds are on this balance, sends deploy request to relayer.
+- **waiting for balance** - The user sends funds on this address. He can transfer ether on his own or use an on-ramp provider. The SDK waits for the future contract address balance change. If the SDK discovers that required funds are on this balance it sends a deploy request to a relayer.
 
-- **deploy** - Relayer deploys the contract and immediately gets the refund from the contract.
+- **deploy** - The relayer deploys the contract and immediately gets the refund from the contract.
 
-- **refund** - During deployment contract will refund the cost of the transaction to the relayer address.
-
-
-Deploy in-depth
-^^^^^^^^^^^^^^^
+- **refund** - During deployment the contract will refund the cost of the transaction to the relayer address.
 
 
-SDK create deploy. Deploy contains the following parameters:
+Deployment in-depth
+^^^^^^^^^^^^^^^^^^^
+
+
+An SDK creates deployment. The deployment contains the following parameters:
 
 .. image:: ../modeling/img/concepts/Deployment.png
 
-- **ensName** - ENS name chosen by user. It is the only parameter provided by the user.
-- **publicKey** - the public key of newly generated key pair on a users device.
-- **ensAddress** - address of ENS contract. It is required to properly register the ENS name.
-- **resolverAddress** - address of Resolver contract. It is required to properly register the ENS name.
-- **registrarAddress** - address of Registrar contract. It is required to properly register the ENS name.
+- **ensName** - ENS name chosen by a user. It is the only parameter provided by the user.
+- **publicKey** - the public key of a newly generated key pair on the user's device.
+- **ensAddress** - the address of ENS contract. It is required to properly register the ENS name.
+- **resolverAddress** - the address of Resolver contract. It is required to properly register the ENS name.
+- **registrarAddress** - the address of Registrar contract. It is required to properly register the ENS name.
 - **gasPrice** - gas price used in the refund process.
-- **signature** - the signature of all of the arguments above. Signature ensures parameters comes from the owner of the private key (paired to the public key). In particular, it prevents against malicious ENS name registration and gas price replacement.
+- **signature** - the signature of all of the arguments above. The signature ensures parameters come from the owner of the private key (paired to the public key). In particular, it prevents against malicious ENS name registration and gas price replacement.
 
 
 **ENS name collision**
 
-Deploy contains ENS name so it could fail (for example when ens name is taken). That's why we require success on register ENS name. If it fails, the contract won't be deployed, so the user can choose ENS name once again and register it on the same contract address.
+Deployment contains ENS name so it could fail (for example when ENS name is taken). That's why we require success on register ENS name. If it fails, the contract won't be deployed, so the user can choose ENS name once again and register it on the same contract address.
 
 
 **Deployment lifecycle**
 
-It starts when the user generates contract address signed to him. The first half of deployment is waiting for the user to send funds to the computed contract address.
+It starts when the user generates a contract address assigned to him. The first half of deployment is waiting for the user to send funds to the computed contract address.
 
 .. image:: ../modeling/img/concepts/DeploymentStates.png
 
@@ -110,20 +110,20 @@ It starts when the user generates contract address signed to him. The first half
 Meta-transactions
 ^^^^^^^^^^^^^^^^^
 
-Message (also known as meta-transaction or signed messages) is a way to trigger ethereum transaction from an application or device that does not possess any ether. The message states the intention of the user. It requests a wallet contract to execute a transaction. (eg.: funds transfer, external function call or internal function call - i.e. operation in wallet contract itself). An application sends message signed with one or more of the keys whitelisted in the contract to the relayer server. Relayer than wraps message into ethereum transaction. The message is then processed by the contract as a function call. Relayer wallet is paying for transaction gas. Wallet refunds cost of execution back to the relayer in Ether or ERC20 token. The message contains the following parameters:
+Message (also known as meta-transaction or signed messages) is a way to trigger ethereum transaction from an application or device that does not possess any ether. The message states the intention of the user. It requests a wallet contract to execute a transaction. (eg: funds transfer, an external function call or an internal function call - i.e. an operation in the wallet contract itself). An application sends a message signed with one or more of the keys whitelisted in the contract to the relayer server. The relayer than wraps the message into an ethereum transaction. The message is then processed by the contract as a function call. The relayer wallet is paying for transaction gas. The wallet contract refunds the cost of execution back to the relayer in ether or ERC20 token. The message contains the following parameters:
 
 .. image:: ../modeling/img/concepts/Message.png
 
-- **to** - recipient of a message call
-- **from** - address of a contract that executes message
+- **to** - a recipient of a message call
+- **from** - the address of a contract that executes a message
 - **value** - value to send
-- **data** - data for the transaction (i.e. encoded function call)
+- **data** - data for the transaction (i.e. an encoded function call)
 - **gasToken** - token address to refund
 - **gasLimit** - maximum gas to use in for a specific transaction
 - **gasPrice** - gas price to use in the refund process
-- **nonce** - internal nounce of the transaction relative to the contract wallet
-- **operationType** - type of execution (call, delegatecall, create)
-- **signature** - the signature of all of the arguments above, which ensures parameters comes from the owner of the allowed private-public key pair
+- **nonce** - an internal nonce of the transaction relative to the contract wallet
+- **operationType** - the type of execution (call, delegatecall, create)
+- **signature** - the signature of all of the arguments above, which ensures parameters come from the owner of the allowed private-public key pair
 
 
 **Message lifecycle**
