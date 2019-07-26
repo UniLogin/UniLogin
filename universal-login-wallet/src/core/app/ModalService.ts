@@ -1,6 +1,6 @@
 import { EventEmitter } from 'fbemitter';
 
-export type ModalType = 'transfer' | 'request' | 'invitation' | 'topUpAccount' | 'address' | 'personalInfo' | 'cardInfo' | 'waiting' | 'waitingForDeploy' | 'waitingForTransfer' | 'TransactionSuccess' | 'safello' | 'none';
+export type ModalType = 'transfer' | 'request' | 'invitation' | 'topUpAccount' | 'address' | 'personalInfo' | 'cardInfo' | 'waiting' | 'waitingForDeploy' | 'waitingForTransfer' | 'transactionSuccess' | 'safello' | 'none';
 
 const MODAL_EVENT = 'modal';
 

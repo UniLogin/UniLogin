@@ -1,9 +1,9 @@
 import React from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
-import {useServices, useWalletConfig, useRouter} from '../../hooks';
+import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
-import {WalletSuggestionAction, defaultDeployOptions, DEFAULT_LOCATION} from '@universal-login/commons';
+import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
 
 interface CreateAccountProps {
@@ -12,9 +12,7 @@ interface CreateAccountProps {
 
 export const CreateAccount = ({location}: CreateAccountProps) => {
   const {sdk, modalService, walletService} = useServices();
-  const {history} = useRouter();
   const walletConfig = useWalletConfig();
-  const from = location && location.state ? location.state.from : DEFAULT_LOCATION;
 
   const onCreateClick = async (name: string) => {
     const {deploy, waitForBalance} = await walletService.createFutureWallet();
@@ -23,7 +21,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
     modalService.showModal('waitingForDeploy');
     await deploy(name, defaultDeployOptions.gasPrice.toString());
     walletService.setDeployed(name);
-    history.push(from);
+    modalService.showModal('transactionSuccess');
   };
 
   return (

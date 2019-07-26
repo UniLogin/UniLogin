@@ -75,9 +75,9 @@ const Modal = () => {
           <ModalWaitingFor action={'Transferring funds'}/>
         </ModalWrapperWithoutClose>
       );
-    case 'TransactionSuccess':
+    case 'transactionSuccess':
       return (
-        <ModalWrapper isVisible>
+        <ModalWrapper isVisible className="jarvis-modal">
           <ModalTxnSuccess />
         </ModalWrapper>
       );
