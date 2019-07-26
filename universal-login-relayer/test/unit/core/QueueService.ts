@@ -20,12 +20,12 @@ describe('UNIT: Queue Service', async () => {
   };
   const executor: any = {
     execute: sinon.fake.returns({hash: TEST_TRANSACTION_HASH}),
-    waitForTransaction: sinon.spy(),
+    waitAndHandleTransaction: sinon.spy(),
     wallet
   };
   const executorReturnsNull: any = {
     execute: sinon.fake.returns(null),
-    waitForTransaction: sinon.spy(),
+    waitAndHandleTransaction: sinon.spy(),
     wallet
   };
   let signedMessage: SignedMessage;
@@ -43,12 +43,13 @@ describe('UNIT: Queue Service', async () => {
     );
     sinon.resetHistory();
   });
+
   it('signedMessage round trip', async () => {
     queueService.start();
     await queueService.add(signedMessage);
     await waitExpect(() => expect(executor.execute).to.be.calledOnce);
-    expect(executor.waitForTransaction).to.be.calledAfter(executor.execute);
-    expect(executor.waitForTransaction).to.be.calledOnce;
+    expect(executor.waitAndHandleTransaction).to.be.calledAfter(executor.execute);
+    expect(executor.waitAndHandleTransaction).to.be.calledOnce;
   });
 
   it('should execute pending signedMessage after start', async () => {

@@ -15,7 +15,7 @@ export class MessageExecutor {
     return this.wallet.sendTransaction(transactionReq);
   }
 
-  async waitForTransaction(transactionResponse: providers.TransactionResponse) {
+  async waitAndHandleTransaction(transactionResponse: providers.TransactionResponse) {
     await transactionResponse.wait();
     await this.onTransactionSent(transactionResponse);
   }
