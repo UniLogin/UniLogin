@@ -14,6 +14,7 @@ interface TopUpProps {
 
 export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
+
   if (modal === TopUpComponentType.choose) {
     return (
       <ModalWrapper isVisible modalPosition="bottom">
