@@ -7,14 +7,14 @@ interface EmojiPanelProps {
 
 export const EmojiPanel = ({code}: EmojiPanelProps) => {
   const emojis = code.map((code: number, index: number) => (
-    <li style={{margin: '10px'}} key={`emojiPanel_${index}`}>
+    <li key={`emojiPanel_${index}`}>
       <Emoji code={code}/>
     </li>
   ));
 
   return (
     <div>
-      <ul style={{display: 'flex', listStyle: 'none'}}>
+      <ul className={'universal-login-emoji-default'}>
         {emojis}
       </ul>
     </div>

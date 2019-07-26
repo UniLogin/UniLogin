@@ -8,12 +8,12 @@
   background: lightskyblue;
 }
 
-.playground-navigation-list {
+.playground-navigation ul {
   list-style: none;
   padding: 0;
 }
 
-.playground-navigation-link {
+.playground-navigation ul li a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,11 +23,11 @@
   text-decoration: none;
 }
 
-.playground-navigation-link:active {
+.playground-navigation ul li:active {
   transform: translateY(1px)
 }
 
-.playground-navigation li + li {
+.playground-navigation ul li + li {
   margin-top: 10px;
 }
 

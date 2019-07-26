@@ -3,20 +3,20 @@ import {Link} from 'react-router-dom';
 
 export const NavigationColumn = () => (
   <div className="playground-navigation">
-    <ul className="playground-navigation-list">
-      <li><Link className="playground-navigation-link" to="/">Home Screen</Link></li>
+    <ul>
+      <li><Link to="/">Home Screen</Link></li>
     </ul>
-    <ul className="playground-navigation-list">
+    <ul>
       E2E flow
-      <li><Link className="playground-navigation-link" to="/onboarding">Onboarding</Link></li>
+      <li><Link to="/onboarding">Onboarding</Link></li>
     </ul>
-    <ul className="playground-navigation-list">
+    <ul>
       Atomic components
-      <li><Link className="playground-navigation-link" to="/walletselector">Wallet Selector</Link></li>
-      <li><Link className="playground-navigation-link" to="/connecting">Connecting</Link></li>
-      <li><Link className="playground-navigation-link" to="/topup">Topup</Link></li>
-      <li><Link className="playground-navigation-link" to="/recover">Recover</Link></li>
-      <li><Link className="playground-navigation-link" to="/settings">Settings</Link></li>
+      <li><Link to="/walletselector">Wallet Selector</Link></li>
+      <li><Link to="/connecting">Connecting</Link></li>
+      <li><Link to="/topup">Topup</Link></li>
+      <li><Link to="/recover">Recover</Link></li>
+      <li><Link to="/settings">Settings</Link></li>
     </ul>
   </div>
 );

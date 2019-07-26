@@ -12,14 +12,13 @@ interface EmojiFormProps {
 
 export const EmojiForm = ({sdk, publicKey, securityCodeWithFakes}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState([] as number[]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [status, setStatus] = useState('');
 
   const confirmWithCodeCheck = (publicKey: string) => {
     if (isValidCode(enteredCode, publicKey)) {
-      console.log('OK: confirmed');
-      setErrorMessage('');
+      setStatus('OK: security code confirmed');
     } else {
-      setErrorMessage('Wrong security code. Try again or deny request.');
+      setStatus('FAIL: Wrong security code. Try again or deny request.');
     }
   };
 
@@ -42,9 +41,9 @@ export const EmojiForm = ({sdk, publicKey, securityCodeWithFakes}: EmojiFormProp
       <EmojiPlaceholders code={enteredCode} onEmojiClicked={onEmojiRemove} />
       <EmojiPanelWithFakes securityCodeWithFakes={securityCodeWithFakes} onEmojiClicked={onEmojiAdd} />
       <div className="notification-buttons-row">
-        <button onClick={() => console.log('Rejected clicked')}>Reject</button>
+        <button onClick={() => setStatus('OK: connection rejected')}>Reject</button>
         <button onClick={() => confirmWithCodeCheck(publicKey)}>Confirm</button>
-        <p>{errorMessage}</p>
+        <p>{status}</p>
       </div>
     </div>
   );

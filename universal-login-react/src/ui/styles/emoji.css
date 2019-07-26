@@ -1,0 +1,9 @@
+ul.universal-login-emoji-default {
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+ul.universal-login-emoji-default  li {
+  margin: 10px
+}

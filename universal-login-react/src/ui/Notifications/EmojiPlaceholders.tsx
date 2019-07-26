@@ -8,13 +8,13 @@ interface EmojiPlaceholdersProps {
 
 export const EmojiPlaceholders = ({code, onEmojiClicked}: EmojiPlaceholdersProps) => {
   const placeholders = code.map((code: number, index: number) => (
-    <li style={{margin: '10px'}} key={`emoji_placeholder_${index}`}  onClick={() => onEmojiClicked(index)} >
+    <li key={`emoji_placeholder_${index}`}  onClick={() => onEmojiClicked(index)} >
       <Emoji code={code}/>
     </li>
   ));
 
   return (
-    <ul style={{display: 'flex', listStyle: 'none'}}>
+    <ul className={'universal-login-emoji-default'}>
       {placeholders}
     </ul>
   );
