@@ -33,7 +33,7 @@ class QueueService {
       const transactionResponse = await this.messageExecutor.execute(signedMessage);
       const {hash} = transactionResponse;
       ensureNotNull(hash, TransactionHashNotFound);
-      await this.messageRepository.setMessageState(messageHash, 'Pending');
+      await this.messageRepository.markAsPending(messageHash, hash!);
       await this.messageExecutor.waitForTransaction(transactionResponse);
       await this.messageRepository.markAsSuccess(messageHash, hash!);
     } catch (error) {
