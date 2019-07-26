@@ -20,7 +20,7 @@ export interface Config {
   onRampProviders: {
     safello: SafelloConfig;
   };
-  knexConfig: KnexConfig;
+  database: KnexConfig;
 }
 
 export const config: Config =  Object.freeze({
@@ -58,7 +58,7 @@ export const config: Config =  Object.freeze({
       addressHelper: true
     }
   },
-  knexConfig: getKnexConfig(),
+  database: getKnexConfig(),
 });
 
 export default config;

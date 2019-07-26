@@ -68,7 +68,7 @@ export class RelayerUnderTest extends Relayer {
           addressHelper: true
         }
       },
-      knexConfig: getKnexConfig(),
+      database: getKnexConfig(),
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};

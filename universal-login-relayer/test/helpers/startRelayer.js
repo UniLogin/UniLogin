@@ -48,7 +48,7 @@ async function startRelayer(wallet, relayerConstructor) {
         addressHelper: true
       }
     },
-    knexConfig: getKnexConfig(),
+    database: getKnexConfig(),
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();

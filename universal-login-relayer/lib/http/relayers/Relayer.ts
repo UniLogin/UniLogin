@@ -61,7 +61,7 @@ class Relayer {
     this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.wallet = new Wallet(config.privateKey, this.provider);
-    this.database = Knex(config.knexConfig);
+    this.database = Knex(config.database);
   }
 
   async start() {
