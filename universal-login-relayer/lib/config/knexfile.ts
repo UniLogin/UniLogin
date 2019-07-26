@@ -1,6 +1,6 @@
 import path from 'path';
-import { KnexConfig } from './KnexConfig';
-import { getEnv } from '@universal-login/commons';
+import {getEnv} from '@universal-login/commons';
+import {KnexConfig} from './KnexConfig';
 
 const migrationDir = path.join(__dirname, '../integration/sql/migrations');
 
@@ -9,7 +9,7 @@ function getDevelopmentKnexConfig(): KnexConfig {
     client: 'postgresql',
     connection: {
       database: 'universal_login_relayer_development',
-      user:     'postgres',
+      user: 'postgres',
       password: 'postgres',
     },
     migrations: {
@@ -24,7 +24,7 @@ function getTestKnexConfig(): KnexConfig {
     client: 'postgresql',
     connection: {
       database: 'universal_login_relayer_test',
-      user:     'postgres',
+      user: 'postgres',
       password: 'postgres',
     },
     migrations: {

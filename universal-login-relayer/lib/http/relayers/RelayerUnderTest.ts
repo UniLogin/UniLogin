@@ -8,6 +8,7 @@ import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
+import {getKnexConfig} from '../../core/utils/knexUtils';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -66,7 +67,8 @@ export class RelayerUnderTest extends Relayer {
           baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
           addressHelper: true
         }
-      }
+      },
+      knexConfig: getKnexConfig(),
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};

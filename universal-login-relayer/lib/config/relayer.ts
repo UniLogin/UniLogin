@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import {getEnv, ContractWhiteList, SupportedToken, ChainSpec, ETHER_NATIVE_TOKEN, LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 import {utils} from 'ethers';
+import {KnexConfig} from './KnexConfig';
+import {getKnexConfig} from '../core/utils/knexUtils';
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ export interface Config {
   onRampProviders: {
     safello: SafelloConfig;
   };
+  knexConfig: KnexConfig;
 }
 
 export const config: Config =  Object.freeze({
@@ -54,7 +57,8 @@ export const config: Config =  Object.freeze({
       baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
       addressHelper: true
     }
-  }
+  },
+  knexConfig: getKnexConfig(),
 });
 
 export default config;

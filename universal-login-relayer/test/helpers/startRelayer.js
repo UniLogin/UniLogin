@@ -5,6 +5,7 @@ import {deployFactory} from '@universal-login/contracts';
 import Token from '../../lib/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
+import {getKnexConfig} from '../../lib/core/utils/knexUtils';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -35,7 +36,19 @@ async function startRelayer(wallet, relayerConstructor) {
       {
         address: tokenContract.address,
         minimalAmount: utils.parseEther('0.5').toString()
-    }]
+    }],
+    localization: {
+      language: 'en',
+      country: 'any'
+    },
+    onRampProviders: {
+      safello: {
+        appId: '1234-5678',
+        baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+        addressHelper: true
+      }
+    },
+    knexConfig: getKnexConfig(),
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();
