@@ -64,7 +64,19 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
         baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
         addressHelper: true
       }
-    }
+    },
+    database: {
+      client: 'postgresql',
+      connection: {
+        database: 'universal_login_relayer_development',
+        user: 'postgres',
+        password: 'postgres',
+      },
+      migrations: {
+        tableName: 'knex_migrations',
+        directory: join(__dirname, '../../../universal-login-relayer/build/lib/integration/sql/migrations'),
+      },
+    },
   };
 }
 
