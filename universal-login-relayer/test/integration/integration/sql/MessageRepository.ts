@@ -97,27 +97,12 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     });
   });
 
-  it('should mark message item as success', async () => {
-    await messageRepository.add(messageHash, messageItem);
-    const expectedTransactionHash = TEST_TRANSACTION_HASH;
-    await messageRepository.markAsSuccess(messageHash, expectedTransactionHash);
-    const {transactionHash, state} = await messageRepository.get(messageHash);
-    expect(transactionHash).to.be.eq(expectedTransactionHash);
-    expect(state).to.be.eq('Success');
-  });
-
   it('should set message state', async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedState = 'Queued';
     await messageRepository.setMessageState(messageHash, expectedState);
     const {state} = await messageRepository.get(messageHash);
     expect(state).to.be.eq(expectedState);
-  });
-
-  it('should throw error if transactionHash is invalid', async () => {
-    await messageRepository.add(messageHash, messageItem);
-    const invalidTransactionHash = '0x0';
-    await expect(messageRepository.markAsSuccess(messageHash, invalidTransactionHash)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
   });
 
   it('should mark message item as error', async () => {

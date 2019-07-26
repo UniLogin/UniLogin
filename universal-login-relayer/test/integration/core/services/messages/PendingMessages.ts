@@ -106,7 +106,7 @@ describe('INT: PendingMessages', () => {
     it('should throw when pending message already has transaction hash', async () => {
       await walletContract.setRequiredSignatures(1);
       await pendingMessages.add(message);
-      await messageRepository.markAsSuccess(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
+      await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       await expect(pendingMessages.ensureCorrectExecution(messageHash))
           .to.be.eventually.rejectedWith('Execution request already processed');
     });

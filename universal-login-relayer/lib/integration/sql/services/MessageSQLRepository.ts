@@ -87,14 +87,6 @@ export class MessageSQLRepository implements IMessageRepository {
       .update('state', state);
   }
 
-  async markAsSuccess(messageHash: string, transactionHash: string) {
-    ensureProperTransactionHash(transactionHash);
-    return this.knex('messages')
-      .where('messageHash', messageHash)
-      .update('transactionHash', transactionHash)
-      .update('state', 'Success');
-  }
-
   async markAsPending(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
     return this.knex('messages')

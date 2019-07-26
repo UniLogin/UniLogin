@@ -35,7 +35,7 @@ class QueueService {
       ensureNotNull(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!);
       await this.messageExecutor.waitForTransaction(transactionResponse);
-      await this.messageRepository.markAsSuccess(messageHash, hash!);
+      await this.messageRepository.setMessageState(messageHash, 'Success');
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.messageRepository.markAsError(messageHash, errorMessage);

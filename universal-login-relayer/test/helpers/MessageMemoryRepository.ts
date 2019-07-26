@@ -72,12 +72,6 @@ export default class MessageMemoryRepository implements IMessageRepository {
     this.messageItems[messageHash].state = 'Pending';
   }
 
-  async markAsSuccess(messageHash: string, transactionHash: string) {
-    ensureProperTransactionHash(transactionHash);
-    this.messageItems[messageHash].transactionHash = transactionHash;
-    this.messageItems[messageHash].state = 'Success';
-  }
-
   async markAsError(messageHash: string, error: string) {
     this.messageItems[messageHash].error = error;
     this.messageItems[messageHash].state = 'Error';

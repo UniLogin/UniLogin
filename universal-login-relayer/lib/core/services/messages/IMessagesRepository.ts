@@ -10,7 +10,6 @@ export default interface IMessageRepository {
   getMessage: (messageHash: string) => Promise<SignedMessage>;
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
   markAsPending: (messageHash: string, transactionHash: string) => Promise<void>;
-  markAsSuccess: (messageHash: string, transactionHash: string) => Promise<void>;
   markAsError: (messageHash: string, error: string) => Promise<void>;
   setMessageState: (messageHash: string, state: MessageState) => Promise<void>;
   containSignature: (messageHash: string, signature: string) => Promise<boolean>;
