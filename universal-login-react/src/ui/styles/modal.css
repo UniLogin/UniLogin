@@ -1,0 +1,39 @@
+.universal-login .modal-wrapper {
+  position: fixed;
+  z-index: 99999;
+  background: #fff;
+  max-width: 100%;
+}
+
+.universal-login .modal-wrapper.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+}
+
+.universal-login .modal-wrapper.bottom {
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 30px;
+  transform: translate(0, 0);
+}
+
+.universal-login .modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+
+@media only screen and (max-width: 600px) {
+  .universal-login .modal-wrapper.bottom {
+    padding: 20px;
+  }
+}

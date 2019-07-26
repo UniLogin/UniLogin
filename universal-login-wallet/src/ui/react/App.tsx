@@ -12,6 +12,7 @@ import SettingsScreen from './Settings/SettingsScreen';
 import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import { TermsAndConditionsScreen } from './Home/TermsAndConditionsScreen';
+import { CreateAccount } from './CreateAccount/CreateAccount';
 
 const App = () => {
   const {walletService} = useServices();
@@ -31,6 +32,13 @@ const App = () => {
           path="/terms"
           render={props =>
             <TermsAndConditionsScreen />
+          }
+        />
+        <Route
+          exact
+          path="/create"
+          render={props =>
+            <CreateAccount {...props}/>
           }
         />
         <Route

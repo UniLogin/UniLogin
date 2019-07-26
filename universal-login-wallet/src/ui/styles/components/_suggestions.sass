@@ -1,31 +1,24 @@
-.suggestions-list
-  padding: 8px 0
-  margin-top: 8px
-  border-radius: 5px
-  background: #262053
-  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90)
+.jarvis
+  ul.suggestions-list
+    position: absolute
+    left: 0
+    bottom: -5px
+    transform: translateY(100%)
+    width: 100%
+    max-height: 130px
+    padding: 0
+    margin: 0
+    background: #FFFFFF
+    border: 1px solid #E1E1F0
+    border-radius: 0
+    overflow-y: auto
 
+  .suggestions-item-btn:hover,
+  .suggestions-item-btn:focus
+    background: #fbfbfd
 
-.suggestions-item-btn
-  display: flex
-  justify-content: space-between
-  align-items: center
-  width: 100%
-  padding: 10px 20.5px
+  .suggestions-item + .suggestions-item
+    border-top: 1px solid #E1E1F0
 
-.suggestions-item-btn:hover,
-.suggestions-item-btn:focus
-  background: #19143D
-  outline: none
-
-.suggestions-item-btn-text
-  font-weight: 600
-  font-size: 13px
-  color: #0FB989
-  text-transform: uppercase
-
-.suggestions-item-text
-  font-weight: 600
-  font-size: 14px
-  color: #FFFFFF
-  
+  .suggestions-item-btn-text
+    display: none
