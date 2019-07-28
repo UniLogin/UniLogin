@@ -16,7 +16,7 @@ export const EmojiPanelWithFakes = ({securityCodeWithFakes, onEmojiClicked}: Emo
   return (
     <div>
       <p>Security code</p>
-      <ul style={{display: 'flex', listStyle: 'none'}}>
+      <ul className={'universal-login-emoji-default'}>
         {emojis}
       </ul>
     </div>

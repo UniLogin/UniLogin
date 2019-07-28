@@ -14,7 +14,7 @@ export const EmojiPlaceholders = ({code, onEmojiClicked}: EmojiPlaceholdersProps
   ));
 
   return (
-    <ul style={{display: 'flex', listStyle: 'none'}}>
+    <ul className={'universal-login-emoji-default'}>
       {placeholders}
     </ul>
   );

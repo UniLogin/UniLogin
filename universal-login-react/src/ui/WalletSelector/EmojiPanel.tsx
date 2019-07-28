@@ -14,7 +14,7 @@ export const EmojiPanel = ({code}: EmojiPanelProps) => {
 
   return (
     <div>
-      <ul style={{display: 'flex', listStyle: 'none'}}>
+      <ul className={'universal-login-emoji-default'}>
         {emojis}
       </ul>
     </div>
