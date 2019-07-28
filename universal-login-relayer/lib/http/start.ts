@@ -4,6 +4,6 @@ import config from '../config/relayer';
 
 const relayer = new Relayer(config);
 relayer.start().then(
-  () => console.log('Started'),
+  () => console.log(`Server listening on port ${config.port}`),
   console.error
 );
