@@ -100,7 +100,8 @@ package Integration {
   }
 
   class MessageExecutor {
-    executeAndWait(signedMessage: SignedMessage)
+    execute(signedMessage: SignedMessage)
+    waitForTransaction(transactionResponse: TransactionResponse)
   }
 }
 

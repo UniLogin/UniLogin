@@ -80,13 +80,21 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     expect(signatures).to.contains(message2.signature);
   });
 
-  it('should mark message item as success', async () => {
-    await messageRepository.add(messageHash, messageItem);
-    const expectedTransactionHash = TEST_TRANSACTION_HASH;
-    await messageRepository.markAsSuccess(messageHash, expectedTransactionHash);
-    const {transactionHash, state} = await messageRepository.get(messageHash);
-    expect(transactionHash).to.be.eq(expectedTransactionHash);
-    expect(state).to.be.eq('Success');
+  describe('markAsPending', async () => {
+    it('should mark message item as pending', async () => {
+      await messageRepository.add(messageHash, messageItem);
+      const expectedTransactionHash = TEST_TRANSACTION_HASH;
+      await messageRepository.markAsPending(messageHash, expectedTransactionHash);
+      const {transactionHash, state} = await messageRepository.get(messageHash);
+      expect(transactionHash).to.be.eq(expectedTransactionHash);
+      expect(state).to.be.eq('Pending');
+    });
+
+    it('should throw error if transactionHash is invalid', async () => {
+      await messageRepository.add(messageHash, messageItem);
+      const invalidTransactionHash = '0x0';
+      await expect(messageRepository.markAsPending(messageHash, invalidTransactionHash)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
+    });
   });
 
   it('should set message state', async () => {
@@ -95,12 +103,6 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
     await messageRepository.setMessageState(messageHash, expectedState);
     const {state} = await messageRepository.get(messageHash);
     expect(state).to.be.eq(expectedState);
-  });
-
-  it('should throw error if transactionHash is invalid', async () => {
-    await messageRepository.add(messageHash, messageItem);
-    const invalidTransactionHash = '0x0';
-    await expect(messageRepository.markAsSuccess(messageHash, invalidTransactionHash)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
   });
 
   it('should mark message item as error', async () => {

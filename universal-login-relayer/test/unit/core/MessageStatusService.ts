@@ -54,9 +54,9 @@ describe('UNIT: MessageStatusService', async () => {
   });
 
   it('getStatus after success', async () => {
-    await messageRepository.markAsSuccess(messageHash, TEST_TRANSACTION_HASH);
+    await messageRepository.markAsPending(messageHash, TEST_TRANSACTION_HASH);
     expect(await messageStatusService.getStatus(messageHash)).to.deep.include({
-      state: 'Success',
+      state: 'Pending',
       transactionHash: TEST_TRANSACTION_HASH
     });
   });

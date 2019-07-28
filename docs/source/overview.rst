@@ -134,8 +134,8 @@ The message starts it's journey when it is created and signed by the user (i.e. 
 
 - **await signature** ``optional``- Relayer waits to collect all required signatures if the message requires more than one signature.
 - **queued** - Message is queued to be sent.
-- **pending** - Message is propagated to the network and waits to be mined.
-- **sucess** / **error** - Mined transaction is a success or an error. In a success state, the message has a transaction hash. In an error state, the message has an error message.
+- **pending** - Message is propagated to the network and waits to be mined. In a pending state, the message has a transaction hash.
+- **sucess** / **error** - Mined transaction is a success or an error. In a success state, the content of message status is not changed. In an error state, the message has an error message.
 
 
 

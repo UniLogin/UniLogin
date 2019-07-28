@@ -55,7 +55,8 @@ describe('INT: MessageHandler', async () => {
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
       await messageHandler.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
-      const {state} = await messageHandler.getStatus(messageHash);
+      const {state, transactionHash} = await messageHandler.getStatus(messageHash);
+      expect(transactionHash).to.not.be.null;
       expect(state).to.be.eq('Success');
     });
   });

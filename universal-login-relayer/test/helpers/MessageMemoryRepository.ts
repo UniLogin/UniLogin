@@ -66,10 +66,10 @@ export default class MessageMemoryRepository implements IMessageRepository {
     this.messageItems[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
 
-  async markAsSuccess(messageHash: string, transactionHash: string) {
+  async markAsPending(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
     this.messageItems[messageHash].transactionHash = transactionHash;
-    this.messageItems[messageHash].state = 'Success';
+    this.messageItems[messageHash].state = 'Pending';
   }
 
   async markAsError(messageHash: string, error: string) {

@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'MessageNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -108,6 +108,13 @@ export class MessageNotFound extends NotFound {
   constructor(messageHash: string) {
     super(`Message not found for hash: ${messageHash}`, 'MessageNotFound');
     Object.setPrototypeOf(this, MessageNotFound.prototype);
+  }
+}
+
+export class TransactionHashNotFound extends NotFound {
+  constructor() {
+    super('Transaction hash not found for executed transaction ', 'TransactionHashNotFound');
+    Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
   }
 }
 
