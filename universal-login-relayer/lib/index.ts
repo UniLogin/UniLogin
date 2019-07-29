@@ -1,6 +1,7 @@
 import Relayer, {RelayerClass} from './http/relayers/Relayer';
 export default Relayer;
-export {getConfig, Config} from './config/relayer';
+export {Config} from './config/relayer';
+export {getConfig} from './core/utils/config';
 export {RelayerClass};
 export {DevelopmentRelayer} from './http/relayers/DevelopmentRelayer';
 export {TokenGrantingRelayer} from './http/relayers/TokenGrantingRelayer';
