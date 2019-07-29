@@ -16,6 +16,7 @@ class QueueService {
     private messageExecutor: MessageExecutor,
     private queueStore: IQueueStore,
     private messageRepository: IMessageRepository,
+    private onTransactionSent: OnTransactionSent,
     private tick: number = 100
   ) {
     this.state = 'stopped';
@@ -31,10 +32,11 @@ class QueueService {
     try {
       const signedMessage = await this.messageRepository.getMessage(messageHash);
       const transactionResponse = await this.messageExecutor.execute(signedMessage);
-      const {hash} = transactionResponse;
+      const {hash, wait} = transactionResponse;
       ensureNotNull(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!);
-      await this.messageExecutor.waitAndHandleTransaction(transactionResponse);
+      await wait();
+      await this.onTransactionSent(transactionResponse);
       await this.messageRepository.setMessageState(messageHash, 'Success');
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
