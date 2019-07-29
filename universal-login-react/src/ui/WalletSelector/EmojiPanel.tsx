@@ -1,6 +1,6 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
-import {getStyleClass} from '../../core/utils/getStyleClass';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 
@@ -17,10 +17,12 @@ export const EmojiPanel = ({code, className}: EmojiPanelProps) => {
   ));
 
   return (
-    <div className={'universal-login-emoji'}>
-      <ul className={getStyleClass(className)}>
-        {emojis}
-      </ul>
+    <div className={getStyleForTopLevelComponent(className)}>
+      <div className="universal-login-emoji">
+        <ul>
+          {emojis}
+        </ul>
+      </div>
     </div>
   );
 };

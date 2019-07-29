@@ -1,6 +1,6 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
-import {getStyleClass} from '../../core/utils/getStyleClass';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 
@@ -18,10 +18,12 @@ export const EmojiPlaceholders = ({code, onEmojiClicked, className}: EmojiPlaceh
   ));
 
   return (
-    <div className={'universal-login-emoji'}>
-      <ul className={getStyleClass(className)}>
-        {placeholders}
-      </ul>
+    <div className={getStyleForTopLevelComponent(className)}>
+      <div className="universal-login-emoji">
+        <ul>
+          {placeholders}
+        </ul>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
-import {getStyleClass} from '../../core/utils/getStyleClass';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 
@@ -17,13 +17,11 @@ export const EmojiPanelWithFakes = ({securityCodeWithFakes, onEmojiClicked, clas
     </li>
   ));
 
-console.log(getStyleClass(className));
-
   return (
-    <div>
+    <div className={getStyleForTopLevelComponent(className)}>
       <p>Security code</p>
-      <div className={'universal-login-emoji'}>
-        <ul className={getStyleClass(className)}>
+      <div className="universal-login-emoji">
+        <ul>
           {emojis}
         </ul>
       </div>
