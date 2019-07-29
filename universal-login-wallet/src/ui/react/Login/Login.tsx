@@ -26,7 +26,7 @@ const Login = ({location} : LoginProps) => {
     history.push(from);
   };
 
-  const onConnectionClick = async (name: string) => {
+  const onConnectClick = async (name: string) => {
     unsubscribe = await connectToWallet(name, loginAndChangeScreen);
     history.push('/approve');
   };
@@ -46,7 +46,7 @@ const Login = ({location} : LoginProps) => {
         </label>
         <WalletSelector
           onCreateClick={(name: string) => onCreateCLick(name)}
-          onConnectionClick={onConnectionClick}
+          onConnectClick={onConnectClick}
           sdk={sdk}
           domains={walletConfig.domains}
           actions={WALLET_SUGGESTION_ALL_ACTIONS}
