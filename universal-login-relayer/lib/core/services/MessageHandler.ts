@@ -7,7 +7,6 @@ import QueueService from './messages/QueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import MessageValidator from './messages/MessageValidator';
 import IMessageRepository from './messages/IMessagesRepository';
 import IQueueStore from './messages/IQueueStore';
 import {MessageStatusService} from './messages/MessageStatusService';
@@ -15,7 +14,6 @@ import {MessageStatusService} from './messages/MessageStatusService';
 class MessageHandler {
   private pendingMessages: PendingMessages;
   private queueService: QueueService;
-  private executor: MessageExecutor;
 
   constructor(
     wallet: Wallet,
@@ -23,14 +21,10 @@ class MessageHandler {
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
     queueStore: IQueueStore,
-    messageValidator: MessageValidator,
+    messageExecutor: MessageExecutor,
     statusService: MessageStatusService
   ) {
-    this.executor = new MessageExecutor(
-      wallet,
-      messageValidator
-      );
-    this.queueService = new QueueService(this.executor, queueStore, messageRepository, this.onTransactionSent.bind(this));
+    this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionSent.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
   }
 
