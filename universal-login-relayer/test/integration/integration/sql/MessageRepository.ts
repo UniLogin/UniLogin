@@ -6,7 +6,7 @@ import IMessageRepository from '../../../../lib/core/services/messages/IMessages
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKeyFromHashAndSignature, createMessageItem} from '../../../../lib/core/utils/utils';
-import {getKnex} from '../../../helpers/knex';
+import {getKnexConfig} from '../../../helpers/knex';
 import MessageSQLRepository from '../../../../lib/integration/sql/services/MessageSQLRepository';
 import MessageMemoryRepository from '../../../helpers/MessageMemoryRepository';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
@@ -25,7 +25,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
   let messageItem: MessageItem;
   let messageHash: string;
   let actionKey: string;
-  const knex = getKnex();
+  const knex = getKnexConfig();
 
   beforeEach(async () => {
     ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));

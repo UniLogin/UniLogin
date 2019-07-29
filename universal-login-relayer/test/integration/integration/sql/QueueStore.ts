@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {getTestSignedMessage} from '../../../config/message';
-import {getKnex} from '../../../helpers/knex';
+import {getKnexConfig} from '../../../helpers/knex';
 import QueueSQLStore from '../../../../lib/integration/sql/services/QueueSQLStore';
 import QueueMemoryStore from '../../../helpers/QueueMemoryStore';
 import IQueueStore from '../../../../lib/core/services/messages/IQueueStore';
@@ -18,7 +18,7 @@ describe(`INT: IQueueStore: ${config.type.name}`, async () => {
   let queueStore: IQueueStore;
   let signedMessage: SignedMessage;
   let expectedMessageHash: string;
-  const knex = getKnex();
+  const knex = getKnexConfig();
 
   before(async () => {
     signedMessage = getTestSignedMessage();
