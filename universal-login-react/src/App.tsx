@@ -10,7 +10,6 @@ import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
 import './ui/styles/playground.css';
-import './ui/styles/emoji.css';
 
 export const App = () => {
   const {modalService, sdk} = useServices();
