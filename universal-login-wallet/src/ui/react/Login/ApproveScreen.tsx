@@ -7,7 +7,7 @@ import {useServices} from '../../hooks';
 const Blockies = require('react-blockies').default;
 
 const ApproveScreen = () => {
-  const {walletPresenter: walletFormatter} = useServices();
+  const {walletPresenter} = useServices();
 
   return(
   <div className="start">
@@ -16,9 +16,9 @@ const ApproveScreen = () => {
     <p className="start-subtitle">Open your device that controls this ID and approve this connection</p>
     <div className="user-row aprove-screen-user">
       <div className="user-avatar">
-        <Blockies seed={walletFormatter.getContractAddress()} size={8} scale={4} />
+        <Blockies seed={walletPresenter.getContractAddress()} size={8} scale={4} />
       </div>
-      <p className="user-id">{walletFormatter.getName()}</p>
+      <p className="user-id">{walletPresenter.getName()}</p>
     </div>
     <div className="devices">
       <img src={devices} alt="devices that controls this ID" className="devices-img"/>

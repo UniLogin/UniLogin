@@ -12,7 +12,7 @@ body
 
 button
   font-family: 'Poppins', sans-serif
-  
+
 input
   border: none
 
@@ -20,13 +20,13 @@ textarea:focus,
 input:focus
   border: 1px solid #0FB989
   outline: none
-  
+
 .container
   max-width: 1230px
   width: 100%
   padding: 15px
   margin: 0 auto
-  
+
 .row
   display: flex
 
@@ -35,13 +35,13 @@ input:focus
 
 .align-items-center
   align-items: center
-  
+
 .box-wrapper
   display: flex
   justify-content: center
   align-items: center
   min-height: 100vh
-  
+
 .box
   background: #FFFFFF
   box-shadow: 0 2px 28px 0 rgba(40,42,42,0.27);
@@ -55,7 +55,26 @@ input:focus
   color: #31405E
   font-weight: 500
 
+.box-content
+  background: #FAFBFD
+
 .link
   display: flex
   justify-content: center
   align-items: center
+
+.info-text
+  position: relative
+  padding-left: 33px
+  font-size: 16px
+  color: #31405E
+  line-height: 24px
+
+.info-text::before
+  content: ''
+  position: absolute
+  top: 3px
+  left: 0
+  width: 18px
+  height: 18px
+  background: url('./../assets/icons/info.svg') center no-repeat
