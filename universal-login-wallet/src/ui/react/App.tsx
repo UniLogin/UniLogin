@@ -14,6 +14,8 @@ import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {useModal} from '../hooks/useModal';
+import {ConnectAccount} from './ConnectAccount/ConnectAccount';
+import {ChooseConnectionMethod} from './ConnectAccount/ChooseConnectionMethod';
 
 const App = () => {
   const modalService = useModal();
@@ -36,6 +38,20 @@ const App = () => {
         exact
         path="/create"
         render={props => <CreateAccount {...props} modalService={modalService} />}
+      />
+      <Route
+        exact
+        path="/connect"
+        render={props =>
+          <ConnectAccount {...props} />
+        }
+      />
+      <Route
+        exact
+        path="/choose-connection"
+        render={props =>
+          <ChooseConnectionMethod {...props} />
+        }
       />
       <Route
         exact
