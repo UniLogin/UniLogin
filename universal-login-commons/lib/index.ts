@@ -45,3 +45,4 @@ export {DeployArgs} from './core/models/deploy';
 export {isProperAddress, reverseHexString} from './core/utils/hexStrings';
 export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';
 export {SECURITY_CODE_LENGTH, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
+export {deepMerge} from './core/utils/deepMerge';
