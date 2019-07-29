@@ -9,7 +9,6 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {TopUp} from './ui/TopUp/TopUp';
 import {Settings} from './ui/Settings/Settings';
 import './ui/styles/playground.css';
-import './ui/styles/emoji.css';
 
 export const App = () => {
   const sdk = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
@@ -20,8 +19,8 @@ export const App = () => {
         <NavigationColumn/>
         <div className="playground-content">
           <Switch>
-            <Route exact path="/" render={() => (<p style={{width: '80%'}}>Welcome to Universal Login</p>)}/>
-            <Route exact path="/onboarding" render={() => (<p style={{width: '80%'}}>Onboarding</p>)}/>
+            <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)}/>
+            <Route exact path="/onboarding" render={() => (<p>Onboarding</p>)}/>
             <Route
               exact
               path="/walletselector"

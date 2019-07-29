@@ -1,9 +1,9 @@
-ul.universal-login-emoji-default {
+.universal-login-emoji ul {
   display: flex;
   list-style: none;
   flex-wrap: wrap;
 }
 
-ul.universal-login-emoji-default  li {
-  margin: 10px
+.universal-login-emoji ul li {
+  margin: 10px;
 }

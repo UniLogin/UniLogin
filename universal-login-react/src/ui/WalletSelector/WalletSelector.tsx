@@ -4,6 +4,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
+import {getStyleClass} from '../../core/utils/getStyleClass';
 import Logo from './../assets/logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
@@ -42,11 +43,9 @@ export const WalletSelector = ({onCreateClick, onConnectionClick, sdk, domains, 
       <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectionClick={onConnectionClick} /> :
       null;
 
-  const getWalletSelectorClass = (className?: string) => className ? className : 'universal-login-default';
-
   return(
     <div className="universal-login">
-      <div className={getWalletSelectorClass(className)}>
+      <div className={getStyleClass(className)}>
         <div className="selector-input-wrapper">
           <img src={Logo} alt="Universal login logo" className="selector-input-img" />
           <Input
