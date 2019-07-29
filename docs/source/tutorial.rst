@@ -12,7 +12,7 @@ New project
 ^^^^^^^^^^^
 
 Installation
-  To add SDK to your project using npm type following:
+  To add an SDK to your project using npm type the following:
   ::
 
     npm i @universal-login/sdk
@@ -32,7 +32,7 @@ Prerequisites
   You might want to check database configuration in file `knexfile.js <https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/src/relayer/knexfile.js>`_ and make sure your database is configured correctly.
 
 Installation
-  To use development environment, you need to install ``@universal-login/ops`` as dev dependency to your project.
+  To use the development environment, you need to install ``@universal-login/ops`` as dev dependency to your project.
 
   With npm:
 
@@ -47,7 +47,7 @@ Installation
       yarn add --dev @universal-login/ops -D
 
 Adding a script
-  The simplest way to use development environment is to add a script to ``package.json`` file:
+  The simplest way to use the development environment is to add a script to ``package.json`` file:
 
   ::
 
@@ -58,7 +58,7 @@ Adding a script
     }
 
 Running development environment
-  To start development environment type in your console:
+  To start the development environment type in your console:
 
   ::
 
@@ -90,13 +90,13 @@ Which will start the development environment. The output should look somewhat li
 
 .. _using_sdk:
 
-Using SDK
----------
+Using an SDK
+------------
 
 Creating a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To start using SDK you will need to create SDK instance and deploy a wallet contract.
+To start using an SDK you will need to create an SDK instance and deploy a wallet contract.
 Below is a snippet doing precisely that for the development environment.
 
 ::
@@ -107,11 +107,11 @@ Below is a snippet doing precisely that for the development environment.
   const [privateKey, contractAddress] = await sdk.create('myname.mylogin.eth');
 
 
-The first argument of ``UniversalLoginSDK`` constructor is relayer address, second is Ethereum node address.
+The first argument of ``UniversalLoginSDK`` constructor is a relayer address, second is an Ethereum node address.
 
-Sending transaction
-^^^^^^^^^^^^^^^^^^^
-Once you have contract wallet deployed you can execute a transaction:
+Sending a transaction
+^^^^^^^^^^^^^^^^^^^^^
+Once you have the contract wallet deployed you can execute a transaction:
 
 ::
 
@@ -128,13 +128,13 @@ Once you have contract wallet deployed you can execute a transaction:
   await sdk.execute(message, privateKey);
 
 
-Note: ``from`` field in this case is contract address.
+Note: ``from`` field in this case is the contract address.
 
-Most fields of a message are analogous to normal Ethereum transaction, except for ``gasToken``,
-which allows specifying token in which transaction cost will be refunded.
+Most fields of the message are analogous to a normal Ethereum transaction, except for ``gasToken``,
+which allows a specifying token in which transaction cost will be refunded.
 
-The token need to be supported by relayer.
-Wallet needs to have enough token balance to refund transaction.
+The token need to be supported by a relayer.
+The wallet contact needs to have enough token balance to refund the transaction.
 
 A detailed explanation of each method can be found in subsections of :ref:`SDK documentation<sdk>`: :ref:`creating SDK<sdk_create>`, :ref:`creating wallet contract<sdk_create_contract>` and :ref:`execute<sdk_execute>`.
 
@@ -142,11 +142,11 @@ A detailed explanation of each method can be found in subsections of :ref:`SDK d
 .. _sdk_example_testnet:
 
 
-Connecting to existing app on testnet
--------------------------------------
+Connecting to an existing app on testnet
+----------------------------------------
 
-Create wallet contract
-^^^^^^^^^^^^^^^^^^^^^^
+Create a wallet contract
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Create your own wallet contract using `Universal Login Example App <https://example.universallogin.io//>`_ and get your contract address.
 
@@ -165,18 +165,18 @@ In your project, create the UniversalLoginSDK
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
 
-Start listen events
-^^^^^^^^^^^^^^^^^^^
+Start listening to events
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Then make UniversalLoginSDK start listening relayer and blockchain events
+Then make UniversalLoginSDK start listening to a relayer and blockchain events
 ::
 
   sdk.start();
 
-Request connection
-^^^^^^^^^^^^^^^^^^
+Request a connection
+^^^^^^^^^^^^^^^^^^^^
 
-Now, you can request connection to created wallet contract
+Now, you can request a connection to the created wallet contract
 ::
 
   const privateKey = await sdk.connect('YOUR_CONTRACT_ADDRESS');
@@ -202,15 +202,15 @@ Subscribe ``KeyAdded`` event with your new key filter
         console.log(`${keyInfo.key} now has permission to manage wallet contract`);
       });
 
-Accept connection request
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Accept a connection request
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Accept connection request in Universal Login Example App. After that your newly created key has permission to manage your wallet contract.
+Accept a connection request in Universal Login Example App. After that your newly created key has a permission to manage your wallet contract.
 
-Stop listen events
-^^^^^^^^^^^^^^^^^^
+Stop listening to events
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Remember about stop listening relayer and blockchain events
+Remember about stoping listening to a relayer and blockchain events
 ::
 
   sdk.stop();
@@ -224,7 +224,7 @@ Helpers
 Prerequisites
 ^^^^^^^^^^^^^
 
-Install universal-login toolkit:
+Install the universal-login toolkit:
 
 ::
 
@@ -233,7 +233,7 @@ Install universal-login toolkit:
 Test token
 ^^^^^^^^^^
 
-To deploy test token use deploy token
+To deploy a test token use a ``deploy token`` script
 ``universal-login deploy:token --nodeUrl [url] --privateKey [privateKey]``
 
 Example:
@@ -251,10 +251,10 @@ To send funds to an address
 
 Parameters:
   - **to** - an address to send funds
-  - **amount** - amount to send to the address
-  - **currency** - currency of transfer
+  - **amount** - an amount to send to the address
+  - **currency** - the currency of transfer
   - **nodeUrl** (optional) - JSON-RPC URL of an Ethereum node, set to ``http://localhost:18545`` by default
-  - **privateKey** (optional) - private key of wallet with additional balance, set to ``DEV_DEFAULT_PRIVATE_KEY`` by default and has enoguh ethers
+  - **privateKey** (optional) - a private key of a wallet with additional balance, set to ``DEV_DEFAULT_PRIVATE_KEY`` by default and has enoguh ethers
 
 
 Example:
@@ -271,12 +271,12 @@ Example:
 ENS registration
 ----------------
 
-To use Universal Login with your own ENS domain, you will need to register it, connect to the resolver and deploy own registrar. There is a script for that.
+To use Universal Login with your own ENS domain, you will need to register it, connect to the resolver and deploy your own registrar. There is a script for that.
 
-`Note:` script currently works only for ``.test`` domains. Tested on the Rinkeby and the Ropsten test networks.
+`Note:` the script currently works only for ``.test`` domains. Tested on the Rinkeby and the Ropsten test networks.
 
-You can register domain on two ways: from command line and programmatically.
-To use registered domain in your relayer, type its name in relayer config.
+You can register the domain in two ways: from command line and programmatically.
+To use a registered domain in your relayer, type its name in relayer config.
 
 
 From command line
@@ -286,8 +286,8 @@ First, prepare ``.env`` file in universal-login-ops directory.
 Parameters:
   - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
   - **PRIVATE_KEY** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
-  - **ENS_ADDRESS** : string - address of ENS
-  - **PUBLIC_RESOLVER_ADDRESS** : string - address of public resolver. For the Ropsten test network working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
+  - **ENS_ADDRESS** : string - the address of an ENS contract
+  - **PUBLIC_RESOLVER_ADDRESS** : string - the address of a public resolver. For the Ropsten test network a working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network a public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
 
   Example ``.env`` file:
 
@@ -298,15 +298,15 @@ Parameters:
     ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
 
-To register ENS domain, in universal-login-ops directory type in the console:
+To register an ENS domain, in universal-login-ops directory type in the console:
 
   ::
 
     yarn register:domain my-domain tld
 
 Parameters:
-  - **my-domain** - domain to register
-  - **tld** - top level domain, for example: ``eth`` or on testnets: ``test``
+  - **my-domain** - a domain to register
+  - **tld** - a top level domain, for example: ``eth`` or on testnets: ``test``
 
   Example:
 
@@ -330,7 +330,7 @@ Parameters:
 Programmatically
 ^^^^^^^^^^^^^^^^
 
-To register own ENS domain programmatically, you should use DomainRegistrar.
+To register your own ENS domain programmatically, you should use DomainRegistrar.
 
 **new DomainRegistrar(config)**
   creates DomainRegistrar.
@@ -339,9 +339,9 @@ To register own ENS domain programmatically, you should use DomainRegistrar.
     - **config** : object - specific config parameters, includes:
 
       - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
-      - **privateKey** : string - private key to execute registrations
-      - **ensAddress** : string - address of ENS
-      - **publicResolverAddress** : string - address of public resolver
+      - **privateKey** : string - a private key to execute registrations
+      - **ensAddress** : string - the address of an ENS contract
+      - **publicResolverAddress** : string - the address of a public resolver
   Returns:
     DomainRegistrar instance
 
@@ -360,11 +360,11 @@ To register own ENS domain programmatically, you should use DomainRegistrar.
       const registrar = new DomainRegistrar(ensRegistrationConfig);
 
 **registrar.registerAndSave(domain, tld)**
-  registers new domain and saves to new file all informations about newly registered domain (registrar address or resolver address)
+  registers a new domain and saves all information about newly registered domain to a new file (a registrar address or resolver address)
 
   Parameters:
-    - **domain** : string - domain to register
-    - **tld** : string - top level domain, for example: ``eth`` or on testnets: ``test``
+    - **domain** : string - a domain to register
+    - **tld** : string - a top level domain, for example: ``eth`` or on testnets: ``test``
 
   Example:
     ::
