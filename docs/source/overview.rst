@@ -64,15 +64,15 @@ Deployment
 ^^^^^^^^^^
 
 
-Deployment is designed in the way, that user pays for himself. To do that, we use counterfactual deployment. (``create2`` function to deploy contract)
+Deployment is designed in a way that makes the user pay for himself. To do that, we use counterfactual deployment (``create2`` function to deploy contract).
 
 The process looks as follows:
 
-- **computing contract address** - An SDK computes a deterministic contract address. A contract address is unique and is obtained from the user's public key and a factory contract address connected to a particular relayer.
+- **computing contract address** - The SDK computes a deterministic contract address. A contract address is unique and is obtained from the user's public key and a factory contract address connected to a particular relayer.
 
-- **waiting for balance** - The user sends funds on this address. He can transfer ether on his own or use an on-ramp provider. The SDK waits for the future contract address balance change. If the SDK discovers that required funds are on this balance it sends a deploy request to a relayer.
+- **waiting for balance** - The user sends funds to this address. He can transfer ether on his own or use an on-ramp provider. The SDK waits for the future contract address balance to change. If the SDK discovers that required funds appear at this address, it sends a deploy request to the relayer.
 
-- **deploy** - The relayer deploys the contract and immediately gets the refund from the contract.
+- **deploy** - The relayer deploys the contract and gets a refund from it immediately.
 
 - **refund** - During deployment the contract will refund the cost of the transaction to the relayer address.
 
@@ -114,25 +114,25 @@ Message (also known as meta-transaction or signed messages) is a way to trigger 
 
 .. image:: ../modeling/img/concepts/Message.png
 
-- **to** - a recipient of a message call
-- **from** - the address of a contract that executes a message
-- **value** - value to send
+- **to** - the recipient of the message call
+- **from** - the address of contract that executes the message
+- **value** - number of Wei to send
 - **data** - data for the transaction (i.e. an encoded function call)
-- **gasToken** - token address to refund
+- **gasToken** - address of token used for refund
 - **gasLimit** - maximum gas to use in for a specific transaction
 - **gasPrice** - gas price to use in the refund process
 - **nonce** - an internal nonce of the transaction relative to the contract wallet
 - **operationType** - the type of execution (call, delegatecall, create)
-- **signature** - the signature of all of the arguments above, which ensures parameters come from the owner of the allowed private-public key pair
+- **signature** - the signature of all of the arguments above, which ensures parameters come from the owner of the allowed public-private key pair
 
 
 **Message lifecycle**
 
-The message starts its journey when it is created and signed by the user (i.e. an application or an SDK) and then sent to a relayer. In the relayer it goes through the following states:
+A message starts its journey when it is created and signed by a user (i.e. an application or an SDK) and then sent to a relayer. In the relayer it goes through the following states:
 
 .. image:: ../modeling/img/concepts/MessageStates.png
 
-- **await signature** ``optional``- The relayer waits to collect all required signatures if the message requires more than one signature.
+- **await signature** ``optional``- The relayer waits to collect all the required signatures if the message requires more than one.
 - **queued** - The message is queued to be sent.
 - **pending** - The message is propagated to the network and waits to be mined. In a pending state, the message has a transaction hash.
 - **sucess** / **error** - A mined transaction is a success or an error. In a success state, the content of the message status is not changed. In an error state, the message has an error message.
@@ -143,7 +143,7 @@ The message starts its journey when it is created and signed by the user (i.e. a
 New device connection
 ^^^^^^^^^^^^^^^^^^^^^
 
-One of the key activities is connecting the newly created public key to the existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
+One of the key activities is connecting a newly created public key to the existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
 
 .. image:: static/connect/setup.png
 
@@ -153,8 +153,8 @@ The new public key is added using a meta-transaction. The meta-transaction needs
 
 There are four key actors in the process:
 
-- **Old device** or an application that is already authorized. Authorized means there is a public and private key pair, where the private key is stored on the device and public key is in the wallet smart contract on the blockchain.
-- **New device** (or a new application) that we want to authorize to use the wallet smart contract. To do that we need to generate **new key pair** (a new public key and private key) and add the new public key to the wallet contract as a management or action key. Adding key is creating a meta-transaction signed by the old device (old private key) and sending to the relayer.
+- **Old device** or an application that is already authorized. Authorized means that there exists a public-private key pair, where the private key is kept on the device and the public key is stored in the wallet smart contract on the blockchain.
+- **New device** (or a new application) that we want to authorize to use the wallet smart contract. To do that we need to generate a **new public-private key pair** and add the new public key to the wallet contract as a management or action key.  The public key is added by creating a meta-transaction signed by the old device (old private key) and sending it to the relayer.
 - **Relayer** - relays meta-transaction sent from an old device to the blockchain
 - **Smart Contract Wallet** - a smart contract that stores keys and executes meta-transactions.
 
@@ -166,13 +166,13 @@ The problem might seem pretty straightforward, but there are some complexities t
 
 * Man in the middle
 
-A man-in-the-middle attack can happen when a new device sends the new public key to the old device. A malicious actor that intercepts communication (e.g. a relayer) can switch a new public key with its new public key and as a result, can take over the control of the wallet contract.
+A man-in-the-middle attack can happen when the new device sends the new public key to the old device. A malicious actor that intercepts communication (e.g. a relayer) can replace the new public key with a public key that belongs to him and, as a result, take over control of the wallet contract.
 
 .. image:: static/connect/man-in-the-middle.png
 
 * Spamming
 
-A spam attack can happen when a lot of new devices request to connect to an old device, therefore the old device is spamming with many notifications.
+A spam attack can happen when a lot of new devices request to connect to an old device, therefore the old device is spammed with many notifications.
 
 .. image:: static/connect/spamming.png
 
@@ -211,23 +211,21 @@ The process goes as follows:
 
 1. The old device generates a temporary key pair.
 
-2. The private key gets transferred to the new device.
+2. The temporary private key gets transferred to the new device.
 
-3. The new device encrypts a new public key using a temporary private key.
+3. The new device encrypts a new public key using the temporary private key and transfers it to the old device.
 
-4. The old device sends a meta-transaction via a relayer to the wallet smart contract.
-
-5. On the successful decryption, the old device sends the meta-transaction to the relayer to add the new public key to the wallet smart contract.
+4. The old device decrypts the new device's public key and sends a meta-transaction to the relayer adding it to the wallet smart contract.
 
 .. image:: static/connect/solution-2.png
 
 **Solution 3**
 
-The third solution is an alternative to the previous solutions. A new device generates a new key pair and shows a user emojis based on a hash of the new public key to the later use on an old device. The newly generated public key is sent to a relayer and forwarded to the old device. To finalize connecting a new device, the user has to arrange emojis in the exact order. See below.
+The third solution is an alternative to the previous solutions. The new device generates a new key pair and shows the user emojis based on a hash of the new public key to the later use on an old device. The newly generated public key is sent to a relayer and forwarded to the old device. To finalize connection of a new device, the user has to arrange emojis on the old device in the same order he has seen on the new device. See below.
 
 .. image:: static/connect/solution-3.png
 
-In the case of spamming, the user has to type exact emojis unlike arranging.
+In case of spamming attack in place, the user has to type the emojis manually.
 
 
 .. _development:
@@ -246,5 +244,5 @@ The script does a bunch of helpful things:
 - creates a database for a relayer
 - starts a local relayer
 
-For more go to :ref:`tutorial<development_environment>`
+Read more in :ref:`tutorial<development_environment>`
 
