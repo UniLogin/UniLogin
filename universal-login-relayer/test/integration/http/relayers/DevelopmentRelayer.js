@@ -39,6 +39,6 @@ describe('INT: Development Relayer', async () => {
   });
 
   afterEach(async () => {
-    await relayer.stop();
+    await relayer.stopLater();
   });
 });
