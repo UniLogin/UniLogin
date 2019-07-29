@@ -1,18 +1,17 @@
-import {getEnv} from '@universal-login/commons';
 import devConfig from '../../config/config.dev';
 import prodConfig from '../../config/config.prod';
 import testConfig from '../../config/config.test';
+import {NodeEnvNotSpecified} from './errors';
 
-export const getNodeEnv = () => getEnv('NODE_ENV', 'development');
-
-export function getConfig(environment: string = getNodeEnv()) {
+export function getConfig(environment: string) {
   switch (environment) {
     case 'production':
       return prodConfig;
     case 'test':
       return testConfig;
     case 'development':
-    default:
       return devConfig;
+    default:
+      throw NodeEnvNotSpecified;
   }
 }

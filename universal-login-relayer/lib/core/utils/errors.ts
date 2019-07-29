@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType = 'NotFound' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -115,6 +115,13 @@ export class TransactionHashNotFound extends NotFound {
   constructor() {
     super('Transaction hash not found for executed transaction ', 'TransactionHashNotFound');
     Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
+  }
+}
+
+export class NodeEnvNotSpecified extends NotFound {
+  constructor() {
+    super('NODE_ENV was not specified', 'NodeEnvNotSpecified');
+    Object.setPrototypeOf(this, NodeEnvNotSpecified.prototype);
   }
 }
 

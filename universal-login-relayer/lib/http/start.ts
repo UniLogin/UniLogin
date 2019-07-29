@@ -1,10 +1,15 @@
-require('dotenv').config();
+
 import Relayer from './relayers/Relayer';
 import {getConfig} from '../core/utils/config';
+import {getEnv} from '@universal-login/commons';
 
-const config = getConfig();
-const relayer = new Relayer(config);
-relayer.start().then(
-  () => console.log(`Server listening on port ${config.port}`),
-  console.error
-);
+export const start = (nodeEnv: string = 'development') => {
+  const config = getConfig(nodeEnv);
+  const relayer = new Relayer(config);
+  relayer.start().then(
+    () => console.log(`Server listening on port ${config.port}`),
+    console.error
+  );
+};
+
+start(getEnv('NODE_ENV', 'development'));
