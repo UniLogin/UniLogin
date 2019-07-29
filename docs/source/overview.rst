@@ -60,8 +60,8 @@ Main concepts
 -------------
 
 
-Deploy
-^^^^^^
+Deployment
+^^^^^^^^^^
 
 
 Deployment is designed in the way, that user pays for himself. To do that, we use counterfactual deployment. (``create2`` function to deploy contract)
@@ -128,35 +128,35 @@ Message (also known as meta-transaction or signed messages) is a way to trigger 
 
 **Message lifecycle**
 
-The message starts it's journey when it is created and signed by the user (i.e. application or SDK) and then sent to relayer. In relayer it goes through the following states:
+The message starts its journey when it is created and signed by the user (i.e. an application or an SDK) and then sent to a relayer. In the relayer it goes through the following states:
 
 .. image:: ../modeling/img/concepts/MessageStates.png
 
-- **await signature** ``optional``- Relayer waits to collect all required signatures if the message requires more than one signature.
-- **queued** - Message is queued to be sent.
-- **pending** - Message is propagated to the network and waits to be mined. In a pending state, the message has a transaction hash.
-- **sucess** / **error** - Mined transaction is a success or an error. In a success state, the content of message status is not changed. In an error state, the message has an error message.
+- **await signature** ``optional``- The relayer waits to collect all required signatures if the message requires more than one signature.
+- **queued** - The message is queued to be sent.
+- **pending** - The message is propagated to the network and waits to be mined. In a pending state, the message has a transaction hash.
+- **sucess** / **error** - A mined transaction is a success or an error. In a success state, the content of the message status is not changed. In an error state, the message has an error message.
 
 
 
 
-Connection new device
+New device connection
 ^^^^^^^^^^^^^^^^^^^^^
 
 One of the key activities is connecting the newly created public key to the existing smart contract wallet. The new public key is created on a new device or application that never interacted with the smart contract wallet before. See below.
 
 .. image:: static/connect/setup.png
 
-The new public key is added using meta-transaction. Meta-transaction needs to be signed with the private key from a device that already is authorized in the wallet smart contract. After signing, meta-transaction is sent to the relayer, which propagates it to the blockchain. Below picture shows this process.
+The new public key is added using a meta-transaction. The meta-transaction needs to be signed with the private key from a device that is already authorized in the wallet smart contract. After signing, the meta-transaction is sent to the relayer, which propagates it to the blockchain. The picture below shows this process.
 
 .. image:: static/connect/expected.png
 
 There are four key actors in the process:
 
-- **Old device** or application that is already authorized. Authorized means there is a public and private key pair, where the private key is stored on the device and public key is in the wallet smart contract on the blockchain.
-- **New device** (or new application) that we want to authorize to use wallet smart contract. To do that we need to generate **new key pair** (new public key and private key) and add the new public key to wallet contract as management or action key. Adding key is creating meta-transaction signed by the old device (old private key) and sending to relayer.
-- **Relayer** - relays meta-transaction sent from an old device to blockchain
-- **Smart Contract Wallet** - smart contract that stores keys and executes meta-transactions.
+- **Old device** or an application that is already authorized. Authorized means there is a public and private key pair, where the private key is stored on the device and public key is in the wallet smart contract on the blockchain.
+- **New device** (or a new application) that we want to authorize to use the wallet smart contract. To do that we need to generate **new key pair** (a new public key and private key) and add the new public key to the wallet contract as a management or action key. Adding key is creating a meta-transaction signed by the old device (old private key) and sending to the relayer.
+- **Relayer** - relays meta-transaction sent from an old device to the blockchain
+- **Smart Contract Wallet** - a smart contract that stores keys and executes meta-transactions.
 
 
 **Possible attacks**
@@ -166,20 +166,20 @@ The problem might seem pretty straightforward, but there are some complexities t
 
 * Man in the middle
 
-A man-in-the-middle attack can happen when a new device sends the new public key to the old device. A malicious actor that intercepts communication (e.g. relayer) can switch new public key with its new public key and as a result, can take over control of the wallet contract.
+A man-in-the-middle attack can happen when a new device sends the new public key to the old device. A malicious actor that intercepts communication (e.g. a relayer) can switch a new public key with its new public key and as a result, can take over the control of the wallet contract.
 
 .. image:: static/connect/man-in-the-middle.png
 
 * Spamming
 
-Spam attack can happen when a lot of new devices request connect to an old device, therefore the old device is spamming with many notifications.
+A spam attack can happen when a lot of new devices request to connect to an old device, therefore the old device is spamming with many notifications.
 
 .. image:: static/connect/spamming.png
 
 
 **Solution 1**
 
-The first solution is pretty straightforward. New device transfers it's public key to the old device.
+The first solution is pretty straightforward. A new device transfers its public key to the old device.
 
 .. image:: static/connect/solution-1.png
 
@@ -190,22 +190,22 @@ There are two possible ways of transferring the public key.
 
 Note: This is a public key, so we don't worry about intercepting.
 
-Note: The seed for ecliptic curve key that we use has 128bits or 16 bytes.
+Note: The seed for the ecliptic curve key that we use has 128 bits or 16 bytes.
 
 * Scan the QR code
-* Manually copy public key by typing. That might have different shades.
+* Manually copy the public key by typing. That might have different shades.
 
   * Retype the letters (32 chars if hex or 26 with just mix cased letters + digits).
-  * Use emojis (12 emojis with 1000 emoji base), see example interface below.
+  * Use emojis (12 emojis with 1000 emoji base), see the example interface below.
 
   .. image:: static/connect/emoji.png
 
-  * If both applications are on the some on one device -> copy paste. (or in some cases even send by e-mail)
+  * If both applications are on the some one device -> copy paste. (or in some cases even send by e-mail)
 
 
 **Solution 2**
 
-The second solution might be useful if, for some reason, we want to transfer information from the old device to the new device. That might make a difference in the case of using QR codes and old device does not possess a camera.
+The second solution might be useful if, for some reason, we want to transfer information from an old device to a new device. That might make a difference in the case of using QR codes and the old device does not possess a camera.
 
 The process goes as follows:
 
@@ -215,15 +215,15 @@ The process goes as follows:
 
 3. The new device encrypts a new public key using a temporary private key.
 
-4. The old device sends meta-transaction via relayer to the wallet smart contract.
+4. The old device sends a meta-transaction via a relayer to the wallet smart contract.
 
-5. On successful decryption, the old device sends meta-transaction to relayer to add the new public key to wallet smart contract.
+5. On the successful decryption, the old device sends the meta-transaction to the relayer to add the new public key to the wallet smart contract.
 
 .. image:: static/connect/solution-2.png
 
 **Solution 3**
 
-The third solution is an alternative to previous solutions. The new device generates a new key pair and shows to user emojis based on a hash of the new public key to later use on an old device. The newly generated public key is sent to the relayer and forwarded to the old device. To finalize connecting a new device, the user has to arrange emojis in the exact order. See below.
+The third solution is an alternative to the previous solutions. A new device generates a new key pair and shows a user emojis based on a hash of the new public key to the later use on an old device. The newly generated public key is sent to a relayer and forwarded to the old device. To finalize connecting a new device, the user has to arrange emojis in the exact order. See below.
 
 .. image:: static/connect/solution-3.png
 
@@ -235,16 +235,16 @@ In the case of spamming, the user has to type exact emojis unlike arranging.
 Development environment
 -----------------------
 
-Development environment helps quickly develop and test applications using universal login.
+Development environment helps quickly develop and test applications using Universal Login.
 The script that starts development environment can be run from ``@universal-login/ops`` project.
 The script does a bunch of helpful things:
 
 - creates a mock blockchain (ganache)
-- deploys mock ENS
+- deploys a mock ENS
 - registers three testing ENS domains: ``mylogin.eth``, ``universal-id.eth``, ``popularapp.eth``
-- deploys example ERC20 Token that can be used to pay for transactions
+- deploys an example ERC20 Token that can be used to pay for transactions
 - creates a database for a relayer
-- starts local relayer
+- starts a local relayer
 
 For more go to :ref:`tutorial<development_environment>`
 
