@@ -5,7 +5,7 @@ import {deployFactory} from '@universal-login/contracts';
 import Token from '../../lib/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
-import {getConfig} from '../../lib/index.js';
+import {getTestKnexConfig} from './knex';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -48,7 +48,7 @@ async function startRelayer(wallet, relayerConstructor) {
         addressHelper: true
       }
     },
-    database: getConfig().database,
+    database: getTestKnexConfig(),
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();

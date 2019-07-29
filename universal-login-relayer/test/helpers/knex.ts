@@ -13,6 +13,8 @@ const testKnexConfig = {
   }
 };
 
+export const getTestKnexConfig = () => testKnexConfig;
+
 export const getKnex = () => knex(testKnexConfig);
 
 export default getKnex;
