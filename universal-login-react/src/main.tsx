@@ -1,10 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 import App from './App';
-import getConfig from './config/getConfig';
+import config from './config/config';
 import {createServices, ServiceContext} from './core/services/createServices';
-
-const config = getConfig();
 
 const services = createServices(config);
 services.sdk.start();
