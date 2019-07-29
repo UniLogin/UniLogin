@@ -2,13 +2,14 @@ import path from 'path';
 import Knex from 'knex';
 import {providers, Wallet, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
-import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN, deployContract} from '@universal-login/commons';
+import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN, deployContract, deepMerge, RecursivePartial} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
 import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
+import {getConfig} from '../../core/utils/config';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -44,42 +45,19 @@ export class RelayerUnderTest extends Relayer {
         minimalAmount: utils.parseEther('0.05').toString()
       }
     ];
-    const config: Config = {
+    const overrideConfig: RecursivePartial<Config> = {
       port,
       privateKey: wallet.privateKey,
       chainSpec: {
-        name: 'test',
         ensAddress: ensBuilder.ens.address,
-        chainId: 0,
       },
       ensRegistrars: [DOMAIN],
       walletMasterAddress: walletMaster.address,
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
-      localization: {
-        language: 'en',
-        country: 'any'
-      },
-      onRampProviders: {
-        safello: {
-          appId: '1234-5678',
-          baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
-          addressHelper: true
-        }
-      },
-      database: {
-        client: 'postgresql',
-        connection: {
-          database: 'universal_login_relayer_test',
-          user: 'postgres',
-          password: 'postgres',
-        },
-        migrations: {
-          directory: path.join(__dirname, '../../integration/sql/migrations'),
-        }
-      },
     };
+    const config: Config = deepMerge(getConfig('test'),  overrideConfig);
     const relayer = new RelayerUnderTest(config, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};
   }
