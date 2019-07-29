@@ -39,7 +39,7 @@ async function startRelayer(wallet, relayerConstructor) {
         minimalAmount: utils.parseEther('0.5').toString()
     }],
   });
-  const config = deepMerge(getConfig('test'), overrideConfig);
+  const config = deepMerge(getConfig(), overrideConfig);
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();
   return {relayer, tokenContract, factoryContract};
