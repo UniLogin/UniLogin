@@ -3,7 +3,7 @@ import testConfig from '../../config/config.test';
 import devConfig from '../../config/config.dev';
 import prodConfig from '../../config/config.prod';
 
-const getNodeEnv = () => getEnv('NODE_ENV', 'development');
+export const getNodeEnv = () => getEnv('NODE_ENV', 'development');
 
 export function getConfig(environment: string = getNodeEnv()) {
   switch (environment) {

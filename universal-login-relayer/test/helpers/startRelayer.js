@@ -6,6 +6,7 @@ import Token from '../../lib/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {getKnexConfig} from '../../lib/core/utils/knexUtils';
+import {getConfig} from '../../lib/index.js';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -48,7 +49,7 @@ async function startRelayer(wallet, relayerConstructor) {
         addressHelper: true
       }
     },
-    database: getKnexConfig(),
+    database: getConfig().database,
   });
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();

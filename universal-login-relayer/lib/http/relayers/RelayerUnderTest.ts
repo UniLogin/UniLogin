@@ -1,3 +1,4 @@
+import path from 'path';
 import Knex from 'knex';
 import {providers, Wallet, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
@@ -8,7 +9,6 @@ import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
-import {getKnexConfig} from '../../core/utils/knexUtils';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -68,7 +68,17 @@ export class RelayerUnderTest extends Relayer {
           addressHelper: true
         }
       },
-      database: getKnexConfig(),
+      database: {
+        client: 'postgresql',
+        connection: {
+          database: 'universal_login_relayer_test',
+          user: 'postgres',
+          password: 'postgres',
+        },
+        migrations: {
+          directory: path.join(__dirname, '../../integration/sql/migrations'),
+        }
+      },
     };
     const relayer = new RelayerUnderTest(config, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};

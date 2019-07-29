@@ -1,12 +1,7 @@
 import knex from 'knex';
-import { getEnv } from '@universal-login/commons';
-import { getKnexConfig as getConfig } from '../../config/knexfile';
+import {getConfig} from './config';
 
-const getNodeEnv = () => getEnv('NODE_ENV', 'development');
+const getKnex = () => knex(getConfig().database);
 
-const getKnexConfig = () => getConfig(getNodeEnv());
-
-const getKnex = () => knex(getKnexConfig());
-
-export {getNodeEnv, getKnexConfig, getKnex};
+export {getKnex};
 
