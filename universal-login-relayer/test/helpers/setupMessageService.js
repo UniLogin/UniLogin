@@ -9,6 +9,7 @@ import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../lib/core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../lib/integration/ethereum/SignaturesService';
 import MessageValidator from '../../lib/core/services/messages/MessageValidator';
+import MessageExecutor from '../../lib/integration/ethereum/MessageExecutor';
 
 export default async function setupMessageService(knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -19,6 +20,7 @@ export default async function setupMessageService(knex) {
   const signaturesService = new SignaturesService(wallet);
   const statusService = new MessageStatusService(messageRepository, signaturesService);
   const messageValidator = new MessageValidator(wallet, getContractWhiteList());
-  const messageHandler = new MessageHandler(wallet, authorisationStore, hooks, messageRepository, queueStore, messageValidator, statusService);
+  const messageExecutor = new MessageExecutor(wallet, messageValidator);
+  const messageHandler = new MessageHandler(wallet, authorisationStore, hooks, messageRepository, queueStore, messageExecutor, statusService);
   return { wallet, actionKey, provider, mockToken, authorisationStore, messageHandler, walletContract, otherWallet };
 }
