@@ -1,5 +1,4 @@
 import React from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
 import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
@@ -8,12 +7,22 @@ import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes} from '@univer
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {TopUp} from './ui/TopUp/TopUp';
 import {Settings} from './ui/Settings/Settings';
+import {Onboarding} from './ui/Onboarding/Onboarding';
+import {useServices} from './core/services/useServices';
 import './ui/styles/playground.css';
 import './ui/styles/emoji.css';
-import {Onboarding} from './ui/Onboarding/Onboarding';
 
 export const App = () => {
-  const sdk = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
+  const {modalService, sdk} = useServices();
+
+  const onCreateClick = (name: string) => {
+    modalService.showModal('topUpAccount');
+  };
+
+  const onConnectClick = (name: string) => {
+    console.log('connect clicked');
+  };
+
 
   return (
     <BrowserRouter>
@@ -21,15 +30,15 @@ export const App = () => {
         <NavigationColumn/>
         <div className="playground-content">
           <Switch>
-            <Route exact path="/" render={() => (<p style={{width: '80%'}}>Welcome to Universal Login</p>)}/>
+            <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)}/>
             <Route
               exact
               path="/onboarding"
               render={() => (
                 <Onboarding
                   sdk={sdk}
-                  onConnectClick={() => { console.log('connect'); }}
-                  onCreateClick={() => { console.log('create'); }}
+                  onConnectClick={onConnectClick}
+                  onCreateClick={onCreateClick}
                 />
               )}
             />
