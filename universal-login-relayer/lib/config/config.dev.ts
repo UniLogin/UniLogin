@@ -4,8 +4,6 @@ import {getEnv, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {Config} from './relayer';
 
 
-const migrationDir = path.join(__dirname, '../integration/sql/migrations');
-
 export const config: Config =  Object.freeze({
   jsonRpcUrl: getEnv('JSON_RPC_URL', ''),
   port: getEnv('PORT', ''),
@@ -50,7 +48,7 @@ export const config: Config =  Object.freeze({
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: migrationDir,
+      directory: path.join(__dirname, '../integration/sql/migrations'),
     },
   },
 });
