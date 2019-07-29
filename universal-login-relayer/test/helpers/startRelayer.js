@@ -5,7 +5,8 @@ import {deployFactory} from '@universal-login/contracts';
 import Token from '../../lib/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
-import {getTestKnexConfig} from './knex';
+import {deepMerge} from '@universal-login/commons';
+import {getConfig} from '../../lib/index.js';
 
 const defaultDomain = 'mylogin.eth';
 
@@ -20,13 +21,13 @@ async function startRelayer(wallet, relayerConstructor) {
   const tokenContract = await deployContract(wallet, Token, []);
   const factoryContract = await deployFactory(wallet, walletMaster.address);
   const ensAddress = await depolyEns(wallet);
-  const config = Object.freeze({
+  const overrideConfig = Object.freeze({
     jsonRpcUrl: 'http://localhost:18545',
     port: 33511,
     privateKey: wallet.privateKey,
     chainSpec: {
       ensAddress,
-      chainId: 0},
+    },
     ensRegistrars: ['mylogin.eth'],
     walletMasterAddress: walletMaster.address,
     tokenContractAddress: tokenContract.address,
@@ -37,19 +38,8 @@ async function startRelayer(wallet, relayerConstructor) {
         address: tokenContract.address,
         minimalAmount: utils.parseEther('0.5').toString()
     }],
-    localization: {
-      language: 'en',
-      country: 'any'
-    },
-    onRampProviders: {
-      safello: {
-        appId: '1234-5678',
-        baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
-        addressHelper: true
-      }
-    },
-    database: getTestKnexConfig(),
   });
+  const config = deepMerge(getConfig('test'), overrideConfig);
   const relayer = new relayerConstructor(config, wallet.provider);
   await relayer.start();
   return {relayer, tokenContract, factoryContract};

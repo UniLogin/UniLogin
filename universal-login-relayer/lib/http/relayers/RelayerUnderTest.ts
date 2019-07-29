@@ -1,4 +1,3 @@
-import path from 'path';
 import Knex from 'knex';
 import {providers, Wallet, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
