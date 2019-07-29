@@ -7,7 +7,7 @@ import PendingMessages from '../../../../../lib/core/services/messages/PendingMe
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
 import {getKeyFromHashAndSignature, createMessageItem} from '../../../../../lib/core/utils/utils';
-import {getKnex} from '../../../../../lib/core/utils/knexUtils';
+import {getKnex} from '../../../../helpers/knex';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';

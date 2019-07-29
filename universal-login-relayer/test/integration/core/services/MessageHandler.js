@@ -4,7 +4,7 @@ import {ACTION_KEY, createSignedMessage, waitExpect} from '@universal-login/comm
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';
-import {getKnex} from '../../../../lib/core/utils/knexUtils';
+import {getKnex} from '../../../helpers/knex';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: MessageHandler', async () => {

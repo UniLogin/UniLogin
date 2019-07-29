@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageHash, createSignedMessage, waitExpect} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
-import {getKnex} from '../../../../lib/core/utils/knexUtils';
+import {getKnex} from '../../../helpers/knex';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: MultiSignatureExecute', async () => {

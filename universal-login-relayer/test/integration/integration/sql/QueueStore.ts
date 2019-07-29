@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {getTestSignedMessage} from '../../../config/message';
-import {getKnex} from '../../../../lib/core/utils/knexUtils';
+import {getKnex} from '../../../helpers/knex';
 import QueueSQLStore from '../../../../lib/integration/sql/services/QueueSQLStore';
 import QueueMemoryStore from '../../../helpers/QueueMemoryStore';
 import IQueueStore from '../../../../lib/core/services/messages/IQueueStore';

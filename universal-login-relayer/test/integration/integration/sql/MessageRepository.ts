@@ -6,7 +6,7 @@ import IMessageRepository from '../../../../lib/core/services/messages/IMessages
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKeyFromHashAndSignature, createMessageItem} from '../../../../lib/core/utils/utils';
-import {getKnex} from '../../../../lib/core/utils/knexUtils';
+import {getKnex} from '../../../helpers/knex';
 import MessageSQLRepository from '../../../../lib/integration/sql/services/MessageSQLRepository';
 import MessageMemoryRepository from '../../../helpers/MessageMemoryRepository';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
