@@ -14,15 +14,18 @@ interface TopUpProps {
 
 export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
+
   if (modal === TopUpComponentType.choose) {
     return (
       <ModalWrapper isVisible modalPosition="bottom">
         <TopUpChoose onMethodChoose={setModal}/>
       </ModalWrapper>
     );
-  } else if (modal === TopUpComponentType.crypto) {
+  }
+  else if (modal === TopUpComponentType.crypto) {
     return (<TopUpWithCrypto contractAddress={contractAddress}/>);
-  } else if (modal === TopUpComponentType.bank) {
+  }
+  else if (modal === TopUpComponentType.bank) {
     return(
       <Safello
         localizationConfig={{} as any}
@@ -31,7 +34,8 @@ export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) =
         crypto="eth"
       />
     );
-  } else {
+  }
+  else {
     throw new Error(`Unsupported type: ${modal}`);
   }
 };

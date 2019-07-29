@@ -1,5 +1,6 @@
 import React from 'react';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import {Button} from '../commons/Button';
 import Ether from './../assets/icons/ether.svg';
 import Card from './../assets/icons/card.svg';
 import Bank from './../assets/icons/bank.svg';
@@ -40,21 +41,3 @@ export const TopUpChoose = ({onMethodChoose, className}: TopUpChooseProps) => {
 };
 
 export default TopUpChoose;
-
-interface ButtonProps {
-  id: string;
-  image: string;
-  title: string;
-  text: string;
-  onClick: () => void;
-}
-
-const Button = ({ id, image, title, text, onClick }: ButtonProps) => (
-  <button id={`topup-btn-${id}`} onClick={onClick} className="topup-btn">
-    <img src={image} alt="Ethereum logo" className="topup-btn-img"/>
-    <div>
-      <h3 className="topup-btn-title">{title}</h3>
-      <p className="topup-btn-text">{text}</p>
-    </div>
-  </button>
-);
