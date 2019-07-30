@@ -1,6 +1,5 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
-import ModalService from '../core/app/ModalService';
 import UserDropdownService from '../core/app/UserDropdownService';
 import WalletService from '../integration/storage/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
@@ -25,7 +24,6 @@ interface Overrides {
 export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl);
-  const modalService = new ModalService();
   const userDropdownService = new UserDropdownService();
   const walletService = new WalletService(sdk);
   const walletPresenter = new WalletPresenter(walletService);
@@ -37,7 +35,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   return {
     sdk,
     config,
-    modalService,
     userDropdownService,
     connectToWallet: _connectToWallet,
     walletService,

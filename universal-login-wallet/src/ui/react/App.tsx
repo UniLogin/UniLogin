@@ -13,8 +13,10 @@ import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
+import {useModal} from '../hooks/useModal';
 
 const App = () => {
+  const modalService = useModal();
   const {walletService} = useServices();
   const authorized = walletService.isAuthorized();
 
@@ -23,32 +25,22 @@ const App = () => {
       <Route
         exact
         path="/welcome"
-        render={props =>
-          <WelcomeScreen />
-        }
+        render={() => <WelcomeScreen />}
       />
       <Route
         exact
         path="/terms"
-        render={props =>
-          <TermsAndConditionsScreen />
-        }
+        render={() => <TermsAndConditionsScreen />}
       />
       <Route
         exact
         path="/create"
-        render={props =>
-          <CreateAccount {...props} />
-        }
+        render={props => <CreateAccount {...props} modalService={modalService} />}
       />
       <Route
         exact
         path="/login"
-        render={props =>
-          <Login
-            {...props}
-          />
-        }
+        render={props => <Login {...props} modalService={modalService} />}
       />
       <Route
         exact
@@ -64,26 +56,17 @@ const App = () => {
         authorized={authorized}
         exact
         path="/"
-        render={
-          () =>
-            <HomeScreen />
-        }
+        render={() => <HomeScreen modalService={modalService} />}
       />
       <PrivateRoute
         path="/transferring"
         authorized={authorized}
-        render={
-          () =>
-            <TransferringFundsScreen />
-        }
+        render={() => <TransferringFundsScreen />}
       />
       <PrivateRoute
         path="/notifications"
         authorized={authorized}
-        render={
-          () =>
-            <NotificationsScreen />
-        }
+        render={() => <NotificationsScreen />}
       />
       <PrivateRoute
         path="/settings"

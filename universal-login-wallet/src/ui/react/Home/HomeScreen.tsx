@@ -3,10 +3,13 @@ import Sidebar from '../common/Sidebar';
 import UserDropdown from '../common/UserDropdown';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
-import { useServices } from '../../hooks';
+import ModalService from '../../../core/entities/ModalService';
 
-const HomeScreen = () => {
-  const {modalService} = useServices();
+interface HomeScreenProps {
+  modalService: ModalService;
+}
+
+const HomeScreen = ({modalService}: HomeScreenProps) => {
   return (
     <>
       <div className="dashboard">
@@ -33,7 +36,7 @@ const HomeScreen = () => {
           </div>
         </div>
       </div>
-      <Modal />
+      <Modal modalService={modalService}/>
     </>
   );
 };

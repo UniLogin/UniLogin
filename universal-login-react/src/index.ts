@@ -11,5 +11,7 @@ export {EmojiPanelWithFakes} from './ui/Notifications/EmojiPanelWithFakes';
 export {EmojiPlaceholders} from './ui/Notifications/EmojiPlaceholders';
 export {TopUp} from './ui/TopUp/TopUp';
 export {ModalWrapper} from './ui/Modals/ModalWrapper';
+export {useModal} from './core/services/useModal';
+export {Onboarding} from './ui/Onboarding/Onboarding';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};

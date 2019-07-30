@@ -2,13 +2,14 @@ import React from 'react';
 import {TopUp} from '../TopUp/TopUp';
 import {ModalWrapper} from './ModalWrapper';
 import {createKeyPair} from '@universal-login/commons';
-import {useServices} from '../../core/services/useServices';
-import {useSubscription} from '../../core/services/useSubscription';
+import ModalService from '../../core/services/ModalService';
 
-const Modal = () => {
-  const {modalService} = useServices();
-  const openModal = useSubscription(modalService);
-  switch (openModal) {
+export interface ModalProps {
+  modalService: ModalService;
+}
+
+const Modal = ({modalService}: ModalProps) => {
+  switch (modalService.modalState) {
     case 'topUpAccount':
       return (
         <ModalWrapper isVisible modalPosition="bottom">
