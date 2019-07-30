@@ -1,7 +1,7 @@
 import {Wallet, providers} from 'ethers';
 import {deployContractAndWait} from '@universal-login/commons';
 import Factory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/KitsuneProxy.json';
 import {getDeployData} from '@universal-login/contracts';
 import {connect} from '../cli/connectAndExecute';
 

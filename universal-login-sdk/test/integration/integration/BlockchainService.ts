@@ -16,14 +16,14 @@ describe('INT: BlockchainService', async () => {
   });
 
   it('getCode returns bytecode of existing contract', async () => {
-    const {address} = await deployContract(deployer, WalletMaster);
+    const {address} = await deployContract(deployer, WalletMaster, [], {gasLimit: 5000000});
     expect(await blockchainService.getCode(address)).to.be.eq(expectedBytecode);
   });
 
   it('getBlockNumber should return increased block number', async () => {
     const blockNumber = await blockchainService.getBlockNumber();
     expect(blockNumber).at.least(0);
-    await deployContract(deployer, WalletMaster);
+    await deployContract(deployer, WalletMaster, [], {gasLimit: 5000000});
     const blockNumber2 = await blockchainService.getBlockNumber();
     expect(blockNumber2).greaterThan(blockNumber);
     expect(blockNumber2).to.be.eq(blockNumber + 1);
@@ -39,7 +39,7 @@ describe('INT: BlockchainService', async () => {
           '0x0000000000000000000000000000000000000000000000000000000000000000',
           '0x0000000000000000000000000000000000000000000000000000000000000001' ],
       logIndex: 0 };
-    const {address} = await deployContract(deployer, WalletMaster);
+    const {address} = await deployContract(deployer, WalletMaster, [], {gasLimit: 5000000});
     const logs = await blockchainService.getLogs({address});
     expect(logs).to.have.length(1);
     expect(logs[0]).to.deep.include(expectedPartOfLog);

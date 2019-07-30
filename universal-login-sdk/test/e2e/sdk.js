@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
-import Proxy from '@universal-login/contracts/build/Proxy';
+import Proxy from '@universal-login/contracts/build/KitsuneProxy';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
