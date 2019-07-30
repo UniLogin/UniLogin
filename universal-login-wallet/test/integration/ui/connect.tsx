@@ -14,7 +14,7 @@ import chai, {expect} from 'chai';
 chai.use(require('chai-string'));
 
 
-describe('UI: Connect', () => {
+describe('UI: Connection flow', () => {
   let services : Services;
   let relayer: any;
   let provider: providers.Provider;
@@ -37,6 +37,7 @@ describe('UI: Connect', () => {
 
   it('Should connect to existing wallet', async () => {
     const appPage = new AppPage(appWrapper);
+    await appPage.login().clickConnectToExisting();
     await appPage.login().connect(name);
     const publicKey = (new Wallet(services.walletService.applicationWallet!.privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});

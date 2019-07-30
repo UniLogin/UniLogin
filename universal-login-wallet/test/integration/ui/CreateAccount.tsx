@@ -12,7 +12,7 @@ import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
 import {AppPage} from '../pages/AppPage';
 
-describe('UI: Login', () => {
+describe('UI: Creation flow', () => {
     let appWrapper: ReactWrapper;
     let services: Services;
     let relayer: any;
@@ -30,16 +30,19 @@ describe('UI: Login', () => {
     it('create wallet and disconnect roundtrip', async () => {
         appWrapper = mountWithContext(<App/>, services, ['/']);
         const appPage = new AppPage(appWrapper);
+        appPage.login().clickCreateOne();
+        appPage.login().approveTerms();
         await appPage.login().createNew('super-name');
         appPage.login().chooseTopUpMethod();
         const address = appPage.login().getAddress();
         expect(address).to.be.an('string');
         const [wallet] = await getWallets(provider);
         await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
+        await appPage.login().waitAndGoToWallet();
         await appPage.login().waitForHomeView(expectedHomeBalance);
         expect(appWrapper.text().includes(expectedHomeBalance)).to.be.true;
         appPage.dashboard().disconnect();
-        expect(appWrapper.text().includes('Type a nickname you want')).to.be.true;
+        expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
     });
 
     after(async () => {

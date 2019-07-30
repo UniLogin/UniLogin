@@ -27,7 +27,7 @@ const ApproveScreen = () => {
       <Spinner className="spinner-mob" dotClassName="spinner-dot-mob"/>
     </div>
     <Link to="/recovery" className="btn btn-primary btn-fullwidth start-link">Recover from backup</Link>
-    <Link to="/login"className="btn-text start-link-text">Cancel request</Link>
+    <Link to="/welcome"className="btn-text start-link-text">Cancel request</Link>
   </div>);
 };
 

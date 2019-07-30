@@ -15,7 +15,7 @@ export const PrivateRoute = ({ authorized, render, ...restProps }: PrivateRouteP
         : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/welcome',
               state: { from: props.location},
             }}
           />
