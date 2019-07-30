@@ -3,7 +3,6 @@ import {utils} from 'ethers';
 import {getEnv, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {Config} from './relayer';
 
-
 export const config: Config =  Object.freeze({
   jsonRpcUrl: getEnv('JSON_RPC_URL', ''),
   port: getEnv('PORT', ''),
