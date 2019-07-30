@@ -6,6 +6,7 @@ import passwordless2x from './../../assets/illustrations/passwordless@2x.png';
 import passphrase1x from './../../assets/illustrations/passphrase@1x.png';
 import passphrase2x from './../../assets/illustrations/passphrase@2x.png';
 import usbIcon from './../../assets/icons/usb.svg';
+import documentIcon from './../../assets/icons/document.svg';
 
 export const ChooseConnectionMethod = ({location}: NavigationProps) => (
   <div className="main-bg">
@@ -31,8 +32,8 @@ export const ChooseConnectionMethod = ({location}: NavigationProps) => (
                 <h2 className="connection-method-title">Passphrase</h2>
                 <p className="connection-method-text">If you have lost all your devices, recover the access to your account.</p>
                 <Link to="/" className="connection-method-link">
-                  <img src={usbIcon} alt="usb" className="connection-method-link-img"/>
-                  Connect with another device
+                  <img src={documentIcon} alt="usb" className="connection-method-link-img"/>
+                  Connect with passphrase
                 </Link>
               </div>
             </div>
