@@ -2,11 +2,13 @@ import React from 'react';
 import usdIcon from '../../assets/icons/usd.png';
 import etherIcon from '../../assets/icons/ether.svg';
 import bitmapIcon from '../../assets/icons/bitmap.svg';
-import {useModal} from '../../hooks/useModal';
+import ModalService from '../../../core/entities/ModalService';
 
-const ModalTopUp = () => {
-  const modalService = useModal();
+export interface ModalTopUpProps {
+  modalService: ModalService;
+}
 
+const ModalTopUp = ({modalService}: ModalTopUpProps) => {
   return (
     <>
       <h2 className="modal-title">Top up your account</h2>

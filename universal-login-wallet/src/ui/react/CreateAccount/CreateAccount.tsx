@@ -5,7 +5,6 @@ import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
 import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
-import {useModal} from '../../hooks/useModal';
 import ModalService from '../../../core/entities/ModalService';
 
 interface CreateAccountProps {
@@ -13,8 +12,7 @@ interface CreateAccountProps {
   modalService: ModalService;
 }
 
-export const CreateAccount = ({location}: CreateAccountProps) => {
-  const modalService = useModal();
+export const CreateAccount = ({location, modalService}: CreateAccountProps) => {
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 

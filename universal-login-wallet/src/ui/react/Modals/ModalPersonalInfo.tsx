@@ -2,11 +2,13 @@ import React from 'react';
 import {Input} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import ButtonFullwidth from '../common/ButtonFullwidth';
-import {useModal} from '../../hooks/useModal';
+import ModalService from '../../../core/entities/ModalService';
 
-const ModalPersonalInfo = () => {
-  const modalService = useModal();
+export interface ModalPersonalInfoProps {
+  modalService: ModalService;
+}
 
+const ModalPersonalInfo = ({modalService}: ModalPersonalInfoProps) => {
   return (
     <>
       <h2 className="modal-title">Personal information</h2>

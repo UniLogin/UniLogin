@@ -24,7 +24,7 @@ const Modal = ({modalService}: ModalProps) => {
     case 'transfer':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ModalTransfer hideModal={modalService.hideModal}/>
+          <ModalTransfer modalService={modalService}/>
         </ModalWrapperClosable>
       );
     case 'request':
@@ -57,7 +57,7 @@ const Modal = ({modalService}: ModalProps) => {
     case 'personalInfo':
       return (
         <ModalWrapperWithoutClose>
-          <ModalPersonalInfo />
+          <ModalPersonalInfo modalService={modalService}/>
         </ModalWrapperWithoutClose>
       );
     case 'cardInfo':
