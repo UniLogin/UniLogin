@@ -12,8 +12,10 @@ interface EmojiPlaceholdersProps {
 
 export const EmojiPlaceholders = ({code, onEmojiClicked, className}: EmojiPlaceholdersProps) => {
   const placeholders = code.map((code: number, index: number) => (
-    <li style={{margin: '10px'}} key={`emoji_placeholder_${index}`}  onClick={() => onEmojiClicked(index)} >
-      <Emoji code={code}/>
+    <li key={`emoji_placeholder_${index}`}>
+      <button onClick={() => onEmojiClicked(index)}>
+        <Emoji code={code}/>
+      </button>
     </li>
   ));
 
