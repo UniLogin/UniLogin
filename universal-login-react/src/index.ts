@@ -13,3 +13,4 @@ export {TopUp} from './ui/TopUp/TopUp';
 export {ModalWrapper} from './ui/Modals/ModalWrapper';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
+export {Onboarding} from './ui/Onboarding/Onboarding';
