@@ -1,24 +1,9 @@
-import { EventEmitter } from 'fbemitter';
+export type ModalStateType = 'topUpAccount' | 'address' | 'waitingForDeploy' | 'waitingForTransfer' | 'safello' | 'none' | undefined;
 
-const MODAL_EVENT = 'modal';
-
-class ModalService<ModalType> {
-  private emitter = new EventEmitter();
-
-  hideModal() {
-    this.emitter.emit(MODAL_EVENT, 'none');
-  }
-
-  showModal(type: ModalType) {
-    this.emitter.emit(MODAL_EVENT, type);
-  }
-
-  subscribe(callback: (type: ModalType) => void) {
-    const subscription = this.emitter.addListener(MODAL_EVENT, callback);
-    return function unsubscribe() {
-      subscription.remove();
-    };
-  }
+export interface ModalService {
+  modalState: ModalStateType;
+  showModal: (modalName: ModalStateType) => void;
+  hideModal: () => void;
 }
 
 export default ModalService;

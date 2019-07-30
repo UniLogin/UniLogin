@@ -21,8 +21,6 @@ const App = () => {
   const authorized = walletService.isAuthorized();
 
   return (
-    <div>
-      <p>{String(modalService.modalState)}</p>
     <Switch>
       <Route
         exact
@@ -77,8 +75,6 @@ const App = () => {
       />
       <Route component={NotFound} />
     </Switch>
-    </div>
-
   );
 };
 

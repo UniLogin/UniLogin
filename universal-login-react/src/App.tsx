@@ -9,10 +9,13 @@ import {TopUp} from './ui/TopUp/TopUp';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
+import {useModal} from './core/services/useModal';
 import './ui/styles/playground.css';
 
 export const App = () => {
-  const {modalService, sdk} = useServices();
+  const modalService = useModal();
+
+  const {sdk} = useServices();
 
   const onCreateClick = (name: string) => {
     modalService.showModal('topUpAccount');
@@ -21,7 +24,6 @@ export const App = () => {
   const onConnectClick = (name: string) => {
     console.log('connect clicked');
   };
-
 
   return (
     <BrowserRouter>
@@ -38,6 +40,7 @@ export const App = () => {
                   sdk={sdk}
                   onConnectClick={onConnectClick}
                   onCreateClick={onCreateClick}
+                  modalService={modalService}
                 />
               )}
             />
