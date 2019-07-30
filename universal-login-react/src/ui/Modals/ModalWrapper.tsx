@@ -7,13 +7,13 @@ interface ModalWrapperProps {
   children: ReactNode;
   isVisible: boolean;
   modalPosition?: ModalPosition;
-  className?: string;
+  modalClassName?: string;
 }
 
-export const ModalWrapper = ({ modalPosition, children, isVisible, className}: ModalWrapperProps) => (
+export const ModalWrapper = ({ modalPosition, children, isVisible, modalClassName}: ModalWrapperProps) => (
   <>
     {isVisible &&
-      <div className={className ? `universal-login ${className}` : 'universal-login-defaults'}>
+      <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-defaults'}>
         <div className="modal-overlay" />
         <div className={`modal-wrapper ${modalPosition ? modalPosition : 'center'}`}>
           {children}
