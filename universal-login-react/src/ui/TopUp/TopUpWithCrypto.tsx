@@ -20,10 +20,6 @@ export const TopUpWithCrypto = ({contractAddress, topUpClassname}: TopUpWithCryp
           <img src={ethereumIcon} alt="ethereum icon" className="address-modal-coin"/>
           <p className="address-modal-amount">0,005 ETH</p>
         </div>
-        <div className="address-modal-block">
-          <img src={daiIcon} alt="dai icon" className="address-modal-coin"/>
-          <p className="address-modal-amount">2 dai</p>
-        </div>
       </div>
       <label htmlFor="input-address" className="input-label">To following address</label>
       <div className="input-address-wrapper">
@@ -36,7 +32,7 @@ export const TopUpWithCrypto = ({contractAddress, topUpClassname}: TopUpWithCryp
           <img src={copyIcon} alt="copy"/>
         </button>
       </div>
-      <p className="address-modal-text">The cost of wallet creation will be: 0,002 ETH or 0,5 dai. Transfer will be automatically discovered.</p>
+      <p className="address-modal-text">The cost of wallet creation will be: 0,002 ETH. Transfer will be automatically discovered.</p>
     </div>
   );
 };
