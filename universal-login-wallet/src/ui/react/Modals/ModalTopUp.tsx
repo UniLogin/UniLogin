@@ -1,11 +1,11 @@
 import React from 'react';
-import { useServices } from '../../hooks/useServices';
 import usdIcon from '../../assets/icons/usd.png';
 import etherIcon from '../../assets/icons/ether.svg';
 import bitmapIcon from '../../assets/icons/bitmap.svg';
+import {useModal} from '../../hooks/useModal';
 
 const ModalTopUp = () => {
-  const {modalService} = useServices();
+  const modalService = useModal();
 
   return (
     <>

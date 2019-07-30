@@ -5,13 +5,17 @@ import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
 import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
+import {useModal} from '../../hooks/useModal';
+import ModalService from '../../../core/entities/ModalService';
 
 interface CreateAccountProps {
   location?: {state: {from: {pathname: string}}};
+  modalService: ModalService;
 }
 
 export const CreateAccount = ({location}: CreateAccountProps) => {
-  const {sdk, modalService, walletService} = useServices();
+  const modalService = useModal();
+  const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 
   const onCreateClick = async (name: string) => {
@@ -49,7 +53,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
           </div>
         </div>
       </div>
-      <Modal />
+      <Modal modalService={modalService}/>
     </div>
   );
 };

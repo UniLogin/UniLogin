@@ -1,11 +1,11 @@
 import React from 'react';
-import { useServices } from '../../hooks/useServices';
 import {Input} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import ButtonFullwidth from '../common/ButtonFullwidth';
+import {useModal} from '../../hooks/useModal';
 
 const ModalPersonalInfo = () => {
-  const {modalService} = useServices();
+  const modalService = useModal();
 
   return (
     <>

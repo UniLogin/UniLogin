@@ -5,6 +5,7 @@ import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import TransferDetails from '../../../core/entities/TransferDetails';
+import {useModal} from '../../hooks/useModal';
 
 
 interface ModalTransferProps {
@@ -12,7 +13,8 @@ interface ModalTransferProps {
 }
 
 const ModalTransfer = ({hideModal}: ModalTransferProps) => {
-  const {transferService, tokenService, modalService} = useServices();
+  const modalService = useModal();
+  const {transferService, tokenService} = useServices();
   const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[0].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {

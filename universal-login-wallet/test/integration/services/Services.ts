@@ -7,7 +7,6 @@ describe('Services', () => {
     const services = createServices(getConfig());
     expect(services).to.not.be.null;
     expect(services.sdk).to.not.be.null;
-    expect(services.modalService).to.not.be.null;
     expect(services.userDropdownService).to.not.be.null;
     expect(services.connectToWallet).to.not.be.null;
     expect(services.walletService).to.not.be.null;
