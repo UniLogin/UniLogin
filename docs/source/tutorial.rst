@@ -12,7 +12,7 @@ New project
 ^^^^^^^^^^^
 
 Installation
-  To add an SDK to your project using npm type the following:
+  To add the SDK to your project using npm type the following:
   ::
 
     npm i @universal-login/sdk
@@ -90,13 +90,13 @@ Which will start the development environment. The output should look somewhat li
 
 .. _using_sdk:
 
-Using an SDK
+Using the SDK
 ------------
 
 Creating a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To start using an SDK you will need to create an SDK instance and deploy a wallet contract.
+To start using the SDK you will need to create an SDK instance and deploy a wallet contract.
 Below is a snippet doing precisely that for the development environment.
 
 ::
@@ -109,9 +109,9 @@ Below is a snippet doing precisely that for the development environment.
 
 The first argument of ``UniversalLoginSDK`` constructor is a relayer address, second is an Ethereum node address.
 
-Sending a transaction
+Sending a meta-transaction
 ^^^^^^^^^^^^^^^^^^^^^
-Once you have the contract wallet deployed you can execute a transaction:
+Once you have the contract wallet deployed you can execute a transaction via relayer:
 
 ::
 
@@ -131,12 +131,12 @@ Once you have the contract wallet deployed you can execute a transaction:
 Note: ``from`` field in this case is the contract address.
 
 Most fields of the message are analogous to a normal Ethereum transaction, except for ``gasToken``,
-which allows a specifying token in which transaction cost will be refunded.
+which allows to specify the token in which transaction cost will be refunded.
 
 The token need to be supported by a relayer.
 The wallet contact needs to have enough token balance to refund the transaction.
 
-A detailed explanation of each method can be found in subsections of :ref:`SDK documentation<sdk>`: :ref:`creating SDK<sdk_create>`, :ref:`creating wallet contract<sdk_create_contract>` and :ref:`execute<sdk_execute>`.
+A detailed explanation of each method can be found in subsections of the :ref:`SDK documentation<sdk>`: :ref:`creating SDK<sdk_create>`, :ref:`creating wallet contract<sdk_create_contract>` and :ref:`execute<sdk_execute>`.
 
 
 .. _sdk_example_testnet:
@@ -165,10 +165,10 @@ In your project, create the UniversalLoginSDK
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
 
-Start listening to events
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Start listening for events
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Then make UniversalLoginSDK start listening to a relayer and blockchain events
+Then make UniversalLoginSDK start listening for relayer and blockchain events
 ::
 
   sdk.start();
@@ -181,10 +181,10 @@ Now, you can request a connection to the created wallet contract
 
   const privateKey = await sdk.connect('YOUR_CONTRACT_ADDRESS');
 
-Subscribe KeyAdded
-^^^^^^^^^^^^^^^^^^
+Subscribe to KeyAdded
+^^^^^^^^^^^^^^^^^^^^^
 
-Subscribe ``KeyAdded`` event with your new key filter
+Subscribe to ``KeyAdded`` event with your new key filter
 ::
 
   const key = new ethers.Wallet(privateKey).address;
@@ -207,10 +207,10 @@ Accept a connection request
 
 Accept a connection request in Universal Login Example App. After that your newly created key has a permission to manage your wallet contract.
 
-Stop listening to events
-^^^^^^^^^^^^^^^^^^^^^^^^
+Stop listening for events
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Remember about stoping listening to a relayer and blockchain events
+Remember to stop listening for relayer and blockchain events
 ::
 
   sdk.stop();
@@ -233,7 +233,7 @@ Install the universal-login toolkit:
 Test token
 ^^^^^^^^^^
 
-To deploy a test token use a ``deploy token`` script
+To deploy a test token use the ``deploy:token`` script
 ``universal-login deploy:token --nodeUrl [url] --privateKey [privateKey]``
 
 Example:
@@ -246,15 +246,15 @@ Example:
 Sending funds
 ^^^^^^^^^^^^^
 
-To send funds to an address
+To send funds to an address use the ``send`` script
 ``universal-login send [to] [amount] [currency] --nodeUrl [url] --privateKey [privateKey]``
 
 Parameters:
-  - **to** - an address to send funds
-  - **amount** - an amount to send to the address
+  - **to** - the address to send funds to
+  - **amount** - the amount to send
   - **currency** - the currency of transfer
   - **nodeUrl** (optional) - JSON-RPC URL of an Ethereum node, set to ``http://localhost:18545`` by default
-  - **privateKey** (optional) - a private key of a wallet with additional balance, set to ``DEV_DEFAULT_PRIVATE_KEY`` by default and has enoguh ethers
+  - **privateKey** (optional) - the private key of a wallet with additional balance, set to ``DEV_DEFAULT_PRIVATE_KEY`` by default which corresponds to a wallet that has enough ethers
 
 
 Example:
