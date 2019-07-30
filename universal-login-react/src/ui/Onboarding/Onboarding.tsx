@@ -3,15 +3,26 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import ModalService from '../../core/services/ModalService';
+import {useModal} from '../../core/services/useModal';
 
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  onConnectClick: (...args: any[]) => void;
-  onCreateClick: (...args: any[]) => void;
-  modalService: ModalService;
+  onConnect: () => void;
+  onCreate: () => void;
 }
 
-export const Onboarding = ({sdk, onConnectClick, onCreateClick, modalService}: OnboardingProps) => {
+export const Onboarding = ({sdk, onConnect, onCreate}: OnboardingProps) => {
+  const modalService = useModal();
+
+  const onConnectClick = () => {
+    onConnect();
+  };
+
+  const onCreateClick = () => {
+    modalService.showModal('topUpAccount');
+    onCreate();
+  };
+
   return (
     <div>
       <WalletSelector

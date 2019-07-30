@@ -13,15 +13,14 @@ import {useModal} from './core/services/useModal';
 import './ui/styles/playground.css';
 
 export const App = () => {
-  const modalService = useModal();
 
   const {sdk} = useServices();
 
-  const onCreateClick = (name: string) => {
-    modalService.showModal('topUpAccount');
+  const onCreate = () => {
+    console.log('create clicked');
   };
 
-  const onConnectClick = (name: string) => {
+  const onConnect = () => {
     console.log('connect clicked');
   };
 
@@ -38,9 +37,8 @@ export const App = () => {
               render={() => (
                 <Onboarding
                   sdk={sdk}
-                  onConnectClick={onConnectClick}
-                  onCreateClick={onCreateClick}
-                  modalService={modalService}
+                  onConnect={onConnect}
+                  onCreate={onCreate}
                 />
               )}
             />
