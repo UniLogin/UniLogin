@@ -9,7 +9,6 @@ import {TopUp} from './ui/TopUp/TopUp';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import {useModal} from './core/services/useModal';
 import './ui/styles/playground.css';
 
 export const App = () => {
