@@ -6,7 +6,7 @@ import WalletService from '../../../../lib/integration/ethereum/WalletService';
 import buildEnsService from '../../../helpers/buildEnsService';
 import {waitForContractDeploy} from '@universal-login/commons';
 import {EventEmitter} from 'fbemitter';
-import {getKnex} from '../../../../lib/core/utils/knexUtils';
+import {getKnexConfig} from '../../../helpers/knex';
 import deviceInfo from '../../../config/defaults';
 import {deployFactory} from '@universal-login/contracts';
 
@@ -28,7 +28,7 @@ describe('INT: Authorisation Service', async () => {
     provider = createMockProvider();
     [wallet, managementKey, otherWallet, ensDeployer] = await getWallets(provider);
     [ensService, provider] = await buildEnsService(ensDeployer, 'mylogin.eth');
-    const database = getKnex();
+    const database = getKnexConfig();
     authorisationStore = new AuthorisationStore(database);
     const walletMasterContract = await deployContract(ensDeployer, WalletMaster);
     const factoryContract = await deployFactory(wallet, walletMasterContract.address);

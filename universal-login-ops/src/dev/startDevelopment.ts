@@ -64,7 +64,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
         baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
         addressHelper: true
       }
-    }
+    },
+    database: databaseConfig
   };
 }
 
@@ -76,7 +77,7 @@ function getProxyContractHash() {
 
 function getMigrationPath() {
   const packagePath = require.resolve('@universal-login/relayer/package.json');
-  return join(dirname(packagePath), 'migrations');
+  return join(dirname(packagePath), 'build', 'lib', 'integration', 'sql', 'migrations');
 }
 
 declare interface StartDevelopmentOverrides {

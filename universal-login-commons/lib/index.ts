@@ -1,4 +1,4 @@
-export {Omit, PartialRequired, Procedure, Predicate} from './core/types/common';
+export {Omit, PartialRequired, Procedure, Predicate, DeepPartial} from './core/types/common';
 export {DeviceInfo, Notification} from './core/models/notifications';
 export {Message, MessageWithFrom, MessageWithoutFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageState, CollectedSignatureKeyPair} from './core/models/message';
 export * from './core/models/ContractJSON';
@@ -45,3 +45,5 @@ export {DeployArgs} from './core/models/deploy';
 export {isProperAddress, reverseHexString} from './core/utils/hexStrings';
 export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';
 export {SECURITY_CODE_LENGTH, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
+export {deepMerge} from './core/utils/deepMerge';
+export {deepCopy} from './core/utils/deepCopy';

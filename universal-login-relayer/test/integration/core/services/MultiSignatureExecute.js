@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {ACTION_KEY, calculateMessageHash, createSignedMessage, waitExpect} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
-import {getKnex} from '../../../../lib/core/utils/knexUtils';
+import {getKnexConfig} from '../../../helpers/knex';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: MultiSignatureExecute', async () => {
@@ -15,7 +15,7 @@ describe('INT: MultiSignatureExecute', async () => {
   let msg;
   let otherWallet;
   let actionKey;
-  const knex = getKnex();
+  const knex = getKnexConfig();
 
   beforeEach(async () => {
     ({wallet, actionKey, provider, messageHandler, mockToken, walletContract, otherWallet} = await setupMessageService(knex));
