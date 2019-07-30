@@ -1,8 +1,6 @@
-export type ModalStateType = 'topUpAccount' | 'address' | 'waitingForDeploy' | 'waitingForTransfer' | 'safello' | 'none' | undefined;
-
-export interface ModalService {
-  modalState: ModalStateType;
-  showModal: (modalName: ModalStateType) => void;
+export interface ModalService<T> {
+  modalState: T | undefined;
+  showModal: (modalName: T | undefined) => void;
   hideModal: () => void;
 }
 

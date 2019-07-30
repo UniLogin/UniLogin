@@ -2,21 +2,20 @@ import React from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
-import {WalletSelector} from '@universal-login/react';
+import {WalletSelector, useModal} from '@universal-login/react';
 import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
-import ModalService from '../../../core/entities/ModalService';
 
 interface CreateAccountProps {
   location?: {state: {from: {pathname: string}}};
-  modalService: ModalService;
 }
 
-export const CreateAccount = ({location, modalService}: CreateAccountProps) => {
+export const CreateAccount = ({location}: CreateAccountProps) => {
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 
   const onCreateClick = async (name: string) => {
+    const modalService = useModal();
     const {deploy, waitForBalance} = await walletService.createFutureWallet();
     modalService.showModal('topUpAccount');
     await waitForBalance();
@@ -51,7 +50,7 @@ export const CreateAccount = ({location, modalService}: CreateAccountProps) => {
           </div>
         </div>
       </div>
-      <Modal modalService={modalService}/>
+      <Modal />
     </div>
   );
 };

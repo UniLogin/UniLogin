@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
-import {Input} from '@universal-login/react';
+import {Input, useModal} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import InputWithDropdown from '../common/InputWithDropdown';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import TransferDetails from '../../../core/entities/TransferDetails';
-import ModalService from '../../../core/entities/ModalService';
 
-
-interface ModalTransferProps {
-  modalService: ModalService;
-}
-
-const ModalTransfer = ({modalService}: ModalTransferProps) => {
+const ModalTransfer = () => {
+  const modalService = useModal();
 
   const {transferService, tokenService} = useServices();
   const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[0].symbol} as TransferDetails);

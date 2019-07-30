@@ -1,11 +1,23 @@
-import {useState} from 'react';
-import ModalService, {ModalStateType} from './ModalService';
+import React, {useState, useContext} from 'react';
+import ModalService from './ModalService';
 
-export const useModal = (): ModalService => {
-  const [modalState, setModalState] = useState<ModalStateType>(undefined);
+export interface IModalService {
+  modalState: any;
+  showModal: (name: any) => void;
+  hideModal: () => void;
+}
+
+export const ModalContext = React.createContext({} as IModalService);
+
+export const useModal = () => {
+  return useContext(ModalContext);
+};
+
+export const createModalService = <T>(): ModalService<T> => {
+  const [modalState, setModalState] = useState<T | undefined>(undefined);
   return {
     modalState,
     showModal: setModalState,
-    hideModal: () => setModalState('none')
+    hideModal: () => setModalState('none' as any as T)
   };
 };
