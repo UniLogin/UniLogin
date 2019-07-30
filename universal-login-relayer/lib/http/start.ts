@@ -1,4 +1,3 @@
-require('dotenv').config();
 import Relayer from './relayers/Relayer';
 import {getConfig} from '../core/utils/config';
 import {getEnv} from '@universal-login/commons';
@@ -12,4 +11,4 @@ export const start = (nodeEnv: string) => {
   );
 };
 
-start(getEnv('NODE_ENV', 'development'));
+start(getEnv('NODE_ENV', 'production'));
