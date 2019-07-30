@@ -1,6 +1,5 @@
 import React from 'react';
 import './../styles/topUpModalDefaults.css';
-import daiIcon from './../assets/icons/dai.svg';
 import ethereumIcon from './../assets/icons/ethereum.svg';
 import copyIcon from './../assets/icons/copy.svg';
 import {copy} from '@universal-login/commons';
@@ -26,7 +25,7 @@ export const TopUpWithCrypto = ({contractAddress, topUpClassname}: TopUpWithCryp
         <input
           id="contract-address"
           className="input-address"
-          value={contractAddress}
+          defaultValue={contractAddress}
         />
         <button onClick={() => copy('contract-address')} className="address-copy-btn">
           <img src={copyIcon} alt="copy"/>
