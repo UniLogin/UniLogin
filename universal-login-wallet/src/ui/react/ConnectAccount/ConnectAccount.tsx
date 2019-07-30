@@ -30,7 +30,7 @@ export const ConnectAccount = ({location}: NavigationProps) => {
               <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
               <WalletSelector
                 onCreateClick={() => null}
-                onConnectionClick={onConnectClick}
+                onConnectClick={onConnectClick}
                 sdk={sdk}
                 domains={walletConfig.domains}
                 actions={[WalletSuggestionAction.connect]}

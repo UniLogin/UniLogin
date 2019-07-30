@@ -22,7 +22,7 @@ export const ChooseConnectionMethod = ({location}: NavigationProps) => (
                 <img src={passwordless1x} srcSet={passwordless2x} alt="avatar" className="connection-method-img"/>
                 <h2 className="connection-method-title">Passwordless</h2>
                 <p className="connection-method-text">Approve the connection with another device that slready controls your account.</p>
-                <Link to="/" className="connection-method-link">
+                <Link to="/connect-with-emoji" className="connection-method-link">
                   <img src={usbIcon} alt="usb" className="connection-method-link-img"/>
                   Connect with another device
                 </Link>
@@ -31,7 +31,7 @@ export const ChooseConnectionMethod = ({location}: NavigationProps) => (
                 <img src={passphrase1x} srcSet={passphrase2x} alt="avatar" className="connection-method-img"/>
                 <h2 className="connection-method-title">Passphrase</h2>
                 <p className="connection-method-text">If you have lost all your devices, recover the access to your account.</p>
-                <Link to="/" className="connection-method-link">
+                <Link to="/connect-with-passphrase" className="connection-method-link">
                   <img src={documentIcon} alt="usb" className="connection-method-link-img"/>
                   Connect with passphrase
                 </Link>

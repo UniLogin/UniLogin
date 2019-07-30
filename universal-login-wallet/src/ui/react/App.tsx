@@ -16,6 +16,8 @@ import {CreateAccount} from './CreateAccount/CreateAccount';
 import {useModal} from '../hooks/useModal';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {ChooseConnectionMethod} from './ConnectAccount/ChooseConnectionMethod';
+import {ConnectWithPassphrase} from './ConnectAccount/ConnectWithPassphrase';
+import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
 
 const App = () => {
   const modalService = useModal();
@@ -51,6 +53,20 @@ const App = () => {
         path="/choose-connection"
         render={props =>
           <ChooseConnectionMethod {...props} />
+        }
+      />
+      <Route
+        exact
+        path="/connect-with-passphrase"
+        render={props =>
+          <ConnectWithPassphrase />
+        }
+      />
+      <Route
+        exact
+        path="/connect-with-emoji"
+        render={props =>
+          <ConnectWithEmoji />
         }
       />
       <Route
