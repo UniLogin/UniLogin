@@ -1,8 +1,5 @@
-import dotenv from 'dotenv';
 import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, SafelloConfig} from '@universal-login/commons';
 import {KnexConfig} from './KnexConfig';
-
-dotenv.config();
 
 export interface Config {
   jsonRpcUrl?: string;

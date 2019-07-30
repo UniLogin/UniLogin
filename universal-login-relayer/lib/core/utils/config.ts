@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import prodConfig from '../../config/config.prod';
 import testConfig from '../../config/config.test';
 import {NodeEnvNotSpecified} from './errors';
