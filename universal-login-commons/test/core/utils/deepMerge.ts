@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {deepMerge, isNotNullObject, deepCopy} from '../../../lib/core/utils/deepMerge';
+import {deepMerge, isProperObject, deepCopy} from '../../../lib/core/utils/deepMerge';
 
 describe('UNIT: deepMerge', () => {
   const obj1 = {
@@ -92,25 +92,25 @@ describe('UNIT: deepMerge', () => {
     });
   });
 
-  describe('isNotNullObject', () => {
+  describe('isProperObject', () => {
     it('null', () => {
-      expect(isNotNullObject(null)).to.be.false;
+      expect(isProperObject(null)).to.be.false;
     });
 
     it('number', () => {
-      expect(isNotNullObject(4)).to.be.false;
+      expect(isProperObject(4)).to.be.false;
     });
 
     it('string', () => {
-      expect(isNotNullObject('string')).to.be.false;
+      expect(isProperObject('string')).to.be.false;
     });
 
     it('empty object', () => {
-      expect(isNotNullObject({})).to.be.true;
+      expect(isProperObject({})).to.be.true;
     });
 
     it('non-empty object', () => {
-      expect(isNotNullObject({a: 3, b: '40'})).to.be.true;
+      expect(isProperObject({a: 3, b: '40'})).to.be.true;
     });
   });
 

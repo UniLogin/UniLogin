@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 import Relayer from './relayers/Relayer';
 import {getConfig} from '../core/utils/config';
 import {getEnv} from '@universal-login/commons';

@@ -1,7 +1,7 @@
 export function deepMerge<T, U>(destination: T, source: U): T & U {
   const result = deepCopy(destination);
   for (const property in source) {
-    if (isNotNullObject(source[property])) {
+    if (isProperObject(source[property])) {
       result[property] = result[property] || {};
       result[property] = deepMerge(result[property], source[property]);
     } else {
@@ -11,7 +11,7 @@ export function deepMerge<T, U>(destination: T, source: U): T & U {
   return result;
 }
 
-export function isNotNullObject<T>(object: T): boolean {
+export function isProperObject<T>(object: T): boolean {
   return typeof object === 'object' && object !== null;
 }
 
