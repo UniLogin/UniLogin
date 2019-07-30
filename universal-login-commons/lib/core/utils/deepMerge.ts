@@ -1,3 +1,5 @@
+import {deepCopy} from './deepCopy';
+
 export function deepMerge<T, U>(destination: T, source: U): T & U {
   const result = deepCopy(destination);
   for (const property in source) {
@@ -13,8 +15,4 @@ export function deepMerge<T, U>(destination: T, source: U): T & U {
 
 export function isProperObject<T>(object: T): boolean {
   return typeof object === 'object' && object !== null;
-}
-
-export function deepCopy<T>(object: T) {
-  return JSON.parse(JSON.stringify(object));
 }

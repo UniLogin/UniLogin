@@ -1,5 +1,5 @@
 const knex = require('knex');
-const {deepCopy} = require('../utils/utils');
+const {deepCopy} = require('@universal-login/commons');
 
 async function getDatabase(connection, databaseName) {
   return connection
