@@ -10,14 +10,20 @@ interface TopUpProps {
   contractAddress: string;
   startModal?: TopUpComponentType;
   onRampConfig: OnRampConfig;
+  modalClassName?: string;
+  topUpClassName?: string;
 }
 
-export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) => {
+export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
 
   if (modal === TopUpComponentType.choose) {
     return (
-      <ModalWrapper isVisible modalPosition="bottom">
+      <ModalWrapper
+        modalClassName={modalClassName}
+        isVisible
+        modalPosition="bottom"
+      >
         <TopUpChoose onMethodChoose={setModal}/>
       </ModalWrapper>
     );

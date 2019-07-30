@@ -5,12 +5,26 @@
 }
 
 .universal-login-topup .topup-title {
-  margin: 0 0 30px;
+  margin: 0;
   font-family: inherit;
   font-weight: 700;
   font-size: 20px;
   color: #31405E;
   text-align: center;
+}
+
+.universal-login-topup .topup-subtitle {
+  margin: 12px;
+  font-family: inherit;
+  font-size: 16px;
+  color: #A4A8B4;
+  letter-spacing: -0.09px;
+  text-align: center;
+  line-height: 24px;
+}
+
+.universal-login-topup .topup-choose-buttons {
+  margin-top: 30px;
 }
 
 .universal-login-topup .topup-btn {
@@ -43,10 +57,80 @@
   color: #A4A8B4;
 }
 
+.universal-login-topup .address-modal-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 42px 0 50px;
+}
+
+.universal-login-topup .address-modal-block {
+  display: flex;
+  align-items: center;
+}
+
+.universal-login-topup .address-modal-block + .address-modal-block {
+  margin-left: 30px;
+}
+
+.universal-login-topup .address-modal-amount {
+  margin-left: 20px;
+  opacity: 0.75;
+  font-size: 13px;
+  color: #3D3D41;
+}
+
+.universal-login-topup .input-label {
+  display: block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 10px;
+  color: #AFB2BD;
+}
+
+.universal-login-topup .input-address-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.universal-login-topup .input-address {
+  width: 100%;
+  height: 45px;
+  padding: 0 25px;
+  background: #FFFFFF;
+  border: 1px solid #E1E1F0;
+  font-size: 14px;
+  color: #6e798e;
+}
+
+.universal-login-topup .address-copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 45px;
+  margin-left: 5px;
+  background: #FFFFFF;
+  border: 1px solid #C9C9D7;
+  cursor: pointer;
+}
+
+.universal-login-topup .address-modal-text {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #A4A8B4;
+  letter-spacing: -0.07px;
+  line-height: 24px;
+}
+
 @media only screen and (max-width: 600px) {
   .universal-login-topup .topup-title {
-    margin-bottom: 40px;
     text-align: left;
+  }
+
+  .universal-login-topup .topup-choose-buttons {
+    margin-top: 40px;
   }
 
   .universal-login-topup .topup-btn + .topup-btn {

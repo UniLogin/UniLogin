@@ -23,12 +23,12 @@ export default class LoginPage {
     await this.pickUsername(userName, 'connect to existing', 'Waiting for approval');
   }
 
-  async chooseTopUpMethod() {
-    await this.wrapper.find('#topup-btn-crypto').simulate('click');
-  }
+  chooseTopUpMethod() {
+    this.wrapper.find('#topup-btn-crypto').simulate('click');
+   }
 
   getAddress() {
-    return this.wrapper.find('span#contract-address').text();
+    return this.wrapper.find('#contract-address').prop('defaultValue');
   }
 
   async waitForHomeView(balance: string, timeout?: number) {

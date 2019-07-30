@@ -68,7 +68,7 @@ const Modal = ({modalService}: ModalProps) => {
       );
     case 'waitingForDeploy':
       return (
-        <ModalWrapper isVisible className="jarvis-modal">
+        <ModalWrapper isVisible modalClassName="jarvis-modal">
           <ModalWaitingFor action={'Txn pending'}/>
         </ModalWrapper>
       );
@@ -80,7 +80,7 @@ const Modal = ({modalService}: ModalProps) => {
       );
     case 'transactionSuccess':
       return (
-        <ModalWrapper isVisible className="jarvis-modal">
+        <ModalWrapper isVisible modalClassName="jarvis-modal">
           <ModalTxnSuccess />
         </ModalWrapper>
       );

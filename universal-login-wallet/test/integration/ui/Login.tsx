@@ -31,10 +31,11 @@ describe('UI: Login', () => {
         appWrapper = mountWithContext(<App/>, services, ['/']);
         const appPage = new AppPage(appWrapper);
         await appPage.login().createNew('super-name');
-        await appPage.login().chooseTopUpMethod();
-        const address = await appPage.login().getAddress();
+        appPage.login().chooseTopUpMethod();
+        const address = appPage.login().getAddress();
+        expect(address).to.be.an('string');
         const [wallet] = await getWallets(provider);
-        await wallet.sendTransaction({to: address, value: utils.parseEther('2.0')});
+        await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
         await appPage.login().waitForHomeView(expectedHomeBalance);
         expect(appWrapper.text().includes(expectedHomeBalance)).to.be.true;
         appPage.dashboard().disconnect();
