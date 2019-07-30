@@ -11,7 +11,7 @@ interface EmojiPanelProps {
 
 export const EmojiPanel = ({code, className}: EmojiPanelProps) => {
   const emojis = code.map((code: number, index: number) => (
-    <li style={{margin: '10px'}} key={`emojiPanel_${index}`}>
+    <li key={`emojiPanel_${index}`}>
       <Emoji code={code}/>
     </li>
   ));
