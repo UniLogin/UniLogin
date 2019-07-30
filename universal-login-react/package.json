@@ -19,9 +19,7 @@
   },
   "peerDependencies": {
     "react": "^16.8.x",
-    "react-dom": "^16.8.x",
-    "react-router": "^5.0.x",
-    "react-router-dom": "^5.0.x"
+    "react-dom": "^16.8.x"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -39,6 +37,8 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "mocha": "^6.1.4",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
