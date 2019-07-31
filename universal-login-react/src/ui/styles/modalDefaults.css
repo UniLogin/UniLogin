@@ -35,8 +35,17 @@
   z-index: 9999;
 }
 
+.universal-login-defaults .modal-close-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  border: none;
+  background: none;
+}
+
 @media only screen and (max-width: 600px) {
-  .universal-login-defaults .modal-wrapper.bottom {
-    padding: 30px 20px;
+  .universal-login-defaults .modal-close-btn {
+    top: 20px;
+    right: 20px;
   }
 }

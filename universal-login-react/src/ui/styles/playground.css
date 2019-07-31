@@ -3,6 +3,7 @@ body {
 }
 .playground {
   display: flex;
+  min-height: 100vh;
 }
 
 .playground-navigation {

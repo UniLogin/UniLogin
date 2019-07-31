@@ -5,15 +5,17 @@ import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
 import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
-import {TopUp} from './ui/TopUp/TopUp';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
 import './ui/styles/playground.css';
+import {useModal} from './core/services/useModal';
+import Modal from './ui/Modals/Modal';
 
 export const App = () => {
 
   const {sdk} = useServices();
+  const modalService = useModal();
 
   const onCreate = () => {
     console.log('create clicked');
@@ -26,7 +28,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <div className="playground">
-        <NavigationColumn/>
+        <NavigationColumn />
         <div className="playground-content">
           <Switch>
             <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)}/>
@@ -72,14 +74,10 @@ export const App = () => {
               exact
               path="/topup"
               render={() => (
-                <TopUp
-                  contractAddress={TEST_ACCOUNT_ADDRESS}
-                  onRampConfig={{safello: {
-                    appId: '1234-5678',
-                    baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
-                    addressHelper: true
-                  }}}
-                />
+                <>
+                  <button onClick={() => modalService.showModal('topUpAccount')}>Show Topup</button>
+                  <Modal modalService={modalService} />
+                </>
               )}
             />
             <Route exact path="/settings" render={() => <Settings/>}/>

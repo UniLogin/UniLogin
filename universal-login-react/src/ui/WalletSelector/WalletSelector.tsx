@@ -62,5 +62,3 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
     </div>
   );
 };
-
-export default WalletSelector;
