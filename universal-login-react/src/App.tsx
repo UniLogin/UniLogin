@@ -38,6 +38,7 @@ export const App = () => {
                   sdk={sdk}
                   onConnect={onConnect}
                   onCreate={onCreate}
+                  domains={['mylogin.eth', 'universal-id.eth']}
                 />
               )}
             />

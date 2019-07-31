@@ -2,16 +2,16 @@ import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
-import ModalService from '../../core/services/ModalService';
 import {useModal} from '../../core/services/useModal';
 
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
   onConnect: () => void;
   onCreate: () => void;
+  domains: string[];
 }
 
-export const Onboarding = ({sdk, onConnect, onCreate}: OnboardingProps) => {
+export const Onboarding = ({sdk, onConnect, onCreate, domains}: OnboardingProps) => {
   const modalService = useModal();
 
   const onConnectClick = () => {
@@ -29,7 +29,7 @@ export const Onboarding = ({sdk, onConnect, onCreate}: OnboardingProps) => {
         sdk={sdk}
         onCreateClick={onCreateClick}
         onConnectClick={onConnectClick}
-        domains={['mylogin.eth', 'myapp.eth']}
+        domains={domains}
       />
       <Modal modalService={modalService}/>
     </div>
