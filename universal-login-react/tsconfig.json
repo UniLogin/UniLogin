@@ -10,7 +10,8 @@
     ],
     "allowJs": false,
     "declaration": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "noUnusedLocals": true
   },
   "include": [
     "src",
