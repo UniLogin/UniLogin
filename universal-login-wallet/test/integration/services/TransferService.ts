@@ -1,11 +1,10 @@
 import chai, {expect} from 'chai';
 import {utils, providers, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '../helpers/setupSdk';
 import {deployMockToken} from '@universal-login/commons/testutils';
-import WalletService from '../../../src/integration/storage/WalletService';
 import TransferService from '../../../src/integration/ethereum/TransferService';
 import TokenService from '../../../src/integration/ethereum/TokenService';
 import {createWallet} from '../helpers/createWallet';

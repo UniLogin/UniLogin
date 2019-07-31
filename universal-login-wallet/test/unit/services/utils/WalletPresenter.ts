@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
-import WalletService from '../../../../src/integration/storage/WalletService';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import WalletPresenter from '../../../../src/core/presenters/WalletPresenter';
 
 describe('WalletFormatter', async () => {

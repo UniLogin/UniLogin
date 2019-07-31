@@ -1,5 +1,5 @@
 import {Wallet, utils} from 'ethers';
-import WalletService from '../../../src/integration/storage/WalletService';
+import {WalletService} from '@universal-login/sdk';
 
 export const createWallet = async (name: string, walletService: WalletService, wallet: Wallet) => {
   const {contractAddress, waitForBalance, deploy, privateKey} = await walletService.createFutureWallet();

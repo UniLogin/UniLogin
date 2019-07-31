@@ -1,10 +1,10 @@
-import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 import {ensure, ApplicationWallet} from '@universal-login/commons';
-import {WalletOverriden, FutureWalletNotSet} from '../../core/errors';
+import UniversalLoginSDK from '../../api/sdk';
+import {FutureWallet} from '../../api/FutureWalletFactory';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
 
-export default class WalletService {
+export class WalletService {
   public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
@@ -51,5 +51,46 @@ export default class WalletService {
   disconnect(): void {
     this.state = 'None';
     this.applicationWallet = undefined;
+  }
+}
+
+type ErrorType = 'ApplicationWalletNotFound' | 'NotFound' | 'Overriden' | 'WalletOverriden' | 'FutureWalletNotSet' | 'NoSet';
+
+export class WalletError extends Error {
+errorType : ErrorType;
+
+  constructor (message: string, errorType: ErrorType) {
+    super(message);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, WalletError.prototype);
+  }
+}
+export class NotSet extends WalletError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, NotSet.prototype);
+  }
+}
+
+export class FutureWalletNotSet extends NotSet {
+  constructor() {
+    super('Future wallet was not set', 'NoSet');
+    Object.setPrototypeOf(this, FutureWalletNotSet.prototype);
+  }
+}
+
+export class Overriden extends WalletError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, Overriden.prototype);
+  }
+}
+
+export class WalletOverriden extends Overriden {
+  constructor() {
+    super('Wallet cannot be overrided', 'Overriden');
+    Object.setPrototypeOf(this, WalletOverriden.prototype);
   }
 }
