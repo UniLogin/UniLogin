@@ -1,0 +1,15 @@
+.waiting-for-spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.waiting-for {
+  width: 618px;
+}
+
+.waiting-for-title {
+  margin: 28px 0 34px;
+  font-size: 23px;
+  color: #FFFFFF;
+  text-align: center;
+}
