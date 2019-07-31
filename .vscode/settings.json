@@ -9,5 +9,10 @@
   "typescript.preferences.quoteStyle": "single",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "search.exclude": {
+    "**/.cache": true,
+    "**/build": true,
+    "**/dist": true
+  }
 }
