@@ -9,7 +9,7 @@ import ConnectionFlow from './ConnectionFlow';
 export class AppPage {
   private loginPage?: LoginPage;
   private transferPage?: TransferPage;
-  private dashboarPage?: DashboardPage;
+  private dashboardPage?: DashboardPage;
   private notificationsPage?: NotificationsPage;
   private creationFlow?: CreationFlow;
   private connectionFlow?: ConnectionFlow;
@@ -38,8 +38,8 @@ export class AppPage {
   }
 
   dashboard(): DashboardPage {
-    this.dashboarPage = this.dashboarPage || new DashboardPage(this.wrapper);
-    return this.dashboarPage;
+    this.dashboardPage = this.dashboardPage || new DashboardPage(this.wrapper);
+    return this.dashboardPage;
   }
 
   notifications(): NotificationsPage {
