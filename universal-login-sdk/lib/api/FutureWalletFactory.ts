@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
-import {BalanceObserver} from '../core/observers/BalanceObserver';
+import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -43,8 +43,8 @@ export class FutureWalletFactory {
     const waitForBalance = async () => new Promise(
       (resolve) => {
         const onReadyToDeploy = (tokenAddress: string, contractAddress: string) => resolve({tokenAddress, contractAddress});
-        const balanceObserver = new BalanceObserver(this.config.supportedTokens, this.provider);
-        balanceObserver.startAndSubscribe(contractAddress, onReadyToDeploy);
+        const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
+        deploymentReadyObserver.startAndSubscribe(contractAddress, onReadyToDeploy);
       }
     ) as Promise<BalanceDetails>;
 

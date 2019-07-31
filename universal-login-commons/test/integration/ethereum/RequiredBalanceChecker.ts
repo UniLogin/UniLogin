@@ -37,12 +37,16 @@ describe('INT: RequiredBalanceChecker', () => {
 
   it('one token with just enough balance', async () => {
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('0.3'));
-    expect(await requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS)).to.eq(mockToken.address);
+
+    const actualTokenAddress = await requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS);
+    expect(actualTokenAddress).to.eq(mockToken.address);
   });
 
   it('two tokens with just enough balance', async () => {
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('0.3'));
-    expect(await requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS)).to.eq(ETHER_NATIVE_TOKEN.address);
+
+    const actualTokenAddress = await requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS);
+    expect(actualTokenAddress).to.eq(ETHER_NATIVE_TOKEN.address);
   });
 });
