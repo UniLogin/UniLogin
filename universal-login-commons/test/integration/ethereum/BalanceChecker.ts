@@ -3,7 +3,7 @@ import {providers, Wallet, utils, Contract} from 'ethers';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
 import {BalanceChecker} from '../../../lib/integration/ethereum/BalanceChecker';
 import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
-import MockToken from '@universal-login/contracts/build/MockToken.json';
+import MockToken from '../../fixtures/MockToken.json';
 import {TEST_ACCOUNT_ADDRESS} from '../../../lib/core/constants/test';
 
 chai.use(solidity);
