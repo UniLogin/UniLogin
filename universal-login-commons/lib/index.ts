@@ -39,6 +39,7 @@ export {CancelAuthorisationRequest, GetAuthorisationRequest} from './core/models
 export {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from './core/utils/authorisation/cancelAuthorisationRequest';
 export {signGetAuthorisationRequest, verifyGetAuthorisationRequest, hashGetAuthorisationRequest, recoverFromGetAuthorisationRequest} from './core/utils/authorisation/getAuthorisationRequest';
 export {copy} from './react/copy';
+export {escapePressed} from './react/escapePressed';
 export {calculateInitializeWithENSSignature, calculateInitializeSignature, getInitializeSigner} from './core/utils/calculateSignature';
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
 export {DeployArgs} from './core/models/deploy';

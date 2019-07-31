@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect} from 'react';
 import { ModalPosition } from '../../core/models/ModalPosition';
 import './../styles/modal.css';
 import './../styles/modalDefaults.css';
-import {KEY_CODE_ESCAPE} from '@universal-login/commons';
+import {escapePressed} from '@universal-login/commons';
 import closeIcon from './../assets/icons/close.svg';
 
 interface ModalWrapperProps {
@@ -14,8 +14,8 @@ interface ModalWrapperProps {
 
 export const ModalWrapper = ({ modalPosition, children, modalClassName, hideModal}: ModalWrapperProps) => {
 
-  const listenKeyboard = (event : any) => {
-    if ((event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) && hideModal) {
+  const listenKeyboard = (event : KeyboardEvent) => {
+    if (escapePressed(event) && hideModal) {
       hideModal();
     }
   };
