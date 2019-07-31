@@ -1,48 +1,40 @@
+.balance
+  max-width: 375px
+  margin: 0 auto
+
 .balance-title
-  margin-bottom: 11px
-  font-weight: 600
-  font-size: 10px
-  color: #3D3D41
-  text-transform: uppercase
-
-  +media(s, 168px)
-    opacity: 0.75
-    font-size: 12px
-    text-align: center
-    text-transform: capitalize
-    margin-bottom: 0
-    font-weight: 400
-
-.balance-box
-  padding: 48px 30px 38px
-  background: #FFFFFF
-  box-shadow: 0 2px 4px 0 rgba(208,209,217,0.25)
-  border-radius: 5px
+  font-weight: 400
+  margin-bottom: 10px
+  font-size: 16px
+  color: #31405E
   text-align: center
 
-  +media(s, 168px)
-    padding: 0
-    box-shadow: none
-
-.balance-icon-wrapper
-  +media(s, 168px)
-    display: flex
-    justify-content: center
-    align-items: center
-    margin-bottom: 20px
-    background: #eeeffa
-    border-radius: 50%
-    width: 50px
-    height: 50px
-  
 .balance-amount
+  margin-bottom: 25px
   font-weight: 600
-  font-size: 40px
+  font-size: 44px
   color: #3D3D41
-  line-height: 66px
+  text-align: center
 
-  +media(s, 168px)
-    font-size: 25px
-    line-height: 41px
+.balance-row
+  display: flex
+  align-items: center
 
-.balance-amount-highlighted
+.balance-btn
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 155px
+  height: 50px
+  font-weight: 600
+  font-size: 16px
+  color: #C9C9D7
+  letter-spacing: -0.09px
+  background: #FFFFFF
+  border: 1px solid #C9C9D7
+
+.balance-btn img
+  margin-right: 14px
+
+.balance-btn + .balance-btn
+  margin-left: 30px
