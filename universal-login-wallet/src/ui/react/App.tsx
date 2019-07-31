@@ -15,7 +15,6 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {useModal} from '../hooks/useModal';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
-import {ChooseConnectionMethod} from './ConnectAccount/ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectAccount/ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
 
@@ -44,29 +43,18 @@ const App = () => {
       <Route
         exact
         path="/connect"
-        render={props =>
-          <ConnectAccount {...props} />
-        }
-      />
-      <Route
-        exact
-        path="/choose-connection"
-        render={props =>
-          <ChooseConnectionMethod {...props} />
-        }
+        render={() => <ConnectAccount />}
       />
       <Route
         exact
         path="/connect-with-passphrase"
-        render={props =>
-          <ConnectWithPassphrase />
+        render={() => <ConnectWithPassphrase />
         }
       />
       <Route
         exact
         path="/connect-with-emoji"
-        render={props =>
-          <ConnectWithEmoji />
+        render={() => <ConnectWithEmoji />
         }
       />
       <Route
