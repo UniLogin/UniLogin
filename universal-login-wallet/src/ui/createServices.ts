@@ -1,7 +1,6 @@
 import React from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import UserDropdownService from '../core/app/UserDropdownService';
-import WalletService from '../integration/storage/WalletService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import TransferService from '../integration/ethereum/TransferService';
 import TokenService from '../integration/ethereum/TokenService';

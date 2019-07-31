@@ -1,6 +1,6 @@
 import {ensure, ApplicationWallet} from '@universal-login/commons';
-import WalletService from '../../integration/storage/WalletService';
 import {ApplicationWalletNotFound} from '../errors';
+import {WalletService} from '@universal-login/sdk';
 
 export class WalletPresenter {
   constructor(

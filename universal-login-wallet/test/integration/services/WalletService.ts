@@ -1,8 +1,7 @@
 import chai, {expect} from 'chai';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import Relayer from '@universal-login/relayer';
-import WalletService from '../../../src/integration/storage/WalletService';
 import {setupSdk} from '../helpers/setupSdk';
 
 chai.use(solidity);

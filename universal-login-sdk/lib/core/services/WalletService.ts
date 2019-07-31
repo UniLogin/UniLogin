@@ -1,10 +1,11 @@
-import UniversalLoginSDK, {FutureWallet} from '@universal-login/sdk';
 import {ensure, ApplicationWallet} from '@universal-login/commons';
-import {WalletOverriden, FutureWalletNotSet} from '../../core/errors';
+import UniversalLoginSDK from '../../api/sdk';
+import {FutureWallet} from '../../api/FutureWalletFactory';
+import {WalletOverridden, FutureWalletNotSet} from '../utils/errors';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
 
-export default class WalletService {
+export class WalletService {
   public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
@@ -26,7 +27,7 @@ export default class WalletService {
   }
 
   setFutureWallet(applicationWallet: FutureWallet) {
-    ensure(this.state === 'None', WalletOverriden);
+    ensure(this.state === 'None', WalletOverridden);
     this.state = 'Future';
     this.applicationWallet = applicationWallet;
   }
@@ -43,7 +44,7 @@ export default class WalletService {
   }
 
   connect(applicationWallet: ApplicationWallet) {
-    ensure(this.state === 'None', WalletOverriden);
+    ensure(this.state === 'None', WalletOverridden);
     this.state = 'Deployed';
     this.applicationWallet = applicationWallet;
   }

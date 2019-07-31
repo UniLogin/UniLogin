@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError' | 'InvalidEvent';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -94,5 +94,35 @@ export class TimeoutError extends SDKError {
   constructor () {
     super('Timeout exceeded', 'TimeoutError');
     Object.setPrototypeOf(this, TimeoutError.prototype);
+  }
+}
+
+export class NotSet extends SDKError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, NotSet.prototype);
+  }
+}
+
+export class FutureWalletNotSet extends NotSet {
+  constructor() {
+    super('Future wallet was not set', 'NoSet');
+    Object.setPrototypeOf(this, FutureWalletNotSet.prototype);
+  }
+}
+
+export class Overridden extends SDKError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, Overridden.prototype);
+  }
+}
+
+export class WalletOverridden extends Overridden {
+  constructor() {
+    super('Wallet cannot be overridded', 'WalletOverridden');
+    Object.setPrototypeOf(this, WalletOverridden.prototype);
   }
 }

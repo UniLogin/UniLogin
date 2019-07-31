@@ -3,9 +3,8 @@ import sinon from 'sinon';
 import {Wallet, providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitExpect} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import WalletService from '../../../src/integration/storage/WalletService';
 import {setupSdk} from '../helpers/setupSdk';
 import {createWallet} from '../helpers/createWallet';
 

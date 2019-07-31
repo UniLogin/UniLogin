@@ -1,5 +1,5 @@
 import {providers, utils} from 'ethers';
-import WalletService from '../storage/WalletService';
+import {WalletService} from '@universal-login/sdk';
 
 export class EtherBalanceService {
   constructor(private provider: providers.Provider, private walletService: WalletService) {}
