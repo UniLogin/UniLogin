@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/ops",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -16,10 +16,10 @@
     "clean": "rm -fr dist"
   },
   "dependencies": {
-    "@universal-login/commons": "^0.3.6",
-    "@universal-login/contracts": "^0.3.6",
-    "@universal-login/relayer": "^0.3.6",
-    "@universal-login/sdk": "^0.3.6",
+    "@universal-login/commons": "^0.3.7",
+    "@universal-login/contracts": "^0.3.7",
+    "@universal-login/relayer": "^0.3.7",
+    "@universal-login/sdk": "^0.3.7",
     "ens-builder": "^2.0.1",
     "ethereum-waffle": "2.0.12",
     "ganache-cli": "^6.4.5",
