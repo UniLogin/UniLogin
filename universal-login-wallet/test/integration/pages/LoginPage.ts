@@ -36,26 +36,6 @@ export default class LoginPage {
     await this.pickUsername(userName, 'connect to existing', 'Connect with another device');
   }
 
-  clickConnectWithAnotherDevice() {
-    this.wrapper.find('.connection-method-link[href="/connect-with-emoji"]').simulate('click', {button: 0});
-  }
-
-  chooseTopUpMethod() {
-    this.wrapper.find('#topup-btn-crypto').simulate('click');
-   }
-
-  getAddress() {
-    return this.wrapper.find('#contract-address').prop('defaultValue');
-  }
-
-  async waitAndGoToWallet(timeout?: number) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Go to your wallet'), timeout);
-    this.wrapper.find('a.button-secondary').simulate('click', {button: 0});
-  }
-  async waitForEmojiView(timeout?: number) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Thanks, now check another device controling this account and enter the emojis in this order:'), timeout);
-  }
-
   async waitForHomeView(balance: string, timeout?: number) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(`balance${balance}`), timeout);
   }
