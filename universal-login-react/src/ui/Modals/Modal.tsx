@@ -1,15 +1,17 @@
 import React from 'react';
 import {TopUp} from '../TopUp/TopUp';
 import {ModalWrapper} from './ModalWrapper';
-import {createKeyPair} from '@universal-login/commons';
+import {WalletService} from '@universal-login/sdk';
 import ModalService from '../../core/services/ModalService';
+import WaitingFor from '../commons/WaitingFor'
 
 export interface ModalProps {
   modalService: ModalService;
   modalClassName?: string;
+  walletService: WalletService
 }
 
-const Modal = ({modalService, modalClassName}: ModalProps) => {
+const Modal = ({modalService, modalClassName, walletService}: ModalProps) => {
   switch (modalService.modalState) {
     case 'topUpAccount':
       return (
@@ -19,7 +21,7 @@ const Modal = ({modalService, modalClassName}: ModalProps) => {
           hideModal={modalService.hideModal}
         >
           <TopUp
-            contractAddress={createKeyPair().publicKey}
+            contractAddress={walletService.applicationWallet!.contractAddress}
             onRampConfig={{safello: {
               appId: '1234-5678',
               baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
@@ -27,6 +29,10 @@ const Modal = ({modalService, modalClassName}: ModalProps) => {
             }}}
           />
         </ModalWrapper>
+      );
+    case 'waitingForDeploy':
+      return (
+        <WaitingFor />
       );
     default:
       return null;
