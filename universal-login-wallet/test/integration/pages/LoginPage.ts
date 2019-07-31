@@ -7,6 +7,19 @@ export default class LoginPage {
   constructor(private wrapper: ReactWrapper) {
   }
 
+  clickCreateOne() {
+    this.wrapper.find('.welcome-box-create').last().simulate('click');
+  }
+
+  clickConnectToExisting() {
+    this.wrapper.find('.welcome-box-connect').last().simulate('click');
+  }
+
+  approveTerms() {
+    this.wrapper.find('.checkbox').childAt(0).simulate('change');
+    this.wrapper.find('button.terms-btn').last().simulate('click');
+  }
+
   async pickUsername(userName: string, action: string, result: string) {
     const input = this.wrapper.find('input');
     input.simulate('change', {target: {value: userName}});
@@ -29,6 +42,11 @@ export default class LoginPage {
 
   getAddress() {
     return this.wrapper.find('#contract-address').prop('defaultValue');
+  }
+
+  async waitAndGoToWallet(timeout?: number) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Go to your wallet'), timeout);
+    this.wrapper.find('a.button-secondary').simulate('click', {button: 0});
   }
 
   async waitForHomeView(balance: string, timeout?: number) {

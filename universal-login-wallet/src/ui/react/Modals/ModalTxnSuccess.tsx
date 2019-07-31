@@ -5,7 +5,10 @@ import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
 const Blockies = require('react-blockies').default;
 
-export const ModalTxnSuccess = () => {
+interface ModalTxnSuccessProps {
+  hideModal: () => void;
+}
+export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
   const {walletPresenter} = useServices();
   return (
     <>
@@ -28,7 +31,7 @@ export const ModalTxnSuccess = () => {
           </div>
         </div>
         <p className="info-text">Your wallet is ready but not secure. Go to your wallet and make sure to follow the steps to.</p>
-        <Link to="/" className="button-secondary modal-succes-btn">Go to your wallet</Link>
+        <Link to="/" onClick={hideModal} className="button-secondary modal-succes-btn">Go to your wallet</Link>
       </div>
     </>
   );
