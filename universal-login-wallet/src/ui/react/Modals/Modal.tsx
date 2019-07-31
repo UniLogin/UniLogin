@@ -41,7 +41,7 @@ const Modal = ({modalService}: ModalProps) => {
       );
     case 'topUpAccount':
       return (
-        <ModalWrapper isVisible modalPosition="bottom">
+        <ModalWrapper modalPosition="bottom">
           <TopUp
             onRampConfig={config!.onRampProviders}
             contractAddress={walletPresenter.getContractAddress()}
@@ -68,7 +68,7 @@ const Modal = ({modalService}: ModalProps) => {
       );
     case 'waitingForDeploy':
       return (
-        <ModalWrapper isVisible modalClassName="jarvis-modal">
+        <ModalWrapper modalClassName="jarvis-modal">
           <ModalWaitingFor action={'Txn pending'}/>
         </ModalWrapper>
       );
@@ -80,7 +80,7 @@ const Modal = ({modalService}: ModalProps) => {
       );
     case 'transactionSuccess':
       return (
-        <ModalWrapper isVisible modalClassName="jarvis-modal">
+        <ModalWrapper modalClassName="jarvis-modal">
           <ModalTxnSuccess hideModal={modalService.hideModal}/>
         </ModalWrapper>
       );

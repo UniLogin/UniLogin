@@ -6,13 +6,18 @@ import ModalService from '../../core/services/ModalService';
 
 export interface ModalProps {
   modalService: ModalService;
+  modalClassName?: string;
 }
 
-const Modal = ({modalService}: ModalProps) => {
+const Modal = ({modalService, modalClassName}: ModalProps) => {
   switch (modalService.modalState) {
     case 'topUpAccount':
       return (
-        <ModalWrapper isVisible modalPosition="bottom">
+        <ModalWrapper
+          modalPosition="bottom"
+          modalClassName={modalClassName}
+          hideModal={modalService.hideModal}
+        >
           <TopUp
             contractAddress={createKeyPair().publicKey}
             onRampConfig={{safello: {
