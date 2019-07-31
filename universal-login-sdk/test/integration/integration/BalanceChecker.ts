@@ -1,0 +1,57 @@
+import chai, {expect} from 'chai';
+import {providers, Wallet, utils, Contract} from 'ethers';
+import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
+import {BalanceChecker} from '../../../lib/integration/ethereum/BalanceChecker';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import MockToken from '@universal-login/contracts/build/MockToken.json';
+
+chai.use(solidity);
+
+describe('INT: BalanceChecker', async () => {
+  let provider: providers.Provider;
+  let balanceChecker: BalanceChecker;
+  let wallet: Wallet;
+  let mockToken: Contract;
+
+  beforeEach(async () => {
+    provider = createMockProvider();
+    [wallet] = await getWallets(provider);
+    balanceChecker = new BalanceChecker(provider, TEST_ACCOUNT_ADDRESS);
+  });
+
+  describe('ETH', async () => {
+    it('0 ETH', async () => {
+      const balance = await balanceChecker.getBalance(ETHER_NATIVE_TOKEN.address);
+      expect(balance).to.eq(0);
+    });
+
+    it('1 ETH', async () => {
+      await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1')});
+      const balance = await balanceChecker.getBalance(ETHER_NATIVE_TOKEN.address);
+      expect(balance).to.eq(utils.parseEther('1'));
+    });
+  });
+
+  describe('ERC20 token', async () => {
+    beforeEach(async () => {
+      mockToken = await deployContract(wallet, MockToken);
+    });
+
+    it('0 tokens', async () => {
+      const balance = await balanceChecker.getBalance(mockToken.address);
+      expect(balance).to.eq(0);
+    });
+
+    it('1 token', async () => {
+      await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
+      const balance = await balanceChecker.getBalance(mockToken.address);
+      expect(balance).to.eq(utils.bigNumberify('1'));
+    });
+
+    it('not deployed', async () => {
+      await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
+      await expect(balanceChecker.getBalance('0x000000000000000000000000000000000000DEAD'))
+        .to.be.rejected;
+    });
+  });
+});
