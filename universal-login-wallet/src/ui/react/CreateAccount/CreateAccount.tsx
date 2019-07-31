@@ -33,7 +33,7 @@ export const CreateAccount = ({location, modalService}: CreateAccountProps) => {
           <div className="box-header">
             <h1 className="box-title">Create account</h1>
           </div>
-          <div className="create-account-content">
+          <div className="box-content create-account-content">
             <img src={vaultImage} srcSet={vaultImage2x} alt="vault" className="create-account-img" />
             <div className="create-accoutn-selector-block">
               <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>

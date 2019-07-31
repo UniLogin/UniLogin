@@ -33,12 +33,12 @@ describe('UI: Creation flow', () => {
         appPage.login().clickCreateOne();
         appPage.login().approveTerms();
         await appPage.login().createNew('super-name');
-        appPage.login().chooseTopUpMethod();
-        const address = appPage.login().getAddress();
+        appPage.creation().chooseTopUpMethod();
+        const address = appPage.creation().getAddress();
         expect(address).to.be.an('string');
         const [wallet] = await getWallets(provider);
         await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
-        await appPage.login().waitAndGoToWallet();
+        await appPage.creation().waitAndGoToWallet();
         await appPage.login().waitForHomeView(expectedHomeBalance);
         expect(appWrapper.text().includes(expectedHomeBalance)).to.be.true;
         expect(appWrapper.find('a.button-secondary')).to.have.length(0);

@@ -6,7 +6,7 @@ interface InputLabelProps {
 }
 
 const InputLabel = ({children, htmlFor} : InputLabelProps) => (
-  <label className="input-label" htmlFor={htmlFor}>{children}</label>
+  <label className="label-text" htmlFor={htmlFor}>{children}</label>
 );
 
 export default InputLabel;

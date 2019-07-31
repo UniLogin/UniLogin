@@ -33,20 +33,7 @@ export default class LoginPage {
   }
 
   async connect(userName: string) {
-    await this.pickUsername(userName, 'connect to existing', 'Waiting for approval');
-  }
-
-  chooseTopUpMethod() {
-    this.wrapper.find('#topup-btn-crypto').simulate('click');
-   }
-
-  getAddress() {
-    return this.wrapper.find('#contract-address').prop('defaultValue');
-  }
-
-  async waitAndGoToWallet(timeout?: number) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Go to your wallet'), timeout);
-    this.wrapper.find('a.button-secondary').simulate('click', {button: 0});
+    await this.pickUsername(userName, 'connect to existing', 'Connect with another device');
   }
 
   async waitForHomeView(balance: string, timeout?: number) {
