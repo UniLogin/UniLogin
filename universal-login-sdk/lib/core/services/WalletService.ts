@@ -1,6 +1,7 @@
 import {ensure, ApplicationWallet} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
+import {WalletOverridden, FutureWalletNotSet} from '../utils/errors';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
 
@@ -26,7 +27,7 @@ export class WalletService {
   }
 
   setFutureWallet(applicationWallet: FutureWallet) {
-    ensure(this.state === 'None', WalletOverriden);
+    ensure(this.state === 'None', WalletOverridden);
     this.state = 'Future';
     this.applicationWallet = applicationWallet;
   }
@@ -43,7 +44,7 @@ export class WalletService {
   }
 
   connect(applicationWallet: ApplicationWallet) {
-    ensure(this.state === 'None', WalletOverriden);
+    ensure(this.state === 'None', WalletOverridden);
     this.state = 'Deployed';
     this.applicationWallet = applicationWallet;
   }
@@ -51,46 +52,5 @@ export class WalletService {
   disconnect(): void {
     this.state = 'None';
     this.applicationWallet = undefined;
-  }
-}
-
-type ErrorType = 'ApplicationWalletNotFound' | 'NotFound' | 'Overriden' | 'WalletOverriden' | 'FutureWalletNotSet' | 'NoSet';
-
-export class WalletError extends Error {
-errorType : ErrorType;
-
-  constructor (message: string, errorType: ErrorType) {
-    super(message);
-    this.errorType = errorType;
-    Object.setPrototypeOf(this, WalletError.prototype);
-  }
-}
-export class NotSet extends WalletError {
-  constructor (message: string, errorType: ErrorType) {
-    super(message, errorType);
-    this.errorType = errorType;
-    Object.setPrototypeOf(this, NotSet.prototype);
-  }
-}
-
-export class FutureWalletNotSet extends NotSet {
-  constructor() {
-    super('Future wallet was not set', 'NoSet');
-    Object.setPrototypeOf(this, FutureWalletNotSet.prototype);
-  }
-}
-
-export class Overriden extends WalletError {
-  constructor (message: string, errorType: ErrorType) {
-    super(message, errorType);
-    this.errorType = errorType;
-    Object.setPrototypeOf(this, Overriden.prototype);
-  }
-}
-
-export class WalletOverriden extends Overriden {
-  constructor() {
-    super('Wallet cannot be overrided', 'Overriden');
-    Object.setPrototypeOf(this, WalletOverriden.prototype);
   }
 }

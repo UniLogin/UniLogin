@@ -57,8 +57,8 @@ describe('WalletService', () => {
     expect(() => walletService.setDeployed(applicationWallet.name)).to.throw('Future wallet was not set');
   });
 
-  it('should throw if wallet is overriden', () => {
+  it('should throw if wallet is overridden', () => {
     walletService.connect(applicationWallet);
-    expect(() => walletService.setFutureWallet(futureWallet)).to.throw('Wallet cannot be overrided');
+    expect(() => walletService.setFutureWallet(futureWallet)).to.throw('Wallet cannot be overridded');
   });
 });
