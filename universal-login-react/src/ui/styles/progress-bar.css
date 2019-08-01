@@ -1,0 +1,69 @@
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background: #fff;
+}
+
+
+.progress-bar-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(90deg, #F76C1C 0%, #F9B047 10%, #FAD55F 21%, #275BB7 34%, #579BEF 47%, #19AE5F 64%, #59F1B0 77%, #D05DF7 87.5%, #F76C1C 100%);
+  animation: gradient-animation 4s linear infinite;
+  background-size: 200% 200%;
+  animation-direction: reverse;
+
+}
+
+.progress-bar-line.dual {
+  width: 50%;
+}
+
+.progress-bar::before,
+.progress-bar::after,
+.progress-bar-line.dual::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  z-index: 10;
+  background: transparent;
+}
+
+
+.universal-login-default .progress-bar::before,
+.universal-login-default .progress-bar::after,
+.universal-login-default .progress-bar-line.dual::after {
+  background: #100940;
+}
+
+.progress-bar::before {
+  left: 0;
+  transform: translate(-100%, -50%);
+}
+
+.progress-bar::after,
+.progress-bar-line::after {
+  transform: translate(100%, -50%);
+  right: 0;
+}
+
+@keyframes gradient-animation {
+	0% {
+		background-position: 0% 0%
+  }
+	50% {
+		background-position: 100% 0%
+  }
+	100% {
+		background-position: 200% 0%
+  }
+}
+
