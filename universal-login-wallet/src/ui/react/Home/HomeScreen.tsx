@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Sidebar from '../common/Sidebar';
 import UserDropdown from '../common/UserDropdown';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
-import {useModal} from '@universal-login/react';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 
 const HomeScreen = () => {
-  const modalService = useModal();
+  const modalService = useContext(WalletModalContext);
   return (
     <>
       <div className="dashboard">

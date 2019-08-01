@@ -4,9 +4,8 @@ import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {createModalService} from '../../core/services/useModal';
-import {getModalContext} from '../../core/services/useModal';
-import {ModalStateType} from '../../core/models/ModalStateType';
+import {createModalService} from '../../core/services/createModalService';
+import {ReactModalType} from '../../core/models/ReactModalContext';
 
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -17,10 +16,9 @@ interface OnboardingProps {
 }
 
 export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: OnboardingProps) => {
-  const modalService = createModalService<ModalStateType>();
+  const modalService = createModalService<ReactModalType>();
   const walletService = new WalletService(sdk);
   const [contractAddress, setContractAddress] = useState<string>('');
-  const ModalContext = getModalContext<ModalStateType>();
 
   const onConnectClick = () => {
     onConnect();
@@ -39,20 +37,16 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
 
 
   return (
-    <ModalContext.Provider value={modalService}>
-      <div className="universal-login">
-        <div className={getStyleForTopLevelComponent(className)}>
-
-          <WalletSelector
-            sdk={sdk}
-            onCreateClick={onCreateClick}
-            onConnectClick={onConnectClick}
-            domains={domains}
-          />
-          <Modal contractAddress={contractAddress}/>
-          <Modal />
-        </div>
+    <div className="universal-login">
+      <div className={getStyleForTopLevelComponent(className)}>
+        <WalletSelector
+          sdk={sdk}
+          onCreateClick={onCreateClick}
+          onConnectClick={onConnectClick}
+          domains={domains}
+        />
+        <Modal />
       </div>
-    </ModalContext.Provider>
+    </div>
   );
 };

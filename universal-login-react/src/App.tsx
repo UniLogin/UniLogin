@@ -10,14 +10,13 @@ import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
 import Modal from './ui/Modals/Modal';
-import {createModalService, getModalContext} from './core/services/useModal';
-import {ModalStateType} from './core/models/ModalStateType';
+import {createModalService} from './core/services/createModalService';
+import {ReactModalType, ReactModalContext} from './core/models/ReactModalContext';
 import './ui/styles/playground.css';
 
 export const App = () => {
-  const modalService = createModalService<ModalStateType>();
+  const modalService = createModalService<ReactModalType>();
   const {sdk} = useServices();
-  const ModalContext = getModalContext<ModalStateType>();
 
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
@@ -38,12 +37,14 @@ export const App = () => {
               exact
               path="/onboarding"
               render={() => (
-                <Onboarding
-                  sdk={sdk}
-                  onConnect={onConnect}
-                  onCreate={onCreate}
-                  domains={['mylogin.eth', 'universal-id.eth']}
-                />
+                <ReactModalContext.Provider value={modalService}>
+                  <Onboarding
+                    sdk={sdk}
+                    onConnect={onConnect}
+                    onCreate={onCreate}
+                    domains={['mylogin.eth', 'universal-id.eth']}
+                  />
+                </ReactModalContext.Provider>
               )}
             />
             <Route
@@ -77,10 +78,10 @@ export const App = () => {
               path="/topup"
               render={() => (
                 <>
-                  <ModalContext.Provider value={modalService}>
+                  <ReactModalContext.Provider value={modalService}>
                     <button onClick={() => modalService.showModal('topUpAccount')}>Show Topup</button>
                     <Modal contractAddress={Wallet.createRandom().address}/>
-                  </ModalContext.Provider>
+                  </ReactModalContext.Provider>
                 </>
               )}
             />

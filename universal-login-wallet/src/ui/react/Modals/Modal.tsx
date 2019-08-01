@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
@@ -9,11 +9,12 @@ import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
-import {Safello, TopUp, ModalWrapper, useModal} from '@universal-login/react';
+import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const Modal = () => {
-  const modalService = useModal();
+  const modalService = useContext(WalletModalContext);
   const {walletPresenter} = useServices();
   const config = useRelayerConfig();
   switch (modalService.modalState) {

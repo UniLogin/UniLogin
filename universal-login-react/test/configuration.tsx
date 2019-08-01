@@ -9,7 +9,7 @@ import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 
 configure({adapter: new Adapter()});
 
-describe('Test congiguration', () => {
+describe('Test configuration', () => {
   it('should be executed', () => {
     const reactWrapper: ReactWrapper = mount(<TestDiv />);
     expect(reactWrapper.text().includes('Test div')).to.be.true;

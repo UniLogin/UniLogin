@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {TopUp} from '../TopUp/TopUp';
 import {ModalWrapper} from './ModalWrapper';
-import ModalService from '../../core/services/ModalService';
 import WaitingFor from '../commons/WaitingFor';
-import {createKeyPair} from '@universal-login/commons';
-import {useModal} from '../../core/services/useModal';
+import {ReactModalContext} from '../../core/models/ReactModalContext';
 
 export interface ModalProps {
   modalClassName?: string;
@@ -12,7 +10,7 @@ export interface ModalProps {
 }
 
 const Modal = ({modalClassName, contractAddress}: ModalProps) => {
-  const modalService = useModal();
+  const modalService = useContext(ReactModalContext);
   switch (modalService.modalState) {
     case 'topUpAccount':
       return (

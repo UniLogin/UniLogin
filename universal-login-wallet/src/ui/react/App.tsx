@@ -16,17 +16,16 @@ import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {ConnectWithPassphrase} from './ConnectAccount/ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
-import {createModalService, getModalContext} from '@universal-login/react';
-import {ModalStateType} from '../../core/entities/ModalStateType';
+import {createModalService} from '@universal-login/react';
+import {WalletModalContext, ModalStateType} from '../../core/entities/WalletModalContext';
 
 const App = () => {
   const modalService = createModalService<ModalStateType>();
   const {walletService} = useServices();
   const authorized = walletService.isAuthorized();
-  const ModalContext = getModalContext<ModalStateType>();
 
   return (
-    <ModalContext.Provider value={modalService}>
+    <WalletModalContext.Provider value={modalService}>
       <Switch>
         <Route
           exact
@@ -98,7 +97,7 @@ const App = () => {
         />
         <Route component={NotFound} />
       </Switch>
-    </ModalContext.Provider>
+    </WalletModalContext.Provider>
   );
 };
 

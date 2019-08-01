@@ -1,17 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
-import {WalletSelector, useModal} from '@universal-login/react';
+import {WalletSelector} from '@universal-login/react';
 import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 interface CreateAccountProps {
   location?: {state: {from: {pathname: string}}};
 }
 
 export const CreateAccount = ({location}: CreateAccountProps) => {
-  const modalService = useModal();
+  const modalService = useContext(WalletModalContext);
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 
