@@ -136,6 +136,24 @@ describe('E2E: SDK', async () => {
     });
   });
 
+  describe('isManagementKeyPurpose', async () => {
+    it('return false if key is not added', async () => {
+      expect(await sdk.isManagementKeyPurpose(contractAddress, otherWallet.address)).to.be.false;
+    });
+
+    it('return false if key have differrent than MANAGEMENT purpose', async () => {
+      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+      await waitToBeMined();
+      expect(await sdk.isManagementKeyPurpose(contractAddress, otherWallet.address)).to.be.false;
+    });
+
+    it('return true if key have MANAGEMENT purpose', async () => {
+      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeMined();
+      expect(await sdk.isManagementKeyPurpose(contractAddress, otherWallet.address)).to.be.true;
+    });
+  });
+
   describe('Get nonce', async () => {
     it('getNonce should return correct nonce', async () => {
       const executionNonce = await sdk.getNonce(contractAddress, privateKey);

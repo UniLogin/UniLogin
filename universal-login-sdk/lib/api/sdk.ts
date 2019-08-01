@@ -127,6 +127,12 @@ class UniversalLoginSDK {
     return this.execute(message, privateKey);
   }
 
+  async isManagementKeyPurpose(walletContractAddress: string, key: string): Promise<boolean> {
+    const walletContract = new Contract(walletContractAddress, WalletContract.interface, this.provider);
+    const keyPurpose = await walletContract.getKeyPurpose(key);
+    return keyPurpose.eq(MANAGEMENT_KEY);
+  }
+
   async getNonce(walletContractAddress: string) {
     const contract = new Contract(walletContractAddress, WalletContract.interface, this.provider);
     return contract.lastNonce();
