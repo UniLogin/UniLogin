@@ -183,7 +183,7 @@ messageStatus
   - **totalCollected** : number - the amount of collected signatures
   - **messageHash** : string - hash of message
   - **state** : MessageState - one of message state: ``AwaitSignatures``, ``Queued``, ``Pending``, ``Error``, ``Success``
-  - **transactionHash** (optional) : string - transaction hash is only possible, when message state is ``Success``
+  - **transactionHash** (optional) : string - transaction hash is only possible, when message state is ``Pending``, ``Success`` or ``Error``
   - **error** (optional) : string - only when message state is ``Error``
 
 **sdk.getMessageStatus(messageHash)**
