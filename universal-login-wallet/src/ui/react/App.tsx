@@ -20,8 +20,8 @@ import {createModalService, ModalContext} from '@universal-login/react';
 import {ModalStateType} from '../../core/entities/ModalStateType';
 
 const App = () => {
-  const {walletService} = useServices();
   const modalService = createModalService<ModalStateType>();
+  const {walletService} = useServices();
   const authorized = walletService.isAuthorized();
 
   return (
@@ -41,6 +41,23 @@ const App = () => {
           exact
           path="/create"
           render={props => <CreateAccount {...props} />}
+        />
+        <Route
+          exact
+          path="/connect"
+          render={() => <ConnectAccount />}
+        />
+        <Route
+          exact
+          path="/connect-with-passphrase"
+          render={() => <ConnectWithPassphrase />
+          }
+        />
+        <Route
+          exact
+          path="/connect-with-emoji"
+          render={() => <ConnectWithEmoji />
+          }
         />
         <Route
           exact

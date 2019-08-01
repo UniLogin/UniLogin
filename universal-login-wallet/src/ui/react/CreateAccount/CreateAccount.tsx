@@ -11,11 +11,11 @@ interface CreateAccountProps {
 }
 
 export const CreateAccount = ({location}: CreateAccountProps) => {
+  const modalService = useModal();
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 
   const onCreateClick = async (name: string) => {
-    const modalService = useModal();
     const {deploy, waitForBalance} = await walletService.createFutureWallet();
     modalService.showModal('topUpAccount');
     await waitForBalance();

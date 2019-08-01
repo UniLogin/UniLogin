@@ -9,14 +9,15 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import './ui/styles/playground.css';
-import {useModal} from './core/services/useModal';
 import Modal from './ui/Modals/Modal';
+import {createModalService, ModalContext} from './core/services/useModal';
+import {ModalStateType} from './core/models/ModalStateType';
+import './ui/styles/playground.css';
 
 export const App = () => {
 
+  const modalService = createModalService<ModalStateType>();
   const {sdk} = useServices();
-  const modalService = useModal();
 
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
@@ -76,8 +77,10 @@ export const App = () => {
               path="/topup"
               render={() => (
                 <>
-                  <button onClick={() => modalService.showModal('topUpAccount')}>Show Topup</button>
-                  <Modal modalService={modalService} contractAddress={Wallet.createRandom().address}/>
+                  <ModalContext.Provider value={modalService}>
+                    <button onClick={() => modalService.showModal('topUpAccount')}>Show Topup</button>
+                    <Modal contractAddress={Wallet.createRandom().address}/>
+                  </ModalContext.Provider>
                 </>
               )}
             />
