@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'NoSet';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -58,6 +58,13 @@ export class InvalidEvent extends ValidationFailed {
   constructor (eventType: string) {
     super(`Unknown event type: ${eventType}`, 'InvalidEvent');
     Object.setPrototypeOf(this, InvalidEvent.prototype);
+  }
+}
+
+export class InvalidPassphrase extends ValidationFailed {
+  constructor () {
+    super('Passphrase is not valid', 'InvalidPassphrase');
+    Object.setPrototypeOf(this, InvalidPassphrase.prototype);
   }
 }
 
