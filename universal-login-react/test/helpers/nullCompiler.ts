@@ -1,4 +1,4 @@
-const noop = () => 1;
+const noop = () => null;
 
 require.extensions['.scss'] = noop;
 require.extensions['.css'] = noop;
