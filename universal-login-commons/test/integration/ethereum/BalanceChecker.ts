@@ -52,7 +52,7 @@ describe('INT: BalanceChecker', async () => {
     it('not deployed', async () => {
       await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
       await expect(balanceChecker.getBalance(TEST_ACCOUNT_ADDRESS, '0x000000000000000000000000000000000000DEAD'))
-        .to.be.rejectedWith('contract not deployed (contractAddress="0x000000000000000000000000000000000000DEAD", operation="getDeployed", version=4.0.15)');
+        .to.be.rejectedWith('contract not deployed');
     });
   });
 });
