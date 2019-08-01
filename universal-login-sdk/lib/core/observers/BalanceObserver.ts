@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {SupportedToken, ensure, findTokenWithRequiredBalance} from '@universal-login/commons';
+import {SupportedToken, ensure, RequiredBalanceChecker, BalanceChecker} from '@universal-login/commons';
 import {ConcurrentDeployment} from '../utils/errors';
 import ObserverRunner from './ObserverRunner';
 
@@ -8,9 +8,13 @@ export type ReadyToDeployCallback = (tokenAddress: string, contractAddress: stri
 export class BalanceObserver extends ObserverRunner {
   private contractAddress?: string;
   private callback?: ReadyToDeployCallback;
+  private requiredBalanceChecker: RequiredBalanceChecker;
+  private balanceChecker: BalanceChecker;
 
-  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
+  constructor(private supportedTokens: SupportedToken[], provider: providers.Provider) {
     super();
+    this.balanceChecker = new BalanceChecker(provider);
+    this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
   }
 
   async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
@@ -30,7 +34,7 @@ export class BalanceObserver extends ObserverRunner {
 
   async checkBalance() {
     if (this.contractAddress) {
-      const tokenAddress = await findTokenWithRequiredBalance(this.provider, this.supportedTokens, this.contractAddress);
+      const tokenAddress = await this.requiredBalanceChecker.findTokenWithRequiredBalance(this.supportedTokens, this.contractAddress);
       if (tokenAddress) {
         this.onBalanceChanged(this.contractAddress, tokenAddress);
       }

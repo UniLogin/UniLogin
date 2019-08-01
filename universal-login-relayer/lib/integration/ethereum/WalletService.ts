@@ -2,7 +2,7 @@ import {ContractFactory, Wallet, utils} from 'ethers';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
 import ENSService from './ensService';
 import {EventEmitter} from 'fbemitter';
-import {Abi, defaultDeployOptions, ensureNotNull, ensure, findTokenWithRequiredBalance, computeContractAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {Abi, defaultDeployOptions, ensureNotNull, ensure, RequiredBalanceChecker, computeContractAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
 import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from '../../core/utils/errors';
 import {encodeInitializeWithENSData, encodeInitializeWithRefundData} from '@universal-login/contracts';
 import {Config} from '../../config/relayer';
@@ -12,7 +12,7 @@ class WalletService {
   private bytecode: string;
   private abi: Abi;
 
-  constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer) {
+  constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer, private requiredBalanceChecker: RequiredBalanceChecker) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
@@ -41,7 +41,7 @@ class WalletService {
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);
     const contractAddress = computeContractAddress(this.config.factoryAddress, publicKey, await this.walletDeployer.getInitCode());
-    ensure(!!await findTokenWithRequiredBalance(this.wallet.provider, this.config.supportedTokens, contractAddress), NotEnoughBalance);
+    ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(this.config.supportedTokens, contractAddress), NotEnoughBalance);
     const args = [publicKey, ...ensArgs as string[], gasPrice];
     const initWithENS = encodeInitializeWithRefundData(args);
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);

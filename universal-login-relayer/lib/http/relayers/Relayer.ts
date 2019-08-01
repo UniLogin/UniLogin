@@ -26,6 +26,7 @@ import {MessageStatusService} from '../../core/services/messages/MessageStatusSe
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
 import MessageValidator from '../../core/services/messages/MessageValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
+import {BalanceChecker, RequiredBalanceChecker} from '@universal-login/commons';
 
 const defaultPort = '3311';
 
@@ -44,6 +45,8 @@ class Relayer {
   private authorisationStore: AuthorisationStore = {} as AuthorisationStore;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
   private walletMasterContractService: WalletMasterContractService = {} as WalletMasterContractService;
+  private balanceChecker: BalanceChecker = {} as BalanceChecker;
+  private requiredBalanceChecker: RequiredBalanceChecker = {} as RequiredBalanceChecker;
   private walletContractService: WalletService = {} as WalletService;
   private queueStore: IQueueStore = {} as IQueueStore;
   private messageHandler: MessageHandler = {} as MessageHandler;
@@ -81,10 +84,12 @@ class Relayer {
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationStore = new AuthorisationStore(this.database);
     this.walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
-    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer);
+    this.balanceChecker = new BalanceChecker(this.provider);
+    this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
+    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker);
     this.walletMasterContractService = new WalletMasterContractService(this.provider);
     this.authorisationService = new AuthorisationService(this.authorisationStore, this.walletMasterContractService);
-    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer);
+    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker);
     this.messageRepository = new MessageSQLRepository(this.database);
     this.queueStore = new QueueSQLStore(this.database);
     this.signaturesService = new SignaturesService(this.wallet);
