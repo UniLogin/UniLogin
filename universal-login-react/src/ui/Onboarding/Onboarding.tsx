@@ -4,7 +4,8 @@ import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {createModalService, ModalContext} from '../../core/services/useModal';
+import {createModalService} from '../../core/services/useModal';
+import {getModalContext} from '../../core/services/useModal';
 import {ModalStateType} from '../../core/models/ModalStateType';
 
 interface OnboardingProps {
@@ -19,6 +20,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
   const modalService = createModalService<ModalStateType>();
   const walletService = new WalletService(sdk);
   const [contractAddress, setContractAddress] = useState<string>('');
+  const ModalContext = getModalContext<ModalStateType>();
 
   const onConnectClick = () => {
     onConnect();

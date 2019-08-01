@@ -1,23 +1,24 @@
 import React, {useState, useContext} from 'react';
-import ModalService from './ModalService';
 
-export interface IModalService {
-  modalState: any;
-  showModal: (name: any) => void;
+export interface IModalService<T> {
+  modalState: T | 'none';
+  showModal: (name: T | 'none') => void;
   hideModal: () => void;
 }
 
-export const ModalContext = React.createContext({} as IModalService);
-
-export const useModal = () => {
-  return useContext(ModalContext);
+export const getModalContext = <T>() => {
+  return React.createContext({} as IModalService<T>);
 };
 
-export const createModalService = <T>(): ModalService<T> => {
-  const [modalState, setModalState] = useState<T | undefined>(undefined);
+export const useModal = <T>() => {
+  return useContext<IModalService<T>>(getModalContext<T>());
+};
+
+export const createModalService = <T>(): IModalService<T> => {
+  const [modalState, setModalState] = useState<T | 'none'>('none');
   return {
     modalState,
     showModal: setModalState,
-    hideModal: () => setModalState('none' as any as T)
+    hideModal: () => setModalState('none')
   };
 };

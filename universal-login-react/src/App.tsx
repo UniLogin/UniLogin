@@ -10,14 +10,14 @@ import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
 import Modal from './ui/Modals/Modal';
-import {createModalService, ModalContext} from './core/services/useModal';
+import {createModalService, getModalContext} from './core/services/useModal';
 import {ModalStateType} from './core/models/ModalStateType';
 import './ui/styles/playground.css';
 
 export const App = () => {
-
   const modalService = createModalService<ModalStateType>();
   const {sdk} = useServices();
+  const ModalContext = getModalContext<ModalStateType>();
 
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);

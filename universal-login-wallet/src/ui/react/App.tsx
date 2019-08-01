@@ -16,13 +16,14 @@ import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {ConnectWithPassphrase} from './ConnectAccount/ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
-import {createModalService, ModalContext} from '@universal-login/react';
+import {createModalService, getModalContext} from '@universal-login/react';
 import {ModalStateType} from '../../core/entities/ModalStateType';
 
 const App = () => {
   const modalService = createModalService<ModalStateType>();
   const {walletService} = useServices();
   const authorized = walletService.isAuthorized();
+  const ModalContext = getModalContext<ModalStateType>();
 
   return (
     <ModalContext.Provider value={modalService}>
