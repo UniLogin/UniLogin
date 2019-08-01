@@ -18,7 +18,7 @@ interface OnboardingProps {
 export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: OnboardingProps) => {
   const modalService = createModalService<ReactModalType>();
   const walletService = new WalletService(sdk);
-  const [contractAddress, setContractAddress] = useState<string>('');
+  const [, setContractAddress] = useState<string>('');
 
   const onConnectClick = () => {
     onConnect();
