@@ -3,13 +3,13 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import {useModal} from '../../core/services/useModal';
-import {DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
   onConnect: () => void;
-  onCreate: () => void;
+  onCreate: (arg: ApplicationWallet) => void;
   domains: string[];
   className?: string;
 }
@@ -31,7 +31,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
     modalService.showModal('waitingForDeploy');
     await deploy(ensName, DEFAULT_GAS_PRICE.toString());
     modalService.hideModal();
-    onCreate();
+    onCreate(walletService.applicationWallet as ApplicationWallet);
   };
 
   return (

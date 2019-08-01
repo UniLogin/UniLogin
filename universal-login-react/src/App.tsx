@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes, ApplicationWallet} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -18,8 +18,8 @@ export const App = () => {
   const {sdk} = useServices();
   const modalService = useModal();
 
-  const onCreate = () => {
-    console.log('create clicked');
+  const onCreate = (applicationWallet: ApplicationWallet) => {
+    alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
   };
 
   const onConnect = () => {
