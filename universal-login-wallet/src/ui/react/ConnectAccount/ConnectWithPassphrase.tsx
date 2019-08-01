@@ -2,7 +2,11 @@ import React, {useState} from 'react';
 import InputLabel from '../common/InputLabel';
 import {CustomInput} from '../common/CustomInput';
 
-export const ConnectWithPassphrase = () => {
+interface ConnectWithPasssphraseProps {
+  name: string;
+}
+
+export const ConnectWithPassphrase = ({name}: ConnectWithPasssphraseProps) => {
   const [codes, setCodes] = useState('');
 
   return (
