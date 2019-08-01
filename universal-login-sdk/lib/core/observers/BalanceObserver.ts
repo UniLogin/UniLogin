@@ -9,10 +9,12 @@ export class BalanceObserver extends ObserverRunner {
   private contractAddress?: string;
   private callback?: ReadyToDeployCallback;
   private requiredBalanceChecker: RequiredBalanceChecker;
+  private balanceChecker: BalanceChecker;
 
-  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
+  constructor(private supportedTokens: SupportedToken[], provider: providers.Provider) {
     super();
-    this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.provider));
+    this.balanceChecker = new BalanceChecker(provider);
+    this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
   }
 
   async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
