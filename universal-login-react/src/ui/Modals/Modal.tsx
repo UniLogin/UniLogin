@@ -2,16 +2,15 @@ import React from 'react';
 import {TopUp} from '../TopUp/TopUp';
 import {ModalWrapper} from './ModalWrapper';
 import ModalService from '../../core/services/ModalService';
-import WaitingFor from '../commons/WaitingFor'
-import {FutureWallet} from '@universal-login/sdk';
+import WaitingFor from '../commons/WaitingFor';
 
 export interface ModalProps {
   modalService: ModalService;
   modalClassName?: string;
-  applicationWallet: FutureWallet;
+  contractAddress?: string;
 }
 
-const Modal = ({modalService, modalClassName, applicationWallet}: ModalProps) => {
+const Modal = ({modalService, modalClassName, contractAddress}: ModalProps) => {
   switch (modalService.modalState) {
     case 'topUpAccount':
       return (
@@ -21,7 +20,7 @@ const Modal = ({modalService, modalClassName, applicationWallet}: ModalProps) =>
           hideModal={modalService.hideModal}
         >
           <TopUp
-            contractAddress={applicationWallet.contractAddress}
+            contractAddress={contractAddress as string}
             onRampConfig={{safello: {
               appId: '1234-5678',
               baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
@@ -32,7 +31,7 @@ const Modal = ({modalService, modalClassName, applicationWallet}: ModalProps) =>
       );
     case 'waitingForDeploy':
       return (
-        <ModalWrapper isVisible modalPosition="bottom">
+        <ModalWrapper modalPosition="bottom">
           <WaitingFor />
         </ModalWrapper>
       );

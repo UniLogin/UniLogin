@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/progress-bar.css'
+import '../styles/progress-bar.css';
 
 interface ProgressBarProps {
   dual?: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ProgressBar} from './ProgressBar';
-import '../styles/waitingFor.css'
+import '../styles/waitingFor.css';
 
 const ModalWaitingFor = () => {
   return (

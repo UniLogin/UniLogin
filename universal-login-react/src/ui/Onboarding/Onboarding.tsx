@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {WalletService, FutureWallet} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import {useModal} from '../../core/services/useModal';
@@ -17,18 +17,17 @@ interface OnboardingProps {
 export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: OnboardingProps) => {
   const modalService = useModal();
   const walletService = new WalletService(sdk);
-  const [applicationWallet, setApplicationWallet] = useState({} as FutureWallet);
+  const [contractAddress, setContractAddress] = useState<string>('');
 
   const onConnectClick = () => {
     onConnect();
   };
 
   const onCreateClick = async (ensName: string) => {
-    const {deploy, waitForBalance} = await walletService.createFutureWallet();
-    setApplicationWallet(walletService.applicationWallet! as FutureWallet);
+    const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
+    setContractAddress(contractAddress);
     modalService.showModal('topUpAccount');
     await waitForBalance();
-    modalService.hideModal();
     modalService.showModal('waitingForDeploy');
     await deploy(ensName, DEFAULT_GAS_PRICE.toString());
     modalService.hideModal();
@@ -44,7 +43,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
           onConnectClick={onConnectClick}
           domains={domains}
         />
-        <Modal modalService={modalService} applicationWallet={applicationWallet}/>
+        <Modal modalService={modalService} contractAddress={contractAddress}/>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
@@ -76,7 +77,7 @@ export const App = () => {
               render={() => (
                 <>
                   <button onClick={() => modalService.showModal('topUpAccount')}>Show Topup</button>
-                  <Modal modalService={modalService} />
+                  <Modal modalService={modalService} contractAddress={Wallet.createRandom().address}/>
                 </>
               )}
             />
