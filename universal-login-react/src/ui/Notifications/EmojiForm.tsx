@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
-import {isValidCode, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, Message, OPERATION_CALL} from '@universal-login/commons';
+import {isValidCode} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
-
-export const transactionDetails: Message = {
-  gasPrice: DEFAULT_GAS_PRICE,
-  gasLimit: DEFAULT_GAS_LIMIT,
-  gasToken: ETHER_NATIVE_TOKEN.address,
-  operationType: OPERATION_CALL
-};
+import {transactionDetails} from '../../core/constants/TransactionDetails';
 
 interface EmojiFormProps {
   sdk: UniversalLoginSDK;
