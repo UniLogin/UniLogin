@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/react",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -14,8 +14,8 @@
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
-    "@universal-login/commons": "^0.3.9",
-    "@universal-login/sdk": "^0.3.9"
+    "@universal-login/commons": "^0.3.10",
+    "@universal-login/sdk": "^0.3.10"
   },
   "peerDependencies": {
     "react": "^16.8.x",
