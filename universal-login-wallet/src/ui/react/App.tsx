@@ -48,12 +48,6 @@ const App = () => {
         />
         <Route
           exact
-          path="/connect-with-passphrase"
-          render={() => <ConnectWithPassphrase />
-          }
-        />
-        <Route
-          exact
           path="/connect-with-emoji"
           render={() => <ConnectWithEmoji />
           }

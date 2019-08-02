@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBackupCodes, MANAGEMENT_KEY} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, MANAGEMENT_KEY} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
@@ -12,7 +12,7 @@ export class WalletService {
   public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
-  constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBackupCodes) {
+  constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain) {
   }
 
   walletDeployed(): boolean {

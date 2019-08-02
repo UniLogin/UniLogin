@@ -1,7 +1,7 @@
 import {utils, Wallet} from 'ethers';
 import scrypt from 'scrypt-js';
 
-export function walletFromBackupCodes(username: string, password: string): Promise<Wallet> {
+export function walletFromBrain(username: string, password: string): Promise<Wallet> {
   const usernameUtf8Bytes =  utils.toUtf8Bytes(username, utils.UnicodeNormalizationForm.NFKC);
   const passwordUtf8Bytes =  utils.toUtf8Bytes(password, utils.UnicodeNormalizationForm.NFKC);
 
