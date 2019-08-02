@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import ModalTransfer from './ModalTransfer';
 import ModalRequest from './ModalRequest';
@@ -11,20 +11,17 @@ import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-export interface ModalProps {
-  modalService: ModalService;
-}
-
-const Modal = ({modalService}: ModalProps) => {
+const Modal = () => {
+  const modalService = useContext(WalletModalContext);
   const {walletPresenter} = useServices();
   const config = useRelayerConfig();
   switch (modalService.modalState) {
     case 'transfer':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ModalTransfer modalService={modalService}/>
+          <ModalTransfer />
         </ModalWrapperClosable>
       );
     case 'request':
@@ -57,7 +54,7 @@ const Modal = ({modalService}: ModalProps) => {
     case 'personalInfo':
       return (
         <ModalWrapperWithoutClose>
-          <ModalPersonalInfo modalService={modalService}/>
+          <ModalPersonalInfo />
         </ModalWrapperWithoutClose>
       );
     case 'cardInfo':

@@ -1,14 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import usdIcon from '../../assets/icons/usd.png';
 import etherIcon from '../../assets/icons/ether.svg';
 import bitmapIcon from '../../assets/icons/bitmap.svg';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-export interface ModalTopUpProps {
-  modalService: ModalService;
-}
-
-const ModalTopUp = ({modalService}: ModalTopUpProps) => {
+const ModalTopUp = () => {
+  const modalService = useContext(WalletModalContext);
   return (
     <>
       <h2 className="modal-title">Top up your account</h2>

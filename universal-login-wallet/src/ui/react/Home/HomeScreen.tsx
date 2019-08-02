@@ -1,15 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Sidebar from '../common/Sidebar';
 import UserDropdown from '../common/UserDropdown';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-interface HomeScreenProps {
-  modalService: ModalService;
-}
 
-const HomeScreen = ({modalService}: HomeScreenProps) => {
+const HomeScreen = () => {
+  const modalService = useContext(WalletModalContext);
   return (
     <>
       <div className="dashboard">
@@ -36,7 +34,7 @@ const HomeScreen = ({modalService}: HomeScreenProps) => {
           </div>
         </div>
       </div>
-      <Modal modalService={modalService}/>
+      <Modal />
     </>
   );
 };

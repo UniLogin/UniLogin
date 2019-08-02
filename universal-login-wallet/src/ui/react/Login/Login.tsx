@@ -1,17 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {DEFAULT_LOCATION, Procedure, defaultDeployOptions, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
 import {WalletSelector} from '@universal-login/react';
 import Logo from './../../assets/logo-with-text.svg';
 import Modal from '../Modals/Modal';
 import {useServices, useRouter, useWalletConfig} from '../../hooks';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 interface LoginProps {
   location? : {state: {from: {pathname : string}}};
-  modalService: ModalService;
 }
 
-const Login = ({location, modalService} : LoginProps) => {
+const Login = ({location} : LoginProps) => {
+  const modalService = useContext(WalletModalContext);
   const {connectToWallet, walletService, sdk} = useServices();
   const walletConfig = useWalletConfig();
   const {history} = useRouter();
@@ -54,7 +54,7 @@ const Login = ({location, modalService} : LoginProps) => {
           domains={walletConfig.domains}
           actions={WALLET_SUGGESTION_ALL_ACTIONS}
         />
-      <Modal modalService={modalService}/>
+      <Modal />
     </div>
   );
 };

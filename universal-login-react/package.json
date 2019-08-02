@@ -10,7 +10,7 @@
     "clean": "rm -fr dist",
     "build": "yarn clean && tsc -p tsconfig.json && cp -r src/ui/assets dist/src/ui/assets && cp -r src/ui/styles dist/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:nobuild": "NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 --exit \"dist/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
