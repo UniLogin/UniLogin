@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import TopUpChoose from './TopUpChoose';
 import {Safello} from '../../integration/Safello';
+import {Ramp} from '../../integration/Ramp';
 import {OnRampConfig} from '@universal-login/commons';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
@@ -27,12 +28,17 @@ export const TopUp = ({contractAddress, startModal, onRampConfig}: TopUpProps) =
   }
   else if (modal === TopUpComponentType.bank) {
     return(
-      <Safello
-        localizationConfig={{} as any}
-        safelloConfig={onRampConfig.safello}
-        contractAddress={contractAddress}
-        crypto="eth"
+      <Ramp
+        address={contractAddress}
+        amount={'100000000000000'}
       />
+
+      // <Safello
+      //   localizationConfig={{} as any}
+      //   safelloConfig={onRampConfig.safello}
+      //   contractAddress={contractAddress}
+      //   crypto="eth"
+      // />
     );
   } else {
     throw new Error(`Unsupported type: ${modal}`);
