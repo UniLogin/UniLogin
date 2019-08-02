@@ -4,11 +4,18 @@ import {Wallet} from 'ethers';
 
 const connectToWallet = (sdk: UniversalLoginSDK, walletService: any) => async (name: string, callback: Procedure) => {
   const contractAddress = await sdk.getWalletContractAddress(name);
-  const {privateKey} = await sdk.connect(contractAddress);
+  const {privateKey, securityCode} = await sdk.connect(contractAddress);
   const publicKey = (new Wallet(privateKey)).address;
   walletService.connect({privateKey, contractAddress, name});
   const filter = {contractAddress, key: publicKey};
-  const subscription = sdk.subscribe('KeyAdded', filter, callback);
-  return () => subscription.remove();
+  const unsubscribe = () => subscription.remove();
+  const subscription = sdk.subscribe('KeyAdded', filter, () => {
+    unsubscribe();
+    callback();
+  });
+  return {
+    unsubscribe,
+    securityCode
+  };
 };
 export default connectToWallet;

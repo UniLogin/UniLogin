@@ -4,9 +4,7 @@ import {createModalService} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
-import Login from './Login/Login';
 import {PrivateRoute} from './PrivateRoute';
-import NotificationsScreen from './NotificationsScreen';
 import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
@@ -15,8 +13,8 @@ import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
-import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
+import {HandleConnection} from './ConnectAccount/HandleConnection';
 
 const App = () => {
   const modalService = createModalService<WalletModalType, void>();
@@ -48,17 +46,6 @@ const App = () => {
         />
         <Route
           exact
-          path="/connect-with-emoji"
-          render={() => <ConnectWithEmoji />
-          }
-        />
-        <Route
-          exact
-          path="/login"
-          render={props => <Login {...props} />}
-        />
-        <Route
-          exact
           path="/approve"
           render={() => <ApproveScreen />}
         />
@@ -81,7 +68,7 @@ const App = () => {
         <PrivateRoute
           path="/notifications"
           authorized={authorized}
-          render={() => <NotificationsScreen />}
+          render={() => <HandleConnection />}
         />
         <PrivateRoute
           path="/settings"

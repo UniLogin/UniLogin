@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes, ApplicationWallet} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -68,6 +68,8 @@ export const App = () => {
                     sdk={sdk}
                     publicKey={TEST_ACCOUNT_ADDRESS}
                     securityCodeWithFakes={generateCodeWithFakes(TEST_ACCOUNT_ADDRESS)}
+                    contractAddress={TEST_CONTRACT_ADDRESS}
+                    privateKey={TEST_PRIVATE_KEY}
                   />
                 </div>
               )}

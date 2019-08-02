@@ -16,7 +16,7 @@ describe('UI: Notifications',  () => {
   let appPage : AppPage;
   let mockTokenContract: Contract;
 
-  before(async () => {
+  beforeEach(async () => {
     const [wallet] = await getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
@@ -26,10 +26,11 @@ describe('UI: Notifications',  () => {
 
   it('Should get notification when new device connect and confirm request', async () => {
     expect(appPage.dashboard().isNotificationAlert()).to.be.false;
-    await services.sdk.connect(services.walletService.applicationWallet!.contractAddress);
+    const {securityCode} = await services.sdk.connect(services.walletService.applicationWallet!.contractAddress);
     await appPage.dashboard().waitForNewNotifications();
     expect(appPage.dashboard().isNotificationAlert()).to.be.true;
     await appPage.dashboard().clickNotificationButton();
+    await appPage.notifications().inputSecurityCode(securityCode);
     await appPage.notifications().clickConfirmButton();
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });
@@ -37,13 +38,14 @@ describe('UI: Notifications',  () => {
   it('Should reject request', async () => {
     await services.sdk.connect(services.walletService.applicationWallet!.contractAddress);
     await appPage.dashboard().waitForNewNotifications();
+    expect(appPage.notifications().isNotificationAlert()).to.be.true;
     await appPage.dashboard().clickNotificationButton();
     await appPage.notifications().clickRejectButton();
 
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });
 
-  after(async () => {
+  afterEach(async () => {
     appWrapper.unmount();
     services.balanceService.stop();
     await services.sdk.finalizeAndStop();
