@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {createModalService} from '../../core/services/createModalService';
-import {ReactModalType} from '../../core/models/ReactModalContext';
+import {ReactModalContext} from '../../core/models/ReactModalContext';
 
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -16,9 +15,9 @@ interface OnboardingProps {
 }
 
 export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: OnboardingProps) => {
-  const modalService = createModalService<ReactModalType>();
+  const modalService = useContext(ReactModalContext);
   const walletService = new WalletService(sdk);
-  const [, setContractAddress] = useState<string>('');
+  const [contractAddress, setContractAddress] = useState<string>('');
 
   const onConnectClick = () => {
     onConnect();
@@ -45,7 +44,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
           onConnectClick={onConnectClick}
           domains={domains}
         />
-        <Modal />
+        <Modal contractAddress={contractAddress}/>
       </div>
     </div>
   );
