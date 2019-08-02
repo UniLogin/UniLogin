@@ -1,9 +1,30 @@
 import React, {useState} from 'react';
 import InputLabel from '../common/InputLabel';
 import {CustomInput} from '../common/CustomInput';
+import {useServices, useRouter} from '../../hooks';
+import {Spinner} from '@universal-login/react';
 
-export const ConnectWithPassphrase = () => {
-  const [codes, setCodes] = useState('');
+interface ConnectWithPasssphraseProps {
+  name: string;
+}
+
+export const ConnectWithPassphrase = ({name}: ConnectWithPasssphraseProps) => {
+  const [code, setCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const {walletService} = useServices();
+  const {history} = useRouter();
+
+  const onRecoveryClick = async () => {
+    setIsLoading(true);
+    try {
+      await walletService.recover(name, code);
+      history.push('/');
+    } catch (e) {
+      setIsLoading(false);
+      setErrorMessage(e.message);
+    }
+  };
 
   return (
     <div className="main-bg">
@@ -18,10 +39,11 @@ export const ConnectWithPassphrase = () => {
               <InputLabel htmlFor="">Backup codes</InputLabel>
               <CustomInput
                 id="passphrase-input"
-                value={codes}
-                onChange={event => setCodes(event.target.value)}
+                value={code}
+                onChange={event => setCode(event.target.value)}
               />
-              <button className="button-primary connect-passphrase-btn" disabled={!codes}>Deny</button>
+              {(errorMessage && !isLoading) ? errorMessage : null}
+              <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}>{isLoading ? <Spinner /> : 'Recover'}</button>
             </div>
           </div>
         </div>

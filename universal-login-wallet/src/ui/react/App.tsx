@@ -14,7 +14,6 @@ import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
-import {ConnectWithPassphrase} from './ConnectAccount/ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
 import {createModalService} from '@universal-login/react';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
@@ -46,12 +45,6 @@ const App = () => {
           exact
           path="/connect"
           render={() => <ConnectAccount />}
-        />
-        <Route
-          exact
-          path="/connect-with-passphrase"
-          render={() => <ConnectWithPassphrase />
-          }
         />
         <Route
           exact

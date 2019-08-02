@@ -8,12 +8,14 @@ import passphrase2x from './../../assets/illustrations/passphrase@2x.png';
 import usbIcon from './../../assets/icons/usb.svg';
 import documentIcon from './../../assets/icons/document.svg';
 import {useServices, useRouter} from '../../hooks';
+import {ConnectModal} from './ConnectAccount';
 
 interface ChooseConnectionMethodProps {
   name: string;
+  setConnectModal: (modal: ConnectModal) => void;
 }
 
-export const ChooseConnectionMethod = ({name}: ChooseConnectionMethodProps) => {
+export const ChooseConnectionMethod = ({name, setConnectModal}: ChooseConnectionMethodProps) => {
   const {connectToWallet} = useServices();
   let unsubscribe: Procedure;
   const {history} = useRouter();
@@ -47,10 +49,10 @@ export const ChooseConnectionMethod = ({name}: ChooseConnectionMethodProps) => {
                   <img src={passphrase1x} srcSet={passphrase2x} alt="avatar" className="connection-method-img" />
                   <h2 className="connection-method-title">Passphrase</h2>
                   <p className="connection-method-text">If you have lost all your devices, recover the access to your account.</p>
-                  <Link to="/connect-with-passphrase" className="connection-method-link">
+                  <button onClick={() => setConnectModal('recover')} className="connection-method-button">
                     <img src={documentIcon} alt="usb" className="connection-method-link-img" />
                     Connect with passphrase
-                </Link>
+                </button>
                 </div>
               </div>
             </div>

@@ -1,15 +1,18 @@
-import {ensure, ApplicationWallet} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, MANAGEMENT_KEY} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
-import {WalletOverridden, FutureWalletNotSet} from '../utils/errors';
+import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
+import {Wallet} from 'ethers';
 
 type WalletState = 'None' | 'Future' | 'Deployed';
+
+type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
 export class WalletService {
   public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
-  constructor(private sdk: UniversalLoginSDK) {
+  constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain) {
   }
 
   walletDeployed(): boolean {
@@ -47,6 +50,17 @@ export class WalletService {
     ensure(this.state === 'None', WalletOverridden);
     this.state = 'Deployed';
     this.applicationWallet = applicationWallet;
+  }
+
+  async recover(name: string, passphrase: string) {
+    const contractAddress = await this.sdk.getWalletContractAddress(name);
+    const wallet = await this.walletFromPassphrase(name, passphrase);
+    ensure(await this.sdk.getKeyPurpose(contractAddress, wallet.address) === MANAGEMENT_KEY, InvalidPassphrase);
+    this.connect({
+      name,
+      privateKey: wallet.privateKey,
+      contractAddress
+    });
   }
 
   disconnect(): void {
