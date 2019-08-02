@@ -1,9 +1,24 @@
 import {utils, Wallet} from 'ethers';
 import scrypt from 'scrypt-js';
 
-export function walletFromBrain(username: string, password: string): Promise<Wallet> {
-  const usernameUtf8Bytes =  utils.toUtf8Bytes(username, utils.UnicodeNormalizationForm.NFKC);
-  const passwordUtf8Bytes =  utils.toUtf8Bytes(password, utils.UnicodeNormalizationForm.NFKC);
+export function walletFromBrain(
+  username: string | utils.Arrayish | utils.Hexable,
+  password: string | utils.Arrayish | utils.Hexable
+): Promise<Wallet> {
+  let usernameUtf8Bytes: Uint8Array;
+  let passwordUtf8Bytes: Uint8Array;
+
+  if (typeof(username) === 'string') {
+    usernameUtf8Bytes =  utils.toUtf8Bytes(username, utils.UnicodeNormalizationForm.NFKC);
+  } else {
+    usernameUtf8Bytes = utils.arrayify(username);
+  }
+
+  if (typeof(password) === 'string') {
+    passwordUtf8Bytes =  utils.toUtf8Bytes(password, utils.UnicodeNormalizationForm.NFKC);
+  } else {
+      passwordUtf8Bytes = utils.arrayify(password);
+  }
 
   return new Promise(function (resolve, reject) {
     scrypt(
@@ -16,7 +31,7 @@ export function walletFromBrain(username: string, password: string): Promise<Wal
       function (
         error: Error | null | undefined,
         progress: number,
-        key?: any
+        key?: ReadonlyArray<number>
       ) {
         if (error) {
           reject(error);
