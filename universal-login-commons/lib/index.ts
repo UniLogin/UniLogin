@@ -51,3 +51,4 @@ export {deepMerge} from './core/utils/deepMerge';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/tokenDetails';
 export {normalizeBigNumber} from './core/utils/bigNumbers';
+export {stringToEther} from './integration/ethereum/stringToEther';

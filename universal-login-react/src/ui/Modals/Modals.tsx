@@ -19,6 +19,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
           hideModal={modalService.hideModal}
         >
           <TopUp
+            hideModal={modalService.hideModal}
             {...modalService.modalProps as TopUpProps}
           />
         </ModalWrapper>
