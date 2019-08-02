@@ -1,13 +1,11 @@
 import React from 'react';
-import Sidebar from '../common/Sidebar';
+import {Header} from '../Home/Header';
 import {Settings} from '@universal-login/react';
-import UserDropdown from '../common/UserDropdown';
 
 const SettingsScreen = () => (
   <div className="dashboard">
-    <Sidebar />
+    <Header />
     <div className="dashboard-content dashboard-content-subscreen">
-      <UserDropdown />
       <Settings />
     </div>
   </div>

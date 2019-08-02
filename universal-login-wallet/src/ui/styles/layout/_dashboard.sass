@@ -1,38 +1,25 @@
 .dashboard
   position: relative
-  display: flex
-  height: 100vh
-
-  +media(s, 168px)
-    padding-bottom: 83px
+  min-height: 100vh
 
 .dashboard-main
   position: relative
   width: 100%
 
 .dashboard-content
-  width: 100%
-  overflow-y: auto
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: 370px
+  height: calc(50vh - 35px)
   padding: 30px 30px 100px
 
   +media(s, 168px)
     padding: 60px 15px 0
-  
+
 .dashboard-content-subscreen
   +media(s, 168px)
     padding: 0
-
-.dashboard-balance
-  max-width: 707px
-  margin: 140px auto 0
-
-  +media(s, 168px)
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    height: 100%
-    margin: 0
 
 .home-screen-column
   +media(s, 168px)
@@ -70,4 +57,9 @@
   font-weight: 600
   font-size: 14px
   color: #3D3D41
-  
+
+.my-assets-section
+  height: calc(50vh - 35px)
+  min-height: 370px
+  background: #fafbfd url('./../assets/dashboardBackground.jpg') bottom no-repeat
+  background-size: cover

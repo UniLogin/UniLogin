@@ -1,0 +1,48 @@
+.header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  height: 70px
+  padding: 15px 30px
+  background: #fff
+
+.header-row
+  display: flex
+  align-items: center
+
+.header-list
+  display: flex
+  align-items: center
+  margin-right: 16px
+
+.header-list-item + .header-list-item
+  margin-left: 25px
+
+.notifications-btn
+  position: relative
+
+.notifications-btn.new-notifications::after
+  content: ''
+  position: absolute
+  top: -1px
+  right: -4px
+  width: 11px
+  height: 11px
+  background: #2EC9F5
+  border-radius: 50%
+  border: 1px solid #ffffff
+
+  +media(s, 168px)
+    border: 2px solid #ffffff
+
+.user-btn
+  display: none
+  width: 25px
+  height: 25px
+  margin: 0 auto
+
+  +media(s, 168px)
+    display: block
+
+.user-btn img
+  max-width: 100%

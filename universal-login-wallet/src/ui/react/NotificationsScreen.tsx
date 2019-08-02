@@ -1,7 +1,6 @@
 import React from 'react';
-import Sidebar from './common/Sidebar';
+import {Header} from './Home/Header';
 import {Notifications} from '@universal-login/react';
-import UserDropdown from './common/UserDropdown';
 import {useServices} from '../hooks';
 
 const NotificationsScreen = () => {
@@ -9,9 +8,8 @@ const NotificationsScreen = () => {
   const {contractAddress, privateKey} = walletService.applicationWallet!;
   return (
     <div className="dashboard">
-      <Sidebar />
+      <Header />
       <div className="dashboard-content dashboard-content-subscreen">
-        <UserDropdown />
         <Notifications sdk={sdk} contractAddress={contractAddress} privateKey={privateKey} />
       </div>
     </div>
