@@ -15,7 +15,7 @@ describe('UNIT: WalletService', () => {
   let sdk: any;
   let walletService: WalletService;
 
-  beforeEach(() => {
+  before(() => {
     getKeyPurpose.resolves(INVALID_KEY);
     getKeyPurpose.withArgs(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS).resolves(MANAGEMENT_KEY);
 
@@ -28,14 +28,16 @@ describe('UNIT: WalletService', () => {
       address: TEST_ACCOUNT_ADDRESS,
       privateKey: TEST_PRIVATE_KEY
     });
+
     walletFromPassphrase.resolves({
       address: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       privateKey: TEST_PRIVATE_KEY
       });
-
-    walletService = new WalletService(sdk, walletFromPassphrase);
   });
 
+  beforeEach(() => {
+    walletService = new WalletService(sdk, walletFromPassphrase);
+  });
   it('succesful recover', async () => {
     const expectedPrivateKey = TEST_PRIVATE_KEY;
     const expectedContractAddress = TEST_CONTRACT_ADDRESS;
