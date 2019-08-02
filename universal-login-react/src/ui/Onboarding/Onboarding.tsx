@@ -1,11 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modal from '../Modals/Modal';
 import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {ReactModalContext} from '../../core/models/ReactModalContext';
-
+import {ReactModalContext, ReactModalType} from '../../core/models/ReactModalContext';
+import {createModalService} from '../../core/services/createModalService';
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
   onConnect: () => void;
@@ -15,10 +15,9 @@ interface OnboardingProps {
 }
 
 export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: OnboardingProps) => {
-  const modalService = useContext(ReactModalContext);
+  const modalService = createModalService<ReactModalType>();
   const walletService = new WalletService(sdk);
   const [contractAddress, setContractAddress] = useState<string>('');
-
   const onConnectClick = () => {
     onConnect();
   };
@@ -38,13 +37,15 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(className)}>
-        <WalletSelector
-          sdk={sdk}
-          onCreateClick={onCreateClick}
-          onConnectClick={onConnectClick}
-          domains={domains}
-        />
-        <Modal contractAddress={contractAddress}/>
+      <ReactModalContext.Provider value={modalService}>
+          <WalletSelector
+            sdk={sdk}
+            onCreateClick={onCreateClick}
+            onConnectClick={onConnectClick}
+            domains={domains}
+          />
+          <Modal contractAddress={contractAddress}/>
+        </ReactModalContext.Provider>
       </div>
     </div>
   );

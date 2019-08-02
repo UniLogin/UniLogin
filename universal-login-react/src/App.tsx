@@ -37,14 +37,12 @@ export const App = () => {
               exact
               path="/onboarding"
               render={() => (
-                <ReactModalContext.Provider value={modalService}>
-                  <Onboarding
-                    sdk={sdk}
-                    onConnect={onConnect}
-                    onCreate={onCreate}
-                    domains={['mylogin.eth', 'universal-id.eth']}
-                  />
-                </ReactModalContext.Provider>
+                <Onboarding
+                  sdk={sdk}
+                  onConnect={onConnect}
+                  onCreate={onCreate}
+                  domains={['mylogin.eth', 'universal-id.eth']}
+                />
               )}
             />
             <Route
