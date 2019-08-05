@@ -3,7 +3,7 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
-import {BalanceObserver} from '../core/observers/BalanceObserver';
+import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -18,7 +18,7 @@ class UniversalLoginSDK {
   authorisationsObserver: AuthorisationsObserver;
   blockchainObserver: BlockchainObserver;
   executionFactory: ExecutionFactory;
-  balanceObserver?: BalanceObserver;
+  deploymentReadyObserver?: DeploymentReadyObserver;
   deploymentObserver?: DeploymentObserver;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
@@ -85,9 +85,9 @@ class UniversalLoginSDK {
     return this.config;
   }
 
-  async getBalanceObserver() {
+  async getDeploymentReadyObserver() {
     ensureNotNull(this.config, MissingConfiguration);
-    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.config!.supportedTokens, this.provider);
+    this.deploymentReadyObserver = this.deploymentReadyObserver || new DeploymentReadyObserver(this.config!.supportedTokens, this.provider);
   }
 
   async getDeploymentObserver() {

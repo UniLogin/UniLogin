@@ -10,6 +10,7 @@
     "deep-equal": "^1.0.1",
     "ethers": "^4.0",
     "fbemitter": "^2.1.1",
+    "lodash.clonedeep": "^4.5.0",
     "node-fetch": "^2.2.0"
   },
   "scripts": {
@@ -23,6 +24,7 @@
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/deep-equal": "^1.0.1",
+    "@types/lodash.clonedeep": "^4.5.6",
     "@types/mocha": "^5.2.5",
     "@types/node-fetch": "^2.1.6",
     "@universal-login/relayer": "^0.3.9",

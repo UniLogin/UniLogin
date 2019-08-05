@@ -49,3 +49,5 @@ export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';
 export {SECURITY_CODE_LENGTH, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
 export {deepMerge} from './core/utils/deepMerge';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
+export {TokenDetails, TokenDetailsWithBalance} from './core/models/tokenDetails';
+export {normalizeBigNumber} from './core/utils/bigNumbers';
