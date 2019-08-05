@@ -1,4 +1,4 @@
-import {deepCopy} from './deepCopy';
+const deepCopy = require('lodash.clonedeep');
 
 export function deepMerge<T, U>(destination: T, source: U): T & U {
   const result = deepCopy(destination);

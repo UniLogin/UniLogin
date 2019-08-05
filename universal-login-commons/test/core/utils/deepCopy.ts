@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {deepCopy} from '../../../lib/core/utils/deepCopy';
+const deepCopy = require('lodash.clonedeep');
 
 describe('deepCopy', () => {
   it('copy should not change when change the 1st level', () => {
