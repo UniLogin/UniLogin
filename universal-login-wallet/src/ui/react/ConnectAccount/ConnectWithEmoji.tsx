@@ -1,8 +1,8 @@
 import React from 'react';
-import {EmojiPanel} from '@universal-login/react';
+import {EmojiPanel, useAsync} from '@universal-login/react';
 import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
-import {useServices, useRouter, useAsync} from '../../hooks';
+import {useServices, useRouter} from '../../hooks';
 
 interface ConnectWithEmojiProps {
   name: string;
