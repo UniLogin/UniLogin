@@ -1,3 +1,5 @@
+import {utils} from 'ethers';
+
 export type TokenDetails = {
   address: string;
   symbol: string;
@@ -5,5 +7,5 @@ export type TokenDetails = {
 };
 
 export type TokenDetailsWithBalance = TokenDetails & {
-  balance: string;
+  balance: utils.BigNumber;
 };

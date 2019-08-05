@@ -2,9 +2,10 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
+import {TokenDetailsWithBalance} from '@universal-login/commons/lib';
 
 describe('INT: BalanceObserver', () => {
   let balanceChecker: BalanceChecker;
@@ -19,7 +20,7 @@ describe('INT: BalanceObserver', () => {
       [wallet] = getWallets(provider);
       mockToken = await deployContract(wallet, MockToken);
       const supportedTokens: TokenDetails[] = [
-        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum'},
+        ETHER_NATIVE_TOKEN,
         {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'}
       ];
 
@@ -42,8 +43,8 @@ describe('INT: BalanceObserver', () => {
     it('1 subscription - no change', async () => {
       const callback = sinon.spy();
       const expectedTokenBalances = [
-        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '0'},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
+        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0')}
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -51,14 +52,16 @@ describe('INT: BalanceObserver', () => {
       unsubscribe();
 
       expect(callback).to.have.been.calledOnce;
-      expect(callback).to.have.been.calledWith(expectedTokenBalances);
+      const actualtokenBalances = callback.firstCall.args[0] as TokenDetailsWithBalance[];
+      actualtokenBalances[0].balance = normalizeBigNumber(actualtokenBalances[0].balance);
+      expect(callback.firstCall.args[0]).to.deep.equal(expectedTokenBalances);
     });
 
     it('1 subscription - change balance', async () => {
       const callback = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
-        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '500000000000000000'},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
+        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: normalizeBigNumber(utils.bigNumberify('0'))}
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -68,15 +71,17 @@ describe('INT: BalanceObserver', () => {
       unsubscribe();
 
       const actualTokenBalancesAfterTransaction = callback.secondCall.args[0];
-      expect(actualTokenBalancesAfterTransaction).to.deep.equal(expectedTokenBalancesAfterTransaction);
+      actualTokenBalancesAfterTransaction[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction[0].balance);
+      expect(actualTokenBalancesAfterTransaction).to.deep.eq(expectedTokenBalancesAfterTransaction);
+      expect(callback).to.have.been.calledTwice;
     });
 
     it('2 subscriptions - no change', async () => {
       const callback1 = sinon.spy();
       const callback2 = sinon.spy();
       const expectedTokenBalances = [
-        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '0'},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
+        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0')}
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
@@ -88,10 +93,15 @@ describe('INT: BalanceObserver', () => {
       unsubscribe1();
       unsubscribe2();
 
+      const actualTokenBalances1 = callback1.firstCall.args[0];
+      actualTokenBalances1[0].balance = normalizeBigNumber(actualTokenBalances1[0].balance);
+      expect(actualTokenBalances1).to.deep.equal(expectedTokenBalances);
       expect(callback1).to.have.been.calledOnce;
-      expect(callback1).to.have.been.calledWith(expectedTokenBalances);
+
+      const actualTokenBalances2 = callback2.firstCall.args[0];
+      actualTokenBalances2[0].balance = normalizeBigNumber(actualTokenBalances2[0].balance);
+      expect(actualTokenBalances2).to.deep.equal(expectedTokenBalances);
       expect(callback2).to.have.been.calledOnce;
-      expect(callback2).to.have.been.calledWith(expectedTokenBalances);
     });
 
 
@@ -99,8 +109,8 @@ describe('INT: BalanceObserver', () => {
       const callback1 = sinon.spy();
       const callback2 = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
-        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '500000000000000000'},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
+        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0')}
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
@@ -116,10 +126,15 @@ describe('INT: BalanceObserver', () => {
       unsubscribe1();
       unsubscribe2();
 
+      const actualTokenBalancesAfterTransaction1 = callback1.secondCall.args[0];
+      actualTokenBalancesAfterTransaction1[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction1[0].balance);
+      expect(actualTokenBalancesAfterTransaction1).to.deep.equal(expectedTokenBalancesAfterTransaction);
       expect(callback1).to.have.been.calledTwice;
+
+      const actualTokenBalancesAfterTransaction2 = callback2.secondCall.args[0];
+      actualTokenBalancesAfterTransaction2[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction2[0].balance);
+      expect(actualTokenBalancesAfterTransaction2).to.deep.equal(expectedTokenBalancesAfterTransaction);
       expect(callback2).to.have.been.calledTwice;
-      expect(callback1).to.have.been.calledWith(expectedTokenBalancesAfterTransaction);
-      expect(callback2).to.have.been.calledWith(expectedTokenBalancesAfterTransaction);
     });
 
     afterEach(async () => {

@@ -1,32 +1,32 @@
 import ObserverRunner from './ObserverRunner';
 import {BalanceChecker, TokenDetails, TokenDetailsWithBalance} from '@universal-login/commons';
-import deepEqual = require('deep-equal');
+import deepEqual from 'deep-equal';
+import clonedeep from 'lodash.clonedeep';
 
 export class BalanceObserver extends ObserverRunner {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
   private callbacks: Function[] = [];
-  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private supportedTokens: TokenDetails[]) {
+
+  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetails: TokenDetails[], step: number = 500) {
     super();
-    this.step = 500;
+    this.step = step;
   }
 
   async tick() {
     await this.checkBalanceNow();
   }
 
-  async getBalances() {
-    const tokenBalances: TokenDetailsWithBalance[] = [];
-    for (const supportedToken of this.supportedTokens) {
-      const balance = await this.balanceChecker.getBalance(this.walletAddress, supportedToken.address);
-      tokenBalances.push({...supportedToken, balance: balance.toString()});
-    }
-    return tokenBalances;
+  async getBalances(): Promise<TokenDetailsWithBalance[]> {
+    return Promise.all(this.tokenDetails.map(async (token: TokenDetails) => {
+        const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
+        return {...token, balance};
+      }));
   }
 
   async checkBalanceNow() {
     const newTokenBalances = await this.getBalances();
     if (!deepEqual(this.lastTokenBalances, newTokenBalances)) {
-      this.lastTokenBalances = newTokenBalances.map((tokenBalance: TokenDetailsWithBalance) => ({...tokenBalance}));
+      this.lastTokenBalances = clonedeep(newTokenBalances);
       this.callbacks.forEach((callback) => callback(newTokenBalances));
     }
     return this.lastTokenBalances;

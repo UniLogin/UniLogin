@@ -12,14 +12,12 @@ export class BalanceChecker {
     return this.getTokenBalance(walletAddress, tokenAddress);
   }
 
-  private async getEthBalance(walletAddress: string) {
-    const balance = await this.provider.getBalance(walletAddress);
-    return balance.toString();
+  private getEthBalance(walletAddress: string) {
+    return this.provider.getBalance(walletAddress);
   }
 
-  private async getTokenBalance(walletAddress: string, tokenAddress: string) {
+  private getTokenBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
     const token = new Contract(tokenAddress, IERC20.abi, this.provider);
-    const balance: utils.BigNumber = await token.balanceOf(walletAddress);
-    return balance.toString();
+    return token.balanceOf(walletAddress);
   }
 }
