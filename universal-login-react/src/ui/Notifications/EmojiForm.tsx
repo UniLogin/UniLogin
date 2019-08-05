@@ -22,7 +22,7 @@ export const EmojiForm = ({sdk, publicKey, privateKey, contractAddress, security
       sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
       setStatus('');
     } else {
-      setStatus('FAIL: Wrong security code. Try again or deny request.');
+      setStatus('Invalid code. Try again.');
     }
   };
 
