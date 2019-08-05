@@ -1,7 +1,7 @@
-import { ReactWrapper } from 'enzyme';
+import {ReactWrapper} from 'enzyme';
 
 export default class TransferPage {
-  constructor(private appWrapper : ReactWrapper) {
+  constructor(private appWrapper: ReactWrapper) {
   }
 
   enterTransferDetails(address: string, value: string) {
@@ -20,5 +20,16 @@ export default class TransferPage {
 
   transfer() {
     this.appWrapper.find('#transferButton').first().simulate('click');
+  }
+
+  enterTransferAmount(amount: string) {
+    const amountInput = this.appWrapper.find('input#amount-eth');
+    amountInput.simulate('change', {target: {value: amount}});
+    this.appWrapper.find('#select-recipient').simulate('click');
+  }
+
+  enterRecipient(address: string) {
+    const addressInput = this.appWrapper.find('input#input-recipient');
+    addressInput.simulate('change', {target: {value: address}});
   }
 }

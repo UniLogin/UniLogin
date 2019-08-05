@@ -1,17 +1,16 @@
 import React, {useState, useContext} from 'react';
-import {Input} from '@universal-login/react';
-import InputLabel from '../common/InputLabel';
-import InputWithDropdown from '../common/InputWithDropdown';
-import ButtonFullwidth from '../common/ButtonFullwidth';
 import {useServices} from '../../hooks';
 import TransferDetails from '../../../core/entities/TransferDetails';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {ModalTransferAmount} from './ModalTransferAmount';
+import {ModalTransferRecipient} from './ModalTransferRecipient';
 
 const ModalTransfer = () => {
   const modalService = useContext(WalletModalContext);
+  const [modal, setModal] = useState('transferAmount');
 
   const {transferService, tokenService} = useServices();
-  const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[0].symbol} as TransferDetails);
+  const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[1].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {
     modalService.hideModal();
@@ -24,33 +23,23 @@ const ModalTransfer = () => {
     setTransferDetails({...transferDetalis, ...args});
   };
 
-  return (
-    <div className="modal-body transfer-modal">
-      <h2 className="modal-title transfer-modal-title">Transfer funds</h2>
-      <InputLabel htmlFor="address">To address</InputLabel>
-      <Input
-        id="address"
-        className="transfer-modal-address"
-        onChange={event => updateTransferDetailsWith({to: event.target.value})}
-        autoFocus
+  if (modal === 'transferAmount') {
+    return (
+      <ModalTransferAmount
+        onSelectRecipientClick={() => setModal('transferRecipient')}
+        onAmountInputChange={event => updateTransferDetailsWith({amount: event.target.value})}
       />
-      <InputLabel htmlFor="amount">Amount to send</InputLabel>
-      <InputWithDropdown
-        id="amount"
-        className="transfer-modal-amount"
-        onChange={event => updateTransferDetailsWith({amount: event.target.value})}
-        currency={transferDetalis.currency}
-        setCurrency={event => updateTransferDetailsWith({currency: event})}
+    );
+  } else if (modal === 'transferRecipient') {
+    return (
+      <ModalTransferRecipient
+        onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+        onSendClick={onGenerateClick}
+        onBackClick={() => setModal('transferAmount')}
       />
-      <button className="modal-btn-text">Send entire balance</button>
-      <ButtonFullwidth
-        id="transferButton"
-        onClick={onGenerateClick}
-      >
-        Generate transaction
-      </ButtonFullwidth>
-    </div>
-  );
+    );
+  }
+  return null;
 };
 
 export default ModalTransfer;
