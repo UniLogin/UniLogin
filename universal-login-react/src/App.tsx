@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {TEST_ACCOUNT_ADDRESS, generateCode, generateCodeWithFakes, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, generateCode, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -33,7 +33,7 @@ export const App = () => {
         <NavigationColumn />
         <div className="playground-content">
           <Switch>
-            <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)}/>
+            <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)} />
             <Route
               exact
               path="/onboarding"
@@ -50,24 +50,23 @@ export const App = () => {
               exact
               path="/walletselector"
               render={() => (
-                    <WalletSelector
-                      onCreateClick={() => { console.log('create'); }}
-                      onConnectClick={() => { console.log('connect'); }}
-                      sdk={sdk}
-                      domains={['mylogin.eth', 'myapp.eth']}
-                    />
-                )}
+                <WalletSelector
+                  onCreateClick={() => { console.log('create'); }}
+                  onConnectClick={() => { console.log('connect'); }}
+                  sdk={sdk}
+                  domains={['mylogin.eth', 'myapp.eth']}
+                />
+              )}
             />
             <Route
               exact
               path="/connecting"
               render={() => (
                 <div>
-                  <EmojiPanel code={generateCode(TEST_ACCOUNT_ADDRESS)}/>
+                  <EmojiPanel code={generateCode(TEST_ACCOUNT_ADDRESS)} />
                   <EmojiForm
                     sdk={sdk}
                     publicKey={TEST_ACCOUNT_ADDRESS}
-                    securityCodeWithFakes={generateCodeWithFakes(TEST_ACCOUNT_ADDRESS)}
                     contractAddress={TEST_CONTRACT_ADDRESS}
                     privateKey={TEST_PRIVATE_KEY}
                   />
@@ -96,9 +95,9 @@ export const App = () => {
                 }
               }
             />
-            <Route exact path="/settings" render={() => <Settings/>}/>
-            <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)}/>
-            <Route component={() => (<p>not found</p>)}/>
+            <Route exact path="/settings" render={() => <Settings />} />
+            <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
+            <Route component={() => (<p>not found</p>)} />
           </Switch>
         </div>
       </div>

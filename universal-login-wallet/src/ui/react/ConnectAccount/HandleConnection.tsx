@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {EmojiForm} from '@universal-login/react';
+import {Link} from 'react-router-dom';
 import {Notification} from '@universal-login/commons';
+import {EmojiForm} from '@universal-login/react';
 import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices} from '../../hooks';
-import {Link} from 'react-router-dom';
 
 export const ConnectionNotification = () => {
   const {sdk, walletService} = useServices();
@@ -25,7 +25,6 @@ export const ConnectionNotification = () => {
               <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
               {notifications.length > 0
                 ? <EmojiForm
-                  securityCodeWithFakes={notifications[0].securityCodeWithFakes!}
                   publicKey={notifications[0].key}
                   sdk={sdk}
                   contractAddress={contractAddress}
