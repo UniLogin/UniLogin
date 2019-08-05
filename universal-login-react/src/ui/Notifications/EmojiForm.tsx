@@ -20,7 +20,7 @@ export const EmojiForm = ({sdk, publicKey, privateKey, contractAddress, security
   const confirmWithCodeCheck = (publicKey: string) => {
     if (isValidCode(enteredCode, publicKey)) {
       sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
-      setStatus('OK: security code confirmed');
+      setStatus('');
     } else {
       setStatus('FAIL: Wrong security code. Try again or deny request.');
     }
