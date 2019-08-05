@@ -4,7 +4,7 @@ import {ensure} from './errors';
 import {isProperAddress, reverseHexString} from './hexStrings';
 import {shuffle, array8bitTo16bit} from './arrays';
 import {Notification} from '../models/notifications';
-const deepCopy = require('lodash.clonedeep');
+import clonedeep from 'lodash.clonedeep';
 
 export const ALPHABET_SIZE = 1024;
 export const SECURITY_CODE_LENGTH = 6;
@@ -37,7 +37,7 @@ const addCodeWithFakes = (notification: Notification) =>
 
 export const addCodesToNotifications = (notifications: Notification[]) =>
   notifications.map((notification) => {
-    const notificationCopy = deepCopy(notification);
+    const notificationCopy = clonedeep(notification);
     return addCodeWithFakes(notificationCopy);
   });
 

@@ -1,7 +1,7 @@
-const deepCopy = require('lodash.clonedeep');
+import clonedeep from 'lodash.clonedeep';
 
 export function deepMerge<T, U>(destination: T, source: U): T & U {
-  const result = deepCopy(destination);
+  const result: any = clonedeep(destination);
   for (const property in source) {
     if (isProperObject(source[property])) {
       result[property] = result[property] || {};

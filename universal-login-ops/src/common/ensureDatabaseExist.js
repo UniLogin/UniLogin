@@ -1,5 +1,5 @@
 const knex = require('knex');
-const {deepCopy} = require('@universal-login/commons');
+import clonedeep from 'lodash.clonedeep';
 
 async function getDatabase(connection, databaseName) {
   return connection
@@ -13,7 +13,7 @@ async function createDatabase(connection, databaseName) {
 }
 
 const stripDatabaseFromConfig = (config) => {
-  const result = deepCopy(config);
+  const result = clonedeep(config);
   result.connection.database = 'postgres';
   return result;
 };
