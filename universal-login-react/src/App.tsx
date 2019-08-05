@@ -75,14 +75,20 @@ export const App = () => {
             <Route
               exact
               path="/topup"
-              render={() => (
-                <>
-                  <ReactModalContext.Provider value={modalService}>
-                    <button onClick={() => modalService.showModal('topUpAccount', {contractAddress: Wallet.createRandom().address, onRampConfig: relayerConfig!.onRampProviders})}>Show Topup</button>
-                    <Modal />
-                  </ReactModalContext.Provider>
-                </>
-              )}
+              render={() => {
+                if(!relayerConfig) {
+                  return <div>Loading...</div>
+                }
+                return (
+                  <>
+                    <ReactModalContext.Provider value={modalService}>
+                      <button onClick={() => modalService.showModal('topUpAccount', {contractAddress: Wallet.createRandom().address, onRampConfig: relayerConfig!.onRampProviders})}>Show Topup</button>
+                      <Modal />
+                    </ReactModalContext.Provider>
+                  </>
+                  )
+                }
+              }
             />
             <Route exact path="/settings" render={() => <Settings/>}/>
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)}/>
