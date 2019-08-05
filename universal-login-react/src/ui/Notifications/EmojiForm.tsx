@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
-import {isValidCode, generateCodeWithFakes} from '@universal-login/commons';
+import {isValidCode} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
 
@@ -43,7 +43,7 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFo
   return (
     <div>
       <EmojiPlaceholders code={enteredCode} onEmojiClicked={onEmojiRemove} />
-      <EmojiPanelWithFakes securityCodeWithFakes={generateCodeWithFakes(publicKey)} onEmojiClicked={onEmojiAdd} />
+      <EmojiPanelWithFakes publicKey={publicKey} onEmojiClicked={onEmojiAdd} />
       <div className="notification-buttons-row">
         <button id="reject" onClick={() => sdk.denyRequest(contractAddress, publicKey, privateKey)}>Reject</button>
         <button id="confirm" onClick={() => confirmWithCodeCheck(publicKey)}>Confirm</button>
