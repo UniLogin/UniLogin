@@ -9,15 +9,16 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import Modal from './ui/Modals/Modal';
+import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
-import {ReactModalType, ReactModalContext} from './core/models/ReactModalContext';
+import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
 import './ui/styles/playground.css';
+import {useAsync} from './ui/hooks/useAsync';
 
 export const App = () => {
-  const modalService = createModalService<ReactModalType>();
+  const modalService = createModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
-
+  const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
   };
@@ -74,14 +75,24 @@ export const App = () => {
             <Route
               exact
               path="/topup"
-              render={() => (
-                <>
-                  <ReactModalContext.Provider value={modalService}>
-                    <button onClick={() => modalService.showModal('topUpAccount')}>Show Topup</button>
-                    <Modal contractAddress={Wallet.createRandom().address}/>
-                  </ReactModalContext.Provider>
-                </>
-              )}
+              render={() => {
+                if (!relayerConfig) {
+                  return <div>Loading...</div>;
+                }
+                const topUpProps = {
+                  contractAddress: Wallet.createRandom().address,
+                  onRampConfig: relayerConfig!.onRampProviders
+                };
+                return (
+                  <>
+                    <ReactModalContext.Provider value={modalService}>
+                      <button onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
+                      <Modals />
+                    </ReactModalContext.Provider>
+                  </>
+                  );
+                }
+              }
             />
             <Route exact path="/settings" render={() => <Settings/>}/>
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)}/>
