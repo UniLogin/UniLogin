@@ -1,5 +1,5 @@
-const knex = require('knex');
 import clonedeep from 'lodash.clonedeep';
+const knex = require('knex');
 
 async function getDatabase(connection, databaseName) {
   return connection
@@ -18,7 +18,7 @@ const stripDatabaseFromConfig = (config) => {
   return result;
 };
 
-async function ensureDatabaseExist(databaseConfig) {
+export async function ensureDatabaseExist(databaseConfig) {
   const connection = knex(stripDatabaseFromConfig(databaseConfig));
   const databaseName = databaseConfig.connection.database;
   const database = await getDatabase(connection, databaseName);
@@ -28,5 +28,3 @@ async function ensureDatabaseExist(databaseConfig) {
   }
   await connection.destroy();
 }
-
-module.exports = ensureDatabaseExist;
