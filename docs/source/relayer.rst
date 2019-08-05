@@ -3,15 +3,15 @@
 Relayer
 =======
 
-Relayer is a RESTful JSON API server written in node.js and express.js, that allows interacting with wallet contract using meta-transactions. Relayer gets signed message and propagates it to the network. It pays for transactions and gets the refund from contracts.
+A relayer is a RESTful JSON API server written in node.js and express.js that allows interacting with a wallet contract using meta-transactions. The relayer gets a signed message and propagates it to the network. It pays for transactions and gets the refund from contracts.
 
-Below are the instructions on how to run relayer.
+Below are the instructions on how to run the relayer.
 
 If you would like to use your own domain, jump to the section :ref:`ENS registration<ens-registration>`.
 
 
-Starting relayer
-----------------
+Starting a relayer
+------------------
 
 
 Prerequisites
@@ -19,7 +19,7 @@ Prerequisites
 
 **Database**
 
-To run relayer in development mode and to run tests you need to have Postgres installed and running.
+To run a relayer in a development mode and to run tests you need to have Postgres installed and running.
 You also need to have `universal_login_relayer_development` database created.
 
 You can do it in your favorite database UI, or from `psql`:
@@ -33,7 +33,7 @@ You can do it in your favorite database UI, or from `psql`:
 
 **Factory contract**
 
-To run relayer you also need to deploy your own factory contract, with the same wallet that relayer will have. To do that you will need wallet master contract address (you can deploy your own or use our). To deploy the factory contract run:
+To run a relayer you also need to deploy your own factory contract, with the same wallet that the relayer will have. To do that you will need a wallet master contract address (you can deploy your own or use ours). To deploy the factory contract run:
 
   ::
 
@@ -53,17 +53,17 @@ Example
 From command line
 ^^^^^^^^^^^^^^^^^
 
-To start relayer from the command line, clone `UniversalLoginSDK <https://github.com/UniversalLogin/UniversalLoginSDK>`_ github repository and follow steps:
+To start a relayer from the command line, clone `UniversalLoginSDK <https://github.com/UniversalLogin/UniversalLoginSDK>`_ github repository and follow steps:
 
 **1. Setup environment**
 
 Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env file with parameters:
 
   - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
-  - **PORT** : number - relayer endpoint
-  - **PRIVATE_KEY** : string - private key of relayer wallet
-  - **ENS_ADDRESS** : string - address of ENS
-  - **ENS_DOMAIN** : string - name of domain
+  - **PORT** : number - a relayer endpoint
+  - **PRIVATE_KEY** : string - a private key of a relayer wallet
+  - **ENS_ADDRESS** : string - an address of an ENS contract
+  - **ENS_DOMAIN** : string - a name of a domain
   - **WALLET_MASTER_ADDRESS** : string - WalletMaster contract address
   - **FACTORY_ADDRESS** : string - Factory contract address
 
