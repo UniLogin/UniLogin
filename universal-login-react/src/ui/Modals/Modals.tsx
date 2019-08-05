@@ -4,11 +4,11 @@ import {ModalWrapper} from './ModalWrapper';
 import WaitingFor from '../commons/WaitingFor';
 import {ReactModalContext, TopUpProps} from '../../core/models/ReactModalContext';
 
-export interface ModalProps {
+export interface ModalsProps {
   modalClassName?: string;
 }
 
-const Modal = ({modalClassName}: ModalProps) => {
+const Modals = ({modalClassName}: ModalsProps) => {
   const modalService = useContext(ReactModalContext);
   switch (modalService.modalState) {
     case 'topUpAccount':
@@ -34,4 +34,4 @@ const Modal = ({modalClassName}: ModalProps) => {
   }
 };
 
-export default Modal;
+export default Modals;

@@ -1,7 +1,7 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
-import Modal from '../Modals/Modal';
+import Modals from '../Modals/Modals';
 import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalType, ReactModalProps} from '../../core/models/ReactModalContext';
@@ -43,7 +43,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
             onConnectClick={onConnectClick}
             domains={domains}
           />
-          <Modal />
+          <Modals />
         </ReactModalContext.Provider>
       </div>
     </div>

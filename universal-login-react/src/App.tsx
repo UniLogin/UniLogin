@@ -9,7 +9,7 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import Modal from './ui/Modals/Modal';
+import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
 import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
 import './ui/styles/playground.css';
@@ -83,7 +83,7 @@ export const App = () => {
                   <>
                     <ReactModalContext.Provider value={modalService}>
                       <button onClick={() => modalService.showModal('topUpAccount', {contractAddress: Wallet.createRandom().address, onRampConfig: relayerConfig!.onRampProviders})}>Show Topup</button>
-                      <Modal />
+                      <Modals />
                     </ReactModalContext.Provider>
                   </>
                   )
