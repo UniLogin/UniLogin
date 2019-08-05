@@ -14,7 +14,7 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
-import {ConnectionNotification} from './ConnectAccount/HandleConnection';
+import {ConnectionNotification} from './ConnectAccount/ConnectionNotification';
 
 const App = () => {
   const modalService = createModalService<WalletModalType, void>();
