@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
+import {createModalService} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
@@ -15,11 +16,10 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
-import {createModalService} from '@universal-login/react';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
 
 const App = () => {
-  const modalService = createModalService<WalletModalType>();
+  const modalService = createModalService<WalletModalType, 'none'>();
   const {walletService} = useServices();
   const authorized = walletService.isAuthorized();
 
