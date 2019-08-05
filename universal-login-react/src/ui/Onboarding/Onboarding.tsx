@@ -24,7 +24,11 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
   const onCreateClick = async (ensName: string) => {
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
     const relayerConfig = await sdk.getRelayerConfig();
-    modalService.showModal('topUpAccount', {contractAddress, onRampConfig: relayerConfig!.onRampProviders});
+    const topUpProps = {
+      contractAddress,
+      onRampConfig: relayerConfig!.onRampProviders
+    };
+    modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
     await deploy(ensName, DEFAULT_GAS_PRICE.toString());

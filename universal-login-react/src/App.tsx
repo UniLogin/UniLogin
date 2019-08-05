@@ -79,10 +79,14 @@ export const App = () => {
                 if(!relayerConfig) {
                   return <div>Loading...</div>
                 }
+                const topUpProps = {
+                  contractAddress: Wallet.createRandom().address,
+                  onRampConfig: relayerConfig!.onRampProviders
+                };
                 return (
                   <>
                     <ReactModalContext.Provider value={modalService}>
-                      <button onClick={() => modalService.showModal('topUpAccount', {contractAddress: Wallet.createRandom().address, onRampConfig: relayerConfig!.onRampProviders})}>Show Topup</button>
+                      <button onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
                       <Modals />
                     </ReactModalContext.Provider>
                   </>
