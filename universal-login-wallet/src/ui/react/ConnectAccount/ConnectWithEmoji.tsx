@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {EmojiPanel} from '@universal-login/react';
 import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
@@ -10,8 +10,18 @@ interface ConnectWithEmojiProps {
 
 export const ConnectWithEmoji = ({name}: ConnectWithEmojiProps) => {
   const {connectToWallet} = useServices();
-  const [connectValues] = useAsync(async () => connectToWallet(name, () =>  history.push('/')), []);
   const {history} = useRouter();
+  const [connectValues, error] = useAsync(async () => connectToWallet(name, () => history.push('/')), []);
+
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+    }
+  }, [error]);
+
+  const onDeny = () => {
+    connectValues!.unsubscribe();
+  };
 
   return (
     <div className="main-bg">
@@ -24,8 +34,10 @@ export const ConnectWithEmoji = ({name}: ConnectWithEmojiProps) => {
             <div className="connect-emoji-section">
               <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
               <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
-              {connectValues ? <EmojiPanel code={connectValues!.securityCode} /> : 'Loading'}
-              <button className="button-secondary connect-emoji-btn">Deny</button>
+              {!connectValues && !error && 'Loading'}
+              {connectValues && <EmojiPanel code={connectValues!.securityCode} />}
+              {error && 'Error!'}
+              <button onClick={onDeny} className="button-secondary connect-emoji-btn">Deny</button>
             </div>
           </div>
         </div>
