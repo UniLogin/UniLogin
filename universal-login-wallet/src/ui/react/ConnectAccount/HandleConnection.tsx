@@ -23,13 +23,15 @@ export const HandleConnection = () => {
             <div className="connect-emoji-section">
               <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
               <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
-              {notifications.length > 0 && <EmojiForm
-                securityCodeWithFakes={notifications[0].securityCodeWithFakes!}
-                publicKey={notifications[0].key}
-                sdk={sdk}
-                contractAddress={contractAddress}
-                privateKey={privateKey}
-              />
+              {notifications.length > 0
+                ? <EmojiForm
+                  securityCodeWithFakes={notifications[0].securityCodeWithFakes!}
+                  publicKey={notifications[0].key}
+                  sdk={sdk}
+                  contractAddress={contractAddress}
+                  privateKey={privateKey}
+                />
+                : 'No requests to connect from other applications'
               }
               <Link to="/" className="button-secondary connect-emoji-btn">Cancel</Link>
             </div>
