@@ -2,7 +2,7 @@ import {useState} from 'react';
 
 export interface IModalService<T, K> {
   modalState: T | 'none';
-  modalProps: K | 'none';
+  modalProps: K | {};
   showModal: (name: T | 'none', props?: K) => void;
   hideModal: () => void;
 }

@@ -76,8 +76,8 @@ export const App = () => {
               exact
               path="/topup"
               render={() => {
-                if(!relayerConfig) {
-                  return <div>Loading...</div>
+                if (!relayerConfig) {
+                  return <div>Loading...</div>;
                 }
                 const topUpProps = {
                   contractAddress: Wallet.createRandom().address,
@@ -90,7 +90,7 @@ export const App = () => {
                       <Modals />
                     </ReactModalContext.Provider>
                   </>
-                  )
+                  );
                 }
               }
             />

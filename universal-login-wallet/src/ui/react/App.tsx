@@ -19,7 +19,7 @@ import {ConnectWithEmoji} from './ConnectAccount/ConnectWithEmoji';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
 
 const App = () => {
-  const modalService = createModalService<WalletModalType, 'none'>();
+  const modalService = createModalService<WalletModalType, void>();
   const {walletService} = useServices();
   const authorized = walletService.isAuthorized();
 
