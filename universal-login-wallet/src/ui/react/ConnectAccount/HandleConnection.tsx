@@ -6,7 +6,7 @@ import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices} from '../../hooks';
 import {Link} from 'react-router-dom';
 
-export const HandleConnection = () => {
+export const ConnectionNotification = () => {
   const {sdk, walletService} = useServices();
   const [notifications, setNotifications] = useState([] as Notification[]);
   const {contractAddress, privateKey} = walletService.applicationWallet!;

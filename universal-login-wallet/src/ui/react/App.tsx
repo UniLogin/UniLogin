@@ -14,7 +14,7 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
-import {HandleConnection} from './ConnectAccount/HandleConnection';
+import {ConnectionNotification} from './ConnectAccount/HandleConnection';
 
 const App = () => {
   const modalService = createModalService<WalletModalType, void>();
@@ -68,7 +68,7 @@ const App = () => {
         <PrivateRoute
           path="/notifications"
           authorized={authorized}
-          render={() => <HandleConnection />}
+          render={() => <ConnectionNotification />}
         />
         <PrivateRoute
           path="/settings"
