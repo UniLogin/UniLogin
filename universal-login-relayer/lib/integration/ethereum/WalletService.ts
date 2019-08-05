@@ -11,12 +11,14 @@ import {WalletDeployer} from '../ethereum/WalletDeployer';
 class WalletService {
   private bytecode: string;
   private abi: Abi;
+  private balanceChecker: BalanceChecker;
 
   constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer, private requiredBalanceChecker: RequiredBalanceChecker) {
     const contractJSON = ProxyContract;
     this.abi = contractJSON.interface;
     this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
-    this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.wallet.provider));
+    this.balanceChecker = new BalanceChecker(this.wallet.provider);
+    this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
   }
 
   async create(key: string, ensName: string, overrideOptions = {}) {
