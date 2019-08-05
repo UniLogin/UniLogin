@@ -4,6 +4,7 @@ import {ensure} from './errors';
 import {isProperAddress, reverseHexString} from './hexStrings';
 import {shuffle, array8bitTo16bit} from './arrays';
 import {Notification} from '../models/notifications';
+import clonedeep from 'lodash.clonedeep';
 
 export const ALPHABET_SIZE = 1024;
 export const SECURITY_CODE_LENGTH = 6;
@@ -31,15 +32,12 @@ export const isValidCode = (code: number[], publicKey: string) => {
   return deepEqual(expectedCode, code);
 };
 
-const copyNotification = (notification: Notification) =>
-  ({...notification, deviceInfo: {...notification.deviceInfo}});
-
 const addCodeWithFakes = (notification: Notification) =>
   ({...notification, securityCodeWithFakes: generateCodeWithFakes(notification.key)});
 
 export const addCodesToNotifications = (notifications: Notification[]) =>
   notifications.map((notification) => {
-    const notificationCopy = copyNotification(notification);
+    const notificationCopy = clonedeep(notification);
     return addCodeWithFakes(notificationCopy);
   });
 
