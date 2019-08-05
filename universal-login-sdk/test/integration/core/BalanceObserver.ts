@@ -42,8 +42,8 @@ describe('INT: BalanceObserver', () => {
     it('1 subscription - no change', async () => {
       const callback = sinon.spy();
       const expectedTokenBalances = [
-        {token: {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum'}, balance: '0'},
-        {token: {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'}, balance: '0'}
+        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '0'},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -57,8 +57,8 @@ describe('INT: BalanceObserver', () => {
     it('1 subscription - change balance', async () => {
       const callback = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
-        {token: {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum'}, balance: '500000000000000000'},
-        {token: {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'}, balance: '0'}
+        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '500000000000000000'},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -75,8 +75,8 @@ describe('INT: BalanceObserver', () => {
       const callback1 = sinon.spy();
       const callback2 = sinon.spy();
       const expectedTokenBalances = [
-        {token: {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum'}, balance: '0'},
-        {token: {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'}, balance: '0'}
+        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '0'},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
@@ -99,8 +99,8 @@ describe('INT: BalanceObserver', () => {
       const callback1 = sinon.spy();
       const callback2 = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
-        {token: {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum'}, balance: '500000000000000000'},
-        {token: {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'}, balance: '0'}
+        {address: ETHER_NATIVE_TOKEN.address, symbol: 'ETH', name: 'Ethereum', balance: '500000000000000000'},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: '0'}
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);

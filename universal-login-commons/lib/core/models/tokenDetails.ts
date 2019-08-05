@@ -4,7 +4,6 @@ export type TokenDetails = {
   name: string;
 };
 
-export type TokenDetailsWithBalance = {
-  token: TokenDetails;
+export type TokenDetailsWithBalance = TokenDetails & {
   balance: string;
 };

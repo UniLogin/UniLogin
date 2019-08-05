@@ -18,7 +18,7 @@ export class BalanceObserver extends ObserverRunner {
     const tokenBalances: TokenDetailsWithBalance[] = [];
     for (const supportedToken of this.supportedTokens) {
       const balance = await this.balanceChecker.getBalance(this.walletAddress, supportedToken.address);
-      tokenBalances.push({token: {...supportedToken}, balance: balance.toString()});
+      tokenBalances.push({...supportedToken, balance: balance.toString()});
     }
     return tokenBalances;
   }
@@ -26,7 +26,7 @@ export class BalanceObserver extends ObserverRunner {
   async checkBalanceNow() {
     const newTokenBalances = await this.getBalances();
     if (!deepEqual(this.lastTokenBalances, newTokenBalances)) {
-      this.lastTokenBalances = newTokenBalances.map((tokenBalance: TokenDetailsWithBalance) => ({...tokenBalance, token: {...tokenBalance.token}}));
+      this.lastTokenBalances = newTokenBalances.map((tokenBalance: TokenDetailsWithBalance) => ({...tokenBalance}));
       this.callbacks.forEach((callback) => callback(newTokenBalances));
     }
     return this.lastTokenBalances;
