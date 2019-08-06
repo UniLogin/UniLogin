@@ -12,7 +12,7 @@ import {MissingConfiguration, InvalidEvent, WalletContractNotDeployed, BalanceOb
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
-import {AVAILABLE_TOKENS} from '../core/utils/availableTokens';
+import {ACTIVE_TOKENS} from '../core/utils/ActiveTokens';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -105,7 +105,7 @@ class UniversalLoginSDK {
     ensureNotNull(walletContractAddress, WalletContractNotDeployed);
     ensureNotNull(this.config, MissingConfiguration);
 
-    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.balanceChecker, walletContractAddress, AVAILABLE_TOKENS);
+    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.balanceChecker, walletContractAddress, ACTIVE_TOKENS);
   }
 
   private getFutureWalletFactory() {

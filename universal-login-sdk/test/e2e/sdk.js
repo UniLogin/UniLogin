@@ -7,7 +7,6 @@ import Proxy from '@universal-login/contracts/build/Proxy';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, signGetAuthorisationRequest, createKeyPair, INVALID_KEY} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
-import {WalletContractNotDeployed} from '../../lib/core/utils/errors';
 
 chai.use(solidity);
 chai.use(sinonChai);
