@@ -2,10 +2,9 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
+import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetail, normalizeBigNumber} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
-import {TokenDetailsWithBalance} from '@universal-login/commons/lib';
 
 describe('INT: BalanceObserver', () => {
   let balanceChecker: BalanceChecker;
@@ -19,7 +18,7 @@ describe('INT: BalanceObserver', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       mockToken = await deployContract(wallet, MockToken);
-      const supportedTokens: TokenDetails[] = [
+      const supportedTokens: TokenDetail[] = [
         ETHER_NATIVE_TOKEN,
         {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'}
       ];

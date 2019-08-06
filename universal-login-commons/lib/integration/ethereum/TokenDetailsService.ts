@@ -1,4 +1,4 @@
-import {providers, Contract, utils} from 'ethers';
+import {providers, Contract} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 
 const tokenAbi = [

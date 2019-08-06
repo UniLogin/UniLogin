@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'WalletContractNotDeployed' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'WalletContractNotDeployed' | 'BalanceObserverNotCreated' | 'NoSet';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'WalletContractNotDeployed' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -101,20 +101,6 @@ export class WalletContractNotDeployed extends NotFound {
   constructor () {
     super('Wallet Contract has not been deployed', 'WalletContractNotDeployed');
     Object.setPrototypeOf(this, WalletContractNotDeployed.prototype);
-  }
-}
-export class NotCreated extends SDKError {
-  constructor (message: string, errorType: ErrorType) {
-    super(message, errorType);
-    this.errorType = errorType;
-    Object.setPrototypeOf(this, NotCreated.prototype);
-  }
-}
-
-export class BalanceObserverNotCreated extends NotCreated {
-  constructor () {
-    super('Balance Observer has not been created', 'BalanceObserverNotCreated');
-    Object.setPrototypeOf(this, BalanceObserverNotCreated.prototype);
   }
 }
 

@@ -1,12 +1,11 @@
 import {expect} from 'chai';
-import {Wallet, utils} from 'ethers';
-import {waitUntil} from '@universal-login/commons';
-import UniversalLoginSDK from '../../lib';
 import sinon from 'sinon';
+import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
-import basicSDK from '../fixtures/basicSDK';
-import {BalanceObserverNotCreated} from '../../lib/core/utils/errors';
+import {waitUntil} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
+import UniversalLoginSDK from '../../lib/api/sdk';
+import basicSDK from '../fixtures/basicSDK';
 
 const loadFixture = createFixtureLoader();
 
@@ -21,19 +20,11 @@ describe('E2E: BalanceObserver', () => {
     ({sdk, relayer, ensName, wallet, contractAddress} = await loadFixture(basicSDK));
   });
 
-  it('BalanceObserver not created', async () => {
-    const callback = sinon.spy();
-
-    const action = () => sdk.subscribeToBalances(callback);
-
-    expect(action).to.throw(BalanceObserverNotCreated);
-  });
-
   it('1 subscription', async () => {
     const callback = sinon.spy();
 
     await sdk.fetchBalanceObserver(ensName);
-    const unsubscribe = sdk.subscribeToBalances(callback);
+    const unsubscribe = sdk.subscribeToBalances(ensName, callback);
     await waitUntil(() => !!callback.firstCall);
     unsubscribe();
 
@@ -44,7 +35,7 @@ describe('E2E: BalanceObserver', () => {
     const callback = sinon.spy();
 
     await sdk.fetchBalanceObserver(ensName);
-    const unsubscribe = sdk.subscribeToBalances(callback);
+    const unsubscribe = sdk.subscribeToBalances(ensName, callback);
     await waitUntil(() => !!callback.firstCall);
 
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
@@ -59,10 +50,10 @@ describe('E2E: BalanceObserver', () => {
     const callback2 = sinon.spy();
 
     await sdk.fetchBalanceObserver(ensName);
-    const unsubscribe1 = sdk.subscribeToBalances(callback1);
+    const unsubscribe1 = sdk.subscribeToBalances(ensName, callback1);
     await waitUntil(() => !!callback1.firstCall);
 
-    const unsubscribe2 = sdk.subscribeToBalances(callback2);
+    const unsubscribe2 = sdk.subscribeToBalances(ensName, callback2);
     await waitUntil(() => !!callback2.firstCall);
 
     unsubscribe1();
