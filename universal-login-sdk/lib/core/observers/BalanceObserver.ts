@@ -17,10 +17,12 @@ export class BalanceObserver extends ObserverRunner {
   }
 
   async getBalances(): Promise<TokenDetailsWithBalance[]> {
-    return Promise.all(this.tokenDetails.map(async (token: TokenDetails) => {
-        const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
-        return {...token, balance};
-      }));
+    const tokenBalances: TokenDetailsWithBalance[] = [];
+    for (const token of this.tokenDetails) {
+      const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
+      tokenBalances.push({...token, balance});
+    }
+    return tokenBalances;
   }
 
   async checkBalanceNow() {
