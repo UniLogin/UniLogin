@@ -982,6 +982,11 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
+"@ramp-network/ramp-instant-sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-1.0.0.tgz#da1f92244469d1e3b216770e1576e65551bd8a8d"
+  integrity sha512-aThKGoe/vr+QflqihjsViqCEGD7QZL+jOpNeCKp0NuxH40u3WpuA1PBbhWscQW/OvJ5MvBinvHAarIw1A/YQSQ==
+
 "@resolver-engine/core@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@resolver-engine/core/-/core-0.3.0.tgz#8d0e254ab0a73ed60f1bdd4e89d1aa081e8ecf11"

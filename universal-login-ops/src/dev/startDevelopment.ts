@@ -63,6 +63,11 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
         appId: '1234-5678',
         baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
         addressHelper: true
+      },
+      ramp: {
+        appName: 'Universal Login',
+        logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
+        rampUrl: 'https://ri-widget-staging-ropsten.firebaseapp.com/'
       }
     },
     database: databaseConfig
