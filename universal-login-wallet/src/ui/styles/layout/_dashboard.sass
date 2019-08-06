@@ -2,6 +2,9 @@
   position: relative
   min-height: 100vh
 
+  +media(s, 168px)
+    padding-bottom: 60px
+
 .dashboard-main
   position: relative
   width: 100%
@@ -63,3 +66,6 @@
   min-height: 370px
   background: #fafbfd url('./../assets/dashboardBackground.jpg') bottom no-repeat
   background-size: cover
+
+  +media(s, 168px)
+    display: none
