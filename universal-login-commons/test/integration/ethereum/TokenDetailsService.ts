@@ -1,4 +1,4 @@
-import {providers, Wallet, Contract} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {expect} from 'chai';
 import {TokenDetailsService} from '../../../lib/integration/ethereum/TokenDetailsService';
