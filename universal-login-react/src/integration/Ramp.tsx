@@ -1,15 +1,12 @@
 import {RampInstantSDK} from '@ramp-network/ramp-instant-sdk';
+import {RampConfig} from '@universal-login/commons';
 
 type RampProps = {
   address: string;
   amount: string;
   currency: string;
-  config: {
-    appName: string;
-    logoUrl: string;
-    rampUrl: string;
-  }
-}
+  config: RampConfig;
+};
 
 export const Ramp = (props: RampProps) => {
   const {address, amount, currency, config} = props;
@@ -23,4 +20,4 @@ export const Ramp = (props: RampProps) => {
   }).on('*', console.log);
   ramp.show();
   return null;
-}
+};

@@ -13,14 +13,14 @@ interface TopUpProps {
   startModal?: TopUpComponentType;
   onRampConfig: OnRampConfig;
   topUpClassName?: string;
-  hideModal: () => void;
+  hideModal?: () => void;
 }
 
 export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState<string>('');
 
-  if(!amount) {
+  if (!amount) {
     return (
       <TopUpAmount onNextClick={setAmount}/>
     );
@@ -41,9 +41,9 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
         contractAddress={contractAddress}
         crypto="eth"
       />
-    )
+    );
   } else if (modal === TopUpComponentType.bank) {
-    hideModal();
+    hideModal ? hideModal() : null;
     return(
       <Ramp
         address={contractAddress}
