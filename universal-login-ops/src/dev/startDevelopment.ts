@@ -106,7 +106,7 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
-  return {jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl, deployWallet, walletMasterAddress: address, tokenAddress, ensAddress, ensDomains};
 }
 
 export default startDevelopment;
