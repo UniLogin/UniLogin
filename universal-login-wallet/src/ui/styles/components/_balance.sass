@@ -2,6 +2,9 @@
   max-width: 375px
   margin: 0 auto
 
+  +media(s, 168px)
+    width: 100%
+
 .balance-title
   font-weight: 400
   margin-bottom: 10px
@@ -15,6 +18,11 @@
   font-size: 44px
   color: #3D3D41
   text-align: center
+
+  +media(s, 168px)
+  margin-bottom: 50px
+    font-size: 35px
+    line-height: 42
 
 .balance-row
   display: flex
@@ -33,8 +41,14 @@
   background: #FFFFFF
   border: 1px solid #C9C9D7
 
+  +media(s, 168px)
+    width: 50%
+
 .balance-btn img
   margin-right: 14px
 
 .balance-btn + .balance-btn
   margin-left: 30px
+
+  +media(s, 168px)
+    margin-left: 15px

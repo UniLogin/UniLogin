@@ -18,7 +18,7 @@ export function Header() {
 
   return (
     <div className="header">
-      <Link to="/">
+      <Link className="header-logo-link" to="/">
         <img className="header-logo" src={logo} />
       </Link>
       <div className="header-row">
@@ -27,7 +27,7 @@ export function Header() {
             <Link
               to="/settings"
               id="settingsLink"
-              className="header-btn"
+              className="header-btn settings-btn"
             >
               <img src={settingsIcon} alt="settings"/>
             </Link>
