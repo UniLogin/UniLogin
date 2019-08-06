@@ -37,7 +37,7 @@ describe('E2E: SdkSigner', () => {
     const signer = new SdkSigner(sdk, contractAddress, privateKey);
 
     // gasToken should be configured when creating SDK instance in order to use the signer
-    sdk.defaultPaymentOptions.gasToken = mockToken.address;
+    sdk.config.paymentOptions.gasToken = mockToken.address;
 
     const contract = mockToken.connect(signer);
     await contract.transfer(otherWallet.address, utils.parseEther('0.5'));

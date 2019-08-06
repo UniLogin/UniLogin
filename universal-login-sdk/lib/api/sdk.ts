@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -12,7 +12,8 @@ import {MissingConfiguration, InvalidEvent, WalletContractNotDeployed, BalanceOb
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
-import {ACTIVE_TOKENS} from '../core/utils/ActiveTokens';
+import {SdkConfigDefault} from '../config/SdkConfigDefault';
+import {SdkConfig} from '../config/SdkConfig';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -26,14 +27,14 @@ class UniversalLoginSDK {
   balanceObserver?: BalanceObserver;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
-  defaultPaymentOptions: Message;
-  config?: PublicRelayerConfig;
+  config: SdkConfig;
+  relayerConfig?: PublicRelayerConfig;
   factoryAddress?: string;
 
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    paymentOptions?: Message,
+    config?: SdkConfig
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
@@ -44,7 +45,9 @@ class UniversalLoginSDK {
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
-    this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
+    this.config = config || SdkConfigDefault;
+    this.config.paymentOptions = {...MESSAGE_DEFAULTS, ...this.config.paymentOptions};
+    this.config.observedTokens = this.config.observedTokens || [ETHER_NATIVE_TOKEN];
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -86,18 +89,18 @@ class UniversalLoginSDK {
   }
 
   async getRelayerConfig() {
-    this.config = this.config || (await this.relayerApi.getConfig()).config;
-    return this.config;
+    this.relayerConfig = this.relayerConfig || (await this.relayerApi.getConfig()).config;
+    return this.relayerConfig;
   }
 
   async fetchDeploymentReadyObserver() {
-    ensureNotNull(this.config, MissingConfiguration);
-    this.deploymentReadyObserver = this.deploymentReadyObserver || new DeploymentReadyObserver(this.config!.supportedTokens, this.provider);
+    ensureNotNull(this.relayerConfig, MissingConfiguration);
+    this.deploymentReadyObserver = this.deploymentReadyObserver || new DeploymentReadyObserver(this.relayerConfig!.supportedTokens, this.provider);
   }
 
   async fetchDeploymentObserver() {
-    ensureNotNull(this.config, MissingConfiguration);
-    this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.config!.contractWhiteList);
+    ensureNotNull(this.relayerConfig, MissingConfiguration);
+    this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.relayerConfig!.contractWhiteList);
   }
 
   async fetchBalanceObserver(ensName: string) {
@@ -106,25 +109,25 @@ class UniversalLoginSDK {
     }
     const walletContractAddress = await this.getWalletContractAddress(ensName);
     ensureNotNull(walletContractAddress, WalletContractNotDeployed);
-    ensureNotNull(this.config, MissingConfiguration);
+    ensureNotNull(this.relayerConfig, MissingConfiguration);
 
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, ACTIVE_TOKENS);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, this.config.observedTokens);
   }
 
   private fetchFutureWalletFactory() {
-    ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
+    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const futureWalletConfig = {
-      supportedTokens: this.config!.supportedTokens,
-      factoryAddress: this.config!.factoryAddress,
-      contractWhiteList: this.config!.contractWhiteList,
-      chainSpec: this.config!.chainSpec
+      supportedTokens: this.relayerConfig!.supportedTokens,
+      factoryAddress: this.relayerConfig!.factoryAddress,
+      contractWhiteList: this.relayerConfig!.contractWhiteList,
+      chainSpec: this.relayerConfig!.chainSpec
     };
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(futureWalletConfig, this.provider, this.blockchainService, this.relayerApi);
   }
 
   async execute(message: Message, privateKey: string): Promise<Execution> {
     const unsignedMessage = {
-      ...this.defaultPaymentOptions,
+      ...this.config.paymentOptions,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
     } as MessageWithFrom;
@@ -168,7 +171,7 @@ class UniversalLoginSDK {
 
   async resolveName(ensName: string) {
     await this.getRelayerConfig();
-    const {ensAddress} = this.config!.chainSpec;
+    const {ensAddress} = this.relayerConfig!.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }
 
