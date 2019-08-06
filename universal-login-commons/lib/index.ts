@@ -15,7 +15,7 @@ export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from './core/c
 export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXECUTION_TYPE_MANAGEMENT, EXECUTION_TYPE_ACTION, OPERATION_CALL, OPERATION_DELEGATECALL, OPERATION_CREATE} from './core/constants/contracts';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
-export {TokenService} from './integration/ethereum/TokenService';
+export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
