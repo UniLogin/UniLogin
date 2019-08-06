@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'WalletContractNotDeployed' | 'BalanceObserverNotCreated' | 'NoSet';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'WalletContractNotDeployed' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'WalletContractNotDeployed' | 'BalanceObserverNotCreated' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;

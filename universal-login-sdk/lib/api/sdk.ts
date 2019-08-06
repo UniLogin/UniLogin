@@ -60,7 +60,7 @@ class UniversalLoginSDK {
 
   async createFutureWallet() {
     await this.getRelayerConfig();
-    this.getFutureWalletFactory();
+    this.fetchFutureWalletFactory();
     return this.futureWalletFactory!.createFutureWallet();
   }
 
@@ -90,25 +90,28 @@ class UniversalLoginSDK {
     return this.config;
   }
 
-  async getDeploymentReadyObserver() {
+  async fetchDeploymentReadyObserver() {
     ensureNotNull(this.config, MissingConfiguration);
     this.deploymentReadyObserver = this.deploymentReadyObserver || new DeploymentReadyObserver(this.config!.supportedTokens, this.provider);
   }
 
-  async getDeploymentObserver() {
+  async fetchDeploymentObserver() {
     ensureNotNull(this.config, MissingConfiguration);
     this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.config!.contractWhiteList);
   }
 
-  async getBalanceObserver(ensName: string) {
+  async fetchBalanceObserver(ensName: string) {
+    if (this.balanceObserver) {
+      return this.balanceObserver!;
+    }
     const walletContractAddress = await this.getWalletContractAddress(ensName);
     ensureNotNull(walletContractAddress, WalletContractNotDeployed);
     ensureNotNull(this.config, MissingConfiguration);
 
-    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.balanceChecker, walletContractAddress, ACTIVE_TOKENS);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, ACTIVE_TOKENS);
   }
 
-  private getFutureWalletFactory() {
+  private fetchFutureWalletFactory() {
     ensureNotNull(this.config, Error, 'Relayer configuration not yet loaded');
     const futureWalletConfig = {
       supportedTokens: this.config!.supportedTokens,

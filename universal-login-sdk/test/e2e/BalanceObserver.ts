@@ -32,7 +32,7 @@ describe('E2E: BalanceObserver', () => {
   it('1 subscription', async () => {
     const callback = sinon.spy();
 
-    await sdk.getBalanceObserver(ensName);
+    await sdk.fetchBalanceObserver(ensName);
     const unsubscribe = sdk.subscribeToBalances(callback);
     await waitUntil(() => !!callback.firstCall);
     unsubscribe();
@@ -43,7 +43,7 @@ describe('E2E: BalanceObserver', () => {
   it('1 subscription - balance changed', async () => {
     const callback = sinon.spy();
 
-    await sdk.getBalanceObserver(ensName);
+    await sdk.fetchBalanceObserver(ensName);
     const unsubscribe = sdk.subscribeToBalances(callback);
     await waitUntil(() => !!callback.firstCall);
 
@@ -58,7 +58,7 @@ describe('E2E: BalanceObserver', () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
-    await sdk.getBalanceObserver(ensName);
+    await sdk.fetchBalanceObserver(ensName);
     const unsubscribe1 = sdk.subscribeToBalances(callback1);
     await waitUntil(() => !!callback1.firstCall);
 
