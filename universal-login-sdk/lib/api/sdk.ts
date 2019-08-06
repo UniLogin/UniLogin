@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {TokenDetail, TokenDetailsService, ETHER_NATIVE_TOKEN, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -8,7 +8,7 @@ import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {MissingConfiguration, InvalidEvent, WalletContractNotDeployed} from '../core/utils/errors';
+import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
@@ -28,14 +28,14 @@ class UniversalLoginSDK {
   tokenDetailsService: TokenDetailsService;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
-  config: SdkConfig;
+  sdkConfig: SdkConfig;
   relayerConfig?: PublicRelayerConfig;
   factoryAddress?: string;
 
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    config?: SdkConfig
+    sdkConfig?: SdkConfig
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
@@ -47,9 +47,9 @@ class UniversalLoginSDK {
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
-    this.config = config || SdkConfigDefault;
-    this.config.paymentOptions = {...MESSAGE_DEFAULTS, ...this.config.paymentOptions};
-    this.config.observedTokens = this.config.observedTokens || [ETHER_NATIVE_TOKEN];
+    this.sdkConfig = sdkConfig || SdkConfigDefault;
+    this.sdkConfig.paymentOptions = {...MESSAGE_DEFAULTS, ...SdkConfigDefault.paymentOptions};
+    this.sdkConfig.observedTokens = this.sdkConfig.observedTokens || SdkConfigDefault.observedTokens;
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -110,7 +110,7 @@ class UniversalLoginSDK {
       return this.balanceObserver!;
     }
     const walletContractAddress = await this.getWalletContractAddress(ensName);
-    ensureNotNull(walletContractAddress, WalletContractNotDeployed);
+    ensureNotNull(walletContractAddress, InvalidContract);
     ensureNotNull(this.relayerConfig, MissingConfiguration);
 
     const tokenDetails = await this.getTokensDetails();
@@ -118,8 +118,8 @@ class UniversalLoginSDK {
   }
 
   async getTokensDetails() {
-    const tokenDetails: TokenDetail[] = [];
-    for (const token of this.config.observedTokens) {
+    const tokenDetails: TokenDetails[] = [];
+    for (const token of this.sdkConfig.observedTokens) {
       const name = await this.tokenDetailsService.getName(token.address);
       const symbol = await this.tokenDetailsService.getSymbol(token.address);
       tokenDetails.push({...token, name, symbol});
@@ -140,7 +140,7 @@ class UniversalLoginSDK {
 
   async execute(message: Message, privateKey: string): Promise<Execution> {
     const unsignedMessage = {
-      ...this.config.paymentOptions,
+      ...this.sdkConfig.paymentOptions,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
     } as MessageWithFrom;
@@ -209,8 +209,8 @@ class UniversalLoginSDK {
     return this.blockchainObserver.subscribe(eventType, filter, callback);
   }
 
-  subscribeToBalances(ensName: string, callback: Function) {
-    this.fetchBalanceObserver(ensName);
+  async subscribeToBalances(ensName: string, callback: Function) {
+    await this.fetchBalanceObserver(ensName);
     return this.balanceObserver!.subscribe(callback);
   }
 

@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'WalletContractNotDeployed' | 'NoSet';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -44,6 +44,13 @@ export class InvalidAddress extends ValidationFailed {
   constructor (address: string) {
     super(`Address ${address} is not valid.`, 'InvalidAddress');
     Object.setPrototypeOf(this, InvalidAddress.prototype);
+  }
+}
+
+export class InvalidContract extends ValidationFailed {
+  constructor () {
+    super('Contract is not valid', 'InvalidContract');
+    Object.setPrototypeOf(this, InvalidContract.prototype);
   }
 }
 
@@ -94,13 +101,6 @@ export class MissingMessageHash extends NotFound {
   constructor () {
     super('Message hash is missing in Message Status', 'MissingMessageHash');
     Object.setPrototypeOf(this, MissingMessageHash.prototype);
-  }
-}
-
-export class WalletContractNotDeployed extends NotFound {
-  constructor () {
-    super('Wallet Contract has not been deployed', 'WalletContractNotDeployed');
-    Object.setPrototypeOf(this, WalletContractNotDeployed.prototype);
   }
 }
 

@@ -4,11 +4,11 @@ export type ObservedToken = {
   address: string;
 };
 
-export type TokenDetail = ObservedToken & {
+export type TokenDetails = ObservedToken & {
   symbol: string;
   name: string;
 };
 
-export type TokenDetailsWithBalance = TokenDetail & {
+export type TokenDetailsWithBalance = TokenDetails & {
   balance: utils.BigNumber;
 };

@@ -24,7 +24,7 @@ describe('E2E: BalanceObserver', () => {
     const callback = sinon.spy();
 
     await sdk.fetchBalanceObserver(ensName);
-    const unsubscribe = sdk.subscribeToBalances(ensName, callback);
+    const unsubscribe = await sdk.subscribeToBalances(ensName, callback);
     await waitUntil(() => !!callback.firstCall);
     unsubscribe();
 
@@ -35,7 +35,7 @@ describe('E2E: BalanceObserver', () => {
     const callback = sinon.spy();
 
     await sdk.fetchBalanceObserver(ensName);
-    const unsubscribe = sdk.subscribeToBalances(ensName, callback);
+    const unsubscribe = await sdk.subscribeToBalances(ensName, callback);
     await waitUntil(() => !!callback.firstCall);
 
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
@@ -50,10 +50,10 @@ describe('E2E: BalanceObserver', () => {
     const callback2 = sinon.spy();
 
     await sdk.fetchBalanceObserver(ensName);
-    const unsubscribe1 = sdk.subscribeToBalances(ensName, callback1);
+    const unsubscribe1 = await sdk.subscribeToBalances(ensName, callback1);
     await waitUntil(() => !!callback1.firstCall);
 
-    const unsubscribe2 = sdk.subscribeToBalances(ensName, callback2);
+    const unsubscribe2 = await sdk.subscribeToBalances(ensName, callback2);
     await waitUntil(() => !!callback2.firstCall);
 
     unsubscribe1();
