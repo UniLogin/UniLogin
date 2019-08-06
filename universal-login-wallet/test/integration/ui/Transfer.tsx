@@ -30,9 +30,9 @@ describe('UI: Transfer', () => {
     const walletAddress = services.walletService.applicationWallet ? services.walletService.applicationWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
     appPage.dashboard().clickTransferButton();
+    appPage.transfer().chooseCurrency('ETH');
     appPage.transfer().enterTransferAmount('1');
     appPage.transfer().enterRecipient(receiverAddress);
-    appPage.transfer().chooseCurrency('ETH');
     appPage.transfer().transfer();
     await appPage.dashboard().waitForHideModal();
     expect(appPage.dashboard().getWalletBalance()).to.match(/^0\.9{4}[0-9]{5}/);
