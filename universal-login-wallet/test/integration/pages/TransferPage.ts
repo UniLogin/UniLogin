@@ -10,7 +10,15 @@ export default class TransferPage {
 
     addressInput.simulate('change', {target: {value: address}});
     amountInput.simulate('change', {target: {value}});
+  }
 
+  chooseCurrency(currency: string) {
+    this.appWrapper.find('.currency-dropdown-btn').simulate('click');
+    const items = this.appWrapper.find('.currency-item-btn');
+    items.filterWhere(item => item.text().includes(currency)).simulate('click');
+  }
+
+  transfer() {
     this.appWrapper.find('#transferButton').first().simulate('click');
   }
 }

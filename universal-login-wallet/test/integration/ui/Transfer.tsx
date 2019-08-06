@@ -26,14 +26,15 @@ describe('UI: Transfer', () => {
     ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
   });
 
-  it('Creates wallet and transfers tokens', async () => {
+  it('Creates wallet and transfers ethers', async () => {
     const walletAddress = services.walletService.applicationWallet ? services.walletService.applicationWallet.contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
     appPage.dashboard().clickTransferButton();
     appPage.transfer().enterTransferDetails(receiverAddress, '1');
-
+    appPage.transfer().chooseCurrency('ETH');
+    appPage.transfer().transfer();
     await appPage.dashboard().waitForHideModal();
-    expect(await appPage.dashboard().getBalance(mockTokenContract, walletAddress)).to.match(/^9{4}[0-9]{14}/);
+    expect(appPage.dashboard().getWalletBalance()).to.match(/^0\.9{4}[0-9]{5}/);
   });
 
   after(async () => {
