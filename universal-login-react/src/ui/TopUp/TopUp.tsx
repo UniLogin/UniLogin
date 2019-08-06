@@ -44,17 +44,12 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
     )
   } else if (modal === TopUpComponentType.bank) {
     hideModal();
-    const config = {
-      logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
-      appName: 'Universal Login',
-      rampUrl: 'https://ri-widget-staging-ropsten.firebaseapp.com/'
-    }
     return(
       <Ramp
         address={contractAddress}
         amount={stringToEther(amount)}
         currency={'ETH'}
-        config={config}
+        config={onRampConfig.ramp}
       />
     );
   } else {

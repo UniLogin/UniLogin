@@ -1,4 +1,4 @@
-import {LocalizationConfig, SafelloConfig} from './onRamp';
+import {LocalizationConfig, SafelloConfig, RampConfig} from './onRamp';
 
 export interface SupportedToken {
   address: string;
@@ -18,6 +18,7 @@ export interface ContractWhiteList {
 
 export interface OnRampConfig {
   safello: SafelloConfig;
+  ramp: RampConfig;
 }
 
 export interface PublicRelayerConfig {
