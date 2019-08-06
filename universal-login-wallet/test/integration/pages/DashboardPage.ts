@@ -1,6 +1,4 @@
 import {ReactWrapper} from 'enzyme';
-import {Contract} from 'ethers';
-import {sleep} from '@universal-login/commons';
 import {waitForUI} from '../helpers/utils';
 
 export default class DashboardPage {
@@ -14,13 +12,6 @@ export default class DashboardPage {
 
   disconnect() {
     this.wrapper.find('.sign-out-btn').simulate('click');
-  }
-
-  async getBalance(mockTokenContract : Contract, walletAddress: string) {
-    // TODO: walletAddress Should be taken from UI
-    await sleep(300);
-    const tokenBalance = await mockTokenContract.balanceOf(walletAddress);
-    return tokenBalance.toString();
   }
 
   async waitForHideModal() {
