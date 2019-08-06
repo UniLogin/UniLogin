@@ -16,7 +16,7 @@ export class BalanceObserver extends ObserverRunner {
     await this.checkBalanceNow();
   }
 
-  async getBalances(): Promise<TokenDetailsWithBalance[]> {
+  async getBalances() {
     const tokenBalances: TokenDetailsWithBalance[] = [];
     for (const token of this.tokenDetails) {
       const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);

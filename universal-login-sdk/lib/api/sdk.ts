@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure} from '@universal-login/commons';
+import {Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -8,9 +8,11 @@ import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {MissingConfiguration, InvalidEvent} from '../core/utils/errors';
+import {MissingConfiguration, InvalidEvent, WalletContractNotDeployed, BalanceObserverNotCreated} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
+import {BalanceObserver} from '../core/observers/BalanceObserver';
+import {AVAILABLE_TOKENS} from '../core/utils/availableTokens';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -20,6 +22,8 @@ class UniversalLoginSDK {
   executionFactory: ExecutionFactory;
   deploymentReadyObserver?: DeploymentReadyObserver;
   deploymentObserver?: DeploymentObserver;
+  balanceChecker: BalanceChecker;
+  balanceObserver?: BalanceObserver;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
   defaultPaymentOptions: Message;
@@ -39,6 +43,7 @@ class UniversalLoginSDK {
     this.executionFactory = new ExecutionFactory(this.relayerApi);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
+    this.balanceChecker = new BalanceChecker(this.provider);
     this.defaultPaymentOptions = {...MESSAGE_DEFAULTS, ...paymentOptions};
   }
 
@@ -93,6 +98,14 @@ class UniversalLoginSDK {
   async getDeploymentObserver() {
     ensureNotNull(this.config, MissingConfiguration);
     this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.config!.contractWhiteList);
+  }
+
+  async getBalanceObserver(ensName: string) {
+    const walletContractAddress = await this.getWalletContractAddress(ensName);
+    ensureNotNull(walletContractAddress, WalletContractNotDeployed);
+    ensureNotNull(this.config, MissingConfiguration);
+
+    this.balanceObserver = this.balanceObserver || new BalanceObserver(this.balanceChecker, walletContractAddress, AVAILABLE_TOKENS);
   }
 
   private getFutureWalletFactory() {
@@ -175,6 +188,11 @@ class UniversalLoginSDK {
   subscribe(eventType: string, filter: any, callback: Function) {
     ensure(['KeyAdded', 'KeyRemoved'].includes(eventType), InvalidEvent, eventType);
     return this.blockchainObserver.subscribe(eventType, filter, callback);
+  }
+
+  subscribeToBalances(callback: Function) {
+    ensureNotNull(this.balanceObserver, BalanceObserverNotCreated);
+    return this.balanceObserver!.subscribe(callback);
   }
 
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {

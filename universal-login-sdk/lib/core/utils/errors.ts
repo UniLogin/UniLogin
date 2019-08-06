@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'NoSet';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'WalletContractNotDeployed' | 'BalanceObserverNotCreated' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -94,6 +94,27 @@ export class MissingMessageHash extends NotFound {
   constructor () {
     super('Message hash is missing in Message Status', 'MissingMessageHash');
     Object.setPrototypeOf(this, MissingMessageHash.prototype);
+  }
+}
+
+export class WalletContractNotDeployed extends NotFound {
+  constructor () {
+    super('Wallet Contract has not been deployed', 'WalletContractNotDeployed');
+    Object.setPrototypeOf(this, WalletContractNotDeployed.prototype);
+  }
+}
+export class NotCreated extends SDKError {
+  constructor (message: string, errorType: ErrorType) {
+    super(message, errorType);
+    this.errorType = errorType;
+    Object.setPrototypeOf(this, NotCreated.prototype);
+  }
+}
+
+export class BalanceObserverNotCreated extends NotCreated {
+  constructor () {
+    super('Balance Observer has not been created', 'BalanceObserverNotCreated');
+    Object.setPrototypeOf(this, BalanceObserverNotCreated.prototype);
   }
 }
 
