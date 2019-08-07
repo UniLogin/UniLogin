@@ -1,4 +1,4 @@
-.universal-login-defaults .accordion {
+.universal-login-default .accordion {
   background: #ffffff;
 }
 
@@ -27,6 +27,6 @@
   transform: translateY(-50%) rotate(180deg);
 }
 
-.universal-login-defaults .accordion-content {
+.universal-login-default .accordion-content {
   margin-top: 10px;
 }
