@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import InputLabel from '../common/InputLabel';
-import qrCodePlacehoder from '../../assets/placeholders/qr-code.jpg';
+import qrCodePlacehoder from '../../assets/placeholders/qr-code-placeholder.png';
 import InputWithButton from '../common/InputWithButton';
 
 const addressPlaceholder = '0xf902fd8B2AEE76AE81bBA106d667';
