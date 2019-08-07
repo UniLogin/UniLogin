@@ -98,5 +98,5 @@ Documentation will be compile to `docs/build/html`.
 
 ## License
 
-Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT) except for smart contracts in [common](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts/contracts/common) and [proxies](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts/contracts/proxies) released under the [LGPL-v3 License](https://opensource.org/licenses/lgpl-3.0.html).
+Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT) except for smart contracts in [common](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts/contracts/erc1836/common) and [proxy](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts/contracts/erc1836/proxy) released under the [LGPL-v3 License](https://opensource.org/licenses/lgpl-3.0.html).
 
