@@ -17,34 +17,71 @@ describe('INT: AggregateBalanceObserver', () => {
   let aggregateBalanceObserver: AggregateBalanceObserver;
   let wallet: Wallet;
   let mockToken: Contract;
+  let observedTokens: TokenDetails[] = [];
+
+  const priceOracle = {
+    getTokenPrice: (tokenSymbol: string) => {
+      return Promise.resolve(1000);
+    }
+  };
 
   beforeEach(async () => {
     provider = createMockProvider();
+    balanceChecker = new BalanceChecker(provider);
     [wallet] = getWallets(provider);
     mockToken = await deployContract(wallet, MockToken);
-    const supportedTokens: TokenDetails[] = [
+
+    observedTokens = [
       ETHER_NATIVE_TOKEN,
       {address: mockToken.address, symbol: 'Mock', name: 'MockToken'}
     ];
-
-    balanceChecker = new BalanceChecker(provider);
-    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, supportedTokens);
-    const priceOracle = {
-      getTokenPrice: (tokenSymbol: string) => {
-        return Promise.resolve(1000);
-      }
-    };
+    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, observedTokens);
     aggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, priceOracle);
   });
 
-  it('[] -> 0$', async () => {
+  it('1 subscription', async () => {
     const callback = sinon.spy();
 
     const unsubscribe = aggregateBalanceObserver.subscribe(callback);
     await waitUntil(() => !!callback.firstCall);
+
+    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
+    await waitUntil(() => !!callback.secondCall);
     unsubscribe();
 
-    expect(callback).to.have.been.calledOnce;
-    expect(callback.firstCall.args[0].totalBalance).to.equal(0);
+    expect(callback).to.have.been.calledTwice;
+
+    expect(callback.firstCall.args[0]).to.equal(0);
+    expect(callback.secondCall.args[0]).to.be.greaterThan(500 - 0.1).and.to.be.lessThan(500 + 0.1);
+  });
+
+  it('2 subscriptions', async () => {
+    const callback1 = sinon.spy();
+    const callback2 = sinon.spy();
+    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
+
+    const unsubscribe1 = aggregateBalanceObserver.subscribe(callback1);
+    const unsubscribe2 = aggregateBalanceObserver.subscribe(callback2);
+
+    await waitUntil(() => !!callback1.firstCall);
+    await waitUntil(() => !!callback2.firstCall);
+
+    unsubscribe1();
+
+    expect(callback1).to.have.been.calledOnce;
+    expect(callback2).to.have.been.calledOnce;
+
+    expect(callback1.firstCall.args[0]).to.be.greaterThan(500 - 0.1).and.to.be.lessThan(500 + 0.1);
+    expect(callback2.firstCall.args[0]).to.be.greaterThan(500 - 0.1).and.to.be.lessThan(500 + 0.1);
+
+    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.3')});
+    await waitUntil(() => !!callback2.secondCall);
+
+    unsubscribe2();
+
+    expect(callback1).to.have.been.calledOnce;
+    expect(callback2).to.have.been.calledTwice;
+
+    expect(callback2.secondCall.args[0]).to.be.greaterThan(800 - 0.1).and.to.be.lessThan(800 + 0.1);
   });
 });

@@ -20,27 +20,31 @@ describe('UNIT: AggregateBalanceObserver', () => {
     {address: TEST_CONTRACT_ADDRESS, symbol: 'Mock', name: 'MockToken', balance: utils.parseEther('2')}
   ];
 
-  it('ETH: gasTokenPrice', async () => {
-    const ethBalanceInUSD = await aggregateBalanceObserver.getTokenBalanceInUSD(tokenDetailsWithBalance[0]);
+  context('token balance in USD', async () => {
+    it('ETH', async () => {
+      const ethBalanceInUSD = await aggregateBalanceObserver.getTokenBalanceInUSD(tokenDetailsWithBalance[0]);
 
-    expect(ethBalanceInUSD).to.be.greaterThan(1000 - 0.1).and.to.be.lessThan(1000 + 0.1);
+      expect(ethBalanceInUSD).to.be.greaterThan(1000 - 0.1).and.to.be.lessThan(1000 + 0.1);
+    });
+
+    it('token', async () => {
+      const tokenBalanceInUSD = await aggregateBalanceObserver.getTokenBalanceInUSD(tokenDetailsWithBalance[1]);
+
+      expect(tokenBalanceInUSD).to.be.greaterThan(2000 - 0.1).and.to.be.lessThan(2000 + 0.1);
+    });
   });
 
-  it('token: gasTokenPrice', async () => {
-    const tokenBalanceInUSD = await aggregateBalanceObserver.getTokenBalanceInUSD(tokenDetailsWithBalance[1]);
+  context('total balance in USD', async () => {
+    it('[]', async () => {
+      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalanceInUSD([]);
 
-    expect(tokenBalanceInUSD).to.be.greaterThan(2000 - 0.1).and.to.be.lessThan(2000 + 0.1);
-  });
+      expect(aggregatedBalanceInUSD).to.equal(0);
+    });
 
-  it('aggregate []', async () => {
-    const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBlanceInUSD([]);
+    it('[eth, token]', async () => {
+      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalanceInUSD(tokenDetailsWithBalance);
 
-    expect(aggregatedBalanceInUSD).to.equal(0);
-  });
-
-  it('aggregated [eth, token]', async () => {
-    const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBlanceInUSD(tokenDetailsWithBalance);
-
-    expect(aggregatedBalanceInUSD).to.be.greaterThan(3000 - 0.1).and.to.be.lessThan(3000 + 0.1);
+      expect(aggregatedBalanceInUSD).to.be.greaterThan(3000 - 0.1).and.to.be.lessThan(3000 + 0.1);
+    });
   });
 });
