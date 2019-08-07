@@ -15,7 +15,7 @@ export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from './core/c
 export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXECUTION_TYPE_MANAGEMENT, EXECUTION_TYPE_ACTION, OPERATION_CALL, OPERATION_DELEGATECALL, OPERATION_CREATE} from './core/constants/contracts';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
-export {TokenService} from './integration/ethereum/TokenService';
+export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
@@ -49,7 +49,7 @@ export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';
 export {SECURITY_CODE_LENGTH, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
 export {deepMerge} from './core/utils/deepMerge';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
-export {TokenDetails, TokenDetailsWithBalance} from './core/models/tokenDetails';
+export {ObservedToken, TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {normalizeBigNumber} from './core/utils/bigNumbers';
 export {stringToEther} from './integration/ethereum/stringToEther';
 export {isValidAmount} from './core/utils/isValidAmount';

@@ -12,12 +12,13 @@ export default async function basicWalletService(givenProvider, wallets) {
   const {relayer, provider} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
   const sdk = new UniversalLoginSDK(relayer.url(), provider);
-  const [privateKey, contractAddress] = await sdk.create('alex.mylogin.eth');
+  const ensName = 'alex.mylogin.eth';
+  const [privateKey, contractAddress] = await sdk.create(ensName);
   const mockToken = await deployContract(wallet, MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
   const walletContract = new Contract(contractAddress, WalletContract.abi, wallet);
-  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer};
+  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer, ensName};
 }
 
 export const transferMessage = {
