@@ -5,7 +5,6 @@ import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {useServices, useRelayerConfig} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
@@ -44,12 +43,6 @@ const Modal = () => {
             contractAddress={walletPresenter.getContractAddress()}
           />
         </ModalWrapper>
-      );
-    case 'address':
-      return (
-        <ModalWrapperWithoutClose>
-          <ModalAddress />
-        </ModalWrapperWithoutClose>
       );
     case 'personalInfo':
       return (
