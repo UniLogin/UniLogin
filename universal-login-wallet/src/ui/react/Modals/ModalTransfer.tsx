@@ -9,8 +9,8 @@ const ModalTransfer = () => {
   const modalService = useContext(WalletModalContext);
   const [modal, setModal] = useState('transferAmount');
 
-  const {transferService, tokenService} = useServices();
-  const [transferDetalis, setTransferDetails] = useState({currency: tokenService.tokensDetails[1].symbol} as TransferDetails);
+  const {transferService, tokensDetailsStore} = useServices();
+  const [transferDetalis, setTransferDetails] = useState({currency: tokensDetailsStore.tokensDetails[1].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {
     modalService.hideModal();

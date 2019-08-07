@@ -7,34 +7,34 @@ import MockToken from '../../fixtures/MockToken.json';
 
 describe('INT: TokenDetailsService', () => {
   let provider: providers.Provider;
-  let tokenService: TokenDetailsService;
+  let tokenDetailsService: TokenDetailsService;
   let wallet: Wallet;
 
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
-    tokenService = new TokenDetailsService(provider);
+    tokenDetailsService = new TokenDetailsService(provider);
   });
 
   it('ether', async () => {
-    const symbol = await tokenService.getSymbol(ETHER_NATIVE_TOKEN.address);
-    const name = await tokenService.getName(ETHER_NATIVE_TOKEN.address);
+    const details = await tokenDetailsService.getTokenDetails(ETHER_NATIVE_TOKEN.address);
 
-    expect(symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
-    expect(name).to.eq(ETHER_NATIVE_TOKEN.name);
+    expect(details.symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
+    expect(details.name).to.eq(ETHER_NATIVE_TOKEN.name);
+    expect(details.address).to.eq(ETHER_NATIVE_TOKEN.address);
   });
 
   it('token', async () => {
     const mockToken = await deployContract(wallet, MockToken, []);
-    const symbol = await tokenService.getSymbol(mockToken.address);
-    const name = await tokenService.getName(mockToken.address);
+    const details = await tokenDetailsService.getTokenDetails(mockToken.address);
 
-    expect(symbol).to.eq('Mock');
-    expect(name).to.eq('MockToken');
+    expect(details.symbol).to.eq('Mock');
+    expect(details.name).to.eq('MockToken');
+    expect(details.address).to.eq(mockToken.address);
   });
 
   it('token not deployed', async () => {
     const notDeployedtokenAddress = '0x000000000000000000000000000000000000DEAD';
-    expect(tokenService.getSymbol(notDeployedtokenAddress)).to.be.eventually.rejectedWith('contract not deployed');
+    expect(tokenDetailsService.getSymbol(notDeployedtokenAddress)).to.be.eventually.rejectedWith('contract not deployed');
   });
 });

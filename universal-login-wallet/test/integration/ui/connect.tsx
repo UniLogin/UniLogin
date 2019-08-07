@@ -27,7 +27,7 @@ describe('UI: Connection flow', () => {
     const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-    services.tokenService.start();
+    await services.tokensDetailsStore.aggregateTokensDetails();
     services.balanceService.start();
     services.sdk.start();
     [privateKey, contractAddress] = await services.sdk.create(name);
