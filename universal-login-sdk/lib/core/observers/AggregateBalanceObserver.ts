@@ -17,16 +17,17 @@ export class AggregateBalanceObserver {
       this.unsubscribeBalanceObserver = this.balanceObserver.subscribe(this.callbackWrapper.bind(this));
     }
 
-    return () => {
+    const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
         this.unsubscribeBalanceObserver!();
       }
     };
+    return unsubscribe;
   }
 
-  async callbackWrapper(tokensDetails: TokenDetailsWithBalance[]) {
-    const aggregatedBalanceInUSD = await this.getAggregatedBalanceInUSD(tokensDetails);
+  async callbackWrapper(tokensDetailsWithBalance: TokenDetailsWithBalance[]) {
+    const aggregatedBalanceInUSD = await this.getAggregatedBalanceInUSD(tokensDetailsWithBalance);
     this.callbacks.forEach((callback) => callback(aggregatedBalanceInUSD));
   }
 
@@ -38,8 +39,8 @@ export class AggregateBalanceObserver {
   }
 
   async getTokenBalanceInUSD(tokenDetailsWithBalance: TokenDetailsWithBalance) {
-    const tokenBalanceInEthOrder = Number(utils.formatEther(tokenDetailsWithBalance.balance));
+    const tokenBalanceInWholeUnits = Number(utils.formatEther(tokenDetailsWithBalance.balance));
     const price = await this.priceOracle.getTokenPrice(tokenDetailsWithBalance.symbol);
-    return tokenBalanceInEthOrder * price;
+    return tokenBalanceInWholeUnits * price;
   }
 }
