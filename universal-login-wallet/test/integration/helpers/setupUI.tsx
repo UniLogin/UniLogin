@@ -13,7 +13,7 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const [wallet] = await getWallets(relayer.provider);
   const tokens = tokenAddress ? [tokenAddress, ETHER_NATIVE_TOKEN.address] : [ETHER_NATIVE_TOKEN.address];
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
-  services.tokensDetailsStore.aggregateTokensDetails();
+  await services.tokensDetailsStore.aggregateTokensDetails();
   services.balanceService.start();
 
   const [privateKey, contractAddress] = await services.sdk.create(name);
