@@ -5,7 +5,7 @@ class TokensDetailsStore {
 
   constructor(private tokenDetailsService: TokenDetailsService, private tokensAddresses: string[]) {}
 
-  async aggregateTokensDetails() {
+  async fetchTokensDetails() {
     for (const address of this.tokensAddresses) {
       const details = await this.tokenDetailsService.getTokenDetails(address);
       this.tokensDetails.push(details);

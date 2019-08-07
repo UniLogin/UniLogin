@@ -19,7 +19,7 @@ describe('INT: TokensDetailsStore', () => {
   });
 
   it('token details', async () => {
-    await tokensDetailsStore.aggregateTokensDetails();
+    await tokensDetailsStore.fetchTokensDetails();
     const {address, name, symbol} = tokensDetailsStore.tokensDetails[0];
 
     expect(address).to.equal(mockToken.address);
@@ -28,7 +28,7 @@ describe('INT: TokensDetailsStore', () => {
   });
 
   it('ether details', async () => {
-    await tokensDetailsStore.aggregateTokensDetails();
+    await tokensDetailsStore.fetchTokensDetails();
     const {address, name, symbol} = tokensDetailsStore.tokensDetails[1];
 
     expect(address).to.equal(ETHER_NATIVE_TOKEN.address);
@@ -37,14 +37,14 @@ describe('INT: TokensDetailsStore', () => {
   });
 
   it('symbol -> address', async () => {
-    await tokensDetailsStore.aggregateTokensDetails();
+    await tokensDetailsStore.fetchTokensDetails();
     const {symbol} = tokensDetailsStore.tokensDetails[0];
 
     expect(tokensDetailsStore.getTokenAddress(symbol)).to.equal(mockToken.address);
   });
 
   it('symbol -> undefined', async () => {
-    await tokensDetailsStore.aggregateTokensDetails();
+    await tokensDetailsStore.fetchTokensDetails();
 
     expect(tokensDetailsStore.getTokenAddress('FAKE')).to.equal(undefined);
   });

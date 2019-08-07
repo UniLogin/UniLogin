@@ -29,7 +29,7 @@ describe('INT: TransferService', () => {
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
     tokenDetailsService = new TokenDetailsService(provider);
     tokenService = new TokenService(tokenDetailsService, [mockTokenContract.address]);
-    await tokenService.aggregateTokensDetails();
+    await tokenService.fetchTokensDetails();
     transferService = new TransferService(sdk, walletService, tokenService);
   });
 

@@ -43,6 +43,11 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     tokensDetailsStore,
     transferService,
     balanceService,
+    start: () => {
+      tokensDetailsStore.fetchTokensDetails();
+      balanceService.start();
+      sdk.start();
+    }
   };
 };
 
