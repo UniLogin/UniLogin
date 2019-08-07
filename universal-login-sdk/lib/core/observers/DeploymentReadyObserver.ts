@@ -15,7 +15,7 @@ export class DeploymentReadyObserver extends ObserverRunner {
     this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.provider));
   }
 
-  startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
+  async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
     ensure(!this.isRunning(), ConcurrentDeployment);
     this.contractAddress = contractAddress;
     this.callback = callback;

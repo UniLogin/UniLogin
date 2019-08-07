@@ -56,7 +56,8 @@ describe('INT: DeploymentReadyObserver', () => {
   });
 
   it('should throw error if is already started', () => {
-    expect(deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback)).to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
+    expect(deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback))
+      .to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
   afterEach(async () => {
