@@ -4,10 +4,10 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {ETHER_NATIVE_TOKEN, ensureNotNull} from '@universal-login/commons';
 import {ApplicationWalletNotFound} from '../../core/errors';
 import TransferDetails from '../../core/entities/TransferDetails';
-import TokenService from './TokenService';
+import AggregateTokensDetailsService from './TokensDetailsStore';
 
 class TransferService {
-  constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokenService: TokenService) {}
+  constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private aggregateTokensDetailsService: AggregateTokensDetailsService) {}
 
   async transfer(transferDetails: TransferDetails) {
     ensureNotNull(this.walletService.applicationWallet, ApplicationWalletNotFound);
@@ -19,7 +19,7 @@ class TransferService {
   }
 
   private async transferTokens({to, amount, currency} : TransferDetails) {
-      const tokenAddress = this.tokenService.getTokenAddress(currency);
+      const tokenAddress = this.aggregateTokensDetailsService.getTokenAddress(currency);
       const message = {
         from: this.walletService.applicationWallet!.contractAddress,
         to: tokenAddress,

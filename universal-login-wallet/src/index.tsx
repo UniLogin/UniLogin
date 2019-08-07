@@ -10,7 +10,7 @@ import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
 const config = getConfig();
 
 const services = createServices(config);
-services.tokenService.start();
+services.tokensDetailsStore.aggregateTokensDetails();
 services.balanceService.start();
 services.sdk.start();
 

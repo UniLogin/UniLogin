@@ -23,7 +23,7 @@ describe('UI: Creation flow', () => {
         const [wallet] = await getWallets(createMockProvider());
         ({relayer, provider} = await setupSdk(wallet, '33113'));
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-        services.tokenService.start();
+        services.tokensDetailsStore.aggregateTokensDetails();
         services.balanceService.start();
     });
 
