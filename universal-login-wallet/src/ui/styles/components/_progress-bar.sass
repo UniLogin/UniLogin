@@ -17,10 +17,10 @@
 
 .progress-bar-line.dual
   width: 50%
-  
-.progress-bar::before,
-.progress-bar::after,
-.progress-bar-line.dual::after
+
+div.progress-bar::before,
+div.progress-bar::after,
+div.progress-bar-line.dual::after
   content: ''
   position: absolute
   top: 50%
@@ -39,12 +39,12 @@
 .progress-bar-line::after
   right: 0
   transform: translate(50%, -50%)
-  
-@keyframes gradient-animation 
+
+@keyframes gradient-animation
 	0%
 		background-position: 0% 0%
 	50%
 		background-position: 100% 0%
-	100% 
+	100%
 		background-position: 200% 0%
-	
+
