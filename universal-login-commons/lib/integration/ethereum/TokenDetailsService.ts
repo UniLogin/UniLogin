@@ -18,7 +18,7 @@ export class TokenDetailsService {
 
   async getSymbol(tokenAddress: string): Promise<string> {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
-      return 'ETH';
+      return ETHER_NATIVE_TOKEN.symbol;
     }
     const token = new Contract(tokenAddress, tokenAbi, this.provider);
     return token.symbol();
@@ -26,7 +26,7 @@ export class TokenDetailsService {
 
   async getName(tokenAddress: string): Promise<string> {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
-      return 'ether';
+      return ETHER_NATIVE_TOKEN.name;
     }
     const token = new Contract(tokenAddress, tokenAbi, this.provider);
     return token.name();
