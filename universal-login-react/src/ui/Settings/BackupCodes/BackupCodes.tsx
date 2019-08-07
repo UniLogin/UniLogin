@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Printer from '../../assets/icons/printer.svg';
 import BackupCodesLoader from './BackupCodesLoader';
 import BackupCodesView from './BackupCodesView';
 import EmptyBackupCodesView from './EmptyBackupCodesView';
@@ -32,9 +31,7 @@ export const BackupCodes = () => {
       return (
         <>
           <BackupCodesLoader title="Generating backup codes, please wait" />
-          <div className="backup-buttons-row">
-            <button className="btn btn-secondary">Cancel backup code</button>
-          </div>
+          <button className="settings-btn">Cancel backup code</button>
         </>
       );
     } else if (codes.length) {
@@ -56,7 +53,6 @@ export const BackupCodes = () => {
     <Accordion
       title="Backup code"
       subtitle="Back up your account"
-      icon={Printer}
     >
       {renderContent()}
     </Accordion>

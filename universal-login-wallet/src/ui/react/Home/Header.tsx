@@ -6,11 +6,13 @@ const Blockies = require('react-blockies').default;
 import {useServices} from '../../hooks';
 import UserDropdown from '../common/UserDropdown';
 import {Link} from 'react-router-dom';
+import {Settings} from '@universal-login/react';
 
 export function Header() {
   const {userDropdownService, walletPresenter, sdk, walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
   const {contractAddress, privateKey} = walletService.applicationWallet!;
+  const [settingsVisibility, setSettingsVisibility] = useState(false);
 
   const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
@@ -24,13 +26,27 @@ export function Header() {
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <Link
-              to="/settings"
-              id="settingsLink"
-              className="header-btn settings-btn"
-            >
-              <img src={settingsIcon} alt="settings"/>
-            </Link>
+            <div className="header-dropdown">
+              <button
+                id="settingsLink"
+                onClick={() => setSettingsVisibility(!settingsVisibility)}
+                className="header-btn settings-btn"
+              >
+                <img src={settingsIcon} alt="settings"/>
+              </button>
+              {settingsVisibility &&
+                <div className="header-dropdown-content">
+                  <h2 className="header-dropdown-content-title">
+                    <button
+                      className="back-btn"
+                      onClick={() => setSettingsVisibility(false)}
+                    />
+                    Settings
+                  </h2>
+                  <Settings />
+                </div>
+              }
+            </div>
           </li>
           <li className="header-list-item">
             <Link
