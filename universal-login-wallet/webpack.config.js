@@ -23,7 +23,7 @@ module.exports = {
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',

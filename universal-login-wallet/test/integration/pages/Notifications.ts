@@ -20,9 +20,9 @@ export default class NotificationsPage {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Security code'));
     for (const number of securityCode) {
       const button = this.wrapper.find(`#btn-${number}`).first();
-      const emojiCount = this.wrapper.find(`img[alt="${number}"]`).length;
+      const emojiCount = this.wrapper.find('.fa').length;
       button.simulate('click');
-      await waitForUI(this.wrapper, () => this.wrapper.find(`img[alt="${number}"]`).length === emojiCount + 1);
+      await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
     }
   }
 

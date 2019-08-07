@@ -24,7 +24,7 @@ module.exports = {
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',
@@ -59,7 +59,7 @@ module.exports = {
       'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
     }),
     new CopyPlugin([
-      {from: './src/ui/assets/emojis', to: 'emojis'}
+      {from: './src/ui/assets/emojis', to: 'emojis'},
     ])
   ],
   devServer: {

@@ -25,3 +25,19 @@
   border: none;
   background: none;
 }
+
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 900;
+  font-display: auto;
+  src: url("../assets/webfonts/fa-solid-900.woff2") format("woff2"), url("../assets/webfonts/fa-solid-900.woff") format("woff");
+}
+
+.fa,
+.fas {
+  font-size: 25;
+  font-style: normal;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
