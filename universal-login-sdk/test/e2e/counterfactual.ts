@@ -30,7 +30,7 @@ describe('E2E: SDK counterfactual deployment', () => {
 
   it('waitForBalance returns promise, which resolves when balance update', async () => {
     const {waitForBalance, contractAddress} = (await sdk.createFutureWallet());
-    wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const result = await waitForBalance();
     expect(result.contractAddress).be.eq(contractAddress);
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
