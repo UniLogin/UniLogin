@@ -1,15 +1,29 @@
 import React from 'react';
-import {getIconFilename} from '../../core/utils/iconDictionary';
+import {getEmojiCodePoint} from '../../core/utils/emojiCodePoint';
 
 interface EmojiProps {
   code: number;
 }
 
+const colors = [
+  'red',
+  'black',
+  'blue',
+  'green',
+  'yellow',
+  'orange',
+  'aqua',
+  'fuchsia',
+  'lime',
+  'gray'
+];
+
 export const Emoji = ({code}: EmojiProps) => {
-  const emojiPath = `emojis/${getIconFilename(code)}`;
+  const emojiNumber = Math.floor(code / colors.length);
+  const colorCode = code % colors.length;
   return (
-    <div>
-      <img src={emojiPath} alt={`${code}`}/>
-    </div>
+    <i className="fa" style={{color: colors[colorCode], fontSize: 25}}>
+      {String.fromCodePoint(getEmojiCodePoint(emojiNumber))}
+    </i>
   );
 };
