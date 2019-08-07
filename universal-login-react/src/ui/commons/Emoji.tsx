@@ -22,7 +22,7 @@ export const Emoji = ({code}: EmojiProps) => {
   const emojiNumber = Math.floor(code / colors.length);
   const colorCode = code % colors.length;
   return (
-    <i className="fa" style={{color: colors[colorCode], fontSize: 25}}>
+    <i className="fa" style={{color: colors[colorCode]}}>
       {String.fromCodePoint(getEmojiCodePoint(emojiNumber))}
     </i>
   );
