@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
-import daiIcon from '../../../assets/icons/dai.svg';
-import ethereumIcon from '../../../assets/icons/ethereum.svg';
 import {useToggler, useServices} from '../../../hooks';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
@@ -40,7 +38,6 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
               name={name}
               symbol={symbol}
               balance={utils.formatEther(balance)}
-              iconSrc={ethereumIcon}
               onClick={onClick}
             />
           ))}
@@ -51,7 +48,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
           {tokenDetailsWithBalanceDetails
             .filter(({symbol}) => symbol !== currency)
             .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-              <TransferDropdownItem key={`${name}-${symbol}`} iconSrc={daiIcon} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
+              <TransferDropdownItem key={`${name}-${symbol}`} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
             ))}
         </div>
       }
