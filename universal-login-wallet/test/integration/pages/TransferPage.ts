@@ -5,9 +5,9 @@ export default class TransferPage {
   }
 
   chooseCurrency(currency: string) {
-    this.appWrapper.find('.currency-accordion-btn').simulate('click');
-    const items = this.appWrapper.find('.currency-accordion-item');
-    items.filterWhere(item => item.text().includes(currency)).simulate('click');
+    this.appWrapper.find('button.currency-accordion-btn').simulate('click');
+    const items = this.appWrapper.find('button.currency-accordion-item');
+    items.filterWhere(item => item.text().includes(currency)).first().simulate('click');
   }
 
   transfer() {

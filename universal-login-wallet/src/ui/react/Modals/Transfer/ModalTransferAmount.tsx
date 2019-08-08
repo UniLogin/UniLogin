@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Input} from '@universal-login/react';
 import InputLabel from '../../common/InputLabel';
 import {TransformAccordion} from './TransferAccordion';

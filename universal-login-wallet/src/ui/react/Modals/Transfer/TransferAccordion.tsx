@@ -1,25 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import daiIcon from '../../../assets/icons/dai.svg';
 import ethereumIcon from '../../../assets/icons/ethereum.svg';
 import {TransferAccordionItem} from './TransferAccordionItem';
+import {useToggler} from '../../../hooks';
 
 export const TransformAccordion = () => {
-  const [dropdownVisibility, setDropdownVisibility] = useState(false);
+  const {visible, toggle} = useToggler();
 
   return (
     <div className="currency-accordion">
       <TransferAccordionItem
-        className={`currency-accordion-btn currency-accordion-item ${dropdownVisibility ? 'expaned' : ''}`}
+        className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
         name="Ethereum"
         symbol="ETH"
         balance="0,8"
         iconSrc={ethereumIcon}
-        onClick={() => setDropdownVisibility(!dropdownVisibility)}
+        onClick={toggle}
       />
       {
-    dropdownVisibility &&
+    visible &&
     <div className="currency-accordion-content">
-      <TransferAccordionItem iconSrc={daiIcon} name="Dai" symbol="DAI" balance="12312,76" onClick={() => setDropdownVisibility(!dropdownVisibility)} />
+      <TransferAccordionItem iconSrc={daiIcon} name="Dai" symbol="DAI" balance="12312,76" onClick={toggle} />
     </div>
   }
     </div >
