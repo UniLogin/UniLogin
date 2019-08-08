@@ -19,7 +19,7 @@ export const TransferAccordion = ({currency, setCurrency}: TransferAccordionProp
   useEffect(() => {
     const promise = sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance);
     return () => {
-      promise.then(unsubscribe => unsubscribe());
+      promise.then((unsubscribe: () => void) => unsubscribe());
     };
   }, []);
 
