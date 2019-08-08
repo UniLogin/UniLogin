@@ -110,7 +110,7 @@ class UniversalLoginSDK {
     this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.relayerConfig!.contractWhiteList);
   }
 
-  async fetchBalanceObserver(ensName: string) {
+  async fetchBalanceObservers(ensName: string) {
     if (this.balanceObserver) {
       return;
     }
@@ -120,6 +120,7 @@ class UniversalLoginSDK {
 
     const tokenDetails = await this.getTokensDetails();
     this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, tokenDetails);
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceOracle);
   }
 
   async fetchAggregateBalanceObserver(ensName: string) {
@@ -223,7 +224,7 @@ class UniversalLoginSDK {
   }
 
   async subscribeToBalances(ensName: string, callback: Function) {
-    await this.fetchBalanceObserver(ensName);
+    await this.fetchBalanceObservers(ensName);
     return this.balanceObserver!.subscribe(callback);
   }
 
