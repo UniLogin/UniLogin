@@ -1,10 +1,12 @@
 import {ReactWrapper} from 'enzyme';
+import {waitForUI} from '../helpers/utils';
 
 export default class TransferPage {
   constructor(private appWrapper: ReactWrapper) {
   }
 
-  chooseCurrency(currency: string) {
+  async chooseCurrency(currency: string) {
+    await waitForUI(this.appWrapper, () => this.appWrapper.find('.currency-accordion-item').length !== 0);
     this.appWrapper.find('button.currency-accordion-btn').simulate('click');
     const items = this.appWrapper.find('button.currency-accordion-item');
     items.filterWhere(item => item.text().includes(currency)).first().simulate('click');

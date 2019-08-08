@@ -10,7 +10,7 @@ const ModalTransfer = () => {
   const [modal, setModal] = useState('transferAmount');
 
   const {transferService, tokensDetailsStore} = useServices();
-  const [transferDetalis, setTransferDetails] = useState({currency: tokensDetailsStore.tokensDetails[1].symbol} as TransferDetails);
+  const [transferDetalis, setTransferDetails] = useState({currency: tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
 
   const onGenerateClick = async () => {
     modalService.hideModal();
@@ -28,6 +28,7 @@ const ModalTransfer = () => {
       <ModalTransferAmount
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
+        currency={transferDetalis.currency}
       />
     );
   } else if (modal === 'transferRecipient') {
