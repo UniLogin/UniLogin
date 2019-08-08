@@ -27,7 +27,7 @@ export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './c
 export {resolveName} from './integration/ethereum/resolveName';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress} from './core/utils/messages/calculateMessageSignature';
 export {createSignedMessage, getMessageWithSignatures} from './core/utils/messages/signMessage';
-export {executionComparator, sortSignatureKeyPairsByKey} from './core/utils/signatures';
+export {executionComparator, sortSignatureKeyPairsByKey, sign} from './core/utils/signatures';
 export {waitToBeMined, waitForContractDeploy, sendAndWaitForTransaction} from './integration/ethereum/wait';
 export {getDeployTransaction, defaultDeployOptions} from './integration/ethereum/transaction';
 export {sleep, waitUntil, waitExpect} from './core/utils/wait';
