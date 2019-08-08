@@ -20,7 +20,12 @@ describe('INT: AggregateBalanceObserver', () => {
   let observedTokens: TokenDetails[] = [];
 
   const priceOracle = {
-    getTokenPrice: (tokenSymbol: string) => {
+    getTokenPrice: (tokenSymbol: string, currencySymbol: string) => {
+      if (currencySymbol === 'USD') {
+        return Promise.resolve(1405);
+      } else if (currencySymbol === 'EUR') {
+        return Promise.resolve(1152);
+      }
       return Promise.resolve(1000);
     }
   };
@@ -42,7 +47,7 @@ describe('INT: AggregateBalanceObserver', () => {
   it('1 subscription', async () => {
     const callback = sinon.spy();
 
-    const unsubscribe = aggregateBalanceObserver.subscribe(callback);
+    const unsubscribe = aggregateBalanceObserver.subscribe(callback, 'USD');
     await waitUntil(() => !!callback.firstCall);
 
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
@@ -52,7 +57,7 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback).to.have.been.calledTwice;
 
     expect(callback.firstCall.args[0]).to.equal(0);
-    expect(callback.secondCall.args[0]).to.be.greaterThan(500 - 0.1).and.to.be.lessThan(500 + 0.1);
+    expect(callback.secondCall.args[0]).to.be.greaterThan(702.5 - 0.1).and.to.be.lessThan(702.5 + 0.1);
   });
 
   it('2 subscriptions', async () => {
@@ -60,10 +65,10 @@ describe('INT: AggregateBalanceObserver', () => {
     const callback2 = sinon.spy();
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
 
-    const unsubscribe1 = aggregateBalanceObserver.subscribe(callback1);
-    const unsubscribe2 = aggregateBalanceObserver.subscribe(callback2);
-
+    const unsubscribe1 = aggregateBalanceObserver.subscribe(callback1, 'USD');
     await waitUntil(() => !!callback1.firstCall);
+
+    const unsubscribe2 = aggregateBalanceObserver.subscribe(callback2, 'EUR');
     await waitUntil(() => !!callback2.firstCall);
 
     unsubscribe1();
@@ -71,8 +76,8 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback1).to.have.been.calledOnce;
     expect(callback2).to.have.been.calledOnce;
 
-    expect(callback1.firstCall.args[0]).to.be.greaterThan(500 - 0.1).and.to.be.lessThan(500 + 0.1);
-    expect(callback2.firstCall.args[0]).to.be.greaterThan(500 - 0.1).and.to.be.lessThan(500 + 0.1);
+    expect(callback1.firstCall.args[0]).to.be.greaterThan(702.5 - 0.1).and.to.be.lessThan(702.5 + 0.1);
+    expect(callback2.firstCall.args[0]).to.be.greaterThan(576 - 0.1).and.to.be.lessThan(576 + 0.1);
 
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.3')});
     await waitUntil(() => !!callback2.secondCall);
@@ -82,6 +87,6 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback1).to.have.been.calledOnce;
     expect(callback2).to.have.been.calledTwice;
 
-    expect(callback2.secondCall.args[0]).to.be.greaterThan(800 - 0.1).and.to.be.lessThan(800 + 0.1);
+    expect(callback2.secondCall.args[0]).to.be.greaterThan(921.6 - 0.1).and.to.be.lessThan(921.6 + 0.1);
   });
 });

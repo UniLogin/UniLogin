@@ -3,44 +3,31 @@ import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {utils} from 'ethers';
 
 export interface PriceOracle {
-  getTokenPrice: (tokenSymbol: string) => Promise<number>;
+  getTokenPrice: (tokenSymbol: string, currencySymbol: string) => Promise<number>;
 }
 
 export class AggregateBalanceObserver {
-  private callbacks: Function[] = [];
-  private unsubscribeBalanceObserver?: Function;
   constructor(private balanceObserver: BalanceObserver, private priceOracle: PriceOracle) {}
 
-  subscribe(callback: Function) {
-    this.callbacks.push(callback);
-    if (this.callbacks.length === 1) {
-      this.unsubscribeBalanceObserver = this.balanceObserver.subscribe(this.callbackWrapper.bind(this));
-    }
-
-    const unsubscribe = () => {
-      this.callbacks = this.callbacks.filter((element) => callback !== element);
-      if (this.callbacks.length === 0) {
-        this.unsubscribeBalanceObserver!();
-      }
+  subscribe(callback: Function, currencySymbol: string) {
+    const callbackWrapper = async (tokensDetailsWithBalance: TokenDetailsWithBalance[]) => {
+      const aggregatedBalance = await this.getAggregatedBalance(tokensDetailsWithBalance, currencySymbol);
+      callback(aggregatedBalance);
     };
-    return unsubscribe;
+
+    return this.balanceObserver.subscribe(callbackWrapper.bind(this));
   }
 
-  async callbackWrapper(tokensDetailsWithBalance: TokenDetailsWithBalance[]) {
-    const aggregatedBalanceInUSD = await this.getAggregatedBalanceInUSD(tokensDetailsWithBalance);
-    this.callbacks.forEach((callback) => callback(aggregatedBalanceInUSD));
-  }
-
-  async getAggregatedBalanceInUSD(tokensDetailsWithBalance: TokenDetailsWithBalance[]) {
+  async getAggregatedBalance(tokensDetailsWithBalance: TokenDetailsWithBalance[], currencySymbol: string) {
     return tokensDetailsWithBalance.reduce(
-      async (total, tokenDetails) => (await total + await this.getTokenBalanceInUSD(tokenDetails)),
+      async (total, tokenDetails) => (await total + await this.getTokenBalance(tokenDetails, currencySymbol)),
       Promise.resolve(0)
     );
   }
 
-  async getTokenBalanceInUSD(tokenDetailsWithBalance: TokenDetailsWithBalance) {
+  async getTokenBalance(tokenDetailsWithBalance: TokenDetailsWithBalance, currencySymbol: string) {
     const tokenBalanceInWholeUnits = Number(utils.formatEther(tokenDetailsWithBalance.balance));
-    const price = await this.priceOracle.getTokenPrice(tokenDetailsWithBalance.symbol);
+    const price = await this.priceOracle.getTokenPrice(tokenDetailsWithBalance.symbol, currencySymbol);
     return tokenBalanceInWholeUnits * price;
   }
 }

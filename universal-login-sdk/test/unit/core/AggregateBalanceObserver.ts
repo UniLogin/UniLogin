@@ -7,7 +7,7 @@ import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
 
 describe('UNIT: AggregateBalanceObserver', () => {
   const priceOracle = {
-    getTokenPrice: (tokenSymbol: string) => {
+    getTokenPrice: (tokenSymbol: string, currencySymbol: string) => {
       return Promise.resolve(1000);
     }
   };
@@ -22,13 +22,13 @@ describe('UNIT: AggregateBalanceObserver', () => {
 
   context('token balance in USD', async () => {
     it('ETH', async () => {
-      const ethBalanceInUSD = await aggregateBalanceObserver.getTokenBalanceInUSD(tokenDetailsWithBalance[0]);
+      const ethBalanceInUSD = await aggregateBalanceObserver.getTokenBalance(tokenDetailsWithBalance[0], 'USD');
 
       expect(ethBalanceInUSD).to.be.greaterThan(1000 - 0.1).and.to.be.lessThan(1000 + 0.1);
     });
 
     it('token', async () => {
-      const tokenBalanceInUSD = await aggregateBalanceObserver.getTokenBalanceInUSD(tokenDetailsWithBalance[1]);
+      const tokenBalanceInUSD = await aggregateBalanceObserver.getTokenBalance(tokenDetailsWithBalance[1], 'USD');
 
       expect(tokenBalanceInUSD).to.be.greaterThan(2000 - 0.1).and.to.be.lessThan(2000 + 0.1);
     });
@@ -36,13 +36,13 @@ describe('UNIT: AggregateBalanceObserver', () => {
 
   context('total balance in USD', async () => {
     it('[]', async () => {
-      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalanceInUSD([]);
+      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalance([], 'USD');
 
       expect(aggregatedBalanceInUSD).to.equal(0);
     });
 
     it('[eth, token]', async () => {
-      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalanceInUSD(tokenDetailsWithBalance);
+      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalance(tokenDetailsWithBalance, 'USD');
 
       expect(aggregatedBalanceInUSD).to.be.greaterThan(3000 - 0.1).and.to.be.lessThan(3000 + 0.1);
     });
