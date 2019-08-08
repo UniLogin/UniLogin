@@ -32,6 +32,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
     await deploy(ensName, DEFAULT_GAS_PRICE.toString());
+    walletService.setDeployed(ensName);
     modalService.hideModal();
     onCreate(walletService.applicationWallet as ApplicationWallet);
   };
