@@ -111,8 +111,8 @@ class UniversalLoginSDK {
   }
 
   async fetchBalanceObservers(ensName: string) {
-    if (this.balanceObserver) {
-      return this.balanceObserver!;
+    if (this.balanceObserver && this.aggregateBalanceObserver) {
+      return;
     }
     const walletContractAddress = await this.getWalletContractAddress(ensName);
     ensureNotNull(walletContractAddress, InvalidContract);
