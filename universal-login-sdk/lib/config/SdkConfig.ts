@@ -1,6 +1,6 @@
-import {Message, ObservedToken} from '@universal-login/commons';
+import {PartialRequired, SignedMessage, ObservedToken} from '@universal-login/commons';
 
 export interface SdkConfig {
-  paymentOptions: Message;
+  paymentOptions: PartialRequired<SignedMessage, 'gasPrice' | 'gasLimit' | 'operationType' | 'value' | 'data'>;
   observedTokens: ObservedToken[];
 }
