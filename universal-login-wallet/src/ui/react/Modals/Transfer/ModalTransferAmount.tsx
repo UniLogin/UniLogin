@@ -2,7 +2,7 @@ import React from 'react';
 import {Input} from '@universal-login/react';
 import InputLabel from '../../common/InputLabel';
 import TransferDetails from '../../../../core/entities/TransferDetails';
-import {TransferAccordion} from './TransferAccordion';
+import {TransferDropdown} from './TransferDropdown';
 
 export interface ModalTransferAmountProps {
   onSelectRecipientClick: () => void;
@@ -20,7 +20,7 @@ export const ModalTransferAmount = ({onSelectRecipientClick, updateTransferDetai
       <div className="modal-content">
 
         <div className="transfer-modal-inner">
-          <TransferAccordion
+          <TransferDropdown
             currency={currency}
             setCurrency={(currency: string) => updateTransferDetailsWith({currency})}
           />

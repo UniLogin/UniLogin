@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface AccordionItemProps {
+interface DropdownItemProps {
   className?: string;
   name: string;
   symbol: string;
@@ -9,7 +9,7 @@ interface AccordionItemProps {
   onClick: (transferCurrency: string) => void;
 }
 
-export const TransferAccordionItem = ({className, name, symbol, balance, iconSrc, onClick}: AccordionItemProps) => (
+export const TransferDropdownItem = ({className, name, symbol, balance, iconSrc, onClick}: DropdownItemProps) => (
   <button onClick={() => onClick(symbol)} className={className || 'currency-accordion-item'}>
     <div className="currency-accordion-left">
       <img src={iconSrc} alt="dai" className="currency-accordion-img" />

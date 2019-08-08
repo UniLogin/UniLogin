@@ -3,15 +3,15 @@ import {TokenDetailsWithBalance} from '@universal-login/commons';
 import daiIcon from '../../../assets/icons/dai.svg';
 import ethereumIcon from '../../../assets/icons/ethereum.svg';
 import {useToggler, useServices} from '../../../hooks';
-import {TransferAccordionItem} from './TransferAccordionItem';
+import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
 
-interface TransferAccordionProps {
+interface TransferDropdownProps {
   currency: string;
   setCurrency: (currency: string) => void;
 }
 
-export const TransferAccordion = ({currency, setCurrency}: TransferAccordionProps) => {
+export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
   const {sdk, walletPresenter} = useServices();
   const [tokenDetailsWithBalanceDetails, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
@@ -34,7 +34,7 @@ export const TransferAccordion = ({currency, setCurrency}: TransferAccordionProp
         tokenDetailsWithBalanceDetails
           .filter(({symbol}) => symbol === currency)
           .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-            <TransferAccordionItem
+            <TransferDropdownItem
               key={`${name}-${symbol}`}
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
@@ -51,7 +51,7 @@ export const TransferAccordion = ({currency, setCurrency}: TransferAccordionProp
           {tokenDetailsWithBalanceDetails
             .filter(({symbol}) => symbol !== currency)
             .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-              <TransferAccordionItem key={`${name}-${symbol}`} iconSrc={daiIcon} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
+              <TransferDropdownItem key={`${name}-${symbol}`} iconSrc={daiIcon} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
             ))}
         </div>
       }
