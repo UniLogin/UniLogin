@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
-import {waitUntil, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {waitUntil} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../lib/api/sdk';
 import basicSDK from '../fixtures/basicSDK';
