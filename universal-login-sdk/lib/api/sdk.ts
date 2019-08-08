@@ -220,7 +220,7 @@ class UniversalLoginSDK {
   }
 
   async subscribeToBalances(ensName: string, callback: Function) {
-    await this.fetchBalanceObserver(ensName);
+    await this.fetchBalanceObservers(ensName);
     return this.balanceObserver!.subscribe(callback);
   }
 
