@@ -41,6 +41,14 @@ describe('UNIT: deepMerge', () => {
     expect(deepMerge(obj1, {})).to.deep.eq(obj1);
   });
 
+  it('non-empty merged to undefined', () => {
+    expect(() => deepMerge(undefined, obj1)).to.throws(`Cannot set property 'a1' of undefined`);
+  });
+
+  it('undefined merged to non-empty', () => {
+    expect(deepMerge(obj1, undefined)).to.deep.eq(obj1);
+  });
+
   it('flat merged to flat', () => {
     const a = {
       a: '10',
