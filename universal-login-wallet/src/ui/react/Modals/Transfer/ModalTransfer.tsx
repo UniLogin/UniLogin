@@ -27,7 +27,7 @@ const ModalTransfer = () => {
     return (
       <ModalTransferAmount
         onSelectRecipientClick={() => setModal('transferRecipient')}
-        onAmountInputChange={event => updateTransferDetailsWith({amount: event.target.value})}
+        updateTransferDetailsWith={updateTransferDetailsWith}
       />
     );
   } else if (modal === 'transferRecipient') {

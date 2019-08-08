@@ -1,14 +1,15 @@
 import React from 'react';
 import {Input} from '@universal-login/react';
 import InputLabel from '../../common/InputLabel';
+import TransferDetails from '../../../../core/entities/TransferDetails';
 import {TransformAccordion} from './TransferAccordion';
 
 export interface ModalTransferAmountProps {
   onSelectRecipientClick: () => void;
-  onAmountInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
 }
 
-export const ModalTransferAmount = ({onSelectRecipientClick, onAmountInputChange}: ModalTransferAmountProps) => {
+export const ModalTransferAmount = ({onSelectRecipientClick, updateTransferDetailsWith}: ModalTransferAmountProps) => {
 
   return (
     <div className="transfer-modal">
@@ -28,7 +29,7 @@ export const ModalTransferAmount = ({onSelectRecipientClick, onAmountInputChange
               id="amount-eth"
               type="number"
               className="transfer-modal-amount"
-              onChange={onAmountInputChange}
+              onChange={event => updateTransferDetailsWith({amount: event.target.value})}
             />
             <span className="currency-code">ETH</span>
           </div>
