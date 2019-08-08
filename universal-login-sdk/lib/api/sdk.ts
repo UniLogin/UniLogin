@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -38,7 +38,7 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    sdkConfig?: Partial<SdkConfig>
+    sdkConfig?: DeepPartial<SdkConfig>
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
