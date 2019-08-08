@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Input} from '@universal-login/react';
-import InputLabel from '../common/InputLabel';
-import daiIcon from '../../assets/icons/dai.svg';
-import ethereumIcon from '../../assets/icons/ethereum.svg';
+import InputLabel from '../../common/InputLabel';
+import daiIcon from '../../../assets/icons/dai.svg';
+import ethereumIcon from '../../../assets/icons/ethereum.svg';
 
 export interface ModalTransferAmountProps {
   onSelectRecipientClick: () => void;

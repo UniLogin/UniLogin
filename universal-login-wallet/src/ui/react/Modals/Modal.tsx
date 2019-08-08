@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
-import ModalTransfer from './ModalTransfer';
+import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {useServices, useRelayerConfig} from '../../hooks';

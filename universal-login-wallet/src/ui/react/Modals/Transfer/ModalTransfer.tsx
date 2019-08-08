@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
-import {useServices} from '../../hooks';
-import TransferDetails from '../../../core/entities/TransferDetails';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {useServices} from '../../../hooks';
+import TransferDetails from '../../../../core/entities/TransferDetails';
+import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {ModalTransferAmount} from './ModalTransferAmount';
 import {ModalTransferRecipient} from './ModalTransferRecipient';
 

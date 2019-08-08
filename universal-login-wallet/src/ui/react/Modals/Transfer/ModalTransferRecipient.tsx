@@ -1,5 +1,5 @@
 import React from 'react';
-import InputLabel from '../common/InputLabel';
+import InputLabel from '../../common/InputLabel';
 import {Input} from '@universal-login/react';
 
 export interface ModalTransferRecipientProps {
