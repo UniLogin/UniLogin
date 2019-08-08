@@ -7,6 +7,7 @@ import {BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, 
 import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
+import {PriceOracle} from '../../../lib/core/services/PriceOracle';
 
 chai.use(sinonChai);
 
@@ -18,17 +19,10 @@ describe('INT: AggregateBalanceObserver', () => {
   let wallet: Wallet;
   let mockToken: Contract;
   let observedTokens: TokenDetails[] = [];
+  const priceOracle = new PriceOracle();
+  const ETH_PRICE_IN_USD = 1405;
+  const ETH_PRICE_IN_EUR = 1152;
 
-  const priceOracle = {
-    getTokenPrice: (tokenSymbol: string, currencySymbol: string) => {
-      if (currencySymbol === 'USD') {
-        return Promise.resolve(1405);
-      } else if (currencySymbol === 'EUR') {
-        return Promise.resolve(1152);
-      }
-      return Promise.resolve(1000);
-    }
-  };
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -57,7 +51,7 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback).to.have.been.calledTwice;
 
     expect(callback.firstCall.args[0]).to.equal(0);
-    expect(callback.secondCall.args[0]).to.be.greaterThan(702.5 - 0.1).and.to.be.lessThan(702.5 + 0.1);
+    expect(callback.secondCall.args[0]).to.be.greaterThan(0.5 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(0.5 * ETH_PRICE_IN_USD + 0.1);
   });
 
   it('2 subscriptions', async () => {
@@ -76,8 +70,8 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback1).to.have.been.calledOnce;
     expect(callback2).to.have.been.calledOnce;
 
-    expect(callback1.firstCall.args[0]).to.be.greaterThan(702.5 - 0.1).and.to.be.lessThan(702.5 + 0.1);
-    expect(callback2.firstCall.args[0]).to.be.greaterThan(576 - 0.1).and.to.be.lessThan(576 + 0.1);
+    expect(callback1.firstCall.args[0]).to.be.greaterThan(0.5 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(0.5 * ETH_PRICE_IN_USD + 0.1);
+    expect(callback2.firstCall.args[0]).to.be.greaterThan(0.5 * ETH_PRICE_IN_EUR - 0.1).and.to.be.lessThan(0.5 * ETH_PRICE_IN_EUR + 0.1);
 
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.3')});
     await waitUntil(() => !!callback2.secondCall);
@@ -87,6 +81,6 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback1).to.have.been.calledOnce;
     expect(callback2).to.have.been.calledTwice;
 
-    expect(callback2.secondCall.args[0]).to.be.greaterThan(921.6 - 0.1).and.to.be.lessThan(921.6 + 0.1);
+    expect(callback2.secondCall.args[0]).to.be.greaterThan(0.8 * ETH_PRICE_IN_EUR - 0.1).and.to.be.lessThan(0.8 * ETH_PRICE_IN_EUR + 0.1);
   });
 });
