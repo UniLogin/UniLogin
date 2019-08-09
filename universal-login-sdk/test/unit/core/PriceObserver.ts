@@ -1,8 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS, TokenDetails, waitUntil} from '@universal-login/commons';
-import {PriceObserver, ObservedCurrency} from '../../../lib/core/observers/PriceObserver';
-import {PRICES_AFTER, PRICES_BEFORE, OBSERVED_CURRENCIES, createMockedPriceObserver} from '../../fixtures/PriceObserver';
+import {PRICES_AFTER, PRICES_BEFORE, createMockedPriceObserver} from '../../fixtures/PriceObserver';
 
 describe('UNIT: PriceObserver', () => {
   const observedTokens: TokenDetails[] = [

@@ -49,7 +49,6 @@ export class AggregateBalanceObserver {
       return;
     }
     const totalWorth = this.getAggregatedTotalWorth();
-
     this.callbacks.forEach((callback) => callback(totalWorth));
   }
 
