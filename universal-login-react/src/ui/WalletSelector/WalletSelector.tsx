@@ -27,6 +27,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
   const [name, setName] = useState('');
+  const isOnlyCreateAction = actions.includes(WalletSuggestionAction.create) && actions.length === 1;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -52,9 +53,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
   const isNameTaken = () => showMessage &&
     !!name &&
     !busy &&
-    actions.includes(WalletSuggestionAction.create) &&
-    !actions.includes(WalletSuggestionAction.connect) &&
-    !actions.includes(WalletSuggestionAction.recover);
+    isOnlyCreateAction;
 
   return(
     <div className="universal-login">
