@@ -23,7 +23,14 @@ interface Overrides {
 
 export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
-  const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl);
+  const sdk = new UniversalLoginSDK(
+    config.relayerUrl,
+    providerOrProviderUrl,
+    {
+      paymentOptions: {},
+      observedTokens: config.tokens.map((address: string) => ({address}))
+    }
+  );
   const userDropdownService = new UserDropdownService();
   const walletService = new WalletService(sdk);
   const walletPresenter = new WalletPresenter(walletService);
