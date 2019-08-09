@@ -1,11 +1,16 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS, TokenDetails, waitUntil, ObservedCurrency} from '@universal-login/commons';
+import {PRICES_AFTER, PRICES_BEFORE, OBSERVED_CURRENCIES, createMockedPriceObserver} from '../../fixtures/PriceObserver';
 import {PriceObserver} from '../../../lib/core/observers/PriceObserver';
-import {PRICES_AFTER, PRICES_BEFORE, OBSERVED_CURRENCIES, OBSERVED_TOKENS, createMockedPriceObserver} from '../../fixtures/PriceObserver';
 
 describe('UNIT: PriceObserver', () => {
-  const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver();
+  const observedTokens: TokenDetails[] = [
+    ETHER_NATIVE_TOKEN,
+    {address: TEST_CONTRACT_ADDRESS, symbol: 'Mock', name: 'Mock Token'}
+  ];
+
+  const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver(observedTokens);
 
   beforeEach(() => {
     resetCallCount();
