@@ -6,7 +6,7 @@ export default class TransferPage {
   }
 
   async chooseCurrency(currency: string) {
-    await waitForUI(this.appWrapper, () => this.appWrapper.find('.currency-accordion-item').length !== 0);
+    await waitForUI(this.appWrapper, () => this.appWrapper.find('button.currency-accordion-item').length !== 0);
     this.appWrapper.find('button.currency-accordion-btn').simulate('click');
     const items = this.appWrapper.find('button.currency-accordion-item');
     items.filterWhere(item => item.text().includes(currency)).first().simulate('click');

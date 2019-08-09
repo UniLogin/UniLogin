@@ -3,6 +3,7 @@ import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {useToggler, useServices} from '../../../hooks';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
+import {Spinner} from '@universal-login/react';
 
 interface TransferDropdownProps {
   currency: string;
@@ -12,7 +13,7 @@ interface TransferDropdownProps {
 export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
   const {sdk, walletPresenter} = useServices();
-  const [tokenDetailsWithBalanceDetails, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useEffect(() => {
     const promise = sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance);
@@ -29,7 +30,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
   return (
     <div className="currency-accordion">
       {
-        tokenDetailsWithBalanceDetails
+        tokenDetailsWithBalance
           .filter(({symbol}) => symbol === currency)
           .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
             <TransferDropdownItem
@@ -42,10 +43,11 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
             />
           ))}
       }
+      {tokenDetailsWithBalance.length === 0 && <div className="currency-accordion-item"> <Spinner /> </div>}
       {
         visible &&
         <div className="currency-accordion-content">
-          {tokenDetailsWithBalanceDetails
+          {tokenDetailsWithBalance
             .filter(({symbol}) => symbol !== currency)
             .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
               <TransferDropdownItem key={`${name}-${symbol}`} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
