@@ -71,20 +71,20 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!.createFutureWallet();
   }
 
-  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Partial<PaymentOptions>, keyPurpose = MANAGEMENT_KEY) {
+  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
     return this.selfExecute(to, 'addKey', [publicKey, keyPurpose], privateKey, transactionDetails);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Partial<PaymentOptions>, keyPurpose = MANAGEMENT_KEY) {
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
     return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Partial<PaymentOptions>) {
+  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Message) {
     return this.selfExecute(to, 'removeKey', [key, MANAGEMENT_KEY], privateKey, transactionDetails);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Partial<PaymentOptions>) {
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Message) {
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
@@ -158,7 +158,7 @@ class UniversalLoginSDK {
     return this.executionFactory.createExecution(signedMessage);
   }
 
-  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Partial<PaymentOptions>) {
+  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Message) {
     const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
     const message = {
       ...transactionDetails,
