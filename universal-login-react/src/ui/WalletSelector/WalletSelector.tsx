@@ -22,10 +22,11 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
   const [debouncedSuggestionsService] = useState(
     new DebouncedSuggestionsService(new SuggestionsService(sdk, domains, actions))
   );
+  const [showMessage, setShowMessage] = useState(false);
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
-  const [, setName] = useState('');
+  const [name, setName] = useState('');
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -34,6 +35,11 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
     debouncedSuggestionsService.getSuggestions(name, suggestions => {
       setConnections(suggestions.connections);
       setCreations(suggestions.creations);
+      if (suggestions.creations.length === 0) {
+        setShowMessage(true);
+      } else {
+        setShowMessage(false);
+      }
       setBusy(false);
     });
   };
@@ -42,6 +48,13 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
     !busy && (connections.length || creations.length) ?
       <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectClick={onConnectClick} actions={actions}/> :
       null;
+
+  const isNameTaken = () => showMessage &&
+    !!name &&
+    !busy &&
+    actions.includes(WalletSuggestionAction.create) &&
+    !actions.includes(WalletSuggestionAction.connect) &&
+    !actions.includes(WalletSuggestionAction.recover);
 
   return(
     <div className="universal-login">
@@ -55,6 +68,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             placeholder="bob.example.eth"
             autoFocus
           />
+          {isNameTaken() && <div>Name is already taken</div>}
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}
