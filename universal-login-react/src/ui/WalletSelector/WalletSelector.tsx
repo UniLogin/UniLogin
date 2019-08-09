@@ -25,7 +25,12 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
-  const [, setName] = useState('');
+  const [name, setName] = useState('');
+  const isOnlyCreateAction = actions.includes(WalletSuggestionAction.create) && actions.length === 1;
+  const isNameTaken = creations.length === 0 &&
+    isOnlyCreateAction &&
+    !!name &&
+    !busy;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -40,10 +45,10 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
 
   const renderSuggestions = () =>
     !busy && (connections.length || creations.length) ?
-      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectClick={onConnectClick} actions={actions}/> :
+      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectClick={onConnectClick} actions={actions} /> :
       null;
 
-  return(
+  return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="selector-input-wrapper">
@@ -55,6 +60,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             placeholder="bob.example.eth"
             autoFocus
           />
+          {isNameTaken && <div>Name is already taken</div>}
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}
