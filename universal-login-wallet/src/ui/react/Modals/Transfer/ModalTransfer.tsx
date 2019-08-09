@@ -37,6 +37,7 @@ const ModalTransfer = () => {
         onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
         onSendClick={onGenerateClick}
         onBackClick={() => setModal('transferAmount')}
+        transferDetalis={transferDetalis}
       />
     );
   }
