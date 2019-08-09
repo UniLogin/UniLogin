@@ -15,7 +15,7 @@ import {BalanceObserver} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
-import {PriceOracle} from '../core/services/PriceOracle';
+import {PriceObserver} from '../core/observers/PriceObserver';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -28,7 +28,7 @@ class UniversalLoginSDK {
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
-  priceOracle: PriceOracle;
+  priceObserver: PriceObserver;
   tokenDetailsService: TokenDetailsService;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
@@ -54,7 +54,7 @@ class UniversalLoginSDK {
     this.sdkConfig = sdkConfig || SdkConfigDefault;
     this.sdkConfig.paymentOptions = {...MESSAGE_DEFAULTS, ...SdkConfigDefault.paymentOptions};
     this.sdkConfig.observedTokens = this.sdkConfig.observedTokens || SdkConfigDefault.observedTokens;
-    this.priceOracle = new PriceOracle();
+    this.priceObserver = new PriceObserver([], []);
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -127,7 +127,7 @@ class UniversalLoginSDK {
       return;
     }
     await this.fetchBalanceObserver(ensName);
-    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceOracle);
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver);
   }
 
   async getTokensDetails() {
@@ -227,9 +227,9 @@ class UniversalLoginSDK {
     return this.balanceObserver!.subscribe(callback);
   }
 
-  async subscribeToAggregatedBalance(ensName: string, callback: Function, currencySymbol: string) {
+  async subscribeToAggregatedBalance(ensName: string, callback: Function) {
     await this.fetchAggregateBalanceObserver(ensName);
-    return this.aggregateBalanceObserver!.subscribe(callback, currencySymbol);
+    return this.aggregateBalanceObserver!.subscribe(callback);
   }
 
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
