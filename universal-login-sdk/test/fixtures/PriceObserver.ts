@@ -1,7 +1,5 @@
-import {ObservedCurrency, PriceObserver} from '../../lib/core/observers/PriceObserver';
-import {TokenDetails, ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
-
-export const OBSERVED_CURRENCIES: ObservedCurrency[] = ['USD', 'EUR', 'BTC'];
+import {PriceObserver} from '../../lib/core/observers/PriceObserver';
+import {TokenDetails} from '@universal-login/commons';
 
 export const PRICES_BEFORE = {
   ETH: { USD: 218.21, EUR: 194.38, BTC: 0.01893 },
@@ -19,7 +17,7 @@ export const createMockedPriceObserver = (observedTokens: TokenDetails[]) => {
     callCount = 0;
   };
 
-  const mockedPriceObserver = new PriceObserver(observedTokens, OBSERVED_CURRENCIES, 100);
+  const mockedPriceObserver = new PriceObserver(observedTokens, ['USD', 'EUR', 'BTC']);
   mockedPriceObserver.getCurrentPrices = async () => {
     callCount++;
     if (callCount === 1) {
