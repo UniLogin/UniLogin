@@ -22,7 +22,6 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
   const [debouncedSuggestionsService] = useState(
     new DebouncedSuggestionsService(new SuggestionsService(sdk, domains, actions))
   );
-  const [showMessage, setShowMessage] = useState(false);
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
@@ -36,11 +35,6 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
     debouncedSuggestionsService.getSuggestions(name, suggestions => {
       setConnections(suggestions.connections);
       setCreations(suggestions.creations);
-      if (suggestions.creations.length === 0) {
-        setShowMessage(true);
-      } else {
-        setShowMessage(false);
-      }
       setBusy(false);
     });
   };
@@ -50,7 +44,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
       <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectClick={onConnectClick} actions={actions}/> :
       null;
 
-  const isNameTaken = () => showMessage &&
+  const isNameTaken = () => creations.length === 0 &&
     !!name &&
     !busy &&
     isOnlyCreateAction;
