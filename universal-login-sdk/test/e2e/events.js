@@ -2,8 +2,8 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import sinon from 'sinon';
-import MESSAGE_DEFAULTS from '../../lib/core/utils/MessageDefaults';
 import basicSDK from '../fixtures/basicSDK';
+import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -33,7 +33,7 @@ describe('E2E: Events', async () => {
     await sdk.subscribe('KeyAdded', {contractAddress, key: wallet.address}, keyCallback);
 
     await sdk.connect(contractAddress);
-    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await sdk.finalizeAndStop();
     unsubscribe();

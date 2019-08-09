@@ -5,7 +5,7 @@ import {utils, Contract} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import MESSAGE_DEFAULTS from '../../lib/core/utils/MessageDefaults';
+import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 
 export default async function basicWalletService(givenProvider, wallets) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
@@ -22,7 +22,7 @@ export default async function basicWalletService(givenProvider, wallets) {
 }
 
 export const transferMessage = {
-  ...MESSAGE_DEFAULTS,
+  ...SdkConfigDefault.paymentOptions,
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5').toString(),
 };
