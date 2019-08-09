@@ -7,18 +7,21 @@ export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
 
-export interface SignedMessage {
-  gasToken: string;
+export interface SignedMessage extends PaymentOptions {
   operationType: number;
   to: string;
   from: string;
   nonce: string | number;
-  gasLimit: utils.BigNumberish;
-  gasPrice: utils.BigNumberish;
   data: utils.Arrayish;
   value: utils.BigNumberish;
   signature: string;
 }
+
+export type PaymentOptions = {
+  gasLimit: utils.BigNumberish;
+  gasPrice: utils.BigNumberish;
+  gasToken: string
+};
 
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
