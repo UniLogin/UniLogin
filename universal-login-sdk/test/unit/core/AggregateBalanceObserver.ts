@@ -1,48 +1,82 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {createMockProvider} from 'ethereum-waffle';
-import {TokenDetailsWithBalance, BalanceChecker, ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
 import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
-import {PriceOracle} from '../../../lib/core/services/PriceOracle';
+import {PriceObserver} from '../../../lib/core/observers/PriceObserver';
 
 describe('UNIT: AggregateBalanceObserver', () => {
-  const priceOracle = new PriceOracle();
-  const provider = createMockProvider();
-  const balanceChecker = new BalanceChecker(provider);
-  const balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, []);
-  const aggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, priceOracle);
+  const mockedAggregateBalanceObserver = new AggregateBalanceObserver({} as BalanceObserver, {} as PriceObserver);
+  mockedAggregateBalanceObserver.notifyListeners = () => {};
+
   const tokenDetailsWithBalance: TokenDetailsWithBalance[] = [
     {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('1')},
     {address: TEST_CONTRACT_ADDRESS, symbol: 'Mock', name: 'MockToken', balance: utils.parseEther('2')}
   ];
-  const ETH_PRICE_IN_USD = 1405;
+  const tokenPrices = {
+    ETH: {USD: 218.21, EUR: 194.38, BTC: 0.01893},
+    Mock: {USD: 0.02619, EUR: 0.02337, BTC: 0.00000227}
+  };
 
-  context('token balance in USD', async () => {
-    it('ETH', async () => {
-      const ethBalanceInUSD = await aggregateBalanceObserver.getTokenBalance(tokenDetailsWithBalance[0], 'USD');
+  beforeEach(() => {
+    mockedAggregateBalanceObserver.priceObserverCallback(tokenPrices);
+    mockedAggregateBalanceObserver.balanceObserverCallback(tokenDetailsWithBalance);
+  });
 
-      expect(ethBalanceInUSD).to.be.greaterThan(1 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(1 * ETH_PRICE_IN_USD + 0.1);
+  context('getTokenTotalWorth', () => {
+    it('addBalances {} + {USD, EUR, BTC}', () => {
+      const token1TotalWorth = {};
+      const token2TotalWorth = {USD: 1838.51, EUR: 1494.71, BTC: 0.09893};
+
+      const tokensTotalWorth = mockedAggregateBalanceObserver.addBalances(token1TotalWorth, token2TotalWorth);
+
+      expect(tokensTotalWorth).to.deep.equal({USD: 1838.51, EUR: 1494.71, BTC: 0.09893});
     });
 
-    it('token', async () => {
-      const tokenBalanceInUSD = await aggregateBalanceObserver.getTokenBalance(tokenDetailsWithBalance[1], 'USD');
+    it('addBalances {USD, EUR, BTC} + {USD, EUR, BTC}', () => {
+      const token1TotalWorth = {USD: 218.21, EUR: 194.38, BTC: 0.01893};
+      const token2TotalWorth = {USD: 1838.51, EUR: 1494.71, BTC: 0.09893};
 
-      expect(tokenBalanceInUSD).to.be.greaterThan(2 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(2 * ETH_PRICE_IN_USD + 0.1);
+      const tokensTotalWorth = mockedAggregateBalanceObserver.addBalances(token1TotalWorth, token2TotalWorth);
+
+      expect(tokensTotalWorth).to.deep.equal({USD: 218.21 + 1838.51, EUR: 194.38 + 1494.71, BTC: 0.01893 + 0.09893});
     });
   });
 
-  context('total balance in USD', async () => {
-    it('[]', async () => {
-      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalance([], 'USD');
+  context('getTokenTotalWorth', () => {
+    it('ETH', () => {
+      const expectedEthTotalWorth = {USD: 1 * 218.21, EUR: 1 * 194.38, BTC: 1 * 0.01893};
 
-      expect(aggregatedBalanceInUSD).to.equal(0);
+      const actualEthTotalWorth = mockedAggregateBalanceObserver.getTokenTotalWorth(tokenDetailsWithBalance[0]);
+
+      expect(actualEthTotalWorth).to.be.deep.equal(expectedEthTotalWorth);
+    });
+
+    it('token', () => {
+      const expectedTokenTotalWorth = {USD: 2 * 0.02619, EUR: 2 * 0.02337, BTC: 2 * 0.00000227};
+
+      const actualTokenTotalWorth = mockedAggregateBalanceObserver.getTokenTotalWorth(tokenDetailsWithBalance[1]);
+
+      expect(actualTokenTotalWorth).to.be.deep.equal(expectedTokenTotalWorth);
+    });
+  });
+
+  context('getAggregatedTotalWorth', () => {
+    it('[eth]', async () => {
+      mockedAggregateBalanceObserver.balanceObserverCallback([tokenDetailsWithBalance[0]]);
+      const expectedTotalWorth = {USD: 1 * 218.21, EUR: 1 * 194.38, BTC: 1 * 0.01893};
+
+      const actualTotalWorth = mockedAggregateBalanceObserver.getAggregatedTotalWorth();
+
+      expect(actualTotalWorth).to.be.deep.equal(expectedTotalWorth);
     });
 
     it('[eth, token]', async () => {
-      const aggregatedBalanceInUSD = await aggregateBalanceObserver.getAggregatedBalance(tokenDetailsWithBalance, 'USD');
+      const expectedTotalWorth = {USD: 1 * 218.21 + 2 * 0.02619, EUR: 1 * 194.38 + 2 * 0.02337, BTC: 1 * 0.01893 + 2 * 0.00000227};
 
-      expect(aggregatedBalanceInUSD).to.be.greaterThan(3 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(3 * ETH_PRICE_IN_USD + 0.1);
+      const actualTotalWorth = mockedAggregateBalanceObserver.getAggregatedTotalWorth();
+
+      expect(actualTotalWorth).to.be.deep.equal(expectedTotalWorth);
     });
   });
 });

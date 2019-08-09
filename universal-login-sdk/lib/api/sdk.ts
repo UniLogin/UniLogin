@@ -14,7 +14,6 @@ import {BalanceObserver} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
-import {PriceOracle} from '../core/services/PriceOracle';
 import {PriceObserver} from '../core/observers/PriceObserver';
 
 class UniversalLoginSDK {
@@ -125,7 +124,7 @@ class UniversalLoginSDK {
       return;
     }
     await this.fetchBalanceObserver(ensName);
-    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, new PriceOracle());
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver);
   }
 
   async getTokensDetails() {
@@ -225,9 +224,9 @@ class UniversalLoginSDK {
     return this.balanceObserver!.subscribe(callback);
   }
 
-  async subscribeToAggregatedBalance(ensName: string, callback: Function, currencySymbol: string) {
+  async subscribeToAggregatedBalance(ensName: string, callback: Function) {
     await this.fetchAggregateBalanceObserver(ensName);
-    return this.aggregateBalanceObserver!.subscribe(callback, currencySymbol);
+    return this.aggregateBalanceObserver!.subscribe(callback);
   }
 
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
