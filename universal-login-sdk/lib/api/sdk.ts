@@ -14,6 +14,8 @@ import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 import {BalanceObserver} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
+import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
+import {PriceOracle} from '../core/services/PriceOracle';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -25,6 +27,8 @@ class UniversalLoginSDK {
   deploymentObserver?: DeploymentObserver;
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
+  aggregateBalanceObserver?: AggregateBalanceObserver;
+  priceOracle: PriceOracle;
   tokenDetailsService: TokenDetailsService;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
@@ -50,6 +54,7 @@ class UniversalLoginSDK {
     this.sdkConfig = sdkConfig || SdkConfigDefault;
     this.sdkConfig.paymentOptions = {...MESSAGE_DEFAULTS, ...SdkConfigDefault.paymentOptions};
     this.sdkConfig.observedTokens = this.sdkConfig.observedTokens || SdkConfigDefault.observedTokens;
+    this.priceOracle = new PriceOracle();
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -107,7 +112,7 @@ class UniversalLoginSDK {
 
   async fetchBalanceObserver(ensName: string) {
     if (this.balanceObserver) {
-      return this.balanceObserver!;
+      return;
     }
     const walletContractAddress = await this.getWalletContractAddress(ensName);
     ensureNotNull(walletContractAddress, InvalidContract);
@@ -115,6 +120,14 @@ class UniversalLoginSDK {
 
     const tokenDetails = await this.getTokensDetails();
     this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, tokenDetails);
+  }
+
+  async fetchAggregateBalanceObserver(ensName: string) {
+    if (this.aggregateBalanceObserver) {
+      return;
+    }
+    await this.fetchBalanceObserver(ensName);
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceOracle);
   }
 
   async getTokensDetails() {
@@ -212,6 +225,11 @@ class UniversalLoginSDK {
   async subscribeToBalances(ensName: string, callback: Function) {
     await this.fetchBalanceObserver(ensName);
     return this.balanceObserver!.subscribe(callback);
+  }
+
+  async subscribeToAggregatedBalance(ensName: string, callback: Function, currencySymbol: string) {
+    await this.fetchAggregateBalanceObserver(ensName);
+    return this.aggregateBalanceObserver!.subscribe(callback, currencySymbol);
   }
 
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
