@@ -30,7 +30,7 @@
     "@universal-login/relayer": "^0.3.9",
     "chai": "^4.1.2",
     "cross-env": "^5.2.0",
-    "ethereum-waffle": "2.0.13",
+    "ethereum-waffle": "2.0.15",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "rimraf": "^2.6.3",
