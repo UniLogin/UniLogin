@@ -28,11 +28,11 @@
     "start": "node build/lib/http/start.js",
     "test": "yarn build && yarn test:nobuild",
     "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
-    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"build/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 --exit \"build/test/**/*.js\"",
     "lint": "tslint -p tsconfig.json \"{lib,test,migrations,scripts}/**/*.{ts,js}\"",
     "relayer:start": "yarn start",
     "ganache:start": "ts-node scripts/ganache.js",
-    "clean": "rm -fr build"
+    "clean": "rimraf build"
   },
   "engines": {
     "node": ">=10.9"
@@ -48,10 +48,12 @@
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.0.0",
     "chai-string": "^1.4.0",
-    "ethereum-waffle": "2.0.12",
+    "cross-env": "^5.2.0",
+    "ethereum-waffle": "2.0.13",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "node-fetch": "^2.2.0",
+    "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",
     "solium": "^1.1.8",

@@ -24,8 +24,8 @@
     "prebuild": "yarn clean",
     "build": "yarn contracts:build && yarn relayer:build && parcel build ./src/index.html",
     "lint": "eslint src/**/*.js src/**/*.jsx scripts/**/*.js test/**/*.js",
-    "test": "NODE_ENV=test mocha --recursive --require ./test/helpers/testNullCompiler.js --require babel-register test -t 10000",
-    "clean": "rm -fr .cache build dist",
+    "test": "cross-env NODE_ENV=test mocha --recursive --require ./test/helpers/testNullCompiler.js --require babel-register test -t 10000",
+    "clean": "rimraf .cache build dist",
     "contracts:build": "waffle .waffle.js",
     "contracts:deploy": "babel-node scripts/deployContracts.js",
     "start:dev": "babel-node scripts/dev-start.js",
@@ -46,6 +46,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "canvas": "^2.2.0",
+    "cross-env": "^5.2.0",
     "ens-builder": "^2.0.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
@@ -53,7 +54,7 @@
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-react": "^7.10.0",
-    "ethereum-waffle": "2.0.12",
+    "ethereum-waffle": "2.0.13",
     "ganache-core": "^2.2.1",
     "jsdom": "^13.1.0",
     "jsdom-global": "^3.0.2",
@@ -61,7 +62,8 @@
     "node-sass": "^4.9.0",
     "openzeppelin-solidity": "^2.1.1",
     "parcel-bundler": "^1.9.4",
-    "prettier-eslint": "^8.8.2"
+    "prettier-eslint": "^8.8.2",
+    "rimraf": "^2.6.3"
   },
   "engines": {
     "node": ">=10.9"
