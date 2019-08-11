@@ -1,15 +1,14 @@
-import {TokenDetails} from '@universal-login/commons';
-import ObserverRunner from './ObserverRunner';
 const cryptocompare = require('cryptocompare');
-
-export type ObservedCurrency = 'USD' | 'EUR' | 'BTC';
+import {TokenDetails, ObservedCurrency} from '@universal-login/commons';
+import ObserverRunner from './ObserverRunner';
+import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
 
 export class PriceObserver extends ObserverRunner {
   private observedTokensSymbols: string[] = [];
   private lastTokenPrices: {} = {};
   private callbacks: Function[] = [];
 
-  constructor(private observedTokens: TokenDetails[], private observedCurrencies: ObservedCurrency[], step: number = 1000 * 60) {
+  constructor(private observedTokens: TokenDetails[], private observedCurrencies: ObservedCurrency[], step: number = PRICE_OBSERVER_DEAFULT_TICK) {
     super();
     this.step = step;
     this.observedTokensSymbols = this.observedTokens.map((token) => token.symbol);

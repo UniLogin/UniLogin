@@ -15,6 +15,7 @@ import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
 import {PriceOracle} from '../core/services/PriceOracle';
+import {PriceObserver} from '../core/observers/PriceObserver';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -27,7 +28,7 @@ class UniversalLoginSDK {
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
-  priceOracle: PriceOracle;
+  priceObserver: PriceObserver;
   tokenDetailsService: TokenDetailsService;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
@@ -51,7 +52,7 @@ class UniversalLoginSDK {
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
-    this.priceOracle = new PriceOracle();
+    this.priceObserver = new PriceObserver(this.sdkConfig.observedTokens, this.sdkConfig.observedCurrencies);
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -124,7 +125,7 @@ class UniversalLoginSDK {
       return;
     }
     await this.fetchBalanceObserver(ensName);
-    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceOracle);
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, new PriceOracle());
   }
 
   async getTokensDetails() {

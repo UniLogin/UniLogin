@@ -9,6 +9,11 @@ export const SdkConfigDefault: SdkConfig = {
     gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE)
   },
   observedTokens: [
-    {address: ETHER_NATIVE_TOKEN.address}
+    ETHER_NATIVE_TOKEN
+  ],
+  observedCurrencies: [
+    'USD',
+    'EUR',
+    'BTC'
   ]
 };
