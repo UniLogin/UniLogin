@@ -3,9 +3,9 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {Wallet, utils} from 'ethers';
-import MESSAGE_DEFAULTS from '../../../lib/core/utils/MessageDefaults';
 import {MANAGEMENT_KEY} from '@universal-login/commons';
 import basicSDK from '../../fixtures/basicSDK';
+import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -47,7 +47,7 @@ describe('INT: BlockchainObserver', async () => {
 
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
-    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
@@ -59,7 +59,7 @@ describe('INT: BlockchainObserver', async () => {
   it('subscribe: shouldn`t emit AddKey on add another key', async () => {
     const callback = sinon.spy();
     const callback2 = sinon.spy();
-    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
 
     const filter = {contractAddress, key: otherWallet.address};
     const filter2 = {contractAddress, key: otherWallet2.address};
@@ -76,12 +76,12 @@ describe('INT: BlockchainObserver', async () => {
 
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
-    const paymentOptions = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await execution.waitToBeMined();
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyRemoved', filter, callback);
-    const removeKeyPaymentOption = {...MESSAGE_DEFAULTS, gasToken: mockToken.address};
+    const removeKeyPaymentOption = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
     const {waitToBeMined} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));

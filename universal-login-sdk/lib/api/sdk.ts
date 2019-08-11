@@ -1,11 +1,10 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
-import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
@@ -39,7 +38,7 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    sdkConfig?: SdkConfig
+    sdkConfig?: DeepPartial<SdkConfig>
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
@@ -51,9 +50,7 @@ class UniversalLoginSDK {
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
-    this.sdkConfig = sdkConfig || SdkConfigDefault;
-    this.sdkConfig.paymentOptions = {...MESSAGE_DEFAULTS, ...SdkConfigDefault.paymentOptions};
-    this.sdkConfig.observedTokens = this.sdkConfig.observedTokens || SdkConfigDefault.observedTokens;
+    this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.priceOracle = new PriceOracle();
   }
 
@@ -78,16 +75,16 @@ class UniversalLoginSDK {
     return this.selfExecute(to, 'addKey', [publicKey, keyPurpose], privateKey, transactionDetails);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: SignedMessage, keyPurpose = MANAGEMENT_KEY) {
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
     return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, transactionDetails: SignedMessage) {
+  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Message) {
     return this.selfExecute(to, 'removeKey', [key, MANAGEMENT_KEY], privateKey, transactionDetails);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: SignedMessage) {
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Message) {
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
@@ -157,7 +154,7 @@ class UniversalLoginSDK {
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
     } as MessageWithFrom;
-    const signedMessage = createSignedMessage(unsignedMessage, privateKey);
+    const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
   }
 
