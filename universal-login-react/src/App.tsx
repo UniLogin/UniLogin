@@ -14,6 +14,7 @@ import {createModalService} from './core/services/createModalService';
 import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
 import './ui/styles/playground.css';
 import {useAsync} from './ui/hooks/useAsync';
+import {BalancesWrapper} from './ui/Balances/BalancesWrapper';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
@@ -97,6 +98,7 @@ export const App = () => {
             />
             <Route exact path="/settings" render={() => <Settings />} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
+            <Route exact path="/balances" render={() => <BalancesWrapper sdk={sdk} />} />
             <Route component={() => (<p>not found</p>)} />
           </Switch>
         </div>

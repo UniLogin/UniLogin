@@ -28,8 +28,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
     return (
       <TopUpChoose onMethodChoose={setModal}/>
     );
-  }
-  else if (modal === TopUpComponentType.crypto) {
+  } else if (modal === TopUpComponentType.crypto) {
     return (
       <TopUpWithCrypto contractAddress={contractAddress}/>
     );

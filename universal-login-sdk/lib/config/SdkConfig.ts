@@ -1,6 +1,7 @@
-import {Message, ObservedToken} from '@universal-login/commons';
+import {Message, TokenDetails} from '@universal-login/commons';
 
 export interface SdkConfig {
   paymentOptions: Message;
-  observedTokens: ObservedToken[];
+  observedTokens: TokenDetails[];
+  observedCurrencies: Array<'USD' | 'EUR' | 'BTC'>;
 }

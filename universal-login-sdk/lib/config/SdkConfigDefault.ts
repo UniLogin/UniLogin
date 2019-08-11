@@ -5,6 +5,7 @@ import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 export const SdkConfigDefault: SdkConfig = {
   paymentOptions: MESSAGE_DEFAULTS,
   observedTokens: [
-    {address: ETHER_NATIVE_TOKEN.address}
-  ]
+    ETHER_NATIVE_TOKEN
+  ],
+  observedCurrencies: ['USD', 'EUR', 'BTC']
 };

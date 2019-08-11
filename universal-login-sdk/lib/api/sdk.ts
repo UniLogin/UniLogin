@@ -54,7 +54,8 @@ class UniversalLoginSDK {
     this.sdkConfig = sdkConfig || SdkConfigDefault;
     this.sdkConfig.paymentOptions = {...MESSAGE_DEFAULTS, ...SdkConfigDefault.paymentOptions};
     this.sdkConfig.observedTokens = this.sdkConfig.observedTokens || SdkConfigDefault.observedTokens;
-    this.priceObserver = new PriceObserver([], []);
+    this.sdkConfig.observedCurrencies = this.sdkConfig.observedCurrencies || SdkConfigDefault.observedCurrencies;
+    this.priceObserver = new PriceObserver(this.sdkConfig.observedTokens, this.sdkConfig.observedCurrencies);
   }
 
   async create(ensName: string): Promise<[string, string]> {
