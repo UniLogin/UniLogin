@@ -53,6 +53,10 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         return keyExist(getMessageHash(_data).recover(_signature));
     }
 
+    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
+        return this.onERC721Received.selector;
+    }
+
     function getMessageHash(bytes memory _data) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uint2str(_data.length), _data));
     }
@@ -75,9 +79,5 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
             i /= 10;
         }
         return string(bstr);
-    }
-
-    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
-        return this.onERC721Received.selector;
     }
 }
