@@ -2,6 +2,8 @@ const cryptocompare = require('cryptocompare');
 import {TokenDetails, ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
+import {utils} from 'ethers';
+import {TokensPricesNumber, CurrencyToValue, CurrencyToNumberValue} from '@universal-login/commons/lib/core/models/CurrencyData';
 
 export class PriceObserver extends ObserverRunner {
   private observedTokensSymbols: string[] = [];
@@ -34,6 +36,23 @@ export class PriceObserver extends ObserverRunner {
   }
 
   async getCurrentPrices(): Promise<TokensPrices> {
-    return cryptocompare.priceMulti(this.observedTokensSymbols, this.observedCurrencies);
+    const pricesWithNumbers = cryptocompare.priceMulti(this.observedTokensSymbols, this.observedCurrencies);
+    return this.bigNumberifyTokensPrices(pricesWithNumbers);
+  }
+
+  bigNumberifyTokensPrices(tokensPricesNumber: TokensPricesNumber): TokensPrices {
+    const tokensPrices: TokensPrices = {};
+    for (const tokenSymbol in tokensPricesNumber) {
+      tokensPrices[tokenSymbol as ObservedCurrency] = this.bigNumberifyCurrencyToValue(tokensPricesNumber[tokenSymbol as ObservedCurrency]);
+    }
+    return tokensPrices;
+  }
+
+  bigNumberifyCurrencyToValue(tokenPricesNumber: CurrencyToNumberValue): CurrencyToValue {
+    const tokenPrices = {} as CurrencyToValue;
+    for (const currencySymbol in tokenPricesNumber) {
+      tokenPrices[currencySymbol as ObservedCurrency] = utils.bigNumberify(tokenPricesNumber[currencySymbol as ObservedCurrency]);
+    }
+    return tokenPrices;
   }
 }
