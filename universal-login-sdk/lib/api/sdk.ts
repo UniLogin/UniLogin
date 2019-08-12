@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
+import {TokensValueConverter, TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -26,6 +26,7 @@ class UniversalLoginSDK {
   deploymentObserver?: DeploymentObserver;
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
+  tokensValueConverter: TokensValueConverter;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   priceObserver: PriceObserver;
   tokenDetailsService: TokenDetailsService;
@@ -52,6 +53,7 @@ class UniversalLoginSDK {
     this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.priceObserver = new PriceObserver(this.sdkConfig.observedTokens, this.sdkConfig.observedCurrencies);
+    this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -124,7 +126,7 @@ class UniversalLoginSDK {
       return;
     }
     await this.fetchBalanceObserver(ensName);
-    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver);
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver, this.tokensValueConverter);
   }
 
   async getTokensDetails() {

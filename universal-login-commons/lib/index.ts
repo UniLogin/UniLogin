@@ -53,4 +53,5 @@ export {ObservedToken, TokenDetails, TokenDetailsWithBalance} from './core/model
 export {normalizeBigNumber} from './core/utils/bigNumbers';
 export {stringToEther} from './integration/ethereum/stringToEther';
 export {isValidAmount} from './core/utils/isValidAmount';
-export {ObservedCurrency} from './core/models/CurrencyData';
+export {ObservedCurrency, CurrencyToValue, TokensPrices} from './core/models/CurrencyData';
+export {TokensValueConverter} from './core/services/TokensValueConverter';

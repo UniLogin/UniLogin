@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {waitUntil} from '@universal-login/commons';
-import {PRICES_AFTER, PRICES_BEFORE, createMockedPriceObserver} from '../../fixtures/PriceObserver';
+import {PRICES_AFTER, PRICES_BEFORE, createMockedPriceObserver} from '../../mock/PriceObserver';
 
 describe('UNIT: PriceObserver', () => {
   const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver();

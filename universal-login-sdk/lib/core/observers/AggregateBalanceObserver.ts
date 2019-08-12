@@ -1,19 +1,14 @@
 import {BalanceObserver} from './BalanceObserver';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
-import {utils} from 'ethers';
-import {} from '@universal-login/commons/lib';
+import {TokenDetailsWithBalance, CurrencyToValue, TokensPrices, TokensValueConverter} from '@universal-login/commons';
 import {PriceObserver} from './PriceObserver';
-import clonedeep from 'lodash.clonedeep';
-
-export type SymbolToValue = {[symbol: string]: number};
 
 export class AggregateBalanceObserver {
-  private tokenPrices: {[symbol: string]: SymbolToValue} = {};
+  private tokensPrices: TokensPrices = {};
   private tokenDetailsWithBalance: TokenDetailsWithBalance[] = [];
   private unsubscribePriceObserver?: Function;
   private unsubscribeBalanceObserver?: Function;
   private callbacks: Function[] = [];
-  constructor(private balanceObserver: BalanceObserver, private priceObserver: PriceObserver) {}
+  constructor(private balanceObserver: BalanceObserver, private priceObserver: PriceObserver, private tokensValueConverter: TokensValueConverter) {}
 
   subscribe(callback: Function) {
     this.callbacks.push(callback);
@@ -28,55 +23,30 @@ export class AggregateBalanceObserver {
         this.unsubscribeBalanceObserver!();
         this.unsubscribePriceObserver!();
         this.tokenDetailsWithBalance = [];
-        this.tokenPrices = {};
       }
     };
     return unsubscribe;
   }
 
-  priceObserverCallback(tokenPrices: {}) {
-    this.tokenPrices = tokenPrices;
-    this.notifyListeners();
+  priceObserverCallback(tokensPrices: TokensPrices) {
+    this.tokensPrices = tokensPrices;
+    this.refreshPrices();
   }
 
   balanceObserverCallback(tokenDetailsWithBalance: TokenDetailsWithBalance[]) {
     this.tokenDetailsWithBalance = tokenDetailsWithBalance;
-    this.notifyListeners();
+    this.refreshPrices();
   }
 
-  notifyListeners() {
-    if (Object.keys(this.tokenPrices).length === 0 || this.tokenDetailsWithBalance.length === 0) {
+  refreshPrices() {
+    if (!this.tokensPrices || this.tokenDetailsWithBalance.length === 0) {
       return;
     }
-    const totalWorth = this.getAggregatedTotalWorth();
+    const totalWorth = this.tokensValueConverter.getTotal(this.tokenDetailsWithBalance, this.tokensPrices);
+    this.notifyListeners(totalWorth);
+  }
+
+  notifyListeners(totalWorth: CurrencyToValue) {
     this.callbacks.forEach((callback) => callback(totalWorth));
-  }
-
-  getAggregatedTotalWorth() {
-    const tokensTotalWorth = this.getTokensTotalWorth(this.tokenDetailsWithBalance);
-    return tokensTotalWorth.reduce((tokensTotal, tokenTotal) => (this.addBalances(tokensTotal, tokenTotal)), {});
-  }
-
-  getTokensTotalWorth(tokensDetailsWithBalance: TokenDetailsWithBalance[]) {
-    return tokensDetailsWithBalance.map((token) => this.getTokenTotalWorth(token));
-  }
-
-  getTokenTotalWorth(tokenDetailsWithBalance: TokenDetailsWithBalance) {
-    const tokenBalanceInWholeUnits = Number(utils.formatEther(tokenDetailsWithBalance.balance));
-    const tokenPrices = this.tokenPrices[tokenDetailsWithBalance.symbol];
-    const tokenPricesCopy = clonedeep(tokenPrices);
-    Object.keys(tokenPricesCopy).map((symbol) => tokenPricesCopy[symbol] *= tokenBalanceInWholeUnits);
-    return tokenPricesCopy;
-  }
-
-  addBalances(totalBalances: {[symbol: string]: number}, toAddBalances: {[symbol: string]: number}) {
-    const copyTotalBalances = clonedeep(totalBalances);
-    Object.keys(toAddBalances).map((symbol: string) => {
-      if (copyTotalBalances[symbol] === undefined || copyTotalBalances === null) {
-        copyTotalBalances[symbol] = 0;
-      }
-      copyTotalBalances[symbol] += toAddBalances[symbol];
-    });
-    return copyTotalBalances;
   }
 }

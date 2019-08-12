@@ -3,10 +3,11 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
+import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
 import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
-import {createMockedPriceObserver} from '../../fixtures/PriceObserver';
+import {createMockedPriceObserver} from '../../mock/PriceObserver';
+import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
 
 chai.use(sinonChai);
 
@@ -17,6 +18,7 @@ describe('INT: AggregateBalanceObserver', () => {
   let mockedAggregateBalanceObserver: AggregateBalanceObserver;
   let wallet: Wallet;
   const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver();
+  const tokensValueConverter = new TokensValueConverter(SdkConfigDefault.observedCurrencies);
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -28,7 +30,7 @@ describe('INT: AggregateBalanceObserver', () => {
     ];
     balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, observedTokens);
 
-    mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver);
+    mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
     resetCallCount();
   });
 
