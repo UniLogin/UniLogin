@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
-import {useToggler, useServices} from '../../../hooks';
+import {useToggler, useServices, useAsyncEffect} from '../../../hooks';
+import daiIcon from '../../../assets/icons/dai.svg';
+import ethIcon from '../../../assets/icons/ethereum.svg';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
 import {Spinner} from '@universal-login/react';
@@ -15,17 +17,14 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
   const {sdk, walletPresenter} = useServices();
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
-  useEffect(() => {
-    const promise = sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance);
-    return () => {
-      promise.then((unsubscribe: () => void) => unsubscribe());
-    };
-  }, []);
+  useAsyncEffect(() => sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance), []);
 
   const onClick = (currency: string) => {
     toggle();
     setCurrency(currency);
   };
+
+  const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
   return (
     <div className="currency-accordion">
@@ -38,6 +37,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
               symbol={symbol}
+              icon={iconForToken(symbol)}
               balance={utils.formatEther(balance)}
               onClick={onClick}
             />
@@ -50,7 +50,14 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
           {tokenDetailsWithBalance
             .filter(({symbol}) => symbol !== currency)
             .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-              <TransferDropdownItem key={`${name}-${symbol}`} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
+              <TransferDropdownItem
+                key={`${name}-${symbol}`}
+                name={name}
+                symbol={symbol}
+                balance={utils.formatEther(balance)}
+                icon={iconForToken(symbol)}
+                onClick={onClick}
+              />
             ))}
         </div>
       }
