@@ -1,6 +1,7 @@
-import {ObservedToken, PaymentOptions} from '@universal-login/commons';
+import {TokenDetails, ObservedCurrency, PaymentOptions} from '@universal-login/commons';
 
 export interface SdkConfig {
   paymentOptions: PaymentOptions;
-  observedTokens: ObservedToken[];
+  observedTokens: TokenDetails[];
+  observedCurrencies: ObservedCurrency[];
 }

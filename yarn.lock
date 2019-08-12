@@ -4288,6 +4288,11 @@ crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+cryptocompare@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cryptocompare/-/cryptocompare-1.0.0.tgz#d93bafd037686ec13bbf3cf6b40187310f991a3d"
+  integrity sha512-Xk6+hJJ+XSlWsofIx2WHF2n410ADLkXMfCn/1aLTI4NlWLo2LPtQzw+j3aBEPQ+HVar1dO5HVLAJFBQqGyhdOQ==
+
 css-color-names@0.0.4, css-color-names@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
