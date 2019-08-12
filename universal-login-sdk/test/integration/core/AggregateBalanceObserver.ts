@@ -1,13 +1,12 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {providers, Wallet, Contract, utils} from 'ethers';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import {BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, ObservedCurrency} from '@universal-login/commons';
+import {providers, Wallet, utils} from 'ethers';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
 import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
-import MockToken from '@universal-login/contracts/build/MockToken.json';
-import {PriceObserver} from '../../../lib/core/observers/PriceObserver';
+import {createMockedPriceObserver} from '../../fixtures/PriceObserver';
 
 chai.use(sinonChai);
 
@@ -17,44 +16,20 @@ describe('INT: AggregateBalanceObserver', () => {
   let balanceObserver: BalanceObserver;
   let mockedAggregateBalanceObserver: AggregateBalanceObserver;
   let wallet: Wallet;
-  let mockToken: Contract;
-  let mockedPriceObserver: PriceObserver;
-
-  const observedCurrencies: ObservedCurrency[] = ['USD', 'EUR', 'BTC'];
-  const pricesBefore = {
-    ETH: { USD: 218.21, EUR: 194.38, BTC: 0.01893 },
-    Mock: { USD: 0.02619, EUR: 0.02337, BTC: 0.00000227 }
-  };
-  const pricesAfter = {
-    ETH: { USD: 1838.51, EUR: 1494.71, BTC: 0.09893 },
-    Mock: { USD: 0.2391, EUR: 0.1942, BTC: 0.00001427 }
-  };
+  const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver();
 
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
-    mockToken = await deployContract(wallet, MockToken);
 
     balanceChecker = new BalanceChecker(provider);
     const observedTokens: TokenDetails[] = [
-      ETHER_NATIVE_TOKEN,
-      {address: mockToken.address, symbol: 'Mock', name: 'Mock Token'}
+      ETHER_NATIVE_TOKEN
     ];
     balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, observedTokens);
 
-    let callCount = 0;
-    mockedPriceObserver = new PriceObserver(observedTokens, observedCurrencies);
-    mockedPriceObserver.getCurrentPrices = async () => {
-      callCount++;
-      if (callCount === 1) {
-        return pricesBefore;
-      } else if (callCount === 2) {
-        return pricesAfter;
-      }
-      return {};
-    };
-
     mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver);
+    resetCallCount();
   });
 
   it('1 subscription - balance 0 -> prices changed', async () => {
