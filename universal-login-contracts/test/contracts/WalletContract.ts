@@ -6,7 +6,7 @@ import {walletContractFixture} from '../fixtures/walletContract';
 
 const sign = (message: string, privateKey: string) => {
   const signingKey = new utils.SigningKey(privateKey)
-  const hash = utils.solidityKeccak256(['string'], [message])
+  const hash = utils.hexlify(utils.toUtf8Bytes(message))
   const signature = signingKey.signDigest(utils.hashMessage(utils.arrayify(hash)))
   return utils.joinSignature(signature)
 }
@@ -36,7 +36,7 @@ describe('WalletContract', () => {
     it('returns true if signer has the permission', async () => {
       const {walletContract, keyPair} = await loadFixture(walletContractFixture);
       const message = 'Hi, I am Justyna';
-      const messageHash = utils.solidityKeccak256(['string'], [message]);
+      const messageHash = utils.hexlify(utils.toUtf8Bytes(message));
       const signature = sign(message, keyPair.privateKey);
       expect(await walletContract.isValidSignature(messageHash, signature)).to.be.true;
     });
