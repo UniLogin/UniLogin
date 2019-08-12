@@ -6,11 +6,11 @@ interface DropdownItemProps {
   name: string;
   symbol: string;
   balance: string;
-  iconForToken: string;
+  icon: string;
   onClick: (transferCurrency: string) => void;
 }
 
-export const TransferDropdownItem = ({className, name, symbol, balance, iconForToken, onClick}: DropdownItemProps) => {
+export const TransferDropdownItem = ({className, name, symbol, balance, icon, onClick}: DropdownItemProps) => {
   const {sdk, walletPresenter} = useServices();
   const [usdAmount, setUsdAmount] = useState<string>('');
 
@@ -19,7 +19,7 @@ export const TransferDropdownItem = ({className, name, symbol, balance, iconForT
   return (
     <button onClick={() => onClick(symbol)} className={className || 'currency-accordion-item'}>
       <div className="currency-accordion-left">
-        <img src={iconForToken} alt={symbol} className="currency-accordion-img" />
+        <img src={icon} alt={symbol} className="currency-accordion-img" />
         <p className="currency-accordion-name">{name}</p>
       </div>
       <div className="currency-accordion-right">

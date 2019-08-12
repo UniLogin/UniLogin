@@ -24,6 +24,8 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
     setCurrency(currency);
   };
 
+  const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
+
   return (
     <div className="currency-accordion">
       {
@@ -35,7 +37,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
               symbol={symbol}
-              iconForToken={symbol === 'ETH' ? ethIcon : daiIcon}
+              icon={iconForToken(symbol)}
               balance={utils.formatEther(balance)}
               onClick={onClick}
             />
@@ -53,7 +55,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
                 name={name}
                 symbol={symbol}
                 balance={utils.formatEther(balance)}
-                iconForToken={symbol === 'ETH' ? ethIcon : daiIcon}
+                icon={iconForToken(symbol)}
                 onClick={onClick}
               />
             ))}
