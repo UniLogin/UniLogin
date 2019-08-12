@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {useToggler, useServices} from '../../../hooks';
+import daiIcon from '../../../assets/icons/dai.svg';
+import ethIcon from '../../../assets/icons/ethereum.svg';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
 import {Spinner} from '@universal-login/react';
@@ -38,6 +40,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
               symbol={symbol}
+              iconForToken={symbol === 'ETH' ? ethIcon : daiIcon}
               balance={utils.formatEther(balance)}
               onClick={onClick}
             />
@@ -50,7 +53,14 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
           {tokenDetailsWithBalance
             .filter(({symbol}) => symbol !== currency)
             .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-              <TransferDropdownItem key={`${name}-${symbol}`} name={name} symbol={symbol} balance={utils.formatEther(balance)} onClick={onClick} />
+              <TransferDropdownItem
+                key={`${name}-${symbol}`}
+                name={name}
+                symbol={symbol}
+                balance={utils.formatEther(balance)}
+                iconForToken={symbol === 'ETH' ? ethIcon : daiIcon}
+                onClick={onClick}
+              />
             ))}
         </div>
       }
