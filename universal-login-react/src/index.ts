@@ -10,7 +10,7 @@ export {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 export {EmojiForm} from './ui/Notifications/EmojiForm';
 export {EmojiPanelWithFakes} from './ui/Notifications/EmojiPanelWithFakes';
 export {EmojiPlaceholders} from './ui/Notifications/EmojiPlaceholders';
-export {TopUp} from './ui/TopUp/TopUp';
+export {ChooseTopUpMethod as TopUp} from './ui/TopUp/ChooseTopUpMethod';
 export {ModalWrapper} from './ui/Modals/ModalWrapper';
 export {createModalService, IModalService} from './core/services/createModalService';
 export {Onboarding} from './ui/Onboarding/Onboarding';

@@ -7,11 +7,7 @@ export default class CreationFlow {
   }
 
   chooseTopUpMethod() {
-    const input = this.wrapper.find('input.input-topup-amount');
-    input.simulate('change', {target: {value: '1'}});
-    this.wrapper.find('.button-topup-amount').simulate('click');
-    this.wrapper.update();
-    this.wrapper.find('#topup-btn-crypto').simulate('click');
+    this.wrapper.find('label#topup-btn-crypto').simulate('click');
    }
 
   getAddress() {

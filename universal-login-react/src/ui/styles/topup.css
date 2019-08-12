@@ -1,0 +1,571 @@
+.top-up-modal .modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background: none;
+  border: none;
+}
+
+.universal-login-topup .top-up {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.universal-login-topup .top-up-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  flex-grow: 1;
+  transition: flex-grow 0.2s linear;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-header {
+  flex-grow: initial;
+}
+
+.universal-login-topup .top-up-title {
+  font-family: inherit;
+  text-align: center;
+}
+
+.universal-login-topup .top-up-radio-label {
+  display: block;
+  cursor: pointer;
+}
+
+.universal-login-topup .top-up-radio-inner {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid;
+}
+
+.universal-login-topup .top-up-radio:checked + .top-up-radio-inner {
+  border: 1px solid #2ec9f5;
+}
+
+.universal-login-topup .top-up-radio-label input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  margin: 10px 0 0 20px;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-method {
+  width: 270px;
+  height: 98px;
+}
+
+.universal-login-topup .top-up-method {
+  width: 270px;
+  height: 270px;
+  transition: height 0.2s linear;
+}
+
+.universal-login-topup .top-up-method .top-up-radio-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.universal-login-topup .top-up-methods {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  max-width: 100%;
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .top-up-method + .top-up-method {
+  margin-left: 30px;
+}
+
+.universal-login-topup .top-up-method-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-method-icons {
+  margin-bottom: 8px;
+}
+
+.universal-login-topup .top-up-method-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-method-icon {
+  width: 25px;
+  height: 25px;
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .top-up-method-icon + .top-up-method-icon {
+  margin-left: 12px;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-method-title {
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.universal-login-topup .top-up-method-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  text-align: center;
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .top-up-method-text {
+  max-width: 211px;
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  line-height: 24px;
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-method-text {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.universal-login-topup .top-up.method-selected .top-up-body {
+  flex-grow: 1;
+}
+
+.universal-login-topup .top-up-body-inner {
+  max-width: 570px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+.universal-login-topup .crypto {
+  opacity: 0;
+  padding: 60px 0 40px;
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .crypto-selected.crypto {
+  opacity: 1;
+}
+
+.universal-login-topup .crypto .input-address-wrapper {
+  background: #FFFFFF;
+  border: 1px solid #E1E1F0;
+}
+
+.universal-login-topup .crypto .input-address {
+  border: none;
+}
+
+.universal-login-topup .crypto .address-copy-btn {
+  position: relative;
+  margin: 0;
+  border: none;
+}
+
+.universal-login-topup .crypto .address-copy-btn::before {
+  content: '';
+  height: 20px;
+  width: 20px;
+  background: url('./../assets/icons/copy.svg') center no-repeat;
+  border: none;
+}
+
+.universal-login-topup .info-text {
+  position: relative;
+  padding-left: 28px;
+  font-size: 12px;
+  color: #A4A8B4;
+  line-height: 24px;
+}
+
+.universal-login-topup .info-text::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  background: url('../assets/icons/info.svg') center no-repeat;
+}
+
+.universal-login-topup .info-text-warning {
+  font-size: 12px;
+  color: #FF4C62;
+}
+.universal-login-topup .info-text-warning::before {
+  background: url('../assets/icons/info-warning.svg') center no-repeat;
+}
+
+.universal-login-topup .info-text-hint {
+  margin: 0 15px 0 0;
+  padding-left: 17px;
+}
+
+.universal-login-topup .info-text-hint::before {
+  top: 5px;
+  transform: translateY(0);
+  width: 12px;
+  height: 12px;
+  background: url('../assets/icons/info-light.png') center no-repeat;
+  background-size: contain;
+}
+
+.universal-login-topup .info-block {
+  margin-top: 15px;
+}
+
+.universal-login-topup .info-row {
+  display: flex;
+  align-items: center;
+}
+
+.universal-login-topup .visa-logo {
+  width: 22px;
+  height: 11px;
+}
+
+.universal-login-topup .mastercard-logo {
+  display: block;
+  width: 18px;
+  height: 13px;
+  margin-left: 8px;
+}
+
+.universal-login-topup .fiat {
+  padding: 25px 0 40px;
+}
+
+.universal-login-topup .fiat-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.universal-login-topup .fiat-input-item {
+  width: 50%;
+}
+
+.universal-login-topup .fiat-input-item + .fiat-input-item {
+  margin-left: 30px;
+}
+
+.universal-login-topup .country-select {
+  position: relative;
+  background: #fff;
+}
+
+.universal-login-topup .country-select-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.universal-login-topup .country-select-toggle {
+  position: relative;
+  padding-right: 20px;
+  border: 1px solid;
+}
+
+.universal-login-topup .country-select-toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 10px;
+  height: 8px;
+  transform: translateY(-50%);
+  background: url('./../assets/icons/angle.svg') center no-repeat;
+  background-size: contain;
+}
+
+.universal-login-topup .country-select-toggle.expanded::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.universal-login-topup .country-select-text {
+  margin: 0;
+}
+
+.universal-login-topup .country-select-img {
+  display: block;
+  margin-right: 9px;
+}
+
+.universal-login-topup .country-select-list {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  width: 100%;
+  max-height: 270px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid;
+  border-top: none;
+  overflow: auto;
+  background: #fff;
+  z-index: 10;
+}
+
+.universal-login-topup .amount-input-wrapper {
+  display: flex;
+  height: 32px;
+  background: #fff;
+  border: 1px solid;
+}
+
+.universal-login-topup .amount-input {
+  width: 100%;
+  height: 100%;
+  padding-left: 13px;
+  font-size: 12px;
+  border: none;
+}
+
+.universal-login-topup .amount-dropdown {
+  position: relative;
+  width: 90px;
+  height: 100%;
+}
+
+.universal-login-topup .amount-dropdown-btn {
+  width: 100%;
+  height: 32px;
+  padding: 0 25px;
+  font-size: 12px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.universal-login-topup .amount-dropdown-toggle {
+  position: relative;
+  padding: 0 31px 0 25px;
+  border-left: 1px solid;
+}
+
+.universal-login-topup .amount-dropdown-toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  transform: translateY(-50%);
+  background: url('./../assets/icons/angle.svg') center no-repeat;
+  background-size: contain;
+}
+
+.universal-login-topup .amount-dropdown-btn.expanded::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.universal-login-topup .amount-dropdown-list {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transform: translateY(100%);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid;
+  z-index: 10;
+}
+
+.universal-login-topup .fiat-payment-methods {
+  display: flex;
+}
+
+.universal-login-topup .fiat-payment-method {
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s linear;
+}
+
+.universal-login-topup .fiat-selected .fiat-payment-method {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.universal-login-topup .fiat-payment-method .top-up-radio-inner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  height: 132px;
+}
+
+.universal-login-topup .fiat-payment-method + .fiat-payment-method {
+  margin-left: 24px;
+}
+
+.universal-login-topup .ramp-logo {
+  width: 70px;
+  height: 27px;
+}
+
+.universal-login-topup .safello-logo {
+  width: 88px;
+  height: 32px;
+}
+
+.universal-login-topup .wyre-logo {
+  width: 62px;
+  height: 62px;
+}
+
+.universal-login-topup .fiat-bottom {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s linear;
+}
+
+.universal-login-topup .fiat-selected .fiat-bottom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.universal-login-topup .pay-btn {
+  display: block;
+  margin: 60px auto 0;
+  width: 100%;
+  max-width: 370px;
+  height: 50px;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.08px;
+  text-align: center;
+  cursor: pointer;
+  background: none;
+}
+.universal-login-topup .pay-btn[disabled] {
+  background: #DBDBE4;
+  color: #FFFFFF;
+  cursor: not-allowed;
+}
+
+@media screen and (max-width: 600px) {
+  .universal-login-topup .top-up {
+    min-height: 568px;
+    height: auto;
+  }
+  .universal-login-topup .top-up-modal .modal-close-btn {
+    top: 15px;
+    right: 15px;
+  }
+  .universal-login-topup .top-up-title {
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+  }
+  .universal-login-topup .top-up-methods {
+    margin-top: 16px;
+    flex-direction: column;
+  }
+  .universal-login-topup .top-up.method-selected .top-up-methods {
+    margin-top: 16px;
+    flex-direction: row;
+  }
+  .universal-login-topup .top-up-method {
+    width: 265px;
+    height: 232px;
+  }
+  .universal-login-topup .top-up.method-selected .top-up-method {
+    height: 72px;
+  }
+  .universal-login-topup .top-up.method-selected .top-up-method + .top-up-method {
+    margin: 0 0 0 15px;
+  }
+  .universal-login-topup .top-up-method + .top-up-method {
+    margin: 15px 0 0;
+  }
+  .universal-login-topup .top-up.method-selected .top-up-method-text {
+    display: none;
+  }
+  .universal-login-topup .crypto {
+    position: relative;
+    padding: 25px 0 75px;
+  }
+  .universal-login-topup .universal-login-default .input-address {
+    padding: 13px;
+  }
+  .universal-login-topup .crypto .address-copy-btn {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    width: 180px;
+    height: 50px;
+    background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%);
+  }
+  .universal-login-topup .crypto .address-copy-btn::before {
+    width: 20px;
+    height: 20px;
+    background: url('./../assets/icons/copy-light.svg') center no-repeat;
+  }
+  .universal-login-topup .crypto .address-copy-btn span {
+    display: block;
+    margin: 0 0 0 5px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFFFFF;
+    letter-spacing: -0.08px;
+    text-align: center;
+  }
+  .universal-login-topup .fiat-inputs {
+    flex-direction: column;
+  }
+  .universal-login-topup .fiat-input-item {
+    width: 100%;
+  }
+  .universal-login-topup .fiat-input-item + .fiat-input-item {
+    margin: 16px 0 0;
+  }
+  .universal-login-topup .fiat .fiat-payment-methods-title {
+    margin-top: 15px;
+  }
+  .universal-login-topup .fiat-payment-methods {
+    flex-wrap: wrap;
+  }
+  .universal-login-topup .fiat-payment-method + .fiat-payment-method {
+    margin: 0;
+  }
+  .universal-login-topup .fiat-payment-method:nth-child(even) {
+    margin-left: 5%;
+  }
+  .universal-login-topup .fiat-payment-method {
+    margin-bottom: 5%;
+  }
+  .universal-login-topup .fiat-selected .fiat-payment-method {
+    width: 47.5%;
+  }
+  .universal-login-topup .fiat-payment-method .top-up-radio-inner {
+    width: 100%;
+  }
+  .universal-login-topup .universal-login .modal-wrapper {
+    height: 100%;
+  }
+  .universal-login-topup .pay-btn {
+    margin-top: 40px;
+  }
+}
