@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {useServices} from '../../../hooks';
+import React, {useState} from 'react';
+import {useServices, useAsyncEffect} from '../../../hooks';
 
 interface DropdownItemProps {
   className?: string;
@@ -14,12 +14,7 @@ export const TransferDropdownItem = ({className, name, symbol, balance, iconForT
   const {sdk, walletPresenter} = useServices();
   const [usdAmount, setUsdAmount] = useState<string>('');
 
-  useEffect(() => {
-    const promise = sdk.subscribeToAggregatedBalance(walletPresenter.getName(), setUsdAmount, symbol);
-    return () => {
-      promise.then((unsubscribe: () => void) => unsubscribe());
-    };
-  }, []);
+  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(walletPresenter.getName(), setUsdAmount, symbol), []);
 
   return (
     <button onClick={() => onClick(symbol)} className={className || 'currency-accordion-item'}>

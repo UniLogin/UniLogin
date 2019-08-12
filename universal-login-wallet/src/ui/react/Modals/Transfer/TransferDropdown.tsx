@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
-import {useToggler, useServices} from '../../../hooks';
+import {useToggler, useServices, useAsyncEffect} from '../../../hooks';
 import daiIcon from '../../../assets/icons/dai.svg';
 import ethIcon from '../../../assets/icons/ethereum.svg';
 import {TransferDropdownItem} from './TransferDropdownItem';
@@ -17,12 +17,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
   const {sdk, walletPresenter} = useServices();
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
-  useEffect(() => {
-    const promise = sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance);
-    return () => {
-      promise.then((unsubscribe: () => void) => unsubscribe());
-    };
-  }, []);
+  useAsyncEffect(() => sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance), []);
 
   const onClick = (currency: string) => {
     toggle();
