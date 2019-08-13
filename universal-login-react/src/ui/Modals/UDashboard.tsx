@@ -3,29 +3,37 @@ import {ReactUModalContext} from '../../core/models/ReactUModalContext';
 import {ModalWrapper} from './ModalWrapper';
 import {UHeader} from '../UFlow/UHeader';
 import {Funds} from '../UFlow/Funds';
-import {UNotifications} from '../UFlow/UNotifications';
 import {USettings} from '../UFlow/USettings';
+import {useServices} from '../../core/services/useServices';
+import {ConnectionNotification} from '../Notifications/NotificationConnectionWithFakes';
+import {ApplicationWallet} from '@universal-login/commons';
 
 export interface UDashboardProps {
-  ensName: string;
+  applicationWallet: ApplicationWallet;
 }
 
-export const UDashboard = ({ensName}: UDashboardProps) => {
+export const UDashboard = ({applicationWallet}: UDashboardProps) => {
   const modalService = useContext(ReactUModalContext);
+  const {sdk} = useServices();
 
   switch (modalService.modalState) {
     case 'funds':
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <Funds ensName={ensName}/>
+          <Funds ensName={applicationWallet.name}/>
         </ModalWrapper>
       );
     case 'approveDevice':
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <UNotifications />
+          <ConnectionNotification
+            contractAddress={applicationWallet.contractAddress}
+            privateKey={applicationWallet.privateKey}
+            onCancel={modalService.hideModal}
+            sdk={sdk}
+          />
         </ModalWrapper>
       );
     case 'settings':

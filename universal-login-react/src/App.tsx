@@ -15,11 +15,13 @@ import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/
 import './ui/styles/playground.css';
 import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
+import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
   };
@@ -30,15 +32,26 @@ export const App = () => {
 
   const randomString = Math.random().toString(36).substring(7);
   const randomEnsName = `${randomString}.mylogin.eth`;
+  const applicationWallet: ApplicationWallet = {name: '', contractAddress: '', privateKey: ''};
 
   return (
     <BrowserRouter>
       <div className="playground">
-        <NavigationColumn ensName={randomEnsName}/>
+        <NavigationColumn />
         <div className="playground-content">
           <Switch>
             <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)} />
-            <Route exact path="/logobutton" render={() => <LogoButton ensName={randomEnsName}/>} />
+            <Route
+              exact
+              path="/logobutton"
+              render={() => (
+                <div>
+                  <CreateRandomInstance ensName={randomEnsName} applicationWallet={applicationWallet}/>
+                  <hr/>
+                  <LogoButton applicationWallet={applicationWallet} />
+                </div>
+              )}
+            />
             <Route
               exact
               path="/onboarding"

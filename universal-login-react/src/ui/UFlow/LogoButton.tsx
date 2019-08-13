@@ -3,12 +3,13 @@ import icon from '../assets/icons/ether.svg';
 import {createModalService} from '../../core/services/createModalService';
 import {UDashboard} from '../Modals/UDashboard';
 import {ReactUModalType, ReactUModalProps, ReactUModalContext} from '../../core/models/ReactUModalContext';
+import {ApplicationWallet} from '@universal-login/commons';
 
 export interface LogoButtonProps {
-  ensName: string;
+  applicationWallet: ApplicationWallet;
 }
 
-export const LogoButton = ({ensName}: LogoButtonProps) => {
+export const LogoButton = ({applicationWallet}: LogoButtonProps) => {
   const modalService = createModalService<ReactUModalType, ReactUModalProps>();
 
   return (
@@ -17,7 +18,7 @@ export const LogoButton = ({ensName}: LogoButtonProps) => {
         <button onClick={() => modalService.showModal('funds')}>
           <img src={icon} alt="U"/>
         </button>
-        <UDashboard ensName={ensName}/>
+        <UDashboard applicationWallet={applicationWallet}/>
       </ReactUModalContext.Provider>
     </>
   );
