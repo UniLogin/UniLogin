@@ -18,8 +18,8 @@
     "build": "yarn clean && tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
     "lint": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
-    "clean": "rm -fr dist"
+    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -30,9 +30,11 @@
     "@types/node-fetch": "^2.1.6",
     "@universal-login/relayer": "^0.3.13",
     "chai": "^4.1.2",
-    "ethereum-waffle": "2.0.12",
+    "cross-env": "^5.2.0",
+    "ethereum-waffle": "2.0.15",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
+    "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",
     "ts-node": "^8.0.2",
