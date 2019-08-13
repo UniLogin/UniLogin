@@ -5,6 +5,7 @@ export {Spinner} from './ui/commons/Spinner';
 export {useAsync} from './ui/hooks/useAsync';
 export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {Notifications} from './ui/Notifications/Notifications';
+export {ConnectionNotification} from './ui/Notifications/ConnectionNotification';
 export {Settings} from './ui/Settings/Settings';
 export {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 export {EmojiForm} from './ui/Notifications/EmojiForm';

@@ -9,6 +9,7 @@ export const NavigationColumn = () => (
     <ul>
       E2E flow
       <li><Link to="/onboarding">Onboarding</Link></li>
+      <li><Link to="/logobutton">U</Link></li>
     </ul>
     <ul>
       Atomic components

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {createModalService} from '@universal-login/react';
+import {createModalService, ConnectionNotification} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
@@ -8,17 +8,17 @@ import {PrivateRoute} from './PrivateRoute';
 import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
-import {useServices} from '../hooks';
+import {useServices, useRouter} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
-import {ConnectionNotification} from './ConnectAccount/ConnectionNotification';
 
 const App = () => {
+  const {history} = useRouter();
   const modalService = createModalService<WalletModalType, void>();
-  const {walletService} = useServices();
+  const {walletService, sdk} = useServices();
   const authorized = walletService.isAuthorized();
 
   return (
@@ -68,7 +68,12 @@ const App = () => {
         <PrivateRoute
           path="/notifications"
           authorized={authorized}
-          render={() => <ConnectionNotification />}
+          render={() => <ConnectionNotification
+            contractAddress={walletService.applicationWallet!.contractAddress}
+            privateKey={walletService.applicationWallet!.privateKey}
+            onCancel={() => history.push('/')}
+            sdk={sdk}
+          />}
         />
         <PrivateRoute
           path="/settings"
