@@ -28,12 +28,14 @@ describe('WalletContract', () => {
   });
 
   describe('isValidSignature', () => {
+    const MAGICVALUE = '0x20c13b0b';
+
     it('returns true if signer has the permission', async () => {
       const {walletContract, keyPair} = await loadFixture(walletContractFixture);
       const message = 'Hi, I am Justyna';
       const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
       const signature = signString(message, keyPair.privateKey);
-      expect(await walletContract.isValidSignature(messageHex, signature)).to.be.true;
+      expect(await walletContract.isValidSignature(messageHex, signature)).to.eq(MAGICVALUE);
     });
   });
 });
