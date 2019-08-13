@@ -3,7 +3,7 @@ import {ReactUModalContext} from '../../core/models/ReactUModalContext';
 import {ModalWrapper} from './ModalWrapper';
 import {UHeader} from '../UFlow/UHeader';
 import {Funds} from '../UFlow/Funds';
-import {ApproveDevice} from '../UFlow/ApproveDevice';
+import {UNotifications} from '../UFlow/UNotifications';
 import {USettings} from '../UFlow/USettings';
 
 export interface UDashboardProps {
@@ -25,7 +25,7 @@ export const UDashboard = ({ensName}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <ApproveDevice />
+          <UNotifications />
         </ModalWrapper>
       );
     case 'settings':
@@ -33,6 +33,24 @@ export const UDashboard = ({ensName}: UDashboardProps) => {
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
           <USettings />
+        </ModalWrapper>
+      );
+    case 'topup':
+      return (
+        <ModalWrapper hideModal={modalService.hideModal}>
+          <UHeader />
+          <div>
+            topup modal
+          </div>
+        </ModalWrapper>
+      );
+    case 'transfer':
+      return (
+        <ModalWrapper hideModal={modalService.hideModal}>
+          <UHeader />
+          <div>
+            transfer modal
+          </div>
         </ModalWrapper>
       );
     default:
