@@ -68,7 +68,10 @@ const App = () => {
         <PrivateRoute
           path="/notifications"
           authorized={authorized}
-          render={() => <ConnectionNotification />}
+          render={() => <ConnectionNotification
+            contractAddress={walletService.applicationWallet!.contractAddress}
+            privateKey={walletService.applicationWallet!.privateKey}
+          />}
         />
         <PrivateRoute
           path="/settings"

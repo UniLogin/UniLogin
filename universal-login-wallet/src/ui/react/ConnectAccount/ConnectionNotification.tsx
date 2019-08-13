@@ -6,10 +6,14 @@ import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices} from '../../hooks';
 
-export const ConnectionNotification = () => {
-  const {sdk, walletService} = useServices();
+interface ConnectNotificationProps {
+  contractAddress: string;
+  privateKey: string;
+}
+
+export const ConnectionNotification = ({contractAddress, privateKey}: ConnectNotificationProps) => {
+  const {sdk} = useServices();
   const [notifications, setNotifications] = useState([] as Notification[]);
-  const {contractAddress, privateKey} = walletService.applicationWallet!;
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNotifications), []);
 
   return (
