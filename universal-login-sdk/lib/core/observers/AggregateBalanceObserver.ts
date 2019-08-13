@@ -1,33 +1,52 @@
 import {BalanceObserver} from './BalanceObserver';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
-import {utils} from 'ethers';
-
-export interface PriceOracle {
-  getTokenPrice: (tokenSymbol: string, currencySymbol: string) => Promise<number>;
-}
+import {TokenDetailsWithBalance, CurrencyToValue, TokensPrices, TokensValueConverter} from '@universal-login/commons';
+import {PriceObserver} from './PriceObserver';
 
 export class AggregateBalanceObserver {
-  constructor(private balanceObserver: BalanceObserver, private priceOracle: PriceOracle) {}
+  private tokensPrices: TokensPrices = {};
+  private tokenDetailsWithBalance: TokenDetailsWithBalance[] = [];
+  private unsubscribePriceObserver?: Function;
+  private unsubscribeBalanceObserver?: Function;
+  private callbacks: Function[] = [];
+  constructor(private balanceObserver: BalanceObserver, private priceObserver: PriceObserver, private tokensValueConverter: TokensValueConverter) {}
 
-  subscribe(callback: Function, currencySymbol: string) {
-    const callbackWrapper = async (tokensDetailsWithBalance: TokenDetailsWithBalance[]) => {
-      const aggregatedBalance = await this.getAggregatedBalance(tokensDetailsWithBalance, currencySymbol);
-      callback(aggregatedBalance);
+  subscribe(callback: Function) {
+    this.callbacks.push(callback);
+    if (this.callbacks.length === 1) {
+      this.unsubscribeBalanceObserver = this.balanceObserver.subscribe(this.balanceObserverCallback.bind(this));
+      this.unsubscribePriceObserver = this.priceObserver.subscribe(this.priceObserverCallback.bind(this));
+    }
+
+    const unsubscribe = () => {
+      this.callbacks = this.callbacks.filter((element) => callback !== element);
+      if (this.callbacks.length === 0) {
+        this.unsubscribeBalanceObserver!();
+        this.unsubscribePriceObserver!();
+        this.tokenDetailsWithBalance = [];
+      }
     };
-
-    return this.balanceObserver.subscribe(callbackWrapper.bind(this));
+    return unsubscribe;
   }
 
-  async getAggregatedBalance(tokensDetailsWithBalance: TokenDetailsWithBalance[], currencySymbol: string) {
-    return tokensDetailsWithBalance.reduce(
-      async (total, tokenDetails) => (await total + await this.getTokenBalance(tokenDetails, currencySymbol)),
-      Promise.resolve(0)
-    );
+  priceObserverCallback(tokensPrices: TokensPrices) {
+    this.tokensPrices = tokensPrices;
+    this.refreshPrices();
   }
 
-  async getTokenBalance(tokenDetailsWithBalance: TokenDetailsWithBalance, currencySymbol: string) {
-    const tokenBalanceInWholeUnits = Number(utils.formatEther(tokenDetailsWithBalance.balance));
-    const price = await this.priceOracle.getTokenPrice(tokenDetailsWithBalance.symbol, currencySymbol);
-    return tokenBalanceInWholeUnits * price;
+  balanceObserverCallback(tokenDetailsWithBalance: TokenDetailsWithBalance[]) {
+    this.tokenDetailsWithBalance = tokenDetailsWithBalance;
+    this.refreshPrices();
+  }
+
+  refreshPrices() {
+    if (!this.tokensPrices || this.tokenDetailsWithBalance.length === 0) {
+      return;
+    }
+    const totalWorth = this.tokensValueConverter.getTotal(this.tokenDetailsWithBalance, this.tokensPrices);
+    this.notifyListeners(totalWorth);
+  }
+
+  notifyListeners(totalWorth: CurrencyToValue) {
+    this.callbacks.forEach((callback) => callback(totalWorth));
   }
 }

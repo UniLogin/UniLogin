@@ -1,11 +1,10 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
-import {TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, SignedMessage, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker} from '@universal-login/commons';
+import {TokensValueConverter, TokenDetails, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, waitForContractDeploy, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
-import MESSAGE_DEFAULTS from '../core/utils/MessageDefaults';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
@@ -15,7 +14,7 @@ import {BalanceObserver} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
-import {PriceOracle} from '../core/services/PriceOracle';
+import {PriceObserver} from '../core/observers/PriceObserver';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -27,8 +26,9 @@ class UniversalLoginSDK {
   deploymentObserver?: DeploymentObserver;
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
+  tokensValueConverter: TokensValueConverter;
   aggregateBalanceObserver?: AggregateBalanceObserver;
-  priceOracle: PriceOracle;
+  priceObserver: PriceObserver;
   tokenDetailsService: TokenDetailsService;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
@@ -39,7 +39,7 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    sdkConfig?: SdkConfig
+    sdkConfig?: DeepPartial<SdkConfig>
   ) {
     this.provider = typeof(providerOrUrl) === 'string' ?
       new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
@@ -51,10 +51,9 @@ class UniversalLoginSDK {
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
-    this.sdkConfig = sdkConfig || SdkConfigDefault;
-    this.sdkConfig.paymentOptions = {...MESSAGE_DEFAULTS, ...SdkConfigDefault.paymentOptions};
-    this.sdkConfig.observedTokens = this.sdkConfig.observedTokens || SdkConfigDefault.observedTokens;
-    this.priceOracle = new PriceOracle();
+    this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
+    this.priceObserver = new PriceObserver(this.sdkConfig.observedTokens, this.sdkConfig.observedCurrencies);
+    this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }
 
   async create(ensName: string): Promise<[string, string]> {
@@ -78,16 +77,16 @@ class UniversalLoginSDK {
     return this.selfExecute(to, 'addKey', [publicKey, keyPurpose], privateKey, transactionDetails);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: SignedMessage, keyPurpose = MANAGEMENT_KEY) {
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
     const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
     return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, transactionDetails: SignedMessage) {
+  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Message) {
     return this.selfExecute(to, 'removeKey', [key, MANAGEMENT_KEY], privateKey, transactionDetails);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: SignedMessage) {
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Message) {
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
@@ -127,7 +126,7 @@ class UniversalLoginSDK {
       return;
     }
     await this.fetchBalanceObserver(ensName);
-    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceOracle);
+    this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver, this.tokensValueConverter);
   }
 
   async getTokensDetails() {
@@ -157,7 +156,7 @@ class UniversalLoginSDK {
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
     } as MessageWithFrom;
-    const signedMessage = createSignedMessage(unsignedMessage, privateKey);
+    const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
   }
 
@@ -227,9 +226,9 @@ class UniversalLoginSDK {
     return this.balanceObserver!.subscribe(callback);
   }
 
-  async subscribeToAggregatedBalance(ensName: string, callback: Function, currencySymbol: string) {
+  async subscribeToAggregatedBalance(ensName: string, callback: Function) {
     await this.fetchAggregateBalanceObserver(ensName);
-    return this.aggregateBalanceObserver!.subscribe(callback, currencySymbol);
+    return this.aggregateBalanceObserver!.subscribe(callback);
   }
 
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
