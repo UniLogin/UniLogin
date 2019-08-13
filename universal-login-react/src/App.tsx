@@ -14,6 +14,7 @@ import {createModalService} from './core/services/createModalService';
 import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
 import './ui/styles/playground.css';
 import {useAsync} from './ui/hooks/useAsync';
+import {LogoButton} from './ui/LogoButton/LogoButton';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
@@ -34,6 +35,7 @@ export const App = () => {
         <div className="playground-content">
           <Switch>
             <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)} />
+            <Route exact path="/logobutton" render={() => <LogoButton />} />
             <Route
               exact
               path="/onboarding"
