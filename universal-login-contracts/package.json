@@ -1,11 +1,11 @@
 {
   "name": "@universal-login/contracts",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "license": "MIT",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "dependencies": {
-    "@universal-login/commons": "^0.3.13",
+    "@universal-login/commons": "^0.3.14",
     "ens-builder": "^2.0.0"
   },
   "scripts": {
