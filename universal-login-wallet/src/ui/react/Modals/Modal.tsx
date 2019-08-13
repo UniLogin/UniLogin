@@ -37,7 +37,7 @@ const Modal = () => {
       );
     case 'topUpAccount':
       return (
-        <ModalWrapper modalPosition="bottom">
+        <ModalWrapper modalClassName="topup-modal-wrapper">
           <TopUp
             onRampConfig={config!.onRampProviders}
             contractAddress={walletPresenter.getContractAddress()}

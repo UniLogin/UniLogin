@@ -29,7 +29,7 @@ export default class LoginPage {
   }
 
   async createNew(userName: string) {
-    await this.pickUsername(userName, 'create new', 'Type amount of ether you want to buy');
+    await this.pickUsername(userName, 'create new', 'Choose a top-up method');
   }
 
   async connect(userName: string) {

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="13px" viewBox="0 0 17 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>PL</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F0F0F0" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="17" height="12.1428571" rx="2"></rect>
+    </defs>
+    <g id="web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="top-up-method-5" transform="translate(-447.000000, -444.000000)">
+            <g id="Group-14" transform="translate(435.000000, 435.000000)">
+                <g id="country-copy">
+                    <g id="PL" transform="translate(12.000000, 9.000000)">
+                        <mask id="mask-3" fill="white">
+                            <use xlink:href="#path-2"></use>
+                        </mask>
+                        <rect stroke="#E9E9E9" stroke-width="0.5" x="0.25" y="0.25" width="16.5" height="11.6428571" rx="2"></rect>
+                        <rect id="Rectangle-2" fill="#EB2A50" mask="url(#mask-3)" x="0" y="5.66666667" width="17" height="6.47619048"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
