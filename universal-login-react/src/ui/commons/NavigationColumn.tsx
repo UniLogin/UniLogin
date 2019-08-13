@@ -1,7 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {CreateRandomInstance} from './CreateRandomInstance';
 
-export const NavigationColumn = () => (
+export interface NavigationColumnProps {
+  ensName: string;
+}
+
+export const NavigationColumn = ({ensName}: NavigationColumnProps) => (
   <div className="playground-navigation">
     <ul>
       <li><Link to="/">Home Screen</Link></li>
@@ -19,5 +24,7 @@ export const NavigationColumn = () => (
       <li><Link to="/recover">Recover</Link></li>
       <li><Link to="/settings">Settings</Link></li>
     </ul>
+    <hr/>
+    <CreateRandomInstance ensName={ensName} />
   </div>
 );

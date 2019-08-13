@@ -4,7 +4,11 @@ import {createModalService} from '../../core/services/createModalService';
 import UDashboard from '../Modals/UDashboard';
 import {ReactUModalType, ReactUModalProps, ReactUModalContext} from '../../core/models/ReactUModalContext';
 
-export const LogoButton = () => {
+export interface LogoButtonProps {
+  ensName: string;
+}
+
+export const LogoButton = ({ensName}: LogoButtonProps) => {
   const modalService = createModalService<ReactUModalType, ReactUModalProps>();
 
   return (
@@ -13,7 +17,7 @@ export const LogoButton = () => {
         <button onClick={() => modalService.showModal('funds')}>
           <img src={icon} alt="notifications"/>
         </button>
-        <UDashboard />
+        <UDashboard ensName={ensName}/>
       </ReactUModalContext.Provider>
     </>
   );

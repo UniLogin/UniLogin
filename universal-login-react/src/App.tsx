@@ -28,14 +28,17 @@ export const App = () => {
     console.log('connect clicked');
   };
 
+  const randomString = Math.random().toString(36).substring(7);
+  const randomEnsName = `${randomString}.mylogin.eth`;
+
   return (
     <BrowserRouter>
       <div className="playground">
-        <NavigationColumn />
+        <NavigationColumn ensName={randomEnsName}/>
         <div className="playground-content">
           <Switch>
             <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)} />
-            <Route exact path="/logobutton" render={() => <LogoButton />} />
+            <Route exact path="/logobutton" render={() => <LogoButton ensName={randomEnsName}/>} />
             <Route
               exact
               path="/onboarding"
