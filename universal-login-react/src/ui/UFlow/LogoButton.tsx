@@ -1,5 +1,5 @@
 import React from 'react';
-import icon from '../assets/icons/ether.svg';
+import logoIcon from '../assets/icons/U.svg';
 import {createModalService} from '../../core/services/createModalService';
 import {UDashboard} from '../Modals/UDashboard';
 import {ReactUModalType, ReactUModalProps, ReactUModalContext} from '../../core/models/ReactUModalContext';
@@ -16,7 +16,7 @@ export const LogoButton = ({applicationWallet}: LogoButtonProps) => {
     <>
       <ReactUModalContext.Provider value={modalService}>
         <button onClick={() => modalService.showModal('funds')}>
-          <img src={icon} alt="U"/>
+          <img src={logoIcon} alt="U"/>
         </button>
         <UDashboard applicationWallet={applicationWallet}/>
       </ReactUModalContext.Provider>
