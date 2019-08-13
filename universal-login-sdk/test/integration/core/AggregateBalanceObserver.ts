@@ -1,13 +1,13 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {providers, Wallet, Contract, utils} from 'ethers';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import {BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
+import {providers, Wallet, utils} from 'ethers';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
 import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
-import MockToken from '@universal-login/contracts/build/MockToken.json';
-import {PriceOracle} from '../../../lib/core/services/PriceOracle';
+import {createMockedPriceObserver} from '../../mock/PriceObserver';
+import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
 
 chai.use(sinonChai);
 
@@ -15,72 +15,102 @@ describe('INT: AggregateBalanceObserver', () => {
   let provider: providers.Provider;
   let balanceChecker: BalanceChecker;
   let balanceObserver: BalanceObserver;
-  let aggregateBalanceObserver: AggregateBalanceObserver;
+  let mockedAggregateBalanceObserver: AggregateBalanceObserver;
   let wallet: Wallet;
-  let mockToken: Contract;
-  let observedTokens: TokenDetails[] = [];
-  const priceOracle = new PriceOracle();
-  const ETH_PRICE_IN_USD = 1405;
-  const ETH_PRICE_IN_EUR = 1152;
-
+  const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver();
+  const tokensValueConverter = new TokensValueConverter(SdkConfigDefault.observedCurrencies);
 
   beforeEach(async () => {
     provider = createMockProvider();
-    balanceChecker = new BalanceChecker(provider);
     [wallet] = getWallets(provider);
-    mockToken = await deployContract(wallet, MockToken);
 
-    observedTokens = [
-      ETHER_NATIVE_TOKEN,
-      {address: mockToken.address, symbol: 'Mock', name: 'MockToken'}
+    balanceChecker = new BalanceChecker(provider);
+    const observedTokens: TokenDetails[] = [
+      ETHER_NATIVE_TOKEN
     ];
     balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, observedTokens);
-    aggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, priceOracle);
+
+    mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
+    resetCallCount();
   });
 
-  it('1 subscription', async () => {
+  it('1 subscription - balance 0 -> prices changed', async () => {
     const callback = sinon.spy();
 
-    const unsubscribe = aggregateBalanceObserver.subscribe(callback, 'USD');
-    await waitUntil(() => !!callback.firstCall);
+    const unsubscribe = mockedAggregateBalanceObserver.subscribe(callback);
 
-    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
+    await waitUntil(() => !!callback.firstCall);
+    expect(callback).to.have.been.calledOnce;
+
+    await mockedPriceObserver.tick();
+
     await waitUntil(() => !!callback.secondCall);
+    expect(callback).to.have.been.calledTwice;
     unsubscribe();
 
-    expect(callback).to.have.been.calledTwice;
-
-    expect(callback.firstCall.args[0]).to.equal(0);
-    expect(callback.secondCall.args[0]).to.be.greaterThan(0.5 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(0.5 * ETH_PRICE_IN_USD + 0.1);
+    expect(callback.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
+    expect(callback.secondCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
   });
 
-  it('2 subscriptions', async () => {
-    const callback1 = sinon.spy();
-    const callback2 = sinon.spy();
+  it('1 subscription - balance 0 -> balance changed -> prices changed', async () => {
+    const callback = sinon.spy();
+
+    const unsubscribe = mockedAggregateBalanceObserver.subscribe(callback);
+
+    await waitUntil(() => !!callback.firstCall);
+    expect(callback).to.have.been.calledOnce;
+
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
 
-    const unsubscribe1 = aggregateBalanceObserver.subscribe(callback1, 'USD');
-    await waitUntil(() => !!callback1.firstCall);
+    await waitUntil(() => !!callback.secondCall);
+    expect(callback).to.have.been.calledTwice;
 
-    const unsubscribe2 = aggregateBalanceObserver.subscribe(callback2, 'EUR');
+    await mockedPriceObserver.tick();
+
+    await waitUntil(() => !!callback.thirdCall);
+    expect(callback).to.have.been.calledThrice;
+    unsubscribe();
+
+    expect(callback.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
+    expect(callback.secondCall.args[0]).to.deep.equal({USD: 109.105, EUR: 97.19, BTC: 0.009465});
+    expect(callback.thirdCall.args[0]).to.deep.equal({USD: 919.255, EUR: 747.355, BTC: 0.049465});
+  });
+
+  it('2 subscriptions - no change -> balance changed -> prices changed', async () => {
+    const callback1 = sinon.spy();
+    const callback2 = sinon.spy();
+
+    const unsubscribe1 = mockedAggregateBalanceObserver.subscribe(callback1);
+    const unsubscribe2 = mockedAggregateBalanceObserver.subscribe(callback2);
+
+    await waitUntil(() => !!callback1.firstCall);
+    expect(callback1).to.have.been.calledOnce;
+
     await waitUntil(() => !!callback2.firstCall);
+    expect(callback2).to.have.been.calledOnce;
+
+    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
+
+    await waitUntil(() => !!callback1.secondCall);
+    expect(callback1).to.have.been.calledTwice;
+
+    await waitUntil(() => !!callback2.secondCall);
+    expect(callback2).to.have.been.calledTwice;
 
     unsubscribe1();
 
-    expect(callback1).to.have.been.calledOnce;
-    expect(callback2).to.have.been.calledOnce;
+    await mockedPriceObserver.tick();
 
-    expect(callback1.firstCall.args[0]).to.be.greaterThan(0.5 * ETH_PRICE_IN_USD - 0.1).and.to.be.lessThan(0.5 * ETH_PRICE_IN_USD + 0.1);
-    expect(callback2.firstCall.args[0]).to.be.greaterThan(0.5 * ETH_PRICE_IN_EUR - 0.1).and.to.be.lessThan(0.5 * ETH_PRICE_IN_EUR + 0.1);
-
-    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.3')});
-    await waitUntil(() => !!callback2.secondCall);
+    await waitUntil(() => !!callback2.thirdCall);
+    expect(callback2).to.have.been.calledThrice;
 
     unsubscribe2();
 
-    expect(callback1).to.have.been.calledOnce;
-    expect(callback2).to.have.been.calledTwice;
+    expect(callback1.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
+    expect(callback1.secondCall.args[0]).to.deep.equal({USD: 109.105, EUR: 97.19, BTC: 0.009465});
 
-    expect(callback2.secondCall.args[0]).to.be.greaterThan(0.8 * ETH_PRICE_IN_EUR - 0.1).and.to.be.lessThan(0.8 * ETH_PRICE_IN_EUR + 0.1);
+    expect(callback2.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
+    expect(callback2.secondCall.args[0]).to.deep.equal({USD: 109.105, EUR: 97.19, BTC: 0.009465});
+    expect(callback2.thirdCall.args[0]).to.deep.equal({USD: 919.255, EUR: 747.355, BTC: 0.049465});
   });
 });
