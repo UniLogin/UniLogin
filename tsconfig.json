@@ -18,6 +18,6 @@
     "@universal-login/commons/lib**",
     "@universal-login/relayer/lib**",
     "@universal-login/sdk/lib**",
-    "@universal-login/relayer/lib**"
+    "@universal-login/react/src**"
   ]
 }
