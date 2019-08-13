@@ -32,8 +32,8 @@ export const BackupCodesView = ({codes, printCodes, walletContract, removeBackup
       </div>
       {loading && <BackupCodesLoader title="Setting backup codes, please wait"/>}
       <div className="backup-buttons-row">
-        <button onClick={removeBackupCodes} className="btn btn-secondary">Cancel backup code</button>
-        <button className="btn btn-primary" disabled={loading}>Set as backup codes</button>
+        <button onClick={removeBackupCodes} className="settings-btn">Cancel backup code</button>
+        <button className="settings-btn" disabled={loading}>Set as backup codes</button>
       </div>
     </>
   );

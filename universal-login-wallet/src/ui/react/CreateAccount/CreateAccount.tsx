@@ -1,18 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
 import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 interface CreateAccountProps {
   location?: {state: {from: {pathname: string}}};
-  modalService: ModalService;
 }
 
-export const CreateAccount = ({location, modalService}: CreateAccountProps) => {
+export const CreateAccount = ({location}: CreateAccountProps) => {
+  const modalService = useContext(WalletModalContext);
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 
@@ -51,7 +51,7 @@ export const CreateAccount = ({location, modalService}: CreateAccountProps) => {
           </div>
         </div>
       </div>
-      <Modal modalService={modalService}/>
+      <Modal />
     </div>
   );
 };

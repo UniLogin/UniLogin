@@ -1,5 +1,5 @@
+import {useAsync} from '@universal-login/react';
 import {useServices} from './useServices';
-import {useAsync} from './useAsync';
 
 export const useRelayerConfig = () => {
   const {sdk} = useServices();

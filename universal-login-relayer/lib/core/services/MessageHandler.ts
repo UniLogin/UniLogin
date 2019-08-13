@@ -61,8 +61,8 @@ class MessageHandler {
     return this.pendingMessages.getStatus(messageHash);
   }
 
-  stop() {
-    this.queueService.stop();
+  async stop() {
+    await this.queueService.stop();
   }
 
   async stopLater() {

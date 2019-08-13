@@ -2,7 +2,9 @@
   position: fixed;
   z-index: 99999;
   background: #fff;
+  max-height: 100%;
   max-width: 100%;
+  overflow-y: auto;
 }
 
 .universal-login .modal-wrapper.center {

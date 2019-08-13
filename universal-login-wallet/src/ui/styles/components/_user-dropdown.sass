@@ -2,7 +2,6 @@
   position: relative
   display: flex
   justify-content: flex-end
-  padding: 0 90px 0 0
 
   +media(s, 168px)
     display: none
@@ -22,7 +21,7 @@
     height: 100%
     background: #FFFFFF
     z-index: 10000
-  
+
 .user-dropdown
   position: relative
   margin-left: auto
@@ -30,6 +29,7 @@
   +media(s, 168px)
     position: static
     margin-left: 0
+    padding: 0 15px
 
 .user-dropdown-header
   position: relative
@@ -62,7 +62,7 @@
   right: 0
   width: 100%
   height: 100%
-  
+
   +media(s, 168px)
     top: 30px
     right: 20px
@@ -70,7 +70,7 @@
     height: 18px
     background: url('../assets/icons/close.svg') center no-repeat
     background-size: contain
-  
+
 .user-dropdown-avatar
   margin-right: 10px
   overflow: hidden
@@ -105,6 +105,7 @@
   +media(s, 168px)
     text-align: center
     font-size: 16px
+    word-break: break-all
 
 .user-dropdown-content
   display: none
@@ -117,9 +118,9 @@
 
   +media(s, 168px)
     position: static
-    margin-top: 60px
+    margin: 60px auto 0
     transform: translateY(0)
-  
+
 .user-dropdown-content.expanded
   display: flex
 

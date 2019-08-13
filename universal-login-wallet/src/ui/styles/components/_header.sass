@@ -1,0 +1,141 @@
+.header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  height: 70px
+  padding: 15px 30px
+  background: #fff
+
+  +media(s, 168px)
+    height: 53px
+    position: fixed
+    width: 100%
+    bottom: 0
+    left: 0
+
+.header-row
+  display: flex
+  align-items: center
+
+  +media(s, 168px)
+    width: 100%
+
+.header-logo-link
+  +media(s, 168px)
+    display: none
+
+.header-list
+  display: flex
+  align-items: center
+  margin-right: 16px
+
+  +media(s, 168px)
+    justify-content: space-between
+    width: 100%
+    align-items: center
+
+.header-list-item + .header-list-item
+  margin-left: 25px
+
+.header-btn img
+  max-width: 100%
+
+.settings-btn
+  +media(s, 168px)
+    display: block
+    width: 20px
+
+.notifications-btn
+  position: relative
+
+  +media(s, 168px)
+    display: block
+    width: 17px
+
+.notifications-btn.new-notifications::after
+  content: ''
+  position: absolute
+  top: -1px
+  right: -4px
+  width: 11px
+  height: 11px
+  background: #2EC9F5
+  border-radius: 50%
+  border: 1px solid #ffffff
+
+  +media(s, 168px)
+    border: 2px solid #ffffff
+
+.user-btn
+  display: none
+  width: 32px
+  height: 32px
+  margin: 0 auto
+
+  +media(s, 168px)
+    display: block
+    border-radius: 50%
+    overflow: hidden
+    width: 20px
+    height: 20px
+
+.header-dropdown
+  position: relative
+
+.header-dropdown-content
+  position: absolute
+  left: 50%
+  bottom: -30px
+  transform: translate(-50%, 100%)
+  width: 500px
+  max-height: 500px
+  overflow-y: auto
+
+
+  +media(s, 168px)
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 53px
+    width: 100%
+    transform: translate(0, 0)
+    overflow: auto
+    max-height: unset
+
+.header-dropdown-content .universal-login .settings
+  +media(s, 168px)
+    background: #fafbfd
+
+.header-dropdown-content-title
+  display: none
+  font-size: 20px
+  color: #31405E
+  padding: 30px 20px
+  background: #fff
+
+  +media(s, 168px)
+    display: flex
+    align-items: center
+
+.header-dropdown-content .universal-login .settings-title
+  +media(s, 168px)
+    display: none
+
+.back-btn
+  display: block
+  width: 18px
+  height: 12px
+  margin-right: 14px
+  background: url('./../assets/icons/arrow-left.svg') center no-repeat
+  background-size: contain
+
+.header-dropdown-content .universal-login .accordion
+  +media(s, 168)
+    background: #fff
+    border: 1px solid #E1E1F0
+
+.header-dropdown-content .universal-login .settings
+  +media(s, 168px)
+    overflow: auto
+    padding: 25px 20px

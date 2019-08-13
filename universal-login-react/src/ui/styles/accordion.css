@@ -1,0 +1,32 @@
+.universal-login-default .accordion {
+  background: #ffffff;
+}
+
+.universal-login .accordion-btn {
+  position: relative;
+  padding-right: 25px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
+.universal-login .accordion-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 9px;
+  background: url('./../assets/icons/angle.svg') center no-repeat;
+  transition: transform 0.3s linear
+}
+
+.universal-login .accordion-btn.expanded::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.universal-login-default .accordion-content {
+  margin-top: 10px;
+}

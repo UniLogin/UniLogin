@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
-import {MANAGEMENT_KEY, createKeyPair} from '@universal-login/commons';
+import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import WalletMaster from '../../build/WalletMaster.json';
 import {EnsDomainData, createFutureDeploymentWithRefund, CreateFutureDeploymentWithRefundArgs, encodeInitializeWithRefundData, setupInitializeWithENSAndRefundArgs} from '../../lib';
@@ -78,5 +78,16 @@ describe('Counterfactual Factory', () => {
     const argsWithInvalidName = switchENSNameInInitializeArgs(argsWithCorrectName, 'invalid-name');
     const initData = encodeInitializeWithRefundData(argsWithInvalidName);
     await expect(factoryContract.createContract(keyPair.publicKey, initData, signature)).to.be.revertedWith('Invalid signature');
+  });
+
+  it('isValidSignature', async () => {
+    const MAGICVALUE = '0x20c13b0b';
+    await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
+    await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
+    const proxyContract = new Contract(futureAddress, WalletMaster.abi, wallet);
+    const message = 'Hi, I am Justyna and I wonder if length of this message matters';
+    const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
+    const signature2 = signString(message, keyPair.privateKey);
+    expect(await proxyContract.isValidSignature(messageHex, signature2)).to.eq(MAGICVALUE);
   });
 });

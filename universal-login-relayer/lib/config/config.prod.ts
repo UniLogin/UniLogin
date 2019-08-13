@@ -20,7 +20,7 @@ export const config: Config =  Object.freeze({
   walletMasterAddress: getEnv('WALLET_MASTER_ADDRESS', ''),
   contractWhiteList: {
     master: [],
-    proxy: ['0xca33d06bff615ad98056f8f720c57042cd3e820985235a3f77b73067c451cd3e']
+    proxy: ['0xca33d06bff615ad98056f8f720c57042cd3e820985235a3f77b73067c451cd3e', '0xcb0b7ef2bf016035e985e68079f3979acda20f6e746b0019bbc9393bb4521ade']
   },
   factoryAddress: getEnv('FACTORY_ADDRESS', ''),
   supportedTokens: [{
@@ -36,6 +36,11 @@ export const config: Config =  Object.freeze({
       appId: '1234-5678',
       baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
       addressHelper: true
+    },
+    ramp: {
+      appName: 'Universal Login',
+      logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
+      rampUrl: 'https://ri-widget-staging-ropsten.firebaseapp.com/'
     }
   },
   database: {

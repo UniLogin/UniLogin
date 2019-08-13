@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'NoSet';
+type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -47,6 +47,13 @@ export class InvalidAddress extends ValidationFailed {
   }
 }
 
+export class InvalidContract extends ValidationFailed {
+  constructor () {
+    super('Contract is not valid', 'InvalidContract');
+    Object.setPrototypeOf(this, InvalidContract.prototype);
+  }
+}
+
 export class UnsupportedBytecode extends ValidationFailed {
   constructor () {
     super('Proxy Bytecode is not supported by relayer', 'UnsupportedBytecode');
@@ -58,6 +65,13 @@ export class InvalidEvent extends ValidationFailed {
   constructor (eventType: string) {
     super(`Unknown event type: ${eventType}`, 'InvalidEvent');
     Object.setPrototypeOf(this, InvalidEvent.prototype);
+  }
+}
+
+export class InvalidPassphrase extends ValidationFailed {
+  constructor () {
+    super('Passphrase is not valid', 'InvalidPassphrase');
+    Object.setPrototypeOf(this, InvalidPassphrase.prototype);
   }
 }
 

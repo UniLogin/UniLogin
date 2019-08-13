@@ -10,9 +10,7 @@ import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
 const config = getConfig();
 
 const services = createServices(config);
-services.tokenService.start();
-services.balanceService.start();
-services.sdk.start();
+services.start();
 
 render(
   <ServiceContext.Provider value={services}>

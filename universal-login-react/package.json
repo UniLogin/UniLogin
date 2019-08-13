@@ -1,21 +1,22 @@
 {
   "name": "@universal-login/react",
-  "version": "0.3.9",
+  "version": "0.3.13",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "lint": "tslint -p tsconfig.json \"{src,test}/**/*.{ts,tsx}\"",
-    "clean": "rm -fr dist",
-    "build": "yarn clean && tsc -p tsconfig.json && cp -r src/ui/assets dist/src/ui/assets && cp -r src/ui/styles dist/src/ui/styles",
+    "clean": "rimraf dist",
+    "build": "yarn clean && tsc -p tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "NODE_ENV=test mocha -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 --exit \"dist/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
-    "@universal-login/commons": "^0.3.9",
-    "@universal-login/sdk": "^0.3.9"
+    "@ramp-network/ramp-instant-sdk": "^1.0.0",
+    "@universal-login/commons": "^0.3.13",
+    "@universal-login/sdk": "^0.3.13"
   },
   "peerDependencies": {
     "react": "^16.8.x",
@@ -33,12 +34,15 @@
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.3",
+    "cpx": "^1.5.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^3.1.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "mocha": "^6.1.4",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
+    "rimraf": "^2.6.3",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",

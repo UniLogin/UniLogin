@@ -21,16 +21,22 @@
     padding: 15px 15px 83px
 
 .modal
-  padding: 40.5px 30px
+  width: 770px
+  max-width: 100%
+  padding: 0
   color: #ffffff
-  background-image: linear-gradient(-180deg, #0C0E57 0%, #14052C 100%)
+  background: #FAFBFD
+  box-shadow: 0 3px 17px 0 rgba(79,55,168,0.09)
   border-radius: 6px
-
-  +media(s)
-    padding: 40px 15px
 
 .modal-body
   max-width: 100%
+
+.modal-content
+  padding: 30px
+
+  +media(s)
+    padding: 15px
 
 .modal-title
   padding-right: 25px
@@ -58,33 +64,9 @@
   color: #FFFFFF
   line-height: 19px
 
-.transfer-modal,
-.request-modal,
-.invitation-modal
-  width: 430px
-
-.transfer-modal-title,
-.invitation-modal-title
-  margin-bottom: 42px
-
-.transfer-modal-title
-.transfer-modal-address
-  margin-bottom: 30px
-
-.request-modal-title
-  margin-bottom: 27px
-
-.request-modal-amount
-  margin-bottom: 30px
-
 .qr-code
-  width: 81px
-  height: 81px
   margin: 0 auto 33px
-
-.request-modal-description,
-.request-modal-address
-  margin-bottom: 30px
+  text-align: center
 
 .modal-topup-row
   display: flex
@@ -246,13 +228,6 @@
   +media(xs, 60px)
     margin-left: 0
 
-.modal-btn-text
-  display: block
-  margin: 6px 0 35px
-  font-size: 12px
-  color: #0FB989
-
-
 .modal-deploying-content-loader
   display: flex
   justify-content: center
@@ -375,3 +350,141 @@
 
   +media(s)
     margin-top: 80px
+
+
+.transfer-modal .transfer-modal-label
+  display: block
+  margin: 0
+  font-size: 15px
+  color: #31405E
+  text-transform: initial
+
+.transfer-modal-inner
+  max-width: 500px
+  margin: 0 auto
+
+.transfer-modal-row
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 20px
+
+.transfer-modal-row-item
+  width: 50%
+
+.transfer-modal-row-item + .transfer-modal-row-item
+  margin-left: 30px
+
+.transfer-input-wrapper
+  position: relative
+  margin-bottom: 58px
+
+.currency-code
+  position: absolute
+  top: 50%
+  right: 20px
+  transform: translateY(-50%)
+  font-size: 12px
+  color: #A4A8B4
+  text-align: right
+
+.transfer-max-btn
+  display: block
+  margin-left: auto
+  font-size: 16px
+  color: #2DC8F6
+  text-align: right
+  text-decoration: underline
+
+.modal-nav-btn
+  display: block
+  margin: 0 auto
+
+.modal-nav-btn span
+  position: relative
+  padding-left: 22px
+  font-size: 16px
+  color: #31405E
+  text-align: center
+
+.modal-nav-btn span::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  transform: translateY(-50%)
+  width: 10px
+  height: 15px
+  background: url('./../assets/icons/arrow-down.svg') center no-repeat
+
+.recipient-input-wrapper
+  position: relative
+  margin-bottom: 160px
+
+.input-recipient-input
+  border: 1px solid #E1E1F0
+  padding-right: 25px
+
+.recipient-modal-inner
+  max-width: 500px
+  margin: 0 auto
+
+.recipient-modal-text
+  margin-bottom: 35px
+  font-size: 16px
+  color: #31405E
+  text-align: center
+
+.modal-back-btn
+  display: block
+  width: 18px
+  height: 12px
+  margin-right: 14px
+  background: url('./../assets/icons/arrow-left.svg') center no-repeat
+
+.receive-modal-hints
+  margin-top: 30px
+
+.hint + .hint
+  margin-top: 20px
+
+.hint
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 20px
+
+.hint.yellow
+  color: #D3A528
+  background: #ffffe4
+
+.hint.red
+  color: #FF1D1C
+  background: #feeced
+
+.hint-text
+  color: inherit
+  font-size: 16px
+  line-height: 1.3
+
+  +media(s)
+    font-size: 14px
+
+.yellow.hint .hint-btn
+  background: #FDFDC3
+
+.red.hint .hint-btn
+  background: #fedbdd
+
+.hint-btn
+  height: 32px
+  width: 138px
+  color: inherit
+  margin-left: 25px
+  font-size: 14px
+  letter-spacing: -0.08px
+  text-align: center
+
+  +media(s)
+    min-width: 75px
+    margin-left: 10px

@@ -8,3 +8,9 @@ export interface SafelloConfig {
   baseAddress: string;
   addressHelper: boolean;
 }
+
+export interface RampConfig {
+  appName: string;
+  logoUrl: string;
+  rampUrl: string;
+}

@@ -3,17 +3,17 @@
 SDK
 ===
 
-SDK is a JS library, that helps to communicate with relayer. The SDK makes it easy to manage contract, by creating basic contract-calling messages. It uses private key to sign these messages and send them to relayer, which propagates them to the network.
+An SDK is a JS library that helps to communicate with a relayer. The SDK makes it easy to manage a contract by creating basic contract-calling messages. It uses a private key to sign these messages and send them to the relayer, which propagates them to the network.
 
 .. _sdk_create:
 
-Creating SDK
-------------
+Creating an SDK
+---------------
 
 **new UniversalLoginSDK(relayerURL, providerURL, messageOptions)**
 
   Parameters:
-    - **relayerURL** : string - URL address of relayer
+    - **relayerURL** : string - a URL address of a relayer
     - **providerURL** : string - JSON-RPC URL of an Ethereum node
     - **messageOptions** (optional) : object - specific message options as ``gasPrice`` or ``gasLimit``
   Returns:
@@ -39,35 +39,35 @@ Creating SDK
 
 .. _sdk_create_contract:
 
-Creating wallet contract
-------------------------
+Creating a wallet contract
+--------------------------
 
 createFutureWallet
 ^^^^^^^^^^^^^^^^^^
 
 **sdk.createFutureWallet()**
 
-Creates a FutureWallet, which contains all information required to deploy and use Wallet in the future.
+Creates a FutureWallet, which contains all information required to deploy and use a Wallet in the future.
 
 Returns:
-  `promise`, that resolves to ``FutureWallet``.
+  `promise` that resolves to ``FutureWallet``.
 
 **FutureWallet** contains:
 
-  - *privateKey* - that will be connected to ContractWallet. Key will be used to sign transactions once the wallet is deployed.
-  - *contract address* - address under which wallet will be deployed in the future.
-  - *waitForBalance* - function that waits for contract address balance change in a way that will allow the wallet contract to be deployed.
+  - *privateKey* - that will be connected to ContractWallet. The key will be used to sign transactions once the wallet is deployed.
+  - *contract address* - an address under which the wallet will be deployed in the future.
+  - *waitForBalance* - a function that waits for a contract address balance change in a way that will allow the wallet contract to be deployed.
 
       Returns:
-        `promise`, that resolves (only when wallet contract balance is changed to satisfy relayer requirements) to ``{tokenAddress, contractAddress}``
-  - *deploy* - function, that requests wallet contract deployment.
+        `promise`, that resolves (only when the wallet contract balance is changed to satisfy relayer requirements) to ``{tokenAddress, contractAddress}``
+  - *deploy* - a function that requests wallet contract deployment.
 
       Parameters:
-        - **ensName** : string - chosen ENS name
-        - **gasPrice** : string - gas price of deployment transaction
+        - **ensName** : string - a chosen ENS name
+        - **gasPrice** : string - gas price of a deployment transaction
 
       Returns:
-        `promise`, that resolves to the deployed wallet contract address
+        `promise` that resolves to the deployed wallet contract address
 
 Example:
   ::
@@ -81,14 +81,14 @@ connect
 
 **sdk.connect(contractAddress)**
 
-  requests of adding a new key to contract.
+  requests adding a new key to a contract.
 
   Parameters:
-    - **contractAddress** : string - address of contract to manage a connect
+    - **contractAddress** : string - an address of the contract to manage a connection
   Returns:
-    `promise`, that resolves to ``privateKey``, where:
+    `promise` that resolves to ``privateKey``, where:
 
-    - *privateKey* - private key that is requested to add to manage contract
+    - *privateKey* - the private key that is requested to add to manage the contract
 
   Example:
     ::
@@ -103,13 +103,13 @@ denyRequest
   removes the request for adding a new key from pending authorizations.
 
   Parameters:
-    - **contractAddress** : string - address of contract to remove request
-    - **publicKey** : string - address to remove from add requests
-    - **privateKey** : string - private key to sign request
+    - **contractAddress** : string - an address of a contract to remove a request
+    - **publicKey** : string - an address to remove from add requests
+    - **privateKey** : string - a private key to sign a request
   Returns:
-    `promise`, that resolves to ``publicKey``, where:
+    `promise` that resolves to ``publicKey``, where:
 
-    - *publicKey* - address removed from pending authorisations
+    - *publicKey* - an address removed from pending authorisations
 
   Example:
     ::
@@ -129,25 +129,25 @@ execute
   executes any message.
 
   Parameters:
-    - **message** : object - message that is sent to contract, includes:
+    - **message** : object - a message that is sent to a contract, includes:
 
-      * from : string - address of contract that requests execution
-      * to : string - beneficient of this execution
-      * data : string - data of execution
+      * from : string - an address of the contract that requests execution
+      * to : string - a beneficient of this execution
+      * data : string - the data of execution
       * value : string - value of transaction
       * gasToken : string - token address to refund
       * gasPrice : number - price of gas to refund
       * gasLimit : number - limit of gas to refund
-    - **privateKey** : string - a private key to be used to sign the transaction and has permission to execute message
+    - **privateKey** : string - a private key to be used to sign the transaction and has a permission to execute the message
   Returns:
-    `promise`, that resolves to the ``Execution``
+    `promise` that resolves to the ``Execution``
 
 .. _execution:
 
   **Execution** contains:
 
-  - **messageStatus** - current status of sent message (:ref:`learn more<messageStatus>`)
-  - **waitToBeMined** - a function that returns a promise, that resolves to MessageStatus once transaction enclosed with Message is mined
+  - **messageStatus** - a current status of the sent message (:ref:`learn more<messageStatus>`)
+  - **waitToBeMined** - a function that returns a promise that resolves to MessageStatus once the transaction enclosed with Message is mined
 
   Example:
     ::
@@ -178,20 +178,20 @@ messageStatus
 
   .. image:: ../modeling/img/concepts/messageStatus.png
 
-  - **required** : number - the amount of required signatures to execute message
-  - **collectedSignatures** : string[] - signatures collected by relayer
+  - **required** : number - the amount of required signatures to execute the message
+  - **collectedSignatures** : string[] - signatures collected by a relayer
   - **totalCollected** : number - the amount of collected signatures
-  - **messageHash** : string - hash of message
-  - **state** : MessageState - one of message state: ``AwaitSignatures``, ``Queued``, ``Pending``, ``Error``, ``Success``
-  - **transactionHash** (optional) : string - transaction hash is only possible, when message state is ``Pending``, ``Success`` or ``Error``
-  - **error** (optional) : string - only when message state is ``Error``
+  - **messageHash** : string - hash of the message
+  - **state** : MessageState - one of the message states: ``AwaitSignatures``, ``Queued``, ``Pending``, ``Error``, ``Success``
+  - **transactionHash** (optional) : string - a transaction hash is only possible when the message state is ``Pending``, ``Success`` or ``Error``
+  - **error** (optional) : string - only when the message state is ``Error``
 
 **sdk.getMessageStatus(messageHash)**
 
-  requests of message status of a specific message
+  requests a message status of a specific message
 
   Parameters:
-    - **messageHash** - hash of message
+    - **messageHash** - a hash of a message
 
   Returns:
     `promise` that resolves to ``MessageStatus``
@@ -212,8 +212,8 @@ SdkSigner
 
 Note: This is an experimental feature, expect breaking changes.
 
-Managing wallet contract
-------------------------
+Managing a wallet contract
+--------------------------
 
 
 addKey
@@ -221,16 +221,16 @@ addKey
 
 **sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails, keysPurpose)**
 
-  adds key to manage wallet contract.
+  adds a key to manage a wallet contract.
 
   Parameters:
-    - **contractAddress** : string - address of contract that requests to add new key
-    - **publicKey** : string - public key to manage contract
-    - **privateKey** : string - private key that has permission to add new keys
+    - **contractAddress** : string - an address of a contract that requests to add a new key
+    - **publicKey** : string - a public key to manage the contract
+    - **privateKey** : string - a private key that has a permission to add new keys
     - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT_KEY - ``1``, ACTION_KEY - ``2``, set to MANAGAMENT_KEY by default
   Returns:
-    `promise`, that resolves to the :ref:`Execution<execution>`
+    `promise` that resolves to the :ref:`Execution<execution>`
 
   Example:
     ::
@@ -254,16 +254,16 @@ addKeys
 
 **sdk.addKeys(contractAddress, publicKeys, privateKey, transactionDetails, keysPurpose)**
 
-  adds multiple keys to manage contract.
+  adds multiple keys to manage a contract.
 
   Parameters:
-    - **contractAddress** : string - address of contract that requests to add keys
+    - **contractAddress** : string - an address of a contract that requests to add keys
     - **publicKeys** : array of strings - public keys to add
-    - **privateKey** : string - private key that has permission to add new keys
+    - **privateKey** : string - a private key that has a permission to add new keys
     - **transactionDetails** : object - refund options
     - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
   Returns:
-    `promise`, that resolves to the :ref:`Execution<execution>`
+    `promise` that resolves to the :ref:`Execution<execution>`
 
   Example:
     ::
@@ -290,15 +290,15 @@ removeKey
 
 **sdk.removeKey(contractAddress, publicKey, privateKey, transactionDetails)**
 
-  removes key from contract.
+  removes a key from a contract.
 
   Parameters:
-    - **contractAddress** : string - address of contract, that we want remove key from
-    - **publicKey** : string - public key to remove
-    - **privateKey** : string - private key with permission of removing key
-    - **transactionDetails** : object - optional parameter, that includes details of transactions for example gasLimit or gasPrice
+    - **contractAddress** : string - an address of a contract that we want to remove a key from the contract
+    - **publicKey** : string - a public key to remove
+    - **privateKey** : string - a private key with a permission of removing keys
+    - **transactionDetails** : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
   Returns:
-    `promise`, that resolves to the :ref:`Execution<execution>`
+    `promise` that resolves to the :ref:`Execution<execution>`
 
   Example
     ::
@@ -317,13 +317,13 @@ removeKey
 
 **getWalletContractAddress(ensName)**
 
-  gets wallet contract address by ENS name
+  gets a wallet contract address by an ENS name
 
   Parameters:
-    - **ensName** : string - ENS name
+    - **ensName** : string - an ENS name
 
   Returns:
-    `promise`, that resolves to ``address`` if ENS name is registered or ``null`` if ENS name is available
+    `promise` that resolves to ``address`` if the ENS name is registered or ``null`` if the ENS name is available
 
   Example:
     ::
@@ -332,13 +332,13 @@ removeKey
 
 **walletContractExist(ensName)**
 
-  checks if ENS name is registered.
+  checks if an ENS name is registered.
 
   Parameters:
-    - **ensName** : string - ENS name
+    - **ensName** : string - an ENS name
 
   Returns:
-    `promise`, that resolves to ``true`` if ENS name is registered or ``false`` if ENS name is available
+    `promise` that resolves to ``true`` if the ENS name is registered or ``false`` if the ENS name is available
 
   Example:
     ::
@@ -354,11 +354,11 @@ Key added and key removed
 
 **sdk.start()**
 
-  Starts to listen relayer and blockchain events.
+  Starts to listen a relayer and blockchain events.
 
 **sdk.stop()**
 
-  Stops to listen relayer and blockchain events.
+  Stops to listen a relayer and blockchain events.
 
 
 **sdk.subscribe(eventType, filter, callback)**
@@ -366,11 +366,11 @@ Key added and key removed
   subscribes KeyAdded or KeyRemoved event.
 
   Parameters:
-    - **eventType** : string - type of event, possible event types: ``KeyAdded``, ``KeyRemoved``
-    - **filter** : object - filter for events, includes:
+    - **eventType** : string - a type of an event, possible event types: ``KeyAdded``, ``KeyRemoved``
+    - **filter** : object - a filter for events, includes:
 
-      * contractAddress : string - address of contract to observe
-      * key : string - public key, using when subscribe to events with specific key
+      * contractAddress : string - an address of a contract to observe
+      * key : string - a public key used to subscribe to an event
     - **callback**
   Returns:
     event listener
@@ -420,8 +420,8 @@ Authorisations
   subscribes AuthorisationChanged event
 
   Parameters:
-    - **walletContractAddress** : string - address of contract to observe
-    - **privateKey** : string - the private key used to sign get authorization request
+    - **walletContractAddress** : string - an address of a contract to observe
+    - **privateKey** : string - a private key used to sign a get authorization request
     - **callback**
 
   Returns:

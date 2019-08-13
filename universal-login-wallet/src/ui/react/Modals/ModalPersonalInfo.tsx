@@ -1,14 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Input} from '@universal-login/react';
 import InputLabel from '../common/InputLabel';
 import ButtonFullwidth from '../common/ButtonFullwidth';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-export interface ModalPersonalInfoProps {
-  modalService: ModalService;
-}
 
-const ModalPersonalInfo = ({modalService}: ModalPersonalInfoProps) => {
+const ModalPersonalInfo = () => {
+  const modalService = useContext(WalletModalContext);
   return (
     <>
       <h2 className="modal-title">Personal information</h2>

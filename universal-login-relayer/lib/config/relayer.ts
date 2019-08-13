@@ -1,4 +1,4 @@
-import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, SafelloConfig} from '@universal-login/commons';
+import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, OnRampConfig} from '@universal-login/commons';
 import {KnexConfig} from './KnexConfig';
 
 export interface Config {
@@ -12,8 +12,6 @@ export interface Config {
   factoryAddress: string;
   supportedTokens: SupportedToken[];
   localization: LocalizationConfig;
-  onRampProviders: {
-    safello: SafelloConfig;
-  };
+  onRampProviders: OnRampConfig;
   database: KnexConfig;
 }

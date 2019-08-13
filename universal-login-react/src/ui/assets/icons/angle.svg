@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="7px" viewBox="0 0 13 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <g id="web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="18.-web" transform="translate(-1066.000000, -387.000000)" fill="#31405E" fill-rule="nonzero" stroke="#31405E">
+            <g id="settings" transform="translate(534.000000, 80.000000)">
+                <g id="Group-3-Copy" transform="translate(35.000000, 280.000000)">
+                    <path d="M506.71114,30.2716004 L501.531015,25.0914749 C501.409048,24.9695084 501.213441,24.9695084 501.091475,25.0914749 C500.969508,25.2134414 500.969508,25.4090481 501.091475,25.5310146 L506.05068,30.4902197 L501.091475,35.4494247 C500.969508,35.5713912 500.969508,35.7669979 501.091475,35.8889644 C501.151308,35.9487971 501.231851,35.9810146 501.310094,35.9810146 C501.388337,35.9810146 501.468881,35.9510983 501.528713,35.8889644 L506.708839,30.7088389 C506.830805,30.5891736 506.830805,30.3912657 506.71114,30.2716004 Z" id="Path" transform="translate(503.900302, 30.490507) rotate(-270.000000) translate(-503.900302, -30.490507) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

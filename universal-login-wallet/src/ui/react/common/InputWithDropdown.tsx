@@ -17,8 +17,8 @@ const classesForInputWithDropdown = classesForElement('input', 'input-with-dropd
 
 const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, currency, setCurrency}: InputProps) => {
   const {visible, toggle} = useToggler();
-  const {tokenService} = useServices();
-  const symbols = tokenService.tokensDetails.map(element => element.symbol);
+  const {tokensDetailsStore} = useServices();
+  const symbols = tokensDetailsStore.tokensDetails.map(element => element.symbol);
   const onDropdownItemClick = (currency: string) => {
     if (setCurrency) { setCurrency(currency); }
     toggle();

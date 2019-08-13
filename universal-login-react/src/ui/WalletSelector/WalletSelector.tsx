@@ -41,9 +41,15 @@ export const WalletSelector = ({
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
-  const [, setName] = useState("");
+
+  const [name, setName] = useState('');
   const [accountStatus, setAccountStatus] = useState("show-initial");
-  const [ethAccount, setEthAccount] = useState("");
+  const [ethAccount, setEthAccount] = useState("");       
+  const isOnlyCreateAction = actions.includes(WalletSuggestionAction.create) && actions.length === 1;
+  const isNameTaken = creations.length === 0 &&
+    isOnlyCreateAction &&
+    !!name &&
+    !busy;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -78,15 +84,9 @@ export const WalletSelector = ({
   };
 
   const renderSuggestions = () =>
-    !busy && (connections.length || creations.length) ? (
-      <Suggestions
-        connections={connections}
-        creations={creations}
-        onCreateClick={onCreateClick}
-        onConnectClick={onConnectClick}
-        actions={actions}
-      />
-    ) : null;
+    !busy && (connections.length || creations.length) ?
+      <Suggestions connections={connections} creations={creations} onCreateClick={onCreateClick} onConnectClick={onConnectClick} actions={actions} /> :
+      null;
 
   return (
     <div className={accountStatus}>
@@ -95,6 +95,7 @@ export const WalletSelector = ({
           Sign in with Ethereum
         </button>
         <div className="ethereum-account">{ethAccount}</div>
+
         <div className="selector-input-wrapper">
           <img
             src={Logo}
@@ -109,6 +110,7 @@ export const WalletSelector = ({
             autocomplete="off"
             autoFocus
           />
+          {isNameTaken && <div>Name is already taken</div>}
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}

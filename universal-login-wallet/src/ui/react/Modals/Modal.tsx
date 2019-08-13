@@ -1,30 +1,26 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
-import ModalTransfer from './ModalTransfer';
+import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
 import ModalInvitation from './ModalInvitation';
 import {useServices, useRelayerConfig} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import ModalAddress from './ModalAddress';
 import ModalPersonalInfo from './ModalPersonalInfo';
 import ModalCardInfo from './ModalCardInfo';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
-import ModalService from '../../../core/entities/ModalService';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-export interface ModalProps {
-  modalService: ModalService;
-}
-
-const Modal = ({modalService}: ModalProps) => {
+const Modal = () => {
+  const modalService = useContext(WalletModalContext);
   const {walletPresenter} = useServices();
   const config = useRelayerConfig();
   switch (modalService.modalState) {
     case 'transfer':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ModalTransfer modalService={modalService}/>
+          <ModalTransfer />
         </ModalWrapperClosable>
       );
     case 'request':
@@ -41,23 +37,17 @@ const Modal = ({modalService}: ModalProps) => {
       );
     case 'topUpAccount':
       return (
-        <ModalWrapper modalPosition="bottom">
+        <ModalWrapper modalClassName="topup-modal-wrapper">
           <TopUp
             onRampConfig={config!.onRampProviders}
             contractAddress={walletPresenter.getContractAddress()}
           />
         </ModalWrapper>
       );
-    case 'address':
-      return (
-        <ModalWrapperWithoutClose>
-          <ModalAddress />
-        </ModalWrapperWithoutClose>
-      );
     case 'personalInfo':
       return (
         <ModalWrapperWithoutClose>
-          <ModalPersonalInfo modalService={modalService}/>
+          <ModalPersonalInfo />
         </ModalWrapperWithoutClose>
       );
     case 'cardInfo':

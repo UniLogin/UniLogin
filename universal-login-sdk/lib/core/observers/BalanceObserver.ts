@@ -1,49 +1,51 @@
-import {providers} from 'ethers';
-import {SupportedToken, ensure, RequiredBalanceChecker, BalanceChecker} from '@universal-login/commons';
-import {ConcurrentDeployment} from '../utils/errors';
+import deepEqual from 'deep-equal';
+import clonedeep from 'lodash.clonedeep';
+import {BalanceChecker, TokenDetails, TokenDetailsWithBalance} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 
-export type ReadyToDeployCallback = (tokenAddress: string, contractAddress: string) => void;
-
 export class BalanceObserver extends ObserverRunner {
-  private contractAddress?: string;
-  private callback?: ReadyToDeployCallback;
-  private requiredBalanceChecker: RequiredBalanceChecker;
-  private balanceChecker: BalanceChecker;
+  private lastTokenBalances: TokenDetailsWithBalance[] = [];
+  private callbacks: Function[] = [];
 
-  constructor(private supportedTokens: SupportedToken[], provider: providers.Provider) {
+  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetails: TokenDetails[], step: number = 500) {
     super();
-    this.balanceChecker = new BalanceChecker(provider);
-    this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
+    this.step = step;
   }
 
-  async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
-    ensure(!this.isRunning(), ConcurrentDeployment);
-    this.contractAddress = contractAddress;
-    this.callback = callback;
-    this.start();
-    return () => {
-      this.contractAddress = undefined;
-      this.stop();
-    };
+  async tick() {
+    await this.checkBalanceNow();
   }
 
-  tick() {
-    return this.checkBalance();
-  }
-
-  async checkBalance() {
-    if (this.contractAddress) {
-      const tokenAddress = await this.requiredBalanceChecker.findTokenWithRequiredBalance(this.supportedTokens, this.contractAddress);
-      if (tokenAddress) {
-        this.onBalanceChanged(this.contractAddress, tokenAddress);
-      }
+  async getBalances() {
+    const tokenBalances: TokenDetailsWithBalance[] = [];
+    for (const token of this.tokenDetails) {
+      const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
+      tokenBalances.push({...token, balance});
     }
+    return tokenBalances;
   }
 
-  onBalanceChanged(contractAddress: string, tokenAddress: string) {
-    this.callback!(tokenAddress, contractAddress);
-    this.contractAddress = undefined;
-    this.stop();
+  async checkBalanceNow() {
+    const newTokenBalances = await this.getBalances();
+    if (!deepEqual(this.lastTokenBalances, newTokenBalances)) {
+      this.lastTokenBalances = clonedeep(newTokenBalances);
+      this.callbacks.forEach((callback) => callback(newTokenBalances));
+    }
+    return this.lastTokenBalances;
+  }
+
+  subscribe(callback: Function) {
+    this.callbacks.push(callback);
+
+    this.isRunning() ? callback(this.lastTokenBalances) : this.start();
+
+    const unsubscribe = () => {
+      this.callbacks = this.callbacks.filter((element) => callback !== element);
+      if (this.callbacks.length === 0) {
+        this.stop();
+        this.lastTokenBalances = [];
+      }
+    };
+    return unsubscribe;
   }
 }

@@ -11,6 +11,6 @@ export class RequiredBalanceChecker {
         return supprotedToken.address;
       }
     }
-    return  null;
+    return null;
   }
 }

@@ -7,7 +7,7 @@ export default class CreationFlow {
   }
 
   chooseTopUpMethod() {
-    this.wrapper.find('#topup-btn-crypto').simulate('click');
+    this.wrapper.find('label#topup-btn-crypto').simulate('click');
    }
 
   getAddress() {

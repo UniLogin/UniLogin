@@ -7,7 +7,7 @@ export default class ConnectionFlow {
   }
 
   clickConnectWithAnotherDevice() {
-    this.wrapper.find('.connection-method-link[href="/connect-with-emoji"]').simulate('click', {button: 0});
+    this.wrapper.find('#emoji').simulate('click');
   }
 
   async waitForEmojiView(timeout?: number) {

@@ -4,7 +4,7 @@ import {providers, Wallet, utils} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/Proxy.json';
-import ensureDatabaseExist from '../common/ensureDatabaseExist';
+import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
@@ -63,6 +63,11 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
         appId: '1234-5678',
         baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
         addressHelper: true
+      },
+      ramp: {
+        appName: 'Universal Login',
+        logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
+        rampUrl: 'https://ri-widget-staging-ropsten.firebaseapp.com/'
       }
     },
     database: databaseConfig
@@ -101,7 +106,7 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
-  return {jsonRpcUrl, deployWallet, address, tokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl, deployWallet, walletMasterAddress: address, tokenAddress, ensAddress, ensDomains};
 }
 
 export default startDevelopment;

@@ -20,3 +20,10 @@ export const sign = (payload: string, privateKey: string): string => {
   const signature = signingKey.signDigest(utils.hashMessage(utils.arrayify(payload)));
   return utils.joinSignature(signature);
 };
+
+export const signString = (stringToSign: string, privateKey: string) => {
+  const signingKey = new utils.SigningKey(privateKey);
+  const hash = utils.hexlify(utils.toUtf8Bytes(stringToSign));
+  const signature = signingKey.signDigest(utils.hashMessage(utils.arrayify(hash)));
+  return utils.joinSignature(signature);
+};

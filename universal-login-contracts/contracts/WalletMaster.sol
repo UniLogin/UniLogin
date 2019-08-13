@@ -49,11 +49,47 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
     }
 
-    function isValidSignature(bytes32 _data, bytes memory _signature) public view returns (bool isValid) {
-        return keyExist(_data.toEthSignedMessageHash().recover(_signature));
+    function isValidSignature(bytes memory _data, bytes memory _signature) public view returns (bytes4) {
+        if (keyExist(getMessageHash(_data).recover(_signature))) {
+            return getMagicValue();
+        } else {
+            return getInvalidSignature();
+        }
     }
 
-    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4) {
+    function getMagicValue() private pure returns(bytes4) {
+        return 0x20c13b0b;
+    }
+
+    function getInvalidSignature() private pure returns(bytes4) {
+        return 0xffffffff;
+    }
+
+    function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4 magicValue) {
         return this.onERC721Received.selector;
+    }
+
+    function getMessageHash(bytes memory _data) internal pure returns (bytes32) {
+        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uint2str(_data.length), _data));
+    }
+
+    function uint2str(uint _num) internal pure returns (string memory _uintAsString) {
+        if (_num == 0) {
+            return "0";
+        }
+        uint i = _num;
+        uint j = _num;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len - 1;
+        while (i != 0) {
+            bstr[k--] = byte(uint8(48 + i % 10));
+            i /= 10;
+        }
+        return string(bstr);
     }
 }
