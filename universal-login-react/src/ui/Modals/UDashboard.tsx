@@ -5,7 +5,7 @@ import {UHeader} from '../UFlow/UHeader';
 import {Funds} from '../UFlow/Funds';
 import {USettings} from '../UFlow/USettings';
 import {useServices} from '../../core/services/useServices';
-import {ConnectionNotification} from '../Notifications/NotificationConnectionWithFakes';
+import {ConnectionNotification} from '../Notifications/ConnectionNotification';
 import {ApplicationWallet} from '@universal-login/commons';
 
 export interface UDashboardProps {
