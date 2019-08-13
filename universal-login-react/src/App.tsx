@@ -14,7 +14,7 @@ import {createModalService} from './core/services/createModalService';
 import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
 import './ui/styles/playground.css';
 import {useAsync} from './ui/hooks/useAsync';
-import {LogoButton} from './ui/LogoButton/LogoButton';
+import {LogoButton} from './ui/UFlow/LogoButton';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
