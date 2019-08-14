@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
-import UniversalLoginSDK, {TransferService, WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {TransferService} from '@universal-login/sdk';
 import {ReactUModalContext} from '../../core/models/ReactUModalContext';
 import {ModalWrapper} from './ModalWrapper';
 import {ChooseTopUpMethod} from '../TopUp/ChooseTopUpMethod';
@@ -13,14 +13,12 @@ import {useAsync} from '../hooks/useAsync';
 import {TopUp} from '../TopUp/TopUp';
 
 export interface UDashboardProps {
-  walletService: WalletService;
   sdk: UniversalLoginSDK;
-  tokensDetailsStore: TokensDetailsStore;
-  transferService: TransferService;
+  applicationWallet: ApplicationWallet;
 }
 
-export const UDashboard = ({walletService, sdk, tokensDetailsStore, transferService}: UDashboardProps) => {
-  const [transferDetalis, setTransferDetails] = useState({currency: tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
+export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
+  const [transferDetalis, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
 
   const modalService = useContext(ReactUModalContext);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
@@ -29,12 +27,14 @@ export const UDashboard = ({walletService, sdk, tokensDetailsStore, transferServ
     setTransferDetails({...transferDetalis, ...args});
   };
 
+  const transferService = new TransferService(sdk, applicationWallet);
+
   switch (modalService.modalState) {
     case 'funds':
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <Funds ensName={(walletService.applicationWallet as ApplicationWallet).name} sdk={sdk}/>
+          <Funds ensName={applicationWallet.name} sdk={sdk}/>
         </ModalWrapper>
       );
     case 'approveDevice':
@@ -42,8 +42,8 @@ export const UDashboard = ({walletService, sdk, tokensDetailsStore, transferServ
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
           <ConnectionNotification
-            contractAddress={(walletService.applicationWallet as ApplicationWallet).contractAddress}
-            privateKey={(walletService.applicationWallet as ApplicationWallet).privateKey}
+            contractAddress={applicationWallet.contractAddress}
+            privateKey={applicationWallet.privateKey}
             onCancel={modalService.hideModal}
             sdk={sdk}
           />
@@ -62,7 +62,7 @@ export const UDashboard = ({walletService, sdk, tokensDetailsStore, transferServ
           <UHeader />
           <TopUp
             hideModal={modalService.hideModal}
-            contractAddress={(walletService.applicationWallet as ApplicationWallet).contractAddress}
+            contractAddress={applicationWallet.contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
           />
         </ModalWrapper>
