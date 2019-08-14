@@ -6,9 +6,9 @@ import {Funds} from '../UFlow/Funds';
 import {USettings} from '../UFlow/USettings';
 import {ConnectionNotification} from '../Notifications/ConnectionNotification';
 import {ApplicationWallet} from '@universal-login/commons';
-import {ChooseTopUpMethod} from '../TopUp/ChooseTopUpMethod';
 import {useAsync} from '../hooks/useAsync';
 import UniversalLoginSDK from '@universal-login/sdk';
+import {TopUp} from '../TopUp/TopUp';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -50,7 +50,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <ChooseTopUpMethod
+          <TopUp
             hideModal={modalService.hideModal}
             contractAddress={applicationWallet.contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}

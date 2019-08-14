@@ -21,7 +21,7 @@ export const TopUpChoose = ({onMethodChoose, topUpClassName}: TopUpChooseProps) 
           image={Ether}
           title="Deposit crypto"
           text="Free-Deposit ETH or DAI"
-          onClick={() => onMethodChoose(TopUpComponentType.crypto)}
+          onClick={() => {}}
         />
         <Button
           id={'creditcard'}

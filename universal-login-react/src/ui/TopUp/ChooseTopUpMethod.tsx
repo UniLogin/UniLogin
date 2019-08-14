@@ -14,7 +14,7 @@ import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 export interface ChooseTopUpMethodProps {
   contractAddress: string;
   onRampConfig: OnRampConfig;
-  onPayClick: (topUpModalType: TopUpComponentType) => void;
+  onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
   topUpClassName?: string;
   hideModal?: () => void;
 }

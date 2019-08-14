@@ -18,7 +18,7 @@ import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 export interface TopUpWithFiatProps {
   contractAddress: string;
-  onPayClick: (topUpModalType: TopUpComponentType) => void;
+  onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
   onRampConfig: OnRampConfig;
 }
 
@@ -102,7 +102,7 @@ export const TopUpWithFiat = ({contractAddress, onRampConfig, onPayClick}: TopUp
             </div>
           : <p className="info-text info-text-warning">Choose payment method</p>
         }
-        <button onClick={() => onPayClick(paymentMethod!)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
+        <button onClick={() => onPayClick(paymentMethod!, amount)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
       </div>
     </div>
   );

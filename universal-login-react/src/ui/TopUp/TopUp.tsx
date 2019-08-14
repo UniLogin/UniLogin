@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {OnRampConfig, stringToEther} from '@universal-login/commons';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
-import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 
@@ -17,13 +16,19 @@ interface TopUpProps {
 
 export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
+  const [amount, setAmount] = useState('');
+
+  const onPayClick = (topUpType: TopUpComponentType, amount: string) =>  {
+    setModal(topUpType);
+    setAmount(amount);
+  };
 
   if (modal === TopUpComponentType.choose) {
     return (
       <ChooseTopUpMethod
         contractAddress={contractAddress}
         onRampConfig={onRampConfig}
-        onPayClick={setModal}
+        onPayClick={onPayClick}
       />
     );
   } else if (modal === TopUpComponentType.safello) {
