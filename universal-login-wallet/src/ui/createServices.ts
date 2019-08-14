@@ -1,7 +1,6 @@
 import React from 'react';
 import {providers} from 'ethers';
-import {TokenDetailsService} from '@universal-login/commons';
-import UniversalLoginSDK, {WalletService, TransferService, TokensDetailsStore} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import UserDropdownService from '../core/app/UserDropdownService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import {BalanceService} from '../core/services/BalanceService';
@@ -33,9 +32,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const walletService = new WalletService(sdk);
   const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
-  const tokenDetailsService = new TokenDetailsService(sdk.provider);
-  const tokensDetailsStore = new TokensDetailsStore(tokenDetailsService, config.tokens);
-  const transferService = new TransferService(sdk, walletService, tokensDetailsStore);
+  // const transferService = new TransferService(sdk, walletService);
   const etherBalanceService = new EtherBalanceService(sdk.provider, walletService);
   const balanceService = new BalanceService(etherBalanceService);
   return {
@@ -45,11 +42,9 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     connectToWallet: _connectToWallet,
     walletService,
     walletPresenter,
-    tokensDetailsStore,
-    transferService,
+    // transferService,
     balanceService,
     start: () => {
-      tokensDetailsStore.fetchTokensDetails();
       balanceService.start();
       sdk.start();
     }
