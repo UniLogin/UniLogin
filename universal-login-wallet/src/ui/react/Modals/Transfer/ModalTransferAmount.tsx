@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input, InputLabel} from '@universal-login/react';
 import {TransferDetails} from '@universal-login/commons';
-import {TransferDropdown} from '@universal-login/react/src/ui/Transfer/TransferDropdown';
+import {TransferDropdown} from './TransferDropdown';
 
 export interface ModalTransferAmountProps {
   onSelectRecipientClick: () => void;
