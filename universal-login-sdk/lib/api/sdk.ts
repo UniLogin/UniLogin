@@ -15,6 +15,7 @@ import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver} from '../core/observers/PriceObserver';
+import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -30,6 +31,7 @@ class UniversalLoginSDK {
   aggregateBalanceObserver?: AggregateBalanceObserver;
   priceObserver: PriceObserver;
   tokenDetailsService: TokenDetailsService;
+  tokensDetailsStore: TokensDetailsStore;
   blockchainService: BlockchainService;
   futureWalletFactory?: FutureWalletFactory;
   sdkConfig: SdkConfig;
@@ -52,6 +54,8 @@ class UniversalLoginSDK {
     this.balanceChecker = new BalanceChecker(this.provider);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
+    this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokens.map((token) => token.address));
+    this.tokensDetailsStore.fetchTokensDetails();
     this.priceObserver = new PriceObserver(this.sdkConfig.observedTokens, this.sdkConfig.observedCurrencies);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }

@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {utils, providers, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, ApplicationWallet} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {WalletService} from '../../../lib/core/services/WalletService';
@@ -31,7 +31,8 @@ describe('INT: TransferService', () => {
     tokenDetailsService = new TokenDetailsService(provider);
     tokenService = new TokensDetailsStore(tokenDetailsService, [mockTokenContract.address]);
     await tokenService.fetchTokensDetails();
-    transferService = new TransferService(sdk, walletService, tokenService);
+    sdk.tokensDetailsStore = tokenService;
+    transferService = new TransferService(sdk, walletService.applicationWallet as ApplicationWallet);
   });
 
   it('Should transfer tokens', async () => {
