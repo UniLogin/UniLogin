@@ -13,18 +13,20 @@ import MastercardLogo2x from './../assets/logos/mastercard@2x.jpg';
 import VisaLogo from './../assets/logos/visa.jpg';
 import VisaLogo2x from './../assets/logos/visa@2x.jpg';
 import {OnRampConfig} from '@universal-login/commons';
+import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 
 export interface TopUpWithFiatProps {
   contractAddress: string;
+  onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
   onRampConfig: OnRampConfig;
 }
 
-export const TopUpWithFiat = ({contractAddress, onRampConfig}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({contractAddress, onRampConfig, onPayClick}: TopUpWithFiatProps) => {
   const [country, selectCountry] = useState('United Kingdom');
   const [selectedCode, setCode] = useState('GBP');
   const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<'ramp' | 'safello' | 'wyre' | undefined>(undefined);
+  const [paymentMethod, setPaymentMethod] = useState<TopUpComponentType.ramp | TopUpComponentType.safello | TopUpComponentType.wyre | undefined>(undefined);
   const [fiatClass, setFiatClass] = useState('');
 
   useEffect(() => {
@@ -55,24 +57,24 @@ export const TopUpWithFiat = ({contractAddress, onRampConfig}: TopUpWithFiatProp
       <p className="top-up-label fiat-payment-methods-title">Payment method</p>
       <div className="fiat-payment-methods">
         <TopUpRadio
-          checked={paymentMethod === 'ramp'}
-          onClick={() => setPaymentMethod('ramp')}
+          checked={paymentMethod === TopUpComponentType.ramp}
+          onClick={() => setPaymentMethod(TopUpComponentType.ramp)}
           name="payment-method"
           className="fiat-payment-method"
         >
           <img src={RampLogo} srcSet={RampLogo2x} alt="ramp" className="ramp-logo" />
         </TopUpRadio>
         <TopUpRadio
-          checked={paymentMethod === 'safello'}
-          onClick={() => setPaymentMethod('safello')}
+          checked={paymentMethod === TopUpComponentType.safello}
+          onClick={() => setPaymentMethod(TopUpComponentType.safello)}
           name="payment-method"
           className="fiat-payment-method"
         >
           <img src={SafelloLogo} srcSet={SafelloLogo2x} alt="safello" className="safello-logo" />
         </TopUpRadio>
         <TopUpRadio
-          checked={paymentMethod === 'wyre'}
-          onClick={() => setPaymentMethod('wyre')}
+          checked={paymentMethod === TopUpComponentType.wyre}
+          onClick={() => setPaymentMethod(TopUpComponentType.wyre)}
           name="payment-method"
           className="fiat-payment-method"
         >
@@ -100,7 +102,7 @@ export const TopUpWithFiat = ({contractAddress, onRampConfig}: TopUpWithFiatProp
             </div>
           : <p className="info-text info-text-warning">Choose payment method</p>
         }
-        <button className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
+        <button onClick={() => onPayClick(paymentMethod!, amount)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
       </div>
     </div>
   );

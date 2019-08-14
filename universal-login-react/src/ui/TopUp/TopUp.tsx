@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import {OnRampConfig, stringToEther} from '@universal-login/commons';
-import TopUpChoose from './TopUpChoose';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
-import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
-
+import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 
 interface TopUpProps {
   contractAddress: string;
@@ -17,18 +15,22 @@ interface TopUpProps {
 
 export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
-  const [amount] = useState<string>('');
+  const [amount, setAmount] = useState('');
+
+  const onPayClick = (topUpType: TopUpComponentType, amount: string) => {
+    setModal(topUpType);
+    setAmount(amount);
+  };
 
   if (modal === TopUpComponentType.choose) {
     return (
-      <TopUpChoose onMethodChoose={setModal}/>
+      <ChooseTopUpMethod
+        contractAddress={contractAddress}
+        onRampConfig={onRampConfig}
+        onPayClick={onPayClick}
+      />
     );
-  }
-  else if (modal === TopUpComponentType.crypto) {
-    return (
-      <TopUpWithCrypto contractAddress={contractAddress}/>
-    );
-  } else if (modal === TopUpComponentType.creditcard) {
+  } else if (modal === TopUpComponentType.safello) {
     return (
       <Safello
         localizationConfig={{} as any}
@@ -37,8 +39,8 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
         crypto="eth"
       />
     );
-  } else if (modal === TopUpComponentType.bank) {
-    return(
+  } else if (modal === TopUpComponentType.ramp) {
+    return (
       <Ramp
         address={contractAddress}
         amount={stringToEther(amount)}
