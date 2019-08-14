@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {OnRampConfig, stringToEther} from '@universal-login/commons';
-import TopUpChoose from './TopUpChoose';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 
 
 interface TopUpProps {
@@ -21,7 +21,11 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
 
   if (modal === TopUpComponentType.choose) {
     return (
-      <TopUpChoose onMethodChoose={setModal}/>
+      <ChooseTopUpMethod
+        contractAddress={contractAddress}
+        onRampConfig={onRampConfig}
+        onPayClick={setModal}
+      />
     );
   }
   else if (modal === TopUpComponentType.crypto) {
