@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import passwordless1x from './../../assets/illustrations/passwordless@1x.png';
 import passwordless2x from './../../assets/illustrations/passwordless@2x.png';
 import passphrase1x from './../../assets/illustrations/passphrase@1x.png';
@@ -45,7 +44,7 @@ export const ChooseConnectionMethod = ({name, setConnectModal}: ChooseConnection
               </div>
             </div>
             <div className="choose-connection-btn-wrapper">
-              <Link to="/connect" className="button-secondary">Cancel</Link>
+              <button onClick={() => setConnectModal('selector')} className="button-secondary">Cancel</button>
             </div>
           </div>
         </div>

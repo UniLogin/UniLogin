@@ -14,7 +14,7 @@ export const ConnectAccount = () => {
   } else if (connectModal === 'recover') {
     return <ConnectWithPassphrase name={name!}/>;
   } else if (connectModal === 'emoji') {
-    return <ConnectWithEmoji name={name!}/>;
+    return <ConnectWithEmoji name={name!} setConnectModal={setConnectModal} />;
   } else {
     return <ConnectSelector setName={setName} setConnectModal={setConnectModal}/>;
   }

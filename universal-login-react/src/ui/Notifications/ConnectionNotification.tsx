@@ -27,18 +27,20 @@ export const ConnectionNotification = ({contractAddress, privateKey, onCancel, s
           <div className="box-content connect-emoji-content">
             <div className="connect-emoji-section">
               <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
-              <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
-              {notifications.length > 0
-                ? <EmojiForm
-                  publicKey={notifications[0].key}
-                  sdk={sdk}
-                  contractAddress={contractAddress}
-                  privateKey={privateKey}
-                />
-                : 'No requests to connect from other applications'
-              }
-              <button onClick={onCancel} className="button-secondary connect-emoji-btn">Cancel</button>
+              <p className="box-text connect-emoji-text">A new device tries to connects to this account. Enter the emojis in the correct order to approve it.</p>
             </div>
+            {notifications.length > 0
+              ? <EmojiForm
+                publicKey={notifications[0].key}
+                sdk={sdk}
+                contractAddress={contractAddress}
+                privateKey={privateKey}
+              />
+              : <div>
+                  <p className="connect-info-text">No requests to connect from other applications</p>
+                  <button onClick={onCancel} className="button-secondary connect-emoji-btn">Cancel</button>
+                </div>
+            }
           </div>
         </div>
       </div>

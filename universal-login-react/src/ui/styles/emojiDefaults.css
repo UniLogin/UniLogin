@@ -12,11 +12,7 @@
   width: 52px;
   margin: 2px;
   border: 1px solid #E1E1F0;
-}
-
-.universal-login-default .universal-login-emoji img {
-  max-width: 32px;
-  width: 100%;
+  font-size: 25px;
 }
 
 .universal-login-default .universal-login-emoji button {
@@ -24,6 +20,7 @@
   width: 100%;
   border: none;
   background: none;
+  font-size: inherit;
 }
 
 @font-face {

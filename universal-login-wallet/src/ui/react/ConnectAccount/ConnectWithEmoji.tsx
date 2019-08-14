@@ -3,18 +3,21 @@ import {EmojiPanel, useAsync} from '@universal-login/react';
 import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useRouter} from '../../hooks';
+import {ConnectModal} from './ConnectAccount';
 
 interface ConnectWithEmojiProps {
   name: string;
+  setConnectModal: (modal: ConnectModal) => void;
 }
 
-export const ConnectWithEmoji = ({name}: ConnectWithEmojiProps) => {
+export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps) => {
   const {connectToWallet} = useServices();
   const {history} = useRouter();
   const [connectValues, error] = useAsync(async () => connectToWallet(name, () => history.push('/')), []);
 
   const onDeny = () => {
     connectValues!.unsubscribe();
+    setConnectModal('connectionMethod');
   };
 
   return (

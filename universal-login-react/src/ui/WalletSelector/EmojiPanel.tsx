@@ -19,7 +19,7 @@ export const EmojiPanel = ({code, className}: EmojiPanelProps) => {
   return (
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="universal-login-emoji">
-        <ul>
+        <ul className="emoji-panel-list">
           {emojis}
         </ul>
       </div>
