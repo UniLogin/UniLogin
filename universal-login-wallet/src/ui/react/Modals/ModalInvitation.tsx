@@ -1,5 +1,5 @@
 import React from 'react';
-import InputLabel from '../common/InputLabel';
+import {InputLabel} from '@universal-login/react';
 import InputWithButton from '../common/InputWithButton';
 
 const addressPlaceholder = '0xf902fd8B2AEE76AE81bBA106d667';

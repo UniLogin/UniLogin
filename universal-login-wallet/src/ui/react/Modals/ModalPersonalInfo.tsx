@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
-import {Input} from '@universal-login/react';
-import InputLabel from '../common/InputLabel';
+import {Input, InputLabel} from '@universal-login/react';
 import ButtonFullwidth from '../common/ButtonFullwidth';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 

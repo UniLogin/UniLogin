@@ -1,6 +1,5 @@
 import React from 'react';
-import {Input} from '@universal-login/react';
-import InputLabel from '../../common/InputLabel';
+import {Input, InputLabel} from '@universal-login/react';
 import {TransferDetails} from '@universal-login/commons';
 import {TransferDropdown} from './TransferDropdown';
 

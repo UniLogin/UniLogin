@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import InputLabel from '../common/InputLabel';
+import {InputLabel} from '@universal-login/react';
 import qrCodePlacehoder from '../../assets/placeholders/qr-code-placeholder.png';
 import InputWithButton from '../common/InputWithButton';
 

@@ -2,6 +2,7 @@ export {Safello} from './integration/Safello';
 export {Input} from './ui/commons/Input';
 export {ProgressBar} from './ui/commons/ProgressBar';
 export {Spinner} from './ui/commons/Spinner';
+export {InputLabel} from './ui/commons/InputLabel';
 export {useAsync} from './ui/hooks/useAsync';
 export {useAsyncEffect} from './ui/hooks/useAsyncEffect';
 export {WalletSelector} from './ui/WalletSelector/WalletSelector';
