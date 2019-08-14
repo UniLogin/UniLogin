@@ -7,6 +7,8 @@ import {USettings} from '../UFlow/USettings';
 import {useServices} from '../../core/services/useServices';
 import {ConnectionNotification} from '../Notifications/ConnectionNotification';
 import {ApplicationWallet} from '@universal-login/commons';
+import {ChooseTopUpMethod} from '../TopUp/ChooseTopUpMethod';
+import {useAsync} from '../hooks/useAsync';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -15,6 +17,7 @@ export interface UDashboardProps {
 export const UDashboard = ({applicationWallet}: UDashboardProps) => {
   const modalService = useContext(ReactUModalContext);
   const {sdk} = useServices();
+  const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
 
   switch (modalService.modalState) {
     case 'funds':
@@ -47,18 +50,18 @@ export const UDashboard = ({applicationWallet}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <div>
-            topup modal
-          </div>
+          <ChooseTopUpMethod
+            hideModal={modalService.hideModal}
+            contractAddress={applicationWallet.contractAddress}
+            onRampConfig={relayerConfig!.onRampProviders}
+          />
         </ModalWrapper>
       );
     case 'transfer':
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <div>
-            transfer modal
-          </div>
+          {/* <DataTransfer /> */}
         </ModalWrapper>
       );
     default:
