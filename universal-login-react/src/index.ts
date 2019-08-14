@@ -18,3 +18,4 @@ export {createModalService, IModalService} from './core/services/createModalServ
 export {Onboarding} from './ui/Onboarding/Onboarding';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
+export {LogoButton} from './ui/UFlow/LogoButton';
