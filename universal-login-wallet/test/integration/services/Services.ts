@@ -11,8 +11,7 @@ describe('Services', () => {
     expect(services.connectToWallet).to.not.be.null;
     expect(services.walletService).to.not.be.null;
     expect(services.walletPresenter).to.not.be.null;
-    expect(services.tokensDetailsStore).to.not.be.null;
-    expect(services.transferService).to.not.be.null;
+    expect(services.sdk.tokensDetailsStore).to.not.be.null;
     expect(services.balanceService).to.not.be.null;
   });
 });

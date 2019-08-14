@@ -11,6 +11,7 @@ export interface CreateRandomInstanceProps {
 export const CreateRandomInstance = ({ensName, applicationWallet}: CreateRandomInstanceProps) => {
   const [contractAddress, setContractAddress] = useState<string>('');
   const [status, setStatus] = useState<string>('');
+
   const {sdk} = useServices();
 
   const createRandomInstance = async () => {

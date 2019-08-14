@@ -12,10 +12,10 @@ import {useServices} from './core/services/useServices';
 import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
 import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
-import './ui/styles/playground.css';
 import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
+import './ui/styles/playground.css';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
@@ -32,6 +32,7 @@ export const App = () => {
 
   const randomString = Math.random().toString(36).substring(7);
   const randomEnsName = `${randomString}.mylogin.eth`;
+
   const applicationWallet: ApplicationWallet = {name: '', contractAddress: '', privateKey: ''};
 
   return (
@@ -48,7 +49,10 @@ export const App = () => {
                 <div>
                   <CreateRandomInstance ensName={randomEnsName} applicationWallet={applicationWallet}/>
                   <hr/>
-                  <LogoButton applicationWallet={applicationWallet} sdk={sdk}/>
+                  <LogoButton
+                    applicationWallet={applicationWallet}
+                    sdk={sdk}
+                  />
                 </div>
               )}
             />

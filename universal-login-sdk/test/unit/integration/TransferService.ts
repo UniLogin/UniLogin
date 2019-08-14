@@ -11,9 +11,13 @@ chai.use(chaiAsPromised);
 
 describe('UNIT: TransferService', () => {
   function setup() {
+    const tokenService = {
+      getTokenAddress: sinon.fake(() => 'TOKEN_ADDRESS')
+    };
     const waitToBeMined = sinon.fake();
     const sdk = {
-      execute: sinon.stub().returns({waitToBeMined})
+      execute: sinon.stub().returns({waitToBeMined}),
+      tokensDetailsStore: tokenService
     } as any;
     const walletService = {
       applicationWallet: {
@@ -21,10 +25,7 @@ describe('UNIT: TransferService', () => {
         contractAddress: 'CONTRACT_ADDRESS',
       } as any
     };
-    const tokenService = {
-      getTokenAddress: sinon.fake(() => 'TOKEN_ADDRESS')
-    };
-    const transferService = new TransferService(sdk as any, walletService as any, tokenService as any);
+    const transferService = new TransferService(sdk as any, walletService.applicationWallet as any);
     return {sdk, walletService, tokenService, transferService, waitToBeMined};
   }
 
@@ -52,13 +53,15 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if wallet missing and transferring ETH', async () => {
-    const {transferService, tokenService, walletService} = setup();
-    walletService.applicationWallet = undefined;
+    const {sdk, tokenService} = setup();
+    const transferService = new TransferService(sdk as any, undefined as any);
+
     await expect(transferService.transfer({
       to: 'RECIPIENT',
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
     })).to.be.rejectedWith('Application wallet not found');
+
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
 
@@ -87,8 +90,10 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if wallet is missing and transfering tokens', async () => {
-    const {transferService, tokenService, walletService} = setup();
+    const {sdk, tokenService, walletService} = setup();
     walletService.applicationWallet = undefined;
+
+    const transferService = new TransferService(sdk as any, undefined as any);
 
     await expect(transferService.transfer({
       to: 'RECIPIENT',
