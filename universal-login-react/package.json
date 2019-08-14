@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/react",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.0.0",
-    "@universal-login/commons": "^0.3.16",
-    "@universal-login/sdk": "^0.3.16"
+    "@universal-login/commons": "^0.3.17",
+    "@universal-login/sdk": "^0.3.17"
   },
   "peerDependencies": {
     "react": "^16.8.x",
