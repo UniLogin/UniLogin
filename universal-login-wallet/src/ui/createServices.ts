@@ -1,14 +1,12 @@
 import React from 'react';
 import {providers} from 'ethers';
 import {TokenDetailsService} from '@universal-login/commons';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService, TransferService, TokensDetailsStore} from '@universal-login/sdk';
 import UserDropdownService from '../core/app/UserDropdownService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import {BalanceService} from '../core/services/BalanceService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
-import TransferService from '../integration/ethereum/TransferService';
-import TokensDetailsStore from '../integration/ethereum/TokensDetailsStore';
 
 interface Config {
   domains: string[];

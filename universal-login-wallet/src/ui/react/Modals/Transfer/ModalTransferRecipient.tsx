@@ -1,7 +1,7 @@
 import React from 'react';
 import InputLabel from '../../common/InputLabel';
 import {Input} from '@universal-login/react';
-import TransferDetails from '../../../../core/entities/TransferDetails';
+import {TransferDetails} from '@universal-login/commons';
 
 export interface ModalTransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

@@ -1,6 +1,6 @@
 import {TokenDetails, TokenDetailsService} from '@universal-login/commons';
 
-class TokensDetailsStore {
+export class TokensDetailsStore {
   tokensDetails: TokenDetails[] = [];
 
   constructor(private tokenDetailsService: TokenDetailsService, private tokensAddresses: string[]) {}
@@ -13,9 +13,7 @@ class TokensDetailsStore {
   }
 
   getTokenAddress(symbol: string) {
-    const token = this.tokensDetails.find(token => token.symbol === symbol);
+    const token = this.tokensDetails.find((token) => token.symbol === symbol);
     return token ? token.address : undefined;
   }
 }
-
-export default TokensDetailsStore;

@@ -5,7 +5,7 @@ export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, OnRampConfig, PublicRelayerConfig} from './core/models/relayer';
 export {LocalizationConfig, SafelloConfig, RampConfig} from './core/models/onRamp';
 export {createKeyPair, KeyPair} from './core/models/keyPair';
-export {TransactionOverrides} from './core/models/transactions';
+export {TransactionOverrides, TransferDetails} from './core/models/transactions';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {ApplicationWallet} from './core/models/ApplicationWallet';
 export {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE} from './core/constants/test';

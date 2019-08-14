@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input} from '@universal-login/react';
 import InputLabel from '../../common/InputLabel';
-import TransferDetails from '../../../../core/entities/TransferDetails';
+import {TransferDetails} from '@universal-login/commons';
 import {TransferDropdown} from './TransferDropdown';
 
 export interface ModalTransferAmountProps {

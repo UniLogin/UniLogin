@@ -1,12 +1,12 @@
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {ETHER_NATIVE_TOKEN, ensureNotNull} from '@universal-login/commons';
-import {ApplicationWalletNotFound} from '../../core/errors';
-import TransferDetails from '../../core/entities/TransferDetails';
-import TokensDetailsStore from './TokensDetailsStore';
+import UniversalLoginSDK from '../../api/sdk';
+import {WalletService} from '../../core/services/WalletService';
+import {ETHER_NATIVE_TOKEN, ensureNotNull, TransferDetails} from '@universal-login/commons';
+import {ApplicationWalletNotFound} from '../../core/utils/errors';
+import {TokensDetailsStore} from './TokensDetailsStore';
 
-class TransferService {
+export class TransferService {
   constructor(private sdk: UniversalLoginSDK, private walletService: WalletService, private tokensDetailsStore: TokensDetailsStore) {}
 
   async transfer(transferDetails: TransferDetails) {
@@ -47,5 +47,3 @@ class TransferService {
 export function encodeTransfer(to: string, amount: string) {
   return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
 }
-
-export default TransferService;

@@ -3,7 +3,7 @@ import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {MockToken} from '@universal-login/commons/testutils';
-import TokensDetailsStore from '../../../src/integration/ethereum/TokensDetailsStore';
+import {TokensDetailsStore} from '../../../lib/integration/ethereum/TokensDetailsStore';
 
 describe('INT: TokensDetailsStore', () => {
   let mockToken: Contract;
