@@ -53,7 +53,7 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if wallet missing and transferring ETH', async () => {
-    const {sdk, tokenService, walletService} = setup();
+    const {sdk, tokenService} = setup();
     const transferService = new TransferService(sdk as any, undefined as any);
 
     await expect(transferService.transfer({

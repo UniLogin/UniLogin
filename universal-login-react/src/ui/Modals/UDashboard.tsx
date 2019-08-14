@@ -3,7 +3,6 @@ import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
 import UniversalLoginSDK, {TransferService} from '@universal-login/sdk';
 import {ReactUModalContext} from '../../core/models/ReactUModalContext';
 import {ModalWrapper} from './ModalWrapper';
-import {ChooseTopUpMethod} from '../TopUp/ChooseTopUpMethod';
 import {ConnectionNotification} from '../Notifications/ConnectionNotification';
 import {ModalTransferRecipient} from '../Transfer/ModalTransferRecipient';
 import {UHeader} from '../UFlow/UHeader';
