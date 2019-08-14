@@ -27,7 +27,7 @@ export const ConnectionNotification = ({contractAddress, privateKey, onCancel, s
           <div className="box-content connect-emoji-content">
             <div className="connect-emoji-section">
               <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
-              <p className="box-text connect-emoji-text">A new device tries to connects to this aacount. Enter the emojis in the correct order to approve it.</p>
+              <p className="box-text connect-emoji-text">A new device tries to connects to this account. Enter the emojis in the correct order to approve it.</p>
             </div>
             {notifications.length > 0
               ? <EmojiForm

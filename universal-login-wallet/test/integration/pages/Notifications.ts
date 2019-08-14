@@ -4,12 +4,6 @@ import {waitForUI} from '../helpers/utils';
 export default class NotificationsPage {
   constructor(private wrapper: ReactWrapper) {}
 
-  async clickConfirmButton () {
-    await waitForUI(this.wrapper, () => this.wrapper.exists('#confirm'));
-    this.wrapper.find('#confirm').simulate('click');
-    await this.waitForNotificationDisappear();
-  }
-
   async clickRejectButton () {
     await waitForUI(this.wrapper, () => this.wrapper.exists('#reject'));
     this.wrapper.find('#reject').simulate('click');
@@ -24,6 +18,7 @@ export default class NotificationsPage {
       button.simulate('click');
       await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
     }
+    await this.waitForNotificationDisappear();
   }
 
   async waitForNotificationDisappear() {
