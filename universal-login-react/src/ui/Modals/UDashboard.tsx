@@ -33,7 +33,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <Funds ensName={(walletService.applicationWallet as ApplicationWallet).name} sdk={sdk}/>
+          <Funds ensName={applicationWallet.name} sdk={sdk}/>
         </ModalWrapper>
       );
     case 'approveDevice':
@@ -41,8 +41,8 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
           <ConnectionNotification
-            contractAddress={(walletService.applicationWallet as ApplicationWallet).contractAddress}
-            privateKey={(walletService.applicationWallet as ApplicationWallet).privateKey}
+            contractAddress={applicationWallet.contractAddress}
+            privateKey={applicationWallet.privateKey}
             onCancel={modalService.hideModal}
             sdk={sdk}
           />
@@ -61,7 +61,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
           <UHeader />
           <TopUp
             hideModal={modalService.hideModal}
-            contractAddress={(walletService.applicationWallet as ApplicationWallet).contractAddress}
+            contractAddress={applicationWallet.contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
           />
         </ModalWrapper>
