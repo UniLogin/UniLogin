@@ -28,7 +28,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
     return (
       <TopUpWithCrypto contractAddress={contractAddress}/>
     );
-  } else if (modal === TopUpComponentType.creditcard) {
+  } else if (modal === TopUpComponentType.safello) {
     return (
       <Safello
         localizationConfig={{} as any}
@@ -37,7 +37,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
         crypto="eth"
       />
     );
-  } else if (modal === TopUpComponentType.bank) {
+  } else if (modal === TopUpComponentType.ramp) {
     return(
       <Ramp
         address={contractAddress}

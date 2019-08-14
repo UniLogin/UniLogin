@@ -28,14 +28,14 @@ export const TopUpChoose = ({onMethodChoose, topUpClassName}: TopUpChooseProps) 
           image={Card}
           title="Buy Crypto with CC"
           text="5%-Buy instantly using your card"
-          onClick={() => onMethodChoose(TopUpComponentType.creditcard)}
+          onClick={() => onMethodChoose(TopUpComponentType.safello)}
         />
         <Button
           id={'bank'}
           image={Bank}
           title="Buy crypto with bank wire"
           text="2%-Buy crypto"
-          onClick={() => onMethodChoose(TopUpComponentType.bank)}
+          onClick={() => onMethodChoose(TopUpComponentType.ramp)}
         />
       </div>
     </div>

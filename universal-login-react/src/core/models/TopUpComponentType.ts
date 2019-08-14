@@ -1,6 +1,7 @@
 export enum TopUpComponentType {
   'choose',
-  'creditcard',
-  'bank',
+  'safello',
+  'ramp',
+  'wyre',
   'crypto'
 }
