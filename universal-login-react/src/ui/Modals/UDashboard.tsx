@@ -61,7 +61,6 @@ export const UDashboard = ({applicationWallet}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          {/* <DataTransfer /> */}
         </ModalWrapper>
       );
     default:
