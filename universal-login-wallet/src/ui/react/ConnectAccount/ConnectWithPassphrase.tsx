@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import InputLabel from '../common/InputLabel';
+import {Spinner, InputLabel} from '@universal-login/react';
 import {CustomInput} from '../common/CustomInput';
 import {useServices, useRouter} from '../../hooks';
-import {Spinner} from '@universal-login/react';
 
 interface ConnectWithPasssphraseProps {
   name: string;

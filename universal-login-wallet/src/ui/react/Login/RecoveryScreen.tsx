@@ -1,7 +1,6 @@
 import React, {useState, ChangeEvent} from 'react';
 import Logo from './../../assets/logo-with-text.svg';
-import InputLabel from '../common/InputLabel';
-import {Avatar, Input} from '@universal-login/react';
+import {Avatar, Input, InputLabel} from '@universal-login/react';
 import { Link } from 'react-router-dom';
 
 const RecoveryScreen = () => {
