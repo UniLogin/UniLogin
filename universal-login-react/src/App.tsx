@@ -48,7 +48,7 @@ export const App = () => {
                 <div>
                   <CreateRandomInstance ensName={randomEnsName} applicationWallet={applicationWallet}/>
                   <hr/>
-                  <LogoButton applicationWallet={applicationWallet} />
+                  <LogoButton applicationWallet={applicationWallet} sdk={sdk}/>
                 </div>
               )}
             />

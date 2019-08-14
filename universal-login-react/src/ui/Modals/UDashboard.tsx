@@ -4,19 +4,19 @@ import {ModalWrapper} from './ModalWrapper';
 import {UHeader} from '../UFlow/UHeader';
 import {Funds} from '../UFlow/Funds';
 import {USettings} from '../UFlow/USettings';
-import {useServices} from '../../core/services/useServices';
 import {ConnectionNotification} from '../Notifications/ConnectionNotification';
 import {ApplicationWallet} from '@universal-login/commons';
 import {ChooseTopUpMethod} from '../TopUp/ChooseTopUpMethod';
 import {useAsync} from '../hooks/useAsync';
+import UniversalLoginSDK from '@universal-login/sdk';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
+  sdk: UniversalLoginSDK;
 }
 
-export const UDashboard = ({applicationWallet}: UDashboardProps) => {
+export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
   const modalService = useContext(ReactUModalContext);
-  const {sdk} = useServices();
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
 
   switch (modalService.modalState) {
