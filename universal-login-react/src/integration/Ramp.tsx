@@ -5,11 +5,16 @@ type RampProps = {
   address: string;
   amount: string;
   currency: string;
+  onClose: () => void;
   config: RampConfig;
 };
 
 export const Ramp = (props: RampProps) => {
-  const {address, amount, currency, config} = props;
+  enum WidgetEventTypes {
+    WIDGET_CLOSE = 'WIDGET_CLOSE',
+    WIDGET_CONFIG_DONE = 'WIDGET_CONFIG_DONE'
+  }
+  const {address, amount, currency, config, onClose} = props;
   const ramp = new RampInstantSDK({
     hostAppName: config.appName,
     hostLogoUrl: config.logoUrl,
@@ -17,7 +22,8 @@ export const Ramp = (props: RampProps) => {
     swapAsset: currency,
     url: config.rampUrl,
     userAddress: address
-  }).on('*', console.log);
+  }).on(WidgetEventTypes.WIDGET_CLOSE, onClose)
+  .on('*', console.log);
   ramp.show();
   return null;
 };

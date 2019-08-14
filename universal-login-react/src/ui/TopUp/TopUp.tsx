@@ -46,6 +46,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
         amount={stringToEther(amount)}
         currency={'ETH'}
         config={onRampConfig.ramp}
+        onClose={() => setModal(TopUpComponentType.choose)}
       />
     );
   } else {
