@@ -36,9 +36,11 @@ export const ConnectionNotification = ({contractAddress, privateKey, onCancel, s
                 contractAddress={contractAddress}
                 privateKey={privateKey}
               />
-              : 'No requests to connect from other applications'
+              : <div>
+                  <p className="connect-info-text">No requests to connect from other applications</p>
+                  <button onClick={onCancel} className="button-secondary connect-emoji-btn">Cancel</button>
+                </div>
             }
-            <button onClick={onCancel} className="button-secondary connect-emoji-btn">Cancel</button>
           </div>
         </div>
       </div>

@@ -33,6 +33,9 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFo
       enteredCode.push(code);
       setEnteredCode([...enteredCode]);
     }
+    if (enteredCode.length === EMOJIS_MAX_LENGTH) {
+      confirmWithCodeCheck(publicKey);
+    }
   };
 
   const onEmojiRemove = (index: number) => {
@@ -46,11 +49,8 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFo
     <div id="emojis">
       <EmojiPlaceholders maxLength={EMOJIS_MAX_LENGTH} code={enteredCode} onEmojiClicked={onEmojiRemove} />
       <EmojiPanelWithFakes publicKey={publicKey} onEmojiClicked={onEmojiAdd} />
-      <div className="notification-buttons-row">
-        <button className="emojis-form-reject" id="reject" onClick={() => sdk.denyRequest(contractAddress, publicKey, privateKey)}>Reject</button>
-        <button className="emojis-form-confirm" id="confirm" onClick={() => confirmWithCodeCheck(publicKey)}>Confirm</button>
-        <p className="emojis-form-status">{status}</p>
-      </div>
+      <p className="emojis-form-status">{status}</p>
+      <button className="emojis-form-reject" id="reject" onClick={() => sdk.denyRequest(contractAddress, publicKey, privateKey)}>Deny</button>
     </div>
   );
 };
