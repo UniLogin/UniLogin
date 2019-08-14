@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {useServices, useAsyncEffect} from '../../../hooks';
-import {CurrencyToValue} from '@universal-login/commons/lib';
+import {useServices} from '../../../hooks';
+import {CurrencyToValue} from '@universal-login/commons';
+import {useAsyncEffect} from '@universal-login/react';
 
 interface DropdownItemProps {
   className?: string;

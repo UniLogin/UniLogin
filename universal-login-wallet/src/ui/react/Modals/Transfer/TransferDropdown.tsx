@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
-import {useToggler, useServices, useAsyncEffect} from '../../../hooks';
+import {useToggler, useServices} from '../../../hooks';
 import daiIcon from '../../../assets/icons/dai.svg';
 import ethIcon from '../../../assets/icons/ethereum.svg';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
-import {Spinner} from '@universal-login/react';
+import {Spinner, useAsyncEffect} from '@universal-login/react';
 
 interface TransferDropdownProps {
   currency: string;
