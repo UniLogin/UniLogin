@@ -1,30 +1,40 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
+import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
+import UniversalLoginSDK, {TransferService, WalletService} from '@universal-login/sdk';
 import {ReactUModalContext} from '../../core/models/ReactUModalContext';
 import {ModalWrapper} from './ModalWrapper';
+import {ChooseTopUpMethod} from '../TopUp/ChooseTopUpMethod';
+import {ConnectionNotification} from '../Notifications/ConnectionNotification';
+import {ModalTransferRecipient} from '../Transfer/ModalTransferRecipient';
 import {UHeader} from '../UFlow/UHeader';
 import {Funds} from '../UFlow/Funds';
 import {USettings} from '../UFlow/USettings';
-import {ConnectionNotification} from '../Notifications/ConnectionNotification';
-import {ApplicationWallet} from '@universal-login/commons';
 import {useAsync} from '../hooks/useAsync';
-import UniversalLoginSDK from '@universal-login/sdk';
 import {TopUp} from '../TopUp/TopUp';
 
 export interface UDashboardProps {
-  applicationWallet: ApplicationWallet;
+  walletService: WalletService;
   sdk: UniversalLoginSDK;
+  tokensDetailsStore: TokensDetailsStore;
+  transferService: TransferService;
 }
 
-export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
+export const UDashboard = ({walletService, sdk, tokensDetailsStore, transferService}: UDashboardProps) => {
+  const [transferDetalis, setTransferDetails] = useState({currency: tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
+
   const modalService = useContext(ReactUModalContext);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+
+  const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
+    setTransferDetails({...transferDetalis, ...args});
+  };
 
   switch (modalService.modalState) {
     case 'funds':
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <Funds ensName={applicationWallet.name} sdk={sdk}/>
+          <Funds ensName={(walletService.applicationWallet as ApplicationWallet).name} sdk={sdk}/>
         </ModalWrapper>
       );
     case 'approveDevice':
@@ -32,8 +42,8 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
           <ConnectionNotification
-            contractAddress={applicationWallet.contractAddress}
-            privateKey={applicationWallet.privateKey}
+            contractAddress={(walletService.applicationWallet as ApplicationWallet).contractAddress}
+            privateKey={(walletService.applicationWallet as ApplicationWallet).privateKey}
             onCancel={modalService.hideModal}
             sdk={sdk}
           />
@@ -52,7 +62,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
           <UHeader />
           <TopUp
             hideModal={modalService.hideModal}
-            contractAddress={applicationWallet.contractAddress}
+            contractAddress={(walletService.applicationWallet as ApplicationWallet).contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
           />
         </ModalWrapper>
@@ -61,6 +71,26 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
+          <button onClick={() => modalService.showModal('transferRecipient')}>transfer recipient</button>
+        </ModalWrapper>
+      );
+    case 'transferRecipient':
+      const onGenerateClick = async () => {
+        modalService.hideModal();
+        modalService.showModal('waitingForTransfer');
+        await transferService.transfer(transferDetalis);
+        modalService.hideModal();
+      };
+
+      return (
+        <ModalWrapper hideModal={modalService.hideModal}>
+          <UHeader />
+          <ModalTransferRecipient
+            onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+            onSendClick={onGenerateClick}
+            onBackClick={() => modalService.showModal('transferAmount')}
+            transferDetalis={transferDetalis}
+          />
         </ModalWrapper>
       );
     default:

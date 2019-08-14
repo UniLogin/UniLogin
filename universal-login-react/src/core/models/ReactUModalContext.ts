@@ -1,7 +1,7 @@
 import React from 'react';
 import {IModalService} from '../services/createModalService';
 
-export type ReactUModalType = 'funds' | 'approveDevice' | 'settings' | 'topup' | 'transfer' | 'none';
+export type ReactUModalType = 'funds' | 'transferAmount' | 'transferRecipient' | 'waitingForTransfer' | 'approveDevice' | 'settings' | 'topup' | 'transfer' | 'none';
 export type ReactUModalProps = {
 
 };
