@@ -33,7 +33,7 @@ export const config: Config =  Object.freeze({
     ramp: {
       appName: 'Universal Login',
       logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
-      rampUrl: 'https://ri-widget-staging-ropsten.firebaseapp.com/'
+      rampUrl: 'http://ri-widget-staging.firebaseapp.com/'
     }
   },
   database: {

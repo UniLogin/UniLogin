@@ -5,7 +5,6 @@ import {Ramp} from '../../integration/Ramp';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 
-
 interface TopUpProps {
   contractAddress: string;
   startModal?: TopUpComponentType;
@@ -18,7 +17,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
-  const onPayClick = (topUpType: TopUpComponentType, amount: string) =>  {
+  const onPayClick = (topUpType: TopUpComponentType, amount: string) => {
     setModal(topUpType);
     setAmount(amount);
   };
@@ -41,7 +40,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
       />
     );
   } else if (modal === TopUpComponentType.ramp) {
-    return(
+    return (
       <Ramp
         address={contractAddress}
         amount={stringToEther(amount)}
