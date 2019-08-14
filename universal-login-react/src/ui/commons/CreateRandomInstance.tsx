@@ -1,21 +1,19 @@
 import React, {useState} from 'react';
 import {WalletService} from '@universal-login/sdk';
-import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
-import {useServices} from '../../core/services/useServices';
+import {DEFAULT_GAS_PRICE} from '@universal-login/commons';
 
 export interface CreateRandomInstanceProps {
   ensName: string;
-  applicationWallet: ApplicationWallet;
+  walletService: WalletService;
 }
 
-export const CreateRandomInstance = ({ensName, applicationWallet}: CreateRandomInstanceProps) => {
+export const CreateRandomInstance = ({ensName, walletService}: CreateRandomInstanceProps) => {
   const [contractAddress, setContractAddress] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
   const {sdk} = useServices();
 
   const createRandomInstance = async () => {
-    const walletService = new WalletService(sdk);
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
     setStatus(`Waiting for intial funds in ${contractAddress}`);
     await waitForBalance();
@@ -25,9 +23,6 @@ export const CreateRandomInstance = ({ensName, applicationWallet}: CreateRandomI
     setStatus(`Wallet contract deployed at ${contractAddress}`);
     setContractAddress(contractAddress);
     setStatus('');
-    applicationWallet.name = (walletService.applicationWallet! as ApplicationWallet).name;
-    applicationWallet.contractAddress = (walletService.applicationWallet! as ApplicationWallet).contractAddress;
-    applicationWallet.privateKey = (walletService.applicationWallet! as ApplicationWallet).privateKey;
   };
 
   return (

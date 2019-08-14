@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {TEST_ACCOUNT_ADDRESS, generateCode, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, generateCode, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TokenDetails} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -21,6 +21,11 @@ export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+
+  const walletService = new WalletService(sdk);
+  const tokensDetailsStore = new TokensDetailsStore(sdk.tokenDetailsService, sdk.sdkConfig.observedTokens.map((token: TokenDetails) => token.address));
+  tokensDetailsStore.fetchTokensDetails();
+  const transferService = new TransferService(sdk, walletService, tokensDetailsStore);
 
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
@@ -47,7 +52,7 @@ export const App = () => {
               path="/logobutton"
               render={() => (
                 <div>
-                  <CreateRandomInstance ensName={randomEnsName} applicationWallet={applicationWallet}/>
+                  <CreateRandomInstance ensName={randomEnsName} walletService={walletService}/>
                   <hr/>
                   <LogoButton
                     applicationWallet={applicationWallet}
