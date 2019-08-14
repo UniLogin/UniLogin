@@ -24,7 +24,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       return (
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
-          <Funds ensName={applicationWallet.name}/>
+          <Funds ensName={applicationWallet.name} sdk={sdk}/>
         </ModalWrapper>
       );
     case 'approveDevice':
