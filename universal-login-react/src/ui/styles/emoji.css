@@ -2,8 +2,17 @@
   display: flex;
   list-style: none;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .universal-login-emoji ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  height: 73px;
+  width: 52px;
   margin: 10px;
+  font-size: 25px;
 }

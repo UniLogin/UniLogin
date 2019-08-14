@@ -8,22 +8,35 @@ interface EmojiPlaceholdersProps {
   code: number[];
   onEmojiClicked: (index: number) => void;
   className?: string;
+  maxLength: number;
 }
 
-export const EmojiPlaceholders = ({code, onEmojiClicked, className}: EmojiPlaceholdersProps) => {
-  const placeholders = code.map((code: number, index: number) => (
-    <li key={`emoji_placeholder_${index}`}>
-      <button onClick={() => onEmojiClicked(index)}>
-        <Emoji code={code}/>
-      </button>
-    </li>
-  ));
+export const EmojiPlaceholders = ({code, onEmojiClicked, className, maxLength}: EmojiPlaceholdersProps) => {
+  const renderSelectedEmojis = () => {
+    const emojis = [];
+
+    for (let i = 0; i < maxLength; i++) {
+      if (code[i]) {
+        emojis.push(
+          <li key={i}>
+            <button onClick={() => onEmojiClicked(i)}>
+              <Emoji code={code[i]}/>
+            </button>
+          </li>
+        );
+      } else {
+        emojis.push(<li key={i} />);
+      }
+    }
+
+    return emojis;
+  };
 
   return (
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="universal-login-emoji">
-        <ul>
-          {placeholders}
+        <ul className="emoji-placeholders-list">
+          {renderSelectedEmojis()}
         </ul>
       </div>
     </div>

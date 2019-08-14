@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import passwordless1x from './../../assets/illustrations/passwordless@1x.png';
 import passwordless2x from './../../assets/illustrations/passwordless@2x.png';
 import passphrase1x from './../../assets/illustrations/passphrase@1x.png';
