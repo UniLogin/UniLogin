@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/wallet",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development",
@@ -16,9 +16,9 @@
     "start:production": "webpack-dev-server --mode production"
   },
   "dependencies": {
-    "@universal-login/commons": "^0.3.17",
-    "@universal-login/react": "^0.3.17",
-    "@universal-login/sdk": "^0.3.17",
+    "@universal-login/commons": "^0.3.18",
+    "@universal-login/react": "^0.3.18",
+    "@universal-login/sdk": "^0.3.18",
     "create-react-context": "^0.2.3",
     "dotenv": "^6.2.0",
     "fbemitter": "^2.1.1",
@@ -44,7 +44,7 @@
     "@types/react-transition-group": "^2.0.16",
     "@types/sinon": "^7.0.6",
     "@types/sinon-chai": "^3.2.2",
-    "@universal-login/relayer": "^0.3.17",
+    "@universal-login/relayer": "^0.3.18",
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
