@@ -17,7 +17,6 @@ interface TopUpProps {
 
 export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
-  const [amount] = useState<string>('');
 
   if (modal === TopUpComponentType.choose) {
     return (
@@ -26,11 +25,6 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
         onRampConfig={onRampConfig}
         onPayClick={setModal}
       />
-    );
-  }
-  else if (modal === TopUpComponentType.crypto) {
-    return (
-      <TopUpWithCrypto contractAddress={contractAddress}/>
     );
   } else if (modal === TopUpComponentType.safello) {
     return (
