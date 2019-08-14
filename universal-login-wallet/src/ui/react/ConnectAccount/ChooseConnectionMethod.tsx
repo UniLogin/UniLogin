@@ -45,7 +45,7 @@ export const ChooseConnectionMethod = ({name, setConnectModal}: ChooseConnection
               </div>
             </div>
             <div className="choose-connection-btn-wrapper">
-              <Link to="/connect" className="button-secondary">Cancel</Link>
+              <button onClick={() => setConnectModal('selector')} className="button-secondary">Cancel</button>
             </div>
           </div>
         </div>
