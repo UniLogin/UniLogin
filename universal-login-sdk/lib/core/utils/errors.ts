@@ -1,4 +1,4 @@
-type ErrorType = 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
+type ErrorType = 'ApplicationWalletNotFound' | 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -101,6 +101,13 @@ export class MissingMessageHash extends NotFound {
   constructor () {
     super('Message hash is missing in Message Status', 'MissingMessageHash');
     Object.setPrototypeOf(this, MissingMessageHash.prototype);
+  }
+}
+
+export class ApplicationWalletNotFound extends NotFound {
+  constructor() {
+    super('Application wallet not found', 'ApplicationWalletNotFound');
+    Object.setPrototypeOf(this, ApplicationWalletNotFound.prototype);
   }
 }
 

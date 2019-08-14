@@ -50,8 +50,8 @@ class UniversalLoginSDK {
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
-    this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
+    this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.priceObserver = new PriceObserver(this.sdkConfig.observedTokens, this.sdkConfig.observedCurrencies);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }

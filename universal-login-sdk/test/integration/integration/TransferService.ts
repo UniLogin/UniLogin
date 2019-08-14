@@ -1,11 +1,14 @@
 import chai, {expect} from 'chai';
 import {utils, providers, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import UniversalLoginSDK, {WalletService, TransferService, TokensDetailsStore} from '@universal-login/sdk';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
-import {createWallet} from '../helpers/createWallet';
-import {setupSdk} from '../helpers/setupSdk';
+import UniversalLoginSDK from '../../../lib/api/sdk';
+import {WalletService} from '../../../lib/core/services/WalletService';
+import {TransferService} from '../../../lib/integration/ethereum/TransferService';
+import {TokensDetailsStore} from '../../../lib/integration/ethereum/TokensDetailsStore';
+import {createWallet} from '../../helpers/createWallet';
+import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
 
@@ -16,7 +19,7 @@ describe('INT: TransferService', () => {
   let sdk: UniversalLoginSDK;
   let mockTokenContract: Contract;
   let tokenDetailsService: TokenDetailsService;
-  let tokensDetailsStore: TokensDetailsStore;
+  let tokenService: TokensDetailsStore;
 
   before(async () => {
     const [wallet] = await getWallets(createMockProvider());
@@ -26,9 +29,9 @@ describe('INT: TransferService', () => {
     const {contractAddress} = await createWallet('name.mylogin.eth', walletService, wallet);
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
     tokenDetailsService = new TokenDetailsService(provider);
-    tokensDetailsStore = new TokensDetailsStore(tokenDetailsService, [mockTokenContract.address]);
-    await tokensDetailsStore.fetchTokensDetails();
-    transferService = new TransferService(sdk, walletService, tokensDetailsStore);
+    tokenService = new TokensDetailsStore(tokenDetailsService, [mockTokenContract.address]);
+    await tokenService.fetchTokensDetails();
+    transferService = new TransferService(sdk, walletService, tokenService);
   });
 
   it('Should transfer tokens', async () => {
