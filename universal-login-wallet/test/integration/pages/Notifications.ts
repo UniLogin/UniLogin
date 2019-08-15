@@ -12,11 +12,17 @@ export default class NotificationsPage {
 
   async inputSecurityCode(securityCode: number[]) {
     await waitForUI(this.wrapper, () => this.wrapper.exists('#emojis'));
-    for (const number of securityCode) {
+    for (const index = 0; index < securityCode.length; index) {
+      const number = securityCode[index];
       const button = this.wrapper.find(`#btn-${number}`).first();
       const emojiCount = this.wrapper.find('.fa').length;
       button.simulate('click');
-      await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
+      if (index < securityCode.length - 1) {
+        await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
+      }
+      else {
+        await waitForUI(this.wrapper, () => this.wrapper.exists('.connection-progress-bar'));
+      }
     }
     await this.waitForNotificationDisappear();
   }
