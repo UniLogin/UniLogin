@@ -1,17 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
-import {TopUpRadio} from './TopUpRadio';
-import SafelloLogo from './../assets/logos/safello.png';
-import SafelloLogo2x from './../assets/logos/safello@2x.png';
-import RampLogo from './../assets/logos/ramp.png';
-import RampLogo2x from './../assets/logos/ramp@2x.png';
-import WyreLogo from './../assets/logos/wyre.png';
-import WyreLogo2x from './../assets/logos/wyre@2x.png';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {FiatFooter} from './FiatFooter';
+import {FiatPaymentMethods} from './FiatPaymentMethods';
 
-
+export type PaymentMethod = TopUpComponentType.ramp | TopUpComponentType.safello | TopUpComponentType.wyre | undefined;
 export interface TopUpWithFiatProps {
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
 }
@@ -20,7 +14,7 @@ export const TopUpWithFiat = ({onPayClick}: TopUpWithFiatProps) => {
   const [country, selectCountry] = useState('United Kingdom');
   const [selectedCode, setCode] = useState('GBP');
   const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpComponentType.ramp | TopUpComponentType.safello | TopUpComponentType.wyre | undefined>(undefined);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(undefined);
   const [fiatClass, setFiatClass] = useState('');
 
   useEffect(() => {
@@ -49,32 +43,7 @@ export const TopUpWithFiat = ({onPayClick}: TopUpWithFiatProps) => {
         </div>
       </div>
       <p className="top-up-label fiat-payment-methods-title">Payment method</p>
-      <div className="fiat-payment-methods">
-        <TopUpRadio
-          checked={paymentMethod === TopUpComponentType.ramp}
-          onClick={() => setPaymentMethod(TopUpComponentType.ramp)}
-          name="payment-method"
-          className="fiat-payment-method"
-        >
-          <img src={RampLogo} srcSet={RampLogo2x} alt="ramp" className="ramp-logo" />
-        </TopUpRadio>
-        <TopUpRadio
-          checked={paymentMethod === TopUpComponentType.safello}
-          onClick={() => setPaymentMethod(TopUpComponentType.safello)}
-          name="payment-method"
-          className="fiat-payment-method"
-        >
-          <img src={SafelloLogo} srcSet={SafelloLogo2x} alt="safello" className="safello-logo" />
-        </TopUpRadio>
-        <TopUpRadio
-          checked={paymentMethod === TopUpComponentType.wyre}
-          onClick={() => setPaymentMethod(TopUpComponentType.wyre)}
-          name="payment-method"
-          className="fiat-payment-method"
-        >
-          <img src={WyreLogo} srcSet={WyreLogo2x} alt="wyre" className="wyre-logo" />
-        </TopUpRadio>
-      </div>
+      <FiatPaymentMethods paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
       <div className="fiat-bottom">
         <FiatFooter isPaymentMethodChecked={!!paymentMethod} />
         <button onClick={() => onPayClick(paymentMethod!, amount)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>

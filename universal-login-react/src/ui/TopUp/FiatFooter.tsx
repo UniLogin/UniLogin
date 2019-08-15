@@ -8,23 +8,28 @@ interface FiatFooterProps {
   isPaymentMethodChecked: boolean;
 }
 
-export const FiatFooter = ({isPaymentMethodChecked}: FiatFooterProps) =>
-  isPaymentMethodChecked
-    ? <div className="info-block info-row">
-      <p className="info-text info-text-hint">You can pay by MasterCard or Visa</p>
-      <div className="info-row">
-        <img
-          src={VisaLogo}
-          srcSet={VisaLogo2x}
-          className="visa-logo"
-          alt="Visa"
-        />
-        <img
-          src={MastercardLogo}
-          srcSet={MastercardLogo2x}
-          className="mastercard-logo"
-          alt="Mastercard"
-        />
-      </div>
-    </div>
-    : <p className="info-text info-text-warning">Choose payment method</p>
+export const FiatFooter = ({isPaymentMethodChecked}: FiatFooterProps) => (
+  <>
+    {
+      isPaymentMethodChecked
+        ? <div className="info-block info-row">
+          <p className="info-text info-text-hint">You can pay by MasterCard or Visa</p>
+          <div className="info-row">
+            <img
+              src={VisaLogo}
+              srcSet={VisaLogo2x}
+              className="visa-logo"
+              alt="Visa"
+            />
+            <img
+              src={MastercardLogo}
+              srcSet={MastercardLogo2x}
+              className="mastercard-logo"
+              alt="Mastercard"
+            />
+          </div>
+        </div>
+        : <p className="info-text info-text-warning">Choose payment method</p>
+    }
+  </>
+);
