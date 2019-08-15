@@ -8,11 +8,8 @@ import RampLogo from './../assets/logos/ramp.png';
 import RampLogo2x from './../assets/logos/ramp@2x.png';
 import WyreLogo from './../assets/logos/wyre.png';
 import WyreLogo2x from './../assets/logos/wyre@2x.png';
-import MastercardLogo from './../assets/logos/mastercard.jpg';
-import MastercardLogo2x from './../assets/logos/mastercard@2x.jpg';
-import VisaLogo from './../assets/logos/visa.jpg';
-import VisaLogo2x from './../assets/logos/visa@2x.jpg';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import {FiatFooter} from './FiatFooter';
 
 
 export interface TopUpWithFiatProps {
@@ -79,26 +76,7 @@ export const TopUpWithFiat = ({onPayClick}: TopUpWithFiatProps) => {
         </TopUpRadio>
       </div>
       <div className="fiat-bottom">
-        {paymentMethod
-          ? <div className="info-block info-row">
-              <p className="info-text info-text-hint">You can pay by MasterCard or Visa</p>
-              <div className="info-row">
-                <img
-                  src={VisaLogo}
-                  srcSet={VisaLogo2x}
-                  className="visa-logo"
-                  alt="Visa"
-                />
-                <img
-                  src={MastercardLogo}
-                  srcSet={MastercardLogo2x}
-                  className="mastercard-logo"
-                  alt="Mastercard"
-                />
-              </div>
-            </div>
-          : <p className="info-text info-text-warning">Choose payment method</p>
-        }
+        <FiatFooter isPaymentMethodChecked={!!paymentMethod} />
         <button onClick={() => onPayClick(paymentMethod!, amount)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
       </div>
     </div>
