@@ -12,16 +12,14 @@ import MastercardLogo from './../assets/logos/mastercard.jpg';
 import MastercardLogo2x from './../assets/logos/mastercard@2x.jpg';
 import VisaLogo from './../assets/logos/visa.jpg';
 import VisaLogo2x from './../assets/logos/visa@2x.jpg';
-import {OnRampConfig} from '@universal-login/commons';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 
 export interface TopUpWithFiatProps {
-  contractAddress: string;
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
 }
 
-export const TopUpWithFiat = ({contractAddress, onPayClick}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({onPayClick}: TopUpWithFiatProps) => {
   const [country, selectCountry] = useState('United Kingdom');
   const [selectedCode, setCode] = useState('GBP');
   const [amount, setAmount] = useState('');

@@ -8,7 +8,6 @@ import {TopUpRadio} from './TopUpRadio';
 import {TopUpWithFiat} from './TopUpWithFiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {OnRampConfig} from '@universal-login/commons';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 export interface ChooseTopUpMethodProps {
@@ -62,7 +61,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName}:
           <div className="top-up-body">
             <div className="top-up-body-inner">
               {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} />}
-              {topUpMethod === 'fiat' && <TopUpWithFiat contractAddress={contractAddress} onPayClick={onPayClick}/>}
+              {topUpMethod === 'fiat' && <TopUpWithFiat onPayClick={onPayClick}/>}
             </div>
           </div>
         </div>
