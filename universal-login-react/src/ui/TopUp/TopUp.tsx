@@ -29,7 +29,6 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName
       <ModalWrapper modalClassName={modalClassName} hideModal={hideModal}>
         <ChooseTopUpMethod
           contractAddress={contractAddress}
-          onRampConfig={onRampConfig}
           onPayClick={onPayClick}
         />
       </ModalWrapper>
