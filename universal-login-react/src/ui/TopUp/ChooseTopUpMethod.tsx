@@ -15,10 +15,9 @@ export interface ChooseTopUpMethodProps {
   contractAddress: string;
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
   topUpClassName?: string;
-  hideModal?: () => void;
 }
 
-export const ChooseTopUpMethod = ({contractAddress, onPayClick, hideModal, topUpClassName}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState('');
 
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
