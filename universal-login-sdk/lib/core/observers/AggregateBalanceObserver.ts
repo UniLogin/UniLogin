@@ -39,7 +39,7 @@ export class AggregateBalanceObserver {
   }
 
   refreshPrices() {
-    if (!this.tokensPrices || this.tokenDetailsWithBalance.length === 0) {
+    if (Object.keys(this.tokensPrices).length === 0 || this.tokenDetailsWithBalance.length === 0) {
       return;
     }
     const totalWorth = this.tokensValueConverter.getTotal(this.tokenDetailsWithBalance, this.tokensPrices);

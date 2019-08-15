@@ -36,7 +36,9 @@ export class TokensValueConverter {
 
   addBalances(totalBalances: CurrencyToValue, toAddBalances: CurrencyToValue) {
     for (const key in totalBalances) {
-      totalBalances[key as ObservedCurrency] += toAddBalances[key as ObservedCurrency];
+      if (key in toAddBalances && typeof toAddBalances[key as ObservedCurrency] === 'number') {
+        totalBalances[key as ObservedCurrency] += toAddBalances[key as ObservedCurrency];
+      }
     }
     return totalBalances;
   }
