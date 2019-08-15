@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
-import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import {TopUpComponentType} from '../../../core/models/TopUpComponentType';
 import {FiatFooter} from './FiatFooter';
 import {FiatPaymentMethods} from './FiatPaymentMethods';
 

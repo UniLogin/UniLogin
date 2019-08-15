@@ -1,13 +1,13 @@
 import React from 'react';
-import SafelloLogo from './../assets/logos/safello.png';
-import SafelloLogo2x from './../assets/logos/safello@2x.png';
-import RampLogo from './../assets/logos/ramp.png';
-import RampLogo2x from './../assets/logos/ramp@2x.png';
-import WyreLogo from './../assets/logos/wyre.png';
-import WyreLogo2x from './../assets/logos/wyre@2x.png';
-import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import SafelloLogo from './../../assets/logos/safello.png';
+import SafelloLogo2x from './../../assets/logos/safello@2x.png';
+import RampLogo from './../../assets/logos/ramp.png';
+import RampLogo2x from './../../assets/logos/ramp@2x.png';
+import WyreLogo from './../../assets/logos/wyre.png';
+import WyreLogo2x from './../../assets/logos/wyre@2x.png';
+import {TopUpComponentType} from '../../../core/models/TopUpComponentType';
 import {PaymentMethod} from './TopUpWithFiat';
-import {TopUpRadio} from './TopUpRadio';
+import {TopUpRadio} from '../TopUpRadio';
 
 interface FiatPaymentMethodsProps {
   paymentMethod: PaymentMethod;

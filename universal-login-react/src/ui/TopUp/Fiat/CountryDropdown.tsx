@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import gbFlagIcon from './../assets/flags/gb.svg';
-import frFlagIcon from './../assets/flags/fr.svg';
-import deFlagIcon from './../assets/flags/de.svg';
-import plFlagIcon from './../assets/flags/pl.svg';
+import gbFlagIcon from './../../assets/flags/gb.svg';
+import frFlagIcon from './../../assets/flags/fr.svg';
+import deFlagIcon from './../../assets/flags/de.svg';
+import plFlagIcon from './../../assets/flags/pl.svg';
 
 export interface CountrySelectProps {
   selectedCountry: string;

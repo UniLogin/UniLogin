@@ -5,7 +5,7 @@ import daiIcon from './../assets/icons/dai.svg';
 import EthereumIcon from './../assets/icons/ethereum.svg';
 import cardIcon from './../assets/icons/card.svg';
 import {TopUpRadio} from './TopUpRadio';
-import {TopUpWithFiat} from './TopUpWithFiat';
+import {TopUpWithFiat} from './Fiat/TopUpWithFiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';

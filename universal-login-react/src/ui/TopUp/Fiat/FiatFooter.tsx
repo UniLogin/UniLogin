@@ -1,8 +1,8 @@
 import React from 'react';
-import MastercardLogo from './../assets/logos/mastercard.jpg';
-import MastercardLogo2x from './../assets/logos/mastercard@2x.jpg';
-import VisaLogo from './../assets/logos/visa.jpg';
-import VisaLogo2x from './../assets/logos/visa@2x.jpg';
+import MastercardLogo from './../../assets/logos/mastercard.jpg';
+import MastercardLogo2x from './../../assets/logos/mastercard@2x.jpg';
+import VisaLogo from './../../assets/logos/visa.jpg';
+import VisaLogo2x from './../../assets/logos/visa@2x.jpg';
 
 interface FiatFooterProps {
   isPaymentMethodChecked: boolean;
