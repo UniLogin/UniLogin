@@ -29,10 +29,6 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
 
   const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
-  // const renderTransferDropDownItems = () => (
-
-  // )
-
   return (
     <div className="currency-accordion">
       {
