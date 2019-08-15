@@ -19,10 +19,9 @@ import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 export interface TopUpWithFiatProps {
   contractAddress: string;
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
-  onRampConfig: OnRampConfig;
 }
 
-export const TopUpWithFiat = ({contractAddress, onRampConfig, onPayClick}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({contractAddress, onPayClick}: TopUpWithFiatProps) => {
   const [country, selectCountry] = useState('United Kingdom');
   const [selectedCode, setCode] = useState('GBP');
   const [amount, setAmount] = useState('');

@@ -13,13 +13,12 @@ import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 export interface ChooseTopUpMethodProps {
   contractAddress: string;
-  onRampConfig: OnRampConfig;
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
   topUpClassName?: string;
   hideModal?: () => void;
 }
 
-export const ChooseTopUpMethod = ({contractAddress, onPayClick, onRampConfig, hideModal, topUpClassName}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({contractAddress, onPayClick, hideModal, topUpClassName}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState('');
 
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
@@ -64,7 +63,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, onRampConfig, hi
           <div className="top-up-body">
             <div className="top-up-body-inner">
               {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} />}
-              {topUpMethod === 'fiat' && <TopUpWithFiat contractAddress={contractAddress} onRampConfig={onRampConfig} onPayClick={onPayClick}/>}
+              {topUpMethod === 'fiat' && <TopUpWithFiat contractAddress={contractAddress} onPayClick={onPayClick}/>}
             </div>
           </div>
         </div>
