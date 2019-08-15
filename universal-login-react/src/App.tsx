@@ -16,7 +16,6 @@ import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
-import {TransferService, WalletService} from '@universal-login/sdk';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
