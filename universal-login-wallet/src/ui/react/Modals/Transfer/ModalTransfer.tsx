@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react';
+import {TransferService} from '@universal-login/sdk';
 import {TransferDetails, ApplicationWallet} from '@universal-login/commons';
 import {ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
