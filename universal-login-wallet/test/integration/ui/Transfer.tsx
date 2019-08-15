@@ -35,7 +35,7 @@ describe('UI: Transfer', () => {
     appPage.transfer().enterRecipient(receiverAddress);
     appPage.transfer().transfer();
     await appPage.dashboard().waitForHideModal();
-    expect(appPage.dashboard().getWalletBalance()).to.match(/^0\.9{4}[0-9]{5}/);
+    expect(appPage.dashboard().getWalletBalance()).to.match(/^0\.9{3}[0-9]{6}/);
   });
 
   after(async () => {

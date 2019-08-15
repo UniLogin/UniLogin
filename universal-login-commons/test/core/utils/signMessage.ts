@@ -22,7 +22,7 @@ const expectedMessage = {
   gasLimit: transferMessage.gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
   operationType: OPERATION_CALL,
-  signature: '0x7999d4b43c50b5e603bd2e13b0bc0ff88c501d0371cd07b042fcf41c0c2e54410c3576a33c0bbe3d74784f6145501ca9c505f401dcdf3c6cc407f6b95b2c17a91c'
+  signature: '0x6572c8e10ddeeb5a1845f78d8fc914ea12897cc9b87048ac79def61f4a82a68b452a1230415d9d8560cae371c6d05374bc56a0850400b487d3a721311ad0f5bc1b'
 };
 
 describe('UNIT: signMessage', async () => {
