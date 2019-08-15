@@ -1,0 +1,14 @@
+.universal-login-balance-text {
+  margin-bottom: 24px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.universal-login-balance-amount {
+  font-weight: 600;
+  font-size: 44px;
+  color: #FFFFFF;
+  text-align: center;
+}

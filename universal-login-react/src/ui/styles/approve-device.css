@@ -1,0 +1,23 @@
+.approve-device {
+  max-width: 808px;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+
+.approve-device-title {
+  margin: 0 0 11px;
+  font-weight: 600;
+  font-size: 24px;
+  color: #FFFFFF;
+}
+
+.approve-device-text {
+  margin-bottom: 50px;
+  opacity: 0.75;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+
+.approve-device .connection-device-status {
+  color: #FFFFFF;
+}

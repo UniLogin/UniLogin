@@ -1,18 +1,42 @@
-.universal-login-emoji ul {
+.universal-login-emojis ul {
   display: flex;
   list-style: none;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
-.universal-login-emoji ul li {
+.universal-login-emojis ul li {
   display: flex;
   align-items: center;
   justify-content: center;
   align-items: center;
   height: 73px;
   width: 52px;
-  margin: 10px;
+  margin: 4px;
   font-size: 25px;
+  border: 1px solid #E1E1F0;
+}
+
+.emojis-fakes-list button  {
+  height: 100%;
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: 25px;
+}
+
+.emojis-placeholders-list {
+  margin: 0;
+}
+
+.emojis-fakes-list {
+  margin: 32px 0 0;
+  padding: 32px 0 0;
+  border-top: 1px solid;
+}
+
+.emojis-form-status {
+  color: red;
 }

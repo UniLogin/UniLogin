@@ -1,14 +1,34 @@
 
-import React, {useContext} from 'react';
-import {ReactUModalContext} from '../../core/models/ReactUModalContext';
+import React from 'react';
+import {dashboardContentType} from '../../core/models/ReactUModalContext';
 
-export const UHeader = () => {
-  const modalService = useContext(ReactUModalContext);
+export interface UHeaderProps {
+  activeTab: dashboardContentType;
+  setActiveTab: (tab: dashboardContentType) => void;
+}
+
+export const UHeader = ({activeTab, setActiveTab}: UHeaderProps) => {
+
   return (
-    <div>
-      <button onClick={() => modalService.showModal('funds')}>Funds</button>
-      <button onClick={() => modalService.showModal('approveDevice')}>ApproveDevice</button>
-      <button onClick={() => modalService.showModal('settings')}>Settings</button>
+    <div className="udashboard-header">
+      <button
+        className={`udashboard-tab udashboard-tab-funds ${activeTab === 'funds' ? 'active' : ''}`}
+        onClick={() => setActiveTab('funds')}
+      >
+        Funds
+      </button>
+      <button
+        className={`udashboard-tab udashboard-tab-approve ${activeTab === 'approveDevice' ? 'active' : ''}`}
+        onClick={() => setActiveTab('approveDevice')}
+      >
+        Approve Device
+      </button>
+      <button
+        className={`udashboard-tab udashboard-tab-settings ${activeTab === 'settings' ? 'active' : ''}`}
+        onClick={() => setActiveTab('settings')}
+      >
+        Settings
+      </button>
     </div>
   );
 };

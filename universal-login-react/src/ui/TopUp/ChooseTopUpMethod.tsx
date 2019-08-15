@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import './../styles/topup.css';
 import './../styles/topUpModalDefaults.css';
-import daiIcon from './../assets/icons/dai.svg';
-import EthereumIcon from './../assets/icons/ethereum.svg';
-import cardIcon from './../assets/icons/card.svg';
+import daiIcon from './../assets/topUp/dai.svg';
+import EthereumIcon from './../assets/topUp/ethereum.svg';
+import cardIcon from './../assets/topUp/card.svg';
+import bankIcon from './../assets/topUp/bank.svg';
 import {TopUpRadio} from './TopUpRadio';
 import {TopUpWithFiat} from './Fiat/TopUpWithFiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
@@ -33,7 +34,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName}:
                 onClick={() => setTopUpMethod('crypto')}
                 checked={topUpMethod === 'crypto'}
                 name="top-up-method"
-                className="top-up-method"
+                className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : '' }`}
               >
                 <div className="top-up-method-icons">
                   <img className="top-up-method-icon" src={daiIcon} alt="Dai"/>
@@ -47,10 +48,11 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName}:
                 onClick={() => setTopUpMethod('fiat')}
                 checked={topUpMethod === 'fiat'}
                 name="top-up-method"
-                className="top-up-method"
+                className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : '' }`}
               >
                 <div className="top-up-method-icons">
                   <img className="top-up-method-icon" src={cardIcon} alt="card"/>
+                  <img className="top-up-method-icon" src={bankIcon} alt="Dai"/>
                 </div>
                 <p className="top-up-method-title">Fiat</p>
                 <p className="top-up-method-text">Buy using credit card or bank account</p>

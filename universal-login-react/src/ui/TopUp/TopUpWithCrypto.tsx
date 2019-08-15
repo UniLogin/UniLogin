@@ -22,6 +22,7 @@ export const TopUpWithCrypto = ({contractAddress}: TopUpWithCryptoProps) => {
           className="input-address"
           onChange={() => {}}
           defaultValue={contractAddress}
+          readOnly
         />
         <button onClick={() => copy('contract-address')} className="address-copy-btn">
           <span hidden>Copy</span>

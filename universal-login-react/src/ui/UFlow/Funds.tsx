@@ -1,17 +1,18 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {TokenDetailsWithBalance, CurrencyToValue} from '@universal-login/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import {TokenAsset} from './TokenAsset';
-import {ReactUModalContext} from '../../core/models/ReactUModalContext';
 import UniversalLoginSDK from '@universal-login/sdk';
+import {Balance} from '../commons/Balance';
+import {MyAssets} from '../commons/MyAssets';
 
 interface FundsProps {
   ensName: string;
   sdk: UniversalLoginSDK;
+  onTopUpClick: () => void;
+  onSendClick: () => void;
 }
 
-export const Funds = ({ensName, sdk}: FundsProps) => {
-  const modalService = useContext(ReactUModalContext);
+export const Funds = ({ensName, sdk, onTopUpClick, onSendClick}: FundsProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
 
@@ -19,22 +20,13 @@ export const Funds = ({ensName, sdk}: FundsProps) => {
   useAsyncEffect(() => sdk.subscribeToAggregatedBalance(ensName, setTotalTokensValue), []);
 
   return (
-    <div>
-      <div>
-        Total: ${totalTokensValue['USD']}
+    <div className="udashboard-funds">
+        <Balance amount={`$${totalTokensValue['USD'] || '0.00'}`} />
+      <div className="udashboard-funds-buttons">
+        <button className="udashboard-funds-btn udashboard-funds-topup" onClick={onTopUpClick}>Top-up</button>
+        <button className="udashboard-funds-btn udashboard-funds-send" onClick={onSendClick}>Send</button>
       </div>
-      <div>
-        <button onClick={() => modalService.showModal('topup')}>topUp</button>
-        <button onClick={() => modalService.showModal('transfer')}>send</button>
-      </div>
-      <div>
-        My assets:
-      </div>
-      {
-        tokenDetailsWithBalance.map((token: TokenDetailsWithBalance) => (
-          <TokenAsset token={token} key={token.symbol}/>
-          ))
-        }
+      <MyAssets title="My assets" assetsList={tokenDetailsWithBalance} />
     </div>
     );
 };

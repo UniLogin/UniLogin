@@ -1,17 +1,15 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 
 interface EmojiPlaceholdersProps {
   code: number[];
   onEmojiClicked: (index: number) => void;
-  className?: string;
   maxLength: number;
 }
 
-export const EmojiPlaceholders = ({code, onEmojiClicked, className, maxLength}: EmojiPlaceholdersProps) => {
+export const EmojiPlaceholders = ({code, onEmojiClicked, maxLength}: EmojiPlaceholdersProps) => {
   const renderSelectedEmojis = () => {
     const emojis = [];
 
@@ -33,12 +31,8 @@ export const EmojiPlaceholders = ({code, onEmojiClicked, className, maxLength}: 
   };
 
   return (
-    <div className={getStyleForTopLevelComponent(className)}>
-      <div className="universal-login-emoji">
-        <ul className="emoji-placeholders-list">
-          {renderSelectedEmojis()}
-        </ul>
-      </div>
-    </div>
+    <ul className="emojis-placeholders-list">
+      {renderSelectedEmojis()}
+    </ul>
   );
 };
