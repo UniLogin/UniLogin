@@ -46,7 +46,7 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
               balance={utils.formatEther(balance)}
               onClick={onClick}
             />
-          ))}
+          ))
       }
       {tokenDetailsWithBalance.length === 0 && <div className="currency-accordion-item"> <Spinner /> </div>}
       {
