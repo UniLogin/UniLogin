@@ -38,7 +38,6 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
             <TransferDropdownItem
               key={`${name}-${symbol}`}
               sdk={sdk}
-              ensName={ensName}
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
               symbol={symbol}
@@ -58,7 +57,6 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
               <TransferDropdownItem
                 key={`${name}-${symbol}`}
                 sdk={sdk}
-                ensName={ensName}
                 name={name}
                 symbol={symbol}
                 balance={utils.formatEther(balance)}

@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
-import {CurrencyToValue} from '@universal-login/commons';
+import React, {useState, useEffect} from 'react';
+import {TokensPrices} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface DropdownItemProps {
   sdk: UniversalLoginSDK;
-  ensName: string;
   className?: string;
   name: string;
   symbol: string;
@@ -14,12 +12,13 @@ export interface DropdownItemProps {
   onClick: (transferCurrency: string) => void;
 }
 
-export const TransferDropdownItem = ({sdk, ensName, className, name, symbol, balance, icon, onClick}: DropdownItemProps) => {
+export const TransferDropdownItem = ({sdk, className, name, symbol, balance, icon, onClick}: DropdownItemProps) => {
   const [usdAmount, setUsdAmount] = useState<string>('');
 
-  const setUsdAmountCallback = (tokenTotalWorth: CurrencyToValue) => setUsdAmount(tokenTotalWorth['USD'].toString());
+  const subscribeToUsdPriceFor = (tokenSymbol: string) =>
+    (tokensPrices: TokensPrices) => setUsdAmount(tokensPrices[tokenSymbol]['USD'].toString());
 
-  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(ensName, setUsdAmountCallback), []);
+  useEffect(() => sdk.subscribeToPrices(subscribeToUsdPriceFor(symbol)), []);
 
   return (
     <button onClick={() => onClick(symbol)} className={className || 'currency-accordion-item'}>
