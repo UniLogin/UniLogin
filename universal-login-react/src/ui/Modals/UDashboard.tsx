@@ -57,14 +57,14 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       );
     case 'topup':
       return (
-        <ModalWrapper hideModal={modalService.hideModal}>
+        <>
           <UHeader />
           <TopUp
             hideModal={modalService.hideModal}
             contractAddress={applicationWallet.contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
           />
-        </ModalWrapper>
+        </>
       );
     case 'transfer':
       return (
