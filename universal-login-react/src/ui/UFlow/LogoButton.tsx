@@ -28,3 +28,4 @@ export const LogoButton = ({sdk, applicationWallet}: LogoButtonProps) => {
       </ReactUModalContext.Provider>
     </>
   );
+};
