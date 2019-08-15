@@ -1,22 +1,26 @@
 import React, {useState} from 'react';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
-import {Spinner, useAsyncEffect, TransferDropdownItem} from '@universal-login/react';
-import {useToggler, useServices} from '../../../hooks';
-import daiIcon from '../../../assets/icons/dai.svg';
-import ethIcon from '../../../assets/icons/ethereum.svg';
 import {utils} from 'ethers';
+import {TokenDetailsWithBalance} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
+import {TransferDropdownItem} from './TransferDropdownItem';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import {Spinner} from '../commons/Spinner';
+import daiIcon from '../assets/icons/dai.svg';
+import ethIcon from '../assets/icons/ethereum.svg';
+import {useToggler} from '../hooks/useToggler';
 
 interface TransferDropdownProps {
+  sdk: UniversalLoginSDK;
+  ensName: string;
   currency: string;
   setCurrency: (currency: string) => void;
 }
 
-export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps) => {
-  const {visible, toggle} = useToggler();
-  const {sdk, walletPresenter} = useServices();
+export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: TransferDropdownProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+  const {visible, toggle} = useToggler();
 
-  useAsyncEffect(() => sdk.subscribeToBalances(walletPresenter.getName(), setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
 
   const onClick = (currency: string) => {
     toggle();
@@ -34,7 +38,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
             <TransferDropdownItem
               key={`${name}-${symbol}`}
               sdk={sdk}
-              ensName={walletPresenter.getName()}
+              ensName={ensName}
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
               symbol={symbol}
@@ -54,7 +58,7 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
               <TransferDropdownItem
                 key={`${name}-${symbol}`}
                 sdk={sdk}
-                ensName={walletPresenter.getName()}
+                ensName={ensName}
                 name={name}
                 symbol={symbol}
                 balance={utils.formatEther(balance)}

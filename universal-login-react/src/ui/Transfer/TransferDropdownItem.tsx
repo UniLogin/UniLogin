@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {CurrencyToValue} from '@universal-login/commons';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import UniversalLoginSDK from '@universal-login/sdk';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface DropdownItemProps {
   sdk: UniversalLoginSDK;
