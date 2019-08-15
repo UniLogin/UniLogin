@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
+import {Spinner, useAsyncEffect, TransferDropdownItem} from '@universal-login/react';
 import {useToggler, useServices} from '../../../hooks';
 import daiIcon from '../../../assets/icons/dai.svg';
 import ethIcon from '../../../assets/icons/ethereum.svg';
-import {TransferDropdownItem} from './TransferDropdownItem';
 import {utils} from 'ethers';
-import {Spinner, useAsyncEffect} from '@universal-login/react';
 
 interface TransferDropdownProps {
   currency: string;
@@ -34,6 +33,8 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
           .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
             <TransferDropdownItem
               key={`${name}-${symbol}`}
+              sdk={sdk}
+              ensName={walletPresenter.getName()}
               className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
               name={name}
               symbol={symbol}
@@ -52,6 +53,8 @@ export const TransferDropdown = ({currency, setCurrency}: TransferDropdownProps)
             .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
               <TransferDropdownItem
                 key={`${name}-${symbol}`}
+                sdk={sdk}
+                ensName={walletPresenter.getName()}
                 name={name}
                 symbol={symbol}
                 balance={utils.formatEther(balance)}

@@ -32,7 +32,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const walletService = new WalletService(sdk);
   const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
-  // const transferService = new TransferService(sdk, walletService);
   const etherBalanceService = new EtherBalanceService(sdk.provider, walletService);
   const balanceService = new BalanceService(etherBalanceService);
   return {
@@ -42,7 +41,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     connectToWallet: _connectToWallet,
     walletService,
     walletPresenter,
-    // transferService,
     balanceService,
     start: () => {
       balanceService.start();
