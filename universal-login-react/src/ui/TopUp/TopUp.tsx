@@ -4,16 +4,18 @@ import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
+import {ModalWrapper} from '../Modals/ModalWrapper';
 
 interface TopUpProps {
   contractAddress: string;
   startModal?: TopUpComponentType;
   onRampConfig: OnRampConfig;
   topUpClassName?: string;
+  modalClassName?: string;
   hideModal?: () => void;
 }
 
-export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: TopUpProps) => {
+export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -24,20 +26,24 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, hideModal}: To
 
   if (modal === TopUpComponentType.choose) {
     return (
-      <ChooseTopUpMethod
-        contractAddress={contractAddress}
-        onRampConfig={onRampConfig}
-        onPayClick={onPayClick}
-      />
+      <ModalWrapper modalClassName={modalClassName} hideModal={hideModal}>
+        <ChooseTopUpMethod
+          contractAddress={contractAddress}
+          onRampConfig={onRampConfig}
+          onPayClick={onPayClick}
+        />
+      </ModalWrapper>
     );
   } else if (modal === TopUpComponentType.safello) {
     return (
-      <Safello
-        localizationConfig={{} as any}
-        safelloConfig={onRampConfig.safello}
-        contractAddress={contractAddress}
-        crypto="eth"
-      />
+      <ModalWrapper modalClassName={modalClassName} hideModal={() => setModal(TopUpComponentType.choose)}>
+        <Safello
+          localizationConfig={{} as any}
+          safelloConfig={onRampConfig.safello}
+          contractAddress={contractAddress}
+          crypto="eth"
+        />
+      </ModalWrapper>
     );
   } else if (modal === TopUpComponentType.ramp) {
     return (

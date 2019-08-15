@@ -13,15 +13,11 @@ const Modals = ({modalClassName}: ModalsProps) => {
   switch (modalService.modalState) {
     case 'topUpAccount':
       return (
-        <ModalWrapper
-          modalClassName={modalClassName}
+        <TopUp
           hideModal={modalService.hideModal}
-        >
-          <TopUp
-            hideModal={modalService.hideModal}
-            {...modalService.modalProps as TopUpProps}
-          />
-        </ModalWrapper>
+          modalClassName={modalClassName}
+          {...modalService.modalProps as TopUpProps}
+        />
       );
     case 'waitingForDeploy':
       return (
