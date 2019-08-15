@@ -5,6 +5,7 @@ import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
 import ProgressBar from '../commons/ProgressBar';
+import {useProgressBar} from '../hooks/useProgressBar';
 
 
 interface EmojiFormProps {
@@ -15,16 +16,16 @@ interface EmojiFormProps {
 }
 
 export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFormProps) => {
-  const [showProgressBar, setShowProgressBar] = useState(false);
   const [enteredCode, setEnteredCode] = useState([] as number[]);
   const [status, setStatus] = useState('');
+  const {progressBar, showProgressBar} = useProgressBar();
 
   const EMOJIS_MAX_LENGTH = 6;
 
   const confirmWithCodeCheck = (publicKey: string) => {
     if (isValidCode(enteredCode, publicKey)) {
       sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
-      setShowProgressBar(true);
+      showProgressBar();
       setStatus('');
     } else {
       setStatus('Invalid code. Try again.');
@@ -50,7 +51,7 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFo
 
   return (
     <div id="emojis">
-    {showProgressBar ?
+    {progressBar ?
       <ProgressBar className="connection-progress-bar" /> :
       <>
         <EmojiPlaceholders maxLength={EMOJIS_MAX_LENGTH} code={enteredCode} onEmojiClicked={onEmojiRemove} />
