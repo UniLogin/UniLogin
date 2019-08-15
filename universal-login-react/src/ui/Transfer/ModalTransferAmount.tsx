@@ -1,16 +1,19 @@
 import React from 'react';
-import {Input, InputLabel, TransferDropdown} from '@universal-login/react';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {TransferDetails} from '@universal-login/commons';
-import {useServices} from '../../../hooks';
+import {Input} from '../commons/Input';
+import {InputLabel} from '../commons/InputLabel';
+import {TransferDropdown} from './TransferDropdown';
 
 export interface ModalTransferAmountProps {
+  sdk: UniversalLoginSDK;
+  ensName: string;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   currency: string;
 }
 
-export const ModalTransferAmount = ({onSelectRecipientClick, updateTransferDetailsWith, currency}: ModalTransferAmountProps) => {
-  const {sdk, walletPresenter} = useServices();
+export const ModalTransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTransferDetailsWith, currency}: ModalTransferAmountProps) => {
   return (
     <div className="transfer-modal">
       <div className="box-header">
@@ -20,7 +23,7 @@ export const ModalTransferAmount = ({onSelectRecipientClick, updateTransferDetai
         <div className="transfer-modal-inner">
           <TransferDropdown
             sdk={sdk}
-            ensName={walletPresenter.getName()}
+            ensName={ensName}
             currency={currency}
             setCurrency={(currency: string) => updateTransferDetailsWith({currency})}
           />

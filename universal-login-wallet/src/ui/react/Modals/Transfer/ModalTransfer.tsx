@@ -1,8 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {TransferDetails, ApplicationWallet} from '@universal-login/commons';
-import {ModalTransferRecipient} from '@universal-login/react';
+import {ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
-import {ModalTransferAmount} from './ModalTransferAmount';
 import {useServices} from '../../../hooks';
 import {TransferService} from '@universal-login/sdk';
 
@@ -13,7 +12,9 @@ const ModalTransfer = () => {
   const {walletService, sdk} = useServices();
   const [transferDetalis, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
 
-  const transferService = new TransferService(sdk, walletService.applicationWallet as ApplicationWallet);
+  const applicationWallet = walletService.applicationWallet as ApplicationWallet;
+
+  const transferService = new TransferService(sdk, applicationWallet);
   const onGenerateClick = async () => {
     modalService.hideModal();
     modalService.showModal('waitingForTransfer');
@@ -28,6 +29,8 @@ const ModalTransfer = () => {
   if (modal === 'transferAmount') {
     return (
       <ModalTransferAmount
+        sdk={sdk}
+        ensName={applicationWallet.name}
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
         currency={transferDetalis.currency}

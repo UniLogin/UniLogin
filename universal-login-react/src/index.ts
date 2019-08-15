@@ -25,3 +25,4 @@ export {LogoButton} from './ui/UFlow/LogoButton';
 export {ModalTransferRecipient} from './ui/Transfer/ModalTransferRecipient';
 export {TransferDropdownItem} from './ui/Transfer/TransferDropdownItem';
 export {TransferDropdown} from './ui/Transfer/TransferDropdown';
+export {ModalTransferAmount} from './ui/Transfer/ModalTransferAmount';

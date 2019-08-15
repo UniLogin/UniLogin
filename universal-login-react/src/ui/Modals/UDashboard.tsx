@@ -10,6 +10,7 @@ import {Funds} from '../UFlow/Funds';
 import {USettings} from '../UFlow/USettings';
 import {useAsync} from '../hooks/useAsync';
 import {TopUp} from '../TopUp/TopUp';
+import {ModalTransferAmount} from '../Transfer/ModalTransferAmount';
 
 export interface UDashboardProps {
   sdk: UniversalLoginSDK;
@@ -71,6 +72,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         <ModalWrapper hideModal={modalService.hideModal}>
           <UHeader />
           <button onClick={() => modalService.showModal('transferRecipient')}>transfer recipient</button>
+          <button onClick={() => modalService.showModal('transferAmount')}>transfer recipient</button>
         </ModalWrapper>
       );
     case 'transferRecipient':
@@ -89,6 +91,19 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             onSendClick={onGenerateClick}
             onBackClick={() => modalService.showModal('transferAmount')}
             transferDetalis={transferDetalis}
+          />
+        </ModalWrapper>
+      );
+    case 'transferAmount':
+      return (
+        <ModalWrapper hideModal={modalService.hideModal}>
+          <UHeader />
+          <ModalTransferAmount
+            sdk={sdk}
+            ensName={applicationWallet.name}
+            onSelectRecipientClick={() => modalService.showModal('transferRecipient')}
+            updateTransferDetailsWith={updateTransferDetailsWith}
+            currency={transferDetalis.currency}
           />
         </ModalWrapper>
       );
