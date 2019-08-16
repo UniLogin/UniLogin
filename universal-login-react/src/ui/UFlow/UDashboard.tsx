@@ -80,7 +80,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
 
   return (
     <>
-      <button onClick={() => onUButtonClick()}>
+      <button className="udashboard-logo-btn" onClick={() => onUButtonClick()}>
         <img src={logoIcon} alt="U"/>
       </button>
       {dashboardVisibility &&
