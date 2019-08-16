@@ -2,6 +2,7 @@
   display: inline-block;
   background: none;
   border: none;
+  cursor: pointer;
 }
 
 .udashboard-modal .modal-wrapper {
