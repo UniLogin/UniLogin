@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "prebuild": "yarn clean",
-    "build": "webpack --mode production --progress && cpx \"src/_redirects/**/*\" dist/html/_redirects",
+    "build": "webpack --mode production --progress && cp \"src/_redirects\" dist/html/_redirects",
     "pretest": "rm -fr dist/src dist/test && tsc && cpx \"src/ui/assets/**/*\" dist/src/ui/assets",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "cross-env NODE_ENV=test mocha \"dist/test/unit/**/*.js\"",
