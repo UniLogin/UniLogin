@@ -17,6 +17,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
           hideModal={modalService.hideModal}
           modalClassName={modalClassName}
           {...modalService.modalProps as TopUpProps}
+          isModal
         />
       );
     case 'waitingForDeploy':
