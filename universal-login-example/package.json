@@ -1,12 +1,12 @@
 {
   "name": "@universal-login/example",
-  "version": "0.3.22",
+  "version": "0.3.24",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@universal-login/commons": "^0.3.22",
-    "@universal-login/relayer": "^0.3.22",
-    "@universal-login/sdk": "^0.3.22",
+    "@universal-login/commons": "^0.3.24",
+    "@universal-login/relayer": "^0.3.24",
+    "@universal-login/sdk": "^0.3.24",
     "components": "^0.1.0",
     "date-fns": "^1.29.0",
     "fbemitter": "^2.1.1",
@@ -33,7 +33,7 @@
     "relayer:start": "node dist/relayer/startRelayer.js"
   },
   "devDependencies": {
-    "@universal-login/ops": "^0.3.22",
+    "@universal-login/ops": "^0.3.24",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
