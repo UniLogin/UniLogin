@@ -49,7 +49,8 @@ module.exports = {
       chunkFilename: '[id].[hash].css',
     }),
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      favicon: './src/ui/assets/logo.ico'
     }),
     new Dotenv(),
     new webpack.DefinePlugin({
