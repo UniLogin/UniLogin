@@ -1,3 +1,9 @@
+.udashboard-logo-btn {
+  display: inline-block;
+  background: none;
+  border: none;
+}
+
 .udashboard-modal .modal-wrapper {
   width: 970px;
   max-width: 100%;
