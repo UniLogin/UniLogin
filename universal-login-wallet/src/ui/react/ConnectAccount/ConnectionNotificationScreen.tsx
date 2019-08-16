@@ -29,6 +29,7 @@ export const ConnectionNotificationScreen = ({contractAddress, privateKey, onCan
               contractAddress={contractAddress}
               privateKey={privateKey}
               sdk={sdk}
+              className="jarvis-emojis"
             />
           </div>
         </div>
