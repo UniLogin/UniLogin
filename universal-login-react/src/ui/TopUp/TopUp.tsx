@@ -15,7 +15,7 @@ interface TopUpProps {
   modalClassName?: string;
   hideModal?: () => void;
   isModal?: boolean;
-  logoColor?: LogoColor
+  logoColor?: LogoColor;
 }
 
 export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
