@@ -67,7 +67,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
       ramp: {
         appName: 'Universal Login',
         logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
-        rampUrl: 'https://ri-widget-staging.firebaseapp.com/'
+        rampUrl: 'https://ri-widget-dev.firebaseapp.com/'
       }
     },
     database: databaseConfig
