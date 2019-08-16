@@ -15,10 +15,14 @@ export interface DropdownItemProps {
 export const TransferDropdownItem = ({sdk, className, name, symbol, balance, icon, onClick}: DropdownItemProps) => {
   const [usdAmount, setUsdAmount] = useState<string>('');
 
-  const subscribeToUsdPriceFor = (tokenSymbol: string) =>
-    (tokensPrices: TokensPrices) => setUsdAmount(tokensPrices[tokenSymbol]['USD'].toString());
-
-  useEffect(() => sdk.subscribeToPrices(subscribeToUsdPriceFor(symbol)), []);
+  useEffect(() => {
+    const unsubscribe = sdk.subscribeToPrices((tokensPrices: TokensPrices) => {
+      const tokenPrice = tokensPrices[symbol] === undefined ? 0 : tokensPrices[symbol]['USD'];
+      const tokenValue = tokenPrice * Number(balance);
+      setUsdAmount(tokenValue.toString());
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <button onClick={() => onClick(symbol)} className={className || 'currency-accordion-item'}>
