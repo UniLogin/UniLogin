@@ -13,6 +13,7 @@ import {TopUp} from '../TopUp/TopUp';
 import {ApproveDevice} from './ApproveDevice';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
 import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
+import {TransferInProgress} from './TransferInProgress';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -90,7 +91,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         );
       case 'waitingForTransfer':
         return (
-          <div>waiting for transfer</div>
+          <TransferInProgress />
         );
       default:
         return null;
