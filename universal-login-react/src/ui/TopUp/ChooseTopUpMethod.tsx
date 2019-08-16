@@ -10,14 +10,16 @@ import {TopUpWithFiat} from './Fiat/TopUpWithFiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
+import {LogoColor} from './Fiat/FiatPaymentMethods';
 
 export interface ChooseTopUpMethodProps {
   contractAddress: string;
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
   topUpClassName?: string;
+  logoColor?: LogoColor;
 }
 
-export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState('');
 
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
@@ -63,7 +65,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName}:
           <div className="top-up-body">
             <div className="top-up-body-inner">
               {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} />}
-              {topUpMethod === 'fiat' && <TopUpWithFiat onPayClick={onPayClick}/>}
+              {topUpMethod === 'fiat' && <TopUpWithFiat onPayClick={onPayClick} logoColor={logoColor}/>}
             </div>
           </div>
         </div>

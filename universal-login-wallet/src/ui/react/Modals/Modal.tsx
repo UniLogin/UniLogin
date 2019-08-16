@@ -43,6 +43,7 @@ const Modal = () => {
           onRampConfig={config!.onRampProviders}
           contractAddress={walletPresenter.getContractAddress()}
           isModal
+          logoColor="black"
         />
       );
     case 'personalInfo':

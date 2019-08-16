@@ -3,14 +3,15 @@ import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
 import {TopUpComponentType} from '../../../core/models/TopUpComponentType';
 import {FiatFooter} from './FiatFooter';
-import {FiatPaymentMethods} from './FiatPaymentMethods';
+import {FiatPaymentMethods, LogoColor} from './FiatPaymentMethods';
 
 export type PaymentMethod = TopUpComponentType.ramp | TopUpComponentType.safello | TopUpComponentType.wyre | undefined;
 export interface TopUpWithFiatProps {
   onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
+  logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({onPayClick}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({onPayClick, logoColor}: TopUpWithFiatProps) => {
   const [country, selectCountry] = useState('United Kingdom');
   const [selectedCode, setCode] = useState('GBP');
   const [amount, setAmount] = useState('');
@@ -43,7 +44,7 @@ export const TopUpWithFiat = ({onPayClick}: TopUpWithFiatProps) => {
         </div>
       </div>
       <p className="top-up-label fiat-payment-methods-title">Payment method</p>
-      <FiatPaymentMethods paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
+      <FiatPaymentMethods paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} logoColor={logoColor}/>
       <div className="fiat-bottom">
         <FiatFooter isPaymentMethodChecked={!!paymentMethod} />
         <button onClick={() => onPayClick(paymentMethod!, amount)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
