@@ -163,3 +163,7 @@
   background: url('./../assets/icons/forward-arrow.svg') center no-repeat;
   background-size: contain;
 }
+
+.udashboard-content .universal-login-topup .universal-login-default .top-up {
+  background: none;
+}
