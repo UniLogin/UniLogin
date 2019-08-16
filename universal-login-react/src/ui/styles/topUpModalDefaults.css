@@ -95,13 +95,13 @@
   background: #362F6A;
   border-radius: 2px;
   border: none;
-  overflow: hidden;
 }
 
 .universal-login-topup .universal-login-default .amount-input {
   background: #362F6A;
   font-size: 12px;
   color: #FFFFFF;
+  border-radius: 2px;
 }
 
 .universal-login-topup .universal-login-default .amount-dropdown-btn {
@@ -112,4 +112,11 @@
 .universal-login-topup .universal-login-default .amount-dropdown-toggle::after {
   background: url('./../assets/icons/angle-light.svg') center no-repeat;
   background-size: contain;
+}
+
+.universal-login-topup .universal-login-default .amount-dropdown-list {
+  background: #362F6A;
+  border: none;
+  border-radius: 2px;
+  bottom: -3px;
 }

@@ -3,11 +3,11 @@ import {utils} from 'ethers';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import {Spinner} from '../commons/Spinner';
-import daiIcon from '../assets/icons/dai.svg';
-import ethIcon from '../assets/icons/ethereum.svg';
-import {useToggler} from '../hooks/useToggler';
+import {useAsyncEffect} from '../../hooks/useAsyncEffect';
+import {Spinner} from '../../commons/Spinner';
+import daiIcon from '../../assets/icons/dai.svg';
+import ethIcon from '../../assets/icons/ethereum.svg';
+import {useToggler} from '../../hooks/useToggler';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;

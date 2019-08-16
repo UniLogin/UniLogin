@@ -1,0 +1,68 @@
+.universal-login-amount .universal-login-default .transfer-amount {
+  padding-top: 50px;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-label {
+  color: #B9C3F8;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-row {
+  margin-bottom: 10px;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-label {
+  margin-bottom: 10px;
+  color: #B9C3F8;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-max {
+  background: none;
+  border: none;
+  color: #0FB989;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-input {
+  padding: 0 50px 0 13px;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 2px;
+  border: none;
+  height: 32px;
+  background: #362F6A;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-btn {
+  border-radius: 6px;
+  border: none;
+  padding: 0;
+  height: 50px;
+  width: 370px;
+  max-width: 100%;
+  background: #0FB989;
+}
+
+.universal-login-amount .universal-login-default .transfer-amount-btn span {
+  font-weight: 500;
+  color: #FFFFFF;
+  letter-spacing: -0.08px;
+}
+
+.universal-login-amount .universal-login-default .currency-accordion-btn {
+  border-radius: 2px;
+  border: none;
+  background: #362F6A;
+  cursor: pointer;
+}
+
+.universal-login-amount .universal-login-default .currency-accordion-name {
+  color: #FFFFFF;
+}
+
+.universal-login-amount .universal-login-default .currency-accordion-amount {
+  color: #FFFFFF;
+}
+
+.universal-login-amount .universal-login-default .currency-accordion-btn::after {
+  background: url('./../assets/icons/angle-light.svg') center no-repeat;
+}
+

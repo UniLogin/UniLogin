@@ -162,14 +162,14 @@
   margin: 0 0 8px;
 }
 
-.universal-login-topup .crypto .input-address-wrapper {
+.universal-login-topup .input-address-wrapper {
   background: #FFFFFF;
   border: 1px solid #E1E1F0;
   display: flex;
   align-items: center;
 }
 
-.universal-login-topup .crypto .input-address {
+.universal-login-topup .input-address {
   width: 100%;
   height: 45px;
   padding: 0 25px;
@@ -179,7 +179,7 @@
   border: none;
 }
 
-.universal-login-topup .crypto .address-copy-btn {
+.universal-login-topup .address-copy-btn {
   position: relative;
   margin: 0;
   border: none;
@@ -194,7 +194,7 @@
   cursor: pointer;
 }
 
-.universal-login-topup .crypto .address-copy-btn::before {
+.universal-login-topup .address-copy-btn::before {
   content: '';
   height: 20px;
   width: 20px;
@@ -529,7 +529,7 @@
   .universal-login-topup .universal-login-default .input-address {
     padding: 13px;
   }
-  .universal-login-topup .crypto .address-copy-btn {
+  .universal-login-topup .address-copy-btn {
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -541,12 +541,12 @@
     height: 50px;
     background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%);
   }
-  .universal-login-topup .crypto .address-copy-btn::before {
+  .universal-login-topup .address-copy-btn::before {
     width: 20px;
     height: 20px;
     background: url('./../assets/icons/copy-light.svg') center no-repeat;
   }
-  .universal-login-topup .crypto .address-copy-btn span {
+  .universal-login-topup .address-copy-btn span {
     display: block;
     margin: 0 0 0 5px;
     font-weight: 500;
