@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/ops",
-  "version": "0.3.21",
+  "version": "0.3.22",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -16,10 +16,10 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@universal-login/commons": "^0.3.21",
-    "@universal-login/contracts": "^0.3.21",
-    "@universal-login/relayer": "^0.3.21",
-    "@universal-login/sdk": "^0.3.21",
+    "@universal-login/commons": "^0.3.22",
+    "@universal-login/contracts": "^0.3.22",
+    "@universal-login/relayer": "^0.3.22",
+    "@universal-login/sdk": "^0.3.22",
     "cross-spawn": "^6.0.5",
     "ens-builder": "^2.0.1",
     "ethereum-waffle": "2.0.15",
