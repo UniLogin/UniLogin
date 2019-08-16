@@ -32,7 +32,9 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
               <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
               <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
               {!connectValues && !error && 'Loading...'}
-              {connectValues && <EmojiPanel code={connectValues!.securityCode} />}
+              {connectValues && <div className="universal-login-emojis">
+                <EmojiPanel code={connectValues!.securityCode} />
+              </div>}
               {error && `Error: ${error}`}
               <button onClick={onDeny} className="button-secondary connect-emoji-btn">Deny</button>
             </div>
