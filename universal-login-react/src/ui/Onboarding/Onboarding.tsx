@@ -12,9 +12,10 @@ interface OnboardingProps {
   onCreate: (arg: ApplicationWallet) => void;
   domains: string[];
   className?: string;
+  modalClassName?: string;
 }
 
-export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: OnboardingProps) => {
+export const Onboarding = ({sdk, onConnect, onCreate, domains, className, modalClassName}: OnboardingProps) => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
   const walletService = new WalletService(sdk);
   const onConnectClick = () => {
@@ -48,7 +49,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className}: Onboa
             onConnectClick={onConnectClick}
             domains={domains}
           />
-          <Modals />
+          <Modals modalClassName={modalClassName}/>
         </ReactModalContext.Provider>
       </div>
     </div>
