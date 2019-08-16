@@ -1,5 +1,5 @@
 import React from 'react';
-import {EMOJI_COLORS, getEmojiNumber} from '@universal-login/commons';
+import {getEmojiColor, getEmojiNumber} from '@universal-login/commons';
 import {getEmojiCodePoint} from '../../core/utils/emojiCodePoint';
 
 interface EmojiProps {
@@ -8,9 +8,9 @@ interface EmojiProps {
 
 export const Emoji = ({code}: EmojiProps) => {
   const emojiNumber = getEmojiNumber(code);
-  const colorCode = code % EMOJI_COLORS.length;
+  const color = getEmojiColor(code);
   return (
-    <i className="fa" style={{color: EMOJI_COLORS[colorCode]}}>
+    <i className="fa" style={{color}}>
       {String.fromCodePoint(getEmojiCodePoint(emojiNumber))}
     </i>
   );

@@ -17,7 +17,7 @@ export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXEC
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
-export {getEmojiNumber} from './core/utils/emoji';
+export {getEmojiColor, getEmojiNumber} from './core/utils/emoji';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
