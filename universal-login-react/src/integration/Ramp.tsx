@@ -20,7 +20,7 @@ export const Ramp = (props: RampProps) => {
     userAddress: address
   }).on(RampInstantEventTypes.WIDGET_CLOSE, onClose)
   .on('*', console.log);
-  ramp.domNodes.overlay.style.zIndex = '1';
+  ramp.domNodes.overlay.style.zIndex = '100';
   ramp.show();
   return null;
 };
