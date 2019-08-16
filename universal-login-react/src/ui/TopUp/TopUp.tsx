@@ -13,9 +13,10 @@ interface TopUpProps {
   topUpClassName?: string;
   modalClassName?: string;
   hideModal?: () => void;
+  isModal?: boolean;
 }
 
-export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal}: TopUpProps) => {
+export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -25,13 +26,23 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName
   };
 
   if (modal === TopUpComponentType.choose) {
+    if (isModal) {
+      return (
+        <ModalWrapper modalClassName={modalClassName} hideModal={hideModal}>
+          <ChooseTopUpMethod
+            contractAddress={contractAddress}
+            onPayClick={onPayClick}
+            topUpClassName={topUpClassName}
+          />
+        </ModalWrapper>
+      );
+    }
     return (
-      <ModalWrapper modalClassName={modalClassName} hideModal={hideModal}>
-        <ChooseTopUpMethod
-          contractAddress={contractAddress}
-          onPayClick={onPayClick}
-        />
-      </ModalWrapper>
+      <ChooseTopUpMethod
+        contractAddress={contractAddress}
+        onPayClick={onPayClick}
+        topUpClassName={topUpClassName}
+      />
     );
   } else if (modal === TopUpComponentType.safello) {
     return (

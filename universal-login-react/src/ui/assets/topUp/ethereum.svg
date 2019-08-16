@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>Ethereum Logo Copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="approve" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="topup3" transform="translate(-537.000000, -296.000000)">
+            <g id="Ethereum-Logo-Copy" transform="translate(537.000000, 296.000000)">
+                <circle id="etherpathA" fill="#FFFFFF" opacity="0.1" cx="15.6" cy="15.6" r="15.6"></circle>
+                <polygon id="etherpathB" fill="#9497FF" points="15.4069747 4.07378689 15.2566813 4.58462319 15.2566813 19.4079096 15.4069747 19.5579342 22.2877784 15.4907093"></polygon>
+                <polygon id="etherpathC" fill="#ECEBF0" points="15.4070231 4.07378689 8.52621947 15.4907093 15.4070231 19.557988 15.4070231 12.3632082"></polygon>
+                <polygon id="etherpathD" fill="#9497FF" points="15.4069747 20.8607603 15.3222834 20.964003 15.3222834 26.2443835 15.4069747 26.4917895 22.2918651 16.7955788"></polygon>
+                <polygon id="etherpathE" fill="#ECEBF0" points="15.4070231 26.4917143 15.4070231 20.8606851 8.52621947 16.7955036"></polygon>
+                <polygon id="etherpathF" fill="#5053DD" opacity="0.84984189" points="15.4069747 19.5579181 22.2876708 15.490747 15.4069747 12.3632458"></polygon>
+                <polygon id="etherpathG" fill="#8C96F1" opacity="0.590425037" points="8.52626787 15.4907524 15.406964 19.5579234 15.406964 12.3632512"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

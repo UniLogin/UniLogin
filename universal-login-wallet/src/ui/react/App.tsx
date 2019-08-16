@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {createModalService, ConnectionNotification} from '@universal-login/react';
+import {createModalService} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
@@ -14,6 +14,7 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
+import {ConnectionNotificationScreen} from './ConnectAccount/ConnectionNotificationScreen';
 
 const App = () => {
   const {history} = useRouter();
@@ -68,7 +69,7 @@ const App = () => {
         <PrivateRoute
           path="/notifications"
           authorized={authorized}
-          render={() => <ConnectionNotification
+          render={() => <ConnectionNotificationScreen
             contractAddress={walletService.applicationWallet!.contractAddress}
             privateKey={walletService.applicationWallet!.privateKey}
             onCancel={() => history.push('/')}

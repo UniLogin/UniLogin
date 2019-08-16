@@ -37,7 +37,7 @@
 
 .universal-login-topup .top-up-radio-inner {
   position: relative;
-  background: #FFFFFF;
+  background: none;
   border: 1px solid;
 }
 
@@ -157,12 +157,25 @@
   opacity: 1;
 }
 
+.universal-login-topup .top-up-label {
+  font-size: 10px;
+  margin: 0 0 8px;
+}
+
 .universal-login-topup .crypto .input-address-wrapper {
   background: #FFFFFF;
   border: 1px solid #E1E1F0;
+  display: flex;
+  align-items: center;
 }
 
 .universal-login-topup .crypto .input-address {
+  width: 100%;
+  height: 45px;
+  padding: 0 25px;
+  background: #FFFFFF;
+  font-size: 14px;
+  color: #6e798e;
   border: none;
 }
 
@@ -170,6 +183,15 @@
   position: relative;
   margin: 0;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 45px;
+  margin-left: 5px;
+  background: #FFFFFF;
+  border: 1px solid #C9C9D7;
+  cursor: pointer;
 }
 
 .universal-login-topup .crypto .address-copy-btn::before {
@@ -514,6 +536,7 @@
     transform: translateX(-50%);
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 180px;
     height: 50px;
     background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>DAI</title>
+    <desc>Created with Sketch.</desc>
+    <g id="approve" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="topup1" transform="translate(-467.000000, -602.000000)" fill-rule="nonzero">
+            <g id="DAI" transform="translate(467.000000, 602.000000)">
+                <polygon id="PathDAI" fill="#FFCE45" points="14.5567438 0.0188441183 29.0859887 14.5480276 14.5567438 29.0773339 0.0274989088 14.5480276"></polygon>
+                <polygon id="PathDAI" fill="#FEBE44" points="14.556621 19.2891341 0.0153453732 14.5474138 14.556621 0.0184144478 29.0978967 14.5474138"></polygon>
+                <polygon id="PathDAI" fill="#FFFFFF" points="5.07318038 13.5990697 11.7115888 13.5990697 14.556621 10.4379229 17.7177679 13.5990697 24.3561763 13.5990697 14.556621 3.00953459"></polygon>
+                <polygon id="PathDAI" fill="#D9A547" opacity="0.42" points="14.556621 29.0764131 14.556621 0.0184144478 29.0856204 14.5474138 14.556621 29.0764131"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

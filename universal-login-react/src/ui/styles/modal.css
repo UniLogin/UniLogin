@@ -32,3 +32,14 @@
   background: rgba(0, 0, 0, 0.6);
   z-index: 9999;
 }
+
+.universal-login .modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 19px;
+  height: 19px;
+  background: url('./../assets/icons/close.svg') center no-repeat;
+  background-size: contain;
+  border: none;
+}

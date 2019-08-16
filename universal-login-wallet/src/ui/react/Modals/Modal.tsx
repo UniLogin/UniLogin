@@ -39,8 +39,10 @@ const Modal = () => {
       return (
         <TopUp
           modalClassName="topup-modal-wrapper"
+          topUpClassName="jarvis-topup"
           onRampConfig={config!.onRampProviders}
           contractAddress={walletPresenter.getContractAddress()}
+          isModal
         />
       );
     case 'personalInfo':
