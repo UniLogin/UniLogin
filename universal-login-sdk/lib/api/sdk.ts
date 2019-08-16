@@ -235,6 +235,10 @@ class UniversalLoginSDK {
     return this.aggregateBalanceObserver!.subscribe(callback);
   }
 
+  subscribeToPrices(callback: Function) {
+    return this.priceObserver.subscribe(callback);
+  }
+
   subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
     return this.authorisationsObserver.subscribe(
       signGetAuthorisationRequest({walletContractAddress}, privateKey),
