@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: auto;
-  src: url("../assets/webfonts/fa-solid-900.woff2") format("woff2"), url("../assets/webfonts/fa-solid-900.woff") format("woff");
+  src: url("../assets/webfonts/icomoon.woff") format("woff");
 }
 
 .fa,
