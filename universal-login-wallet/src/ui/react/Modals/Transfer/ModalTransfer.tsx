@@ -34,6 +34,7 @@ const ModalTransfer = () => {
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
         currency={transferDetalis.currency}
+        transferAmountClassName="jarvis-transfer-amount"
       />
     );
   } else if (modal === 'transferRecipient') {

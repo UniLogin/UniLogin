@@ -1,16 +1,17 @@
 import React from 'react';
 import {TransferDetails} from '@universal-login/commons';
-import {InputLabel} from '../commons/InputLabel';
-import {Input} from '../commons/Input';
+import {InputLabel} from '../../commons/InputLabel';
+import {Input} from '../../commons/Input';
 
 export interface ModalTransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSendClick: () => Promise<void>;
   onBackClick: () => void;
   transferDetalis: TransferDetails;
+  className?: string;
 }
 
-export const ModalTransferRecipient = ({onRecipientChange, onSendClick, onBackClick, transferDetalis: {amount, currency}}: ModalTransferRecipientProps) => (
+export const ModalTransferRecipient = ({onRecipientChange, onSendClick, onBackClick, className, transferDetalis: {amount, currency}}: ModalTransferRecipientProps) => (
   <div className="transfer-modal">
     <div className="box-header">
       <div className="row align-items-center">

@@ -1,67 +1,68 @@
-.currency-accordion
-  position: relative
-  margin-bottom: 45px
+.jarvis-transfer-amount
+  .currency-accordion
+    position: relative
+    margin-bottom: 45px
 
-.currency-accordion-btn::after
-  content: ''
-  position: absolute
-  top: 50%
-  right: 20px
-  transform: translateY(-50%)
-  width: 13px
-  height: 11px
-  background: url('./../assets/icons/angle.svg') center no-repeat
+  .currency-accordion-btn::after
+    content: ''
+    position: absolute
+    top: 50%
+    right: 20px
+    transform: translateY(-50%)
+    width: 13px
+    height: 11px
+    background: url('./../assets/icons/angle.svg') center no-repeat
 
-  +media(s)
-    right: 15px
+    +media(s)
+      right: 15px
 
-.currency-accordion-btn.expaned::after
-  transform: translateY(-50%) rotate(180deg)
+  .currency-accordion-btn.expaned::after
+    transform: translateY(-50%) rotate(180deg)
 
-.currency-accordion-item
-  position: relative
-  display: flex
-  align-items: center
-  justify-content: space-between
-  width: 100%
-  height: 92px
-  padding: 0 50px 0 20px
-  background: #fff
-  border: 1px solid #D0D3F6
+  .currency-accordion-item
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: space-between
+    width: 100%
+    height: 92px
+    padding: 0 50px 0 20px
+    background: #fff
+    border: 1px solid #D0D3F6
 
-  +media(s)
-    padding: 0 40px 0 10px
+    +media(s)
+      padding: 0 40px 0 10px
 
-.currency-accordion-left
-  display: flex
-  align-items: center
+  .currency-accordion-left
+    display: flex
+    align-items: center
 
-.currency-accordion-img
-  display: block
-  margin-right: 18px
-  max-width: 25px
+  .currency-accordion-img
+    display: block
+    margin-right: 18px
+    max-width: 25px
 
-  +media(s)
-    margin-right: 10px
+    +media(s)
+      margin-right: 10px
 
-.currency-accordion-name
-  font-size: 14px
-  color: #31405E
+  .currency-accordion-name
+    font-size: 14px
+    color: #31405E
 
-.currency-accordion-amount
-  font-size: 14px
-  color: #31405E
-  text-align: right
+  .currency-accordion-amount
+    font-size: 14px
+    color: #31405E
+    text-align: right
 
-.currency-accordion-amount-usd
-  font-size: 14px
-  color: #A4A8B4
-  text-align: right
+  .currency-accordion-amount-usd
+    font-size: 14px
+    color: #A4A8B4
+    text-align: right
 
-.currency-accordion-content
-  position: absolute
-  left: 0
-  bottom: -5px
-  transform: translateY(100%)
-  z-index: 10
-  width: 100%
+  .currency-accordion-content
+    position: absolute
+    left: 0
+    bottom: -5px
+    transform: translateY(100%)
+    z-index: 10
+    width: 100%
