@@ -29,7 +29,7 @@ describe('UI: Connection flow', () => {
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     await services.sdk.tokensDetailsStore.fetchTokensDetails();
     services.balanceService.start();
-    services.sdk.start();
+    await services.sdk.start();
     [privateKey, contractAddress] = await services.sdk.create(name);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
     appWrapper = mountWithContext(<App/>, services, ['/']);
