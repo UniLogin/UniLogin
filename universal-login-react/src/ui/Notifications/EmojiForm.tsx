@@ -13,9 +13,10 @@ interface EmojiFormProps {
   publicKey: string;
   contractAddress: string;
   privateKey: string;
+  hideTitle?: () => void;
 }
 
-export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFormProps) => {
+export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitle}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState([] as number[]);
   const [status, setStatus] = useState('');
   const {progressBar, showProgressBar} = useProgressBar();
@@ -25,6 +26,7 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFo
   const confirmWithCodeCheck = (publicKey: string) => {
     if (isValidCode(enteredCode, publicKey)) {
       sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
+      hideTitle ? hideTitle() : null;
       showProgressBar();
       setStatus('');
     } else {
@@ -52,7 +54,10 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey}: EmojiFo
   return (
     <div id="emojis">
     {progressBar ?
-      <ProgressBar className="connection-progress-bar" /> :
+      <div>
+        <p className="approve-device-title">Connecting new device...</p>
+        <ProgressBar className="connection-progress-bar" />
+      </div> :
       <>
         <EmojiPlaceholders maxLength={EMOJIS_MAX_LENGTH} code={enteredCode} onEmojiClicked={onEmojiRemove} />
         <EmojiPanelWithFakes publicKey={publicKey} onEmojiClicked={onEmojiAdd} />
