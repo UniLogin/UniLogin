@@ -44,13 +44,15 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'funds':
         return (
           <div>
-            <p className="udashboard-name">{applicationWallet.name}</p>
+            <div>
+              <p className="udashboard-name">{applicationWallet.name}</p>
+            </div>
             <Funds
               ensName={applicationWallet.name}
               sdk={sdk}
               onTopUpClick={() => setDashboardContent('topup')}
               onSendClick={() => setDashboardContent('transferAmount')}
-              />
+            />
           </div>
         );
       case 'approveDevice':

@@ -195,3 +195,8 @@
   border-radius: 50%;
   border: 1px solid transparent;
 }
+
+.udashboard-name {
+  color: #A4A8B4;
+  text-align: center;
+}
