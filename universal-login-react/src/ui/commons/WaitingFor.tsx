@@ -4,7 +4,7 @@ import '../styles/waitingFor.css';
 
 const ModalWaitingFor = () => {
   return (
-      <div >
+      <div className="waiting-for-title">
         Waiting for deployment
         <ProgressBar />
       </div>
