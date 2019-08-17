@@ -1,7 +1,10 @@
 import React from 'react';
-import SafelloLogo from './../../assets/topUp/safello-white.png';
-import RampLogo from './../../assets/topUp/ramp-white.png';
-import WyreLogo from './../../assets/topUp/wyre-white.svg';
+import SafelloLogoWhite from './../../assets/topUp/safello-white.png';
+import Safello from './../../assets/logos/safello@2x.png';
+import RampLogoWhite from './../../assets/topUp/ramp-white.png';
+import RampLogo from './../../assets/logos/ramp.png';
+import WyreLogoWhite from './../../assets/topUp/wyre-white.svg';
+import WyreLogo from './../../assets/logos/wyre@2x.png';
 import {TopUpComponentType} from '../../../core/models/TopUpComponentType';
 import {PaymentMethod} from './TopUpWithFiat';
 import {TopUpRadio} from '../TopUpRadio';
@@ -9,9 +12,16 @@ import {TopUpRadio} from '../TopUpRadio';
 interface FiatPaymentMethodsProps {
   paymentMethod: PaymentMethod;
   setPaymentMethod: (paymentMethod: PaymentMethod) => void;
+  logoColor?: LogoColor;
 }
 
-export const FiatPaymentMethods = ({paymentMethod, setPaymentMethod}: FiatPaymentMethodsProps) => (
+export type LogoColor = 'white' | 'black';
+
+const getRampLogo = (logoColor: LogoColor) => logoColor === 'white' ? RampLogoWhite : RampLogo;
+const getSafelloLogo = (logoColor: LogoColor) => logoColor === 'white' ? SafelloLogoWhite : Safello;
+const getWyreLogo = (logoColor: LogoColor) => logoColor === 'white' ? WyreLogoWhite : WyreLogo;
+
+export const FiatPaymentMethods = ({paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => (
   <div className="fiat-payment-methods">
     <TopUpRadio
       checked={paymentMethod === TopUpComponentType.ramp}
@@ -19,7 +29,7 @@ export const FiatPaymentMethods = ({paymentMethod, setPaymentMethod}: FiatPaymen
       name="payment-method"
       className="fiat-payment-method"
     >
-      <img src={RampLogo} srcSet={RampLogo} alt="ramp" className="ramp-logo" />
+      <img src={getRampLogo(logoColor)} srcSet={getRampLogo(logoColor)} alt="ramp" className="ramp-logo" />
     </TopUpRadio>
     <TopUpRadio
       checked={paymentMethod === TopUpComponentType.safello}
@@ -27,7 +37,7 @@ export const FiatPaymentMethods = ({paymentMethod, setPaymentMethod}: FiatPaymen
       name="payment-method"
       className="fiat-payment-method"
     >
-      <img src={SafelloLogo} srcSet={SafelloLogo} alt="safello" className="safello-logo" />
+      <img src={getSafelloLogo(logoColor)} srcSet={getSafelloLogo(logoColor)} alt="safello" className="safello-logo" />
     </TopUpRadio>
     <TopUpRadio
       checked={paymentMethod === TopUpComponentType.wyre}
@@ -35,7 +45,7 @@ export const FiatPaymentMethods = ({paymentMethod, setPaymentMethod}: FiatPaymen
       name="payment-method"
       className="fiat-payment-method"
     >
-      <img src={WyreLogo} srcSet={WyreLogo} alt="wyre" className="wyre-logo" />
+      <img src={getWyreLogo(logoColor)} srcSet={getWyreLogo(logoColor)} alt="wyre" className="wyre-logo" />
     </TopUpRadio>
   </div>
 );
