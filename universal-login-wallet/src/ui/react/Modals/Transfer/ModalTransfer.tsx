@@ -44,6 +44,7 @@ const ModalTransfer = () => {
         onSendClick={onGenerateClick}
         onBackClick={() => setModal('transferAmount')}
         transferDetalis={transferDetalis}
+        transferRecipientClassName="jarvis-transfer-recipient"
       />
     );
   }
