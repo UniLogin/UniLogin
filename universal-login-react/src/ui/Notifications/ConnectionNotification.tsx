@@ -15,18 +15,29 @@ interface ConnectNotificationProps {
 
 export const ConnectionNotification = ({contractAddress, privateKey, sdk, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
+  const [showTitle, setShowTitle] = useState(true);
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNotifications), []);
 
   return (
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="universal-login-emojis">
         {notifications.length > 0
-          ? <EmojiForm
-            publicKey={notifications[0].key}
-            sdk={sdk}
-            contractAddress={contractAddress}
-            privateKey={privateKey}
-          />
+          ?
+          <div>
+            {showTitle &&
+              <div>
+                <p className="approve-device-title">Approve device</p>
+                <p className="approve-device-text">A new device tries to connects to this aacount. Enter the emojis in the correct order to approve it.</p>
+              </div>
+            }
+            <EmojiForm
+              publicKey={notifications[0].key}
+              sdk={sdk}
+              contractAddress={contractAddress}
+              privateKey={privateKey}
+              hideTitle={() => setShowTitle(false)}
+            />
+          </div>
           : <p className="connection-device-status">No requests to connect from other applications</p>
         }
       </div>
