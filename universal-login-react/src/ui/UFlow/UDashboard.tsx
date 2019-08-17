@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
-import {USettings} from './USettings';
 import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
 import {useAsync} from '../hooks/useAsync';
 import UniversalLoginSDK, {TransferService} from '@universal-login/sdk';
@@ -56,8 +55,6 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             sdk={sdk}
           />
         );
-      case 'settings':
-        return <USettings />;
       case 'topup':
         return (
           <TopUp

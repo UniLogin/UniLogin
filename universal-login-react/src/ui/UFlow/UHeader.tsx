@@ -23,12 +23,6 @@ export const UHeader = ({activeTab, setActiveTab}: UHeaderProps) => {
       >
         Approve Device
       </button>
-      <button
-        className={`udashboard-tab udashboard-tab-settings ${activeTab === 'settings' ? 'active' : ''}`}
-        onClick={() => setActiveTab('settings')}
-      >
-        Settings
-      </button>
     </div>
   );
 };
