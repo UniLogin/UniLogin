@@ -1,0 +1,50 @@
+.universal-login-recipient .universal-login-default .transfer-recipient {
+  padding-top: 50px;
+}
+
+.universal-login-recipient .universal-login-default .transfer-recipient-text {
+  color: #ABB3E8;
+}
+
+.universal-login-recipient .universal-login-default .transfer-recipient-label {
+  color: #B9C3F8;
+  margin: 0 0 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.universal-login-recipient .universal-login-default .transfer-recipient-text {
+  font-size: 12px;
+  color: #B9C3F8;
+  margin: 0 0 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.universal-login-recipient .universal-login-default .transfer-recipient-input {
+  height: 32px;
+  background: #362F6A;
+  border-radius: 2px;
+  border: none;
+  font-weight: 700;
+  font-size: 12px;
+  color: #FFFFFF;
+  padding-left: 13px;
+}
+
+.universal-login-recipient .universal-login-default .transfer-send-btn {
+  background: #0FB989;
+  border-radius: 6px;
+  border: none;
+  width: 370px;
+  max-width: 100%;
+  height: 50px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #FFFFFF;
+  letter-spacing: -0.08px;
+  text-align: center;
+  margin: 50px auto 0;
+  display: block;
+}
