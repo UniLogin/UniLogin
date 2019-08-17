@@ -5,6 +5,7 @@ import {Ramp} from '../../integration/Ramp';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
+import {LogoColor} from './Fiat/FiatPaymentMethods';
 
 interface TopUpProps {
   contractAddress: string;
@@ -14,9 +15,10 @@ interface TopUpProps {
   modalClassName?: string;
   hideModal?: () => void;
   isModal?: boolean;
+  logoColor?: LogoColor;
 }
 
-export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName}: TopUpProps) => {
+export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -33,6 +35,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName
             contractAddress={contractAddress}
             onPayClick={onPayClick}
             topUpClassName={topUpClassName}
+            logoColor={logoColor}
           />
         </ModalWrapper>
       );
@@ -42,6 +45,7 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName
         contractAddress={contractAddress}
         onPayClick={onPayClick}
         topUpClassName={topUpClassName}
+        logoColor={logoColor}
       />
     );
   } else if (modal === TopUpComponentType.safello) {

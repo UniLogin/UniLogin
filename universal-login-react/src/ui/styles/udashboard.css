@@ -1,3 +1,10 @@
+.udashboard-logo-btn {
+  display: inline-block;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .udashboard-modal .modal-wrapper {
   width: 970px;
   max-width: 100%;
@@ -156,4 +163,22 @@
   width: 15px;
   background: url('./../assets/icons/forward-arrow.svg') center no-repeat;
   background-size: contain;
+}
+
+.udashboard-progress {
+  max-width: 500px;
+  padding: 50px 20px 20px;
+  margin: 0 auto;
+}
+
+.udashboard-progress-text {
+  color: #fff;
+  font-weight: 700;
+  margin: 0 0 40px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.udashboard-content .universal-login-topup .universal-login-default .top-up {
+  background: none;
 }
