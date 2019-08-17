@@ -11,9 +11,9 @@ export interface LogoButtonProps {
 export const LogoButton = ({applicationWallet, sdk}: LogoButtonProps) => {
 
 
-  if(applicationWallet.contractAddress.length > 10) {
-    return (<UDashboard applicationWallet={applicationWallet} sdk={sdk}/>)
+  if (applicationWallet.contractAddress.length > 10) {
+    return (<UDashboard applicationWallet={applicationWallet} sdk={sdk}/>);
   } else {
-    return <></>
+    return <></>;
   }
 };

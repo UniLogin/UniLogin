@@ -32,7 +32,7 @@ export const App = () => {
 
 
 
-  const [applicationWallet, setApplicationWallet] = useState({name: '', contractAddress: '', privateKey: ''})
+  const [applicationWallet, setApplicationWallet] = useState({name: '', contractAddress: '', privateKey: ''});
 
   return (
     <BrowserRouter>
