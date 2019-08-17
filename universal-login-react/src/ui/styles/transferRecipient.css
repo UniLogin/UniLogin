@@ -1,0 +1,30 @@
+.transfer-recipient-input-wrapper {
+  position: relative;
+  margin-bottom: 160px;
+}
+
+.transfer-recipient-input {
+  width: 100%;
+  border: 1px solid #E1E1F0;
+  padding-right: 25px;
+}
+
+.transfer-recipient {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.transfer-recipient-text {
+  margin: 0 0 35px;
+  font-size: 16px;
+  color: #31405E;
+  text-align: center;
+}
+
+.modal-back-btn {
+  display: block;
+  width: 18px;
+  height: 12px;
+  margin-right: 14px;
+  background: url('./../assets/icons/arrow-left.svg') center no-repeat;
+}

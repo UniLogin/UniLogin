@@ -5,13 +5,15 @@ import {Funds} from './Funds';
 import {USettings} from './USettings';
 import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
 import {useAsync} from '../hooks/useAsync';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {TransferService} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {dashboardContentType} from '../../core/models/ReactUModalContext';
 import './../styles/udashboard.css';
 import {TopUp} from '../TopUp/TopUp';
 import {ApproveDevice} from './ApproveDevice';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
+import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
+import {TransferInProgress} from './TransferInProgress';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -27,6 +29,8 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
     setTransferDetails({...transferDetalis, ...args});
   };
+
+  const transferService = new TransferService(sdk, applicationWallet);
 
   const onUButtonClick = () => {
     setDashboardVisibility(true);
@@ -71,6 +75,23 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             updateTransferDetailsWith={updateTransferDetailsWith}
             currency={transferDetalis.currency}
           />
+        );
+      case 'transferRecipient':
+        const onGenerateClick = async () => {
+          setDashboardContent('waitingForTransfer');
+          await transferService.transfer(transferDetalis);
+          setDashboardContent('funds');
+        };
+        return (
+          <TransferRecipient
+            onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+            onSendClick={onGenerateClick}
+            transferDetalis={transferDetalis}
+          />
+        );
+      case 'waitingForTransfer':
+        return (
+          <TransferInProgress />
         );
       default:
         return null;
