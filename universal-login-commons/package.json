@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/commons",
-  "version": "0.3.26",
+  "version": "0.3.28",
   "description": "Unviersal Login Common source code",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
