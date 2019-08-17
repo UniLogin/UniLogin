@@ -26,7 +26,7 @@ export const Funds = ({ensName, sdk, onTopUpClick, onSendClick}: FundsProps) => 
         <button className="udashboard-funds-btn udashboard-funds-topup" onClick={onTopUpClick}>Top-up</button>
         <button className="udashboard-funds-btn udashboard-funds-send" onClick={onSendClick}>Send</button>
       </div>
-      <MyAssets title="My assets" assetsList={tokenDetailsWithBalance} />
+      <MyAssets sdk={sdk} title="My assets" assetsList={tokenDetailsWithBalance} />
     </div>
     );
 };
