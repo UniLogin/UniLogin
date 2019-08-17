@@ -3,6 +3,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
 }
 
 .udashboard-modal .modal-wrapper {
@@ -181,4 +182,16 @@
 
 .udashboard-content .universal-login-topup .universal-login-default .top-up {
   background: none;
+}
+
+.new-notifications::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -4px;
+  width: 11px;
+  height: 11px;
+  background: #0FB989;
+  border-radius: 50%;
+  border: 1px solid transparent;
 }

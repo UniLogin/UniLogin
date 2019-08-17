@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
@@ -30,10 +30,9 @@ export const App = () => {
     console.log('connect clicked');
   };
 
-  const randomString = Math.random().toString(36).substring(7);
-  const randomEnsName = `${randomString}.mylogin.eth`;
 
-  const applicationWallet: ApplicationWallet = {name: '', contractAddress: '', privateKey: ''};
+
+  const [applicationWallet, setApplicationWallet] = useState({name: '', contractAddress: '', privateKey: ''});
 
   return (
     <BrowserRouter>
@@ -47,7 +46,7 @@ export const App = () => {
               path="/logobutton"
               render={() => (
                 <div>
-                  <CreateRandomInstance ensName={randomEnsName} applicationWallet={applicationWallet}/>
+                  <CreateRandomInstance setApplicationWallet={setApplicationWallet}/>
                   <hr/>
                   <LogoButton
                     applicationWallet={applicationWallet}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
@@ -24,6 +24,9 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
   const [dashboardContent, setDashboardContent] = useState<dashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+
+  const [newNotifications, setNewNotifications] = useState([] as Notification[]);
+  useEffect(() => sdk.subscribeAuthorisations(applicationWallet.contractAddress, applicationWallet.privateKey, setNewNotifications), []);
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
     setTransferDetails({...transferDetalis, ...args});
@@ -98,7 +101,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
 
   return (
     <>
-      <button className="udashboard-logo-btn" onClick={() => onUButtonClick()}>
+      <button className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`} onClick={() => onUButtonClick()}>
         <img src={logoIcon} alt="U"/>
       </button>
       {dashboardVisibility &&
