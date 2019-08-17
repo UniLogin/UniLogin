@@ -3,14 +3,14 @@ import {TokensPrices} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 
 export interface DropdownItemProps {
-  sdk: UniversalLoginSDK;
-  className?: string;
-  name: string;
-  symbol: string;
-  balance: string;
-  icon: string;
-  onClick: (transferCurrency: string) => void;
-}
+    sdk: UniversalLoginSDK;
+    className?: string;
+    name: string;
+    symbol: string;
+    balance: string;
+    icon: string;
+    onClick: (transferCurrency: string) => void;
+  }
 
 export const TransferDropdownItem = ({sdk, className, name, symbol, balance, icon, onClick}: DropdownItemProps) => {
   const [usdAmount, setUsdAmount] = useState<string>('');
