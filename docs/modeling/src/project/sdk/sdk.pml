@@ -4,18 +4,51 @@ title SDK
 
 package UserInterface {
   class SDK {
-    getFutureWallet() : [privateKey, contractAddress]
-    intatializeWallet(privateKey, ensName)
-    createWallet() : [privateKey, contractAddress]
+    createFutureWallet() : [privateKey, contractAddress]
+    walletFrom(privateKey, ensNameOrAddress)
+    connectToWallet(walletContractAddress: string)
+    getMessageStatus(messageHash)
+    getRelayerConfig()
+    execute(...);
+    selfExecute(...)
+  }
+
+  class Wallet {
+    futureWallet: FutureWallet
+    deployedWallet: DeployedWallet
+    type: 'future' | 'deployed' | 'none'
+  }
+
+  class WalletBase {
+    privateKey: address
+    contractAddress: address
+    sdk: SDK
   }
 
   class FutureWallet {
-    privateKey: address
-    contractAddress: address
-    waitForBalance()
-    deploy(ensName)
+    waitForBalance();
+    deploy(ensName);
+  }
+
+  class DeployedWallet {
+    addKey(key);
+    removeKey(key);
+    setRequiredSignatures(number);
+    getKeyPurpose(key);
+    getNonce();
+    subscribeToEvent()
+    subscribeToBalances()
+    subscribeToAggregatedBalance()
+    subscribeToPrices()
+    subscribeAuthorisations()
   }
 }
+
+WalletBase <|-- Wallet
+WalletBase <|-- FutureWallet
+WalletBase <|-- DeployedWallet
+Wallet *-- FutureWallet
+Wallet *-- DeployedWallet
 
 package Core {
   class PublicRelayerConfig {
@@ -41,7 +74,7 @@ package Domain {
     subscribe(...)
   }
 
-  class BalanceObserver {
+  class DeploymentReadyObserver {
     constructor(walletAddress, SupportedToken [])
     tick()
   }
@@ -79,23 +112,21 @@ package Integration {
   }
 }
 
-SDK .. FutureWallet
-
-ObserverRunner <|-- BalanceObserver
+ObserverRunner <|-- DeploymentReadyObserver
 ObserverRunner <|-- DeploymentObserver
 ObserverRunner <|-- ObserverBase
 ObserverBase <|-- BlockchainObserver
 ObserverBase <|-- RelayerObserver
 
-FutureWallet *-- BalanceObserver
+FutureWallet *-- DeploymentReadyObserver
 FutureWallet *-- DeploymentObserver
-BalanceObserver *-- BlockchainService
+DeploymentReadyObserver *-- BlockchainService
 DeploymentObserver *-- BlockchainService
 BlockchainObserver *-- BlockchainService
 RelayerObserver *-- RelayerApi
 
-SDK *-- BlockchainObserver
-SDK *-- RelayerObserver
+DeployedWallet *-- BlockchainObserver
+DeployedWallet *-- RelayerObserver
 PublicRelayerConfig o-- SupportedToken
 
 
