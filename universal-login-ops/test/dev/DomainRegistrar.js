@@ -107,13 +107,13 @@ describe('ENS register', async () => {
     });
 
     it('should set name', async () => {
-      const reverseNode = utils.namehash(`${wallet.address.slice(2)}.addr.reverse`.toLowerCase());
+      const reverseNode = utils.namehash(`${wallet.address.slice(2)}.addr.reverse`);
       await nameRegistrar.setReverseName(label, domain);
       expect(await publicResolverContract.name(reverseNode)).to.eq(`${label}.${domain}`);
     });
 
     it('start works', async () => {
-      const reverseNode = utils.namehash(`${wallet.address.slice(2)}.addr.reverse`.toLowerCase());
+      const reverseNode = utils.namehash(`${wallet.address.slice(2)}.addr.reverse`);
       await nameRegistrar.start('justa', domain);
       expect(await publicResolverContract.addr(utils.namehash(`justa.${domain}`))).to.eq(wallet.address);
       expect(await publicResolverContract.name(reverseNode)).to.eq(`justa.${domain}`);

@@ -15,7 +15,7 @@ export class WalletPresenter {
 
   getContractAddress(): string {
     ensure(!!this.walletService.applicationWallet, ApplicationWalletNotFound);
-    return this.walletService.applicationWallet!.contractAddress.toLowerCase();
+    return this.walletService.applicationWallet!.contractAddress;
   }
 }
 

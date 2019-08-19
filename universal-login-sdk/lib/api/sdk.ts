@@ -206,7 +206,7 @@ class UniversalLoginSDK {
 
   async connect(walletContractAddress: string) {
     const {publicKey, privateKey} = createKeyPair();
-    await this.relayerApi.connect(walletContractAddress, publicKey.toLowerCase());
+    await this.relayerApi.connect(walletContractAddress, publicKey);
     return {
       privateKey,
       securityCode: generateCode(publicKey)

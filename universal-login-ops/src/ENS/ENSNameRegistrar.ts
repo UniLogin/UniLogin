@@ -52,7 +52,7 @@ class ENSNameRegistrar extends ENSRegistrarBase {
 
     const labelHash = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${domain}`);
-    const reverseNode = utils.namehash(`${this.deployer.address.slice(2)}.addr.reverse`.toLowerCase());
+    const reverseNode = utils.namehash(`${this.deployer.address.slice(2)}.addr.reverse`);
     this.variables.ENS_NAME = `${label}.${domain}`;
     this.log(`Registgering ${this.variables.ENS_NAME}...`);
     await this.registerName(labelHash, label, domain, node);

@@ -17,7 +17,7 @@ export const getKeyFromData = (data : string) => {
   const codec = new utils.AbiCoder();
   const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
   const [address] = (codec.decode(['bytes32', 'uint256'], data.replace(addKeySighash.slice(2), '')));
-  return utils.hexlify(utils.stripZeros(address));
+  return utils.getAddress(utils.hexlify(utils.stripZeros(address)));
 };
 
 export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>

@@ -11,21 +11,21 @@ class AuthorisationStore {
 
   addRequest(request: AuthorisationRequest) {
     const {walletContractAddress, key, deviceInfo} = request;
-    return this.database.insert({walletContractAddress: walletContractAddress.toLowerCase(), key: key.toLowerCase(), deviceInfo})
+    return this.database.insert({walletContractAddress, key, deviceInfo})
       .into('authorisations')
       .returning('id');
   }
 
   getPendingAuthorisations(walletContractAddress: string) {
     return this.database('authorisations')
-      .where({walletContractAddress: walletContractAddress.toLowerCase()})
+      .where({walletContractAddress})
       .select();
   }
 
   removeRequest(walletContractAddress: string, publicKey: string) {
     return this.database('authorisations')
-      .where('walletContractAddress', walletContractAddress.toLowerCase())
-      .where('key', publicKey.toLocaleLowerCase())
+      .where('walletContractAddress', walletContractAddress)
+      .where('key', publicKey)
       .del();
   }
 }

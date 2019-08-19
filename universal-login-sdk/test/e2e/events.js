@@ -37,7 +37,7 @@ describe('E2E: Events', async () => {
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await sdk.finalizeAndStop();
     unsubscribe();
-    expect(keyCallback).to.have.been.calledWith({key: wallet.address.toLowerCase(), purpose: 1});
+    expect(keyCallback).to.have.been.calledWith({key: wallet.address, purpose: 1});
     expect(connectionCallback).to.have.been.called;
   });
 
