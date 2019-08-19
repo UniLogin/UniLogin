@@ -14,7 +14,7 @@ export const EmojiPlaceholders = ({code, onEmojiClicked, maxLength}: EmojiPlaceh
     const emojis = [];
 
     for (let i = 0; i < maxLength; i++) {
-      if (code[i]) {
+      if (typeof code[i] === 'number') {
         emojis.push(
           <li key={i}>
             <button onClick={() => onEmojiClicked(i)}>
