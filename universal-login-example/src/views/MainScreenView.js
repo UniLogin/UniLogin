@@ -9,7 +9,7 @@ class MainScreenView extends Component {
       <p className="click-history-item" key={event.key}>
         <span className="date"> {event.pressTime} ago </span>
         <span className="bold user-inline">
-          <Blockies seed={event.address.toLowerCase()} size={8} scale={4} />{' '}
+          <Blockies seed={event.address} size={8} scale={4} />{' '}
           {event.name}
         </span>{' '}
         pressed at {event.score} seconds

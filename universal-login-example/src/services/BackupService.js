@@ -17,11 +17,9 @@ class BackupService {
   async generateBackupCodes(numCodes) {
     for (let index = 0; index < numCodes; index++) {
       const prefix = toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
-        .replace(/\s/g, '-')
-        .toLowerCase();
+        .replace(/\s/g, '-');
       const suffix = toWords(Math.floor(Math.random() * Math.pow(3456, 4)))
-        .replace(/\s/g, '-')
-        .toLowerCase();
+        .replace(/\s/g, '-');
       const backupCode = `${prefix}-${suffix}`;
       const wallet = await this.generateWallet(this.walletContractService.walletContract.name, backupCode);
       this.backupCodes.push(backupCode);

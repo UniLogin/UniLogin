@@ -18,7 +18,7 @@ class EnsService {
   }
 
   async getEnsName(address) {
-    const node = namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
+    const node = namehash(`${address.slice(2)}.addr.reverse`);
     this.resolverContract = this.resolverContract || new Contract(await this.getPublicResolverAddress(), PublicResolver.interface, this.provider);
     return await this.resolverContract.name(node);
   }

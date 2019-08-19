@@ -6,7 +6,7 @@ function Header(props) {
   return (
     <div className="row">
       <Blockies
-        seed={props.walletContract.address.toLowerCase()}
+        seed={props.walletContract.address}
         size={8}
         scale={8}
       />
