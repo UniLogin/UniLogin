@@ -16,7 +16,8 @@
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.0.1",
     "@universal-login/commons": "^0.3.29",
-    "@universal-login/sdk": "^0.3.29"
+    "@universal-login/sdk": "^0.3.29",
+    "react-blockies": "^1.4.1"
   },
   "peerDependencies": {
     "react": "^16.8.x",
