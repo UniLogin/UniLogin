@@ -200,3 +200,13 @@
   color: #A4A8B4;
   text-align: center;
 }
+
+.udashboard-blockies {
+  position: absolute;
+  left: 37%;
+  border-radius: 6px;
+  top: 12.5%;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+}

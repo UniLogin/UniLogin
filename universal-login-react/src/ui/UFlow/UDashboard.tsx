@@ -13,6 +13,7 @@ import {ApproveDevice} from './ApproveDevice';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
 import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
 import {TransferInProgress} from './TransferInProgress';
+const Blockies = require('react-blockies').default;
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -45,6 +46,9 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         return (
           <div>
             <div>
+              <div className="udashboard-blockies">
+                <Blockies seed={applicationWallet.contractAddress.toLowerCase()} size={8} scale={4} />
+              </div>
               <p className="udashboard-name">{applicationWallet.name}</p>
             </div>
             <Funds
