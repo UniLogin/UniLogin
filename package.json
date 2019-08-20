@@ -28,7 +28,7 @@
     "publish:packages": "yarn lerna publish from-package"
   },
   "engines": {
-    "node": ">=10.15",
+    "node": "^10.15",
     "yarn": ">=1.9.4"
   }
 }
