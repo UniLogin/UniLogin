@@ -47,7 +47,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
           <div>
             <div>
               <div className="udashboard-blockies">
-                <Blockies seed={applicationWallet.contractAddress.toLowerCase()} size={8} scale={4} />
+                <Blockies seed={applicationWallet.contractAddress} size={8} scale={4} />
               </div>
               <p className="udashboard-name">{applicationWallet.name}</p>
             </div>

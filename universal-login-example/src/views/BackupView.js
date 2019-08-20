@@ -7,7 +7,7 @@ function BackupCode(props) {
     <div>
       <div className="row align-items-center">
         <Blockies
-          seed={props.walletContract.address.toLowerCase()}
+          seed={props.walletContract.address}
           size={8}
           scale={6}
         />

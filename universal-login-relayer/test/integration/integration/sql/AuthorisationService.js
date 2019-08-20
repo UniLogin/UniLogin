@@ -39,21 +39,21 @@ describe('INT: Authorisation Service', async () => {
   });
 
   it('Authorisation roundtrip', async () => {
-    const walletContractAddress =  walletContract.address.toLowerCase();
-    const key = managementKey.address.toLowerCase();
+    const walletContractAddress =  walletContract.address;
+    const key = managementKey.address;
     const request = {walletContractAddress, key, deviceInfo};
 
     const [id] = await authorisationStore.addRequest(request);
     const authorisations = await authorisationStore.getPendingAuthorisations(walletContractAddress);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
 
-    await authorisationStore.removeRequest(otherWallet.address, managementKey.address.toLowerCase());
+    await authorisationStore.removeRequest(otherWallet.address, managementKey.address);
     const authorisationsAfterDelete = await authorisationStore.getPendingAuthorisations(otherWallet.address);
     expect(authorisationsAfterDelete).to.deep.eq([]);
   });
 
   it('should return [] array when no pending authorisations', async () => {
-    expect(await authorisationStore.getPendingAuthorisations(walletContract.address.toLowerCase())).to.deep.eq([]);
+    expect(await authorisationStore.getPendingAuthorisations(walletContract.address)).to.deep.eq([]);
   });
 
   afterEach(async () => {

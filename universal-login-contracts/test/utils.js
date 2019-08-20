@@ -18,7 +18,7 @@ export const messageSignatureForApprovals = (wallet, id) =>
     ));
 
 export const lookupAddress = async (provider, address, resolverAddress) => {
-  const node = utils.namehash(`${address.slice(2)}.addr.reverse`.toLowerCase());
+  const node = utils.namehash(`${address.slice(2)}.addr.reverse`);
   const contract = new Contract(resolverAddress, PublicResolver.abi, provider);
   return contract.name(node);
 };

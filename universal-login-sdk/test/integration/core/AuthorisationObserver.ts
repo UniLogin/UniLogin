@@ -53,8 +53,8 @@ describe('INT: AuthorisationsObserver', async () => {
     const {privateKey} = await sdk.connect(contractAddress);
     await waitUntil(() => !!callback.secondCall);
     expect(callback.secondCall.args[0][0]).to.deep.include({
-      walletContractAddress: contractAddress.toLocaleLowerCase(),
-      key: utils.computeAddress(privateKey).toLocaleLowerCase()
+      walletContractAddress: contractAddress,
+      key: utils.computeAddress(privateKey)
     });
     unsubscribe();
     expect(callback).to.have.been.calledTwice;

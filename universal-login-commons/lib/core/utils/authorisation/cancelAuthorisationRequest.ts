@@ -5,7 +5,7 @@ import {sign} from '../signatures';
 export const hashCancelAuthorisationRequest =
   (cancelAuthorisationRequest: CancelAuthorisationRequest): string => {
     const {walletContractAddress, publicKey} = cancelAuthorisationRequest;
-    return utils.solidityKeccak256(['bytes20', 'bytes20'], [walletContractAddress.toLowerCase(), publicKey.toLowerCase()]);
+    return utils.solidityKeccak256(['bytes20', 'bytes20'], [walletContractAddress, publicKey]);
   };
 
 export const signCancelAuthorisationRequest =

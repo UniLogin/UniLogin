@@ -6,7 +6,7 @@ abstract class ObserverBase extends ObserverRunner {
 
   subscribe(eventType: string, filter: any, callback: Function) {
     if (filter.key) {
-      filter.key = filter.key.toLowerCase();
+      filter.key = filter.key;
     }
     const filterString = JSON.stringify(filter);
     const emitter = this.emitters[filterString] || new EventEmitter();

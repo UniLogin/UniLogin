@@ -98,7 +98,7 @@ function toWords(number) {
 // Converts a valid phrase back into a string
 function fromWords(words) {
   let wordArray = words
-    .toLowerCase()
+
     .replace(/[bcdfghjklmnprstvwz][bcdfghjklmnprstvwz]/gi, function(r) {
       let n = Math.floor(r.length / 2);
       return r.substr(0, n) + " " + r.substr(n, n);
@@ -122,4 +122,4 @@ function fromWords(words) {
   return result;
 }
 
-export {fromWords, toWords}; 
+export {fromWords, toWords};
