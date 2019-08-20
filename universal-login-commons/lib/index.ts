@@ -18,6 +18,7 @@ export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsS
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {getEmojiColor, getEmojiNumber} from './core/utils/emoji';
+export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
