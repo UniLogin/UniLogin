@@ -1,4 +1,5 @@
 import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '../models/WalletSuggestionAction';
+import {isValidEnsNameElement} from '../utils/ens';
 
 export interface WalletExistenceVerifier {
   walletContractExist(domain: string): Promise<boolean>;
@@ -28,17 +29,14 @@ export class SuggestionsService {
     if (splitted.length === 0 || splitted.length > 3) {
       return false;
     }
-    if (!/^\w[\w-]*$/.test(splitted[0])) {
+    if (!isValidEnsNameElement(splitted[0])) {
       return false;
     }
-    if (splitted.length > 1 && !/^[\w-]*$/.test(splitted[1])) {
+    if (splitted.length > 1 && splitted[1] !== '' && !isValidEnsNameElement(splitted[1])) {
       return this.isCorrectDomainPrefix(splitted[1]);
     }
     if (splitted.length > 2) {
-      if (splitted[1].length === 0) {
-        return false;
-      }
-      return this.isCorrectTld(splitted[2]);
+      return (splitted[1].length === 0) ? false : this.isCorrectTld(splitted[2]);
     }
     return true;
   }
