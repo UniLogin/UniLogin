@@ -27,10 +27,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
   const [creations, setCreations] = useState<string[]>([]);
   const [name, setName] = useState('');
   const isOnlyCreateAction = actions.includes(WalletSuggestionAction.create) && actions.length === 1;
-  const isNameTaken = creations.length === 0 &&
-    isOnlyCreateAction &&
-    !!name &&
-    !busy;
+  const isNameAvailable = creations.length === 0 && isOnlyCreateAction && !!name && !busy;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -60,7 +57,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             placeholder="bob.example.eth"
             autoFocus
           />
-          {isNameTaken && <div>Name is already taken</div>}
+          {isNameAvailable && <div>Name is already taken or is invalid</div>}
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}
