@@ -229,9 +229,7 @@ describe('SuggestionsService', () => {
     });
 
     it('domains with dashes', () => {
-      expect(service.isCorrectPrefix('a.my-')).to.be.true;
       expect(service.isCorrectPrefix('a.my-log')).to.be.true;
-      expect(service.isCorrectPrefix('a.my-super-')).to.be.true;
       expect(service.isCorrectPrefix('a.my-super-domain')).to.be.true;
     });
   });
