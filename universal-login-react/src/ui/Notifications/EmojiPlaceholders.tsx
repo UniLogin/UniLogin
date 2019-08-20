@@ -9,22 +9,22 @@ interface EmojiPlaceholdersProps {
   maxLength: number;
 }
 
-export const EmojiPlaceholders = ({code, onEmojiClicked, maxLength}: EmojiPlaceholdersProps) => {
-  const renderSelectedEmojis = () => {
-    const emojis = [];
+const emojisButtons = (codes: number[], onEmojiClicked: (index: number) => void) =>
+  codes.map((code: number, i: number) => (
+    <li key={i}>
+      <button onClick={() => onEmojiClicked(i)}>
+        <Emoji code={code} />
+      </button>
+    </li>
+  ));
 
-    for (let i = 0; i < maxLength; i++) {
-      if (typeof code[i] === 'number') {
-        emojis.push(
-          <li key={i}>
-            <button onClick={() => onEmojiClicked(i)}>
-              <Emoji code={code[i]}/>
-            </button>
-          </li>
-        );
-      } else {
-        emojis.push(<li key={i} />);
-      }
+export const EmojiPlaceholders = ({code, onEmojiClicked, maxLength}: EmojiPlaceholdersProps) => {
+
+  const renderSelectedEmojis = () => {
+    const emojis = emojisButtons(code, onEmojiClicked);
+
+    for (let i = code.length; i < maxLength; i++) {
+      emojis.push(<li key={i} />);
     }
 
     return emojis;
