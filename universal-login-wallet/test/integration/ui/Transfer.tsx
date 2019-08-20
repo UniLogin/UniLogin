@@ -7,8 +7,10 @@ import {deployMockToken} from '@universal-login/commons/testutils';
 import {Services} from '../../../src/ui/createServices';
 import {setupSdk} from '../helpers/setupSdk';
 import {setupUI} from '../helpers/setupUI';
+import {setupCryptoCompare} from '../helpers/setupCryptoCompare';
 import {AppPage} from '../pages/AppPage';
 
+setupCryptoCompare();
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
