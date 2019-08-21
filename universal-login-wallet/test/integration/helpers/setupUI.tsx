@@ -14,7 +14,6 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const tokens = tokenAddress ? [tokenAddress, ETHER_NATIVE_TOKEN.address] : [ETHER_NATIVE_TOKEN.address];
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
   await services.sdk.tokensDetailsStore.fetchTokensDetails();
-  await services.sdk.start();
 
   const [privateKey, contractAddress] = await services.sdk.create(name);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
