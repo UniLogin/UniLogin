@@ -41,7 +41,6 @@ describe('UI: Transfer', () => {
   });
 
   after(async () => {
-    services.balanceService.stop();
     appWrapper.unmount();
     await relayer.stop();
   });

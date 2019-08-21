@@ -14,6 +14,5 @@ describe('Services', () => {
     expect(services.walletService).to.not.be.null;
     expect(services.walletPresenter).to.not.be.null;
     expect(services.sdk.tokensDetailsStore).to.not.be.null;
-    expect(services.balanceService).to.not.be.null;
   });
 });

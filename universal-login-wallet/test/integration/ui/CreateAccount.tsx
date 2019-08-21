@@ -24,7 +24,6 @@ describe('UI: Creation flow', () => {
         ({relayer, provider} = await setupSdk(wallet, '33113'));
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
         await services.sdk.tokensDetailsStore.fetchTokensDetails();
-        services.balanceService.start();
     });
 
     it('create wallet and disconnect roundtrip', async () => {
@@ -47,7 +46,6 @@ describe('UI: Creation flow', () => {
     });
 
     after(async () => {
-        services.balanceService.stop();
         appWrapper.unmount();
         await relayer.stop();
     });

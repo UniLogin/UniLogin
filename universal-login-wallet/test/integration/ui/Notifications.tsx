@@ -46,7 +46,6 @@ describe('UI: Notifications',  () => {
 
   afterEach(async () => {
     appWrapper.unmount();
-    services.balanceService.stop();
     await services.sdk.finalizeAndStop();
     await relayer.stop();
   });

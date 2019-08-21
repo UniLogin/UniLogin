@@ -3,9 +3,7 @@ import {providers} from 'ethers';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import UserDropdownService from '../core/app/UserDropdownService';
 import connectToWallet from '../core/services/ConnectToWallet';
-import {BalanceService} from '../core/services/BalanceService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
-import {EtherBalanceService} from '../integration/ethereum/EtherBalanceService';
 
 interface Config {
   domains: string[];
@@ -32,8 +30,6 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const walletService = new WalletService(sdk);
   const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
-  const etherBalanceService = new EtherBalanceService(sdk.provider, walletService);
-  const balanceService = new BalanceService(etherBalanceService);
   return {
     sdk,
     config,
@@ -41,11 +37,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     connectToWallet: _connectToWallet,
     walletService,
     walletPresenter,
-    balanceService,
-    start: () => {
-      balanceService.start();
-      sdk.start();
-    }
+    start: () => sdk.start()
   };
 };
 
