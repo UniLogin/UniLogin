@@ -14,7 +14,7 @@ describe('UNIT: hex strings', () => {
     });
 
     it('no prefix', () => {
-      expect(isProperAddress('FFFFFFe7d45c34110B34Ed269AD86248884E78C7')).to.be.false;
+      expect(isProperAddress('00FFFFFFe7d45c34110B34Ed269AD86248884E78C7')).to.be.false;
     });
 
     it('invalid charater', () => {

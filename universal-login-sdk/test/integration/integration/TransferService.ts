@@ -1,4 +1,5 @@
 import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import {utils, providers, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, ApplicationWallet} from '@universal-login/commons';
@@ -11,6 +12,7 @@ import {createWallet} from '../../helpers/createWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
+chai.use(chaiAsPromised);
 
 describe('INT: TransferService', () => {
   let transferService: TransferService;
@@ -49,6 +51,13 @@ describe('INT: TransferService', () => {
     const currency = ETHER_NATIVE_TOKEN.symbol;
     await transferService.transfer({to, amount, currency});
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
+  });
+
+  it('Should throw error if invalid address', async () => {
+    const to = `${TEST_ACCOUNT_ADDRESS}3`;
+    const amount = '0.5';
+    const currency = ETHER_NATIVE_TOKEN.symbol;
+    await expect(transferService.transfer({to, amount, currency})).to.be.rejectedWith(`Address ${to} is not valid`);
   });
 
   after(async () => {

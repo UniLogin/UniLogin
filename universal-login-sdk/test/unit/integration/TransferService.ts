@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {TransferService, encodeTransfer} from '../../../lib/integration/ethereum/TransferService';
 
 chai.use(sinonChai);
@@ -33,7 +33,7 @@ describe('UNIT: TransferService', () => {
     const {sdk, transferService, tokenService, waitToBeMined} = setup();
 
     await transferService.transfer({
-      to: 'RECIPIENT',
+      to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
     });
@@ -42,7 +42,7 @@ describe('UNIT: TransferService', () => {
     expect(sdk.execute).to.be.calledWith(
       {
         from: 'CONTRACT_ADDRESS',
-        to: 'RECIPIENT',
+        to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('123'),
         data: '0x0',
         gasToken: ETHER_NATIVE_TOKEN.address
@@ -57,7 +57,7 @@ describe('UNIT: TransferService', () => {
     const transferService = new TransferService(sdk as any, undefined as any);
 
     await expect(transferService.transfer({
-      to: 'RECIPIENT',
+      to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
     })).to.be.rejectedWith('Application wallet not found');
@@ -96,7 +96,7 @@ describe('UNIT: TransferService', () => {
     const transferService = new TransferService(sdk as any, undefined as any);
 
     await expect(transferService.transfer({
-      to: 'RECIPIENT',
+      to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: 'TOKEN_SYMBOL'
     })).to.be.rejectedWith('Application wallet not found');
@@ -108,9 +108,18 @@ describe('UNIT: TransferService', () => {
     const {transferService, sdk} = setup();
     sdk.execute = () => { throw new Error('Not enough tokens'); };
     await expect(transferService.transfer({
-      to: 'RECIPIENT',
+      to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
     })).to.be.rejectedWith('Not enough tokens');
+  });
+
+  it('throw an error if address is not valid', async () => {
+    const {transferService} = setup();
+    await expect(transferService.transfer({
+      to: '0x',
+      amount: '123',
+      currency: ETHER_NATIVE_TOKEN.symbol
+    })).to.be.rejectedWith(`Address 0x is not valid`);
   });
 });
