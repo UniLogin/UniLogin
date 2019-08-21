@@ -4,6 +4,8 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import UserDropdownService from '../core/app/UserDropdownService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import WalletPresenter from '../core/presenters/WalletPresenter';
+import { StorageService } from '../core/services/StorageService';
+import { WalletStorageService } from '../core/services/WalletStorageService';
 
 interface Config {
   domains: string[];
@@ -30,6 +32,9 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const walletService = new WalletService(sdk);
   const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
+  const walletStorageService = new WalletStorageService(walletService, storageService);
+  const storageService = new StorageService();
+  
   return {
     sdk,
     config,

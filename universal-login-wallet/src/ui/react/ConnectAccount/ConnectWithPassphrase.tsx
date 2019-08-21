@@ -11,13 +11,14 @@ export const ConnectWithPassphrase = ({name}: ConnectWithPasssphraseProps) => {
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const {walletService} = useServices();
+  const {walletService, walletStorageService} = useServices();
   const {history} = useRouter();
 
   const onRecoveryClick = async () => {
     setIsLoading(true);
     try {
       await walletService.recover(name, code);
+      walletStorageService.save();
       history.push('/');
     } catch (e) {
       setIsLoading(false);

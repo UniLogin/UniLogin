@@ -13,7 +13,7 @@ interface CreateAccountProps {
 
 export const CreateAccount = ({location}: CreateAccountProps) => {
   const modalService = useContext(WalletModalContext);
-  const {sdk, walletService} = useServices();
+  const {sdk, walletService, walletStorageService} = useServices();
   const walletConfig = useWalletConfig();
 
   const onCreateClick = async (name: string) => {
@@ -23,6 +23,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
     modalService.showModal('waitingForDeploy');
     await deploy(name, defaultDeployOptions.gasPrice.toString());
     walletService.setDeployed(name);
+    walletStorageService.save();
     modalService.showModal('transactionSuccess');
   };
 
