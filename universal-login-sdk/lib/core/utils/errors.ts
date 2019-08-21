@@ -42,7 +42,7 @@ export class ValidationFailed extends SDKError {
 
 export class InvalidAddress extends ValidationFailed {
   constructor (address: string) {
-    super(`Address ${address} is not valid.`, 'InvalidAddress');
+    super(`Address ${address} is not valid`, 'InvalidAddress');
     Object.setPrototypeOf(this, InvalidAddress.prototype);
   }
 }
