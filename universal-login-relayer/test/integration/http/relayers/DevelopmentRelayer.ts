@@ -1,19 +1,19 @@
 import chai from 'chai';
-import {utils} from 'ethers';
+import {utils, providers, Contract} from 'ethers';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import {waitUntil} from '@universal-login/commons';
 import {DevelopmentRelayer} from '../../../../lib/http/relayers/DevelopmentRelayer';
-import {startRelayer} from '../../../helpers/startRelayer';
 import {WalletCreator} from '../../../helpers/WalletCreator';
+const {startRelayer} = require('../../../helpers/startRelayer');
 
 chai.use(solidity);
 
 describe('INT: Development Relayer', async () => {
-  let provider;
+  let provider: providers.Provider;
   let wallet;
-  let relayer;
-  let tokenContract;
-  let contractAddress;
+  let relayer: DevelopmentRelayer;
+  let tokenContract: Contract;
+  let contractAddress: string;
 
   const relayerUrl = 'http://localhost:33511';
 
@@ -25,18 +25,18 @@ describe('INT: Development Relayer', async () => {
     ({contractAddress} = await walletCreator.deployWallet());
   });
 
-  const isBalanceEqual = (value) => async () =>
+  const isBalanceEqual = (value: utils.BigNumber) => async () =>
     (await provider.getBalance(contractAddress)).gt(value);
 
-  const isTokenBalanceEqual = (value) => async () =>
+  const isTokenBalanceEqual = (value: utils.BigNumber) => async () =>
     (await tokenContract.balanceOf(contractAddress)).eq(value);
 
   it('Grants 100 ether to newly created wallet contract', async () => {
-    await waitUntil(isBalanceEqual(utils.parseEther('100')), 5, 50);
+    await waitUntil(isBalanceEqual(utils.parseEther('100')) as any, 5, 50);
   });
 
   it('Grants 100 tokens to newly created wallet contract', async () => {
-    await waitUntil(isTokenBalanceEqual(utils.parseEther('100')), 5, 50);
+    await waitUntil(isTokenBalanceEqual(utils.parseEther('100')) as any, 5, 50);
   });
 
   afterEach(async () => {

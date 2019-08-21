@@ -12,7 +12,7 @@ declare interface Transaction {
   hash: string;
 }
 
-interface CallbackArgs {
+export interface CallbackArgs {
   transaction: Transaction;
   contractAddress: string;
 }
