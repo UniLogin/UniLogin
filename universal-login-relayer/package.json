@@ -35,7 +35,7 @@
     "clean": "rimraf build"
   },
   "engines": {
-    "node": ">=10.9"
+    "node": "^10.9"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
