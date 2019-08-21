@@ -7,7 +7,6 @@ import App from '../../../src/ui/react/App';
 import {AppPage} from '../pages/AppPage';
 import {mountWithContext} from './CustomMount';
 import {createPreconfiguredServices} from './ServicesUnderTests';
-import {SdkSigner} from '@universal-login/sdk';
 
 export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const name = 'name.mylogin.eth';
