@@ -1,5 +1,4 @@
-import {http, HttpFunction} from './http';
-import { CancelAuthorisationRequest, GetAuthorisationRequest } from '@universal-login/commons';
+import {CancelAuthorisationRequest, GetAuthorisationRequest, http, HttpFunction} from '@universal-login/commons';
 
 export class RelayerApi {
   private http: HttpFunction;
