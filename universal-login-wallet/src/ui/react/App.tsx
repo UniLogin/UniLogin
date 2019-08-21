@@ -18,7 +18,7 @@ import {ConnectionNotificationScreen} from './ConnectAccount/ConnectionNotificat
 
 const App = () => {
   const {history} = useRouter();
-  const modalService = createModalService<WalletModalType, void>();
+  const modalService = createModalService<WalletModalType, string>();
   const {walletService, sdk} = useServices();
   const authorized = walletService.isAuthorized();
 
