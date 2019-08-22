@@ -134,13 +134,12 @@ class UniversalLoginSDK {
   }
 
   async getTokensDetails() {
-    const tokenDetails: TokenDetails[] = [];
+    const tokensDetails: TokenDetails[] = [];
     for (const token of this.sdkConfig.observedTokens) {
-      const name = await this.tokenDetailsService.getName(token.address);
-      const symbol = await this.tokenDetailsService.getSymbol(token.address);
-      tokenDetails.push({...token, name, symbol});
+      const tokenDetails = await this.tokenDetailsService.getTokenDetails(token.address);
+      tokensDetails.push(tokenDetails);
     }
-    return tokenDetails;
+    return tokensDetails;
   }
 
   private fetchFutureWalletFactory() {
