@@ -1,13 +1,13 @@
 import {expect, use} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {Response} from 'node-fetch';
+import fetch, {Response} from 'node-fetch';
 import {http, handleApiResponse} from '../../../lib/integration/http/http';
 
 use(chaiAsPromised);
 
 describe('UNIT: http', () => {
   it('returns a function', () => {
-    const result = http('baseurl');
+    const result = http(fetch)('baseurl');
     expect(result).to.be.a('function');
   });
 });

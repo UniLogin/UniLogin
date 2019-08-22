@@ -52,7 +52,6 @@
     "ethereum-waffle": "2.0.15",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
-    "node-fetch": "^2.2.0",
     "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",

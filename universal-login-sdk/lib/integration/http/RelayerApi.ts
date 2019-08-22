@@ -1,10 +1,10 @@
-import {http, HttpFunction} from './http';
-import { CancelAuthorisationRequest, GetAuthorisationRequest } from '@universal-login/commons';
+import {CancelAuthorisationRequest, GetAuthorisationRequest, http, HttpFunction} from '@universal-login/commons';
+import {fetch} from './fetch';
 
 export class RelayerApi {
   private http: HttpFunction;
   constructor(relayerUrl: string) {
-    this.http = http(relayerUrl);
+    this.http = http(fetch)(relayerUrl);
   }
 
   async createWallet(managementKey: string, ensName: string) {
