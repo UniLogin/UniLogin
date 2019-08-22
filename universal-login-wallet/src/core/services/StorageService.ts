@@ -1,4 +1,4 @@
-import { cast, Sanitizer } from '@restless/sanitizers';
+import {cast, Sanitizer} from '@restless/sanitizers';
 
 export class StorageService {
   get(key: string): string | null {
@@ -15,12 +15,15 @@ export class StorageEntry<T> {
     private key: string,
     private sanitizer: Sanitizer<T>,
     private storageService: StorageService,
-  ) {}
+  ) {
+  }
 
 
   get(): T | null {
     const json = this.storageService.get(this.key);
-    if (!json) { return null; }
+    if (!json) {
+      return null;
+    }
 
     const parsed = JSON.parse(json);
     return cast(parsed, this.sanitizer);

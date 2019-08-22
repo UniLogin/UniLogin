@@ -1,7 +1,7 @@
-import { StorageEntry, StorageService } from './StorageService';
-import { WalletService } from '@universal-login/sdk';
-import { ApplicationWallet, ensure } from '@universal-login/commons';
-import { asObject, asString, Sanitizer } from '@restless/sanitizers';
+import {StorageEntry, StorageService} from './StorageService';
+import {WalletService} from '@universal-login/sdk';
+import {ApplicationWallet, ensure} from '@universal-login/commons';
+import {asObject, asString, Sanitizer} from '@restless/sanitizers';
 
 export class WalletStorageService {
   private storage: StorageEntry<ApplicationWallet>;
