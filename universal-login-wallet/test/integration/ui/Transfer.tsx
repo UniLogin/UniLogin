@@ -21,7 +21,7 @@ describe('UI: Transfer', () => {
   let mockTokenContract: Contract;
   const receiverAddress = TEST_ACCOUNT_ADDRESS;
 
-  before(async () => {
+  beforeEach(async () => {
     const [wallet] = await getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
@@ -40,8 +40,7 @@ describe('UI: Transfer', () => {
     expect(appPage.dashboard().getWalletBalance()).to.match(/^0\.9{3}[0-9]{6}/);
   });
 
-  after(async () => {
-    services.balanceService.stop();
+  afterEach(async () => {
     appWrapper.unmount();
     await relayer.stop();
   });
