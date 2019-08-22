@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {InputLabel} from '@universal-login/react';
 import qrCodePlacehoder from '../../assets/placeholders/qr-code-placeholder.png';
 import InputWithButton from '../common/InputWithButton';
+import {Hint} from '../common/Hint';
 
 const addressPlaceholder = '0xf902fd8B2AEE76AE81bBA106d667';
 
@@ -27,26 +28,6 @@ const ModalRequest = () => (
     </div>
   </div>
 );
-
-interface HintProps {
-  color: 'red' | 'yellow';
-  children: string;
-}
-
-const Hint = ({color, children}: HintProps) => {
-  const [hintVisibility, setHintVisibility] = useState(true);
-
-  if (hintVisibility) {
-    return (
-      <div className={`hint ${color}`}>
-        <p className="hint-text">{children}</p>
-        <button onClick={() => setHintVisibility(false)} className="hint-btn">Dismiss</button>
-      </div>
-    );
-  }
-
-  return null;
-};
 
 export default ModalRequest;
 

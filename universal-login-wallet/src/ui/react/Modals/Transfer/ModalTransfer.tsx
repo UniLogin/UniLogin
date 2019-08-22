@@ -16,10 +16,13 @@ const ModalTransfer = () => {
 
   const transferService = new TransferService(sdk, applicationWallet);
   const onGenerateClick = async () => {
-    modalService.hideModal();
     modalService.showModal('waitingForTransfer');
-    await transferService.transfer(transferDetalis);
-    modalService.hideModal();
+    try {
+      await transferService.transfer(transferDetalis);
+      modalService.hideModal();
+    } catch (e) {
+      modalService.showModal('error', `${e.name}: ${e.message}`);
+    }
   };
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
