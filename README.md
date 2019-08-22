@@ -32,10 +32,6 @@ Packages maintained with this monorepo are listed below.
 - [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example application written in React
 - OPS - scripts for development and deployment
 
-## Formal Verification
-Our goal is to formally verify functions declared in ethereum smart contracts used in our project.
-Please, see [Formal Verification README](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/formal-verification/README.md) for details and instructions.
-
 ## Contributing
 
 Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
