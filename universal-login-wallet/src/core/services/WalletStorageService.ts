@@ -8,7 +8,7 @@ export class WalletStorageService {
 
   constructor(
     private walletService: WalletService,
-    private storageService: StorageService,
+    storageService: StorageService,
   ) {
     this.storage = new StorageEntry(
       'wallet',
