@@ -55,7 +55,6 @@ class UniversalLoginSDK {
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokens.map((token) => token.address));
-    this.tokensDetailsStore.fetchTokensDetails();
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }
@@ -247,6 +246,7 @@ class UniversalLoginSDK {
 
   async start() {
     await this.blockchainObserver.start();
+    await this.tokensDetailsStore.fetchTokensDetails();
   }
 
   stop() {
