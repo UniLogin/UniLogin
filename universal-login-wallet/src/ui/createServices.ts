@@ -16,10 +16,11 @@ interface Config {
 
 interface Overrides {
   provider?: providers.Provider;
+  storageService?: StorageService;
 }
 
-export const createServices = (config: Config, {provider} : Overrides = {}) => {
-  const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
+export const createServices = (config: Config, overrides : Overrides = {}) => {
+  const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(
     config.relayerUrl,
     providerOrProviderUrl,
