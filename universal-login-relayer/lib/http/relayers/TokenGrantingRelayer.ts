@@ -3,6 +3,7 @@ import {waitToBeMined} from '@universal-login/commons';
 import Token from './abi/Token.json';
 import Relayer from './Relayer';
 import {Config} from '../../config/relayer';
+import {CallbackArgs} from './DevelopmentRelayer';
 
 interface TokenGrantingRelayerCongig extends Config {
   tokenContractAddress : string;
@@ -20,24 +21,24 @@ class TokenGrantingRelayer extends Relayer {
   }
 
   addHooks() {
-    this.hooks.addListener('created', async (transaction : utils.Transaction) => {
+    this.hooks.addListener('created', async ({transaction, contractAddress} : CallbackArgs) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash as string);
       if (receipt.status) {
-        this.tokenContract.transfer(receipt.contractAddress, utils.parseEther('100'));
+        this.tokenContract.transfer(contractAddress, utils.parseEther('100'));
       }
     });
 
-    this.hooks.addListener('added', async (transaction : utils.Transaction) => {
+    this.hooks.addListener('added', async ({transaction, contractAddress} : CallbackArgs) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash as string);
       if (receipt.status) {
-        this.tokenContract.transfer(transaction.to, utils.parseEther('5'));
+        this.tokenContract.transfer(contractAddress, utils.parseEther('5'));
       }
     });
 
-     this.hooks.addListener('keysAdded', async (transaction : utils.Transaction) => {
+     this.hooks.addListener('keysAdded', async ({transaction, contractAddress} : CallbackArgs) => {
       const receipt = await waitToBeMined(this.provider, transaction.hash as string);
       if (receipt.status) {
-        this.tokenContract.transfer(transaction.to, utils.parseEther('15'));
+        this.tokenContract.transfer(contractAddress, utils.parseEther('15'));
       }
     });
   }

@@ -15,13 +15,11 @@ describe('INT: Development Relayer', async () => {
   let tokenContract: Contract;
   let contractAddress: string;
 
-  const relayerUrl = 'http://localhost:33511';
-
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({relayer, tokenContract} = await startRelayer(wallet, DevelopmentRelayer));
-    const walletCreator = new WalletCreator(relayerUrl, wallet);
+    const walletCreator = new WalletCreator(relayer as any, wallet);
     ({contractAddress} = await walletCreator.deployWallet());
   });
 

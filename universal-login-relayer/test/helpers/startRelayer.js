@@ -46,6 +46,7 @@ async function startRelayer(wallet, relayerConstructor) {
   });
   const config = deepMerge(getConfig('test'), overrideConfig);
   const relayer = new relayerConstructor(config, wallet.provider);
+  relayer.url = () => `http://localhost:${config.port}`;
   await relayer.start();
   return {relayer, tokenContract, factoryContract};
 }
