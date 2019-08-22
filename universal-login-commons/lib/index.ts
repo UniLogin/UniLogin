@@ -59,3 +59,4 @@ export {isValidAmount} from './core/utils/isValidAmount';
 export {ObservedCurrency, CurrencyToValue, TokensPrices} from './core/models/CurrencyData';
 export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
+export {getBalanceOf} from './core/utils/getBalanceOf';
