@@ -43,7 +43,8 @@ export const createServices = (config: Config, overrides : Overrides = {}) => {
     connectToWallet: _connectToWallet,
     walletService,
     walletPresenter,
-    start: () => sdk.start()
+    start: () => sdk.start(),
+    walletStorageService,
   };
 };
 
