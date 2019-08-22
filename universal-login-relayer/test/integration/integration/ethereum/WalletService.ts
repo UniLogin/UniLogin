@@ -1,10 +1,10 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { providers, Wallet, Contract } from 'ethers';
+import {providers, Wallet, Contract, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE} from '@universal-login/commons';
-import WalletMaster from '@universal-login/contracts/build/WalletMasterWithRefund.json'
+import WalletMaster from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 import WalletService from '../../../../lib/integration/ethereum/WalletService';
 import ENSService from '../../../../lib/integration/ethereum/ensService';
@@ -23,13 +23,14 @@ describe('INT: WalletService', async () => {
   let ensService: ENSService;
   const keyPair = createKeyPair();
   const ensName = 'alex.mylogin.eth';
+  let transaction: utils.Transaction;
 
   before(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({walletService, callback, factoryContract, ensService, provider} = await setupWalletService(wallet));
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
-    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature});
+    transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature});
     walletContract = new Contract(futureContractAddress, WalletMaster.interface, provider);
   });
 
@@ -44,7 +45,6 @@ describe('INT: WalletService', async () => {
     });
 
     it('should emit created event', async () => {
-      const transaction = await walletService.create(wallet.address, 'example.mylogin.eth');
       expect(callback).to.be.calledWith(sinon.match(transaction));
     });
 
