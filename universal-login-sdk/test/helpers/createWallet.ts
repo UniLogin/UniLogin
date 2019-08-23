@@ -14,4 +14,4 @@ export const createAndSetWallet = async (name: string, walletService: WalletServ
   const {privateKey, contractAddress} = await createWallet(name, sdk, wallet);
   walletService.connect({privateKey, contractAddress, name});
   return {contractAddress, privateKey, walletService};
-}
+};

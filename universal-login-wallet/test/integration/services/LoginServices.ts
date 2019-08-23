@@ -4,9 +4,8 @@ import {Wallet, providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitExpect, generateCode} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {setupSdk} from '@universal-login/sdk/testutils';
+import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import {createAndSetWallet} from '../helpers/createWallet';
 
 describe('Login', () => {
   let connectToWalletService: any;
@@ -56,7 +55,7 @@ describe('Login', () => {
   describe('ConnectionService', () => {
     before(async () => {
       name = 'super-name.mylogin.eth';
-      ({privateKey, contractAddress} = await createAndSetWallet(name, sdk, wallet, walletService));
+      ({privateKey, contractAddress} = await createAndSetWallet(name, walletService, wallet, sdk));
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     });
 
