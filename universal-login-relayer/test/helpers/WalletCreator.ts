@@ -4,23 +4,20 @@ import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitial
 import {encodeInitializeWithRefundData} from '@universal-login/contracts';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from '../../lib/integration/ethereum/ensService';
+import {RelayerUnderTest} from '../../lib';
 
 export class WalletCreator {
   private http: HttpFunction;
-  private relayerConfig?: PublicRelayerConfig;
   private ensService?: ENSService;
+  private relayerConfig: PublicRelayerConfig;
 
-  constructor(relayerUrl: string, private wallet: Wallet) {
-    this.http = http(fetch)(relayerUrl);
+  constructor(relayer: RelayerUnderTest, private wallet: Wallet) {
+    this.http = http(fetch)(relayer.url());
+    this.relayerConfig = relayer.publicConfig;
   }
 
-  async getRelayerConfig(): Promise<PublicRelayerConfig> {
-    this.relayerConfig = this.relayerConfig || (await this.http('GET', '/config')).config;
-    return this.relayerConfig!;
-  }
-
-  private async getEnsService() {
-    const {chainSpec: {ensAddress}} = await this.getRelayerConfig();
+  private async fetchEnsService() {
+    const {chainSpec: {ensAddress}} = await this.relayerConfig;
     if (this.ensService) {
       return this.ensService;
     }
@@ -35,15 +32,15 @@ export class WalletCreator {
   }
 
   private async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
-    const ensService = await this.getEnsService();
+    const ensService = await this.fetchEnsService();
     const args = await ensService.argsFor(ensName) as string[];
     const initArgs = [publicKey, ...args, gasPrice];
     return encodeInitializeWithRefundData(initArgs);
   }
 
   async createFutureWallet() {
-    await this.getEnsService();
-    const {factoryAddress} = await this.getRelayerConfig();
+    await this.fetchEnsService();
+    const {factoryAddress} = await this.relayerConfig;
     const keyPair = createKeyPair();
     const futureContractAddress = computeContractAddress(factoryAddress, keyPair.publicKey, await this.getInitCode(factoryAddress));
     return {privateKey: keyPair.privateKey, contractAddress: futureContractAddress, publicKey: keyPair.publicKey};

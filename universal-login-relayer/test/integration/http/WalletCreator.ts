@@ -13,23 +13,17 @@ describe('WalletCreator', () => {
   let provider: providers.Provider;
 
   const relayerPort = '33112';
-  const relayerUrl = `http://localhost:${relayerPort}`;
 
   beforeEach(async () => {
     provider = createMockProvider();
     const [wallet] = getWallets(provider);
     ({relayer} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
     await relayer.start();
-    walletCreator = new WalletCreator(relayerUrl, wallet);
+    walletCreator = new WalletCreator(relayer as any, wallet);
   });
 
   afterEach(async () => {
     await relayer.stop();
-  });
-
-  it('Gets relayer config', async () => {
-    const relayerConfig = await walletCreator.getRelayerConfig();
-    expect(relayerConfig).to.deep.eq(relayer.publicConfig);
   });
 
   it('Creates wallet contract', async () => {
