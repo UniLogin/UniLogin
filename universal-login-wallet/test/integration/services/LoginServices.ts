@@ -4,8 +4,8 @@ import {Wallet, providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitExpect, generateCode} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import {setupSdk} from '@universal-login/sdk/testutils';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import {setupSdk} from '../helpers/setupSdk';
 import {createWallet} from '../helpers/createWallet';
 
 describe('Login', () => {
