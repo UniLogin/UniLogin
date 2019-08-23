@@ -26,7 +26,7 @@ import {MessageStatusService} from '../../core/services/messages/MessageStatusSe
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
 import MessageValidator from '../../core/services/messages/MessageValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, RequiredBalanceChecker} from '@universal-login/commons';
+import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
 
 const defaultPort = '3311';
 
@@ -58,6 +58,7 @@ class Relayer {
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
+  public publicConfig: PublicRelayerConfig;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -65,6 +66,7 @@ class Relayer {
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
+    this.publicConfig = getPublicConfig(this.config);
   }
 
   async start() {
@@ -97,10 +99,9 @@ class Relayer {
     this.messageValidator = new MessageValidator(this.wallet, this.config.contractWhiteList);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageValidator);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.hooks, this.messageRepository, this.queueStore, this.messageExecutor, this.statusService);
-    const publicConfig = getPublicConfig(this.config);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
-    this.app.use('/config', ConfigRouter(publicConfig));
+    this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
