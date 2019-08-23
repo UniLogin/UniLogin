@@ -90,7 +90,7 @@ Which will start the development environment. The output should look somewhat li
 .. _using_sdk:
 
 Using the SDK
-------------
+-------------
 
 Creating a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -109,7 +109,7 @@ Below is a snippet doing precisely that for the development environment.
 The first argument of ``UniversalLoginSDK`` constructor is a relayer address, second is an Ethereum node address.
 
 Sending a meta-transaction
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 Once you have the contract wallet deployed you can execute a transaction via relayer:
 
 ::
