@@ -1,14 +1,14 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import basicWalletService from '../fixtures/basicSDK';
+import basicSDK from '../fixtures/basicSDK';
 import {SdkSigner} from '../../lib/api/SdkSigner';
 
 describe('E2E: SdkSigner', () => {
   let relayer: any;
 
   before(async () => {
-    ({relayer} = await loadFixture(basicWalletService));
+    ({relayer} = await loadFixture(basicSDK));
   });
 
   after(async () => {
@@ -16,14 +16,14 @@ describe('E2E: SdkSigner', () => {
   });
 
   it('can be created', async () => {
-    const {sdk, contractAddress, privateKey} = await loadFixture(basicWalletService);
+    const {sdk, contractAddress, privateKey} = await loadFixture(basicSDK);
     const signer = new SdkSigner(sdk, contractAddress, privateKey);
 
     expect(signer).not.to.equal(undefined);
   });
 
   it('can query balance', async () => {
-    const {sdk, contractAddress, privateKey, mockToken} = await loadFixture(basicWalletService);
+    const {sdk, contractAddress, privateKey, mockToken} = await loadFixture(basicSDK);
     const signer = new SdkSigner(sdk, contractAddress, privateKey);
 
     const contract = mockToken.connect(signer);
@@ -33,7 +33,7 @@ describe('E2E: SdkSigner', () => {
   });
 
   it('can send transactions through ethers contract', async () => {
-    const {sdk, contractAddress, privateKey, mockToken, otherWallet} = await loadFixture(basicWalletService);
+    const {sdk, contractAddress, privateKey, mockToken, otherWallet} = await loadFixture(basicSDK);
     const signer = new SdkSigner(sdk, contractAddress, privateKey);
 
     // gasToken should be configured when creating SDK instance in order to use the signer
