@@ -354,11 +354,11 @@ Key added and key removed
 
 **sdk.start()**
 
-  Starts to listen a relayer and blockchain events.
+  Starts listening to blockchain events and fetches supported tokens detials.
 
 **sdk.stop()**
 
-  Stops to listen a relayer and blockchain events.
+  Stops listening to blockchain events.
 
 
 **sdk.subscribe(eventType, filter, callback)**

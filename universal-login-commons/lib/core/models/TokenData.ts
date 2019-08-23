@@ -1,10 +1,7 @@
 import {utils} from 'ethers';
 
-export type ObservedToken = {
+export type TokenDetails = {
   address: string;
-};
-
-export type TokenDetails = ObservedToken & {
   symbol: string;
   name: string;
 };

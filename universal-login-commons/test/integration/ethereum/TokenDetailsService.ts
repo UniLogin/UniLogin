@@ -37,4 +37,21 @@ describe('INT: TokenDetailsService', () => {
     const notDeployedtokenAddress = '0x000000000000000000000000000000000000DEAD';
     expect(tokenDetailsService.getSymbol(notDeployedtokenAddress)).to.be.eventually.rejectedWith('contract not deployed');
   });
+
+  it('[token, ether]', async () => {
+    const mockToken = await deployContract(wallet, MockToken, []);
+    const tokensDetails = await tokenDetailsService.getTokensDetails([mockToken.address, ETHER_NATIVE_TOKEN.address]);
+
+    expect(tokensDetails).to.be.lengthOf(2);
+
+    const [tokenDetails, etherDetails] = tokensDetails;
+
+    expect(tokenDetails.symbol).to.eq('Mock');
+    expect(tokenDetails.name).to.eq('MockToken');
+    expect(tokenDetails.address).to.eq(mockToken.address);
+
+    expect(etherDetails.symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
+    expect(etherDetails.name).to.eq(ETHER_NATIVE_TOKEN.name);
+    expect(etherDetails.address).to.eq(ETHER_NATIVE_TOKEN.address);
+  });
 });

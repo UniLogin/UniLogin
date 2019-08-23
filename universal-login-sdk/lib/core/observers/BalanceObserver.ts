@@ -1,13 +1,14 @@
 import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
-import {BalanceChecker, TokenDetails, TokenDetailsWithBalance} from '@universal-login/commons';
+import {BalanceChecker, TokenDetailsWithBalance} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
+import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
 
 export class BalanceObserver extends ObserverRunner {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
   private callbacks: Function[] = [];
 
-  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetails: TokenDetails[], step: number = 500) {
+  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, step: number = 500) {
     super();
     this.step = step;
   }
@@ -18,7 +19,7 @@ export class BalanceObserver extends ObserverRunner {
 
   async getBalances() {
     const tokenBalances: TokenDetailsWithBalance[] = [];
-    for (const token of this.tokenDetails) {
+    for (const token of this.tokenDetailsStore.tokensDetails) {
       const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
       tokenBalances.push({...token, balance});
     }
