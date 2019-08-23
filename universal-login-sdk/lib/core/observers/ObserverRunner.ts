@@ -6,6 +6,7 @@ abstract class ObserverRunner {
   protected state: ObserverRunnerState = 'stop';
   abstract async tick(): Promise<void>;
   step = 1000;
+  timeout: any = null;
 
   async loop() {
     if (this.state === 'stop') {
@@ -14,12 +15,12 @@ abstract class ObserverRunner {
     await this.tick();
     if (this.state === 'stopping') {
       this.state = 'stop';
-    } else {
-      setTimeout(this.loop.bind(this), this.step);
+    } else if (this.state === 'running') {
+      this.timeout = setTimeout(() => this.loop(), this.step);
     }
   }
 
-  async start() {
+  start() {
     if (this.state === 'stop') {
       this.state = 'running';
       this.loop();
@@ -28,10 +29,11 @@ abstract class ObserverRunner {
 
   stop() {
     this.state = 'stop';
+    clearTimeout(this.timeout);
   }
 
   async finalizeAndStop() {
-    this.state = 'stopping';
+    this.state = this.isRunning() ? 'stopping' : 'stop';
     do {
       await sleep(this.step);
     } while (this.isRunning());
