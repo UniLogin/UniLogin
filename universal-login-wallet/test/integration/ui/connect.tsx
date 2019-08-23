@@ -4,7 +4,7 @@ import {mountWithContext} from '../helpers/CustomMount';
 import App from '../../../src/ui/react/App';
 import {providers, Wallet, utils} from 'ethers';
 import {Services} from '../../../src/ui/createServices';
-import {setupSdk} from '../helpers/setupSdk';
+import {setupSdk} from '@universal-login/sdk/testutils';
 import {ETHER_NATIVE_TOKEN, waitExpect} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
