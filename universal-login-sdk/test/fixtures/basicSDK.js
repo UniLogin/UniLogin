@@ -1,10 +1,10 @@
-import UniversalLoginSDK from '../../lib/api/sdk';
-import {RelayerUnderTest} from '@universal-login/relayer';
-import {deployContract} from 'ethereum-waffle';
 import {utils, Contract} from 'ethers';
+import {deployContract} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
+import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
+import {RelayerUnderTest} from '@universal-login/relayer';
+import UniversalLoginSDK from '../../lib/api/sdk';
 import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 import {createWallet} from '../helpers/createWallet';
 
