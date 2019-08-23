@@ -6,7 +6,7 @@ import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {setupSdk} from '@universal-login/sdk/testutils';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import {createWallet} from '../helpers/createWallet';
+import {createAndSetWallet} from '../helpers/createWallet';
 
 describe('Login', () => {
   let connectToWalletService: any;
@@ -56,7 +56,7 @@ describe('Login', () => {
   describe('ConnectionService', () => {
     before(async () => {
       name = 'super-name.mylogin.eth';
-      ({privateKey, contractAddress} = await createWallet(name, walletService, wallet));
+      ({privateKey, contractAddress} = await createAndSetWallet(name, sdk, wallet, walletService));
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     });
 
