@@ -2,12 +2,8 @@
 .idea
 /docs/build/
 /node_modules
-/sdk/*
 /universal-login-commons/dist/*
 /universal-login-commons/node_modules/*
-/universal-login-boilerplate/.cache/*
-/universal-login-boilerplate/dist/*
-/universal-login-boilerplate/node_modules/*
 /universal-login-contracts/build/
 /universal-login-contracts/dist/
 /universal-login-contracts/node_modules
