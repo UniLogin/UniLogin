@@ -10,6 +10,15 @@ const tokenAbi = [
 export class TokenDetailsService {
   constructor(private provider: providers.Provider) {}
 
+  async getTokensDetails(tokenAddresses: string[]) {
+    const tokensDetails: TokenDetails[] = [];
+    for (const address of tokenAddresses) {
+      const tokenDetails = await this.getTokenDetails(address);
+      tokensDetails.push(tokenDetails);
+    }
+    return tokensDetails;
+  }
+
   async getTokenDetails(tokenAddress: string): Promise<TokenDetails> {
     const symbol = await this.getSymbol(tokenAddress);
     const name = await this.getName(tokenAddress);

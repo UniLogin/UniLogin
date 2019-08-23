@@ -8,6 +8,7 @@ import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBal
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
 import {createMockedPriceObserver} from '../../mock/PriceObserver';
 import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
+import {TokensDetailsStore} from '../../../lib/integration/ethereum/TokensDetailsStore';
 
 chai.use(sinonChai);
 
@@ -28,7 +29,7 @@ describe('INT: AggregateBalanceObserver', () => {
     const observedTokens: TokenDetails[] = [
       ETHER_NATIVE_TOKEN
     ];
-    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, observedTokens);
+    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore);
 
     mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
     resetCallCount();

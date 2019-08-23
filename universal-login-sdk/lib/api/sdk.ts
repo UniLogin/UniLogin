@@ -120,8 +120,8 @@ class UniversalLoginSDK {
     ensureNotNull(walletContractAddress, InvalidContract);
     ensureNotNull(this.relayerConfig, MissingConfiguration);
 
-    const tokenDetails = await this.getTokensDetails();
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, tokenDetails);
+    await this.tokensDetailsStore.fetchTokensDetails();
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, this.tokensDetailsStore);
   }
 
   async fetchAggregateBalanceObserver(ensName: string) {
@@ -132,9 +132,9 @@ class UniversalLoginSDK {
     this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver, this.tokensValueConverter);
   }
 
-  async getTokensDetails() {
-    return Promise.all(this.sdkConfig.observedTokens.map(({address}) => this.tokenDetailsService.getTokenDetails(address)));
-  }
+  // async getTokensDetails() {
+  //   return this.tokenDetailsService.getTokensDetails(this.sdkConfig.observedTokens.map);
+  // }
 
   private fetchFutureWalletFactory() {
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
