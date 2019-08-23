@@ -4,9 +4,7 @@ import {ConcurrentDeployment, UnsupportedBytecode} from '../utils/errors';
 import {BlockchainService} from '../../integration/ethereum/BlockchainService';
 import ObserverRunner from './ObserverRunner';
 
-export type OnContractDeployed = (
-  contractAddress: string,
- ) => void;
+export type OnContractDeployed = (contractAddress: string) => void;
 
 export class DeploymentObserver extends ObserverRunner {
   private onContractDeployed?: OnContractDeployed;

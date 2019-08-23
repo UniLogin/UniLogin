@@ -4,16 +4,18 @@ import ObserverRunner from './ObserverRunner';
 import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
 import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
 
+export type OnTokenPricesChange = (data: TokensPrices) => void;
+
 export class PriceObserver extends ObserverRunner {
   private lastTokenPrices: TokensPrices = {};
-  private callbacks: Function[] = [];
+  private callbacks: OnTokenPricesChange[] = [];
 
   constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], step: number = PRICE_OBSERVER_DEAFULT_TICK) {
     super();
     this.step = step;
   }
 
-  subscribe(callback: Function) {
+  subscribe(callback: OnTokenPricesChange) {
     this.callbacks.push(callback);
 
     this.isRunning() ? callback(this.lastTokenPrices) : this.start();
