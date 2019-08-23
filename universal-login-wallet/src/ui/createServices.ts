@@ -23,7 +23,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     providerOrProviderUrl,
     {
       paymentOptions: {},
-      observedTokens: config.tokens.map((address: string) => ({address}))
+      observedTokensAddresses: config.tokens
     }
   );
   const userDropdownService = new UserDropdownService();

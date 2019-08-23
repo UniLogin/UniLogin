@@ -8,8 +8,8 @@ export const SdkConfigDefault: SdkConfig = {
     gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
     gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE)
   },
-  observedTokens: [
-    {address: ETHER_NATIVE_TOKEN.address}
+  observedTokensAddresses: [
+    ETHER_NATIVE_TOKEN.address
   ],
   observedCurrencies: [
     'USD',

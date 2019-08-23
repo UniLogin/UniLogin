@@ -54,7 +54,7 @@ class UniversalLoginSDK {
     this.balanceChecker = new BalanceChecker(this.provider);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.tokenDetailsService = new TokenDetailsService(this.provider);
-    this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokens.map((token) => token.address));
+    this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }
@@ -131,10 +131,6 @@ class UniversalLoginSDK {
     await this.fetchBalanceObserver(ensName);
     this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver, this.tokensValueConverter);
   }
-
-  // async getTokensDetails() {
-  //   return this.tokenDetailsService.getTokensDetails(this.sdkConfig.observedTokens.map);
-  // }
 
   private fetchFutureWalletFactory() {
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
