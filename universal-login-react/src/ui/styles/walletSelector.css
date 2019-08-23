@@ -8,7 +8,7 @@
 
 .universal-login .selector-input-img {
   position: absolute;
-  top: 50%;
+  top: 25px;
   left: 12px;
   transform: translateY(-50%);
 }

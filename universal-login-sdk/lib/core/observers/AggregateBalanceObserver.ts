@@ -2,15 +2,17 @@ import {BalanceObserver} from './BalanceObserver';
 import {TokenDetailsWithBalance, CurrencyToValue, TokensPrices, TokensValueConverter} from '@universal-login/commons';
 import {PriceObserver} from './PriceObserver';
 
+export type OnAggregatedBalanceChange = (data: CurrencyToValue) => void;
+
 export class AggregateBalanceObserver {
   private tokensPrices: TokensPrices = {};
   private tokenDetailsWithBalance: TokenDetailsWithBalance[] = [];
-  private unsubscribePriceObserver?: Function;
-  private unsubscribeBalanceObserver?: Function;
-  private callbacks: Function[] = [];
+  private unsubscribePriceObserver?: () => void;
+  private unsubscribeBalanceObserver?: () => void;
+  private callbacks: OnAggregatedBalanceChange[] = [];
   constructor(private balanceObserver: BalanceObserver, private priceObserver: PriceObserver, private tokensValueConverter: TokensValueConverter) {}
 
-  subscribe(callback: Function) {
+  subscribe(callback: OnAggregatedBalanceChange) {
     this.callbacks.push(callback);
     if (this.callbacks.length === 1) {
       this.unsubscribeBalanceObserver = this.balanceObserver.subscribe(this.balanceObserverCallback.bind(this));

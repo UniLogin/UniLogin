@@ -1,14 +1,9 @@
 @startuml
 
-package client {
-  class Example {
-    balanceChanged(tokensWithBalances: Map<address, balance>)
-  }
-}
-
 package ui {
   class SDK {
-    onBalanceChanged(walletAddress: string, tokens: string[], callback: Function)
+    subscribeToAggregatedBalance(ensName: string, callback: OnAggregatedBalanceChange)
+    subscribeToBalance(ensName: string, callback: OnBalanceChange)
   }
 }
 
@@ -19,26 +14,40 @@ package core {
     loop()
   }
 
-  class BalanceObserver {
-    readonly public balances: Map<address, balance>
-    construtor(provider, walletAddress: string, tokens: string[], {tick, intialBalances?});
-    getInitialBalances();
-    checkBalancesNow();
-    tick()
-    subscribe(callback: Function): Function
+  class AggregatedBalanceObserver {
+    constructor(balanceObserver: BalanceObserver, priceObserver: PriceObserver, tokensValueConverter: TokensValueConverter)
+    subscribe(callback: OnAggregatedBalanceChange): Unsubscribe
   }
 
-  class AggregatedBalanceObserver {
-    constructor(balanceObserver: BalanceObserver, currency: string)
-    subscribe(callback: Function): Function
+  class BalanceObserver {
+    lastTokenBalances: TokenDetailsWithBalance[]
+    callbacks: OnBalanceChange[];
+    construtor(balanceChecker: BalanceChecker, walletAddress: string, tokenDetails: TokenDetails[]);
+    checkBalancesNow();
+    tick()
+    subscribe(callback: OnBalanceChange): Unsubscribe
+  }
+
+  class PriceObserver {
+    lastTokenPrices: TokensPrices;
+    callbacks: OnPriceChange[];
+    construtor(observedTokens: TokenDetails[], observedCurrencies: ObservedCurrency[]);
+    getCurrentPrices();
+    tick()
+    subscribe(callback: OnPriceChange): Unsubscribe
+  }
+}
+
+package commons {
+    class TokensValueConverter {
+    constructor(observedCurrencies: ObservedCurrency[]);
+    getTotal(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices)
+    getTokensTotalWorth(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices)
+    getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue)
   }
 }
 
 package integration {
-  class PriceOracle {
-    getRate(currency, tokenAddress)
-  }
-
   class BalanceChecker {
     constructor(provider: Provider);
     getBalance(address: string);
@@ -47,9 +56,13 @@ package integration {
   }
 }
 
-Example --> SDK
+SDK --> AggregatedBalanceObserver
 SDK --> BalanceObserver
 BalanceObserver --> BalanceChecker
+AggregatedBalanceObserver --> BalanceObserver
+AggregatedBalanceObserver --> PriceObserver
+AggregatedBalanceObserver --> TokensValueConverter
 BalanceObserver --|> ObserverRunner
+PriceObserver --|> ObserverRunner
 
 @enduml

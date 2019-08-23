@@ -26,4 +26,3 @@ To get API reference go to one of the following sections:
 
 - :ref:`SDK documentation<sdk>` - if you would like to build an application using Universal Login
 - :ref:`Relayer documentation<relayer>` - if you would like to set up your own relayer
-- :ref:`Example documentation<example>` - if you would like to play with the example application

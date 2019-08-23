@@ -11,8 +11,8 @@ import {
   generateCode,
 } from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import {setupSdk} from '@universal-login/sdk/testutils';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import {setupSdk} from '../helpers/setupSdk';
 import {createWallet} from '../helpers/createWallet';
 
 describe('Login', () => {

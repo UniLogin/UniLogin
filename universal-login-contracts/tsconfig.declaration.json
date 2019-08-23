@@ -9,6 +9,7 @@
     "outDir": "dist/"
   },
   "include": [
-    "lib"
+    "lib",
+    "test/fixtures"
   ]
 }

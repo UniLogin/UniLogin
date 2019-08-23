@@ -5,7 +5,7 @@ import {ReactWrapper} from 'enzyme';
 import {providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {setupSdk} from '../helpers/setupSdk';
+import {setupSdk} from '@universal-login/sdk/testutils';
 import App from '../../../src/ui/react/App';
 import {Services} from '../../../src/ui/createServices';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';

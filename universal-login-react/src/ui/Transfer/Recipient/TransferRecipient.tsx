@@ -1,5 +1,5 @@
-import React from 'react';
-import {TransferDetails} from '@universal-login/commons';
+import React, {useState} from 'react';
+import {TransferDetails, isProperAddress} from '@universal-login/commons';
 import './../../styles/transferRecipient.css';
 import './../../styles/transferRecipientDefaults.css';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -11,21 +11,34 @@ export interface TransferRecipientProps {
   transferRecipientClassName?: string;
 }
 
-export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetalis: {amount, currency}}: TransferRecipientProps) => (
-  <div className="universal-login-recipient">
-    <div className={getStyleForTopLevelComponent(transferRecipientClassName)}>
-      <div className="transfer-recipient">
-        <p className="transfer-recipient-text">To who  are you sending {amount} {currency}?</p>
+export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetalis: {amount, currency, to}}: TransferRecipientProps) => {
+  const [showError, setShowError] = useState<boolean>(false);
+  const errorMessage = 'Invalid address';
+
+  const onClick = () => isProperAddress(to) ? onSendClick() : setShowError(true);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    showError && setShowError(false);
+    onRecipientChange(event);
+  };
+
+  return (
+    <div className="universal-login-recipient">
+      <div className={getStyleForTopLevelComponent(transferRecipientClassName)}>
+        <div className="transfer-recipient">
+          <p className="transfer-recipient-text">To who  are you sending {amount} {currency}?</p>
           <label className="transfer-recipient-label" htmlFor="">Recipient</label>
           <div className="transfer-recipient-input-wrapper">
             <input
               id="input-recipient"
               className="transfer-recipient-input"
-              onChange={onRecipientChange}
+              onChange={onChange}
             />
+            {showError && <div className={`hint red`}>{errorMessage}</div>}
           </div>
-        <button id="send-button" onClick={onSendClick} className="transfer-send-btn">Send</button>
+          <button id="send-button" onClick={onClick} className="transfer-send-btn">Send</button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};

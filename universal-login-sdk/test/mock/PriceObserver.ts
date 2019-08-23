@@ -1,5 +1,5 @@
 import {PriceObserver} from '../../lib/core/observers/PriceObserver';
-import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
+import {TokensDetailsStore} from '../../lib/integration/ethereum/TokensDetailsStore';
 
 export const PRICES_BEFORE = {
   ETH: { USD: 218.21, EUR: 194.38, BTC: 0.01893 },
@@ -21,8 +21,7 @@ export const createMockedPriceObserver = () => {
   const resetCallCount = () => {
     callCount = 0;
   };
-
-  const mockedPriceObserver = new PriceObserver(SdkConfigDefault.observedTokens, ['USD', 'EUR', 'BTC']);
+  const mockedPriceObserver = new PriceObserver({} as TokensDetailsStore, ['USD', 'EUR', 'BTC']);
 
   mockedPriceObserver.getCurrentPrices = async () => {
     return callCount < PRICES.length ? PRICES[callCount++] : {};

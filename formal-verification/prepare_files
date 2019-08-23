@@ -1,7 +1,0 @@
-#!/bin/bash
-
-mkdir -p dapp/out
-cp ../universal-login-contracts/build/Combined-Json.json dapp/out/ERC1077.sol.json
-cp -r ../universal-login-contracts/contracts dapp/contracts
-cp -r ../node_modules/openzeppelin-solidity dapp/openzeppelin-solidity
-cp -r ../node_modules/@ensdomains dapp/@ensdomains

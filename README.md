@@ -29,12 +29,7 @@ Packages maintained with this monorepo are listed below.
 - [Contracts](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
 - [Relayer](https://universalloginsdk.readthedocs.io/en/latest/relayer.html) - node.js server application that allows interacting with blockchain without a wallet
 - [SDK](https://universalloginsdk.readthedocs.io/en/latest/sdk.html) - a JS library, that helps to communicate with relayer
-- [Example](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/README.md) - example application written in React
 - OPS - scripts for development and deployment
-
-## Formal Verification
-Our goal is to formally verify functions declared in ethereum smart contracts used in our project.
-Please, see [Formal Verification README](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/formal-verification/README.md) for details and instructions.
 
 ## Contributing
 

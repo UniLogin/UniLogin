@@ -1,8 +1,8 @@
-import {useEffect, DependencyList} from 'react';
+import {useEffect} from 'react';
 
 type Unsubscribe = () => void;
 
-export const useAsyncEffect = (asyncCallback: () => Promise<Unsubscribe>, deps?: DependencyList) => {
+export const useAsyncEffect = (asyncCallback: () => Promise<Unsubscribe>, deps?: any[]) => {
   useEffect(() => {
     const promise = asyncCallback();
     return () => {

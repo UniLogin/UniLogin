@@ -29,7 +29,6 @@ Development environment
 
 Prerequisites
   Before running the development environment, make sure you have **PostgreSQL** installed, up and running.
-  You might want to check database configuration in file `knexfile.js <https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/src/relayer/knexfile.js>`_ and make sure your database is configured correctly.
 
 Installation
   To use the development environment, you need to install ``@universal-login/ops`` as dev dependency to your project.
@@ -91,7 +90,7 @@ Which will start the development environment. The output should look somewhat li
 .. _using_sdk:
 
 Using the SDK
-------------
+-------------
 
 Creating a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -110,7 +109,7 @@ Below is a snippet doing precisely that for the development environment.
 The first argument of ``UniversalLoginSDK`` constructor is a relayer address, second is an Ethereum node address.
 
 Sending a meta-transaction
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 Once you have the contract wallet deployed you can execute a transaction via relayer:
 
 ::
@@ -148,7 +147,7 @@ Connecting to an existing app on testnet
 Create a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Create your own wallet contract using `Universal Login Example App <https://example.universallogin.io//>`_ and get your contract address.
+Create your own wallet contract using `Universal Login Wallet <https://wallet.universallogin.io/>`_ and get your contract address.
 
 Create UniversalLoginSDK
 ^^^^^^^^^^^^^^^^^^^^^^^^

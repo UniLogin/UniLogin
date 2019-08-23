@@ -8,6 +8,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import Logo from './../assets/logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
+import './../styles/hint.css';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
@@ -57,7 +58,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             placeholder="bob.example.eth"
             autoFocus
           />
-          {isNameAvailable && <div>Name is already taken or is invalid</div>}
+          {isNameAvailable && <div className="hint" >Name is already taken or is invalid</div>}
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}
