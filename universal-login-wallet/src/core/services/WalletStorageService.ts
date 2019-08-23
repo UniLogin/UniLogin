@@ -1,15 +1,12 @@
 import {StorageEntry, StorageService} from './StorageService';
-import {WalletService} from '@universal-login/sdk';
-import {ApplicationWallet, ensure} from '@universal-login/commons';
+import {ApplicationWallet} from '@universal-login/commons';
 import {asObject, asString, Sanitizer} from '@restless/sanitizers';
+import {WalletStorage} from '@universal-login/sdk/lib/core/services/WalletService';
 
-export class WalletStorageService {
-  private storage: StorageEntry<ApplicationWallet>;
+export class WalletStorageService implements WalletStorage {
+  private storage: StorageEntry<ApplicationWallet | null>;
 
-  constructor(
-    private walletService: WalletService,
-    storageService: StorageService,
-  ) {
+  constructor(storageService: StorageService) {
     this.storage = new StorageEntry(
       'wallet',
       asApplicationWallet,
@@ -17,19 +14,12 @@ export class WalletStorageService {
     );
   }
 
-  save() {
-    ensure(this.walletService.isAuthorized(), Error, 'User must be authorized');
-    const wallet = this.walletService.applicationWallet as ApplicationWallet;
-    this.storage.set(wallet);
+  load(): ApplicationWallet | null {
+    return this.storage.get();
   }
 
-  load() {
-    const wallet = this.storage.get();
-    if (wallet === null) {
-      return false;
-    }
-    this.walletService.connect(wallet);
-    return true;
+  save(wallet: ApplicationWallet | null): void {
+    this.storage.set(wallet);
   }
 }
 

@@ -19,11 +19,13 @@ import {ConnectionNotificationScreen} from './ConnectAccount/ConnectionNotificat
 const App = () => {
   const {history} = useRouter();
   const modalService = createModalService<WalletModalType, void>();
-  const {walletService, walletStorageService, sdk} = useServices();
+  const {walletService, sdk} = useServices();
   const [appReady, setAppReady] = useState(false);
 
   useLayoutEffect(() => {
-    walletStorageService.load();
+    if (walletService.state === 'None') {
+      walletService.loadFromStorage();
+    }
     setAppReady(true);
   }, []);
 

@@ -14,7 +14,6 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
 import {setupSdk} from '../helpers/setupSdk';
 import {createWallet} from '../helpers/createWallet';
-import {WalletStorageService} from '../../../src/core/services/WalletStorageService';
 
 describe('Login', () => {
   let connectToWalletService: any;
@@ -28,8 +27,6 @@ describe('Login', () => {
   let name: string;
   let privateKey: string;
   let contractAddress: string;
-  let storageService = {get: sinon.fake(), set: sinon.fake()};
-  let walletStorageService: WalletStorageService;
 
   before(async () => {
     [wallet] = getWallets(createMockProvider());
@@ -37,20 +34,11 @@ describe('Login', () => {
     [wallet] = await getWallets(provider);
     walletService = new WalletService(sdk);
     walletServiceForConnect = new WalletService(sdk);
-    storageService = {get: sinon.fake(), set: sinon.fake()};
-    walletStorageService = new WalletStorageService(walletService, storageService);
-    const walletStorageServiceForConnect = new WalletStorageService(walletServiceForConnect, storageService);
-
-    connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect, walletStorageServiceForConnect);
+    connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 10;
     blockchainObserver.lastBlock = 0;
     await sdk.start();
-  });
-
-  beforeEach(() => {
-    storageService.get.resetHistory();
-    storageService.set.resetHistory();
   });
 
   describe('CreationService', () => {
@@ -61,7 +49,6 @@ describe('Login', () => {
       await waitForBalance();
       await deploy(name, '1');
       walletService.setDeployed(name);
-      walletStorageService.save();
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
 
@@ -69,7 +56,6 @@ describe('Login', () => {
       expect(applicationWallet.name).to.eq(name);
       expect(applicationWallet.privateKey).to.eq(privateKey);
       expect(applicationWallet.contractAddress).to.eq(contractAddress);
-      expect(storageService.set).to.be.calledWith('wallet', JSON.stringify({name, contractAddress, privateKey}));
     });
   });
 
@@ -95,11 +81,6 @@ describe('Login', () => {
       await waitToBeMined();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       expect(securityCode).to.be.deep.eq(expectedSecurityCode);
-      expect(storageService.set).to.be.calledWith('wallet', JSON.stringify({
-        privateKey: walletServiceForConnect.applicationWallet.privateKey,
-        contractAddress,
-        name,
-      }));
     });
   });
 
