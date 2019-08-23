@@ -3,10 +3,12 @@ import {TokenDetails, ObservedCurrency, TokensPrices} from '@universal-login/com
 import ObserverRunner from './ObserverRunner';
 import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
 
+export type OnTokenPricesChange = (data: TokensPrices) => void;
+
 export class PriceObserver extends ObserverRunner {
   private observedTokensSymbols: string[] = [];
   private lastTokenPrices: TokensPrices = {};
-  private callbacks: Function[] = [];
+  private callbacks: OnTokenPricesChange[] = [];
 
   constructor(private observedTokens: TokenDetails[], private observedCurrencies: ObservedCurrency[], step: number = PRICE_OBSERVER_DEAFULT_TICK) {
     super();
@@ -14,7 +16,7 @@ export class PriceObserver extends ObserverRunner {
     this.observedTokensSymbols = this.observedTokens.map((token) => token.symbol);
   }
 
-  subscribe(callback: Function) {
+  subscribe(callback: OnTokenPricesChange) {
     this.callbacks.push(callback);
 
     this.isRunning() ? callback(this.lastTokenPrices) : this.start();

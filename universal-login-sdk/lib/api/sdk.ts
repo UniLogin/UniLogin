@@ -10,11 +10,11 @@ import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
-import {BalanceObserver} from '../core/observers/BalanceObserver';
+import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
-import {AggregateBalanceObserver} from '../core/observers/AggregateBalanceObserver';
-import {PriceObserver} from '../core/observers/PriceObserver';
+import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
+import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
 
 class UniversalLoginSDK {
@@ -225,17 +225,17 @@ class UniversalLoginSDK {
     return this.blockchainObserver.subscribe(eventType, filter, callback);
   }
 
-  async subscribeToBalances(ensName: string, callback: Function) {
+  async subscribeToBalances(ensName: string, callback: OnBalanceChange) {
     await this.fetchBalanceObserver(ensName);
     return this.balanceObserver!.subscribe(callback);
   }
 
-  async subscribeToAggregatedBalance(ensName: string, callback: Function) {
+  async subscribeToAggregatedBalance(ensName: string, callback: OnAggregatedBalanceChange) {
     await this.fetchAggregateBalanceObserver(ensName);
     return this.aggregateBalanceObserver!.subscribe(callback);
   }
 
-  subscribeToPrices(callback: Function) {
+  subscribeToPrices(callback: OnTokenPricesChange) {
     return this.priceObserver.subscribe(callback);
   }
 

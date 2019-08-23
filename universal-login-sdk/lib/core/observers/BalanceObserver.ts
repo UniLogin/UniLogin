@@ -3,9 +3,11 @@ import clonedeep from 'lodash.clonedeep';
 import {BalanceChecker, TokenDetails, TokenDetailsWithBalance} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 
+export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
+
 export class BalanceObserver extends ObserverRunner {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
-  private callbacks: Function[] = [];
+  private callbacks: OnBalanceChange[] = [];
 
   constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetails: TokenDetails[], step: number = 500) {
     super();
@@ -34,7 +36,7 @@ export class BalanceObserver extends ObserverRunner {
     return this.lastTokenBalances;
   }
 
-  subscribe(callback: Function) {
+  subscribe(callback: OnBalanceChange) {
     this.callbacks.push(callback);
 
     this.isRunning() ? callback(this.lastTokenBalances) : this.start();
