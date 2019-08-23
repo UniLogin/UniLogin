@@ -29,7 +29,6 @@ Development environment
 
 Prerequisites
   Before running the development environment, make sure you have **PostgreSQL** installed, up and running.
-  You might want to check database configuration in file `knexfile.js <https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/universal-login-example/src/relayer/knexfile.js>`_ and make sure your database is configured correctly.
 
 Installation
   To use the development environment, you need to install ``@universal-login/ops`` as dev dependency to your project.
@@ -148,7 +147,7 @@ Connecting to an existing app on testnet
 Create a wallet contract
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Create your own wallet contract using `Universal Login Example App <https://example.universallogin.io//>`_ and get your contract address.
+Create your own wallet contract using `Universal Login Wallet <https://wallet.universallogin.io/>`_ and get your contract address.
 
 Create UniversalLoginSDK
 ^^^^^^^^^^^^^^^^^^^^^^^^
