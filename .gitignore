@@ -12,14 +12,6 @@
 /universal-login-contracts/dist/
 /universal-login-contracts/node_modules
 /universal-login-contracts/yarn-error.log
-/universal-login-example/.cache
-/universal-login-example/.env
-/universal-login-example/build
-/universal-login-example/dist
-/universal-login-example/node_modules
-/universal-login-example/src/.DS_Store
-/universal-login-example/src/views/.DS_Store
-/universal-login-example/yarn-error.log
 /universal-login-ops/.env
 /universal-login-ops/dist
 /universal-login-ops/node_modules
