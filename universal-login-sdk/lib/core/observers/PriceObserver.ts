@@ -33,9 +33,6 @@ export class PriceObserver extends ObserverRunner {
   }
 
   async getCurrentPrices(): Promise<TokensPrices> {
-    if (this.tokensDetailsStore.tokensDetails.length === 0) {
-      await this.tokensDetailsStore.fetchTokensDetails();
-    }
     const observedTokensSymbols = this.tokensDetailsStore.tokensDetails.map((token) => token.symbol);
     return cryptocompare.priceMulti(observedTokensSymbols, this.observedCurrencies);
   }
