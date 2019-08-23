@@ -6,9 +6,10 @@
     "allowJs": false,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "dist/lib"
+    "outDir": "dist/"
   },
   "include": [
-    "lib"
+    "lib",
+    "test/helpers"
   ]
 }
