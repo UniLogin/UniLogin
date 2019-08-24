@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {TokensPrices} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
+import Spinner from '../../commons/Spinner';
 
 export interface DropdownItemProps {
     sdk: UniversalLoginSDK;
     className?: string;
     name: string;
     symbol: string;
-    balance: string;
+    balance: string | null;
     icon: string;
     onClick: (transferCurrency: string) => void;
   }
@@ -31,7 +32,7 @@ export const TransferDropdownItem = ({sdk, className, name, symbol, balance, ico
         <p className="currency-accordion-name">{name}</p>
       </div>
       <div className="currency-accordion-right">
-        <p className="currency-accordion-amount">{balance} {symbol}</p>
+        {balance ? <p className="currency-accordion-amount">{balance} {symbol}</p> : <Spinner />}
         <p className="currency-accordion-amount-usd">${usdAmount}</p>
       </div>
     </button>
