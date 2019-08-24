@@ -33,14 +33,14 @@ abstract class ObserverRunner {
   }
 
   async finalizeAndStop() {
-    this.state = this.isRunning() ? 'stopping' : 'stop';
+    this.state = this.isStopped() ? 'stop' : 'stopping';
     do {
       await sleep(this.step);
-    } while (this.isRunning());
+    } while (!this.isStopped());
   }
 
-  protected isRunning() {
-    return this.state !== 'stop';
+  protected isStopped() {
+    return this.state === 'stop';
   }
 }
 
