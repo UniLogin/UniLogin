@@ -16,7 +16,7 @@ export class DeploymentReadyObserver extends ObserverRunner {
   }
 
   async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
-    ensure(!this.isRunning(), ConcurrentDeployment);
+    ensure(this.isStopped(), ConcurrentDeployment);
     this.contractAddress = contractAddress;
     this.callback = callback;
     this.start();

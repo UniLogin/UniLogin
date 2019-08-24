@@ -18,7 +18,7 @@ export class PriceObserver extends ObserverRunner {
   subscribe(callback: OnTokenPricesChange) {
     this.callbacks.push(callback);
 
-    this.isRunning() ? callback(this.lastTokenPrices) : this.start();
+    this.isStopped() ? this.start() : callback(this.lastTokenPrices);
 
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);

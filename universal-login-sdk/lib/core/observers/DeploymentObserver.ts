@@ -15,7 +15,7 @@ export class DeploymentObserver extends ObserverRunner {
   }
 
   startAndSubscribe(futureContractAddress: string, callback: OnContractDeployed) {
-    ensure(!this.isRunning(), ConcurrentDeployment);
+    ensure(this.isStopped(), ConcurrentDeployment);
     this.futureContractAddress = futureContractAddress;
     this.onContractDeployed = callback;
     this.start();
