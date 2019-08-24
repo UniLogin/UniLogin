@@ -45,7 +45,7 @@ describe('INT: WalletService', async () => {
     });
 
     it('should emit created event', async () => {
-      expect(callback).to.be.calledWith(sinon.match(transaction));
+      expect(callback).to.be.calledWith(sinon.match({transaction}));
     });
 
     it('should fail with not existing ENS name', async () => {
