@@ -964,6 +964,11 @@
     "@types/express" "^4.16.0"
     express "^4.16.0"
 
+"@restless/sanitizers@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.2.tgz#bb54d54f92168a839d66daa621359a470cf2f3a0"
+  integrity sha512-Cv7NWOChJa3QIRYzjbMQkemLqrkKxH4FHnNTaUL5sDFzHQDSsz2fQ1LBp3t+VDdfn7CmNJNs9XwJ92TsJZKtrA==
+
 "@sinonjs/commons@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.0.2.tgz#3e0ac737781627b8844257fadc3d803997d0526e"

@@ -1,4 +1,4 @@
-{
+ {
   "name": "@universal-login/wallet",
   "version": "0.3.30",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "start:production": "webpack-dev-server --mode production"
   },
   "dependencies": {
+    "@restless/sanitizers": "^0.2.2",
     "@universal-login/commons": "^0.3.30",
     "@universal-login/react": "^0.3.30",
     "@universal-login/sdk": "^0.3.30",

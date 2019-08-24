@@ -4,6 +4,9 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import UserDropdownService from '../core/app/UserDropdownService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import WalletPresenter from '../core/presenters/WalletPresenter';
+import {StorageService} from '../core/services/StorageService';
+import {WalletStorageService} from '../core/services/WalletStorageService';
+import {walletFromBrain} from '@universal-login/commons';
 
 interface Config {
   domains: string[];
@@ -14,10 +17,11 @@ interface Config {
 
 interface Overrides {
   provider?: providers.Provider;
+  storageService?: StorageService;
 }
 
-export const createServices = (config: Config, {provider} : Overrides = {}) => {
-  const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
+export const createServices = (config: Config, overrides : Overrides = {}) => {
+  const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(
     config.relayerUrl,
     providerOrProviderUrl,
@@ -27,7 +31,9 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     }
   );
   const userDropdownService = new UserDropdownService();
-  const walletService = new WalletService(sdk);
+  const storageService = overrides.storageService || new StorageService();
+  const walletStorageService = new WalletStorageService(storageService);
+  const walletService = new WalletService(sdk, walletFromBrain, walletStorageService);
   const walletPresenter = new WalletPresenter(walletService);
   const _connectToWallet = connectToWallet(sdk, walletService);
   return {
@@ -37,7 +43,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
     connectToWallet: _connectToWallet,
     walletService,
     walletPresenter,
-    start: () => sdk.start()
+    start: () => sdk.start(),
   };
 };
 

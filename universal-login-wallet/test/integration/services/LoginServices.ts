@@ -2,7 +2,14 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet, providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, MANAGEMENT_KEY, waitExpect, generateCode} from '@universal-login/commons';
+import {
+  DEFAULT_GAS_LIMIT,
+  DEFAULT_GAS_PRICE,
+  ETHER_NATIVE_TOKEN,
+  MANAGEMENT_KEY,
+  waitExpect,
+  generateCode,
+} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {setupSdk} from '@universal-login/sdk/testutils';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
@@ -17,9 +24,9 @@ describe('Login', () => {
   let wallet: Wallet;
   let provider: providers.Provider;
   let blockchainObserver: any;
-  let name : string;
-  let privateKey : string;
-  let contractAddress : string;
+  let name: string;
+  let privateKey: string;
+  let contractAddress: string;
 
   before(async () => {
     [wallet] = getWallets(createMockProvider());
@@ -27,7 +34,6 @@ describe('Login', () => {
     [wallet] = await getWallets(provider);
     walletService = new WalletService(sdk);
     walletServiceForConnect = new WalletService(sdk);
-
     connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect);
     ({blockchainObserver} = sdk);
     blockchainObserver.step = 10;
