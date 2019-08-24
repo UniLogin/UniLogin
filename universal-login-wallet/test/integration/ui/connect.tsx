@@ -2,9 +2,9 @@ import {ReactWrapper} from 'enzyme';
 import React from 'react';
 import {mountWithContext} from '../helpers/CustomMount';
 import App from '../../../src/ui/react/App';
-import {providers, Wallet, utils} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {Services} from '../../../src/ui/createServices';
-import {setupSdk} from '@universal-login/sdk/testutils';
+import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
 import {ETHER_NATIVE_TOKEN, waitExpect} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
@@ -29,8 +29,7 @@ describe('UI: Connection flow', () => {
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     await services.sdk.tokensDetailsStore.fetchTokensDetails();
     await services.sdk.start();
-    [privateKey, contractAddress] = await services.sdk.create(name);
-    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
+    ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
     appWrapper = mountWithContext(<App/>, services, ['/']);
   });
 

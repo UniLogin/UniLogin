@@ -7,7 +7,8 @@ import basicSDK from '../../fixtures/basicSDK';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import AuthorisationsObserver from '../../../lib/core/observers/AuthorisationsObserver';
 import {waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
+import {createWallet} from '../../helpers/createWallet';
 
 
 chai.use(solidity);
@@ -21,6 +22,7 @@ describe('INT: AuthorisationsObserver', async () => {
   let contractAddress: string;
   let authorisationsObserver: AuthorisationsObserver;
   let privateKey: string;
+  let wallet: Wallet;
   let getAuthorisationRequest: GetAuthorisationRequest;
 
   const createGetAuthorisationRequest = (walletContractAddress: string, privateKey: string) => {
@@ -33,7 +35,7 @@ describe('INT: AuthorisationsObserver', async () => {
   };
 
   beforeEach(async () => {
-    ({sdk, relayer, contractAddress, privateKey} = await loadFixture(basicSDK));
+    ({sdk, relayer, contractAddress, privateKey, wallet} = await loadFixture(basicSDK));
     getAuthorisationRequest = createGetAuthorisationRequest(contractAddress, privateKey);
     ({authorisationsObserver} = sdk);
     authorisationsObserver.step = 50;
@@ -61,7 +63,7 @@ describe('INT: AuthorisationsObserver', async () => {
   });
 
   it('two authorisation requests', async () => {
-    const [, newContractAddress] = await sdk.create('newlogin.mylogin.eth');
+    const newWalletContract = await createWallet('newlogin.mylogin.eth', sdk, wallet);
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
@@ -69,7 +71,7 @@ describe('INT: AuthorisationsObserver', async () => {
     const unsubscribe2 = authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
 
     await sdk.connect(contractAddress);
-    await sdk.connect(newContractAddress);
+    await sdk.connect(newWalletContract.contractAddress);
 
     await waitUntil(() => !!callback1.secondCall);
     await waitUntil(() => !!callback2.secondCall);

@@ -11,9 +11,8 @@ import {
   generateCode,
 } from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {setupSdk} from '@universal-login/sdk/testutils';
+import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
 import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
-import {createWallet} from '../helpers/createWallet';
 
 describe('Login', () => {
   let connectToWalletService: any;
@@ -62,7 +61,7 @@ describe('Login', () => {
   describe('ConnectionService', () => {
     before(async () => {
       name = 'super-name.mylogin.eth';
-      ({privateKey, contractAddress} = await createWallet(name, walletService, wallet));
+      ({privateKey, contractAddress} = await createAndSetWallet(name, walletService, wallet, sdk));
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     });
 

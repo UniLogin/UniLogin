@@ -8,7 +8,7 @@ import UniversalLoginSDK from '../../../lib/api/sdk';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import {TransferService} from '../../../lib/integration/ethereum/TransferService';
 import {TokensDetailsStore} from '../../../lib/integration/ethereum/TokensDetailsStore';
-import {createWallet} from '../../helpers/createWallet';
+import {createAndSetWallet} from '../../helpers/createWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
@@ -28,7 +28,7 @@ describe('INT: TransferService', () => {
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     const walletService = new WalletService(sdk);
-    const {contractAddress} = await createWallet('name.mylogin.eth', walletService, wallet);
+    const {contractAddress} = await createAndSetWallet('name.mylogin.eth', walletService, wallet, sdk);
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
     tokenDetailsService = new TokenDetailsService(provider);
     tokenService = new TokensDetailsStore(tokenDetailsService, [mockTokenContract.address]);

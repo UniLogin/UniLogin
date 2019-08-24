@@ -6,6 +6,7 @@ import {Wallet, utils} from 'ethers';
 import {MANAGEMENT_KEY} from '@universal-login/commons';
 import basicSDK from '../../fixtures/basicSDK';
 import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
+import {createWallet} from '../../helpers/createWallet';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -35,7 +36,7 @@ describe('INT: BlockchainObserver', async () => {
   });
 
   it('subscribe: should emit AddKey on construction', async () => {
-    [privateKey, contractAddress] = await sdk.create('me.mylogin.eth');
+    ({contractAddress, privateKey} = await createWallet('me.mylogin.eth', sdk, wallet));
     await mockToken.transfer(contractAddress, utils.parseEther('20'));
     const {address} = new Wallet(privateKey);
     const callback = sinon.spy();
