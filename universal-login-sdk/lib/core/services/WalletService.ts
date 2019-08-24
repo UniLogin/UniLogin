@@ -8,11 +8,21 @@ type WalletState = 'None' | 'Future' | 'Deployed';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
+export interface WalletStorage {
+  load(): ApplicationWallet | null;
+
+  save(wallet: ApplicationWallet | null): void;
+}
+
 export class WalletService {
   public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
-  constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain) {
+  constructor(
+    private sdk: UniversalLoginSDK,
+    private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
+    private storage?: WalletStorage,
+  ) {
   }
 
   walletDeployed(): boolean {
@@ -44,12 +54,14 @@ export class WalletService {
       contractAddress,
       privateKey
     };
+    this.storage && this.storage.save(this.applicationWallet);
   }
 
   connect(applicationWallet: ApplicationWallet) {
     ensure(this.state === 'None', WalletOverridden);
     this.state = 'Deployed';
     this.applicationWallet = applicationWallet;
+    this.storage && this.storage.save(applicationWallet);
   }
 
   async recover(name: string, passphrase: string) {
@@ -66,5 +78,19 @@ export class WalletService {
   disconnect(): void {
     this.state = 'None';
     this.applicationWallet = undefined;
+    this.storage && this.storage.save(null);
+  }
+
+  loadFromStorage() {
+    if (!this.storage) {
+      return;
+    }
+    const wallet = this.storage.load();
+    if (!wallet) {
+      return;
+    }
+    ensure(this.state === 'None', WalletOverridden);
+    this.state = 'Deployed';
+    this.applicationWallet = wallet;
   }
 }

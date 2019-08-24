@@ -10,7 +10,7 @@ Universal Login documentation
 
 Universal Login is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
 
-This documentation covers all components of the project including sdk, relayer, smart contracts and example.
+This documentation covers all components of the project including sdk, relayer and smart contracts.
 
 Disclaimer
 ----------
@@ -28,7 +28,6 @@ Universal Login is a work in progress and is at the experimental stage. Expect b
   tutorial.rst
   sdk.rst
   relayer.rst
-  example.rst
 
 
 Indices and tables

@@ -5,6 +5,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {waitUntil} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {startRelayer} from '../../../helpers/startRelayer';
+import {WalletCreator} from '../../../helpers/WalletCreator';
 chai.use(solidity);
 
 describe('INT: Token Granting Relayer', async () => {
@@ -13,22 +14,23 @@ describe('INT: Token Granting Relayer', async () => {
   let relayer;
   let tokenContract;
   let sdk;
-  let walletContractPrivateKey;
-  let walletContractAddress;
+  let privateKey;
+  let contractAddress;
 
   const relayerUrl = 'http://localhost:33511';
 
   beforeEach(async () => {
     ({relayer, tokenContract} = await startRelayer(wallet, TokenGrantingRelayer));
+    const walletCreator = new WalletCreator(relayer, wallet);
+    ({contractAddress, privateKey} = await walletCreator.deployWallet());
     sdk = new UniversalLoginSDK(relayerUrl, provider);
-    [walletContractPrivateKey, walletContractAddress] = await sdk.create('ja.mylogin.eth');
   });
 
   const isTokenBalanceGreater = (value) => async () =>
-    (await tokenContract.balanceOf(walletContractAddress)).gt(utils.parseEther(value));
+    (await tokenContract.balanceOf(contractAddress)).gt(utils.parseEther(value));
 
   const isTokenBalanceEqual = (value) => async () =>
-    (await tokenContract.balanceOf(walletContractAddress)).eq(value);
+    (await tokenContract.balanceOf(contractAddress)).eq(value);
 
 
   describe('Token granting', async () => {
@@ -37,10 +39,10 @@ describe('INT: Token Granting Relayer', async () => {
     });
 
     it('Grants 5 tokens on key add', async () => {
-      const {waitToBeMined} = await sdk.addKey(walletContractAddress, wallet.address, walletContractPrivateKey, {gasToken: tokenContract.address});
+      const {waitToBeMined} = await sdk.addKey(contractAddress, wallet.address, privateKey, {gasToken: tokenContract.address});
       await waitToBeMined();
       await waitUntil(isTokenBalanceGreater('104'), 5, 50);
-      const actualBalance = await tokenContract.balanceOf(walletContractAddress);
+      const actualBalance = await tokenContract.balanceOf(contractAddress);
       expect(actualBalance).to.be.above(utils.parseEther('104'));
     });
   });

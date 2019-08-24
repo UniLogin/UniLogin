@@ -6,10 +6,7 @@ export class TokensDetailsStore {
   constructor(private tokenDetailsService: TokenDetailsService, private tokensAddresses: string[]) {}
 
   async fetchTokensDetails() {
-    for (const address of this.tokensAddresses) {
-      const details = await this.tokenDetailsService.getTokenDetails(address);
-      this.tokensDetails.push(details);
-    }
+    this.tokensDetails = await this.tokenDetailsService.getTokensDetails(this.tokensAddresses);
   }
 
   getTokenAddress(symbol: string) {

@@ -4,9 +4,7 @@ import {ConcurrentDeployment, UnsupportedBytecode} from '../utils/errors';
 import {BlockchainService} from '../../integration/ethereum/BlockchainService';
 import ObserverRunner from './ObserverRunner';
 
-export type OnContractDeployed = (
-  contractAddress: string,
- ) => void;
+export type OnContractDeployed = (contractAddress: string) => void;
 
 export class DeploymentObserver extends ObserverRunner {
   private onContractDeployed?: OnContractDeployed;
@@ -17,7 +15,7 @@ export class DeploymentObserver extends ObserverRunner {
   }
 
   startAndSubscribe(futureContractAddress: string, callback: OnContractDeployed) {
-    ensure(!this.isRunning(), ConcurrentDeployment);
+    ensure(this.isStopped(), ConcurrentDeployment);
     this.futureContractAddress = futureContractAddress;
     this.onContractDeployed = callback;
     this.start();

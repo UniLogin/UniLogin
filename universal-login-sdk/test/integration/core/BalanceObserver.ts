@@ -5,6 +5,7 @@ import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
+import {TokensDetailsStore} from '../../../lib/integration/ethereum/TokensDetailsStore';
 
 describe('INT: BalanceObserver', () => {
   let balanceChecker: BalanceChecker;
@@ -24,7 +25,7 @@ describe('INT: BalanceObserver', () => {
       ];
 
       balanceChecker = new BalanceChecker(provider);
-      balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, supportedTokens);
+      balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore);
       balanceObserver.step = 100;
     });
 

@@ -1,23 +1,24 @@
 const cryptocompare = require('cryptocompare');
-import {TokenDetails, ObservedCurrency, TokensPrices} from '@universal-login/commons';
+import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
+import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
+
+export type OnTokenPricesChange = (data: TokensPrices) => void;
 
 export class PriceObserver extends ObserverRunner {
-  private observedTokensSymbols: string[] = [];
   private lastTokenPrices: TokensPrices = {};
-  private callbacks: Function[] = [];
+  private callbacks: OnTokenPricesChange[] = [];
 
-  constructor(private observedTokens: TokenDetails[], private observedCurrencies: ObservedCurrency[], step: number = PRICE_OBSERVER_DEAFULT_TICK) {
+  constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], step: number = PRICE_OBSERVER_DEAFULT_TICK) {
     super();
     this.step = step;
-    this.observedTokensSymbols = this.observedTokens.map((token) => token.symbol);
   }
 
-  subscribe(callback: Function) {
+  subscribe(callback: OnTokenPricesChange) {
     this.callbacks.push(callback);
 
-    this.isRunning() ? callback(this.lastTokenPrices) : this.start();
+    this.isStopped() ? this.start() : callback(this.lastTokenPrices);
 
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
@@ -34,6 +35,7 @@ export class PriceObserver extends ObserverRunner {
   }
 
   async getCurrentPrices(): Promise<TokensPrices> {
-    return cryptocompare.priceMulti(this.observedTokensSymbols, this.observedCurrencies);
+    const observedTokensSymbols = this.tokensDetailsStore.tokensDetails.map((token) => token.symbol);
+    return cryptocompare.priceMulti(observedTokensSymbols, this.observedCurrencies);
   }
 }

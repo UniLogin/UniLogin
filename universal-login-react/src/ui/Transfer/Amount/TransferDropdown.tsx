@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import {utils} from 'ethers';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
-import {Spinner} from '../../commons/Spinner';
 import daiIcon from '../../assets/icons/dai.svg';
 import ethIcon from '../../assets/icons/ethereum.svg';
 import {useToggler} from '../../hooks/useToggler';
@@ -29,43 +27,28 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
 
   const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
+  const renderTransferDropdownItems = (tokensDetails: TokenDetails[], predicate: (tokenDetails: TokenDetails) => boolean, className?: string) =>
+    tokensDetails
+      .filter(predicate)
+      .map(({symbol, name}: TokenDetails) => renderTransferDropdownItem(symbol, name, className));
+
+  const renderTransferDropdownItem = (symbol: string, name: string, className?: string) => (
+    <TransferDropdownItem
+      key={`${name}-${symbol}`}
+      sdk={sdk}
+      className={className}
+      name={name}
+      symbol={symbol}
+      icon={iconForToken(symbol)}
+      balance={getBalanceOf(symbol, tokenDetailsWithBalance)}
+      onClick={onClick}
+    />
+  );
+
   return (
     <div className="currency-accordion">
-      {
-        tokenDetailsWithBalance
-          .filter(({symbol}) => symbol === currency)
-          .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-            <TransferDropdownItem
-              key={`${name}-${symbol}`}
-              sdk={sdk}
-              className={`currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`}
-              name={name}
-              symbol={symbol}
-              icon={iconForToken(symbol)}
-              balance={utils.formatEther(balance)}
-              onClick={onClick}
-            />
-          ))
-      }
-      {tokenDetailsWithBalance.length === 0 && <div className="currency-accordion-item"> <Spinner /> </div>}
-      {
-        visible &&
-        <div className="currency-accordion-content">
-          {tokenDetailsWithBalance
-            .filter(({symbol}) => symbol !== currency)
-            .map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-              <TransferDropdownItem
-                key={`${name}-${symbol}`}
-                sdk={sdk}
-                name={name}
-                symbol={symbol}
-                balance={utils.formatEther(balance)}
-                icon={iconForToken(symbol)}
-                onClick={onClick}
-              />
-            ))}
-        </div>
-      }
+      {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === currency, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
+      {visible && renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== currency)}
     </div >
   );
 };

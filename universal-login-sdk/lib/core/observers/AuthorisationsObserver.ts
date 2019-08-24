@@ -42,7 +42,7 @@ class AuthorisationsObserver extends ObserverRunner {
     callback(this.lastAuthorisations);
     this.getAuthorisationRequest = getAuthorisationRequest;
     this.callbacks.push(callback);
-    if (!this.isRunning()) {
+    if (this.isStopped()) {
       this.start();
     }
 
