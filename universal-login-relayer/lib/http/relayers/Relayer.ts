@@ -91,7 +91,6 @@ class Relayer {
     this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker);
     this.walletMasterContractService = new WalletMasterContractService(this.provider);
     this.authorisationService = new AuthorisationService(this.authorisationStore, this.walletMasterContractService);
-    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker);
     this.messageRepository = new MessageSQLRepository(this.database);
     this.queueStore = new QueueSQLStore(this.database);
     this.signaturesService = new SignaturesService(this.wallet);
