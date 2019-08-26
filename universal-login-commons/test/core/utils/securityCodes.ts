@@ -105,6 +105,70 @@ describe('UNIT: security codes', () => {
     });
   });
 
+  describe('keyboard attack mode', () => {
+    const realAddress = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b';
+    const expectedCode = generateCode(realAddress);
+    const addressesThatDontShareBytesWithRealAddress = [
+      '0x9a2c510AA7E56B83AFe6834f83C24512bafD7318',
+      '0xC633cE261FfE65950ef74DDF05b8A953fAFfc095',
+      '0x45D4dBF0F3FCb3E154e6CAbA60E80105032e1DF7',
+      '0x95719d7001097A0be2fe3fcDF74efaa2A967714E',
+      '0x16925cd9D4985016D1816b24b1707F0D9116C01e'
+    ];
+    const addressesThatShareFirstCodeWithRealAddress = [
+      '0x49c9A6784C061D298f9021a07eC218382feE20A9',
+      '0xf247e3c2f118763f79BE7C226D1c3dB988004704',
+      '0x22A6F13A956e7235fd989329da6e504523EE9346',
+      '0xd856550341C0772BC8f02E8E30DcD43239677084',
+      '0x69a4de9CF98FFf3D019F85C2d0aeb3860C179EBC'
+    ];
+
+    const attackerAddresses = addressesThatDontShareBytesWithRealAddress.concat(addressesThatShareFirstCodeWithRealAddress);
+    const incomingAddresses = attackerAddresses.concat([realAddress]);
+
+    describe('findPossibleAddressesFromPartCode', () => {
+      it('addresses found after 1 code entered', () => {
+        const codeWithOneElement = expectedCode.slice(0, 1);
+        const expectedPossibleAddresses = addressesThatShareFirstCodeWithRealAddress.concat([realAddress]);
+
+        const actualPossibleAddresses = findPossibleAddressesFromPartCode(codeWithOneElement, incomingAddresses);
+
+        expect(actualPossibleAddresses.sort()).to.deep.eq(expectedPossibleAddresses.sort());
+      });
+
+      it('addresses found after 2 codes entered', () => {
+        const codeWithOneElement = expectedCode.slice(0, 2);
+        const expectedPossibleAddresses = [realAddress];
+
+        const actualPossibleAddresses = findPossibleAddressesFromPartCode(codeWithOneElement, incomingAddresses);
+
+        expect(actualPossibleAddresses).to.deep.eq(expectedPossibleAddresses);
+      });
+    });
+
+    describe('findValidAddressFromPartCode', () => {
+      it('correct full code', () => {
+        const findResult = findValidAddressFromPartCode(expectedCode, incomingAddresses);
+
+        expect(findResult).to.deep.eq(realAddress);
+      });
+
+      it('invalid full code', () => {
+        expectedCode[0] += 1 % 1024;
+        const findResult = findValidAddressFromPartCode(expectedCode, incomingAddresses);
+
+        expect(findResult).to.be.undefined;
+      });
+
+      it('many addresses match to part of the code', () => {
+        const codeWithOneElement = expectedCode.slice(0, 1);
+        const findResult = findValidAddressFromPartCode(codeWithOneElement, incomingAddresses);
+
+        expect(findResult).to.be.undefined;
+      });
+    });
+  });
+
   describe('generateCodeWithFakes', () => {
     it('security code length should equal 12', () => {
       const securityCode = generateCodeWithFakes('0x0aFFFFe7d45c34110B34Ed269AD86248884E78C7');
