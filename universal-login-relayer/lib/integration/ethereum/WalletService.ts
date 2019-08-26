@@ -1,39 +1,15 @@
 import {EventEmitter} from 'fbemitter';
-import {ContractFactory, Wallet, utils} from 'ethers';
-import {Abi, defaultDeployOptions, ensureNotNull, ensure, RequiredBalanceChecker, computeContractAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
-import {encodeInitializeWithENSData, encodeInitializeWithRefundData} from '@universal-login/contracts';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import {utils} from 'ethers';
+import {ensureNotNull, ensure, RequiredBalanceChecker, computeContractAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {encodeInitializeWithRefundData} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from '../../core/utils/errors';
 import {Config} from '../../config/relayer';
 import {WalletDeployer} from '../ethereum/WalletDeployer';
 
 class WalletService {
-  private bytecode: string;
-  private abi: Abi;
 
-  constructor(private wallet: Wallet, private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer, private requiredBalanceChecker: RequiredBalanceChecker) {
-    const contractJSON = ProxyContract;
-    this.abi = contractJSON.interface;
-    this.bytecode = `0x${contractJSON.evm.bytecode.object}`;
-  }
-
-  async create(key: string, ensName: string, overrideOptions = {}) {
-    const ensArgs = this.ensService.argsFor(ensName);
-    if (ensArgs !== null) {
-      let args = [key, ...ensArgs] as string[];
-      const initData = encodeInitializeWithENSData(args);
-      args = [this.config.walletMasterAddress, initData];
-      const deployTransaction = {
-        ...defaultDeployOptions,
-        ...overrideOptions,
-        ...new ContractFactory(this.abi, this.bytecode).getDeployTransaction(...args),
-      };
-      const transaction = await this.wallet.sendTransaction(deployTransaction);
-      this.hooks.emit('created', transaction);
-      return transaction;
-    }
-    throw new InvalidENSDomain(ensName);
+  constructor(private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer, private requiredBalanceChecker: RequiredBalanceChecker) {
   }
 
   async deploy({publicKey, ensName, gasPrice, signature}: DeployArgs) {
