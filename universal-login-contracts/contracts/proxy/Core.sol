@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
 import "./Store.sol";
-import "../masters/IMaster.sol";
+import "../interfaces/IMaster.sol";
 
 
 contract Core is Store {

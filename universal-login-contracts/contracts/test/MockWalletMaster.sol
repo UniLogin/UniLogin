@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import "../WalletMaster.sol";
+import "../wallet/WalletMaster.sol";
 
 
 contract MockWalletMaster is WalletMaster {

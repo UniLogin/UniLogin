@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import "../common/Core.sol";
+import "./Core.sol";
 
 
 contract Proxy is Core {
