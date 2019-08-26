@@ -29,7 +29,7 @@ describe('INT: AggregateBalanceObserver', () => {
     const observedTokens: TokenDetails[] = [
       ETHER_NATIVE_TOKEN
     ];
-    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore);
+    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, 10);
 
     mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
     resetCallCount();
