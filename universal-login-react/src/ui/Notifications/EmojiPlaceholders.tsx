@@ -8,7 +8,7 @@ interface EmojiPlaceholdersProps {
   code: number[];
   onEmojiClicked: (index: number) => void;
   maxLength: number;
-  className: string;
+  className?: string;
 }
 
 const emojisButtons = (codes: number[], onEmojiClicked: (index: number) => void) =>

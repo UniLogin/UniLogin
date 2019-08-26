@@ -14,7 +14,7 @@ interface EmojiFormProps {
   contractAddress: string;
   privateKey: string;
   hideTitle?: () => void;
-  className: string;
+  className?: string;
 }
 
 export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
