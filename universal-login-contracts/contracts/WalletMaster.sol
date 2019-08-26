@@ -57,14 +57,6 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         }
     }
 
-    function getMagicValue() private pure returns(bytes4) {
-        return 0x20c13b0b;
-    }
-
-    function getInvalidSignature() private pure returns(bytes4) {
-        return 0xffffffff;
-    }
-
     function onERC721Received(address, address, uint256, bytes memory) public returns (bytes4 magicValue) {
         return this.onERC721Received.selector;
     }
@@ -91,5 +83,13 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
             i /= 10;
         }
         return string(bstr);
+    }
+
+    function getMagicValue() private pure returns(bytes4) {
+        return 0x20c13b0b;
+    }
+
+    function getInvalidSignature() private pure returns(bytes4) {
+        return 0xffffffff;
     }
 }
