@@ -7,16 +7,6 @@ export class RelayerApi {
     this.http = http(fetch)(relayerUrl);
   }
 
-  async createWallet(managementKey: string, ensName: string) {
-    return this.http('POST', '/wallet', {
-      managementKey,
-      ensName
-    }).catch((e: any) => {
-      // TODO: Maybe wrap this as a custom Error?
-      throw new Error(e !== undefined && e.error);
-    });
-  }
-
   async getConfig() {
     return this.http('GET', '/config');
   }
