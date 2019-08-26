@@ -49,7 +49,7 @@ describe('INT: WalletService', async () => {
     });
 
     it('should fail with not existing ENS name', async () => {
-      const creationPromise = walletService.create(wallet.address, 'alex.non-existing-id.eth');
+      const creationPromise = walletService.deploy({publicKey: wallet.address, ensName: 'alex.non-existing-id.eth', signature: 'SOME_SIGNATURE', gasPrice: '1'});
       await expect(creationPromise)
         .to.be.eventually.rejectedWith('ENS domain alex.non-existing-id.eth does not exist or is not compatible with Universal Login');
     });

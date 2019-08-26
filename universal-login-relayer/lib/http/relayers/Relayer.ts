@@ -88,7 +88,7 @@ class Relayer {
     this.walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
-    this.walletContractService = new WalletService(this.wallet, this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker);
+    this.walletContractService = new WalletService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker);
     this.walletMasterContractService = new WalletMasterContractService(this.provider);
     this.authorisationService = new AuthorisationService(this.authorisationStore, this.walletMasterContractService);
     this.messageRepository = new MessageSQLRepository(this.database);
