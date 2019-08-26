@@ -18,11 +18,7 @@ export const generateCodeWithFakes = (publicKey: string): number[] => {
 };
 
 export const generateCode = (publicKey: string): number[] => {
-  const hash = utils.keccak256(publicKey);
-  const bytes8bit = Array.from(utils.arrayify(hash));
-  const bytes16bit = array8bitTo16bit(bytes8bit);
-
-  return bytes16bit
+  return addressTo16bitBytes(publicKey)
     .slice(0, SECURITY_CODE_LENGTH)
     .map((e) => e & MASK);
 };
@@ -30,6 +26,25 @@ export const generateCode = (publicKey: string): number[] => {
 export const isValidCode = (code: number[], publicKey: string) => {
   const expectedCode = generateCode(publicKey);
   return deepEqual(expectedCode, code);
+};
+
+export const findValidAddressFromPartCode = (code: number[], incomingPublicKeys: string[]) => {
+  const possibleAddresses = findPossibleAddressesFromPartCode(code, incomingPublicKeys);
+  return possibleAddresses.length === 1 ? possibleAddresses[0] : undefined;
+};
+
+export const findPossibleAddressesFromPartCode = (code: number[], incomingPublicKeys: string[]) => {
+  return incomingPublicKeys.filter((incomingPublicKey) => {
+    const expectedCode = generateCode(incomingPublicKey);
+    const expectedCodeSlice = expectedCode.slice(0, code.length);
+    return deepEqual(expectedCodeSlice, code);
+  });
+};
+
+export const addressTo16bitBytes = (publicKey: string): number[] => {
+  const hash = utils.keccak256(publicKey);
+  const bytes8bit = Array.from(utils.arrayify(hash));
+  return array8bitTo16bit(bytes8bit);
 };
 
 const addCodeWithFakes = (notification: Notification) =>
