@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
-import "./IMaster.sol";
-import "../common/Core.sol";
+import "../interfaces/IMaster.sol";
+import "./Core.sol";
 
 
 contract MasterBase is IMaster, Core {

@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
-import "./KeyHolder/KeyHolder.sol";
-import "./IERC1077.sol";
+import "./KeyHolder.sol";
+import "../interfaces/IERC1077.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
@@ -50,7 +50,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
 
     function setRequiredSignatures(uint _requiredSignatures) public onlyManagementKeyOrThisContract {
         require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
-        require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number"); 
+        require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number");
         requiredSignatures = _requiredSignatures;
     }
 
@@ -147,7 +147,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
             return tokenRefundCharge();
         }
     }
-    
+
     function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
         uint sigCount = signatures.length / 65;
