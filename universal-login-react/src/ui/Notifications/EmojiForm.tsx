@@ -14,9 +14,10 @@ interface EmojiFormProps {
   contractAddress: string;
   privateKey: string;
   hideTitle?: () => void;
+  className?: string;
 }
 
-export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitle}: EmojiFormProps) => {
+export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState([] as number[]);
   const [status, setStatus] = useState('');
   const {progressBar, showProgressBar} = useProgressBar();
@@ -59,8 +60,8 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
         <ProgressBar className="connection-progress-bar" />
       </div> :
       <>
-        <EmojiPlaceholders maxLength={EMOJIS_MAX_LENGTH} code={enteredCode} onEmojiClicked={onEmojiRemove} />
-        <EmojiPanelWithFakes publicKey={publicKey} onEmojiClicked={onEmojiAdd} />
+        <EmojiPlaceholders maxLength={EMOJIS_MAX_LENGTH} code={enteredCode} onEmojiClicked={onEmojiRemove} className={className}/>
+        <EmojiPanelWithFakes publicKey={publicKey} onEmojiClicked={onEmojiAdd} className={className}/>
         <p className="emojis-form-status">{status}</p>
         <button className="emojis-form-reject" id="reject" onClick={() => sdk.denyRequest(contractAddress, publicKey, privateKey)}>Deny</button>
       </>
