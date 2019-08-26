@@ -1,29 +1,43 @@
 import chai, {expect} from 'chai';
+import chaiHttp from 'chai-http';
 import {TokenGrantingRelayer} from '../../../../lib/http/relayers/TokenGrantingRelayer';
+import {utils, Contract} from 'ethers';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
-import UniversalLoginSDK from '@universal-login/sdk';
-import {waitUntil} from '@universal-login/commons';
-import {utils} from 'ethers';
+import {waitUntil, MANAGEMENT_KEY, createSignedMessage, stringifySignedMessageFields} from '@universal-login/commons';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {startRelayer} from '../../../helpers/startRelayer';
 import {WalletCreator} from '../../../helpers/WalletCreator';
 chai.use(solidity);
+chai.use(chaiHttp);
+
+
+const addKey = async (contractAddress, publicKey, privateKey, tokenAddress, provider) => {
+  const data = new utils.Interface(WalletContract.interface).functions['addKey'].encode([publicKey, MANAGEMENT_KEY]);
+  const message = {
+    gasToken: tokenAddress,
+    to: contractAddress,
+    from: contractAddress,
+    data,
+    nonce: parseInt(await (new Contract(contractAddress, WalletContract.interface, provider)).lastNonce(), 10),
+  };
+  const signedMessage = createSignedMessage(message, privateKey);
+  await chai.request('http://localhost:33511')
+    .post('/wallet/execution')
+    .send(stringifySignedMessageFields(signedMessage));
+};
 
 describe('INT: Token Granting Relayer', async () => {
   const provider = createMockProvider();
   const [wallet] = getWallets(provider);
   let relayer;
   let tokenContract;
-  let sdk;
   let privateKey;
   let contractAddress;
-
-  const relayerUrl = 'http://localhost:33511';
 
   beforeEach(async () => {
     ({relayer, tokenContract} = await startRelayer(wallet, TokenGrantingRelayer));
     const walletCreator = new WalletCreator(relayer, wallet);
     ({contractAddress, privateKey} = await walletCreator.deployWallet());
-    sdk = new UniversalLoginSDK(relayerUrl, provider);
   });
 
   const isTokenBalanceGreater = (value) => async () =>
@@ -39,9 +53,8 @@ describe('INT: Token Granting Relayer', async () => {
     });
 
     it('Grants 5 tokens on key add', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, wallet.address, privateKey, {gasToken: tokenContract.address});
-      await waitToBeMined();
-      await waitUntil(isTokenBalanceGreater('104'), 5, 50);
+      await addKey(contractAddress, wallet.address, privateKey, tokenContract.address, provider);
+      await waitUntil(isTokenBalanceGreater('104'), 5, 500);
       const actualBalance = await tokenContract.balanceOf(contractAddress);
       expect(actualBalance).to.be.above(utils.parseEther('104'));
     });
