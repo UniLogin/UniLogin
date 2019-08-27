@@ -35,11 +35,10 @@ describe('UNIT: AuthorisationsObserver', () => {
   };
 
   beforeEach(() => {
-    authorisationsObserver = new AuthorisationsObserver(relayerApi as any);
+    authorisationsObserver = new AuthorisationsObserver(relayerApi as any, 10);
     ({privateKey} = createKeyPair());
     getAuthorisationRequest = createGetAuthorisationRequest(TEST_ACCOUNT_ADDRESS, privateKey);
     fakeGetAuthorisationRequest = createGetAuthorisationRequest('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef', privateKey);
-    authorisationsObserver.tick = 10;
   });
 
   it('should call callback with authorisation', async () => {

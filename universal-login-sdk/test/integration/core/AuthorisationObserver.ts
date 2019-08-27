@@ -38,7 +38,6 @@ describe('INT: AuthorisationsObserver', async () => {
     ({sdk, relayer, contractAddress, privateKey, wallet} = await loadFixture(basicSDK));
     getAuthorisationRequest = createGetAuthorisationRequest(contractAddress, privateKey);
     ({authorisationsObserver} = sdk);
-    authorisationsObserver.tick = 50;
   });
 
   it('no authorisation requests', async () => {
