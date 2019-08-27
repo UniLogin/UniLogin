@@ -3,8 +3,6 @@ import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, MANAGEMENT_KEY, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
-import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
-import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
@@ -23,8 +21,6 @@ class UniversalLoginSDK {
   authorisationsObserver: AuthorisationsObserver;
   blockchainObserver: BlockchainObserver;
   executionFactory: ExecutionFactory;
-  deploymentReadyObserver?: DeploymentReadyObserver;
-  deploymentObserver?: DeploymentObserver;
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
   tokensValueConverter: TokensValueConverter;
@@ -89,16 +85,6 @@ class UniversalLoginSDK {
   async getRelayerConfig() {
     this.relayerConfig = this.relayerConfig || (await this.relayerApi.getConfig()).config;
     return this.relayerConfig;
-  }
-
-  async fetchDeploymentReadyObserver() {
-    ensureNotNull(this.relayerConfig, MissingConfiguration);
-    this.deploymentReadyObserver = this.deploymentReadyObserver || new DeploymentReadyObserver(this.relayerConfig!.supportedTokens, this.provider);
-  }
-
-  async fetchDeploymentObserver() {
-    ensureNotNull(this.relayerConfig, MissingConfiguration);
-    this.deploymentObserver = this.deploymentObserver || new DeploymentObserver(this.blockchainService, this.relayerConfig!.contractWhiteList);
   }
 
   async fetchBalanceObserver(ensName: string) {
