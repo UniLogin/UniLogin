@@ -1,13 +1,14 @@
 import {utils} from 'ethers';
 import deepEqual from 'deep-equal';
-import {ensure} from './errors';
-import {isProperAddress, reverseHexString} from './hexStrings';
-import {shuffle, array8bitTo16bit} from './arrays';
-import {Notification} from '../models/notifications';
 import clonedeep from 'lodash.clonedeep';
+import {isProperAddress, reverseHexString} from './hexStrings';
+import {shuffle, array8bitTo16bit, deepArrayStartWith, getArrayElementsFromIndicies} from './arrays';
+import {Notification} from '../models/notifications';
+import {ensure} from './errors';
 
 export const ALPHABET_SIZE = 1024;
 export const SECURITY_CODE_LENGTH = 6;
+export const SECURITY_CODE_WITH_FAKES_LENGTH = 12;
 export const MASK = 1023;
 
 export const generateCodeWithFakes = (publicKey: string): number[] => {
@@ -28,18 +29,24 @@ export const isValidCode = (code: number[], publicKey: string) => {
   return deepEqual(expectedCode, code);
 };
 
-export const findValidAddressFromPartCode = (code: number[], incomingPublicKeys: string[]) => {
-  const possibleAddresses = findPossibleAddressesFromPartCode(code, incomingPublicKeys);
+export const findValidAddressFromCodePart = (enteredCode: number[], incomingPublicKeys: string[]) => {
+  const possibleAddresses = findPossibleAddressesFromCodePart(enteredCode, incomingPublicKeys);
   return possibleAddresses.length === 1 ? possibleAddresses[0] : undefined;
 };
 
-export const findPossibleAddressesFromPartCode = (code: number[], incomingPublicKeys: string[]) => {
-  return incomingPublicKeys.filter((incomingPublicKey) => {
-    const expectedCode = generateCode(incomingPublicKey);
-    const expectedCodeSlice = expectedCode.slice(0, code.length);
-    return deepEqual(expectedCodeSlice, code);
-  });
+export const findPossibleAddressesFromCodePart = (enteredCode: number[], incomingPublicKeys: string[]) => {
+  const generatedCodes = incomingPublicKeys.map((key) => generateCode(key));
+  const validIndicies = findIndiciesOfValidCodesByPrefix(generatedCodes, enteredCode);
+  return getArrayElementsFromIndicies(incomingPublicKeys, validIndicies);
 };
+
+export const findIndiciesOfValidCodesByPrefix = (codes: number[][], enteredCode: number[]) =>
+  codes.reduce((indices, code, index) => {
+    if (deepArrayStartWith(code, enteredCode)) {
+      indices.push(index);
+    }
+    return indices;
+  }, [] as number[]);
 
 export const addressTo16bitBytes = (publicKey: string): number[] => {
   const hash = utils.keccak256(publicKey);
@@ -57,15 +64,15 @@ export const addCodesToNotifications = (notifications: Notification[]) =>
   });
 
 export const isProperCodeNumber = (code: number) => {
-  return 0 <= code && code < 1024;
+  return 0 <= code && code < ALPHABET_SIZE;
 };
 
 export const isProperSecurityCode = (securityCode: number[]) => {
-  return securityCode.length === 6 &&
+  return securityCode.length === SECURITY_CODE_LENGTH &&
           securityCode.every((e: number) => isProperCodeNumber(e));
 };
 
 export const isProperSecurityCodeWithFakes = (securityCode: number[]) => {
-  return securityCode.length === 12 &&
+  return securityCode.length === SECURITY_CODE_WITH_FAKES_LENGTH &&
           securityCode.every((e: number) => isProperCodeNumber(e));
 };
