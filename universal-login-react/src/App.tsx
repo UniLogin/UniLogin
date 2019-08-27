@@ -118,6 +118,21 @@ export const App = () => {
             />
             <Route
               exact
+              path="/keyboard"
+              render={() => (
+                <div>
+                  <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
+                  <hr/>
+                  <EmojiKeyboardForm
+                    sdk={sdk}
+                    contractAddress={TEST_CONTRACT_ADDRESS}
+                    privateKey={TEST_PRIVATE_KEY}
+                  />
+                </div>
+              )}
+            />
+            <Route
+              exact
               path="/topup"
               render={() => {
                 if (!relayerConfig) {

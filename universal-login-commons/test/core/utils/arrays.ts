@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {slices, shuffle, array8bitTo16bit, deepArrayStartWith, getArrayElementsFromIndicies} from '../../../lib/core/utils/arrays';
+import {slices, shuffle, array8bitTo16bit, deepArrayStartWith, getArrayElementsFromIndicies, createSequence} from '../../../lib/core/utils/arrays';
 import {utils} from 'ethers';
 
 describe('UNIT: Arrays', () => {
@@ -104,6 +104,32 @@ describe('UNIT: Arrays', () => {
     it('A, [0, 100, 1]', () => {
       const array = [1, 2, 3];
       expect(getArrayElementsFromIndicies(array, [0, 100, 1])).to.deep.equal([1, 2]);
+    });
+  });
+
+  describe('createSequence', () => {
+    it('[0]', () => {
+      const sequence = createSequence(1);
+
+      expect(sequence).to.deep.equal([0]);
+    });
+
+    it('[0, 1, 2]', () => {
+      const sequence = createSequence(3);
+
+      expect(sequence).to.deep.equal([0, 1, 2]);
+    });
+
+    it('[2, 3, 4]', () => {
+      const sequence = createSequence(5, 2);
+
+      expect(sequence).to.deep.equal([2, 3, 4]);
+    });
+
+    it('[]', () => {
+      const sequence = createSequence(-1);
+
+      expect(sequence).to.deep.equal([]);
     });
   });
 });

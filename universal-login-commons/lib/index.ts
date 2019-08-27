@@ -60,3 +60,4 @@ export {ObservedCurrency, CurrencyToValue, TokensPrices} from './core/models/Cur
 export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
+export {CONNECTION_REAL_ADDRESS, ATTACKER_ADDRESS_1_COMMON_CODE, ATTACKER_ADDRESS_NO_COMMON_CODE} from './core/constants/test';

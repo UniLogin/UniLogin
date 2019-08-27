@@ -9,8 +9,6 @@ import '../styles/colors.css';
 
 const BATCH_SIZE = 32;
 
-const getEmojiCode = (code: number, category: number, color: number) => (code + category * BATCH_SIZE) * 8 + color;
-
 interface EmojiKeyboardProps {
   onEmojiClick: (code: number) => void;
   className?: string;

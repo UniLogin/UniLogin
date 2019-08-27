@@ -84,6 +84,10 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     }
   };
 
+  const renderPanelOrKeyboard = () => {
+
+  };
+
   return (
     <div id="emojis">
     {progressBar ?
