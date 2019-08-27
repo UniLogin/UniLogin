@@ -1,4 +1,5 @@
 import deepEqual = require('deep-equal');
+import {ensure} from './errors';
 
 export function *slices(array: number[], sliceSize: number) {
   for (let i = 0; i < array.length; i++) {
@@ -32,7 +33,7 @@ export const deepArrayStartWith = (array: any[], prefix: any[]) => {
   return deepEqual(arrayPrefix, prefix);
 };
 
-export const getArrayElementsFromIndicies = <T>(array: T[], indicies: number[]) =>
-  indicies
-    .filter((index) => 0 <= index && index < array.length)
-    .map((index) => array[index]);
+export const getArrayElementsFromIndicies = <T>(array: T[], indices: number[]) => {
+  indices.forEach((index) => ensure(0 <= index && index < array.length, Error, 'index out of bounds'));
+  return indices.map((index) => array[index]);
+};
