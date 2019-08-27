@@ -9,8 +9,9 @@ class AuthorisationsObserver extends ObserverRunner {
   private getAuthorisationRequest?: GetAuthorisationRequest;
   private callbacks: Function[] = [];
 
-  constructor(private relayerApi: RelayerApi) {
+  constructor(private relayerApi: RelayerApi, tick: number = 1000) {
     super();
+    this.tick = tick;
   }
 
   async execute() {
