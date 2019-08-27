@@ -4,7 +4,7 @@ import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
 import basicERC1077 from '../../fixtures/basicERC1077';
 import {transferMessage} from '../../utils/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
-import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, OPERATION_CALL} from '@universal-login/commons';
+import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../utils';
 import {encodeDataForExecuteSigned} from '../../../lib';
@@ -36,8 +36,7 @@ describe('CONTRACT: ERC1077 - refund', async  () => {
       nonce: 0,
       gasPrice: 1,
       gasToken: '0x0',
-      gasLimit: utils.bigNumberify('240000'),
-      operationType: OPERATION_CALL
+      gasLimit: utils.bigNumberify('240000')
     };
   });
 

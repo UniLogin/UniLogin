@@ -32,7 +32,6 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint gasPrice,
         address gasToken,
         uint gasLimit,
-        OperationType operationType,
         bytes memory signatures) public view returns (bool)
     {
         bytes32 hash = calculateMessageHash(
@@ -43,8 +42,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
             nonce,
             gasPrice,
             gasToken,
-            gasLimit,
-            operationType).toEthSignedMessageHash();
+            gasLimit).toEthSignedMessageHash();
         return areSignaturesValid(signatures, hash);
     }
 
@@ -62,8 +60,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint nonce,
         uint gasPrice,
         address gasToken,
-        uint gasLimit,
-        OperationType operationType) public pure returns (bytes32)
+        uint gasLimit) public pure returns (bytes32)
     {
         return keccak256(
             abi.encodePacked(
@@ -74,8 +71,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
                 nonce,
                 gasPrice,
                 gasToken,
-                gasLimit,
-                uint(operationType)
+                gasLimit
         ));
     }
 
@@ -88,8 +84,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint gasPrice,
         address gasToken,
         uint gasLimit,
-        OperationType operationType,
-        bytes memory signatures ) public pure returns (address)
+        bytes memory signatures) public pure returns (address)
     {
         return calculateMessageHash(
             from,
@@ -99,8 +94,7 @@ contract ERC1077 is KeyHolder, IERC1077 {
             nonce,
             gasPrice,
             gasToken,
-            gasLimit,
-            operationType).toEthSignedMessageHash().recover(signatures);
+            gasLimit).toEthSignedMessageHash().recover(signatures);
     }
 
     function executeSigned(
@@ -111,20 +105,19 @@ contract ERC1077 is KeyHolder, IERC1077 {
         uint gasPrice,
         address gasToken,
         uint gasLimit,
-        OperationType operationType,
         bytes memory signatures) public returns (bytes32)
     {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         require(nonce == lastNonce, "Invalid nonce");
-        require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType, signatures), "Invalid signature");
+        require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, signatures), "Invalid signature");
         lastNonce++;
         uint256 startingGas = gasleft();
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit, operationType);
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit);
         emit ExecutedSigned(messageHash, nonce, success);
         uint256 gasUsed = startingGas.sub(gasleft());
         refund(gasUsed, gasPrice, gasToken, msg.sender);

@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
-import {OPERATION_CALL, createSignedMessage, waitExpect, createKeyPair} from '@universal-login/commons';
+import {createSignedMessage, waitExpect, createKeyPair} from '@universal-login/commons';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
 
 chai.use(chaiHttp);
@@ -35,8 +35,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       nonce: '0',
       gasToken: mockToken.address,
       gasPrice: 110000000,
-      gasLimit: 1000000,
-      operationType: OPERATION_CALL,
+      gasLimit: 1000000
     };
     const balanceBefore = await otherWallet.getBalance();
     const signedMessage = createSignedMessage(msg, keyPair.privateKey);
@@ -62,7 +61,6 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       gasPrice: '1000000000',
       gasLimit: '1000000',
       gasToken: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-      operationType: 0,
       from: '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d',
       signature: '0x24e58b6f9cb3f7816110df9116562d6052982ee799fc7004153fb20d2cda21a434d71b8fe6669978c9dd803dfed465e563da0f68b5d45bf35ecc089d79a18eae1c'
     };

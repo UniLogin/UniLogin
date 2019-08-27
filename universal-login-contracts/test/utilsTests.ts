@@ -63,8 +63,7 @@ describe('Tools test', async () => {
         nonce: 0,
         gasPrice: 0,
         gasLimit: 0,
-        gasToken: '0x0000000000000000000000000000000000000000',
-        operationType: 0,
+        gasToken: '0x0000000000000000000000000000000000000000'
       };
 
       const expectedResult = [
@@ -74,7 +73,6 @@ describe('Tools test', async () => {
         0,
         0,
         '0x0000000000000000000000000000000000000000',
-        0,
         0,
       ];
       expect(getExecutionArgs(msg)).to.deep.eq(expectedResult);

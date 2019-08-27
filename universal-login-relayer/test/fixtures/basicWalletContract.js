@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {ACTION_KEY, OPERATION_CALL, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {ACTION_KEY, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
@@ -25,8 +25,7 @@ export const transferMessage = {
   nonce: '0',
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 export const addKeyMessage = {
@@ -36,8 +35,7 @@ export const addKeyMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 export const removeKeyMessage = {
@@ -47,6 +45,5 @@ export const removeKeyMessage = {
   nonce: 1,
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };

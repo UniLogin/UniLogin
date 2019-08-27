@@ -2,7 +2,7 @@ import {Router} from 'express';
 import WalletService from '../../integration/ethereum/WalletService';
 import MessageHandler from '../../core/services/MessageHandler';
 import {SignedMessage, DeployArgs} from '@universal-login/commons';
-import {asyncHandler, sanitize, responseOf, asString, asObject, asNumber} from '@restless/restless';
+import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {asBigNumberish, asArrayish} from '../utils/sanitizers';
 
 
@@ -32,7 +32,6 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
     sanitize({
       body: asObject({
         gasToken: asString,
-        operationType: asNumber,
         to: asString,
         from: asString,
         nonce: asString,

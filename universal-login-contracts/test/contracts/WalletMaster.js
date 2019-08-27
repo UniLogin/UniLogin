@@ -67,7 +67,7 @@ describe('WalletMaster', async () => {
         msg.nonce,
         msg.gasPrice,
         msg.gasToken,
-        msg.gasLimit, 0);
+        msg.gasLimit);
       expect(jsHash).to.eq(solidityHash);
     });
 
@@ -81,7 +81,6 @@ describe('WalletMaster', async () => {
         msg.gasPrice,
         msg.gasToken,
         msg.gasLimit,
-        0,
         signature);
       expect(recoveredAddress).to.eq(publicKey);
     });
