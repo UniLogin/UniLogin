@@ -2,7 +2,7 @@ const yargs = require('yargs');
 import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../ops/deployToken';
 import connectAndExecute from './connectAndExecute';
-import deployMaster, {deployMasterContractWithRefund} from '../ops/deployMaster';
+import deployMaster, {deployMasterContract} from '../ops/deployMaster';
 import {connectAndDeployFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
@@ -36,7 +36,7 @@ const commandLineBuilder = yargs
   .command('deploy:master:refund', 'Deploys wallet master with refund contract',
     () => {},
     (argv) => {
-      connectAndExecute(argv.nodeUrl, argv.privateKey, deployMasterContractWithRefund).catch(console.error);
+      connectAndExecute(argv.nodeUrl, argv.privateKey, deployMasterContract).catch(console.error);
     })
   .command('deploy:factory [walletMasterAddress]', 'Deploys counterfactual factory contract',
     (yargs) => {

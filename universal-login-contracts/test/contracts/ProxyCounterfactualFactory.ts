@@ -4,7 +4,7 @@ import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithRefundArgs, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
+import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../utils/utils';
 
@@ -22,7 +22,7 @@ describe('Counterfactual Factory', () => {
   let initializeData: any;
   let futureAddress: string;
   let signature: string;
-  let createFutureDeploymentArgs: CreateFutureDeploymentWithRefundArgs;
+  let createFutureDeploymentArgs: CreateFutureDeploymentWithENS;
 
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));

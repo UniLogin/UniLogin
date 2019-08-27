@@ -48,6 +48,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
+        /* solium-disable security/no-tx-origin*/
         refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
     }
 
