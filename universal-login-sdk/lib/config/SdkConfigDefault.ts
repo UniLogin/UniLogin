@@ -15,5 +15,7 @@ export const SdkConfigDefault: SdkConfig = {
     'USD',
     'EUR',
     'BTC'
-  ]
+  ],
+  authorisationsObserverTick: 1000,
+  executionFactoryTick: 1000,
 };
