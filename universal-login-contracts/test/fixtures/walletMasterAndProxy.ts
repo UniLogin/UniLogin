@@ -1,17 +1,17 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {createKeyPair} from '@universal-login/commons';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletMaster from '../../build/WalletMasterWithRefund.json';
 import Proxy from '../../build/Proxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
-import {encodeInitializeData} from '../../lib';
+import {encodeInitializeData, deployWalletMasterWithRefund} from '../../lib';
 
 const {parseEther} = utils;
 
 export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const keyPair = createKeyPair();
-  const walletContractMaster = await deployContract(wallet, WalletMaster);
+  const walletContractMaster = await deployWalletMasterWithRefund(wallet);
   const initData = encodeInitializeData(keyPair.publicKey);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address, initData]);
   const mockToken = await deployContract(wallet, MockToken);
