@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {MessageWithoutFrom} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import {InvalidHexData} from '../errors';
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;

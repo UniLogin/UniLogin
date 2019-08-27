@@ -1,5 +1,5 @@
 import {utils, providers} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {SignedMessage} from '@universal-login/commons';
 import MessageItem from '../models/messages/MessageItem';

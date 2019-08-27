@@ -4,7 +4,7 @@ import {TokenGrantingRelayer} from '../../../../lib/http/relayers/TokenGrantingR
 import {utils, Contract} from 'ethers';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import {waitUntil, MANAGEMENT_KEY, createSignedMessage, stringifySignedMessageFields} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import {startRelayer} from '../../../helpers/startRelayer';
 import {WalletCreator} from '../../../helpers/WalletCreator';
 chai.use(solidity);

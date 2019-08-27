@@ -1,6 +1,6 @@
 import {defaultDeployOptions} from '@universal-login/commons';
 import WalletProxy from '@universal-login/contracts/build/Proxy.json';
-import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMaster from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import {ContractFactory, Contract} from 'ethers';
 import {encodeInitializeWithENSData, deployWalletMasterWithRefund} from '@universal-login/contracts';
 
