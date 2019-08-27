@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {ACTION_KEY, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import WalletMaster from '@universal-login/contracts/build/WalletMasterWithRefund.json';
+import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
 import buildEnsService from '../helpers/buildEnsService';

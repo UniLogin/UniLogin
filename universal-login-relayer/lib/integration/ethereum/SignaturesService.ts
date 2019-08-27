@@ -1,5 +1,5 @@
 import {Contract, Wallet, utils} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
+import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
 
 
 export class SignaturesService {
