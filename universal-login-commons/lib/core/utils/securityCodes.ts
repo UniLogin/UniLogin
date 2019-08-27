@@ -41,12 +41,9 @@ export const findPossibleAddressesFromCodePart = (enteredCode: number[], incomin
 };
 
 export const findIndiciesOfValidCodesByPrefix = (codes: number[][], enteredCode: number[]) =>
-  codes.reduce((indices, code, index) => {
-    if (deepArrayStartWith(code, enteredCode)) {
-      indices.push(index);
-    }
-    return indices;
-  }, [] as number[]);
+  codes.map((code, index) => [code, index] as [number[], number])
+    .filter(([code, ]) => deepArrayStartWith(code, enteredCode))
+    .map(([, index]) => index);
 
 export const addressTo16bitBytes = (publicKey: string): number[] => {
   const hash = utils.keccak256(publicKey);

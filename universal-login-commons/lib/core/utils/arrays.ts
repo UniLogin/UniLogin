@@ -33,9 +33,6 @@ export const deepArrayStartWith = (array: any[], prefix: any[]) => {
 };
 
 export const getArrayElementsFromIndicies = <T>(array: T[], indicies: number[]) =>
-  indicies.reduce((elements, index) => {
-    if (0 <= index && index < array.length) {
-      elements.push(array[index]);
-    }
-    return elements;
-  }, [] as T[]);
+  indicies
+    .filter((index) => 0 <= index && index < array.length)
+    .map((index) => array[index]);
