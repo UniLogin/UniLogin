@@ -49,7 +49,7 @@ class UniversalLoginSDK {
     this.relayerApi = new RelayerApi(relayerUrl);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorisationsObserverTick);
-    this.executionFactory = new ExecutionFactory(this.relayerApi);
+    this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.executionFactoryTick);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);

@@ -7,14 +7,12 @@ import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../lib/api/sdk';
 import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 import {createWallet} from '../helpers/createWallet';
-import {setupSdkTicks} from '../helpers/setupSdkTicks';
 
 export default async function basicSDK(givenProvider, wallets) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
   const {relayer, provider} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
-  const sdk = new UniversalLoginSDK(relayer.url(), provider, {authorisationsObserverTick: 10});
-  setupSdkTicks(sdk);
+  const sdk = new UniversalLoginSDK(relayer.url(), provider, {authorisationsObserverTick: 10, executionFactoryTick: 10});
   const ensName = 'alex.mylogin.eth';
   const  {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
   const mockToken = await deployContract(wallet, MockToken);

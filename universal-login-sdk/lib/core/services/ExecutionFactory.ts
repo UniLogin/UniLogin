@@ -15,8 +15,8 @@ export interface Execution {
 export class ExecutionFactory {
   constructor(
     private relayerApi: RelayerApi,
-    private timeout: number = DEFAULT_EXECUTION_TIMEOUT,
-    private tick: number = DEFAULT_EXECUTION_TICK
+    private tick: number = DEFAULT_EXECUTION_TICK,
+    private timeout: number = DEFAULT_EXECUTION_TIMEOUT
   ) {}
 
   async createExecution(signedMessage: SignedMessage): Promise<Execution> {
