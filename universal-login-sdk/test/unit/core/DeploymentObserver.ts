@@ -13,7 +13,7 @@ describe('UNIT: DeploymentObserver', async () => {
 
   beforeEach(() => {
     deploymentObserver = new DeploymentObserver(blockchainService as any, contractWhiteList);
-    deploymentObserver.step = 10;
+    deploymentObserver.tick = 10;
   });
 
   it('calls calback if contract deployed', async () => {

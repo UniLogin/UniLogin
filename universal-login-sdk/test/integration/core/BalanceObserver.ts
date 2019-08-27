@@ -26,7 +26,7 @@ describe('INT: BalanceObserver', () => {
 
       balanceChecker = new BalanceChecker(provider);
       balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore);
-      balanceObserver.step = 100;
+      balanceObserver.tick = 100;
     });
 
     it('getBalances', async () => {

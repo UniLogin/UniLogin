@@ -39,7 +39,7 @@ describe('UNIT: AuthorisationsObserver', () => {
     ({privateKey} = createKeyPair());
     getAuthorisationRequest = createGetAuthorisationRequest(TEST_ACCOUNT_ADDRESS, privateKey);
     fakeGetAuthorisationRequest = createGetAuthorisationRequest('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef', privateKey);
-    authorisationsObserver.step = 10;
+    authorisationsObserver.tick = 10;
   });
 
   it('should call callback with authorisation', async () => {
