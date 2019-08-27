@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
 import WalletMaster from '../build/WalletMaster.json';
-import WalletMasterWithRefund from '../build/WalletMasterWithRefund.json';
+// import WalletMasterWithRefund from '../build/WalletMasterWithRefund.json';
 
 export type EnsDomainData = {
   ensAddress: string;
@@ -11,7 +11,7 @@ export type EnsDomainData = {
 
 export const encodeInitializeWithENSData = (args: string[]) => new utils.Interface(WalletMaster.interface).functions.initializeWithENS.encode(args);
 
-export const encodeInitializeWithRefundData = (args: string[]) => new utils.Interface(WalletMasterWithRefund.interface).functions.initializeWithRefund.encode(args);
+// export const encodeInitializeWithRefundData = (args: string[]) => new utils.Interface(WalletMasterWithRefund.interface).functions.initializeWithRefund.encode(args);
 
 export const encodeInitializeData = (publicKey: string) => new utils.Interface(WalletMaster.interface).functions.initialize.encode([publicKey]);
 
@@ -38,21 +38,22 @@ type SetupInitializeWithENSArgs = {
   ensDomainData: EnsDomainData;
   name?: string;
   domain?: string;
+  gasPrice: string;
 };
 
 interface SetupInitializeWithENSAndRefundArgs extends SetupInitializeWithENSArgs {
   gasPrice: string;
 }
 
-export function setupInitializeWithENSArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
+export function setupInitializeWithENSArgs({keyPair, ensDomainData, gasPrice, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress];
+  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress, gasPrice];
   return args;
 }
 
-export function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', gasPrice}: SetupInitializeWithENSAndRefundArgs) {
-  const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
-  return [...args, gasPrice];
-}
+// export function setupInitializeWithENSAndRefundArgs({keyPair, ensDomainData, name = 'name', domain = 'mylogin.eth', gasPrice}: SetupInitializeWithENSAndRefundArgs) {
+//   const args = setupInitializeWithENSArgs({keyPair, ensDomainData, name, domain});
+//   return [...args, gasPrice];
+// }

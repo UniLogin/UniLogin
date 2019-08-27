@@ -36,7 +36,8 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         bytes32 _node,
         ENS ens,
         FIFSRegistrar registrar,
-        PublicResolver resolver) external onlyInitializing()
+        PublicResolver resolver,
+        uint gasPrice) external onlyInitializing()
         {
 
         // ERC1077 → KeyHolder
@@ -47,6 +48,7 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
         // ENSRegistered
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
+        refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
     }
 
     function isValidSignature(bytes memory _data, bytes memory _signature) public view returns (bytes4) {
@@ -83,6 +85,10 @@ contract WalletMaster is MasterBase, ENSRegistered, ERC1077, IERC1271, IERC721Re
             i /= 10;
         }
         return string(bstr);
+    }
+
+    function getDeploymentGasUsed() private pure returns(uint) {
+        return 500000;
     }
 
     function getMagicValue() private pure returns(bytes4) {
