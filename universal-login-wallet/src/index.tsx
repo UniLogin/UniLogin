@@ -6,6 +6,7 @@ import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
 import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
+import {ErrorBoundary} from './ui/react/ErrorBoundary';
 
 const config = getConfig();
 
@@ -15,7 +16,9 @@ services.start();
 render(
   <ServiceContext.Provider value={services}>
       <CustomBrowserRouter>
-        <App/>
+        <ErrorBoundary>
+          <App/>
+        </ErrorBoundary>
       </CustomBrowserRouter>
   </ServiceContext.Provider>,
   document.getElementById('app'),
