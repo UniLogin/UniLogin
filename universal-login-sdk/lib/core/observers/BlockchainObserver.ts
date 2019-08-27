@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import WalletContract from '@universal-login/contracts/build/WalletMasterWithRefund.json';
 import {BlockchainService} from '../../integration/ethereum/BlockchainService';
 import ObserverBase from './ObserverBase';
 
