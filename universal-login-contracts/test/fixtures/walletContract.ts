@@ -3,7 +3,7 @@ import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/WalletMaster.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {deployFactory, createFutureDeploymentWithRefund, deployWalletMasterWithRefund} from '../../lib';
+import {deployFactory, createFutureDeploymentWithENS, deployWalletMaster} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
@@ -25,7 +25,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
 }
 
 export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
-  const walletMaster = await deployWalletMasterWithRefund(deployer);
+  const walletMaster = await deployWalletMaster(deployer);
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     walletMaster,
@@ -36,7 +36,7 @@ export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const {initializeData, futureAddress, signature} = createFutureDeploymentWithRefund({keyPair, walletMasterAddress: walletMaster.address, gasPrice: '1000000', ensDomainData, factoryContract});
+  const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({keyPair, walletMasterAddress: walletMaster.address, gasPrice: '1000000', ensDomainData, factoryContract});
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
   const walletContract = new Contract(futureAddress, WalletMaster.interface, provider);

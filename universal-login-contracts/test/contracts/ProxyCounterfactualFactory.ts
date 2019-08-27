@@ -4,7 +4,7 @@ import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
 import WalletMaster from '../../build/WalletMaster.json';
-import {EnsDomainData, createFutureDeploymentWithRefund, CreateFutureDeploymentWithRefundArgs, encodeInitializeWithRefundData, setupInitializeWithENSAndRefundArgs} from '../../lib';
+import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../utils/utils';
 
@@ -22,13 +22,13 @@ describe('Counterfactual Factory', () => {
   let initializeData: any;
   let futureAddress: string;
   let signature: string;
-  let createFutureDeploymentArgs: CreateFutureDeploymentWithRefundArgs;
+  let createFutureDeploymentArgs: CreateFutureDeploymentWithENS;
 
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
     createFutureDeploymentArgs = {keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: '1000000'};
-    ({initializeData, futureAddress, signature} = createFutureDeploymentWithRefund(createFutureDeploymentArgs));
+    ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 
   it('factory contract address should be proper address', () => {
@@ -54,7 +54,7 @@ describe('Counterfactual Factory', () => {
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const newKeyPair = createKeyPair();
-    ({initializeData, signature} = createFutureDeploymentWithRefund({...createFutureDeploymentArgs, keyPair: newKeyPair}));
+    ({initializeData, signature} = createFutureDeploymentWithENS({...createFutureDeploymentArgs, keyPair: newKeyPair}));
     await expect(factoryContract.createContract(newKeyPair.publicKey, initializeData, signature)).to.be.revertedWith('Unable to register ENS domain');
   });
 
@@ -64,7 +64,7 @@ describe('Counterfactual Factory', () => {
   });
 
   it('wallet refund after deploy', async () => {
-    const {initializeData, futureAddress, signature} = createFutureDeploymentWithRefund(createFutureDeploymentArgs);
+    const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs);
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const initBalance = await wallet.getBalance();
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(createFutureDeploymentArgs.gasPrice)});
@@ -72,11 +72,11 @@ describe('Counterfactual Factory', () => {
   });
 
   it('should fail if signed ens name and passed in initialize data are different', async () => {
-    const {futureAddress, signature} = createFutureDeploymentWithRefund(createFutureDeploymentArgs);
+    const {futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs);
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
-    const argsWithCorrectName = await setupInitializeWithENSAndRefundArgs(createFutureDeploymentArgs);
+    const argsWithCorrectName = await setupInitializeWithENSArgs(createFutureDeploymentArgs);
     const argsWithInvalidName = switchENSNameInInitializeArgs(argsWithCorrectName, 'invalid-name');
-    const initData = encodeInitializeWithRefundData(argsWithInvalidName);
+    const initData = encodeInitializeWithENSData(argsWithInvalidName);
     await expect(factoryContract.createContract(keyPair.publicKey, initData, signature)).to.be.revertedWith('Invalid signature');
   });
 

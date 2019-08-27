@@ -5,7 +5,7 @@ import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
-import {encodeInitializeWithRefundData} from '@universal-login/contracts';
+import {encodeInitializeWithENSData} from '@universal-login/contracts';
 
 export type BalanceDetails = {
   tokenAddress: string,
@@ -35,7 +35,7 @@ export class FutureWalletFactory {
   async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
     const args = await this.ensService.argsFor(ensName) as string[];
     const initArgs = [publicKey, ...args, gasPrice];
-    return encodeInitializeWithRefundData(initArgs);
+    return encodeInitializeWithENSData(initArgs);
   }
 
   async createFutureWallet(): Promise<FutureWallet> {

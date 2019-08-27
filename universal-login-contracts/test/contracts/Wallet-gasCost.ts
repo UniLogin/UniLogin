@@ -4,7 +4,7 @@ import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
 import {createKeyPair} from '@universal-login/commons';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
-import {EnsDomainData, createFutureDeploymentWithRefund, createFutureDeployment} from '../../lib';
+import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -37,7 +37,7 @@ describe('Performance test', async () => {
   });
 
   it('Proxy deploy with ENS', async () => {
-    const {futureAddress, initializeData, signature} = createFutureDeploymentWithRefund({keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: '1000000'});
+    const {futureAddress, initializeData, signature} = createFutureDeploymentWithENS({keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: '1000000'});
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);

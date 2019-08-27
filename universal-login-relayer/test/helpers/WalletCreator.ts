@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import {Wallet, Contract, utils} from 'ethers';
 import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeContractAddress, TEST_GAS_PRICE} from '@universal-login/commons';
-import {encodeInitializeWithRefundData} from '@universal-login/contracts';
+import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import ProxyCounterfactualFactory from '@universal-login/contracts/build/ProxyCounterfactualFactory.json';
 import ENSService from '../../lib/integration/ethereum/ensService';
 import {RelayerUnderTest} from '../../lib';
@@ -35,7 +35,7 @@ export class WalletCreator {
     const ensService = await this.fetchEnsService();
     const args = await ensService.argsFor(ensName) as string[];
     const initArgs = [publicKey, ...args, gasPrice];
-    return encodeInitializeWithRefundData(initArgs);
+    return encodeInitializeWithENSData(initArgs);
   }
 
   async createFutureWallet() {

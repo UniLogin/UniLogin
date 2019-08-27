@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {providers, Wallet, Contract, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE} from '@universal-login/commons';
-import WalletMaster from '@universal-login/contracts/build/WalletMasterWithRefund.json';
+import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 import WalletService from '../../../../lib/integration/ethereum/WalletService';
 import ENSService from '../../../../lib/integration/ethereum/ensService';

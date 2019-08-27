@@ -8,7 +8,7 @@ import buildEnsService from '../helpers/buildEnsService';
 export default async function basicWalletContractWithMockToken(provider, wallets) {
   const [, otherWallet, wallet] = wallets;
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
-  const walletContract = await createWalletContract(wallet, ensService);
+  const walletContract = await createWalletContract(wallet);
   const actionWallet = Wallet.createRandom();
   const actionKey = actionWallet.privateKey;
   const mockToken = await deployContract(wallet, MockToken);
