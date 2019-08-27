@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {isValidCode} from '@universal-login/commons';
+import {isValidCode, SECURITY_CODE_LENGTH} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
@@ -22,8 +22,6 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
   const [status, setStatus] = useState('');
   const {progressBar, showProgressBar} = useProgressBar();
 
-  const EMOJIS_MAX_LENGTH = 6;
-
   const confirmWithCodeCheck = (publicKey: string) => {
     if (isValidCode(enteredCode, publicKey)) {
       sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
@@ -36,11 +34,11 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
   };
 
   const onEmojiAdd = (code: number) => {
-    if (enteredCode.length < EMOJIS_MAX_LENGTH) {
+    if (enteredCode.length < SECURITY_CODE_LENGTH) {
       enteredCode.push(code);
       setEnteredCode([...enteredCode]);
     }
-    if (enteredCode.length === EMOJIS_MAX_LENGTH) {
+    if (enteredCode.length === SECURITY_CODE_LENGTH) {
       confirmWithCodeCheck(publicKey);
     }
   };
@@ -52,6 +50,10 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
     }
   };
 
+  const renderPanelOrKeyboard = () => {
+
+  };
+
   return (
     <div id="emojis">
     {progressBar ?
@@ -60,8 +62,9 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
         <ProgressBar className="connection-progress-bar" />
       </div> :
       <>
-        <EmojiPlaceholders maxLength={EMOJIS_MAX_LENGTH} code={enteredCode} onEmojiClicked={onEmojiRemove} className={className}/>
-        <EmojiPanelWithFakes publicKey={publicKey} onEmojiClicked={onEmojiAdd} className={className}/>
+        <EmojiPlaceholders enteredCode={enteredCode} onEmojiClick={onEmojiRemove} className={className}/>
+        {renderPanelOrKeyboard()}
+        <EmojiPanelWithFakes publicKey={publicKey} onEmojiClick={onEmojiAdd} className={className}/>
         <p className="emojis-form-status">{status}</p>
         <button className="emojis-form-reject" id="reject" onClick={() => sdk.denyRequest(contractAddress, publicKey, privateKey)}>Deny</button>
       </>

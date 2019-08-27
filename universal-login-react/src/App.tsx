@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {TEST_ACCOUNT_ADDRESS, generateCode, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, generateCode, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, CONNECTION_REAL_ADDRESS} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -16,6 +16,7 @@ import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
+import {EmojiKeyboardForm} from './ui/Notifications/EmojiKeyboardForm';
 
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
@@ -88,6 +89,21 @@ export const App = () => {
                   <EmojiForm
                     sdk={sdk}
                     publicKey={TEST_ACCOUNT_ADDRESS}
+                    contractAddress={TEST_CONTRACT_ADDRESS}
+                    privateKey={TEST_PRIVATE_KEY}
+                  />
+                </div>
+              )}
+            />
+            <Route
+              exact
+              path="/keyboard"
+              render={() => (
+                <div>
+                  <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
+                  <hr/>
+                  <EmojiKeyboardForm
+                    sdk={sdk}
                     contractAddress={TEST_CONTRACT_ADDRESS}
                     privateKey={TEST_PRIVATE_KEY}
                   />

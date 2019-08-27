@@ -45,3 +45,31 @@
 .emojis-form-status {
   color: red;
 }
+
+.emoji-keyboard {
+  margin-top: 20px;
+}
+
+.emoji-keybord-row {
+  display: flex;
+  align-items: center;
+}
+
+.universal-login-emojis .emoji-keybord-row  button.emoji-keyboard-arrow-button {
+  width: 30px;
+  height: 30px;
+}
+
+.universal-login-emojis .emoji-keyboard-color-row  .emoji-keyboard-color-item {
+  background: none;
+  width: auto;
+  height: auto;
+  border: none;
+  box-shadow: none;
+}
+
+.universal-login-emojis .emoji-keyboard-color-row  .emoji-keyboard-color-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
