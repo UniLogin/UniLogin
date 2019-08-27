@@ -24,7 +24,7 @@ export const array8bitTo16bit = (numbers: number[]) => {
   );
 };
 
-export const deepArrayStartWith = (prefix: any[], array: any[]) => {
+export const deepArrayStartWith = (array: any[], prefix: any[]) => {
   if (prefix.length > array.length) {
     return false;
   }

@@ -61,22 +61,22 @@ describe('UNIT: Arrays', () => {
       expect(deepArrayStartWith([], [])).to.be.true;
     });
 
-    it('[1, 2, 3], [1, 2, 3, 4, 5]', () => {
-      expect(deepArrayStartWith([1, 2, 3], [1, 2, 3, 4, 5])).to.be.true;
+    it('[1, 2, 3, 4, 5], [1, 2, 3]', () => {
+      expect(deepArrayStartWith([1, 2, 3, 4, 5], [1, 2, 3])).to.be.true;
     });
 
-    it('[1, 1, 1], [1, 1]', () => {
-      expect(deepArrayStartWith([1, 1, 1], [1, 1])).to.be.false;
+    it('[1, 1], [1, 1, 1]', () => {
+      expect(deepArrayStartWith([1, 1], [1, 1, 1])).to.be.false;
     });
 
     it('[1], [2]', () => {
       expect(deepArrayStartWith([1], [2])).to.be.false;
     });
 
-    it('[bigNumber(1), {leet: 1337}, `deadbeef`], [bigNumber(1), {leet: 1337}, `deadbeef`, [1]]', () => {
+    it('[bigNumber(1), {leet: 1337}, `deadbeef`, [1]], [bigNumber(1), {leet: 1337}, `deadbeef`]', () => {
       const prefix = [utils.bigNumberify('42'), {leet: 1337}, 'deadbeef'];
       const array = [utils.bigNumberify('42'), {leet: 1337}, 'deadbeef', [1]];
-      expect(deepArrayStartWith(prefix, array)).to.be.true;
+      expect(deepArrayStartWith(array, prefix)).to.be.true;
     });
   });
 
