@@ -4,7 +4,7 @@ type ObserverRunnerState = 'stop' | 'stopping' | 'running';
 
 abstract class ObserverRunner {
   protected state: ObserverRunnerState = 'stop';
-  abstract async tick(): Promise<void>;
+  abstract async execute(): Promise<void>;
   step = 1000;
   timeout: any = null;
 
@@ -12,7 +12,7 @@ abstract class ObserverRunner {
     if (this.state === 'stop') {
       return;
     }
-    await this.tick();
+    await this.execute();
     if (this.state === 'stopping') {
       this.state = 'stop';
     } else if (this.state === 'running') {

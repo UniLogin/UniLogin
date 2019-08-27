@@ -17,7 +17,7 @@ describe('UNIT: PriceObserver', () => {
     await waitUntil(() => !!callback.firstCall);
     expect(callback).to.have.been.calledOnce;
 
-    await mockedPriceObserver.tick();
+    await mockedPriceObserver.execute();
 
     await waitUntil(() => !!callback.secondCall);
     expect(callback).to.have.been.calledTwice;
@@ -45,7 +45,7 @@ describe('UNIT: PriceObserver', () => {
     expect(callback1.firstCall.args[0]).to.deep.equal(PRICES_BEFORE);
     expect(callback2.firstCall.args[0]).to.deep.equal(PRICES_BEFORE);
 
-    await mockedPriceObserver.tick();
+    await mockedPriceObserver.execute();
     await waitUntil(() => !!callback2.secondCall);
 
     unsubscribe2();

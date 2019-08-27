@@ -18,7 +18,7 @@ class BlockchainObserver extends ObserverBase {
     await super.start();
   }
 
-  async tick() {
+  async execute() {
     await this.fetchEvents();
   }
 

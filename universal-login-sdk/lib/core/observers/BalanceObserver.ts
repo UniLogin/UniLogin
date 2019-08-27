@@ -15,7 +15,7 @@ export class BalanceObserver extends ObserverRunner {
     this.step = step;
   }
 
-  async tick() {
+  async execute() {
     await this.checkBalanceNow();
   }
 

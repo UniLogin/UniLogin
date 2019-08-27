@@ -29,7 +29,7 @@ export class PriceObserver extends ObserverRunner {
     return unsubscribe;
   }
 
-  async tick() {
+  async execute() {
     this.lastTokenPrices = await this.getCurrentPrices();
     this.callbacks.forEach((callback) => callback(this.lastTokenPrices));
   }

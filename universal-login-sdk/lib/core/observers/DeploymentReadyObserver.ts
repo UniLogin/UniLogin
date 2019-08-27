@@ -26,7 +26,7 @@ export class DeploymentReadyObserver extends ObserverRunner {
     };
   }
 
-  tick() {
+  execute() {
     return this.checkDeploymentReadiness();
   }
 

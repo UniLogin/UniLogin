@@ -76,12 +76,12 @@ package Domain {
 
   class DeploymentReadyObserver {
     constructor(walletAddress, SupportedToken [])
-    tick()
+    execute()
   }
 
   class DeploymentObserver {
     constructor(walletAddress)
-    tick()
+    execute()
   }
 
   class BlockchainObserver {

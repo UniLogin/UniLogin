@@ -13,7 +13,7 @@ class AuthorisationsObserver extends ObserverRunner {
     super();
   }
 
-  async tick() {
+  async execute() {
     return this.checkAuthorisationsChangedFor(this.getAuthorisationRequest!);
   }
 
