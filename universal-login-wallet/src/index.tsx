@@ -6,7 +6,7 @@ import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
 import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
-import {ErrorBoundary} from './ui/react/ErrorBoundary';
+import {ErrorBoundary} from '@universal-login/react';
 
 const config = getConfig();
 

@@ -1,20 +1,11 @@
-import 'jsdom-global/register';
-import React from 'react';
 import {expect} from 'chai';
-import {TestDiv} from '../src/test';
-import {configure, ReactWrapper, mount} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import {Safello} from '../src';
+import React from 'react';
+import {mount} from 'enzyme';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {Safello} from '../../src/integration/Safello';
 
-configure({adapter: new Adapter()});
 
-describe('Test configuration', () => {
-  it('should be executed', () => {
-    const reactWrapper: ReactWrapper = mount(<TestDiv />);
-    expect(reactWrapper.text().includes('Test div')).to.be.true;
-  });
-
+describe('Safello', () => {
   it('should be mounted', async () => {
     expect(() =>
       mount(

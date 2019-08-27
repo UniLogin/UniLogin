@@ -26,3 +26,4 @@ export {ModalTransferRecipient} from './ui/Transfer/Recipient/ModalTransferRecip
 export {TransferDropdownItem} from './ui/Transfer/Amount/TransferDropdownItem';
 export {TransferDropdown} from './ui/Transfer/Amount/TransferDropdown';
 export {ModalTransferAmount} from './ui/Transfer/Amount/ModalTransferAmount';
+export {ErrorBoundary} from './ui/commons/ErrorBoundary';
