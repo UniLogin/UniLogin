@@ -24,7 +24,7 @@ export class DeploymentObserver extends ObserverRunner {
     };
   }
 
-  async tick() {
+  async execute() {
     await this.checkContract(this.futureContractAddress!);
   }
 

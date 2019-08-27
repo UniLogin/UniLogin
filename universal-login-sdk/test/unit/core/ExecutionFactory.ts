@@ -37,6 +37,7 @@ describe('UNIT: ExecutionFactory', async () => {
       getStatus
     } as any;
     executionFactory = new ExecutionFactory(relayerApi);
+    (executionFactory as any).tick = 10;
   });
 
   it('waitToBeMined success', async () => {

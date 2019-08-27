@@ -10,12 +10,12 @@ export class BalanceObserver extends ObserverRunner {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
   private callbacks: OnBalanceChange[] = [];
 
-  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, step: number = 500) {
+  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, tick: number = 500) {
     super();
-    this.step = step;
+    this.tick = tick;
   }
 
-  async tick() {
+  async execute() {
     await this.checkBalanceNow();
   }
 

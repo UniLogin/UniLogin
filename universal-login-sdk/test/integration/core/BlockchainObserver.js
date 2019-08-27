@@ -27,7 +27,6 @@ describe('INT: BlockchainObserver', async () => {
   beforeEach(async () => {
     ({relayer, sdk, mockToken, contractAddress, wallet, otherWallet, otherWallet2, privateKey} = await loadFixture(basicSDK));
     ({blockchainObserver} = sdk);
-    blockchainObserver.step = 50;
     blockchainObserver.lastBlock = 0;
   });
 

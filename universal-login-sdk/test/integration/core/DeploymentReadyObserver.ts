@@ -29,7 +29,7 @@ describe('INT: DeploymentReadyObserver', () => {
     supportedTokens = [...supportedTokens, {address: mockToken.address, minimalAmount}];
     callback = sinon.spy();
     deploymentReadyObserver = new DeploymentReadyObserver(supportedTokens, provider);
-    deploymentReadyObserver.step = 10;
+    deploymentReadyObserver.tick = 10;
     unsubscribe = await deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
   });
 

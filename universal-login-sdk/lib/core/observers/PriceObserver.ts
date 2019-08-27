@@ -10,9 +10,9 @@ export class PriceObserver extends ObserverRunner {
   private lastTokenPrices: TokensPrices = {};
   private callbacks: OnTokenPricesChange[] = [];
 
-  constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], step: number = PRICE_OBSERVER_DEAFULT_TICK) {
+  constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], tick: number = PRICE_OBSERVER_DEAFULT_TICK) {
     super();
-    this.step = step;
+    this.tick = tick;
   }
 
   subscribe(callback: OnTokenPricesChange) {
@@ -29,7 +29,7 @@ export class PriceObserver extends ObserverRunner {
     return unsubscribe;
   }
 
-  async tick() {
+  async execute() {
     this.lastTokenPrices = await this.getCurrentPrices();
     this.callbacks.forEach((callback) => callback(this.lastTokenPrices));
   }

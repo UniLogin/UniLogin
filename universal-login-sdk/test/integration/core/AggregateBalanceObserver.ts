@@ -29,7 +29,7 @@ describe('INT: AggregateBalanceObserver', () => {
     const observedTokens: TokenDetails[] = [
       ETHER_NATIVE_TOKEN
     ];
-    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore);
+    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, 10);
 
     mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
     resetCallCount();
@@ -43,7 +43,7 @@ describe('INT: AggregateBalanceObserver', () => {
     await waitUntil(() => !!callback.firstCall);
     expect(callback).to.have.been.calledOnce;
 
-    await mockedPriceObserver.tick();
+    await mockedPriceObserver.execute();
 
     await waitUntil(() => !!callback.secondCall);
     expect(callback).to.have.been.calledTwice;
@@ -66,7 +66,7 @@ describe('INT: AggregateBalanceObserver', () => {
     await waitUntil(() => !!callback.secondCall);
     expect(callback).to.have.been.calledTwice;
 
-    await mockedPriceObserver.tick();
+    await mockedPriceObserver.execute();
 
     await waitUntil(() => !!callback.thirdCall);
     expect(callback).to.have.been.calledThrice;
@@ -100,7 +100,7 @@ describe('INT: AggregateBalanceObserver', () => {
 
     unsubscribe1();
 
-    await mockedPriceObserver.tick();
+    await mockedPriceObserver.execute();
 
     await waitUntil(() => !!callback2.thirdCall);
     expect(callback2).to.have.been.calledThrice;

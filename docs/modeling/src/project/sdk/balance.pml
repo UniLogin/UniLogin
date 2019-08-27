@@ -24,7 +24,7 @@ package core {
     callbacks: OnBalanceChange[];
     construtor(balanceChecker: BalanceChecker, walletAddress: string, tokenDetails: TokenDetails[]);
     checkBalancesNow();
-    tick()
+    execute()
     subscribe(callback: OnBalanceChange): Unsubscribe
   }
 
@@ -33,7 +33,7 @@ package core {
     callbacks: OnPriceChange[];
     construtor(observedTokens: TokenDetails[], observedCurrencies: ObservedCurrency[]);
     getCurrentPrices();
-    tick()
+    execute()
     subscribe(callback: OnPriceChange): Unsubscribe
   }
 }
