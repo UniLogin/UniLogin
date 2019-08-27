@@ -1,21 +1,21 @@
-import React from 'react';
+import React, {ErrorInfo} from 'react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
 }
 
 export class ErrorBoundary extends React.Component {
-  constructor(props: any) {
-    super(props);
-    const initialState: ErrorBoundaryState = {hasError: false};
-    this.state = initialState;
-  }
+  state: ErrorBoundaryState = {hasError: false};
 
   static getDerivedStateFromError() {
     return {hasError: true};
   }
 
-  componentDidCatch() {}
+  componentDidCatch(error: unknown, errorInfo: ErrorInfo) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.error(error, errorInfo.componentStack);
+    }
+  }
 
   render() {
     if ((this.state as ErrorBoundaryState).hasError) {
