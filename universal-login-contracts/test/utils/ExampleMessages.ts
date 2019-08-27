@@ -1,4 +1,4 @@
-import {OPERATION_CALL, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
@@ -16,8 +16,7 @@ export const transferMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 
@@ -28,8 +27,7 @@ export const failedTransferMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 export const callMessage = {
@@ -39,8 +37,7 @@ export const callMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 export const failedCallMessage = {
@@ -50,8 +47,7 @@ export const failedCallMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
-  gasToken: '0x0000000000000000000000000000000000000000',
-  operationType: OPERATION_CALL,
+  gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 type InfiniteCallOverrides = {
@@ -70,7 +66,6 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasPrice: 1,
     gasToken: '0x0',
     gasLimit: utils.bigNumberify('240000'),
-    operationType: OPERATION_CALL,
     ...overrides
   };
 };

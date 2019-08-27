@@ -24,6 +24,6 @@ export const lookupAddress = async (provider, address, resolverAddress) => {
 };
 
 export const getExecutionArgs = (msg) =>
-  [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit, msg.operationType];
+  [msg.to, msg.value, msg.data, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit];
 
 export const encodeFunction = (ContractJSON, functionName, args = []) => new utils.Interface(ContractJSON.interface).functions[`${functionName}`].encode(args);

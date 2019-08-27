@@ -30,6 +30,5 @@ const dataToMessage = (data: any[]): MessageWithoutFrom => ({
   gasPrice: data[4],
   gasToken: data[5],
   gasLimit: data[6],
-  operationType: parseInt(data[7], 16),
-  signature: data[8]
+  signature: data[7]
 });

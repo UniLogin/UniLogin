@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, OPERATION_CALL, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../../lib';
+import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../../lib';
 
 describe('UNIT: Parsing Transaction', () => {
   const message: MessageWithFrom = {
@@ -11,8 +11,7 @@ describe('UNIT: Parsing Transaction', () => {
     gasPrice: utils.bigNumberify(9000000000),
     data: utils.formatBytes32String('0'),
     nonce: '0',
-    gasToken: '0x0000000000000000000000000000000000000000',
-    operationType: OPERATION_CALL
+    gasToken: '0x0000000000000000000000000000000000000000'
   };
 
   const parsedTransaction = {
@@ -24,8 +23,7 @@ describe('UNIT: Parsing Transaction', () => {
     data: '0x3000000000000000000000000000000000000000000000000000000000000000',
     nonce: '0',
     gasToken: '0x0000000000000000000000000000000000000000',
-    operationType: OPERATION_CALL,
-    signature: '0x45fe0bf06270a46741ef85b8594b3b8e78cb3a4e382056bb43b580e4823bdb2e7688d54d40413a1a52fedd7870c4da48289738b14fb4dc8ac6790aaa7b3cfaa41c'
+    signature: '0x47589f51820002497726d60e01ec59c1424b9b3beaa07593f56c196bad68f40c0a34db040f1bd6f65b99729c5925d7bdfcaf76414de4bb5738cc78571c1549151c'
   };
 
   let signedMessage: SignedMessage;

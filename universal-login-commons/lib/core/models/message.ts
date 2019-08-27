@@ -8,7 +8,6 @@ export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
 
 export interface SignedMessage extends PaymentOptions {
-  operationType: number;
   to: string;
   from: string;
   nonce: string | number;
