@@ -93,17 +93,12 @@ describe('UNIT: Arrays', () => {
 
     it('A, [-1, -2]', () => {
       const array = [1, 2, 3];
-      expect(getArrayElementsFromIndicies(array, [-1, -2])).to.deep.equal([]);
-    });
-
-    it('A, [-1, 0, 1]', () => {
-      const array = [1, 2, 3];
-      expect(getArrayElementsFromIndicies(array, [-1, 0, 1])).to.deep.equal([1, 2]);
+      expect(() => getArrayElementsFromIndicies(array, [-1, -2])).to.be.throw('index out of bounds');
     });
 
     it('A, [0, 100, 1]', () => {
       const array = [1, 2, 3];
-      expect(getArrayElementsFromIndicies(array, [0, 100, 1])).to.deep.equal([1, 2]);
+      expect(() => getArrayElementsFromIndicies(array, [0, 100, 1])).to.be.throw('index out of bounds');
     });
   });
 });
