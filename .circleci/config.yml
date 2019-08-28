@@ -9,8 +9,8 @@ jobs:
       - run: yarn build
       - run: yarn lint
       - run: cd universal-login-contracts && yarn test:nobuild
-      - run: cd universal-login-commons && yarn test
-      - run: cd universal-login-ops && yarn test
+      - run: cd universal-login-commons && yarn test:nobuild
+      - run: cd universal-login-ops && yarn test:nobuild
       - run: yarn codechecks
   test_sdk_relayer:
     docker:
