@@ -36,7 +36,7 @@ export const isValidCode = (code: number[], publicKey: string) => {
   return deepEqual(expectedCode, code);
 };
 
-export const filterAddressesByCodePrefix = (notifications: Notification[], codePrefix: number[]) => {
+export const filterNotificationByCodePrefix = (notifications: Notification[], codePrefix: number[]) => {
   const codes = notifications.map((notification) => new KeyWithCode(notification.key));
   return filterKeyWithCodeByPrefix(codes, codePrefix);
 };

@@ -1,22 +1,22 @@
 import {expect} from 'chai';
-import {filterKeyWithCodeByPrefix, filterAddressesByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
+import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
 import {Notification} from '../../../lib';
 
 describe('UNIT: security codes', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
 
-  describe('filterAddressesByCodePrefix', () => {
+  describe('filterNotificationByCodePrefix', () => {
     const notifications = [
       {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301270'},
       {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301271'}
     ] as unknown as Notification[];
 
     it('no match', () => {
-      expect(filterAddressesByCodePrefix(notifications, [1])).to.deep.eq([]);
+      expect(filterNotificationByCodePrefix(notifications, [1])).to.deep.eq([]);
     });
 
     it('1 match', () => {
-      expect(filterAddressesByCodePrefix(notifications, [544])).to.deep.eq([
+      expect(filterNotificationByCodePrefix(notifications, [544])).to.deep.eq([
         '0x121323c0564ac2b0d5ae5d71773e8f208e301270'
       ]);
     });
