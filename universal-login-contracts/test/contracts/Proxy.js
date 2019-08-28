@@ -30,7 +30,7 @@ describe('CONTRACT: ProxyMasterCopy', async () => {
     });
 
     it('deployment fails if masterCopy is zero', async () => {
-      await expect(deployContract(wallet, Proxy, [0x0, []])).to.be.eventually.rejectedWith('invalid address');
+      await expect(deployContract(wallet, Proxy, [0x0])).to.be.eventually.rejectedWith('invalid address');
     });
 
     it('should be properly constructed', async () => {

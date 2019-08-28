@@ -4,8 +4,8 @@ import "./Core.sol";
 
 
 contract Proxy is Core {
-    constructor(address _master, bytes memory _initData) public {
-        setMaster(_master, _initData);
+    constructor(address _master) public {
+        setMaster(_master, "0x0");
     }
 
     function () external payable {

@@ -5,7 +5,7 @@ import ProxyContract from '../build/Proxy.json';
 import ProxyCounterfactualFactory from '../build/ProxyCounterfactualFactory.json';
 
 export const deployFactory = async (wallet: Wallet, walletMasterAddress: string, overrideOptions?: TransactionOverrides) => {
-  const initCode = getDeployData(ProxyContract as ContractJSON, [walletMasterAddress, '0x0']);
+  const initCode = getDeployData(ProxyContract as ContractJSON, [walletMasterAddress]);
   const factory = new ContractFactory(
     ProxyCounterfactualFactory.abi,
     ProxyCounterfactualFactory.evm.bytecode,

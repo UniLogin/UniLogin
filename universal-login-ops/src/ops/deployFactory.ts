@@ -18,7 +18,7 @@ export async function connectAndDeployFactory({nodeUrl, privateKey, provider, wa
 }
 
 export default async function deployFactory(wallet: Wallet, walletMasterAddress: string): Promise<string> {
-  const initData = getDeployData(ProxyContract, [walletMasterAddress, '0x0']);
+  const initData = getDeployData(ProxyContract, [walletMasterAddress]);
   console.log('Deploying factory contract...');
   const contractAddress = await deployContractAndWait(wallet, Factory, [initData]);
   console.log(`Factory contract address: ${contractAddress}`);
