@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-import {slices, shuffle, array8bitTo16bit} from '../../../lib/core/utils/arrays';
+import {slices, shuffle, array8bitTo16bit, deepArrayStartWith} from '../../../lib/core/utils/arrays';
+import {utils} from 'ethers';
 
 describe('UNIT: Arrays', () => {
   describe('slices', () => {
@@ -52,6 +53,30 @@ describe('UNIT: Arrays', () => {
 
     it('[1024] -> [0]', () => {
       expect(array8bitTo16bit([1024])).to.deep.eq([0]);
+    });
+  });
+
+  describe('deepArrayStartWith', () => {
+    it('[], []', () => {
+      expect(deepArrayStartWith([], [])).to.be.true;
+    });
+
+    it('[1, 2, 3, 4, 5], [1, 2, 3]', () => {
+      expect(deepArrayStartWith([1, 2, 3, 4, 5], [1, 2, 3])).to.be.true;
+    });
+
+    it('[1, 1], [1, 1, 1]', () => {
+      expect(deepArrayStartWith([1, 1], [1, 1, 1])).to.be.false;
+    });
+
+    it('[1], [2]', () => {
+      expect(deepArrayStartWith([1], [2])).to.be.false;
+    });
+
+    it('[bigNumber(1), {leet: 1337}, `deadbeef`, [1]], [bigNumber(1), {leet: 1337}, `deadbeef`]', () => {
+      const prefix = [utils.bigNumberify('42'), {leet: 1337}, 'deadbeef'];
+      const array = [utils.bigNumberify('42'), {leet: 1337}, 'deadbeef', [1]];
+      expect(deepArrayStartWith(array, prefix)).to.be.true;
     });
   });
 });

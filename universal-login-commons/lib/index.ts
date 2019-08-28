@@ -48,8 +48,8 @@ export {calculateInitializeWithENSSignature, calculateInitializeSignature, getIn
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
 export {DeployArgs} from './core/models/deploy';
 export {isProperAddress, reverseHexString} from './core/utils/hexStrings';
-export {slices, shuffle, array8bitTo16bit} from './core/utils/arrays';
-export {SECURITY_CODE_LENGTH, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
+export {slices, shuffle, array8bitTo16bit, deepArrayStartWith} from './core/utils/arrays';
+export {SECURITY_CODE_LENGTH, filterNotificationByCodePrefix, filterKeyWithCodeByPrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
 export {deepMerge} from './core/utils/deepMerge';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';

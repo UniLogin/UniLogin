@@ -1,8 +1,77 @@
 import {expect} from 'chai';
-import {generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
+import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
+import {Notification} from '../../../lib';
 
 describe('UNIT: security codes', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
+
+  describe('filterNotificationByCodePrefix', () => {
+    const notifications = [
+      {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301270'},
+      {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301271'}
+    ] as unknown as Notification[];
+
+    it('no match', () => {
+      expect(filterNotificationByCodePrefix(notifications, [1])).to.deep.eq([]);
+    });
+
+    it('1 match', () => {
+      expect(filterNotificationByCodePrefix(notifications, [544])).to.deep.eq([
+        '0x121323c0564ac2b0d5ae5d71773e8f208e301270'
+      ]);
+    });
+  });
+
+  describe('filterKeyWithCodeByPrefix', () => {
+    it('empty addresses', () => {
+      expect(filterKeyWithCodeByPrefix([], [])).to.deep.eq([]);
+    });
+
+    describe('single address', () => {
+      const keyWithCode = {
+        key: '0x321323c0564ac2b0d5ae5d71773e8f208e30127d',
+        code: [ 385, 951, 760, 594, 456, 349 ]
+      };
+
+      it('no match, single addresses', () => {
+        expect(filterKeyWithCodeByPrefix([keyWithCode], [1])).to.deep.eq([]);
+      });
+
+      it('single match, single addresses', () => {
+        expect(filterKeyWithCodeByPrefix([keyWithCode], [385])).to.deep.eq(['0x321323c0564ac2b0d5ae5d71773e8f208e30127d']);
+      });
+    });
+
+    describe('many addresses', () => {
+      const keyWithCodes = [{
+        key: '0x121323c0564ac2b0d5ae5d71773e8f208e301270',
+        code: [ 544, 680, 528, 350, 51, 414 ]
+      }, {
+        key: '0x121323c0564ac2b0d5ae5d71773e8f208e301271',
+        code: [ 854, 444, 123, 102, 545, 328 ]
+      }, {
+        key: '0x121323c0564ac2b0d5ae5d71773e8f208e301272',
+        code: [ 544, 167, 198, 145, 541, 1009 ]
+      }];
+
+      it('no match, mulitple addresses', () => {
+        expect(filterKeyWithCodeByPrefix(keyWithCodes, [1])).to.deep.eq([]);
+      });
+
+      it('multiple matches, multiple addresses', () => {
+        expect(filterKeyWithCodeByPrefix(keyWithCodes, [544])).to.deep.eq([
+          '0x121323c0564ac2b0d5ae5d71773e8f208e301270',
+          '0x121323c0564ac2b0d5ae5d71773e8f208e301272'
+        ]);
+      });
+
+      it('multiple matches, multiple addresses, two digit prefix', () => {
+        expect(filterKeyWithCodeByPrefix(keyWithCodes, [544, 167])).to.deep.eq([
+          '0x121323c0564ac2b0d5ae5d71773e8f208e301272'
+        ]);
+      });
+    });
+  });
 
   describe('generateCode', () => {
     it('returns 6 numbers', () => {
