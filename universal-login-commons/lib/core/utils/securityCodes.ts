@@ -2,7 +2,7 @@ import {utils} from 'ethers';
 import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
 import {isProperAddress, reverseHexString} from './hexStrings';
-import {shuffle, array8bitTo16bit, deepArrayStartWith, getArrayElementsFromIndicies} from './arrays';
+import {shuffle, array8bitTo16bit, deepArrayStartWith} from './arrays';
 import {Notification} from '../models/notifications';
 import {ensure} from './errors';
 
@@ -10,6 +10,13 @@ export const ALPHABET_SIZE = 1024;
 export const SECURITY_CODE_LENGTH = 6;
 export const SECURITY_CODE_WITH_FAKES_LENGTH = 12;
 export const MASK = 1023;
+
+class KeyWithCode {
+  public code: number[];
+  constructor(public key: string) {
+    this.code = generateCode(key);
+  }
+}
 
 export const generateCodeWithFakes = (publicKey: string): number[] => {
   ensure(isProperAddress(publicKey), Error, `Address ${publicKey} is not valid.`);
@@ -29,23 +36,16 @@ export const isValidCode = (code: number[], publicKey: string) => {
   return deepEqual(expectedCode, code);
 };
 
-export const findValidAddressFromCodePart = (enteredCode: number[], incomingPublicKeys: string[]) => {
-  const possibleAddresses = findPossibleAddressesFromCodePart(enteredCode, incomingPublicKeys);
-  return possibleAddresses.length === 1 ? possibleAddresses[0] : undefined;
+export const filterAddressesByCodePrefix = (notifications: Notification[], codePrefix: number[]) => {
+  const codes = notifications.map((notification) => new KeyWithCode(notification.key));
+  return filterKeyWithCodeByPrefix(codes, codePrefix);
 };
 
-export const findPossibleAddressesFromCodePart = (enteredCode: number[], incomingPublicKeys: string[]) => {
-  const keyCodePairs = incomingPublicKeys.map((key) => ({key, code: generateCode(key)}));
-  const addresses = keyCodePairs.filter
-  const generatedCodes = incomingPublicKeys.map((key) => generateCode(key));
-  const validIndicies = findIndiciesOfValidCodesByPrefix(generatedCodes, enteredCode);
-  return getArrayElementsFromIndicies(incomingPublicKeys, validIndicies);
+export const filterKeyWithCodeByPrefix = (keysWithCodes: KeyWithCode[], prefix: number[]) => {
+  return keysWithCodes
+    .filter(({code}) => deepArrayStartWith(code, prefix))
+    .map(({key}) => key);
 };
-
-export const findIndiciesOfValidCodesByPrefix = (codes: number[][], enteredCode: number[]) =>
-  codes.map((code, index) => [code, index] as [number[], number])
-    .filter(([code, ]) => deepArrayStartWith(code, enteredCode))
-    .map(([, index]) => index);
 
 export const addressTo16bitBytes = (publicKey: string): number[] => {
   const hash = utils.keccak256(publicKey);
