@@ -35,6 +35,8 @@ export const findValidAddressFromCodePart = (enteredCode: number[], incomingPubl
 };
 
 export const findPossibleAddressesFromCodePart = (enteredCode: number[], incomingPublicKeys: string[]) => {
+  const keyCodePairs = incomingPublicKeys.map((key) => ({key, code: generateCode(key)}));
+  const addresses = keyCodePairs.filter
   const generatedCodes = incomingPublicKeys.map((key) => generateCode(key));
   const validIndicies = findIndiciesOfValidCodesByPrefix(generatedCodes, enteredCode);
   return getArrayElementsFromIndicies(incomingPublicKeys, validIndicies);
