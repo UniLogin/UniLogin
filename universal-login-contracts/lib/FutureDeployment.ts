@@ -40,6 +40,6 @@ export function createFutureDeployment(keyPair: KeyPair, walletMasterAddress: st
 }
 
 export function getFutureAddress(walletMasterAddress: string, factoryContractAddress: string, publicKey: string) {
-  const initData = getDeployData(ProxyContract as any, [walletMasterAddress, '0x0']);
+  const initData = getDeployData(ProxyContract as any, [walletMasterAddress]);
   return computeContractAddress(factoryContractAddress, publicKey, initData);
 }
