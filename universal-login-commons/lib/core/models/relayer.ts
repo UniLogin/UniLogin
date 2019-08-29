@@ -12,7 +12,7 @@ export interface ChainSpec {
 }
 
 export interface ContractWhiteList {
-  master: string[];
+  wallet: string[];
   proxy: string[];
 }
 

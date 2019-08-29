@@ -13,7 +13,7 @@ export const config: Config =  Object.freeze({
   walletContractAddress: 'GENERATED',
   contractWhiteList: {
     proxy: ['GENERATED'],
-    master: ['GENERATED']
+    wallet: ['GENERATED']
   },
   factoryAddress: 'GENERATED',
   supportedTokens: [{

@@ -42,7 +42,7 @@ describe('INT: MessageValidator', async () => {
 
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new MessageValidator(wallet, {
-      master: [],
+      wallet: [],
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);

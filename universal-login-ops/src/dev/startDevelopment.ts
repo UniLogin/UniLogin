@@ -101,7 +101,7 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
-    master:  [walletContractHash],
+    wallet:  [walletContractHash],
     proxy: [proxyContractHash]
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
