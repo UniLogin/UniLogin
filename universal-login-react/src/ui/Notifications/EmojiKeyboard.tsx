@@ -1,15 +1,10 @@
 import React, {useState} from 'react';
 import {Emoji} from '../commons/Emoji';
-import {EMOJI_COLORS} from '@universal-login/commons';
+import {EMOJI_COLORS, getEmojiSet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import range from 'lodash.range';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 import '../styles/colors.css';
-
-const BATCH_SIZE = 32;
-
-const getEmojiCode = (code: number, category: number, color: number) => (code + category * BATCH_SIZE) * 8 + color;
 
 interface EmojiKeyboardProps {
   onEmojiClick: (code: number) => void;
@@ -29,16 +24,13 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   );
 
   const renderKeyboard = () => (
-    range(BATCH_SIZE).map((code: number) => {
-      const emojiCode = getEmojiCode(code, category, color);
-      return (
-        <li key={`securityCodeWithFakes_${code}`}>
-          <button id={`btn-${code}`} onClick={() => onEmojiClick(emojiCode)}>
-            <Emoji code={emojiCode}/>
-          </button>
-        </li>
-      );
-    })
+    getEmojiSet(category, color).map(code => (
+      <li key={`securityCodeWithFakes_${code}`}>
+        <button id={`btn-${code}`} onClick={() => onEmojiClick(code)}>
+          <Emoji code={code}/>
+        </button>
+      </li>
+    ))
   );
 
   return (
@@ -55,7 +47,7 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
             <ul className="emojis-keyboard-batch">
               {renderKeyboard()}
             </ul>
-            <button disabled={category === 3} onClick={() => setCategory(category + 1)} className="emoji-keyboard-arrow-button">
+            <button disabled={category === 4} onClick={() => setCategory(category + 1)} className="emoji-keyboard-arrow-button">
               {'>'}
             </button>
           </div>
