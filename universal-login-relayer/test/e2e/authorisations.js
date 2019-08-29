@@ -37,7 +37,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
   let otherWallet;
   let contract;
   let keyPair;
-  let walletMaster;
+  let walletContract;
   let factoryContract;
   let ensAddress;
   let deployer;
@@ -47,8 +47,8 @@ describe('E2E: Relayer - Authorisation routes', async () => {
 
   beforeEach(async () => {
     keyPair = createKeyPair();
-    ({otherWallet, relayer, deployer, walletMaster, ensAddress, factoryContract} = await startRelayerWithRefund(relayerPort));
-    contract = await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletMaster.address, factoryContract.address, ensAddress);
+    ({otherWallet, relayer, deployer, walletContract, ensAddress, factoryContract} = await startRelayerWithRefund(relayerPort));
+    contract = await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletContract.address, factoryContract.address, ensAddress);
   });
 
   it('get empty pending authorisations', async () => {

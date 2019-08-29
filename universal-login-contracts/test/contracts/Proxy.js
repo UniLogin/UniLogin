@@ -13,14 +13,14 @@ chai.use(solidity);
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('CONTRACT: ProxyMasterCopy', async () => {
-  let walletMaster;
+  let walletContract;
   let walletProxy;
   let proxyAsWallet;
   let wallet;
   let data;
 
   beforeEach(async () => {
-    ({walletMaster, walletProxy, proxyAsWallet, wallet} = await loadFixture(basicMasterAndProxy));
+    ({walletContract, walletProxy, proxyAsWallet, wallet} = await loadFixture(basicMasterAndProxy));
   });
 
 

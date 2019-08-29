@@ -17,18 +17,18 @@ const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 type CreateRelayerArgs = {
   port: string;
   wallet: Wallet;
-  walletMaster: Contract;
+  walletContract: Contract;
   factoryContract: Contract;
 };
 
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const walletMaster = await deployContract(wallet, WalletMasterWithRefund);
-    const factoryContract = await deployFactory(wallet, walletMaster.address);
-    return this.createPreconfiguredRelayer({port, wallet, walletMaster, factoryContract});
+    const walletContract = await deployContract(wallet, WalletMasterWithRefund);
+    const factoryContract = await deployFactory(wallet, walletContract.address);
+    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract});
   }
 
-  static async createPreconfiguredRelayer({port, wallet, walletMaster, factoryContract}: CreateRelayerArgs) {
+  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract}: CreateRelayerArgs) {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
@@ -51,14 +51,14 @@ export class RelayerUnderTest extends Relayer {
         ensAddress: ensBuilder.ens.address,
       },
       ensRegistrars: [DOMAIN],
-      walletMasterAddress: walletMaster.address,
+      walletMasterAddress: walletContract.address,
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
     };
     const config: Config = deepMerge(getConfig('test'),  overrideConfig);
     const relayer = new RelayerUnderTest(config, providerWithENS);
-    return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletMaster, mockToken, provider: providerWithENS};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS};
   }
 
   url() {

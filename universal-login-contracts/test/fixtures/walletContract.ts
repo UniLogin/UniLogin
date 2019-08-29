@@ -9,7 +9,7 @@ import MockToken from '../../build/MockToken.json';
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
-  const {factoryContract, walletMaster} = await setupMasterWithRefundAndFactory(deployer);
+  const {factoryContract, walletContract} = await setupMasterWithRefundAndFactory(deployer);
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
   return {
     ensDomainData: {
@@ -17,7 +17,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
       registrarAddress,
       resolverAddress
     },
-    walletMaster,
+    walletContract,
     provider: providerWithENS,
     deployer,
     factoryContract
@@ -25,23 +25,23 @@ export async function setupEnsAndMaster(deployer: Wallet) {
 }
 
 export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
-  const walletMaster = await deployWalletContract(deployer);
-  const factoryContract = await deployFactory(deployer, walletMaster.address);
+  const walletContract = await deployWalletContract(deployer);
+  const factoryContract = await deployFactory(deployer, walletContract.address);
   return {
-    walletMaster,
+    walletContract,
     factoryContract
   };
 }
 
 export async function setupWalletContract(deployer: Wallet) {
-  const {ensDomainData, walletMaster, provider, factoryContract} = await setupEnsAndMaster(deployer);
+  const {ensDomainData, walletContract, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({keyPair, walletMasterAddress: walletMaster.address, gasPrice: '1000000', ensDomainData, factoryContract});
+  const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({keyPair, walletMasterAddress: walletContract.address, gasPrice: '1000000', ensDomainData, factoryContract});
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-  const walletContract = new Contract(futureAddress, WalletMaster.interface, provider);
+  const proxyWallet = new Contract(futureAddress, WalletMaster.interface, provider);
   return {
-    walletContract,
+    proxyWallet,
     keyPair,
     deployer,
     provider
@@ -49,13 +49,13 @@ export async function setupWalletContract(deployer: Wallet) {
 }
 
 export async function walletContractWithTokenAndEther(deployer: Wallet) {
-  const {provider, walletContract, keyPair} = await setupWalletContract(deployer);
+  const {provider, proxyWallet, keyPair} = await setupWalletContract(deployer);
   const mockToken = await deployContract(deployer, MockToken);
-  await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
-  await deployer.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+  await mockToken.transfer(proxyWallet.address, utils.parseEther('1.0'));
+  await deployer.sendTransaction({to: proxyWallet.address, value: utils.parseEther('1.0')});
   return {
     provider,
-    walletContract,
+    proxyWallet,
     keyPair,
     deployer,
     mockToken

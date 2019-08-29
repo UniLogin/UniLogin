@@ -18,16 +18,16 @@ describe('Counterfactual Factory', () => {
   let anotherWallet: Wallet;
   let factoryContract: Contract;
   let ensDomainData: EnsDomainData;
-  let walletMaster: Contract;
+  let walletContract: Contract;
   let initializeData: any;
   let futureAddress: string;
   let signature: string;
   let createFutureDeploymentArgs: CreateFutureDeploymentWithENS;
 
   beforeEach(async () => {
-    ({ensDomainData, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: '1000000'};
+    createFutureDeploymentArgs = {keyPair, walletMasterAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000'};
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 

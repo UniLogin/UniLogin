@@ -5,14 +5,14 @@ import {ContractFactory, Contract} from 'ethers';
 import {encodeInitializeData, deployWalletContract} from '@universal-login/contracts';
 
 export default async function createWalletContract(wallet) {
-  const walletMaster = await deployWalletContract(wallet);
+  const walletContract = await deployWalletContract(wallet);
   const factory = new ContractFactory(
     WalletProxy.interface,
     `0x${WalletProxy.evm.bytecode.object}`,
     wallet,
   );
   const initData = encodeInitializeData(wallet.address);
-  const proxyArgs = [walletMaster.address];
+  const proxyArgs = [walletContract.address];
   const proxyContract = await factory.deploy(...proxyArgs, defaultDeployOptions);
   await wallet.sendTransaction({to: proxyContract.address, data: initData});
   return new Contract(proxyContract.address, WalletMaster.abi, wallet);

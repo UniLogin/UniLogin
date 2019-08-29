@@ -12,9 +12,9 @@ export const startRelayer = async (port = '33111') => {
   const [deployer] = getWallets(provider);
   const wallet = Wallet.createRandom();
   const otherWallet = Wallet.createRandom();
-  const {relayer, factoryContract, walletMaster, mockToken, ensAddress} = await RelayerUnderTest.createPreconfigured(deployer, port);
+  const {relayer, factoryContract, walletContract, mockToken, ensAddress} = await RelayerUnderTest.createPreconfigured(deployer, port);
   await relayer.start();
-  return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletMaster, mockToken, ensAddress};
+  return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletContract, mockToken, ensAddress};
 };
 
 export const createWalletContract = async (provider, relayerUrlOrServer, publicKey, ensName = 'marek.mylogin.eth') => {
@@ -48,11 +48,11 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
 export const startRelayerWithRefund = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer, wallet, otherWallet] = getWallets(provider);
-  const walletMaster = await deployWalletContract(deployer);
-  const factoryContract = await deployFactory(deployer, walletMaster.address);
-  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletMaster, factoryContract});
+  const walletContract = await deployWalletContract(deployer);
+  const factoryContract = await deployFactory(deployer, walletContract.address);
+  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract});
   await relayer.start();
-  return {provider, relayer, mockToken, factoryContract, walletMaster, deployer, ensAddress, wallet, otherWallet};
+  return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet};
 };
 
 export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice) => {

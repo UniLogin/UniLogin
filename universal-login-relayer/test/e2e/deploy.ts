@@ -13,7 +13,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let relayer: Relayer;
   let provider: providers.Provider;
   let deployer: Wallet;
-  let walletMaster: Contract;
+  let walletContract: Contract;
   let factoryContract: Contract;
   let mockToken: Contract;
   let keyPair: KeyPair;
@@ -26,9 +26,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let signature: string;
 
   beforeEach(async () => {
-    ({provider, relayer, deployer, walletMaster, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
+    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
-    initCode = getDeployData(ProxyContract as any, [walletMaster.address]);
+    initCode = getDeployData(ProxyContract as any, [walletContract.address]);
     contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
     const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
@@ -52,7 +52,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
 
   it('Counterfactual deployment fail if ENS name is taken', async () => {
-    await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletMaster.address, factoryContract.address, ensAddress, ensName);
+    await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletContract.address, factoryContract.address, ensAddress, ensName);
     const newKeyPair = createKeyPair();
     contractAddress = computeContractAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
