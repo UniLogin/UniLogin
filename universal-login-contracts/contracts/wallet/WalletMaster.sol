@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
-import "../openzeppelin/Initializable.sol";
+import "../openzeppelin/contracts/Initializable.sol";
 import "../interfaces/IERC1271.sol";
 import "../utils/ENSRegistered.sol";
 import "./ERC1077.sol";

@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "../openzeppelin/BaseUpgradeabilityProxy.sol";
+import "../openzeppelin/contracts/upgradeability/BaseUpgradeabilityProxy.sol";
 
 
 contract UpgradeabilityProxy is BaseUpgradeabilityProxy {
