@@ -5,7 +5,7 @@ import {utils} from 'ethers';
 import MockWalletMaster from '../../build/MockWalletMaster.json';
 import Proxy from '../../build/UpgradeabilityProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
-import basicMasterAndProxy from '../fixtures/basicMasterAndProxy';
+import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -20,7 +20,7 @@ describe('CONTRACT: ProxyMasterCopy', async () => {
   let data;
 
   beforeEach(async () => {
-    ({walletContract, walletProxy, proxyAsWallet, wallet} = await loadFixture(basicMasterAndProxy));
+    ({walletContract, walletProxy, proxyAsWallet, wallet} = await loadFixture(basicWalletAndProxy));
   });
 
 
