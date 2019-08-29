@@ -13,7 +13,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   let deployer;
   let ensAddress;
   let mockToken;
-  let walletMaster;
+  let walletContract;
   let factoryContract;
   let keyPair;
   const relayerPort = '33511';
@@ -21,8 +21,8 @@ describe('E2E: Relayer - WalletContract routes', async () => {
 
   before(async () => {
     keyPair = createKeyPair();
-    ({relayer, deployer, otherWallet, mockToken, ensAddress, walletMaster, factoryContract} = await startRelayerWithRefund(relayerPort));
-    contract = await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletMaster.address, factoryContract.address, ensAddress);
+    ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract} = await startRelayerWithRefund(relayerPort));
+    contract = await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletContract.address, factoryContract.address, ensAddress);
     await mockToken.transfer(contract.address, utils.parseEther('1.0'));
   });
 

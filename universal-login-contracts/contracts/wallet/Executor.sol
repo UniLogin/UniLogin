@@ -1,12 +1,12 @@
 pragma solidity ^0.5.2;
 
 import "./KeyHolder.sol";
-import "../interfaces/IERC1077.sol";
+import "../interfaces/IExecutor.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
-contract ERC1077 is KeyHolder, IERC1077 {
+contract Executor is KeyHolder, IExecutor {
     using ECDSA for bytes32;
 
     uint public lastNonce;

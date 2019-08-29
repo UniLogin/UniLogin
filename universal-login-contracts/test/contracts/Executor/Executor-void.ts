@@ -1,13 +1,13 @@
 import {expect} from 'chai';
 import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
-import ERC1077 from '../../../build/ERC1077.json';
+import Executor from '../../../build/Executor.json';
 import {constants, Contract} from 'ethers';
 import {transferMessage} from '../../utils/ExampleMessages';
 import {getExecutionArgs} from '../../utils';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 
 
-describe('Void ERC1077', () => {
+describe('Void Executor', () => {
   let provider;
   let walletContractWithZeroKey : Contract;
   let signature : string [];
@@ -17,7 +17,7 @@ describe('Void ERC1077', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [, , , , , , , , , wallet] = getWallets(provider);
-    walletContractWithZeroKey = await deployContract(wallet, ERC1077, [constants.AddressZero]);
+    walletContractWithZeroKey = await deployContract(wallet, Executor, [constants.AddressZero]);
   });
 
   it('execute signed fails', async () => {

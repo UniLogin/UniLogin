@@ -1,19 +1,19 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {createKeyPair} from '@universal-login/commons';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletContract from '../../build/Wallet.json';
 import Proxy from '../../build/UpgradeabilityProxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
-import {deployWalletMaster} from '../../lib';
+import {deployWalletContract} from '../../lib';
 
 const {parseEther} = utils;
 
-export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
+export default async function walletAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const keyPair = createKeyPair();
-  const walletContractMaster = await deployWalletMaster(wallet);
+  const walletContractMaster = await deployWalletContract(wallet);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address]);
-  const proxyAsWalletContract = new Contract(walletContractProxy.address, WalletMaster.abi, wallet);
+  const proxyAsWalletContract = new Contract(walletContractProxy.address, WalletContract.abi, wallet);
   await proxyAsWalletContract.initialize(keyPair.publicKey);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);

@@ -3,7 +3,7 @@ import {providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {getDeployedBytecode, MANAGEMENT_KEY} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/UpgradeabilityProxy.json';
-import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
 import {WalletCreator} from '../../helpers/WalletCreator';
 import Relayer, {RelayerUnderTest} from '../../../lib';
 

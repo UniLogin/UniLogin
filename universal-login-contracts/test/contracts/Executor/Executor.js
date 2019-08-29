@@ -14,7 +14,7 @@ chai.use(solidity);
 const {parseEther} = utils;
 const to = TEST_ACCOUNT_ADDRESS;
 
-describe('CONTRACT: ERC1077 - main', async  () => {
+describe('CONTRACT: Executor - main', async  () => {
   let provider;
   let walletContract;
   let signature;

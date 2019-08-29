@@ -6,18 +6,18 @@ import {connect} from '../cli/connectAndExecute';
 export type ConnectAndDeployFactory = {
   nodeUrl: string;
   privateKey: string;
-  walletMasterAddress: string;
+  walletContractAddress: string;
   provider?: providers.Provider;
 };
 
-export async function connectAndDeployFactory({nodeUrl, privateKey, provider, walletMasterAddress}: ConnectAndDeployFactory) {
+export async function connectAndDeployFactory({nodeUrl, privateKey, provider, walletContractAddress}: ConnectAndDeployFactory) {
   const {wallet} = connect(nodeUrl, privateKey, provider);
-  await deployFactory(wallet, walletMasterAddress);
+  await deployFactory(wallet, walletContractAddress);
 }
 
-export default async function deployFactory(wallet: Wallet, walletMasterAddress: string): Promise<string> {
+export default async function deployFactory(wallet: Wallet, walletContractAddress: string): Promise<string> {
   console.log('Deploying factory contract...');
-  const contractAddress = await deployContractAndWait(wallet, Factory, [walletMasterAddress]);
+  const contractAddress = await deployContractAndWait(wallet, Factory, [walletContractAddress]);
   console.log(`Factory contract address: ${contractAddress}`);
   return contractAddress;
 }

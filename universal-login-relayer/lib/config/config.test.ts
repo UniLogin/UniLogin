@@ -10,10 +10,10 @@ export const config: Config =  Object.freeze({
     chainId: 0,
   },
   ensRegistrars: ['GENERATED'],
-  walletMasterAddress: 'GENERATED',
+  walletContractAddress: 'GENERATED',
   contractWhiteList: {
     proxy: ['GENERATED'],
-    master: ['GENERATED']
+    wallet: ['GENERATED']
   },
   factoryAddress: 'GENERATED',
   supportedTokens: [{

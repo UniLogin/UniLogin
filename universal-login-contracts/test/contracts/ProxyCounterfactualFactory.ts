@@ -3,7 +3,7 @@ import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletContract from '../../build/Wallet.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../utils/utils';
@@ -18,16 +18,16 @@ describe('Counterfactual Factory', () => {
   let anotherWallet: Wallet;
   let factoryContract: Contract;
   let ensDomainData: EnsDomainData;
-  let walletMaster: Contract;
+  let walletContract: Contract;
   let initializeData: any;
   let futureAddress: string;
   let signature: string;
   let createFutureDeploymentArgs: CreateFutureDeploymentWithENS;
 
   beforeEach(async () => {
-    ({ensDomainData, provider, factoryContract, walletMaster} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {keyPair, walletMasterAddress: walletMaster.address, ensDomainData, factoryContract, gasPrice: '1000000'};
+    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000'};
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 
@@ -46,7 +46,7 @@ describe('Counterfactual Factory', () => {
   it('should deploy contract with computed address', async () => {
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const proxyContract = new Contract(futureAddress, WalletMaster.abi, wallet);
+    const proxyContract = new Contract(futureAddress, WalletContract.abi, wallet);
     expect(await proxyContract.getKeyPurpose(keyPair.publicKey)).to.eq(MANAGEMENT_KEY);
   });
 
@@ -84,7 +84,7 @@ describe('Counterfactual Factory', () => {
     const MAGICVALUE = '0x20c13b0b';
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const proxyContract = new Contract(futureAddress, WalletMaster.abi, wallet);
+    const proxyContract = new Contract(futureAddress, WalletContract.abi, wallet);
     const message = 'Hi, I am Justyna and I wonder if length of this message matters';
     const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
     const signature2 = signString(message, keyPair.privateKey);

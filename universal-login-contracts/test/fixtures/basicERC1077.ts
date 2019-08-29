@@ -1,4 +1,4 @@
-import ERC1077 from '../../build/ERC1077.json';
+import Executor from '../../build/Executor.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet, providers} from 'ethers';
@@ -11,7 +11,7 @@ export default async function basicWallet(unusedProvider : providers.Provider, [
   const actionKeyPair = createKeyPair();
   const actionKeyPair2 = createKeyPair();
   const sortedKeys = sortPrivateKeysByAddress([actionKeyPair2.privateKey, actionKeyPair.privateKey, managementKeyPair.privateKey]);
-  const walletContract = await deployContract(wallet, ERC1077, [managementKeyPair.publicKey]);
+  const walletContract = await deployContract(wallet, Executor, [managementKeyPair.publicKey]);
   const mockToken = await deployContract(wallet, MockToken);
   const mockContract = await deployContract(wallet, MockContract);
   await wallet.sendTransaction({to: walletContract.address, value: parseEther('2.0')});

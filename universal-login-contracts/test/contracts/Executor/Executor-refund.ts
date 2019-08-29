@@ -12,7 +12,7 @@ import {encodeDataForExecuteSigned} from '../../../lib';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-describe('CONTRACT: ERC1077 - refund', async  () => {
+describe('CONTRACT: Executor - refund', async  () => {
   let provider: providers.Provider;
   let walletContract: Contract;
   let signature: string;

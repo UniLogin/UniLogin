@@ -33,7 +33,7 @@ const commandLineBuilder = yargs
     (argv) => {
       connectAndExecute(argv.nodeUrl, argv.privateKey, deployMaster).catch(console.error);
     })
-  .command('deploy:factory [walletMasterAddress]', 'Deploys counterfactual factory contract',
+  .command('deploy:factory [walletContractAddress]', 'Deploys counterfactual factory contract',
     (yargs) => {
       yargs
         .positional('walletMaster', {
