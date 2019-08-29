@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
-import WalletMaster from '../../../build/WalletMaster.json';
+import WalletMaster from '../../../build/Wallet.json';
 import {KeyPair, MANAGEMENT_KEY} from '@universal-login/commons';
 
 

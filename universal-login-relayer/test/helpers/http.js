@@ -2,7 +2,7 @@ import {Wallet, utils, Contract} from 'ethers';
 import {RelayerUnderTest} from '../../lib/http/relayers/RelayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, parseDomain} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/WalletMaster.json';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ENS from '@universal-login/contracts/build/ENS.json';
 import chai from 'chai';
 import {deployFactory, getFutureAddress, deployWalletMaster, encodeInitializeWithENSData} from '@universal-login/contracts';

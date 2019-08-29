@@ -3,7 +3,7 @@ import {providers, Wallet, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN, deployContract, deepMerge, DeepPartial} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
-import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
 import ProxyContract from '@universal-login/contracts/build/UpgradeabilityProxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';

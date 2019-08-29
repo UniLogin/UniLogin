@@ -1,4 +1,4 @@
-import WalletMasterWithRefund from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
 import {getContractHash} from '@universal-login/commons';
 import {deployWalletMaster} from '@universal-login/contracts';
 

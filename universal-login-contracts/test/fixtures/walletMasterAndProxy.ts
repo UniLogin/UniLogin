@@ -1,7 +1,7 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {createKeyPair} from '@universal-login/commons';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletMaster from '../../build/Wallet.json';
 import Proxy from '../../build/UpgradeabilityProxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';

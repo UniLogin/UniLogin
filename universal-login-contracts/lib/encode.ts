@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
-import WalletMaster from '../build/WalletMaster.json';
+import WalletMaster from '../build/Wallet.json';
 
 export type EnsDomainData = {
   ensAddress: string;

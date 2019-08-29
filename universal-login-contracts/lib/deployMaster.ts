@@ -1,6 +1,6 @@
 import {Wallet, utils} from 'ethers';
 import {TransactionOverrides, deployContract} from '@universal-login/commons';
-import WalletMaster from '../build/WalletMaster.json';
+import WalletMaster from '../build/Wallet.json';
 
 
 export const deployWalletMaster = async (wallet: Wallet, overrideOptions?: TransactionOverrides) => {

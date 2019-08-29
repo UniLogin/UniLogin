@@ -1,4 +1,4 @@
-import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMaster from '@universal-login/contracts/build/Wallet.json';
 import {Wallet, utils} from 'ethers';
 import {deployContractAndWait} from '@universal-login/commons';
 

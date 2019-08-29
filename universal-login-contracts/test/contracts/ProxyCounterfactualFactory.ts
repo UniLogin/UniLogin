@@ -3,7 +3,7 @@ import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
 import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletMaster from '../../build/Wallet.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../utils/utils';

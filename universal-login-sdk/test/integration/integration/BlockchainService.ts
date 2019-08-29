@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import WalletMaster from '@universal-login/contracts/build/WalletMaster.json';
+import WalletMaster from '@universal-login/contracts/build/Wallet.json';
 import {getDeployedBytecode, ContractJSON, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {BlockchainService} from '../../../lib/integration/ethereum/BlockchainService';
 import {deployWalletMaster} from '@universal-login/contracts';

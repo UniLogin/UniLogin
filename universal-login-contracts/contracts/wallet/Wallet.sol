@@ -8,7 +8,7 @@ import "./Executor.sol";
 
 
 /* solium-disable no-empty-blocks */
-contract WalletMaster is ENSRegistered, Executor, IERC1271, IERC721Receiver, Initializable {
+contract Wallet is ENSRegistered, Executor, IERC1271, IERC721Receiver, Initializable {
     constructor()
         Executor(address(0))
         public

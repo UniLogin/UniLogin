@@ -1,6 +1,6 @@
 import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletMaster from '../../build/Wallet.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
 import {deployFactory, createFutureDeploymentWithENS, deployWalletMaster} from '../../lib';

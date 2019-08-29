@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {utils, Wallet, providers} from 'ethers';
-import WalletMaster from '../../build/WalletMaster.json';
+import WalletMaster from '../../build/Wallet.json';
 import {createKeyPair} from '@universal-login/commons';
 
 const computeContractAddress = (address: string, nonce: number) => {
