@@ -8,7 +8,7 @@ import {createKeyPair} from '@universal-login/commons';
 const computeContractAddress = (address: string, nonce: number) => {
   const futureAddress = utils.solidityKeccak256(['bytes1', 'bytes1', 'address', 'bytes1'], ['0xd6', '0x94', address, utils.hexlify(nonce)]);
   return utils.getAddress(`0x${futureAddress.slice(26)}`);
-}
+};
 
 describe('WalletImplementation', () => {
   let provider: providers.Provider;
@@ -28,9 +28,8 @@ describe('WalletImplementation', () => {
 
   beforeEach(async () => {
     ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
-    [,,,otherWallet] = getWallets(provider);
+    [, , , otherWallet] = getWallets(provider);
     ensArgs = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
-
   });
 
   it('wallet implementation deployed and initialized successfully', async () => {
@@ -46,6 +45,6 @@ describe('WalletImplementation', () => {
   it('can`t initialize wallet twice', async () => {
     const walletContract = await deployContract(wallet, WalletMaster, [], {gasLimit: 5000000});
     await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0');
-    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0')).to.be.revertedWith('Contract instance has already been initialized')
+    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0')).to.be.revertedWith('Contract instance has already been initialized');
   });
 });

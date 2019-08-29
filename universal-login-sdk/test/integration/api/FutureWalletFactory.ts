@@ -4,7 +4,7 @@ import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/UpgradeabilityProxy.json';
 import {FutureWalletFactory} from '../../../lib/api/FutureWalletFactory';
 import {BlockchainService} from '../../../lib/integration/ethereum/BlockchainService';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';

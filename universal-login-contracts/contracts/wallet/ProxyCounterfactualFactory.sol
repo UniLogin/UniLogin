@@ -2,7 +2,7 @@ pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
-import "../proxy/Proxy.sol";
+import "../proxy/UpgradeabilityProxy.sol";
 
 
 contract ProxyCounterfactualFactory is Ownable {
@@ -10,7 +10,7 @@ contract ProxyCounterfactualFactory is Ownable {
     using ECDSA for bytes32;
 
     constructor(address walletMasterAddress) public {
-        initCode = abi.encodePacked(type(Proxy).creationCode, uint256(walletMasterAddress));
+        initCode = abi.encodePacked(type(UpgradeabilityProxy).creationCode, uint256(walletMasterAddress));
     }
 
     function createContract(address publicKey, bytes memory initializeWithENS, bytes memory signature) public onlyOwner returns(bool success) {

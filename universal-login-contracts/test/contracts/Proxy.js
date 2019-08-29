@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import MockWalletMaster from '../../build/MockWalletMaster.json';
-import Proxy from '../../build/Proxy.json';
+import Proxy from '../../build/UpgradeabilityProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import basicMasterAndProxy from '../fixtures/basicMasterAndProxy';
 
@@ -31,10 +31,6 @@ describe('CONTRACT: ProxyMasterCopy', async () => {
 
     it('deployment fails if masterCopy is zero', async () => {
       await expect(deployContract(wallet, Proxy, [0x0])).to.be.eventually.rejectedWith('invalid address');
-    });
-
-    it('should be properly constructed', async () => {
-			expect(await proxyAsWallet.master()).to.eq(walletMaster.address);
     });
 
     it('should be able to send transaction to wallet', async () => {

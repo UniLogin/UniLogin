@@ -3,7 +3,7 @@ import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet, utils} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
-import ProxyContract from '@universal-login/contracts/build/Proxy.json';
+import ProxyContract from '@universal-login/contracts/build/UpgradeabilityProxy.json';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache.js';

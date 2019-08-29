@@ -1,5 +1,8 @@
 pragma solidity ^0.5.0;
 
+/* solium-disable */
+
+
 /**
  * Utility library of inline functions on addresses
  *

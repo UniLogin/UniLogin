@@ -1,5 +1,7 @@
 pragma solidity ^0.5.0;
 
+/* solium-disable */
+
 /**
  * @title Proxy
  * @dev Implements delegation of calls to other contracts, with proper

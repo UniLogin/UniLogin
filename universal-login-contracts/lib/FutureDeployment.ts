@@ -1,6 +1,6 @@
 import {Contract} from 'ethers';
 import {computeContractAddress, KeyPair, calculateInitializeSignature} from '@universal-login/commons';
-import ProxyContract from '../build/Proxy.json';
+import ProxyContract from '../build/UpgradeabilityProxy.json';
 import {EnsDomainData, createProxyDeployWithENSArgs, getDeployData, encodeInitializeData} from '.';
 
 type FutureDeployment = {
