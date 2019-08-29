@@ -28,11 +28,11 @@ interface EmojiFormProps {
 }
 
 export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
-  const [enteredCode, setEnteredCode] = useState([] as number[]);
+  const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [status, setStatus] = useState('Initial status');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [inputMode, setInputMode] = useState<InputModeType>('none');
-  const [addresses, setAddresses] = useState([] as string[]);
+  const [addresses, setAddresses] = useState<string[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
 
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, (notifications: Notification[]) => {
@@ -47,7 +47,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const checkCode = () => {
-    if (enteredCode.length !== SECURITY_CODE_LENGTH && addresses.length !== 1) {
+    if (enteredCode.length !== SECURITY_CODE_LENGTH || addresses.length !== 1) {
       return false;
     }
     return isValidCode(enteredCode, addresses[0]);
