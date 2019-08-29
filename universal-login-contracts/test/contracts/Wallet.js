@@ -4,7 +4,7 @@ import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
 import WalletContract from '../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../utils/ExampleMessages';
-import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
+import walletAndProxy from '../fixtures/walletAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../utils';
@@ -33,7 +33,7 @@ describe('WalletContract', async () => {
   let publicKey;
 
   beforeEach(async () => {
-    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
+    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletAndProxy));
     executeSignedFunc = new utils.Interface(WalletContract.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = calculateMessageSignature(privateKey, msg);
