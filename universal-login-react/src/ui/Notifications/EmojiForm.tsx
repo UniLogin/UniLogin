@@ -50,10 +50,6 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
     }
   };
 
-  const renderPanelOrKeyboard = () => {
-
-  };
-
   return (
     <div id="emojis">
     {progressBar ?
@@ -63,7 +59,6 @@ export const EmojiForm = ({sdk, publicKey, contractAddress, privateKey, hideTitl
       </div> :
       <>
         <EmojiPlaceholders enteredCode={enteredCode} onEmojiClick={onEmojiRemove} className={className}/>
-        {renderPanelOrKeyboard()}
         <EmojiPanelWithFakes publicKey={publicKey} onEmojiClick={onEmojiAdd} className={className}/>
         <p className="emojis-form-status">{status}</p>
         <button className="emojis-form-reject" id="reject" onClick={() => sdk.denyRequest(contractAddress, publicKey, privateKey)}>Deny</button>
