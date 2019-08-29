@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {isValidCode, SECURITY_CODE_LENGTH, Notification, findPossibleAddressFromCodePart, CONNECTION_REAL_ADDRESS, ATTACKER_ADDRESS_1_COMMON_CODE, ATTACKER_ADDRESS_NO_COMMON_CODE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, CONNECTION_REAL_ADDRESS, ATTACKER_ADDRESS_1_COMMON_CODE, ATTACKER_ADDRESS_NO_COMMON_CODE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
@@ -30,7 +30,7 @@ export const EmojiKeyboardForm = ({sdk, contractAddress, privateKey, hideTitle, 
   const {inputMode, updateInputMode} = useInputMode();
   const {progressBar, showProgressBar} = useProgressBar();
 
-  const possibleAddressFound = findPossibleAddressFromCodePart(enteredCode, incomingNotifications.map(notif => notif.key));
+  const possibleAddressFound = filterNotificationByCodePrefix(incomingNotifications, enteredCode);
   updateInputMode(possibleAddressFound);
 
   const checkCode = (address: string | undefined) => {

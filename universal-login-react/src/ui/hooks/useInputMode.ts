@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {AddressFound, AddressFoundStatus} from '@universal-login/commons';
 import {InputModeWithAddress, DEFAULT_INPUT_MODE_WITH_ADDRESS, InputMode} from '../../core/models/InputMode';
 
 export const useInputMode = () => {
@@ -7,11 +6,11 @@ export const useInputMode = () => {
 
   return {
     inputMode,
-    updateInputMode: (newPossibleAddressFound: AddressFound) => {
-      if (inputMode.mode === InputMode.KeyboardMode && newPossibleAddressFound.status === AddressFoundStatus.OneAddressFound) {
-        setInputMode({mode: InputMode.PanelMode, address: newPossibleAddressFound.address});
+    updateInputMode: (possibleAddresses: string[]) => {
+      if (inputMode.mode === InputMode.KeyboardMode && possibleAddresses.length === 1) {
+        setInputMode({mode: InputMode.PanelMode, address: possibleAddresses[0]});
       }
-      else if (inputMode.mode === InputMode.PanelMode && newPossibleAddressFound.status === AddressFoundStatus.ManyAddressesFound) {
+      else if (inputMode.mode === InputMode.PanelMode && possibleAddresses.length > 1) {
         setInputMode({mode: InputMode.KeyboardMode, address: undefined});
       }
     }
