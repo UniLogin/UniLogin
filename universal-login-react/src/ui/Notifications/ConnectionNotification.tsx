@@ -31,7 +31,6 @@ export const ConnectionNotification = ({contractAddress, privateKey, sdk, classN
               </div>
             }
             <EmojiForm
-              publicKey={notifications[0].key}
               sdk={sdk}
               contractAddress={contractAddress}
               privateKey={privateKey}

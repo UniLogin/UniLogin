@@ -1,0 +1,24 @@
+.universal-login-colors ul {
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.universal-login-colors ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.color-list {
+  margin: 0;
+}
+
+.color-list button {
+  width: 100%;
+  height: 100%;
+}

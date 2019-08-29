@@ -7,15 +7,15 @@ import '../styles/emojiDefaults.css';
 
 interface EmojiPanelWithFakesProps {
   publicKey: string;
-  onEmojiClicked: (code: number) => void;
+  onEmojiClick: (code: number) => void;
   className?: string;
 }
 
-export const EmojiPanelWithFakes = ({publicKey, onEmojiClicked, className}: EmojiPanelWithFakesProps) => {
+export const EmojiPanelWithFakes = ({publicKey, onEmojiClick, className}: EmojiPanelWithFakesProps) => {
   const [securityCodeWithFakes] = useState(() => generateCodeWithFakes(publicKey));
   const emojis = securityCodeWithFakes.map((code: number, index: number) => (
     <li key={`securityCodeWithFakes_${index}`}>
-      <button id={`btn-${code}`} onClick={() => onEmojiClicked(code)}>
+      <button id={`btn-${code}`} onClick={() => onEmojiClick(code)}>
         <Emoji code={code}/>
       </button>
     </li>

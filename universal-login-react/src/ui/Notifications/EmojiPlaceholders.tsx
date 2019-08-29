@@ -3,40 +3,38 @@ import {Emoji} from '../commons/Emoji';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
+import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
+import range from 'lodash.range';
+
 
 interface EmojiPlaceholdersProps {
-  code: number[];
-  onEmojiClicked: (index: number) => void;
-  maxLength: number;
+  enteredCode: number[];
+  onEmojiClick: (index: number) => void;
   className?: string;
 }
 
-const emojisButtons = (codes: number[], onEmojiClicked: (index: number) => void) =>
-  codes.map((code: number, i: number) => (
-    <li key={i}>
-      <button onClick={() => onEmojiClicked(i)}>
-        <Emoji code={code} />
-      </button>
-    </li>
-  ));
+export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiPlaceholdersProps) => {
+  const renderEmojis = () =>
+    enteredCode.map((code: number, i: number) => (
+      <li key={i}>
+        <button onClick={() => onEmojiClick(i)}>
+          <Emoji code={code} />
+        </button>
+      </li>
+    ));
 
-export const EmojiPlaceholders = ({code, onEmojiClicked, maxLength, className}: EmojiPlaceholdersProps) => {
-
-  const renderSelectedEmojis = () => {
-    const emojis = emojisButtons(code, onEmojiClicked);
-
-    for (let i = code.length; i < maxLength; i++) {
-      emojis.push(<li key={i} />);
-    }
-
-    return emojis;
+  const renderPlaceholderPanel = () => {
+    const emojis = renderEmojis();
+    const placeholders = range(emojis.length, SECURITY_CODE_LENGTH)
+      .map(index => <li key={index} />);
+    return [...emojis, ...placeholders];
   };
 
   return (
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="universal-login-emojis">
         <ul className="emojis-placeholders-list">
-          {renderSelectedEmojis()}
+          {renderPlaceholderPanel()}
         </ul>
       </div>
     </div>
