@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Emoji} from '../commons/Emoji';
-import {EMOJI_COLORS, createSequence} from '@universal-login/commons';
+import {EMOJI_COLORS} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import range from 'lodash.range';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 import '../styles/colors.css';
@@ -26,7 +27,7 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   );
 
   const renderKeyboard = () => (
-    createSequence(BATCH_SIZE).map((code: number) => {
+    range(BATCH_SIZE).map((code: number) => {
       const emojiCode = (code + batchNumber * BATCH_SIZE) * 8 + colorNumber;
       return (
         <li key={`securityCodeWithFakes_${code}`}>

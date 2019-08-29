@@ -8,7 +8,7 @@ export {createKeyPair, KeyPair} from './core/models/keyPair';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {ApplicationWallet} from './core/models/ApplicationWallet';
-export {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE} from './core/constants/test';
+export {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE, ATTACKER_ADDRESS_1_COMMON_CODE, ATTACKER_ADDRESS_NO_COMMON_CODE, CONNECTION_REAL_ADDRESS} from './core/constants/test';
 export {EMOJI_COLORS} from './core/constants/emojiColors';
 export {DEV_DEFAULT_PRIVATE_KEY, devJsonRpcUrl} from './core/constants/dev';
 export {KEY_CODE_ESCAPE, DEFAULT_LOCATION} from './core/constants/ui';
@@ -60,4 +60,3 @@ export {ObservedCurrency, CurrencyToValue, TokensPrices} from './core/models/Cur
 export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
-export {CONNECTION_REAL_ADDRESS, ATTACKER_ADDRESS_1_COMMON_CODE, ATTACKER_ADDRESS_NO_COMMON_CODE} from './core/constants/test';

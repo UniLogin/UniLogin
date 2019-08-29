@@ -17,6 +17,7 @@
     "@ramp-network/ramp-instant-sdk": "^1.0.1",
     "@universal-login/commons": "^0.3.30",
     "@universal-login/sdk": "^0.3.30",
+    "lodash.range": "^3.2.0",
     "react-blockies": "^1.4.1"
   },
   "peerDependencies": {
@@ -27,6 +28,7 @@
     "@types/chai": "^4.1.7",
     "@types/enzyme": "^3.9.0",
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/lodash.range": "^3.2.6",
     "@types/mocha": "^5.2.5",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",

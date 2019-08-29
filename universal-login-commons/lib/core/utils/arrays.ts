@@ -31,15 +31,3 @@ export const deepArrayStartWith = (array: any[], prefix: any[]) => {
   const arrayPrefix = array.slice(0, prefix.length);
   return deepEqual(arrayPrefix, prefix);
 };
-
-export const getArrayElementsFromIndicies = <T>(array: T[], indicies: number[]) =>
-  indicies
-    .filter((index) => 0 <= index && index < array.length)
-    .map((index) => array[index]);
-
-export const createSequence = (end: number, start: number = 0) => {
-  if (end < 0 || start < 0) {
-    return [];
-  }
-  return Array.from(Array(end).keys()).slice(start, start + end);
-};

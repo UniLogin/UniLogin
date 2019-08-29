@@ -3,7 +3,9 @@ import {Emoji} from '../commons/Emoji';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
-import {createSequence, SECURITY_CODE_LENGTH} from '@universal-login/commons';
+import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
+import range from 'lodash.range';
+
 
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
@@ -23,7 +25,7 @@ export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiP
 
   const renderPlaceholderPanel = () => {
     const emojis = renderEmojis();
-    const placeholders = createSequence(SECURITY_CODE_LENGTH, emojis.length)
+    const placeholders = range(emojis.length, SECURITY_CODE_LENGTH)
       .map(index => <li key={index} />);
     return [...emojis, ...placeholders];
   };
