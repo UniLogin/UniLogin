@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils} from 'ethers';
-import WalletMaster from '../../build/Wallet.json';
+import WalletContract from '../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../utils/ExampleMessages';
 import walletMasterAndProxy from '../fixtures/walletMasterAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
@@ -14,7 +14,7 @@ chai.use(solidity);
 
 const {parseEther} = utils;
 
-describe('WalletMaster', async () => {
+describe('WalletContract', async () => {
   let provider;
   let walletContractProxy;
   let proxyAsWalletContract;
@@ -34,7 +34,7 @@ describe('WalletMaster', async () => {
 
   beforeEach(async () => {
     ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletMasterAndProxy));
-    executeSignedFunc = new utils.Interface(WalletMaster.interface).functions.executeSigned;
+    executeSignedFunc = new utils.Interface(WalletContract.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = calculateMessageSignature(privateKey, msg);
     data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);

@@ -4,8 +4,8 @@ import {deployWalletContract} from '@universal-login/contracts';
 
 export default async function deployWalletContract(deployWallet) {
   const {address} = await deployWalletContract(deployWallet);
-  console.log(`WalletMaster address: ${address}`);
+  console.log(`WalletContract address: ${address}`);
   const masterContractHash = getContractHash(WalletMasterWithRefund);
-  console.log(`WalletMaster hash: ${masterContractHash}`);
+  console.log(`WalletContract hash: ${masterContractHash}`);
   return {address, masterContractHash};
 }

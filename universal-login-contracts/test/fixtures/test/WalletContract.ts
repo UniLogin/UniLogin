@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
-import WalletMaster from '../../../build/Wallet.json';
+import WalletContract from '../../../build/Wallet.json';
 import {KeyPair, MANAGEMENT_KEY} from '@universal-login/commons';
 
 
@@ -21,7 +21,7 @@ describe('WalletContract fixture test', () => {
   });
 
   it('walletOwner address should be managament key', async () => {
-    const getKeyPurposeInterface = new utils.Interface(WalletMaster.interface).functions.getKeyPurpose;
+    const getKeyPurposeInterface = new utils.Interface(WalletContract.interface).functions.getKeyPurpose;
     const getKeyPurposeData = getKeyPurposeInterface.encode([keyPair.publicKey]);
     const callTransaction = {to: proxyWallet.address, data: getKeyPurposeData};
     const resultCall = await deployer.provider.call(callTransaction);
