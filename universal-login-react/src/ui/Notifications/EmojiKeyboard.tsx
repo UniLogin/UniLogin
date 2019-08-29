@@ -9,26 +9,28 @@ import '../styles/colors.css';
 
 const BATCH_SIZE = 32;
 
+const getEmojiCode = (code: number, category: number, color: number) => (code + category * BATCH_SIZE) * 8 + color;
+
 interface EmojiKeyboardProps {
   onEmojiClick: (code: number) => void;
   className?: string;
 }
 
 export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => {
-  const [colorNumber, setColorNumber] = useState<number>(0);
-  const [batchNumber, setBatchNumber] = useState<number>(0);
+  const [color, setColor] = useState<number>(0);
+  const [category, setCategory] = useState<number>(0);
 
   const renderColors = () => (
     EMOJI_COLORS.map((colorString: string, index: number) => (
       <li key={`li-color-${index}`} className="emoji-keyboard-color-item">
-        <button style={{backgroundColor: colorString}} id={`btn-color-${index}`} onClick={() => setColorNumber(index)} className="emoji-keyboard-color-button" />
+        <button style={{backgroundColor: colorString}} id={`btn-color-${index}`} onClick={() => setColor(index)} className="emoji-keyboard-color-button" />
       </li>
     ))
   );
 
   const renderKeyboard = () => (
     range(BATCH_SIZE).map((code: number) => {
-      const emojiCode = (code + batchNumber * BATCH_SIZE) * 8 + colorNumber;
+      const emojiCode = getEmojiCode(code, category, color);
       return (
         <li key={`securityCodeWithFakes_${code}`}>
           <button id={`btn-${code}`} onClick={() => onEmojiClick(emojiCode)}>
@@ -47,13 +49,13 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
             {renderColors()}
           </ul>
           <div className="emoji-keybord-row">
-            <button disabled={batchNumber === 0} onClick={() => setBatchNumber(batchNumber - 1)} className="emoji-keyboard-arrow-button">
+            <button disabled={category === 0} onClick={() => setCategory(category - 1)} className="emoji-keyboard-arrow-button">
               {'<'}
             </button>
             <ul className="emojis-keyboard-batch">
-                {renderKeyboard()}
+              {renderKeyboard()}
             </ul>
-            <button disabled={batchNumber === 3} onClick={() => setBatchNumber(batchNumber + 1)} className="emoji-keyboard-arrow-button">
+            <button disabled={category === 3} onClick={() => setCategory(category + 1)} className="emoji-keyboard-arrow-button">
               {'>'}
             </button>
           </div>
