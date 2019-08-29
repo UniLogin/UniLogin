@@ -11,10 +11,10 @@ import ENSService from '../../lib/integration/ethereum/ensService';
 
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
-  const walletMasterAddress = (await deployWalletContract(wallet)).address;
-  const factoryContract = await deployFactory(wallet, walletMasterAddress);
+  const walletContractAddress = (await deployWalletContract(wallet)).address;
+  const factoryContract = await deployFactory(wallet, walletContractAddress);
   const hooks = new EventEmitter();
-  const config = {walletMasterAddress, factoryAddress: factoryContract.address, supportedTokens: []};
+  const config = {walletContractAddress, factoryAddress: factoryContract.address, supportedTokens: []};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
   const fakeBalanceChecker = {
     findTokenWithRequiredBalance: () => true

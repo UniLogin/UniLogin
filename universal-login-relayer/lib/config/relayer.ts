@@ -7,7 +7,7 @@ export interface Config {
   privateKey: string;
   chainSpec: ChainSpec;
   ensRegistrars: string[];
-  walletMasterAddress: string;
+  walletContractAddress: string;
   contractWhiteList: ContractWhiteList;
   factoryAddress: string;
   supportedTokens: SupportedToken[];

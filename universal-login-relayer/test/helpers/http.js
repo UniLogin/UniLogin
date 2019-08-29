@@ -28,8 +28,8 @@ export const createWalletContract = async (provider, relayerUrlOrServer, publicK
   return waitForContractDeploy(provider, WalletContract, transaction.hash);
 };
 
-export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, keyPair, walletMasterAddress, factoryContractAddress, ensAddress, ensName = 'marek.mylogin.eth') => {
-  const futureAddress = getFutureAddress(walletMasterAddress, factoryContractAddress, keyPair.publicKey);
+export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, keyPair, walletContractAddress, factoryContractAddress, ensAddress, ensName = 'marek.mylogin.eth') => {
+  const futureAddress = getFutureAddress(walletContractAddress, factoryContractAddress, keyPair.publicKey);
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
   const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);
   const signature = await calculateInitializeSignature(initData, keyPair.privateKey);

@@ -9,8 +9,8 @@ contract ProxyCounterfactualFactory is Ownable {
     bytes public initCode;
     using ECDSA for bytes32;
 
-    constructor(address walletMasterAddress) public {
-        initCode = abi.encodePacked(type(UpgradeabilityProxy).creationCode, uint256(walletMasterAddress));
+    constructor(address walletContractAddress) public {
+        initCode = abi.encodePacked(type(UpgradeabilityProxy).creationCode, uint256(walletContractAddress));
     }
 
     function createContract(address publicKey, bytes memory initializeWithENS, bytes memory signature) public onlyOwner returns(bool success) {

@@ -29,7 +29,7 @@ async function startRelayer(wallet, relayerConstructor) {
       ensAddress,
     },
     ensRegistrars: ['mylogin.eth'],
-    walletMasterAddress: walletContract.address,
+    walletContractAddress: walletContract.address,
     tokenContractAddress: tokenContract.address,
     contractWhiteList: getContractWhiteList(),
     factoryAddress: factoryContract.address,

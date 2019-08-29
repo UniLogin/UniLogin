@@ -30,7 +30,7 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
     address: tokenAddress,
     minimalAmount: utils.parseEther('0.05').toString()
@@ -49,7 +49,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletMasterAddres
       chainId: 0
     },
     ensRegistrars,
-    walletMasterAddress,
+    walletContractAddress,
     contractWhiteList,
     factoryAddress,
     supportedTokens,
@@ -95,18 +95,18 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [, , , , ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
-  const {address, masterContractHash} = await deployWalletContract(deployWallet);
+  const {address, walletContractHash} = await deployWalletContract(deployWallet);
   const proxyContractHash = getProxyContractHash();
   const factoryAddress = await deployFactory(deployWallet, address);
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
-    master:  [masterContractHash],
+    master:  [walletContractHash],
     proxy: [proxyContractHash]
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
-  return {jsonRpcUrl, deployWallet, walletMasterAddress: address, tokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl, deployWallet, walletContractAddress: address, tokenAddress, ensAddress, ensDomains};
 }
 
 export default startDevelopment;

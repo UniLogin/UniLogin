@@ -9,17 +9,17 @@ chai.use(solidity);
 describe('Counterfactual factory contract', async () => {
   let provider: providers.Provider;
   let wallet: Wallet;
-  let walletMasterAddress: string;
+  let walletContractAddress: string;
 
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     const {address} = await deployWalletContract(wallet);
-    walletMasterAddress = address;
+    walletContractAddress = address;
   });
 
   it('should deploy contract', async () => {
-    const factoryAddress = await deployFactory(wallet, walletMasterAddress);
+    const factoryAddress = await deployFactory(wallet, walletContractAddress);
     expect(factoryAddress).to.be.properAddress;
   });
 });

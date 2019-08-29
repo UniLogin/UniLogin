@@ -11,16 +11,16 @@ type FutureDeployment = {
 
 export type CreateFutureDeploymentWithENS = {
   keyPair: KeyPair;
-  walletMasterAddress: string;
+  walletContractAddress: string;
   ensDomainData: EnsDomainData;
   factoryContract: Contract;
   gasPrice: string;
 };
 
-export function createFutureDeploymentWithENS({keyPair, walletMasterAddress, ensDomainData, factoryContract, gasPrice} : CreateFutureDeploymentWithENS): FutureDeployment {
-  const [, initializeData] = createProxyDeployWithENSArgs(keyPair, ensDomainData, walletMasterAddress, gasPrice);
+export function createFutureDeploymentWithENS({keyPair, walletContractAddress, ensDomainData, factoryContract, gasPrice} : CreateFutureDeploymentWithENS): FutureDeployment {
+  const [, initializeData] = createProxyDeployWithENSArgs(keyPair, ensDomainData, walletContractAddress, gasPrice);
   const signature = calculateInitializeSignature(initializeData, keyPair.privateKey);
-  const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, keyPair.publicKey);
+  const futureAddress = getFutureAddress(walletContractAddress, factoryContract.address, keyPair.publicKey);
   return {
     initializeData,
     futureAddress,
@@ -28,10 +28,10 @@ export function createFutureDeploymentWithENS({keyPair, walletMasterAddress, ens
   };
 }
 
-export function createFutureDeployment(keyPair: KeyPair, walletMasterAddress: string, factoryContract: Contract): FutureDeployment {
+export function createFutureDeployment(keyPair: KeyPair, walletContractAddress: string, factoryContract: Contract): FutureDeployment {
   const initializeData = encodeInitializeData(keyPair.publicKey);
   const signature = calculateInitializeSignature(initializeData, keyPair.privateKey);
-  const futureAddress = getFutureAddress(walletMasterAddress, factoryContract.address, keyPair.publicKey);
+  const futureAddress = getFutureAddress(walletContractAddress, factoryContract.address, keyPair.publicKey);
   return {
     initializeData,
     futureAddress,
@@ -39,7 +39,7 @@ export function createFutureDeployment(keyPair: KeyPair, walletMasterAddress: st
   };
 }
 
-export function getFutureAddress(walletMasterAddress: string, factoryContractAddress: string, publicKey: string) {
-  const initData = getDeployData(ProxyContract as any, [walletMasterAddress]);
+export function getFutureAddress(walletContractAddress: string, factoryContractAddress: string, publicKey: string) {
+  const initData = getDeployData(ProxyContract as any, [walletContractAddress]);
   return computeContractAddress(factoryContractAddress, publicKey, initData);
 }

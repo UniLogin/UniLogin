@@ -27,7 +27,7 @@ describe('Counterfactual Factory', () => {
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {keyPair, walletMasterAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000'};
+    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000'};
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 

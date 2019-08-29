@@ -15,7 +15,7 @@ export default async function basicWalletContract(provider, wallets) {
   const walletContract = await deployContract(wallet, WalletContract);
   const factoryContract = await deployFactory(wallet, walletContract.address);
   const walletContract = await createWalletContract(wallet);
-  return {wallet, provider, walletContract, ensService, walletMasterAddress: walletContract.address, factoryContractAddress: factoryContract.address};
+  return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
 }
 
 export const transferMessage = {

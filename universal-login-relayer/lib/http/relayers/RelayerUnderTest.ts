@@ -51,7 +51,7 @@ export class RelayerUnderTest extends Relayer {
         ensAddress: ensBuilder.ens.address,
       },
       ensRegistrars: [DOMAIN],
-      walletMasterAddress: walletContract.address,
+      walletContractAddress: walletContract.address,
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
