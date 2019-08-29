@@ -5,7 +5,7 @@ import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, par
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ENS from '@universal-login/contracts/build/ENS.json';
 import chai from 'chai';
-import {deployFactory, getFutureAddress, deployWalletMaster, encodeInitializeWithENSData} from '@universal-login/contracts';
+import {deployFactory, getFutureAddress, deployWalletContract, encodeInitializeWithENSData} from '@universal-login/contracts';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -48,7 +48,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
 export const startRelayerWithRefund = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer, wallet, otherWallet] = getWallets(provider);
-  const walletMaster = await deployWalletMaster(deployer);
+  const walletMaster = await deployWalletContract(deployer);
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletMaster, factoryContract});
   await relayer.start();

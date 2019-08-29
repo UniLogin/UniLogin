@@ -1,9 +1,9 @@
 import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
 import {getContractHash} from '@universal-login/commons';
-import {deployWalletMaster} from '@universal-login/contracts';
+import {deployWalletContract} from '@universal-login/contracts';
 
-export default async function deployWalletMaster(deployWallet) {
-  const {address} = await deployWalletMaster(deployWallet);
+export default async function deployWalletContract(deployWallet) {
+  const {address} = await deployWalletContract(deployWallet);
   console.log(`WalletMaster address: ${address}`);
   const masterContractHash = getContractHash(WalletMasterWithRefund);
   console.log(`WalletMaster hash: ${masterContractHash}`);

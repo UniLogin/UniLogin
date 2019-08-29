@@ -3,7 +3,7 @@ import {createMockProvider, getWallets} from 'ethereum-waffle';
 import WalletMaster from '@universal-login/contracts/build/Wallet.json';
 import {getDeployedBytecode, ContractJSON, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {BlockchainService} from '../../../lib/integration/ethereum/BlockchainService';
-import {deployWalletMaster} from '@universal-login/contracts';
+import {deployWalletContract} from '@universal-login/contracts';
 
 describe('INT: BlockchainService', async () => {
   const provider = createMockProvider();
@@ -17,14 +17,14 @@ describe('INT: BlockchainService', async () => {
   });
 
   it('getCode returns bytecode of existing contract', async () => {
-    const {address} = await deployWalletMaster(deployer);
+    const {address} = await deployWalletContract(deployer);
     expect(await blockchainService.getCode(address)).to.be.eq(expectedBytecode);
   });
 
   it('getBlockNumber should return increased block number', async () => {
     const blockNumber = await blockchainService.getBlockNumber();
     expect(blockNumber).at.least(0);
-    await deployWalletMaster(deployer);
+    await deployWalletContract(deployer);
     const blockNumber2 = await blockchainService.getBlockNumber();
     expect(blockNumber2).greaterThan(blockNumber);
     expect(blockNumber2).to.be.eq(blockNumber + 1);
@@ -40,7 +40,7 @@ describe('INT: BlockchainService', async () => {
           '0x0000000000000000000000000000000000000000000000000000000000000000',
           '0x0000000000000000000000000000000000000000000000000000000000000001' ],
       logIndex: 0 };
-    const {address} = await deployWalletMaster(deployer);
+    const {address} = await deployWalletContract(deployer);
     const logs = await blockchainService.getLogs({address});
     expect(logs).to.have.length(1);
     expect(logs[0]).to.deep.include(expectedPartOfLog);

@@ -3,7 +3,7 @@ import {deployContract} from 'ethereum-waffle';
 import WalletMaster from '../../build/Wallet.json';
 import {withENS, createKeyPair} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {deployFactory, createFutureDeploymentWithENS, deployWalletMaster} from '../../lib';
+import {deployFactory, createFutureDeploymentWithENS, deployWalletContract} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
 
@@ -25,7 +25,7 @@ export async function setupEnsAndMaster(deployer: Wallet) {
 }
 
 export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
-  const walletMaster = await deployWalletMaster(deployer);
+  const walletMaster = await deployWalletContract(deployer);
   const factoryContract = await deployFactory(deployer, walletMaster.address);
   return {
     walletMaster,

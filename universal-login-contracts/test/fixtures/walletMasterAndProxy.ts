@@ -5,13 +5,13 @@ import WalletMaster from '../../build/Wallet.json';
 import Proxy from '../../build/UpgradeabilityProxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
-import {deployWalletMaster} from '../../lib';
+import {deployWalletContract} from '../../lib';
 
 const {parseEther} = utils;
 
 export default async function walletMasterAndProxy(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const keyPair = createKeyPair();
-  const walletContractMaster = await deployWalletMaster(wallet);
+  const walletContractMaster = await deployWalletContract(wallet);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address]);
   const proxyAsWalletContract = new Contract(walletContractProxy.address, WalletMaster.abi, wallet);
   await proxyAsWalletContract.initialize(keyPair.publicKey);

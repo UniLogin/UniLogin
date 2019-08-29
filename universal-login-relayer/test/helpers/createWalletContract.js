@@ -2,10 +2,10 @@ import {defaultDeployOptions} from '@universal-login/commons';
 import WalletProxy from '@universal-login/contracts/build/UpgradeabilityProxy.json';
 import WalletMaster from '@universal-login/contracts/build/Wallet.json';
 import {ContractFactory, Contract} from 'ethers';
-import {encodeInitializeData, deployWalletMaster} from '@universal-login/contracts';
+import {encodeInitializeData, deployWalletContract} from '@universal-login/contracts';
 
 export default async function createWalletContract(wallet) {
-  const walletMaster = await deployWalletMaster(wallet);
+  const walletMaster = await deployWalletContract(wallet);
   const factory = new ContractFactory(
     WalletProxy.interface,
     `0x${WalletProxy.evm.bytecode.object}`,
