@@ -17,7 +17,7 @@ const tokenTransferCost = 80000;
 
 const overrideOptions = {gasLimit: 120000};
 
-describe('ERC1077 - gas cost', async () => {
+describe('Executor - gas cost', async () => {
   const gasCosts = {};
   let provider;
   let walletContract;
