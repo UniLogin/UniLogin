@@ -11,7 +11,7 @@ chai.use(solidity);
 
 const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
-describe('Utils', async () => {
+describe('UNIT: argumentsEncoding', async () => {
   const wallet1 = Wallet.createRandom();
   const wallet2 = Wallet.createRandom();
   const value = utils.parseEther('0.1');
