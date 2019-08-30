@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {TokenGrantingRelayer} from '../../../../lib/http/relayers/TokenGrantingRelayer';
 import {utils, Contract} from 'ethers';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
-import {waitUntil, MANAGEMENT_KEY, createSignedMessage, stringifySignedMessageFields} from '@universal-login/commons';
+import {waitUntil, createSignedMessage, stringifySignedMessageFields} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {startRelayer} from '../../../helpers/startRelayer';
 import {WalletCreator} from '../../../helpers/WalletCreator';

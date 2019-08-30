@@ -3,7 +3,7 @@ import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import WalletContract from '../../../build/Wallet.json';
-import {KeyPair, MANAGEMENT_KEY} from '@universal-login/commons';
+import {KeyPair} from '@universal-login/commons';
 
 
 describe('WalletContract fixture test', () => {
@@ -21,11 +21,11 @@ describe('WalletContract fixture test', () => {
   });
 
   it('walletOwner address should be managament key', async () => {
-    const getKeyPurposeInterface = new utils.Interface(WalletContract.interface).functions.getKeyPurpose;
-    const getKeyPurposeData = getKeyPurposeInterface.encode([keyPair.publicKey]);
-    const callTransaction = {to: proxyWallet.address, data: getKeyPurposeData};
+    const keyExistInterface = new utils.Interface(WalletContract.interface).functions.keyExist;
+    const keyExistData = keyExistInterface.encode([keyPair.publicKey]);
+    const callTransaction = {to: proxyWallet.address, data: keyExistData};
     const resultCall = await deployer.provider.call(callTransaction);
-    expect(getKeyPurposeInterface.decode(resultCall).purpose).to.eq(MANAGEMENT_KEY);
+    expect(keyExistInterface.decode(resultCall)[0]).to.be.true;
   });
 
   it('has proper ens name', async () => {

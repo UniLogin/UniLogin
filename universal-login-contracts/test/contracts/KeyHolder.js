@@ -30,7 +30,7 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('Key should be management key', async () => {
-      expect(await walletContract.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.keyExist(managementKey)).to.be.true;
     });
 
     it('there must be a total of 3 keys', async () => {
@@ -95,14 +95,14 @@ describe('CONTRACT: KeyHolder', async () => {
   describe('Get key', async () => {
     it('Should return key correctly', async () => {
       await addActionKey();
-      expect(await walletContract.getKeyPurpose(actionKey)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
       expect(await walletContract.keyExist(actionKey)).to.eq(true);
     });
 
     it('Should return key purpose correctly', async () => {
-      expect(await walletContract.getKeyPurpose(managementKey)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.keyExist(managementKey)).to.be.true;
       await addActionKey();
-      expect(await walletContract.getKeyPurpose(actionKey)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
     });
   });
 

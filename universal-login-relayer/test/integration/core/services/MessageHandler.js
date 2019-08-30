@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, createSignedMessage, waitExpect, sleep} from '@universal-login/commons';
+import {createSignedMessage, waitExpect} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';

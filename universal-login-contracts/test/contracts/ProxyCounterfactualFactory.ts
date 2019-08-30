@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
-import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
+import {createKeyPair, signString} from '@universal-login/commons';
 import WalletProxyFactory from '../../build/WalletProxyFactory.json';
 import WalletContract from '../../build/Wallet.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
@@ -47,7 +47,7 @@ describe('Counterfactual Factory', () => {
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const proxyContract = new Contract(futureAddress, WalletContract.abi, wallet);
-    expect(await proxyContract.getKeyPurpose(keyPair.publicKey)).to.eq(MANAGEMENT_KEY);
+    expect(await proxyContract.keyExist(keyPair.publicKey)).to.be.true;
   });
 
   it('deploy with the same ens name', async () => {

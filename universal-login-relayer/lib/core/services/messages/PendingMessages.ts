@@ -1,5 +1,5 @@
 import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';

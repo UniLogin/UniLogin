@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {MANAGEMENT_KEY, CLAIM_KEY, signGetAuthorisationRequest, createKeyPair, INVALID_KEY} from '@universal-login/commons';
+import {signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
