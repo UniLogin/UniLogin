@@ -3,16 +3,17 @@ pragma solidity ^0.5.2;
 import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 import "../openzeppelin/contracts/Initializable.sol";
 import "../interfaces/IERC1271.sol";
-import "../utils/ENSRegistered.sol";
+import "../utils/ENSUtils.sol";
+import "../utils/ERC1271Utils.sol";
+import "../utils/StringUtils.sol";
 import "./Executor.sol";
 
 
 /* solium-disable no-empty-blocks */
-contract Wallet is ENSRegistered, Executor, IERC1271, IERC721Receiver, Initializable {
-    constructor()
-        Executor(address(0))
-        public
-    {}
+contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receiver, Initializable, IERC1271 {
+
+    constructor() Executor(address(0)) public {
+    }
 
     function owner() external view returns (address) {
         return address(this);
@@ -46,7 +47,7 @@ contract Wallet is ENSRegistered, Executor, IERC1271, IERC721Receiver, Initializ
         keyCount = 1;
         requiredSignatures = 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
-        // ENSRegistered
+        // ENSUtils
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/
         refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
@@ -68,35 +69,7 @@ contract Wallet is ENSRegistered, Executor, IERC1271, IERC721Receiver, Initializ
         return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uint2str(_data.length), _data));
     }
 
-    function uint2str(uint _num) internal pure returns (string memory _uintAsString) {
-        if (_num == 0) {
-            return "0";
-        }
-        uint i = _num;
-        uint j = _num;
-        uint len;
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint k = len - 1;
-        while (i != 0) {
-            bstr[k--] = byte(uint8(48 + i % 10));
-            i /= 10;
-        }
-        return string(bstr);
-    }
-
     function getDeploymentGasUsed() private pure returns(uint) {
         return 500000;
-    }
-
-    function getMagicValue() private pure returns(bytes4) {
-        return 0x20c13b0b;
-    }
-
-    function getInvalidSignature() private pure returns(bytes4) {
-        return 0xffffffff;
     }
 }
