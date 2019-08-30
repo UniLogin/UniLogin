@@ -47,7 +47,7 @@ contract Executor is KeyHolder {
         return areSignaturesValid(signatures, hash);
     }
 
-    function setRequiredSignatures(uint _requiredSignatures) public onlyManagementKeyOrThisContract {
+    function setRequiredSignatures(uint _requiredSignatures) public onlyAuthorised {
         require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
         require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number");
         requiredSignatures = _requiredSignatures;
