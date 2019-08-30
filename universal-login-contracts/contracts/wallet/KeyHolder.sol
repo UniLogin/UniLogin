@@ -33,16 +33,8 @@ contract KeyHolder {
 
     }
 
-    modifier onlyManagementOrActionKeys(address sender) {
-        bool isActionKey = keyHasPurpose(sender, ACTION_KEY);
-        bool isManagementKey = keyHasPurpose(sender, MANAGEMENT_KEY);
-        require(isActionKey || isManagementKey, "Invalid key");
-        _;
-    }
-
-    modifier onlyManagementKeyOrThisContract() {
-        bool isManagementKey = keyHasPurpose(msg.sender, MANAGEMENT_KEY);
-        require(isManagementKey || msg.sender == address(this), "Sender not permissioned");
+    modifier onlyAuthorised() {
+        require(keyExist(msg.sender) || msg.sender == address(this), "Sender not permissioned");
         _;
     }
 
@@ -54,7 +46,7 @@ contract KeyHolder {
         return keys[_key].purpose == _purpose;
     }
 
-    function addKey(address _key) public onlyManagementKeyOrThisContract returns(bool success) {
+    function addKey(address _key) public onlyAuthorised returns(bool success) {
         require(keys[_key].key != _key, "Key already added");
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
@@ -64,7 +56,7 @@ contract KeyHolder {
         return true;
     }
 
-    function addKeys(address[] memory _keys) public onlyManagementKeyOrThisContract returns(bool success) {
+    function addKeys(address[] memory _keys) public onlyAuthorised returns(bool success) {
         for (uint i = 0; i < _keys.length; i++) {
             require(_keys[i] != msg.sender, "Invalid key");
             addKey(_keys[i]);
@@ -73,7 +65,7 @@ contract KeyHolder {
         return true;
     }
 
-    function removeKey(address _key) public  onlyManagementKeyOrThisContract returns(bool success) {
+    function removeKey(address _key) public  onlyAuthorised returns(bool success) {
         emit KeyRemoved(keys[_key].key);
 
         delete keys[_key];
