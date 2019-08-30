@@ -3,7 +3,7 @@ import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {ACTION_KEY, sortPrivateKeysByAddress, createKeyPair} from '@universal-login/commons';
+import {sortPrivateKeysByAddress, createKeyPair} from '@universal-login/commons';
 const {parseEther} = utils;
 
 export default async function basicWallet(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
@@ -16,7 +16,7 @@ export default async function basicWallet(unusedProvider : providers.Provider, [
   const mockContract = await deployContract(wallet, MockContract);
   await wallet.sendTransaction({to: walletContract.address, value: parseEther('2.0')});
   await mockToken.transfer(walletContract.address, parseEther('1.0'));
-  await walletContract.addKey(actionKeyPair.publicKey, ACTION_KEY);
-  await walletContract.addKey(actionKeyPair2.publicKey, ACTION_KEY);
+  await walletContract.addKey(actionKeyPair.publicKey);
+  await walletContract.addKey(actionKeyPair2.publicKey);
   return {provider: wallet.provider, managementKeyPair, sortedKeys, walletContract, mockToken, mockContract, wallet};
 }

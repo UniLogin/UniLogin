@@ -2,7 +2,6 @@ import KeyHolder from '../../build/KeyHolder.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/commons';
 import {Provider} from 'ethers/providers';
 
 export default async function basicKeyHolder(
@@ -21,8 +20,8 @@ export default async function basicKeyHolder(
   const fromActionWallet = await walletContract.connect(actionWallet);
   const fromUnknownWallet = await walletContract.connect(unknownWallet);
 
-  await walletContract.addKey(managementWalletKey, MANAGEMENT_KEY);
-  await walletContract.addKey(actionWalletKey, ACTION_KEY);
+  await walletContract.addKey(managementWalletKey);
+  await walletContract.addKey(actionWalletKey);
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   return {provider, walletContract, mockContract, wallet,
     targetWallet, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,

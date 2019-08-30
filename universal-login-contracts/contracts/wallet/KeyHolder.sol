@@ -59,21 +59,20 @@ contract KeyHolder {
         return keys[_key].purpose == _purpose;
     }
 
-    function addKey(address _key, uint256 _purpose) public onlyManagementKeyOrThisContract returns(bool success) {
+    function addKey(address _key) public onlyManagementKeyOrThisContract returns(bool success) {
         require(keys[_key].key != _key, "Key already added");
         keys[_key].key = _key;
-        keys[_key].purpose = _purpose;
+        keys[_key].purpose = MANAGEMENT_KEY;
         keyCount = keyCount.add(1);
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
 
         return true;
     }
 
-    function addKeys(address[] memory _keys, uint256[] memory _purposes) public onlyManagementKeyOrThisContract returns(bool success) {
-        require(_keys.length == _purposes.length, "Unequal argument set lengths");
+    function addKeys(address[] memory _keys) public onlyManagementKeyOrThisContract returns(bool success) {
         for (uint i = 0; i < _keys.length; i++) {
             require(_keys[i] != msg.sender, "Invalid key");
-            addKey(_keys[i], _purposes[i]);
+            addKey(_keys[i]);
         }
         emit MultipleKeysAdded(_keys.length);
         return true;
