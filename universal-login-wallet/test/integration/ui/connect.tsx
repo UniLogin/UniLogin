@@ -2,10 +2,10 @@ import {ReactWrapper} from 'enzyme';
 import React from 'react';
 import {mountWithContext} from '../helpers/CustomMount';
 import App from '../../../src/ui/react/App';
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, utils} from 'ethers';
 import {Services} from '../../../src/ui/createServices';
 import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
-import {ETHER_NATIVE_TOKEN, waitExpect} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, waitExpect, sleep} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {AppPage} from '../pages/AppPage';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
@@ -42,8 +42,8 @@ describe('UI: Connection flow', () => {
     await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
     const publicKey = (new Wallet(services.walletService.applicationWallet!.privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
-    await appPage.login().waitForHomeView('1.9997');
-    expect(appPage.dashboard().getWalletBalance()).to.startWith('1.9997');
+    await appPage.login().waitForHomeView('1.9998');
+    expect(appPage.dashboard().getWalletBalance()).to.startWith('1.9998');
   });
 
   after(async () => {
