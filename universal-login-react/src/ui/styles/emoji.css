@@ -55,6 +55,22 @@
   align-items: center;
 }
 
+.emoji-keyboard-item {
+  position: relative;
+}
+
+.universal-login-emojis .emoji-keyboard-item .emoji-keyboard-color-row {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  z-index: 10;
+  width: 150px;
+  background: #aaa;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 .universal-login-emojis .emoji-keybord-row  button.emoji-keyboard-arrow-button {
   width: 30px;
   height: 30px;
@@ -71,5 +87,5 @@
 .universal-login-emojis .emoji-keyboard-color-row  .emoji-keyboard-color-button {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: 5px;
 }

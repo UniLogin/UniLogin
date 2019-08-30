@@ -76,12 +76,12 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const onEmojiRemove = (index: number) => {
-    setAddressesAndInputMode(notifications);
     if (enteredCode.length >= 0) {
       enteredCode.splice(index, 1);
       setEnteredCode([...enteredCode]);
       setStatus('');
     }
+    setAddressesAndInputMode(notifications);
   };
 
   return (

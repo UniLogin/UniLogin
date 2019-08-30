@@ -9,13 +9,15 @@ export const CATEGORY_INTERVALS = [
   {start: 109, end: 128}
 ];
 
-export const getEmojiCode = (code: number, color: number) => code * 8 + color;
+export const getBaseEmojiCode = (iconIndex: number) => iconIndex * EMOJI_COLORS.length;
+
+export const getColoredEmojiCode = (emojiCode: number, colorIndex: number) => emojiCode + colorIndex;
+
+export const getEmojiSet = (category: number) => {
+  const interval = CATEGORY_INTERVALS[category];
+  return range(interval.start, interval.end).map((iconIndex) => getBaseEmojiCode(iconIndex));
+};
 
 export const getEmojiNumber = (code: number) => Math.floor(code / EMOJI_COLORS.length);
 
 export const getEmojiColor = (code: number) => EMOJI_COLORS[code % EMOJI_COLORS.length];
-
-export const getEmojiSet = (category: number, color: number) => {
-  const interval = CATEGORY_INTERVALS[category];
-  return range(interval.start, interval.end).map((code) => getEmojiCode(code, color));
-};
