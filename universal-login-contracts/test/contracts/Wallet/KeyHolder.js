@@ -100,21 +100,21 @@ describe('CONTRACT: KeyHolder', async () => {
 
     it('Should remove key successfully', async () => {
       expect(await isKey()).to.be.true;
-      await walletContract.removeKey(actionKey, MANAGEMENT_KEY);
+      await walletContract.removeKey(actionKey);
       expect(await walletContract.keyHasPurpose(actionKey, MANAGEMENT_KEY)).to.be.false;
       expect(await walletContract.keyCount()).to.eq(3);
     });
 
     it('Should emit KeyRemoved event successfully', async () => {
       expect(await isKey()).to.be.true;
-      await expect(walletContract.removeKey(actionKey, MANAGEMENT_KEY)).to
+      await expect(walletContract.removeKey(actionKey)).to
         .emit(walletContract, 'KeyRemoved')
         .withArgs(utils.hexlify(actionKey));
     });
 
     it('Should not allow to remove key with unknown key', async () => {
       expect(await isKey()).to.be.true;
-      await expect(fromUnknownWallet.removeKey(actionKey, MANAGEMENT_KEY)).to.be.reverted;
+      await expect(fromUnknownWallet.removeKey(actionKey)).to.be.reverted;
     });
   });
 });

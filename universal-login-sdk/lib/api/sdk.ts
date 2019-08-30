@@ -70,7 +70,7 @@ class UniversalLoginSDK {
   }
 
   async removeKey(to: string, key: string, privateKey: string, transactionDetails: Message) {
-    return this.selfExecute(to, 'removeKey', [key, MANAGEMENT_KEY], privateKey, transactionDetails);
+    return this.selfExecute(to, 'removeKey', [key], privateKey, transactionDetails);
   }
 
   async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Message) {

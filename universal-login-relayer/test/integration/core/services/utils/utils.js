@@ -33,7 +33,7 @@ describe('INT: Core tools test', async () => {
     });
 
     it('Should return false if no addKey call', async () => {
-      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address, MANAGEMENT_KEY]);
+      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address]);
       expect(isAddKeyCall(data)).to.be.false;
     });
   });
@@ -46,7 +46,7 @@ describe('INT: Core tools test', async () => {
     });
 
     it('Should return false if no addKeys call', async () => {
-      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address, MANAGEMENT_KEY]);
+      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address]);
       expect(isAddKeysCall(data)).to.be.false;
     });
   });

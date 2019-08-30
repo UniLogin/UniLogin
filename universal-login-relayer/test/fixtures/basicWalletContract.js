@@ -41,7 +41,7 @@ export const addKeyMessage = {
 export const removeKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
-  data: new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0', MANAGEMENT_KEY]),
+  data: new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']),
   nonce: 1,
   gasPrice,
   gasLimit,

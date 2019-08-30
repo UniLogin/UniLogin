@@ -73,9 +73,7 @@ contract KeyHolder {
         return true;
     }
 
-    function removeKey(address _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
-        require(keys[_key].purpose == _purpose, "Invalid key");
-
+    function removeKey(address _key) public  onlyManagementKeyOrThisContract returns(bool success) {
         emit KeyRemoved(keys[_key].key);
 
         delete keys[_key];
