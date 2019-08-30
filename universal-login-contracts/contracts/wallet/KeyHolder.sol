@@ -1,15 +1,27 @@
 pragma solidity ^0.5.2;
 
-import "../interfaces/IKeyHolder.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 
-contract KeyHolder is IKeyHolder {
+contract KeyHolder {
     using SafeMath for uint;
+
+    uint constant MAX_KEYS_PER_ADD = 5;
+    uint256 constant public MANAGEMENT_KEY = 1;
+    uint256 constant public ACTION_KEY = 2;
+
+    struct Key {
+        uint256 purpose;
+        address key;
+    }
 
     mapping (address => Key) public keys;
 
     uint public keyCount;
+
+    event KeyAdded(address indexed key, uint256 indexed purpose);
+    event KeyRemoved(address indexed key, uint256 indexed purpose);
+    event MultipleKeysAdded(uint count);
 
     constructor(address _key) public {
         keys[_key].key = _key;
@@ -77,6 +89,4 @@ contract KeyHolder is IKeyHolder {
 
         return true;
     }
-
-    event MultipleKeysAdded(uint count);
 }
