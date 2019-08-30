@@ -38,6 +38,6 @@ describe('WalletCreator', () => {
     expect(contractAddress).to.be.properAddress;
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract)}`);
     const walletContract = new Contract(contractAddress, WalletMasterWithRefund.interface, provider);
-    expect(await walletContract.getKeyPurpose(publicKey)).to.eq(MANAGEMENT_KEY);
+    expect(await walletContract.keyExist(publicKey)).to.be.true;
   });
 });

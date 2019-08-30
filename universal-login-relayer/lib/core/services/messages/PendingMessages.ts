@@ -55,8 +55,7 @@ export default class PendingMessages {
       message.signature
     );
     const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
-    const keyPurpose = await walletContract.getKeyPurpose(key);
-    ensure(!keyPurpose.eq(INVALID_KEY), InvalidSignature, 'Invalid key purpose');
+    ensure(await walletContract.keyExist(key), InvalidSignature, 'Invalid key');
   }
 
   async getStatus(messageHash: string) {
