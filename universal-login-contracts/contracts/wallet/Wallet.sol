@@ -26,7 +26,7 @@ contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receive
         keys[_key].purpose = MANAGEMENT_KEY;
         keyCount = 1;
         requiredSignatures = 1;
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
+        emit KeyAdded(keys[_key].key);
     }
 
     // Disabled upgradability: persistent nonce not sync
@@ -46,7 +46,7 @@ contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receive
         keys[_key].purpose = MANAGEMENT_KEY;
         keyCount = 1;
         requiredSignatures = 1;
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
+        emit KeyAdded(keys[_key].key);
         // ENSUtils
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/

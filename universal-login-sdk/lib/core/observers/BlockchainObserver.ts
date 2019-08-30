@@ -46,8 +46,8 @@ class BlockchainObserver extends ObserverBase {
   parseArgs(type: string, event: any) {
     if (event.topics[0] === eventInterface[type].topic) {
       const args = walletContractInterface.parseLog(event);
-      const {key, purpose} = args.values;
-      return {key, purpose: purpose.toNumber()};
+      const {key} = args.values;
+      return {key};
     }
     throw `Not supported event with topic: ${event.topics[0]}`;
   }

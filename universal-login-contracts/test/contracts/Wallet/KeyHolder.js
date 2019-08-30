@@ -51,7 +51,7 @@ describe('CONTRACT: KeyHolder', async () => {
     it('Should emit KeyAdded event successfully', async () => {
       await expect(addActionKey()).to
         .emit(walletContract, 'KeyAdded')
-        .withArgs(utils.hexlify(actionKey), MANAGEMENT_KEY);
+        .withArgs(utils.hexlify(actionKey));
     });
 
     it('Should not allow to add new key with unknown key', async () => {
@@ -109,7 +109,7 @@ describe('CONTRACT: KeyHolder', async () => {
       expect(await isKey()).to.be.true;
       await expect(walletContract.removeKey(actionKey, MANAGEMENT_KEY)).to
         .emit(walletContract, 'KeyRemoved')
-        .withArgs(utils.hexlify(actionKey), MANAGEMENT_KEY);
+        .withArgs(utils.hexlify(actionKey));
     });
 
     it('Should not allow to remove key with unknown key', async () => {

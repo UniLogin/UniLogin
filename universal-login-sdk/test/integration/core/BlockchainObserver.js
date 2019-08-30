@@ -42,7 +42,7 @@ describe('INT: BlockchainObserver', async () => {
     const filter = {contractAddress, key: address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await blockchainObserver.fetchEvents();
-    expect(callback).to.have.been.calledWith({key: address, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: address});
   });
 
   it('subscribe: should emit AddKey on addKey', async () => {
@@ -53,7 +53,7 @@ describe('INT: BlockchainObserver', async () => {
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await execution.waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
-    expect(callback).to.have.been.calledWith({key: wallet.address, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: wallet.address});
   });
 
   it('subscribe: shouldn`t emit AddKey on add another key', async () => {
@@ -70,7 +70,7 @@ describe('INT: BlockchainObserver', async () => {
     await execution.waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
-    expect(callback).to.have.been.calledWith({key: otherWallet.address, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: otherWallet.address});
     expect(callback2).to.not.have.been.called;
   });
 
@@ -85,7 +85,7 @@ describe('INT: BlockchainObserver', async () => {
     const {waitToBeMined} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await waitToBeMined();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
-    expect(callback).to.have.been.calledWith({key: wallet.address, purpose: MANAGEMENT_KEY});
+    expect(callback).to.have.been.calledWith({key: wallet.address});
   });
 
   after(async () => {
