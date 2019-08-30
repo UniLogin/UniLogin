@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
-import {messageSignature, getExecutionArgs} from './utils';
+import {messageSignature, getExecutionArgs} from './helpers/argumentsEncoding';
 import {utils, Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
 import {concatenateSignatures, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
@@ -11,12 +11,13 @@ chai.use(solidity);
 
 const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
-describe('Tools test', async () => {
+describe('UNIT: argumentsEncoding', async () => {
   const wallet1 = Wallet.createRandom();
   const wallet2 = Wallet.createRandom();
   const value = utils.parseEther('0.1');
   const data = utils.hexlify(0);
   const nonce = 0;
+
   describe('signature utils', () => {
     let signature1: string;
     let signature2: string;
@@ -53,13 +54,12 @@ describe('Tools test', async () => {
     });
   });
 
-
   describe('getExecutionArgs', () => {
     it('should return corect array', async () => {
       const msg = {
         to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('1.0'),
-        data: 0x0,
+        data: '0x0',
         nonce: 0,
         gasPrice: 0,
         gasLimit: 0,
@@ -69,7 +69,7 @@ describe('Tools test', async () => {
       const expectedResult = [
         TEST_ACCOUNT_ADDRESS,
         utils.parseEther('1.0'),
-        0x0,
+        '0x0',
         0,
         0,
         '0x0000000000000000000000000000000000000000',

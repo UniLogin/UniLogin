@@ -2,11 +2,11 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import basicERC1077 from '../../fixtures/basicERC1077';
-import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../utils/ExampleMessages';
+import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import {utils} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
-import {getExecutionArgs} from '../../utils';
+import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

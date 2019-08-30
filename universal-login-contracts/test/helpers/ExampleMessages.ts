@@ -3,7 +3,7 @@ import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import MockContract from '../../build/MockContract.json';
-import {encodeFunction} from '../utils';
+import {encodeFunction} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
 
 const {parseEther} = utils;
