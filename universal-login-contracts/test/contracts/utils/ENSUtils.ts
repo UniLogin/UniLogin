@@ -19,7 +19,7 @@ describe('ENSUtils', async () => {
   let publicResolver: Contract;
   let registrarAddress: string;
   let ensAddress: string;
-  let args: any[];
+  let args: string[];
 
   beforeEach(async () => {
     ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));

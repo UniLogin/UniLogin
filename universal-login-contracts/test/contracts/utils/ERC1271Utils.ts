@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import ERC1271Utils from '../../../build/ERC1271Utils.json';
-import {Contract, Wallet} from 'ethers';
+import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 
 describe('ERC1271Utils', async () => {
