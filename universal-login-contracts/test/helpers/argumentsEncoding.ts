@@ -1,5 +1,5 @@
 import {Message} from '@universal-login/commons';
-import {Interface, namehash, BigNumberish, Arrayish, arrayify, solidityKeccak256} from 'ethers/utils';
+import {Interface, BigNumberish, Arrayish, arrayify, solidityKeccak256} from 'ethers/utils';
 import {Wallet, utils} from 'ethers';
 
 export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: string, domain = 'mylogin.eth') => {
