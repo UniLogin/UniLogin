@@ -90,11 +90,6 @@ describe('INT: PendingMessages', () => {
       expect(collectedSignatures).to.be.deep.eq([message.signature, signedMessage.signature]);
     });
 
-    it('should not push invalid key purpose', async () => {
-      const message2 = createSignedMessage({from: wallet.address, to: '0x'}, actionKey);
-      await expect(pendingMessages.add({...message, signature: message2.signature})).to.be.rejectedWith('Invalid key');
-    });
-
     it('should not accept same signature twice', async () => {
       await pendingMessages.add(message);
       await expect(pendingMessages.add(message))

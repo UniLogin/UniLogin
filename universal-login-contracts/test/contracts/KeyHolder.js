@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY, ACTION_KEY} from '@universal-login/commons';
+import {MANAGEMENT_KEY} from '@universal-login/commons';
 import basicKeyHolder from '../fixtures/basicKeyHolder';
 
 chai.use(chaiAsPromised);
@@ -29,26 +29,15 @@ describe('CONTRACT: KeyHolder', async () => {
       expect(address).to.not.be.null;
     });
 
-    it('Key should be management key', async () => {
-      expect(await walletContract.keyExist(managementKey)).to.be.true;
-    });
-
     it('there must be a total of 3 keys', async () => {
       expect(await walletContract.keyCount()).to.eq(3);
-    });
-
-    it('Should return the purpose', async () => {
-      expect(await walletContract.keyHasPurpose(managementKey, MANAGEMENT_KEY)).to.be.true;
-      expect(await walletContract.keyHasPurpose(managementKey, ACTION_KEY)).to.be.false;
-      expect(await walletContract.keyHasPurpose(actionKey, MANAGEMENT_KEY)).to.be.false;
-      expect(await walletContract.keyHasPurpose(actionKey, ACTION_KEY)).to.be.false;
     });
   });
 
   describe('Add key', async () => {
     it('Should add key successfully', async () => {
       await addActionKey();
-      expect(await isKey()).to.be.true;
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
       const existingKeys = await walletContract.keys(actionKey);
       expect(existingKeys[0]).to.eq(MANAGEMENT_KEY);
       expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
@@ -92,17 +81,14 @@ describe('CONTRACT: KeyHolder', async () => {
     });
   });
 
-  describe('Get key', async () => {
-    it('Should return key correctly', async () => {
+  describe('keyExist', async () => {
+    it('return true if key exist', async () => {
       await addActionKey();
       expect(await walletContract.keyExist(actionKey)).to.be.true;
-      expect(await walletContract.keyExist(actionKey)).to.eq(true);
     });
 
-    it('Should return key purpose correctly', async () => {
-      expect(await walletContract.keyExist(managementKey)).to.be.true;
-      await addActionKey();
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
+    it('return false if key doesn`t exist', async () => {
+      expect(await walletContract.keyExist(unknownWalletKey)).to.be.false;
     });
   });
 
