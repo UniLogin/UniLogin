@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-const commandLineBuilder = require('../dist/cli/cli');
+const commandLineBuilder = require('../dist/src/cli/cli');
 
 commandLineBuilder.parse();
