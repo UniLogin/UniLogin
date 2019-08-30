@@ -4,8 +4,8 @@ import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {calculateMessageSignature} from '@universal-login/commons';
 import basicERC1077 from '../../fixtures/basicERC1077';
-import {transferMessage, callMessage} from '../../utils/ExampleMessages';
-import {getExecutionArgs} from '../../utils';
+import {transferMessage, callMessage} from '../../helpers/ExampleMessages';
+import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 import MockToken from '../../../build/MockToken.json';
 
 chai.use(chaiAsPromised);

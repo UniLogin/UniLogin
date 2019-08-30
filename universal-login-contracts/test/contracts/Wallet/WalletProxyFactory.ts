@@ -6,7 +6,7 @@ import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
 import WalletContract from '../../../build/Wallet.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../../lib';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
-import {switchENSNameInInitializeArgs} from '../../utils/utils';
+import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 
 chai.use(solidity);
 

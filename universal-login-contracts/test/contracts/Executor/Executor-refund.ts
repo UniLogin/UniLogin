@@ -2,11 +2,11 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
 import basicERC1077 from '../../fixtures/basicERC1077';
-import {transferMessage} from '../../utils/ExampleMessages';
+import {transferMessage} from '../../helpers/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
 import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import Loop from '../../../build/Loop.json';
-import {encodeFunction} from '../../utils';
+import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../lib';
 
 chai.use(chaiAsPromised);

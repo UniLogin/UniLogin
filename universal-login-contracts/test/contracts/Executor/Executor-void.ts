@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
 import Executor from '../../../build/Executor.json';
 import {constants, Contract} from 'ethers';
-import {transferMessage} from '../../utils/ExampleMessages';
-import {getExecutionArgs} from '../../utils';
+import {transferMessage} from '../../helpers/ExampleMessages';
+import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 
 
