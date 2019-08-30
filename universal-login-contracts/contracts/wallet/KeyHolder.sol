@@ -14,7 +14,7 @@ contract KeyHolder {
         address key;
     }
 
-    mapping (address => Key) public keys;
+    mapping (address => bool) public keys;
 
     uint public keyCount;
 
@@ -23,10 +23,9 @@ contract KeyHolder {
     event MultipleKeysAdded(uint count);
 
     constructor(address _key) public {
-        keys[_key].key = _key;
-        keys[_key].purpose = MANAGEMENT_KEY;
+        keys[_key] = true;
         keyCount = 1;
-        emit KeyAdded(keys[_key].key);
+        emit KeyAdded(_key);
     }
 
     function() external payable {
@@ -39,15 +38,14 @@ contract KeyHolder {
     }
 
     function keyExist(address _key) public view returns(bool) {
-        return keys[_key].key != address(0x0);
+        return keys[_key];
     }
 
     function addKey(address _key) public onlyAuthorised returns(bool success) {
-        require(keys[_key].key != _key, "Key already added");
-        keys[_key].key = _key;
-        keys[_key].purpose = MANAGEMENT_KEY;
+        require(!keyExist(_key), "Key already added");
+        keys[_key] = true;
         keyCount = keyCount.add(1);
-        emit KeyAdded(keys[_key].key);
+        emit KeyAdded(_key);
 
         return true;
     }
@@ -62,7 +60,7 @@ contract KeyHolder {
     }
 
     function removeKey(address _key) public  onlyAuthorised returns(bool success) {
-        emit KeyRemoved(keys[_key].key);
+        emit KeyRemoved(_key);
 
         delete keys[_key];
         keyCount = keyCount.sub(1);

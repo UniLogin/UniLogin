@@ -22,11 +22,10 @@ contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receive
     // Disabled upgradability: persistent nonce not sync
     function initialize(address _key) external initializer {
         // Executor → KeyHolder
-        keys[_key].key = _key;
-        keys[_key].purpose = MANAGEMENT_KEY;
+        keys[_key] = true;
         keyCount = 1;
         requiredSignatures = 1;
-        emit KeyAdded(keys[_key].key);
+        emit KeyAdded(_key);
     }
 
     // Disabled upgradability: persistent nonce not sync
@@ -42,11 +41,10 @@ contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receive
         {
 
         // Executor → KeyHolder
-        keys[_key].key = _key;
-        keys[_key].purpose = MANAGEMENT_KEY;
+        keys[_key] = true;
         keyCount = 1;
         requiredSignatures = 1;
-        emit KeyAdded(keys[_key].key);
+        emit KeyAdded(_key);
         // ENSUtils
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/
