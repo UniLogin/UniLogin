@@ -89,3 +89,9 @@
   height: 30px;
   border-radius: 5px;
 }
+
+.universal-login-emojis ul.emoji-category-row .emoji-category-item {
+  width: 120px;
+  height: 30px;
+  margin-left: 20px;
+}

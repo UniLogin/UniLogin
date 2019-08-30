@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode} from '@universal-login/commons';
+import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode, CATEGORIES} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {Emoji} from '../commons/Emoji';
 import '../styles/emoji.css';
@@ -44,10 +44,21 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
     setPalette(undefined);
   };
 
+  const renderCategories = () => (
+    CATEGORIES.map(({name}) => (
+      <li key={`li-category-${name}`} className="emoji-category-item">
+        {name}
+      </li>
+    ))
+  );
+
   return (
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="universal-login-emojis">
         <div className="emoji-keyboard">
+          <ul className="emoji-category-row">
+            {renderCategories()}
+          </ul>
           <div className="emoji-keybord-row">
             <button disabled={category === 0} onClick={() => setCategory(category - 1)} className="emoji-keyboard-arrow-button">
               {'<'}
