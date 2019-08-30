@@ -6,9 +6,6 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 contract KeyHolder {
     using SafeMath for uint;
 
-    uint256 constant public MANAGEMENT_KEY = 1;
-    uint256 constant public ACTION_KEY = 2;
-
     mapping (address => bool) public keys;
 
     uint public keyCount;

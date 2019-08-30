@@ -13,7 +13,6 @@ export {EMOJI_COLORS} from './core/constants/emojiColors';
 export {DEV_DEFAULT_PRIVATE_KEY, devJsonRpcUrl} from './core/constants/dev';
 export {KEY_CODE_ESCAPE, DEFAULT_LOCATION} from './core/constants/ui';
 export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from './core/constants/constants';
-export {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, INVALID_KEY, EXECUTION_TYPE_MANAGEMENT, EXECUTION_TYPE_ACTION} from './core/constants/contracts';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
