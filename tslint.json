@@ -20,6 +20,7 @@
     "no-eval": true,
     "no-floating-promises": {"severity": "warning"},
     "no-irregular-whitespace": true,
+    "no-implicit-dependencies": true,
     "no-parameter-reassignment": true,
     "no-return-await": true,
     "no-trailing-whitespace": true,
