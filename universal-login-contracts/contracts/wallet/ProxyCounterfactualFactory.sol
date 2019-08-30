@@ -2,7 +2,7 @@ pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
-import "../proxy/WalletProxy.sol";
+import "./WalletProxy.sol";
 
 
 contract ProxyCounterfactualFactory is Ownable {
