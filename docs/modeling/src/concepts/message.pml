@@ -11,7 +11,6 @@ class Message {
   gasPrice: uint
 
   nonce: uint
-  operationType: OperationType
   signature: bytes
 }
 

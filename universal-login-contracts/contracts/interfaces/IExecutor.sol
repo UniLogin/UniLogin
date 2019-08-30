@@ -2,8 +2,6 @@ pragma solidity ^0.5.2;
 
 
 contract IExecutor {
-    enum OperationType {CALL, DELEGATECALL, CREATE}
-
     event ExecutedSigned(bytes32 indexed messageHash, uint indexed nonce, bool indexed success);
 
     function canExecute(
