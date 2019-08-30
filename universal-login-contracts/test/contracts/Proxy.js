@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import MockWalletMaster from '../../build/MockWalletMaster.json';
-import Proxy from '../../build/UpgradeabilityProxy.json';
+import Proxy from '../../build/WalletProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 

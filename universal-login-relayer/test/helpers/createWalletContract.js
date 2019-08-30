@@ -1,5 +1,5 @@
 import {defaultDeployOptions} from '@universal-login/commons';
-import WalletProxy from '@universal-login/contracts/build/UpgradeabilityProxy.json';
+import WalletProxy from '@universal-login/contracts/build/WalletProxy.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {ContractFactory, Contract} from 'ethers';
 import {encodeInitializeData, deployWalletContract} from '@universal-login/contracts';
