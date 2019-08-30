@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import TestableENSUtils from '../../build/TestableENSUtils.json';
 import {deployContract, loadFixture} from 'ethereum-waffle';
-import {utils} from 'ethers';
+import {utils, providers, Wallet, Contract} from 'ethers';
 import {lookupAddress} from '../utils';
 import {basicENS} from '@universal-login/commons/testutils';
 
@@ -13,13 +13,13 @@ const name = `${label}.${domain}`;
 const node = utils.namehash(name);
 
 describe('ENSUtils', async () => {
-  let provider;
-  let wallet;
-  let ensRegisteredContract;
-  let publicResolver;
-  let registrarAddress;
-  let ensAddress;
-  let args;
+  let provider: providers.Provider;
+  let wallet: Wallet;
+  let ensRegisteredContract: Contract;
+  let publicResolver: Contract;
+  let registrarAddress: string;
+  let ensAddress: string;
+  let args: any[];
 
   beforeEach(async () => {
     ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
