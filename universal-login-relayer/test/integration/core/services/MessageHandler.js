@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {ACTION_KEY, createSignedMessage, waitExpect} from '@universal-login/commons';
+import {MANAGEMENT_KEY, createSignedMessage, waitExpect, sleep} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';
@@ -68,7 +68,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await messageHandler.stopLater();
-      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(ACTION_KEY);
+      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(MANAGEMENT_KEY);
     });
 
     describe('Collaboration with Authorisation Service', async () => {
@@ -94,7 +94,7 @@ describe('INT: MessageHandler', async () => {
     });
 
     it('should remove key', async () => {
-      await waitExpect(async () => expect((await walletContract.getKeyPurpose(otherWallet.address))).to.eq(ACTION_KEY));
+      await waitExpect(async () => expect((await walletContract.getKeyPurpose(otherWallet.address))).to.eq(MANAGEMENT_KEY));
       const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
       const signedMessage = createSignedMessage(message, wallet.privateKey);
 
