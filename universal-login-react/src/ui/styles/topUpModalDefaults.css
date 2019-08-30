@@ -121,3 +121,14 @@
   border-radius: 2px;
   bottom: -3px;
 }
+
+.universal-login-default .universal-login-topup .pay-btn {
+  background: #0FB989;
+  border: none;
+  color: #FFFFFF;
+}
+
+.universal-login-default .universal-login-topup .pay-btn[disabled] {
+  background: #262053;
+  color: #928fa9;
+}

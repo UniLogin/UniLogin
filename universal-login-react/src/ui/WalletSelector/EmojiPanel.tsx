@@ -1,8 +1,8 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import '../styles/emoji.css';
-import '../styles/emojiDefaults.css';
+import '../styles/emoji.sass';
+import '../styles/emojiDefaults.sass';
 
 interface EmojiPanelProps {
   code: number[];
@@ -11,14 +11,14 @@ interface EmojiPanelProps {
 
 export const EmojiPanel = ({code, className}: EmojiPanelProps) => {
   const emojis = code.map((code: number, index: number) => (
-    <li key={`emojiPanel_${index}`}>
+    <li className="emoji-item" key={`emojiPanel_${index}`}>
       <Emoji code={code}/>
     </li>
   ));
 
   return (
-    <div className={getStyleForTopLevelComponent(className)}>
-      <div className="universal-login-emojis">
+    <div className="universal-login-emojis">
+      <div className={getStyleForTopLevelComponent(className)}>
         <ul className="emoji-panel-list">
           {emojis}
         </ul>

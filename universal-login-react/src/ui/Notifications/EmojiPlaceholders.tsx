@@ -1,8 +1,8 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import '../styles/emoji.css';
-import '../styles/emojiDefaults.css';
+import '../styles/emoji.sass';
+import '../styles/emojiDefaults.sass';
 import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
 import range from 'lodash.range';
 
@@ -16,8 +16,11 @@ interface EmojiPlaceholdersProps {
 export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiPlaceholdersProps) => {
   const renderEmojis = () =>
     enteredCode.map((code: number, i: number) => (
-      <li key={i}>
-        <button onClick={() => onEmojiClick(i)}>
+      <li className="emoji-item" key={i}>
+        <button
+          onClick={() => onEmojiClick(i)}
+          className="emoji-keyboard-button"
+        >
           <Emoji code={code} />
         </button>
       </li>
@@ -26,13 +29,13 @@ export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiP
   const renderPlaceholderPanel = () => {
     const emojis = renderEmojis();
     const placeholders = range(emojis.length, SECURITY_CODE_LENGTH)
-      .map(index => <li key={index} />);
+      .map(index => <li className="emoji-item emoji-item-empty" key={index} />);
     return [...emojis, ...placeholders];
   };
 
   return (
-    <div className={getStyleForTopLevelComponent(className)}>
-      <div className="universal-login-emojis">
+    <div className="universal-login-emojis">
+      <div className={getStyleForTopLevelComponent(className)}>
         <ul className="emojis-placeholders-list">
           {renderPlaceholderPanel()}
         </ul>

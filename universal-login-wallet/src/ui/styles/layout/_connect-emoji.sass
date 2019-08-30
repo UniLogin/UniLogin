@@ -2,8 +2,10 @@
   padding: 25px
   text-align: center
 
+  +media(s)
+    padding: 20px 10px
+
 .connect-emoji-section
-  max-width: 500px
   margin: 0 auto
 
 .connect-emoji-img
@@ -13,7 +15,8 @@
   margin: 0 auto 40px
 
 .connect-emoji-text
-  margin-bottom: 25px
+  max-width: 500px
+  margin: 0 auto 25px
 
 .connect-emoji-btn
   margin-top: 35px
@@ -26,7 +29,64 @@
   justify-content: center
 
 
-.jarvis-emojis
+.universal-login-emojis
+  .jarvis-emojis
+    .emoji-item
+      border: none
+      background: #ffffff
+
+    .emoji-category-nature::before
+      background: url('../assets/icons/nature.svg') center no-repeat
+      background-size: contain
+
+    .emoji-category-food::before
+      background: url('../assets/icons/food.svg') center no-repeat
+      background-size: contain
+
+    .emoji-category-activities::before
+      background: url('../assets/icons/activities.svg') center no-repeat
+      background-size: contain
+
+    .emoji-category-shapes::before
+      background: url('../assets/icons/shapes.svg') center no-repeat
+      background-size: contain
+
+    .emoji-category-emojis::before
+      background: url('../assets/icons/emojis.svg') center no-repeat
+      background-size: contain
+
+    .emoji-category-item.active
+      border-color: #0FB989
+
+      +media(s, 168px)
+        border-color: #2C3E62
+
+    .emoji-keyboard-prev
+      margin-right: 10px
+      transform: rotate(0)
+
+    .emoji-keyboard-next
+      margin-left: 10px
+      transform: rotate(180deg)
+
+    .emoji-keyboard-arrow-button
+      background: transparent url('../assets/icons/angle-left-dark.svg') center no-repeat;
+      border: 1px solid #969fb1
+
+    .emoji-keyboard-button:focus
+      outline: none
+      border: 1px solid rgba(154, 156, 167, 0.3)
+      border-radius: 10px
+
+  .emojis-keyboard-batch
+    .emoji-keyboard-button i
+      color: #2C3E62 !important
+
+  .emojis-placeholders-list
+    .emoji-item-empty
+      border: 1px solid #0FB989
+
+
   .emojis-fakes-list
     margin-top: 35px
     padding-top: 35px
