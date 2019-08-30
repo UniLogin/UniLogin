@@ -104,19 +104,19 @@ describe('E2E: SDK', async () => {
     it('should add a management key to the walletContract', async () => {
       const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeMined();
-      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(MANAGEMENT_KEY);
+      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
   });
 
-  describe('getKeyPurpose', async () => {
+  describe('keyExist', async () => {
     it('return an invalid key if key is not added', async () => {
-      expect(await sdk.getKeyPurpose(contractAddress, otherWallet.address)).to.be.eq(INVALID_KEY);
+      expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.false;
     });
 
     it('return a management key', async () => {
       const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeMined();
-      expect(await sdk.getKeyPurpose(contractAddress, otherWallet.address)).to.be.eq(MANAGEMENT_KEY);
+      expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.true;
     });
   });
 

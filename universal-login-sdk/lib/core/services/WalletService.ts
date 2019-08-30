@@ -67,7 +67,7 @@ export class WalletService {
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
-    ensure(await this.sdk.getKeyPurpose(contractAddress, wallet.address) === MANAGEMENT_KEY, InvalidPassphrase);
+    ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
     this.connect({
       name,
       privateKey: wallet.privateKey,

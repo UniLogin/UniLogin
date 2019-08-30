@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, INVALID_KEY, MANAGEMENT_KEY} from '@universal-login/commons';
+import {ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {WalletService} from '../../../lib/core/services/WalletService';
 
 chai.use(chaiAsPromised);
@@ -11,17 +11,17 @@ describe('UNIT: WalletService', () => {
   const passphrase = 'ik-akainy-vom-zazoji-juynuo';
   const invalidPassphrase = 'ukucas-ahecim-zazgor-ropgys';
   const walletFromPassphrase = sinon.stub();
-  const getKeyPurpose = sinon.stub();
+  const keyExist = sinon.stub();
   let sdk: any;
   let walletService: WalletService;
 
   before(() => {
-    getKeyPurpose.resolves(INVALID_KEY);
-    getKeyPurpose.withArgs(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS).resolves(MANAGEMENT_KEY);
+    keyExist.resolves(false);
+    keyExist.withArgs(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS).resolves(true);
 
     sdk = {
       getWalletContractAddress: sinon.stub().withArgs(name).returns(TEST_CONTRACT_ADDRESS),
-      getKeyPurpose
+      keyExist
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({
