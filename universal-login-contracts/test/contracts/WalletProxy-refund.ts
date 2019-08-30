@@ -10,7 +10,7 @@ import {walletContractWithFundsFixture} from '../fixtures/walletContract';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-describe('CONTRACT: Proxy - refund', async  () => {
+describe('CONTRACT: WalletProxy - refund', async  () => {
   let provider: providers.Provider;
   let signature: string;
   let deployer: Wallet;
