@@ -27,7 +27,7 @@ class Ownable {
   onlyOwner();
 }
 
-class ProxyCounterfactualFactory {
+class WalletProxyFactory {
   constructor(proxyCode)
   createContract(salt, initCode) onlyOwner
   registerDomain(node);
@@ -76,7 +76,7 @@ ERC1077 <|-- WalletMaster
 IERC1271 <|-- WalletMaster
 ENSRegistered <|-- WalletMaster
 Proxy *-- WalletMaster
-Ownable <|-- ProxyCounterfactualFactory
+Ownable <|-- WalletProxyFactory
 IMaster <|-- MasterBase
 Store <|-- Core
 MasterBase <|-- WalletMaster

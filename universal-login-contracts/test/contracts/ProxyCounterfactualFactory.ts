@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
 import {MANAGEMENT_KEY, createKeyPair, signString} from '@universal-login/commons';
-import ProxyCounterfactualFactory from '../../build/ProxyCounterfactualFactory.json';
+import WalletProxyFactory from '../../build/WalletProxyFactory.json';
 import WalletContract from '../../build/Wallet.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../lib';
 import {ensAndMasterFixture} from '../fixtures/walletContract';
@@ -59,7 +59,7 @@ describe('Counterfactual Factory', () => {
   });
 
   it('only owner can create contract', async () => {
-    const factoryWithAnotherWallet = new Contract(factoryContract.address, ProxyCounterfactualFactory.abi, anotherWallet);
+    const factoryWithAnotherWallet = new Contract(factoryContract.address, WalletProxyFactory.abi, anotherWallet);
     await expect(factoryWithAnotherWallet.createContract(keyPair.publicKey, initializeData, signature)).to.be.reverted;
   });
 

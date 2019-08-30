@@ -1,16 +1,17 @@
 pragma solidity ^0.5.2;
 
 import "./KeyHolder.sol";
-import "../interfaces/IExecutor.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
-contract Executor is KeyHolder, IExecutor {
+contract Executor is KeyHolder {
     using ECDSA for bytes32;
 
     uint public lastNonce;
     uint public requiredSignatures;
+
+    event ExecutedSigned(bytes32 indexed messageHash, uint indexed nonce, bool indexed success);
 
     constructor(address _key) KeyHolder(_key) public {
         requiredSignatures = 1;
