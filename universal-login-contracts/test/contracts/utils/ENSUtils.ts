@@ -16,7 +16,7 @@ describe('ENSUtils', async () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let ensRegisteredContract: Contract;
-  let publicResolver: Contract;
+  let publicResolver: string;
   let registrarAddress: string;
   let ensAddress: string;
   let args: string[];
