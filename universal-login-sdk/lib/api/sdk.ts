@@ -62,12 +62,11 @@ class UniversalLoginSDK {
   }
 
   async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Message) {
-    return this.selfExecute(to, 'addKey', [publicKey, MANAGEMENT_KEY], privateKey, transactionDetails);
+    return this.selfExecute(to, 'addKey', [publicKey], privateKey, transactionDetails);
   }
 
   async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Message) {
-    const keyRoles = new Array(publicKeys.length).fill(MANAGEMENT_KEY);
-    return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
+    return this.selfExecute(to, 'addKeys', [publicKeys], privateKey, transactionDetails);
   }
 
   async removeKey(to: string, key: string, privateKey: string, transactionDetails: Message) {

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {ACTION_KEY, calculateMessageHash, createSignedMessage, waitExpect, MANAGEMENT_KEY} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, waitExpect, MANAGEMENT_KEY} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import {getKnexConfig} from '../../../helpers/knex';
