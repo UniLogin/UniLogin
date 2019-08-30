@@ -61,12 +61,12 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!.createFutureWallet();
   }
 
-  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
-    return this.selfExecute(to, 'addKey', [publicKey, keyPurpose], privateKey, transactionDetails);
+  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Message) {
+    return this.selfExecute(to, 'addKey', [publicKey, MANAGEMENT_KEY], privateKey, transactionDetails);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Message, keyPurpose = MANAGEMENT_KEY) {
-    const keyRoles = new Array(publicKeys.length).fill(keyPurpose);
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Message) {
+    const keyRoles = new Array(publicKeys.length).fill(MANAGEMENT_KEY);
     return this.selfExecute(to, 'addKeys', [publicKeys, keyRoles], privateKey, transactionDetails);
   }
 
