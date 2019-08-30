@@ -3,14 +3,14 @@ pragma solidity ^0.5.2;
 import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 import "../openzeppelin/contracts/Initializable.sol";
 import "../interfaces/IERC1271.sol";
-import "../utils/ENSRegistered.sol";
+import "../utils/ENSUtils.sol";
 import "../utils/ERC1271Utils.sol";
 import "../utils/StringUtils.sol";
 import "./Executor.sol";
 
 
 /* solium-disable no-empty-blocks */
-contract Wallet is ENSRegistered, Executor, ERC1271Utils, StringUtils, IERC721Receiver, Initializable, IERC1271 {
+contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receiver, Initializable, IERC1271 {
 
     constructor() Executor(address(0)) public {
     }
@@ -47,7 +47,7 @@ contract Wallet is ENSRegistered, Executor, ERC1271Utils, StringUtils, IERC721Re
         keyCount = 1;
         requiredSignatures = 1;
         emit KeyAdded(keys[_key].key,  keys[_key].purpose);
-        // ENSRegistered
+        // ENSUtils
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/
         refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);

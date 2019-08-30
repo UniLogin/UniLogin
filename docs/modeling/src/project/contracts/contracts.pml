@@ -65,7 +65,7 @@ class Core {
   setMaster(_newMaster, _initData)
 }
 
-class ENSRegistered {
+class ENSUtils {
   registerENS(...)
 }
 
@@ -74,7 +74,7 @@ KeyHolder <|-- ERC1077
 IAutorisable <|-- MasterBase
 ERC1077 <|-- WalletMaster
 IERC1271 <|-- WalletMaster
-ENSRegistered <|-- WalletMaster
+ENSUtils <|-- WalletMaster
 Proxy *-- WalletMaster
 Ownable <|-- WalletProxyFactory
 IMaster <|-- MasterBase
