@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, MANAGEMENT_KEY} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
@@ -67,7 +67,7 @@ export class WalletService {
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
-    ensure(await this.sdk.getKeyPurpose(contractAddress, wallet.address) === MANAGEMENT_KEY, InvalidPassphrase);
+    ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
     this.connect({
       name,
       privateKey: wallet.privateKey,

@@ -51,10 +51,6 @@ contract KeyHolder {
         return keys[_key].key != address(0x0);
     }
 
-    function getKeyPurpose(address _key) public view returns(uint256 purpose) {
-        return keys[_key].purpose;
-    }
-
     function keyHasPurpose(address _key, uint256 _purpose) public view returns(bool result) {
         return keys[_key].purpose == _purpose;
     }

@@ -1,5 +1,5 @@
 import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, SignedMessage, INVALID_KEY, ensure, MessageStatus} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
@@ -55,8 +55,7 @@ export default class PendingMessages {
       message.signature
     );
     const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
-    const keyPurpose = await walletContract.getKeyPurpose(key);
-    ensure(!keyPurpose.eq(INVALID_KEY), InvalidSignature, 'Invalid key purpose');
+    ensure(await walletContract.keyExist(key), InvalidSignature, 'Invalid key');
   }
 
   async getStatus(messageHash: string) {

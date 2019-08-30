@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {calculateMessageHash, createSignedMessage, waitExpect, MANAGEMENT_KEY} from '@universal-login/commons';
+import {calculateMessageHash, createSignedMessage, waitExpect} from '@universal-login/commons';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import {getKnexConfig} from '../../../helpers/knex';
@@ -74,7 +74,7 @@ describe('INT: MultiSignatureExecute', async () => {
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
       await messageHandler.stopLater();
-      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.eq(MANAGEMENT_KEY);
+      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
     describe('Query message status', async () => {
@@ -107,7 +107,7 @@ describe('INT: MultiSignatureExecute', async () => {
     });
 
     it('should remove key', async () => {
-      await waitExpect(async () => expect((await walletContract.getKeyPurpose(otherWallet.address))).to.eq(MANAGEMENT_KEY));
+      await waitExpect(async () => expect((await walletContract.keyExist(otherWallet.address))).to.be.true);
       const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
       const signedMessage0 = createSignedMessage(message, wallet.privateKey);
       const signedMessage1 = createSignedMessage(message, actionKey);
