@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, MANAGEMENT_KEY} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';

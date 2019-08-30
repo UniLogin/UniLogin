@@ -4,7 +4,6 @@ import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../../../../lib/core/utils/utils';
 import {utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {MANAGEMENT_KEY} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

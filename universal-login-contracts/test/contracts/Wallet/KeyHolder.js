@@ -2,7 +2,6 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
-import {MANAGEMENT_KEY} from '@universal-login/commons';
 import basicKeyHolder from '../../fixtures/basicKeyHolder';
 
 chai.use(chaiAsPromised);
@@ -37,9 +36,8 @@ describe('CONTRACT: KeyHolder', async () => {
     it('Should add key successfully', async () => {
       await addActionKey();
       expect(await walletContract.keyExist(actionKey)).to.be.true;
-      const existingKeys = await walletContract.keys(actionKey);
-      expect(existingKeys[0]).to.eq(MANAGEMENT_KEY);
-      expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
+      const keyExist = await walletContract.keys(actionKey);
+      expect(keyExist).to.be.true;
       expect(await walletContract.keyCount()).to.eq(4);
     });
 
@@ -61,13 +59,8 @@ describe('CONTRACT: KeyHolder', async () => {
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
       await walletContract.addKeys([actionKey, actionKey2]);
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
       expect(await walletContract.keyExist(actionKey2)).to.be.true;
-      const existingKeys = await walletContract.keys(actionKey);
-      expect(existingKeys[0]).to.eq(MANAGEMENT_KEY);
-      expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
-      const existingKeys2 = await walletContract.keys(actionKey2);
-      expect(existingKeys2[0]).to.eq(MANAGEMENT_KEY);
-      expect(existingKeys2[1]).to.eq(utils.hexlify(actionKey2));
       expect(await walletContract.keyCount()).to.eq(5);
     });
 
