@@ -7,8 +7,6 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 contract KeyHolder is IKeyHolder {
     using SafeMath for uint;
 
-    uint constant MAX_KEYS_PER_ADD = 5;
-
     mapping (address => Key) public keys;
 
     uint public keyCount;
