@@ -10,6 +10,7 @@
   },
   "scripts": {
     "prepublishOnly": "rimraf build dist && yarn build",
+    "prebuild": "yarn clean",
     "build": "yarn build:contracts && yarn build:ts",
     "build:contracts": "waffle .waffle.js",
     "build:ts": "tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",

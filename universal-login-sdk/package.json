@@ -14,7 +14,8 @@
     "lodash.clonedeep": "^4.5.0"
   },
   "scripts": {
-    "build": "yarn clean && tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
+    "prebuild": "yarn clean",
+    "build": "tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
     "lint": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.js\"",

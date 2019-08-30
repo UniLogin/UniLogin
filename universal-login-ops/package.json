@@ -7,6 +7,7 @@
     "universal-login": "./bin/universal-login"
   },
   "scripts": {
+    "prebuild": "yarn clean",
     "build": "tsc --build tsconfig.build.json && cpx \"src/contracts/**/*\" dist/src/contracts",
     "lint": "tslint -p tsconfig.json \"{src,test}/**/*.{ts,js}\"",
     "test": "yarn build && yarn test:nobuild",
