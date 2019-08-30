@@ -6,7 +6,8 @@
   "types": "dist/lib/index.d.ts",
   "dependencies": {
     "@universal-login/commons": "^0.3.31",
-    "ens-builder": "^2.0.0"
+    "ens-builder": "^2.0.0",
+    "ethers": "^4.0.36"
   },
   "scripts": {
     "prepublishOnly": "rimraf build dist && yarn build",
