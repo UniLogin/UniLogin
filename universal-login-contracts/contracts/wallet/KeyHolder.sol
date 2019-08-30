@@ -9,11 +9,6 @@ contract KeyHolder {
     uint256 constant public MANAGEMENT_KEY = 1;
     uint256 constant public ACTION_KEY = 2;
 
-    struct Key {
-        uint256 purpose;
-        address key;
-    }
-
     mapping (address => bool) public keys;
 
     uint public keyCount;
