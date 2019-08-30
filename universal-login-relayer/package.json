@@ -24,7 +24,8 @@
     "pg": "^7.7.1"
   },
   "scripts": {
-    "build": "yarn clean && tsc && tsc -p tsconfig.declaration.json",
+    "prebuild": "yarn clean",
+    "build": "tsc && tsc -p tsconfig.declaration.json",
     "start": "node build/lib/http/start.js",
     "test": "yarn build && yarn test:nobuild",
     "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
