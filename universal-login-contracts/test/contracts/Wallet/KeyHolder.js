@@ -17,7 +17,6 @@ describe('CONTRACT: KeyHolder', async () => {
   let actionKey2;
 
   const addActionKey = () => walletContract.addKey(actionKey);
-  const isKey = () => walletContract.keyHasPurpose(actionKey, MANAGEMENT_KEY);
 
   beforeEach(async () => {
     ({walletContract, actionKey, actionKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
@@ -62,7 +61,7 @@ describe('CONTRACT: KeyHolder', async () => {
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
       await walletContract.addKeys([actionKey, actionKey2]);
-      expect(await walletContract.keyHasPurpose(actionKey2, MANAGEMENT_KEY)).to.be.true;
+      expect(await walletContract.keyExist(actionKey2)).to.be.true;
       const existingKeys = await walletContract.keys(actionKey);
       expect(existingKeys[0]).to.eq(MANAGEMENT_KEY);
       expect(existingKeys[1]).to.eq(utils.hexlify(actionKey));
@@ -99,21 +98,21 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('Should remove key successfully', async () => {
-      expect(await isKey()).to.be.true;
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
       await walletContract.removeKey(actionKey);
-      expect(await walletContract.keyHasPurpose(actionKey, MANAGEMENT_KEY)).to.be.false;
+      expect(await walletContract.keyExist(actionKey)).to.be.false;
       expect(await walletContract.keyCount()).to.eq(3);
     });
 
     it('Should emit KeyRemoved event successfully', async () => {
-      expect(await isKey()).to.be.true;
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
       await expect(walletContract.removeKey(actionKey)).to
         .emit(walletContract, 'KeyRemoved')
         .withArgs(utils.hexlify(actionKey));
     });
 
     it('Should not allow to remove key with unknown key', async () => {
-      expect(await isKey()).to.be.true;
+      expect(await walletContract.keyExist(actionKey)).to.be.true;
       await expect(fromUnknownWallet.removeKey(actionKey)).to.be.reverted;
     });
   });

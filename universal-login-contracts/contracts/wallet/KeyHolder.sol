@@ -42,10 +42,6 @@ contract KeyHolder {
         return keys[_key].key != address(0x0);
     }
 
-    function keyHasPurpose(address _key, uint256 _purpose) public view returns(bool result) {
-        return keys[_key].purpose == _purpose;
-    }
-
     function addKey(address _key) public onlyAuthorised returns(bool success) {
         require(keys[_key].key != _key, "Key already added");
         keys[_key].key = _key;
