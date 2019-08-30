@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 
 const addKey = async (contractAddress, publicKey, privateKey, tokenAddress, provider) => {
-  const data = new utils.Interface(WalletContract.interface).functions['addKey'].encode([publicKey, MANAGEMENT_KEY]);
+  const data = new utils.Interface(WalletContract.interface).functions['addKey'].encode([publicKey]);
   const message = {
     gasToken: tokenAddress,
     to: contractAddress,

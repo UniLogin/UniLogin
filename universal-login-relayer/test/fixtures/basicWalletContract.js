@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {ACTION_KEY, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, MANAGEMENT_KEY} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
@@ -31,7 +31,7 @@ export const transferMessage = {
 export const addKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
-  data: new utils.Interface(WalletContract.interface).functions.addKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0', ACTION_KEY]),
+  data: new utils.Interface(WalletContract.interface).functions.addKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']),
   nonce: 0,
   gasPrice,
   gasLimit,
@@ -41,7 +41,7 @@ export const addKeyMessage = {
 export const removeKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
-  data: new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0', ACTION_KEY]),
+  data: new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0', MANAGEMENT_KEY]),
   nonce: 1,
   gasPrice,
   gasLimit,

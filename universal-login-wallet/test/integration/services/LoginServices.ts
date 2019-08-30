@@ -6,7 +6,6 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
   ETHER_NATIVE_TOKEN,
-  MANAGEMENT_KEY,
   waitExpect,
   generateCode,
 } from '@universal-login/commons';
@@ -74,8 +73,7 @@ describe('Login', () => {
         contractAddress,
         newPublicKey,
         privateKey,
-        {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT},
-        MANAGEMENT_KEY);
+        {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
       await waitToBeMined();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       expect(securityCode).to.be.deep.eq(expectedSecurityCode);

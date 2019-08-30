@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {MANAGEMENT_KEY, ACTION_KEY, CLAIM_KEY, ENCRYPTION_KEY, signGetAuthorisationRequest, createKeyPair, INVALID_KEY} from '@universal-login/commons';
+import {MANAGEMENT_KEY, CLAIM_KEY, signGetAuthorisationRequest, createKeyPair, INVALID_KEY} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
@@ -106,47 +106,11 @@ describe('E2E: SDK', async () => {
       await waitToBeMined();
       expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(MANAGEMENT_KEY);
     });
-
-    it('should add an action key to the walletContract', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ACTION_KEY);
-      await waitToBeMined();
-      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(ACTION_KEY);
-    });
-
-    it('should add a claim key to the walletContract', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-      await waitToBeMined();
-      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(CLAIM_KEY);
-    });
-
-    it('should add an encryption key to the walletContract', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ENCRYPTION_KEY);
-      await waitToBeMined();
-      expect(await walletContract.getKeyPurpose(otherWallet.address)).to.be.eq(ENCRYPTION_KEY);
-    });
   });
 
   describe('getKeyPurpose', async () => {
     it('return an invalid key if key is not added', async () => {
       expect(await sdk.getKeyPurpose(contractAddress, otherWallet.address)).to.be.eq(INVALID_KEY);
-    });
-
-    it('return an action key', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ACTION_KEY);
-      await waitToBeMined();
-      expect(await sdk.getKeyPurpose(contractAddress, otherWallet.address)).to.be.eq(ACTION_KEY);
-    });
-
-    it('return a claim key', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
-      await waitToBeMined();
-      expect(await sdk.getKeyPurpose(contractAddress, otherWallet.address)).to.be.eq(CLAIM_KEY);
-    });
-
-    it('return an encryption key', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, ENCRYPTION_KEY);
-      await waitToBeMined();
-      expect(await sdk.getKeyPurpose(contractAddress, otherWallet.address)).to.be.eq(ENCRYPTION_KEY);
     });
 
     it('return a management key', async () => {
@@ -249,7 +213,7 @@ describe('E2E: SDK', async () => {
 
   describe('change required signatures', async () => {
     it('should change required signatures', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeMined();
       ({waitToBeMined} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
       const {transactionHash} = await waitToBeMined();
@@ -260,7 +224,7 @@ describe('E2E: SDK', async () => {
 
   describe('get message status', async () => {
     it('should return message status', async () => {
-      await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address}, CLAIM_KEY);
+      await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
       const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
       const {messageStatus} = await sdk.execute(msg, privateKey);

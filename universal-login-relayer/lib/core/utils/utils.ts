@@ -16,7 +16,7 @@ export const isAddKeysCall = (data : string) =>  isDataForFunctionCall(data, Wal
 export const getKeyFromData = (data : string) => {
   const codec = new utils.AbiCoder();
   const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
-  const [address] = (codec.decode(['bytes32', 'uint256'], data.replace(addKeySighash.slice(2), '')));
+  const [address] = (codec.decode(['bytes32'], data.replace(addKeySighash.slice(2), '')));
   return utils.getAddress(utils.hexlify(utils.stripZeros(address)));
 };
 
