@@ -4,13 +4,13 @@ import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 import "../openzeppelin/contracts/Initializable.sol";
 import "../interfaces/IERC1271.sol";
 import "../utils/ENSRegistered.sol";
-import "../utils/ERC1271Base.sol";
+import "../utils/ERC1271Utils.sol";
+import "../utils/StringUtils.sol";
 import "./Executor.sol";
 
 
-
 /* solium-disable no-empty-blocks */
-contract Wallet is ENSRegistered, ERC1271Base, Executor, IERC721Receiver, Initializable {
+contract Wallet is ENSRegistered, Executor, ERC1271Utils, StringUtils, IERC721Receiver, Initializable, IERC1271 {
 
     constructor() Executor(address(0)) public {
     }

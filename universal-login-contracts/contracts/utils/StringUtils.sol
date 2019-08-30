@@ -1,11 +1,7 @@
 pragma solidity ^0.5.2;
 
-import "../interfaces/IERC1271.sol";
 
-
-contract ERC1271Base is IERC1271 {
-    function isValidSignature(bytes memory, bytes memory) public view returns (bytes4 magicValue);
-
+contract StringUtils {
     function uint2str(uint _num) public pure returns (string memory _uintAsString) {
         if (_num == 0) {
             return "0";
@@ -24,14 +20,6 @@ contract ERC1271Base is IERC1271 {
             i /= 10;
         }
         return string(bstr);
-    }
-
-    function getMagicValue() public pure returns(bytes4) {
-        return 0x20c13b0b;
-    }
-
-    function getInvalidSignature() public pure returns(bytes4) {
-        return 0xffffffff;
     }
 }
 
