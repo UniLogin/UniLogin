@@ -5,7 +5,7 @@ import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "./WalletProxy.sol";
 
 
-contract ProxyCounterfactualFactory is Ownable {
+contract WalletProxyFactory is Ownable {
     bytes public initCode;
     using ECDSA for bytes32;
 
