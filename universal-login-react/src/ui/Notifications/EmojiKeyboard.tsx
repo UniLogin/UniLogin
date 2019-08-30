@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Emoji} from '../commons/Emoji';
-import {EMOJI_COLORS, getEmojiSet} from '@universal-login/commons';
+import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {Emoji} from '../commons/Emoji';
 import '../styles/emoji.css';
 import '../styles/emojiDefaults.css';
 import '../styles/colors.css';
@@ -12,34 +12,42 @@ interface EmojiKeyboardProps {
 }
 
 export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => {
-  const [color, setColor] = useState<number>(0);
-  const [category, setCategory] = useState<number>(0);
+  const [category, setCategory] = useState(0);
+  const [palette, setPalette] = useState<number | undefined>(undefined);
 
-  const renderColors = () => (
-    EMOJI_COLORS.map((colorString: string, index: number) => (
-      <li key={`li-color-${index}`} className="emoji-keyboard-color-item">
-        <button style={{backgroundColor: colorString}} id={`btn-color-${index}`} onClick={() => setColor(index)} className="emoji-keyboard-color-button" />
+  const renderKeyboard = () =>
+    getEmojiSet(category).map((emojiCode, index) => renderInputEmoji(emojiCode, index));
+
+  const renderInputEmoji = (emojiCode: number, index: number) => (
+    <li className="emoji-keyboard-item" key={`securityCodeWithFakes_${emojiCode}`}>
+      <button id={`btn-${emojiCode}`} onClick={() => palette === index ? setPalette(undefined) : setPalette(index)}>
+        <Emoji code={emojiCode}/>
+      </button>
+      {palette === index
+        ? <ul className="emoji-keyboard-color-row">
+            {renderColors(emojiCode)}
+          </ul>
+        : null }
+    </li>
+  );
+
+  const renderColors = (emojiCode: number) => (
+    EMOJI_COLORS.map((colorString: string, colorIndex: number) => (
+      <li key={`li-color-${colorIndex}`} className="emoji-keyboard-color-item">
+        <button style={{backgroundColor: colorString}} id={`btn-color-${colorIndex}`} onClick={() => onColorClick(getColoredEmojiCode(emojiCode, colorIndex))} className="emoji-keyboard-color-button" />
       </li>
     ))
   );
 
-  const renderKeyboard = () => (
-    getEmojiSet(category, color).map(code => (
-      <li key={`securityCodeWithFakes_${code}`}>
-        <button id={`btn-${code}`} onClick={() => onEmojiClick(code)}>
-          <Emoji code={code}/>
-        </button>
-      </li>
-    ))
-  );
+  const onColorClick = (coloredEmojiCode: number) => {
+    onEmojiClick(coloredEmojiCode);
+    setPalette(undefined);
+  };
 
   return (
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="universal-login-emojis">
         <div className="emoji-keyboard">
-          <ul className="emoji-keyboard-color-row">
-            {renderColors()}
-          </ul>
           <div className="emoji-keybord-row">
             <button disabled={category === 0} onClick={() => setCategory(category - 1)} className="emoji-keyboard-arrow-button">
               {'<'}
