@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {Contract, Wallet, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {signString} from '@universal-login/commons';
-import {walletAndErc721} from '../fixtures/walletAndErc721';
-import {walletContractFixture} from '../fixtures/walletContract';
+import {walletAndErc721} from '../../fixtures/walletAndErc721';
+import {walletContractFixture} from '../../fixtures/walletContract';
 
 describe('WalletContract', () => {
   describe('ERC721', () => {

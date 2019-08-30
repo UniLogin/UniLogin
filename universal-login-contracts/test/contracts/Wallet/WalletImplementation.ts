@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {utils, Wallet, providers} from 'ethers';
-import WalletContract from '../../build/Wallet.json';
 import {createKeyPair} from '@universal-login/commons';
+import WalletContract from '../../../build/Wallet.json';
 
 const computeContractAddress = (address: string, nonce: number) => {
   const futureAddress = utils.solidityKeccak256(['bytes1', 'bytes1', 'address', 'bytes1'], ['0xd6', '0x94', address, utils.hexlify(nonce)]);

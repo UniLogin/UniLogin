@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {MANAGEMENT_KEY} from '@universal-login/commons';
-import basicKeyHolder from '../fixtures/basicKeyHolder';
+import basicKeyHolder from '../../fixtures/basicKeyHolder';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

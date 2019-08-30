@@ -3,8 +3,8 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
 import {createKeyPair} from '@universal-login/commons';
-import {ensAndMasterFixture} from '../fixtures/walletContract';
-import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../lib';
+import {ensAndMasterFixture} from '../../fixtures/walletContract';
+import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
