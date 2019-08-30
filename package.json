@@ -22,7 +22,7 @@
     "build": "yarn wsrun build --stages",
     "test": "yarn wsrun test --stages --fast-exit",
     "lint": "yarn wsrun lint --stages",
-    "ci": "yarn clean && yarn && yarn build && yarn lint && yarn test",
+    "ci": "yarn && yarn clean && yarn build && yarn lint && yarn test",
     "clean": "yarn wsrun clean",
     "bump:version": "yarn lerna version --no-push",
     "publish:packages": "yarn lerna publish from-package"
