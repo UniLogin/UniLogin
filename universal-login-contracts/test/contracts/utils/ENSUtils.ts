@@ -1,8 +1,8 @@
 import {expect} from 'chai';
-import TestableENSUtils from '../../build/TestableENSUtils.json';
+import TestableENSUtils from '../../../build/TestableENSUtils.json';
 import {deployContract, loadFixture} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
-import {lookupAddress} from '../utils';
+import {lookupAddress} from '../../utils';
 import {basicENS} from '@universal-login/commons/testutils';
 
 
