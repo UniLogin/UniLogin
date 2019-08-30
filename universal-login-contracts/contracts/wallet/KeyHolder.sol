@@ -18,15 +18,15 @@ contract KeyHolder {
 
     uint public keyCount;
 
-    event KeyAdded(address indexed key, uint256 indexed purpose);
-    event KeyRemoved(address indexed key, uint256 indexed purpose);
+    event KeyAdded(address indexed key);
+    event KeyRemoved(address indexed key);
     event MultipleKeysAdded(uint count);
 
     constructor(address _key) public {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         keyCount = 1;
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
+        emit KeyAdded(keys[_key].key);
     }
 
     function() external payable {
@@ -59,7 +59,7 @@ contract KeyHolder {
         keys[_key].key = _key;
         keys[_key].purpose = MANAGEMENT_KEY;
         keyCount = keyCount.add(1);
-        emit KeyAdded(keys[_key].key,  keys[_key].purpose);
+        emit KeyAdded(keys[_key].key);
 
         return true;
     }
@@ -73,10 +73,8 @@ contract KeyHolder {
         return true;
     }
 
-    function removeKey(address _key, uint256 _purpose) public  onlyManagementKeyOrThisContract returns(bool success) {
-        require(keys[_key].purpose == _purpose, "Invalid key");
-
-        emit KeyRemoved(keys[_key].key, keys[_key].purpose);
+    function removeKey(address _key) public  onlyManagementKeyOrThisContract returns(bool success) {
+        emit KeyRemoved(keys[_key].key);
 
         delete keys[_key];
         keyCount = keyCount.sub(1);
