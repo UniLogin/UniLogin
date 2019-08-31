@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "deep-equal": "^1.1.0",
-    "ethers": "^4.0",
+    "ethers": "^4.0.36",
     "lodash.clonedeep": "^4.5.0",
     "lodash.range": "^3.2.0",
     "openzeppelin-solidity": "^2.1.1",
