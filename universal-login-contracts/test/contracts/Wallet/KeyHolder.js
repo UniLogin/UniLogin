@@ -26,7 +26,7 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('there must be the 1 initial key', async () => {
-      expect(await walletContract.keyCount()).to.eq(2);
+      expect(await walletContract.keyCount()).to.eq(1);
     });
   });
 
