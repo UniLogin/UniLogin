@@ -16,7 +16,7 @@ describe('WalletService', () => {
     deploy: async () => '',
     waitForBalance: (async () => { }) as any
   };
-  const storage = {load: () => applicationWallet, save: sinon.fake()};
+  const storage = {load: () => applicationWallet, save: sinon.fake(), remove: sinon.fake()};
   let walletService: WalletService;
 
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('WalletService', () => {
     walletService.disconnect();
     expect(walletService.applicationWallet).to.be.undefined;
     expect(walletService.state).to.be.eq('None');
-    expect(storage.save).to.be.calledWith(null);
+    expect(storage.remove).to.be.called;
   });
 
   it('should set state and applicationWallet', () => {

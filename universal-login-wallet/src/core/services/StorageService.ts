@@ -8,28 +8,29 @@ export class StorageService {
   set(key: string, value: string) {
     localStorage.setItem(key, value);
   }
+
+  remove(key: string) {
+    localStorage.removeItem(key);
+  }
 }
 
 export class StorageEntry<T> {
-  constructor(
-    private key: string,
-    private sanitizer: Sanitizer<T>,
-    private storageService: StorageService,
-  ) {
-  }
-
+  constructor(private key: string, private sanitizer: Sanitizer<T>, private storageService: StorageService) {}
 
   get(): T | null {
     const json = this.storageService.get(this.key);
     if (!json) {
       return null;
     }
-
     const parsed = JSON.parse(json);
     return cast(parsed, this.sanitizer);
   }
 
   set(value: T) {
     this.storageService.set(this.key, JSON.stringify(value));
+  }
+
+  remove() {
+    this.storageService.remove(this.key);
   }
 }
