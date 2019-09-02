@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
-import basicERC1077 from '../../fixtures/basicERC1077';
+import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
 import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
@@ -24,7 +24,7 @@ describe('CONTRACT: Executor - refund', async  () => {
   let initialBalance: utils.BigNumber;
 
   beforeEach(async () => {
-    ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicERC1077));
+    ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicExecutor));
     loopContract = await deployContract(wallet, Loop);
     initialBalance = await wallet.getBalance();
     const loopFunctionData = encodeFunction(Loop, 'loop');

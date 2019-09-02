@@ -6,7 +6,7 @@ import {deployContract} from 'ethereum-waffle';
 import {sortPrivateKeysByAddress, createKeyPair} from '@universal-login/commons';
 const {parseEther} = utils;
 
-export default async function basicWallet(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
+export default async function basicExecutor(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
   const managementKeyPair = {publicKey: wallet.address, privateKey: wallet.privateKey};
   const actionKeyPair = createKeyPair();
   const actionKeyPair2 = createKeyPair();

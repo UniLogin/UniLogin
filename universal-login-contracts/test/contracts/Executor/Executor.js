@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
-import basicERC1077 from '../../fixtures/basicERC1077';
+import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import {utils} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
@@ -30,7 +30,7 @@ describe('CONTRACT: Executor - main', async  () => {
   let managementKeyPair;
 
   beforeEach(async () => {
-    ({provider, walletContract, managementKeyPair, sortedKeys, mockToken, mockContract, wallet} = await loadFixture(basicERC1077));
+    ({provider, walletContract, managementKeyPair, sortedKeys, mockToken, mockContract, wallet} = await loadFixture(basicExecutor));
     msg = {...transferMessage, from: walletContract.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
     [anotherWallet] = await getWallets(provider);
