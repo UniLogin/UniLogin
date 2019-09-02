@@ -13,10 +13,10 @@ describe('CONTRACT: KeyHolder', async () => {
   let fromUnknownWallet;
   let managementKey;
   let publicKey;
-  let actionKey2;
+  let publicKey2;
 
   beforeEach(async () => {
-    ({walletContract, publicKey, actionKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
+    ({walletContract, publicKey, publicKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
 
   describe('Create', async () => {
@@ -54,9 +54,9 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
-      await walletContract.addKeys([publicKey, actionKey2]);
+      await walletContract.addKeys([publicKey, publicKey2]);
       expect(await walletContract.keyExist(publicKey)).to.be.true;
-      expect(await walletContract.keyExist(actionKey2)).to.be.true;
+      expect(await walletContract.keyExist(publicKey2)).to.be.true;
       expect(await walletContract.keyCount()).to.eq(5);
     });
 
