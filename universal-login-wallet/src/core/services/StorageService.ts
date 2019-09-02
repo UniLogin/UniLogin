@@ -8,6 +8,10 @@ export class StorageService {
   set(key: string, value: string) {
     localStorage.setItem(key, value);
   }
+
+  remove(key: string) {
+    localStorage.removeItem(key);
+  }
 }
 
 export class StorageEntry<T> {
@@ -15,7 +19,7 @@ export class StorageEntry<T> {
 
   get(): T | null {
     const json = this.storageService.get(this.key);
-    if (!json || json === 'null') {
+    if (!json) {
       return null;
     }
     const parsed = JSON.parse(json);
@@ -24,5 +28,9 @@ export class StorageEntry<T> {
 
   set(value: T) {
     this.storageService.set(this.key, JSON.stringify(value));
+  }
+
+  remove() {
+    this.storageService.remove(this.key);
   }
 }

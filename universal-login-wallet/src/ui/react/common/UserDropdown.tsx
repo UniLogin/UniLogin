@@ -13,6 +13,7 @@ const UserDropdown = () => {
     walletService.disconnect();
     history.push('/welcome');
   };
+
   return (
     <div className={`user-dropdown-wrapper ${isExpanded ? 'expanded' : ''}`}>
       <div className="user-dropdown">

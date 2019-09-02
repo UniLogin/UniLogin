@@ -12,4 +12,7 @@ export class MockedStorageService implements StorageService {
     this.store[key] = value;
   }
 
+  remove(key: string) {
+    delete this.store[key];
+  }
 }

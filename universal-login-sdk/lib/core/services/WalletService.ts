@@ -10,20 +10,15 @@ type WalletFromBackupCodes = (username: string, password: string) => Promise<Wal
 
 export interface WalletStorage {
   load(): ApplicationWallet | null;
-
   save(wallet: ApplicationWallet | null): void;
+  remove(): void;
 }
 
 export class WalletService {
   public applicationWallet?: FutureWallet | ApplicationWallet;
   public state: WalletState = 'None';
 
-  constructor(
-    private sdk: UniversalLoginSDK,
-    private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
-    private storage?: WalletStorage,
-  ) {
-  }
+  constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain, private storage?: WalletStorage) {}
 
   walletDeployed(): boolean {
     return this.state === 'Deployed';
@@ -78,7 +73,7 @@ export class WalletService {
   disconnect(): void {
     this.state = 'None';
     this.applicationWallet = undefined;
-    this.storage && this.storage.save(null);
+    this.storage && this.storage.remove();
   }
 
   loadFromStorage() {

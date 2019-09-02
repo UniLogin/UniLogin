@@ -21,6 +21,10 @@ export class WalletStorageService implements WalletStorage {
   save(wallet: ApplicationWallet | null): void {
     this.storage.set(wallet);
   }
+
+  remove() {
+    this.storage.remove();
+  }
 }
 
 const asApplicationWallet: Sanitizer<ApplicationWallet> = asObject({
