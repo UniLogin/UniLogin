@@ -15,8 +15,6 @@ describe('CONTRACT: KeyHolder', async () => {
   let publicKey;
   let actionKey2;
 
-  const addActionKey = () => walletContract.addKey(publicKey);
-
   beforeEach(async () => {
     ({walletContract, publicKey, actionKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
@@ -34,7 +32,7 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('Add key', async () => {
     it('Should add key successfully', async () => {
-      await addActionKey();
+      await walletContract.addKey(publicKey);
       expect(await walletContract.keyExist(publicKey)).to.be.true;
       expect(await walletContract.keyCount()).to.eq(4);
     });
@@ -44,7 +42,7 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('Should emit KeyAdded event successfully', async () => {
-      await expect(addActionKey()).to
+      await expect(walletContract.addKey(publicKey)).to
         .emit(walletContract, 'KeyAdded')
         .withArgs(utils.hexlify(publicKey));
     });
@@ -73,7 +71,7 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('keyExist', async () => {
     it('return true if key exist', async () => {
-      await addActionKey();
+      await walletContract.addKey(publicKey);
       expect(await walletContract.keyExist(publicKey)).to.be.true;
     });
 
@@ -84,7 +82,7 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('Remove key', async () => {
     beforeEach(async () => {
-      await addActionKey();
+      await walletContract.addKey(publicKey);
       expect(await walletContract.keyCount()).to.eq(4);
     });
 
