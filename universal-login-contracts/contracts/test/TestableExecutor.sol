@@ -1,13 +1,13 @@
 pragma solidity ^0.5.2;
 
 import "../wallet/Executor.sol";
+import "../wallet/KeyHolder.sol";
 
 
-contract TestableExecutor is Executor {
+/* solium-disable no-empty-blocks */
+contract TestableExecutor is Executor, KeyHolder {
 
-    constructor(address _key) Executor(_key) public {
-
-    }
+    constructor(address _key) KeyHolder(_key) public {}
 
     function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
