@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
-import {constants, utils} from 'ethers';
+import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 
@@ -15,22 +15,22 @@ chai.use(solidity);
 const {parseEther} = utils;
 
 describe('WalletContract', async () => {
-  let provider;
-  let walletContractProxy;
-  let proxyAsWalletContract;
-  let privateKey;
-  let mockToken;
-  let mockContract;
-  let wallet;
-  let executeSignedFunc;
-  let msg;
-  let signature;
-  let data;
+  let provider: providers.Provider;
+  let walletContractProxy: Contract;
+  let proxyAsWalletContract: Contract;
+  let privateKey: string;
+  let mockToken: Contract;
+  let mockContract: Contract;
+  let wallet: Wallet;
+  let executeSignedFunc: any;
+  let msg: UnsignedMessage;
+  let signature: string;
+  let data: string;
   let anotherWallet;
-  let invalidSignature;
-  let relayerBalance;
-  let relayerTokenBalance;
-  let publicKey;
+  let invalidSignature: string;
+  let relayerBalance: utils.BigNumber;
+  let relayerTokenBalance: utils.BigNumber;
+  let publicKey: string;
 
   beforeEach(async () => {
     ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletAndProxy));
@@ -114,8 +114,8 @@ describe('WalletContract', async () => {
 
         it('should refund after execute transfer ethers', async () => {
           const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -185,8 +185,8 @@ describe('WalletContract', async () => {
 
           const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
 
-          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -203,8 +203,8 @@ describe('WalletContract', async () => {
   });
 
   describe('Call', async () => {
-    let msgToCall;
-    let signatureToCall;
+    let msgToCall: UnsignedMessage;
+    let signatureToCall: string;
 
     describe('successful execution of call', async () => {
       beforeEach(async () => {
@@ -238,7 +238,7 @@ describe('WalletContract', async () => {
           const transaction = await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -283,7 +283,7 @@ describe('WalletContract', async () => {
           const transaction = await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
