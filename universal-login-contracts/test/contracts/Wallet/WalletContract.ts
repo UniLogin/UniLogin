@@ -71,20 +71,6 @@ describe('WalletContract', async () => {
         msg.gasLimit);
       expect(jsHash).to.eq(solidityHash);
     });
-
-    it('recovers signature', async () => {
-      const recoveredAddress = await proxyAsWalletContract.getSigner(
-        msg.from,
-        msg.to,
-        msg.value,
-        msg.data,
-        msg.nonce,
-        msg.gasPrice,
-        msg.gasToken,
-        msg.gasLimit,
-        signature);
-      expect(recoveredAddress).to.eq(publicKey);
-    });
   });
 
   describe('Transfer', async () => {

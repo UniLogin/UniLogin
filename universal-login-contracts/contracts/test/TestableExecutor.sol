@@ -9,6 +9,34 @@ contract TestableExecutor is Executor, KeyHolder {
 
     constructor(address _key) KeyHolder(_key) public {}
 
+    function setRequiredSignatures(uint _requiredSignatures) public onlyAuthorised {
+        require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
+        require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number");
+        requiredSignatures = _requiredSignatures;
+    }
+
+    function getSigner(
+        address from,
+        address to,
+        uint value,
+        bytes memory data,
+        uint nonce,
+        uint gasPrice,
+        address gasToken,
+        uint gasLimit,
+        bytes memory signatures) public pure returns (address)
+    {
+        return calculateMessageHash(
+            from,
+            to,
+            value,
+            data,
+            nonce,
+            gasPrice,
+            gasToken,
+            gasLimit).toEthSignedMessageHash().recover(signatures);
+    }
+
     function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
         uint sigCount = signatures.length / 65;
@@ -35,4 +63,5 @@ contract TestableExecutor is Executor, KeyHolder {
         }
         return true;
     }
+
 }
