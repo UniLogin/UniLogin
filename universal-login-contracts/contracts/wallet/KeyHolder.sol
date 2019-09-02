@@ -20,10 +20,6 @@ contract KeyHolder {
         emit KeyAdded(_key);
     }
 
-    function() external payable {
-
-    }
-
     modifier onlyAuthorised() {
         require(keyExist(msg.sender) || msg.sender == address(this), "Sender not permissioned");
         _;

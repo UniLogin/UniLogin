@@ -9,6 +9,10 @@ contract TestableExecutor is Executor, KeyHolder {
 
     constructor(address _key) KeyHolder(_key) public {}
 
+    function() external payable {
+
+    }
+
     function setRequiredSignatures(uint _requiredSignatures) public onlyAuthorised {
         require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
         require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number");

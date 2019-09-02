@@ -20,6 +20,10 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
         return address(this);
     }
 
+    function() external payable {
+
+    }
+
     // Disabled upgradability: persistent nonce not sync
     function initialize(address _key) external initializer {
         // Executor → KeyHolder
