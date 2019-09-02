@@ -8,7 +8,7 @@ import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {ConnectionNotificationScreen} from '../ConnectAccount/ConnectionNotificationScreen';
+import {ConnectionNotificationModal} from '../ConnectAccount/ConnectionNotificationModal';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
@@ -30,7 +30,7 @@ const Modal = () => {
     case 'approveDevice':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ConnectionNotificationScreen
+          <ConnectionNotificationModal
             sdk={sdk}
             contractAddress={walletService.applicationWallet!.contractAddress}
             privateKey={walletService.applicationWallet!.privateKey}

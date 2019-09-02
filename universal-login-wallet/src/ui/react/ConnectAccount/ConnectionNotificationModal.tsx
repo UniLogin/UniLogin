@@ -10,7 +10,7 @@ interface ConnectionNotificationScreenProps {
   sdk: UniversalLoginSDK;
 }
 
-export const ConnectionNotificationScreen = ({contractAddress, privateKey, sdk}: ConnectionNotificationScreenProps) => (
+export const ConnectionNotificationModal = ({contractAddress, privateKey, sdk}: ConnectionNotificationScreenProps) => (
   <>
     <div className="modal-body">
       <div className="box-header">
