@@ -48,7 +48,7 @@ package Interfaces {
   }
 
   interface Authorisable {
-    function isAuthorised()
+    onlyAuhtorised()
   }
 }
 
@@ -67,7 +67,7 @@ package Wallet {
     {abstract} keyExist(key)
     addKey(key)
     removeKey(key)
-    isAuthorised()
+    onlyAuhtorised()
   }
 
   class Executor {
@@ -83,7 +83,7 @@ package Wallet {
     initialize(address publicKey);
     initializeWithENS(address publicKey, ENSDomain);
     setRequiredSignatures()
-    isAuthorised()
+    onlyAuhtorised()
     isValidSignature(data, signature)
     onERC721Received(...)
   }
