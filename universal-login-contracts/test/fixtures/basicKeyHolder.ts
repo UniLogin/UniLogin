@@ -11,7 +11,7 @@ export default async function basicKeyHolder(
   const managementKey = wallet.address;
   const managementWalletKey = managementWallet.address;
   const actionWalletKey = actionWallet.address;
-  const actionKey = anotherWallet.address;
+  const publicKey = anotherWallet.address;
   const actionKey2 = anotherWallet2.address;
   const unknownWalletKey = unknownWallet.address;
   const walletContract = await deployContract(wallet, KeyHolder, [managementKey]);
@@ -24,7 +24,7 @@ export default async function basicKeyHolder(
   await walletContract.addKey(actionWalletKey);
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   return {provider, walletContract, mockContract, wallet,
-    targetWallet, actionKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
+    targetWallet, publicKey, actionKey2, managementKey, unknownWalletKey, managementWalletKey,
     fromManagementWallet, fromActionWallet, fromUnknownWallet,
   };
 }

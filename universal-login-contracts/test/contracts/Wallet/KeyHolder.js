@@ -12,13 +12,13 @@ describe('CONTRACT: KeyHolder', async () => {
   let unknownWalletKey;
   let fromUnknownWallet;
   let managementKey;
-  let actionKey;
+  let publicKey;
   let actionKey2;
 
-  const addActionKey = () => walletContract.addKey(actionKey);
+  const addActionKey = () => walletContract.addKey(publicKey);
 
   beforeEach(async () => {
-    ({walletContract, actionKey, actionKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
+    ({walletContract, publicKey, actionKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
 
   describe('Create', async () => {
@@ -35,7 +35,7 @@ describe('CONTRACT: KeyHolder', async () => {
   describe('Add key', async () => {
     it('Should add key successfully', async () => {
       await addActionKey();
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
+      expect(await walletContract.keyExist(publicKey)).to.be.true;
       expect(await walletContract.keyCount()).to.eq(4);
     });
 
@@ -46,7 +46,7 @@ describe('CONTRACT: KeyHolder', async () => {
     it('Should emit KeyAdded event successfully', async () => {
       await expect(addActionKey()).to
         .emit(walletContract, 'KeyAdded')
-        .withArgs(utils.hexlify(actionKey));
+        .withArgs(utils.hexlify(publicKey));
     });
 
     it('Should not allow to add new key with unknown key', async () => {
@@ -56,25 +56,25 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
-      await walletContract.addKeys([actionKey, actionKey2]);
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
+      await walletContract.addKeys([publicKey, actionKey2]);
+      expect(await walletContract.keyExist(publicKey)).to.be.true;
       expect(await walletContract.keyExist(actionKey2)).to.be.true;
       expect(await walletContract.keyCount()).to.eq(5);
     });
 
     it('Should not allow to add existing key', async () => {
-      await expect(walletContract.addKeys([managementKey, actionKey])).to.be.reverted;
+      await expect(walletContract.addKeys([managementKey, publicKey])).to.be.reverted;
     });
 
     it('Should not allow the same key multiple times', async () => {
-      await expect(walletContract.addKeys([actionKey, actionKey])).to.be.reverted;
+      await expect(walletContract.addKeys([publicKey, publicKey])).to.be.reverted;
     });
   });
 
   describe('keyExist', async () => {
     it('return true if key exist', async () => {
       await addActionKey();
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
+      expect(await walletContract.keyExist(publicKey)).to.be.true;
     });
 
     it('return false if key doesn`t exist', async () => {
@@ -89,21 +89,21 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('Should remove key successfully', async () => {
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
-      await walletContract.removeKey(actionKey);
-      expect(await walletContract.keyExist(actionKey)).to.be.false;
+      expect(await walletContract.keyExist(publicKey)).to.be.true;
+      await walletContract.removeKey(publicKey);
+      expect(await walletContract.keyExist(publicKey)).to.be.false;
       expect(await walletContract.keyCount()).to.eq(3);
     });
 
     it('Should emit KeyRemoved event successfully', async () => {
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
-      await expect(walletContract.removeKey(actionKey))
+      expect(await walletContract.keyExist(publicKey)).to.be.true;
+      await expect(walletContract.removeKey(publicKey))
         .to.emit(walletContract, 'KeyRemoved');
     });
 
     it('Should not allow to remove key with unknown key', async () => {
-      expect(await walletContract.keyExist(actionKey)).to.be.true;
-      await expect(fromUnknownWallet.removeKey(actionKey)).to.be.reverted;
+      expect(await walletContract.keyExist(publicKey)).to.be.true;
+      await expect(fromUnknownWallet.removeKey(publicKey)).to.be.reverted;
     });
   });
 });
