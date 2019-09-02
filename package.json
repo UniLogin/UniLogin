@@ -24,7 +24,7 @@
     "lint": "yarn wsrun lint --stages",
     "ci": "yarn && yarn clean && yarn build && yarn lint && yarn test",
     "clean": "yarn wsrun clean",
-    "bump:version": "yarn lerna version --no-push",
+    "bump:version": "yarn lerna version --no-push --exact",
     "publish:packages": "yarn lerna publish from-package"
   },
   "engines": {
