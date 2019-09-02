@@ -11,20 +11,13 @@ export class StorageService {
 }
 
 export class StorageEntry<T> {
-  constructor(
-    private key: string,
-    private sanitizer: Sanitizer<T>,
-    private storageService: StorageService,
-  ) {
-  }
-
+  constructor(private key: string, private sanitizer: Sanitizer<T>, private storageService: StorageService) {}
 
   get(): T | null {
     const json = this.storageService.get(this.key);
-    if (!json) {
+    if (!json || json === 'null') {
       return null;
     }
-
     const parsed = JSON.parse(json);
     return cast(parsed, this.sanitizer);
   }
