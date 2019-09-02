@@ -1,6 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {utils} from 'ethers';
-import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {CurrencyToValue} from '@universal-login/commons';
 import {useAsyncEffect} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import ReceiveIcon from './../../assets/icons/receive.svg';
@@ -9,21 +8,15 @@ import {useServices} from '../../hooks';
 
 const Balance = () => {
   const modalService = useContext(WalletModalContext);
-  const [ethBalance, setEthBalance] = useState(utils.bigNumberify(0));
+  const [totalBalance, setTotalBalance] = useState<number>(0);
   const {sdk, walletPresenter} = useServices();
 
-  const setBalanceCallback = (balances: TokenDetailsWithBalance[]) => {
-    const ethDetails = balances.find((token: TokenDetailsWithBalance) => token.address === ETHER_NATIVE_TOKEN.address);
-    const balance = ethDetails === undefined ? utils.bigNumberify(0) : ethDetails.balance;
-    setEthBalance(balance);
-  };
-
-  useAsyncEffect(() => sdk.subscribeToBalances(walletPresenter.getName(), setBalanceCallback), []);
+  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(walletPresenter.getName(), (totalBalances: CurrencyToValue) => setTotalBalance(totalBalances['USD'])), []);
 
   return(
     <section className="balance">
-      <h2 className="balance-title">Balance</h2>
-      <p className="balance-amount"><span className="balance-amount-highlighted">{utils.formatEther(ethBalance)}</span> ETH</p>
+      <h2 className="balance-title">Total Balance</h2>
+      <p className="balance-amount"><span className="balance-amount-highlighted">{totalBalance}</span> $</p>
       <div className="balance-row">
         <button
           onClick={() => modalService.showModal('request')}
