@@ -17,8 +17,8 @@
   padding: 15px
   overflow-y: auto
 
-  +media(s, 183px)
-    padding: 15px 15px 83px
+  +media(s, 168px)
+    padding: 0
 
 .modal
   width: 770px
@@ -28,6 +28,9 @@
   background: #FAFBFD
   box-shadow: 0 3px 17px 0 rgba(79,55,168,0.09)
   border-radius: 6px
+
+  +media(s, 168px)
+    min-height: 100vh
 
 .modal-body
   max-width: 100%
@@ -45,6 +48,9 @@
   width: 20px
   height: 20px
   background: url('../assets/close.svg') center no-repeat
+
+  +media(s, 168px)
+    top: 25px
 
 .modal-text
   opacity: 0.75
