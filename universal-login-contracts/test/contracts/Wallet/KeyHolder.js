@@ -11,12 +11,12 @@ describe('CONTRACT: KeyHolder', async () => {
   let walletContract;
   let unknownWalletKey;
   let fromUnknownWallet;
-  let managementKey;
+  let initialPublicKey;
   let publicKey;
   let publicKey2;
 
   beforeEach(async () => {
-    ({walletContract, publicKey, publicKey2, managementKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
+    ({walletContract, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
   });
 
   describe('Create', async () => {
@@ -38,7 +38,7 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('Should not allow to add existing key', async () => {
-      await expect(walletContract.addKey(managementKey)).to.be.reverted;
+      await expect(walletContract.addKey(initialPublicKey)).to.be.reverted;
     });
 
     it('Should emit KeyAdded event successfully', async () => {
@@ -61,7 +61,7 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('Should not allow to add existing key', async () => {
-      await expect(walletContract.addKeys([managementKey, publicKey])).to.be.reverted;
+      await expect(walletContract.addKeys([initialPublicKey, publicKey])).to.be.reverted;
     });
 
     it('Should not allow the same key multiple times', async () => {
