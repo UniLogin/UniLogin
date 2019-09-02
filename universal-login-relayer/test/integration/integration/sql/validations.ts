@@ -4,7 +4,7 @@ import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
-import KeyHolder from '@universal-login/contracts/build/KeyHolder.json';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {hasEnoughToken} from '../../../../lib/integration/ethereum/validations';
 
 chai.use(chaiAsPromised);
@@ -27,7 +27,8 @@ describe('INT: Tools test', async () => {
 
     before(async () => {
       token = await deployContract(wallet, MockToken, []);
-      walletContract = await deployContract(wallet, KeyHolder, [wallet.address]);
+      walletContract = await deployContract(wallet, WalletContract, []);
+      await walletContract.initialize(wallet.address);
       await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
       await token.transfer(walletContract.address, utils.parseEther('1'));
     });
