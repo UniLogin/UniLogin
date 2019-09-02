@@ -3,8 +3,8 @@ import chaiAsPromised from 'chai-as-promised';
 import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
-import {utils} from 'ethers';
-import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {utils, providers, Contract, Wallet} from 'ethers';
+import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 
@@ -15,19 +15,22 @@ const {parseEther} = utils;
 const to = TEST_ACCOUNT_ADDRESS;
 
 describe('CONTRACT: Executor - main', async  () => {
-  let provider;
-  let walletContract;
-  let signature;
-  let msg;
-  let mockContract;
-  let wallet;
-  let mockToken;
-  let anotherWallet;
-  let invalidSignature;
-  let relayerBalance;
-  let relayerTokenBalance;
-  let sortedKeys;
-  let managementKeyPair;
+  let provider: providers.Provider;
+  let walletContract: Contract;
+  let signature: string;
+  let msg: UnsignedMessage;
+  let mockContract: Contract;
+  let wallet: Wallet;
+  let mockToken: Contract;
+  let anotherWallet: Wallet;
+  let invalidSignature: string;
+  let relayerBalance: utils.BigNumber;
+  let relayerTokenBalance: utils.BigNumber;
+  let sortedKeys: string[];
+  let managementKeyPair: KeyPair;
+  let msgToCall: UnsignedMessage;
+  let signatureToCall: string;
+  let signatures: string;
 
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, sortedKeys, mockToken, mockContract, wallet} = await loadFixture(basicExecutor));
@@ -137,7 +140,7 @@ describe('CONTRACT: Executor - main', async  () => {
           const transaction = await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -152,7 +155,7 @@ describe('CONTRACT: Executor - main', async  () => {
       });
 
       it('nonce too high', async () => {
-        msg = {...transferMessage, nonce: 2};
+        msg = {...transferMessage, from: walletContract.address, nonce: 2};
         await expect(walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid nonce');
       });
@@ -210,7 +213,7 @@ describe('CONTRACT: Executor - main', async  () => {
           const transaction = await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -226,9 +229,6 @@ describe('CONTRACT: Executor - main', async  () => {
   });
 
   describe('Multi-Signature call with 2 signatures', async () => {
-    let msgToCall;
-    let signatures;
-
     describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
@@ -318,9 +318,6 @@ describe('CONTRACT: Executor - main', async  () => {
   });
 
   describe('Multi-Signature call with 3 signatures', async () => {
-    let msgToCall;
-    let signatures;
-
     describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
@@ -397,7 +394,6 @@ describe('CONTRACT: Executor - main', async  () => {
       it('should fail with invalid signature size', async () => {
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
-        const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
         const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
           .to.be.revertedWith('Invalid signature');
@@ -421,9 +417,6 @@ describe('CONTRACT: Executor - main', async  () => {
   });
 
   describe('Call', async () => {
-    let msgToCall;
-    let signatureToCall;
-
     describe('successful execution of call', () => {
       before(() => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
@@ -456,7 +449,7 @@ describe('CONTRACT: Executor - main', async  () => {
           const transaction = await walletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });
@@ -501,7 +494,7 @@ describe('CONTRACT: Executor - main', async  () => {
           const transaction = await walletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-          const totalCost = gasUsed.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
+          const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
           expect(await wallet.getBalance()).to.be.above(relayerBalance.sub(totalCost));
         });

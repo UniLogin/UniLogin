@@ -1,19 +1,19 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
-import {utils} from 'ethers';
+import {utils, Contract} from 'ethers';
 import basicKeyHolder from '../../fixtures/basicKeyHolder';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
 describe('CONTRACT: KeyHolder', async () => {
-  let keyHolder;
-  let unknownWalletKey;
-  let fromUnknownWallet;
-  let initialPublicKey;
-  let publicKey;
-  let publicKey2;
+  let keyHolder: Contract;
+  let unknownWalletKey: string;
+  let fromUnknownWallet: Contract;
+  let initialPublicKey: string;
+  let publicKey: string;
+  let publicKey2: string;
 
   beforeEach(async () => {
     ({keyHolder, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
