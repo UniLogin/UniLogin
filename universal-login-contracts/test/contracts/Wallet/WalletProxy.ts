@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
-import {utils} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
+import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import MockWalletMaster from '../../../build/MockWalletMaster.json';
 import Proxy from '../../../build/WalletProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
@@ -13,9 +14,9 @@ chai.use(solidity);
 const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('CONTRACT: WalletProxy', async () => {
-  let walletProxy;
-  let proxyAsWallet;
-  let wallet;
+  let walletProxy: Contract;
+  let proxyAsWallet: Contract;
+  let wallet: Wallet;
   let data;
 
   beforeEach(async () => {
