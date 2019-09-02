@@ -477,23 +477,11 @@
   text-align: center;
   cursor: pointer;
   background: none;
-}
-
-.universal-login-default .universal-login-topup .pay-btn {
-  background: #0FB989;
-  border: none;
   border-radius: 6px;
-  color: #FFFFFF;
 }
 
 .universal-login-topup .pay-btn[disabled] {
-  background: #DBDBE4;
-  color: #FFFFFF;
   cursor: not-allowed;
-}
-
-.universal-login-default .universal-login-topup .pay-btn[disabled] {
-  border-radius: 6px;
 }
 
 @media screen and (max-width: 600px) {

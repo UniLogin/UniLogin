@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode, CATEGORIES} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {Emoji} from '../commons/Emoji';
-import '../styles/emoji.css';
-import '../styles/emojiDefaults.css';
+import '../styles/emoji.sass';
+import '../styles/emojiDefaults.sass';
 import '../styles/colors.css';
 
 interface EmojiKeyboardProps {
@@ -16,11 +16,15 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   const [palette, setPalette] = useState<number | undefined>(undefined);
 
   const renderKeyboard = () =>
-    getEmojiSet(category).map((emojiCode, index) => renderInputEmoji(emojiCode, index));
+    getEmojiSet(category).map((emojiCode, index: number) => renderInputEmoji(emojiCode, index));
 
   const renderInputEmoji = (emojiCode: number, index: number) => (
-    <li className="emoji-keyboard-item" key={`securityCodeWithFakes_${emojiCode}`}>
-      <button id={`btn-${emojiCode}`} onClick={() => palette === index ? setPalette(undefined) : setPalette(index)}>
+    <li className="emoji-item" key={`securityCodeWithFakes_${emojiCode}`}>
+      <button
+        id={`btn-${emojiCode}`}
+        onClick={() => palette === index ? setPalette(undefined) : setPalette(index)}
+        className="emoji-keyboard-button"
+      >
         <Emoji code={emojiCode}/>
       </button>
       {palette === index
@@ -34,7 +38,12 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   const renderColors = (emojiCode: number) => (
     EMOJI_COLORS.map((colorString: string, colorIndex: number) => (
       <li key={`li-color-${colorIndex}`} className="emoji-keyboard-color-item">
-        <button style={{backgroundColor: colorString}} id={`btn-color-${colorIndex}`} onClick={() => onColorClick(getColoredEmojiCode(emojiCode, colorIndex))} className="emoji-keyboard-color-button" />
+        <button
+          style={{backgroundColor: colorString}}
+          id={`btn-color-${colorIndex}`}
+          onClick={() => onColorClick(getColoredEmojiCode(emojiCode, colorIndex))}
+          className="emoji-keyboard-color-button"
+        />
       </li>
     ))
   );
@@ -45,30 +54,42 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   };
 
   const renderCategories = () => (
-    CATEGORIES.map(({name}) => (
-      <li key={`li-category-${name}`} className="emoji-category-item">
-        {name}
+    CATEGORIES.map(({name} : {name: string}, index: number) => (
+      <li
+        key={`li-category-${name}`}
+        className={`emoji-category-item ${category === index ? 'active' : ''}`}
+      >
+        <button
+          onClick={() => setCategory(index)}
+          className={`emoji-category-button emoji-category-${name.toLowerCase()}`}
+        >
+          {name}
+        </button>
       </li>
     ))
   );
 
   return (
-    <div className={getStyleForTopLevelComponent(className)}>
-      <div className="universal-login-emojis">
+    <div className="universal-login-emojis">
+      <div className={getStyleForTopLevelComponent(className)}>
         <div className="emoji-keyboard">
           <ul className="emoji-category-row">
             {renderCategories()}
           </ul>
-          <div className="emoji-keybord-row">
-            <button disabled={category === 0} onClick={() => setCategory(category - 1)} className="emoji-keyboard-arrow-button">
-              {'<'}
-            </button>
+          <div className="emoji-keyboard-row">
+            <button
+              disabled={category === 0}
+              onClick={() => setCategory(category - 1)}
+              className="emoji-keyboard-arrow-button emoji-keyboard-prev"
+            />
             <ul className="emojis-keyboard-batch">
               {renderKeyboard()}
             </ul>
-            <button disabled={category === 4} onClick={() => setCategory(category + 1)} className="emoji-keyboard-arrow-button">
-              {'>'}
-            </button>
+            <button
+              disabled={category === 4}
+              onClick={() => setCategory(category + 1)}
+              className="emoji-keyboard-arrow-button emoji-keyboard-next"
+            />
           </div>
         </div>
       </div>

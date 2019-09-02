@@ -29,7 +29,6 @@ interface EmojiFormProps {
 
 export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
-  const [status, setStatus] = useState('Initial status');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [inputMode, setInputMode] = useState<InputModeType>('none');
   const [addresses, setAddresses] = useState<string[]>([]);
@@ -57,7 +56,6 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     sdk.addKey(contractAddress, address, privateKey, transactionDetails);
     hideTitle ? hideTitle() : null;
     showProgressBar();
-    setStatus('');
   };
 
   const onEmojiAdd = (code: number) => {
@@ -67,11 +65,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
       updateAddressesAndInputMode(notifications);
     }
     if (checkCode()) {
-      setStatus(``);
       confirmCode(addresses[0]);
-    }
-    else {
-      setStatus(`Code doesn't match any incoming notification`);
     }
   };
 
@@ -79,28 +73,47 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     if (enteredCode.length >= 0) {
       enteredCode.splice(index, 1);
       setEnteredCode([...enteredCode]);
-      setStatus('');
     }
     updateAddressesAndInputMode(notifications);
   };
 
+  const renderKeyboard = (inputMode: string) => {
+    if (inputMode === 'none') {
+      return null;
+    } else if (inputMode === 'keyboard') {
+      return <EmojiKeyboard onEmojiClick={onEmojiAdd} className={className} />;
+    }
+    return (
+      <EmojiPanelWithFakes
+        publicKey={addresses[0]}
+        onEmojiClick={onEmojiAdd}
+        className={className}
+      />
+    );
+  };
+
   return (
     <div id="emojis">
-    {progressBar ?
-      <div>
-        <p className="approve-device-title">Connecting new device...</p>
-        <ProgressBar className="connection-progress-bar" />
-      </div> :
-      <>
-        <EmojiPlaceholders enteredCode={enteredCode} onEmojiClick={onEmojiRemove} className={className}/>
-        {inputMode === 'none'
-          ? null
-          : inputMode === 'keyboard'
-          ? <EmojiKeyboard onEmojiClick={onEmojiAdd} className={className}/>
-          : <EmojiPanelWithFakes publicKey={addresses[0]} onEmojiClick={onEmojiAdd} className={className}/>}
-        <p className="emojis-form-status">{status}</p>
-        <button className="emojis-form-reject" id="reject" onClick={() => sdk.denyRequest(contractAddress, TEST_ACCOUNT_ADDRESS, privateKey)}>Deny</button>
-      </>
+    {progressBar
+      ? <div className="emoji-form-loader">
+          <p className="emojis-form-title">Connecting new device...</p>
+          <ProgressBar className="connection-progress-bar" />
+        </div>
+      : <>
+          <EmojiPlaceholders
+            enteredCode={enteredCode}
+            onEmojiClick={onEmojiRemove}
+            className={className}
+          />
+          {renderKeyboard(inputMode)}
+          <button
+            className="emojis-form-reject"
+            id="reject"
+            onClick={() => sdk.denyRequest(contractAddress, TEST_ACCOUNT_ADDRESS, privateKey)}
+          >
+            Deny
+          </button>
+        </>
     }
     </div>
   );

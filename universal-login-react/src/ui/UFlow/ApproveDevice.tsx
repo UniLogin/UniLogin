@@ -11,7 +11,6 @@ export interface ApproveDeviceProps {
 
 export const ApproveDevice = ({contractAddress, privateKey, sdk}: ApproveDeviceProps) => (
   <div className="approve-device">
-
     <ConnectionNotification
       contractAddress={contractAddress}
       privateKey={privateKey}

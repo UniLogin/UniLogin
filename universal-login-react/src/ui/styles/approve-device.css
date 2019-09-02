@@ -1,23 +1,29 @@
 .approve-device {
   max-width: 808px;
   margin: 0 auto;
-  padding-top: 60px;
+  padding: 60px 0;
 }
-
 .approve-device-title {
   margin: 0 0 11px;
   font-weight: 600;
   font-size: 24px;
   color: #FFFFFF;
 }
-
 .approve-device-text {
-  margin-bottom: 50px;
+  margin: 0 0 50px;
   opacity: 0.75;
   font-size: 16px;
   color: #FFFFFF;
 }
-
 .approve-device .connection-device-status {
   color: #FFFFFF;
+}
+
+@media only screen and (max-width: 768px) {
+  .approve-device {
+    padding: 50px 0 0px;
+  }
+  .approve-device-text {
+    margin: 0 0 35px;
+  }
 }

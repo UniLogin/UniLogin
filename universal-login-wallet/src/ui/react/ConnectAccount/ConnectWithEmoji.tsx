@@ -33,7 +33,7 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
               <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
               {!connectValues && !error && 'Loading...'}
               {connectValues && <div className="universal-login-emojis">
-                <EmojiPanel code={connectValues!.securityCode} />
+                <EmojiPanel className="jarvis-emojis" code={connectValues!.securityCode} />
               </div>}
               {error && `Error: ${error}`}
               <button onClick={onDeny} className="button-secondary connect-emoji-btn">Deny</button>
