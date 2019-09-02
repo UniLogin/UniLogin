@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {TokenDetailsWithBalance, CurrencyToValue} from '@universal-login/commons';
+import {CurrencyToValue} from '@universal-login/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Balance} from '../commons/Balance';
-import {MyAssets} from '../commons/MyAssets';
+import {Assets} from '../commons/Assets';
 
 interface FundsProps {
   ensName: string;
@@ -13,10 +13,8 @@ interface FundsProps {
 }
 
 export const Funds = ({ensName, sdk, onTopUpClick, onSendClick}: FundsProps) => {
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
 
-  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
   useAsyncEffect(() => sdk.subscribeToAggregatedBalance(ensName, setTotalTokensValue), []);
 
   return (
@@ -26,7 +24,7 @@ export const Funds = ({ensName, sdk, onTopUpClick, onSendClick}: FundsProps) => 
         <button className="udashboard-funds-btn udashboard-funds-topup" onClick={onTopUpClick}>Top-up</button>
         <button className="udashboard-funds-btn udashboard-funds-send" onClick={onSendClick}>Send</button>
       </div>
-      <MyAssets sdk={sdk} title="My assets" assetsList={tokenDetailsWithBalance} />
+      <Assets sdk={sdk} ensName={ensName} />
     </div>
-    );
+  );
 };

@@ -1,10 +1,10 @@
-.my-assets-title {
+.assets-title {
   margin: 0 0 8px;
   font-size: 16px;
   color: #FFFFFF;
 }
 
-.my-assets-list {
+.assets-list {
   width: 100%;
   margin: 0;
   padding: 10px 23px;
@@ -12,21 +12,21 @@
   border-radius: 6px;
 }
 
-.my-assets-item + .my-assets-item {
+.assets-item + .assets-item {
   border-top: 1px solid #55507A;
 }
 
-.my-assets-item {
+.assets-item {
   display: flex;
   justify-content: space-between;
   padding: 15px 0;
 }
 
-.my-assets-item-left {
+.assets-item-left {
   display: flex;
 }
 
-.my-assets-img-wrapper {
+.assets-img-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,24 +34,24 @@
   margin-right: 10px;
 }
 
-.my-assets-img {
+.assets-img {
   max-width: 100%;
 }
 
-.my-assets-name {
+.assets-name {
   margin: 0;
   font-size: 14px;
   color: #FFFFFF;
   text-transform: capitalize;
 }
 
-.my-assets-price {
+.assets-price {
   margin: 0;
   font-size: 12px;
   color: #A4A8B4;
 }
 
-.my-assets-balance {
+.assets-balance {
   margin: 0;
   font-size: 14px;
   color: #FFFFFF;

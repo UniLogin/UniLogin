@@ -25,19 +25,19 @@ export const Asset = ({sdk, name, symbol, balance, icon}: AssetProps) => {
   }, []);
 
   return (
-    <li key={`${name}`} className="my-assets-item">
-      <div className="my-assets-item-left">
-        <div className="my-assets-img-wrapper">
+    <li key={`${name}`} className="assets-item">
+      <div className="assets-item-left">
+        <div className="assets-img-wrapper">
           <img src={icon} alt={symbol} className="currency-accordion-img" />
         </div>
         <div>
-          <p className="my-assets-name">{name}</p>
-          <p className="my-assets-price">$ {usdPrice}</p>
+          <p className="assets-name">{name}</p>
+          <p className="assets-price">$ {usdPrice}</p>
         </div>
       </div>
-      <div className="my-assets-item-right">
-        <p className="my-assets-balance">{balance} {symbol}</p>
-        <p className="my-assets-price">${usdAmount}</p>
+      <div className="assets-item-right">
+        <p className="assets-balance">{balance} {symbol}</p>
+        <p className="assets-price">${usdAmount}</p>
       </div>
     </li>
   );
