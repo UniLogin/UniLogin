@@ -36,8 +36,6 @@ describe('CONTRACT: KeyHolder', async () => {
     it('Should add key successfully', async () => {
       await addActionKey();
       expect(await walletContract.keyExist(actionKey)).to.be.true;
-      const keyExist = await walletContract.keys(actionKey);
-      expect(keyExist).to.be.true;
       expect(await walletContract.keyCount()).to.eq(4);
     });
 
