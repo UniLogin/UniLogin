@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
-import Executor from '../../../build/Executor.json';
+import Executor from '../../../build/TestableExecutor.json';
 import {constants, Contract} from 'ethers';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';

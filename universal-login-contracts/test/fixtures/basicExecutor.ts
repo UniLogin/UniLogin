@@ -1,4 +1,4 @@
-import Executor from '../../build/Executor.json';
+import Executor from '../../build/TestableExecutor.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
 import {utils, Wallet, providers} from 'ethers';
