@@ -5,9 +5,10 @@ import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
+import {walletContractFixture} from '../../fixtures/walletContract';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -298,4 +299,15 @@ describe('WalletContract', async () => {
     });
   });
 
+  describe('isValidSignature', () => {
+    const MAGICVALUE = '0x20c13b0b';
+
+    it('returns true if signer has the permission', async () => {
+      const {proxyWallet, keyPair} = await loadFixture(walletContractFixture);
+      const message = 'Hi, I am Justyna';
+      const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
+      const signature = signString(message, keyPair.privateKey);
+      expect(await proxyWallet.isValidSignature(messageHex, signature)).to.eq(MAGICVALUE);
+    });
+  });
 });
