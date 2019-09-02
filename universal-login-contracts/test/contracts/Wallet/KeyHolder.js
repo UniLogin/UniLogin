@@ -25,16 +25,17 @@ describe('CONTRACT: KeyHolder', async () => {
       expect(address).to.not.be.null;
     });
 
-    it('there must be a total of 3 keys', async () => {
-      expect(await walletContract.keyCount()).to.eq(3);
+    it('there must be the 1 initial key', async () => {
+      expect(await walletContract.keyCount()).to.eq(1);
     });
   });
 
   describe('Add key', async () => {
     it('Should add key successfully', async () => {
+      const expectedKeyCount = (await walletContract.keyCount()).add(1);
       await walletContract.addKey(publicKey);
       expect(await walletContract.keyExist(publicKey)).to.be.true;
-      expect(await walletContract.keyCount()).to.eq(4);
+      expect(await walletContract.keyCount()).to.eq(expectedKeyCount);
     });
 
     it('Should not allow to add existing key', async () => {
@@ -54,10 +55,11 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('Add multiple keys', async () => {
     it('Should add multiple keys successfully', async () => {
+      const expectedKeyCount = (await walletContract.keyCount()).add(2);
       await walletContract.addKeys([publicKey, publicKey2]);
       expect(await walletContract.keyExist(publicKey)).to.be.true;
       expect(await walletContract.keyExist(publicKey2)).to.be.true;
-      expect(await walletContract.keyCount()).to.eq(5);
+      expect(await walletContract.keyCount()).to.eq(expectedKeyCount);
     });
 
     it('Should not allow to add existing key', async () => {
@@ -83,14 +85,14 @@ describe('CONTRACT: KeyHolder', async () => {
   describe('Remove key', async () => {
     beforeEach(async () => {
       await walletContract.addKey(publicKey);
-      expect(await walletContract.keyCount()).to.eq(4);
     });
 
     it('Should remove key successfully', async () => {
+      const expectedKeyCount = (await walletContract.keyCount()).sub(1);
       expect(await walletContract.keyExist(publicKey)).to.be.true;
       await walletContract.removeKey(publicKey);
       expect(await walletContract.keyExist(publicKey)).to.be.false;
-      expect(await walletContract.keyCount()).to.eq(3);
+      expect(await walletContract.keyCount()).to.eq(expectedKeyCount);
     });
 
     it('Should emit KeyRemoved event successfully', async () => {
