@@ -18,7 +18,7 @@ export class WalletStorageService implements WalletStorage {
     return this.storage.get();
   }
 
-  save(wallet: ApplicationWallet | null): void {
+  save(wallet: ApplicationWallet): void {
     this.storage.set(wallet);
   }
 
