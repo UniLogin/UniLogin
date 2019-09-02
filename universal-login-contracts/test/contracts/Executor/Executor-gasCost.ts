@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
-import {utils} from 'ethers';
-import {calculateMessageSignature} from '@universal-login/commons';
+import {utils, providers, Contract, Wallet} from 'ethers';
+import {calculateMessageSignature, KeyPair} from '@universal-login/commons';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, callMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
@@ -18,15 +18,15 @@ const tokenTransferCost = 80000;
 const overrideOptions = {gasLimit: 120000};
 
 describe('Executor - gas cost', async () => {
-  const gasCosts = {};
-  let provider;
-  let walletContract;
-  let managementKeyPair;
-  let signature;
+  const gasCosts = {} as Record<string, utils.BigNumber>;
+  let provider: providers.Provider;
+  let walletContract: Contract;
+  let managementKeyPair: KeyPair;
+  let signature: string;
   let msg;
-  let mockContract;
-  let mockToken;
-  let wallet;
+  let mockContract: Contract;
+  let mockToken: Contract;
+  let wallet: Wallet;
 
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, mockContract, mockToken, wallet} = await loadFixture(basicExecutor));
@@ -37,7 +37,7 @@ describe('Executor - gas cost', async () => {
     signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
     const transaction = await walletContract.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-    gasCosts['Function call'] = gasUsed;
+    gasCosts['Function call'] = gasUsed!;
     expect(gasUsed).to.be.below(callCost);
   });
 
@@ -46,7 +46,7 @@ describe('Executor - gas cost', async () => {
     signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
     const transaction = await walletContract.executeSigned(...getExecutionArgs(msg), signature, overrideOptions);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-    gasCosts['Ether transfer'] = gasUsed;
+    gasCosts['Ether transfer'] = gasUsed!;
     expect(gasUsed).to.be.below(etherTransferCost);
   });
 
@@ -56,7 +56,7 @@ describe('Executor - gas cost', async () => {
     signature = calculateMessageSignature(managementKeyPair.privateKey, transferTokenMsg);
     const transaction = await walletContract.executeSigned(...getExecutionArgs(transferTokenMsg), signature, overrideOptions);
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
-    gasCosts['Token transfer'] = gasUsed;
+    gasCosts['Token transfer'] = gasUsed!;
     expect(gasUsed).to.be.below(tokenTransferCost);
   });
 
