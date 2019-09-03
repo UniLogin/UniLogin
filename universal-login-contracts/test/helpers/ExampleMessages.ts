@@ -70,7 +70,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
   };
 };
 
-export const setRequiredSignaturesMsg = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
+export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
   const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
