@@ -59,3 +59,4 @@ export {ObservedCurrency, CurrencyToValue, TokensPrices} from './core/models/Cur
 export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
+export {convertTenthGweiToWei} from './core/utils/conversion';
