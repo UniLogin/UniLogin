@@ -1,19 +1,20 @@
 pragma solidity ^0.5.2;
 
-import "./KeyHolder.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 
-contract Executor is KeyHolder {
+contract Executor {
     using ECDSA for bytes32;
+    using SafeMath for uint;
 
     uint public lastNonce;
     uint public requiredSignatures;
 
     event ExecutedSigned(bytes32 indexed messageHash, uint indexed nonce, bool indexed success);
 
-    constructor(address _key) KeyHolder(_key) public {
+    constructor() public {
         requiredSignatures = 1;
     }
 
@@ -24,6 +25,8 @@ contract Executor is KeyHolder {
     function tokenRefundCharge() public pure returns(uint) {
         return 19500;
     }
+
+    function keyExist(address _key) public view returns(bool);
 
     function canExecute(
         address to,
@@ -45,12 +48,6 @@ contract Executor is KeyHolder {
             gasToken,
             gasLimit).toEthSignedMessageHash();
         return areSignaturesValid(signatures, hash);
-    }
-
-    function setRequiredSignatures(uint _requiredSignatures) public onlyAuthorised {
-        require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
-        require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number");
-        requiredSignatures = _requiredSignatures;
     }
 
     function calculateMessageHash(

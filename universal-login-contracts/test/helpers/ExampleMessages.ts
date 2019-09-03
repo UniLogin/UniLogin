@@ -1,9 +1,9 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
-import {utils, Wallet} from 'ethers';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature} from '@universal-login/commons';
+import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import DEFAULT_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
+import DEFAULT_PAYMENT_OPTIONS, {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
 import MockContract from '../../build/MockContract.json';
-import {encodeFunction} from '../helpers/argumentsEncoding';
+import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
 
 const {parseEther} = utils;
@@ -69,3 +69,33 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     ...overrides
   };
 };
+
+export const setRequiredSignaturesMsg = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
+  const msg = {
+    from: proxyAsWalletContract.address,
+    to: proxyAsWalletContract.address,
+    data: proxyAsWalletContract.interface.functions.setRequiredSignatures.encode([requiredSignatures]),
+    value: parseEther('0.0'),
+    nonce: await proxyAsWalletContract.lastNonce(),
+    gasPrice,
+    gasLimit,
+    gasToken: '0x0000000000000000000000000000000000000000'
+  };
+  const signature = calculateMessageSignature(privateKey, msg);
+  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+}
+
+export const addKeyMsg = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
+  const msg = {
+    from: proxyAsWalletContract.address,
+    to: proxyAsWalletContract.address,
+    data: proxyAsWalletContract.interface.functions.addKey.encode([newKey]),
+    value: parseEther('0.0'),
+    nonce: await proxyAsWalletContract.lastNonce(),
+    gasPrice,
+    gasLimit,
+    gasToken: '0x0000000000000000000000000000000000000000'
+  };
+  const signature = calculateMessageSignature(privateKey, msg);
+  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+}
