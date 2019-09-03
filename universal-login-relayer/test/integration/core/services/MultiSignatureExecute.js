@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {calculateMessageHash, createSignedMessage, waitExpect} from '@universal-login/commons';
+import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import {getKnexConfig} from '../../../helpers/knex';
@@ -20,8 +21,8 @@ describe('INT: MultiSignatureExecute', async () => {
 
   beforeEach(async () => {
     ({wallet, actionKey, provider, messageHandler, mockToken, walletContract, otherWallet} = await setupMessageService(knex));
-    msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address};
-    await walletContract.setRequiredSignatures(2);
+    await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
+    msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address, nonce: await walletContract.lastNonce()};
     messageHandler.start();
   });
 
@@ -68,7 +69,7 @@ describe('INT: MultiSignatureExecute', async () => {
 
   describe('Add Key', async () => {
     it('execute add key', async () => {
-      msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
+      msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage0 = createSignedMessage(msg, wallet.privateKey);
       const signedMessage1 = createSignedMessage(msg, actionKey);
       await messageHandler.handleMessage(signedMessage0);
@@ -99,7 +100,7 @@ describe('INT: MultiSignatureExecute', async () => {
 
   describe('Remove key ', async () => {
     beforeEach(async () => {
-      const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
+      const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage0 = createSignedMessage(message, wallet.privateKey);
       const signedMessage1 = createSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
@@ -108,7 +109,7 @@ describe('INT: MultiSignatureExecute', async () => {
 
     it('should remove key', async () => {
       await waitExpect(async () => expect((await walletContract.keyExist(otherWallet.address))).to.be.true);
-      const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address};
+      const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage0 = createSignedMessage(message, wallet.privateKey);
       const signedMessage1 = createSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
