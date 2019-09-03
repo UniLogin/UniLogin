@@ -40,7 +40,6 @@ describe('UI: Notifications',  () => {
     expect(appPage.notifications().isNotificationAlert()).to.be.true;
     await appPage.dashboard().clickNotificationButton();
     await appPage.notifications().clickRejectButton();
-
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });
 

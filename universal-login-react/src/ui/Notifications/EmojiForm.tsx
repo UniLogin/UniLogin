@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
@@ -92,6 +92,10 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     );
   };
 
+  const onDenyNotifications = () => {
+    notifications.forEach(notification => sdk.denyRequest(contractAddress, notification.key, privateKey));
+  };
+
   return (
     <div id="emojis">
     {progressBar
@@ -109,7 +113,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
           <button
             className="emojis-form-reject"
             id="reject"
-            onClick={() => sdk.denyRequest(contractAddress, TEST_ACCOUNT_ADDRESS, privateKey)}
+            onClick={onDenyNotifications}
           >
             Deny
           </button>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import logo from '../../assets/logo.svg';
 import settingsIcon from './../../assets/icons/gear.svg';
 import notificationsIcon from './../../assets/icons/bell.svg';
@@ -7,12 +7,14 @@ import {useServices} from '../../hooks';
 import UserDropdown from '../common/UserDropdown';
 import {Link} from 'react-router-dom';
 import {Settings} from '@universal-login/react';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 export function Header() {
   const {userDropdownService, walletPresenter, sdk, walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
   const {contractAddress, privateKey} = walletService.applicationWallet!;
   const [settingsVisibility, setSettingsVisibility] = useState(false);
+  const modalService = useContext(WalletModalContext);
 
   const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
@@ -49,13 +51,13 @@ export function Header() {
             </div>
           </li>
           <li className="header-list-item">
-            <Link
-              to="/notifications"
-              id="notificationsLink"
+            <button
+              id="notificationsButton"
               className={`header-btn notifications-btn ${newNotifications ? 'new-notifications' : ''}`}
+              onClick={() => modalService.showModal('approveDevice')}
             >
               <img src={notificationsIcon} alt="notifications"/>
-            </Link>
+            </button>
           </li>
           <li className="header-list-item">
             <button onClick={() => userDropdownService.setDropdownVisibility(true)} className="user-btn">
