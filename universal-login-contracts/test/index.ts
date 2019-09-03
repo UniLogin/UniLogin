@@ -1,2 +1,2 @@
 export {setupMasterWithRefundAndFactory} from './fixtures/walletContract';
-export {executeAddKey} from './helpers/ExampleMessages';
+export {executeAddKey, executeSetRequiredSignatures} from './helpers/ExampleMessages';
