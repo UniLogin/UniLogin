@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
 import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
-import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, setRequiredSignaturesMsg, addKeyMsg} from '../../helpers/ExampleMessages';
+import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, setRequiredSignaturesMsg, executeAddKey} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
@@ -323,7 +323,7 @@ describe('WalletContract', async () => {
 
   describe('change required signatures per transaction', async () => {
     it('change number of required signatures to 2', async () => {
-      await addKeyMsg(proxyAsWalletContract, createKeyPair().publicKey, privateKey);
+      await executeAddKey(proxyAsWalletContract, createKeyPair().publicKey, privateKey);
       expect(await proxyAsWalletContract.requiredSignatures()).to.eq(1);
       await setRequiredSignaturesMsg(proxyAsWalletContract, 2, privateKey);
       expect(await proxyAsWalletContract.requiredSignatures()).to.eq(2);

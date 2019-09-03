@@ -85,7 +85,7 @@ export const setRequiredSignaturesMsg = async (proxyAsWalletContract: Contract, 
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 };
 
-export const addKeyMsg = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
+export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
   const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
