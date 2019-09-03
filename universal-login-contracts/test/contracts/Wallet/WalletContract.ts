@@ -325,12 +325,12 @@ describe('WalletContract', async () => {
     it('change number of required signatures to 2', async () => {
       await addKeyMsg(proxyAsWalletContract, createKeyPair().publicKey, privateKey);
       expect(await proxyAsWalletContract.requiredSignatures()).to.eq(1);
-      await setRequiredSignaturesMsg(proxyAsWalletContract, 2, privateKey)
+      await setRequiredSignaturesMsg(proxyAsWalletContract, 2, privateKey);
       expect(await proxyAsWalletContract.requiredSignatures()).to.eq(2);
     });
 
     it('don`t change the number of required signatures if the new amount is higher than keyCount', async () => {
-      await setRequiredSignaturesMsg(proxyAsWalletContract, (await proxyAsWalletContract.keyCount()).add(1), privateKey)
+      await setRequiredSignaturesMsg(proxyAsWalletContract, (await proxyAsWalletContract.keyCount()).add(1), privateKey);
       expect(await proxyAsWalletContract.requiredSignatures()).to.eq(1);
     });
   });

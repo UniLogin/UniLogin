@@ -83,7 +83,7 @@ export const setRequiredSignaturesMsg = async (proxyAsWalletContract: Contract, 
   };
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
-}
+};
 
 export const addKeyMsg = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
   const msg = {
@@ -98,4 +98,4 @@ export const addKeyMsg = async (proxyAsWalletContract: Contract, newKey: string,
   };
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
-}
+};
