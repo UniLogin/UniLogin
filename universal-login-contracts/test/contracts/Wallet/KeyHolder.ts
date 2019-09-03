@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture, deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {utils, Contract} from 'ethers';
 import KeyHolder from '../../../build/KeyHolder.json';
-import basicKeyHolder from '../../fixtures/basicKeyHolder';
+import testableKeyHolder from '../../fixtures/testableKeyHolder';
 import {createKeyPair} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
@@ -18,7 +18,7 @@ describe('CONTRACT: KeyHolder', async () => {
   let publicKey2: string;
 
   beforeEach(async () => {
-    ({keyHolder, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(basicKeyHolder));
+    ({keyHolder, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(testableKeyHolder));
   });
 
   describe('onlyAuthorised', () => {
@@ -27,7 +27,7 @@ describe('CONTRACT: KeyHolder', async () => {
       keyHolder = await deployContract(wallet, KeyHolder, [wallet.address]);
       expect(keyHolder.addKey(createKeyPair().publicKey)).to.be.revertedWith('Sender not permissioned');
     });
-  })
+  });
 
   describe('Create', async () => {
     it('Should be deployed successfully', async () => {
