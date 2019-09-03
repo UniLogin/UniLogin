@@ -1,46 +1,56 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {CancelAuthorisationRequest} from '../../../lib/core/models/authorisation';
-import {signCancelAuthorisationRequest, verifyCancelAuthorisationRequest, hashCancelAuthorisationRequest, recoverFromCancelAuthorisationRequest} from '../../../lib/core/utils/authorisation/cancelAuthorisationRequest';
+import {AuthorisationRequest} from '../../../lib/core/models/authorisation';
+import {signAuthorisationRequest, verifyAuthorisationRequest, hashAuthorisationRequest, recoverFromAuthorisationRequest} from '../../../lib/core/utils/authorisation';
 
-describe('authorisation sign verify', async () => {
-  const contractAddress: string = '0x14791697260E4c9A71f18484C9f997B308e59325';
+describe('UNIT: CancelAuthorisationRequest', () => {
   const privateKey = '0x9e0f0ab35e7b8d8efc554fa0e9db29235e7c52ea5e2bb53ed50d24ff7a4a6f65';
-  const address = '0xa67131F4640294a209fdFF9Ad15a409D22EEB3Dd';
-  const expectedSignature = '0x6f69246991e13656c5921f9a610fda2db2b2bb88e34b55e6a413a7bcb35ed715644a6f0e1a230467eb2192babcaf3318739dc9c591607977fe50244e532d96461b';
-  const expectedPayloadDigest = '0x41a2afe40ed413e2fff512455eab332900c7591e46280498e7f7c69e15bbd862';
-  let cancelAuthorisationRequest: CancelAuthorisationRequest;
+  const signerAddress = utils.computeAddress(privateKey);
+  const expectedSignature = '0xbb32164e253c9f92b5ca5c2e11c169e9630ce5b3bd7c7881f035d1c3e609a71e208b0c9cebb780a381432cf206b42b959fc77b49134c8d8643187826f5aa4cab1b';
 
-  beforeEach('before', async () => {
-    cancelAuthorisationRequest = {
-      walletContractAddress: contractAddress,
-      publicKey: address,
+  const contractAddress = '0x14791697260E4c9A71f18484C9f997B308e59325';
+  let authorisationRequest: AuthorisationRequest;
+
+  beforeEach(() => {
+    authorisationRequest = {
+      contractAddress,
       signature: ''
     };
   });
 
-  it('Hash cancel authorisation request', async () => {
-    const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
+  describe('signAuthorisationRequest', () => {
+    it('valid signature', () => {
+      signAuthorisationRequest(authorisationRequest, privateKey);
+
+      expect(authorisationRequest.signature).to.deep.equal(expectedSignature);
+
+      const payloadDigest = utils.arrayify(hashAuthorisationRequest(authorisationRequest));
+      expect(utils.verifyMessage(payloadDigest, authorisationRequest.signature!)).to.eq(signerAddress);
+    });
+
+    it('forged signature', () => {
+      const attackerPrivateKey = '0x8e0f0ab35e7b8d8efc554fa0e9db29235e7c52ea5e2bb53ed50d24ff7a4a6f65';
+
+      signAuthorisationRequest(authorisationRequest, attackerPrivateKey);
+
+      expect(authorisationRequest.signature).to.not.deep.equal(expectedSignature);
+    });
+  });
+
+  it('verifyAuthorisationRequest', () => {
+    signAuthorisationRequest(authorisationRequest, privateKey);
+
+    expect(verifyAuthorisationRequest(authorisationRequest, signerAddress)).to.be.true;
+
+    const computedAddress = recoverFromAuthorisationRequest(authorisationRequest);
+    expect(computedAddress).to.equal(signerAddress);
+  });
+
+  it('hashAuthorisationRequest', () => {
+    const expectedPayloadDigest = '0x513741ffb1226167f112de55d110bf11ff18ebc0afe0068c899d583a66d755c8';
+
+    const payloadDigest = hashAuthorisationRequest(authorisationRequest);
+
     expect(payloadDigest).to.equal(expectedPayloadDigest);
-  });
-
-  it('Sign cancel authorisation request payload', async () => {
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
-    expect(cancelAuthorisationRequest.signature).to.deep.equal(expectedSignature);
-    expect(utils.verifyMessage(utils.arrayify(hashCancelAuthorisationRequest(cancelAuthorisationRequest)), cancelAuthorisationRequest.signature!)).to.eq(address);
-  });
-
-  it('Verify cancel authorisation request payload', async () => {
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
-    const result = verifyCancelAuthorisationRequest(cancelAuthorisationRequest, address);
-    expect(result).to.deep.equal(true);
-    const computedAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest);
-    expect(computedAddress).to.deep.equal(address);
-  });
-
-  it('Forged signature', async () => {
-    const attackerPrivateKey = '0x8e0f0ab35e7b8d8efc554fa0e9db29235e7c52ea5e2bb53ed50d24ff7a4a6f65';
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, attackerPrivateKey);
-    expect(cancelAuthorisationRequest.signature).to.not.deep.equal(expectedSignature);
   });
 });

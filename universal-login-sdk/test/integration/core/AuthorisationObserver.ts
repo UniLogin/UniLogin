@@ -6,7 +6,7 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../../fixtures/basicSDK';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import AuthorisationsObserver from '../../../lib/core/observers/AuthorisationsObserver';
-import {waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
+import {waitUntil, signAuthorisationRequest, AuthorisationRequest} from '@universal-login/commons';
 import {utils, Wallet} from 'ethers';
 import {createWallet} from '../../helpers/createWallet';
 
@@ -23,33 +23,33 @@ describe('INT: AuthorisationsObserver', async () => {
   let authorisationsObserver: AuthorisationsObserver;
   let privateKey: string;
   let wallet: Wallet;
-  let getAuthorisationRequest: GetAuthorisationRequest;
+  let authorisationRequest: AuthorisationRequest;
 
-  const createGetAuthorisationRequest = (walletContractAddress: string, privateKey: string) => {
-    const getauthorisationRequest: GetAuthorisationRequest = {
-      walletContractAddress,
+  const createauthorisationRequest = (walletContractAddress: string, privateKey: string) => {
+    const authorisationRequest: AuthorisationRequest = {
+      contractAddress,
       signature: ''
     };
-    signGetAuthorisationRequest(getauthorisationRequest, privateKey);
-    return getauthorisationRequest;
+    signAuthorisationRequest(authorisationRequest, privateKey);
+    return authorisationRequest;
   };
 
   beforeEach(async () => {
     ({sdk, relayer, contractAddress, privateKey, wallet} = await loadFixture(basicSDK));
-    getAuthorisationRequest = createGetAuthorisationRequest(contractAddress, privateKey);
+    authorisationRequest = createauthorisationRequest(contractAddress, privateKey);
     ({authorisationsObserver} = sdk);
   });
 
   it('no authorisation requests', async () => {
     const callback = sinon.spy();
-    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
+    const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
     unsubscribe();
     expect(callback).to.have.been.calledWith([]);
   });
 
   it('one authorisation requests', async () => {
     const callback = sinon.spy();
-    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
+    const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
     expect(callback).to.have.been.calledWith([]);
     const {privateKey} = await sdk.connect(contractAddress);
     await waitUntil(() => !!callback.secondCall);
@@ -66,8 +66,8 @@ describe('INT: AuthorisationsObserver', async () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
-    const unsubscribe1 = authorisationsObserver.subscribe(getAuthorisationRequest, callback1);
-    const unsubscribe2 = authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
+    const unsubscribe1 = authorisationsObserver.subscribe(authorisationRequest, callback1);
+    const unsubscribe2 = authorisationsObserver.subscribe(authorisationRequest, callback2);
 
     await sdk.connect(contractAddress);
     await sdk.connect(newWalletContract.contractAddress);

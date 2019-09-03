@@ -1,4 +1,4 @@
-import {CancelAuthorisationRequest, GetAuthorisationRequest, http, HttpFunction} from '@universal-login/commons';
+import {AuthorisationRequest, http, HttpFunction} from '@universal-login/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
@@ -30,18 +30,18 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(cancelAuthorisationRequest: CancelAuthorisationRequest) {
-    const {walletContractAddress} = cancelAuthorisationRequest;
-    return this.http('POST', `/authorisation/${walletContractAddress}`, {
-      cancelAuthorisationRequest
+  async denyConnection(authorisationRequest: AuthorisationRequest) {
+    const {contractAddress} = authorisationRequest;
+    return this.http('POST', `/authorisation/${contractAddress}`, {
+      authorisationRequest
     }).catch((e: any) => {
       throw new Error(e.error);
     });
   }
 
-  async getPendingAuthorisations(getAuthorisationRequest: GetAuthorisationRequest) {
-    const {walletContractAddress, signature} = getAuthorisationRequest;
-    return this.http('GET', `/authorisation/${walletContractAddress}?signature=${signature}`);
+  async getPendingAuthorisations(AuthorisationRequest: AuthorisationRequest) {
+    const {contractAddress, signature} = AuthorisationRequest;
+    return this.http('GET', `/authorisation/${contractAddress}?signature=${signature}`);
   }
 
   async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {

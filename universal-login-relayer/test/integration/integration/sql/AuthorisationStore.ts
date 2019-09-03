@@ -3,14 +3,14 @@ import Knex from 'knex';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE} from '@universal-login/commons';
+import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 import AuthorisationStore from '../../../../lib/integration/sql/services/AuthorisationStore';
 import {getKnexConfig} from '../../../helpers/knex';
 import deviceInfo from '../../../config/defaults';
-import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 
 chai.use(require('chai-string'));
 
-describe('INT: Authorisation Service', async () => {
+describe('INT: Authorisation Store', async () => {
   let authorisationStore: AuthorisationStore;
   let wallet: Wallet;
   let provider;
@@ -37,7 +37,26 @@ describe('INT: Authorisation Service', async () => {
     const authorisations = await authorisationStore.getPendingAuthorisations(contractAddress);
     expect(authorisations[authorisations.length - 1]).to.deep.eq({...request, id});
 
-    await authorisationStore.removeRequest(otherWallet.address, keyPair.publicKey);
+    await authorisationStore.removeRequests(otherWallet.address);
+    const authorisationsAfterDelete = await authorisationStore.getPendingAuthorisations(otherWallet.address);
+    expect(authorisationsAfterDelete).to.deep.eq([]);
+  });
+
+  it('Many authorisation requests roundtrip', async () => {
+    const requests = [1, 2, 3].map((_) => ({walletContractAddress: contractAddress, key: createKeyPair().publicKey, deviceInfo}));
+    const ids = [];
+    for (const request of requests) {
+       const [id] = await authorisationStore.addRequest(request);
+       ids.push(id);
+    }
+
+    const authorisations = await authorisationStore.getPendingAuthorisations(contractAddress);
+    expect(authorisations.length).to.eq(3);
+    expect(authorisations[0]).to.deep.eq({...requests[0], id: ids[0]});
+    expect(authorisations[1]).to.deep.eq({...requests[1], id: ids[1]});
+    expect(authorisations[2]).to.deep.eq({...requests[2], id: ids[2]});
+
+    await authorisationStore.removeRequests(otherWallet.address);
     const authorisationsAfterDelete = await authorisationStore.getPendingAuthorisations(otherWallet.address);
     expect(authorisationsAfterDelete).to.deep.eq([]);
   });

@@ -1,6 +1,6 @@
 import Knex from 'knex';
 
-export interface AuthorisationRequest {
+export interface AddAuthorisationRequest {
   walletContractAddress: string;
   key: string;
   deviceInfo: object;
@@ -9,7 +9,7 @@ export interface AuthorisationRequest {
 class AuthorisationStore {
   constructor(private database : Knex) {}
 
-  addRequest(request: AuthorisationRequest) {
+  addRequest(request: AddAuthorisationRequest) {
     const {walletContractAddress, key, deviceInfo} = request;
     return this.database.insert({walletContractAddress, key, deviceInfo})
       .into('authorisations')
@@ -22,10 +22,16 @@ class AuthorisationStore {
       .select();
   }
 
-  removeRequest(walletContractAddress: string, publicKey: string) {
+  removeRequest(contractAddress: string, key: string) {
     return this.database('authorisations')
-      .where('walletContractAddress', walletContractAddress)
-      .where('key', publicKey)
+      .where('walletContractAddress', contractAddress)
+      .where('key', key)
+      .del();
+  }
+
+  removeRequests(contractAddress: string) {
+    return this.database('authorisations')
+      .where('walletContractAddress', contractAddress)
       .del();
   }
 }

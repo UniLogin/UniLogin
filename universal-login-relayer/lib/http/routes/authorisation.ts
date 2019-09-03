@@ -1,32 +1,32 @@
 import {Router, Request} from 'express';
-import {AuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
+import {AddAuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
 import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {CancelAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
-import { asCancelAuthorisationRequest } from '../utils/sanitizers';
+import {AuthorisationRequest} from '@universal-login/commons';
+import {asAuthorisationRequest} from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
 
 
 const request = (authorisationService: AuthorisationService) =>
   async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
-    const requestAuthorisation: AuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
-    const result = await authorisationService.addRequest(requestAuthorisation);
+    const addAuthorisationRequest: AddAuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
+    const result = await authorisationService.addRequest(addAuthorisationRequest);
     return responseOf({response: result}, 201);
   };
 
 const getPending = (authorisationService: AuthorisationService) =>
-  async (data: {walletContractAddress: string,  query: {signature: string}}) => {
-    const getAuthorisationRequest: GetAuthorisationRequest = {
-      walletContractAddress: data.walletContractAddress,
+  async (data: {contractAddress: string,  query: {signature: string}}) => {
+    const authorisationRequest: AuthorisationRequest = {
+      contractAddress: data.contractAddress,
       signature: data.query.signature
     };
-    const result = await authorisationService.getAuthorisationRequests(getAuthorisationRequest);
+    const result = await authorisationService.getAuthorisationRequests(authorisationRequest);
     return responseOf({response: result});
   };
 
 const denyRequest = (authorisationService: AuthorisationService) =>
-  async (data: {body: {cancelAuthorisationRequest: CancelAuthorisationRequest}}) => {
-    const result = await authorisationService.removeAuthorisationRequest(data.body.cancelAuthorisationRequest);
+  async (data: {body: {authorisationRequest: AuthorisationRequest}}) => {
+    const result = await authorisationService.removeAuthorisationRequest(data.body.authorisationRequest);
     return responseOf(result, 204);
   };
 
@@ -43,9 +43,9 @@ export default (authorisationService: AuthorisationService) => {
     request(authorisationService)
   ));
 
-  router.get('/:walletContractAddress', asyncHandler(
+  router.get('/:contractAddress', asyncHandler(
     sanitize({
-      walletContractAddress: asString,
+      contractAddress: asString,
       query: asObject({
         signature: asString
       })
@@ -53,10 +53,10 @@ export default (authorisationService: AuthorisationService) => {
     getPending(authorisationService)
   ));
 
-  router.post('/:walletContractAddress', asyncHandler(
+  router.post('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
-        cancelAuthorisationRequest: asCancelAuthorisationRequest
+        authorisationRequest: asAuthorisationRequest
       })
     }),
     denyRequest(authorisationService)

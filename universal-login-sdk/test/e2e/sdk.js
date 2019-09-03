@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
+import {signAuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
@@ -182,8 +182,8 @@ describe('E2E: SDK', async () => {
 
     describe('Authorisation', async () => {
       it('no pending authorisations', async () => {
-        const getAuthorisationRequest = signGetAuthorisationRequest({walletContractAddress: contractAddress}, privateKey);
-        expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest)).to.deep.eq([]);
+        const authorisationRequest = signAuthorisationRequest({contractAddress}, privateKey);
+        expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(authorisationRequest)).to.deep.eq([]);
       });
 
 
@@ -191,9 +191,9 @@ describe('E2E: SDK', async () => {
         const {privateKey: devicePrivateKey} = await sdk.connect(contractAddress);
         const wallet = new Wallet(devicePrivateKey);
 
-        const getAuthorisationRequest = signGetAuthorisationRequest({walletContractAddress: contractAddress}, privateKey);
+        const authorisationRequest = signAuthorisationRequest({contractAddress}, privateKey);
 
-        const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(getAuthorisationRequest);
+        const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(authorisationRequest);
         expect(response[response.length - 1]).to.deep.include({key: wallet.address});
       });
 
