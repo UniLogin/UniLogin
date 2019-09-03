@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {convertTenthGweiToWei} from '../../../lib/integration/ethereum/conversion';
+import {convertTenthGweiToWei} from '../../../lib/core/utils/conversion';
 
 describe('UNIT: conversion ethers', () => {
   it('parse 1 1/10 GWEI to WEI', () => {
