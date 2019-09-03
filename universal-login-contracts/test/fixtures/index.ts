@@ -1,1 +1,0 @@
-export {setupMasterWithRefundAndFactory} from './walletContract';
