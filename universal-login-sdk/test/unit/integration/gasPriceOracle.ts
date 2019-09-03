@@ -26,9 +26,9 @@ describe('UNIT: GasPriceOracle', () => {
   });
 
   it('have exactly {fastest | fast | average} props', async () => {
-    expect(gasPrices.fastest).to.deep.eq(utils.bigNumberify('1500000000000'));
-    expect(gasPrices.fast).to.eq(utils.bigNumberify('1000000000000'));
-    expect(gasPrices.average).to.eq(utils.bigNumberify('500000000000'));
+    expect(gasPrices.fastest).to.deep.eq(utils.bigNumberify('15000000000'));
+    expect(gasPrices.fast).to.eq(utils.bigNumberify('10000000000'));
+    expect(gasPrices.average).to.eq(utils.bigNumberify('5000000000'));
 
     expect(Object.keys(gasPrices).length).to.be.equal(3);
   });

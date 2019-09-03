@@ -1,4 +1,4 @@
-import {http, HttpFunction, convert10sGweiToWei} from '@universal-login/commons';
+import {http, HttpFunction, convertTenthGweiToWei} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {fetch} from './fetch';
 
@@ -17,9 +17,9 @@ export class GasPriceOracle {
   async getGasPrices(): Promise<GasPriceSuggestion> {
     const response = await this.http('GET', '');
     return {
-      fastest: convert10sGweiToWei(response.fastest),
-      fast: convert10sGweiToWei(response.fast),
-      average: convert10sGweiToWei(response.average),
+      fastest: convertTenthGweiToWei(response.fastest),
+      fast: convertTenthGweiToWei(response.fast),
+      average: convertTenthGweiToWei(response.average),
     };
   }
 }
