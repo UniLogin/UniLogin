@@ -57,29 +57,6 @@ describe('CONTRACT: Executor - main', async  () => {
     });
   });
 
-  describe('change required signatures per transaction', async () => {
-    it('should change the number of required signatures successfully', async () => {
-        await walletContract.setRequiredSignatures(2);
-        expect(await walletContract.requiredSignatures()).to.eq(2);
-    });
-
-    it('should change the number of required signatures to keyCount', async () => {
-        await walletContract.setRequiredSignatures(await walletContract.keyCount());
-        expect(await walletContract.requiredSignatures()).to.eq(await walletContract.keyCount());
-    });
-
-    it('should fail to change the amount of required signatures if the amount is equal to the actual amount', async () => {
-        await expect(walletContract.setRequiredSignatures(1)).to.be.revertedWith('Invalid required signature');
-    });
-
-    it('should fail to change the amount of required signatures if the new amount 0', async () => {
-        await expect(walletContract.setRequiredSignatures(0)).to.be.revertedWith('Invalid required signature');
-    });
-
-    it('should fail to change the amount of required signatures if the new amount is higher than keyCount', async () => {
-        await expect(walletContract.setRequiredSignatures(await walletContract.keyCount() + 1)).to.be.revertedWith('Signatures exceed owned keys number');
-    });
-  });
   describe('signing message', () => {
     it('calculates hash', async () => {
       const jsHash = calculateMessageHash(msg);

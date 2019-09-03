@@ -7,12 +7,13 @@ import "../utils/ENSUtils.sol";
 import "../utils/ERC1271Utils.sol";
 import "../utils/StringUtils.sol";
 import "./Executor.sol";
+import "./KeyHolder.sol";
 
 
 /* solium-disable no-empty-blocks */
-contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receiver, Initializable, IERC1271 {
+contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IERC721Receiver, Initializable, IERC1271 {
 
-    constructor() Executor(address(0)) public {
+    constructor() KeyHolder(address(0)) public {
     }
 
     function owner() external view returns (address) {
@@ -49,6 +50,12 @@ contract Wallet is ENSUtils, Executor, ERC1271Utils, StringUtils, IERC721Receive
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/
         refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
+    }
+
+    function setRequiredSignatures(uint _requiredSignatures) public onlyAuthorised {
+        require(_requiredSignatures != requiredSignatures && _requiredSignatures > 0, "Invalid required signature");
+        require(_requiredSignatures <= keyCount, "Signatures exceed owned keys number");
+        requiredSignatures = _requiredSignatures;
     }
 
     function isValidSignature(bytes memory _data, bytes memory _signature) public view returns (bytes4) {
