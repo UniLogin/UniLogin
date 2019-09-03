@@ -14,5 +14,8 @@
     "**/.cache": true,
     "**/build": true,
     "**/dist": true
+  },
+  "[solidity]": {
+    "editor.tabSize": 4,
   }
 }
