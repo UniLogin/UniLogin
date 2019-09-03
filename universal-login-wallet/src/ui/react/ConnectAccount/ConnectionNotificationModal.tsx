@@ -4,15 +4,15 @@ import {ConnectionNotification} from '@universal-login/react';
 import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
 
-interface ConnectionNotificationScreenProps {
+interface ConnectionNotificationModalProps {
   contractAddress: string;
   privateKey: string;
   sdk: UniversalLoginSDK;
 }
 
-export const ConnectionNotificationModal = ({contractAddress, privateKey, sdk}: ConnectionNotificationScreenProps) => (
+export const ConnectionNotificationModal = ({contractAddress, privateKey, sdk}: ConnectionNotificationModalProps) => (
   <>
-    <div className="modal-body">
+    <div id="notifications" className="modal-body">
       <div className="box-header">
         <div className="row align-items-center">
           <h2 className="box-title">Confirmation</h2>

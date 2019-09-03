@@ -8,18 +8,16 @@ import {PrivateRoute} from './PrivateRoute';
 import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
-import {useServices, useRouter} from '../hooks';
+import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
-import {ConnectionNotificationScreen} from './ConnectAccount/ConnectionNotificationScreen';
 
 const App = () => {
-  const {history} = useRouter();
   const modalService = createModalService<WalletModalType, string>();
-  const {walletService, sdk} = useServices();
+  const {walletService} = useServices();
   const [appReady, setAppReady] = useState(false);
 
   useLayoutEffect(() => {
@@ -78,16 +76,6 @@ const App = () => {
           path="/transferring"
           authorized={authorized}
           render={() => <TransferringFundsScreen />}
-        />
-        <PrivateRoute
-          path="/notifications"
-          authorized={authorized}
-          render={() => <ConnectionNotificationScreen
-            contractAddress={walletService.applicationWallet!.contractAddress}
-            privateKey={walletService.applicationWallet!.privateKey}
-            onCancel={() => history.push('/')}
-            sdk={sdk}
-          />}
         />
         <PrivateRoute
           path="/settings"

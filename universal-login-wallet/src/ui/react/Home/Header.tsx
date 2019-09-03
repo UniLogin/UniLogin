@@ -52,7 +52,7 @@ export function Header() {
           </li>
           <li className="header-list-item">
             <button
-              id="notificationsLink"
+              id="notificationsButton"
               className={`header-btn notifications-btn ${newNotifications ? 'new-notifications' : ''}`}
               onClick={() => modalService.showModal('approveDevice')}
             >

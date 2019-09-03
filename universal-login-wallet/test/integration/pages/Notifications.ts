@@ -28,7 +28,7 @@ export default class NotificationsPage {
   }
 
   async waitForNotificationDisappear() {
-    await waitForUI(this.wrapper, () => !this.wrapper.text().includes('Security code'));
+    await waitForUI(this.wrapper, () => !this.wrapper.exists('#emojis'));
   }
 
   isNotificationAlert(): boolean {

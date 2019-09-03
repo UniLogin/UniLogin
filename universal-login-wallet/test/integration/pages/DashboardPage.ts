@@ -28,8 +28,8 @@ export default class DashboardPage {
   }
 
   async clickNotificationButton() {
-    this.wrapper.find('a#notificationsLink').simulate('click', { button: 0 });
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Confirmation'));
+    this.wrapper.find('#notificationsButton').simulate('click', { button: 0 });
+    await waitForUI(this.wrapper, () => this.wrapper.exists('#emojis'));
   }
 
   async waitForNewNotifications() {
