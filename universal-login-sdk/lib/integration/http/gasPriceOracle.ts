@@ -1,11 +1,21 @@
 import {http} from '@universal-login/commons';
 import {fetch} from './fetch';
+import {HttpFunction} from '@universal-login/commons/lib';
 
 export type GasPriceOption = 'fastest' | 'fast' | 'average';
 
-const GAS_PRICE_ORACLE_URL = 'https://ethgasstation.info/json/ethgasAPI.json';
+export type GasPriceSuggestion = Record<GasPriceOption, number>;
 
-export const getGasPrices = async (): Promise<Record<GasPriceOption, number>> => {
-  const {fastest, fast, average} = await http(fetch)(GAS_PRICE_ORACLE_URL)('GET', '');
-  return {fastest, fast, average};
-};
+export class GasPriceOracle {
+  private http: HttpFunction;
+  private GAS_PRICE_ORACLE_URL = 'https://ethgasstation.info/json/ethgasAPI.json';
+
+  constructor() {
+    this.http = http(fetch)(this.GAS_PRICE_ORACLE_URL);
+  }
+
+  async getGasPrices(): Promise<GasPriceSuggestion> {
+    const {fastest, fast, average} = await this.http('GET', '');
+    return {fastest, fast, average};
+  }
+}

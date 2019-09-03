@@ -1,11 +1,19 @@
 import {expect} from 'chai';
-import {getGasPrices, GasPriceOption} from '../../../lib/integration/http/gasPriceOracle';
+import {GasPriceOracle, GasPriceOption} from '../../../lib/integration/http/gasPriceOracle';
+
+const response = {
+  fast: 100,
+  fastest: 150,
+  average: 50
+};
 
 describe('INT: GasPriceOracle', () => {
   let gasPrices: Record<GasPriceOption, number>;
+  const gasPriceOracle = new GasPriceOracle();
+  (gasPriceOracle as any).http = async (verb: string, url: string) => Promise.resolve(response);
 
   beforeEach(async () => {
-    gasPrices = await getGasPrices();
+    gasPrices = await gasPriceOracle.getGasPrices();
   });
 
   it('have exactly {fastest | fast | average} props', async () => {
