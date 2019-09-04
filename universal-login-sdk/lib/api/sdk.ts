@@ -176,11 +176,10 @@ class UniversalLoginSDK {
     };
   }
 
-  async denyRequest(contractAddress: string, publicKey: string, privateKey: string) {
+  async denyRequests(contractAddress: string, privateKey: string) {
     const authorisationRequest = {contractAddress};
     signAuthorisationRequest(authorisationRequest, privateKey);
     await this.relayerApi.denyConnection(authorisationRequest);
-    return publicKey;
   }
 
   subscribe(eventType: string, filter: any, callback: Function) {

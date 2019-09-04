@@ -201,13 +201,6 @@ describe('E2E: SDK', async () => {
         const {privateKey: newDevicePrivateKey} = await sdk.connect(contractAddress);
         expect(newDevicePrivateKey).to.be.properPrivateKey;
       });
-
-      it('should return public key when deny request', async () => {
-        await sdk.connect(contractAddress);
-        const {publicKey} = createKeyPair();
-        const response = await sdk.denyRequest(contractAddress, publicKey, privateKey);
-        expect(response).to.eq(publicKey);
-      });
     });
   });
 

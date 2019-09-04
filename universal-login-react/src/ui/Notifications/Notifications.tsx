@@ -18,7 +18,7 @@ export const Notifications = ({sdk, contractAddress, privateKey}: NotificationsP
 
   const confirmRequest = (publicKey: string) => sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails);
 
-  const rejectRequest = (publicKey: string) => sdk.denyRequest(contractAddress, publicKey, privateKey);
+  const rejectRequest = () => sdk.denyRequests(contractAddress, privateKey);
 
   return (
     <div className="subscreen">
