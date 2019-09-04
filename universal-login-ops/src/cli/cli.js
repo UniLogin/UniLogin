@@ -6,7 +6,7 @@ import deployMaster from '../ops/deployMaster';
 import {connectAndDeployFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
-import {registerDomain} from '../ENS/registerDomain';
+import {registerTestDomain} from '../ENS/registerTestDomain';
 
 const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')
@@ -62,20 +62,16 @@ const commandLineBuilder = yargs
     (argv) => {
       sendFunds(argv).catch(console.error);
     })
-  .command('register:test:domain [label] [tld]', 'Registers test ENS domain',
+  .command('register:test:domain [label]', 'Registers test ENS domain',
     (yargs) => {
       yargs
         .positional('label', {
           type: 'string',
           describe: 'Label domain to register'
-        })
-        .positional('tld', {
-          type: 'string',
-          describe: 'Top level domain'
         });
     },
     (argv) => {
-      registerDomain(argv.label, argv.tld).catch(console.error);
+      registerTestDomain(argv.label).catch(console.error);
     })
   .demandCommand(1, 'No command provided');
 
