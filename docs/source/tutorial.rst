@@ -297,21 +297,20 @@ Parameters:
     ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
 
-To register an ENS domain, in universal-login-ops directory type in the console:
+To register an test ENS domain type in the console:
 
   ::
 
-    yarn register:domain my-domain tld
+    universal-login register:test:domain my-domain
 
 Parameters:
   - **my-domain** - a domain to register
-  - **tld** - a top level domain, for example: ``eth`` or on testnets: ``test``
 
   Example:
 
   ::
 
-    yarn register:domain cool-domain test
+    universal-login register:test:domain cool-domain
 
   Result:
 
@@ -324,6 +323,8 @@ Parameters:
     New registrar deployed: 0xf1Af1CCEEC4464212Fc7b790c205ca3b8E74ba67
     cool-domain.test owner set to: 0xf1Af1CCEEC4464212Fc7b790c205ca3b8E74ba67 (registrar)
 
+
+Note: use ``.test`` tld only on testnets.
 
 
 Programmatically
