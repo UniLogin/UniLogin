@@ -4,12 +4,13 @@ import {connect} from '../cli/connectAndExecute';
 
 type RegisterTestDomainArgs = {
   nodeUrl: string;
-  label : string;
+  label: string;
+  privateKey: string;
 }
 
-export const registerTestDomain = async ({nodeUrl, label}: RegisterTestDomainArgs) => {
+export const registerTestDomain = async ({nodeUrl, label, privateKey}: RegisterTestDomainArgs) => {
+  const {wallet} = connect(nodeUrl, privateKey);
   const config = getConfig();
-  const {provider} = connect(nodeUrl, config.privateKey);
-  const registrar = new DomainRegistrar(config, provider);
+  const registrar = new DomainRegistrar(config, wallet);
   await registrar.registerAndSave(label, 'test');
 };

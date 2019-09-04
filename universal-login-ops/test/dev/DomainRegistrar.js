@@ -43,7 +43,7 @@ describe('ENS register', async () => {
     const tld = 'eth';
 
     before(() => {
-      domainRegistrar = new DomainRegistrar(config, provider, nullConsole);
+      domainRegistrar = new DomainRegistrar(config, wallet, nullConsole);
       label = 'universal-login';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       node = utils.namehash(`${label}.${tld}`);
@@ -82,7 +82,7 @@ describe('ENS register', async () => {
     let publicResolverContract;
 
     before(async () => {
-      nameRegistrar = new ENSNameRegistrar(config, provider, nullConsole);
+      nameRegistrar = new ENSNameRegistrar(config, wallet, nullConsole);
       label = 'justyna';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       [domain] = ensRegistrars;
