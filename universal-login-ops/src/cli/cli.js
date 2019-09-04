@@ -6,7 +6,7 @@ import deployMaster from '../ops/deployMaster';
 import {connectAndDeployFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
-import {registerTestDomain} from '../ENS/registerTestDomain';
+import {registerTestDomain} from '../ENS/registerDomain';
 import {registerENSName} from '../ENS/registerENSName';
 
 const commandLineBuilder = yargs
@@ -74,7 +74,7 @@ const commandLineBuilder = yargs
     (argv) => {
       registerTestDomain(argv.label).catch(console.error);
     })
-  .commans('register:ens:name [name] [domain]', 'Registers ENS name',
+  .command('register:ens:name [name] [domain]', 'Registers ENS name',
     (yargs) => {
       yargs
         .positional('name', {

@@ -13,7 +13,6 @@
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.{js,ts}\"",
     "cli": "ts-node ./scripts/cli",
-    "register:name": "ts-node ./scripts/ENSNameRegister.ts",
     "clean": "rimraf dist"
   },
   "dependencies": {
