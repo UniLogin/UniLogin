@@ -30,6 +30,13 @@ const denyRequest = (authorisationService: AuthorisationService) =>
     return responseOf(result, 204);
   };
 
+const cancelRequest = (authorisationService: AuthorisationService) =>
+  async (data: {body: {authorisationRequest: AuthorisationRequest}}) => {
+    const result = await authorisationService.cancelAuthorisationRequest(data.body.authorisationRequest);
+    const httpCode = result === 0 ? 401 : 204;
+    return responseOf(result, httpCode);
+  };
+
 export default (authorisationService: AuthorisationService) => {
   const router = Router();
 
@@ -60,6 +67,15 @@ export default (authorisationService: AuthorisationService) => {
       })
     }),
     denyRequest(authorisationService)
+  ));
+
+  router.delete('/:walletContractAddress', asyncHandler(
+    sanitize({
+      body: asObject({
+        authorisationRequest: asAuthorisationRequest
+      })
+    }),
+    cancelRequest(authorisationService)
   ));
 
   return router;
