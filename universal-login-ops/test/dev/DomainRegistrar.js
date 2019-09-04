@@ -15,7 +15,6 @@ chai.use(sinonChai);
 const nullConsole = () => {};
 
 describe('ENS register', async () => {
-  let provider;
   let wallet;
   let ensAddress;
   let ensRegistrars;
@@ -27,7 +26,7 @@ describe('ENS register', async () => {
 
 
   before(async () => {
-    ({wallet, provider, ensAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
+    ({wallet, ensAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
     config = {
       privateKey: wallet.privateKey,
       chainSpec: {
