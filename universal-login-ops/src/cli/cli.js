@@ -63,18 +63,26 @@ const commandLineBuilder = yargs
     (argv) => {
       sendFunds(argv).catch(console.error);
     })
-  .command('register:test:domain [label]', 'Registers test ENS domain',
+  .command('register:test:domain [label] [ensAddress] [publicResolverAddress]', 'Registers test ENS domain',
     (yargs) => {
       yargs
         .positional('label', {
           type: 'string',
           describe: 'Label domain to register'
+        })
+        .positional('ensAddress', {
+          type: 'string',
+          describe: 'ENS address'
+        })
+        .positional('publicResolverAddress', {
+          type: 'string',
+          describe: 'Address of the public resolver'
         });
     },
     (argv) => {
       registerTestDomain(argv).catch(console.error);
     })
-  .command('register:ens:name [name] [domain]', 'Registers ENS name',
+  .command('register:ens:name [name] [domain] [ensAddress] [publicResolverAddress]', 'Registers ENS name',
     (yargs) => {
       yargs
         .positional('name', {
@@ -84,6 +92,14 @@ const commandLineBuilder = yargs
         .positional('domain', {
           type: 'string',
           describe: 'ENS domain'
+        })
+        .positional('ensAddress', {
+          type: 'string',
+          describe: 'ENS address'
+        })
+        .positional('publicResolverAddress', {
+          type: 'string',
+          describe: 'Address of the public resolver'
         });
     },
     (argv) => {

@@ -20,11 +20,11 @@ class DomainRegistrar extends ENSRegistrarBase {
   }
 
   async setAsResolverPublicResolver(label : string, node : string, tld : string) {
-    this.publicResolver = new Contract(this.config.chainSpec.publicResolverAddress!, PublicResolver.interface, this.deployer);
+    this.publicResolver = new Contract(this.ensInfo.publicResolverAddress!, PublicResolver.interface, this.deployer);
     const transaction = await this.ens.setResolver(node, this.publicResolver.address);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${tld} set to ${await this.ens.resolver(node)} (public resolver)`);
-    this.variables.PUBLIC_RESOLVER_ADDRESS = this.config.chainSpec.publicResolverAddress!;
+    this.variables.PUBLIC_RESOLVER_ADDRESS = this.ensInfo.publicResolverAddress!;
   }
 
   async deployNewRegistrar(node : string) {

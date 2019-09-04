@@ -22,19 +22,10 @@ describe('ENS register', async () => {
   let label;
   let node;
   let labelHash;
-  let config;
 
 
   before(async () => {
     ({wallet, ensAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
-    config = {
-      privateKey: wallet.privateKey,
-      chainSpec: {
-        ensAddress,
-        publicResolverAddress: publicResolver,
-        chainId: 0,
-      },
-    };
   });
 
   describe('DomainRegistrar', async () => {
@@ -42,7 +33,7 @@ describe('ENS register', async () => {
     const tld = 'eth';
 
     before(() => {
-      domainRegistrar = new DomainRegistrar(config, wallet, nullConsole);
+      domainRegistrar = new DomainRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, nullConsole);
       label = 'universal-login';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       node = utils.namehash(`${label}.${tld}`);
@@ -81,7 +72,7 @@ describe('ENS register', async () => {
     let publicResolverContract;
 
     before(async () => {
-      nameRegistrar = new ENSNameRegistrar(config, wallet, nullConsole);
+      nameRegistrar = new ENSNameRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, nullConsole);
       label = 'justyna';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       [domain] = ensRegistrars;
