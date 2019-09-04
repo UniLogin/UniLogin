@@ -20,4 +20,10 @@
 /universal-login-sdk/dist/
 /universal-login-sdk/node_modules/
 /universal-login-sdk/yarn-error.log
+/universal-login-web3/dist/
+/universal-login-web3/node_modules/
+/universal-login-web3/yarn-error.log
+/universal-login-web3-poc/dist/
+/universal-login-web3-poc/node_modules/
+/universal-login-web3-poc/yarn-error.log
 yarn-error.log
