@@ -25,7 +25,7 @@ contract KeyHolder {
     }
 
     modifier onlyAuthorised() {
-        require(keyExist(msg.sender) || msg.sender == address(this), "Sender not permissioned");
+        require(msg.sender == address(this), "Sender not permissioned");
         _;
     }
 

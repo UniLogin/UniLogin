@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {Wallet, Contract} from 'ethers';
-import WalletContract from '../../../build/Wallet.json';
+import WalletContract from '../../../build/TestableWallet.json';
 import {createKeyPair} from '@universal-login/commons';
 
 describe('UNIT: WalletContract', () => {

@@ -1,10 +1,10 @@
-import KeyHolder from '../../build/KeyHolder.json';
+import KeyHolder from '../../build/TestableKeyHolder.json';
 import {Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {Provider} from 'ethers/providers';
 import {createKeyPair} from '@universal-login/commons';
 
-export default async function basicKeyHolder(provider: Provider, [unknownWallet, , , wallet]: Wallet[]) {
+export default async function testableKeyHolder(provider: Provider, [unknownWallet, , , wallet]: Wallet[]) {
   const initialPublicKey = wallet.address;
   const publicKey = createKeyPair().publicKey;
   const publicKey2 = createKeyPair().publicKey;

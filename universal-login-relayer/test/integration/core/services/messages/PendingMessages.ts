@@ -3,6 +3,7 @@ import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, createSignedMessage, SignedMessage, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
@@ -34,7 +35,7 @@ describe('INT: PendingMessages', () => {
     pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any, statusService);
     message = createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
-    await walletContract.setRequiredSignatures(2);
+    await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
   });
 
   afterEach(async () => {
@@ -99,7 +100,6 @@ describe('INT: PendingMessages', () => {
 
   describe('Ensure correct execution', async () =>  {
     it('should throw when pending message already has transaction hash', async () => {
-      await walletContract.setRequiredSignatures(1);
       await pendingMessages.add(message);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       await expect(pendingMessages.ensureCorrectExecution(messageHash))
