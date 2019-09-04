@@ -1,15 +1,15 @@
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
+import chai, {expect} from 'chai';
 import React from 'react';
-import {mountWithContext} from '../helpers/CustomMount';
-import App from '../../../src/ui/react/App';
-import {providers, Wallet} from 'ethers';
-import {Services} from '../../../src/ui/createServices';
 import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
 import {ETHER_NATIVE_TOKEN, waitExpect} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
+import {mountWithContext} from '../helpers/CustomMount';
+import {Services} from '../../../src/ui/createServices';
+import App from '../../../src/ui/react/App';
+import {providers, Wallet} from 'ethers';
 import {AppPage} from '../pages/AppPage';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
-import chai, {expect} from 'chai';
 
 chai.use(require('chai-string'));
 
@@ -23,7 +23,7 @@ describe('UI: Connection flow', () => {
   let contractAddress : string;
   const name = 'name.mylogin.eth';
 
-  before(async () => {
+  beforeEach(async () => {
     const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
@@ -46,7 +46,18 @@ describe('UI: Connection flow', () => {
     expect(appPage.dashboard().getWalletBalance()).to.startWith('1.9998');
   });
 
-  after(async () => {
+  it('Cancel connection', async () => {
+    const appPage = new AppPage(appWrapper);
+    appPage.login().clickConnectToExisting();
+    await appPage.login().connect(name);
+    appPage.connection().clickConnectWithAnotherDevice();
+    await appPage.connection().waitForEmojiView();
+    await appPage.connection().clickCancel();
+    await appPage.connection().waitForConnectionChoiceView();
+    expect(appPage.connection().getConnectionWithPassphraseText()).to.startWith('Connect with passphrase');
+  });
+
+  afterEach(async () => {
     await services.sdk.finalizeAndStop();
     appWrapper.unmount();
     await relayer.stop();
