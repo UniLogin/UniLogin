@@ -5,9 +5,13 @@
   "types": "dist/lib/index.d.ts",
   "license": "MIT",
   "dependencies": {
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
     "@types/web3": "^1.0.19",
     "@universal-login/sdk": "^0.3.33",
     "ethers": "^4.0.36",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "web3": "^1.2.1"
   },
   "scripts": {
