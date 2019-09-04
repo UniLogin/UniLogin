@@ -6,8 +6,8 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: yarn build
       - run: yarn lint
+      - run: yarn build
       - run: cd universal-login-contracts && yarn test:nobuild
       - run: cd universal-login-commons && yarn test:nobuild
       - run: cd universal-login-ops && yarn test:nobuild
