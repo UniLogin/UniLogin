@@ -72,7 +72,7 @@ const commandLineBuilder = yargs
         });
     },
     (argv) => {
-      registerTestDomain(argv.label).catch(console.error);
+      registerTestDomain(argv).catch(console.error);
     })
   .command('register:ens:name [name] [domain]', 'Registers ENS name',
     (yargs) => {
@@ -87,7 +87,7 @@ const commandLineBuilder = yargs
         });
     },
     (argv) => {
-      registerENSName(argv.name, argv.domain).catch(console.error);
+      registerENSName(argv).catch(console.error);
     })
   .demandCommand(1, 'No command provided');
 
