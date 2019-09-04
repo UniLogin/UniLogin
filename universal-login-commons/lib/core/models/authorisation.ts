@@ -1,10 +1,4 @@
-export interface CancelAuthorisationRequest {
-  walletContractAddress: string;
-  publicKey: string;
-  signature?: string;
-}
-
-export interface GetAuthorisationRequest {
-  walletContractAddress: string;
+export interface AuthorisationRequest {
+  contractAddress: string;
   signature?: string;
 }

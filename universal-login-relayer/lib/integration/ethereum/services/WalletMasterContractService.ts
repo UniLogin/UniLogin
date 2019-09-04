@@ -1,4 +1,4 @@
-import {recoverFromCancelAuthorisationRequest, recoverFromGetAuthorisationRequest, GetAuthorisationRequest, hashGetAuthorisationRequest, CancelAuthorisationRequest, hashCancelAuthorisationRequest, ensure} from '@universal-login/commons';
+import {recoverFromAuthorisationRequest, AuthorisationRequest, hashAuthorisationRequest, ensure} from '@universal-login/commons';
 import { ethers, providers} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
 import { UnauthorisedAddress } from '../../../core/utils/errors';
@@ -14,20 +14,12 @@ class WalletMasterContractService {
     ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
 
-  async ensureValidCancelAuthorisationRequestSignature(cancelAuthorisationRequest: CancelAuthorisationRequest) {
-    const recoveredAddress = recoverFromCancelAuthorisationRequest(cancelAuthorisationRequest);
-    const {walletContractAddress, signature} = cancelAuthorisationRequest;
-    const payloadDigest = hashCancelAuthorisationRequest(cancelAuthorisationRequest);
+  async ensureValidAuthorisationRequestSignature(authorisationRequest: AuthorisationRequest) {
+    const recoveredAddress = recoverFromAuthorisationRequest(authorisationRequest);
+    const {contractAddress, signature} = authorisationRequest;
+    const payloadDigest = hashAuthorisationRequest(authorisationRequest);
 
-    await this.ensureValidSignature(walletContractAddress, signature!, payloadDigest, recoveredAddress);
-  }
-
-  async ensureValidGetAuthorisationRequestSignature(getAuthorisationRequest: GetAuthorisationRequest) {
-    const recoveredAddress = recoverFromGetAuthorisationRequest(getAuthorisationRequest);
-    const {walletContractAddress, signature} = getAuthorisationRequest;
-    const payloadDigest = hashGetAuthorisationRequest(getAuthorisationRequest);
-
-    await this.ensureValidSignature(walletContractAddress, signature!, payloadDigest, recoveredAddress);
+    await this.ensureValidSignature(contractAddress, signature!, payloadDigest, recoveredAddress);
   }
 }
 
