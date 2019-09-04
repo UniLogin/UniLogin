@@ -14,7 +14,7 @@ web3.eth.getAccounts().then(console.log)
 
 function App() {
   return (
-    <div>
+    <div> Hello from host app!
     </div>
   );
 }
