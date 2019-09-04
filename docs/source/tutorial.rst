@@ -297,15 +297,15 @@ Parameters:
     ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
     PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
 
-To register an ENS domain, in universal-login-ops directory type in the console:
+To register an ENS domain type in the console:
 
   ::
 
-    yarn register:domain my-domain tld
+    universal-login register:test:domain my-domain tld
 
 Parameters:
   - **my-domain** - a domain to register
-  - **tld** - a top level domain, for example: ``eth`` or on testnets: ``test``
+  - **tld** - a top level domain on testnets: ``test``
 
   Example:
 
