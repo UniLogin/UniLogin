@@ -28,7 +28,7 @@ jobs:
       - run: yarn build
       - run: cd universal-login-sdk && yarn test:nobuild
       - run: cd universal-login-relayer && yarn test:nobuild
-  test_react_wallet:
+  test_react_wallet_web3:
     docker:
       - image: circleci/node:10.15
       - image: circleci/postgres:9.6-alpine
@@ -41,6 +41,7 @@ jobs:
       - run: yarn build
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
+      - run: cd universal-login-web3 && yarn test
 
 workflows:
   version: 2
@@ -48,4 +49,4 @@ workflows:
     jobs:
       - lint_test_contracts_commons_ops
       - test_sdk_relayer
-      - test_react_wallet
+      - test_react_wallet_web3
