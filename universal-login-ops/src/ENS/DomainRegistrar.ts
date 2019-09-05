@@ -2,7 +2,7 @@ import {utils, Contract} from 'ethers';
 import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
 import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
 import TestRegistrar from '@universal-login/contracts/build/TestRegistrar.json';
-import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction} from '@universal-login/commons';
+import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction, ensure} from '@universal-login/commons';
 import {saveVariables} from '../utils/save';
 import ENSRegistrarBase from './ENSRegistrarBase';
 
@@ -80,6 +80,7 @@ class DomainRegistrar extends ENSRegistrarBase {
     const node = utils.namehash(`${label}.${tld}`);
     this.log(`Registering ${label}.${tld}...`);
 
+    ensure(await this.ens.owner(node) === this.deployer.address, Error, `You don't own ${label}.eth domain`);
     const publicResolverAddress = await this.deployAndSetPublicResolver(label, node, tld);
     const registrarAddress = await this.deployNewRegistrar(node);
     await this.setRegistrarAsOwner(label, node, tld);
