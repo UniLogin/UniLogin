@@ -1,15 +1,15 @@
 import React from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {Onboarding} from '@universal-login/react';
 import {ApplicationWallet} from '@universal-login/commons';
 
 export interface AppProps {
   sdk: UniversalLoginSDK;
-  onCreate: (arg: ApplicationWallet) => void;
+  walletService: WalletService;
   domains: string[];
 }
 
-export const App = ({sdk, onCreate, domains}: AppProps) => (
+export const App = ({sdk, walletService, domains}: AppProps) => (
   <div>
     <p style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>
       Create or connect account
@@ -19,8 +19,7 @@ export const App = ({sdk, onCreate, domains}: AppProps) => (
     </p>
     <Onboarding
       sdk={sdk}
-      onConnect={() => {}}
-      onCreate={onCreate}
+      walletService={walletService}
       domains={domains}
     />
   </div>
