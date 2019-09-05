@@ -285,16 +285,16 @@ To register an test ENS domain type in the console:
 
   ::
 
-    universal-login register:test:domain [my-domain] [ensAddress] [publicResolverAddress] --privateKey [privateKey] --nodeUrl [url]
+    universal-login register:test:domain [my-domain] [publicResolverAddress] --ensAddress [ensAddress] --privateKey [privateKey] --nodeUrl [url]
 
 Parameters:
   - **my-domain** - a domain to register
-  - **ensAddress** : string - the address of an ENS contract
   - **publicResolverAddress** : string - the address of a public resolver. For the Ropsten test network a working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network a public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
+  - **ensAddress** : string - the address of an ENS contract ([list of ENS addresses](https://docs.ens.domains/ens-deployments) on public networks)
   - **privateKey** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
   - **nodeUrl** : string - JSON-RPC URL of an Ethereum node
 
-  Example:
+  To register `cool-domain.test` on a test network that supports registration of test domains (e.g. Ropsten, Rinkeby, Görli) and connect it to resolver at address `0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A` type following:
 
   ::
 
