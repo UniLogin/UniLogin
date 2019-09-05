@@ -25,8 +25,8 @@
     "react-transition-group": "^4.2.2"
   },
   "peerDependencies": {
-    "react": "^16.8.x",
-    "react-dom": "^16.8.x"
+    "react": "^16.9.x",
+    "react-dom": "^16.9.x"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

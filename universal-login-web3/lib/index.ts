@@ -40,7 +40,11 @@ export class ULWeb3Provider implements Provider {
       new providers.Web3Provider(this.provider as any),
     );
 
-    initUi();
+    initUi({
+      sdk: this.sdk,
+      domains: ['popularapp.test'],
+      onCreate: (wallet) => console.log('wallet created', wallet),
+    });
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
