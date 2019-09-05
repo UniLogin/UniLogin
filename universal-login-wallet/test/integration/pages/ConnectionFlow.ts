@@ -10,7 +10,19 @@ export default class ConnectionFlow {
     this.wrapper.find('#emoji').simulate('click');
   }
 
+  clickCancel() {
+    this.wrapper.find('.connect-emoji-btn').simulate('click');
+  }
+
   async waitForEmojiView(timeout?: number) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Thanks, now check another device controling this account and enter the emojis in this order:'), timeout);
+    await waitForUI(this.wrapper, () => this.wrapper.html().includes('emoji-panel-list'), timeout);
+  }
+
+  async waitForConnectionChoiceView(timeout?: number) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Connect'), timeout);
+  }
+
+  getConnectionWithPassphraseText() {
+    return this.wrapper.find('button#recover').text();
   }
 }

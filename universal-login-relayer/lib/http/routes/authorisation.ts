@@ -71,7 +71,7 @@ export default (authorisationService: AuthorisationService) => {
     denyRequest(authorisationService)
   ));
 
-  router.delete('/:walletContractAddress', asyncHandler(
+  router.delete('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
         authorisationRequest: asAuthorisationRequest

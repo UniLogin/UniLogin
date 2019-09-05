@@ -182,6 +182,12 @@ class UniversalLoginSDK {
     await this.relayerApi.denyConnection(authorisationRequest);
   }
 
+  async cancelRequest(contractAddress: string, privateKey: string) {
+    const authorisationRequest = {contractAddress};
+    signAuthorisationRequest(authorisationRequest, privateKey);
+    return this.relayerApi.cancelConnection(authorisationRequest);
+  }
+
   subscribe(eventType: string, filter: any, callback: Function) {
     ensure(['KeyAdded', 'KeyRemoved'].includes(eventType), InvalidEvent, eventType);
     return this.blockchainObserver.subscribe(eventType, filter, callback);
