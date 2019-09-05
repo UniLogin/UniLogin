@@ -16,13 +16,15 @@
   },
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.0.1",
+    "@types/styled-components": "^4.1.18",
     "@universal-login/commons": "0.3.33",
     "@universal-login/sdk": "0.3.33",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.36",
     "lodash.range": "^3.2.0",
     "react-blockies": "^1.4.1",
-    "react-transition-group": "^4.2.2"
+    "react-transition-group": "^4.2.2",
+    "styled-components": "^4.3.2"
   },
   "peerDependencies": {
     "react": "^16.9.x",
