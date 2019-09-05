@@ -2,8 +2,10 @@ import {Router} from 'express';
 import WalletService from '../../integration/ethereum/WalletService';
 import MessageHandler from '../../core/services/MessageHandler';
 import {SignedMessage, DeployArgs} from '@universal-login/commons';
-import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
-import {asBigNumberish, asArrayish} from '../utils/sanitizers';
+import {asyncHandler, sanitize, responseOf} from '@restless/restless';
+import {asString, asObject} from '@restless/sanitizers';
+import {asEthAddress, asBigNumber} from '@restless/ethereum';
+import {asArrayish} from '../utils/sanitizers';
 
 
 const execution = (messageHandler : MessageHandler) =>
@@ -32,13 +34,13 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
     sanitize({
       body: asObject({
         gasToken: asString,
-        to: asString,
-        from: asString,
+        to: asEthAddress,
+        from: asEthAddress,
         nonce: asString,
-        gasLimit: asBigNumberish,
-        gasPrice: asBigNumberish,
+        gasLimit: asBigNumber,
+        gasPrice: asBigNumber,
         data: asArrayish,
-        value: asBigNumberish,
+        value: asBigNumber,
         signature: asString
       })
     }),
@@ -55,7 +57,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
   router.post('/deploy', asyncHandler(
     sanitize({
       body: asObject({
-        publicKey: asString,
+        publicKey: asEthAddress,
         ensName: asString,
         gasPrice: asString,
         signature: asString

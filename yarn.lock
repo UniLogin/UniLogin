@@ -956,15 +956,24 @@
     path-browserify "^1.0.0"
     url "^0.11.0"
 
-"@restless/restless@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@restless/restless/-/restless-0.2.4.tgz#09f596a68bfc898b5c651ea09ecee6264c2d7738"
-  integrity sha512-8Qr5q1TvLfBAxxkeeApcCINvJhXUCSNY+MMdrzfbqIl8kiQjzEeBIBhm1vrCu/t0sP6+mqVivRFhjUTyFc7bzQ==
+"@restless/ethereum@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@restless/ethereum/-/ethereum-0.2.1.tgz#7bd7204b09e5ab3689ee768c610bc7e78dd25747"
+  integrity sha512-2EsRRJZWfzduaDkPJyGWFS7+TKrpBz/Nj109c+6o1FqjTFa5pCD2qTB1vk11hpRbfI1AY4T+DDuvYAUqXRP1eg==
   dependencies:
+    "@restless/sanitizers" "^0.2.0"
+    ethers "^4.0.0"
+
+"@restless/restless@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@restless/restless/-/restless-0.4.2.tgz#b274c0b031e1ed028b77b5d976e7a1862aafd0e2"
+  integrity sha512-MPwwQTi4C03eT5LnD3qX0IoPttceAkSSSPPPquRlxmtZ4zIyP9cZ4tyu9C082BqaXD8Bxq9lTpsz8aVm8dkxeA==
+  dependencies:
+    "@restless/sanitizers" "^0.2.0"
     "@types/express" "^4.16.0"
     express "^4.16.0"
 
-"@restless/sanitizers@^0.2.2":
+"@restless/sanitizers@^0.2.0", "@restless/sanitizers@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.2.tgz#bb54d54f92168a839d66daa621359a470cf2f3a0"
   integrity sha512-Cv7NWOChJa3QIRYzjbMQkemLqrkKxH4FHnNTaUL5sDFzHQDSsz2fQ1LBp3t+VDdfn7CmNJNs9XwJ92TsJZKtrA==
