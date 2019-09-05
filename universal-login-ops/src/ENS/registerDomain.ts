@@ -1,7 +1,16 @@
 import DomainRegistrar from './DomainRegistrar';
-import getConfig from './config';
+import {connect} from '../cli/connectAndExecute';
 
-export const registerTestDomain = async (label : string) => {
-  const registrar = new DomainRegistrar(getConfig());
+type RegisterTestDomainArgs = {
+  nodeUrl: string;
+  label: string;
+  privateKey: string;
+  ensAddress: string;
+  publicResolverAddress: string;
+};
+
+export const registerTestDomain = async ({nodeUrl, label, privateKey, ensAddress, publicResolverAddress}: RegisterTestDomainArgs) => {
+  const {wallet} = connect(nodeUrl, privateKey);
+  const registrar = new DomainRegistrar({ensAddress, publicResolverAddress}, wallet);
   await registrar.registerAndSave(label, 'test');
 };

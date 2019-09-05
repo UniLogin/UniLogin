@@ -1,7 +1,17 @@
 import ENSNameRegistrar from './ENSNameRegistrar';
-import getConfig from './config';
+import {connect} from '../cli/connectAndExecute';
 
-export const registerENSName = async (name: string, domain: string) => {
-  const registrar = new ENSNameRegistrar(getConfig());
+type RegisterENSNameArgs = {
+  nodeUrl: string;
+  name: string;
+  domain: string;
+  privateKey: string;
+  ensAddress: string;
+  publicResolverAddress: string;
+};
+
+export const registerENSName = async ({name, domain, nodeUrl, privateKey, ensAddress, publicResolverAddress}: RegisterENSNameArgs) => {
+  const {wallet} = connect(nodeUrl, privateKey);
+  const registrar = new ENSNameRegistrar({ensAddress, publicResolverAddress}, wallet);
   await registrar.start(name, domain);
 };

@@ -1,19 +1,21 @@
 import {providers, Contract, Wallet, utils, ContractFunction} from 'ethers';
 import ENS from '@universal-login/contracts/build/ENS.json';
-import {Config} from './config';
+
+type ENSInfo = {
+  ensAddress: string;
+  publicResolverAddress: string;
+};
 
 class ENSRegistrarBase {
-  protected readonly deployer : Wallet;
   protected ens : Contract;
   protected variables : Record<string, string>;
   protected registrarAddress: ContractFunction | any;
   protected resolverAddress: ContractFunction | any;
   protected provider: providers.Provider;
 
-  constructor(protected config: Config, provider?: providers.Provider, protected log: any = console.log) {
-    this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
-    this.deployer = new Wallet(config.privateKey, this.provider);
-    this.ens = new Contract(config.chainSpec.ensAddress, ENS.interface, this.deployer);
+  constructor(protected ensInfo: ENSInfo, protected readonly deployer: Wallet, protected log: any = console.log) {
+    this.provider = deployer.provider;
+    this.ens = new Contract(ensInfo.ensAddress, ENS.interface, this.deployer);
     this.variables = {};
   }
 
