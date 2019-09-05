@@ -24,5 +24,5 @@ export const App = ({sdk, onCreate, domains}: AppProps) => (
       domains={domains}
     />
   </div>
-)
+);
 
