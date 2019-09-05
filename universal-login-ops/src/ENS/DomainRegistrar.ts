@@ -8,7 +8,6 @@ import ENSRegistrarBase from './ENSRegistrarBase';
 
 class DomainRegistrar extends ENSRegistrarBase {
   private testRegistrar? : Contract;
-  private publicResolver? : Contract;
 
   async registerInRegistrar(label : string, labelHash : string, node : string, tld : string) {
     const tldRegistrarAddress = await this.ens.owner(utils.namehash(tld));
@@ -20,11 +19,27 @@ class DomainRegistrar extends ENSRegistrarBase {
   }
 
   async setAsResolverPublicResolver(label : string, node : string, tld : string) {
-    this.publicResolver = new Contract(this.ensInfo.publicResolverAddress!, PublicResolver.interface, this.deployer);
-    const transaction = await this.ens.setResolver(node, this.publicResolver.address);
+    await this.setResolver(label, node, tld, this.ensInfo.publicResolverAddress);
+  }
+
+  async setResolver(label : string, node : string, tld : string, resolverAddress: string) {
+    const transaction = await this.ens.setResolver(node, resolverAddress);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${tld} set to ${await this.ens.resolver(node)} (public resolver)`);
     this.variables.PUBLIC_RESOLVER_ADDRESS = this.ensInfo.publicResolverAddress!;
+  }
+
+  async deployNewPublicResolver() {
+    const resolverDeployTransaction = getDeployTransaction(PublicResolver, [this.ens.address]);
+    const newPublicResolver = await sendAndWaitForTransaction(this.deployer, resolverDeployTransaction);
+    this.log(`New public resolver deployed: ${newPublicResolver}`);
+    return newPublicResolver;
+  }
+
+  async deployAndSetPublicResolver(label : string, node : string, tld : string) {
+    const publicResolver = await this.deployNewPublicResolver();
+    await this.setResolver(label, node, tld, publicResolver as string);
+    return publicResolver;
   }
 
   async deployNewRegistrar(node : string) {
@@ -58,6 +73,17 @@ class DomainRegistrar extends ENSRegistrarBase {
     const filename = `./${label}.${tld}_info`;
     saveVariables(filename, this.variables);
     this.log(`${filename} file updated.`);
+  }
+
+  async registerEthDomain(label : string) {
+    const tld = 'eth';
+    const node = utils.namehash(`${label}.${tld}`);
+    this.log(`Registering ${label}.${tld}...`);
+
+    const publicResolverAddress = await this.deployAndSetPublicResolver(label, node, tld);
+    const registrarAddress = await this.deployNewRegistrar(node);
+    await this.setRegistrarAsOwner(label, node, tld);
+    return {publicResolverAddress, registrarAddress};
   }
 }
 

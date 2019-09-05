@@ -6,7 +6,7 @@ import deployMaster from '../ops/deployMaster';
 import {connectAndDeployFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
-import {registerTestDomain} from '../ENS/registerDomain';
+import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
 import {registerENSName} from '../ENS/registerENSName';
 
 const commandLineBuilder = yargs
@@ -102,6 +102,24 @@ const commandLineBuilder = yargs
     },
     (argv) => {
       registerENSName(argv).catch(console.error);
+    })
+  .command('register:eth:domain [label] [publicResolverAddress]', 'Registers .eth ENS domain',
+    (yargs) => {
+      yargs
+        .positional('label', {
+          type: 'string',
+          describe: 'Label domain to register'
+        })
+        .positional('publicResolverAddress', {
+          type: 'string',
+          describe: 'Address of the public resolver'
+        })
+        .option('ensAddress', {
+          describe: 'ENS address'
+        });
+    },
+    (argv) => {
+      registerEthDomain(argv).catch(console.error);
     })
   .demandCommand(1, 'No command provided');
 

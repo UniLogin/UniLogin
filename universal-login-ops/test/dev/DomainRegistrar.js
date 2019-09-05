@@ -39,6 +39,7 @@ describe('ENS register', async () => {
       node = utils.namehash(`${label}.${tld}`);
       domainRegistrar.save = sinon.fake.returns('');
     });
+
     it('Should register label to register', async () => {
       await domainRegistrar.registerInRegistrar(label, labelHash, node, tld);
       expect(await domainRegistrar.ens.owner(node)).to.eq(wallet.address);
@@ -54,6 +55,18 @@ describe('ENS register', async () => {
       await domainRegistrar.setRegistrarAsOwner(label, node, tld);
       expect(await domainRegistrar.ens.owner(node)).to.eq(registrarAddress);
     });
+
+    it('register existing domain', async () => {
+      const label = 'super-app';
+      const labelHash = utils.keccak256(utils.toUtf8Bytes(label));
+      const node = utils.namehash(`${label}.${tld}`);
+      await domainRegistrar.registerInRegistrar(label, labelHash, node, tld);
+      const {publicResolverAddress} = await domainRegistrar.registerEthDomain(label);
+      expect(await domainRegistrar.ens.owner(node)).to.eq(domainRegistrar.registrarAddress);
+      expect(await domainRegistrar.ens.resolver(node)).to.not.eq(publicResolver);
+      expect(await domainRegistrar.ens.resolver(node)).to.eq(publicResolverAddress);
+    });
+
     describe('start works', async () => {
       it('should register new domain', async () => {
         const label = 'my-domain';
