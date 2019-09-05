@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
@@ -8,18 +8,19 @@ import {ReactModalContext, ReactModalType, ReactModalProps} from '../../core/mod
 import {createModalService} from '../../core/services/createModalService';
 interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  onConnect: () => void;
-  onCreate: (arg: ApplicationWallet) => void;
+  walletService?: WalletService;
+  onConnect?: () => void;
+  onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
   className?: string;
   modalClassName?: string;
 }
 
-export const Onboarding = ({sdk, onConnect, onCreate, domains, className, modalClassName}: OnboardingProps) => {
+export const Onboarding = ({sdk, walletService: injectedWalletService, onConnect, onCreate, domains, className, modalClassName}: OnboardingProps) => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
-  const walletService = new WalletService(sdk);
+  const [walletService] = useState(injectedWalletService || new WalletService(sdk));
   const onConnectClick = () => {
-    onConnect();
+    onConnect && onConnect();
   };
 
   const onCreateClick = async (ensName: string) => {
@@ -35,7 +36,7 @@ export const Onboarding = ({sdk, onConnect, onCreate, domains, className, modalC
     await deploy(ensName, DEFAULT_GAS_PRICE.toString());
     walletService.setDeployed(ensName);
     modalService.hideModal();
-    onCreate(walletService.applicationWallet as ApplicationWallet);
+    onCreate && onCreate(walletService.applicationWallet as ApplicationWallet);
   };
 
 
