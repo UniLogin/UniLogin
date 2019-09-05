@@ -281,7 +281,42 @@ To use a registered domain in your relayer, type its name in relayer config.
 From command line
 ^^^^^^^^^^^^^^^^^
 
-To register an test ENS domain type in the console:
+
+To register an **.eth** ENS domain type in the console:
+
+  ::
+
+    universal-login register:eth:domain [my-domain] --ensAddress [ensAddress] --privateKey [privateKey] --nodeUrl [url]
+
+Parameters:
+  - **my-domain** - a domain to register
+  - **ensAddress** : string - the address of an ENS contract ([list of ENS addresses](https://docs.ens.domains/ens-deployments) on public networks)
+  - **privateKey** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
+  - **nodeUrl** : string - JSON-RPC URL of an Ethereum node
+
+  To register `cool-domain.eth`:
+
+  ::
+
+    universal-login register:eth:domain cool-domain --ensAddress 0x314159265dd8dbb310642f98f50c066173c1259b --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io'
+
+  Result:
+
+  ::
+
+    Registering cool-domain.eth...
+    New public resolver deployed: 0x75242e98198486fe0307e5ee307f340Af5c950a4
+    Resolver for cool-domain.eth set to 0x75242e98198486fe0307e5ee307f340Af5c950a4 (public resolver)
+    New registrar deployed: 0x09873b81932b7726595b86Fe8612c82e65bdB9Fe
+    cool-domain.eth owner set to: 0x09873b81932b7726595b86Fe8612c82e65bdB9Fe (registrar)
+
+
+Note: You must be the owner of the domain that means you need to buy it. You can buy an ENS domain for example [here](https://ethsimple.com/)
+
+
+
+
+To register an **.test** ENS domain type in the console:
 
   ::
 
@@ -298,7 +333,7 @@ Parameters:
 
   ::
 
-    universal-login register:test:domain cool-domain 0x112234455c3a32fd11230c42e7bccd4a84e02010 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
+    universal-login register:test:domain cool-domain 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --ensAddress 0x112234455c3a32fd11230c42e7bccd4a84e02010 --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
 
   Result:
 
