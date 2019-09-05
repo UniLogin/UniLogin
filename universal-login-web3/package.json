@@ -17,7 +17,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "tsc --build tsconfig.json",
-    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,tsx}\"",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist"
