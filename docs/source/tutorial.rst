@@ -311,7 +311,7 @@ Parameters:
     cool-domain.eth owner set to: 0x09873b81932b7726595b86Fe8612c82e65bdB9Fe (registrar)
 
 
-Note: You must be the owner of the domain that means you need to buy it. You can buy an ENS domain for example [here](https://ethsimple.com/)
+Note: You must be the owner of the domain that means you need to buy it. You can buy an ENS domain for example `here<https://ethsimple.com/>`_
 
 
 
@@ -325,7 +325,7 @@ To register an **.test** ENS domain type in the console:
 Parameters:
   - **my-domain** - a domain to register
   - **publicResolverAddress** : string - the address of a public resolver. For the Ropsten test network a working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network a public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
-  - **ensAddress** : string - the address of an ENS contract ([list of ENS addresses](https://docs.ens.domains/ens-deployments) on public networks)
+  - **ensAddress** : string - the address of an ENS contract (`list of ENS addresses<https://docs.ens.domains/ens-deployments>`_ on public networks)
   - **privateKey** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
   - **nodeUrl** : string - JSON-RPC URL of an Ethereum node
 
