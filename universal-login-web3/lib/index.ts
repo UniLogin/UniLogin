@@ -1,8 +1,7 @@
 import {Provider} from 'web3/providers';
 import {providers} from 'ethers';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {render} from 'react-dom';
-import App from './ui';
+import {initUi} from './ui';
 
 interface JsonRPCRequest {
   jsonrpc: string;
@@ -30,16 +29,8 @@ const WALLET = {
   privateKey: '0x313758209e20726adfa2fbacf1d2951a3b1ec01ac702604d09cf982944e54300',
 };
 
-function createReactRoot() {
-  const reactRoot = document.createElement('div');
-  reactRoot.setAttribute('id', 'universal-login-modal-root');
-  document.getElementsByTagName('body')[0].appendChild(reactRoot);
-  return reactRoot;
-}
-
 export class ULWeb3Provider implements Provider {
   private sdk: UniversalLoginSDK;
-  private reactRootElement: HTMLDivElement;
 
   constructor(
     private provider: Provider,
@@ -49,8 +40,11 @@ export class ULWeb3Provider implements Provider {
       new providers.Web3Provider(this.provider as any),
     );
 
-    this.reactRootElement = createReactRoot();
-    render(App, this.reactRootElement);
+    initUi({
+      sdk: this.sdk,
+      domains: ['popularapp.test'],
+      onCreate: (wallet) => console.log('wallet created', wallet),
+    });
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
