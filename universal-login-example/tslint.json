@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "../tslint.json",
+    "tslint-react"
+  ],
+  "rules": {
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "eofline": true,
+    "jsx-boolean-value": [
+      "never"
+    ],
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false,
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    "trailing-comma": [
+      "error",
+      "never"
+    ],
+    "variable-name": [
+      "allow-pascal-case"
+    ]
+  }
+}
