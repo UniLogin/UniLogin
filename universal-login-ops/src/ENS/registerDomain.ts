@@ -7,7 +7,7 @@ type RegisterTestDomainArgs = {
   privateKey: string;
   ensAddress: string;
   publicResolverAddress: string;
-}
+};
 
 export const registerTestDomain = async ({nodeUrl, label, privateKey, ensAddress, publicResolverAddress}: RegisterTestDomainArgs) => {
   const {wallet} = connect(nodeUrl, privateKey);

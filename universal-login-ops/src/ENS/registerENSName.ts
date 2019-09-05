@@ -8,7 +8,7 @@ type RegisterENSNameArgs = {
   privateKey: string;
   ensAddress: string;
   publicResolverAddress: string;
-}
+};
 
 export const registerENSName = async ({name, domain, nodeUrl, privateKey, ensAddress, publicResolverAddress}: RegisterENSNameArgs) => {
   const {wallet} = connect(nodeUrl, privateKey);

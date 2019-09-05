@@ -298,7 +298,7 @@ Parameters:
 
   ::
 
-    universal-login register:test:domain cool-domain ensAddress 0x112234455c3a32fd11230c42e7bccd4a84e02010 publicResolverAddress 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
+    universal-login register:test:domain cool-domain 0x112234455c3a32fd11230c42e7bccd4a84e02010 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
 
   Result:
 

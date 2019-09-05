@@ -4,7 +4,7 @@ import ENS from '@universal-login/contracts/build/ENS.json';
 type ENSInfo = {
   ensAddress: string;
   publicResolverAddress: string;
-}
+};
 
 class ENSRegistrarBase {
   protected ens : Contract;
