@@ -48,7 +48,6 @@ export class ULWeb3Provider implements Provider {
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
-    console.log(payload);
     switch (payload.method) {
       case 'eth_sendTransaction':
         const tx = payload.params[0];
