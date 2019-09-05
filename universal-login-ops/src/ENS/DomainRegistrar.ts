@@ -13,7 +13,7 @@ class DomainRegistrar extends ENSRegistrarBase {
     const tldRegistrarAddress = await this.ens.owner(utils.namehash(tld));
     this.testRegistrar = new Contract(tldRegistrarAddress, TestRegistrar.interface, this.deployer);
     this.log(`Registrar address for ${tld}: ${tldRegistrarAddress}`);
-    const transaction = await this.testRegistrar.register(labelHash, this.deployer.address, {gasLimit: 100000});
+    const transaction = await this.testRegistrar.register(labelHash, this.deployer.address, {gasLimit: 100000, ...this.overridesOptions});
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Registered ${label}.${tld} with owner: ${await this.ens.owner(node)}`);
   }
@@ -23,7 +23,7 @@ class DomainRegistrar extends ENSRegistrarBase {
   }
 
   async setResolver(label : string, node : string, tld : string, resolverAddress: string) {
-    const transaction = await this.ens.setResolver(node, resolverAddress);
+    const transaction = await this.ens.setResolver(node, resolverAddress, this.overridesOptions);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${tld} set to ${await this.ens.resolver(node)} (public resolver)`);
     this.variables.PUBLIC_RESOLVER_ADDRESS = this.ensInfo.publicResolverAddress!;
@@ -31,7 +31,7 @@ class DomainRegistrar extends ENSRegistrarBase {
 
   async deployNewPublicResolver() {
     const resolverDeployTransaction = getDeployTransaction(PublicResolver, [this.ens.address]);
-    const newPublicResolver = await sendAndWaitForTransaction(this.deployer, resolverDeployTransaction);
+    const newPublicResolver = await sendAndWaitForTransaction(this.deployer, {...resolverDeployTransaction, ...this.overridesOptions});
     this.log(`New public resolver deployed: ${newPublicResolver}`);
     return newPublicResolver;
   }
@@ -44,14 +44,14 @@ class DomainRegistrar extends ENSRegistrarBase {
 
   async deployNewRegistrar(node : string) {
     const registrarDeployTransaction = getDeployTransaction(FIFSRegistrar, [this.ens.address, node]);
-    this.registrarAddress = await sendAndWaitForTransaction(this.deployer, registrarDeployTransaction);
+    this.registrarAddress = await sendAndWaitForTransaction(this.deployer, {...registrarDeployTransaction, ...this.overridesOptions});
     this.log(`New registrar deployed: ${this.registrarAddress}`);
     this.variables.REGISTRAR_ADDRESS = this.registrarAddress;
     return this.registrarAddress;
   }
 
   async setRegistrarAsOwner(label : string, node : string, tld : string) {
-    const transaction = await this.ens.setOwner(node, this.registrarAddress);
+    const transaction = await this.ens.setOwner(node, this.registrarAddress, this.overridesOptions);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`${label}.${tld} owner set to: ${await this.ens.owner(node)} (registrar)`);
   }

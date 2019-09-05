@@ -286,19 +286,20 @@ To register an **.eth** ENS domain type in the console:
 
   ::
 
-    universal-login register:eth:domain [my-domain] --ensAddress [ensAddress] --privateKey [privateKey] --nodeUrl [url]
+    universal-login register:eth:domain [my-domain] --ensAddress [ensAddress] --privateKey [privateKey] --nodeUrl [url] --gasPrice [gasPrice]
 
 Parameters:
   - **my-domain** - a domain to register
   - **ensAddress** : string - the address of an ENS contract ([list of ENS addresses](https://docs.ens.domains/ens-deployments) on public networks)
   - **privateKey** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
   - **nodeUrl** : string - JSON-RPC URL of an Ethereum node
+  - **gasPrice** : string `optional` - gas price of transactions, default gas price value is 9 gwei
 
-  To register `cool-domain.eth`:
+  To register `cool-domain.eth` (each transaction's gasPrice set to 11 gwei):
 
   ::
 
-    universal-login register:eth:domain cool-domain --ensAddress 0x314159265dd8dbb310642f98f50c066173c1259b --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io'
+    universal-login register:eth:domain cool-domain --ensAddress 0x314159265dd8dbb310642f98f50c066173c1259b --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io' --gasPrice 11000000000
 
   Result:
 
