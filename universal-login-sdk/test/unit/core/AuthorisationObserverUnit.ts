@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, waitUntil, signGetAuthorisationRequest, GetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, waitUntil, signAuthorisationRequest, AuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import AuthorisationsObserver from '../../../lib/core/observers/AuthorisationsObserver';
 
 describe('UNIT: AuthorisationsObserver', () => {
@@ -21,37 +21,37 @@ describe('UNIT: AuthorisationsObserver', () => {
   ];
   const relayerApi = {getPendingAuthorisations: async () => ({response: notifications})};
   let authorisationsObserver: AuthorisationsObserver;
-  let getAuthorisationRequest: GetAuthorisationRequest;
-  let fakeGetAuthorisationRequest: GetAuthorisationRequest;
+  let authorisationRequest: AuthorisationRequest;
+  let fakeAuthorisationRequest: AuthorisationRequest;
   let privateKey: string;
 
-  const createGetAuthorisationRequest = (walletContractAddress: string, privateKey: string) => {
-    const getAuthorisationRequest: GetAuthorisationRequest = {
-      walletContractAddress,
+  const createauthorisationRequest = (contractAddress: string, privateKey: string) => {
+    const authorisationRequest: AuthorisationRequest = {
+      contractAddress,
       signature: ''
     };
-    signGetAuthorisationRequest(getAuthorisationRequest, privateKey);
-    return getAuthorisationRequest;
+    signAuthorisationRequest(authorisationRequest, privateKey);
+    return authorisationRequest;
   };
 
   beforeEach(() => {
     authorisationsObserver = new AuthorisationsObserver(relayerApi as any, 10);
     ({privateKey} = createKeyPair());
-    getAuthorisationRequest = createGetAuthorisationRequest(TEST_ACCOUNT_ADDRESS, privateKey);
-    fakeGetAuthorisationRequest = createGetAuthorisationRequest('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef', privateKey);
+    authorisationRequest = createauthorisationRequest(TEST_ACCOUNT_ADDRESS, privateKey);
+    fakeAuthorisationRequest = createauthorisationRequest('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef', privateKey);
   });
 
   it('should call callback with authorisation', async () => {
     const callback = sinon.spy();
-    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
+    const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
     expect(callback).to.have.been.calledWith([]);
     unsubscribe();
   });
 
   it('new subscription request should be rejected', async () => {
     const callback = sinon.spy();
-    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
-    expect(() => authorisationsObserver.subscribe(fakeGetAuthorisationRequest, callback)).to.throw('Another wallet is subscribed.');
+    const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
+    expect(() => authorisationsObserver.subscribe(fakeAuthorisationRequest, callback)).to.throw('Another wallet is subscribed.');
     await waitUntil(() => !!callback.secondCall);
     expect(callback).to.have.been.calledWith([]);
     expect(callback).to.have.been.calledWith(notifications);
@@ -61,9 +61,9 @@ describe('UNIT: AuthorisationsObserver', () => {
   it('Subscribe. Unsubscribe', async () => {
     const callback = sinon.spy();
     const callback2 = sinon.spy();
-    const unsubscribe = authorisationsObserver.subscribe(getAuthorisationRequest, callback);
+    const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
     unsubscribe();
-    const unsubscribe2 = authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
+    const unsubscribe2 = authorisationsObserver.subscribe(authorisationRequest, callback2);
     await waitUntil(() => !!callback2.firstCall);
     expect(callback2).to.have.been.calledOnce;
     unsubscribe2();
@@ -72,10 +72,10 @@ describe('UNIT: AuthorisationsObserver', () => {
   it('2 subscriptions', async () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
-    const unsubscribe1 = authorisationsObserver.subscribe(getAuthorisationRequest, callback1);
+    const unsubscribe1 = authorisationsObserver.subscribe(authorisationRequest, callback1);
     expect(callback1).to.have.been.calledWith([]);
     await waitUntil(() => !!callback1.secondCall);
-    const unsubscribe2 = authorisationsObserver.subscribe(getAuthorisationRequest, callback2);
+    const unsubscribe2 = authorisationsObserver.subscribe(authorisationRequest, callback2);
     expect(callback2).to.have.been.calledWith(notifications);
     unsubscribe1();
     unsubscribe2();

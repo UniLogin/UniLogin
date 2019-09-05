@@ -6,6 +6,8 @@ import deployMaster from '../ops/deployMaster';
 import {connectAndDeployFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
+import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
+import {registerENSName} from '../ENS/registerENSName';
 
 const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')
@@ -60,6 +62,60 @@ const commandLineBuilder = yargs
     },
     (argv) => {
       sendFunds(argv).catch(console.error);
+    })
+  .command('register:test:domain [label] [publicResolverAddress]', 'Registers test ENS domain',
+    (yargs) => {
+      yargs
+        .positional('label', {
+          type: 'string',
+          describe: 'Label domain to register'
+        })
+        .positional('publicResolverAddress', {
+          type: 'string',
+          describe: 'Address of the public resolver'
+        })
+        .option('ensAddress', {
+          describe: 'ENS address'
+        });
+    },
+    (argv) => {
+      registerTestDomain(argv).catch(console.error);
+    })
+  .command('register:ens:name [name] [domain] [publicResolverAddress]', 'Registers ENS name',
+    (yargs) => {
+      yargs
+        .positional('name', {
+          type: 'string',
+          describe: 'Name to register'
+        })
+        .positional('domain', {
+          type: 'string',
+          describe: 'ENS domain'
+        })
+        .positional('publicResolverAddress', {
+          type: 'string',
+          describe: 'Address of the public resolver'
+        })
+        .option('ensAddress', {
+          describe: 'ENS address'
+        });
+    },
+    (argv) => {
+      registerENSName(argv).catch(console.error);
+    })
+  .command('register:eth:domain [label]', 'Registers .eth ENS domain',
+    (yargs) => {
+      yargs
+        .positional('label', {
+          type: 'string',
+          describe: 'Label domain to register'
+        })
+        .option('ensAddress', {
+          describe: 'ENS address'
+        });
+    },
+    (argv) => {
+      registerEthDomain(argv).catch(console.error);
     })
   .demandCommand(1, 'No command provided');
 

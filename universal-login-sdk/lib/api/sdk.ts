@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signCancelAuthorisationRequest, signGetAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
+import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signAuthorisationRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -176,11 +176,10 @@ class UniversalLoginSDK {
     };
   }
 
-  async denyRequest(walletContractAddress: string, publicKey: string, privateKey: string) {
-    const cancelAuthorisationRequest = {walletContractAddress, publicKey};
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, privateKey);
-    await this.relayerApi.denyConnection(cancelAuthorisationRequest);
-    return publicKey;
+  async denyRequests(contractAddress: string, privateKey: string) {
+    const authorisationRequest = {contractAddress};
+    signAuthorisationRequest(authorisationRequest, privateKey);
+    await this.relayerApi.denyConnection(authorisationRequest);
   }
 
   subscribe(eventType: string, filter: any, callback: Function) {
@@ -202,9 +201,9 @@ class UniversalLoginSDK {
     return this.priceObserver.subscribe(callback);
   }
 
-  subscribeAuthorisations(walletContractAddress: string, privateKey: string, callback: Function) {
+  subscribeAuthorisations(contractAddress: string, privateKey: string, callback: Function) {
     return this.authorisationsObserver.subscribe(
-      signGetAuthorisationRequest({walletContractAddress}, privateKey),
+      signAuthorisationRequest({contractAddress}, privateKey),
       (notifications: Notification[]) => callback(addCodesToNotifications(notifications))
     );
   }

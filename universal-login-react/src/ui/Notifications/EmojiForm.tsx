@@ -93,7 +93,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const onDenyNotifications = () => {
-    notifications.forEach(notification => sdk.denyRequest(contractAddress, notification.key, privateKey));
+    notifications.forEach(notification => sdk.denyRequests(contractAddress, privateKey));
   };
 
   return (

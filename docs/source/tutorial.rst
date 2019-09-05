@@ -280,38 +280,25 @@ To use a registered domain in your relayer, type its name in relayer config.
 
 From command line
 ^^^^^^^^^^^^^^^^^
-First, prepare ``.env`` file in universal-login-ops directory.
 
-Parameters:
-  - **JSON_RPC_URL** : string - JSON-RPC URL of an Ethereum node
-  - **PRIVATE_KEY** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
-  - **ENS_ADDRESS** : string - the address of an ENS contract
-  - **PUBLIC_RESOLVER_ADDRESS** : string - the address of a public resolver. For the Ropsten test network a working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network a public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
-
-  Example ``.env`` file:
+To register an test ENS domain type in the console:
 
   ::
 
-    JSON_RPC_URL='https://ropsten.infura.io'
-    PRIVATE_KEY='YOUR_PRIVATE_KEY'
-    ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
-    PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
-
-To register an ENS domain, in universal-login-ops directory type in the console:
-
-  ::
-
-    yarn register:domain my-domain tld
+    universal-login register:test:domain [my-domain] [publicResolverAddress] --ensAddress [ensAddress] --privateKey [privateKey] --nodeUrl [url]
 
 Parameters:
   - **my-domain** - a domain to register
-  - **tld** - a top level domain, for example: ``eth`` or on testnets: ``test``
+  - **publicResolverAddress** : string - the address of a public resolver. For the Ropsten test network a working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network a public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
+  - **ensAddress** : string - the address of an ENS contract ([list of ENS addresses](https://docs.ens.domains/ens-deployments) on public networks)
+  - **privateKey** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
+  - **nodeUrl** : string - JSON-RPC URL of an Ethereum node
 
-  Example:
+  To register `cool-domain.test` on a test network that supports registration of test domains (e.g. Ropsten, Rinkeby, Görli) and connect it to resolver at address `0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A` type following:
 
   ::
 
-    yarn register:domain cool-domain test
+    universal-login register:test:domain cool-domain 0x112234455c3a32fd11230c42e7bccd4a84e02010 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
 
   Result:
 
@@ -325,6 +312,8 @@ Parameters:
     cool-domain.test owner set to: 0xf1Af1CCEEC4464212Fc7b790c205ca3b8E74ba67 (registrar)
 
 
+Note: use ``.test`` tld only on testnets.
+
 
 Programmatically
 ^^^^^^^^^^^^^^^^
@@ -335,28 +324,27 @@ To register your own ENS domain programmatically, you should use DomainRegistrar
   creates DomainRegistrar.
 
   Parameters:
-    - **config** : object - specific config parameters, includes:
+    - **ensInfo** : object - required informations about ENS:
 
-      - **jsonRpcUrl** : string - JSON-RPC URL of an Ethereum node
-      - **privateKey** : string - a private key to execute registrations
       - **ensAddress** : string - the address of an ENS contract
       - **publicResolverAddress** : string - the address of a public resolver
+    - **wallet** : ethers.Wallet - instance of ethers Wallet connected to the specific network
   Returns:
     DomainRegistrar instance
 
   Example:
     ::
 
-      const ensRegistrationConfig = {
-        jsonRpcUrl: 'https://ropsten.infura.io',
-        privateKey: 'YOUR_PRIVATE_KEY',
-        chainSpec: {
-          ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
-          publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A',
-          chainId: 0
-        }
-      }
-      const registrar = new DomainRegistrar(ensRegistrationConfig);
+      import {providers, Wallet} from 'ethers';
+
+      const ensInfo = {
+        ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
+        publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
+      };
+      const provider = new providers.JsonRpcProvider('https://ropsten.infura.io');
+      const wallet = new Wallet('YOUR_PRIVATE_KEY', provider);
+
+      const registrar = new DomainRegistrar(ensInfo, wallet);
 
 **registrar.registerAndSave(domain, tld)**
   registers a new domain and saves all information about newly registered domain to a new file (a registrar address or resolver address)

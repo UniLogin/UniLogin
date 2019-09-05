@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
-import {signCancelAuthorisationRequest, signGetAuthorisationRequest, createKeyPair} from '@universal-login/commons';
+import {signAuthorisationRequest, createKeyPair} from '@universal-login/commons';
 import {utils} from 'ethers';
 
 chai.use(chaiHttp);
@@ -17,12 +17,12 @@ async function postAuthorisationRequest(relayer, contract, keyPair) {
 }
 
 async function getAuthorisation(relayer, contract, keyPair) {
-  const getAuthorisationRequest = {
-    walletContractAddress: contract.address,
+  const authorisationRequest = {
+    contractAddress: contract.address,
     signature: ''
   };
-  signGetAuthorisationRequest(getAuthorisationRequest, keyPair.privateKey);
-  const {signature} = getAuthorisationRequest;
+  signAuthorisationRequest(authorisationRequest, keyPair.privateKey);
+  const {signature} = authorisationRequest;
 
   const result = await chai.request(relayer.server)
     .get(`/authorisation/${contract.address}?signature=${signature}`)
@@ -77,15 +77,14 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     const newKeyPair = createKeyPair();
     await postAuthorisationRequest(relayer, contract, newKeyPair);
 
-    const cancelAuthorisationRequest = {
-      walletContractAddress: contract.address,
-      publicKey: newKeyPair.publicKey,
+    const authorisationRequest = {
+      contractAddress: contract.address,
       signature: ''
     };
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, keyPair.privateKey);
+    signAuthorisationRequest(authorisationRequest, keyPair.privateKey);
     const result = await chai.request(relayer.server)
       .post(`/authorisation/${contract.address}`)
-      .send({cancelAuthorisationRequest});
+      .send({authorisationRequest});
     expect(result.status).to.eq(204);
 
 
@@ -94,17 +93,15 @@ describe('E2E: Relayer - Authorisation routes', async () => {
   });
 
   it('Send valid cancel request', async () => {
-    const {publicKey} = createKeyPair();
-    const cancelAuthorisationRequest = {
-      walletContractAddress: contract.address,
-      publicKey,
+    const authorisationRequest = {
+      contractAddress: contract.address,
       signature: ''
     };
 
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, keyPair.privateKey);
+    signAuthorisationRequest(authorisationRequest, keyPair.privateKey);
     const {body, status} = await chai.request(relayer.server)
       .post(`/authorisation/${contract.address}`)
-      .send({cancelAuthorisationRequest});
+      .send({authorisationRequest});
 
     expect(status).to.eq(204);
     expect(body).to.deep.eq({});
@@ -113,16 +110,15 @@ describe('E2E: Relayer - Authorisation routes', async () => {
   it('Send forged cancel request', async () => {
     const attackerPrivateKey = createKeyPair().privateKey;
     const attackerAddress = utils.computeAddress(attackerPrivateKey);
-    const cancelAuthorisationRequest = {
-      walletContractAddress: contract.address,
-      publicKey: otherWallet.address,
+    const authorisationRequest = {
+      contractAddress: contract.address,
       signature: ''
     };
 
-    signCancelAuthorisationRequest(cancelAuthorisationRequest, attackerPrivateKey);
+    signAuthorisationRequest(authorisationRequest, attackerPrivateKey);
     const {body, status} = await chai.request(relayer.server)
       .post(`/authorisation/${contract.address}`)
-      .send({cancelAuthorisationRequest});
+      .send({authorisationRequest});
 
     expect(status).to.eq(401);
     expect(body.type).to.eq('UnauthorisedAddress');
@@ -131,14 +127,14 @@ describe('E2E: Relayer - Authorisation routes', async () => {
 
   it('Forged getPending request', async () => {
     const attackerPrivateKey = createKeyPair().privateKey;
-    const getAuthorisationRequest = {
-      walletContractAddress: contract.address,
+    const authorisationRequest = {
+      contractAddress: contract.address,
       signature: ''
     };
-    signGetAuthorisationRequest(getAuthorisationRequest, attackerPrivateKey);
+    signAuthorisationRequest(authorisationRequest, attackerPrivateKey);
 
     const {body, status} = await chai.request(relayer.server)
-      .get(`/authorisation/${contract.address}?signature=${getAuthorisationRequest.signature}`);
+      .get(`/authorisation/${contract.address}?signature=${authorisationRequest.signature}`);
 
     expect(status).to.eq(401);
     expect(body.type).to.eq('UnauthorisedAddress');

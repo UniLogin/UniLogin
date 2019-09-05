@@ -1,5 +1,5 @@
 import { Sanitizer, Either, asObject, asOptional, asString } from '@restless/restless';
-import {TransactionOverrides, CancelAuthorisationRequest, GetAuthorisationRequest} from '@universal-login/commons';
+import {TransactionOverrides, AuthorisationRequest} from '@universal-login/commons';
 import { utils } from 'ethers';
 
 export const asBigNumberish: Sanitizer<utils.BigNumber> = (value, path) => {
@@ -24,14 +24,8 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   }
 };
 
-export const asCancelAuthorisationRequest: Sanitizer<CancelAuthorisationRequest> = asObject({
-  walletContractAddress: asString,
-  publicKey: asString,
-  signature: asString
-});
-
-export const asGetAuthorisationRequest: Sanitizer<GetAuthorisationRequest> = asObject({
-  walletContractAddress: asString,
+export const asAuthorisationRequest: Sanitizer<AuthorisationRequest> = asObject({
+  contractAddress: asString,
   signature: asString
 });
 
