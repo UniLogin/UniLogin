@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@types/web3": "^1.0.19",
-    "@universal-login/commons": "^0.3.33",
-    "@universal-login/react": "^0.3.33",
     "@universal-login/web3": "^0.3.33",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
