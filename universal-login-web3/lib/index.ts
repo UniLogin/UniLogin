@@ -1,5 +1,5 @@
 import {Provider} from 'web3/providers';
-import {providers} from 'ethers'
+import {providers} from 'ethers';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {render} from 'react-dom';
 import App from './ui';
