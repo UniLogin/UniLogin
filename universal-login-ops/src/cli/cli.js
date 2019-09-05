@@ -112,6 +112,9 @@ const commandLineBuilder = yargs
         })
         .option('ensAddress', {
           describe: 'ENS address'
+        })
+        .option('gasPrice', {
+          describe: 'Gas price'
         });
     },
     (argv) => {

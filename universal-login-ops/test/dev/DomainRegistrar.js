@@ -22,6 +22,7 @@ describe('ENS register', async () => {
   let label;
   let node;
   let labelHash;
+  const transactionOverrides = {gasPrice: utils.bigNumberify(100)};
 
 
   before(async () => {
@@ -33,7 +34,7 @@ describe('ENS register', async () => {
     const tld = 'eth';
 
     before(() => {
-      domainRegistrar = new DomainRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, nullConsole);
+      domainRegistrar = new DomainRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, transactionOverrides, nullConsole);
       label = 'universal-login';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       node = utils.namehash(`${label}.${tld}`);
@@ -85,7 +86,7 @@ describe('ENS register', async () => {
     let publicResolverContract;
 
     before(async () => {
-      nameRegistrar = new ENSNameRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, nullConsole);
+      nameRegistrar = new ENSNameRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, {} , nullConsole);
       label = 'justyna';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       [domain] = ensRegistrars;
