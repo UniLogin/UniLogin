@@ -8,7 +8,7 @@
     "universal-login-sdk",
     "universal-login-wallet",
     "universal-login-web3",
-    "universal-login-web3-poc"
+    "universal-login-example"
   ],
   "version": "0.3.33"
 }

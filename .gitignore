@@ -23,7 +23,7 @@
 /universal-login-web3/dist/
 /universal-login-web3/node_modules/
 /universal-login-web3/yarn-error.log
-/universal-login-web3-poc/dist/
-/universal-login-web3-poc/node_modules/
-/universal-login-web3-poc/yarn-error.log
+/universal-login-example/dist/
+/universal-login-example/node_modules/
+/universal-login-example/yarn-error.log
 yarn-error.log
