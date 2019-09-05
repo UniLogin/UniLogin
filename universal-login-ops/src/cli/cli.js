@@ -103,16 +103,12 @@ const commandLineBuilder = yargs
     (argv) => {
       registerENSName(argv).catch(console.error);
     })
-  .command('register:eth:domain [label] [publicResolverAddress]', 'Registers .eth ENS domain',
+  .command('register:eth:domain [label]', 'Registers .eth ENS domain',
     (yargs) => {
       yargs
         .positional('label', {
           type: 'string',
           describe: 'Label domain to register'
-        })
-        .positional('publicResolverAddress', {
-          type: 'string',
-          describe: 'Address of the public resolver'
         })
         .option('ensAddress', {
           describe: 'ENS address'

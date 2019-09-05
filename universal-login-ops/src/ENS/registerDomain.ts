@@ -15,8 +15,8 @@ export const registerTestDomain = async ({nodeUrl, label, privateKey, ensAddress
   await registrar.registerAndSave(label, 'test');
 };
 
-export const registerEthDomain = async ({nodeUrl, label, privateKey, ensAddress, publicResolverAddress}: RegisterTestDomainArgs) => {
+export const registerEthDomain = async ({nodeUrl, label, privateKey, ensAddress}: RegisterTestDomainArgs) => {
   const {wallet} = connect(nodeUrl, privateKey);
-  const registrar = new DomainRegistrar({ensAddress, publicResolverAddress}, wallet);
+  const registrar = new DomainRegistrar({ensAddress}, wallet);
   await registrar.registerEthDomain(label);
 };

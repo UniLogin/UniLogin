@@ -19,7 +19,7 @@ class DomainRegistrar extends ENSRegistrarBase {
   }
 
   async setAsResolverPublicResolver(label : string, node : string, tld : string) {
-    await this.setResolver(label, node, tld, this.ensInfo.publicResolverAddress);
+    await this.setResolver(label, node, tld, this.ensInfo.publicResolverAddress!);
   }
 
   async setResolver(label : string, node : string, tld : string, resolverAddress: string) {
