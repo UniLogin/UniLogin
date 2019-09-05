@@ -2,9 +2,11 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "allowJs": false,
+    "jsx": "react",
     "declaration": true,
     "outDir": "dist",
     "downlevelIteration": true,
+    "esModuleInterop": true,
     "lib": [
       "esnext",
       "dom"

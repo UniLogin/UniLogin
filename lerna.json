@@ -6,7 +6,9 @@
     "universal-login-react",
     "universal-login-relayer",
     "universal-login-sdk",
-    "universal-login-wallet"
+    "universal-login-wallet",
+    "universal-login-web3",
+    "universal-login-example"
   ],
   "version": "0.3.33"
 }
