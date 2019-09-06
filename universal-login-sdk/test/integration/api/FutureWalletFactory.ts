@@ -44,7 +44,8 @@ describe('INT: FutureWalletFactory', async () => {
       futureWalletConfig,
       provider,
       blockchainService,
-      relayerApi
+      relayerApi,
+      null as any,
     );
   });
 

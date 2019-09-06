@@ -14,7 +14,7 @@ describe('WalletService', () => {
   const futureWallet: FutureWallet = {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
-    deploy: async () => new DeployedWallet('', '', ''),
+    deploy: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, '', TEST_PRIVATE_KEY, null as any),
     waitForBalance: (async () => { }) as any
   };
   const storage = {load: () => applicationWallet, save: sinon.fake(), remove: sinon.fake()};

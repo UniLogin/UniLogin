@@ -7,6 +7,7 @@ import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import {DeployedWallet} from './DeployedWallet';
+import UniversalLoginSDK from './sdk';
 
 export type BalanceDetails = {
   tokenAddress: string,
@@ -29,7 +30,9 @@ export class FutureWalletFactory {
     private config: FutureFactoryConfig,
     private provider: providers.Provider,
     private blockchainService: BlockchainService,
-    private relayerApi: RelayerApi) {
+    private relayerApi: RelayerApi,
+    private sdk: UniversalLoginSDK,
+  ) {
       this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
@@ -60,6 +63,7 @@ export class FutureWalletFactory {
         address,
         ensName,
         privateKey,
+        this.sdk,
       );
     };
 
