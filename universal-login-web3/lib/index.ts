@@ -44,7 +44,7 @@ export class ULWeb3Provider implements Provider {
 
     initUi({
       sdk: this.sdk,
-      domains: ['popularapp.test'],
+      domains: ['poppularapp.test'],
       walletService: this.walletService,
     });
   }
