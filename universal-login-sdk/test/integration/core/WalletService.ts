@@ -5,6 +5,7 @@ import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import {DeployedWallet} from '../../../lib';
 
 chai.use(sinonChai);
 
@@ -13,7 +14,7 @@ describe('WalletService', () => {
   const futureWallet: FutureWallet = {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
-    deploy: async () => '',
+    deploy: async () => new DeployedWallet('', '', ''),
     waitForBalance: (async () => { }) as any
   };
   const storage = {load: () => applicationWallet, save: sinon.fake(), remove: sinon.fake()};

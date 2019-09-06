@@ -46,8 +46,8 @@ describe('E2E: SDK counterfactual deployment', () => {
     const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet());
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
-    const deployedContractAddress = await deploy(ensName, '1');
-    expect(deployedContractAddress).to.be.eq(contractAddress);
+    const deployedWallet = await deploy(ensName, '1');
+    expect(deployedWallet.contractAddress).to.be.eq(contractAddress);
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     const signedMessage = createSignedMessage({from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1')}, privateKey);
     await expect(sdk.execute(signedMessage, privateKey)).to.be.fulfilled;
