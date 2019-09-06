@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {providers} from 'ethers';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {initUi} from './ui';
 
 interface JsonRPCRequest {
@@ -31,6 +31,7 @@ const WALLET = {
 
 export class ULWeb3Provider implements Provider {
   private sdk: UniversalLoginSDK;
+  private walletService: WalletService;
 
   constructor(
     private provider: Provider,
@@ -39,11 +40,12 @@ export class ULWeb3Provider implements Provider {
       'https://relayer-rinkeby.herokuapp.com',
       new providers.Web3Provider(this.provider as any),
     );
+    this.walletService = new WalletService(this.sdk);
 
     initUi({
       sdk: this.sdk,
-      domains: ['popularapp.test'],
-      onCreate: (wallet) => console.log('wallet created', wallet),
+      domains: ['poppularapp.test'],
+      walletService: this.walletService,
     });
   }
 
