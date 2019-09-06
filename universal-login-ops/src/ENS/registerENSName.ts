@@ -7,11 +7,10 @@ type RegisterENSNameArgs = {
   domain: string;
   privateKey: string;
   ensAddress: string;
-  publicResolverAddress: string;
 };
 
-export const registerENSName = async ({name, domain, nodeUrl, privateKey, ensAddress, publicResolverAddress}: RegisterENSNameArgs) => {
+export const registerENSName = async ({name, domain, nodeUrl, privateKey, ensAddress}: RegisterENSNameArgs) => {
   const {wallet} = connect(nodeUrl, privateKey);
-  const registrar = new ENSNameRegistrar({ensAddress, publicResolverAddress}, wallet);
+  const registrar = new ENSNameRegistrar({ensAddress}, wallet);
   await registrar.start(name, domain);
 };
