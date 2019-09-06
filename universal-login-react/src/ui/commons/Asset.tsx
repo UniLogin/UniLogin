@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {TokensPrices} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
+import Spinner from './Spinner';
 
 export interface AssetProps {
   sdk: UniversalLoginSDK;
   name: string;
   symbol: string;
-  balance: string;
+  balance: string | null;
   icon: string;
 }
 
@@ -18,11 +19,14 @@ export const Asset = ({sdk, name, symbol, balance, icon}: AssetProps) => {
     const unsubscribe = sdk.subscribeToPrices((tokensPrices: TokensPrices) => {
       const tokenPrice = tokensPrices[symbol] === undefined ? 0 : tokensPrices[symbol]['USD'];
       setUsdPrice(tokenPrice.toString());
-      const tokenValue = tokenPrice * Number(balance);
-      setUsdAmount(tokenValue.toString());
     });
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    const tokenValue = Number(usdPrice) * Number(balance);
+    setUsdAmount(tokenValue.toString());
+  }, [usdPrice]);
 
   return (
     <li key={`${name}`} className="assets-item">
@@ -36,7 +40,7 @@ export const Asset = ({sdk, name, symbol, balance, icon}: AssetProps) => {
         </div>
       </div>
       <div className="assets-item-right">
-        <p className="assets-balance">{balance} {symbol}</p>
+        {balance ? <p className="assets-balance">{balance} {symbol}</p> : <Spinner/>}
         <p className="assets-price">${usdAmount}</p>
       </div>
     </li>
