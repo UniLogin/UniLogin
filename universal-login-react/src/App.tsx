@@ -85,7 +85,7 @@ export const App = () => {
                   sdk={sdk}
                   onConnect={onConnect}
                   onCreate={onCreate}
-                  domains={['popularapp.test']}
+                  domains={['mylogin.eth', 'universal-id.eth']}
                 />
               )}
             />
