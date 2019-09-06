@@ -40,7 +40,7 @@ export class ULWeb3Provider implements Provider {
       'https://relayer-rinkeby.herokuapp.com',
       new providers.Web3Provider(this.provider as any),
     );
-    this.walletService = new WalletService(this.sdk)
+    this.walletService = new WalletService(this.sdk);
 
     initUi({
       sdk: this.sdk,
