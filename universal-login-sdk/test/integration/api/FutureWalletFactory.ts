@@ -56,8 +56,11 @@ describe('INT: FutureWalletFactory', async () => {
     expect(result.contractAddress).be.eq(contractAddress);
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    await deploy(ensName, '1');
+    const deployedWallet = await deploy(ensName, '1');
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as ContractJSON)}`);
+
+    expect(deployedWallet.contractAddress).to.eq(contractAddress);
+    expect(deployedWallet.name).to.eq(ensName);
   });
 
   after(async () => {
