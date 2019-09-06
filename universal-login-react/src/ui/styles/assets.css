@@ -20,6 +20,7 @@
   display: flex;
   justify-content: space-between;
   padding: 15px 0;
+  width: 100%;
 }
 
 .assets-item-left {
@@ -49,6 +50,7 @@
   margin: 0;
   font-size: 12px;
   color: #A4A8B4;
+  text-align: left;
 }
 
 .assets-balance {
