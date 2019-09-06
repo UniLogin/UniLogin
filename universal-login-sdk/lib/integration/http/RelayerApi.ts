@@ -44,6 +44,11 @@ export class RelayerApi {
     return this.http('GET', `/authorisation/${contractAddress}?signature=${signature}`);
   }
 
+  async cancelConnection(authorisationRequest: AuthorisationRequest) {
+    const {contractAddress} = authorisationRequest;
+    return this.http('DELETE', `/authorisation/${contractAddress}`, {authorisationRequest});
+  }
+
   async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,

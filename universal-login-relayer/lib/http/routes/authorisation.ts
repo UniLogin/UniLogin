@@ -1,6 +1,8 @@
 import {Router, Request} from 'express';
 import {AddAuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
-import {asyncHandler, sanitize, responseOf, asString, asObject} from '@restless/restless';
+import {asyncHandler, sanitize, responseOf} from '@restless/restless';
+import {asString, asObject} from '@restless/sanitizers';
+import {asEthAddress} from '@restless/ethereum';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {AuthorisationRequest} from '@universal-login/commons';
 import {asAuthorisationRequest} from '../utils/sanitizers';
@@ -43,7 +45,7 @@ export default (authorisationService: AuthorisationService) => {
   router.post('/', asyncHandler(
     sanitize({
       body: asObject({
-        walletContractAddress: asString,
+        walletContractAddress: asEthAddress,
         key: asString
       })
     }),
@@ -69,7 +71,7 @@ export default (authorisationService: AuthorisationService) => {
     denyRequest(authorisationService)
   ));
 
-  router.delete('/:walletContractAddress', asyncHandler(
+  router.delete('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
         authorisationRequest: asAuthorisationRequest

@@ -5,17 +5,21 @@ import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useRouter} from '../../hooks';
 import {ConnectModal} from './ConnectAccount';
 
+
 interface ConnectWithEmojiProps {
   name: string;
   setConnectModal: (modal: ConnectModal) => void;
 }
 
 export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps) => {
-  const {connectToWallet} = useServices();
-  const {history} = useRouter();
+  const {sdk, connectToWallet, walletService} = useServices();
   const [connectValues, error] = useAsync(async () => connectToWallet(name, () => history.push('/')), []);
+  const {history} = useRouter();
 
-  const onDeny = () => {
+  const onCancelClick = async () => {
+    const {contractAddress, privateKey} = walletService.applicationWallet!;
+    await sdk.cancelRequest(contractAddress, privateKey);
+
     connectValues!.unsubscribe();
     setConnectModal('connectionMethod');
   };
@@ -36,7 +40,7 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
                 <EmojiPanel className="jarvis-emojis" code={connectValues!.securityCode} />
               </div>}
               {error && `Error: ${error}`}
-              <button onClick={onDeny} className="button-secondary connect-emoji-btn">Deny</button>
+              <button onClick={onCancelClick} className="button-secondary connect-emoji-btn">Cancel Request</button>
             </div>
           </div>
         </div>

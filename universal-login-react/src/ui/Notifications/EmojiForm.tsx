@@ -92,10 +92,6 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     );
   };
 
-  const onDenyNotifications = () => {
-    notifications.forEach(notification => sdk.denyRequests(contractAddress, privateKey));
-  };
-
   return (
     <div id="emojis">
     {progressBar
@@ -113,7 +109,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
           <button
             className="emojis-form-reject"
             id="reject"
-            onClick={onDenyNotifications}
+            onClick={() => sdk.denyRequests(contractAddress, privateKey)}
           >
             Deny
           </button>
