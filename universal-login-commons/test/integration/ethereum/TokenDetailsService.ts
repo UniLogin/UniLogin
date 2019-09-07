@@ -4,6 +4,7 @@ import {expect} from 'chai';
 import {TokenDetailsService} from '../../../lib/integration/ethereum/TokenDetailsService';
 import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
 import MockToken from '../../fixtures/MockToken.json';
+import MockDai from '../../fixtures/MockDai.json';
 
 describe('INT: TokenDetailsService', () => {
   let provider: providers.Provider;
@@ -53,5 +54,13 @@ describe('INT: TokenDetailsService', () => {
     expect(etherDetails.symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
     expect(etherDetails.name).to.eq(ETHER_NATIVE_TOKEN.name);
     expect(etherDetails.address).to.eq(ETHER_NATIVE_TOKEN.address);
+  });
+
+  it('works for DAI', async () => {
+    const mockDai = await deployContract(wallet, MockDai, []);
+    const details = await tokenDetailsService.getTokenDetails(mockDai.address);
+    expect(details.symbol).to.eq('DAI');
+    expect(details.name).to.eq('Dai Stablecoin v1.0');
+    expect(details.address).to.eq(mockDai.address);
   });
 });

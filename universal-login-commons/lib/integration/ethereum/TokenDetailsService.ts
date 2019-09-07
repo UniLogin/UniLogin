@@ -1,10 +1,15 @@
-import {providers, Contract} from 'ethers';
+import {providers, Contract, utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 import {TokenDetails} from '../../core/models/TokenData';
 
-const tokenAbi = [
+const tokenAbiString = [
   'function name() public view returns (string)',
   'function symbol() public view returns (string)'
+];
+
+const tokenAbiBytes32 = [
+  'function name() public view returns (bytes32)',
+  'function symbol() public view returns (bytes32)'
 ];
 
 export class TokenDetailsService {
@@ -29,15 +34,25 @@ export class TokenDetailsService {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
       return ETHER_NATIVE_TOKEN.symbol;
     }
-    const token = new Contract(tokenAddress, tokenAbi, this.provider);
-    return token.symbol();
+    try {
+      const token = new Contract(tokenAddress, tokenAbiString, this.provider);
+      return await token.symbol();
+    } catch (error) {
+      const token = new Contract(tokenAddress, tokenAbiBytes32, this.provider);
+      return utils.parseBytes32String(await token.symbol());
+    }
   }
 
   async getName(tokenAddress: string): Promise<string> {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
       return ETHER_NATIVE_TOKEN.name;
     }
-    const token = new Contract(tokenAddress, tokenAbi, this.provider);
-    return token.name();
+    try {
+      const token = new Contract(tokenAddress, tokenAbiString, this.provider);
+      return await token.name();
+    } catch (error) {
+      const token = new Contract(tokenAddress, tokenAbiBytes32, this.provider);
+      return utils.parseBytes32String(await token.name());
+    }
   }
 }
