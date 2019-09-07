@@ -30,6 +30,9 @@ Packages maintained with this monorepo are listed below.
 - [Relayer](https://universalloginsdk.readthedocs.io/en/latest/relayer.html) - node.js server application that allows interacting with blockchain without a wallet
 - [SDK](https://universalloginsdk.readthedocs.io/en/latest/sdk.html) - a JS library, that helps to communicate with relayer
 - OPS - scripts for development and deployment
+- React - liblrary of React components
+- Web3 - web3 provider connected allowing to use Universal Login without modifing exisitng applications
+
 
 ## Contributing
 
