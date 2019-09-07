@@ -12,9 +12,10 @@ interface TransferDropdownProps {
   ensName: string;
   currency: string;
   setCurrency: (currency: string) => void;
+  className?: string;
 }
 
-export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: TransferDropdownProps) => {
+export const TransferDropdown = ({sdk, ensName, currency, setCurrency, className}: TransferDropdownProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const {visible, toggle} = useToggler();
 
@@ -27,15 +28,16 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
 
   const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
-  const renderTransferDropdownItems = (tokensDetails: TokenDetails[], predicate: (tokenDetails: TokenDetails) => boolean, className?: string) =>
+  const renderTransferDropdownItems = (tokensDetails: TokenDetails[], predicate: (tokenDetails: TokenDetails) => boolean, dropdownClassName: string) =>
     tokensDetails
       .filter(predicate)
-      .map(({symbol, name}: TokenDetails) => renderTransferDropdownItem(symbol, name, className));
+      .map(({symbol, name}: TokenDetails) => renderTransferDropdownItem(symbol, name, dropdownClassName));
 
-  const renderTransferDropdownItem = (symbol: string, name: string, className?: string) => (
+  const renderTransferDropdownItem = (symbol: string, name: string, dropdownClassName: string) => (
     <TransferDropdownItem
       key={`${name}-${symbol}`}
       sdk={sdk}
+      dropdownClassName={dropdownClassName}
       className={className}
       name={name}
       symbol={symbol}
@@ -48,7 +50,7 @@ export const TransferDropdown = ({sdk, ensName, currency, setCurrency}: Transfer
   return (
     <div className="currency-accordion">
       {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === currency, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
-      {visible && renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== currency)}
+      {visible && renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== currency, 'currency-accordion-item')}
     </div >
   );
 };
