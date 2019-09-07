@@ -24,6 +24,7 @@ export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTran
           ensName={ensName}
           currency={currency}
           setCurrency={(currency: string) => updateTransferDetailsWith({currency})}
+          className={transferAmountClassName}
         />
         <div className="transfer-amount-row">
           <label className="transfer-amount-label" htmlFor="amount-eth">How much are you sending?</label>
