@@ -15,7 +15,14 @@ export interface DropdownItemProps {
 export const TransferDropdownItem = ({sdk, name, symbol, balance, icon, onClick, className}: DropdownItemProps) => {
   return (
     <button onClick={() => onClick(symbol)} className={className || 'currency-accordion-item'}>
-      <Asset sdk={sdk} name={name} symbol={symbol} balance={balance} icon={icon}/>
+      <Asset
+        sdk={sdk}
+        name={name}
+        symbol={symbol}
+        balance={balance}
+        icon={icon}
+        className="jarvis-assets"
+      />
     </button>
   );
 };

@@ -14,9 +14,14 @@ const HomeScreen = () => {
         <Header />
         <div className="dashboard-content">
           <Balance />
-          <Assets sdk={sdk} ensName={walletPresenter.getName()} />
         </div>
-        <div className="my-assets-section" />
+        <div className="my-assets-section">
+          <Assets
+            sdk={sdk}
+            ensName={walletPresenter.getName()}
+            className="jarvis-assets"
+          />
+        </div>
       </div>
       <Modal />
     </>
