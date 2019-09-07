@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="34px" viewBox="0 0 28 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="new-device" transform="translate(-25.000000, -32.000000)" fill="#0FB989" fill-rule="nonzero">
+            <g id="New-device-want">
+                <path d="M52.9234056,37.3121611 C47.1552268,37.3121611 42.7362206,35.6546206 38.9994752,32 C35.2631183,35.6546206 30.8443064,37.3121611 25.0766134,37.3121611 C25.0766134,46.8295346 23.1186229,60.4631076 38.999378,66 C54.8812989,60.4632053 52.9234056,46.8296324 52.9234056,37.3121611 Z M37.8460531,54.06012 L33.2073983,49.393915 L35.2842963,47.3050858 L37.8460531,49.8822661 L42.7151397,44.9848809 L44.7919406,47.0737102 L37.8460531,54.06012 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

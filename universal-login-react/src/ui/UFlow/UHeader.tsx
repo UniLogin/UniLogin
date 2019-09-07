@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {dashboardContentType} from '../../core/models/ReactUModalContext';
+import {dashboardContentType} from '../../core/models/ReactUDashboardContentType';
 
 export interface UHeaderProps {
   activeTab: dashboardContentType;
@@ -22,6 +22,12 @@ export const UHeader = ({activeTab, setActiveTab}: UHeaderProps) => {
         onClick={() => setActiveTab('approveDevice')}
       >
         Approve Device
+      </button>
+      <button
+        className={`udashboard-tab udashboard-tab-devices ${activeTab === 'devices' ? 'active' : ''}`}
+        onClick={() => setActiveTab('devices')}
+      >
+        Devices
       </button>
     </div>
   );
