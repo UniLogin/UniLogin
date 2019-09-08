@@ -4,7 +4,9 @@ import {ULWeb3Provider} from '@universal-login/web3';
 
 const web3 = new Web3(new ULWeb3Provider(new Web3.providers.HttpProvider('https://rinkeby.infura.io')));
 
-web3.eth.getAccounts().then(accounts => console.log('accounts', accounts));
+web3.eth.getAccounts()
+  .then(accounts => console.log('accounts', accounts))
+  .catch(console.error);
 
 function App() {
   function sendTx() {
@@ -12,7 +14,9 @@ function App() {
       from: '0x2bc65e3Bb5D6bAbd6342489aacFecCaB64167835',
       to: '0x7ffC57839B00206D1ad20c69A1981b489f772031',
       value: '500000000000000',
-    }).then(console.log);
+    })
+      .then(console.log)
+      .catch(console.error);
   }
 
   return (
