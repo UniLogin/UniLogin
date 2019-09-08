@@ -48,7 +48,8 @@ export class FutureWalletFactory {
       (resolve) => {
         const onReadyToDeploy = (tokenAddress: string, contractAddress: string) => resolve({tokenAddress, contractAddress});
         const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
-        deploymentReadyObserver.startAndSubscribe(contractAddress, onReadyToDeploy);
+        deploymentReadyObserver.startAndSubscribe(contractAddress, onReadyToDeploy)
+          .catch(console.error);
       }
     ) as Promise<BalanceDetails>;
 

@@ -45,7 +45,7 @@ describe('waitExpect', async () => {
     });
 
   it('should pass test using waitExpect ', async () => {
-    changeExpected();
+    await changeExpected();
     await waitExpect(() => expect(expected).to.be.true, 15, 1);
   });
 

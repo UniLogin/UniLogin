@@ -1,7 +1,6 @@
 import {utils, Contract} from 'ethers';
 import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
 import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
-import TestRegistrar from '@universal-login/contracts/build/TestRegistrar.json';
 import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction, ensure} from '@universal-login/commons';
 import {saveVariables} from '../utils/save';
 import ENSRegistrarBase from './ENSRegistrarBase';
@@ -11,9 +10,9 @@ class DomainRegistrar extends ENSRegistrarBase {
 
   async registerInRegistrar(label : string, labelHash : string, node : string, tld : string) {
     const tldRegistrarAddress = await this.ens.owner(utils.namehash(tld));
-    this.testRegistrar = new Contract(tldRegistrarAddress, TestRegistrar.interface, this.deployer);
+    this.testRegistrar = new Contract(tldRegistrarAddress, FIFSRegistrar.interface, this.deployer);
     this.log(`Registrar address for ${tld}: ${tldRegistrarAddress}`);
-    const transaction = await this.testRegistrar.register(labelHash, this.deployer.address, {gasLimit: 100000, ...this.overridesOptions});
+    const transaction = await this.testRegistrar!.register(labelHash, this.deployer.address, {gasLimit: 100000, ...this.overridesOptions});
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Registered ${label}.${tld} with owner: ${await this.ens.owner(node)}`);
   }
