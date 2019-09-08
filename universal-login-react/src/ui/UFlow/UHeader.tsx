@@ -29,6 +29,12 @@ export const UHeader = ({activeTab, setActiveTab}: UHeaderProps) => {
       >
         Devices
       </button>
+      <button
+        className={`udashboard-tab udashboard-tab-backup ${activeTab === 'backup' ? 'active' : ''}`}
+        onClick={() => setActiveTab('backup')}
+      >
+        Backup
+      </button>
     </div>
   );
 };
