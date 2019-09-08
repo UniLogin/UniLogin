@@ -10,13 +10,14 @@ import {Services} from '../../../src/ui/createServices';
 import App from '../../../src/ui/react/App';
 import {providers, Wallet} from 'ethers';
 import {AppPage} from '../pages/AppPage';
+import Relayer from '@universal-login/relayer';
 
 chai.use(require('chai-string'));
 
 
 describe('UI: Connection flow', () => {
   let services : Services;
-  let relayer: any;
+  let relayer: Relayer;
   let provider: providers.Provider;
   let appWrapper: ReactWrapper;
   let privateKey : string;
@@ -39,9 +40,9 @@ describe('UI: Connection flow', () => {
     await appPage.login().connect(name);
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
-    await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
     const publicKey = (new Wallet(services.walletService.applicationWallet!.privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
+    await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
     await appPage.login().waitForHomeView('1.9998');
     expect(appPage.dashboard().getWalletBalance()).to.startWith('1.9998');
   });

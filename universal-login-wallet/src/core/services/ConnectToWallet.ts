@@ -1,8 +1,8 @@
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {Procedure} from '@universal-login/commons';
-import {Wallet} from 'ethers';
+import {Procedure, ApplicationWallet} from '@universal-login/commons';
+import {utils} from 'ethers';
 
-interface Connection {
+export interface Connection {
   unsubscribe: () => void;
   securityCode: number[];
 }
@@ -11,16 +11,24 @@ const connectToWallet = (sdk: UniversalLoginSDK, walletService: WalletService) =
   async (name: string, callback: Procedure): Promise<Connection> => {
     const contractAddress = await sdk.getWalletContractAddress(name);
     const {privateKey, securityCode} = await sdk.connect(contractAddress);
-    const publicKey = (new Wallet(privateKey)).address;
-    walletService.connect({privateKey, contractAddress, name});
-    const filter = {contractAddress, key: publicKey};
+
+    const applicationWallet: ApplicationWallet = {privateKey, contractAddress, name};
+    walletService.setApplicationWallet(applicationWallet);
+
+    const filter = {
+      contractAddress,
+      key: utils.computeAddress(privateKey)
+    };
+
     const subscription = sdk.subscribe('KeyAdded', filter, () => {
+      walletService.connect(applicationWallet);
       subscription.remove();
       callback();
     });
+
     return {
       unsubscribe: () => subscription.remove(),
-      securityCode,
+      securityCode
     };
   };
 export default connectToWallet;

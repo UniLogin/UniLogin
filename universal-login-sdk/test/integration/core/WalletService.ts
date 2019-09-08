@@ -9,7 +9,7 @@ import {DeployedWallet} from '../../../lib';
 
 chai.use(sinonChai);
 
-describe('WalletService', () => {
+describe('INT: WalletService', () => {
   const applicationWallet: ApplicationWallet = { name: 'justyna.nylogin.eth', contractAddress: '0x123', privateKey: '0x5422' };
   const futureWallet: FutureWallet = {
     contractAddress: TEST_ACCOUNT_ADDRESS,
@@ -38,15 +38,21 @@ describe('WalletService', () => {
     walletService.connect(applicationWallet);
     expect(walletService.applicationWallet).to.deep.eq(applicationWallet);
     expect(walletService.state).to.be.eq('Deployed');
+  });
+
+  it('should save applicationWallet to localstorage', () => {
+    walletService.saveToStorage(applicationWallet);
     expect(storage.save).to.be.calledWith(applicationWallet);
   });
 
   it('roundtrip', () => {
     expect(walletService.state).to.be.eq('None', 'Initial WalletService state does not equal None');
     expect(walletService.applicationWallet).to.be.undefined;
+
     walletService.setFutureWallet(futureWallet);
     expect(walletService.applicationWallet).to.deep.eq(futureWallet);
     expect(walletService.state).to.be.eq('Future');
+
     walletService.setDeployed(applicationWallet.name);
     const expectedWallet = {
       contractAddress: futureWallet.contractAddress,
@@ -56,12 +62,16 @@ describe('WalletService', () => {
     expect(walletService.applicationWallet).to.deep.eq(expectedWallet);
     expect(walletService.state).to.be.eq('Deployed');
     expect(storage.save.args[0]).to.deep.eq([expectedWallet]);
+
     walletService.disconnect();
     expect(walletService.applicationWallet).to.be.undefined;
     expect(walletService.state).to.be.eq('None');
+
     walletService.connect(applicationWallet);
     expect(walletService.applicationWallet).to.deep.eq(applicationWallet);
     expect(walletService.state).to.be.eq('Deployed');
+
+    walletService.saveToStorage(applicationWallet);
     expect(storage.save).to.be.calledWith(applicationWallet);
   });
 

@@ -44,36 +44,37 @@ export class WalletService {
     ensure(this.state === 'Future', FutureWalletNotSet);
     const {contractAddress, privateKey} = this.applicationWallet!;
     this.state = 'Deployed';
-    this.applicationWallet = {
-      name,
-      contractAddress,
-      privateKey
-    };
-    this.storage && this.storage.save(this.applicationWallet);
+    this.applicationWallet = {name, contractAddress, privateKey};
+    this.saveToStorage(this.applicationWallet);
   }
 
   connect(applicationWallet: ApplicationWallet) {
     ensure(this.state === 'None', WalletOverridden);
     this.state = 'Deployed';
+    this.setApplicationWallet(applicationWallet);
+    this.saveToStorage(applicationWallet);
+  }
+
+  setApplicationWallet(applicationWallet: ApplicationWallet) {
     this.applicationWallet = applicationWallet;
-    this.storage && this.storage.save(applicationWallet);
   }
 
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
     ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
-    this.connect({
-      name,
-      privateKey: wallet.privateKey,
-      contractAddress
-    });
+    const applicationWallet: ApplicationWallet = {name, privateKey: wallet.privateKey, contractAddress};
+    this.connect(applicationWallet);
   }
 
   disconnect(): void {
     this.state = 'None';
     this.applicationWallet = undefined;
-    this.storage && this.storage.remove();
+    this.removeFromStorage();
+  }
+
+  saveToStorage(applicationWallet: ApplicationWallet) {
+    this.storage && this.storage.save(applicationWallet);
   }
 
   loadFromStorage() {
@@ -87,5 +88,9 @@ export class WalletService {
     ensure(this.state === 'None', WalletOverridden);
     this.state = 'Deployed';
     this.applicationWallet = wallet;
+  }
+
+  removeFromStorage() {
+    this.storage && this.storage.remove();
   }
 }
