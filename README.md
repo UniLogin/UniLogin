@@ -83,8 +83,6 @@ You can run all of above scripts (`install`, `build`, `test`, `lint`, `clean`) f
 
 To emulate the full CI process:
 ```sh
-yarn clean
-yarn
 yarn ci
 ```
 
