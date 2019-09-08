@@ -23,7 +23,8 @@ abstract class ObserverRunner {
   start() {
     if (this.state === 'stop') {
       this.state = 'running';
-      this.loop();
+      this.loop()
+        .catch(console.error);
     }
   }
 
