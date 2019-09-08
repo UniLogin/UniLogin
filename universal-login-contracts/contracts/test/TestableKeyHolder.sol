@@ -4,8 +4,8 @@ import "../wallet/KeyHolder.sol";
 
 
 contract TestableKeyHolder is KeyHolder {
+    /* solium-disable-next-line no-empty-blocks */
     constructor(address _key) KeyHolder(_key) public {
-
     }
 
     modifier onlyAuthorised() {
