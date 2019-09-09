@@ -5,7 +5,7 @@ import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress} from '@restless/ethereum';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {RelayerRequest} from '@universal-login/commons';
-import {asAuthorisationRequest} from '../utils/sanitizers';
+import {asRelayerRequest} from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
 
 
@@ -65,7 +65,7 @@ export default (authorisationService: AuthorisationService) => {
   router.post('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
-        authorisationRequest: asAuthorisationRequest
+        authorisationRequest: asRelayerRequest
       })
     }),
     denyRequest(authorisationService)
@@ -74,7 +74,7 @@ export default (authorisationService: AuthorisationService) => {
   router.delete('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
-        authorisationRequest: asAuthorisationRequest
+        authorisationRequest: asRelayerRequest
       })
     }),
     cancelRequest(authorisationService)

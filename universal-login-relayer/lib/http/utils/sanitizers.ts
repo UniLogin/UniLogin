@@ -12,7 +12,7 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   }
 };
 
-export const asAuthorisationRequest: Sanitizer<RelayerRequest> = asObject({
+export const asRelayerRequest: Sanitizer<RelayerRequest> = asObject({
   contractAddress: asEthAddress,
   signature: asString
 });
