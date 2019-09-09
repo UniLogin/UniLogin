@@ -1,5 +1,4 @@
 import path from 'path';
-import {utils} from 'ethers';
 import {getEnv, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {Config} from './relayer';
 
@@ -25,7 +24,7 @@ export const config: Config =  Object.freeze({
   factoryAddress: getEnv('FACTORY_ADDRESS', ''),
   supportedTokens: [{
     address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: utils.parseEther('0.005').toString()
+    minimalAmount: '500000'
   }],
   localization: {
     language: 'en',

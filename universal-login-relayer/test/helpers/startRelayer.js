@@ -40,7 +40,7 @@ async function startRelayer(wallet, relayerConstructor) {
       },
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: utils.parseEther('0.5').toString()
+        minimalAmount: '500000'
       }
     ],
   });
