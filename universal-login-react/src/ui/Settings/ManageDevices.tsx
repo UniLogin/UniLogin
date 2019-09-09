@@ -1,9 +1,16 @@
 import React from 'react';
+import {DeviceInfo} from '@universal-login/commons';
 
-export const ManageDevices = () => (
+interface ManageDevicesProps {
+  devices: DeviceInfo[];
+}
+export const ManageDevices = ({devices}: ManageDevicesProps) => (
   <div>
+    {
+      devices && devices.map(({os}: DeviceInfo, index: number) => (<div key={index}> device {index} : {os}</div>))
+    }
     <button className="settings-btn">Remove this device</button>
-  </div>
+  </div >
 );
 
 export default ManageDevices;

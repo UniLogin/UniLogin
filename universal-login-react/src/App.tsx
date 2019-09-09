@@ -138,7 +138,7 @@ export const App = () => {
                 }
               }
             />
-            <Route exact path="/settings" render={() => <Settings />} />
+            <Route exact path="/settings" render={() => <Settings sdk={sdk} contractAddress={TEST_CONTRACT_ADDRESS} privateKey={TEST_PRIVATE_KEY}/>} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
             <Route component={() => (<p>not found</p>)} />
           </Switch>

@@ -45,7 +45,12 @@ export function Header() {
                     />
                     Settings
                   </h2>
-                  <Settings className="jarvis-settings"/>
+                  <Settings
+                    className="jarvis-settings"
+                    sdk={sdk}
+                    contractAddress={contractAddress}
+                    privateKey={privateKey}
+                  />
                 </div>
               }
             </div>

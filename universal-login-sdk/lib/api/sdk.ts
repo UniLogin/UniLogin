@@ -220,6 +220,11 @@ class UniversalLoginSDK {
     );
   }
 
+  subscribeConnectedDevices(contractAddress: string, privateKey: string, callback: Function) {
+    callback([{type: 'mobile'}, {type: 'desktop'}]);
+    return () => {};
+  }
+
   async start() {
     await this.blockchainObserver.start();
     await this.tokensDetailsStore.fetchTokensDetails();
