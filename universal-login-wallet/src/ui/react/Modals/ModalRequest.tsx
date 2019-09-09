@@ -1,9 +1,9 @@
 import React from 'react';
 import {InputLabel} from '@universal-login/react';
-import qrCodePlacehoder from '../../assets/placeholders/qr-code-placeholder.png';
 import InputWithButton from '../common/InputWithButton';
 import {Hint} from '../common/Hint';
 import {useServices} from '../../hooks';
+import {QRCode} from 'react-qr-svg';
 
 const ModalRequest = () => {
   const {walletPresenter} = useServices();
@@ -14,7 +14,7 @@ const ModalRequest = () => {
       </div>
       <div className="modal-content">
         <div className="qr-code">
-          <img src={qrCodePlacehoder} alt="Qrcode placeholder"/>
+          <QRCode level="M" width={128} height={128} value={walletPresenter.getContractAddress()} />
         </div>
         <InputLabel htmlFor="address">Receiving address</InputLabel>
         <InputWithButton
