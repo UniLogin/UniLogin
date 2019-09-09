@@ -76,7 +76,11 @@ export class WalletService {
 
   disconnect(): void {
     this.state = {kind: 'None'};
-    this.storage && this.storage.remove();
+    this.removeFromStorage();
+  }
+
+  saveToStorage(applicationWallet: ApplicationWallet) {
+    this.storage && this.storage.save(applicationWallet);
   }
 
   loadFromStorage() {
@@ -92,5 +96,9 @@ export class WalletService {
       kind: 'Deployed',
       deployedWallet: new DeployedWallet(wallet.contractAddress, name, wallet.privateKey, this.sdk),
     };
+  }
+
+  removeFromStorage() {
+    this.storage && this.storage.remove();
   }
 }

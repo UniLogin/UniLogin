@@ -6,7 +6,7 @@ import {setupSdk} from '@universal-login/sdk/testutils';
 
 chai.use(solidity);
 
-describe('WalletService', async () => {
+describe('INT: WalletService', async () => {
   let walletService: WalletService;
   let sdk: UniversalLoginSDK;
   let relayer: Relayer;

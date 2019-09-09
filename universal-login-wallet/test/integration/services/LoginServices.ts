@@ -8,20 +8,21 @@ import {
   ETHER_NATIVE_TOKEN,
   waitExpect,
   generateCode,
+  Procedure,
 } from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
-import ConnectionToWalletService from '../../../src/core/services/ConnectToWallet';
+import ConnectionToWalletService, {Connection} from '../../../src/core/services/ConnectToWallet';
+import Relayer from '@universal-login/relayer';
 
 describe('Login', () => {
-  let connectToWalletService: any;
-  let walletService: any;
-  let walletServiceForConnect: any;
+  let connectToWalletService: (name: string, callback: Procedure) => Promise<Connection>;
+  let walletService: WalletService;
+  let walletServiceForConnect: WalletService;
   let sdk: UniversalLoginSDK;
-  let relayer: any;
+  let relayer: Relayer;
   let wallet: Wallet;
   let provider: providers.Provider;
-  let blockchainObserver: any;
   let name: string;
   let privateKey: string;
   let contractAddress: string;
@@ -33,8 +34,7 @@ describe('Login', () => {
     walletService = new WalletService(sdk);
     walletServiceForConnect = new WalletService(sdk);
     connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect);
-    ({blockchainObserver} = sdk);
-    blockchainObserver.lastBlock = 0;
+    (sdk.blockchainObserver as any).lastBlock = 0;
     await sdk.start();
   });
 
@@ -42,17 +42,15 @@ describe('Login', () => {
     it('should create contract wallet', async () => {
       name = 'name.mylogin.eth';
       const {contractAddress, waitForBalance, deploy, privateKey} = await walletService.createFutureWallet();
+
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
       await waitForBalance();
       await deploy(name, '1');
       walletService.setDeployed(name);
+
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
-
-      const applicationWallet = walletService.applicationWallet;
-      expect(applicationWallet.name).to.eq(name);
-      expect(applicationWallet.privateKey).to.eq(privateKey);
-      expect(applicationWallet.contractAddress).to.eq(contractAddress);
+      expect(walletService.applicationWallet!).to.deep.equal({name, privateKey, contractAddress});
     });
   });
 
@@ -66,7 +64,7 @@ describe('Login', () => {
     it('should request connect to existing wallet and call callback when add key', async () => {
       const callback = sinon.spy();
       const {unsubscribe, securityCode} = await connectToWalletService(name, callback);
-      const newPublicKey = (new Wallet(walletServiceForConnect.applicationWallet.privateKey)).address;
+      const newPublicKey = utils.computeAddress(walletServiceForConnect.applicationWallet!.privateKey);
       const expectedSecurityCode = await generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;
       const {waitToBeMined} = await sdk.addKey(
