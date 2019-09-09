@@ -40,3 +40,9 @@ export type CollectedSignatureKeyPair = {
   key: string;
   signature: string;
 };
+
+export type DecodedMessage = Omit<MessageWithoutFrom, 'nonce'>;
+
+export interface DecodedMessageWithFrom extends DecodedMessage {
+  from: string;
+}
