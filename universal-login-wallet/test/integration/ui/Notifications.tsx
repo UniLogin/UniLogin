@@ -7,13 +7,14 @@ import {setupSdk} from '@universal-login/sdk/testutils';
 import {Services} from '../../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../helpers/setupUI';
+import Relayer from '@universal-login/relayer';
 
 describe('UI: Notifications',  () => {
-  let services : Services;
-  let relayer : any;
-  let provider : providers.Provider;
-  let appWrapper : ReactWrapper;
-  let appPage : AppPage;
+  let services: Services;
+  let relayer: Relayer;
+  let provider: providers.Provider;
+  let appWrapper: ReactWrapper;
+  let appPage: AppPage;
   let mockTokenContract: Contract;
 
   beforeEach(async () => {
@@ -21,7 +22,7 @@ describe('UI: Notifications',  () => {
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
-     await services.sdk.start();
+    await services.sdk.start();
   });
 
   it('Should get notification when new device connect and confirm request', async () => {

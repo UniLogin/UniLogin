@@ -7,7 +7,7 @@ import {sortPrivateKeysByAddress, createKeyPair} from '@universal-login/commons'
 const {parseEther} = utils;
 
 export default async function basicExecutor(unusedProvider : providers.Provider, [, , , , , , , , , wallet] : Wallet []) {
-  const managementKeyPair = {publicKey: wallet.address, privateKey: wallet.privateKey};
+  const managementKeyPair = createKeyPair();
   const actionKeyPair = createKeyPair();
   const actionKeyPair2 = createKeyPair();
   const sortedKeys = sortPrivateKeysByAddress([actionKeyPair2.privateKey, actionKeyPair.privateKey, managementKeyPair.privateKey]);

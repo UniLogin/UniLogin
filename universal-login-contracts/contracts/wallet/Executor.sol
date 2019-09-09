@@ -18,12 +18,20 @@ contract Executor {
         requiredSignatures = 1;
     }
 
-    function etherRefundCharge() public pure returns(uint) {
-        return 14000;
+    function etherRefundCharge() private pure returns(uint) {
+        return 15000;
     }
 
-    function tokenRefundCharge() public pure returns(uint) {
-        return 19500;
+    function tokenRefundCharge() private pure returns(uint) {
+        return 20000;
+    }
+
+    function getNonMeasurableExecutionCost() private pure returns(uint) {
+        return 34600; // 21000 + 68 * 200
+    }
+
+    function addRelayerFee(uint gasUsed) private pure returns(uint) {
+        return gasUsed * 6 / 5; // 20%
     }
 
     function keyExist(address _key) public view returns(bool);
@@ -105,33 +113,36 @@ contract Executor {
         uint gasLimit,
         bytes memory signatures) public returns (bytes32)
     {
+        uint256 startingGas = gasleft();
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         require(nonce == lastNonce, "Invalid nonce");
         require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, signatures), "Invalid signature");
         lastNonce++;
-        uint256 startingGas = gasleft();
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
-        (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
+        (success, _data) = to.call.gas(gasleft().sub(getRefundGas(gasToken))).value(value)(data);
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit);
         emit ExecutedSigned(messageHash, nonce, success);
+        uint256 nonMeasurableExecutionCost = getNonMeasurableExecutionCost().add(getRefundGas(gasToken));
         uint256 gasUsed = startingGas.sub(gasleft());
-        refund(gasUsed, gasPrice, gasToken, msg.sender);
+        refund(gasUsed.add(nonMeasurableExecutionCost), gasPrice, gasToken, msg.sender);
         return messageHash;
     }
 
     function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
+        uint gasUsedWithFee = addRelayerFee(gasUsed);
+
         if (gasToken != address(0)) {
             ERC20 token = ERC20(gasToken);
-            token.transfer(beneficiary, gasUsed.mul(gasPrice));
+            token.transfer(beneficiary, gasUsedWithFee.mul(gasPrice));
         } else {
-            beneficiary.transfer(gasUsed.mul(gasPrice));
+            beneficiary.transfer(gasUsedWithFee.mul(gasPrice));
         }
     }
 
-    function refundGas(address gasToken) private pure returns(uint refundCharge) {
+    function getRefundGas(address gasToken) private pure returns(uint refundCharge) {
         if (gasToken == address(0)) {
             return etherRefundCharge();
         } else {

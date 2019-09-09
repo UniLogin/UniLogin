@@ -21,12 +21,12 @@ describe('CONTRACT: Executor - refund', async  () => {
   let managementKeyPair: KeyPair;
   let loopContract: Contract;
   let infiniteCallMessage: UnsignedMessage;
-  let initialBalance: utils.BigNumber;
+  let relayerInitialBalance: utils.BigNumber;
 
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicExecutor));
     loopContract = await deployContract(wallet, Loop);
-    initialBalance = await wallet.getBalance();
+    relayerInitialBalance = await wallet.getBalance();
     const loopFunctionData = encodeFunction(Loop, 'loop');
     infiniteCallMessage = {
       from: walletContract.address,
@@ -44,31 +44,43 @@ describe('CONTRACT: Executor - refund', async  () => {
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, message);
     const executeData = encodeDataForExecuteSigned({...message, signature});
+
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
+    const relayerBalanceAfter = await wallet.getBalance();
+
+    const relayerFee = receipt.gasUsed!.div(5); // 20% fee
+
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
-    const balanceAfter = await wallet.getBalance();
-    expect(balanceAfter).to.be.above(initialBalance.sub(receipt.gasUsed as utils.BigNumber));
+    expect(relayerBalanceAfter).to.be.above(relayerInitialBalance.add(relayerFee));
   });
 
   it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
+
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
-    const balanceAfter = await wallet.getBalance();
-    expect(balanceAfter).to.be.above(initialBalance.sub(receipt.gasUsed as utils.BigNumber));
+    const relayerBalanceAfter = await wallet.getBalance();
+
+    const relayerFee = receipt.gasUsed!.div(5); // 20% fee
+
+    expect(relayerBalanceAfter).to.be.above(relayerInitialBalance.add(relayerFee));
   });
 
   it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
-    const initialTokenBalance = await mockToken.balanceOf(wallet.address);
+    const relayerInitialTokenBalance = await mockToken.balanceOf(wallet.address);
     infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
+
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
-    const balanceAfter = await mockToken.balanceOf(wallet.address);
-    expect(balanceAfter).to.be.above(initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber));
+    const relayerTokenBalanceAfter = await mockToken.balanceOf(wallet.address);
+
+    const relayerFee = receipt.gasUsed!.div(5); // 20% fee
+
+    expect(relayerTokenBalanceAfter).to.be.above(relayerInitialTokenBalance.add(relayerFee));
   });
 });
