@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {RelayerRequest} from '../models/authorisation';
+import {RelayerRequest} from '../models/relayerRequest';
 import {sign} from './signatures';
 
 export const signAuthorisationRequest =
