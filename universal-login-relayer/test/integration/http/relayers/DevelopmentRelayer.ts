@@ -24,7 +24,7 @@ describe('INT: Development Relayer', async () => {
   });
 
   const isBalanceEqual = (value: utils.BigNumber) => async () =>
-    (await provider.getBalance(contractAddress)).gt(value);
+    (await provider.getBalance(contractAddress)).gte(value);
 
   const isTokenBalanceEqual = (value: utils.BigNumber) => async () =>
     (await tokenContract.balanceOf(contractAddress)).eq(value);

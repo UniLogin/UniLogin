@@ -37,7 +37,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
    },
    {
     address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: utils.parseEther('0.05').toString()
+    minimalAmount: '500000'
    }];
   return {
     jsonRpcUrl,
