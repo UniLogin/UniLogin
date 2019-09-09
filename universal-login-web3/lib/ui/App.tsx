@@ -1,7 +1,8 @@
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {Onboarding} from '@universal-login/react';
 import styled from 'styled-components';
+import {WalletService} from '../services/WalletService';
 
 export interface AppProps {
   sdk: UniversalLoginSDK;

@@ -1,7 +1,8 @@
 import {Provider} from 'web3/providers';
 import {providers} from 'ethers';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {initUi} from './ui';
+import {WalletService} from './services/WalletService';
 
 interface JsonRPCRequest {
   jsonrpc: string;
