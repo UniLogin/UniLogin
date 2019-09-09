@@ -40,7 +40,7 @@ describe('UI: Connection flow', () => {
     await appPage.login().connect(name);
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
-    const publicKey = (new Wallet(services.walletService.applicationWallet!.privateKey)).address;
+    const publicKey = (new Wallet(services.walletService.getDeployedWallet().privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
     await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
     await appPage.login().waitForHomeView('1.9998');

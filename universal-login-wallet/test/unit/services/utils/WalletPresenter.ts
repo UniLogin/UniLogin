@@ -27,7 +27,7 @@ describe('WalletFormatter', async () => {
   });
 
   it('return contract address if applicationWallet exist', () => {
-    walletService.applicationWallet = applicationWallet;
+    walletService.connect(applicationWallet);
     expect(walletPresenter.getContractAddress()).to.be.eq(applicationWallet.contractAddress);
   });
 

@@ -9,10 +9,13 @@ type WalletState = {
   kind: 'None'
 } | {
   kind: 'Future'
-  futureWallet: FutureWallet
+  wallet: FutureWallet
+} | {
+  kind: 'Connecting'
+  wallet: ApplicationWallet
 } | {
   kind: 'Deployed'
-  deployedWallet: DeployedWallet
+  wallet: DeployedWallet
 };
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
@@ -36,35 +39,49 @@ export class WalletService {
     return this.walletDeployed();
   }
 
+  getDeployedWallet(): DeployedWallet {
+    if (this.state.kind !== 'Deployed') {
+      throw new Error('Invalid state: expected deployed wallet');
+    }
+    return this.state.wallet;
+  }
+
   async createFutureWallet(): Promise<FutureWallet> {
     const futureWallet = await this.sdk.createFutureWallet();
     this.setFutureWallet(futureWallet);
     return futureWallet;
   }
 
-  setFutureWallet(futureWallet: FutureWallet) {
+  setFutureWallet(wallet: FutureWallet) {
     if (this.state.kind !== 'None') {
       throw new WalletOverridden();
     }
-    this.state = {kind: 'Future', futureWallet};
+    this.state = {kind: 'Future', wallet};
   }
 
   setDeployed(name: string) {
     if (this.state.kind !== 'Future') {
       throw new FutureWalletNotSet();
     }
-    const {contractAddress, privateKey} = this.state.futureWallet;
-    const deployedWallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
-    this.state = {kind: 'Deployed', deployedWallet};
-    this.storage && this.storage.save(deployedWallet.asApplicationWallet);
+    const {contractAddress, privateKey} = this.state.wallet;
+    const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
+    this.state = {kind: 'Deployed', wallet};
+    this.storage && this.storage.save(wallet.asApplicationWallet);
   }
 
-  connect(deployedWallet: DeployedWallet) {
+  setConnecting(wallet: ApplicationWallet) {
     if (this.state.kind !== 'None') {
       throw new WalletOverridden();
     }
-    this.state = {kind: 'Deployed', deployedWallet};
-    this.storage && this.storage.save(deployedWallet.asApplicationWallet);
+    this.state = {kind: 'Connecting', wallet};
+  }
+
+  connect(wallet: ApplicationWallet) {
+    if (this.state.kind !== 'None' && this.state.kind !== 'Connecting') {
+      throw new WalletOverridden();
+    }
+    this.state = {kind: 'Deployed', wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk)};
+    this.storage && this.storage.save(wallet);
   }
 
   async recover(name: string, passphrase: string) {
@@ -94,7 +111,7 @@ export class WalletService {
     ensure(this.state.kind === 'None', WalletOverridden);
     this.state = {
       kind: 'Deployed',
-      deployedWallet: new DeployedWallet(wallet.contractAddress, name, wallet.privateKey, this.sdk),
+      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
     };
   }
 

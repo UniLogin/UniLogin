@@ -17,7 +17,7 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
   const {history} = useRouter();
 
   const onCancelClick = async () => {
-    const {contractAddress, privateKey} = walletService.applicationWallet!;
+    const {contractAddress, privateKey} = walletService.getDeployedWallet();
     await sdk.cancelRequest(contractAddress, privateKey);
 
     connectValues!.unsubscribe();

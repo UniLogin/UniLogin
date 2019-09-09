@@ -19,6 +19,9 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
+        include: [
+          path.resolve(__dirname, 'src'),
+        ],
         exclude: /node_modules/
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },

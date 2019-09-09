@@ -32,8 +32,8 @@ const Modal = () => {
         <ModalWrapperClosable hideModal={modalService.hideModal}>
           <ConnectionNotificationModal
             sdk={sdk}
-            contractAddress={walletService.applicationWallet!.contractAddress}
-            privateKey={walletService.applicationWallet!.privateKey}
+            contractAddress={walletService.getDeployedWallet().contractAddress}
+            privateKey={walletService.getDeployedWallet().privateKey}
           />
         </ModalWrapperClosable>
       );

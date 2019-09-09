@@ -10,7 +10,9 @@ import {DeployedWallet} from '../../../lib';
 chai.use(sinonChai);
 
 describe('INT: WalletService', () => {
-  const applicationWallet: ApplicationWallet = { name: 'justyna.nylogin.eth', contractAddress: '0x123', privateKey: '0x5422' };
+  const sdk = {} as UniversalLoginSDK;
+  const deployedWallet: DeployedWallet = new DeployedWallet('0x123', 'justyna.nylogin.eth', '0x5422', sdk);
+  const applicationWallet = deployedWallet.asApplicationWallet;
   const futureWallet: FutureWallet = {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
@@ -21,23 +23,20 @@ describe('INT: WalletService', () => {
   let walletService: WalletService;
 
   beforeEach(() => {
-    walletService = new WalletService({} as UniversalLoginSDK, walletFromBrain, storage);
+    walletService = new WalletService(sdk, walletFromBrain, storage);
     storage.save.resetHistory();
   });
 
-  it('should disconnect', () => {
-    walletService.applicationWallet = applicationWallet;
-    expect(walletService.applicationWallet).to.deep.eq(applicationWallet);
+  it('disconnect resets state to None', () => {
+    walletService.state = {kind: 'Deployed', wallet: deployedWallet};
     walletService.disconnect();
-    expect(walletService.applicationWallet).to.be.undefined;
-    expect(walletService.state).to.be.eq('None');
+    expect(walletService.state).to.deep.eq({kind: 'None'});
     expect(storage.remove).to.be.called;
   });
 
-  it('should set state and applicationWallet', () => {
+  it('connect set state to Deployed', () => {
     walletService.connect(applicationWallet);
-    expect(walletService.applicationWallet).to.deep.eq(applicationWallet);
-    expect(walletService.state).to.be.eq('Deployed');
+    expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
   });
 
   it('should save applicationWallet to localstorage', () => {
@@ -46,30 +45,26 @@ describe('INT: WalletService', () => {
   });
 
   it('roundtrip', () => {
-    expect(walletService.state).to.be.eq('None', 'Initial WalletService state does not equal None');
-    expect(walletService.applicationWallet).to.be.undefined;
+    expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setFutureWallet(futureWallet);
-    expect(walletService.applicationWallet).to.deep.eq(futureWallet);
-    expect(walletService.state).to.be.eq('Future');
+    expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
 
     walletService.setDeployed(applicationWallet.name);
-    const expectedWallet = {
-      contractAddress: futureWallet.contractAddress,
-      privateKey: futureWallet.privateKey,
-      name: applicationWallet.name
-    };
-    expect(walletService.applicationWallet).to.deep.eq(expectedWallet);
-    expect(walletService.state).to.be.eq('Deployed');
-    expect(storage.save.args[0]).to.deep.eq([expectedWallet]);
+    const expectedWallet = new DeployedWallet(
+      futureWallet.contractAddress,
+      applicationWallet.name,
+      futureWallet.privateKey,
+      sdk,
+    );
+    expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: expectedWallet});
+    expect(storage.save.args[0]).to.deep.eq([expectedWallet.asApplicationWallet]);
 
     walletService.disconnect();
-    expect(walletService.applicationWallet).to.be.undefined;
-    expect(walletService.state).to.be.eq('None');
+    expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.connect(applicationWallet);
-    expect(walletService.applicationWallet).to.deep.eq(applicationWallet);
-    expect(walletService.state).to.be.eq('Deployed');
+    expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
 
     walletService.saveToStorage(applicationWallet);
     expect(storage.save).to.be.calledWith(applicationWallet);
@@ -86,7 +81,6 @@ describe('INT: WalletService', () => {
 
   it('should load from storage', () => {
     walletService.loadFromStorage();
-    expect(walletService.state).to.eq('Deployed');
-    expect(walletService.applicationWallet).to.deep.eq(applicationWallet);
+    expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
   });
 });
