@@ -6,7 +6,7 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../../fixtures/basicSDK';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import AuthorisationsObserver from '../../../lib/core/observers/AuthorisationsObserver';
-import {waitUntil, signAuthorisationRequest, AuthorisationRequest} from '@universal-login/commons';
+import {waitUntil, signAuthorisationRequest, RelayerRequest} from '@universal-login/commons';
 import {utils, Wallet} from 'ethers';
 import {createWallet} from '../../helpers/createWallet';
 
@@ -23,10 +23,10 @@ describe('INT: AuthorisationsObserver', async () => {
   let authorisationsObserver: AuthorisationsObserver;
   let privateKey: string;
   let wallet: Wallet;
-  let authorisationRequest: AuthorisationRequest;
+  let authorisationRequest: RelayerRequest;
 
   const createauthorisationRequest = (walletContractAddress: string, privateKey: string) => {
-    const authorisationRequest: AuthorisationRequest = {
+    const authorisationRequest: RelayerRequest = {
       contractAddress,
       signature: ''
     };

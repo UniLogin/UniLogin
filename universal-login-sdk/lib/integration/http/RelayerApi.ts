@@ -1,4 +1,4 @@
-import {AuthorisationRequest, http, HttpFunction} from '@universal-login/commons';
+import {RelayerRequest, http, HttpFunction} from '@universal-login/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
@@ -30,7 +30,7 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(authorisationRequest: AuthorisationRequest) {
+  async denyConnection(authorisationRequest: RelayerRequest) {
     const {contractAddress} = authorisationRequest;
     return this.http('POST', `/authorisation/${contractAddress}`, {
       authorisationRequest
@@ -39,12 +39,12 @@ export class RelayerApi {
     });
   }
 
-  async getPendingAuthorisations(AuthorisationRequest: AuthorisationRequest) {
-    const {contractAddress, signature} = AuthorisationRequest;
+  async getPendingAuthorisations(authorisationRequest: RelayerRequest) {
+    const {contractAddress, signature} = authorisationRequest;
     return this.http('GET', `/authorisation/${contractAddress}?signature=${signature}`);
   }
 
-  async cancelConnection(authorisationRequest: AuthorisationRequest) {
+  async cancelConnection(authorisationRequest: RelayerRequest) {
     const {contractAddress} = authorisationRequest;
     return this.http('DELETE', `/authorisation/${contractAddress}`, {authorisationRequest});
   }

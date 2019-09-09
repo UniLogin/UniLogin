@@ -4,7 +4,7 @@ import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress} from '@restless/ethereum';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {AuthorisationRequest} from '@universal-login/commons';
+import {RelayerRequest} from '@universal-login/commons';
 import {asAuthorisationRequest} from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
 
@@ -18,7 +18,7 @@ const request = (authorisationService: AuthorisationService) =>
 
 const getPending = (authorisationService: AuthorisationService) =>
   async (data: {contractAddress: string,  query: {signature: string}}) => {
-    const authorisationRequest: AuthorisationRequest = {
+    const authorisationRequest: RelayerRequest = {
       contractAddress: data.contractAddress,
       signature: data.query.signature
     };
@@ -27,13 +27,13 @@ const getPending = (authorisationService: AuthorisationService) =>
   };
 
 const denyRequest = (authorisationService: AuthorisationService) =>
-  async (data: {body: {authorisationRequest: AuthorisationRequest}}) => {
+  async (data: {body: {authorisationRequest: RelayerRequest}}) => {
     const result = await authorisationService.removeAuthorisationRequest(data.body.authorisationRequest);
     return responseOf(result, 204);
   };
 
 const cancelRequest = (authorisationService: AuthorisationService) =>
-  async (data: {body: {authorisationRequest: AuthorisationRequest}}) => {
+  async (data: {body: {authorisationRequest: RelayerRequest}}) => {
     const result = await authorisationService.cancelAuthorisationRequest(data.body.authorisationRequest);
     const httpCode = result === 0 ? 401 : 204;
     return responseOf(result, httpCode);

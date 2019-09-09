@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, waitUntil, signAuthorisationRequest, AuthorisationRequest, createKeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, waitUntil, signAuthorisationRequest, RelayerRequest, createKeyPair} from '@universal-login/commons';
 import AuthorisationsObserver from '../../../lib/core/observers/AuthorisationsObserver';
 
 describe('UNIT: AuthorisationsObserver', () => {
@@ -21,12 +21,12 @@ describe('UNIT: AuthorisationsObserver', () => {
   ];
   const relayerApi = {getPendingAuthorisations: async () => ({response: notifications})};
   let authorisationsObserver: AuthorisationsObserver;
-  let authorisationRequest: AuthorisationRequest;
-  let fakeAuthorisationRequest: AuthorisationRequest;
+  let authorisationRequest: RelayerRequest;
+  let fakeAuthorisationRequest: RelayerRequest;
   let privateKey: string;
 
   const createauthorisationRequest = (contractAddress: string, privateKey: string) => {
-    const authorisationRequest: AuthorisationRequest = {
+    const authorisationRequest: RelayerRequest = {
       contractAddress,
       signature: ''
     };

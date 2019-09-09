@@ -38,7 +38,7 @@ export {debounce} from './core/utils/debounce';
 export {getEnv} from './core/utils/getEnv';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
-export {AuthorisationRequest} from './core/models/authorisation';
+export {RelayerRequest} from './core/models/relayerRequest';
 export {signAuthorisationRequest, verifyAuthorisationRequest, hashAuthorisationRequest, recoverFromAuthorisationRequest} from './core/utils/authorisation';
 export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
