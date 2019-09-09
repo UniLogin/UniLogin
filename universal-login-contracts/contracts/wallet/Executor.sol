@@ -19,11 +19,11 @@ contract Executor {
     }
 
     function etherRefundCharge() public pure returns(uint) {
-        return 14000;
+        return 15000;
     }
 
     function tokenRefundCharge() public pure returns(uint) {
-        return 19500;
+        return 29500;
     }
 
     function keyExist(address _key) public view returns(bool);
@@ -99,7 +99,6 @@ contract Executor {
         address to,
         uint256 value,
         bytes memory data,
-        uint nonce,
         uint gasPrice,
         address gasToken,
         uint gasLimit,
@@ -107,16 +106,15 @@ contract Executor {
     {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        require(nonce == lastNonce, "Invalid nonce");
-        require(canExecute(to, value, data, nonce, gasPrice, gasToken, gasLimit, signatures), "Invalid signature");
+        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimit, signatures), "Invalid signature");
         lastNonce++;
         uint256 startingGas = gasleft();
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, nonce, gasPrice, gasToken, gasLimit);
-        emit ExecutedSigned(messageHash, nonce, success);
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce.sub(1), gasPrice, gasToken, gasLimit);
+        emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
         uint256 gasUsed = startingGas.sub(gasleft());
         refund(gasUsed, gasPrice, gasToken, msg.sender);
         return messageHash;

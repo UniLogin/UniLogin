@@ -20,7 +20,6 @@ export const encodeDataForExecuteSigned = (message: Message) =>
     message.to,
     message.value,
     message.data,
-    message.nonce,
     message.gasPrice,
     message.gasToken,
     message.gasLimit,

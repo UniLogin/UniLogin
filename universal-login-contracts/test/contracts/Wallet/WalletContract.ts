@@ -127,7 +127,7 @@ describe('WalletContract', async () => {
       it('nonce too low', async () => {
         await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.be.revertedWith('Invalid nonce');
+          .to.be.revertedWith('Invalid signature');
       });
 
       it('nonce too high', async () => {
@@ -136,7 +136,7 @@ describe('WalletContract', async () => {
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.be.revertedWith('Invalid nonce');
+          .to.be.revertedWith('Invalid signature');
       });
 
       it('emits ExecutedSigned event', async () => {
@@ -276,7 +276,7 @@ describe('WalletContract', async () => {
         signature = calculateMessageSignature(privateKey, msg);
 
         await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-          .to.be.revertedWith('Invalid nonce');
+          .to.be.revertedWith('Invalid signature');
       });
 
       describe('refund', () => {

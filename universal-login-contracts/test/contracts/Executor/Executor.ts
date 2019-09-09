@@ -128,13 +128,14 @@ describe('CONTRACT: Executor - main', async  () => {
       it('nonce too low', async () => {
         await walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN);
         await expect(walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-          .to.be.revertedWith('Invalid nonce');
+          .to.be.revertedWith('Invalid signature');
       });
 
       it('nonce too high', async () => {
         msg = {...transferMessage, from: walletContract.address, nonce: 2};
+        signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
         await expect(walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-          .to.be.revertedWith('Invalid nonce');
+          .to.be.revertedWith('Invalid signature');
       });
 
       it('emits ExecutedSigned event', async () => {
@@ -458,12 +459,12 @@ describe('CONTRACT: Executor - main', async  () => {
           .withArgs(messageHash, 0, false);
       });
 
-      it('invalid nonce', async () => {
+      it('Invalid nonce', async () => {
         msg = {...msgToCall, nonce: 2};
         signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
 
         await expect(walletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-          .to.be.revertedWith('Invalid nonce');
+          .to.be.revertedWith('Invalid signature');
       });
 
       describe('refund', () => {
