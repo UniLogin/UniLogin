@@ -2,26 +2,26 @@ import {utils} from 'ethers';
 import {RelayerRequest} from '../models/relayerRequest';
 import {sign} from './signatures';
 
-export const signAuthorisationRequest =
+export const signRelayerRequest =
   (relayerRequest: RelayerRequest, privateKey: string) => {
-    const payloadDigest = hashAuthorisationRequest(relayerRequest);
+    const payloadDigest = hashRelayerRequest(relayerRequest);
     relayerRequest.signature = sign(payloadDigest, privateKey);
     return relayerRequest;
   };
 
-export const verifyAuthorisationRequest =
+export const verifyRelayerRequest =
   (relayerRequest: RelayerRequest, address: string): boolean => {
-    const computedAddress = recoverFromAuthorisationRequest(relayerRequest);
+    const computedAddress = recoverFromRelayerRequest(relayerRequest);
     return computedAddress === address;
   };
 
-export const recoverFromAuthorisationRequest =
+export const recoverFromRelayerRequest =
   (relayerRequest: RelayerRequest): string => {
-    const payloadDigest = hashAuthorisationRequest(relayerRequest);
+    const payloadDigest = hashRelayerRequest(relayerRequest);
     return utils.verifyMessage(utils.arrayify(payloadDigest), relayerRequest.signature!);
   };
 
-export const hashAuthorisationRequest =
+export const hashRelayerRequest =
   (relayerRequest: RelayerRequest): string => {
     return utils.solidityKeccak256(['bytes20'], [relayerRequest.contractAddress]);
   };

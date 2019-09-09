@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, waitUntil, signAuthorisationRequest, RelayerRequest, createKeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, waitUntil, signRelayerRequest, RelayerRequest, createKeyPair} from '@universal-login/commons';
 import AuthorisationsObserver from '../../../lib/core/observers/AuthorisationsObserver';
 
 describe('UNIT: AuthorisationsObserver', () => {
@@ -30,7 +30,7 @@ describe('UNIT: AuthorisationsObserver', () => {
       contractAddress,
       signature: ''
     };
-    signAuthorisationRequest(authorisationRequest, privateKey);
+    signRelayerRequest(authorisationRequest, privateKey);
     return authorisationRequest;
   };
 

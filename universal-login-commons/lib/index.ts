@@ -39,7 +39,7 @@ export {getEnv} from './core/utils/getEnv';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {RelayerRequest} from './core/models/relayerRequest';
-export {signAuthorisationRequest, verifyAuthorisationRequest, hashAuthorisationRequest, recoverFromAuthorisationRequest} from './core/utils/authorisation';
+export {signRelayerRequest, verifyRelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from './core/utils/relayerRequest';
 export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
 export {calculateInitializeWithENSSignature, calculateInitializeSignature, getInitializeSigner} from './core/utils/calculateSignature';
