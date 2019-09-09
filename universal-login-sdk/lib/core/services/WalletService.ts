@@ -3,8 +3,17 @@ import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
 import {Wallet} from 'ethers';
+import {DeployedWallet} from '../..';
 
-type WalletState = 'None' | 'Future' | 'Deployed';
+type WalletState = {
+  kind: 'None'
+} | {
+  kind: 'Future'
+  futureWallet: FutureWallet
+} | {
+  kind: 'Deployed'
+  deployedWallet: DeployedWallet
+};
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -15,13 +24,12 @@ export interface WalletStorage {
 }
 
 export class WalletService {
-  public applicationWallet?: FutureWallet | ApplicationWallet;
-  public state: WalletState = 'None';
+  public state: WalletState = {kind: 'None'};
 
   constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain, private storage?: WalletStorage) {}
 
   walletDeployed(): boolean {
-    return this.state === 'Deployed';
+    return this.state.kind === 'Deployed';
   }
 
   isAuthorized(): boolean {
@@ -34,45 +42,40 @@ export class WalletService {
     return futureWallet;
   }
 
-  setFutureWallet(applicationWallet: FutureWallet) {
-    ensure(this.state === 'None', WalletOverridden);
-    this.state = 'Future';
-    this.applicationWallet = applicationWallet;
+  setFutureWallet(futureWallet: FutureWallet) {
+    if (this.state.kind !== 'None') {
+      throw new WalletOverridden();
+    }
+    this.state = {kind: 'Future', futureWallet};
   }
 
   setDeployed(name: string) {
-    ensure(this.state === 'Future', FutureWalletNotSet);
-    const {contractAddress, privateKey} = this.applicationWallet!;
-    this.state = 'Deployed';
-    this.applicationWallet = {
-      name,
-      contractAddress,
-      privateKey
-    };
-    this.storage && this.storage.save(this.applicationWallet);
+    if (this.state.kind !== 'Future') {
+      throw new FutureWalletNotSet();
+    }
+    const {contractAddress, privateKey} = this.state.futureWallet;
+    const deployedWallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
+    this.state = {kind: 'Deployed', deployedWallet};
+    this.storage && this.storage.save(deployedWallet.asApplicationWallet);
   }
 
-  connect(applicationWallet: ApplicationWallet) {
-    ensure(this.state === 'None', WalletOverridden);
-    this.state = 'Deployed';
-    this.applicationWallet = applicationWallet;
-    this.storage && this.storage.save(applicationWallet);
+  connect(deployedWallet: DeployedWallet) {
+    if (this.state.kind !== 'None') {
+      throw new WalletOverridden();
+    }
+    this.state = {kind: 'Deployed', deployedWallet};
+    this.storage && this.storage.save(deployedWallet.asApplicationWallet);
   }
 
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
     ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
-    this.connect({
-      name,
-      privateKey: wallet.privateKey,
-      contractAddress
-    });
+    this.connect(new DeployedWallet(contractAddress, name, wallet.privateKey, this.sdk));
   }
 
   disconnect(): void {
-    this.state = 'None';
-    this.applicationWallet = undefined;
+    this.state = {kind: 'None'};
     this.storage && this.storage.remove();
   }
 
@@ -84,8 +87,10 @@ export class WalletService {
     if (!wallet) {
       return;
     }
-    ensure(this.state === 'None', WalletOverridden);
-    this.state = 'Deployed';
-    this.applicationWallet = wallet;
+    ensure(this.state.kind === 'None', WalletOverridden);
+    this.state = {
+      kind: 'Deployed',
+      deployedWallet: new DeployedWallet(wallet.contractAddress, name, wallet.privateKey, this.sdk),
+    };
   }
 }
