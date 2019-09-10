@@ -42,7 +42,7 @@ describe('CONTRACT: WalletProxy - refund', async  () => {
     initialBalance = await deployer.getBalance();
     signature = calculateMessageSignature(keyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
+    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimitExecution});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     const expectedBalance = initialBalance.sub(receipt.gasUsed as utils.BigNumber);
     expect(await deployer.getBalance()).to.be.above(expectedBalance);
@@ -53,7 +53,7 @@ describe('CONTRACT: WalletProxy - refund', async  () => {
     infiniteCallMessage = await createInfiniteCallMessage(deployer, {gasToken: mockToken.address, from: proxyWallet.address});
     signature = calculateMessageSignature(keyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
+    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimitExecution});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     const expectedBalance = initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber);
     expect(await mockToken.balanceOf(deployer.address)).to.be.above(expectedBalance);
