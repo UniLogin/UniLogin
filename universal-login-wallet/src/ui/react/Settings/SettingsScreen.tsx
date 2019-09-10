@@ -5,7 +5,7 @@ import {useServices} from '../../hooks';
 
 const SettingsScreen = () => {
   const {walletService, sdk} = useServices();
-  const {contractAddress, privateKey} = walletService.applicationWallet!;
+  const {contractAddress, privateKey} = walletService.getDeployedWallet();
   return (
     <div className="dashboard">
       <Header />
