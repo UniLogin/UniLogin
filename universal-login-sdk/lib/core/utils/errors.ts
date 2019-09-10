@@ -27,14 +27,14 @@ export class ConcurrentDeployment extends Conflict {
 
 export class ConcurrentAuthorisation extends Conflict {
   constructor () {
-    super('Another wallet is subscribed for authorisations.', 'ConcurrentAuthorisation');
+    super('Another wallet is subscribed for authorisations', 'ConcurrentAuthorisation');
     Object.setPrototypeOf(this, ConcurrentAuthorisation.prototype);
   }
 }
 
 export class ConcurrentDevices extends Conflict {
   constructor () {
-    super('Another wallet is subscribed for connected devices.', 'ConcurrentDevices');
+    super('Another wallet is subscribed for connected devices', 'ConcurrentDevices');
     Object.setPrototypeOf(this, ConcurrentDevices.prototype);
   }
 }

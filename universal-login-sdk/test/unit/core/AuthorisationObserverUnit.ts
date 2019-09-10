@@ -51,7 +51,7 @@ describe('UNIT: AuthorisationsObserver', () => {
   it('new subscription request should be rejected', async () => {
     const callback = sinon.spy();
     const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
-    expect(() => authorisationsObserver.subscribe(fakeAuthorisationRequest, callback)).to.throw('Another wallet is subscribed.');
+    expect(() => authorisationsObserver.subscribe(fakeAuthorisationRequest, callback)).to.throw('Another wallet is subscribed for authorisations');
     await waitUntil(() => !!callback.secondCall);
     expect(callback).to.have.been.calledWith([]);
     expect(callback).to.have.been.calledWith(notifications);
