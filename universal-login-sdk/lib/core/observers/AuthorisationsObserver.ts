@@ -1,12 +1,12 @@
 import {RelayerApi} from '../../integration/http/RelayerApi';
 import deepEqual from 'deep-equal';
 import ObserverRunner from './ObserverRunner';
-import {ensure, Notification, AuthorisationRequest} from '@universal-login/commons';
+import {ensure, Notification, RelayerRequest} from '@universal-login/commons';
 import {ConcurrentAuthorisation} from '../utils/errors';
 
 class AuthorisationsObserver extends ObserverRunner {
   private lastAuthorisations: Notification[] = [];
-  private authorisationRequest?: AuthorisationRequest;
+  private authorisationRequest?: RelayerRequest;
   private callbacks: Function[] = [];
 
   constructor(private relayerApi: RelayerApi, tick: number = 1000) {
@@ -18,7 +18,7 @@ class AuthorisationsObserver extends ObserverRunner {
     return this.checkAuthorisationsChangedFor(this.authorisationRequest!);
   }
 
-  private async checkAuthorisationsChangedFor(authorisationRequest: AuthorisationRequest) {
+  private async checkAuthorisationsChangedFor(authorisationRequest: RelayerRequest) {
     const authorisations = await this.fetchPendingAuthorisations(authorisationRequest);
     if (!deepEqual(authorisations, this.lastAuthorisations)) {
       this.lastAuthorisations = authorisations;
@@ -28,12 +28,12 @@ class AuthorisationsObserver extends ObserverRunner {
     }
   }
 
-  private async fetchPendingAuthorisations(authorisationRequest: AuthorisationRequest) {
+  private async fetchPendingAuthorisations(authorisationRequest: RelayerRequest) {
     const {response} = await this.relayerApi.getPendingAuthorisations(authorisationRequest);
     return response;
   }
 
-  subscribe(authorisationRequest: AuthorisationRequest, callback: Function) {
+  subscribe(authorisationRequest: RelayerRequest, callback: Function) {
     ensure(
       !this.authorisationRequest ||
       (this.authorisationRequest.contractAddress === authorisationRequest.contractAddress),

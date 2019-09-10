@@ -1,5 +1,5 @@
 import { Sanitizer, Result, asObject, asOptional, asString } from '@restless/sanitizers';
-import {TransactionOverrides, AuthorisationRequest} from '@universal-login/commons';
+import {TransactionOverrides, RelayerRequest} from '@universal-login/commons';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 
 export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
@@ -12,7 +12,7 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   }
 };
 
-export const asAuthorisationRequest: Sanitizer<AuthorisationRequest> = asObject({
+export const asRelayerRequest: Sanitizer<RelayerRequest> = asObject({
   contractAddress: asEthAddress,
   signature: asString
 });

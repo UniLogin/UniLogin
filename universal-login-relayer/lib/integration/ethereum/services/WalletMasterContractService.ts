@@ -1,4 +1,4 @@
-import {recoverFromAuthorisationRequest, AuthorisationRequest, hashAuthorisationRequest, ensure} from '@universal-login/commons';
+import {recoverFromRelayerRequest, RelayerRequest, hashRelayerRequest, ensure} from '@universal-login/commons';
 import { ethers, providers} from 'ethers';
 import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
 import { UnauthorisedAddress } from '../../../core/utils/errors';
@@ -14,10 +14,10 @@ class WalletMasterContractService {
     ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
 
-  async ensureValidAuthorisationRequestSignature(authorisationRequest: AuthorisationRequest) {
-    const recoveredAddress = recoverFromAuthorisationRequest(authorisationRequest);
+  async ensureValidAuthorisationRequestSignature(authorisationRequest: RelayerRequest) {
+    const recoveredAddress = recoverFromRelayerRequest(authorisationRequest);
     const {contractAddress, signature} = authorisationRequest;
-    const payloadDigest = hashAuthorisationRequest(authorisationRequest);
+    const payloadDigest = hashRelayerRequest(authorisationRequest);
 
     await this.ensureValidSignature(contractAddress, signature!, payloadDigest, recoveredAddress);
   }
