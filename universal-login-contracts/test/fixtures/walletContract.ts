@@ -1,7 +1,7 @@
 import {providers, Wallet, utils, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletContract from '../../build/Wallet.json';
-import {withENS, createKeyPair} from '@universal-login/commons';
+import {withENS, createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
 import {deployFactory, createFutureDeploymentWithENS, deployWalletContract} from '../../lib';
 import MockToken from '../../build/MockToken.json';
@@ -36,7 +36,7 @@ export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
 export async function setupWalletContract(deployer: Wallet) {
   const {ensDomainData, walletContract, provider, factoryContract} = await setupEnsAndMaster(deployer);
   const keyPair = createKeyPair();
-  const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({keyPair, walletContractAddress: walletContract.address, gasPrice: '1000000', ensDomainData, factoryContract});
+  const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({keyPair, walletContractAddress: walletContract.address, gasPrice: '1000000', ensDomainData, factoryContract, gasToken: ETHER_NATIVE_TOKEN.address});
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
   const proxyWallet = new Contract(futureAddress, WalletContract.interface, provider);

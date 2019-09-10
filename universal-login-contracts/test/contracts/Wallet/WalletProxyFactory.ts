@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
-import {createKeyPair, signString} from '@universal-login/commons';
+import {createKeyPair, signString, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
 import WalletContract from '../../../build/Wallet.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../../lib';
@@ -27,7 +27,7 @@ describe('Counterfactual Factory', () => {
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000'};
+    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000', gasToken: ETHER_NATIVE_TOKEN.address};
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 
