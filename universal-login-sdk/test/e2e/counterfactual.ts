@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, getDeployedBytecode, createSignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, getDeployedBytecode, createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import UniversaLoginSDK from '../../lib/api/sdk';
@@ -38,7 +38,7 @@ describe('E2E: SDK counterfactual deployment', () => {
 
   it('should not deploy contract which does not have balance', async () => {
     const {deploy} = (await sdk.createFutureWallet());
-    await expect(deploy('login.mylogin.eth', '1')).to.be.rejected;
+    await expect(deploy('login.mylogin.eth', TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address)).to.be.rejected;
   });
 
   it('counterfactual deployment roundtrip', async () => {
@@ -46,12 +46,12 @@ describe('E2E: SDK counterfactual deployment', () => {
     const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet());
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
-    const deployedWallet = await deploy(ensName, '1');
+    const deployedWallet = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     expect(deployedWallet.contractAddress).to.be.eq(contractAddress);
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     const signedMessage = createSignedMessage({from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1')}, privateKey);
     await expect(sdk.execute(signedMessage, privateKey)).to.be.fulfilled;
-    await expect(deploy(ensName, '1')).to.be.rejected;
+    await expect(deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address)).to.be.rejected;
   });
 
   afterEach(async () => {

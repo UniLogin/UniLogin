@@ -9,6 +9,7 @@ import {
   waitExpect,
   generateCode,
   Procedure,
+  TEST_GAS_PRICE,
 } from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
@@ -45,7 +46,7 @@ describe('Login', () => {
 
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
       await waitForBalance();
-      await deploy(name, '1');
+      await deploy(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
       walletService.setDeployed(name);
 
       expect(privateKey).to.not.be.null;

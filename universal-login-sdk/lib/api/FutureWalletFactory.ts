@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {PublicRelayerConfig, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
@@ -18,7 +18,7 @@ export type FutureWallet = {
   privateKey: string,
   contractAddress: string,
   waitForBalance: () => Promise<BalanceDetails>,
-  deploy: (ensName: string, gasPrice: string) => Promise<DeployedWallet>
+  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployedWallet>
 };
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
@@ -36,9 +36,9 @@ export class FutureWalletFactory {
       this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
-  async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
+  async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
     const args = await this.ensService.argsFor(ensName) as string[];
-    const initArgs = [publicKey, ...args, gasPrice, ETHER_NATIVE_TOKEN.address];
+    const initArgs = [publicKey, ...args, gasPrice, gasToken];
     return encodeInitializeWithENSData(initArgs);
   }
 
@@ -53,8 +53,8 @@ export class FutureWalletFactory {
       }
     ) as Promise<BalanceDetails>;
 
-    const deploy = async (ensName: string, gasPrice: string) => {
-      const initData = await this.setupInitData(publicKey, ensName, gasPrice);
+    const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
+      const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
       const signature = await calculateInitializeSignature(initData, privateKey);
       await this.relayerApi.deploy(publicKey, ensName, gasPrice, signature);
 

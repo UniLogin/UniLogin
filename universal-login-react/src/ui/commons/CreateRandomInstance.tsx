@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {WalletService} from '@universal-login/sdk';
-import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
+import {DEFAULT_GAS_PRICE, ApplicationWallet, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {useServices} from '../../core/services/useServices';
 
 export interface CreateRandomInstanceProps {
@@ -23,7 +23,7 @@ export const CreateRandomInstance = ({setApplicationWallet}: CreateRandomInstanc
     setStatus(`Waiting for intial funds in ${contractAddress}`);
     await waitForBalance();
     setStatus('waiting for wallet contract to be deployed');
-    await deploy(name, DEFAULT_GAS_PRICE.toString());
+    await deploy(name, DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
     walletService.setDeployed(name);
     setStatus(`Wallet contract deployed at ${contractAddress}`);
     setContractAddress(contractAddress);
