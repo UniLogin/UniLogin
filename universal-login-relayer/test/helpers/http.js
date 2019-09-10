@@ -1,7 +1,7 @@
 import {Wallet, utils, Contract} from 'ethers';
 import {RelayerUnderTest} from '../../lib/http/relayers/RelayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, parseDomain} from '@universal-login/commons';
+import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, parseDomain, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ENS from '@universal-login/contracts/build/ENS.json';
 import chai from 'chai';
@@ -62,5 +62,5 @@ export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPri
   const ens = new Contract(ensAddress, ENS.interface, provider);
   const resolverAddress = await ens.resolver(utils.namehash(domain));
   const registrarAddress = await ens.owner(utils.namehash(domain));
-  return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice]);
+  return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, ETHER_NATIVE_TOKEN.address]);
 };
