@@ -59,6 +59,7 @@ export class RelayerApi {
       publicKey,
       ensName,
       gasPrice,
+      gasToken,
       signature
     });
   }
