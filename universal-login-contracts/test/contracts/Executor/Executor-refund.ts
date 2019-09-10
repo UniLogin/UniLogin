@@ -36,7 +36,8 @@ describe('CONTRACT: Executor - refund', async  () => {
       nonce: 0,
       gasPrice: 1,
       gasToken: '0x0',
-      gasLimit: utils.bigNumberify('240000')
+      gasLimit: utils.bigNumberify('240000'),
+      gasData: utils.bigNumberify('0')
     };
   });
 

@@ -9,6 +9,7 @@ const transferMessage = {
   nonce: '0',
   gasPrice: DEFAULT_GAS_PRICE,
   gasLimit: DEFAULT_GAS_LIMIT,
+  gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 const expectedMessage = {
@@ -19,6 +20,7 @@ const expectedMessage = {
   nonce: '0',
   gasPrice: transferMessage.gasPrice,
   gasLimit: transferMessage.gasLimit,
+  gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
   signature: '0xe89b19f155614f3b28d7042d4eaf3bb7f4591d97682c6fff01776107a5ab49906e8e40a123404569c62770e49a999aae9dd9982f6a8b536cf6b2749cb03da2631c'
 };

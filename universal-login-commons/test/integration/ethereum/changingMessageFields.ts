@@ -9,6 +9,7 @@ describe('UNIT: Parsing Transaction', () => {
     value: utils.parseEther('2'),
     gasLimit: utils.bigNumberify(3500000),
     gasPrice: utils.bigNumberify(9000000000),
+    gasData: utils.bigNumberify(0),
     data: utils.formatBytes32String('0'),
     nonce: '0',
     gasToken: '0x0000000000000000000000000000000000000000'
@@ -20,6 +21,7 @@ describe('UNIT: Parsing Transaction', () => {
     value: '2000000000000000000',
     gasLimit: '3500000',
     gasPrice: '9000000000',
+    gasData: '0',
     data: '0x3000000000000000000000000000000000000000000000000000000000000000',
     nonce: '0',
     gasToken: '0x0000000000000000000000000000000000000000',

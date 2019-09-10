@@ -19,6 +19,7 @@ describe('UNIT: MessageToTransaction', () => {
       gasToken: '0x0000000000000000000000000000000000000000',
       gasLimit,
       gasPrice,
+      gasData: 0,
       signature: '0x592fa743889fc7f92ac2a37bb1f5ba1daf2a5c84741ca0e0061d243a2e6707ba'
     };
 

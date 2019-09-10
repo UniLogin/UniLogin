@@ -128,6 +128,7 @@ class UniversalLoginSDK {
       ...this.sdkConfig.paymentOptions,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
+      gasData: utils.bigNumberify(0)
     } as MessageWithFrom;
     const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);

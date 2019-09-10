@@ -18,6 +18,7 @@ export interface SignedMessage extends PaymentOptions {
 
 export type PaymentOptions = {
   gasLimit: utils.BigNumberish;
+  gasData: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string
 };

@@ -16,6 +16,7 @@ export const transferMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
+  gasData: 0,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -27,6 +28,7 @@ export const failedTransferMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
+  gasData: 0,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -37,6 +39,7 @@ export const callMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
+  gasData: 0,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -47,6 +50,7 @@ export const failedCallMessage = {
   nonce: 0,
   gasPrice,
   gasLimit,
+  gasData: 0,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -66,6 +70,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasPrice: 1,
     gasToken: '0x0',
     gasLimit: utils.bigNumberify('240000'),
+    gasData: 0,
     ...overrides
   };
 };
@@ -79,6 +84,7 @@ export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contra
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
     gasLimit,
+    gasData: 0,
     gasToken: '0x0000000000000000000000000000000000000000'
   };
   const signature = calculateMessageSignature(privateKey, msg);
@@ -94,6 +100,7 @@ export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: str
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
     gasLimit,
+    gasData: 0,
     gasToken: '0x0000000000000000000000000000000000000000'
   };
   const signature = calculateMessageSignature(privateKey, msg);
