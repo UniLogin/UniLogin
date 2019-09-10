@@ -38,7 +38,8 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
         ENS ens,
         FIFSRegistrar registrar,
         PublicResolver resolver,
-        uint gasPrice) external initializer
+        uint gasPrice,
+        address gasToken) external initializer
         {
 
         // Executor → KeyHolder
@@ -49,7 +50,7 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
         // ENSUtils
         registerENS(_hashLabel, _name, _node, ens, registrar, resolver);
         /* solium-disable security/no-tx-origin*/
-        refund(getDeploymentGasUsed(), gasPrice, address(0), tx.origin);
+        refund(getDeploymentGasUsed(), gasPrice, gasToken, tx.origin);
     }
 
     function setRequiredSignatures(uint _requiredSignatures) public onlyAuthorised {

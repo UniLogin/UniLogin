@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {utils, Wallet, providers} from 'ethers';
-import {createKeyPair} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@universal-login/commons';
 import WalletContract from '../../../build/Wallet.json';
 
 const computeContractAddress = (address: string, nonce: number) => {
@@ -38,13 +38,13 @@ describe('WalletImplementation', () => {
     await otherWallet.sendTransaction({to: futureAddress, value: utils.parseEther('1')});
     const walletContract = await deployContract(wallet, WalletContract, [], {gasLimit: 5000000});
 
-    await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '1');
+    await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.9999999999995');
   });
 
   it('can`t initialize wallet twice', async () => {
     const walletContract = await deployContract(wallet, WalletContract, [], {gasLimit: 5000000});
-    await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0');
-    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0')).to.be.revertedWith('Contract instance has already been initialized');
+    await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address);
+    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address)).to.be.revertedWith('Contract instance has already been initialized');
   });
 });

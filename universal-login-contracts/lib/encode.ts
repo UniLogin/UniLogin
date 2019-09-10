@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
+import {Message, ContractJSON, KeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import WalletContract from '../build/Wallet.json';
 
 export type EnsDomainData = {
@@ -42,6 +42,6 @@ export function setupInitializeWithENSArgs({keyPair, ensDomainData, gasPrice, na
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress, gasPrice];
+  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress, gasPrice, ETHER_NATIVE_TOKEN.address];
   return args;
 }
