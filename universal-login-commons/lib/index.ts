@@ -1,6 +1,6 @@
 export {Omit, PartialRequired, Procedure, Predicate, DeepPartial} from './core/types/common';
 export {DeviceInfo, Notification} from './core/models/notifications';
-export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageState, CollectedSignatureKeyPair} from './core/models/message';
+export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, MessageState, CollectedSignatureKeyPair} from './core/models/message';
 export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, OnRampConfig, PublicRelayerConfig} from './core/models/relayer';
 export {LocalizationConfig, SafelloConfig, RampConfig} from './core/models/onRamp';
