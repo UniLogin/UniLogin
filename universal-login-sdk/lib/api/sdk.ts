@@ -14,12 +14,10 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
-import {DevicesObserver} from '../core/observers/DevicesObserver';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
   relayerApi: RelayerApi;
-  deviceObserver: DevicesObserver;
   authorisationsObserver: AuthorisationsObserver;
   blockchainObserver: BlockchainObserver;
   executionFactory: ExecutionFactory;
@@ -47,7 +45,6 @@ class UniversalLoginSDK {
     this.relayerApi = new RelayerApi(relayerUrl);
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorisationsObserverTick);
-    this.deviceObserver = new DevicesObserver(this.relayerApi);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.executionFactoryTick);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
@@ -223,10 +220,9 @@ class UniversalLoginSDK {
     );
   }
 
-  subscribeConnectedDevices(contractAddress: string, privateKey: string, callback: Function) {
-    return this.deviceObserver.subscribe(
-      signRelayerRequest({contractAddress}, privateKey),
-      callback
+  getConnectedDevices(contractAddress: string, privateKey: string) {
+    return this.relayerApi.getConnectedDevices(
+      signRelayerRequest({contractAddress}, privateKey)
     );
   }
 

@@ -4,7 +4,7 @@ import {asString, asObject} from '@restless/sanitizers';
 
 const getDevices = async () => {
   const result = [{}, {}];
-  return responseOf({response: result}, 201);
+  return responseOf(result, 201);
 };
 
 export default () => {
