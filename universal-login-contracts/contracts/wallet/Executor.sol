@@ -19,11 +19,11 @@ contract Executor {
     }
 
     function etherRefundCharge() public pure returns(uint) {
-        return 14500;
+        return 14300;
     }
 
     function tokenRefundCharge() public pure returns(uint) {
-        return 20000;
+        return 19800;
     }
 
     function keyExist(address _key) public view returns(bool);
