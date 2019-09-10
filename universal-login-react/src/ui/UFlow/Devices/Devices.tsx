@@ -1,53 +1,32 @@
 import React, {useState} from 'react';
+import UniversalLoginSDK from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {NewDeviceMessage} from './NewDeviceMessage';
 import {ConnectedDevices} from './ConnectedDevices';
+import {useAsync} from '../../hooks/useAsync';
+import {useServices} from '../../../core/services/useServices';
 
 export interface DevicesProps {
   className?: string;
+  contractAddress: string;
+  privateKey: string;
 }
 
-export const Devices = ({className}: DevicesProps) => {
+export const Devices = ({contractAddress, privateKey, className}: DevicesProps) => {
   const [newDevicesAmount] = useState(1);
-  const [connectedDevices] = useState(devicesList);
+  const {sdk} = useServices();
+  const [devices] = useAsync(async () => sdk.getConnectedDevices(contractAddress, privateKey), []);
 
   return (
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
           {newDevicesAmount > 0 && <NewDeviceMessage onClick={() => {}} />}
-          <ConnectedDevices devicesList={connectedDevices} />
+          {devices ? <ConnectedDevices devicesList={devices} /> : 'Loading devices..'}
         </div>
       </div>
     </div>
   );
 };
-
-const devicesList = [
-  {
-    os: 'Mac',
-    name: 'laptop',
-    city: 'Warsaw, Poland',
-    ipAddress: '84.10.249.134',
-    time: '18 minutes ago',
-    browser: 'Safari'
-  },
-  {
-    os: 'iPhone',
-    name: 'phone',
-    city: 'Warsaw, Poland',
-    ipAddress: '84.10.249.134',
-    time: '18 minutes ago',
-    browser: 'Safari'
-  },
-  {
-    os: 'iPad Air',
-    name: 'tablet',
-    city: 'Warsaw, Poland',
-    ipAddress: '84.10.249.134',
-    time: '18 minutes ago',
-    browser: 'Safari'
-  }
-];

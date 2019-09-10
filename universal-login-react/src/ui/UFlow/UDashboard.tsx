@@ -98,7 +98,10 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         );
       case 'devices':
         return (
-          <Devices />
+          <Devices
+            contractAddress={applicationWallet.contractAddress}
+            privateKey={applicationWallet.privateKey}
+          />
         );
       case 'backup':
         return (
