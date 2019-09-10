@@ -22,7 +22,9 @@
     "ethers": "^4.0.36",
     "lodash.range": "^3.2.0",
     "react-blockies": "^1.4.1",
-    "react-transition-group": "^4.2.2"
+    "react-transition-group": "^4.2.2",
+    "reactive-properties": "^0.1.0",
+    "use-subscription": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^16.8.x",
