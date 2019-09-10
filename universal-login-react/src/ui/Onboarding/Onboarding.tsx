@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService, FutureWallet} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
 import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalType, ReactModalProps} from '../../core/models/ReactModalContext';
 import {createModalService} from '../../core/services/createModalService';
-interface OnboardingProps {
+
+export interface OnboardingWalletService {
+  createFutureWallet(): Promise<FutureWallet>;
+  setDeployed(ensName: string): void;
+}
+
+export interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  walletService?: WalletService;
+  walletService?: OnboardingWalletService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -18,7 +24,7 @@ interface OnboardingProps {
 
 export const Onboarding = ({sdk, walletService: injectedWalletService, onConnect, onCreate, domains, className, modalClassName}: OnboardingProps) => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
-  const [walletService] = useState(injectedWalletService || new WalletService(sdk));
+  const [walletService] = useState<OnboardingWalletService>(injectedWalletService || new WalletService(sdk));
   const onConnectClick = () => {
     onConnect && onConnect();
   };
@@ -33,10 +39,10 @@ export const Onboarding = ({sdk, walletService: injectedWalletService, onConnect
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
-    await deploy(ensName, DEFAULT_GAS_PRICE.toString());
+    const wallet = await deploy(ensName, DEFAULT_GAS_PRICE.toString());
     walletService.setDeployed(ensName);
     modalService.hideModal();
-    onCreate && onCreate(walletService.applicationWallet as ApplicationWallet);
+    onCreate && onCreate(wallet);
   };
 
 

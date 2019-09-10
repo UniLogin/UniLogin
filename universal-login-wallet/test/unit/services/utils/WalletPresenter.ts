@@ -23,15 +23,15 @@ describe('WalletFormatter', async () => {
   });
 
   it('return empty string if applicationWallet not exist', () => {
-    expect(() => walletPresenter.getName()).throws('Application wallet not found');
+    expect(() => walletPresenter.getName()).throws('Invalid wallet state: expected Deployed or Connecting wallet');
   });
 
   it('return contract address if applicationWallet exist', () => {
-    walletService.applicationWallet = applicationWallet;
+    walletService.connect(applicationWallet);
     expect(walletPresenter.getContractAddress()).to.be.eq(applicationWallet.contractAddress);
   });
 
   it('return empty string if applicationWallet not exist', () => {
-    expect(() => walletPresenter.getContractAddress()).throws('Application wallet not found');
+    expect(() => walletPresenter.getContractAddress()).throws('Invalid wallet state: expected Deployed, Connecting or Future wallet');
   });
 });

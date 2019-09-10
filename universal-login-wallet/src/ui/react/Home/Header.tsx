@@ -12,7 +12,7 @@ import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 export function Header() {
   const {userDropdownService, walletPresenter, sdk, walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
-  const {contractAddress, privateKey} = walletService.applicationWallet!;
+  const {contractAddress, privateKey} = walletService.getDeployedWallet();
   const [settingsVisibility, setSettingsVisibility] = useState(false);
   const modalService = useContext(WalletModalContext);
 

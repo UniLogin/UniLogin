@@ -26,7 +26,7 @@ describe('UI: Notifications',  () => {
 
   it('Should get notification when new device connect and confirm request', async () => {
     expect(appPage.dashboard().isNotificationAlert()).to.be.false;
-    const {securityCode} = await services.sdk.connect(services.walletService.applicationWallet!.contractAddress);
+    const {securityCode} = await services.sdk.connect(services.walletService.getDeployedWallet().contractAddress);
     await appPage.dashboard().waitForNewNotifications();
     expect(appPage.dashboard().isNotificationAlert()).to.be.true;
     await appPage.dashboard().clickNotificationButton();
@@ -35,7 +35,7 @@ describe('UI: Notifications',  () => {
   });
 
   it('Should reject request', async () => {
-    await services.sdk.connect(services.walletService.applicationWallet!.contractAddress);
+    await services.sdk.connect(services.walletService.getDeployedWallet().contractAddress);
     await appPage.dashboard().waitForNewNotifications();
     expect(appPage.notifications().isNotificationAlert()).to.be.true;
     await appPage.dashboard().clickNotificationButton();

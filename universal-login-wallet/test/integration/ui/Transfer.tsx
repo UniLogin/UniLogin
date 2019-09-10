@@ -29,7 +29,7 @@ describe('UI: Transfer', () => {
   });
 
   it('Creates wallet and transfers ethers', async () => {
-    const walletAddress = services.walletService.applicationWallet ? services.walletService.applicationWallet.contractAddress : '0x0';
+    const walletAddress = services.walletService.state.kind === 'Deployed' ? services.walletService.getDeployedWallet().contractAddress : '0x0';
     await mockTokenContract.transfer(walletAddress, utils.parseEther('2.0'));
     appPage.dashboard().clickTransferButton();
     await appPage.transfer().chooseCurrency('ETH');

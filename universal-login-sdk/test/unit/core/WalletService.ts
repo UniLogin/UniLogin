@@ -1,8 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {WalletService} from '../../../lib/core/services/WalletService';
+import {DeployedWallet} from '../../../lib';
 
 chai.use(chaiAsPromised);
 
@@ -39,15 +40,13 @@ describe('UNIT: WalletService', () => {
     walletService = new WalletService(sdk, walletFromPassphrase);
   });
   it('succesful recover', async () => {
-    const expectedPrivateKey = TEST_PRIVATE_KEY;
-    const expectedContractAddress = TEST_CONTRACT_ADDRESS;
+    const expectedWallet = new DeployedWallet(TEST_CONTRACT_ADDRESS, name, TEST_PRIVATE_KEY, sdk);
 
     await walletService.recover(name, passphrase);
-    expect(walletService.state).to.be.eq('Deployed');
-    const applicationWallet: ApplicationWallet = walletService.applicationWallet as ApplicationWallet;
-    expect(applicationWallet!.name).to.eq(name);
-    expect(applicationWallet!.privateKey).to.eq(expectedPrivateKey, 'privateKeys are not equal');
-    expect(applicationWallet!.contractAddress).to.eq(expectedContractAddress, 'contractAdressess are not equal');
+    expect(walletService.state).to.deep.eq({
+      kind: 'Deployed',
+      wallet: expectedWallet,
+    });
   });
 
   it('unsuccesful recover', async () => {

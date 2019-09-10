@@ -11,6 +11,14 @@ export class DeployedWallet implements ApplicationWallet {
   ) {
   }
 
+  get asApplicationWallet(): ApplicationWallet {
+    return {
+      contractAddress: this.contractAddress,
+      name: this.name,
+      privateKey: this.privateKey,
+    };
+  }
+
   async addKey(publicKey: string, transactionDetails: Message) {
     return this.sdk.addKey(this.contractAddress, publicKey, this.privateKey, transactionDetails);
   }

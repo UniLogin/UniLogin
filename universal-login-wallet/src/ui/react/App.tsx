@@ -21,7 +21,7 @@ const App = () => {
   const [appReady, setAppReady] = useState(false);
 
   useLayoutEffect(() => {
-    if (walletService.state === 'None') {
+    if (walletService.state.kind === 'None') {
       walletService.loadFromStorage();
     }
     setAppReady(true);

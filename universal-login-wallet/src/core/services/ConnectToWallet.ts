@@ -13,7 +13,7 @@ const connectToWallet = (sdk: UniversalLoginSDK, walletService: WalletService) =
     const {privateKey, securityCode} = await sdk.connect(contractAddress);
 
     const applicationWallet: ApplicationWallet = {privateKey, contractAddress, name};
-    walletService.setApplicationWallet(applicationWallet);
+    walletService.setConnecting(applicationWallet);
 
     const filter = {
       contractAddress,

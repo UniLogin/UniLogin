@@ -5,7 +5,7 @@ import {useServices} from '../hooks';
 
 const NotificationsScreen = () => {
   const {sdk, walletService} = useServices();
-  const {contractAddress, privateKey} = walletService.applicationWallet!;
+  const {contractAddress, privateKey} = walletService.getDeployedWallet();
   return (
     <div className="dashboard">
       <Header />

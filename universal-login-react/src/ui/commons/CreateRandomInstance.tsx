@@ -28,7 +28,7 @@ export const CreateRandomInstance = ({setApplicationWallet}: CreateRandomInstanc
     setStatus(`Wallet contract deployed at ${contractAddress}`);
     setContractAddress(contractAddress);
     setStatus('');
-    setApplicationWallet(walletService.applicationWallet as ApplicationWallet);
+    setApplicationWallet(walletService.getDeployedWallet().asApplicationWallet);
   };
 
   return (
