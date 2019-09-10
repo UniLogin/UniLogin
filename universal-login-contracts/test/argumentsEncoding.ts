@@ -73,6 +73,7 @@ describe('UNIT: argumentsEncoding', async () => {
         0,
         '0x0000000000000000000000000000000000000000',
         0,
+        0
       ];
       expect(getExecutionArgs(msg)).to.deep.eq(expectedResult);
     });

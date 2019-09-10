@@ -28,7 +28,7 @@ export const messageSignatureForApprovals = (wallet: Wallet, id: BigNumberish) =
   wallet.signMessage(arrayify(solidityKeccak256(['uint256'], [id])));
 
 export const getExecutionArgs = (msg: Message) =>
-  [msg.to, msg.value, msg.data, msg.gasPrice, msg.gasToken, msg.gasLimit];
+  [msg.to, msg.value, msg.data, msg.gasPrice, msg.gasToken, msg.gasLimit, 0];
 
 export const encodeFunction = (ContractJSON: any, functionName: string, args: string[] = []) =>
   new Interface(ContractJSON.interface).functions[`${functionName}`].encode(args);
