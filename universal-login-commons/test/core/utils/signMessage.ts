@@ -20,7 +20,7 @@ const expectedMessage = {
   gasPrice: transferMessage.gasPrice,
   gasLimit: transferMessage.gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
-  signature: '0xe89b19f155614f3b28d7042d4eaf3bb7f4591d97682c6fff01776107a5ab49906e8e40a123404569c62770e49a999aae9dd9982f6a8b536cf6b2749cb03da2631c'
+  signature: '0x572032b2343daae81fdde643f998d8a7b8ca3daf6729270b61b92b6416ae3e1d1e139c6730f61855fb05a2f38adeadb85b3d720faa9580004bd134305c7fbb9c1c'
 };
 
 describe('UNIT: signMessage', async () => {
