@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {MessageWithoutFrom} from '@universal-login/commons';
+import {DecodedMessage} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {InvalidHexData} from '../errors';
 
@@ -22,13 +22,12 @@ const removeLeadingBytes = (n: number, data: string) => {
   }
 };
 
-const dataToMessage = (data: any[]): MessageWithoutFrom => ({
+const dataToMessage = (data: any): DecodedMessage => ({
   to: data[0],
   value: data[1],
   data: data[2],
-  nonce: parseInt(data[3], 16),
-  gasPrice: data[4],
-  gasToken: data[5],
-  gasLimit: data[6],
+  gasPrice: data[3],
+  gasToken: data[4],
+  gasLimit: data[5],
   signature: data[7]
 });
