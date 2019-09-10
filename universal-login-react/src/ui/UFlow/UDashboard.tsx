@@ -14,6 +14,7 @@ import {TransferAmount} from '../Transfer/Amount/TransferAmount';
 import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
 import {TransferInProgress} from './TransferInProgress';
 import {Devices} from './Devices/Devices';
+import BackupCodes from '../BackupCodes/BackupCodes';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -98,6 +99,10 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'devices':
         return (
           <Devices />
+        );
+      case 'backup':
+        return (
+          <BackupCodes />
         );
       default:
         return null;

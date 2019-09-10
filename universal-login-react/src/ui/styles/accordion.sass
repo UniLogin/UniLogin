@@ -1,0 +1,62 @@
+.universal-login-accordion + .universal-login-accordion
+  margin-top: 20px
+
+.universal-login-accordion
+  .accordion
+    width: 100%
+    padding: 20px
+    background: #ffffff
+
+  .accordion-title
+    margin: 0 0 6px
+    font-size: 16px
+    text-align: left
+
+  .accordion-subtitle
+    margin: 0
+    font-size: 14px
+    text-align: left
+
+  .accordion-btn
+    position: relative
+    padding-right: 25px
+    width: 100%
+    text-align: left
+    border: none
+    background: none
+
+  .accordion-btn::after
+    content: ''
+    position: absolute
+    top: 50%
+    right: 5px
+    transform: translateY(-50%)
+    width: 12px
+    height: 9px
+    background: url('./../assets/icons/angle.svg') center no-repeat
+    transition: transform 0.3s linear
+
+  .accordion-btn.expanded::after
+    transform: translateY(-50%) rotate(180deg)
+
+  .accordion-content
+    margin-top: 30px
+
+  .accordion-content-enter
+    max-height: 0
+    transition: all 300ms linear
+    overflow-y: hidden
+
+  .accordion-content-enter-active
+    max-height: 500px
+
+  .accordion-content-exit
+    max-height: 500px
+    transition: all 0.3s linear
+    overflow-y: hidden
+
+  .accordion-content-exit-active
+    max-height: 0
+
+  .accordion-content-text
+    font-size: 14px

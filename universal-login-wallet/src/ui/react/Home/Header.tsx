@@ -45,7 +45,7 @@ export function Header() {
                     />
                     Settings
                   </h2>
-                  <Settings />
+                  <Settings className="jarvis-settings"/>
                 </div>
               }
             </div>
