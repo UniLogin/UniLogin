@@ -1,6 +1,6 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {createModalService} from '@universal-login/react';
+import {createModalService, useProperty} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
@@ -27,11 +27,11 @@ const App = () => {
     setAppReady(true);
   }, []);
 
+  const authorized = useProperty(walletService.isAuthorized);
+
   if (!appReady) {
     return null;
   }
-
-  const authorized = walletService.isAuthorized();
 
   return (
     <WalletModalContext.Provider value={modalService}>

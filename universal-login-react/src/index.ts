@@ -6,6 +6,7 @@ export {InputLabel} from './ui/commons/InputLabel';
 export {useAsync} from './ui/hooks/useAsync';
 export {useAsyncEffect} from './ui/hooks/useAsyncEffect';
 export {useToggler} from './ui/hooks/useToggler';
+export {useProperty} from './ui/hooks/useProperty';
 export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {Notifications} from './ui/Notifications/Notifications';
 export {ConnectionNotification} from './ui/Notifications/ConnectionNotification';
