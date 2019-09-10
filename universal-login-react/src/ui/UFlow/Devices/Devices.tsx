@@ -1,49 +1,31 @@
 import React, {useState} from 'react';
+import UniversalLoginSDK from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {NewDeviceMessage} from './NewDeviceMessage';
 import {ConnectedDevices} from './ConnectedDevices';
+import {useAsync} from '../../hooks/useAsync';
 
 export interface DevicesProps {
+  sdk: UniversalLoginSDK;
   className?: string;
+  contractAddress: string;
+  privateKey: string;
 }
 
-export const Devices = ({className}: DevicesProps) => {
+export const Devices = ({sdk, contractAddress, privateKey, className}: DevicesProps) => {
   const [newDevicesAmount] = useState(1);
-  const [connectedDevices] = useState(devicesList);
+  const [devices] = useAsync(async () => sdk.getConnectedDevices(contractAddress, privateKey), []);
 
   return (
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
           {newDevicesAmount > 0 && <NewDeviceMessage onClick={() => {}} />}
-          <ConnectedDevices devicesList={connectedDevices} />
+          {devices ? <ConnectedDevices devicesList={devices} /> : 'Loading devices..'}
         </div>
       </div>
     </div>
   );
 };
-
-const devicesList = [
-  {
-    device: 'Mac',
-    type: 'laptop',
-    location: 'Warsaw, Poland',
-    ip: '84.10.249.134'
-  },
-  {
-    device: 'iPhone',
-    type: 'phone',
-    location: 'Warsaw, Poland',
-    ip: '84.10.249.134',
-    lastConnection: '18 minutes ago'
-  },
-  {
-    device: 'iPad Air',
-    type: 'tablet',
-    location: 'Warsaw, Poland',
-    ip: '84.10.249.134',
-    lastConnection: '18 minutes ago'
-  }
-];

@@ -49,6 +49,11 @@ export class RelayerApi {
     return this.http('DELETE', `/authorisation/${contractAddress}`, {authorisationRequest});
   }
 
+  async getConnectedDevices(deviceRequest: RelayerRequest) {
+    const {contractAddress, signature} = deviceRequest;
+    return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
+  }
+
   async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,

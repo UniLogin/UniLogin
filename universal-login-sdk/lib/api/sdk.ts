@@ -220,6 +220,12 @@ class UniversalLoginSDK {
     );
   }
 
+  getConnectedDevices(contractAddress: string, privateKey: string) {
+    return this.relayerApi.getConnectedDevices(
+      signRelayerRequest({contractAddress}, privateKey)
+    );
+  }
+
   async start() {
     await this.blockchainObserver.start();
     await this.tokensDetailsStore.fetchTokensDetails();

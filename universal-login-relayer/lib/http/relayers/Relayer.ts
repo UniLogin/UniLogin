@@ -2,6 +2,7 @@ import express, {Application} from 'express';
 import WalletRouter from '../routes/wallet';
 import ConfigRouter, {getPublicConfig} from '../routes/config';
 import RequestAuthorisationRouter from '../routes/authorisation';
+import DevicesRouter from '../routes/devices';
 import WalletService from '../../integration/ethereum/WalletService';
 import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
@@ -102,6 +103,7 @@ class Relayer {
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
+    this.app.use('/devices', DevicesRouter());
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
   }

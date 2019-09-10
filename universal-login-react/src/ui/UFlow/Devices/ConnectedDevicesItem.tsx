@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
-import {Device} from './ConnectedDevices';
+import {DeviceInfo} from '@universal-login/commons';
 
-export interface ConnectedDevicesItemProps extends Device {
+export interface ConnectedDevicesItemProps extends DeviceInfo {
   devicesAmount: number;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, device, type, location, ip, lastConnection}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, os, name, ipAddress, city, time}: ConnectedDevicesItemProps) => {
   const [toBeRemoved, setToBeRemoved] = useState(false);
 
   return (
-    <li className={`connected-devices-item ${type} ${toBeRemoved ? 'highlighted' : ''}`}>
+    <li className={`connected-devices-item ${name} ${toBeRemoved ? 'highlighted' : ''}`}>
       <div>
-        <p className="connected-devices-type">{device} &bull; {location}</p>
+        <p className="connected-devices-type">{os} &bull; {city}</p>
         <p className="connected-devices-details">
-          IP adress {ip}
-          {lastConnection
-            ? lastConnection
+          IP adress {ipAddress}
+          {time
+            ? time
             : <span className="connected-devices-active"> Active device</span>
           }
         </p>
