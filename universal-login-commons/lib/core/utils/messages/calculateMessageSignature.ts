@@ -7,7 +7,7 @@ export const calculateMessageHash = (msg: UnsignedMessage) => {
   const dataHash = utils.solidityKeccak256(['bytes'], [msg.data]);
   return utils.solidityKeccak256(
     ['address', 'address', 'uint256', 'bytes32', 'uint256', 'uint', 'address', 'uint'],
-    [msg.from, msg.to, msg.value, dataHash, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimit]);
+    [msg.from, msg.to, msg.value, dataHash, msg.nonce, msg.gasPrice, msg.gasToken, msg.gasLimitExecution]);
 };
 
 export const calculateMessageSignature = (privateKey: string, msg: UnsignedMessage) => {
