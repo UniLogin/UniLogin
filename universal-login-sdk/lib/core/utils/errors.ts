@@ -1,4 +1,4 @@
-type ErrorType = 'ApplicationWalletNotFound' | 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
+type ErrorType = 'ApplicationWalletNotFound' | 'ConcurrentAuthorisation' | 'ConcurrentDevices' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -27,8 +27,15 @@ export class ConcurrentDeployment extends Conflict {
 
 export class ConcurrentAuthorisation extends Conflict {
   constructor () {
-    super('Another wallet is subscribed.', 'ConcurrentAuthorisation');
+    super('Another wallet is subscribed for authorisations.', 'ConcurrentAuthorisation');
     Object.setPrototypeOf(this, ConcurrentAuthorisation.prototype);
+  }
+}
+
+export class ConcurrentDevices extends Conflict {
+  constructor () {
+    super('Another wallet is subscribed for connected devices.', 'ConcurrentDevices');
+    Object.setPrototypeOf(this, ConcurrentDevices.prototype);
   }
 }
 
