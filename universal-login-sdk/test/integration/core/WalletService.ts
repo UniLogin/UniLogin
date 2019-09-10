@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {ApplicationWallet, TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, walletFromBrain} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, walletFromBrain} from '@universal-login/commons';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {WalletService} from '../../../lib/core/services/WalletService';
