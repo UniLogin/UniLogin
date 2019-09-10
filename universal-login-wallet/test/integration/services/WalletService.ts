@@ -18,14 +18,13 @@ describe('INT: WalletService', async () => {
   });
 
   it('create wallet', async () => {
-    expect(walletService.state).to.be.eq('None');
+    expect(walletService.state).to.deep.eq({kind: 'None'});
     const futureWallet = await walletService.createFutureWallet();
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
     expect(futureWallet.deploy).to.be.a('function');
     expect(futureWallet.waitForBalance).to.be.a('function');
-    expect(futureWallet).to.deep.eq(walletService.getDeployedWallet().asApplicationWallet);
-    expect(walletService.state).to.be.eq('Future');
+    expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
   });
 
   after(async () => {

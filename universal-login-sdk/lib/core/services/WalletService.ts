@@ -46,6 +46,13 @@ export class WalletService {
     return this.state.wallet;
   }
 
+  getConnectingWallet(): ApplicationWallet {
+    if (this.state.kind !== 'Connecting') {
+      throw new Error('Invalid state: expected connecting wallet');
+    }
+    return this.state.wallet;
+  }
+
   async createFutureWallet(): Promise<FutureWallet> {
     const futureWallet = await this.sdk.createFutureWallet();
     this.setFutureWallet(futureWallet);

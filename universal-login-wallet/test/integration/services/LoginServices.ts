@@ -64,7 +64,7 @@ describe('Login', () => {
     it('should request connect to existing wallet and call callback when add key', async () => {
       const callback = sinon.spy();
       const {unsubscribe, securityCode} = await connectToWalletService(name, callback);
-      const newPublicKey = utils.computeAddress(walletServiceForConnect.getDeployedWallet().privateKey);
+      const newPublicKey = utils.computeAddress((walletServiceForConnect.state as any).wallet.privateKey);
       const expectedSecurityCode = await generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;
       const {waitToBeMined} = await sdk.addKey(

@@ -6,11 +6,24 @@ export class WalletPresenter {
   ) {}
 
   getName(): string {
-    return this.walletService.getDeployedWallet().name;
+    switch (this.walletService.state.kind) {
+      case 'Connecting':
+      case 'Deployed':
+        return this.walletService.state.wallet.name;
+      default:
+        throw new Error('Invalid wallet state: expected Deployed or Connecting wallet');
+    }
   }
 
   getContractAddress(): string {
-    return this.walletService.getDeployedWallet().contractAddress;
+    switch (this.walletService.state.kind) {
+      case 'Connecting':
+      case 'Deployed':
+      case 'Future':
+        return this.walletService.state.wallet.contractAddress;
+      default:
+        throw new Error('Invalid wallet state: expected Deployed, Connecting or Future wallet');
+    }
   }
 }
 
