@@ -39,6 +39,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
     publicKey: keyPair.publicKey,
     ensName,
     gasPrice: TEST_GAS_PRICE,
+    gasToken: ETHER_NATIVE_TOKEN.address,
     signature
   });
   return new Contract(futureAddress, WalletContract.interface, wallet);
@@ -55,12 +56,12 @@ export const startRelayerWithRefund = async (port = '33111') => {
   return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet};
 };
 
-export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice) => {
+export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice, gasToken = ETHER_NATIVE_TOKEN.address) => {
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);
   const ens = new Contract(ensAddress, ENS.interface, provider);
   const resolverAddress = await ens.resolver(utils.namehash(domain));
   const registrarAddress = await ens.owner(utils.namehash(domain));
-  return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, ETHER_NATIVE_TOKEN.address]);
+  return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, gasToken]);
 };

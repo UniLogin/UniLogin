@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, ContractJSON, KeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
 import WalletContract from '../build/Wallet.json';
 
 export type EnsDomainData = {

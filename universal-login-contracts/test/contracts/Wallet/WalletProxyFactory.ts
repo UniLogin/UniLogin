@@ -97,8 +97,7 @@ describe('Counterfactual Factory', () => {
     const mockToken = await deployContract(anotherWallet, MockToken);
     const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({...createFutureDeploymentArgs, gasToken: mockToken.address});
     await mockToken.transfer(futureAddress, utils.parseEther('1.0'));
-    const initBalance = await mockToken.balanceOf(wallet.address);
-    const expectedBalance = initBalance.add(utils.bigNumberify(500000).mul(gasPrice))
+    const expectedBalance = utils.bigNumberify(500000).mul(gasPrice);
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(gasPrice)});
     expect(await mockToken.balanceOf(wallet.address)).to.be.eq(expectedBalance);
   });

@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
-import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE} from '@universal-login/commons';
+import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../helpers/http';
 import Relayer from '../../lib';
@@ -43,6 +43,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
         signature
       });
     expect(result.status).to.eq(201);
@@ -64,6 +65,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: newKeyPair.publicKey,
         ensName,
         gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
         signature
       });
     expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
@@ -71,18 +73,23 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
 
   it('Counterfactual deployment with token payment', async () => {
+    const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, mockToken.address);
+    signature = await calculateInitializeSignature(initData, keyPair.privateKey);
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
+    const initialRelayerBalance = await mockToken.balanceOf(deployer.address);
     const result = await chai.request(relayerUrl)
       .post(`/wallet/deploy/`)
       .send({
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: TEST_GAS_PRICE,
+        gasToken: mockToken.address,
         signature
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(500000)));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {
@@ -92,6 +99,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
         signature
       });
     expect(result.status).to.eq(402);
@@ -109,6 +117,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName: invalidEnsName,
         gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
         signature
       });
     expect(result.status).to.eq(404);
@@ -127,6 +136,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         publicKey: keyPair.publicKey,
         ensName,
         gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
         signature
       });
     expect(result.body.type).to.eq('InvalidSignature');

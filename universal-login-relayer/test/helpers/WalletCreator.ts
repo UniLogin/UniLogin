@@ -59,6 +59,7 @@ export class WalletCreator {
       publicKey,
       ensName,
       gasPrice: TEST_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
       signature
     });
     return {privateKey, contractAddress, publicKey};

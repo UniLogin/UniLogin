@@ -54,7 +54,7 @@ export class RelayerApi {
     return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
   }
 
-  async deploy(publicKey: string, ensName: string, gasPrice: string, signature: string) {
+  async deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
