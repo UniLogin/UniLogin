@@ -27,23 +27,27 @@ export const Devices = ({className}: DevicesProps) => {
 
 const devicesList = [
   {
-    device: 'Mac',
-    type: 'laptop',
-    location: 'Warsaw, Poland',
-    ip: '84.10.249.134'
+    os: 'Mac',
+    name: 'laptop',
+    city: 'Warsaw, Poland',
+    ipAddress: '84.10.249.134',
+    time: '18 minutes ago',
+    browser: 'Safari'
   },
   {
-    device: 'iPhone',
-    type: 'phone',
-    location: 'Warsaw, Poland',
-    ip: '84.10.249.134',
-    lastConnection: '18 minutes ago'
+    os: 'iPhone',
+    name: 'phone',
+    city: 'Warsaw, Poland',
+    ipAddress: '84.10.249.134',
+    time: '18 minutes ago',
+    browser: 'Safari'
   },
   {
-    device: 'iPad Air',
-    type: 'tablet',
-    location: 'Warsaw, Poland',
-    ip: '84.10.249.134',
-    lastConnection: '18 minutes ago'
+    os: 'iPad Air',
+    name: 'tablet',
+    city: 'Warsaw, Poland',
+    ipAddress: '84.10.249.134',
+    time: '18 minutes ago',
+    browser: 'Safari'
   }
 ];

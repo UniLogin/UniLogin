@@ -1,16 +1,9 @@
 import React from 'react';
 import {ConnectedDevicesItem} from './ConnectedDevicesItem';
-
-export interface Device {
-  device: string;
-  type: string;
-  location: string;
-  ip: string;
-  lastConnection?: string;
-}
+import {DeviceInfo} from '@universal-login/commons';
 
 export interface ConnectedDevicesProps {
-  devicesList: Device[];
+  devicesList: DeviceInfo[];
 }
 
 export const ConnectedDevices = ({devicesList}: ConnectedDevicesProps) => {
@@ -21,17 +14,12 @@ export const ConnectedDevices = ({devicesList}: ConnectedDevicesProps) => {
       </div>
       <ul className="connected-devices-list">
         {devicesList.map((deviceItem, index) => {
-          const {device, type, ip, location, lastConnection} = deviceItem;
 
           return (
             <ConnectedDevicesItem
               key={index}
               devicesAmount={devicesList.length}
-              device={device}
-              type={type}
-              location={location}
-              ip={ip}
-              lastConnection={lastConnection}
+              {...deviceItem}
             />
           );
         })}
