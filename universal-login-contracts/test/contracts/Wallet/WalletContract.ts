@@ -127,7 +127,7 @@ describe('WalletContract', async () => {
       it('nonce too low', async () => {
         await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.be.revertedWith('Invalid signature');
+          .to.be.revertedWith('Invalid signature or nonce');
       });
 
       it('nonce too high', async () => {
@@ -136,7 +136,7 @@ describe('WalletContract', async () => {
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
         await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-          .to.be.revertedWith('Invalid signature');
+          .to.be.revertedWith('Invalid signature or nonce');
       });
 
       it('emits ExecutedSigned event', async () => {
@@ -164,7 +164,7 @@ describe('WalletContract', async () => {
         it('no signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), []]);
           await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-            .to.be.revertedWith('Invalid signature');
+            .to.be.revertedWith('Invalid signatures');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
           expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
         });
@@ -172,7 +172,7 @@ describe('WalletContract', async () => {
         it('invalid signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), invalidSignature]);
           await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
-            .to.be.revertedWith('Invalid signature');
+            .to.be.revertedWith('Invalid signature or nonce');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
           expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
         });
@@ -276,7 +276,7 @@ describe('WalletContract', async () => {
         signature = calculateMessageSignature(privateKey, msg);
 
         await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-          .to.be.revertedWith('Invalid signature');
+          .to.be.revertedWith('Invalid signature or nonce');
       });
 
       describe('refund', () => {

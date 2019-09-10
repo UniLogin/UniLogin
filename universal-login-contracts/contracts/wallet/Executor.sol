@@ -106,7 +106,7 @@ contract Executor {
     {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimit, signatures), "Invalid signature");
+        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimit, signatures), "Invalid signature or nonce");
         lastNonce++;
         uint256 startingGas = gasleft();
         bytes memory _data;

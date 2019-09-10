@@ -24,6 +24,6 @@ describe('Void Executor', () => {
     signature = [];
     message = {...transferMessage, from: walletContractWithZeroKey.address};
     await expect(walletContractWithZeroKey.executeSigned(...getExecutionArgs(message), signature, DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN))
-      .to.be.revertedWith('Invalid signature');
+      .to.be.revertedWith('Invalid signatures');
   });
 });
