@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {FutureWalletFactory} from '../../../lib/api/FutureWalletFactory';
@@ -57,7 +57,7 @@ describe('INT: FutureWalletFactory', async () => {
     expect(result.contractAddress).be.eq(contractAddress);
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    const deployedWallet = await deploy(ensName, '1');
+    const deployedWallet = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as ContractJSON)}`);
 
     expect(deployedWallet.contractAddress).to.eq(contractAddress);

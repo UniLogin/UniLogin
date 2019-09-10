@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import UniversalLoginSDK, {WalletService, FutureWallet} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
-import {DEFAULT_GAS_PRICE, ApplicationWallet} from '@universal-login/commons';
+import {DEFAULT_GAS_PRICE, ApplicationWallet, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalType, ReactModalProps} from '../../core/models/ReactModalContext';
 import {createModalService} from '../../core/services/createModalService';
@@ -39,7 +39,7 @@ export const Onboarding = ({sdk, walletService: injectedWalletService, onConnect
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
-    const wallet = await deploy(ensName, DEFAULT_GAS_PRICE.toString());
+    const wallet = await deploy(ensName, DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
     walletService.setDeployed(ensName);
     modalService.hideModal();
     onCreate && onCreate(wallet);

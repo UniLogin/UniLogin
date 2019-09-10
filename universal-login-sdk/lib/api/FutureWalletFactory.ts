@@ -18,7 +18,7 @@ export type FutureWallet = {
   privateKey: string,
   contractAddress: string,
   waitForBalance: () => Promise<BalanceDetails>,
-  deploy: (ensName: string, gasPrice: string) => Promise<DeployedWallet>
+  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployedWallet>
 };
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
@@ -36,9 +36,9 @@ export class FutureWalletFactory {
       this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
-  async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
+  async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
     const args = await this.ensService.argsFor(ensName) as string[];
-    const initArgs = [publicKey, ...args, gasPrice];
+    const initArgs = [publicKey, ...args, gasPrice, gasToken];
     return encodeInitializeWithENSData(initArgs);
   }
 
@@ -53,10 +53,10 @@ export class FutureWalletFactory {
       }
     ) as Promise<BalanceDetails>;
 
-    const deploy = async (ensName: string, gasPrice: string) => {
-      const initData = await this.setupInitData(publicKey, ensName, gasPrice);
+    const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
+      const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
       const signature = await calculateInitializeSignature(initData, privateKey);
-      await this.relayerApi.deploy(publicKey, ensName, gasPrice, signature);
+      await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature);
 
       const deploymentObserver = new DeploymentObserver(this.blockchainService, this.config.contractWhiteList);
       const address = await new Promise<string>((resolve) => deploymentObserver.startAndSubscribe(contractAddress, resolve));

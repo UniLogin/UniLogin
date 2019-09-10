@@ -3,7 +3,7 @@ import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
-import {WalletSuggestionAction, defaultDeployOptions} from '@universal-login/commons';
+import {WalletSuggestionAction, defaultDeployOptions, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
@@ -21,7 +21,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
     modalService.showModal('topUpAccount');
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
-    await deploy(name, defaultDeployOptions.gasPrice.toString());
+    await deploy(name, defaultDeployOptions.gasPrice.toString(), ETHER_NATIVE_TOKEN.address);
     walletService.setDeployed(name);
     modalService.showModal('transactionSuccess');
   };

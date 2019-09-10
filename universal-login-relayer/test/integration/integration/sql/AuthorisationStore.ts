@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import Knex from 'knex';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {createKeyPair, TEST_GAS_PRICE} from '@universal-login/commons';
+import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 import AuthorisationStore from '../../../../lib/integration/sql/services/AuthorisationStore';
 import {getKnexConfig} from '../../../helpers/knex';
@@ -27,7 +27,7 @@ describe('INT: Authorisation Store', async () => {
     authorisationStore = new AuthorisationStore(database);
     const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
-    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature});
+    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address});
     contractAddress = futureContractAddress;
   });
 

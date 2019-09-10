@@ -1,9 +1,10 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
-import {getWallets, solidity, loadFixture} from 'ethereum-waffle';
-import {createKeyPair, signString} from '@universal-login/commons';
+import {getWallets, solidity, loadFixture, deployContract} from 'ethereum-waffle';
+import {createKeyPair, signString, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
 import WalletContract from '../../../build/Wallet.json';
+import MockToken from '../../../build/MockToken.json';
 import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../../lib';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
@@ -23,11 +24,12 @@ describe('Counterfactual Factory', () => {
   let futureAddress: string;
   let signature: string;
   let createFutureDeploymentArgs: CreateFutureDeploymentWithENS;
+  const gasPrice = '1000000';
 
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000'};
+    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address};
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 
@@ -89,5 +91,14 @@ describe('Counterfactual Factory', () => {
     const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
     const signature2 = signString(message, keyPair.privateKey);
     expect(await proxyContract.isValidSignature(messageHex, signature2)).to.eq(MAGICVALUE);
+  });
+
+  it('return in token after deploy', async () => {
+    const mockToken = await deployContract(anotherWallet, MockToken);
+    const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({...createFutureDeploymentArgs, gasToken: mockToken.address});
+    await mockToken.transfer(futureAddress, utils.parseEther('1.0'));
+    const expectedBalance = utils.bigNumberify(500000).mul(gasPrice);
+    await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(gasPrice)});
+    expect(await mockToken.balanceOf(wallet.address)).to.be.eq(expectedBalance);
   });
 });
