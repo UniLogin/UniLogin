@@ -28,7 +28,7 @@ describe('INT: WalletService', () => {
   });
 
   it('disconnect resets state to None', () => {
-    walletService.state = {kind: 'Deployed', wallet: deployedWallet};
+    walletService.connect(applicationWallet)
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
     expect(storage.remove).to.be.called;

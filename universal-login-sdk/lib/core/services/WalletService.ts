@@ -37,12 +37,6 @@ export class WalletService {
     return this.stateProperty.get();
   }
 
-  // Should only be used for testing.
-  // Use other state-transition methods defined bellow
-  set state(value: WalletState) {
-    this.stateProperty.set(value);
-  }
-
   constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain, private storage?: WalletStorage) {}
 
   getDeployedWallet(): DeployedWallet {
@@ -69,7 +63,7 @@ export class WalletService {
     if (this.state.kind !== 'None') {
       throw new WalletOverridden();
     }
-    this.state = {kind: 'Future', wallet};
+    this.stateProperty.set({kind: 'Future', wallet});
   }
 
   setDeployed(name: string) {
@@ -78,7 +72,7 @@ export class WalletService {
     }
     const {contractAddress, privateKey} = this.state.wallet;
     const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
-    this.state = {kind: 'Deployed', wallet};
+    this.stateProperty.set({kind: 'Deployed', wallet});
     this.storage && this.storage.save(wallet.asApplicationWallet);
   }
 
@@ -86,14 +80,17 @@ export class WalletService {
     if (this.state.kind !== 'None') {
       throw new WalletOverridden();
     }
-    this.state = {kind: 'Connecting', wallet};
+    this.stateProperty.set({kind: 'Connecting', wallet});
   }
 
   connect(wallet: ApplicationWallet) {
     if (this.state.kind !== 'None' && this.state.kind !== 'Connecting') {
       throw new WalletOverridden();
     }
-    this.state = {kind: 'Deployed', wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk)};
+    this.stateProperty.set({
+      kind: 'Deployed',
+      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk)
+    });
     this.storage && this.storage.save(wallet);
   }
 
@@ -105,7 +102,7 @@ export class WalletService {
   }
 
   disconnect(): void {
-    this.state = {kind: 'None'};
+    this.stateProperty.set({kind: 'None'});
     this.removeFromStorage();
   }
 
@@ -122,10 +119,10 @@ export class WalletService {
       return;
     }
     ensure(this.state.kind === 'None', WalletOverridden);
-    this.state = {
+    this.stateProperty.set({
       kind: 'Deployed',
       wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
-    };
+    });
   }
 
   removeFromStorage() {
