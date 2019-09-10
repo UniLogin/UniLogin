@@ -37,7 +37,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
         to: asEthAddress,
         from: asEthAddress,
         nonce: asString,
-        gasLimit: asBigNumber,
+        gasLimitExecution: asBigNumber,
         gasPrice: asBigNumber,
         gasData: asBigNumber,
         data: asArrayish,

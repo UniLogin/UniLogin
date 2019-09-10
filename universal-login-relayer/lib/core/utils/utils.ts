@@ -23,7 +23,7 @@ export const getKeyFromData = (data : string) => {
 export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>
   Object({
     gasPrice: message.gasPrice,
-    gasLimit: message.gasLimit,
+    gasLimit: message.gasLimitExecution,
     to: message.from,
     value: 0,
     data: encodeDataForExecuteSigned(message)

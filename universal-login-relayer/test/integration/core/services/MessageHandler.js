@@ -29,7 +29,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const message = {...msg, gasLimit: utils.parseEther('2.0')};
+    const message = {...msg, gasLimitExecution: utils.parseEther('2.0')};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await messageHandler.stopLater();
@@ -38,7 +38,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough gas', async () => {
-    const message = {...msg, gasLimit: 100};
+    const message = {...msg, gasLimitExecution: 100};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await messageHandler.stopLater();

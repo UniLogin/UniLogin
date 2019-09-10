@@ -28,13 +28,13 @@ describe('INT: MessageValidator', async () => {
   });
 
   it('throws when not enough gas', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimit: 100}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message, gasLimitExecution: 100}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidator.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
   it('throws when not enough tokens', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message, gasLimitExecution: utils.parseEther('2.0')}, wallet.privateKey);
     const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidator.validate(signedMessage, transactionRequest))
       .to.be.eventually.rejectedWith('Not enough tokens');

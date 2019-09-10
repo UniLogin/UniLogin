@@ -35,7 +35,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       nonce: '0',
       gasToken: mockToken.address,
       gasPrice: 110000000,
-      gasLimit: 1000000,
+      gasLimitExecution: 1000000,
       gasData: 0
     };
     const balanceBefore = await otherWallet.getBalance();
@@ -60,7 +60,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       data: '0x0',
       nonce: utils.bigNumberify(2),
       gasPrice: '1000000000',
-      gasLimit: '1000000',
+      gasLimitExecution: '1000000',
       gasData: '0',
       gasToken: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
       from: '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d',
