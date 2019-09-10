@@ -23,14 +23,16 @@ export const Settings = ({sdk, contractAddress, privateKey, className}: Settings
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="settings">
           <h2 className="settings-title">Settings</h2>
-          <Accordion
-            title="Manage devices"
-            subtitle={devices ? `You currently have ${devices.length} authorized devices` : 'Devices are loading..'}
-          >
-            <ManageDevices
-              devices={devices}
-            />
-          </Accordion>
+          {devices
+            ? <Accordion
+              title="Manage devices"
+              subtitle={`You currently have ${devices.length} authorized devices`}
+            >
+              <ManageDevices
+                devices={devices}
+              />
+            </Accordion>
+            : 'Devices are loading..'}
           <Accordion
             title="Backup code"
             subtitle="Back up your account"

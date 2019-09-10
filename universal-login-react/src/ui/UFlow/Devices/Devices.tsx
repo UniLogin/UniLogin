@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
