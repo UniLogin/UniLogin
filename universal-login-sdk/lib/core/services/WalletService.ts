@@ -4,6 +4,7 @@ import {FutureWallet} from '../../api/FutureWalletFactory';
 import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
 import {Wallet} from 'ethers';
 import {DeployedWallet} from '../..';
+import {State, map} from 'reactive-properties';
 
 type WalletState = {
   kind: 'None'
@@ -27,17 +28,22 @@ export interface WalletStorage {
 }
 
 export class WalletService {
-  public state: WalletState = {kind: 'None'};
+  public stateProperty = new State<WalletState>({kind: 'None'});
+
+  public walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
+  public isAuthorized = this.walletDeployed;
+
+  get state() {
+    return this.stateProperty.get();
+  }
+
+  // Should only be used for testing.
+  // Use other state-transition methods defined bellow
+  set state(value: WalletState) {
+    this.stateProperty.set(value);
+  }
 
   constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain, private storage?: WalletStorage) {}
-
-  walletDeployed(): boolean {
-    return this.state.kind === 'Deployed';
-  }
-
-  isAuthorized(): boolean {
-    return this.walletDeployed();
-  }
 
   getDeployedWallet(): DeployedWallet {
     if (this.state.kind !== 'Deployed') {
