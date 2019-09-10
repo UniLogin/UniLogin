@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
+import {PublicRelayerConfig, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
@@ -38,7 +38,7 @@ export class FutureWalletFactory {
 
   async setupInitData(publicKey: string, ensName: string, gasPrice: string) {
     const args = await this.ensService.argsFor(ensName) as string[];
-    const initArgs = [publicKey, ...args, gasPrice];
+    const initArgs = [publicKey, ...args, gasPrice, ETHER_NATIVE_TOKEN.address];
     return encodeInitializeWithENSData(initArgs);
   }
 
