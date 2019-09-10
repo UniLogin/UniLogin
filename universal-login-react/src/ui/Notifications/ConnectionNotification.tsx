@@ -27,7 +27,7 @@ export const ConnectionNotification = ({contractAddress, privateKey, sdk, classN
             {showTitle &&
               <>
                 <p className="approve-device-title">Approve device</p>
-                <p className="approve-device-text">A new device tries to connects to this aacount. Enter the emojis in the correct order to approve it.</p>
+                <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
               </>
             }
             <EmojiForm

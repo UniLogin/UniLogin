@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -12,18 +12,25 @@ export interface DevicesProps {
   className?: string;
   contractAddress: string;
   privateKey: string;
+  ensName: string;
 }
 
-export const Devices = ({sdk, contractAddress, privateKey, className}: DevicesProps) => {
+export const Devices = ({sdk, contractAddress, privateKey, ensName, className}: DevicesProps) => {
   const [newDevicesAmount] = useState(1);
   const [devices] = useAsync(async () => sdk.getConnectedDevices(contractAddress, privateKey), []);
+  const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
 
   return (
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
-          {newDevicesAmount > 0 && <NewDeviceMessage onClick={() => {}} />}
-          {devices ? <ConnectedDevices devicesList={devices} /> : 'Loading devices..'}
+          {newDevicesAmount > 0 && <NewDeviceMessage onClick={() => {}}/>}
+          {devices ?
+            <ConnectedDevices
+              devicesList={devices}
+              deployedWallet={deployedWallet}
+            /> : 'Loading devices..'
+          }
         </div>
       </div>
     </div>
