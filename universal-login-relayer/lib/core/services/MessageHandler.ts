@@ -10,6 +10,7 @@ import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import IMessageRepository from './messages/IMessagesRepository';
 import IQueueStore from './messages/IQueueStore';
 import {MessageStatusService} from './messages/MessageStatusService';
+import {DevicesService} from './DevicesService';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
@@ -18,6 +19,7 @@ class MessageHandler {
   constructor(
     wallet: Wallet,
     private authorisationStore: AuthorisationStore,
+    private devicesService: DevicesService,
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
     queueStore: IQueueStore,
