@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -49,6 +50,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
+    new webpack.DefinePlugin({
+      'process.env.TOKEN_CONTRACT_ADDRESS': JSON.stringify(process.env.TOKEN_CONTRACT_ADDRESS),
+      'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
+      'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
+      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
+    })
   ],
   devServer: {
     historyApiFallback: true,
