@@ -2,29 +2,10 @@ import {Provider} from 'web3/providers';
 import {providers} from 'ethers';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {initUi} from './ui';
-import {Property} from 'reactive-properties';
 import {UIController} from './services/UIController';
 import {Message} from '@universal-login/commons';
-
-interface JsonRPCRequest {
-  jsonrpc: string;
-  method: string;
-  params: any[];
-  id: number;
-}
-
-interface JsonRPCResponse {
-  jsonrpc: string;
-  id: number;
-  result?: any;
-  error?: string;
-}
-
-interface Callback<ResultType> {
-  (error: Error): void;
-
-  (error: null, val: ResultType): void;
-}
+import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
+import {waitFor} from './utils';
 
 export class ULWeb3Provider implements Provider {
   private sdk: UniversalLoginSDK;
@@ -43,8 +24,6 @@ export class ULWeb3Provider implements Provider {
     this.walletService = new WalletService(this.sdk);
     this.uiController = new UIController(this.walletService);
 
-    this.walletService.stateProperty.subscribe(() => console.log(this.walletService.stateProperty.get()));
-
     initUi({
       sdk: this.sdk,
       domains: ensDomains,
@@ -53,15 +32,7 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  send(payload: JsonRPCRequest, _callback: Callback<JsonRPCResponse>): any {
-    const callback = (err: any, msg: any) => {
-      console.log('<', msg);
-      if (err) {
-        console.log('err', err);
-      }
-      _callback(err, msg);
-    };
-    console.log('>', payload);
+  send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
     switch (payload.method) {
       case 'eth_sendTransaction':
         const tx = payload.params[0];
@@ -109,16 +80,3 @@ export class ULWeb3Provider implements Provider {
     this.uiController.requireWallet();
   }
 }
-
-
-function waitFor<T>(predicate: (value: T) => boolean): (prop: Property<T>) => Promise<void> {
-  return (source) => new Promise((resolve) => {
-    const unsubscribe = source.subscribe(() => {
-      if (predicate(source.get())) {
-        resolve();
-        unsubscribe();
-      }
-    });
-  });
-}
-
