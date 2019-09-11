@@ -81,13 +81,13 @@ describe('E2E: SDK', async () => {
     });
 
     it('when not enough tokens ', async () => {
-      message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimitExecution: utils.parseEther('25').toString()};
+      message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: utils.parseEther('25').toString()};
       const {waitToBeMined} = await sdk.execute(message, privateKey);
       await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough tokens');
     });
 
     it('when not enough gas', async () => {
-      message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimitExecution: '100'};
+      message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: '100'};
       const {waitToBeMined} = await sdk.execute(message, privateKey);
       await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough gas');
     });

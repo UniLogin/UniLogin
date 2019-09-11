@@ -125,10 +125,12 @@ class UniversalLoginSDK {
 
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
     const unsignedMessage = {
-      ...this.sdkConfig.paymentOptions,
+      gasPrice: this.sdkConfig.paymentOptions.gasPrice,
+      gasToken: this.sdkConfig.paymentOptions.gasToken,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
-      gasData: utils.bigNumberify(0)
+      gasData: utils.bigNumberify(0),
+      gasLimitExecution: message.gasLimit || this.sdkConfig.paymentOptions.gasLimit,
     } as MessageWithFrom;
     const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
