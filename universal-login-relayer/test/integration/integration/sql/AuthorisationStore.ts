@@ -47,13 +47,15 @@ describe('INT: Authorisation Store', async () => {
     await authorisationStore.addRequest(request);
     const authorisations = await authorisationStore.getPendingAuthorisations(contractAddress);
     expect(authorisations).length(1);
-    const removedItem = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
-    expect(removedItem).to.deep.eq(request);
+    const itemToRemove = await authorisationStore.get(contractAddress, keyPair.publicKey);
+    const removedItemsCount = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
+    expect(itemToRemove).to.deep.eq(request);
+    expect(removedItemsCount).to.be.eq(1);
   });
 
   it('Remove non-existing item', async () => {
-    const removedItem = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
-    expect(removedItem).to.be.undefined;
+    const removedItemsCount = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
+    expect(removedItemsCount).to.be.eq(0);
   });
 
   it('Many authorisation requests roundtrip', async () => {

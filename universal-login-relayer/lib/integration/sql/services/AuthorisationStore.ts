@@ -22,7 +22,7 @@ class AuthorisationStore {
       .select();
   }
 
-  private get(contractAddress: string, key: string) {
+  get(contractAddress: string, key: string) {
     return this.database('authorisations')
       .where({
         walletContractAddress: contractAddress,
@@ -32,13 +32,11 @@ class AuthorisationStore {
       .first();
   }
 
-  async removeRequest(contractAddress: string, key: string): Promise<AddAuthorisationRequest | undefined> {
-    const authorisationEntry = await this.get(contractAddress, key);
-    await this.database('authorisations')
+  async removeRequest(contractAddress: string, key: string): Promise<number> {
+    return this.database('authorisations')
       .where('walletContractAddress', contractAddress)
       .where('key', key)
       .del();
-    return authorisationEntry;
   }
 
   removeRequests(contractAddress: string) {
