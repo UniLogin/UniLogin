@@ -15,13 +15,13 @@ class AuthorisationService {
   }
 
   async removeAuthorisationRequest(authorisationRequest: RelayerRequest) {
-    await this.walletMasterContractService.ensureValidAuthorisationRequestSignature(authorisationRequest);
+    await this.walletMasterContractService.ensureValidRelayerRequestSignature(authorisationRequest);
 
     return this.authorisationStore.removeRequests(authorisationRequest.contractAddress);
   }
 
   async getAuthorisationRequests(authorisationRequest: RelayerRequest) {
-    await this.walletMasterContractService.ensureValidAuthorisationRequestSignature(authorisationRequest);
+    await this.walletMasterContractService.ensureValidRelayerRequestSignature(authorisationRequest);
 
     return this.authorisationStore.getPendingAuthorisations(authorisationRequest.contractAddress);
   }
