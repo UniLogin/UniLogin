@@ -1,23 +1,27 @@
 import {utils} from 'ethers';
 import {Omit, PartialRequired} from '../types/common';
 
-export type Message = Partial<SignedMessage>;
+export type Message = MessageCore & PaymentOptions;
 
-export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
+export type SignedMessage = MessageCore & SignedMessagePaymentOptions & {signature: string};
 
-export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
-
-export interface SignedMessage extends PaymentOptions {
+export type MessageCore = {
   to: string;
   from: string;
   nonce: string | number;
   data: utils.Arrayish;
   value: utils.BigNumberish;
-  signature: string;
-}
+};
 
 export type PaymentOptions = {
   gasLimit: utils.BigNumberish;
+  gasPrice: utils.BigNumberish;
+  gasToken: string
+};
+
+export type SignedMessagePaymentOptions = {
+  gasLimitExecution: utils.BigNumberish;
+  gasData: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string
 };
@@ -33,6 +37,10 @@ export type MessageStatus = {
   required: number,
   state: MessageState
 };
+
+export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
+
+export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
 
 export type MessageState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
 

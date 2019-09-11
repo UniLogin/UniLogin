@@ -24,9 +24,9 @@ export const hasEnoughToken = async (gasToken : string, walletContractAddress : 
 };
 
 export const ensureEnoughToken = async (provider: providers.Provider, message: SignedMessage) =>
-  ensure(await hasEnoughToken(message.gasToken, message.from, message.gasLimit, provider), NotEnoughTokens);
+  ensure(await hasEnoughToken(message.gasToken, message.from, message.gasLimitExecution, provider), NotEnoughTokens);
 
 export const ensureEnoughGas = async (provider: providers.Provider, walletAddress: string, transaction: providers.TransactionRequest, message: SignedMessage) => {
   const estimateGas = await provider.estimateGas({ ...transaction, from: walletAddress });
-  ensure(utils.bigNumberify(message.gasLimit as utils.BigNumberish).gte(estimateGas), NotEnoughGas);
+  ensure(utils.bigNumberify(message.gasLimitExecution as utils.BigNumberish).gte(estimateGas), NotEnoughGas); // TODO Add gasData to gasLimitExecution !!!!
 };

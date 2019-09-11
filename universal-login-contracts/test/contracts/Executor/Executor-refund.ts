@@ -36,7 +36,8 @@ describe('CONTRACT: Executor - refund', async  () => {
       nonce: 0,
       gasPrice: 1,
       gasToken: '0x0',
-      gasLimit: utils.bigNumberify('240000')
+      gasLimitExecution: utils.bigNumberify('240000'),
+      gasData: utils.bigNumberify('0')
     };
   });
 
@@ -55,7 +56,7 @@ describe('CONTRACT: Executor - refund', async  () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
+    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimitExecution});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     const balanceAfter = await wallet.getBalance();
     expect(balanceAfter).to.be.above(initialBalance.sub(receipt.gasUsed as utils.BigNumber));
@@ -66,7 +67,7 @@ describe('CONTRACT: Executor - refund', async  () => {
     infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimit});
+    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: infiniteCallMessage.gasLimitExecution});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     const balanceAfter = await mockToken.balanceOf(wallet.address);
     expect(balanceAfter).to.be.above(initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber));

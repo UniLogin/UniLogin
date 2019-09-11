@@ -11,7 +11,8 @@ const emptyMessage = {
   data: utils.formatBytes32String('0'),
   nonce: 0,
   gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
+  gasLimitExecution: utils.bigNumberify(DEFAULT_GAS_LIMIT),
+  gasData: utils.bigNumberify(0),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 

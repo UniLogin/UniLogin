@@ -8,7 +8,8 @@ const transferMessage = {
   data: utils.formatBytes32String('0'),
   nonce: '0',
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimit: DEFAULT_GAS_LIMIT,
+  gasLimitExecution: DEFAULT_GAS_LIMIT,
+  gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 const expectedMessage = {
@@ -18,7 +19,8 @@ const expectedMessage = {
   data: utils.formatBytes32String('0'),
   nonce: '0',
   gasPrice: transferMessage.gasPrice,
-  gasLimit: transferMessage.gasLimit,
+  gasLimitExecution: transferMessage.gasLimitExecution,
+  gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
   signature: '0x572032b2343daae81fdde643f998d8a7b8ca3daf6729270b61b92b6416ae3e1d1e139c6730f61855fb05a2f38adeadb85b3d720faa9580004bd134305c7fbb9c1c'
 };

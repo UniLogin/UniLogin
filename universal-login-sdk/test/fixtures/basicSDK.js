@@ -24,5 +24,5 @@ export default async function basicSDK(givenProvider, wallets) {
 export const transferMessage = {
   ...SdkConfigDefault.paymentOptions,
   to: TEST_ACCOUNT_ADDRESS,
-  value: utils.parseEther('0.5').toString(),
+  value: utils.parseEther('0.5').toString()
 };

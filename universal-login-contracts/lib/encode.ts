@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, ContractJSON, KeyPair} from '@universal-login/commons';
+import {ContractJSON, KeyPair, SignedMessage} from '@universal-login/commons';
 import WalletContract from '../build/Wallet.json';
 
 export type EnsDomainData = {
@@ -15,15 +15,15 @@ export const encodeInitializeData = (publicKey: string) => new utils.Interface(W
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
 
-export const encodeDataForExecuteSigned = (message: Message) =>
+export const encodeDataForExecuteSigned = (message: SignedMessage) =>
   executeSigned.encode([
     message.to,
     message.value,
     message.data,
     message.gasPrice,
     message.gasToken,
-    message.gasLimit,
-    0,
+    message.gasLimitExecution,
+    message.gasData,
     message.signature
   ]);
 

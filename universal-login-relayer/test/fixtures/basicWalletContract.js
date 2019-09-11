@@ -24,7 +24,7 @@ export const transferMessage = {
   data: utils.formatBytes32String('0'),
   nonce: '0',
   gasPrice,
-  gasLimit,
+  gasLimitExecution: gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -34,7 +34,7 @@ export const addKeyMessage = {
   data: new utils.Interface(WalletContract.interface).functions.addKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']),
   nonce: 0,
   gasPrice,
-  gasLimit,
+  gasLimitExecution: gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -44,6 +44,6 @@ export const removeKeyMessage = {
   data: new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']),
   nonce: 1,
   gasPrice,
-  gasLimit,
+  gasLimitExecution: gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000'
 };

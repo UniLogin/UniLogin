@@ -4,7 +4,7 @@ import {solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './helpers/argumentsEncoding';
 import {utils, Wallet} from 'ethers';
 import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
-import {concatenateSignatures, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -56,14 +56,16 @@ describe('UNIT: argumentsEncoding', async () => {
 
   describe('getExecutionArgs', () => {
     it('should return corect array', async () => {
-      const msg = {
+      const msg: UnsignedMessage = {
+        from: TEST_ACCOUNT_ADDRESS,
         to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('1.0'),
         data: '0x0',
         nonce: 0,
         gasPrice: 0,
-        gasLimit: 0,
-        gasToken: '0x0000000000000000000000000000000000000000'
+        gasLimitExecution: 0,
+        gasToken: '0x0000000000000000000000000000000000000000',
+        gasData: 0
       };
 
       const expectedResult = [

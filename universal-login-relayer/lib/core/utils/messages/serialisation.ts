@@ -28,6 +28,7 @@ const dataToMessage = (data: any): DecodedMessage => ({
   data: data[2],
   gasPrice: data[3],
   gasToken: data[4],
-  gasLimit: data[5],
+  gasLimitExecution: data[5],
+  gasData: data[6],
   signature: data[7]
 });
