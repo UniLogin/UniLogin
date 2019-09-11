@@ -14,10 +14,10 @@ class WalletMasterContractService {
     ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
 
-  async ensureValidRelayerRequestSignature(authorisationRequest: RelayerRequest) {
-    const recoveredAddress = recoverFromRelayerRequest(authorisationRequest);
-    const {contractAddress, signature} = authorisationRequest;
-    const payloadDigest = hashRelayerRequest(authorisationRequest);
+  async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
+    const recoveredAddress = recoverFromRelayerRequest(relayerRequest);
+    const {contractAddress, signature} = relayerRequest;
+    const payloadDigest = hashRelayerRequest(relayerRequest);
 
     await this.ensureValidSignature(contractAddress, signature!, payloadDigest, recoveredAddress);
   }
