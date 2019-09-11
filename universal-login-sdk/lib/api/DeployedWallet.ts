@@ -35,8 +35,11 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.setRequiredSignatures(this.contractAddress, requiredSignatures, this.privateKey, transactionDetails);
   }
 
-  async execute(message: Message): Promise<Execution> {
-    return this.sdk.execute(message, this.privateKey);
+  async execute(message: Partial<Message>): Promise<Execution> {
+    return this.sdk.execute({
+      from: this.contractAddress,
+      ...message,
+    }, this.privateKey);
   }
 
   async keyExist(key: string) {
