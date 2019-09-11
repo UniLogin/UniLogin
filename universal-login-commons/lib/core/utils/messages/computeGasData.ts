@@ -1,11 +1,11 @@
 import {ensure} from '../errors';
+import {isProperHexString} from '../hexStrings';
 
 export const ZERO_BYTE_GAS_COST = 4;
 export const NON_ZERO_BYTE_GAS_COST = 68;
 
 export const computeGasData = (data: string) => {
-  ensure(data.startsWith('0x'), Error, 'Not a hex string');
-  ensure(data.length % 2 === 0, Error, 'Wrong data layout');
+  ensure(isProperHexString(data), Error, 'Not a valid hex string');
 
   if (data === '0x') {
     return 0;

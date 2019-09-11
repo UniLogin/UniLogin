@@ -1,5 +1,9 @@
 import {ensure} from './errors';
 
+export const isProperHexString = (hexString: string) => {
+  return hexString.startsWith('0x') && hexString.length % 2 === 0;
+};
+
 export const isProperAddress = (address: string) => {
   return !!address.match(/^0x[0-9A-Fa-f]{40}$/);
 };
