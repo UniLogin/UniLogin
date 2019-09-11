@@ -2,7 +2,8 @@ import React from 'react';
 import Web3 from 'web3';
 import {ULWeb3Provider} from '@universal-login/web3';
 
-const web3 = new Web3(new ULWeb3Provider(new Web3.providers.HttpProvider('https://rinkeby.infura.io')));
+const universalLogin = new ULWeb3Provider(new Web3.providers.HttpProvider('https://rinkeby.infura.io'));
+const web3 = new Web3(universalLogin);
 
 web3.eth.getAccounts()
   .then(accounts => console.log('accounts', accounts))
@@ -19,10 +20,15 @@ function App() {
       .catch(console.error);
   }
 
+  function create() {
+    universalLogin.create();
+  }
+
   return (
     <div>
       Hello from host app!
       <button onClick={sendTx}>Send TX</button>
+      <button onClick={create}>Create wallet</button>
     </div>
   );
 }
