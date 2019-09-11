@@ -7,7 +7,7 @@ export interface AddAuthorisationRequest {
 }
 
 class AuthorisationStore {
-  constructor(private database : Knex) {}
+  constructor(private database: Knex) {}
 
   addRequest(request: AddAuthorisationRequest) {
     const {walletContractAddress, key, deviceInfo} = request;
@@ -22,7 +22,17 @@ class AuthorisationStore {
       .select();
   }
 
-  removeRequest(contractAddress: string, key: string) {
+  get(contractAddress: string, key: string) {
+    return this.database('authorisations')
+      .where({
+        walletContractAddress: contractAddress,
+        key
+      })
+      .select('key', 'walletContractAddress', 'deviceInfo')
+      .first();
+  }
+
+  async removeRequest(contractAddress: string, key: string): Promise<number> {
     return this.database('authorisations')
       .where('walletContractAddress', contractAddress)
       .where('key', key)
