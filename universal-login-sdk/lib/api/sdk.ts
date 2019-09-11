@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage, computeGasData} from '@universal-login/commons';
+import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, createSignedMessage, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -14,6 +14,7 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
+import {messageToUnsignedMessage} from '../core/utils/utils';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -123,25 +124,10 @@ class UniversalLoginSDK {
     );
   }
 
-  removeGasLimit(message: Partial<Message>) {
-    const {gasLimit, ...rest} = message;
-    return rest;
-  }
-
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
-    const gasLimit = utils.bigNumberify(message.gasLimit || this.sdkConfig.paymentOptions.gasLimit);
-    const gasData = computeGasData(message.data as string);
-    const gasLimitExecution = gasLimit.sub(gasData);
-
-    const {gasLimit: dupa, ...messageWithoutGasLimit} = message;
-    const unsignedMessage = {
-      gasPrice: this.sdkConfig.paymentOptions.gasPrice,
-      gasToken: this.sdkConfig.paymentOptions.gasToken,
-      ...messageWithoutGasLimit,
-      nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
-      gasData,
-      gasLimitExecution
-    } as MessageWithFrom;
+    const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
+    const unsignedMessage = messageToUnsignedMessage({gasLimit, gasPrice, gasToken, ...message});
+    unsignedMessage.nonce = unsignedMessage.nonce || parseInt(await this.getNonce(message.from!), 10);
 
     const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
@@ -149,11 +135,11 @@ class UniversalLoginSDK {
 
   protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Partial<Message>) {
     const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
-    const message = {
+    const message: Partial<Message> = {
       ...transactionDetails,
       to,
       from: to,
-      data: data || '0x'
+      data
     };
     return this.execute(message, privateKey);
   }
