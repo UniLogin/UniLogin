@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {TEST_GAS_PRICE, createKeyPair, signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest} from '@universal-login/commons';
+import {TEST_GAS_PRICE, createKeyPair, signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import WalletMasterContractService from '../../../../lib/integration/ethereum/services/WalletMasterContractService';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 
@@ -19,7 +19,7 @@ describe('INT: WalletMasterContractService', () => {
     walletMasterContractService = new WalletMasterContractService(provider);
     const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
-    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature});
+    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address});
     contractAddress = futureContractAddress;
   });
 
