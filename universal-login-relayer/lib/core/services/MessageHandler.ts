@@ -26,7 +26,7 @@ class MessageHandler {
     messageExecutor: MessageExecutor,
     statusService: MessageStatusService
   ) {
-    this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionSent.bind(this));
+    this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionMined.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
   }
 
@@ -34,7 +34,7 @@ class MessageHandler {
     this.queueService.start();
   }
 
-  async onTransactionSent(sentTransaction: providers.TransactionResponse) {
+  async onTransactionMined(sentTransaction: providers.TransactionResponse) {
     const {data, to} = sentTransaction;
     const message = decodeDataForExecuteSigned(data);
     if (message.to === to) {

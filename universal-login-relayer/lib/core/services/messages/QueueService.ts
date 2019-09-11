@@ -7,7 +7,7 @@ import {TransactionHashNotFound} from '../../utils/errors';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
 
-export type OnTransactionSent = (transaction: providers.TransactionResponse) => Promise<void>;
+export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
 class QueueService {
   private state: QueueState;
@@ -16,7 +16,7 @@ class QueueService {
     private messageExecutor: MessageExecutor,
     private queueStore: IQueueStore,
     private messageRepository: IMessageRepository,
-    private onTransactionSent: OnTransactionSent,
+    private onTransactionMined: OnTransactionMined,
     private tick: number = 100
   ) {
     this.state = 'stopped';
@@ -36,7 +36,7 @@ class QueueService {
       ensureNotNull(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!);
       await wait();
-      await this.onTransactionSent(transactionResponse);
+      await this.onTransactionMined(transactionResponse);
       await this.messageRepository.setMessageState(messageHash, 'Success');
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
