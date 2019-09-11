@@ -2,7 +2,19 @@ import React from 'react';
 import Web3 from 'web3';
 import {ULWeb3Provider} from '@universal-login/web3';
 
-const universalLogin = new ULWeb3Provider(new Web3.providers.HttpProvider('https://rinkeby.infura.io'));
+const config = {
+  relayerUrl: process.env.RELAYER_URL!,
+  jsonRpcURl: process.env.JSON_RPC_URL!,
+  ensDomains: [process.env.ENS_DOMAIN_1!],
+}
+
+console.log(config);
+
+const universalLogin = new ULWeb3Provider(
+  new Web3.providers.HttpProvider(config.jsonRpcURl),
+  config.relayerUrl,
+  config.ensDomains,
+);
 const web3 = new Web3(universalLogin);
 
 web3.eth.getAccounts()

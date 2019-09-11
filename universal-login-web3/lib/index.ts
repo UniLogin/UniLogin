@@ -33,9 +33,11 @@ export class ULWeb3Provider implements Provider {
 
   constructor(
     private provider: Provider,
+    private relayerUrl: string,
+    private ensDomains: string[],
   ) {
     this.sdk = new UniversalLoginSDK(
-      'https://relayer-rinkeby.herokuapp.com',
+      relayerUrl,
       new providers.Web3Provider(this.provider as any),
     );
     this.walletService = new WalletService(this.sdk);
@@ -45,7 +47,7 @@ export class ULWeb3Provider implements Provider {
 
     initUi({
       sdk: this.sdk,
-      domains: ['poppularapp.test'],
+      domains: ensDomains,
       walletService: this.walletService,
       uiController: this.uiController,
     });
@@ -93,6 +95,7 @@ export class ULWeb3Provider implements Provider {
   async executeTransaction(tx: Partial<Message>): Promise<string> {
     const execution = await this.walletService.getDeployedWallet().execute({
       ...tx,
+      gasLimit: undefined,
       from: this.walletService.getDeployedWallet().contractAddress,
     });
     const mined = await execution.waitToBeMined();
