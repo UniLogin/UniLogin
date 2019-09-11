@@ -7,4 +7,5 @@ yarn lint &&
 git checkout -b bump-$1 &&
 yarn bump:version $1 --yes &&
 yarn publish:packages &&
+git checkout . &&
 git push --set-upstream origin bump-$1
