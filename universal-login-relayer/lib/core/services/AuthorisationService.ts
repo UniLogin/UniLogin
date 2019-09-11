@@ -14,7 +14,7 @@ class AuthorisationService {
     return this.authorisationStore.removeRequest(authorisationRequest.contractAddress, recoveredAddress);
   }
 
-  async removeAuthorisationRequest(authorisationRequest: RelayerRequest) {
+  async removeAuthorisationRequests(authorisationRequest: RelayerRequest) {
     await this.walletMasterContractService.ensureValidRelayerRequestSignature(authorisationRequest);
 
     return this.authorisationStore.removeRequests(authorisationRequest.contractAddress);
