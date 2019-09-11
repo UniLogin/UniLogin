@@ -14,8 +14,9 @@ export const computeGasData = (data: string) => {
   return data
     .slice(2)
     .match(/.{2}/g)!
-    .reduce((totalGasCost, byte) => {
-      const byteCost = byte === '00' ? ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
-      return totalGasCost + byteCost;
-    }, 0);
+    .reduce((totalGasCost, byte) =>  totalGasCost + gasCostFor(byte), 0);
+};
+
+const gasCostFor = (byte: string) => {
+  return byte === '00' ? ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
 };

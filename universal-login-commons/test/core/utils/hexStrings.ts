@@ -40,7 +40,7 @@ describe('UNIT: hex strings', () => {
     });
 
     it('invalid charater', () => {
-      expect(isProperHexString('0xXFFFFe7d45c34110B34Ed269AD86248884E78C7')).to.be.false;
+      expect(isProperHexString('0xINVALID_HEX')).to.be.false;
     });
 
     it('long', () => {

@@ -29,7 +29,7 @@ describe('E2E: SDK', async () => {
 
   beforeEach(async () => {
     ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
-    message = {...transferMessage, from: contractAddress, gasToken: mockToken.address};
+    message = {...transferMessage, from: contractAddress, gasToken: mockToken.address, data: '0x'};
   });
 
   afterEach(async () => {
@@ -81,13 +81,13 @@ describe('E2E: SDK', async () => {
     });
 
     it('when not enough tokens ', async () => {
-      message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: utils.parseEther('25').toString()};
+      message = {...message, gasLimit: utils.parseEther('25').toString()};
       const {waitToBeMined} = await sdk.execute(message, privateKey);
       await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough tokens');
     });
 
     it('when not enough gas', async () => {
-      message = {...transferMessage, gasToken: mockToken.address, from: contractAddress, gasLimit: '100'};
+      message = {...message, gasLimit: '100'};
       const {waitToBeMined} = await sdk.execute(message, privateKey);
       await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough gas');
     });

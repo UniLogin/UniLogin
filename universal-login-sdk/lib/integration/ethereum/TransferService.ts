@@ -35,7 +35,7 @@ export class TransferService {
         from: this.applicationWallet!.contractAddress,
         to,
         value: utils.parseEther(amount),
-        data: '0x0',
+        data: '0x',
         gasToken: ETHER_NATIVE_TOKEN.address
       };
       const {waitToBeMined} = await this.sdk.execute(message, this.applicationWallet!.privateKey);

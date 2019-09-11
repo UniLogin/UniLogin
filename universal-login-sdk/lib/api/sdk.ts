@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
+import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, createSignedMessage, MessageWithFrom, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage, computeGasData} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -124,14 +124,19 @@ class UniversalLoginSDK {
   }
 
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
+    const gasLimit = utils.bigNumberify(message.gasLimit || this.sdkConfig.paymentOptions.gasLimit);
+    const gasData = computeGasData(message.data as string);
+    const gasLimitExecution = gasLimit.sub(gasData);
+
     const unsignedMessage = {
       gasPrice: this.sdkConfig.paymentOptions.gasPrice,
       gasToken: this.sdkConfig.paymentOptions.gasToken,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
       gasData: utils.bigNumberify(0),
-      gasLimitExecution: message.gasLimit || this.sdkConfig.paymentOptions.gasLimit,
+      gasLimitExecution
     } as MessageWithFrom;
+
     const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);
   }
@@ -142,7 +147,7 @@ class UniversalLoginSDK {
       ...transactionDetails,
       to,
       from: to,
-      data
+      data: data || '0x'
     };
     return this.execute(message, privateKey);
   }

@@ -11,13 +11,13 @@ describe('UNIT: computeGasData', async () => {
   it('0xbeef', async () => {
     const data = '0xbeef';
 
-    expect(computeGasData(data)).to.equal(2 * NON_ZERO_BYTE_GAS_COST);
+    expect(computeGasData(data)).to.equal(136);
   });
 
   it('0x00ef', async () => {
     const data = '0x00ef';
 
-    expect(computeGasData(data)).to.equal(NON_ZERO_BYTE_GAS_COST + ZERO_BYTE_GAS_COST);
+    expect(computeGasData(data)).to.equal(72);
   });
 
   it('long hex', async () => {
@@ -25,7 +25,7 @@ describe('UNIT: computeGasData', async () => {
     const twentyNonZeroBytes = 'f65bc65a5043e6582b38aa2269bafd759fcdfe32';
     const data = `0x${twentyNonZeroBytes}${tenZeroBytes}`;
 
-    expect(computeGasData(data)).to.equal(20 * NON_ZERO_BYTE_GAS_COST + 10 * ZERO_BYTE_GAS_COST);
+    expect(computeGasData(data)).to.equal(1400);
   });
 
   it('invalid hex', async () => {

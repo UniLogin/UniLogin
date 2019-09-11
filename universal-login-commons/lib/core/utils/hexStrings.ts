@@ -1,7 +1,7 @@
 import {ensure} from './errors';
 
 export const isProperHexString = (hexString: string) => {
-  return hexString.startsWith('0x') && hexString.length % 2 === 0;
+  return !!hexString.match(/^0x([0-9A-Fa-f]{2})*$/);
 };
 
 export const isProperAddress = (address: string) => {
