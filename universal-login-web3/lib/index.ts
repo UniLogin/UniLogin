@@ -14,8 +14,8 @@ export class ULWeb3Provider implements Provider {
 
   constructor(
     private provider: Provider,
-    private relayerUrl: string,
-    private ensDomains: string[],
+    relayerUrl: string,
+    ensDomains: string[],
   ) {
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
