@@ -28,5 +28,5 @@ export default async function setupMessageService(knex) {
   const messageValidator = new MessageValidator(wallet, getContractWhiteList());
   const messageExecutor = new MessageExecutor(wallet, messageValidator);
   const messageHandler = new MessageHandler(wallet, authorisationStore, devicesService, hooks, messageRepository, queueStore, messageExecutor, statusService);
-  return { wallet, actionKey, provider, mockToken, authorisationStore, devicesService, messageHandler, walletContract, otherWallet };
+  return { wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet };
 }

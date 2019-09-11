@@ -53,7 +53,9 @@ class MessageHandler {
   }
 
   private async removeReqFromAuthService(contractAddress: string, key: string) {
-    return this.authorisationStore.removeRequest(contractAddress, key);
+    const {deviceInfo} = await this.authorisationStore.get(contractAddress, key);
+    await this.authorisationStore.removeRequest(contractAddress, key);
+    return this.devicesService.add(contractAddress, key, deviceInfo);
   }
 
   async getStatus(messageHash: string) {

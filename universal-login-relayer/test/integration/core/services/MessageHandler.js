@@ -11,6 +11,7 @@ describe('INT: MessageHandler', async () => {
   let messageHandler;
   let provider;
   let authorisationStore;
+  let devicesStore;
   let wallet;
   let mockToken;
   let walletContract;
@@ -19,7 +20,7 @@ describe('INT: MessageHandler', async () => {
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, mockToken, authorisationStore, walletContract, otherWallet} = await setupMessageService(knex));
+    ({wallet, provider, messageHandler, mockToken, authorisationStore, walletContract, otherWallet, devicesStore} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, gasToken: mockToken.address, nonce: await walletContract.lastNonce()};
     messageHandler.start();
   });
@@ -81,6 +82,7 @@ describe('INT: MessageHandler', async () => {
         await messageHandler.stopLater();
         const authorisations = await authorisationStore.getPendingAuthorisations(walletContract.address);
         expect(authorisations).to.deep.eq([]);
+        expect(await devicesStore.get(walletContract.address)).length(1);
       });
     });
   });
