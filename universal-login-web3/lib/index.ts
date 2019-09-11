@@ -2,6 +2,7 @@ import {Provider} from 'web3/providers';
 import {providers} from 'ethers';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {initUi} from './ui';
+import {UIController} from './services/UIController';
 
 interface JsonRPCRequest {
   jsonrpc: string;
@@ -32,6 +33,7 @@ const WALLET = {
 export class ULWeb3Provider implements Provider {
   private sdk: UniversalLoginSDK;
   private walletService: WalletService;
+  private uiController: UIController;
 
   constructor(
     private provider: Provider,
@@ -41,11 +43,13 @@ export class ULWeb3Provider implements Provider {
       new providers.Web3Provider(this.provider as any),
     );
     this.walletService = new WalletService(this.sdk);
+    this.uiController = new UIController(this.walletService);
 
     initUi({
       sdk: this.sdk,
       domains: ['poppularapp.test'],
       walletService: this.walletService,
+      uiController: this.uiController,
     });
   }
 
@@ -73,5 +77,9 @@ export class ULWeb3Provider implements Provider {
       default:
         return this.provider.send(payload, callback);
     }
+  }
+
+  create() {
+    this.uiController.requireWallet();
   }
 }
