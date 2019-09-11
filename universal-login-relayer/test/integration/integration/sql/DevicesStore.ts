@@ -17,23 +17,23 @@ describe('INT: DevicesStore', () => {
     devicesStore = new DevicesStore();
   });
 
-  it('initially empty', () => {
-    const devices = devicesStore.get(TEST_CONTRACT_ADDRESS);
+  it('initially empty', async () => {
+    const devices = await devicesStore.get(TEST_CONTRACT_ADDRESS);
     expect(devices).to.be.deep.eq([]);
   });
 
-  it('add to store 1 element', () => {
-    devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
-    const devices = devicesStore.get(TEST_CONTRACT_ADDRESS);
+  it('add to store 1 element', async () => {
+    await devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
+    const devices = await devicesStore.get(TEST_CONTRACT_ADDRESS);
     expect(devices).to.be.deep.eq([TEST_DEVICE_INFO]);
-    const devices2 = devicesStore.get(TEST_ACCOUNT_ADDRESS);
+    const devices2 = await devicesStore.get(TEST_ACCOUNT_ADDRESS);
     expect(devices2).to.be.deep.eq([]);
   });
 
-  it('add to store 2 elements', () => {
-    devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
-    devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, device2);
-    const devices = devicesStore.get(TEST_CONTRACT_ADDRESS);
+  it('add to store 2 elements', async () => {
+    await devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
+    await devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, device2);
+    const devices = await devicesStore.get(TEST_CONTRACT_ADDRESS);
     expect(devices).to.be.deep.eq([TEST_DEVICE_INFO, device2]);
   });
 });

@@ -9,11 +9,11 @@ export interface DeviceEntry {
 export class DevicesStore {
   private devices: DeviceEntry[] = [];
 
-  add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
+  async add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
     this.devices.push({contractAddress, publicKey, deviceInfo});
   }
 
-  get(contractAddress: string) {
+  async get(contractAddress: string) {
     return this.devices
       .filter((deviceEntry: DeviceEntry) => deviceEntry.contractAddress === contractAddress)
       .map((deviceEntry: DeviceEntry) => deviceEntry.deviceInfo);
