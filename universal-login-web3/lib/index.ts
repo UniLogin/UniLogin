@@ -91,7 +91,10 @@ export class ULWeb3Provider implements Provider {
   }
 
   async executeTransaction(tx: Partial<Message>): Promise<string> {
-    const execution = await this.walletService.getDeployedWallet().execute(tx);
+    const execution = await this.walletService.getDeployedWallet().execute({
+      ...tx,
+      from: this.walletService.getDeployedWallet().contractAddress,
+    });
     const mined = await execution.waitToBeMined();
     if (!mined.transactionHash) {
       throw new Error('Expected tx hash to not be null');

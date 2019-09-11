@@ -12,7 +12,7 @@ web3.eth.getAccounts()
 function App() {
   function sendTx() {
     web3.eth.sendTransaction({
-      from: '0x2bc65e3Bb5D6bAbd6342489aacFecCaB64167835',
+      from: '0x0000000000000000000000000000000000000000',
       to: '0x7ffC57839B00206D1ad20c69A1981b489f772031',
       value: '500000000000000',
     })
