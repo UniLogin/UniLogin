@@ -9,7 +9,7 @@ import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFA
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
-import UpgratedWallet from '../../../build/UpgratedWallet.json';
+import UpgradedWallet from '../../../build/UpgradedWallet.json';
 import {encodeDataForExecuteSigned} from '../../../lib/index.js';
 
 chai.use(chaiAsPromised);
@@ -340,14 +340,14 @@ describe('WalletContract', async () => {
 
   describe('upgrade', () => {
     it('updates master', async () => {
-      const newWallet = await deployContract(wallet, UpgratedWallet);
+      const newWallet = await deployContract(wallet, UpgradedWallet);
       expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
       const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
       data = encodeDataForExecuteSigned(signedMessage);
       expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
       await wallet.sendTransaction({to: proxyAsWalletContract.address, data});
       expect(await walletContractProxy.implementation()).to.eq(newWallet.address);
-      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgratedWallet.abi, wallet);
+      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
       expect(await proxyAsUpdatedWallet.getFive()).to.eq(5);
       expect(await proxyAsUpdatedWallet.lastNonce()).to.eq(1);
     });
