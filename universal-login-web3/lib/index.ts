@@ -2,7 +2,6 @@ import {Provider} from 'web3/providers';
 import {providers} from 'ethers';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {initUi} from './ui';
-import {State, Property} from 'reactive-properties';
 import {UIController} from './services/UIController';
 
 interface JsonRPCRequest {
