@@ -19,3 +19,12 @@ export const TEST_SIGNATURE_KEY_PAIRS = [{
 export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = '1';
+
+export const TEST_DEVICE_INFO = {
+  os: 'Mac',
+  name: 'laptop',
+  city: 'Warsaw, Poland',
+  ipAddress: '84.10.249.134',
+  time: '18 minutes ago',
+  browser: 'Safari'
+};

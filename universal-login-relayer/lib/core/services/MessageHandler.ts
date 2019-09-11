@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage, DecodedMessageWithFrom} from '@universal-login/commons';
+import {SignedMessage, EMPTY_DEVICE_INFO} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import QueueService from './messages/QueueService';
@@ -10,6 +10,7 @@ import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import IMessageRepository from './messages/IMessagesRepository';
 import IQueueStore from './messages/IQueueStore';
 import {MessageStatusService} from './messages/MessageStatusService';
+import {DevicesService} from './DevicesService';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
@@ -18,13 +19,14 @@ class MessageHandler {
   constructor(
     wallet: Wallet,
     private authorisationStore: AuthorisationStore,
+    private devicesService: DevicesService,
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
     queueStore: IQueueStore,
     messageExecutor: MessageExecutor,
     statusService: MessageStatusService
   ) {
-    this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionSent.bind(this));
+    this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionMined.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
   }
 
@@ -32,12 +34,13 @@ class MessageHandler {
     this.queueService.start();
   }
 
-  async onTransactionSent(sentTransaction: providers.TransactionResponse) {
+  async onTransactionMined(sentTransaction: providers.TransactionResponse) {
     const {data, to} = sentTransaction;
     const message = decodeDataForExecuteSigned(data);
     if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
-        await this.removeReqFromAuthService({...message, from: to});
+        const key = getKeyFromData(message.data as string);
+        await this.updateDevicesAndAuthorisations(to, key);
         this.hooks.emit('added', {transaction: sentTransaction, contractAddress: to});
       } else if (isAddKeysCall(message.data as string)) {
         this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: to});
@@ -49,9 +52,11 @@ class MessageHandler {
     return this.pendingMessages.add(message);
   }
 
-  private async removeReqFromAuthService(message: DecodedMessageWithFrom) {
-    const key = getKeyFromData(message.data as string);
-    return this.authorisationStore.removeRequest(message.from, key);
+  private async updateDevicesAndAuthorisations(contractAddress: string, key: string) {
+    const authorisationEntry = await this.authorisationStore.get(contractAddress, key);
+    const deviceInfo = authorisationEntry ? authorisationEntry.deviceInfo : EMPTY_DEVICE_INFO;
+    await this.authorisationStore.removeRequest(contractAddress, key);
+    await this.devicesService.add(contractAddress, key, deviceInfo);
   }
 
   async getStatus(messageHash: string) {

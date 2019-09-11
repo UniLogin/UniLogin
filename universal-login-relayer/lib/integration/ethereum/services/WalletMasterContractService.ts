@@ -8,16 +8,16 @@ const MAGICVALUE = '0x20c13b0b';
 class WalletMasterContractService {
   constructor(private provider: providers.Provider) {}
 
-  async ensureValidSignature(walletContractAddress: string, signature: string, payloadDigest: string, recoveredAddress: string) {
+  private async ensureValidSignature(walletContractAddress: string, signature: string, payloadDigest: string, recoveredAddress: string) {
     const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, this.provider);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
     ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
 
-  async ensureValidAuthorisationRequestSignature(authorisationRequest: RelayerRequest) {
-    const recoveredAddress = recoverFromRelayerRequest(authorisationRequest);
-    const {contractAddress, signature} = authorisationRequest;
-    const payloadDigest = hashRelayerRequest(authorisationRequest);
+  async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
+    const recoveredAddress = recoverFromRelayerRequest(relayerRequest);
+    const {contractAddress, signature} = relayerRequest;
+    const payloadDigest = hashRelayerRequest(relayerRequest);
 
     await this.ensureValidSignature(contractAddress, signature!, payloadDigest, recoveredAddress);
   }

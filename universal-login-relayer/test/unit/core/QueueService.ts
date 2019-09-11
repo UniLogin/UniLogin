@@ -16,7 +16,7 @@ describe('UNIT: Queue Service', async () => {
   let queueMemoryStore: QueueMemoryStore;
   let messageRepository: IMessageRepository;
   const wait = sinon.spy();
-  const onTransactionSent = sinon.spy();
+  const onTransactionMined = sinon.spy();
   const executor: any = {
     execute: sinon.fake.returns({
       hash: TEST_TRANSACTION_HASH,
@@ -32,7 +32,7 @@ describe('UNIT: Queue Service', async () => {
   beforeEach(async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
-    queueService = new QueueService(executor, queueMemoryStore, messageRepository, onTransactionSent, 1);
+    queueService = new QueueService(executor, queueMemoryStore, messageRepository, onTransactionMined, 1);
     signedMessage = getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
@@ -47,9 +47,9 @@ describe('UNIT: Queue Service', async () => {
     await queueService.add(signedMessage);
     await waitExpect(() => expect(executor.execute).to.be.calledOnce);
     expect(wait).to.be.calledAfter(executor.execute);
-    expect(onTransactionSent).to.be.calledImmediatelyAfter(wait);
+    expect(onTransactionMined).to.be.calledImmediatelyAfter(wait);
     expect(wait).to.be.calledOnce;
-    expect(onTransactionSent).to.be.calledOnce;
+    expect(onTransactionMined).to.be.calledOnce;
   });
 
   it('should execute pending signedMessage after start', async () => {
@@ -60,7 +60,7 @@ describe('UNIT: Queue Service', async () => {
   });
 
   it('should throw error when hash is null', async () => {
-    queueService = new QueueService(executorReturnsNull, queueMemoryStore, messageRepository, onTransactionSent, 1);
+    queueService = new QueueService(executorReturnsNull, queueMemoryStore, messageRepository, onTransactionMined, 1);
     queueService.start();
     const markAsErrorSpy = sinon.spy(messageRepository.markAsError);
     messageRepository.markAsError = markAsErrorSpy;
@@ -70,7 +70,7 @@ describe('UNIT: Queue Service', async () => {
     await waitExpect(() => expect(messageRepository.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
     expect(queueMemoryStore.remove).to.be.calledOnce;
     expect(queueMemoryStore.remove).to.be.calledAfter(markAsErrorSpy);
-    expect(onTransactionSent).to.be.not.called;
+    expect(onTransactionMined).to.be.not.called;
   });
 
   afterEach(async () => {
