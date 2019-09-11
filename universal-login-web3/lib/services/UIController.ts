@@ -5,7 +5,7 @@ export class UIController {
   private walletNeeded = new State(false);
   public showOnboarding: Property<boolean>;
 
-  constructor(private walletService: WalletService) {
+  constructor(walletService: WalletService) {
     this.showOnboarding = combine(
       [this.walletNeeded, walletService.stateProperty],
       (needed, state) => needed && state.kind !== 'Deployed',
