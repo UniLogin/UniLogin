@@ -42,6 +42,20 @@ describe('INT: Authorisation Store', async () => {
     expect(authorisationsAfterDelete).to.deep.eq([]);
   });
 
+  it('Authorisation add-remove roundtrip', async () => {
+    const request = {walletContractAddress: contractAddress, key: keyPair.publicKey, deviceInfo};
+    await authorisationStore.addRequest(request);
+    const authorisations = await authorisationStore.getPendingAuthorisations(contractAddress);
+    expect(authorisations).length(1);
+    const removedItem = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
+    expect(removedItem).to.deep.eq(request);
+  });
+
+  it('Remove non-existing item', async () => {
+    const removedItem = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
+    expect(removedItem).to.be.undefined;
+  });
+
   it('Many authorisation requests roundtrip', async () => {
     const requests = [1, 2, 3].map((_) => ({walletContractAddress: contractAddress, key: createKeyPair().publicKey, deviceInfo}));
     const ids = [];
