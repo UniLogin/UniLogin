@@ -133,7 +133,7 @@ class UniversalLoginSDK {
       gasToken: this.sdkConfig.paymentOptions.gasToken,
       ...message,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
-      gasData: utils.bigNumberify(0),
+      gasData,
       gasLimitExecution
     } as MessageWithFrom;
 

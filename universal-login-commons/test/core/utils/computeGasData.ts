@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {computeGasData, NON_ZERO_BYTE_GAS_COST, ZERO_BYTE_GAS_COST} from '../../../lib/core/utils/messages/computeGasData';
+import {computeGasData} from '../../../lib/core/utils/messages/computeGasData';
 
 describe('UNIT: computeGasData', async () => {
   it('0x', async () => {
