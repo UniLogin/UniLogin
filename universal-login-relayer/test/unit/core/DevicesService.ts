@@ -4,7 +4,6 @@ import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, signRelayerRequest, createKeyPair, recoverFromRelayerRequest} from '@universal-login/commons';
 import {DevicesService} from '../../../lib/core/services/DevicesService';
-import {DevicesStore} from '../../../lib/integration/sql/services/DevicesStore';
 import {UnauthorisedAddress} from '../../../lib/core/utils/errors';
 
 chai.use(chaiAsPromised);
@@ -33,7 +32,7 @@ describe('UNIT: DevicesService', () => {
   });
 
   it('add device', async () => {
-    await devicesService.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);;
+    await devicesService.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
     expect(devicesStore.add).to.be.calledOnce;
     expect(devicesStore.get).to.not.be.called;
   });

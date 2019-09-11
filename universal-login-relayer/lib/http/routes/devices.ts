@@ -2,8 +2,9 @@ import {Router} from 'express';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {DeviceInfo} from '@universal-login/commons';
+import {DevicesService} from '../../core/services/DevicesService';
 
-const getDevices = async () => {
+const getDevices = (devicesService: DevicesService) => async () => {
   const devicesList: DeviceInfo[] = [
     {
       os: 'Mac',
@@ -33,7 +34,7 @@ const getDevices = async () => {
   return responseOf(devicesList, 201);
 };
 
-export default () => {
+export default (devicesService: DevicesService) => {
   const router = Router();
 
   router.get('/:contractAddress', asyncHandler(
@@ -43,7 +44,7 @@ export default () => {
       signature: asString
     })
   }),
-  getDevices
+  getDevices(devicesService)
   ));
   return router;
 };
