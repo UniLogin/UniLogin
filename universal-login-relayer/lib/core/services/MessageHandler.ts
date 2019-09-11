@@ -40,7 +40,7 @@ class MessageHandler {
     if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
         const key = getKeyFromData(message.data as string);
-        await this.removeReqFromAuthService(to, key);
+        await this.updateDevicesAndAuthorisations(to, key);
         this.hooks.emit('added', {transaction: sentTransaction, contractAddress: to});
       } else if (isAddKeysCall(message.data as string)) {
         this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: to});
@@ -52,7 +52,7 @@ class MessageHandler {
     return this.pendingMessages.add(message);
   }
 
-  private async removeReqFromAuthService(contractAddress: string, key: string) {
+  private async updateDevicesAndAuthorisations(contractAddress: string, key: string) {
     const {deviceInfo} = await this.authorisationStore.get(contractAddress, key);
     await this.authorisationStore.removeRequest(contractAddress, key);
     return this.devicesService.add(contractAddress, key, deviceInfo);
