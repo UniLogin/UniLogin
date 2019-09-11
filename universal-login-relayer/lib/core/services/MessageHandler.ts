@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, EMPTY_DEVICE_INFO} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import QueueService from './messages/QueueService';
@@ -53,9 +53,10 @@ class MessageHandler {
   }
 
   private async updateDevicesAndAuthorisations(contractAddress: string, key: string) {
-    const {deviceInfo} = await this.authorisationStore.get(contractAddress, key);
+    const authorisationEntry = await this.authorisationStore.get(contractAddress, key);
+    const deviceInfo = authorisationEntry ? authorisationEntry.deviceInfo : EMPTY_DEVICE_INFO;
     await this.authorisationStore.removeRequest(contractAddress, key);
-    return this.devicesService.add(contractAddress, key, deviceInfo);
+    await this.devicesService.add(contractAddress, key, deviceInfo);
   }
 
   async getStatus(messageHash: string) {
