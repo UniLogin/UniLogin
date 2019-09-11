@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
-import {SignedMessage, DecodedMessageWithFrom} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {isAddKeyCall, getKeyFromData, isAddKeysCall} from '../utils/utils';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import QueueService from './messages/QueueService';
@@ -37,7 +37,8 @@ class MessageHandler {
     const message = decodeDataForExecuteSigned(data);
     if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
-        await this.removeReqFromAuthService({...message, from: to});
+        const key = getKeyFromData(message.data as string);
+        await this.removeReqFromAuthService(to, key);
         this.hooks.emit('added', {transaction: sentTransaction, contractAddress: to});
       } else if (isAddKeysCall(message.data as string)) {
         this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: to});
@@ -49,9 +50,8 @@ class MessageHandler {
     return this.pendingMessages.add(message);
   }
 
-  private async removeReqFromAuthService(message: DecodedMessageWithFrom) {
-    const key = getKeyFromData(message.data as string);
-    return this.authorisationStore.removeRequest(message.from, key);
+  private async removeReqFromAuthService(contractAddress: string, key: string) {
+    return this.authorisationStore.removeRequest(contractAddress, key);
   }
 
   async getStatus(messageHash: string) {
