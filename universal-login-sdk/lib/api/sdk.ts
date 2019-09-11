@@ -123,15 +123,21 @@ class UniversalLoginSDK {
     );
   }
 
+  removeGasLimit(message: Partial<Message>) {
+    const {gasLimit, ...rest} = message;
+    return rest;
+  }
+
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
     const gasLimit = utils.bigNumberify(message.gasLimit || this.sdkConfig.paymentOptions.gasLimit);
     const gasData = computeGasData(message.data as string);
     const gasLimitExecution = gasLimit.sub(gasData);
 
+    const {gasLimit: dupa, ...messageWithoutGasLimit} = message;
     const unsignedMessage = {
       gasPrice: this.sdkConfig.paymentOptions.gasPrice,
       gasToken: this.sdkConfig.paymentOptions.gasToken,
-      ...message,
+      ...messageWithoutGasLimit,
       nonce: message.nonce || parseInt(await this.getNonce(message.from!), 10),
       gasData,
       gasLimitExecution

@@ -3,9 +3,10 @@ import sinon from 'sinon';
 import {Provider} from 'ethers/providers';
 import {createMockProvider} from 'ethereum-waffle';
 import {utils} from 'ethers';
-import {Message, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, SignedMessage, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {Message, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, SignedMessage, TEST_PRIVATE_KEY, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {transferMessage} from '../../fixtures/basicSDK';
+import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
 
 describe('UNIT: sdk.execute transform message', () => {
   let sdk: UniversalLoginSDK;
@@ -21,21 +22,28 @@ describe('UNIT: sdk.execute transform message', () => {
 
   it('correct transform', async () => {
     const incomingMessage: Partial<Message> = {
-      ...transferMessage,
       from: TEST_CONTRACT_ADDRESS,
       to: TEST_CONTRACT_ADDRESS,
-      gasToken: TEST_ACCOUNT_ADDRESS,
+      value: utils.parseEther('1'),
+      gasPrice: SdkConfigDefault.paymentOptions.gasPrice,
+      gasToken: SdkConfigDefault.paymentOptions.gasToken,
       data: '0xbeef',
       gasLimit: utils.bigNumberify(100000)
     };
 
     const signedMessage: Partial<SignedMessage> = {
-      ...incomingMessage,
+      from: TEST_CONTRACT_ADDRESS,
+      to: TEST_CONTRACT_ADDRESS,
+      value: utils.parseEther('1'),
+      gasPrice: SdkConfigDefault.paymentOptions.gasPrice,
+      gasToken: SdkConfigDefault.paymentOptions.gasToken,
+      data: '0xbeef',
       gasData: 136,
       gasLimitExecution: utils.bigNumberify(100000 - 136),
       nonce: 0,
-      signature: '0x2bca7b700a408c95bd10c3f8f833ccb7c6789f377d79d9470ce023723d0bd2e55b75ae368ee25e01dadf5cb98f229a9b06bc1cc86dbbc44f7756b659fbcaa0471b'
+      signature: '0x1d25bc145fa3d2b6b98e9da7f1c0752f37f0ef9f388ceedca12f21cb8ff3c0106516a6b93ab996e51acbec7f9a6a0a0c59dc27525329e08b8e5eae0214ea11061c'
     };
+
     await sdk.execute(incomingMessage, TEST_PRIVATE_KEY);
     expect(callback.args[0][0]).to.deep.equal(signedMessage);
   });
