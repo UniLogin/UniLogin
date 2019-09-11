@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {isProperAddress, reverseHexString} from '../../../lib/core/utils/hexStrings';
+import {isProperAddress, reverseHexString, isProperHexString} from '../../../lib/core/utils/hexStrings';
 import {TEST_ACCOUNT_ADDRESS} from '../../../lib';
 
 
@@ -23,6 +23,36 @@ describe('UNIT: hex strings', () => {
 
     it('too long', () => {
       expect(isProperAddress('0xFFFFFe7d45c34110B34Ed269AD86248884E78C74534545')).to.be.false;
+    });
+  });
+
+  describe('isProperHexString', () => {
+    it('proper address', () => {
+      expect(isProperHexString('0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7')).to.be.true;
+    });
+
+    it('length % 2 === 1', () => {
+      expect(isProperHexString('0xFFF')).to.be.false;
+    });
+
+    it('no prefix', () => {
+      expect(isProperHexString('00FFFFFFe7d45c34110B34Ed269AD86248884E78C7')).to.be.false;
+    });
+
+    it('invalid charater', () => {
+      expect(isProperHexString('0xINVALID_HEX')).to.be.false;
+    });
+
+    it('long', () => {
+      expect(isProperHexString('0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7BEEF')).to.be.true;
+    });
+
+    it('0x', () => {
+      expect(isProperHexString('0x')).to.be.true;
+    });
+
+    it('empty', () => {
+      expect(isProperHexString('')).to.be.false;
     });
   });
 

@@ -44,7 +44,7 @@ describe('UNIT: TransferService', () => {
         from: 'CONTRACT_ADDRESS',
         to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('123'),
-        data: '0x0',
+        data: '0x',
         gasToken: ETHER_NATIVE_TOKEN.address
       },
       'PRIVATE_KEY',
