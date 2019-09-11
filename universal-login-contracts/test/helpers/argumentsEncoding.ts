@@ -1,6 +1,7 @@
-import {UnsignedMessage} from '@universal-login/commons';
+import {UnsignedMessage, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {Interface, BigNumberish, Arrayish, arrayify, solidityKeccak256} from 'ethers/utils';
-import {Wallet, utils} from 'ethers';
+import {Wallet, utils, Contract} from 'ethers';
+import WalletProxy from '../../build/WalletProxy.json';
 
 export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: string, domain = 'mylogin.eth') => {
   const ensName = `${label}.${domain}`;
@@ -32,3 +33,19 @@ export const getExecutionArgs = (msg: UnsignedMessage) =>
 
 export const encodeFunction = (ContractJSON: any, functionName: string, args: string[] = []) =>
   new Interface(ContractJSON.interface).functions[`${functionName}`].encode(args);
+
+export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWalletAddress: string) => {
+  const updateData = new utils.Interface(WalletProxy.interface).functions.upgradeTo.encode([newWalletAddress]);
+  return {
+    to: proxyAsWalletContract.address,
+    from: proxyAsWalletContract.address,
+    data: updateData,
+    value: 0,
+    nonce: await proxyAsWalletContract.lastNonce(),
+    gasData: 0,
+    gasLimit: DEFAULT_GAS_LIMIT.toString(),
+    gasPrice: '1',
+    gasLimitExecution: DEFAULT_GAS_LIMIT.toString(),
+    gasToken: '0x0000000000000000000000000000000000000000'
+  };
+};
