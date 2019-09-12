@@ -1,11 +1,6 @@
 import {DeviceInfo} from '@universal-login/commons';
 import Knex = require('knex');
-
-export interface DeviceEntry {
-  contractAddress: string;
-  publicKey: string;
-  deviceInfo: DeviceInfo;
-}
+import {DeviceEntry} from '../../../core/models/DeviceEntry';
 
 export class DevicesStore {
   private devices: DeviceEntry[] = [];

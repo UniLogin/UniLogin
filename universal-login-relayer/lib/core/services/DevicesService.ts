@@ -1,6 +1,7 @@
 import {DeviceInfo, RelayerRequest} from '@universal-login/commons';
-import {DevicesStore, DeviceEntry} from '../../integration/sql/services/DevicesStore';
+import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
+import {DeviceEntry} from '../models/DeviceEntry';
 
 export class DevicesService {
   constructor(private devicesStore: DevicesStore, private walletMasterContractService: WalletMasterContractService) {
