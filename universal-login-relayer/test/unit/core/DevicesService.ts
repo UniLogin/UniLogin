@@ -18,7 +18,7 @@ describe('UNIT: DevicesService', () => {
   };
   const devicesStore: any = {
     add: sinon.stub().resolves(),
-    get: sinon.stub().resolves([TEST_DEVICE_INFO])
+    get: sinon.stub().resolves([{deviceInfo: TEST_DEVICE_INFO}])
   };
   let devicesService: DevicesService;
 

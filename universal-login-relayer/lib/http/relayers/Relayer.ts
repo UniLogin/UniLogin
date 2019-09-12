@@ -90,7 +90,7 @@ class Relayer {
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationStore = new AuthorisationStore(this.database);
-    this.devicesStore = new DevicesStore();
+    this.devicesStore = new DevicesStore(this.database);
     this.walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
