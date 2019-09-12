@@ -35,7 +35,7 @@ contract Executor {
         uint nonce,
         uint gasPrice,
         address gasToken,
-        uint gasLimit,
+        uint gasLimitExecution,
         uint gasData,
         bytes memory signatures) public view returns (bool)
     {
@@ -47,7 +47,7 @@ contract Executor {
             nonce,
             gasPrice,
             gasToken,
-            gasLimit,
+            gasLimitExecution,
             gasData).toEthSignedMessageHash();
         return areSignaturesValid(signatures, hash);
     }
@@ -60,7 +60,7 @@ contract Executor {
         uint nonce,
         uint gasPrice,
         address gasToken,
-        uint gasLimit,
+        uint gasLimitExecution,
         uint gasData) public pure returns (bytes32)
     {
         return keccak256(
@@ -72,7 +72,7 @@ contract Executor {
                 nonce,
                 gasPrice,
                 gasToken,
-                gasLimit,
+                gasLimitExecution,
                 gasData
         ));
     }
@@ -85,7 +85,7 @@ contract Executor {
         uint nonce,
         uint gasPrice,
         address gasToken,
-        uint gasLimit,
+        uint gasLimitExecution,
         uint gasData,
         bytes memory signatures) public pure returns (address)
     {
@@ -97,7 +97,7 @@ contract Executor {
             nonce,
             gasPrice,
             gasToken,
-            gasLimit,
+            gasLimitExecution,
             gasData).toEthSignedMessageHash().recover(signatures);
     }
 
@@ -107,20 +107,20 @@ contract Executor {
         bytes memory data,
         uint gasPrice,
         address gasToken,
-        uint gasLimit,
+        uint gasLimitExecution,
         uint gasData,
         bytes memory signatures) public returns (bytes32)
     {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimit, gasData, signatures), "Invalid signature or nonce");
+        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData, signatures), "Invalid signature or nonce");
         lastNonce++;
         uint256 startingGas = gasleft();
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce.sub(1), gasPrice, gasToken, gasLimit, gasData);
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce.sub(1), gasPrice, gasToken, gasLimitExecution, gasData);
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
         uint256 gasUsed = startingGas.sub(gasleft());
         refund(gasUsed, gasPrice, gasToken, msg.sender);

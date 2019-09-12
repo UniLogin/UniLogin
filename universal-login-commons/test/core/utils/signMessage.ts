@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {createSignedMessage, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, CollectedSignatureKeyPair, TEST_SIGNATURE_KEY_PAIRS, getMessageWithSignatures} from '../../../lib';
+import {createSignedMessage, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, CollectedSignatureKeyPair, TEST_SIGNATURE_KEY_PAIRS, getMessageWithSignatures, EMPTY_DATA} from '../../../lib';
 
 const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
-  data: utils.formatBytes32String('0'),
+  data: EMPTY_DATA,
   nonce: '0',
   gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT,
@@ -16,7 +16,7 @@ const expectedMessage = {
   from: '0x',
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
-  data: utils.formatBytes32String('0'),
+  data: EMPTY_DATA,
   nonce: '0',
   gasPrice: transferMessage.gasPrice,
   gasLimitExecution: transferMessage.gasLimitExecution,

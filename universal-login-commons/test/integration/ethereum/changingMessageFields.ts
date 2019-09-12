@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields} from '../../../lib';
+import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields, EMPTY_DATA} from '../../../lib';
 
 describe('UNIT: Parsing Transaction', () => {
   const message: MessageWithFrom = {
@@ -10,7 +10,7 @@ describe('UNIT: Parsing Transaction', () => {
     gasLimitExecution: utils.bigNumberify(3500000),
     gasPrice: utils.bigNumberify(9000000000),
     gasData: utils.bigNumberify(0),
-    data: utils.formatBytes32String('0'),
+    data: EMPTY_DATA,
     nonce: '0',
     gasToken: '0x0000000000000000000000000000000000000000'
   };

@@ -3,19 +3,20 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './helpers/argumentsEncoding';
 import {utils, Wallet} from 'ethers';
-import DEFAULT_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
+import {TEST_MESSAGE_OPTIONS} from '../lib/defaultPaymentOptions';
 import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, computeGasData} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const {gasToken, gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
+const {gasToken, gasPrice, gasLimitExecution} = TEST_MESSAGE_OPTIONS;
 
 describe('UNIT: argumentsEncoding', async () => {
   const wallet1 = Wallet.createRandom();
   const wallet2 = Wallet.createRandom();
   const value = utils.parseEther('0.1');
   const data = utils.hexlify(0);
+  const gasData = computeGasData(data);
   const nonce = 0;
 
   describe('signature utils', () => {
@@ -23,15 +24,15 @@ describe('UNIT: argumentsEncoding', async () => {
     let signature2: string;
 
     before(async () => {
-      signature1 = await messageSignature(wallet1, wallet1.address, wallet1.address, value, data, nonce, gasToken, gasPrice, gasLimit, computeGasData(data));
-      signature2 = await messageSignature(wallet1, wallet1.address, wallet2.address, value, data, nonce, gasToken, gasPrice, gasLimit, computeGasData(data));
+      signature1 = await messageSignature(wallet1, wallet1.address, wallet1.address, value, data, nonce, gasToken, gasPrice, gasLimitExecution, gasData);
+      signature2 = await messageSignature(wallet1, wallet1.address, wallet2.address, value, data, nonce, gasToken, gasPrice, gasLimitExecution, gasData);
     });
 
     it('Should return correct message signature', async () => {
       const from = wallet1.address;
       const message = utils.arrayify(utils.solidityKeccak256(
         ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint', 'uint'],
-        [wallet1.address, from, value, data, nonce, gasToken, gasPrice, gasLimit, computeGasData(data)]));
+        [wallet1.address, from, value, data, nonce, gasToken, gasPrice, gasLimitExecution, gasData]));
       expect(utils.verifyMessage(message, signature1)).to.eq(wallet1.address);
     });
 

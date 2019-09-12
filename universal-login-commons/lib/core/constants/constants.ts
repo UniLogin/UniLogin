@@ -1,3 +1,5 @@
+import {utils} from 'ethers';
+
 export const ETHER_NATIVE_TOKEN = {
   address: '0x0000000000000000000000000000000000000000',
   symbol: 'ETH',
@@ -7,3 +9,5 @@ export const ETHER_NATIVE_TOKEN = {
 export const DEFAULT_GAS_PRICE = 10000000000;
 
 export const DEFAULT_GAS_LIMIT = 1000000;
+
+export const EMPTY_DATA = utils.formatBytes32String('0');

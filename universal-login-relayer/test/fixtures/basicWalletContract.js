@@ -1,11 +1,12 @@
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, computeGasData} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, computeGasData, EMPTY_DATA} from '@universal-login/commons';
+import {deployFactory} from '@universal-login/contracts';
+import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
 import buildEnsService from '../helpers/buildEnsService';
-import {deployFactory} from '@universal-login/contracts';
 
 const {gasPrice, gasLimit} = defaultPaymentOptions;
 
@@ -18,19 +19,18 @@ export default async function basicWalletContract(provider, wallets) {
   return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
 }
 
-const transferMessageDataField = utils.formatBytes32String('0');
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
-  data: transferMessageDataField,
+  data: EMPTY_DATA,
   nonce: '0',
   gasPrice,
   gasLimitExecution: gasLimit,
-  gasData: computeGasData(transferMessageDataField),
+  gasData: 0,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
-const addKeyMessageDataField = new utils.Interface(WalletContract.interface).functions.addKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
+const addKeyMessageDataField = encodeFunction(WalletContract, 'addKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
 export const addKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
@@ -42,7 +42,7 @@ export const addKeyMessage = {
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
-const removeKeyMessageDataField = new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
+const removeKeyMessageDataField = encodeFunction(WalletContract, 'removeKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
 export const removeKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
