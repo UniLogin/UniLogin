@@ -18,7 +18,8 @@ describe('UNIT: DevicesService', () => {
   };
   const devicesStore: any = {
     add: sinon.stub().resolves(),
-    get: sinon.stub().resolves([{deviceInfo: TEST_DEVICE_INFO}])
+    get: sinon.stub().resolves([{deviceInfo: TEST_DEVICE_INFO, contractAddress: TEST_CONTRACT_ADDRESS, pubilcKey: TEST_ACCOUNT_ADDRESS}]),
+    remove: sinon.stub().resolves(1)
   };
   let devicesService: DevicesService;
 
@@ -38,9 +39,8 @@ describe('UNIT: DevicesService', () => {
   });
 
   it('get devices', async () => {
-    const devices = await devicesService.getDevices(relayerRequest);
-    expect(devices).to.be.deep.eq([TEST_DEVICE_INFO]);
-    expect(devicesStore.get).to.be.calledOnce;
+    await devicesService.getDevices(relayerRequest);
+    expect(devicesStore.get).to.be.calledOnceWithExactly(relayerRequest.contractAddress);
     expect(devicesStore.add).to.not.be.called;
   });
 
@@ -50,8 +50,17 @@ describe('UNIT: DevicesService', () => {
     expect(devicesStore.add).to.not.be.called;
   });
 
+  it('add or update device', async () => {
+    await devicesService.addOrUpdate(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
+    expect(devicesStore.remove).to.be.calledOnce;
+    expect(devicesStore.remove).to.be.calledWithExactly(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS);
+    expect(devicesStore.add).to.be.calledOnce;
+    expect(devicesStore.add).to.be.calledWithExactly(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
+  });
+
   afterEach(() => {
     devicesStore.get.resetHistory();
     devicesStore.add.resetHistory();
+    devicesStore.remove.resetHistory();
   });
 });

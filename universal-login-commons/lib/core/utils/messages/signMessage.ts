@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../constants/constants';
+import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, EMPTY_DATA} from '../../constants/constants';
 import {MessageWithFrom, UnsignedMessage, CollectedSignatureKeyPair, SignedMessage} from '../../models/message';
 import {calculateMessageSignature, concatenateSignatures} from './calculateMessageSignature';
 import { sortSignatureKeyPairsByKey } from '../signatures';
@@ -8,7 +8,7 @@ import { sortSignatureKeyPairsByKey } from '../signatures';
 const emptyMessage = {
   to: '',
   value: utils.parseEther('0.0'),
-  data: utils.formatBytes32String('0'),
+  data: EMPTY_DATA,
   nonce: 0,
   gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
   gasLimitExecution: utils.bigNumberify(DEFAULT_GAS_LIMIT),

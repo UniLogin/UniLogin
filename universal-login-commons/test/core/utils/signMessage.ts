@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {createSignedMessage, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, CollectedSignatureKeyPair, TEST_SIGNATURE_KEY_PAIRS, getMessageWithSignatures} from '../../../lib';
+import {createSignedMessage, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, CollectedSignatureKeyPair, TEST_SIGNATURE_KEY_PAIRS, getMessageWithSignatures, EMPTY_DATA} from '../../../lib';
 
 const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
-  data: utils.formatBytes32String('0'),
+  data: EMPTY_DATA,
   nonce: '0',
   gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT,
@@ -16,13 +16,13 @@ const expectedMessage = {
   from: '0x',
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
-  data: utils.formatBytes32String('0'),
+  data: EMPTY_DATA,
   nonce: '0',
   gasPrice: transferMessage.gasPrice,
   gasLimitExecution: transferMessage.gasLimitExecution,
   gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
-  signature: '0x572032b2343daae81fdde643f998d8a7b8ca3daf6729270b61b92b6416ae3e1d1e139c6730f61855fb05a2f38adeadb85b3d720faa9580004bd134305c7fbb9c1c'
+  signature: '0x331f30dc0829b182833da3ab8ebb4af38202517ac57b68609a186d80d1613e456157d39aaa9479bdb18e6a60310be5aa879730f051e4c7781d6d3e62dd0894261b'
 };
 
 describe('UNIT: signMessage', async () => {

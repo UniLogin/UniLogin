@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import {Router, Request} from 'express';
 import WalletService from '../../integration/ethereum/WalletService';
 import MessageHandler from '../../core/services/MessageHandler';
 import {SignedMessage, DeployArgs} from '@universal-login/commons';
@@ -6,6 +6,7 @@ import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 import {asArrayish} from '../utils/sanitizers';
+import {getDeviceInfo} from '../utils/getDeviceInfo';
 
 
 const execution = (messageHandler : MessageHandler) =>
@@ -21,9 +22,10 @@ const getStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploy = (walletContractService: WalletService) =>
-  async (data: {body: DeployArgs}) => {
+  async (data: {body: DeployArgs}, req: Request) => {
+    const deviceInfo = getDeviceInfo(req);
     const {publicKey, ensName, gasPrice, gasToken, signature} = data.body;
-    const transaction = await walletContractService.deploy({publicKey, ensName, gasPrice, gasToken, signature});
+    const transaction = await walletContractService.deploy({publicKey, ensName, gasPrice, gasToken, signature}, deviceInfo);
     return responseOf(transaction, 201);
   };
 

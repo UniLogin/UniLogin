@@ -1,4 +1,4 @@
-import {DeviceInfo} from '@universal-login/commons';
+import {DeviceInfo} from './notifications';
 
 export interface Device {
   contractAddress: string;

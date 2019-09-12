@@ -20,6 +20,7 @@ export {ChooseTopUpMethod} from './ui/TopUp/ChooseTopUpMethod';
 export {ModalWrapper} from './ui/Modals/ModalWrapper';
 export {createModalService, IModalService} from './core/services/createModalService';
 export {Onboarding} from './ui/Onboarding/Onboarding';
+export {OnboardingModal} from './ui/Onboarding/OnboardingModal';
 import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
 export {LogoButton} from './ui/UFlow/LogoButton';
