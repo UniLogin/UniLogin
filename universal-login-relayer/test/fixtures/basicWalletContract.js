@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, computeGasData} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 import createWalletContract from '../helpers/createWalletContract';
@@ -18,32 +18,38 @@ export default async function basicWalletContract(provider, wallets) {
   return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
 }
 
+const transferMessageDataField = utils.formatBytes32String('0');
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
-  data: utils.formatBytes32String('0'),
+  data: transferMessageDataField,
   nonce: '0',
   gasPrice,
   gasLimitExecution: gasLimit,
+  gasData: computeGasData(transferMessageDataField),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
+const addKeyMessageDataField = new utils.Interface(WalletContract.interface).functions.addKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
 export const addKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
-  data: new utils.Interface(WalletContract.interface).functions.addKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']),
+  data: addKeyMessageDataField,
   nonce: 0,
   gasPrice,
   gasLimitExecution: gasLimit,
+  gasData: computeGasData(addKeyMessageDataField),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
+const removeKeyMessageDataField = new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
 export const removeKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
-  data: new utils.Interface(WalletContract.interface).functions.removeKey.encode(['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']),
+  data: removeKeyMessageDataField,
   nonce: 1,
   gasPrice,
   gasLimitExecution: gasLimit,
+  gasData: computeGasData(removeKeyMessageDataField),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
