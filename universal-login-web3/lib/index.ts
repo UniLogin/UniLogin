@@ -66,7 +66,6 @@ export class ULWeb3Provider implements Provider {
   async executeTransaction(tx: Partial<Message>): Promise<string> {
     const execution = await this.walletService.getDeployedWallet().execute({
       ...tx,
-      gasLimit: undefined,
       from: this.walletService.getDeployedWallet().contractAddress,
     });
     const mined = await execution.waitToBeMined();

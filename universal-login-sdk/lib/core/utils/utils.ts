@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 
 export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMessage => {
   const gasLimit = utils.bigNumberify(message.gasLimit!);
-  const gasData = computeGasData(message.data as string);
+  const gasData = computeGasData((message.data || '0x') as string);
   const gasLimitExecution = gasLimit.sub(gasData);
 
   return {
