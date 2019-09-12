@@ -1508,6 +1508,123 @@
     "@types/bn.js" "*"
     "@types/underscore" "*"
 
+"@universal-login/commons@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.36.tgz#b6255b87a2e8f82baf439172ef1601d8252f29f8"
+  integrity sha512-7521vVll+emkFQHXb6y8lfnX6FJVP8MorxU2kEX8LkHVblCFuKDZ3/jCkDIU2liDaK9zRzs9SPzA6ChcTiTdpQ==
+  dependencies:
+    deep-equal "^1.1.0"
+    ethers "^4.0.36"
+    lodash.clonedeep "^4.5.0"
+    lodash.range "^3.2.0"
+    openzeppelin-solidity "^2.1.1"
+    scrypt-js "^2.0.4"
+
+"@universal-login/contracts@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.36.tgz#8526aeac72475c11b7b531eb69ee9ad5f39f1faf"
+  integrity sha512-N5NG14Xt1Q3aBawafm+Mt/yPheFeFZRpUKegNzUrvlF+Kspzx8h0G4sGtHQSiAu8j/7yj8K+0gv/YlHH3kcnyg==
+  dependencies:
+    "@universal-login/commons" "0.3.36"
+    ens-builder "^2.0.0"
+    ethers "^4.0.36"
+
+"@universal-login/ops@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/ops/-/ops-0.3.36.tgz#5c29bb844b757e267ee7ffaec516f25142fd0b68"
+  integrity sha512-VtY3gH2eOQ7+k2T11iCPNZ/CtD5Hhukv+cXSQ8zSWMZ6AAcbWCEtAW4nHc7bTqZmu9w5b/QUOaAqqQSPBN0uKQ==
+  dependencies:
+    "@universal-login/commons" "0.3.36"
+    "@universal-login/contracts" "0.3.36"
+    "@universal-login/relayer" "0.3.36"
+    "@universal-login/sdk" "0.3.36"
+    cross-spawn "^6.0.5"
+    dotenv "^8.1.0"
+    ens-builder "^2.0.1"
+    ethereum-waffle "2.0.15"
+    ethers "^4.0.36"
+    ganache-cli "^6.4.5"
+    ganache-core "^2.2.1"
+    knex "^0.16.3"
+    lodash.clonedeep "^4.5.0"
+    yargs "^12.0.5"
+
+"@universal-login/react@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.36.tgz#76f18f47510f051be516a985c37d666c2527cfcb"
+  integrity sha512-ACZl30olNWcDzk0E350RlZOX6o+V7qOUbNL/gYeeJzzVxpengfKtAIWV1kgkVorDbILdM1qgG+neHamwyPvLXA==
+  dependencies:
+    "@ramp-network/ramp-instant-sdk" "^1.0.1"
+    "@universal-login/commons" "0.3.36"
+    "@universal-login/sdk" "0.3.36"
+    dotenv "^8.1.0"
+    ethers "^4.0.36"
+    lodash.range "^3.2.0"
+    react-blockies "^1.4.1"
+    react-transition-group "^4.2.2"
+    reactive-properties "^0.1.0"
+    use-subscription "^1.0.0"
+
+"@universal-login/relayer@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/relayer/-/relayer-0.3.36.tgz#f11be20c92ceadf4ea6e67213ed58bb65ef4e897"
+  integrity sha512-utT1en7VisNwFrN+x+Qt8NtYWVs8hsljfARYPbA8gMw1aK9mE8rXMV8uY9qEzA8F4+dQRgz3YGbPWaybNKnVvw==
+  dependencies:
+    "@restless/ethereum" "^0.2.1"
+    "@restless/restless" "^0.4.2"
+    "@restless/sanitizers" "^0.2.2"
+    "@types/cors" "^2.8.4"
+    "@types/express" "^4.16.1"
+    "@types/geoip-lite" "^1.1.29"
+    "@universal-login/commons" "0.3.36"
+    "@universal-login/contracts" "0.3.36"
+    body-parser "^1.19.0"
+    cors "^2.8.4"
+    dotenv "^6.0.0"
+    ens-builder "^2.0.1"
+    ethers "^4.0.36"
+    express "^4.16.3"
+    express-useragent "^1.0.12"
+    fbemitter "^2.1.1"
+    geoip-lite "^1.3.5"
+    knex "^0.16.3"
+    moment "^2.22.2"
+    pg "^7.7.1"
+
+"@universal-login/sdk@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.36.tgz#84630db41814d267f5ce70e0dbbb84700432a293"
+  integrity sha512-CK4T9W/MaqPeP5alg5CuHljfdqlQxLDKoKjlJpTxJ97+QoOechiyueQysp3E5AYtKfYFPxat6lK1n6Ii8xp3Zg==
+  dependencies:
+    "@universal-login/commons" "0.3.36"
+    "@universal-login/contracts" "0.3.36"
+    cryptocompare "^1.0.0"
+    deep-equal "^1.0.1"
+    ethers "^4.0.36"
+    fbemitter "^2.1.1"
+    lodash.clonedeep "^4.5.0"
+    openzeppelin-solidity "^2.3.0"
+    reactive-properties "^0.1.3"
+
+"@universal-login/web3@0.3.36":
+  version "0.3.36"
+  resolved "https://registry.yarnpkg.com/@universal-login/web3/-/web3-0.3.36.tgz#8ede1dc5ade804db2837eebc7b46e3721b4fe21d"
+  integrity sha512-ROXrgH03mQ8b7bNuWMC/s318wIFuT2Ezo5BFXYORmILMCYsOEXZ7IfFBp6e7FGLxTlF3W6W5+je3/Yg86WcRGA==
+  dependencies:
+    "@types/react" "^16.9.2"
+    "@types/react-dom" "^16.9.0"
+    "@types/styled-components" "^4.1.18"
+    "@types/web3" "^1.0.19"
+    "@universal-login/commons" "0.3.36"
+    "@universal-login/react" "0.3.36"
+    "@universal-login/sdk" "0.3.36"
+    ethers "^4.0.36"
+    react "^16.8.6"
+    react-dom "^16.8.6"
+    reactive-properties "^0.1.3"
+    styled-components "^4.3.2"
+    web3 "^1.2.1"
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
@@ -11403,16 +11520,6 @@ react-dom@^16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-react-dom@^16.9.0:
-  version "16.9.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.9.0.tgz#5e65527a5e26f22ae3701131bcccaee9fb0d3962"
-  integrity sha512-YFT2rxO9hM70ewk9jq0y6sQk8cL02xm4+IzYBz75CQGlClQQ1Bxq0nhHF6OtSbit+AIahujJgb/CPRibFkMNJQ==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.15.0"
-
 react-is@^16.6.0, react-is@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
@@ -11531,15 +11638,6 @@ react@^16.8.6:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.13.6"
-
-react@^16.9.0:
-  version "16.9.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
-  integrity sha512-+7LQnFBwkiw+BobzOF6N//BdoNw0ouwmSJTEm9cglOOmsg/TMiFHZLe2sEoN5M7LgJTj9oHH0gxklfnQe66S1w==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
 
 reactive-properties@^0.1.0:
   version "0.1.0"
@@ -12195,14 +12293,6 @@ scheduler@^0.13.6:
   version "0.13.6"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
   integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-
-scheduler@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.15.0.tgz#6bfcf80ff850b280fed4aeecc6513bc0b4f17f8e"
-  integrity sha512-xAefmSfN6jqAa7Kuq7LIJY0bwAPG3xlCj0HMEBQk1lxYiDKZscY2xJ5U/61ZTrYbmNQbXa+gc7czPkVo11tnCg==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
