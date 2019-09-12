@@ -1,0 +1,14 @@
+{
+  "packages": [
+    "universal-login-commons",
+    "universal-login-contracts",
+    "universal-login-ops",
+    "universal-login-react",
+    "universal-login-relayer",
+    "universal-login-sdk",
+    "universal-login-web3",
+    "universal-login-wallet",
+    "universal-login-example"
+  ],
+  "version": "0.3.38"
+}
