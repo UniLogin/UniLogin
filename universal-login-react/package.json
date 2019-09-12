@@ -21,13 +21,13 @@
     "dotenv": "^8.1.0",
     "ethers": "^4.0.36",
     "lodash.range": "^3.2.0",
+    "node-sass": "^4.10.0",
     "react-blockies": "^1.4.1",
     "react-transition-group": "^4.2.2",
     "reactive-properties": "^0.1.0",
     "use-subscription": "^1.0.0"
   },
   "peerDependencies": {
-    "node-sass": "^4.10.0",
     "react": "^16.8.x",
     "react-dom": "^16.8.x"
   },
