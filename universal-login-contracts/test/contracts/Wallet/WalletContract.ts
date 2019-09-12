@@ -338,7 +338,7 @@ describe('WalletContract', async () => {
     });
   });
 
-  describe('upgrade', () => {
+  describe('Upgrade', () => {
     let newWallet: Contract;
     let updateData: string;
 
@@ -366,6 +366,10 @@ describe('WalletContract', async () => {
       expect(await proxyAsUpdatedWallet.someNumber()).to.eq(0);
       await proxyAsUpdatedWallet.change(10);
       expect(await proxyAsUpdatedWallet.someNumber()).to.eq(10);
+    });
+
+    it('updates master fails when sender has no permission', async () => {
+      await expect(walletContractProxy.upgradeTo(newWallet.address)).to.be.revertedWith('Unauthorized');
     });
   });
 });

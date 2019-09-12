@@ -3,7 +3,6 @@ import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
 import MockWalletMaster from '../../../build/MockWalletMaster.json';
-import UpgradedWallet from '../../../build/UpgradedWallet.json';
 import WalletProxy from '../../../build/WalletProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 import basicWalletAndProxy from '../../fixtures/basicWalletAndProxy';
@@ -25,12 +24,6 @@ describe('CONTRACT: WalletProxy', async () => {
 
 
   describe('WalletProxy', async () => {
-    it('updates master fails when sender has no permission', async () => {
-      const newWallet = await deployContract(wallet, UpgradedWallet);
-      data = new utils.Interface(WalletProxy.interface).functions.upgradeTo.encode([newWallet.address]);
-      await expect(wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit})).to.be.revertedWith('Unauthorized');
-    });
-
     it('deployment fails if masterCopy is zero', async () => {
       await expect(deployContract(wallet, WalletProxy, [0x0])).to.be.eventually.rejectedWith('invalid address');
     });
