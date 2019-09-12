@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {WalletService} from '@universal-login/sdk';
-import {DEFAULT_GAS_PRICE, ApplicationWallet, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ApplicationWallet, DEFAULT_GAS_PRICE, DEV_DEFAULT_PRIVATE_KEY, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {useServices} from '../../core/services/useServices';
+import {utils, Wallet} from 'ethers';
 
 export interface CreateRandomInstanceProps {
   setApplicationWallet: (arg: ApplicationWallet) => void;
@@ -21,6 +22,8 @@ export const CreateRandomInstance = ({setApplicationWallet}: CreateRandomInstanc
     const walletService = new WalletService(sdk);
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
     setStatus(`Waiting for intial funds in ${contractAddress}`);
+    const wallet = new Wallet(DEV_DEFAULT_PRIVATE_KEY, sdk.provider);
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('4')});
     await waitForBalance();
     setStatus('waiting for wallet contract to be deployed');
     await deploy(name, DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
@@ -33,7 +36,7 @@ export const CreateRandomInstance = ({setApplicationWallet}: CreateRandomInstanc
 
   return (
     <div>
-      <button onClick={createRandomInstance}>Create Ranodm Instance</button>
+      <button onClick={createRandomInstance}>Create Random Instance</button>
       <p>{`ENS name: ${ensName}`}</p>
       <p>{`Wallet Contract address: ${contractAddress}`}</p>
       <p>{`Status: ${status}`}</p>

@@ -62,19 +62,19 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!.createFutureWallet();
   }
 
-  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Partial<Message>) {
+  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
     return this.selfExecute(to, 'addKey', [publicKey], privateKey, transactionDetails);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Partial<Message>) {
+  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
     return this.selfExecute(to, 'addKeys', [publicKeys], privateKey, transactionDetails);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Partial<Message>) {
+  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
     return this.selfExecute(to, 'removeKey', [key], privateKey, transactionDetails);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Partial<Message>) {
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
   }
 
@@ -133,7 +133,7 @@ class UniversalLoginSDK {
     return this.executionFactory.createExecution(signedMessage);
   }
 
-  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Partial<Message>) {
+  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
     const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
     const message: Partial<Message> = {
       ...transactionDetails,

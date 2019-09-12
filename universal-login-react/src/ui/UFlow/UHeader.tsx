@@ -1,10 +1,10 @@
 
 import React from 'react';
-import {dashboardContentType} from '../../core/models/ReactUDashboardContentType';
+import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
 
 export interface UHeaderProps {
-  activeTab: dashboardContentType;
-  setActiveTab: (tab: dashboardContentType) => void;
+  activeTab: DashboardContentType;
+  setActiveTab: (tab: DashboardContentType) => void;
 }
 
 export const UHeader = ({activeTab, setActiveTab}: UHeaderProps) => {
