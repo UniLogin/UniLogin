@@ -1,6 +1,5 @@
 .DS_Store
 .idea
-lerna.json
 /docs/build/
 /node_modules
 /universal-login-commons/dist/*
