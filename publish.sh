@@ -5,11 +5,8 @@ yarn install &&
 yarn build &&
 yarn lint &&
 git checkout -b bump-$1 &&
-cp lerna.bump.json lerna.json
 yarn bump:version $1 --yes &&
-rm lerna.json &&
-cp lerna.publish.json lerna.json
-yarn publish:packages &&
-rm lerna.json &&
-git checkout . &&
-git push --set-upstream origin bump-$1
+yarn publish:packages
+echo Now type following to create branch in repo:
+echo git checkout . &&
+echo git push --set-upstream origin bump-$1
