@@ -16,17 +16,19 @@ export class DevicesStore {
 
   async add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
     this.devices.push({contractAddress, publicKey, deviceInfo});
+    return this.database(this.tableName).insert({contractAddress, publicKey, deviceInfo});
   }
 
   async get(contractAddress: string) {
-    return this.devices
-      .filter((deviceEntry: DeviceEntry) => deviceEntry.contractAddress === contractAddress)
-      .map((deviceEntry: DeviceEntry) => deviceEntry.deviceInfo);
+    return this.database(this.tableName)
+    .where({contractAddress})
+    .select('deviceInfo', 'publicKey');
   }
 
   async remove(contractAddress: string, publicKey: string) {
-    const removedItems = this.devices.filter((deviceEntry: DeviceEntry) => deviceEntry.contractAddress === contractAddress && deviceEntry.publicKey === publicKey);
-    this.devices = this.devices.filter((deviceEntry: DeviceEntry) => deviceEntry.contractAddress !== contractAddress || deviceEntry.publicKey !== publicKey);
-    return removedItems.length;
+    return this.database(this.tableName)
+    .where({contractAddress})
+    .andWhere({publicKey})
+    .delete();
   }
 }
