@@ -19,6 +19,7 @@ export default async function basicWalletContract(provider, wallets) {
   return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
 }
 
+const transferMessageDataField = utils.formatBytes32String('0');
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
