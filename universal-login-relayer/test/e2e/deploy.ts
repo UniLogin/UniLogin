@@ -56,14 +56,18 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         key: keyPair.publicKey
       });
     expect(body).length(1);
-    const {time, ...other} = body[0];
-    expect(other).to.be.deep.eq({
-      browser: 'node-superagent',
-      city: 'unknown',
-      ipAddress: '::ffff:127.0.0.1',
-      name: 'unknown',
-      os: 'unknown',
-    });
+    expect(body).to.be.deep.eq([{
+      contractAddress,
+      publicKey: keyPair.publicKey,
+      deviceInfo: {
+        browser: 'node-superagent',
+        city: 'unknown',
+        ipAddress: '::ffff:127.0.0.1',
+        name: 'unknown',
+        os: 'unknown',
+        time: body[0].deviceInfo.time
+      }
+    }]);
   });
 
 
