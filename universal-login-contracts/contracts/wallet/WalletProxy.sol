@@ -8,4 +8,13 @@ contract WalletProxy is BaseUpgradeabilityProxy {
         assert(IMPLEMENTATION_SLOT == bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1));
         _setImplementation(_logic);
     }
+
+    function upgradeTo(address newImplementation) public {
+        require(msg.sender == address(this), "Unauthorized");
+        _upgradeTo(newImplementation);
+    }
+
+    function implementation() public view returns(address) {
+        return _implementation();
+    }
 }

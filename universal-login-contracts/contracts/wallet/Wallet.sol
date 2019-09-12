@@ -76,6 +76,6 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
     }
 
     function getDeploymentGasUsed() private pure returns(uint) {
-        return 500000;
+        return 570000;
     }
 }

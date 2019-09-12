@@ -2,9 +2,8 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import MockWalletMaster from '../../../build/MockWalletMaster.json';
-import Proxy from '../../../build/WalletProxy.json';
+import WalletProxy from '../../../build/WalletProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 import basicWalletAndProxy from '../../fixtures/basicWalletAndProxy';
 
@@ -24,13 +23,9 @@ describe('CONTRACT: WalletProxy', async () => {
   });
 
 
-  describe('Proxy', async () => {
-    xit('updates master', async () => {
-      await expect(proxyAsWallet.setMaster(TEST_ACCOUNT_ADDRESS, [])).to.be.revertedWith('restricted-access');
-    });
-
+  describe('WalletProxy', async () => {
     it('deployment fails if masterCopy is zero', async () => {
-      await expect(deployContract(wallet, Proxy, [0x0])).to.be.eventually.rejectedWith('invalid address');
+      await expect(deployContract(wallet, WalletProxy, [0x0])).to.be.eventually.rejectedWith('invalid address');
     });
 
     it('should be able to send transaction to wallet', async () => {

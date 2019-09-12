@@ -39,7 +39,7 @@ describe('WalletImplementation', () => {
     const walletContract = await deployContract(wallet, WalletContract, [], {gasLimit: 5000000});
 
     await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.9999999999995');
+    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.99999999999943');
   });
 
   it('can`t initialize wallet twice', async () => {

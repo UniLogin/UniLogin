@@ -27,6 +27,7 @@ export default async function walletAndProxy(unusedProvider : providers.Provider
     proxyAsWalletContract,
     mockToken,
     mockContract,
-    wallet
+    wallet,
+    walletContractMaster
   };
 }

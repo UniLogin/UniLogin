@@ -20,4 +20,4 @@ export async function deployContractAndWait(wallet: Wallet, contractJSON: Contra
   return contractAddress!;
 }
 
-export const DEPLOY_GAS_LIMIT = utils.bigNumberify('500000');
+export const DEPLOY_GAS_LIMIT = utils.bigNumberify('600000');

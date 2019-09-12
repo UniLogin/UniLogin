@@ -34,7 +34,7 @@ describe('WalletCreator', () => {
 
   it('Sends funds to the contract', async () => {
     const {contractAddress, publicKey} = await walletCreator.deployWallet();
-    expect(await provider.getBalance(contractAddress)).to.eq('999999999999500000');
+    expect(await provider.getBalance(contractAddress)).to.eq('999999999999430000');
     expect(contractAddress).to.be.properAddress;
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract)}`);
     const walletContract = new Contract(contractAddress, WalletMasterWithRefund.interface, provider);

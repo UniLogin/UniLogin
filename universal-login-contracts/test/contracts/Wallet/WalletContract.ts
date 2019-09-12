@@ -1,14 +1,16 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, getWallets, loadFixture} from 'ethereum-waffle';
+import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair} from '@universal-login/commons';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, createSignedMessage} from '@universal-login/commons';
 import {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
-import {getExecutionArgs} from '../../helpers/argumentsEncoding';
+import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
+import UpgradedWallet from '../../../build/UpgradedWallet.json';
+import {encodeDataForExecuteSigned} from '../../../lib/index.js';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -32,9 +34,10 @@ describe('WalletContract', async () => {
   let relayerBalance: utils.BigNumber;
   let relayerTokenBalance: utils.BigNumber;
   let publicKey: string;
+  let walletContractMaster: Contract;
 
   beforeEach(async () => {
-    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, wallet} = await loadFixture(walletAndProxy));
+    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, walletContractMaster, wallet} = await loadFixture(walletAndProxy));
     executeSignedFunc = new utils.Interface(WalletContract.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = calculateMessageSignature(privateKey, msg);
@@ -332,6 +335,41 @@ describe('WalletContract', async () => {
     it('don`t change the number of required signatures if the new amount is higher than keyCount', async () => {
       await executeSetRequiredSignatures(proxyAsWalletContract, (await proxyAsWalletContract.keyCount()).add(1), privateKey);
       expect(await proxyAsWalletContract.requiredSignatures()).to.eq(1);
+    });
+  });
+
+  describe('Upgrade', () => {
+    let newWallet: Contract;
+    let updateData: string;
+
+    beforeEach(async () => {
+      newWallet = await deployContract(wallet, UpgradedWallet);
+      const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
+      updateData = encodeDataForExecuteSigned(signedMessage);
+    });
+
+    it('before upgrade', async () => {
+      expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
+    });
+
+    it('updates master', async () => {
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData});
+      expect(await walletContractProxy.implementation()).to.eq(newWallet.address);
+      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
+      expect(await proxyAsUpdatedWallet.getFive()).to.eq(5);
+      expect(await proxyAsUpdatedWallet.lastNonce()).to.eq(1);
+    });
+
+    it('updates store', async () => {
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData});
+      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
+      expect(await proxyAsUpdatedWallet.someNumber()).to.eq(0);
+      await proxyAsUpdatedWallet.change(10);
+      expect(await proxyAsUpdatedWallet.someNumber()).to.eq(10);
+    });
+
+    it('updates master fails when sender has no permission', async () => {
+      await expect(walletContractProxy.upgradeTo(newWallet.address)).to.be.revertedWith('Unauthorized');
     });
   });
 });
