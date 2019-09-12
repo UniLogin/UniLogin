@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/wallet",
-  "version": "0.3.36",
+  "version": "0.3.39",
   "license": "MIT",
   "private": true,
   "scripts": {

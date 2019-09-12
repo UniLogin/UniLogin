@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/example",
-  "version": "0.3.36",
+  "version": "0.3.39",
   "private": true,
   "dependencies": {
     "@types/web3": "^1.0.19",
