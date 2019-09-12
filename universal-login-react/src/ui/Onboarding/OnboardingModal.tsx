@@ -1,7 +1,7 @@
 import React from 'react';
 import {Onboarding, OnboardingProps} from './Onboarding';
 
-export function OnboardingModal ({sdk, walletService, domains}: OnboardingProps) {
+export function OnboardingModal({sdk, walletService, domains}: OnboardingProps) {
   return (
     <div className="onboarding-modal-container">
       <div className="onboarding-modal-content">
