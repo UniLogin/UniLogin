@@ -1,9 +1,9 @@
 import {DeviceInfo} from '@universal-login/commons';
 import Knex = require('knex');
-import {DeviceEntry} from '../../../core/models/DeviceEntry';
+import {Device} from '../../../core/models/Device';
 
 export class DevicesStore {
-  private devices: DeviceEntry[] = [];
+  private devices: Device[] = [];
   private tableName: string = 'devices';
 
   constructor(public database: Knex) {
@@ -14,16 +14,16 @@ export class DevicesStore {
     return this.database(this.tableName).insert({contractAddress, publicKey, deviceInfo});
   }
 
-  async get(contractAddress: string): Promise<DeviceEntry[]> {
+  async get(contractAddress: string): Promise<Device[]> {
     return this.database(this.tableName)
-    .where({contractAddress})
-    .select();
+      .where({contractAddress})
+      .select();
   }
 
   async remove(contractAddress: string, publicKey: string) {
     return this.database(this.tableName)
-    .where({contractAddress})
-    .andWhere({publicKey})
-    .delete();
+      .where({contractAddress})
+      .andWhere({publicKey})
+      .delete();
   }
 }
