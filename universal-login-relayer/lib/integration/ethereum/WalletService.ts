@@ -1,6 +1,6 @@
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
-import {ensureNotNull, ensure, RequiredBalanceChecker, computeContractAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {ensureNotNull, ensure, RequiredBalanceChecker, computeContractAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from '../../core/utils/errors';
@@ -29,6 +29,7 @@ class WalletService {
     const initWithENS = encodeInitializeWithENSData(args);
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const transaction = await this.walletDeployer.deploy({publicKey, signature, intializeData: initWithENS}, {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
+    await this.devicesSevice.addOrUpdate(contractAddress, publicKey, deviceInfo);
     this.hooks.emit('created', {transaction, contractAddress});
     return transaction;
   }
