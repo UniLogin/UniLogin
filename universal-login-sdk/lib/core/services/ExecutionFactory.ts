@@ -38,9 +38,13 @@ export class ExecutionFactory {
     return !!messageStatus.transactionHash || !!messageStatus.error;
   }
 
+  private createGetStatus(messageHash: string) {
+    return async () => this.relayerApi.getStatus(messageHash);
+  }
+
   private createWaitToBeMined(messageHash: string) {
     return async () => {
-      const getStatus = () => this.relayerApi.getStatus(messageHash);
+      const getStatus = this.createGetStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
       const status = await retry(getStatus, isNotExecuted, this.timeout, this.tick);
       ensure(!status.error, Error, status.error!);
