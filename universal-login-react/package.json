@@ -27,6 +27,7 @@
     "use-subscription": "^1.0.0"
   },
   "peerDependencies": {
+    "node-sass": "^4.10.0",
     "react": "^16.8.x",
     "react-dom": "^16.8.x"
   },
