@@ -38,6 +38,10 @@ export class ExecutionFactory {
     return messageStatus.state === 'Error' || messageStatus.state === 'Success';
   }
 
+  private isPending(messageStatus: MessageStatus) {
+    return messageStatus.state === 'Pending';
+  }
+
   private createGetStatus(messageHash: string) {
     return async () => this.relayerApi.getStatus(messageHash);
   }
