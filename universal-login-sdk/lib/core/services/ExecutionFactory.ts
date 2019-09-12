@@ -35,7 +35,7 @@ export class ExecutionFactory {
   }
 
   private isExecuted(messageStatus: MessageStatus) {
-    return !!messageStatus.transactionHash || !!messageStatus.error;
+    return messageStatus.state === 'Error' || messageStatus.state === 'Success';
   }
 
   private createGetStatus(messageHash: string) {
