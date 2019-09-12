@@ -68,7 +68,8 @@ describe('CONTRACT: Executor - main', async  () => {
         msg.nonce,
         msg.gasPrice,
         msg.gasToken,
-        msg.gasLimitExecution);
+        msg.gasLimitExecution,
+        msg.gasData);
       expect(jsHash).to.eq(solidityHash);
     });
 
@@ -82,6 +83,7 @@ describe('CONTRACT: Executor - main', async  () => {
         msg.gasPrice,
         msg.gasToken,
         msg.gasLimitExecution,
+        msg.gasData,
         signature);
       expect(recoveredAddress).to.eq(managementKeyPair.publicKey);
     });

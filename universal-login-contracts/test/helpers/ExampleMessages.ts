@@ -1,4 +1,4 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, computeGasData} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import DEFAULT_PAYMENT_OPTIONS, {DEFAULT_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
@@ -32,25 +32,27 @@ export const failedTransferMessage = {
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
+const callMessageDataField = new utils.Interface(MockContract.abi).functions.callMe.encode([]);
 export const callMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('0.0'),
-  data: new utils.Interface(MockContract.abi).functions.callMe.encode([]),
+  data: callMessageDataField,
   nonce: 0,
   gasPrice,
   gasLimitExecution: gasLimit,
-  gasData: 0,
+  gasData: computeGasData(callMessageDataField),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
+const failedCallMessageDataField = new utils.Interface(MockContract.abi).functions.revertingFunction.encode([]);
 export const failedCallMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('0.0'),
-  data: new utils.Interface(MockContract.abi).functions.revertingFunction.encode([]),
+  data: failedCallMessageDataField,
   nonce: 0,
   gasPrice,
   gasLimitExecution: gasLimit,
-  gasData: 0,
+  gasData: computeGasData(failedCallMessageDataField),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -70,21 +72,22 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasPrice: 1,
     gasToken: '0x0',
     gasLimitExecution: utils.bigNumberify('240000'),
-    gasData: 0,
+    gasData: computeGasData(loopFunctionData),
     ...overrides
   };
 };
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
+  const setRequiredSignatureMessageDataField = proxyAsWalletContract.interface.functions.setRequiredSignatures.encode([requiredSignatures]);
   const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
-    data: proxyAsWalletContract.interface.functions.setRequiredSignatures.encode([requiredSignatures]),
+    data: setRequiredSignatureMessageDataField,
     value: parseEther('0.0'),
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
     gasLimitExecution: gasLimit,
-    gasData: 0,
+    gasData: computeGasData(setRequiredSignatureMessageDataField),
     gasToken: '0x0000000000000000000000000000000000000000'
   };
   const signature = calculateMessageSignature(privateKey, msg);
@@ -92,15 +95,16 @@ export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contra
 };
 
 export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
+  const addKeyMessageDataField = proxyAsWalletContract.interface.functions.addKey.encode([newKey]);
   const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
-    data: proxyAsWalletContract.interface.functions.addKey.encode([newKey]),
+    data: addKeyMessageDataField,
     value: parseEther('0.0'),
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
     gasLimitExecution: gasLimit,
-    gasData: 0,
+    gasData: computeGasData(addKeyMessageDataField),
     gasToken: '0x0000000000000000000000000000000000000000'
   };
   const signature = calculateMessageSignature(privateKey, msg);
