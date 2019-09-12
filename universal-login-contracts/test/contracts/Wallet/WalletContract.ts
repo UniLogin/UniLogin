@@ -339,21 +339,33 @@ describe('WalletContract', async () => {
   });
 
   describe('upgrade', () => {
+    let newWallet: Contract;
+    let updateData: string;
+
+    beforeEach(async () => {
+      newWallet = await deployContract(wallet, UpgradedWallet);
+      const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
+      updateData = encodeDataForExecuteSigned(signedMessage);
+    });
+
     it('before upgrade', async () => {
       expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
     });
 
     it('updates master', async () => {
-      const newWallet = await deployContract(wallet, UpgradedWallet);
-      const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
-      data = encodeDataForExecuteSigned(signedMessage);
-      expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
-      await wallet.sendTransaction({to: proxyAsWalletContract.address, data});
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData});
       expect(await walletContractProxy.implementation()).to.eq(newWallet.address);
       const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
       expect(await proxyAsUpdatedWallet.getFive()).to.eq(5);
       expect(await proxyAsUpdatedWallet.lastNonce()).to.eq(1);
     });
 
+    it('updates store', async () => {
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData});
+      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
+      expect(await proxyAsUpdatedWallet.someNumber()).to.eq(0);
+      await proxyAsUpdatedWallet.change(10);
+      expect(await proxyAsUpdatedWallet.someNumber()).to.eq(10);
+    });
   });
 });

@@ -4,7 +4,13 @@ import "../wallet/Wallet.sol";
 
 
 contract UpgradedWallet is Wallet {
+    uint public someNumber = 7;
+
     function getFive() public view returns(uint) {
         return 5;
+    }
+
+    function change(uint newNumber) public {
+        someNumber = newNumber;
     }
 }
