@@ -89,7 +89,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
-    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(500000)));
+    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(570000)));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {
