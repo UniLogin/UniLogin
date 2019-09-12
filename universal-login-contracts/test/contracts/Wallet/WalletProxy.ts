@@ -28,7 +28,7 @@ describe('CONTRACT: WalletProxy', async () => {
     it('updates master fails when sender has no permission', async () => {
       const newWallet = await deployContract(wallet, UpgradedWallet);
       data = new utils.Interface(WalletProxy.interface).functions.upgradeTo.encode([newWallet.address]);
-      await expect(wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit})).to.be.revertedWith(`You don't have permission`);
+      await expect(wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit})).to.be.revertedWith('Unauthorized');
     });
 
     it('deployment fails if masterCopy is zero', async () => {

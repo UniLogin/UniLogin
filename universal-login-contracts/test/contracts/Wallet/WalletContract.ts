@@ -339,9 +339,12 @@ describe('WalletContract', async () => {
   });
 
   describe('upgrade', () => {
+    it('before upgrade', async () => {
+      expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
+    });
+
     it('updates master', async () => {
       const newWallet = await deployContract(wallet, UpgradedWallet);
-      expect(await walletContractProxy.implementation()).to.eq(walletContractMaster.address);
       const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
       data = encodeDataForExecuteSigned(signedMessage);
       expect(await proxyAsWalletContract.lastNonce()).to.eq(0);

@@ -10,7 +10,7 @@ contract WalletProxy is BaseUpgradeabilityProxy {
     }
 
     function upgradeTo(address newImplementation) public {
-        require(msg.sender == address(this), "You don't have permission");
+        require(msg.sender == address(this), "Unauthorized");
         _upgradeTo(newImplementation);
     }
 
