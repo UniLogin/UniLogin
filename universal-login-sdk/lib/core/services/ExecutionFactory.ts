@@ -24,9 +24,7 @@ export class ExecutionFactory {
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
     const waitToBeMined = totalCollected >= required ? this.createWaitToBeMined(messageHash) : async () => result.status;
-    const waitToBePending = async () => {
-      throw Error('Not implemented');
-    };
+    const waitToBePending = totalCollected >= required ? this.createWaitToBePending(messageHash) : async () => result.status;
     return {
       messageStatus: result.status,
       waitToBeMined,
@@ -44,6 +42,15 @@ export class ExecutionFactory {
 
   private createGetStatus(messageHash: string) {
     return async () => this.relayerApi.getStatus(messageHash);
+  }
+
+  private createWaitToBePending(messageHash: string) {
+    return async () => {
+      const isNotPending = (messageStatus: MessageStatus) => !this.isPending(messageStatus);
+      const status = await retry(this.createGetStatus(messageHash), isNotPending, this.timeout, this.tick);
+      ensure(!status.error, Error, status.error!);
+      return status;
+    };
   }
 
   private createWaitToBeMined(messageHash: string) {
