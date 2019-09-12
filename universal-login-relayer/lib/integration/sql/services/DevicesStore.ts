@@ -19,10 +19,10 @@ export class DevicesStore {
     return this.database(this.tableName).insert({contractAddress, publicKey, deviceInfo});
   }
 
-  async get(contractAddress: string) {
+  async get(contractAddress: string): Promise<DeviceEntry[]> {
     return this.database(this.tableName)
     .where({contractAddress})
-    .select('deviceInfo', 'publicKey');
+    .select();
   }
 
   async remove(contractAddress: string, publicKey: string) {

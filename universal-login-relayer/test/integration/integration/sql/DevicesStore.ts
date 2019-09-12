@@ -28,7 +28,7 @@ describe('INT: DevicesStore', () => {
   it('add to store 1 element', async () => {
     await devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
     const devices = await devicesStore.get(TEST_CONTRACT_ADDRESS);
-    expect(devices).to.be.deep.eq([{deviceInfo: TEST_DEVICE_INFO, publicKey: TEST_ACCOUNT_ADDRESS}]);
+    expect(devices).to.be.deep.eq([{deviceInfo: TEST_DEVICE_INFO, publicKey: TEST_ACCOUNT_ADDRESS, contractAddress: TEST_CONTRACT_ADDRESS}]);
     const devices2 = await devicesStore.get(TEST_ACCOUNT_ADDRESS);
     expect(devices2).to.be.deep.eq([]);
   });
@@ -38,8 +38,8 @@ describe('INT: DevicesStore', () => {
     await devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_CONTRACT_ADDRESS, device2);
     const devices = await devicesStore.get(TEST_CONTRACT_ADDRESS);
     expect(devices).to.be.deep.eq([
-      {deviceInfo: TEST_DEVICE_INFO, publicKey: TEST_ACCOUNT_ADDRESS},
-      {deviceInfo: device2, publicKey: TEST_CONTRACT_ADDRESS}]);
+      {deviceInfo: TEST_DEVICE_INFO, publicKey: TEST_ACCOUNT_ADDRESS, contractAddress: TEST_CONTRACT_ADDRESS},
+      {deviceInfo: device2, publicKey: TEST_CONTRACT_ADDRESS, contractAddress: TEST_CONTRACT_ADDRESS}]);
   });
 
   it('should remove element', async () => {

@@ -1,5 +1,5 @@
 import {DeviceInfo, RelayerRequest} from '@universal-login/commons';
-import {DevicesStore} from '../../integration/sql/services/DevicesStore';
+import {DevicesStore, DeviceEntry} from '../../integration/sql/services/DevicesStore';
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 
 export class DevicesService {
@@ -12,7 +12,7 @@ export class DevicesService {
 
   async getDevices(devicesRequest: RelayerRequest) {
     await this.walletMasterContractService.ensureValidRelayerRequestSignature(devicesRequest);
-
-    return this.devicesStore.get(devicesRequest.contractAddress);
+    const devices = await this.devicesStore.get(devicesRequest.contractAddress);
+    return devices.map((device: DeviceEntry) => device.deviceInfo);
   }
 }
