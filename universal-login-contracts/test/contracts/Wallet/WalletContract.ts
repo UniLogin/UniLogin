@@ -61,7 +61,7 @@ describe('WalletContract', async () => {
       expect(await proxyAsWalletContract.keyExist(constants.AddressZero)).to.be.false;
     });
   });
-  
+
   describe('Transfer', async () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
