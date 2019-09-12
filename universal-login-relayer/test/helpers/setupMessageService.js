@@ -19,7 +19,7 @@ export default async function setupMessageService(knex) {
   const hooks = new EventEmitter();
   const authorisationStore = new AuthorisationStore(knex);
   const messageRepository = new MessageSQLRepository(knex);
-  const devicesStore = new DevicesStore();
+  const devicesStore = new DevicesStore(knex);
   const queueStore = new QueueSQLStore(knex);
   const walletMasterContractService = new WalletMasterContractService(provider);
   const devicesService = new DevicesService(devicesStore, walletMasterContractService);

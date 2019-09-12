@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {DevicesStore} from '../../../../lib/integration/sql/services/DevicesStore';
 import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO} from '@universal-login/commons';
+import {getKnexConfig} from '../../../helpers/knex';
 
 describe('INT: DevicesStore', () => {
   let devicesStore: DevicesStore;
@@ -14,7 +15,7 @@ describe('INT: DevicesStore', () => {
   };
 
   beforeEach(() => {
-    devicesStore = new DevicesStore();
+    devicesStore = new DevicesStore(getKnexConfig());
   });
 
   it('initially empty', async () => {

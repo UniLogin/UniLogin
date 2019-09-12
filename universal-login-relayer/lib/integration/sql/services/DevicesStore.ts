@@ -1,4 +1,5 @@
 import {DeviceInfo} from '@universal-login/commons';
+import Knex = require('knex');
 
 export interface DeviceEntry {
   contractAddress: string;
@@ -8,6 +9,10 @@ export interface DeviceEntry {
 
 export class DevicesStore {
   private devices: DeviceEntry[] = [];
+  private tableName: string = 'devices';
+
+  constructor(public database: Knex) {
+  }
 
   async add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
     this.devices.push({contractAddress, publicKey, deviceInfo});
