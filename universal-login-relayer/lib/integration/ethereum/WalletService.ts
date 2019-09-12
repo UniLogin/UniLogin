@@ -6,13 +6,20 @@ import ENSService from './ensService';
 import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature} from '../../core/utils/errors';
 import {Config} from '../../config/relayer';
 import {WalletDeployer} from '../ethereum/WalletDeployer';
+import {DevicesService} from '../../core/services/DevicesService';
 
 class WalletService {
 
-  constructor(private config: Config, private ensService: ENSService, private hooks: EventEmitter, private walletDeployer: WalletDeployer, private requiredBalanceChecker: RequiredBalanceChecker) {
+  constructor(
+    private config: Config,
+    private ensService: ENSService,
+    private hooks: EventEmitter,
+    private walletDeployer: WalletDeployer,
+    private requiredBalanceChecker: RequiredBalanceChecker,
+    private devicesSevice: DevicesService) {
   }
 
-  async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs) {
+  async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     ensure(!await this.ensService.resolveName(ensName), EnsNameTaken, ensName);
     const ensArgs = this.ensService.argsFor(ensName);
     ensureNotNull(ensArgs, InvalidENSDomain, ensName);

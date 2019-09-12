@@ -19,7 +19,10 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeBalanceChecker = {
     findTokenWithRequiredBalance: () => true
   };
-  const walletService = new WalletService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any);
+  const fakeDevicesService = {
+    addOrUpdate: () => null
+  };
+  const walletService = new WalletService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   return {provider, wallet, walletService, callback, factoryContract, ensService};
