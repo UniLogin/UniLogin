@@ -18,7 +18,7 @@ describe('UNIT: DevicesService', () => {
   };
   const devicesStore: any = {
     add: sinon.stub().resolves(),
-    get: sinon.stub().resolves([{deviceInfo: TEST_DEVICE_INFO}]),
+    get: sinon.stub().resolves([{deviceInfo: TEST_DEVICE_INFO, contractAddress: TEST_CONTRACT_ADDRESS, pubilcKey: TEST_ACCOUNT_ADDRESS}]),
     remove: sinon.stub().resolves(1)
   };
   let devicesService: DevicesService;
@@ -39,9 +39,8 @@ describe('UNIT: DevicesService', () => {
   });
 
   it('get devices', async () => {
-    const devices = await devicesService.getDevices(relayerRequest);
-    expect(devices).to.be.deep.eq([TEST_DEVICE_INFO]);
-    expect(devicesStore.get).to.be.calledOnce;
+    await devicesService.getDevices(relayerRequest);
+    expect(devicesStore.get).to.be.calledOnceWithExactly(relayerRequest.contractAddress);
     expect(devicesStore.add).to.not.be.called;
   });
 

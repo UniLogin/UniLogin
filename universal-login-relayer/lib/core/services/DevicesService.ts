@@ -15,9 +15,8 @@ export class DevicesService {
     return this.devicesStore.add(contractAddress, publicKey, deviceInfo);
   }
 
-  async getDevices(devicesRequest: RelayerRequest) {
+  async getDevices(devicesRequest: RelayerRequest): Promise<Device[]> {
     await this.walletMasterContractService.ensureValidRelayerRequestSignature(devicesRequest);
-    const devices = await this.devicesStore.get(devicesRequest.contractAddress);
-    return devices.map((device: Device) => device.deviceInfo);
+    return this.devicesStore.get(devicesRequest.contractAddress);
   }
 }

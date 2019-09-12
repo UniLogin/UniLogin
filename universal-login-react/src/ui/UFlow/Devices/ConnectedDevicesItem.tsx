@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {DeviceInfo} from '@universal-login/commons';
+import {Device} from '@universal-login/commons';
 
-export interface ConnectedDevicesItemProps extends DeviceInfo {
+export interface ConnectedDevicesItemProps extends Device{
   devicesAmount: number;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, os, name, ipAddress, city, time}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo}: ConnectedDevicesItemProps) => {
+  const {os, name, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
 
   return (
