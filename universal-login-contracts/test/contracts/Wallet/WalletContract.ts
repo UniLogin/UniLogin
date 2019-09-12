@@ -60,9 +60,9 @@ describe('WalletContract', async () => {
     it('zero key does not exist', async () => {
       expect(await proxyAsWalletContract.keyExist(constants.AddressZero)).to.be.false;
     });
-
-    });
-    describe('Transfer', async () => {
+  });
+  
+  describe('Transfer', async () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
         expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
