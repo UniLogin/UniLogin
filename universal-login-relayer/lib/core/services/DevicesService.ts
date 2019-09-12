@@ -11,6 +11,11 @@ export class DevicesService {
     return this.devicesStore.add(contractAddress, publicKey, deviceInfo);
   }
 
+  async addOrUpdate(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
+    await this.devicesStore.remove(contractAddress, publicKey);
+    return this.devicesStore.add(contractAddress, publicKey, deviceInfo);
+  }
+
   async getDevices(devicesRequest: RelayerRequest) {
     await this.walletMasterContractService.ensureValidRelayerRequestSignature(devicesRequest);
     const devices = await this.devicesStore.get(devicesRequest.contractAddress);
