@@ -40,6 +40,7 @@ describe('UNIT: ExecutionFactory', async () => {
   });
 
   it('waitToBeMined success', async () => {
+    status.state = 'Success';
     const execution = await executionFactory.createExecution(signedMessage);
     await execution.waitToBeMined();
     expect(execution.messageStatus).to.be.deep.eq(executionStatus);
@@ -47,7 +48,7 @@ describe('UNIT: ExecutionFactory', async () => {
   });
 
   it('waitToBePending', async () => {
-
+    status.state = 'Pending';
     const execution = await executionFactory.createExecution(signedMessage);
     await execution.waitToBePending();
     expect(execution.messageStatus).to.be.deep.eq(executionStatus);
@@ -55,6 +56,7 @@ describe('UNIT: ExecutionFactory', async () => {
   });
 
   it('waitToBeMined error', async () => {
+    status.state = 'Error';
     delete status.transactionHash;
     status.error = 'Error: waitToBeMined';
     const execution = await executionFactory.createExecution(signedMessage);
@@ -64,6 +66,7 @@ describe('UNIT: ExecutionFactory', async () => {
   });
 
   it('waitToBeMined for message with no enough signatures', async () => {
+    status.state = 'AwaitSignature';
     const expectedStatus = {
       ...status,
       required: 2
