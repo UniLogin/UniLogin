@@ -1,8 +1,6 @@
 import {expect} from 'chai';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, UnsignedMessage, createSignedMessage, SignedMessage} from '@universal-login/commons';
-import KeyHolderContract from '../build/KeyHolder.json';
-import {encodeFunction} from './helpers/argumentsEncoding';
-import {computeGasDataFromSignedMessage, estimateGasDataFromSignedMessage} from './helpers/computeGasDataFromSignedMessage';
+import {SignedMessage} from '@universal-login/commons';
+import {estimateGasDataFromSignedMessage} from './helpers/estimateGasDataFromSignedMessage';
 
 const createZeroedHexString = (bytesLength: number) => {
   return `0x${'00'.repeat(bytesLength)}`;
@@ -176,37 +174,5 @@ describe('UNIT: computeGasDataFromSignedMessage', () => {
       };
       expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 65 * 64);
     });
-
-  });
-
-  xit('addKey meta transaction', async () => {
-    const addKeyTransactionEncoding = encodeFunction(KeyHolderContract, 'addKey', [address]);
-    const unsignedMessageBeforeGasDataComputation: UnsignedMessage = {
-      from: address,
-      nonce: 42,
-      to: address,
-      value: 1337,
-      data: addKeyTransactionEncoding,
-      gasPrice: DEFAULT_GAS_PRICE,
-      gasToken: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-      gasLimitExecution: DEFAULT_GAS_LIMIT,
-      gasData: 4294967295, // 0x FF FF FF FF
-    };
-    const expectedUnsignedMessageAfterGasDataComputation: UnsignedMessage = {
-      to: address,
-      from: address,
-      value: 1337,
-      nonce: 42,
-      data: addKeyTransactionEncoding,
-      gasPrice: DEFAULT_GAS_PRICE,
-      gasToken: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-      gasLimitExecution: DEFAULT_GAS_LIMIT,
-      gasData: 11536, // 0x 00 00 FF FF  => note that relayer will charge 2*(68-4) more gas than actual data cost
-    };
-
-    const signedMessage = await createSignedMessage(unsignedMessageBeforeGasDataComputation, privateKey);
-    const actualUnsignedMessageAfterGasDataComputation = computeGasDataFromSignedMessage(signedMessage);
-
-    expect(actualUnsignedMessageAfterGasDataComputation).to.deep.equal(expectedUnsignedMessageAfterGasDataComputation)
   });
 });
