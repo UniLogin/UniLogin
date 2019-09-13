@@ -111,7 +111,7 @@ describe('E2E: SDK', async () => {
       const initiallyDevicesLength = (await sdk.getConnectedDevices(contractAddress, privateKey)).length;
       const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeMined();
-      expect(await sdk.getConnectedDevices(contractAddress, privateKey)).length(initiallyDevicesLength+1);
+      expect(await sdk.getConnectedDevices(contractAddress, privateKey)).length(initiallyDevicesLength + 1);
     });
   });
 
@@ -213,11 +213,11 @@ describe('E2E: SDK', async () => {
 
   describe('Devices', async () => {
     it('should return added devices', async () => {
-      const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map(device => device.publicKey);
+      const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device) => device.publicKey);
       const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeMined();
-      const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map(device => device.publicKey);
-      expect(devicesPublicKeys).length(initiallyPublicKeys.length+1);
+      const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device) => device.publicKey);
+      expect(devicesPublicKeys).length(initiallyPublicKeys.length + 1);
       expect(devicesPublicKeys).to.be.deep.eq([...initiallyPublicKeys, otherWallet.address]);
     });
   });

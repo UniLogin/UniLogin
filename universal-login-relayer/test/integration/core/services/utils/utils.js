@@ -21,7 +21,7 @@ describe('INT: Core tools test', async () => {
   describe('getKeyFromData', async () => {
     it('Should return proper key', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([wallet.address]);
-      expect(getKeyFromData(data)).to.eq(wallet.address); // OK?
+      expect(getKeyFromData(data, 'addKey')).to.eq(wallet.address); // OK?
     });
   });
 

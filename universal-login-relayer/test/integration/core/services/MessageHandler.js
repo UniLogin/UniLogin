@@ -102,7 +102,8 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await messageHandler.stopLater();
-      expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
+      expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.be.deep.eq([]);
+      expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
     });
   });
 
