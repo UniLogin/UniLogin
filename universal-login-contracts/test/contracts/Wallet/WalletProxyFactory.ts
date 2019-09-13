@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, Wallet, utils} from 'ethers';
 import {getWallets, solidity, loadFixture, deployContract} from 'ethereum-waffle';
-import {createKeyPair, signString, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createKeyPair, signString, ETHER_NATIVE_TOKEN, DEPLOYMENT_REFUND} from '@universal-login/commons';
 import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
 import WalletContract from '../../../build/Wallet.json';
 import MockToken from '../../../build/MockToken.json';
@@ -94,12 +94,10 @@ describe('Counterfactual Factory', () => {
   });
 
   it('return in token after deploy', async () => {
-    const deploymentCost = utils.bigNumberify(570000);
-    const deploymentCostWithFee = deploymentCost.div(5).mul(6); // 20% fee
     const mockToken = await deployContract(anotherWallet, MockToken);
     const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({...createFutureDeploymentArgs, gasToken: mockToken.address});
     await mockToken.transfer(futureAddress, utils.parseEther('1.0'));
-    const expectedBalance = deploymentCostWithFee.mul(gasPrice);
+    const expectedBalance = DEPLOYMENT_REFUND.mul(gasPrice);
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(gasPrice)});
     expect(await mockToken.balanceOf(wallet.address)).to.be.eq(expectedBalance);
   });
