@@ -32,30 +32,6 @@ contract Executor {
 
     function keyExist(address _key) public view returns(bool);
 
-    function calculateMessageHash(
-        address from,
-        address to,
-        uint256 value,
-        bytes memory data,
-        uint nonce,
-        uint gasPrice,
-        address gasToken,
-        uint gasLimitExecution,
-        uint gasData) public pure returns (bytes32)
-    {
-        return keccak256(
-            abi.encodePacked(
-                from,
-                to,
-                value,
-                keccak256(data),
-                nonce,
-                gasPrice,
-                gasToken,
-                gasLimitExecution,
-                gasData
-        ));
-    }
 
     function executeSigned(
         address to,
@@ -71,7 +47,7 @@ contract Executor {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);
-        require(areSignaturesValid(signatures, messageHash.toEthSignedMessageHash()), "Invalid signature or nonce");
+        require(verifySignatures(signatures, messageHash.toEthSignedMessageHash()), "Invalid signature or nonce");
         lastNonce++;
         bytes memory _data;
         bool success;
@@ -100,7 +76,32 @@ contract Executor {
         }
     }
 
-    function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
+    function calculateMessageHash(
+        address from,
+        address to,
+        uint256 value,
+        bytes memory data,
+        uint nonce,
+        uint gasPrice,
+        address gasToken,
+        uint gasLimitExecution,
+        uint gasData) public pure returns (bytes32)
+    {
+        return keccak256(
+            abi.encodePacked(
+                from,
+                to,
+                value,
+                keccak256(data),
+                nonce,
+                gasPrice,
+                gasToken,
+                gasLimitExecution,
+                gasData
+        ));
+    }
+
+    function verifySignatures(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
         uint sigCount = signatures.length / 65;
         address lastSigner = address(0);
