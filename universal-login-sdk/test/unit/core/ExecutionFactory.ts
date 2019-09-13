@@ -36,13 +36,20 @@ describe('UNIT: ExecutionFactory', async () => {
       execute: sinon.stub().returns({status: executionStatus}),
       getStatus
     } as any;
-    executionFactory = new ExecutionFactory(relayerApi);
-    (executionFactory as any).tick = 10;
+    executionFactory = new ExecutionFactory(relayerApi, 10);
   });
 
   it('waitToBeMined success', async () => {
     const execution = await executionFactory.createExecution(signedMessage);
     await execution.waitToBeMined();
+    expect(execution.messageStatus).to.be.deep.eq(executionStatus);
+    expect(getStatus.callCount).be.eq(callCount);
+  });
+
+  it('waitToBePending', async () => {
+
+    const execution = await executionFactory.createExecution(signedMessage);
+    await execution.waitToBePending();
     expect(execution.messageStatus).to.be.deep.eq(executionStatus);
     expect(getStatus.callCount).be.eq(callCount);
   });
