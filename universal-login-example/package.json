@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@types/web3": "^1.0.19",
-    "@universal-login/ops": "0.3.36",
-    "@universal-login/relayer": "0.3.36",
-    "@universal-login/web3": "0.3.36",
+    "@universal-login/ops": "0.3.39",
+    "@universal-login/relayer": "0.3.39",
+    "@universal-login/web3": "0.3.39",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "web3": "^1.2.1"
