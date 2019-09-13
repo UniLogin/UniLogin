@@ -37,12 +37,12 @@ describe('CONTRACT: Executor - refund', async  () => {
       gasPrice: 1,
       gasToken: '0x0',
       gasLimitExecution: utils.bigNumberify('240000'),
-      gasData: computeGasData(loopFunctionData)
+      gasData: computeGasData(loopFunctionData) + 2000
     };
   });
 
   it('refund works', async () => {
-    const message = {...transferMessage, gasPrice: 1, from: walletContract.address};
+    const message = {...transferMessage, gasPrice: 1, from: walletContract.address, gasData: 1000};
     signature = calculateMessageSignature(managementKeyPair.privateKey, message);
     const executeData = encodeDataForExecuteSigned({...message, signature});
 

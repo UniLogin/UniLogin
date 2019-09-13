@@ -19,11 +19,11 @@ contract Executor {
     }
 
     function etherRefundCharge() public pure returns(uint) {
-        return 18000;
+        return 16000;
     }
 
     function tokenRefundCharge() public pure returns(uint) {
-        return 24000;
+        return 21000;
     }
 
     function transactionGasCost(uint gasData) public pure returns(uint) {
