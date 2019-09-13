@@ -77,30 +77,6 @@ contract Executor {
         ));
     }
 
-    function getSigner(
-        address from,
-        address to,
-        uint value,
-        bytes memory data,
-        uint nonce,
-        uint gasPrice,
-        address gasToken,
-        uint gasLimitExecution,
-        uint gasData,
-        bytes memory signatures) public pure returns (address)
-    {
-        return calculateMessageHash(
-            from,
-            to,
-            value,
-            data,
-            nonce,
-            gasPrice,
-            gasToken,
-            gasLimitExecution,
-            gasData).toEthSignedMessageHash().recover(signatures);
-    }
-
     function executeSigned(
         address to,
         uint256 value,

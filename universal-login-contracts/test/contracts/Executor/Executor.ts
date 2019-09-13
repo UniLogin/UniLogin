@@ -72,21 +72,6 @@ describe('CONTRACT: Executor - main', async  () => {
         msg.gasData);
       expect(jsHash).to.eq(solidityHash);
     });
-
-    it('recovers signature', async () => {
-      const recoveredAddress = await walletContract.getSigner(
-        msg.from,
-        msg.to,
-        msg.value,
-        msg.data,
-        msg.nonce,
-        msg.gasPrice,
-        msg.gasToken,
-        msg.gasLimitExecution,
-        msg.gasData,
-        signature);
-      expect(recoveredAddress).to.eq(managementKeyPair.publicKey);
-    });
   });
 
   describe('Transfer', async () => {
