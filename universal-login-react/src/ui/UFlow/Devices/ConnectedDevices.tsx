@@ -1,12 +1,13 @@
 import React from 'react';
 import {Device} from '@universal-login/commons';
-import {DeployedWallet} from '@universal-login/sdk';
+import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {ConnectedDevicesItem} from './ConnectedDevicesItem';
 import {ConfirmationsEdit} from './ConfirmationsEdit';
 
 export interface ConnectedDevicesProps {
   devicesList: Device[];
   deployedWallet: DeployedWallet;
+  sdk: UniversalLoginSDK;
 }
 
 export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevicesProps) => {
