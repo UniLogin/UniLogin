@@ -47,9 +47,7 @@ export function Header() {
                   </h2>
                   <Settings
                     className="jarvis-settings"
-                    sdk={sdk}
-                    contractAddress={contractAddress}
-                    privateKey={privateKey}
+                    deployedWallet={walletService.getDeployedWallet()}
                   />
                 </div>
               }

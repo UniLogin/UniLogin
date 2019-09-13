@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
-  privateKey: string;
-  sdk: UniversalLoginSDK;
+  deployedWallet: DeployedWallet;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk, contractAddress, publicKey, privateKey}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, contractAddress, publicKey, deployedWallet}: ConnectedDevicesItemProps) => {
   const {os, name, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
 
@@ -28,7 +27,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk, contractAd
       {toBeRemoved
         ? <div className="connected-devices-buttons">
             <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-            <button onClick={() => sdk.removeKey(contractAddress, publicKey, privateKey, transactionDetails)} className="connected-devices-delete">Delete</button>
+            <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
         </div>
         : <div className="connected-devices-trash-btn-wrapper">
             <WarningMessage devicesAmount={devicesAmount} />

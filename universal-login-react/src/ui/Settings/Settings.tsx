@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import ManageDevices from './ManageDevices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import './../styles/settings.sass';
@@ -9,14 +9,12 @@ import Accordion from './Accordion';
 import {useAsync} from '../hooks/useAsync';
 
 export interface SettingsProps {
-  sdk: UniversalLoginSDK;
-  privateKey: string;
-  contractAddress: string;
+  deployedWallet: DeployedWallet;
   className?: string;
 }
 
-export const Settings = ({sdk, contractAddress, privateKey, className}: SettingsProps) => {
-  const [devices] = useAsync(async () => sdk.getConnectedDevices(contractAddress, privateKey), []);
+export const Settings = ({deployedWallet, className}: SettingsProps) => {
+  const [devices] = useAsync(async () => (deployedWallet as any).sdk.getConnectedDevices(deployedWallet.contractAddress, deployedWallet.privateKey), []);
 
   return (
     <div className="universal-login-settings">
@@ -29,8 +27,7 @@ export const Settings = ({sdk, contractAddress, privateKey, className}: Settings
               subtitle={`You currently have ${devices.length} authorized devices`}
             >
               <ManageDevices
-                privateKey={privateKey}
-                sdk={sdk}
+                deployedWallet={deployedWallet}
                 devices={devices}
               />
             </Accordion>

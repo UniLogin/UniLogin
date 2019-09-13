@@ -29,8 +29,6 @@ export const Devices = ({sdk, contractAddress, privateKey, ensName, className}: 
             <ConnectedDevices
               devicesList={devices}
               deployedWallet={deployedWallet}
-              sdk={sdk}
-              privateKey={privateKey}
             /> : 'Loading devices..'
           }
         </div>
