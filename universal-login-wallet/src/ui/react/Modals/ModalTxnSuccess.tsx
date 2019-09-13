@@ -27,7 +27,7 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
           <Blockies seed={walletPresenter.getContractAddress()} size={8} scale={4} />
           <div>
             <p className="created-account-label">Account name</p>
-            <p className="created-account-hash">0xEb451578Ff05E9E742…ged36354</p>
+            <p className="created-account-hash">{walletPresenter.getContractAddress()}</p>
           </div>
         </div>
         <p className="info-text">Your wallet is ready but not secure. Go to your wallet and make sure to follow the steps to.</p>
