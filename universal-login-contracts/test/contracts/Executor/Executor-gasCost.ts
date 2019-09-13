@@ -11,7 +11,7 @@ import MockToken from '../../../build/MockToken.json';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const callCost = 90000;
+const callCost = 100000;
 const etherTransferCost = 105000;
 const tokenTransferCost = 80000;
 

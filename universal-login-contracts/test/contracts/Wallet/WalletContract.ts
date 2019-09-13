@@ -60,9 +60,9 @@ describe('WalletContract', async () => {
     it('zero key does not exist', async () => {
       expect(await proxyAsWalletContract.keyExist(constants.AddressZero)).to.be.false;
     });
+  });
 
-    });
-    describe('Transfer', async () => {
+  describe('Transfer', async () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
         expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
@@ -325,7 +325,7 @@ describe('WalletContract', async () => {
     });
 
     it('updates master', async () => {
-      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData});
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit: DEFAULT_GAS_LIMIT});
       expect(await walletContractProxy.implementation()).to.eq(newWallet.address);
       const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
       expect(await proxyAsUpdatedWallet.getFive()).to.eq(5);
@@ -333,7 +333,7 @@ describe('WalletContract', async () => {
     });
 
     it('updates store', async () => {
-      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData});
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit: DEFAULT_GAS_LIMIT});
       const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
       expect(await proxyAsUpdatedWallet.someNumber()).to.eq(0);
       await proxyAsUpdatedWallet.change(10);
