@@ -226,9 +226,6 @@ class UniversalLoginSDK {
     );
   }
 
-  async removeConnectedDevice(contractAddress: string, publicKey: string) {
-  }
-
   async start() {
     await this.blockchainObserver.start();
     await this.tokensDetailsStore.fetchTokensDetails();

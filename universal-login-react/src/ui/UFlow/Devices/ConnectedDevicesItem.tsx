@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
+import {transactionDetails} from '../../../core/constants/TransactionDetails';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
@@ -8,7 +9,7 @@ export interface ConnectedDevicesItemProps extends Device {
   sdk: UniversalLoginSDK;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk, contractAddress, publicKey}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk, contractAddress, publicKey, privateKey}: ConnectedDevicesItemProps) => {
   const {os, name, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
 
@@ -26,17 +27,15 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk, contractAd
       </div>
       {toBeRemoved
         ? <div className="connected-devices-buttons">
-          <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-          <button onClick={() => sdk.removeConnectedDevice(contractAddress, publicKey)} className="connected-devices-delete">Delete</button>
+            <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
+            <button onClick={() => sdk.removeKey(contractAddress, publicKey, privateKey, transactionDetails)} className="connected-devices-delete">Delete</button>
         </div>
-        : <div>
-          <div className="connected-devices-trash-btn-wrapper">
+        : <div className="connected-devices-trash-btn-wrapper">
             <WarningMessage devicesAmount={devicesAmount} />
             <button onClick={() => setToBeRemoved(true)} className="connected-devices-trash-btn" />
-          </div>
         </div>
       }
-    </li>
+    </li >
   );
 };
 

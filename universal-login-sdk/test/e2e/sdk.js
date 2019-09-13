@@ -106,6 +106,13 @@ describe('E2E: SDK', async () => {
       await waitToBeMined();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
+
+    it('should add a device to connected devices', async () => {
+      const initiallyDevicesLength = (await sdk.getConnectedDevices(contractAddress, privateKey)).length;
+      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeMined();
+      expect(await sdk.getConnectedDevices(contractAddress, privateKey)).length(initiallyDevicesLength+1);
+    });
   });
 
   describe('keyExist', async () => {
@@ -201,6 +208,17 @@ describe('E2E: SDK', async () => {
         const {privateKey: newDevicePrivateKey} = await sdk.connect(contractAddress);
         expect(newDevicePrivateKey).to.be.properPrivateKey;
       });
+    });
+  });
+
+  describe('Devices', async () => {
+    it('should return added devices', async () => {
+      const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map(device => device.publicKey);
+      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeMined();
+      const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map(device => device.publicKey);
+      expect(devicesPublicKeys).length(initiallyPublicKeys.length+1);
+      expect(devicesPublicKeys).to.be.deep.eq([...initiallyPublicKeys, otherWallet.address]);
     });
   });
 
