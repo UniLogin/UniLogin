@@ -10,7 +10,7 @@ export interface ConnectedDevicesProps {
   sdk: UniversalLoginSDK;
 }
 
-export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevicesProps) => {
+export const ConnectedDevices = ({devicesList, deployedWallet, sdk}: ConnectedDevicesProps) => {
   return (
     <div className="connected-devices">
       <div className="connected-devices-header">
@@ -23,6 +23,7 @@ export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevices
             <ConnectedDevicesItem
               key={index}
               devicesAmount={devicesList.length}
+              sdk={sdk}
               {...device}
             />
           );

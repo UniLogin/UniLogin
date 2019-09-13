@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
+  sdk: UniversalLoginSDK;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk}: ConnectedDevicesItemProps) => {
   const {os, name, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
 
