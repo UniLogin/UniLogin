@@ -7,7 +7,7 @@ export interface ConnectedDevicesItemProps extends Device {
   sdk: UniversalLoginSDK;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk, contractAddress, publicKey}: ConnectedDevicesItemProps) => {
   const {os, name, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
 
@@ -26,7 +26,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, sdk}: Connected
       {toBeRemoved
         ? <div className="connected-devices-buttons">
           <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-          <button className="connected-devices-delete">Delete</button>
+          <button onClick={() => sdk.removeConnectedDevice(contractAddress, publicKey)} className="connected-devices-delete">Delete</button>
         </div>
         : <div>
           <div className="connected-devices-trash-btn-wrapper">
