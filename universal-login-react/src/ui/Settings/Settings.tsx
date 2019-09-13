@@ -29,6 +29,8 @@ export const Settings = ({sdk, contractAddress, privateKey, className}: Settings
               subtitle={`You currently have ${devices.length} authorized devices`}
             >
               <ManageDevices
+                privateKey={privateKey}
+                sdk={sdk}
                 devices={devices}
               />
             </Accordion>
