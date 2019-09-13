@@ -47,7 +47,7 @@ export {escapePressed} from './react/escapePressed';
 export {calculateInitializeWithENSSignature, calculateInitializeSignature, getInitializeSigner} from './core/utils/calculateSignature';
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
 export {DeployArgs} from './core/models/deploy';
-export {isProperAddress, reverseHexString} from './core/utils/hexStrings';
+export {isProperAddress, reverseHexString, createFullHexString, createZeroedHexString} from './core/utils/hexStrings';
 export {slices, shuffle, array8bitTo16bit, deepArrayStartWith} from './core/utils/arrays';
 export {SECURITY_CODE_LENGTH, filterNotificationByCodePrefix, filterKeyWithCodeByPrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes} from './core/utils/securityCodes';
 export {deepMerge} from './core/utils/deepMerge';
