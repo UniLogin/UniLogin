@@ -4,6 +4,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
+  privateKey: string;
   sdk: UniversalLoginSDK;
 }
 

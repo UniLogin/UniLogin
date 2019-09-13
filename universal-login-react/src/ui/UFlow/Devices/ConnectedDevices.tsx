@@ -8,9 +8,10 @@ export interface ConnectedDevicesProps {
   devicesList: Device[];
   deployedWallet: DeployedWallet;
   sdk: UniversalLoginSDK;
+  privateKey: string;
 }
 
-export const ConnectedDevices = ({devicesList, deployedWallet, sdk}: ConnectedDevicesProps) => {
+export const ConnectedDevices = ({devicesList, deployedWallet, sdk, privateKey}: ConnectedDevicesProps) => {
   return (
     <div className="connected-devices">
       <div className="connected-devices-header">
@@ -21,9 +22,10 @@ export const ConnectedDevices = ({devicesList, deployedWallet, sdk}: ConnectedDe
         {devicesList.map((device, index) => {
           return (
             <ConnectedDevicesItem
-              key={index}
+              key={device.publicKey}
               devicesAmount={devicesList.length}
               sdk={sdk}
+              privateKey={privateKey}
               {...device}
             />
           );
