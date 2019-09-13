@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
 
-export interface ConnectedDevicesItemProps extends Device{
+export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
 }
 
@@ -23,15 +23,15 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo}: ConnectedDevic
       </div>
       {toBeRemoved
         ? <div className="connected-devices-buttons">
-            <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-            <button className="connected-devices-delete">Delete</button>
-          </div>
+          <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
+          <button className="connected-devices-delete">Delete</button>
+        </div>
         : <div>
-            <div className="connected-devices-trash-btn-wrapper">
-              <WarningMessage devicesAmount={devicesAmount} />
-              <button onClick={() => setToBeRemoved(true)} className="connected-devices-trash-btn" />
-            </div>
+          <div className="connected-devices-trash-btn-wrapper">
+            <WarningMessage devicesAmount={devicesAmount} />
+            <button onClick={() => setToBeRemoved(true)} className="connected-devices-trash-btn" />
           </div>
+        </div>
       }
     </li>
   );

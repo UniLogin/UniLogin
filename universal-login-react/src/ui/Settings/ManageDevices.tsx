@@ -1,16 +1,16 @@
 import React from 'react';
-import {DeviceInfo} from '@universal-login/commons';
+import {Device} from '@universal-login/commons';
 
 interface ManageDevicesProps {
-  devices: DeviceInfo[];
+  devices: Device[];
 }
 
 export const ManageDevices = ({devices}: ManageDevicesProps) => (
   <div>
     {
-      devices.map(({os}: DeviceInfo, index: number) => (
+      devices.map(({deviceInfo}: Device, index: number) => (
         <div key={index}>
-          device {index} : {os}
+          device {index} : {deviceInfo.os}
           <button className="settings-btn">Remove this device</button>
         </div>))
     }
