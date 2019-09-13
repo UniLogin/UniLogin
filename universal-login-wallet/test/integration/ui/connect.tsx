@@ -43,8 +43,8 @@ describe('UI: Connection flow', () => {
     const publicKey = (new Wallet(services.walletService.getConnectingWallet().privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
     await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
-    await appPage.login().waitForHomeView('1.999');
-    expect(appPage.dashboard().getWalletBalance()).to.startWith('1.999');
+    await appPage.login().waitForHomeView('1.99');
+    expect(appPage.dashboard().getWalletBalance()).to.startWith('1.99');
   });
 
   it('Cancel connection', async () => {
