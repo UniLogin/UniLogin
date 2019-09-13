@@ -32,28 +32,48 @@ contract Executor {
 
     function keyExist(address _key) public view returns(bool);
 
-    function canExecute(
+
+    function executeSigned(
         address to,
         uint256 value,
         bytes memory data,
-        uint nonce,
         uint gasPrice,
         address gasToken,
         uint gasLimitExecution,
         uint gasData,
-        bytes memory signatures) public view returns (bool)
+        bytes memory signatures) public returns (bytes32)
     {
-        bytes32 hash = calculateMessageHash(
-            address(this),
-            to,
-            value,
-            data,
-            nonce,
-            gasPrice,
-            gasToken,
-            gasLimitExecution,
-            gasData).toEthSignedMessageHash();
-        return areSignaturesValid(signatures, hash);
+        uint256 startingGas = gasleft();
+        require(signatures.length != 0, "Invalid signatures");
+        require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);
+        require(verifySignatures(signatures, messageHash.toEthSignedMessageHash()), "Invalid signature or nonce");
+        lastNonce++;
+        bytes memory _data;
+        bool success;
+        /* solium-disable-next-line security/no-call-value */
+        (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
+        emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
+        uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasData)).add(refundGas(gasToken));
+        refund(gasUsed, gasPrice, gasToken, msg.sender);
+        return messageHash;
+    }
+
+    function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
+        if (gasToken != address(0)) {
+            ERC20 token = ERC20(gasToken);
+            token.transfer(beneficiary, gasUsed.mul(gasPrice));
+        } else {
+            beneficiary.transfer(gasUsed.mul(gasPrice));
+        }
+    }
+
+    function refundGas(address gasToken) private pure returns(uint refundCharge) {
+        if (gasToken == address(0)) {
+            return etherRefundCharge();
+        } else {
+            return tokenRefundCharge();
+        }
     }
 
     function calculateMessageHash(
@@ -81,50 +101,7 @@ contract Executor {
         ));
     }
 
-    function executeSigned(
-        address to,
-        uint256 value,
-        bytes memory data,
-        uint gasPrice,
-        address gasToken,
-        uint gasLimitExecution,
-        uint gasData,
-        bytes memory signatures) public returns (bytes32)
-    {
-        uint256 startingGas = gasleft();
-        require(signatures.length != 0, "Invalid signatures");
-        require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData, signatures), "Invalid signature or nonce");
-        lastNonce++;
-        bytes memory _data;
-        bool success;
-        /* solium-disable-next-line security/no-call-value */
-        (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce.sub(1), gasPrice, gasToken, gasLimitExecution, gasData);
-        emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
-        uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasData)).add(refundGas(gasToken));
-        refund(gasUsed, gasPrice, gasToken, msg.sender);
-        return messageHash;
-    }
-
-    function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
-        if (gasToken != address(0)) {
-            ERC20 token = ERC20(gasToken);
-            token.transfer(beneficiary, gasUsed.mul(gasPrice));
-        } else {
-            beneficiary.transfer(gasUsed.mul(gasPrice));
-        }
-    }
-
-    function refundGas(address gasToken) private pure returns(uint refundCharge) {
-        if (gasToken == address(0)) {
-            return etherRefundCharge();
-        } else {
-            return tokenRefundCharge();
-        }
-    }
-
-    function areSignaturesValid(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
+    function verifySignatures(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
         // There cannot be an owner with address 0.
         uint sigCount = signatures.length / 65;
         address lastSigner = address(0);

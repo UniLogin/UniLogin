@@ -76,7 +76,7 @@ package Wallet {
     executeSigned(...)
     refundGas()
     calculateMessageHash()
-    areSignaturesValid()
+    verifySignatures()
   }
 
   class Wallet {
