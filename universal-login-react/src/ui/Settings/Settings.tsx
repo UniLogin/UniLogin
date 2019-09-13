@@ -14,7 +14,7 @@ export interface SettingsProps {
 }
 
 export const Settings = ({deployedWallet, className}: SettingsProps) => {
-  const [devices] = useAsync(async () => (deployedWallet as any).sdk.getConnectedDevices(deployedWallet.contractAddress, deployedWallet.privateKey), []);
+  const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
   return (
     <div className="universal-login-settings">

@@ -17,8 +17,8 @@ export interface DevicesProps {
 
 export const Devices = ({sdk, contractAddress, privateKey, ensName, className}: DevicesProps) => {
   const [newDevicesAmount] = useState(1);
-  const [devices] = useAsync(async () => sdk.getConnectedDevices(contractAddress, privateKey), []);
   const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+  const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
   return (
     <div className="universal-login-devices">
