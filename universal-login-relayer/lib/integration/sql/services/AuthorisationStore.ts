@@ -1,10 +1,5 @@
 import Knex from 'knex';
-
-export interface AddAuthorisationRequest {
-  walletContractAddress: string;
-  key: string;
-  deviceInfo: object;
-}
+import {AddAuthorisationRequest} from '../../../core/models/AddAuthorisationRequest';
 
 class AuthorisationStore {
   constructor(private database: Knex) {}

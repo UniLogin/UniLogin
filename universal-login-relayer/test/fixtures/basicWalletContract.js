@@ -13,7 +13,6 @@ const {gasPrice, gasLimit} = defaultPaymentOptions;
 export default async function basicWalletContract(provider, wallets) {
   const [ , , wallet] = wallets;
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
-  const walletContract = await deployContract(wallet, WalletContract);
   const factoryContract = await deployFactory(wallet, walletContract.address);
   const walletContract = await createWalletContract(wallet);
   return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
