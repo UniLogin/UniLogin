@@ -32,30 +32,6 @@ contract Executor {
 
     function keyExist(address _key) public view returns(bool);
 
-    function canExecute(
-        address to,
-        uint256 value,
-        bytes memory data,
-        uint nonce,
-        uint gasPrice,
-        address gasToken,
-        uint gasLimitExecution,
-        uint gasData,
-        bytes memory signatures) public view returns (bool)
-    {
-        bytes32 hash = calculateMessageHash(
-            address(this),
-            to,
-            value,
-            data,
-            nonce,
-            gasPrice,
-            gasToken,
-            gasLimitExecution,
-            gasData).toEthSignedMessageHash();
-        return areSignaturesValid(signatures, hash);
-    }
-
     function calculateMessageHash(
         address from,
         address to,
@@ -94,13 +70,13 @@ contract Executor {
         uint256 startingGas = gasleft();
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        require(canExecute(to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData, signatures), "Invalid signature or nonce");
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);
+        require(areSignaturesValid(signatures, messageHash.toEthSignedMessageHash()), "Invalid signature or nonce");
         lastNonce++;
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce.sub(1), gasPrice, gasToken, gasLimitExecution, gasData);
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
         uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasData)).add(refundGas(gasToken));
         refund(gasUsed, gasPrice, gasToken, msg.sender);
