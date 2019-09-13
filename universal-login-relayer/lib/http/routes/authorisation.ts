@@ -1,12 +1,12 @@
 import {Router, Request} from 'express';
-import {AddAuthorisationRequest} from '../../integration/sql/services/AuthorisationStore';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress} from '@restless/ethereum';
-import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {RelayerRequest} from '@universal-login/commons';
+import {getDeviceInfo} from '../utils/getDeviceInfo';
 import {asRelayerRequest} from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
+import {AddAuthorisationRequest} from '../../core/models/AddAuthorisationRequest';
 
 
 const request = (authorisationService: AuthorisationService) =>
