@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {providers, Contract} from 'ethers';
+import {providers, Contract, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {getDeployedBytecode} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
@@ -33,8 +33,11 @@ describe('WalletCreator', () => {
   });
 
   it('Sends funds to the contract', async () => {
+    const initialBalance = utils.parseEther('1');
     const {contractAddress, publicKey} = await walletCreator.deployWallet();
-    expect(await provider.getBalance(contractAddress)).to.eq('999999999999430000');
+    const gasUsedForDeployment = utils.bigNumberify(570000);
+    const gasUsedWithFee = gasUsedForDeployment.div(5).mul(6); // 20% fee
+    expect(await provider.getBalance(contractAddress)).to.eq(initialBalance.sub(gasUsedWithFee));
     expect(contractAddress).to.be.properAddress;
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract)}`);
     const walletContract = new Contract(contractAddress, WalletMasterWithRefund.interface, provider);

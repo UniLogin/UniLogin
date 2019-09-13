@@ -30,6 +30,10 @@ contract Executor {
         return gasData.add(21000); // 21000 - cost for initiating transaction
     }
 
+    function computeGasUsedWithFee(uint gasUsed) public pure returns(uint) {
+        return gasUsed.div(5).mul(6); // 20% fee
+    }
+
     function keyExist(address _key) public view returns(bool);
 
 
@@ -62,9 +66,9 @@ contract Executor {
     function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
         if (gasToken != address(0)) {
             ERC20 token = ERC20(gasToken);
-            token.transfer(beneficiary, gasUsed.mul(gasPrice));
+            token.transfer(beneficiary, computeGasUsedWithFee(gasUsed).mul(gasPrice));
         } else {
-            beneficiary.transfer(gasUsed.mul(gasPrice));
+            beneficiary.transfer(computeGasUsedWithFee(gasUsed).mul(gasPrice));
         }
     }
 
