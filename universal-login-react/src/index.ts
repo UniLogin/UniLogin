@@ -31,3 +31,4 @@ export {ModalTransferAmount} from './ui/Transfer/Amount/ModalTransferAmount';
 export {ErrorBoundary} from './ui/commons/ErrorBoundary';
 export {Asset} from './ui/commons/Asset';
 export {Assets} from './ui/commons/Assets';
+export {ULWeb3Provider} from './web3/ULWeb3Provider';
