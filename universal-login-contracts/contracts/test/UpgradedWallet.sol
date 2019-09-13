@@ -6,7 +6,7 @@ import "../wallet/Wallet.sol";
 contract UpgradedWallet is Wallet {
     uint public someNumber = 7;
 
-    function getFive() public view returns(uint) {
+    function getFive() public pure returns(uint) {
         return 5;
     }
 
