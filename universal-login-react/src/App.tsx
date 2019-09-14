@@ -17,6 +17,7 @@ import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
 import {asMock} from './core/utils/asMock';
+import {DeployedWallet} from '@universal-login/sdk';
 
 const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
 
@@ -138,7 +139,7 @@ export const App = () => {
                 }
               }
             />
-            <Route exact path="/settings" render={() => <Settings sdk={sdk} contractAddress={TEST_CONTRACT_ADDRESS} privateKey={TEST_PRIVATE_KEY}/>} />
+            <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}/>} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
             <Route component={() => (<p>not found</p>)} />
           </Switch>

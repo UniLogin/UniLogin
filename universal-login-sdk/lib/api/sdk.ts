@@ -220,7 +220,7 @@ class UniversalLoginSDK {
     );
   }
 
-  getConnectedDevices(contractAddress: string, privateKey: string) {
+  async getConnectedDevices(contractAddress: string, privateKey: string) {
     return this.relayerApi.getConnectedDevices(
       signRelayerRequest({contractAddress}, privateKey)
     );

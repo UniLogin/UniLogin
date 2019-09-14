@@ -19,9 +19,14 @@ describe('INT: Core tools test', async () => {
   });
 
   describe('getKeyFromData', async () => {
-    it('Should return proper key', async () => {
+    it('Should return proper key for addKey', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([wallet.address]);
-      expect(getKeyFromData(data)).to.eq(wallet.address); // OK?
+      expect(getKeyFromData(data, 'addKey')).to.eq(wallet.address);
+    });
+
+    it('Should return proper key for removeKey', async () => {
+      const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address]);
+      expect(getKeyFromData(data, 'removeKey')).to.eq(wallet.address);
     });
   });
 

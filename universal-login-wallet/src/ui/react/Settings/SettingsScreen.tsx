@@ -4,13 +4,12 @@ import {Settings} from '@universal-login/react';
 import {useServices} from '../../hooks';
 
 const SettingsScreen = () => {
-  const {walletService, sdk} = useServices();
-  const {contractAddress, privateKey} = walletService.getDeployedWallet();
+  const {walletService} = useServices();
   return (
     <div className="dashboard">
       <Header />
       <div className="dashboard-content dashboard-content-subscreen">
-        <Settings sdk={sdk} contractAddress={contractAddress} privateKey={privateKey}/>
+        <Settings deployedWallet={walletService.getDeployedWallet()}/>
       </div>
     </div>
   );

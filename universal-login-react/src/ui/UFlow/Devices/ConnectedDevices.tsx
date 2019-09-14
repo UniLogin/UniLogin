@@ -20,8 +20,9 @@ export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevices
         {devicesList.map((device, index) => {
           return (
             <ConnectedDevicesItem
-              key={index}
+              key={device.publicKey}
               devicesAmount={devicesList.length}
+              deployedWallet={deployedWallet}
               {...device}
             />
           );

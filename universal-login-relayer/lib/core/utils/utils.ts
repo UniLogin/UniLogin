@@ -12,11 +12,12 @@ export const isDataForFunctionCall = (data : string, contract : any, functionNam
 
 export const isAddKeyCall = (data : string) =>  isDataForFunctionCall(data, WalletContract, 'addKey');
 export const isAddKeysCall = (data : string) =>  isDataForFunctionCall(data, WalletContract, 'addKeys');
+export const isRemoveKeyCall = (data : string) =>  isDataForFunctionCall(data, WalletContract, 'removeKey');
 
-export const getKeyFromData = (data : string) => {
+export const getKeyFromData = (data : string, functionName: string) => {
   const codec = new utils.AbiCoder();
-  const addKeySighash = new utils.Interface(WalletContract.interface).functions.addKey.sighash;
-  const [address] = (codec.decode(['bytes32'], data.replace(addKeySighash.slice(2), '')));
+  const sigHash = new utils.Interface(WalletContract.interface).functions[functionName].sighash;
+  const [address] = (codec.decode(['bytes32'], data.replace(sigHash.slice(2), '')));
   return utils.getAddress(utils.hexlify(utils.stripZeros(address)));
 };
 

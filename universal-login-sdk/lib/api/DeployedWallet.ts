@@ -53,6 +53,10 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.getNonce(this.contractAddress);
   }
 
+  async getConnectedDevices() {
+    return this.sdk.getConnectedDevices(this.contractAddress, this.privateKey);
+  }
+
   async getRequiredSignatures(): Promise<BigNumber> {
     const walletContract = new Contract(this.contractAddress, WalletContract.interface, this.sdk.provider);
     return walletContract.requiredSignatures();
