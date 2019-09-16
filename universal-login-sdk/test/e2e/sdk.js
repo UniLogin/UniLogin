@@ -87,7 +87,7 @@ describe('E2E: SDK', async () => {
     });
 
     it('when not enough gas', async () => {
-      const gasData = 8336;
+      const gasData = 8720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: gasData + notEnoughGasLimit};
       const {waitToBeMined} = await sdk.execute(message, privateKey);

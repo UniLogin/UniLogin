@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType = 'NotFound' | 'InvalidGasPrice' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -72,6 +72,13 @@ export class InvalidHexData extends ValidationFailed {
   constructor(hexData: string) {
     super(`Invalid hex data ${hexData}`, 'InvalidHexData');
     Object.setPrototypeOf(this, InvalidHexData.prototype);
+  }
+}
+
+export class InvalidGasPrice extends ValidationFailed {
+  constructor(msg: string) {
+    super(`Invalid GasData cost value. ${msg}`, 'InvalidGasPrice');
+    Object.setPrototypeOf(this, InvalidGasPrice.prototype);
   }
 }
 
