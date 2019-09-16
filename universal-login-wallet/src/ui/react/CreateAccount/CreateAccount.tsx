@@ -36,7 +36,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
           </div>
           <div className="box-content create-account-content">
             <img src={vaultImage} srcSet={vaultImage2x} alt="vault" className="create-account-img" />
-            <div className="create-accoutn-selector-block">
+            <div className="create-account-selector-block">
               <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
               <WalletSelector
                 onCreateClick={onCreateClick}
