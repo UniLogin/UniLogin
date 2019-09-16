@@ -1,8 +1,41 @@
 import {expect} from 'chai';
-import {SignedMessage, createFullHexString, createZeroedHexString} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage} from './helpers/estimateGasDataFromSignedMessage';
+import {utils} from 'ethers';
+import {Message, TEST_CONTRACT_ADDRESS, SignedMessage, createFullHexString, createZeroedHexString, UnsignedMessage} from '@universal-login/commons';
+import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
+import {messageToUnsignedMessage, estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage} from '../../../lib/core/utils/utils';
 
-describe('UNIT: computeGasDataFromSignedMessage', () => {
+describe('UNIT: utils', () => {
+  describe('messageToUnsignedMessage', () => {
+    it('correct transform', async () => {
+      const incomingMessage: Partial<Message> = {
+        from: TEST_CONTRACT_ADDRESS,
+        to: TEST_CONTRACT_ADDRESS,
+        value: utils.parseEther('1'),
+        gasPrice: SdkConfigDefault.paymentOptions.gasPrice,
+        gasToken: SdkConfigDefault.paymentOptions.gasToken,
+        data: '0xbeef',
+        gasLimit: utils.bigNumberify(100000),
+        nonce: 0
+      };
+
+      const expectedUnsignedMessage: Partial<SignedMessage> = {
+        from: TEST_CONTRACT_ADDRESS,
+        to: TEST_CONTRACT_ADDRESS,
+        value: utils.parseEther('1'),
+        gasPrice: SdkConfigDefault.paymentOptions.gasPrice,
+        gasToken: SdkConfigDefault.paymentOptions.gasToken,
+        data: '0xbeef',
+        gasData: 8592,
+        gasLimitExecution: utils.bigNumberify(100000 - 8592),
+        nonce: 0,
+      };
+
+      const actualUnsginedMessage = messageToUnsignedMessage(incomingMessage);
+
+      expect(actualUnsginedMessage).to.deep.equal(expectedUnsignedMessage);
+    });
+  });
+
   describe('estimateGasDataFromSignedMessage', () => {
     it('empty message costs 2192 gas', () => {
       const message: SignedMessage = {
@@ -162,6 +195,23 @@ describe('UNIT: computeGasDataFromSignedMessage', () => {
         signature: createFullHexString(65)
       };
       expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 65 * 64);
+    });
+  });
+
+  describe('``estimateGasDataFromUnsignedMessage', () => {
+    it(`add signature`, () => {
+      const message: UnsignedMessage = {
+        from: createFullHexString(20),
+        nonce: 1337,
+        to: createZeroedHexString(20),
+        value: 0,
+        data: createZeroedHexString(0),
+        gasPrice: 0,
+        gasToken: createZeroedHexString(20),
+        gasLimitExecution: 0,
+        gasData: 0
+      };
+      expect(estimateGasDataFromUnsignedMessage(message)).to.equal(2192 + 65 * 64);
     });
   });
 });
