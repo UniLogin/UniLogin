@@ -16,6 +16,6 @@ export default class CreationFlow {
 
   async waitAndGoToWallet(timeout?: number) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Go to your wallet'), timeout);
-    this.wrapper.find('a.button-secondary').simulate('click', {button: 0});
+    this.wrapper.find('a.modal-success-btn').simulate('click', {button: 0});
   }
 }
