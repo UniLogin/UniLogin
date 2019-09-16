@@ -1,8 +1,8 @@
 import {expect} from 'chai';
-import {SignedMessage, createFullHexString, createZeroedHexString} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage} from './helpers/estimateGasDataFromSignedMessage';
+import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage} from '@universal-login/commons';
+import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage} from '../lib/estimateGas';
 
-describe('UNIT: computeGasDataFromSignedMessage', () => {
+describe('UNIT: estimateGas', () => {
   describe('estimateGasDataFromSignedMessage', () => {
     it('empty message costs 2192 gas', () => {
       const message: SignedMessage = {
@@ -162,6 +162,23 @@ describe('UNIT: computeGasDataFromSignedMessage', () => {
         signature: createFullHexString(65)
       };
       expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 65 * 64);
+    });
+  });
+
+  describe('``estimateGasDataFromUnsignedMessage', () => {
+    it(`add signature`, () => {
+      const message: UnsignedMessage = {
+        from: createFullHexString(20),
+        nonce: 1337,
+        to: createZeroedHexString(20),
+        value: 0,
+        data: createZeroedHexString(0),
+        gasPrice: 0,
+        gasToken: createZeroedHexString(20),
+        gasLimitExecution: 0,
+        gasData: 0
+      };
+      expect(estimateGasDataFromUnsignedMessage(message)).to.equal(2192 + 65 * 64);
     });
   });
 });
