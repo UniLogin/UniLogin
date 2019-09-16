@@ -11,10 +11,9 @@ export interface BackupProps {
   className?: string;
 }
 
-export const BackupCodes = ({className}: BackupProps) => {
+export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
   const [codes, setCodes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const walletContract = 'liam.universal-id.eth';
 
   const generateBackupCodes = () => {
     const backupCodes = ['wokzai-tarwib-lezvie-lawgod', 'kenmil-syonuh-jujaro-zansar'];
@@ -46,7 +45,7 @@ export const BackupCodes = ({className}: BackupProps) => {
         <BackupCodesView
           codes={codes}
           printCodes={window.print}
-          walletContract={walletContract}
+          walletContract={deployedWallet.name}
           removeBackupCodes={removeBackupCodes}
           generateBackupCodes={generateBackupCodes}
           loading={loading}
