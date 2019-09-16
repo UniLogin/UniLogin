@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {DeployedWallet} from '@universal-login/sdk';
 import BackupCodesLoader from './BackupCodesLoader';
 import BackupCodesView from './BackupCodesView';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -6,6 +7,7 @@ import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 
 export interface BackupProps {
+  deployedWallet: DeployedWallet;
   className?: string;
 }
 
