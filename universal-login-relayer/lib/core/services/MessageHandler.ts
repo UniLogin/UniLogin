@@ -11,10 +11,12 @@ import IMessageRepository from './messages/IMessagesRepository';
 import IQueueStore from './messages/IQueueStore';
 import {MessageStatusService} from './messages/MessageStatusService';
 import {DevicesService} from './DevicesService';
+import {GasValidator} from './validators/GasValidator';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
   private queueService: QueueService;
+  private gasValidator: GasValidator;
 
   constructor(
     wallet: Wallet,
@@ -28,6 +30,7 @@ class MessageHandler {
   ) {
     this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionMined.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
+    this.gasValidator = new GasValidator();
   }
 
   start() {
@@ -52,6 +55,7 @@ class MessageHandler {
   }
 
   async handleMessage(message: SignedMessage) {
+    this.gasValidator.validate(message);
     return this.pendingMessages.add(message);
   }
 

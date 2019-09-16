@@ -19,6 +19,7 @@ const addKey = async (contractAddress, publicKey, privateKey, tokenAddress, prov
     from: contractAddress,
     data,
     nonce: parseInt(await (new Contract(contractAddress, WalletContract.interface, provider)).lastNonce(), 10),
+    gasData: 11408
   };
   const signedMessage = createSignedMessage(message, privateKey);
   await chai.request('http://localhost:33511')
