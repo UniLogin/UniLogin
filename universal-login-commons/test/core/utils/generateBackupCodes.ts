@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {toWords, generateBackupCode, fromWords} from '../../lib/vendors/Daefen';
+import {toWords, generateBackupCode, fromWords} from '../../../lib/core/utils/generateBackupCodes';
 import {utils} from 'ethers';
 
 describe('Daefen', () => {
