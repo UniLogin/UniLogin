@@ -2,12 +2,13 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
 import {utils, Contract, providers, Wallet} from 'ethers';
-import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, Message} from '@universal-login/commons';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
-import {encodeDataForExecuteSigned, computeGasFields} from '../../../lib';
+import {encodeDataForExecuteSigned} from '../../../lib/encode';
+import {messageToSignedMessage} from '../../../lib/message';
 import TEST_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 
 chai.use(chaiAsPromised);
@@ -16,13 +17,15 @@ chai.use(solidity);
 describe('CONTRACT: Executor - refund', async () => {
   let provider: providers.Provider;
   let walletContract: Contract;
-  let signature: string;
   let wallet: Wallet;
   let mockToken: Contract;
   let managementKeyPair: KeyPair;
   let loopContract: Contract;
-  let infiniteCallMessage: UnsignedMessage;
+  let infiniteCallMessage: Message;
   let initialBalance: utils.BigNumber;
+
+
+  const computeFeeFor = (gasUsed: utils.BigNumber) => gasUsed.div(5); // 20% fee
 
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicExecutor));
@@ -31,17 +34,16 @@ describe('CONTRACT: Executor - refund', async () => {
   });
 
   it('refund works', async () => {
-    const unsignedMessage = {...transferMessage, gasPrice: 1, from: walletContract.address};
-    const unsignedMessageWithEstimates = {...unsignedMessage, ...computeGasFields(unsignedMessage, TEST_PAYMENT_OPTIONS.gasLimit)};
-    signature = calculateMessageSignature(managementKeyPair.privateKey, unsignedMessageWithEstimates);
-    const executeData = encodeDataForExecuteSigned({...unsignedMessageWithEstimates, signature});
+    const message = {...transferMessage, gasPrice: 1, from: walletContract.address,  gasLimit: TEST_PAYMENT_OPTIONS.gasLimit};
+    const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey);
+    const executeData = encodeDataForExecuteSigned(signedMessage);
 
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
     const balanceAfter = await wallet.getBalance();
-    const gasFee = receipt.gasUsed!.div(5); // 20% fee
+    const gasFee = computeFeeFor(receipt.gasUsed!);
     expect(balanceAfter).to.be.above(initialBalance.add(gasFee));
   });
 
@@ -56,36 +58,31 @@ describe('CONTRACT: Executor - refund', async () => {
         nonce: 0,
         gasPrice: 1,
         gasToken: '0x0',
-        gasLimitExecution: 0,
-        gasData: 0
+        gasLimit: TEST_PAYMENT_OPTIONS.gasLimit
       };
     });
 
     it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
-      infiniteCallMessage = {...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address};
-      const unsignedMessageWithEstimates = {...infiniteCallMessage, ...computeGasFields(infiniteCallMessage, TEST_PAYMENT_OPTIONS.gasLimit)};
-      signature = calculateMessageSignature(managementKeyPair.privateKey, unsignedMessageWithEstimates);
-      const executeData = encodeDataForExecuteSigned({...unsignedMessageWithEstimates, signature});
+      const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address}, managementKeyPair.privateKey);
+      const executeData = encodeDataForExecuteSigned(signedMessage);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: unsignedMessageWithEstimates.gasLimitExecution});
+      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: signedMessage.gasLimitExecution});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
       const balanceAfter = await wallet.getBalance();
-      const gasFee = receipt.gasUsed!.div(5); // 20% fee
+      const gasFee = computeFeeFor(receipt.gasUsed!);
       expect(balanceAfter).to.be.above(initialBalance.add(gasFee));
     });
 
     it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
       const initialTokenBalance = await mockToken.balanceOf(wallet.address);
-      infiniteCallMessage = {...infiniteCallMessage, gasToken: mockToken.address};
-      const unsignedMessageWithEstimates = {...infiniteCallMessage, ...computeGasFields(infiniteCallMessage, TEST_PAYMENT_OPTIONS.gasLimit)};
-      signature = calculateMessageSignature(managementKeyPair.privateKey, unsignedMessageWithEstimates);
-      const executeData = encodeDataForExecuteSigned({...unsignedMessageWithEstimates, signature});
+      const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: mockToken.address}, managementKeyPair.privateKey);
+      const executeData = encodeDataForExecuteSigned(signedMessage);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: unsignedMessageWithEstimates.gasLimitExecution});
+      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: signedMessage.gasLimitExecution});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
-      const gasFee = receipt.gasUsed!.div(5); // 20% fee
+      const gasFee = computeFeeFor(receipt.gasUsed!);
       const balanceAfter = await mockToken.balanceOf(wallet.address);
       expect(balanceAfter).to.be.above(initialTokenBalance.add(gasFee));
     });

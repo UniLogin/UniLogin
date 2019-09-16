@@ -1,6 +1,12 @@
 import {utils} from 'ethers';
-import {Message, UnsignedMessage} from '@universal-login/commons';
-import {computeGasFields} from '@universal-login/contracts';
+import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature} from '@universal-login/commons';
+import {computeGasFields} from './estimateGas';
+
+export const messageToSignedMessage = (message: Partial<Message>, privateKey: string): SignedMessage => {
+  const unsignedMessage = messageToUnsignedMessage(message);
+  const signature = calculateMessageSignature(privateKey, unsignedMessage);
+  return {...unsignedMessage, signature};
+};
 
 export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMessage => {
   const messageWithoutGasEstimates = {
