@@ -165,7 +165,7 @@ describe('UNIT: estimateGas', () => {
     });
   });
 
-  describe('``estimateGasDataFromUnsignedMessage', () => {
+  describe('estimateGasDataFromUnsignedMessage', () => {
     it(`add signature`, () => {
       const message: UnsignedMessage = {
         from: createFullHexString(20),

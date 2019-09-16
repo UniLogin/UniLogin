@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {Message, TEST_CONTRACT_ADDRESS, SignedMessage} from '@universal-login/commons';
-import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
-import {messageToUnsignedMessage} from '../../../lib/core/utils/utils';
+import {SdkConfigDefault} from '../../../../lib/config/SdkConfigDefault';
+import {messageToUnsignedMessage} from '../../../../lib/core/utils/message';
 
 describe('UNIT: utils', () => {
   describe('messageToUnsignedMessage', () => {

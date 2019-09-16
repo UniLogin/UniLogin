@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {Message, UnsignedMessage} from '@universal-login/commons';
-import {fillGasEstimatesToUnsignedMessage} from '@universal-login/contracts';
+import {computeGasFields} from '@universal-login/contracts';
 
 export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMessage => {
   const messageWithoutGasEstimates = {
@@ -15,5 +15,5 @@ export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMes
     gasLimitExecution: 0
   };
 
-  return fillGasEstimatesToUnsignedMessage(messageWithoutGasEstimates, message.gasLimit!);
+  return {...messageWithoutGasEstimates, ...computeGasFields(messageWithoutGasEstimates, message.gasLimit!)};
 };
