@@ -1,3 +1,5 @@
+import {utils} from 'ethers';
+
 /* eslint-disable */
 
 /*
@@ -53,13 +55,13 @@ for (let a = 0; a < vowels.length; a++) {
 }
 
 // Quick function that converts a big Number object into an array of numbers for any chosen base
-function fromBase10(bigNum: number, base: number) {
+function fromBase10(bigNum: utils.BigNumber, base: utils.BigNumber) {
   const result: number[] = [];
-  if (bigNum === 0) {
+  if (bigNum.eq(0)) {
     return [0];
   }
-  for (let i = bigNum; i > 0; i = Math.floor(i / base)) {
-    result.unshift(i % base);
+  for (let i = bigNum; i.gt(0); i = i.div(base)) {
+    result.unshift(i.mod(base).toNumber());
   }
   return result;
 }
@@ -70,8 +72,8 @@ function isConsonant(letter: string) {
 }
 
 // Converts an integer (passed as a string to avoid scientific notation issues)
-function toWords(number: number) {
-  const numberArray: number[] = fromBase10(number, syllables.length);
+function toWords(number: utils.BigNumber) {
+  const numberArray: number[] = fromBase10(number, utils.bigNumberify(syllables.length));
   let result = '';
   let lastWord = '';
   let n = 0;
@@ -97,7 +99,7 @@ function toWords(number: number) {
   });
 }
 
-// Converts a valid phrase back into a string
+// Converts a valid phrase back into a number
 function fromWords(words: string) {
   const wordArray = words
     .toLowerCase()
@@ -126,4 +128,17 @@ function fromWords(words: string) {
   return result;
 }
 
-export {fromWords, toWords};
+function generateBackupCode(
+  random1: utils.BigNumber = utils.bigNumberify(utils.randomBytes(128)),
+  random2: utils.BigNumber = utils.bigNumberify(utils.randomBytes(128))
+) {
+  const prefix = toWords(random1)
+      .replace(/\s/g, '-')
+    .toLowerCase();
+  const suffix = toWords(random2)
+      .replace(/\s/g, '-')
+    .toLowerCase();
+  return `${prefix}-${suffix}`;
+}
+
+export {fromWords, toWords, generateBackupCode};
