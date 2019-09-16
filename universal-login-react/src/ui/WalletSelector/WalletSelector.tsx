@@ -57,6 +57,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
             placeholder="bob.example.eth"
             autoFocus
+            checkSpelling={false}
           />
           {isNameAvailable && <div className="hint" >Name is already taken or is invalid</div>}
           {renderBusyIndicator(busy)}
