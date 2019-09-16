@@ -17,9 +17,12 @@ interface WalletSelector {
   domains: string[];
   actions?: WalletSuggestionAction[];
   className?: string;
+  placeholder?: string;
 }
 
-export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, actions = WALLET_SUGGESTION_ALL_ACTIONS, className}: WalletSelector) => {
+const defaultInputPlaceholder = 'bob.example.eth';
+
+export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, actions = WALLET_SUGGESTION_ALL_ACTIONS, className, placeholder = defaultInputPlaceholder}: WalletSelector) => {
   const [debouncedSuggestionsService] = useState(
     new DebouncedSuggestionsService(new SuggestionsService(sdk, domains, actions))
   );
@@ -55,7 +58,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             className="wallet-selector"
             id="loginInput"
             onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
-            placeholder="bob.example.eth"
+            placeholder={placeholder}
             autoFocus
             checkSpelling={false}
           />
