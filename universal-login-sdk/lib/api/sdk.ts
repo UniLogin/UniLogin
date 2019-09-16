@@ -14,7 +14,7 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
-import {messageToUnsignedMessage} from '../core/utils/utils';
+import {messageToUnsignedMessage} from '@universal-login/contracts';
 
 class UniversalLoginSDK {
   provider: providers.Provider;

@@ -2,10 +2,10 @@ import {utils} from 'ethers';
 import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 
-export const fillGasEstimatesToUnsignedMessage = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish): UnsignedMessage => {
+export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
   const gasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
   const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
-  return {...unsignedMessage, gasData, gasLimitExecution};
+  return {gasData, gasLimitExecution};
 };
 
 export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
