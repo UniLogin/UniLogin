@@ -30,7 +30,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const message = {...msg, gasLimitExecution: utils.parseEther('2.0')};
+    const message = {...msg, gasLimitExecution: utils.parseEther('2.0'), gasData: 8912};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await messageHandler.stopLater();
@@ -39,7 +39,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough gas', async () => {
-    const message = {...msg, gasLimitExecution: 100};
+    const message = {...msg, gasLimitExecution: 100, gasData: 8976};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await messageHandler.stopLater();
@@ -52,7 +52,7 @@ describe('INT: MessageHandler', async () => {
   describe('Transfer', async () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
-      const signedMessage = createSignedMessage(msg, wallet.privateKey);
+      const signedMessage = createSignedMessage({...msg, gasData: 8976} , wallet.privateKey);
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
       await messageHandler.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
@@ -64,7 +64,7 @@ describe('INT: MessageHandler', async () => {
 
   describe('Add Key', async () => {
     it('execute add key', async () => {
-      msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce(), gasData: 11408};
       const signedMessage = createSignedMessage(msg, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);

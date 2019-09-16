@@ -3,8 +3,6 @@ import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString} fro
 import {encodeDataForExecuteSigned} from './encode';
 import cloneDeep from 'lodash.clonedeep';
 
-export const NOT_COMPUTED_FIELDS_GAS_FEE = 6 * 64;
-
 export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
   const gasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
   const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
@@ -17,7 +15,7 @@ export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMess
 };
 
 export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) => {
-  const copySignedMessage = {...cloneDeep(signedMessage), gasData: 0, gasLimitExecution: 0};
+  const copySignedMessage = {...cloneDeep(signedMessage), gasData: utils.bigNumberify('0xFFFFFF'), gasLimitExecution: utils.bigNumberify('0xFFFFFF')};
   const txdata = encodeDataForExecuteSigned(copySignedMessage);
-  return computeGasData(txdata) + NOT_COMPUTED_FIELDS_GAS_FEE;
+  return computeGasData(txdata);
 };

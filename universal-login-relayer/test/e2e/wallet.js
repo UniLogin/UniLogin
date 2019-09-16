@@ -36,7 +36,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       gasToken: mockToken.address,
       gasPrice: 110000000,
       gasLimitExecution: 1000000,
-      gasData: 0
+      gasData: 9680
     };
     const balanceBefore = await otherWallet.getBalance();
     const signedMessage = createSignedMessage(msg, keyPair.privateKey);
