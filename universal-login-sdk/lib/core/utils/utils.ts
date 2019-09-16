@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
-import {Message, UnsignedMessage, SignedMessage, computeGasData, createFullHexString} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '@universal-login/contracts';
+import {Message, UnsignedMessage} from '@universal-login/commons';
+import {fillGasEstimatesToUnsignedMessage} from '@universal-login/contracts';
 
 export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMessage => {
   const messageWithoutGasEstimates = {
@@ -16,20 +16,4 @@ export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMes
   };
 
   return fillGasEstimatesToUnsignedMessage(messageWithoutGasEstimates, message.gasLimit!);
-};
-
-export const fillGasEstimatesToUnsignedMessage = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish): UnsignedMessage => {
-  const gasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
-  const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
-  return {...unsignedMessage, gasData, gasLimitExecution};
-};
-
-export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
-  const signature = createFullHexString(65);
-  return estimateGasDataFromSignedMessage({...unsignedMessage, signature});
-};
-
-export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) => {
-  const txdata = encodeDataForExecuteSigned(signedMessage);
-  return computeGasData(txdata);
 };
