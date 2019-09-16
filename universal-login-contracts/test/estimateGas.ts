@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage} from '../lib/estimateGas';
+import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage, NOT_COMPUTED_FIELDS_GAS_FEE} from '../lib/estimateGas';
 
 describe('UNIT: estimateGas', () => {
   describe('estimateGasDataFromSignedMessage', () => {
@@ -17,7 +17,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`from and nonce don't count for gasData`, () => {
@@ -33,7 +33,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add 0xff...ff 'to' address`, () => {
@@ -49,7 +49,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 1280);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + 1280 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add value 255 [0xff]`, () => {
@@ -65,7 +65,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 64);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + 64 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add gasPrice 255 [0xff]`, () => {
@@ -81,7 +81,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 64);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + 64 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add 0xff...ff gasToken address`, () => {
@@ -97,7 +97,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 1280);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + 1280 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add gasLimitExecution 1000`, () => {
@@ -113,7 +113,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 128);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.within(2192 + 128, 2192 + 128 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add real gasData uint 0xff`, () => {
@@ -129,7 +129,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 255,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 64);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.within(2192 + 64, 2192 + 64 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add 100bytes of 0xff data`, () => {
@@ -145,7 +145,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createZeroedHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 6400 + 576);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + 6400 + 576 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
 
     it(`add signature`, () => {
@@ -161,7 +161,7 @@ describe('UNIT: estimateGas', () => {
         gasData: 0,
         signature: createFullHexString(65)
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.equal(2192 + 65 * 64);
+      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2192 + 65 * 64 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
   });
 
@@ -178,7 +178,7 @@ describe('UNIT: estimateGas', () => {
         gasLimitExecution: 0,
         gasData: 0
       };
-      expect(estimateGasDataFromUnsignedMessage(message)).to.equal(2192 + 65 * 64);
+      expect(estimateGasDataFromUnsignedMessage(message)).to.be.equal(2192 + 65 * 64 + NOT_COMPUTED_FIELDS_GAS_FEE);
     });
   });
 });
