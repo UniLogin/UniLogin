@@ -98,7 +98,8 @@ export class WalletService {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
     ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
-    this.connect(new DeployedWallet(contractAddress, name, wallet.privateKey, this.sdk));
+    const applicationWallet: ApplicationWallet = {contractAddress, name, privateKey: wallet.privateKey};
+    this.connect(applicationWallet);
   }
 
   disconnect(): void {
