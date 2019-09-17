@@ -26,10 +26,6 @@ describe('Daefen', () => {
       expect(toWords(utils.bigNumberify(9007199254740991))).to.eq('Omkeu Ugekum Ope');
     });
 
-    it('Error for 2^53 passed as number', () => {
-      expect(() => toWords(utils.bigNumberify(9007199254740992))).to.throw('overflow');
-    });
-
     it('Bigger than Number.MAX_VALUE', () => {
       expect(toWords(utils.bigNumberify(`1${'0'.repeat(309)}`))).to.match(/As Owauda Cibime Za Nagciv ([A-Z][a-z]+ )*Villah Ywefui Ryiodo Egu/);
     });
