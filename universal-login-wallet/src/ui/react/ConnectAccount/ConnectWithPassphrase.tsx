@@ -3,11 +3,11 @@ import {Spinner, InputLabel} from '@universal-login/react';
 import {CustomInput} from '../common/CustomInput';
 import {useServices, useRouter} from '../../hooks';
 
-interface ConnectWithPasssphraseProps {
+interface ConnectWithPassphraseProps {
   name: string;
 }
 
-export const ConnectWithPassphrase = ({name}: ConnectWithPasssphraseProps) => {
+export const ConnectWithPassphrase = ({name}: ConnectWithPassphraseProps) => {
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -41,9 +41,9 @@ export const ConnectWithPassphrase = ({name}: ConnectWithPasssphraseProps) => {
                 value={code}
                 onChange={event => setCode(event.target.value)}
               />
-              {(errorMessage && !isLoading) ? errorMessage : null}
+              {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
+              </div>
               <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}>{isLoading ? <Spinner /> : 'Recover'}</button>
-            </div>
           </div>
         </div>
       </div>

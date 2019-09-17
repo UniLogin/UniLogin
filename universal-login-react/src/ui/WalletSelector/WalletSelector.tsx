@@ -62,7 +62,7 @@ export const WalletSelector = ({onCreateClick, onConnectClick, sdk, domains, act
             autoFocus
             checkSpelling={false}
           />
-          {isNameAvailable && <div className="hint" >Name is already taken or is invalid</div>}
+          {isNameAvailable && <div className="hint">Name is already taken or is invalid</div>}
           {renderBusyIndicator(busy)}
         </div>
         {renderSuggestions()}
