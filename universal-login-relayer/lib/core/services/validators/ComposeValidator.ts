@@ -4,7 +4,9 @@ import IMessageValidator from './IMessageValidator';
 export class ComposeValidator implements IMessageValidator {
   constructor(private validators: Array<IMessageValidator>) {}
 
-  validate(signedMessage: SignedMessage) {
-    this.validators.forEach((validator) => validator.validate(signedMessage));
+  async validate(signedMessage: SignedMessage) {
+    for (let i = 0; i < this.validators.length; i++) {
+      await this.validators[i].validate(signedMessage);
+    }
   }
 }
