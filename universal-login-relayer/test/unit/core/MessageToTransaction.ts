@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, computeGasData} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
-import {messageToTransaction} from '../../../lib/core/utils/utils';
+import {messageToTransaction} from '../../../lib/core/utils/messages/serialisation';
 
 describe('UNIT: MessageToTransaction', () => {
   const gasLimitExecution = utils.bigNumberify(23000);

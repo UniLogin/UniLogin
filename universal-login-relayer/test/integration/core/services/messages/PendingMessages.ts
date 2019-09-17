@@ -7,7 +7,7 @@ import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
-import {getKeyFromHashAndSignature} from '../../../../../lib/core/utils/utils';
+import {getKeyFromHashAndSignature} from '../../../../../lib/core/utils/encodeData';
 import {getKnexConfig} from '../../../../helpers/knex';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';

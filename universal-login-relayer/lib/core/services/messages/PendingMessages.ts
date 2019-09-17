@@ -4,7 +4,7 @@ import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
 import IMessageRepository from './IMessagesRepository';
-import {getKeyFromHashAndSignature} from '../../utils/utils';
+import {getKeyFromHashAndSignature} from '../../utils/encodeData';
 import QueueService from './QueueService';
 import {createMessageItem} from '../../utils/messages/serialisation';
 

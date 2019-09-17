@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {decodeParametersFromData, isAddKeyCall, isAddKeysCall, getFunctionParametersData} from '../../../../../lib/core/utils/utils';
+import {decodeParametersFromData, isAddKeyCall, isAddKeysCall, getFunctionParametersData} from '../../../../../lib/core/utils/encodeData';
 import {utils, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 

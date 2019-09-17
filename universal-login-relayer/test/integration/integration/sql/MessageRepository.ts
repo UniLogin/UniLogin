@@ -6,7 +6,7 @@ import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils
 import IMessageRepository from '../../../../lib/core/services/messages/IMessagesRepository';
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import {getKeyFromHashAndSignature} from '../../../../lib/core/utils/utils';
+import {getKeyFromHashAndSignature} from '../../../../lib/core/utils/encodeData';
 import {getKnexConfig} from '../../../helpers/knex';
 import MessageSQLRepository from '../../../../lib/integration/sql/services/MessageSQLRepository';
 import MessageMemoryRepository from '../../../helpers/MessageMemoryRepository';
