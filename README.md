@@ -40,7 +40,7 @@ Packages maintained with this monorepo are listed below.
 ### Ropsten:
 - Domains: `poppularapp.test`, `my-login.test`, `universal-login.test`
 - Relayer url: `universal-login-relayer.herokuapp.com`
-- Jarvis Wallet (web wallet): [wallet.universallogin.io](wallet.universallogin.io)
+- Jarvis Wallet (web wallet): [wallet.universallogin.io](https://wallet.universallogin.io)
 
 ## Contributing
 
