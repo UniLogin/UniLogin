@@ -1,5 +1,7 @@
 import {utils} from 'ethers';
 
+const {bigNumberify} = utils;
+
 const consonants: string = 'bcdfghjklmnprstvwz';
 const vowels: string = 'aeiouy';
 
@@ -61,7 +63,7 @@ function isConsonant(letter: string) {
 
 export function toWords(number: utils.BigNumber) {
   const syllables = getSyllables();
-  const numberArray: number[] = fromBase(number, utils.bigNumberify(syllables.length));
+  const numberArray: number[] = fromBase(number, bigNumberify(syllables.length));
   let result = '';
   let lastWord = '';
   let n = 0;
@@ -99,7 +101,7 @@ export function fromWords(words: string) {
       return `${r.substr(0, n)} ${r.substr(n, n)}`;
     })
     .split(' ');
-  let result = 0;
+  let result = bigNumberify(0);
 
   const syllables = getSyllables();
   for (let i = 0; i < wordArray.length; i++) {
@@ -107,18 +109,16 @@ export function fromWords(words: string) {
       return;
     }
 
-    result =
-      result +
-      syllables.indexOf(wordArray[i]) *
-      Math.pow(syllables.length, wordArray.length - i - 1);
+    const magnitude = bigNumberify(syllables.length).pow(bigNumberify(wordArray.length - i - 1));
+    result = result.add(bigNumberify(syllables.indexOf(wordArray[i])).mul(magnitude));
   }
 
-  return result;
+  return bigNumberify(result);
 }
 
 export function generateBackupCode(
-  random1: utils.BigNumber = utils.bigNumberify(utils.randomBytes(128)),
-  random2: utils.BigNumber = utils.bigNumberify(utils.randomBytes(128))
+  random1: utils.BigNumber = bigNumberify(utils.randomBytes(128)),
+  random2: utils.BigNumber = bigNumberify(utils.randomBytes(128))
 ) {
   const prefix = toWords(random1)
     .replace(/\s/g, '-')
