@@ -1,3 +1,4 @@
+import Knex from 'knex';
 import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
 import MessageHandler from '../../lib/core/services/MessageHandler';
@@ -14,7 +15,7 @@ import {DevicesStore} from '../../lib/integration/sql/services/DevicesStore';
 import {DevicesService} from '../../lib/core/services/DevicesService';
 import WalletMasterContractService from '../../lib/integration/ethereum/services/WalletMasterContractService';
 
-export default async function setupMessageService(knex) {
+export default async function setupMessageService(knex: Knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
   const hooks = new EventEmitter();
   const authorisationStore = new AuthorisationStore(knex);
