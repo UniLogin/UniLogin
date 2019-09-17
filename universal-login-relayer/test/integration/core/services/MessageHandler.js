@@ -1,6 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {createSignedMessage, waitExpect} from '@universal-login/commons';
+import {encodeFunction} from '@universal-login/contracts/testutils';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';
@@ -85,6 +87,20 @@ describe('INT: MessageHandler', async () => {
         expect(authorisations).to.deep.eq([]);
         expect(await devicesStore.get(walletContract.address)).length(1);
       });
+    });
+  });
+
+  describe('Add Keys', async () => {
+    it('execute add key', async () => {
+      const keys = [otherWallet.address];
+      const data = encodeFunction(WalletContract, 'addKeys', [keys]);
+      msg = {data, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const signedMessage0 = createSignedMessage(msg, wallet.privateKey);
+      await messageHandler.handleMessage(signedMessage0);
+      await messageHandler.stopLater();
+      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
+      const devices = await devicesStore.get(walletContract.address);
+      expect(devices.map(({publicKey}) => publicKey)).to.be.deep.eq(keys);
     });
   });
 
