@@ -26,4 +26,6 @@
 /universal-login-example/dist/
 /universal-login-example/node_modules/
 /universal-login-example/yarn-error.log
+/universal-login-example/build
 yarn-error.log
+.cache
