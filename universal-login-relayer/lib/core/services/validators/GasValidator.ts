@@ -1,9 +1,7 @@
 import {estimateGasDataFromUnsignedMessage} from '@universal-login/contracts';
-import {SignedMessage, ensure} from '@universal-login/commons';
+import {SignedMessage, ensure, GAS_BASE} from '@universal-login/commons';
 import {InsufficientGas} from '../../utils/errors';
 import IMessageValidator from './IMessageValidator';
-
-export const GAS_BASE = 105000;
 
 export class GasValidator implements IMessageValidator {
   async validate(signedMessage: SignedMessage) {

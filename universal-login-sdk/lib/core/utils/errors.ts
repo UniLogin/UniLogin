@@ -1,4 +1,4 @@
-type ErrorType = 'ApplicationWalletNotFound' | 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
+type ErrorType = 'InsufficientGas' | 'ApplicationWalletNotFound' | 'ConcurrentAuthorisation' | 'ConcurrentDeployment' | 'UnsupportedBytecode' | 'InvalidAddress' | 'MissingConfiguration' | 'TransactionHashNotFound' | 'MissingMessageHash' | 'InvalidPassphrase' | 'TimeoutError' | 'InvalidEvent' | 'Overridden' | 'WalletOverridden' | 'FutureWalletNotSet' | 'InvalidContract' | 'NoSet';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -72,6 +72,13 @@ export class InvalidPassphrase extends ValidationFailed {
   constructor () {
     super('Passphrase is not valid', 'InvalidPassphrase');
     Object.setPrototypeOf(this, InvalidPassphrase.prototype);
+  }
+}
+
+export class InsufficientGas extends ValidationFailed {
+  constructor (message: string) {
+    super(`Insufficient Gas. ${message}`, 'InsufficientGas');
+    Object.setPrototypeOf(this, InsufficientGas.prototype);
   }
 }
 
