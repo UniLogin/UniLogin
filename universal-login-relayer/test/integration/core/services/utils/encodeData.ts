@@ -48,6 +48,12 @@ describe('INT: Core tools test', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address]);
       expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
     });
+
+    it('Should return proper key for addKeys', async () => {
+      const keys = [wallet.address];
+      const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys]);
+      expect(decodeParametersFromData(data, ['address[]'])[0]).to.deep.eq(keys);
+    });
   });
 
   describe('isAddKeyCall', async () => {
