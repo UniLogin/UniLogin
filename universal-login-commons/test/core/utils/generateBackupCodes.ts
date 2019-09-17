@@ -1,8 +1,54 @@
 import {expect} from 'chai';
-import {toWords, generateBackupCode, fromWords} from '../../../lib/core/utils/generateBackupCodes';
+import {toWords, generateBackupCode, fromWords, getSyllables} from '../../../lib/core/utils/generateBackupCodes';
 import {utils} from 'ethers';
 
 describe('Daefen', () => {
+  describe('getSyllables', () => {
+    const syllables = getSyllables();
+
+    it('Length equal 3456', () => {
+      expect(syllables).length(3456);
+    });
+
+    it('vowel+consonant', () => {
+      expect(syllables[0]).to.eq('ab');
+      expect(syllables[1]).to.eq('ac');
+      expect(syllables[17]).to.eq('az');
+      expect(syllables[107]).to.eq('yz');
+    });
+
+    it('consonant+vowel', () => {
+      expect(syllables[108]).to.eq('ba');
+      expect(syllables[114]).to.eq('ca');
+      expect(syllables[116]).to.eq('ci');
+      expect(syllables[215]).to.eq('zy');
+    });
+
+    it('consonant+vowel+vowel', () => {
+      expect(syllables[216]).to.eq('baa');
+      expect(syllables[221]).to.eq('bay');
+      expect(syllables[227]).to.eq('bey');
+      expect(syllables[263]).to.eq('cey');
+      expect(syllables[863]).to.eq('zyy');
+    });
+
+    it('consonant+vowel+consonant', () => {
+      expect(syllables[864]).to.eq('bab');
+      expect(syllables[881]).to.eq('baz');
+      expect(syllables[882]).to.eq('beb');
+      expect(syllables[972]).to.eq('cab');
+      expect(syllables[2807]).to.eq('zyz');
+    });
+
+    it('vowel+consonant+vowel', () => {
+      expect(syllables[2808]).to.eq('aba');
+      expect(syllables[2809]).to.eq('abe');
+      expect(syllables[2814]).to.eq('aca');
+      expect(syllables[2916]).to.eq('eba');
+      expect(syllables[3455]).to.eq('yzy');
+    });
+  });
+
   describe('toWords', () => {
     it('Single syllable', () => {
       expect(toWords(utils.bigNumberify(0))).to.eq('Ab');
