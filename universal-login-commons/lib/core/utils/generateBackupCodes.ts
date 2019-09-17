@@ -55,7 +55,7 @@ for (let a = 0; a < vowels.length; a++) {
 }
 
 // Quick function that converts a big Number object into an array of numbers for any chosen base
-function fromBase10(bigNum: utils.BigNumber, base: utils.BigNumber) {
+export function fromBase10(bigNum: utils.BigNumber, base: utils.BigNumber) {
   const result: number[] = [];
   if (bigNum.eq(0)) {
     return [0];
@@ -72,7 +72,7 @@ function isConsonant(letter: string) {
 }
 
 // Converts an integer (passed as a string to avoid scientific notation issues)
-function toWords(number: utils.BigNumber) {
+export function toWords(number: utils.BigNumber) {
   const numberArray: number[] = fromBase10(number, utils.bigNumberify(syllables.length));
   let result = '';
   let lastWord = '';
@@ -100,7 +100,7 @@ function toWords(number: utils.BigNumber) {
 }
 
 // Converts a valid phrase back into a number
-function fromWords(words: string) {
+export function fromWords(words: string) {
   const wordArray = words
     .toLowerCase()
     .replace(/[bcdfghjklmnprstvwz][bcdfghjklmnprstvwz]/gi, function (r) {
@@ -128,7 +128,7 @@ function fromWords(words: string) {
   return result;
 }
 
-function generateBackupCode(
+export function generateBackupCode(
   random1: utils.BigNumber = utils.bigNumberify(utils.randomBytes(128)),
   random2: utils.BigNumber = utils.bigNumberify(utils.randomBytes(128))
 ) {
@@ -140,5 +140,3 @@ function generateBackupCode(
     .toLowerCase();
   return `${prefix}-${suffix}`;
 }
-
-export {fromWords, toWords, generateBackupCode};
