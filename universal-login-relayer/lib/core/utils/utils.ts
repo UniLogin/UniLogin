@@ -1,7 +1,7 @@
 import {utils, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, ensure} from '@universal-login/commons';
 import MessageItem from '../models/messages/MessageItem';
 
 
@@ -14,11 +14,15 @@ export const isAddKeyCall = (data : string) =>  isDataForFunctionCall(data, Wall
 export const isAddKeysCall = (data : string) =>  isDataForFunctionCall(data, WalletContract, 'addKeys');
 export const isRemoveKeyCall = (data : string) =>  isDataForFunctionCall(data, WalletContract, 'removeKey');
 
-export const getKeyFromData = (data : string, functionName: string) => {
+export const getFunctionParametersData = (data: string) => {
+  ensure(data.startsWith('0x'), Error, `Data missing 0x: ${data}`);
+  return `0x${data.slice(10)}`;
+};
+
+export const decodeParametersFromData = (data: string, functionAbi: string[]) => {
   const codec = new utils.AbiCoder();
-  const sigHash = new utils.Interface(WalletContract.interface).functions[functionName].sighash;
-  const [address] = (codec.decode(['bytes32'], data.replace(sigHash.slice(2), '')));
-  return utils.getAddress(utils.hexlify(utils.stripZeros(address)));
+  const parametersData = getFunctionParametersData(data);
+  return codec.decode(functionAbi, parametersData);
 };
 
 export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>

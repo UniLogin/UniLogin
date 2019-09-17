@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../../../../lib/core/utils/utils';
+import {decodeParametersFromData, isAddKeyCall, isAddKeysCall, getFunctionParametersData} from '../../../../../lib/core/utils/utils';
 import {utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
@@ -18,15 +18,35 @@ describe('INT: Core tools test', async () => {
     [wallet, otherWallet] = await getWallets(provider);
   });
 
-  describe('getKeyFromData', async () => {
+  describe('getFunctionParametersData', () => {
+    it('no params', () => {
+      const input = '0x5f7b68be';
+      const output = '0x';
+      expect(getFunctionParametersData(input)).to.eq(output);
+    });
+
+    it('simple params', () => {
+      const input = '0x5f7b68be00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff';
+      const output = '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff';
+      expect(getFunctionParametersData(input)).to.eq(output);
+    });
+
+    it('tricky params', () => {
+      const input = '0x5f7b68be5f7b68be';
+      const output = '0x5f7b68be';
+      expect(getFunctionParametersData(input)).to.eq(output);
+    });
+  });
+
+  describe('decodeParametersFromData', async () => {
     it('Should return proper key for addKey', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([wallet.address]);
-      expect(getKeyFromData(data, 'addKey')).to.eq(wallet.address);
+      expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
     });
 
     it('Should return proper key for removeKey', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address]);
-      expect(getKeyFromData(data, 'removeKey')).to.eq(wallet.address);
+      expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
     });
   });
 
