@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {decodeParametersFromData, isAddKeyCall, isAddKeysCall, getFunctionParametersData} from '../../../../../lib/core/utils/utils';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
 chai.use(chaiAsPromised);
@@ -10,8 +10,8 @@ chai.use(solidity);
 
 describe('INT: Core tools test', async () => {
   let provider;
-  let wallet;
-  let otherWallet;
+  let wallet: Wallet;
+  let otherWallet: Wallet;
 
   before(async () => {
     provider = createMockProvider();
