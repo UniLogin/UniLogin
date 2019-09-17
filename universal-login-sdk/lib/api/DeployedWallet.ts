@@ -1,4 +1,4 @@
-import {ApplicationWallet, Message, generateBackupCode} from '@universal-login/commons';
+import {ApplicationWallet, Message, generateBackupCode, walletFromBrain, ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
 import {Contract} from 'ethers';
@@ -63,6 +63,9 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async generateBackupCode(): Promise<string> {
-    return generateBackupCode();
+    const code =  generateBackupCode();
+    const {address} = await walletFromBrain(this.name, code);
+    this.sdk.addKey(this.contractAddress, address, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+    return code;
   }
 }
