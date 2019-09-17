@@ -38,7 +38,7 @@ const Modal = () => {
         </ModalWrapperClosable>
       );
     case 'topUpAccount':
-      return (
+      return config ? (
         <TopUp
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
@@ -47,7 +47,7 @@ const Modal = () => {
           isModal
           logoColor="black"
         />
-      );
+      ) : null;
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">
