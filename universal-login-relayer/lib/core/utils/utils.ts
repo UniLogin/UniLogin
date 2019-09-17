@@ -1,9 +1,6 @@
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {encodeDataForExecuteSigned} from '@universal-login/contracts';
-import {SignedMessage, ensure} from '@universal-login/commons';
-import MessageItem from '../models/messages/MessageItem';
-
+import {ensure} from '@universal-login/commons';
 
 export const isDataForFunctionCall = (data : string, contract : any, functionName: string) => {
   const functionSignature = new utils.Interface(contract.interface).functions[functionName].sighash;
@@ -25,23 +22,5 @@ export const decodeParametersFromData = (data: string, functionAbi: string[]) =>
   return codec.decode(functionAbi, parametersData);
 };
 
-export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>
-  Object({
-    gasPrice: message.gasPrice,
-    gasLimit: utils.bigNumberify(message.gasLimitExecution).add(message.gasData),
-    to: message.from,
-    value: 0,
-    data: encodeDataForExecuteSigned(message)
-  });
-
 export const getKeyFromHashAndSignature = (messageHash: string, signature: string) =>
   utils.verifyMessage(utils.arrayify(messageHash), signature);
-
-export const createMessageItem = (signedMessage: SignedMessage) : MessageItem => ({
-  walletAddress: signedMessage.from,
-  collectedSignatureKeyPairs: [],
-  transactionHash: null,
-  error: null,
-  message: signedMessage,
-  state: 'AwaitSignature'
-});

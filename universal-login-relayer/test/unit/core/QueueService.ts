@@ -6,7 +6,7 @@ import QueueService from '../../../lib/core/services/messages/QueueService';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
-import {createMessageItem} from '../../../lib/core/utils/utils';
+import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
 import IMessageRepository from '../../../lib/core/services/messages/IMessagesRepository';
 
 use(sinonChai);
