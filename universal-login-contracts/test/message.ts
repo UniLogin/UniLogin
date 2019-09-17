@@ -24,8 +24,8 @@ describe('messageToUnsignedMessage', () => {
       gasPrice: TEST_PAYMENT_OPTIONS.gasPrice,
       gasToken: TEST_PAYMENT_OPTIONS.gasToken,
       data: '0xbeef',
-      gasData: 8592,
-      gasLimitExecution: utils.bigNumberify(100000 - 8592),
+      gasData: 8976,
+      gasLimitExecution: utils.bigNumberify(100000 - 8976),
       nonce: 0,
     };
 
