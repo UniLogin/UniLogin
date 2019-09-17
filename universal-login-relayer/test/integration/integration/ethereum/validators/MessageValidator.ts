@@ -44,7 +44,6 @@ describe('INT: MessageValidator', async () => {
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);
-    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });
