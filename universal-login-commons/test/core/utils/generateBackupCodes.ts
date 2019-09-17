@@ -22,10 +22,6 @@ describe('Daefen', () => {
       expect(toWords(utils.bigNumberify(11943936))).to.eq('Acab Ab');
     });
 
-    it('More syllables', () => {
-      expect(toWords(utils.bigNumberify(11943936))).to.eq('Acab Ab');
-    });
-
     it('Max allowed number in input 2^53-1 passed as number', () => {
       expect(toWords(utils.bigNumberify(9007199254740991))).to.eq('Omkeu Ugekum Ope');
     });
