@@ -12,38 +12,35 @@ export interface BackupProps {
 }
 
 export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
-  const [codes, setCodes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [backupCode, setBackupCode] = useState<string | undefined>(undefined);
 
-  const generateBackupCodes = () => {
-    const backupCodes = ['wokzai-tarwib-lezvie-lawgod', 'kenmil-syonuh-jujaro-zansar'];
+  const generateBackupCodes = async () => {
     setLoading(true);
-
-    setTimeout(() => {
-      setCodes(backupCodes);
-      setLoading(false);
-    }, 2000);
+    const backupCode = await deployedWallet.generateBackupCode();
+    setBackupCode(backupCode);
+    setLoading(false);
   };
 
   const removeBackupCodes = () => {
     const message = 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
     if (confirm(message)) {
-      setCodes([]);
+      setBackupCode(undefined);
     }
   };
 
   function renderContent() {
-    if (loading && !codes.length) {
+    if (loading && !backupCode) {
       return (
         <div className="backup-loader-wrapper">
           <BackupCodesLoader title="Generating backup codes, please wait" />
           <button className="backup-btn backup-btn-secondary cancel-backup-btn">Cancel backup code</button>
         </div>
       );
-    } else if (codes.length) {
+    } else if (!!backupCode) {
       return (
         <BackupCodesView
-          codes={codes}
+          code={backupCode}
           printCodes={window.print}
           walletContract={deployedWallet.name}
           removeBackupCodes={removeBackupCodes}
@@ -69,7 +66,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           <h2 className="backup-title">Backup code</h2>
           <p className="backup-subtitle">
             If you lose all your devices you may not have other ways to recover your account.
-            {codes.length > 0
+            {!!backupCode
               ? <strong> Keep your generate the recovery code safe.</strong>
               : ' Generate a recovery code and keep it safe'
             }

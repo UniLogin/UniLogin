@@ -1,4 +1,4 @@
-import {ApplicationWallet, Message} from '@universal-login/commons';
+import {ApplicationWallet, Message, generateBackupCode} from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
 import {Contract} from 'ethers';
@@ -60,5 +60,9 @@ export class DeployedWallet implements ApplicationWallet {
   async getRequiredSignatures(): Promise<BigNumber> {
     const walletContract = new Contract(this.contractAddress, WalletContract.interface, this.sdk.provider);
     return walletContract.requiredSignatures();
+  }
+
+  async generateBackupCode(): Promise<string> {
+    return generateBackupCode();
   }
 }

@@ -3,7 +3,7 @@ import Avatar from '../assets/avatar.svg';
 import BackupCodesLoader from './BackupCodesLoader';
 
 interface BackupCodesViewProps {
-  codes: string[];
+  code: string;
   walletContract: string;
   printCodes: () => void;
   removeBackupCodes: () => void;
@@ -11,11 +11,10 @@ interface BackupCodesViewProps {
   loading: boolean;
 }
 
-export const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, loading, generateBackupCodes}: BackupCodesViewProps) => {
+export const BackupCodesView = ({code, printCodes, walletContract, removeBackupCodes, loading, generateBackupCodes}: BackupCodesViewProps) => {
   return (
     <>
       <ul className="backup-codes-list">
-        {codes.map(code => (
           <div className="backup-codes-item" key={code}>
             <img src={Avatar} alt="avatar" className="backup-codes-img" />
             <div>
@@ -23,7 +22,6 @@ export const BackupCodesView = ({codes, printCodes, walletContract, removeBackup
               <p className="backup-code">{code}</p>
             </div>
           </div>
-        ))}
       </ul>
       <div className="backup-codes-buttons">
         <button onClick={generateBackupCodes} className="backup-create-btn" disabled={loading}>Create more codes</button>
