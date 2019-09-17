@@ -3,24 +3,27 @@ import chaiHttp from 'chai-http';
 import {TokenGrantingRelayer} from '../../../../lib/http/relayers/TokenGrantingRelayer';
 import {utils, Contract} from 'ethers';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
-import {waitUntil, createSignedMessage, stringifySignedMessageFields} from '@universal-login/commons';
+import {waitUntil, stringifySignedMessageFields, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {messageToSignedMessage} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {startRelayer} from '../../../helpers/startRelayer';
 import {WalletCreator} from '../../../helpers/WalletCreator';
+
 chai.use(solidity);
 chai.use(chaiHttp);
-
 
 const addKey = async (contractAddress, publicKey, privateKey, tokenAddress, provider) => {
   const data = new utils.Interface(WalletContract.interface).functions['addKey'].encode([publicKey]);
   const message = {
-    gasToken: tokenAddress,
     to: contractAddress,
     from: contractAddress,
-    data,
     nonce: parseInt(await (new Contract(contractAddress, WalletContract.interface, provider)).lastNonce(), 10),
+    data,
+    gasToken: tokenAddress,
+    gasPrice: DEFAULT_GAS_PRICE,
+    gasLimit: DEFAULT_GAS_LIMIT
   };
-  const signedMessage = createSignedMessage(message, privateKey);
+  const signedMessage = messageToSignedMessage(message, privateKey);
   await chai.request('http://localhost:33511')
     .post('/wallet/execution')
     .send(stringifySignedMessageFields(signedMessage));
