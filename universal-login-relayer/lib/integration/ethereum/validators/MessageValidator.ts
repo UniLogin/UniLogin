@@ -3,7 +3,7 @@ import {ContractWhiteList, SignedMessage, ensure} from '@universal-login/commons
 import {IMessageValidator} from '../../../core/services/validators/IMessageValidator';
 import {ensureEnoughGas, ensureEnoughToken} from '../validations';
 import {InvalidProxy} from '../../../core/utils/errors';
-import {messageToTransaction} from '../../../core/utils/utils';
+import {messageToTransaction} from '../../../core/utils/messages/serialisation';
 
 export class MessageValidator implements IMessageValidator {
   constructor(private wallet: Wallet, private contractWhiteList: ContractWhiteList) {
