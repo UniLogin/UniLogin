@@ -3,7 +3,7 @@ import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import MessageValidator from '../../../../../lib/core/services/messages/MessageValidator';
+import MessageValidator from '../../../../../lib/integration/ethereum/validators/MessageValidator';
 import {messageToTransaction} from '../../../../../lib/core/utils/utils';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
