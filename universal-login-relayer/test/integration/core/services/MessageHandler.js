@@ -27,6 +27,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   afterEach(async () => {
+    messageHandler.stopLater();
     await clearDatabase(knex);
   });
 
@@ -42,12 +43,7 @@ describe('INT: MessageHandler', async () => {
   it('Error when not enough gas', async () => {
     const message = {...msg, gasLimitExecution: 100, gasData: 8976};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
-    const {messageHash} = await messageHandler.handleMessage(signedMessage);
-    await messageHandler.stopLater();
-    const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.be.eq('Error: Not enough gas');
-    const {state} = await messageHandler.getStatus(messageHash);
-    expect(state).to.be.eq('Error');
+    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith('Insufficient Gas. gasLimitExecution: got 100 but should be greater than 21000');
   });
 
   describe('Transfer', async () => {
