@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {Contract, Wallet, utils, providers} from 'ethers';
+import {Contract, Wallet, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
+import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
 import MessageValidator from '../../../../../lib/integration/ethereum/validators/MessageValidator';
-import {messageToTransaction} from '../../../../../lib/core/utils/messages/serialisation';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: MessageValidator', async () => {
@@ -12,7 +12,7 @@ describe('INT: MessageValidator', async () => {
   let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
-  let messageValidator: MessageValidator;
+  let messageValidator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
 
   before(async () => {
@@ -23,20 +23,17 @@ describe('INT: MessageValidator', async () => {
 
   it('successfully pass the validation', async () => {
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);
-    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionRequest)).to.not.be.rejected;
+    await expect(messageValidator.validate(signedMessage)).to.not.be.rejected;
   });
 
   it('throws when not enough gas', async () => {
     const signedMessage = createSignedMessage({...message, gasLimitExecution: 100}, wallet.privateKey);
-    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith('Not enough gas');
+    await expect(messageValidator.validate(signedMessage)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
   it('throws when not enough tokens', async () => {
     const signedMessage = createSignedMessage({...message, gasLimitExecution: utils.parseEther('2.0')}, wallet.privateKey);
-    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidator.validate(signedMessage, transactionRequest))
+    await expect(messageValidator.validate(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
 
@@ -46,7 +43,6 @@ describe('INT: MessageValidator', async () => {
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);
-    const transactionRequest: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await expect(messageValidatorWithInvalidProxy.validate(signedMessage, transactionRequest)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
+    await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });

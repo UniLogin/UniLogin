@@ -25,6 +25,7 @@ import AuthorisationStore from '../../integration/sql/services/AuthorisationStor
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 import {MessageStatusService} from '../../core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
+import IMessageValidator from '../../core/services/validators/IMessageValidator';
 import MessageValidator from '../../integration/ethereum/validators/MessageValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
@@ -58,7 +59,7 @@ class Relayer {
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
-  private messageValidator: MessageValidator = {} as MessageValidator;
+  private messageValidator: IMessageValidator = {} as IMessageValidator;
   private messageExecutor: MessageExecutor = {} as MessageExecutor;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
