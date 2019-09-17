@@ -1,7 +1,7 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, isRemoveKeyCall} from '../utils/utils';
+import {isAddKeyCall, decodeParametersFromData, isAddKeysCall, isRemoveKeyCall} from '../utils/encodeData';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import QueueService from './messages/QueueService';
 import PendingMessages from './messages/PendingMessages';
@@ -39,11 +39,11 @@ class MessageHandler {
     const message = decodeDataForExecuteSigned(data);
     if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
-        const key = getKeyFromData(message.data as string, 'addKey');
+        const [key] = decodeParametersFromData(message.data as string, ['address']);
         await this.updateDevicesAndAuthorisations(to, key);
         this.hooks.emit('added', {transaction: sentTransaction, contractAddress: to});
       } else if (isRemoveKeyCall(message.data as string)) {
-        const key = getKeyFromData(message.data as string, 'removeKey');
+        const [key] = decodeParametersFromData(message.data as string, ['address']);
         await this.devicesService.remove(to, key);
       } else if (isAddKeysCall(message.data as string)) {
         this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: to});
