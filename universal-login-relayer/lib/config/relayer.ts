@@ -14,4 +14,5 @@ export interface Config {
   localization: LocalizationConfig;
   onRampProviders: OnRampConfig;
   database: KnexConfig;
+  MAX_GAS_LIMIT: number;
 }

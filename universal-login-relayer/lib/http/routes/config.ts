@@ -4,14 +4,15 @@ import {Config} from '../../config/relayer';
 import {PublicRelayerConfig} from '@universal-login/commons';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
-  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders} = config;
+  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders, MAX_GAS_LIMIT} = config;
   return {
     chainSpec,
     supportedTokens,
     factoryAddress,
     contractWhiteList,
     localization,
-    onRampProviders
+    onRampProviders,
+    MAX_GAS_LIMIT
   };
 }
 
