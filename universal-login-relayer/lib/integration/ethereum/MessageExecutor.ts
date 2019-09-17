@@ -1,16 +1,16 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage} from '@universal-login/commons';
 import {messageToTransaction} from '../../core/utils/utils';
-import MessageValidator from './validators/MessageValidator';
+import IMessageValidator from '../../core/services/validators/IMessageValidator';
 
 export class MessageExecutor {
 
-  constructor(private wallet: Wallet, private messageValidator: MessageValidator) {
+  constructor(private wallet: Wallet, private messageValidator: IMessageValidator) {
   }
 
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
+    await this.messageValidator.validate(signedMessage);
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    await this.messageValidator.validate(signedMessage, transactionReq);
     return this.wallet.sendTransaction(transactionReq);
   }
 }
