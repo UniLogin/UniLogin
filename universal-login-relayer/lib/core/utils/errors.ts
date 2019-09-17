@@ -70,7 +70,7 @@ export class InvalidTransaction extends ValidationFailed {
 
 export class InvalidHexData extends ValidationFailed {
   constructor(hexData: string) {
-    super(`Invalid hex data ${hexData}`, 'InvalidHexData');
+    super(`Invalid hex data: ${hexData}`, 'InvalidHexData');
     Object.setPrototypeOf(this, InvalidHexData.prototype);
   }
 }

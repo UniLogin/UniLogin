@@ -1,7 +1,9 @@
-import {utils} from 'ethers';
-import {DecodedMessage} from '@universal-login/commons';
+import {utils, providers} from 'ethers';
+import {DecodedMessage, SignedMessage} from '@universal-login/commons';
+import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {InvalidHexData} from '../errors';
+import MessageItem from '../../models/messages/MessageItem';
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
 
@@ -22,6 +24,15 @@ const removeLeadingBytes = (n: number, data: string) => {
   }
 };
 
+export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>
+  Object({
+    gasPrice: message.gasPrice,
+    gasLimit: utils.bigNumberify(message.gasLimitExecution).add(message.gasData),
+    to: message.from,
+    value: 0,
+    data: encodeDataForExecuteSigned(message)
+  });
+
 const dataToMessage = (data: any): DecodedMessage => ({
   to: data[0],
   value: data[1],
@@ -31,4 +42,13 @@ const dataToMessage = (data: any): DecodedMessage => ({
   gasLimitExecution: data[5],
   gasData: data[6],
   signature: data[7]
+});
+
+export const createMessageItem = (signedMessage: SignedMessage) : MessageItem => ({
+  walletAddress: signedMessage.from,
+  collectedSignatureKeyPairs: [],
+  transactionHash: null,
+  error: null,
+  message: signedMessage,
+  state: 'AwaitSignature'
 });

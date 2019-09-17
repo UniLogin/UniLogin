@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {getKeyFromData, isAddKeyCall, isAddKeysCall} from '../../../../../lib/core/utils/utils';
-import {utils} from 'ethers';
+import {decodeParametersFromData, isAddKeyCall, isAddKeysCall, getFunctionParametersData} from '../../../../../lib/core/utils/encodeData';
+import {utils, Wallet} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
 chai.use(chaiAsPromised);
@@ -10,23 +10,54 @@ chai.use(solidity);
 
 describe('INT: Core tools test', async () => {
   let provider;
-  let wallet;
-  let otherWallet;
+  let wallet: Wallet;
+  let otherWallet: Wallet;
 
   before(async () => {
     provider = createMockProvider();
     [wallet, otherWallet] = await getWallets(provider);
   });
 
-  describe('getKeyFromData', async () => {
+  describe('getFunctionParametersData', () => {
+    it('no params', () => {
+      const input = '0x5f7b68be';
+      const output = '0x';
+      expect(getFunctionParametersData(input)).to.eq(output);
+    });
+
+    it('simple params', () => {
+      const input = '0x5f7b68be00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff';
+      const output = '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff';
+      expect(getFunctionParametersData(input)).to.eq(output);
+    });
+
+    it('tricky params', () => {
+      const input = '0x5f7b68be5f7b68be';
+      const output = '0x5f7b68be';
+      expect(getFunctionParametersData(input)).to.eq(output);
+    });
+
+    it('throw error', () => {
+      const input = '000000';
+      expect(() => getFunctionParametersData(input)).to.throw(`Invalid hex data: ${input}`);
+    });
+  });
+
+  describe('decodeParametersFromData', async () => {
     it('Should return proper key for addKey', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.addKey.encode([wallet.address]);
-      expect(getKeyFromData(data, 'addKey')).to.eq(wallet.address);
+      expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
     });
 
     it('Should return proper key for removeKey', async () => {
       const data = new utils.Interface(WalletContract.interface).functions.removeKey.encode([wallet.address]);
-      expect(getKeyFromData(data, 'removeKey')).to.eq(wallet.address);
+      expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
+    });
+
+    it('Should return proper key for addKeys', async () => {
+      const keys = [wallet.address];
+      const data = new utils.Interface(WalletContract.interface).functions.addKeys.encode([keys]);
+      expect(decodeParametersFromData(data, ['address[]'])[0]).to.deep.eq(keys);
     });
   });
 
