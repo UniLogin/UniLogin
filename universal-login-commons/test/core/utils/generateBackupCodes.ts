@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {toWords, generateBackupCode, fromWords, getSyllables} from '../../../lib/core/utils/generateBackupCodes';
+import {toWords, generateBackupCode, fromWords, getSyllables, fromBase} from '../../../lib/core/utils/generateBackupCodes';
 import {utils} from 'ethers';
 
 describe('Daefen', () => {
@@ -46,6 +46,29 @@ describe('Daefen', () => {
       expect(syllables[2814]).to.eq('aca');
       expect(syllables[2916]).to.eq('eba');
       expect(syllables[3455]).to.eq('yzy');
+    });
+  });
+
+  describe('fromBase', () => {
+    it('for number equal 0', () => {
+      expect(fromBase(utils.bigNumberify(0), utils.bigNumberify(2))).to.be.deep.eq([0]);
+      expect(fromBase(utils.bigNumberify(0), utils.bigNumberify(4))).to.be.deep.eq([0]);
+      expect(fromBase(utils.bigNumberify(0), utils.bigNumberify(10))).to.be.deep.eq([0]);
+    });
+
+    it('for base greater than number equal number', () => {
+      [1, 2, 4, 5, 7, 9, 10, 15 , 100]
+        .map((number) => utils.bigNumberify(number))
+        .forEach((bigNumber) => {
+          expect(fromBase(bigNumber, bigNumber.add(1))).to.be.deep.eq([bigNumber.toNumber()]);
+      });
+    });
+
+    it('for base equal 2', () => {
+      const base = utils.bigNumberify(2);
+      expect(fromBase(utils.bigNumberify(2), base)).to.be.deep.eq([1, 0]);
+      expect(fromBase(utils.bigNumberify(3), base)).to.be.deep.eq([1, 1]);
+      expect(fromBase(utils.bigNumberify(8), base)).to.be.deep.eq([1, 0, 0, 0]);
     });
   });
 

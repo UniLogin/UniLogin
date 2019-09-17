@@ -59,7 +59,7 @@ export function getSyllables() {
 }
 
 // Quick function that converts a big Number object into an array of numbers for any chosen base
-export function fromBase10(bigNum: utils.BigNumber, base: utils.BigNumber) {
+export function fromBase(bigNum: utils.BigNumber, base: utils.BigNumber) {
   const result: number[] = [];
   if (bigNum.eq(0)) {
     return [0];
@@ -78,7 +78,7 @@ function isConsonant(letter: string) {
 // Converts an integer (passed as a string to avoid scientific notation issues)
 export function toWords(number: utils.BigNumber) {
   const syllables = getSyllables();
-  const numberArray: number[] = fromBase10(number, utils.bigNumberify(syllables.length));
+  const numberArray: number[] = fromBase(number, utils.bigNumberify(syllables.length));
   let result = '';
   let lastWord = '';
   let n = 0;
