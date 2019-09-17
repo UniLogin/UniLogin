@@ -1,7 +1,7 @@
 import {Wallet, providers, utils} from 'ethers';
 import {ContractWhiteList, SignedMessage, ensure} from '@universal-login/commons';
-import {ensureEnoughGas, ensureEnoughToken} from '../../../integration/ethereum/validations';
-import {InvalidProxy} from '../../utils/errors';
+import {ensureEnoughGas, ensureEnoughToken} from '../validations';
+import {InvalidProxy} from '../../../core/utils/errors';
 
 export class MessageValidator {
   constructor(private wallet: Wallet, private contractWhiteList: ContractWhiteList) {
