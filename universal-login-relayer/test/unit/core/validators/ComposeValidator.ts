@@ -1,11 +1,13 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import {SignedMessage} from '@universal-login/commons';
 import {ComposeValidator} from '../../../../lib/core/services/validators/ComposeValidator';
 import {IMessageValidator} from '../../../../lib/core/services/validators/IMessageValidator';
+import chaiAsPromised from 'chai-as-promised';
+chai.use(chaiAsPromised);
 
 describe('UNIT: ComposeValidator', () => {
-  const passingValidator: IMessageValidator = { validate: () => {} };
-  const createFailingValidator = (errorMsg: string) => ({ validate: () => {throw new Error(errorMsg); } } as IMessageValidator);
+  const passingValidator: IMessageValidator = { validate: async () => {} };
+  const createFailingValidator = (errorMsg: string) => ({ validate: async () => {throw new Error(errorMsg); } } as IMessageValidator);
   const message: SignedMessage = {
     to: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',
     value: 0,
@@ -24,19 +26,19 @@ describe('UNIT: ComposeValidator', () => {
     expect(() => composeValidator.validate(message)).to.not.throw;
   });
 
-  it('ComposeValidator should fail if one individual validator fails', () => {
+  it('ComposeValidator should fail if one individual validator fails', async () => {
     const composeValidator = new ComposeValidator(
       [passingValidator, createFailingValidator('validation error')]
     );
 
-    expect(() => composeValidator.validate(message)).to.throw('validation error');
+    await expect(composeValidator.validate(message)).to.be.eventually.rejectedWith('validation error');
   });
 
-  it('ComposeValidator should fail with first error if many individual validators fail', () => {
+  it('ComposeValidator should fail with first error if many individual validators fail', async () => {
     const composeValidator = new ComposeValidator(
       [createFailingValidator('first validation error'), createFailingValidator('second validation error')]
     );
 
-    expect(() => composeValidator.validate(message)).to.throw('first validation error');
+    await expect(composeValidator.validate(message)).to.be.eventually.rejectedWith('first validation error');
   });
 });

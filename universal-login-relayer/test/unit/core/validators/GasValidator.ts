@@ -1,7 +1,9 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import {SignedMessage} from '@universal-login/commons';
 import {estimateGasDataFromSignedMessage} from '@universal-login/contracts';
 import {GasValidator} from '../../../../lib/core/services/validators/GasValidator';
+import chaiAsPromised from 'chai-as-promised';
+chai.use(chaiAsPromised);
 
 describe('UNIT: GasValidator', () => {
   const gasValidator = new GasValidator();
@@ -23,12 +25,12 @@ describe('UNIT: GasValidator', () => {
   });
 
   it('just about right', () => {
-    expect(() => gasValidator.validate(message)).to.not.throw();
+    expect(gasValidator.validate(message)).to.be.eventually.fulfilled;
   });
 
   it('too less', () => {
     (message.gasData as number) -= 1;
     const actualGasData = estimateGasDataFromSignedMessage(message);
-    expect(() => gasValidator.validate(message)).to.throw(`Insufficient Gas. Got GasData ${message.gasData as number} but should be ${actualGasData}`);
+    expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasData ${message.gasData as number} but should be ${actualGasData}`);
   });
 });
