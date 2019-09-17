@@ -6,7 +6,7 @@ import IMessageValidator from './IMessageValidator';
 export const GAS_BASE = 0;
 
 export class GasValidator implements IMessageValidator {
-  validate(signedMessage: SignedMessage) {
+  async validate(signedMessage: SignedMessage) {
     const {signature, ...unsignedMessage} = signedMessage;
     const expectedGasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
     const actualGasData = Number(signedMessage.gasData);

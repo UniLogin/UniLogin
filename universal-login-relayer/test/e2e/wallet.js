@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
-import {waitExpect, createKeyPair, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {waitExpect, createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields} from '@universal-login/commons';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
 import {messageToSignedMessage} from '@universal-login/contracts';
 
@@ -40,10 +40,10 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     };
     const balanceBefore = await otherWallet.getBalance();
     const signedMessage = messageToSignedMessage(msg, keyPair.privateKey);
-    signedMessage.gasLimitExecution = signedMessage.gasLimitExecution.toString();
+    const stringifiedMessage = stringifySignedMessageFields(signedMessage);
     const {status, body} = await chai.request(relayer.server)
       .post('/wallet/execution')
-      .send(signedMessage);
+      .send(stringifiedMessage);
     expect(status).to.eq(201);
 
     await waitExpect(async () => expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value)));
