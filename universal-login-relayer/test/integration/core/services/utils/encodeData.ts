@@ -36,6 +36,11 @@ describe('INT: Core tools test', async () => {
       const output = '0x5f7b68be';
       expect(getFunctionParametersData(input)).to.eq(output);
     });
+
+    it('throw error', () => {
+      const input = '000000';
+      expect(() => getFunctionParametersData(input)).to.throw(`Invalid hex data: ${input}`);
+    });
   });
 
   describe('decodeParametersFromData', async () => {
