@@ -43,12 +43,12 @@ describe('INT: MultiSignatureExecute', async () => {
   });
 
   it('Error when not enough gas', async () => {
-    const message0 = {...msg, gasLimit: 100000};
+    const message0 = {...msg, gasLimit: 120000};
     const signedMessage0 = messageToSignedMessage(message0, wallet.privateKey);
     await messageHandler.handleMessage(signedMessage0);
     const message1 = {...msg, gasLimit: 9000};
     const signedMessage1 = messageToSignedMessage(message1, actionKey);
-    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith('Insufficient Gas. gasLimitExecution: got 24 but should be greater than 21000');
+    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith('Insufficient Gas. gasLimitExecution: got 24 but should be greater than 105000');
   });
 
   describe('Transfer', async () => {

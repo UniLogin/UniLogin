@@ -3,7 +3,7 @@ import {SignedMessage, ensure} from '@universal-login/commons';
 import {InsufficientGas} from '../../utils/errors';
 import IMessageValidator from './IMessageValidator';
 
-export const GAS_BASE = 21000;
+export const GAS_BASE = 105000;
 
 export class GasValidator implements IMessageValidator {
   async validate(signedMessage: SignedMessage) {
