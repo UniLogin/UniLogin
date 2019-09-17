@@ -1,35 +1,23 @@
 import {utils} from 'ethers';
 
-/* eslint-disable */
-
-/*
-Daefen
-------
-A library for encoding/decoding large numbers into/from a pronounceable high-density string constructed from a base of 3456 syllables.
-*/
-
-const consonants: string = 'bcdfghjklmnprstvwz'; // consonants that are unambiguous and easy to pronounce
+const consonants: string = 'bcdfghjklmnprstvwz';
 const vowels: string = 'aeiouy';
 
-// Creates the syllable array
 export function getSyllables() {
   const syllables: string[] = [];
 
-  // Vowel + Consonant
   for (let a = 0; a < vowels.length; a++) {
     for (let b = 0; b < consonants.length; b++) {
       syllables.push(vowels[a] + consonants[b]);
     }
   }
 
-  // Consonant + Vowel
   for (let b = 0; b < consonants.length; b++) {
     for (let a = 0; a < vowels.length; a++) {
       syllables.push(consonants[b] + vowels[a]);
     }
   }
 
-  // Consonant + Vowel + Vowel
   for (let b = 0; b < consonants.length; b++) {
     for (let a = 0; a < vowels.length; a++) {
       for (let e = 0; e < vowels.length; e++) {
@@ -38,7 +26,6 @@ export function getSyllables() {
     }
   }
 
-  // Consonant + Vowel + Consonant
   for (let b = 0; b < consonants.length; b++) {
     for (let a = 0; a < vowels.length; a++) {
       for (let c = 0; c < consonants.length; c++) {
@@ -47,7 +34,6 @@ export function getSyllables() {
     }
   }
 
-  // Vowel + Consonant + Vowel
   for (let a = 0; a < vowels.length; a++) {
     for (let b = 0; b < consonants.length; b++) {
       for (let e = 0; e < vowels.length; e++) {
@@ -58,7 +44,6 @@ export function getSyllables() {
   return syllables;
 }
 
-// Quick function that converts a big Number object into an array of numbers for any chosen base
 export function fromBase(bigNum: utils.BigNumber, base: utils.BigNumber) {
   const result: number[] = [];
   if (bigNum.eq(0)) {
@@ -70,12 +55,10 @@ export function fromBase(bigNum: utils.BigNumber, base: utils.BigNumber) {
   return result;
 }
 
-// Important to check some spacing issues
 function isConsonant(letter: string) {
   return consonants.indexOf(letter) >= 0;
 }
 
-// Converts an integer (passed as a string to avoid scientific notation issues)
 export function toWords(number: utils.BigNumber) {
   const syllables = getSyllables();
   const numberArray: number[] = fromBase(number, utils.bigNumberify(syllables.length));
@@ -104,8 +87,6 @@ export function toWords(number: utils.BigNumber) {
   });
 }
 
-
-// Converts a valid phrase back into a number
 export function fromWords(words: string) {
   const wordArray = words
     .toLowerCase()
