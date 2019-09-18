@@ -49,6 +49,10 @@ class MessageHandler {
         const [key] = decodeParametersFromData(message.data as string, ['address']);
         await this.devicesService.remove(to, key);
       } else if (isAddKeysCall(message.data as string)) {
+        const [keys] = decodeParametersFromData(message.data as string, ['address[]']);
+        for (const key of keys) {
+          await this.updateDevicesAndAuthorisations(to, key);
+        }
         this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: to});
       }
     }
