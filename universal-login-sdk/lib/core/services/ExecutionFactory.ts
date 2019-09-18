@@ -40,20 +40,17 @@ export class ExecutionFactory {
     return ['Pending', 'Success', 'Error'].includes(messageStatus.state);
   }
 
-  private createGetStatus(messageHash: string) {
-    return async () => this.relayerApi.getStatus(messageHash);
-  }
-
   private createWaitForTransactionHash(messageHash: string) {
     return async () => {
+      const getStatus = async () => this.relayerApi.getStatus(messageHash);
       const isNotPending = (messageStatus: MessageStatus) => !this.hasTransactionHash(messageStatus);
-      return retry(this.createGetStatus(messageHash), isNotPending, this.timeout, this.tick);
+      return retry(getStatus, isNotPending, this.timeout, this.tick);
     };
   }
 
   private createWaitToBeMined(messageHash: string) {
     return async () => {
-      const getStatus = this.createGetStatus(messageHash);
+      const getStatus = async () => this.relayerApi.getStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
       const status = await retry(getStatus, isNotExecuted, this.timeout, this.tick);
       ensure(!status.error, Error, status.error!);
