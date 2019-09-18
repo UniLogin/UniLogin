@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import sinon, {SinonSpy} from 'sinon';
+import sinon, {SinonSpy, SinonStub} from 'sinon';
 import {utils} from 'ethers';
-import {createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, MessageState} from '@universal-login/commons';
 
 import {ExecutionFactory} from '../../../lib/core/services/ExecutionFactory';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
@@ -10,15 +10,16 @@ describe('UNIT: ExecutionFactory', async () => {
   let executionFactory: ExecutionFactory;
   let relayerApi: RelayerApi;
   let signedMessage: SignedMessage;
+  let defaultStatus: MessageStatus;
   let status: MessageStatus;
-  let executionStatus: MessageStatus;
-  let getStatus: SinonSpy;
+  const getStatus: SinonStub = sinon.stub().returns({status: {}});
+  const execute: SinonStub = sinon.stub();
   const callCount = 2;
 
   before(async () => {
     signedMessage = createSignedMessage({from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
     const messageHash = await calculateMessageHash(signedMessage);
-    status = {
+    defaultStatus = {
       transactionHash: TEST_TRANSACTION_HASH,
       required: 1,
       totalCollected: 1,
@@ -26,57 +27,79 @@ describe('UNIT: ExecutionFactory', async () => {
       messageHash,
       collectedSignatures: [signedMessage.signature]
     };
-    executionStatus = {
-      ...status,
-    };
-    getStatus = sinon.stub()
-      .returns({status: {}})
-      .onCall(callCount - 1).returns(status);
+
     relayerApi = {
-      execute: sinon.stub().returns({status: executionStatus}),
+      execute,
       getStatus
     } as any;
     executionFactory = new ExecutionFactory(relayerApi, 10);
   });
 
-  it('waitToBeMined success', async () => {
-    status.state = 'Success';
-    const execution = await executionFactory.createExecution(signedMessage);
-    await execution.waitToBeMined();
-    expect(execution.messageStatus).to.be.deep.eq(executionStatus);
-    expect(getStatus.callCount).be.eq(callCount);
+  beforeEach(() => {
+    status = {...defaultStatus};
+    getStatus.onCall(callCount - 1).returns(status);
+    execute.returns({status: {...defaultStatus}});
   });
 
-  it('waitToBePending', async () => {
-    status.state = 'Pending';
-    const execution = await executionFactory.createExecution(signedMessage);
-    await execution.waitToBePending();
-    expect(execution.messageStatus).to.be.deep.eq(executionStatus);
-    expect(getStatus.callCount).be.eq(callCount);
+  describe('waitToBeMined', async () => {
+    it('waitToBeMined success', async () => {
+      status.state = 'Success';
+      const execution = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await execution.waitToBeMined();
+      expect(messageStatus).to.be.deep.eq(status);
+      expect(getStatus.callCount).be.eq(callCount);
+    });
+
+    it('error', async () => {
+      status.state = 'Error';
+      status.error = 'Error: waitToBeMined';
+
+      const execution = await executionFactory.createExecution(signedMessage);
+      expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
+      await expect(execution.waitToBeMined()).to.be.rejectedWith('Error: waitToBeMined');
+      expect(getStatus.callCount).be.eq(callCount);
+    });
+
+    it('message with no enough signatures', async () => {
+      status.state = 'AwaitSignature';
+      status.required = 2;
+      delete status.transactionHash;
+
+      relayerApi.execute = sinon.stub().returns({status});
+      const execution = await executionFactory.createExecution(signedMessage);
+      expect(await execution.waitToBeMined()).to.be.deep.eq(status);
+      expect(getStatus.callCount).be.eq(0);
+    });
   });
 
-  it('waitToBeMined error', async () => {
-    status.state = 'Error';
-    delete status.transactionHash;
-    status.error = 'Error: waitToBeMined';
-    const execution = await executionFactory.createExecution(signedMessage);
-    expect(execution.messageStatus).to.be.deep.eq(executionStatus);
-    await expect(execution.waitToBeMined()).to.be.rejectedWith('Error: waitToBeMined');
-    expect(getStatus.callCount).be.eq(callCount);
-  });
+  describe('waitToBePending', () => {
+    it('state: Pending', async () => {
+      status.state = 'Pending';
 
-  it('waitToBeMined for message with no enough signatures', async () => {
-    status.state = 'AwaitSignature';
-    const expectedStatus = {
-      ...status,
-      required: 2
-    };
-    delete expectedStatus.transactionHash;
-    delete expectedStatus.error;
-    relayerApi.execute = sinon.stub().returns({status: expectedStatus});
-    const execution = await executionFactory.createExecution(signedMessage);
-    expect(await execution.waitToBeMined()).to.be.deep.eq(expectedStatus);
-    expect(getStatus.callCount).be.eq(0);
+      const {waitToBePending} = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await waitToBePending();
+      expect(messageStatus).to.be.deep.eq(status);
+      expect(getStatus.callCount).be.eq(callCount);
+    });
+
+    it('state: Success', async () => {
+      status.state = 'Success';
+
+      const {waitToBePending} = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await waitToBePending();
+      expect(messageStatus).to.be.deep.eq(status);
+      expect(getStatus.callCount).be.eq(callCount);
+    });
+
+    it('state: Error', async () => {
+      status.state = 'Error';
+      status.error = 'Error: waitToBeMined';
+
+      const {waitToBePending, messageStatus} = await executionFactory.createExecution(signedMessage);
+      expect(messageStatus).to.be.deep.eq(defaultStatus);
+      await expect(waitToBePending()).to.be.rejectedWith('Error: waitToBeMined');
+      expect(getStatus.callCount).be.eq(callCount);
+    });
   });
 
   afterEach(() => {
