@@ -59,7 +59,7 @@ class MessageHandler {
   }
 
   async handleMessage(message: SignedMessage) {
-    this.gasValidator.validate(message);
+    await this.gasValidator.validate(message);
     return this.pendingMessages.add(message);
   }
 

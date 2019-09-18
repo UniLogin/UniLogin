@@ -94,8 +94,8 @@ describe('INT: MessageHandler', async () => {
     it('execute add key', async () => {
       const keys = [otherWallet.address];
       const data = encodeFunction(WalletContract, 'addKeys', [keys]);
-      msg = {data, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
-      const signedMessage0 = createSignedMessage(msg, wallet.privateKey);
+      msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data};
+      const signedMessage0 = messageToSignedMessage(msg, wallet.privateKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
