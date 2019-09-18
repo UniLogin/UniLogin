@@ -64,10 +64,11 @@ describe('E2E: SDK', async () => {
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
     });
 
-    it('Should return transaction hash', async () => {
+    it('Should return transaction hash and proper state', async () => {
       const {waitToBeMined} = await sdk.execute(message, privateKey);
-      const {transactionHash} = await waitToBeMined();
+      const {transactionHash, state} = await waitToBeMined();
       expect(transactionHash).to.be.properHex(64);
+      expect(state).to.be.eq('Success');
     });
 
     it('Should increment nonce', async () => {
@@ -97,8 +98,9 @@ describe('E2E: SDK', async () => {
   describe('Add key', async () => {
     it('should return transaction hash', async () => {
       const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      const {transactionHash} = await waitToBeMined();
+      const {transactionHash, state} = await waitToBeMined();
       expect(transactionHash).to.be.properHex(64);
+      expect(state).to.be.eq('Success');
       expect(await walletContract.lastNonce()).to.be.eq(1);
     });
 
@@ -151,10 +153,11 @@ describe('E2E: SDK', async () => {
   });
 
   describe('Add keys', async () => {
-    it('should return transaction hash', async () => {
+    it('should return transaction hash and proper state', async () => {
       const {waitToBeMined} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
-      const {transactionHash} = await waitToBeMined();
+      const {state, transactionHash} = await waitToBeMined();
       expect(transactionHash).to.be.properHex(64);
+      expect(state).to.be.eq('Success');
     });
   });
 
