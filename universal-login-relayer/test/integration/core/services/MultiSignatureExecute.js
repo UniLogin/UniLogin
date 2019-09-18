@@ -31,7 +31,7 @@ describe('INT: MultiSignatureExecute', async () => {
     await clearDatabase(knex);
   });
 
-  it('Error when not enough tokens', async () => {
+  xit('Error when not enough tokens', async () => {
     const message = {...msg, gasLimit: utils.parseEther('2.0')};
     const signedMessage0 = messageToSignedMessage(message, wallet.privateKey);
     const signedMessage1 = messageToSignedMessage(message, actionKey);

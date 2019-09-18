@@ -1,6 +1,6 @@
 import {estimateGasDataFromUnsignedMessage} from '@universal-login/contracts';
 import {SignedMessage, ensure, GAS_BASE} from '@universal-login/commons';
-import {InsufficientGas} from '../../utils/errors';
+import {InsufficientGas, GasLimitTooHigh} from '../../utils/errors';
 import IMessageValidator from './IMessageValidator';
 
 export class GasValidator implements IMessageValidator {
@@ -14,6 +14,7 @@ export class GasValidator implements IMessageValidator {
     ensure(GAS_BASE < signedMessage.gasLimitExecution, InsufficientGas, `Got GasLimitExecution ${signedMessage.gasLimitExecution} but should greater than ${GAS_BASE}`);
 
     const gasLimitExecution = Number(signedMessage.gasLimitExecution);
-    ensure(gasLimitExecution + actualGasData < this.MAX_GAS_LIMIT, Error, 'dupa');
+    const totalGasLimit = gasLimitExecution + actualGasData;
+    ensure(totalGasLimit <= this.MAX_GAS_LIMIT, GasLimitTooHigh, `Got ${totalGasLimit} but should be less than ${this.MAX_GAS_LIMIT}`);
   }
 }

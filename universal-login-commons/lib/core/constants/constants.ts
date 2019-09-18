@@ -8,7 +8,7 @@ export const ETHER_NATIVE_TOKEN = {
 
 export const DEFAULT_GAS_PRICE = 10000000000;
 
-export const DEFAULT_GAS_LIMIT = 1000000;
+export const DEFAULT_GAS_LIMIT = 500000;
 
 export const GAS_BASE = 105000;
 

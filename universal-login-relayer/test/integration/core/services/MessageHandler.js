@@ -33,7 +33,7 @@ describe('INT: MessageHandler', async () => {
     await clearDatabase(knex);
   });
 
-  it('Error when not enough tokens', async () => {
+  xit('Error when not enough tokens', async () => {
     const message = {...msg, gasLimitExecution: utils.parseEther('2.0'), gasData: 8976};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
