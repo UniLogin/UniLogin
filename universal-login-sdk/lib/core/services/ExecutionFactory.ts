@@ -36,7 +36,7 @@ export class ExecutionFactory {
     return messageStatus.state === 'Error' || messageStatus.state === 'Success';
   }
 
-  private isStarted(messageStatus: MessageStatus) {
+  private hasTransactionHash(messageStatus: MessageStatus) {
     return ['Pending', 'Success', 'Error'].includes(messageStatus.state);
   }
 
@@ -46,7 +46,7 @@ export class ExecutionFactory {
 
   private createWaitForTransactionHash(messageHash: string) {
     return async () => {
-      const isNotPending = (messageStatus: MessageStatus) => !this.isStarted(messageStatus);
+      const isNotPending = (messageStatus: MessageStatus) => !this.hasTransactionHash(messageStatus);
       return retry(this.createGetStatus(messageHash), isNotPending, this.timeout, this.tick);
     };
   }
