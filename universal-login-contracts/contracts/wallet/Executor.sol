@@ -63,23 +63,6 @@ contract Executor {
         return messageHash;
     }
 
-    function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
-        if (gasToken != address(0)) {
-            ERC20 token = ERC20(gasToken);
-            token.transfer(beneficiary, computeGasUsedWithFee(gasUsed).mul(gasPrice));
-        } else {
-            beneficiary.transfer(computeGasUsedWithFee(gasUsed).mul(gasPrice));
-        }
-    }
-
-    function refundGas(address gasToken) private pure returns(uint refundCharge) {
-        if (gasToken == address(0)) {
-            return etherRefundCharge();
-        } else {
-            return tokenRefundCharge();
-        }
-    }
-
     function calculateMessageHash(
         address from,
         address to,
@@ -103,6 +86,23 @@ contract Executor {
                 gasLimitExecution,
                 gasData
         ));
+    }
+
+    function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
+        if (gasToken != address(0)) {
+            ERC20 token = ERC20(gasToken);
+            token.transfer(beneficiary, computeGasUsedWithFee(gasUsed).mul(gasPrice));
+        } else {
+            beneficiary.transfer(computeGasUsedWithFee(gasUsed).mul(gasPrice));
+        }
+    }
+
+    function refundGas(address gasToken) private pure returns(uint refundCharge) {
+        if (gasToken == address(0)) {
+            return etherRefundCharge();
+        } else {
+            return tokenRefundCharge();
+        }
     }
 
     function verifySignatures(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
