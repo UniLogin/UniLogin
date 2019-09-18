@@ -36,7 +36,7 @@ export const Settings = ({deployedWallet, className}: SettingsProps) => {
             title="Backup code"
             subtitle="Back up your account"
           >
-            <BackupCodes />
+            <BackupCodes deployedWallet={deployedWallet}/>
           </Accordion>
         </div>
       </div>

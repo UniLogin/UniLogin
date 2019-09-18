@@ -117,8 +117,8 @@ export function fromWords(words: string) {
 }
 
 export function generateBackupCode(
-  random1: utils.BigNumber = bigNumberify(utils.randomBytes(128)),
-  random2: utils.BigNumber = bigNumberify(utils.randomBytes(128))
+  random1: utils.BigNumber = bigNumberify(utils.randomBytes(8)),
+  random2: utils.BigNumber = bigNumberify(utils.randomBytes(8))
 ) {
   const prefix = toWords(random1)
     .replace(/\s/g, '-')

@@ -3,8 +3,8 @@ import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
 import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
+import UniversalLoginSDK, {DeployedWallet, TransferService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
-import UniversalLoginSDK, {TransferService} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
 import './../styles/udashboard.sass';
@@ -106,8 +106,11 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
           />
         );
       case 'backup':
+        const {contractAddress, name, privateKey} = applicationWallet;
         return (
-          <BackupCodes />
+          <BackupCodes
+            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
+          />
         );
       default:
         return null;
@@ -118,7 +121,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
   return (
     <>
       <button className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`} onClick={() => onUButtonClick()}>
-        <img src={logoIcon} alt="U"/>
+        <img src={logoIcon} alt="U" />
       </button>
       {dashboardVisibility &&
         <ModalWrapper
