@@ -15,6 +15,7 @@ import MessageExecutor from '../../lib/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../lib/integration/sql/services/DevicesStore';
 import {DevicesService} from '../../lib/core/services/DevicesService';
 import WalletMasterContractService from '../../lib/integration/ethereum/services/WalletMasterContractService';
+import {GasValidator} from '../../lib/core/services/validators/GasValidator';
 
 export default async function setupMessageService(knex: Knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -29,6 +30,8 @@ export default async function setupMessageService(knex: Knex) {
   const statusService = new MessageStatusService(messageRepository, signaturesService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList());
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator);
-  const messageHandler = new MessageHandler(wallet, authorisationStore, devicesService, hooks, messageRepository, queueStore, messageExecutor, statusService);
+  const MAX_GAS_LIMIT = 500000;
+  const gasValidator = new GasValidator(MAX_GAS_LIMIT);
+  const messageHandler = new MessageHandler(wallet, authorisationStore, devicesService, hooks, messageRepository, queueStore, messageExecutor, statusService, gasValidator);
   return { wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet };
 }

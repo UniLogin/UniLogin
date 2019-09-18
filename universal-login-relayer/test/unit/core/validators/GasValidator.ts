@@ -6,7 +6,8 @@ import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 
 describe('UNIT: GasValidator', () => {
-  const gasValidator = new GasValidator();
+  const MAX_GAS_LIMIT = 500000;
+  const gasValidator = new GasValidator(MAX_GAS_LIMIT);
   let message: SignedMessage;
 
   beforeEach(() => {
