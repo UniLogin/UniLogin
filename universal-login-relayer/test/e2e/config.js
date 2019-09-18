@@ -13,7 +13,7 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('should return public config', async () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, MAX_GAS_LIMIT} = relayer.config;
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit} = relayer.config;
     const expectedConfig = {
       supportedTokens,
       chainSpec,
@@ -21,7 +21,7 @@ describe('E2E: Relayer - Config routes', async () => {
       contractWhiteList,
       localization,
       onRampProviders,
-      MAX_GAS_LIMIT
+      maxGasLimit
     };
     const result = await chai.request(relayer.server)
       .get('/config');
@@ -30,7 +30,7 @@ describe('E2E: Relayer - Config routes', async () => {
 
 
   it('getPublicConfig should return PublicConfig', () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, MAX_GAS_LIMIT} = relayer.config;
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit} = relayer.config;
     const expectedConfig = {
       supportedTokens,
       chainSpec,
@@ -38,7 +38,7 @@ describe('E2E: Relayer - Config routes', async () => {
       contractWhiteList,
       localization,
       onRampProviders,
-      MAX_GAS_LIMIT
+      maxGasLimit
     };
     const publicConfig = getPublicConfig(relayer.config);
 

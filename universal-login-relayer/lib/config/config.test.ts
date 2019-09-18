@@ -47,7 +47,7 @@ export const config: Config =  Object.freeze({
       directory: path.join(__dirname, '../integration/sql/migrations'),
     }
   },
-  MAX_GAS_LIMIT: 500000
+  maxGasLimit: 500000
 });
 
 export default config;

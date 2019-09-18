@@ -70,7 +70,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
         rampUrl: 'https://ri-widget-staging.firebaseapp.com/'
       }
     },
-    database: databaseConfig
+    database: databaseConfig,
+    maxGasLimit: 500000
   };
 }
 

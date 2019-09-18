@@ -28,5 +28,5 @@ export interface PublicRelayerConfig {
   contractWhiteList: ContractWhiteList;
   localization: LocalizationConfig;
   onRampProviders: OnRampConfig;
-  MAX_GAS_LIMIT: number;
+  maxGasLimit: number;
 }

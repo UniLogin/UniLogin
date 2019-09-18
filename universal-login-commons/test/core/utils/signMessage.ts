@@ -22,7 +22,7 @@ const expectedMessage = {
   gasLimitExecution: transferMessage.gasLimitExecution,
   gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
-  signature: '0x331f30dc0829b182833da3ab8ebb4af38202517ac57b68609a186d80d1613e456157d39aaa9479bdb18e6a60310be5aa879730f051e4c7781d6d3e62dd0894261b'
+  signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c'
 };
 
 describe('UNIT: signMessage', async () => {
