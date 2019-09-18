@@ -90,8 +90,7 @@ describe('E2E: SDK', async () => {
       const gasData = 8720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: gasData + notEnoughGasLimit};
-      const {waitToBeMined} = await sdk.execute(message, privateKey);
-      await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough gas');
+      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Insufficient Gas. gasLimitExecution: got 100 but should be greater than 105000');
     });
   });
 
