@@ -14,7 +14,6 @@ describe('UNIT: ExecutionFactory', async () => {
   let status: MessageStatus;
   const getStatus: SinonStub = sinon.stub().returns({status: {}});
   const execute: SinonStub = sinon.stub();
-  const callCount = 2;
 
   before(async () => {
     signedMessage = createSignedMessage({from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
@@ -36,7 +35,7 @@ describe('UNIT: ExecutionFactory', async () => {
 
   beforeEach(() => {
     status = {...defaultStatus};
-    getStatus.onCall(callCount - 1).returns(status);
+    getStatus.onCall(1).returns(status);
     execute.returns({status: {...defaultStatus}});
   });
 
@@ -46,7 +45,7 @@ describe('UNIT: ExecutionFactory', async () => {
       const execution = await executionFactory.createExecution(signedMessage);
       const messageStatus = await execution.waitToBeMined();
       expect(messageStatus).to.be.deep.eq(status);
-      expect(getStatus.callCount).be.eq(callCount);
+      expect(getStatus.callCount).be.eq(2);
     });
 
     it('error', async () => {
@@ -56,7 +55,7 @@ describe('UNIT: ExecutionFactory', async () => {
       const execution = await executionFactory.createExecution(signedMessage);
       expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
       await expect(execution.waitToBeMined()).to.be.rejectedWith('Error: waitToBeMined');
-      expect(getStatus.callCount).be.eq(callCount);
+      expect(getStatus.callCount).be.eq(2);
     });
 
     it('message with no enough signatures', async () => {
@@ -78,7 +77,7 @@ describe('UNIT: ExecutionFactory', async () => {
       const {waitForTransactionHash} = await executionFactory.createExecution(signedMessage);
       const messageStatus = await waitForTransactionHash();
       expect(messageStatus).to.be.deep.eq(status);
-      expect(getStatus.callCount).be.eq(callCount);
+      expect(getStatus.callCount).be.eq(2);
     });
 
     it('state: Success', async () => {
@@ -87,7 +86,7 @@ describe('UNIT: ExecutionFactory', async () => {
       const {waitForTransactionHash} = await executionFactory.createExecution(signedMessage);
       const messageStatus = await waitForTransactionHash();
       expect(messageStatus).to.be.deep.eq(status);
-      expect(getStatus.callCount).be.eq(callCount);
+      expect(getStatus.callCount).be.eq(2);
     });
 
     it('state: Error', async () => {
@@ -98,7 +97,7 @@ describe('UNIT: ExecutionFactory', async () => {
       expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
       const messageStatus = await execution.waitForTransactionHash();
       expect(messageStatus).to.be.deep.eq(status);
-      expect(getStatus.callCount).be.eq(callCount);
+      expect(getStatus.callCount).be.eq(2);
     });
   });
 
