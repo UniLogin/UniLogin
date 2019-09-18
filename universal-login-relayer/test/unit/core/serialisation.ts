@@ -21,15 +21,13 @@ describe('UNIT: Coding transaction data', () => {
   it('should correctly decode encoded SignedMessage', () => {
     const {from, nonce, ...messageWithoutFromAndNonce} = message;
     const decoded = decodeDataForExecuteSigned(encodedMessage);
-    decoded.gasData = Number(decoded.gasData.toString());
     expect(decoded).to.deep.eq(messageWithoutFromAndNonce);
   });
 
   it('message without from property shoud be equal decoded message', () => {
     const {from, ...messageWithoutFrom} = message;
     const encoded = encodeDataForExecuteSigned(message);
-    const decoded = decodeDataForExecuteSigned(encoded);
-    decoded.gasData = Number(decoded.gasData.toString());
+    const decoded = decodeDataForExecuteSigned(encoded);y
     const {nonce, ...messageWithoutNonce} = messageWithoutFrom;
     expect(decoded).to.deep.eq(messageWithoutNonce);
   });
