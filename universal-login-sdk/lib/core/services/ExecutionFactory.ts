@@ -8,7 +8,7 @@ const DEFAULT_EXECUTION_TICK = 1000;
 
 export interface Execution {
   waitForTransactionHash: () => Promise<MessageStatus>;
-  waitToBeMined: () => Promise<MessageStatus>;
+  waitToBeSuccess: () => Promise<MessageStatus>;
   messageStatus: MessageStatus;
 }
 
@@ -23,11 +23,11 @@ export class ExecutionFactory {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
-    const waitToBeMined = totalCollected >= required ? this.createWaitToBeMined(messageHash) : async () => result.status;
+    const waitToBeSuccess = totalCollected >= required ? this.createWaitToBeSuccess(messageHash) : async () => result.status;
     const waitForTransactionHash = totalCollected >= required ? this.createWaitForTransactionHash(messageHash) : async () => result.status;
     return {
       messageStatus: result.status,
-      waitToBeMined,
+      waitToBeSuccess,
       waitForTransactionHash
     };
   }
@@ -48,7 +48,7 @@ export class ExecutionFactory {
     };
   }
 
-  private createWaitToBeMined(messageHash: string) {
+  private createWaitToBeSuccess(messageHash: string) {
     return async () => {
       const getStatus = async () => this.relayerApi.getStatus(messageHash);
       const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);

@@ -41,14 +41,14 @@ SDK -> Execution: new
 SDK -> User: Execution
 deactivate SDK
 
-User -> Execution: await waitForPending()
+User -> Execution: await waitForTransactionHash()
 activate Execution
 Execution -> RelayerApi:getStatus
 RelayerApi -> Relayer: GET /execution/:messageHash
 Execution -> User: Promise<MessageStatus>
 deactivate Execution
 
-User -> Execution: await waitToBeMined()
+User -> Execution: await waitToBeSuccess()
 activate Execution
 Execution -> RelayerApi:getStatus
 RelayerApi -> Relayer: GET /execution/:messageHash

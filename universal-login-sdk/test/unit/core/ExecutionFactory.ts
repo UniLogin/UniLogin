@@ -43,7 +43,7 @@ describe('UNIT: ExecutionFactory', async () => {
     it('waitToBeMined success', async () => {
       status.state = 'Success';
       const execution = await executionFactory.createExecution(signedMessage);
-      const messageStatus = await execution.waitToBeMined();
+      const messageStatus = await execution.waitToBeSuccess();
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
@@ -54,7 +54,7 @@ describe('UNIT: ExecutionFactory', async () => {
 
       const execution = await executionFactory.createExecution(signedMessage);
       expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
-      await expect(execution.waitToBeMined()).to.be.rejectedWith('Error: waitToBeMined');
+      await expect(execution.waitToBeSuccess()).to.be.rejectedWith('Error: waitToBeMined');
       expect(getStatus.callCount).be.eq(2);
     });
 
@@ -65,7 +65,7 @@ describe('UNIT: ExecutionFactory', async () => {
 
       execute.returns({status});
       const execution = await executionFactory.createExecution(signedMessage);
-      expect(await execution.waitToBeMined()).to.be.deep.eq(status);
+      expect(await execution.waitToBeSuccess()).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(0);
     });
   });

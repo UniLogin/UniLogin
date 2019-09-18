@@ -42,10 +42,10 @@ describe('E2E: DeployedWallet', async () => {
     });
 
     it('returns the correct number of required signatures after update', async function () {
-      let {waitToBeMined} = await deployedWallet.addKey(otherWallet.address, {gasToken: mockToken.address});
-      await waitToBeMined();
-      ({waitToBeMined} = await deployedWallet.setRequiredSignatures(2, {gasToken: mockToken.address}));
-      await waitToBeMined();
+      let {waitToBeSuccess} = await deployedWallet.addKey(otherWallet.address, {gasToken: mockToken.address});
+      await waitToBeSuccess();
+      ({waitToBeSuccess} = await deployedWallet.setRequiredSignatures(2, {gasToken: mockToken.address}));
+      await waitToBeSuccess();
       await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(2);
     });
   });

@@ -50,7 +50,7 @@ describe('INT: BlockchainObserver', async () => {
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
-    await execution.waitToBeMined();
+    await execution.waitToBeSuccess();
     await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
     expect(callback).to.have.been.calledWith({key: wallet.address});
   });
@@ -66,7 +66,7 @@ describe('INT: BlockchainObserver', async () => {
     await blockchainObserver.subscribe('KeyAdded', filter2, callback2);
 
     const execution = await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);
-    await execution.waitToBeMined();
+    await execution.waitToBeSuccess();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
 
     expect(callback).to.have.been.calledWith({key: otherWallet.address});
@@ -77,12 +77,12 @@ describe('INT: BlockchainObserver', async () => {
     const callback = sinon.spy();
     const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
-    await execution.waitToBeMined();
+    await execution.waitToBeSuccess();
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyRemoved', filter, callback);
     const removeKeyPaymentOption = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
-    const {waitToBeMined} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
-    await waitToBeMined();
+    const {waitToBeSuccess} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
+    await waitToBeSuccess();
     await blockchainObserver.fetchEvents(JSON.stringify(filter));
     expect(callback).to.have.been.calledWith({key: wallet.address});
   });

@@ -68,12 +68,12 @@ describe('Login', () => {
       const newPublicKey = utils.computeAddress((walletServiceForConnect.state as any).wallet.privateKey);
       const expectedSecurityCode = await generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;
-      const {waitToBeMined} = await sdk.addKey(
+      const {waitToBeSuccess} = await sdk.addKey(
         contractAddress,
         newPublicKey,
         privateKey,
         {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-      await waitToBeMined();
+      await waitToBeSuccess();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       expect(securityCode).to.be.deep.eq(expectedSecurityCode);
     });

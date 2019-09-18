@@ -25,7 +25,7 @@ export const ConfirmationsEdit = ({deployedWallet, devicesAmount}: Confirmations
     }
     setEditActive(false);
     const execution = await deployedWallet.setRequiredSignatures(requiredSignatures, transactionDetails);
-    await execution.waitToBeMined();
+    await execution.waitToBeSuccess();
   };
 
   const renderButton = () => {

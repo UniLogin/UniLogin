@@ -14,9 +14,9 @@ describe('UNIT: TransferService', () => {
     const tokenService = {
       getTokenAddress: sinon.fake(() => 'TOKEN_ADDRESS')
     };
-    const waitToBeMined = sinon.fake();
+    const waitToBeSuccess = sinon.fake();
     const sdk = {
-      execute: sinon.stub().returns({waitToBeMined}),
+      execute: sinon.stub().returns({waitToBeSuccess}),
       tokensDetailsStore: tokenService
     } as any;
     const walletService = {
@@ -26,11 +26,11 @@ describe('UNIT: TransferService', () => {
       } as any
     };
     const transferService = new TransferService(sdk as any, walletService.applicationWallet as any);
-    return {sdk, walletService, tokenService, transferService, waitToBeMined};
+    return {sdk, walletService, tokenService, transferService, waitToBeSuccess};
   }
 
   it('can transfer ether', async () => {
-    const {sdk, transferService, tokenService, waitToBeMined} = setup();
+    const {sdk, transferService, tokenService, waitToBeSuccess} = setup();
 
     await transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
@@ -49,7 +49,7 @@ describe('UNIT: TransferService', () => {
       },
       'PRIVATE_KEY',
     );
-    expect(waitToBeMined).to.be.calledOnce;
+    expect(waitToBeSuccess).to.be.calledOnce;
   });
 
   it('throw an error if wallet missing and transferring ETH', async () => {
@@ -66,7 +66,7 @@ describe('UNIT: TransferService', () => {
   });
 
   it('can transfer tokens', async () => {
-    const {sdk, transferService, tokenService, waitToBeMined} = setup();
+    const {sdk, transferService, tokenService, waitToBeSuccess} = setup();
     const recipient = Wallet.createRandom().address;
 
     await transferService.transfer({
@@ -86,7 +86,7 @@ describe('UNIT: TransferService', () => {
       },
       'PRIVATE_KEY',
     );
-    expect(waitToBeMined).to.be.calledOnce;
+    expect(waitToBeSuccess).to.be.calledOnce;
   });
 
   it('throw an error if wallet is missing and transfering tokens', async () => {
