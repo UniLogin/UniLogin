@@ -4,7 +4,7 @@ import IMessageValidator from '../../../core/services/validators/IMessageValidat
 import {messageToTransaction} from '../../../core/utils/messages/serialisation';
 import {NotEnoughGas} from '../../../core/utils/errors';
 
-export default class EnoughGasValidator implements IMessageValidator {
+export default class EstimateGasValidator implements IMessageValidator {
   constructor(private wallet: Wallet) {}
 
   async validate(signedMessage: SignedMessage) {

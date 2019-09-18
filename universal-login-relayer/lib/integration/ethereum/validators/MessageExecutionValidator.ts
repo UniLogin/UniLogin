@@ -3,14 +3,14 @@ import {ContractWhiteList} from '@universal-login/commons';
 import {ComposeValidator} from '../../../core/services/validators/ComposeValidator';
 import CorrectProxyValidator from './CorrectProxyValidator';
 import EnoughTokenValidator from './EnoughTokenValidator';
-import EnoughGasValidator from './EnoughGasValidator';
+import EstimateGasValidator from './EstimateGasValidator';
 
 export class MessageExecutionValidator extends ComposeValidator {
   constructor(wallet: Wallet, contractWhiteList: ContractWhiteList) {
     super([
       new CorrectProxyValidator(wallet, contractWhiteList),
       new EnoughTokenValidator(wallet),
-      new EnoughGasValidator(wallet)
+      new EstimateGasValidator(wallet)
     ]);
   }
 }
