@@ -27,7 +27,7 @@ describe('UNIT: Coding transaction data', () => {
   it('message without from property shoud be equal decoded message', () => {
     const {from, ...messageWithoutFrom} = message;
     const encoded = encodeDataForExecuteSigned(message);
-    const decoded = decodeDataForExecuteSigned(encoded);y
+    const decoded = decodeDataForExecuteSigned(encoded);
     const {nonce, ...messageWithoutNonce} = messageWithoutFrom;
     expect(decoded).to.deep.eq(messageWithoutNonce);
   });
