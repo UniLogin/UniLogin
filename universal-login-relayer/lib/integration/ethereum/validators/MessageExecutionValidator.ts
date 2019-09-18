@@ -1,11 +1,11 @@
 import {Wallet} from 'ethers';
 import {ContractWhiteList} from '@universal-login/commons';
 import {ComposeValidator} from '../../../core/services/validators/ComposeValidator';
-import CorrectProxyValidator from '../../../integration/ethereum/validators/CorrectProxyValidator';
-import EnoughTokenValidator from '../../../integration/ethereum/validators/EnoughTokenValidator';
-import EnoughGasValidator from '../../../integration/ethereum/validators/EnoughGasValidator';
+import CorrectProxyValidator from './CorrectProxyValidator';
+import EnoughTokenValidator from './EnoughTokenValidator';
+import EnoughGasValidator from './EnoughGasValidator';
 
-export class MessageValidator extends ComposeValidator {
+export class MessageExecutionValidator extends ComposeValidator {
   constructor(wallet: Wallet, contractWhiteList: ContractWhiteList) {
     super([
       new CorrectProxyValidator(wallet, contractWhiteList),
@@ -15,4 +15,4 @@ export class MessageValidator extends ComposeValidator {
   }
 }
 
-export default MessageValidator;
+export default MessageExecutionValidator;
