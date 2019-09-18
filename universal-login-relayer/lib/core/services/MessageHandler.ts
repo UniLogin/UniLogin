@@ -16,7 +16,6 @@ import {GasValidator} from './validators/GasValidator';
 class MessageHandler {
   private pendingMessages: PendingMessages;
   private queueService: QueueService;
-  private gasValidator: GasValidator;
 
   constructor(
     wallet: Wallet,
@@ -26,11 +25,11 @@ class MessageHandler {
     messageRepository: IMessageRepository,
     queueStore: IQueueStore,
     messageExecutor: MessageExecutor,
-    statusService: MessageStatusService
+    statusService: MessageStatusService,
+    private gasValidator: GasValidator
   ) {
     this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionMined.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
-    this.gasValidator = new GasValidator();
   }
 
   start() {

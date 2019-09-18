@@ -4,6 +4,8 @@ import {SignedMessage, TEST_CONTRACT_ADDRESS, Message} from '@universal-login/co
 import TEST_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
 import {messageToUnsignedMessage} from '../lib/message';
 
+const {bigNumberify} = utils;
+
 describe('messageToUnsignedMessage', () => {
   it('correct transform', async () => {
     const incomingMessage: Partial<Message> = {
@@ -13,7 +15,7 @@ describe('messageToUnsignedMessage', () => {
       gasPrice: TEST_PAYMENT_OPTIONS.gasPrice,
       gasToken: TEST_PAYMENT_OPTIONS.gasToken,
       data: '0xbeef',
-      gasLimit: utils.bigNumberify(100000),
+      gasLimit: bigNumberify(100000),
       nonce: 0
     };
 
@@ -24,8 +26,8 @@ describe('messageToUnsignedMessage', () => {
       gasPrice: TEST_PAYMENT_OPTIONS.gasPrice,
       gasToken: TEST_PAYMENT_OPTIONS.gasToken,
       data: '0xbeef',
-      gasData: 8976,
-      gasLimitExecution: utils.bigNumberify(100000 - 8976),
+      gasData: bigNumberify(8976),
+      gasLimitExecution: bigNumberify(100000 - 8976),
       nonce: 0,
     };
 

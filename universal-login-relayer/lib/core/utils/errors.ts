@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'InsufficientGas' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType = 'NotFound' | 'GasLimitTooHigh' | 'InsufficientGas' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -79,6 +79,13 @@ export class InsufficientGas extends ValidationFailed {
   constructor(msg: string) {
     super(`Insufficient Gas. ${msg}`, 'InsufficientGas');
     Object.setPrototypeOf(this, InsufficientGas.prototype);
+  }
+}
+
+export class GasLimitTooHigh extends ValidationFailed {
+  constructor(msg: string) {
+    super(`GasLimit is too high. ${msg}`, 'GasLimitTooHigh');
+    Object.setPrototypeOf(this, GasLimitTooHigh.prototype);
   }
 }
 

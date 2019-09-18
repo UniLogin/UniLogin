@@ -4,7 +4,7 @@ import {encodeDataForExecuteSigned} from './encode';
 import cloneDeep from 'lodash.clonedeep';
 
 export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
-  const gasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
+  const gasData = utils.bigNumberify(estimateGasDataFromUnsignedMessage(unsignedMessage));
   const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
   return {gasData, gasLimitExecution};
 };

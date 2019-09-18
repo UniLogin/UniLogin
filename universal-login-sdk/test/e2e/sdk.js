@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
-import {solidity, createFixtureLoader} from 'ethereum-waffle';
+import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
+import MockToken from '@universal-login/contracts/build/MockToken';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
@@ -26,9 +27,10 @@ describe('E2E: SDK', async () => {
   let mockToken;
   let message;
   let walletContract;
+  let wallet;
 
   beforeEach(async () => {
-    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
+    ({wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address, data: '0x'};
   });
 
@@ -82,10 +84,12 @@ describe('E2E: SDK', async () => {
     });
 
     it('when not enough tokens ', async () => {
-      message = {...message, gasLimit: utils.parseEther('25').toString()};
+      const mockToken = await deployContract(wallet, MockToken);
+      await mockToken.transfer(walletContract.address, 1);
+      message = {...message, gasToken: mockToken.address};
       const {waitToBeSuccess} = await sdk.execute(message, privateKey);
       await expect(waitToBeSuccess()).to.be.eventually.rejectedWith('Error: Not enough tokens');
-    });
+  });
 
     it('when not enough gas', async () => {
       const gasData = 8720;

@@ -1,23 +1,27 @@
 import {expect} from 'chai';
-import {Contract, Wallet, utils} from 'ethers';
-import {loadFixture} from 'ethereum-waffle';
+import {Contract, Wallet} from 'ethers';
+import {loadFixture, deployContract} from 'ethereum-waffle';
+import {messageToSignedMessage} from '@universal-login/contracts';
 import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
 import MessageExecutionValidator from '../../../../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
+import {transferMessage} from '../../../../fixtures/basicWalletContract';
+
+// @ts-ignore
+import MockToken from '@universal-login/contracts/build/MockToken';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: MessageWithFrom;
-  let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
   let messageExecutionValidator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
 
   before(async () => {
-    ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
+    ({wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
+    message = {...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS};
     messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList);
   });
 
@@ -32,7 +36,10 @@ describe('INT: MessageExecutionValidator', async () => {
   });
 
   it('throws when not enough tokens', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimitExecution: utils.parseEther('2.0')}, wallet.privateKey);
+    const mockToken = await deployContract(wallet, MockToken);
+    await mockToken.transfer(walletContract.address, 1);
+
+    const signedMessage = messageToSignedMessage({...message, gasToken: mockToken.address}, wallet.privateKey);
     await expect(messageExecutionValidator.validate(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
