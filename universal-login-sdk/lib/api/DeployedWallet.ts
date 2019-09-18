@@ -62,10 +62,16 @@ export class DeployedWallet implements ApplicationWallet {
     return walletContract.requiredSignatures();
   }
 
-  async generateBackupCode(): Promise<string> {
-    const code =  generateBackupCode();
-    const {address} = await walletFromBrain(this.name, code);
-    this.sdk.addKey(this.contractAddress, address, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-    return code;
+  async generateBackupCodes(): Promise<string[]> {
+    const codes: string[] = [generateBackupCode(), generateBackupCode()];
+    const addresses: string[] = [];
+
+    for (const code of codes) {
+      const {address} = await walletFromBrain(this.name, code);
+      addresses.push(address);
+    }
+
+    this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+    return codes;
   }
 }

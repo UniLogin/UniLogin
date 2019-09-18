@@ -13,34 +13,34 @@ export interface BackupProps {
 
 export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
   const [loading, setLoading] = useState(false);
-  const [backupCode, setBackupCode] = useState<string | undefined>(undefined);
+  const [backupCodes, setBackupCodes] = useState<string[]>([]);
 
   const generateBackupCodes = async () => {
     setLoading(true);
-    const backupCode = await deployedWallet.generateBackupCode();
-    setBackupCode(backupCode);
+    const backupCodes = await deployedWallet.generateBackupCodes();
+    setBackupCodes(backupCodes);
     setLoading(false);
   };
 
   const removeBackupCodes = () => {
     const message = 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
     if (confirm(message)) {
-      setBackupCode(undefined);
+        setBackupCodes([]);
     }
   };
 
   function renderContent() {
-    if (loading && !backupCode) {
+    if (loading && backupCodes.length === 0) {
       return (
         <div className="backup-loader-wrapper">
           <BackupCodesLoader title="Generating backup codes, please wait" />
           <button className="backup-btn backup-btn-secondary cancel-backup-btn">Cancel backup code</button>
         </div>
       );
-    } else if (!!backupCode) {
+    } else if (backupCodes.length > 0) {
       return (
         <BackupCodesView
-          code={backupCode}
+          codes={backupCodes}
           printCodes={window.print}
           walletContract={deployedWallet.name}
           removeBackupCodes={removeBackupCodes}
@@ -66,7 +66,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           <h2 className="backup-title">Backup code</h2>
           <p className="backup-subtitle">
             If you lose all your devices you may not have other ways to recover your account.
-            {!!backupCode
+            {backupCodes.length > 0
               ? <strong> Keep your generate the recovery code safe.</strong>
               : ' Generate a recovery code and keep it safe'
             }
