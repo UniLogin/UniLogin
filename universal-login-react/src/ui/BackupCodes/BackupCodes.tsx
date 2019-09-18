@@ -17,16 +17,9 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
 
   const generateBackupCodes = async () => {
     setLoading(true);
-    const backupCodes = await deployedWallet.generateBackupCodes();
-    setBackupCodes(backupCodes);
+    const codes = await deployedWallet.generateBackupCodes();
+    setBackupCodes(codes.concat(backupCodes));
     setLoading(false);
-  };
-
-  const removeBackupCodes = () => {
-    const message = 'You have NOT saved your backup keys! Proceeding will cancel and render these codes useless';
-    if (confirm(message)) {
-        setBackupCodes([]);
-    }
   };
 
   function renderContent() {
@@ -34,7 +27,6 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
       return (
         <div className="backup-loader-wrapper">
           <BackupCodesLoader title="Generating backup codes, please wait" />
-          <button className="backup-btn backup-btn-secondary cancel-backup-btn">Cancel backup code</button>
         </div>
       );
     } else if (backupCodes.length > 0) {
@@ -43,7 +35,6 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           codes={backupCodes}
           printCodes={window.print}
           walletContract={deployedWallet.name}
-          removeBackupCodes={removeBackupCodes}
           generateBackupCodes={generateBackupCodes}
           loading={loading}
         />

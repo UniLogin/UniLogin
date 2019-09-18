@@ -6,12 +6,11 @@ interface BackupCodesViewProps {
   codes: string[];
   walletContract: string;
   printCodes: () => void;
-  removeBackupCodes: () => void;
   generateBackupCodes: () => void;
   loading: boolean;
 }
 
-export const BackupCodesView = ({codes, printCodes, walletContract, removeBackupCodes, loading, generateBackupCodes}: BackupCodesViewProps) => {
+export const BackupCodesView = ({codes, printCodes, walletContract, loading, generateBackupCodes}: BackupCodesViewProps) => {
   return (
     <>
       {codes.map((code: string) =>
@@ -30,10 +29,6 @@ export const BackupCodesView = ({codes, printCodes, walletContract, removeBackup
         <button onClick={printCodes} className="backup-print-btn">Print codes</button>
       </div>
       {loading && <BackupCodesLoader title="Setting backup codes, please wait" />}
-      <div className="backup-buttons-row">
-        <button onClick={removeBackupCodes} className="backup-btn backup-btn-secondary backup-cancel-btn">Cancel backup code</button>
-        <button className="backup-btn backup-btn-primary" disabled={loading}>Set as backup codes</button>
-      </div>
     </>
   );
 };
