@@ -1,31 +1,53 @@
-import chai, {expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
-import {utils, providers, Wallet, Contract} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {expect} from 'chai';
+import {Contract, Wallet, utils, providers} from 'ethers';
+import {loadFixture, deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
+import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
+import EnoughTokenValidator, {hasEnoughToken} from '../../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
+import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {hasEnoughToken} from '../../../../lib/integration/ethereum/validations';
 
-chai.use(chaiAsPromised);
-chai.use(solidity);
-
-describe('INT: Tools test', async () => {
-  let provider : providers.Provider;
-  let wallet : Wallet;
-  let otherWallet : Wallet;
-  const gasLimit = 1000000;
+describe('INT: EnoughTokenValidator', async () => {
+  let message: MessageWithFrom;
+  let mockToken: Contract;
+  let walletContract: Contract;
+  let wallet: Wallet;
+  let validator: IMessageValidator;
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet, otherWallet] = await getWallets(provider);
+    ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
+    message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
+    validator = new EnoughTokenValidator(wallet);
+  });
+
+  it('successfully pass the validation', async () => {
+    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    await expect(validator.validate(signedMessage)).to.not.be.rejected;
+  });
+
+  it('passes when not enough gas', async () => {
+    const signedMessage = createSignedMessage({...message, gasLimitExecution: 100}, wallet.privateKey);
+    await expect(validator.validate(signedMessage)).to.be.eventually.fulfilled;
+  });
+
+  it('throws when not enough tokens', async () => {
+    const signedMessage = createSignedMessage({...message, gasLimitExecution: utils.parseEther('2.0')}, wallet.privateKey);
+    await expect(validator.validate(signedMessage))
+      .to.be.eventually.rejectedWith('Not enough tokens');
   });
 
   describe('hasEnoughToken', async () => {
+    let provider : providers.Provider;
+    let wallet : Wallet;
+    let otherWallet : Wallet;
+    const gasLimit = 1000000;
     let token : Contract;
     let walletContract : Contract;
 
     before(async () => {
+      provider = createMockProvider();
+      [wallet, otherWallet] = await getWallets(provider);
       token = await deployContract(wallet, MockToken, []);
       walletContract = await deployContract(wallet, WalletContract, []);
       await walletContract.initialize(wallet.address);

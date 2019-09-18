@@ -1,31 +1,24 @@
-import {Wallet, providers, utils} from 'ethers';
-import {ContractWhiteList, SignedMessage, ensure} from '@universal-login/commons';
-import {IMessageValidator} from '../../../core/services/validators/IMessageValidator';
-import {ensureEnoughGas, ensureEnoughToken} from '../validations';
-import {InvalidProxy} from '../../../core/utils/errors';
+import {Wallet, providers} from 'ethers';
+import {ContractWhiteList, SignedMessage} from '@universal-login/commons';
+import {ComposeValidator} from '../../../core/services/validators/ComposeValidator';
+import CorrectProxyValidator from '../../../integration/ethereum/validators/CorrectProxyValidator';
+import EnoughTokenValidator from '../../../integration/ethereum/validators/EnoughTokenValidator';
 import {messageToTransaction} from '../../../core/utils/messages/serialisation';
+import {ensureEnoughGas} from '../validations';
 
-export class MessageValidator implements IMessageValidator {
-  constructor(private wallet: Wallet, private contractWhiteList: ContractWhiteList) {
+export class MessageValidator extends ComposeValidator {
+  constructor(private wallet: Wallet, contractWhiteList: ContractWhiteList) {
+    super([
+      new CorrectProxyValidator(wallet, contractWhiteList),
+      new EnoughTokenValidator(wallet)
+    ]);
   }
 
   async validate(signedMessage: SignedMessage) : Promise<void> {
-    await this.ensureCorrectProxy(signedMessage.from);
-    await ensureEnoughToken(this.wallet.provider, signedMessage);
+    await super.validate(signedMessage);
 
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
     await ensureEnoughGas(this.wallet.provider, this.wallet.address, transactionReq, signedMessage);
-  }
-
-  private async ensureCorrectProxy(from: string) {
-    const proxyByteCode = await this.wallet.provider.getCode(from);
-    const proxyContractHash = utils.keccak256(proxyByteCode);
-    ensure(
-      this.contractWhiteList.proxy.includes(proxyContractHash),
-      InvalidProxy,
-      from,
-      proxyContractHash,
-      this.contractWhiteList.proxy);
   }
 }
 

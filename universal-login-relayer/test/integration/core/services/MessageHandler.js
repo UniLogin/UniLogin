@@ -1,6 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {createSignedMessage, waitExpect} from '@universal-login/commons';
+import {encodeFunction} from '@universal-login/contracts/testutils';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';
@@ -27,6 +29,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   afterEach(async () => {
+    messageHandler.stopLater();
     await clearDatabase(knex);
   });
 
@@ -42,12 +45,7 @@ describe('INT: MessageHandler', async () => {
   it('Error when not enough gas', async () => {
     const message = {...msg, gasLimitExecution: 100, gasData: 8976};
     const signedMessage = createSignedMessage(message, wallet.privateKey);
-    const {messageHash} = await messageHandler.handleMessage(signedMessage);
-    await messageHandler.stopLater();
-    const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.be.eq('Error: Not enough gas');
-    const {state} = await messageHandler.getStatus(messageHash);
-    expect(state).to.be.eq('Error');
+    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith('Insufficient Gas. gasLimitExecution: got 100 but should be greater than 105000');
   });
 
   describe('Transfer', async () => {
@@ -85,6 +83,20 @@ describe('INT: MessageHandler', async () => {
         expect(authorisations).to.deep.eq([]);
         expect(await devicesStore.get(walletContract.address)).length(1);
       });
+    });
+  });
+
+  describe('Add Keys', async () => {
+    it('execute add key', async () => {
+      const keys = [otherWallet.address];
+      const data = encodeFunction(WalletContract, 'addKeys', [keys]);
+      msg = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data};
+      const signedMessage0 = messageToSignedMessage(msg, wallet.privateKey);
+      await messageHandler.handleMessage(signedMessage0);
+      await messageHandler.stopLater();
+      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
+      const devices = await devicesStore.get(walletContract.address);
+      expect(devices.map(({publicKey}) => publicKey)).to.be.deep.eq(keys);
     });
   });
 

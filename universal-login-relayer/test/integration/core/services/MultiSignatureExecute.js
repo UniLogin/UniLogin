@@ -27,6 +27,7 @@ describe('INT: MultiSignatureExecute', async () => {
   });
 
   afterEach(async () => {
+    messageHandler.stopLater();
     await clearDatabase(knex);
   });
 
@@ -42,14 +43,12 @@ describe('INT: MultiSignatureExecute', async () => {
   });
 
   it('Error when not enough gas', async () => {
-    const message = {...msg, gasLimit: 9000};
-    const signedMessage0 = messageToSignedMessage(message, wallet.privateKey);
-    const signedMessage1 = messageToSignedMessage(message, actionKey);
+    const message0 = {...msg, gasLimit: 120000};
+    const signedMessage0 = messageToSignedMessage(message0, wallet.privateKey);
     await messageHandler.handleMessage(signedMessage0);
-    const {messageHash} = await messageHandler.handleMessage(signedMessage1);
-    await messageHandler.stopLater();
-    const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.be.eq('Error: Not enough gas');
+    const message1 = {...msg, gasLimit: 9000};
+    const signedMessage1 = messageToSignedMessage(message1, actionKey);
+    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith('Insufficient Gas. gasLimitExecution: got 24 but should be greater than 105000');
   });
 
   describe('Transfer', async () => {
@@ -104,7 +103,7 @@ describe('INT: MultiSignatureExecute', async () => {
 
   describe('Remove key ', async () => {
     beforeEach(async () => {
-      const message =  {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const message = {...addKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage0 = messageToSignedMessage(message, wallet.privateKey);
       const signedMessage1 = messageToSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
@@ -113,13 +112,13 @@ describe('INT: MultiSignatureExecute', async () => {
 
     it('should remove key', async () => {
       await waitExpect(async () => expect((await walletContract.keyExist(otherWallet.address))).to.be.true);
-      const message =  {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const message = {...removeKeyMessage, from: walletContract.address, gasToken: mockToken.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage0 = messageToSignedMessage(message, wallet.privateKey);
       const signedMessage1 = messageToSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
       await messageHandler.stopLater();
-      expect((await walletContract.keyExist(otherWallet.address))).to.eq(false);
+      expect((await walletContract.keyExist(otherWallet.address))).to.be.false;
     });
   });
 

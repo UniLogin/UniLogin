@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {toWords, generateBackupCode, fromWords, getSyllables, fromBase} from '../../../lib/core/utils/generateBackupCodes';
+import {toWords, generateBackupCode, fromWords, getSyllables, fromBase} from '../../../lib/core/utils/generateBackupCode';
 import {utils} from 'ethers';
 import range from 'lodash.range';
 
