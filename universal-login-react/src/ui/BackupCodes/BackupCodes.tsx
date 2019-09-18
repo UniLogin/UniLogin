@@ -11,19 +11,21 @@ export interface BackupProps {
   className?: string;
 }
 
+type BackupState = 'Initial' | 'Loading' | 'Generated';
+
 export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
-  const [loading, setLoading] = useState(false);
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
+  const [state, setState] = useState<BackupState>('Initial');
 
   const generateBackupCodes = async () => {
-    setLoading(true);
+    setState('Loading');
     const codes = await deployedWallet.generateBackupCodes();
     setBackupCodes(codes.concat(backupCodes));
-    setLoading(false);
+    setState('Generated');
   };
 
   function renderContent() {
-    if (loading && backupCodes.length === 0) {
+    if (state === 'Loading') {
       return (
         <div className="backup-loader-wrapper">
           <BackupCodesLoader title="Generating backup codes, please wait" />
@@ -35,8 +37,6 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           codes={backupCodes}
           printCodes={window.print}
           walletContract={deployedWallet.name}
-          generateBackupCodes={generateBackupCodes}
-          loading={loading}
         />
       );
     }
@@ -57,7 +57,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           <h2 className="backup-title">Backup code</h2>
           <p className="backup-subtitle">
             If you lose all your devices you may not have other ways to recover your account.
-            {backupCodes.length > 0
+            {state !== 'Initial'
               ? <strong> Keep your generate the recovery code safe.</strong>
               : ' Generate a recovery code and keep it safe'
             }
