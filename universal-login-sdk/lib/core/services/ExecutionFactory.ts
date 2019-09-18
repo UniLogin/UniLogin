@@ -7,7 +7,7 @@ const DEFAULT_EXECUTION_TIMEOUT = 600000;
 const DEFAULT_EXECUTION_TICK = 1000;
 
 export interface Execution {
-  waitToExecutionStart: () => Promise<MessageStatus>;
+  waitForTransactionHash: () => Promise<MessageStatus>;
   waitToBeMined: () => Promise<MessageStatus>;
   messageStatus: MessageStatus;
 }
@@ -24,11 +24,11 @@ export class ExecutionFactory {
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
     const waitToBeMined = totalCollected >= required ? this.createWaitToBeMined(messageHash) : async () => result.status;
-    const waitToExecutionStart = totalCollected >= required ? this.createExecutionStart(messageHash) : async () => result.status;
+    const waitForTransactionHash = totalCollected >= required ? this.createWaitForTransactionHash(messageHash) : async () => result.status;
     return {
       messageStatus: result.status,
       waitToBeMined,
-      waitToExecutionStart
+      waitForTransactionHash
     };
   }
 
@@ -44,12 +44,10 @@ export class ExecutionFactory {
     return async () => this.relayerApi.getStatus(messageHash);
   }
 
-  private createExecutionStart(messageHash: string) {
+  private createWaitForTransactionHash(messageHash: string) {
     return async () => {
       const isNotPending = (messageStatus: MessageStatus) => !this.isStarted(messageStatus);
-      const status = await retry(this.createGetStatus(messageHash), isNotPending, this.timeout, this.tick);
-      ensure(!status.error, Error, status.error!);
-      return status;
+      return retry(this.createGetStatus(messageHash), isNotPending, this.timeout, this.tick);
     };
   }
 

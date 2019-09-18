@@ -71,12 +71,12 @@ describe('UNIT: ExecutionFactory', async () => {
     });
   });
 
-  describe('waitToExecutionStart', () => {
+  describe('waitForTransactionHash', () => {
     it('state: Pending', async () => {
       status.state = 'Pending';
 
-      const {waitToExecutionStart} = await executionFactory.createExecution(signedMessage);
-      const messageStatus = await waitToExecutionStart();
+      const {waitForTransactionHash} = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await waitForTransactionHash();
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(callCount);
     });
@@ -84,8 +84,8 @@ describe('UNIT: ExecutionFactory', async () => {
     it('state: Success', async () => {
       status.state = 'Success';
 
-      const {waitToExecutionStart} = await executionFactory.createExecution(signedMessage);
-      const messageStatus = await waitToExecutionStart();
+      const {waitForTransactionHash} = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await waitForTransactionHash();
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(callCount);
     });
@@ -94,9 +94,10 @@ describe('UNIT: ExecutionFactory', async () => {
       status.state = 'Error';
       status.error = 'Error: waitToBeMined';
 
-      const {waitToExecutionStart, messageStatus} = await executionFactory.createExecution(signedMessage);
-      expect(messageStatus).to.be.deep.eq(defaultStatus);
-      await expect(waitToExecutionStart()).to.be.rejectedWith('Error: waitToBeMined');
+      const execution = await executionFactory.createExecution(signedMessage);
+      expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
+      const messageStatus = await execution.waitForTransactionHash();
+      expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(callCount);
     });
   });
