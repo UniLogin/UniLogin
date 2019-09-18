@@ -26,7 +26,7 @@ import WalletMasterContractService from '../../integration/ethereum/services/Wal
 import {MessageStatusService} from '../../core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
 import IMessageValidator from '../../core/services/validators/IMessageValidator';
-import MessageValidator from '../../integration/ethereum/validators/MessageValidator';
+import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
@@ -59,7 +59,7 @@ class Relayer {
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
-  private messageValidator: IMessageValidator = {} as IMessageValidator;
+  private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
   private messageExecutor: MessageExecutor = {} as MessageExecutor;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
@@ -103,8 +103,8 @@ class Relayer {
     this.queueStore = new QueueSQLStore(this.database);
     this.signaturesService = new SignaturesService(this.wallet);
     this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
-    this.messageValidator = new MessageValidator(this.wallet, this.config.contractWhiteList);
-    this.messageExecutor = new MessageExecutor(this.wallet, this.messageValidator);
+    this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
+    this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.queueStore, this.messageExecutor, this.statusService);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
