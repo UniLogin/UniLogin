@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import sinon, {SinonSpy, SinonStub} from 'sinon';
+import sinon, {SinonStub} from 'sinon';
 import {utils} from 'ethers';
-import {createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, MessageState} from '@universal-login/commons';
+import {createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY} from '@universal-login/commons';
 
 import {ExecutionFactory} from '../../../lib/core/services/ExecutionFactory';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
@@ -27,7 +27,6 @@ describe('UNIT: ExecutionFactory', async () => {
       messageHash,
       collectedSignatures: [signedMessage.signature]
     };
-
     relayerApi = {
       execute,
       getStatus
@@ -65,19 +64,19 @@ describe('UNIT: ExecutionFactory', async () => {
       status.required = 2;
       delete status.transactionHash;
 
-      relayerApi.execute = sinon.stub().returns({status});
+      execute.returns({status});
       const execution = await executionFactory.createExecution(signedMessage);
       expect(await execution.waitToBeMined()).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(0);
     });
   });
 
-  describe('waitToBePending', () => {
+  describe('waitToExecutionStart', () => {
     it('state: Pending', async () => {
       status.state = 'Pending';
 
-      const {waitToBePending} = await executionFactory.createExecution(signedMessage);
-      const messageStatus = await waitToBePending();
+      const {waitToExecutionStart} = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await waitToExecutionStart();
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(callCount);
     });
@@ -85,8 +84,8 @@ describe('UNIT: ExecutionFactory', async () => {
     it('state: Success', async () => {
       status.state = 'Success';
 
-      const {waitToBePending} = await executionFactory.createExecution(signedMessage);
-      const messageStatus = await waitToBePending();
+      const {waitToExecutionStart} = await executionFactory.createExecution(signedMessage);
+      const messageStatus = await waitToExecutionStart();
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(callCount);
     });
@@ -95,9 +94,9 @@ describe('UNIT: ExecutionFactory', async () => {
       status.state = 'Error';
       status.error = 'Error: waitToBeMined';
 
-      const {waitToBePending, messageStatus} = await executionFactory.createExecution(signedMessage);
+      const {waitToExecutionStart, messageStatus} = await executionFactory.createExecution(signedMessage);
       expect(messageStatus).to.be.deep.eq(defaultStatus);
-      await expect(waitToBePending()).to.be.rejectedWith('Error: waitToBeMined');
+      await expect(waitToExecutionStart()).to.be.rejectedWith('Error: waitToBeMined');
       expect(getStatus.callCount).be.eq(callCount);
     });
   });

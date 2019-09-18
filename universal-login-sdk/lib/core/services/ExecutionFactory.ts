@@ -7,7 +7,7 @@ const DEFAULT_EXECUTION_TIMEOUT = 600000;
 const DEFAULT_EXECUTION_TICK = 1000;
 
 export interface Execution {
-  waitToBePending: () => Promise<MessageStatus>;
+  waitToExecutionStart: () => Promise<MessageStatus>;
   waitToBeMined: () => Promise<MessageStatus>;
   messageStatus: MessageStatus;
 }
@@ -24,11 +24,11 @@ export class ExecutionFactory {
     ensureNotNull(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
     const waitToBeMined = totalCollected >= required ? this.createWaitToBeMined(messageHash) : async () => result.status;
-    const waitToBePending = totalCollected >= required ? this.createWaitToBePending(messageHash) : async () => result.status;
+    const waitToExecutionStart = totalCollected >= required ? this.createExecutionStart(messageHash) : async () => result.status;
     return {
       messageStatus: result.status,
       waitToBeMined,
-      waitToBePending
+      waitToExecutionStart
     };
   }
 
@@ -36,17 +36,17 @@ export class ExecutionFactory {
     return messageStatus.state === 'Error' || messageStatus.state === 'Success';
   }
 
-  private isPending(messageStatus: MessageStatus) {
-    return messageStatus.state === 'Pending';
+  private isStarted(messageStatus: MessageStatus) {
+    return ['Pending', 'Success', 'Error'].includes(messageStatus.state);
   }
 
   private createGetStatus(messageHash: string) {
     return async () => this.relayerApi.getStatus(messageHash);
   }
 
-  private createWaitToBePending(messageHash: string) {
+  private createExecutionStart(messageHash: string) {
     return async () => {
-      const isNotPending = (messageStatus: MessageStatus) => !this.isPending(messageStatus);
+      const isNotPending = (messageStatus: MessageStatus) => !this.isStarted(messageStatus);
       const status = await retry(this.createGetStatus(messageHash), isNotPending, this.timeout, this.tick);
       ensure(!status.error, Error, status.error!);
       return status;
