@@ -68,11 +68,11 @@ export class ULWeb3Provider implements Provider {
       ...tx,
       from: this.walletService.getDeployedWallet().contractAddress,
     });
-    const mined = await execution.waitToBeMined();
-    if (!mined.transactionHash) {
+    const succeeded = await execution.waitToBeSuccess();
+    if (!succeeded.transactionHash) {
       throw new Error('Expected tx hash to not be null');
     }
-    return mined.transactionHash;
+    return succeeded.transactionHash;
   }
 
   create() {
