@@ -31,6 +31,6 @@ describe('UNIT: GasValidator', () => {
   it('too less', () => {
     (message.gasData as number) -= 1;
     const actualGasData = estimateGasDataFromSignedMessage(message);
-    expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasData ${message.gasData as number} but should be ${actualGasData}`);
+    expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. gasData: got ${message.gasData as number} but should be ${actualGasData}`);
   });
 });
