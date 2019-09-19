@@ -36,9 +36,18 @@ describe('INT: CorrectProxyValidator', async () => {
     await expect(validator.validate(signedMessage)).to.be.eventually.fulfilled;
   });
 
+  it('passes when invalid master but valid proxy', async () => {
+    const validatorWithInvalidMaster = new CorrectProxyValidator(wallet, {
+      wallet: [TEST_ACCOUNT_ADDRESS],
+      proxy: contractWhiteList.proxy
+    });
+    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually.fulfilled;
+  });
+
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new CorrectProxyValidator(wallet, {
-      wallet: [],
+      wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);

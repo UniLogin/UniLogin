@@ -13,7 +13,7 @@ export default async function basicWalletContract(provider, wallets) {
   const [ , , wallet] = wallets;
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const factoryContract = await deployFactory(wallet, walletContract.address);
-  const walletContract = await createWalletContract(wallet);
+  const {proxy: walletContract} = await createWalletContract(wallet);
   return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
 }
 
