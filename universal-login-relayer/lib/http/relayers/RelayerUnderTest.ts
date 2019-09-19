@@ -3,7 +3,7 @@ import {providers, Wallet, utils, Contract} from 'ethers';
 const ENSBuilder = require('ens-builder');
 import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN, deployContract, deepMerge, DeepPartial} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
-import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
@@ -23,7 +23,7 @@ type CreateRelayerArgs = {
 
 export class RelayerUnderTest extends Relayer {
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const walletContract = await deployContract(wallet, WalletMasterWithRefund);
+    const walletContract = await deployContract(wallet, WalletContract);
     const factoryContract = await deployFactory(wallet, walletContract.address);
     return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract});
   }
@@ -84,6 +84,6 @@ export async function clearDatabase(knex: Knex) {
 }
 
 export const getContractWhiteList = () => ({
-  wallet: [getContractHash(WalletMasterWithRefund as ContractJSON)],
+  wallet: [getContractHash(WalletContract as ContractJSON)],
   proxy: [getContractHash(ProxyContract as ContractJSON)]
 });
