@@ -84,6 +84,6 @@ export async function clearDatabase(knex: Knex) {
 }
 
 export const getContractWhiteList = () => ({
-  wallet: [],
+  wallet: [getContractHash(WalletMasterWithRefund as ContractJSON)],
   proxy: [getContractHash(ProxyContract as ContractJSON)]
 });

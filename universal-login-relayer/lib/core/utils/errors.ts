@@ -1,4 +1,4 @@
-type ErrorType = 'NotFound' | 'GasLimitTooHigh' | 'InsufficientGas' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType = 'NotFound' | 'GasLimitTooHigh' | 'InsufficientGas' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidMaster' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -51,6 +51,13 @@ export class InvalidProxy extends ValidationFailed {
   constructor (address: string, proxyHash: string, supportedProxyHashes: string[]) {
     super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidSignature');
     Object.setPrototypeOf(this, InvalidContract.prototype);
+  }
+}
+
+export class InvalidMaster extends ValidationFailed {
+  constructor (address: string, masterHash: string, supportedMasterHashes: string[]) {
+    super(`Invalid master at address '${address}'. Deployed contract bytecode hash: '${masterHash}'. Supported bytecode hashes: [${supportedMasterHashes}]`, 'InvalidMaster');
+    Object.setPrototypeOf(this, InvalidMaster.prototype);
   }
 }
 

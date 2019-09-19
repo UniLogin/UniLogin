@@ -46,7 +46,7 @@ describe('INT: MessageExecutionValidator', async () => {
 
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new MessageExecutionValidator(wallet, {
-      wallet: [],
+      wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);
