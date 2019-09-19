@@ -1,4 +1,28 @@
-type ErrorType = 'NotFound' | 'GasLimitTooHigh' | 'InsufficientGas' | 'StatusNotFound' | 'MessageNotFound' | 'TransactionHashNotFound' | 'NodeEnvNotSpecified' | 'InvalidENSDomain' |  'PaymentError' | 'NotEnoughGas' | 'NotEnoughBalance' | 'InvalidExecution' | 'InvalidProxy' | 'InvalidMaster' | 'InvalidSignature' | 'DuplicatedSignature' | 'DuplicatedExecution' | 'NotEnoughSignatures' | 'InvalidTransaction' | 'InvalidHexData' | 'DuplicatedEnsName' | 'UnauthorisedAddress';
+type ErrorType =
+  'NotFound' |
+  'GasLimitTooHigh' |
+  'InsufficientGas' |
+  'InvalidContract' |
+  'StatusNotFound' |
+  'MessageNotFound' |
+  'TransactionHashNotFound' |
+  'NodeEnvNotSpecified' |
+  'InvalidENSDomain' |
+  'PaymentError' |
+  'NotEnoughGas' |
+  'NotEnoughBalance' |
+  `NotEnoughTokens` |
+  'InvalidExecution' |
+  'InvalidMaster' |
+  'InvalidProxy' |
+  'InvalidSignature' |
+  'DuplicatedSignature' |
+  'DuplicatedExecution' |
+  'NotEnoughSignatures' |
+  'InvalidTransaction' |
+  'InvalidHexData' |
+  'EnsNameTaken' |
+  'UnauthorisedAddress';
 
 export class RelayerError extends Error {
   errorType : ErrorType;
@@ -42,15 +66,15 @@ export class InvalidSignature extends ValidationFailed {
 
 export class InvalidContract extends ValidationFailed {
   constructor (contractAddress: string) {
-    super(`Invalid contract address: ${contractAddress}`, 'InvalidSignature');
+    super(`Invalid contract address: ${contractAddress}`, 'InvalidContract');
     Object.setPrototypeOf(this, InvalidContract.prototype);
   }
 }
 
 export class InvalidProxy extends ValidationFailed {
   constructor (address: string, proxyHash: string, supportedProxyHashes: string[]) {
-    super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidSignature');
-    Object.setPrototypeOf(this, InvalidContract.prototype);
+    super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidProxy');
+    Object.setPrototypeOf(this, InvalidProxy.prototype);
   }
 }
 
@@ -114,7 +138,7 @@ export class InvalidMessage extends NotFound {
 
 export class InvalidENSDomain extends NotFound {
   constructor (ensDomain: string) {
-    super(`ENS domain ${ensDomain} does not exist or is not compatible with Universal Login`, 'NotFound');
+    super(`ENS domain ${ensDomain} does not exist or is not compatible with Universal Login`, 'InvalidENSDomain');
   }
 }
 
@@ -170,7 +194,7 @@ export class NotEnoughBalance extends PaymentError {
 
 export class NotEnoughTokens extends PaymentError {
   constructor () {
-    super('Not enough tokens', 'NotEnoughBalance');
+    super('Not enough tokens', 'NotEnoughTokens');
     Object.setPrototypeOf(this, NotEnoughTokens.prototype);
   }
 }
@@ -185,8 +209,8 @@ export class Conflict extends RelayerError {
 
 export class EnsNameTaken extends Conflict {
   constructor (ensName: string) {
-    super(`ENS name ${ensName} already taken`, 'DuplicatedEnsName');
-    Object.setPrototypeOf(this, DuplicatedSignature.prototype);
+    super(`ENS name ${ensName} already taken`, 'EnsNameTaken');
+    Object.setPrototypeOf(this, EnsNameTaken.prototype);
   }
 }
 
