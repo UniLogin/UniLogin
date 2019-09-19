@@ -14,13 +14,14 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: MessageWithFrom;
+  let master: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
   let messageExecutionValidator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
 
   before(async () => {
-    ({wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
+    ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS};
     messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList);
   });
@@ -51,5 +52,15 @@ describe('INT: MessageExecutionValidator', async () => {
     });
     const signedMessage = createSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
+  });
+
+  it('throws when invalid master', async () => {
+    const messageValidatorWithInvalidMaster = new MessageExecutionValidator(wallet, {
+      wallet: [TEST_ACCOUNT_ADDRESS],
+      proxy: contractWhiteList.proxy
+    });
+    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
+    .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });
