@@ -7,6 +7,7 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';
+import {getConfig} from '../../../../lib';
 import {getKnexConfig} from '../../../helpers/knex';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 import {messageToSignedMessage} from '@universal-login/contracts';
@@ -20,10 +21,11 @@ describe('INT: MessageHandler', async () => {
   let walletContract;
   let msg;
   let otherWallet;
+  const config = getConfig('test');
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore} = await setupMessageService(knex));
+    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore} = await setupMessageService(knex, config));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
     messageHandler.start();
   });
