@@ -57,7 +57,7 @@ const Modal = () => {
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>
-          <ModalWaitingFor action={'Transferring funds'} transactionHash={'0x5a63…f3a68a'}/>
+          <ModalWaitingFor action={'Transferring funds'} transactionHash={modalService.modalProps.toString()}/>
         </ModalWrapperWithoutClose>
       );
     case 'transactionSuccess':
