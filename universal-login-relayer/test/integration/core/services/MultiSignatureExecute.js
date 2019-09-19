@@ -6,6 +6,7 @@ import {messageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
+import {getConfig} from '../../../../lib';
 import {getKnexConfig} from '../../../helpers/knex';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
@@ -17,10 +18,11 @@ describe('INT: MultiSignatureExecute', async () => {
   let msg;
   let otherWallet;
   let actionKey;
+  const config = getConfig('test');
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet} = await setupMessageService(knex));
+    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet} = await setupMessageService(knex, config));
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
     messageHandler.start();
