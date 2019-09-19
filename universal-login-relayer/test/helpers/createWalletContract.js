@@ -15,5 +15,8 @@ export default async function createWalletContract(wallet) {
   const proxyArgs = [walletContract.address];
   const proxyContract = await factory.deploy(...proxyArgs, defaultDeployOptions);
   await wallet.sendTransaction({to: proxyContract.address, data: initData});
-  return new Contract(proxyContract.address, WalletContract.abi, wallet);
+  return {
+    proxy: new Contract(proxyContract.address, WalletContract.abi, wallet),
+    master: walletContract
+  };
 }

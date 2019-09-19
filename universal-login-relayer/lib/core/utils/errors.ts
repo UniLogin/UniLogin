@@ -13,6 +13,7 @@ type ErrorType =
   'NotEnoughBalance' |
   `NotEnoughTokens` |
   'InvalidExecution' |
+  'InvalidMaster' |
   'InvalidProxy' |
   'InvalidSignature' |
   'DuplicatedSignature' |
@@ -74,6 +75,13 @@ export class InvalidProxy extends ValidationFailed {
   constructor (address: string, proxyHash: string, supportedProxyHashes: string[]) {
     super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidProxy');
     Object.setPrototypeOf(this, InvalidProxy.prototype);
+  }
+}
+
+export class InvalidMaster extends ValidationFailed {
+  constructor (address: string, masterHash: string, supportedMasterHashes: string[]) {
+    super(`Invalid master at address '${address}'. Deployed contract bytecode hash: '${masterHash}'. Supported bytecode hashes: [${supportedMasterHashes}]`, 'InvalidMaster');
+    Object.setPrototypeOf(this, InvalidMaster.prototype);
   }
 }
 
