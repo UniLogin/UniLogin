@@ -9,4 +9,5 @@ export interface TransferDetails {
 export type TransactionOverrides = {
   gasLimit?: utils.BigNumber;
   gasPrice?: utils.BigNumber;
+  nonce?: utils.BigNumber;
 };
