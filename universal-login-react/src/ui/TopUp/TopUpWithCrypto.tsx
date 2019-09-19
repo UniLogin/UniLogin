@@ -24,8 +24,8 @@ export const TopUpWithCrypto = ({contractAddress}: TopUpWithCryptoProps) => {
           defaultValue={contractAddress}
           readOnly
         />
-        <button onClick={() => copy('contract-address')} className="address-copy-btn">
-          <span className="address-copy-btn-copy-alert">Copied</span>
+        <button onClick={() => copy('contract-address')} className="copy-btn">
+          <span className="copy-btn-feedback"/>
         </button>
       </div>
       <p className="info-text">Minimum amount is 0.005 ETH or 2 dai</p>
