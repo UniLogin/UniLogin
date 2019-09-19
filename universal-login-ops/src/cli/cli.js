@@ -5,7 +5,7 @@ import connectAndExecute from './connectAndExecute';
 import deployMaster from '../ops/deployMaster';
 import {connectAndDeployFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
-import {ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
+import {defaultDeployOptions, ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
 import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
 import {registerENSName} from '../ENS/registerENSName';
 
@@ -19,6 +19,13 @@ const commandLineBuilder = yargs
     describe: 'private key to be used for ',
     default: DEV_DEFAULT_PRIVATE_KEY
   })
+  .option('gasPrice', {
+    describe: 'gasPrice',
+    default: defaultDeployOptions.gasPrice
+  })
+  .option('nonce', {
+    describe: 'nonce for the transaction'
+  })
   .command('start:dev', 'Starts development environment',
     () => {
     },
@@ -28,12 +35,12 @@ const commandLineBuilder = yargs
   .command('deploy:token', 'Deploys a token',
     () => {},
     (argv) => {
-      connectAndExecute(argv.nodeUrl, argv.privateKey, deployToken).catch(console.error);
+      connectAndExecute(argv, deployToken).catch(console.error);
     })
   .command('deploy:master', 'Deploys wallet master contract',
     () => {},
     (argv) => {
-      connectAndExecute(argv.nodeUrl, argv.privateKey, deployMaster).catch(console.error);
+      connectAndExecute(argv, deployMaster).catch(console.error);
     })
   .command('deploy:factory [walletContractAddress]', 'Deploys counterfactual factory contract',
     (yargs) => {

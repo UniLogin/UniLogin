@@ -19,7 +19,7 @@ describe('Counterfactual factory contract', async () => {
   });
 
   it('should deploy contract', async () => {
-    const factoryAddress = await deployFactory(wallet, walletContractAddress);
+    const factoryAddress = await deployFactory(wallet, {walletContractAddress, privateKey: '', nodeUrl: ''});
     expect(factoryAddress).to.be.properAddress;
   });
 });
