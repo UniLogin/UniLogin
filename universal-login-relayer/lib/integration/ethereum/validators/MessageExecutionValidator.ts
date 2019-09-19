@@ -9,8 +9,8 @@ import EstimateGasValidator from './EstimateGasValidator';
 export class MessageExecutionValidator extends ComposeValidator {
   constructor(wallet: Wallet, contractWhiteList: ContractWhiteList) {
     super([
-      new CorrectProxyValidator(wallet, contractWhiteList),
-      new CorrectMasterValidator(wallet, contractWhiteList),
+      new CorrectProxyValidator(wallet.provider, contractWhiteList),
+      new CorrectMasterValidator(wallet.provider, contractWhiteList),
       new EnoughTokenValidator(wallet),
       new EstimateGasValidator(wallet)
     ]);
