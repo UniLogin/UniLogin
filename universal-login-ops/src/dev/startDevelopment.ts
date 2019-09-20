@@ -98,7 +98,7 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, walletContractHash} = await deployWalletContract(deployWallet);
   const proxyContractHash = getProxyContractHash();
-  const factoryAddress = await deployFactory(deployWallet, address);
+  const factoryAddress = await deployFactory(deployWallet, {walletContractAddress: address, nodeUrl: 'dev', privateKey: 'dev'});
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
