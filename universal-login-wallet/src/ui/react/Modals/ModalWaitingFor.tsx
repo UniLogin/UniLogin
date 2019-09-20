@@ -25,7 +25,7 @@ const ModalWaitingFor = ({action, transactionHash}: ModalWaitingForProps) => {
         <div className="modal-pending-section">
           <ProgressBar className="modal-pending-loader"/>
           <h3 className="modal-section-title transaction-hash-title">Transaction status</h3>
-          <p className="txn-hash-text">{transactionHash}</p>
+          <p className="txn-hash-text"><a href={`https://etherscan.io/tx/${transactionHash}`} target="_blank">{transactionHash}</a> </p>
         </div>
         <p className="info-text">It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...</p>
       </div>
