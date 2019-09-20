@@ -7,9 +7,9 @@ export const config: Config =  Object.freeze({
   port: getEnv('PORT', ''),
   privateKey: getEnv('PRIVATE_KEY', ''),
   chainSpec: Object.freeze({
+    name: getEnv('CHAIN_NAME', ''),
     ensAddress: getEnv('ENS_ADDRESS', ''),
     chainId: 0,
-    name: 'ganache'
   }),
   ensRegistrars: [
     getEnv('ENS_DOMAIN_1', ''),
