@@ -7,7 +7,7 @@ export interface ModalTransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSendClick: () => Promise<void>;
   onBackClick: () => void;
-  transferDetalis: TransferDetails;
+  transferDetails: TransferDetails;
   modalLayoutClassName?: string;
   transferRecipientClassName?: string;
 }
@@ -18,7 +18,7 @@ onSendClick,
 onBackClick,
 modalLayoutClassName,
 transferRecipientClassName,
-transferDetalis
+transferDetails
 }: ModalTransferRecipientProps) => (
   <div className="universal-login-modal">
     <div className={getStyleForTopLevelComponent(modalLayoutClassName)}>
@@ -35,7 +35,7 @@ transferDetalis
               onRecipientChange={onRecipientChange}
               onSendClick={onSendClick}
               transferRecipientClassName={transferRecipientClassName}
-              transferDetalis={transferDetalis}
+              transferDetails={transferDetails}
             />
           </div>
         </div>

@@ -10,7 +10,7 @@ const ModalTransfer = () => {
   const [modal, setModal] = useState('transferAmount');
 
   const {walletService, sdk} = useServices();
-  const [transferDetalis, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
+  const [transferDetails, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
 
   const applicationWallet = walletService.getDeployedWallet();
 
@@ -18,7 +18,7 @@ const ModalTransfer = () => {
   const onGenerateClick = async () => {
     modalService.showModal('waitingForTransfer', 'The transaction will start in a moment');
     try {
-      const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetalis);
+      const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
       const {transactionHash} = await waitForTransactionHash();
       modalService.showModal('waitingForTransfer', transactionHash);
       await waitToBeSuccess();
@@ -29,7 +29,7 @@ const ModalTransfer = () => {
   };
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
-    setTransferDetails({...transferDetalis, ...args});
+    setTransferDetails({...transferDetails, ...args});
   };
 
   if (modal === 'transferAmount') {
@@ -39,7 +39,7 @@ const ModalTransfer = () => {
         ensName={applicationWallet.name}
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
-        currency={transferDetalis.currency}
+        currency={transferDetails.currency}
         transferAmountClassName="jarvis-transfer-amount"
       />
     );
@@ -49,7 +49,7 @@ const ModalTransfer = () => {
         onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
         onSendClick={onGenerateClick}
         onBackClick={() => setModal('transferAmount')}
-        transferDetalis={transferDetalis}
+        transferDetails={transferDetails}
         transferRecipientClassName="jarvis-transfer-recipient"
       />
     );
