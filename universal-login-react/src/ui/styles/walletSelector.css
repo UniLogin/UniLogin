@@ -38,8 +38,6 @@ textarea, select, input, button { outline: none; }
   backface-visibility: hidden;
 }
 
-
-
 .universal-login .button-web3-provider {
   position: absolute;
   top: 0;
@@ -52,8 +50,9 @@ textarea, select, input, button { outline: none; }
   transform: rotateX(-180deg);
   padding-left: 6px;
   padding-right: 6px;
-
+  cursor: pointer;
 }
+
 
 .universal-login .ethereum-account {
   /* custom something */
@@ -92,6 +91,18 @@ textarea, select, input, button { outline: none; }
 .universal-login.show-initial .button-web3-provider {
   transform: rotateX(0);
   opacity: 1;
+}
+
+
+.universal-login.show-initial .button-web3-provider:hover ,
+.universal-login.show-initial .button-web3-provider:focus {
+  border-width: 2px;
+  transform: rotateX(15deg) scale(1.05);
+}
+
+.universal-login.show-initial .button-web3-provider:active {
+  border-width: 2px;
+  transform: rotateX(-60deg);
 }
 
 .universal-login.show-account .ethereum-account {
