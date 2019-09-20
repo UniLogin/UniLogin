@@ -16,6 +16,7 @@ const ModalTransfer = () => {
 
   const transferService = new TransferService(sdk, applicationWallet);
   const onGenerateClick = async () => {
+    modalService.showModal('waitingForTransfer', 'The transaction will start in a moment');
     try {
       const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetalis);
       const {transactionHash} = await waitForTransactionHash();
