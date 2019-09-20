@@ -2,7 +2,7 @@ import {useAsync} from '@universal-login/react';
 import {useServices} from './useServices';
 
 export const useRelayerConfig = () => {
-  const {sdk} = useServices();
-  const [config] = useAsync(async () => sdk.getRelayerConfig(), []);
+  const {configService} = useServices();
+  const [config] = useAsync(async () => configService.getRelayerConfig(), []);
   return config;
 };

@@ -7,6 +7,7 @@ import WalletPresenter from '../core/presenters/WalletPresenter';
 import {StorageService} from '../core/services/StorageService';
 import {WalletStorageService} from '../core/services/WalletStorageService';
 import {walletFromBrain} from '@universal-login/commons';
+import {ConfigService} from '../core/services/ConfigService';
 
 interface Config {
   domains: string[];
@@ -35,6 +36,7 @@ export const createServices = (config: Config, overrides : Overrides = {}) => {
   const walletStorageService = new WalletStorageService(storageService);
   const walletService = new WalletService(sdk, walletFromBrain, walletStorageService);
   const walletPresenter = new WalletPresenter(walletService);
+  const configService = new ConfigService(sdk);
   const _connectToWallet = connectToWallet(sdk, walletService);
   return {
     sdk,
@@ -43,6 +45,7 @@ export const createServices = (config: Config, overrides : Overrides = {}) => {
     connectToWallet: _connectToWallet,
     walletService,
     walletPresenter,
+    configService,
     start: () => sdk.start(),
   };
 };

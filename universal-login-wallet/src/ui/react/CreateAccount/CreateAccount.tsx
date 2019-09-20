@@ -8,11 +8,7 @@ import Modal from '../Modals/Modal';
 import {Link} from 'react-router-dom';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-interface CreateAccountProps {
-  location?: {state: {from: {pathname: string}}};
-}
-
-export const CreateAccount = ({location}: CreateAccountProps) => {
+export const CreateAccount = () => {
   const modalService = useContext(WalletModalContext);
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
