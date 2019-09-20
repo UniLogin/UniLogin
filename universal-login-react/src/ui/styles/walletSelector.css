@@ -2,6 +2,13 @@
   box-sizing: border-box
 }
 
+textarea, select, input, button { outline: none; }
+
+
+.universal-login {
+  perspective: 1000px;
+}
+
 .universal-login .selector-input-wrapper {
   position: relative;
 }
@@ -13,11 +20,83 @@
   transform: translateY(-50%);
 }
 
-.universal-login .input-wallet-selector {
+.universal-login .input-wallet-selector ,
+.universal-login .button-web3-provider ,
+.universal-login .ethereum-account {
   width: 100%;
   height: 45px;
   padding: 12px 46px 12px 42px;
   border-radius: 5px;
+}
+
+.universal-login .selector-input-wrapper ,
+.universal-login .button-web3-provider ,
+.universal-login .ethereum-account {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  transform: rotateX(170deg);
+  backface-visibility: hidden;
+}
+
+
+
+.universal-login .button-web3-provider {
+  position: absolute;
+  top: 0;
+  font-family: helvetica neue, helvetica, arial, sans-serif;
+  font-size: 80%;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  transform: rotateX(-180deg);
+  padding-left: 6px;
+  padding-right: 6px;
+
+}
+
+.universal-login .ethereum-account {
+  /* custom something */
+  position: absolute;
+  top: 0;
+  padding-top: 14px;
+  font-family: helvetica neue, helvetica, arial, sans-serif;
+  color: #666;
+  text-align: center;
+  background: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.universal-login .ethereum-account::after {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  content: " ";
+  background: #ccc;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.universal-login .selector-input-wrapper {
+  /* custom something */
+}
+
+.universal-login.show-picker  .selector-input-wrapper {
+  transform: rotateX(0);
+  opacity: 1;
+}
+
+.universal-login.show-initial .button-web3-provider {
+  transform: rotateX(0);
+  opacity: 1;
+}
+
+.universal-login.show-account .ethereum-account {
+  transform: rotateX(0);
+  opacity: 1;
 }
 
 .universal-login .suggestions-list {
