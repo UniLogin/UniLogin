@@ -3,16 +3,12 @@ import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
-import {WalletSuggestionAction, defaultDeployOptions, ETHER_NATIVE_TOKEN, PublicRelayerConfig} from '@universal-login/commons';
+import {WalletSuggestionAction, defaultDeployOptions, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
 import {Link} from 'react-router-dom';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-interface CreateAccountProps {
-  relayerConfig?: PublicRelayerConfig;
-}
-
-export const CreateAccount = ({relayerConfig}: CreateAccountProps) => {
+export const CreateAccount = () => {
   const modalService = useContext(WalletModalContext);
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
@@ -53,7 +49,7 @@ export const CreateAccount = ({relayerConfig}: CreateAccountProps) => {
           </div>
         </div>
       </div>
-      <Modal relayerConfig={relayerConfig} />
+      <Modal />
     </div>
   );
 };

@@ -5,19 +5,16 @@ import ModalRequest from './ModalRequest';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalWaitingFor from './ModalWaitingFor';
-import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
+import {Safello, TopUp, ModalWrapper, useAsync} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {ConnectionNotificationModal} from '../ConnectAccount/ConnectionNotificationModal';
-import {PublicRelayerConfig} from '@universal-login/commons';
 
-interface Modal {
-  relayerConfig?: PublicRelayerConfig;
-}
-
-const Modal = ({relayerConfig}: Modal) => {
+const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, walletService, sdk} = useServices();
+  const {walletPresenter, walletService, sdk, configService} = useServices();
+  useAsync(async () => configService.setRelayerConfig(), []);
+  const relayerConfig = configService.getRelayerConfig();
 
   switch (modalService.modalState) {
     case 'transfer':
