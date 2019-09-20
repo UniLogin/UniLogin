@@ -7,11 +7,11 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 export interface TransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSendClick: () => Promise<void>;
-  transferDetalis: TransferDetails;
+  transferDetails: TransferDetails;
   transferRecipientClassName?: string;
 }
 
-export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetalis: {amount, currency, to}}: TransferRecipientProps) => {
+export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetails: {amount, currency, to}}: TransferRecipientProps) => {
   const [showError, setShowError] = useState<boolean>(false);
   const errorMessage = 'Invalid address';
 

@@ -15,7 +15,7 @@ export default class DashboardPage {
   }
 
   async waitForHideModal() {
-    await waitForUI(this.wrapper, () => !this.wrapper.exists('.modal-wrapper'));
+    await waitForUI(this.wrapper, () => !this.wrapper.exists('.modal-wrapper'), 4000);
   }
 
   getWalletBalance() : string {

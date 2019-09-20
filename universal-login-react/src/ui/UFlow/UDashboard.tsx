@@ -89,7 +89,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
           <TransferRecipient
             onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
             onSendClick={onGenerateClick}
-            transferDetalis={transferDetails}
+            transferDetails={transferDetails}
           />
         );
       case 'waitingForTransfer':
