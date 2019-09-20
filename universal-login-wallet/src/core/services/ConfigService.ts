@@ -9,13 +9,14 @@ export class ConfigService {
     this.sdk = sdk;
   }
 
-  async setRelayerConfig() {
+  async fetchRelayerConfig() {
     if (!this.relayerConfig) {
       this.relayerConfig = await this.sdk.getRelayerConfig();
     }
   }
 
-  getRelayerConfig() {
+  async getRelayerConfig() {
+    await this.fetchRelayerConfig();
     return this.relayerConfig;
   }
 }

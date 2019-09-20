@@ -2,19 +2,18 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
-import {useServices} from '../../hooks';
+import {useServices, useRelayerConfig} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalWaitingFor from './ModalWaitingFor';
-import {Safello, TopUp, ModalWrapper, useAsync} from '@universal-login/react';
+import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {ConnectionNotificationModal} from '../ConnectAccount/ConnectionNotificationModal';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, walletService, sdk, configService} = useServices();
-  useAsync(async () => configService.setRelayerConfig(), []);
-  const relayerConfig = configService.getRelayerConfig();
+  const {walletPresenter, walletService, sdk} = useServices();
+  const relayerConfig = useRelayerConfig();
 
   switch (modalService.modalState) {
     case 'transfer':
@@ -40,16 +39,16 @@ const Modal = () => {
         </ModalWrapperClosable>
       );
     case 'topUpAccount':
-      return (
+      return relayerConfig ? (
         <TopUp
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
-          onRampConfig={relayerConfig!.onRampProviders}
+          onRampConfig={relayerConfig.onRampProviders}
           contractAddress={walletPresenter.getContractAddress()}
           isModal
           logoColor="black"
         />
-      );
+      ) : null;
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">

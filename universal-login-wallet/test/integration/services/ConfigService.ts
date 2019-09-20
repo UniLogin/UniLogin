@@ -19,15 +19,9 @@ describe('INT: ConfigService', async () => {
     relayerConfig = await sdk.getRelayerConfig();
   });
 
-  it('Get uncached config', async () => {
-    const configService = new ConfigService(sdk);
-    expect(configService.getRelayerConfig()).to.be.undefined;
-  });
-
   it('Cache and get config', async () => {
     const configService = new ConfigService(sdk);
-    await configService.setRelayerConfig();
-    expect(configService.getRelayerConfig()).to.eq(relayerConfig);
+    expect(await configService.getRelayerConfig()).to.eq(relayerConfig);
   });
 
   after(async () => {
