@@ -14,8 +14,13 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
+import {PublicRelayerConfig} from '@universal-login/commons';
 
-const App = () => {
+interface App {
+  relayerConfig?: PublicRelayerConfig;
+}
+
+const App = ({relayerConfig}: App) => {
   const modalService = createModalService<WalletModalType, string>();
   const {walletService} = useServices();
   const [appReady, setAppReady] = useState(false);
@@ -49,7 +54,7 @@ const App = () => {
         <Route
           exact
           path="/create"
-          render={props => <CreateAccount {...props} />}
+          render={() => <CreateAccount relayerConfig={relayerConfig} />}
         />
         <Route
           exact

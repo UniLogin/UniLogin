@@ -8,18 +8,24 @@ import getConfig from './config/getConfig';
 import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
 import {ErrorBoundary} from '@universal-login/react';
 
-const config = getConfig();
 
-const services = createServices(config);
-services.start();
+const start = async () => {
+  const config = getConfig();
+  const services = createServices(config);
+  const relayerConfig = await services.getRelayerConfig();
+  await services.start();
 
-render(
-  <ServiceContext.Provider value={services}>
-      <CustomBrowserRouter>
-        <ErrorBoundary>
-          <App/>
-        </ErrorBoundary>
-      </CustomBrowserRouter>
-  </ServiceContext.Provider>,
-  document.getElementById('app'),
-);
+  render(
+    <ServiceContext.Provider value={services}>
+        <CustomBrowserRouter>
+          <ErrorBoundary>
+            <App relayerConfig={relayerConfig} />
+          </ErrorBoundary>
+        </CustomBrowserRouter>
+    </ServiceContext.Provider>,
+    document.getElementById('app'),
+  );
+};
+
+// tslint:disable-next-line: no-floating-promises
+start();

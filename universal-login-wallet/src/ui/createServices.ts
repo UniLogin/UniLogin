@@ -44,6 +44,7 @@ export const createServices = (config: Config, overrides : Overrides = {}) => {
     walletService,
     walletPresenter,
     start: () => sdk.start(),
+    getRelayerConfig: () => sdk.getRelayerConfig()
   };
 };
 

@@ -27,7 +27,8 @@ describe('UI: Creation flow', () => {
     });
 
     it('create wallet and disconnect roundtrip', async () => {
-        appWrapper = mountWithContext(<App/>, services, ['/']);
+        const relayerConfig = await services.getRelayerConfig();
+        appWrapper = mountWithContext(<App relayerConfig={relayerConfig} />, services, ['/']);
         const appPage = new AppPage(appWrapper);
         appPage.login().clickCreateOne();
         appPage.login().approveTerms();
