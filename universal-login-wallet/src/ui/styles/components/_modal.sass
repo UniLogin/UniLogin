@@ -16,6 +16,7 @@
   transform: translate(-50%, -50%)
   padding: 15px
   overflow-y: auto
+  z-index: 99999
 
   +media(s, 168px)
     padding: 0
@@ -184,7 +185,11 @@
   color: #FFFFFF
   text-align: center
 
-.jarvis-modal
+.jarvis-modal.universal-login
+
+  .modal-overlay
+    background: none
+
   .modal-wrapper
     width: 770px
     padding: 0
