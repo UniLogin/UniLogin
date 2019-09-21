@@ -26,8 +26,9 @@
 
 .header-list
   display: flex
+  justify-content: flex-end
   align-items: center
-  margin-right: 16px
+  margin-right: 75px
 
   +media(s, 168px)
     justify-content: space-between
@@ -37,6 +38,37 @@
 .header-list-item + .header-list-item
   margin-left: 25px
 
+.header-btn
+  position: relative
+  font-size: 14px
+  line-height: 16px
+  color: #838c9e
+
+.header-btn::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  transform: translateY(-50%)
+
+.funds-btn
+  padding-left: 18px
+
+.funds-btn::before
+  height: 18px
+  width: 9px
+  background: url('./../assets/icons/dollar.svg') center no-repeat
+  background-size: contain
+
+.backup-btn
+  padding-left: 20px
+
+.backup-btn::before
+  height: 18px
+  width: 12px
+  background: url('./../assets/icons/backup.svg') center no-repeat
+  background-size: contain
+
 .header-btn img
   max-width: 100%
 
@@ -45,26 +77,34 @@
     display: block
     width: 20px
 
-.notifications-btn
-  position: relative
+.devices-btn
+  padding-left: 25px
 
-  +media(s, 168px)
-    display: block
-    width: 17px
+.devices-btn::before
+  height: 16px
+  width: 16px
+  background: url('./../assets/icons/devices.svg') center no-repeat
+  background-size: contain
 
-.notifications-btn.new-notifications::after
+.transactions-btn
+  padding-left: 22px
+
+.transactions-btn::before
+  height: 19px
+  width: 13px
+  background: url('./../assets/icons/arrows.svg') center no-repeat
+  background-size: contain
+
+.header-btn .new-notifications::after
   content: ''
   position: absolute
-  top: -1px
-  right: -4px
-  width: 11px
-  height: 11px
-  background: #2EC9F5
+  top: -7px
+  left: -11px
+  width: 13px
+  height: 13px
+  background: #0FB989
+  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.14516)
   border-radius: 50%
-  border: 1px solid #ffffff
-
-  +media(s, 168px)
-    border: 2px solid #ffffff
 
 .user-btn
   display: none
