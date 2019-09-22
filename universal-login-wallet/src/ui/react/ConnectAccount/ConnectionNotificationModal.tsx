@@ -1,8 +1,6 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {ConnectionNotification} from '@universal-login/react';
-import vault1x from './../../assets/illustrations/vault.png';
-import vault2x from './../../assets/illustrations/vault@2x.png';
 
 interface ConnectionNotificationModalProps {
   contractAddress: string;
