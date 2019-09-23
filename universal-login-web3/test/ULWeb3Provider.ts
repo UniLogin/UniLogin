@@ -58,4 +58,18 @@ describe('ULWeb3Provier', () => {
 
     expect(transactionHash).to.be.a('string');
   });
+
+  it('sends transactions that originated before wallet was created', async () => {
+    const {web3, services, deployedWallet} = await setup();
+
+    const promise = web3.eth.sendTransaction({
+      to: Wallet.createRandom().address,
+      value: utils.parseEther('0.005').toString(),
+    });
+
+    services.walletService.connect(deployedWallet.asApplicationWallet);
+
+    const { transactionHash } = await promise;
+    expect(transactionHash).to.be.a('string');
+  });
 });
