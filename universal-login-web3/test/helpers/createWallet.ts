@@ -1,5 +1,5 @@
-import {Wallet, utils} from 'ethers';
-import UniversalLoginSDK, {DeployedWallet, WalletService} from '@universal-login/sdk';
+import {utils, Wallet} from 'ethers';
+import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@universal-login/commons';
 
 export const createWallet = async (name: string, sdk: UniversalLoginSDK, wallet: Wallet) => {

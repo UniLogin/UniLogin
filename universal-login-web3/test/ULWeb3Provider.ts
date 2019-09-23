@@ -1,8 +1,7 @@
 import {expect} from 'chai';
-import {providers, utils, Wallet} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {waitExpect} from '@universal-login/commons';
 import Web3 from 'web3';
-import {ULWeb3Provider} from '../lib';
 import {AppProps} from '../lib/ui/App';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createWallet} from './helpers/createWallet';
@@ -11,13 +10,11 @@ import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWe
 describe('ULWeb3Provier', () => {
   let relayer: RelayerUnderTest;
   let deployer: Wallet;
-  let provider: providers.Web3Provider;
-  let ulProvider: ULWeb3Provider;
   let services: AppProps;
   let web3: Web3;
 
   beforeEach(async () => {
-    ({relayer, deployer, provider, ulProvider, services, web3} = await setupTestEnvironmentWithWeb3());
+    ({relayer, deployer, services, web3} = await setupTestEnvironmentWithWeb3());
   });
 
   afterEach(async () => {
