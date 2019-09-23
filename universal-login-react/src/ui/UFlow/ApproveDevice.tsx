@@ -1,7 +1,7 @@
 import React from 'react';
 import {ConnectionNotification} from '../Notifications/ConnectionNotification';
 import UniversalLoginSDK from '@universal-login/sdk';
-import './../styles/approve-device.css';
+import './../styles/approve-device.sass';
 
 export interface ApproveDeviceProps {
   contractAddress: string;
