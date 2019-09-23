@@ -6,8 +6,19 @@ import {UIController} from './services/UIController';
 import {Message} from '@universal-login/commons';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {waitFor} from './utils';
+import {Config, getConfigForNetwork, Network} from './config';
 
 export class ULWeb3Provider implements Provider {
+  static getDefaultProvider(networkOrConfig: Network | Config) {
+    const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
+
+    return new ULWeb3Provider(
+      config.provider,
+      config.relayerUrl,
+      config.ensDomains,
+    );
+  }
+
   private sdk: UniversalLoginSDK;
   private walletService: WalletService;
   private uiController: UIController;
