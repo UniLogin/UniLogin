@@ -2,9 +2,14 @@ import {http, HttpFunction, convertTenthGweiToWei} from '@universal-login/common
 import {utils} from 'ethers';
 import {fetch} from './fetch';
 
-export type GasPriceOption = 'fastest' | 'fast' | 'average';
+export type GasPriceOption = 'fast' | 'cheap';
 
-export type GasPriceSuggestion = Record<GasPriceOption, utils.BigNumber>;
+export type GasPriceDetails = {
+  price: utils.BigNumber;
+  waitTime: string;
+};
+
+export type GasPriceSuggestion = Record<GasPriceOption, GasPriceDetails>;
 
 export class GasPriceOracle {
   private http: HttpFunction;
@@ -17,9 +22,14 @@ export class GasPriceOracle {
   async getGasPrices(): Promise<GasPriceSuggestion> {
     const response = await this.http('GET', '');
     return {
-      fastest: convertTenthGweiToWei(response.fastest),
-      fast: convertTenthGweiToWei(response.fast),
-      average: convertTenthGweiToWei(response.average),
+      fast: {
+        waitTime: response.fastWait,
+        price: convertTenthGweiToWei(response.fast)
+      },
+      cheap: {
+        waitTime: response.avgWait,
+        price: convertTenthGweiToWei(response.average)
+      }
     };
   }
 }
