@@ -1,40 +1,32 @@
 import {expect} from 'chai';
-import {utils, Wallet} from 'ethers';
-import {createFixtureLoader} from 'ethereum-waffle';
+import {providers, utils, Wallet} from 'ethers';
 import {waitExpect} from '@universal-login/commons';
-import {oneWallet} from './fixtures/oneWalletFixture';
 import Web3 from 'web3';
-import {Provider} from 'web3/providers';
 import {ULWeb3Provider} from '../lib';
 import {AppProps} from '../lib/ui/App';
-
-const loadFixture = createFixtureLoader();
-
-function createProvider(provider: Provider, relaterUrl: string): [ULWeb3Provider, AppProps] {
-  let services: AppProps;
-  const ulProvider = new ULWeb3Provider(provider, relaterUrl, ['mylogin.eth'], (props: AppProps) => {
-    services = props;
-  });
-
-  return [ulProvider, services!];
-}
-
+import {RelayerUnderTest} from '@universal-login/relayer';
+import {createWallet} from './helpers/createWallet';
+import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
 
 describe('ULWeb3Provier', () => {
-  const setup = async () => {
-    const {relayer, provider, deployedWallet} = await loadFixture(oneWallet);
-    const [ulProvider, services] = createProvider(provider._web3Provider as any, relayer.url());
+  let relayer: RelayerUnderTest;
+  let deployer: Wallet;
+  let provider: providers.Web3Provider;
+  let ulProvider: ULWeb3Provider;
+  let services: AppProps;
+  let web3: Web3;
 
-    const web3 = new Web3(ulProvider);
-    web3.eth.defaultAccount = `0x${'00'.repeat(20)}`;
+  beforeEach(async () => {
+    ({relayer, deployer, provider, ulProvider, services, web3} = await setupTestEnvironmentWithWeb3());
+  });
 
-    return {web3, ulProvider, services, deployedWallet};
-  };
+  afterEach(async () => {
+    await relayer.clearDatabase();
+    await relayer.stop();
+  });
 
   describe('send transaction', () => {
     it('triggers wallet create flow', async () => {
-      const {web3, services} = await setup();
-
       expect(services.uiController.showOnboarding.get()).to.be.false;
 
       web3.eth.sendTransaction({
@@ -45,11 +37,10 @@ describe('ULWeb3Provier', () => {
       await waitExpect(() => {
         return expect(services.uiController.showOnboarding.get()).to.be.true;
       });
-
     });
 
     it('can send a simple eth transfer', async () => {
-      const {web3, services, deployedWallet} = await setup();
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.connect(deployedWallet.asApplicationWallet);
 
       const {transactionHash} = await web3.eth.sendTransaction({
@@ -61,13 +52,12 @@ describe('ULWeb3Provier', () => {
     });
 
     it('sends transactions that originated before wallet was created', async () => {
-      const {web3, services, deployedWallet} = await setup();
-
       const promise = web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
         value: utils.parseEther('0.005').toString(),
       });
 
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.connect(deployedWallet.asApplicationWallet);
 
       const { transactionHash } = await promise;
@@ -77,13 +67,11 @@ describe('ULWeb3Provier', () => {
 
   describe('get accounts', () => {
     it('returns empty array when wallet does not exist', async () => {
-      const {web3} = await setup();
-
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
     });
 
     it('returns single address when wallet is connected', async () => {
-      const {web3, services, deployedWallet} = await setup();
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.connect(deployedWallet.asApplicationWallet);
 
       expect(await web3.eth.getAccounts()).to.deep.eq([deployedWallet.contractAddress]);
