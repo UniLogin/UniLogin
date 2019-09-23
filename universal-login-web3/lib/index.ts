@@ -76,7 +76,7 @@ export class ULWeb3Provider implements Provider {
       ...tx,
       from: this.walletService.getDeployedWallet().contractAddress,
     });
-    const succeeded = await execution.waitToBeSuccess();
+    const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
       throw new Error('Expected tx hash to not be null');
     }
