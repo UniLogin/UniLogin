@@ -33,22 +33,21 @@ export class ULWeb3Provider implements Provider {
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
+    function respond(result: any) {
+      callback(null, {
+        id: payload.id,
+        jsonrpc: '2.0',
+        result,
+      });
+    }
+
     switch (payload.method) {
       case 'eth_sendTransaction':
         const tx = payload.params[0];
-        this.sendTransaction(tx)
-          .then((hash) => callback(null, {
-            id: payload.id,
-            jsonrpc: '2.0',
-            result: hash,
-          }));
+        this.sendTransaction(tx).then((hash) => respond(hash));
         break;
       case 'eth_accounts':
-        callback(null, {
-          id: payload.id,
-          jsonrpc: '2.0',
-          result: this.walletService.walletDeployed.get() ? [this.walletService.getDeployedWallet().contractAddress] : [],
-        });
+        respond(this.walletService.walletDeployed.get() ? [this.walletService.getDeployedWallet().contractAddress] : []);
         break;
       default:
         return this.provider.send(payload, callback as any);
