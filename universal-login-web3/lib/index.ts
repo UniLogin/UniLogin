@@ -27,6 +27,7 @@ export class ULWeb3Provider implements Provider {
     private provider: Provider,
     relayerUrl: string,
     ensDomains: string[],
+    uiInitializer = initUi,
   ) {
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
@@ -35,7 +36,7 @@ export class ULWeb3Provider implements Provider {
     this.walletService = new WalletService(this.sdk);
     this.uiController = new UIController(this.walletService);
 
-    initUi({
+    uiInitializer({
       sdk: this.sdk,
       domains: ensDomains,
       walletService: this.walletService,
@@ -44,25 +45,32 @@ export class ULWeb3Provider implements Provider {
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
+    function respond(result: any) {
+      callback(null, {
+        id: payload.id,
+        jsonrpc: '2.0',
+        result,
+      });
+    }
+
     switch (payload.method) {
       case 'eth_sendTransaction':
         const tx = payload.params[0];
-        this.sendTransaction(tx)
-          .then((hash) => callback(null, {
-            id: payload.id,
-            jsonrpc: '2.0',
-            result: hash,
-          }));
+        this.sendTransaction(tx).then((hash) => respond(hash));
         break;
       case 'eth_accounts':
-        callback(null, {
-          id: payload.id,
-          jsonrpc: '2.0',
-          result: this.walletService.walletDeployed.get() ? [this.walletService.getDeployedWallet().contractAddress] : [],
-        });
+        respond(this.getAccounts());
         break;
       default:
         return this.provider.send(payload, callback as any);
+    }
+  }
+
+  getAccounts() {
+    if (this.walletService.walletDeployed.get()) {
+      return [this.walletService.getDeployedWallet().contractAddress];
+    } else {
+      return [];
     }
   }
 
@@ -79,7 +87,7 @@ export class ULWeb3Provider implements Provider {
       ...tx,
       from: this.walletService.getDeployedWallet().contractAddress,
     });
-    const succeeded = await execution.waitToBeSuccess();
+    const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
       throw new Error('Expected tx hash to not be null');
     }
