@@ -48,10 +48,18 @@ export class ULWeb3Provider implements Provider {
         this.sendTransaction(tx).then((hash) => respond(hash));
         break;
       case 'eth_accounts':
-        respond(this.walletService.walletDeployed.get() ? [this.walletService.getDeployedWallet().contractAddress] : []);
+        respond(this.getAccounts());
         break;
       default:
         return this.provider.send(payload, callback as any);
+    }
+  }
+
+  getAccounts() {
+    if (this.walletService.walletDeployed.get()) {
+      return [this.walletService.getDeployedWallet().contractAddress];
+    } else {
+      return [];
     }
   }
 
