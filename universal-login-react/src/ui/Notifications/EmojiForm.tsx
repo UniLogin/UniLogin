@@ -7,6 +7,8 @@ import ProgressBar from '../commons/ProgressBar';
 import {useProgressBar} from '../hooks/useProgressBar';
 import {EmojiKeyboard} from './EmojiKeyboard';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
+import {GasPrice} from '../commons/GasPrice';
+import CheckmarkIcon from './../assets/icons/correct.svg';
 
 type InputModeType = 'keyboard' | 'panelWithFakes' | 'none';
 
@@ -33,6 +35,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   const [inputMode, setInputMode] = useState<InputModeType>('none');
   const [addresses, setAddresses] = useState<string[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
+  const [isInputValid, setIsInputValid] = useState(false);
 
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, (notifications: Notification[]) => {
     setNotifications(notifications);
@@ -54,7 +57,6 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
 
   const confirmCode = (address: string) => {
     sdk.addKey(contractAddress, address, privateKey, transactionDetails);
-    hideTitle ? hideTitle() : null;
     showProgressBar();
   };
 
@@ -65,7 +67,8 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
       updateAddressesAndInputMode(notifications);
     }
     if (checkCode()) {
-      confirmCode(addresses[0]);
+      setIsInputValid(true);
+      hideTitle ? hideTitle() : null;
     }
   };
 
@@ -92,29 +95,57 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     );
   };
 
-  return (
-    <div id="emojis">
-    {progressBar
-      ? <div className="emoji-form-loader">
-          <p className="emojis-form-title">Connecting new device...</p>
-          <ProgressBar className="connection-progress-bar" />
-        </div>
-      : <>
+  const renderContent = () => {
+    if (isInputValid) {
+      return (
+        <div className="correct-input">
+          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark"/>
+          <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}
             onEmojiClick={onEmojiRemove}
             className={className}
           />
-          {renderKeyboard(inputMode)}
-          <button
-            className="emojis-form-reject"
-            id="reject"
-            onClick={() => sdk.denyRequests(contractAddress, privateKey)}
-          >
-            Deny
-          </button>
-        </>
+          <div className="correct-input-footer">
+            <GasPrice />
+            <div className="connect-buttons-row">
+              <button onClick={() => sdk.denyRequests(contractAddress, privateKey)} className="connect-cancel-btn">Cancel</button>
+              <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>
+            </div>
+          </div>
+        </div>
+      );
     }
+
+    return (
+      <>
+        <EmojiPlaceholders
+          enteredCode={enteredCode}
+          onEmojiClick={onEmojiRemove}
+          className={className}
+        />
+        {renderKeyboard(inputMode)}
+        <button
+          className="emojis-form-reject"
+          id="reject"
+          onClick={() => sdk.denyRequests(contractAddress, privateKey)}
+        >
+          Deny
+        </button>
+      </>
+    );
+  };
+
+  return (
+    <div id="emojis">
+      {progressBar ? <Loader /> : renderContent()}
     </div>
   );
 };
+
+const Loader = () => (
+  <div className="emoji-form-loader">
+    <p className="emojis-form-title">Connecting new device...</p>
+    <ProgressBar className="connection-progress-bar" />
+  </div>
+);
