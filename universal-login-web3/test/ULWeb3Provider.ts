@@ -31,45 +31,63 @@ describe('ULWeb3Provier', () => {
     return {web3, ulProvider, services, deployedWallet};
   };
 
-  it('send transaction triggers wallet creationg', async () => {
-    const {web3, services} = await setup();
+  describe('send transaction', () => {
+    it('triggers wallet create flow', async () => {
+      const {web3, services} = await setup();
 
-    expect(services.uiController.showOnboarding.get()).to.be.false;
+      expect(services.uiController.showOnboarding.get()).to.be.false;
 
-    web3.eth.sendTransaction({
-      to: Wallet.createRandom().address,
-      value: utils.parseEther('0.005').toString(),
+      web3.eth.sendTransaction({
+        to: Wallet.createRandom().address,
+        value: utils.parseEther('0.005').toString(),
+      });
+
+      await waitExpect(() => {
+        return expect(services.uiController.showOnboarding.get()).to.be.true;
+      });
+
     });
 
-    await waitExpect(() => {
-      return expect(services.uiController.showOnboarding.get()).to.be.true;
+    it('can send a simple eth transfer', async () => {
+      const {web3, services, deployedWallet} = await setup();
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      const {transactionHash} = await web3.eth.sendTransaction({
+        to: Wallet.createRandom().address,
+        value: utils.parseEther('0.005').toString(),
+      });
+
+      expect(transactionHash).to.be.a('string');
     });
 
+    it('sends transactions that originated before wallet was created', async () => {
+      const {web3, services, deployedWallet} = await setup();
+
+      const promise = web3.eth.sendTransaction({
+        to: Wallet.createRandom().address,
+        value: utils.parseEther('0.005').toString(),
+      });
+
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      const { transactionHash } = await promise;
+      expect(transactionHash).to.be.a('string');
+    });
   });
 
-  it('can send a simple eth transfer', async () => {
-    const {web3, services, deployedWallet} = await setup();
-    services.walletService.connect(deployedWallet.asApplicationWallet);
+  describe('get accounts', () => {
+    it('returns empty array when wallet does not exist', async () => {
+      const {web3} = await setup();
 
-    const {transactionHash} = await web3.eth.sendTransaction({
-      to: Wallet.createRandom().address,
-      value: utils.parseEther('0.005').toString(),
+      expect(await web3.eth.getAccounts()).to.deep.eq([]);
     });
 
-    expect(transactionHash).to.be.a('string');
-  });
+    it('returns single address when wallet is connected', async () => {
+      const {web3, services, deployedWallet} = await setup();
+      services.walletService.connect(deployedWallet.asApplicationWallet);
 
-  it('sends transactions that originated before wallet was created', async () => {
-    const {web3, services, deployedWallet} = await setup();
-
-    const promise = web3.eth.sendTransaction({
-      to: Wallet.createRandom().address,
-      value: utils.parseEther('0.005').toString(),
+      expect(await web3.eth.getAccounts()).to.deep.eq([deployedWallet.contractAddress]);
     });
-
-    services.walletService.connect(deployedWallet.asApplicationWallet);
-
-    const { transactionHash } = await promise;
-    expect(transactionHash).to.be.a('string');
   });
+
 });
