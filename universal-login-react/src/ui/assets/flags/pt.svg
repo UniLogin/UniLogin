@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="20px" viewBox="0 0 28 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>@Portugal</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="20" rx="2"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags" transform="translate(-412.000000, -748.000000)">
+            <g id="Portugal" transform="translate(412.000000, 748.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
+                <rect id="Mask-Copy" fill="#FF2936" mask="url(#mask-2)" x="0" y="0" width="28" height="20"></rect>
+                <rect id="Rectangle-2-Copy" fill="#128415" mask="url(#mask-2)" x="0" y="0" width="10.6666667" height="20"></rect>
+                <circle id="Oval-1" stroke="#FAF94F" stroke-width="1.33333333" mask="url(#mask-2)" cx="10.6666667" cy="10" r="3.33333333"></circle>
+                <path d="M9.33333333,8.34103775 C9.33333333,8.1526878 9.47670492,8 9.66031901,8 L11.6730143,8 C11.8536035,8 12,8.15192032 12,8.34103775 L12,10.6680579 C12,11.4036692 11.4081802,12 10.6666667,12 L10.6666667,12 C9.930287,12 9.33333333,11.4097862 9.33333333,10.6680579 L9.33333333,8.34103775 Z" id="Rectangle-429" fill="#FFFFFF" mask="url(#mask-2)"></path>
+                <path d="M10.6666667,10.6666667 C11.0348565,10.6666667 11.3333333,9.70152317 11.3333333,9.33333333 C11.3333333,8.9651435 11.0348565,8.66666667 10.6666667,8.66666667 C10.2984768,8.66666667 10,8.9651435 10,9.33333333 C10,9.70152317 10.2984768,10.6666667 10.6666667,10.6666667 Z" id="Oval-27" fill="#1D50B5" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>
