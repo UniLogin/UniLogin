@@ -26,7 +26,7 @@
     "build": "tsc --build tsconfig.json",
     "lint": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,tsx}\"",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts  -t 10000 \"dist/test/**/*.js\" --exit",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts  -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist"
   },
   "devDependencies": {

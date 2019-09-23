@@ -2,7 +2,7 @@ import {providers, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import ENSBuilder = require('ens-builder');
+import ENSBuilder from 'ens-builder';
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
