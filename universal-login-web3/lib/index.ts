@@ -16,6 +16,7 @@ export class ULWeb3Provider implements Provider {
     private provider: Provider,
     relayerUrl: string,
     ensDomains: string[],
+    uiInitializer = initUi,
   ) {
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
@@ -24,7 +25,7 @@ export class ULWeb3Provider implements Provider {
     this.walletService = new WalletService(this.sdk);
     this.uiController = new UIController(this.walletService);
 
-    initUi({
+    uiInitializer({
       sdk: this.sdk,
       domains: ensDomains,
       walletService: this.walletService,
