@@ -2,10 +2,16 @@ import React, { ReactNode, useState } from 'react';
 import './../styles/gasPrice.sass';
 import './../styles/gasPriceDefault.sass';
 
-export const GasPrice = () => {
+interface GasPriceProps {
+  gasTokenAddress: string;
+  setGasTokenAddress: (gasTokenAddress: string) => void;
+  gasModeName: string;
+  setGasModeName: (gasModeName: string) => void;
+  gasModes: any;
+}
+
+export const GasPrice = ({setGasModeName, setGasTokenAddress, gasModeName, gasTokenAddress}: GasPriceProps) => {
   const [contentVisibility, setContentVisibility] = useState(false);
-  const [speedType, setSpeedType] = useState('cheap');
-  const [fee, setFee] = useState('dai');
 
   return (
     <div className="gas-price">
@@ -37,9 +43,10 @@ export const GasPrice = () => {
               <ul className="transaction-speed-list">
                 <li className="transaction-speed-item">
                   <RadioButton
+                    id="cheap"
                     name="speed"
-                    checked={speedType === 'cheap'}
-                    onChange={() => setSpeedType('cheap')}
+                    checked={gasModeName === 'cheap'}
+                    onChange={() => setGasModeName('cheap')}
                   >
                     <div className="transaction-speed-block">
                       <p className="transaction-speed-type">Cheap</p>
@@ -48,9 +55,10 @@ export const GasPrice = () => {
                 </li>
                 <li className="transaction-speed-item">
                   <RadioButton
+                    id="fast"
                     name="speed"
-                    checked={speedType === 'fast'}
-                    onChange={() => setSpeedType('fast')}
+                    checked={gasModeName === 'fast'}
+                    onChange={() => setGasModeName('fast')}
                   >
                     <div className="transaction-speed-block">
                       <p className="transaction-speed-type">Fast</p>
@@ -64,9 +72,10 @@ export const GasPrice = () => {
               <ul className="transaction-fee-list">
                 <li className="transaction-fee-item">
                   <RadioButton
+                    id={'token-0x'}
                     name="fee"
-                    checked={fee === 'dai'}
-                    onChange={() => setFee('dai')}
+                    checked={gasTokenAddress !== '0x0000000000000000000000000000000000000000'}
+                    onChange={() => setGasTokenAddress('none')}
                   >
                     <div className="transaction-fee-row">
                       <div className="transaction-fee-details">
@@ -85,9 +94,10 @@ export const GasPrice = () => {
                 </li>
                 <li className="transaction-fee-item">
                   <RadioButton
+                    id={'token-0x0000000000000000000000000000000000000000'}
                     name="fee"
-                    checked={fee === 'eth'}
-                    onChange={() => setFee('eth')}
+                    checked={gasTokenAddress === '0x0000000000000000000000000000000000000000'}
+                    onChange={() => setGasTokenAddress('0x0000000000000000000000000000000000000000')}
                   >
                     <div className="transaction-fee-row">
                       <div className="transaction-fee-details">
@@ -123,15 +133,16 @@ const GasPriceTitle = () => (
 );
 
 interface RadioButtonProps {
+  id: string;
   name: string;
   checked: boolean;
   onChange: () => void;
   children: ReactNode;
 }
 
-const RadioButton = ({name, checked, onChange, children}: RadioButtonProps) => (
+const RadioButton = ({id, name, checked, onChange, children}: RadioButtonProps) => (
   <label className="gas-price-label">
-    <input checked={checked} onChange={onChange} type="radio" name={name} className="gas-price-radio"/>
+    <input id={id} checked={checked} onChange={onChange} type="radio" name={name} className="gas-price-radio"/>
     <div className="gas-price-radio-custom">
       {children}
     </div>
