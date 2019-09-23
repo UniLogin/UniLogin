@@ -3,7 +3,7 @@ import {ContractJSON} from '../..';
 
 export const defaultDeployOptions = {
   gasLimit: utils.bigNumberify(3500000),
-  gasPrice: utils.bigNumberify(9000000000),
+  gasPrice: utils.bigNumberify(20000000000),
 };
 
 export const getDeployTransaction = (contractJSON : ContractJSON, args : string[] = []) => {
