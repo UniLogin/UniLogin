@@ -1,6 +1,5 @@
 import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '../helpers/utils';
-import {sleep} from '@universal-login/commons';
 
 export default class NotificationsPage {
   constructor(private wrapper: ReactWrapper) {}

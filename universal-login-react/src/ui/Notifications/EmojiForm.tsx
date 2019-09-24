@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix} from '@universal-login/commons';
+import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, getGasPriceFromGasModes} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
@@ -46,12 +46,6 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   const {progressBar, showProgressBar} = useProgressBar();
   const [isInputValid, setIsInputValid] = useState(false);
 
-  const getTransactionGasPrice = () => {
-    const mode = gasModes!.filter((gasPriceMode: any) => gasPriceMode.name === gasModeName)[0];
-    const gasOption = mode.gasOptions.filter((gasOption: any) => gasOption.token.address === gasTokenAddress)[0];
-    return gasOption.gasPrice;
-  };
-
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, (notifications: Notification[]) => {
     setNotifications(notifications);
     updateAddressesAndInputMode(notifications);
@@ -71,7 +65,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const confirmCode = async (address: string) => {
-    const computedTransactionDetails = {...transactionDetails, gasToken: gasTokenAddress, gasPrice: getTransactionGasPrice()};
+    const computedTransactionDetails = {...transactionDetails, gasToken: gasTokenAddress, gasPrice: getGasPriceFromGasModes(gasModes!, gasModeName, gasTokenAddress)};
     const {waitToBeSuccess} = await sdk.addKey(contractAddress, address, privateKey, computedTransactionDetails);
     showProgressBar();
     await waitToBeSuccess();
