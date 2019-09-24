@@ -5,14 +5,17 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
 import {getGasPriceFor, GasMode} from '@universal-login/commons';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+
 
 interface GasPriceProps {
   sdk: UniversalLoginSDK;
   setGasTokenAddress: (gasTokenAddress: string) => void;
   setGasPrice: (gasModeName: utils.BigNumber) => void;
+  className?: string;
 }
 
-export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice}: GasPriceProps) => {
+export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice, className}: GasPriceProps) => {
   const [gasModes] = useAsync(() => sdk.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [tokenAddress, setTokenAddress] = useState<string>('');
@@ -42,82 +45,80 @@ export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice}: GasPriceProps) 
   const formatWeiToEther = (wei: utils.BigNumber) => wei.div('1000000000').toNumber() / 1000000000;
 
   const renderComponent = (gasModes: GasMode[]) => (
-    <div className="gas-price">
-      <GasPriceTitle />
-      <div className="gas-price-dropdown">
-        <div className="gas-price-selected">
-          <div className="gas-price-selected-row">
-            <div>
-              <div className="transaction-fee-details">
-                <img src="" alt="" className="transaction-fee-item-icon" />
+    <div className="universal-login-gas">
+      <div className={getStyleForTopLevelComponent(className)}>
+        <div className="gas-price">
+          <GasPriceTitle />
+          <div className="gas-price-dropdown">
+            <div className="gas-price-selected">
+              <div className="gas-price-selected-row">
                 <div>
-                  <p className="transaction-fee-amount">0.09 DAI</p>
-                  <p className="transaction-fee-amount-usd">0.09 USD</p>
+                  <div className="transaction-fee-details">
+                    <img src="" alt="" className="transaction-fee-item-icon" />
+                    <hr className="gas-price-selected-divider" />
+                    <div>
+                      <p className="transaction-speed-type">Fast</p>
+                    </div>
+                  </div>
+                  <button className="gas-price-btn" onClick={() => setContentVisibility(!contentVisibility)} />
                 </div>
+                {contentVisibility &&
+                  <div className="gas-price-selector">
+                    <GasPriceTitle />
+                    <div className="transaction-speed">
+                      <p className="transaction-speed-title">Transaction speed</p>
+                      <ul className="transaction-speed-list">
+                        {gasModes.map(({name}) => (
+                          <li key={name} className="transaction-speed-item">
+                            <RadioButton
+                              id={name}
+                              name="speed"
+                              checked={name === modeName}
+                              onChange={() => onModeChanged(name)}
+                            >
+                              <div className="transaction-speed-block">
+                                <p className="transaction-speed-type">{name}</p>
+                              </div>
+                            </RadioButton>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="transaction-fee">
+                      <p className="transaction-fee-title">Transaction fee</p>
+                      <ul className="transaction-fee-list">
+                        {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map(({token, gasPrice}) => (
+                          <li key={token.address} className="transaction-fee-item">
+                            <RadioButton
+                              id={`token-${token.address}`}
+                              name="fee"
+                              checked={token.address === tokenAddress}
+                              onChange={() => onTokenChanged(token.address, gasPrice)}
+                            >
+                              <div className="transaction-fee-row">
+                                <div className="transaction-fee-details">
+                                  <img src="" alt="" className="transaction-fee-item-icon" />
+                                  <div>
+                                    <p className="transaction-fee-amount">{formatWeiToEther(gasPrice)} {token.symbol}</p>
+                                    <p className="transaction-fee-amount-usd">0.09 USD</p>
+                                  </div>
+                                </div>
+                                <div className="transaction-fee-balance">
+                                  <p className="transaction-fee-balance-text">Your balance</p>
+                                  <p className="transaction-fee-balance-amount">250 {token.symbol}</p>
+                                </div>
+                              </div>
+                            </RadioButton>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                }
               </div>
             </div>
-            <hr className="gas-price-selected-divider" />
-            <div>
-              <p className="transaction-speed-type">Fast</p>
-            </div>
           </div>
-          <button className="gas-price-btn" onClick={() => setContentVisibility(!contentVisibility)} />
         </div>
-        {contentVisibility &&
-          <div className="gas-price-selector">
-            <GasPriceTitle />
-            <div className="transaction-speed">
-              <p className="transaction-speed-title">Transaction speed</p>
-              <ul className="transaction-speed-list">
-                {gasModes.map(({name}) => (
-                  <li key={name} className="transaction-speed-item">
-                    <RadioButton
-                      id={name}
-                      name="speed"
-                      checked={name === modeName}
-                      onChange={() => onModeChanged(name)}
-                    >
-                      <div className="transaction-speed-block">
-                        <p className="transaction-speed-type">{name}</p>
-                      </div>
-                    </RadioButton>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="transaction-fee">
-              <p className="transaction-fee-title">Transaction fee</p>
-              <ul className="transaction-fee-list">
-
-                {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map(({token, gasPrice}) => (
-                  <li key={token.address} className="transaction-fee-item">
-                    <RadioButton
-                      id={`token-${token.address}`}
-                      name="fee"
-                      checked={token.address === tokenAddress}
-                      onChange={() => onTokenChanged(token.address, gasPrice)}
-                    >
-                      <div className="transaction-fee-row">
-                        <div className="transaction-fee-details">
-                          <img src="" alt="" className="transaction-fee-item-icon" />
-                          <div>
-                            <p className="transaction-fee-amount">{formatWeiToEther(gasPrice)} {token.symbol}</p>
-                            <p className="transaction-fee-amount-usd">0.09 USD</p>
-                          </div>
-                        </div>
-                        <div className="transaction-fee-balance">
-                          <p className="transaction-fee-balance-text">Your balance</p>
-                          <p className="transaction-fee-balance-amount">250 {token.symbol}</p>
-                        </div>
-                      </div>
-                    </RadioButton>
-                  </li>
-                ))
-                }
-              </ul>
-            </div>
-          </div>
-        }
       </div>
     </div>
   );

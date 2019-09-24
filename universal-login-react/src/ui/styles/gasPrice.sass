@@ -1,159 +1,175 @@
-.gas-price-top
-  display: flex
-  align-items: center
+.universal-login-gas
+  .gas-price-top
+    display: flex
+    align-items: center
 
-.gas-price-title
-  margin: 0 4px 0 0
-  font-weight: 500
-  font-size: 10px
-  line-height: 15px
-  color: #FFFFFF
+  .gas-price-title
+    margin: 0 4px 0 0
+    font-weight: 500
+    font-size: 10px
+    line-height: 15px
 
-.gas-price-hint
-  width: 12px
-  height: 12px
-  background: url('./../assets/icons/info-white.svg') center no-repeat
-  background-size: contain
+  .gas-price-hint
+    position: relative
+    width: 12px
+    height: 12px
+    background: url('./../assets/icons/info-white.svg') center no-repeat
+    background-size: contain
 
-.gas-price-tooltip
-  display: none
+  .gas-price-tooltip
+    display: none
+    position: absolute
+    left: 50%
+    top: -11px
+    transform: translate(-50%, -100%)
+    width: 242px
+    font-size: 12px
+    line-height: 18px
+    border-radius: 3px
+    padding: 10px 20px
 
-.gas-price-dropdown
-  position: relative
-  max-width: 270px
-  width: 270px
-  margin-top: 5px
+  .gas-price-tooltip::after
+    content: ''
+    position: absolute
+    bottom: 0
+    left: calc(50% - 1px)
+    width: 6px
+    height: 6px
+    transform: rotate(-45deg) translateX(-50%)
 
-.gas-price-selected
-  display: flex
-  justify-content: space-between
-  height: 40px
-  border: 1px solid rgba(185, 195, 248, 0.3)
-  border-radius: 2px
+  .gas-price-hint:hover .gas-price-tooltip
+    display: block
 
-.gas-price-selected-row
-  display: flex
-  align-items: center
-  width: 100%
-  padding: 5px 23px
+  .gas-price-dropdown
+    position: relative
+    max-width: 270px
+    width: 270px
+    margin-top: 5px
 
-.gas-price-selected-divider
-  margin: 0 15px
-  height: 24px
-  border-color: #B9C3F8
+  .gas-price-selected
+    display: flex
+    justify-content: space-between
+    height: 40px
+    border: 1px solid
+    border-radius: 2px
 
-.gas-price-btn
-  height: 38px
-  width: 34px
-  background: url('./../assets/icons/3dots.svg') center no-repeat
-  border: none
-  border-left: 1px solid rgba(185, 195, 248, 0.3)
-  cursor: pointer
+  .gas-price-selected-row
+    display: flex
+    align-items: center
+    width: 100%
+    padding: 5px 23px
 
-.gas-price-selector
-  position: absolute
-  width: 100%
-  left: 0
-  top: -4px
-  transform: translateY(-100%)
-  padding: 12px 8px 16px
-  background: linear-gradient(0deg, rgba(185, 195, 248, 0.1), rgba(185, 195, 248, 0.1)), #120838
-  box-shadow: 0px -6px 10px rgba(17, 2, 54, 0.739975)
-  border-radius: 3px
+  .gas-price-selected-divider
+    margin: 0 15px
+    height: 24px
 
-.transaction-speed-title,
-.transaction-fee-title
-  margin: 0 0 4px
-  font-size: 10px
-  line-height: 15px
-  color: #FFFFFF
-  opacity: 0.5
+  .gas-price-btn
+    height: 38px
+    width: 34px
+    background: url('./../assets/icons/3dots.svg') center no-repeat
+    border: none
+    border-left: 1px solid
+    cursor: pointer
 
-.transaction-speed-list
-  display: flex
-  align-items: center
-  margin: 0
-  padding: 0
-  list-style-type: none
+  .gas-price-selector
+    position: absolute
+    width: 100%
+    left: 0
+    top: -4px
+    transform: translateY(-100%)
+    padding: 12px 8px 16px
+    border-radius: 3px
 
-.transaction-speed-item + .transaction-speed-item
-  margin-left: 8px
+  .transaction-speed-title,
+  .transaction-fee-title
+    margin: 0 0 4px
+    font-size: 10px
+    line-height: 15px
+    opacity: 0.5
 
-.gas-price-label
-  display: block
-  cursor: pointer
+  .transaction-speed-list
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    margin: 0
+    padding: 0
+    list-style-type: none
 
-.gas-price-radio
-  position: absolute
-  z-index: -1
-  opacity: 0
-  margin: 10px 0 0 7px
+  .transaction-speed-item + .transaction-speed-item
+    margin-left: 8px
 
-.gas-price-radio-custom
-  background: rgba(185, 195, 248, 0.1)
-  border-radius: 2px
-  border: 1px solid transparent
+  .gas-price-label
+    display: block
+    cursor: pointer
 
-.gas-price-radio:checked + .gas-price-radio-custom
-  background: rgba(15, 185, 137, 0.1)
-  border: 1px solid #0FB989
+  .gas-price-radio
+    position: absolute
+    z-index: -1
+    opacity: 0
+    margin: 10px 0 0 7px
 
-.transaction-speed
-  margin: 16px 0 24px
+  .gas-price-radio-custom
+    border-radius: 2px
+    border: 1px solid transparent
 
-.transaction-speed-block
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-  width: 80px
-  height: 48px
+  .gas-price-radio:checked + .gas-price-radio-custom
+    border: 1px solid
 
-.transaction-speed-type
-  margin: 0
-  font-weight: 600
-  font-size: 12px
-  line-height: 18px
-  color: #FFFFFF
+  .transaction-speed
+    margin: 16px 0 24px
 
-.transaction-fee-item + .transaction-fee-item
-  margin-top: 8px
+  .transaction-speed-block
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    width: 80px
+    height: 48px
 
-.transaction-fee-row
-  display: flex
-  justify-content: space-between
-  align-items: center
-  padding: 9px 16px
+  .transaction-speed-type
+    margin: 0
+    font-weight: 600
+    font-size: 12px
+    line-height: 18px
 
-.transaction-fee-list
-  margin: 0
-  padding: 0
-  list-style-type: none
+  .transaction-fee-item
+    width: 100%
 
-.transaction-fee-details
-  display: flex
-  align-items: center
+  .transaction-fee-item + .transaction-fee-item
+    margin-top: 8px
 
-.transaction-fee-amount
-  margin: 0
-  font-weight: 600
-  font-size: 12px
-  line-height: 18px
-  color: #FFFFFF
+  .transaction-fee-row
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 9px 16px
 
-.transaction-fee-amount-usd
-  margin: 0
-  font-size: 10px
-  line-height: 15px
-  color: #FFFFFF
-  opacity: 0.5
+  .transaction-fee-list
+    margin: 0
+    padding: 0
+    list-style-type: none
 
-.transaction-fee-balance-text,
-.transaction-fee-balance-amount
-  margin: 0
-  font-size: 10px
-  line-height: 15px
-  text-align: right
-  color: #FFFFFF
+  .transaction-fee-details
+    display: flex
+    align-items: center
+
+  .transaction-fee-amount
+    margin: 0
+    font-weight: 600
+    font-size: 12px
+    line-height: 18px
+
+  .transaction-fee-amount-usd
+    margin: 0
+    font-size: 10px
+    line-height: 15px
+    opacity: 0.5
+
+  .transaction-fee-balance-text,
+  .transaction-fee-balance-amount
+    margin: 0
+    font-size: 10px
+    line-height: 15px
+    text-align: right
 
 
