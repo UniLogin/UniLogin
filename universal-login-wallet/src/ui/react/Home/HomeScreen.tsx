@@ -1,26 +1,54 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import {Assets} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
 import {useServices} from '../../hooks';
-
+import {Devices} from '@universal-login/react';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
   const {sdk, walletPresenter} = useServices();
+  const [content, setContent] = useState('balance');
+  const modalService = useContext(WalletModalContext);
+
+  const renderContent = () => {
+    switch (content) {
+      case 'balance':
+        return (
+          <div className="balance-section">
+            <Balance />
+            <Assets
+              sdk={sdk}
+              ensName={walletPresenter.getName()}
+              className="jarvis-assets"
+            />
+          </div>
+        );
+      case 'devices':
+        return (
+          <div className="dashboard-content-box">
+            <Devices
+              sdk={sdk}
+              contractAddress={walletPresenter.getContractAddress()}
+              privateKey={walletPresenter.getPrivateKey()}
+              ensName={walletPresenter.getName()}
+              className="jarvis-devices"
+              onManageDevicesClick={() => modalService.showModal('approveDevice')}
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <div className="dashboard">
-        <Header />
+        <Header setContent={(content) => setContent(content)}/>
         <div className="dashboard-content">
-          <Balance />
-        </div>
-        <div className="my-assets-section">
-          <Assets
-            sdk={sdk}
-            ensName={walletPresenter.getName()}
-            className="jarvis-assets"
-          />
+          {renderContent()}
         </div>
       </div>
       <Modal />

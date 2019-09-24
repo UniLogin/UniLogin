@@ -5,7 +5,6 @@ import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
 import {PrivateRoute} from './PrivateRoute';
-import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
 import SettingsScreen from './Settings/SettingsScreen';
 import {useServices} from '../hooks';
@@ -55,11 +54,6 @@ const App = () => {
           exact
           path="/connect"
           render={() => <ConnectAccount />}
-        />
-        <Route
-          exact
-          path="/approve"
-          render={() => <ApproveScreen />}
         />
         <Route
           exact
