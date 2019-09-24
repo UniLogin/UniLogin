@@ -5,7 +5,7 @@
 textarea, select, input, button { outline: none; }
 
 
-.universal-login {
+.perspective {
   perspective: 1000px;
 }
 

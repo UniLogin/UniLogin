@@ -51,13 +51,15 @@ export const Onboarding = (props: OnboardingProps) => {
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
       <ReactModalContext.Provider value={modalService}>
-          <WalletSelector
-            sdk={props.sdk}
-            onCreateClick={onCreateClick}
-            onConnectClick={onConnectClick}
-            domains={props.domains}
-            tryEnablingMetamask={props.tryEnablingMetamask}
-          />
+          <div className="perspective">
+            <WalletSelector
+              sdk={props.sdk}
+              onCreateClick={onCreateClick}
+              onConnectClick={onConnectClick}
+              domains={props.domains}
+              tryEnablingMetamask={props.tryEnablingMetamask}
+            />
+          </div>
           <Modals modalClassName={props.modalClassName}/>
         </ReactModalContext.Provider>
       </div>
