@@ -43,6 +43,7 @@ export const GasPrice = ({setGasModeName, setGasTokenAddress, gasModeName, gasTo
               <ul className="transaction-speed-list">
                 <li className="transaction-speed-item">
                   <RadioButton
+                    id="cheap"
                     name="speed"
                     checked={gasModeName === 'cheap'}
                     onChange={() => setGasModeName('cheap')}
@@ -54,6 +55,7 @@ export const GasPrice = ({setGasModeName, setGasTokenAddress, gasModeName, gasTo
                 </li>
                 <li className="transaction-speed-item">
                   <RadioButton
+                    id="fast"
                     name="speed"
                     checked={gasModeName === 'fast'}
                     onChange={() => setGasModeName('fast')}
@@ -70,6 +72,7 @@ export const GasPrice = ({setGasModeName, setGasTokenAddress, gasModeName, gasTo
               <ul className="transaction-fee-list">
                 <li className="transaction-fee-item">
                   <RadioButton
+                    id={'token-0x'}
                     name="fee"
                     checked={gasTokenAddress !== '0x0000000000000000000000000000000000000000'}
                     onChange={() => setGasTokenAddress('none')}
@@ -91,6 +94,7 @@ export const GasPrice = ({setGasModeName, setGasTokenAddress, gasModeName, gasTo
                 </li>
                 <li className="transaction-fee-item">
                   <RadioButton
+                    id={'token-0x0000000000000000000000000000000000000000'}
                     name="fee"
                     checked={gasTokenAddress === '0x0000000000000000000000000000000000000000'}
                     onChange={() => setGasTokenAddress('0x0000000000000000000000000000000000000000')}
@@ -129,15 +133,16 @@ const GasPriceTitle = () => (
 );
 
 interface RadioButtonProps {
+  id: string;
   name: string;
   checked: boolean;
   onChange: () => void;
   children: ReactNode;
 }
 
-const RadioButton = ({name, checked, onChange, children}: RadioButtonProps) => (
+const RadioButton = ({id, name, checked, onChange, children}: RadioButtonProps) => (
   <label className="gas-price-label">
-    <input checked={checked} onChange={onChange} type="radio" name={name} className="gas-price-radio"/>
+    <input id={id} checked={checked} onChange={onChange} type="radio" name={name} className="gas-price-radio"/>
     <div className="gas-price-radio-custom">
       {children}
     </div>
