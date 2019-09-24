@@ -13,10 +13,10 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
   return (
     <>
       <div className="box-header">
-        <h1 className="box-title">Txn Success</h1>
+        <h1 className="box-title">Wallet creation</h1>
       </div>
       <div className="box-content modal-succes-content">
-        <h3 className="modal-section-title transaction-status-title">Transaction status</h3>
+        <h3 className="modal-section-title transaction-status-title">Transaction status: success</h3>
         <img
           className="modal-avatar-succes"
           src={send1x}
@@ -26,7 +26,7 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
         <div className="created-account">
           <Blockies seed={walletPresenter.getContractAddress()} size={8} scale={4} />
           <div>
-            <p className="created-account-label">Account name</p>
+            <p className="created-account-label">{walletPresenter.getName()}</p>
             <p className="created-account-hash">{walletPresenter.getContractAddress()}</p>
           </div>
         </div>
