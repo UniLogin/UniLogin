@@ -20,18 +20,19 @@ export interface OnboardingProps {
   domains: string[];
   className?: string;
   modalClassName?: string;
+  tryEnablingMetamask?: () => Promise<string | undefined>;
 }
 
-export const Onboarding = ({sdk, walletService: injectedWalletService, onConnect, onCreate, domains, className, modalClassName}: OnboardingProps) => {
+export const Onboarding = (props: OnboardingProps) => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
-  const [walletService] = useState<OnboardingWalletService>(injectedWalletService || new WalletService(sdk));
+  const [walletService] = useState<OnboardingWalletService>(props.walletService || new WalletService(props.sdk));
   const onConnectClick = () => {
-    onConnect && onConnect();
+    props.onConnect && props.onConnect();
   };
 
   const onCreateClick = async (ensName: string) => {
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
-    const relayerConfig = await sdk.getRelayerConfig();
+    const relayerConfig = await props.sdk.getRelayerConfig();
     const topUpProps = {
       contractAddress,
       onRampConfig: relayerConfig!.onRampProviders
@@ -42,21 +43,24 @@ export const Onboarding = ({sdk, walletService: injectedWalletService, onConnect
     const wallet = await deploy(ensName, defaultDeployOptions.gasPrice.toString(), ETHER_NATIVE_TOKEN.address);
     walletService.setDeployed(ensName);
     modalService.hideModal();
-    onCreate && onCreate(wallet);
+    props.onCreate && props.onCreate(wallet);
   };
 
 
   return (
     <div className="universal-login">
-      <div className={getStyleForTopLevelComponent(className)}>
+      <div className={getStyleForTopLevelComponent(props.className)}>
       <ReactModalContext.Provider value={modalService}>
-          <WalletSelector
-            sdk={sdk}
-            onCreateClick={onCreateClick}
-            onConnectClick={onConnectClick}
-            domains={domains}
-          />
-          <Modals modalClassName={modalClassName}/>
+          <div className="perspective">
+            <WalletSelector
+              sdk={props.sdk}
+              onCreateClick={onCreateClick}
+              onConnectClick={onConnectClick}
+              domains={props.domains}
+              tryEnablingMetamask={props.tryEnablingMetamask}
+            />
+          </div>
+          <Modals modalClassName={props.modalClassName}/>
         </ReactModalContext.Provider>
       </div>
     </div>

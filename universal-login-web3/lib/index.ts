@@ -7,6 +7,7 @@ import {Message} from '@universal-login/commons';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {waitFor} from './utils';
 import {Config, getConfigForNetwork, Network} from './config';
+import {MetamaskService} from './services/MetamaskService';
 
 export class ULWeb3Provider implements Provider {
   static getDefaultProvider(networkOrConfig: Network | Config) {
@@ -22,6 +23,7 @@ export class ULWeb3Provider implements Provider {
   private sdk: UniversalLoginSDK;
   private walletService: WalletService;
   private uiController: UIController;
+  private metamaskService: MetamaskService;
 
   constructor(
     private provider: Provider,
@@ -35,12 +37,14 @@ export class ULWeb3Provider implements Provider {
     );
     this.walletService = new WalletService(this.sdk);
     this.uiController = new UIController(this.walletService);
+    this.metamaskService = new MetamaskService();
 
     uiInitializer({
       sdk: this.sdk,
       domains: ensDomains,
       walletService: this.walletService,
       uiController: this.uiController,
+      metamaskService: this.metamaskService,
     });
   }
 
