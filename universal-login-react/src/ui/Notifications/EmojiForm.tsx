@@ -58,11 +58,9 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     return isValidCode(enteredCode, addresses[0]);
   };
 
-  const confirmCode = async (address: string) => {
-    const computedTransactionDetails = {...transactionDetails, gasToken, gasPrice};
-    const {waitToBeSuccess} = await sdk.addKey(contractAddress, address, privateKey, computedTransactionDetails);
+  const confirmCode = (address: string) => {
+    sdk.addKey(contractAddress, address, privateKey, {...transactionDetails, gasToken, gasPrice});
     showProgressBar();
-    await waitToBeSuccess();
   };
 
   const onEmojiAdd = (code: number) => {
