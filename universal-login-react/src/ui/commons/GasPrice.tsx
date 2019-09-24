@@ -4,7 +4,7 @@ import './../styles/gasPriceDefault.sass';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
-import {getGasPriceFromGasModes, GasMode} from '@universal-login/commons';
+import {getGasPriceFor, GasMode} from '@universal-login/commons';
 
 interface GasPriceProps {
   sdk: UniversalLoginSDK;
@@ -19,7 +19,7 @@ export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice}: GasPriceProps) 
 
   const onModeChanged = (name: string) => {
     setModeName(name);
-    setGasPrice(getGasPriceFromGasModes(gasModes!, name, tokenAddress));
+    setGasPrice(getGasPriceFor(gasModes!, name, tokenAddress));
   };
 
   const onTokenChanged = (address: string, gasPrice: utils.BigNumber) => {
@@ -32,7 +32,7 @@ export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice}: GasPriceProps) 
     if (gasModes) {
       const name = gasModes[0].name;
       const address = gasModes[0].gasOptions[0].token.address;
-      const gasPrice = getGasPriceFromGasModes(gasModes, name, address);
+      const gasPrice = getGasPriceFor(gasModes, name, address);
       setModeName(name);
       onTokenChanged(address, gasPrice);
     }
