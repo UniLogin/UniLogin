@@ -1,8 +1,9 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {convertTenthGweiToWei, TokensPrices} from '@universal-login/commons';
+import {TokensPrices} from '@universal-login/commons';
 import {GasModeService} from '../../../lib/core/services/GasModeService';
+import {utils} from 'ethers';
 
 chai.use(sinonChai);
 
@@ -21,14 +22,8 @@ describe('UNIT: GasModeService', () => {
     tokensDetails
   };
   const gasPrices = {
-    fast: {
-      price: convertTenthGweiToWei(100),
-      timeWait: '0.8'
-    },
-    cheap: {
-      price: convertTenthGweiToWei(50),
-      timeWait: '1.2'
-    }
+    fast: utils.bigNumberify('24000000000'),
+    cheap: utils.bigNumberify('20000000000'),
   };
   const gasPriceOracle: any = {
     getGasPrices: sinon.stub().resolves(gasPrices)
@@ -47,24 +42,24 @@ describe('UNIT: GasModeService', () => {
     expect(gasPriceOracle.getGasPrices).calledOnce;
     expect(modes).to.be.deep.eq([
       {
-        name: 'Cheap',
+        name: 'cheap',
         gasOptions: [{
-          gasPrice: gasPrices.cheap.price,
+          gasPrice: gasPrices.cheap,
           token: tokensDetails[0],
         },
         {
-          gasPrice: gasPrices.cheap.price,
+          gasPrice: gasPrices.cheap,
           token: tokensDetails[1],
         }]
       },
       {
-        name: 'Fast',
+        name: 'fast',
         gasOptions: [{
-          gasPrice: gasPrices.fast.price,
+          gasPrice: gasPrices.fast,
           token: tokensDetails[0],
         },
         {
-          gasPrice: gasPrices.fast.price,
+          gasPrice: gasPrices.fast,
           token: tokensDetails[1],
         }]
       }
