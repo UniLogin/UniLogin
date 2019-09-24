@@ -22,8 +22,8 @@ export class ULWeb3Provider implements Provider {
 
   private sdk: UniversalLoginSDK;
   private walletService: WalletService;
-  private uiController: UIController;
   private metamaskService: MetamaskService;
+  private uiController: UIController;
 
   constructor(
     private provider: Provider,
@@ -36,8 +36,8 @@ export class ULWeb3Provider implements Provider {
       new providers.Web3Provider(this.provider as any),
     );
     this.walletService = new WalletService(this.sdk);
-    this.uiController = new UIController(this.walletService);
     this.metamaskService = new MetamaskService();
+    this.uiController = new UIController(this.walletService, this.metamaskService);
 
     uiInitializer({
       sdk: this.sdk,
@@ -49,6 +49,11 @@ export class ULWeb3Provider implements Provider {
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
+    const metamaskProvider = this.metamaskService.metamaskProvider.get();
+    if (metamaskProvider) {
+      return metamaskProvider.sendAsync(payload, callback);
+    }
+
     function respond(result: any) {
       callback(null, {
         id: payload.id,
