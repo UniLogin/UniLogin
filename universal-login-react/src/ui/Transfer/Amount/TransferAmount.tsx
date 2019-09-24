@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TransferDropdown} from './TransferDropdown';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {TransferDetails} from '@universal-login/commons';
+import {TransferDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import './../../styles/transferAmount.css';
 import './../../styles/transferAmountDefaults.css';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
+import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 
 export interface TransferAmountProps {
   sdk: UniversalLoginSDK;
@@ -15,13 +16,29 @@ export interface TransferAmountProps {
   transferAmountClassName?: string;
 }
 
-export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => (
-  <div className="universal-login-amount">
+export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
+  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+  const [isAmountCorrect, setIsAmountCorrect] = useState(false);
+
+  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
+  const balance = getBalanceOf(currency, tokenDetailsWithBalance);
+
+  const validateAndUpdateTransferDetails = (amount: string) => {
+    if (balance && amount) {
+      setIsAmountCorrect(amount <= balance);
+    } else {
+      setIsAmountCorrect(false);
+    }
+    updateTransferDetailsWith({amount});
+  };
+
+  return (
+    <div className="universal-login-amount">
     <div className={getStyleForTopLevelComponent(transferAmountClassName)}>
       <div className="transfer-amount">
         <TransferDropdown
           sdk={sdk}
-          ensName={ensName}
+          tokenDetailsWithBalance={tokenDetailsWithBalance}
           currency={currency}
           setCurrency={(currency: string) => updateTransferDetailsWith({currency})}
           className={transferAmountClassName}
@@ -35,14 +52,15 @@ export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTran
             id="amount-eth"
             type="number"
             className="transfer-amount-input"
-            onChange={event => updateTransferDetailsWith({amount: event.target.value})}
+            onChange={event => validateAndUpdateTransferDetails(event.target.value)}
           />
           <span className="transfer-amount-code">{currency}</span>
         </div>
-        <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn">
+        <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!isAmountCorrect}>
           <span>Select recipient</span>
         </button>
       </div>
     </div>
   </div>
-);
+  );
+};
