@@ -1,10 +1,9 @@
 import React, {useState, useContext} from 'react';
-import {Assets} from '@universal-login/react';
+import {Assets, Devices} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import Balance from './Balance';
 import {useServices} from '../../hooks';
-import {Devices} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
@@ -46,7 +45,7 @@ const HomeScreen = () => {
   return (
     <>
       <div className="dashboard">
-        <Header setContent={(content) => setContent(content)}/>
+        <Header setContent={content => setContent(content)}/>
         <div className="dashboard-content">
           {renderContent()}
         </div>
