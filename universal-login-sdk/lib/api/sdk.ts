@@ -16,6 +16,8 @@ import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserve
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
 import {messageToUnsignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
+import {GasPriceOracle} from '../integration/http/gasPriceOracle';
+import {GasModeService} from '../core/services/GasModeService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -31,6 +33,8 @@ class UniversalLoginSDK {
   tokenDetailsService: TokenDetailsService;
   tokensDetailsStore: TokensDetailsStore;
   blockchainService: BlockchainService;
+  gasPriceOracle: GasPriceOracle;
+  gasModeService: GasModeService;
   futureWalletFactory?: FutureWalletFactory;
   sdkConfig: SdkConfig;
   relayerConfig?: PublicRelayerConfig;
@@ -54,6 +58,8 @@ class UniversalLoginSDK {
     this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies);
+    this.gasPriceOracle = new GasPriceOracle(this.provider);
+    this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }
 
@@ -226,6 +232,10 @@ class UniversalLoginSDK {
     return this.relayerApi.getConnectedDevices(
       signRelayerRequest({contractAddress}, privateKey)
     );
+  }
+
+  async getGasModes() {
+    return this.gasModeService.getModes();
   }
 
   async start() {

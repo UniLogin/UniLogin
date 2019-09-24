@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
-import {TokenDetails, TokensPrices, CurrencyToValue} from '@universal-login/commons';
-import {GasPriceOracle} from '../../integration/http/GasPriceOracle';
+import {TokenDetails, TokensPrices} from '@universal-login/commons';
+import {GasPriceOracle} from '../../integration/http/gasPriceOracle';
 import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
 import {PriceObserver} from '../observers/PriceObserver';
 
@@ -33,8 +33,8 @@ export class GasModeService {
     const tokensPrices = await this.priceObserver.getCurrentPrices();
 
     return [
-      await this.getMode('Cheap', gasPrices.cheap.price, tokensPrices),
-      await this.getMode('Fast', gasPrices.fast.price, tokensPrices)
+      await this.getMode('cheap', gasPrices.cheap, tokensPrices),
+      await this.getMode('fast', gasPrices.fast, tokensPrices)
     ];
   }
 }

@@ -2,10 +2,16 @@ import React, { ReactNode, useState } from 'react';
 import './../styles/gasPrice.sass';
 import './../styles/gasPriceDefault.sass';
 
-export const GasPrice = () => {
+interface GasPriceProps {
+  gasTokenAddress: string;
+  setGasTokenAddress: (gasTokenAddress: string) => void;
+  gasModeName: string;
+  setGasModeName: (gasModeName: string) => void;
+  gasModes: any;
+}
+
+export const GasPrice = ({setGasModeName, setGasTokenAddress, gasModeName, gasTokenAddress}: GasPriceProps) => {
   const [contentVisibility, setContentVisibility] = useState(false);
-  const [speedType, setSpeedType] = useState('cheap');
-  const [fee, setFee] = useState('dai');
 
   return (
     <div className="gas-price">
@@ -38,8 +44,8 @@ export const GasPrice = () => {
                 <li className="transaction-speed-item">
                   <RadioButton
                     name="speed"
-                    checked={speedType === 'cheap'}
-                    onChange={() => setSpeedType('cheap')}
+                    checked={gasModeName === 'cheap'}
+                    onChange={() => setGasModeName('cheap')}
                   >
                     <div className="transaction-speed-block">
                       <p className="transaction-speed-type">Cheap</p>
@@ -49,8 +55,8 @@ export const GasPrice = () => {
                 <li className="transaction-speed-item">
                   <RadioButton
                     name="speed"
-                    checked={speedType === 'fast'}
-                    onChange={() => setSpeedType('fast')}
+                    checked={gasModeName === 'fast'}
+                    onChange={() => setGasModeName('fast')}
                   >
                     <div className="transaction-speed-block">
                       <p className="transaction-speed-type">Fast</p>
@@ -65,8 +71,8 @@ export const GasPrice = () => {
                 <li className="transaction-fee-item">
                   <RadioButton
                     name="fee"
-                    checked={fee === 'dai'}
-                    onChange={() => setFee('dai')}
+                    checked={gasTokenAddress !== '0x0000000000000000000000000000000000000000'}
+                    onChange={() => setGasTokenAddress('none')}
                   >
                     <div className="transaction-fee-row">
                       <div className="transaction-fee-details">
@@ -86,8 +92,8 @@ export const GasPrice = () => {
                 <li className="transaction-fee-item">
                   <RadioButton
                     name="fee"
-                    checked={fee === 'eth'}
-                    onChange={() => setFee('eth')}
+                    checked={gasTokenAddress === '0x0000000000000000000000000000000000000000'}
+                    onChange={() => setGasTokenAddress('0x0000000000000000000000000000000000000000')}
                   >
                     <div className="transaction-fee-row">
                       <div className="transaction-fee-details">

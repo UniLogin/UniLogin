@@ -1,7 +1,6 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {utils} from 'ethers';
 import {convertTenthGweiToWei, TokensPrices} from '@universal-login/commons';
 import {GasModeService} from '../../../lib/core/services/GasModeService';
 
