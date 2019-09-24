@@ -9,7 +9,7 @@ export interface AmountInputProps {
 
 export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
-  const currenciesList = ['GBP', 'EUR', 'PLN'];
+  const currenciesList = ['GBP', 'EUR', 'PLN', 'USD'];
 
   const onCurrencyItemClick = (currency: string) => {
     setExpanded(false);

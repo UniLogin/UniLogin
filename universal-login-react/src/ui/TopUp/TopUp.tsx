@@ -6,6 +6,8 @@ import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {LogoColor} from './Fiat/FiatPaymentMethods';
+import {TopUpProvider} from '../../core/models/TopUpProvider';
+import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 
 interface TopUpProps {
   contractAddress: string;
@@ -22,8 +24,8 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
-  const onPayClick = (topUpType: TopUpComponentType, amount: string) => {
-    setModal(topUpType);
+  const onPayClick = (provider: TopUpProvider, amount: string) => {
+    setModal(toTopUpComponentType(provider));
     setAmount(amount);
   };
 

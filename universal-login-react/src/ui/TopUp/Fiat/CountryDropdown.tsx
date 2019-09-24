@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Country} from '../../../core/models/Country';
-import {countries} from './countries';
+import {countries} from '../../../core/utils/countries';
 
 export interface CountrySelectProps {
   selectedCountry?: string;
@@ -19,7 +19,8 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
 
   const countrySelectionButton = () => {
     const country = countries.find(({name}) => name === selectedCountry);
-    const {name, flag} = country || {} as Partial<Country>;
+    const {name, code} = country || {} as Partial<Country>;
+    const flag = code && require(`../../assets/flags/${code.toLowerCase()}.svg`);
 
     return (
       <button
@@ -63,9 +64,13 @@ interface CountryDropdownItemProps extends Country {
   onDropdownItemClick: (selectedCountry: string, currency: string) => void;
 }
 
-const CountryDropdownItem = ({name, flag, currency, onDropdownItemClick}: CountryDropdownItemProps) => (
+const CountryDropdownItem = ({name, code, currency, onDropdownItemClick}: CountryDropdownItemProps) => (
   <button onClick={() => onDropdownItemClick(name, currency)} className="country-select-btn">
-    <img src={flag} alt={`${name} flag`} className="country-select-img"/>
+    <img
+      src={require(`../../assets/flags/${code.toLowerCase()}.svg`)}
+      alt={`${name} flag`}
+      className="country-select-img"
+    />
     <p className="country-select-text">{name}</p>
   </button>
 );

@@ -9,12 +9,12 @@ import {TopUpRadio} from './TopUpRadio';
 import {TopUpWithFiat} from './Fiat/TopUpWithFiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {LogoColor} from './Fiat/FiatPaymentMethods';
+import {TopUpProvider} from '../../core/models/TopUpProvider';
 
 export interface ChooseTopUpMethodProps {
   contractAddress: string;
-  onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
+  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   topUpClassName?: string;
   logoColor?: LogoColor;
 }
