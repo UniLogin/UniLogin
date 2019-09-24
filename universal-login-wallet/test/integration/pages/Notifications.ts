@@ -21,16 +21,24 @@ export default class NotificationsPage {
         await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
       }
       else {
-        await waitForUI(this.wrapper, () => this.wrapper.exists('.correct-input'));
+        await waitForUI(this.wrapper, () => this.wrapper.exists('.gas-price-btn'));
       }
     }
-    this.clickConnectDeviceButton();
-    await waitForUI(this.wrapper, () => this.wrapper.exists('.connection-progress-bar'));
-    await this.waitForNotificationDisappear();
   }
 
-  clickConnectDeviceButton() {
+  async selectGasMode() {
+    const button = this.wrapper.find('.gas-price-btn');
+    button.simulate('click');
+    const fastOption = this.wrapper.find('#fast').last();
+    fastOption.simulate('change');
+    const feeToken = this.wrapper.find('#token-0x0000000000000000000000000000000000000000').last();
+    feeToken.simulate('change');
+  }
+
+  async clickConnectDeviceButton() {
     this.wrapper.find('.connect-approve-btn').simulate('click');
+    await waitForUI(this.wrapper, () => this.wrapper.exists('.connection-progress-bar'));
+    await this.waitForNotificationDisappear();
   }
 
   async waitForNotificationDisappear() {
