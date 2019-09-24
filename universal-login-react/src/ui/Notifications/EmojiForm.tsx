@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, getGasPriceFromGasModes} from '@universal-login/commons';
+import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
@@ -9,7 +9,7 @@ import {EmojiKeyboard} from './EmojiKeyboard';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
 import {GasPrice} from '../commons/GasPrice';
 import CheckmarkIcon from './../assets/icons/correct.svg';
-import {useAsync} from '../hooks/useAsync';
+import {utils} from 'ethers';
 
 type InputModeType = 'keyboard' | 'panelWithFakes' | 'none';
 
@@ -31,14 +31,8 @@ interface EmojiFormProps {
 }
 
 export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
-  const [gasModes] = useAsync(() => sdk.getGasModes(), []);
-  const [gasModeName, setGasModeName] = useState<string>('');
-  const [gasTokenAddress, setGasTokenAddress] = useState<string>('');
-  useEffect(() => {
-    gasModes && setGasModeName(gasModes![0].name);
-    gasModes && setGasTokenAddress(gasModes![0].gasOptions[0].token.address);
-  }, [gasModes]);
-
+  const [gasToken, setGasToken] = useState<string>('');
+  const [gasPrice, setGasPrice] = useState<utils.BigNumber>(utils.bigNumberify('0'));
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [inputMode, setInputMode] = useState<InputModeType>('none');
@@ -65,7 +59,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const confirmCode = async (address: string) => {
-    const computedTransactionDetails = {...transactionDetails, gasToken: gasTokenAddress, gasPrice: getGasPriceFromGasModes(gasModes!, gasModeName, gasTokenAddress)};
+    const computedTransactionDetails = {...transactionDetails, gasToken, gasPrice};
     const {waitToBeSuccess} = await sdk.addKey(contractAddress, address, privateKey, computedTransactionDetails);
     showProgressBar();
     await waitToBeSuccess();
@@ -110,7 +104,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     if (isInputValid) {
       return (
         <div className="correct-input">
-          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark"/>
+          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark" />
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}
@@ -118,7 +112,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
             className={className}
           />
           <div className="correct-input-footer">
-            {gasModes ? <GasPrice gasModes={gasModes} gasModeName={gasModeName} setGasModeName={setGasModeName} gasTokenAddress={gasTokenAddress} setGasTokenAddress={setGasTokenAddress} /> : 'Loading gas modes'}
+            <GasPrice sdk={sdk} setGasTokenAddress={setGasToken} setGasPrice={setGasPrice}/> : 'Loading gas modes'}
             <div className="connect-buttons-row">
               <button onClick={() => sdk.denyRequests(contractAddress, privateKey)} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>

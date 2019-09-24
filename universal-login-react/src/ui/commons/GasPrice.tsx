@@ -1,21 +1,47 @@
-import React, {ReactNode, useState} from 'react';
+import React, {ReactNode, useState, useEffect} from 'react';
 import './../styles/gasPrice.sass';
 import './../styles/gasPriceDefault.sass';
-import {GasMode, getGasPriceFromGasModes} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {utils} from 'ethers';
+import {useAsync} from '../hooks/useAsync';
+import {getGasPriceFromGasModes, GasMode} from '@universal-login/commons';
 
 interface GasPriceProps {
-  gasTokenAddress: string;
+  sdk: UniversalLoginSDK;
   setGasTokenAddress: (gasTokenAddress: string) => void;
-  gasModeName: string;
-  setGasModeName: (gasModeName: string) => void;
-  gasModes: GasMode[];
+  setGasPrice: (gasModeName: utils.BigNumber) => void;
 }
 
-export const GasPrice = ({gasModes, setGasModeName, setGasTokenAddress, gasModeName, gasTokenAddress}: GasPriceProps) => {
+export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice}: GasPriceProps) => {
+  const [gasModes] = useAsync(() => sdk.getGasModes(), []);
+  const [modeName, setModeName] = useState<string>('');
+  const [tokenAddress, setTokenAddress] = useState<string>('');
+
+  const onModeChanged = (name: string) => {
+    setModeName(name);
+    setGasPrice(getGasPriceFromGasModes(gasModes!, name, tokenAddress));
+  };
+
+  const onTokenChanged = (address: string, gasPrice: utils.BigNumber) => {
+    setTokenAddress(address);
+    setGasTokenAddress(address);
+    setGasPrice(gasPrice);
+  };
+
+  useEffect(() => {
+    if (gasModes) {
+      const name = gasModes[0].name;
+      const address = gasModes[0].gasOptions[0].token.address;
+      const gasPrice = getGasPriceFromGasModes(gasModes, name, address);
+      setModeName(name);
+      onTokenChanged(address, gasPrice);
+    }
+  }, [gasModes]);
   const [contentVisibility, setContentVisibility] = useState(false);
 
-  return (
+  const formatWeiToEther = (wei: utils.BigNumber) => wei.div('1000000000').toNumber() / 1000000000;
+
+  const renderComponent = (gasModes: GasMode[]) => (
     <div className="gas-price">
       <GasPriceTitle />
       <div className="gas-price-dropdown">
@@ -48,8 +74,8 @@ export const GasPrice = ({gasModes, setGasModeName, setGasTokenAddress, gasModeN
                     <RadioButton
                       id={name}
                       name="speed"
-                      checked={name === gasModeName}
-                      onChange={() => setGasModeName(name)}
+                      checked={name === modeName}
+                      onChange={() => onModeChanged(name)}
                     >
                       <div className="transaction-speed-block">
                         <p className="transaction-speed-type">{name}</p>
@@ -62,56 +88,41 @@ export const GasPrice = ({gasModes, setGasModeName, setGasTokenAddress, gasModeN
             <div className="transaction-fee">
               <p className="transaction-fee-title">Transaction fee</p>
               <ul className="transaction-fee-list">
-                <li className="transaction-fee-item">
-                  <RadioButton
-                    id={'token-0x'}
-                    name="fee"
-                    checked={gasTokenAddress !== '0x0000000000000000000000000000000000000000'}
-                    onChange={() => setGasTokenAddress('none')}
-                  >
-                    <div className="transaction-fee-row">
-                      <div className="transaction-fee-details">
-                        <img src="" alt="" className="transaction-fee-item-icon" />
-                        <div>
-                          <p className="transaction-fee-amount">0.09 DAI</p>
-                          <p className="transaction-fee-amount-usd">0.09 USD</p>
+
+                {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map(({token, gasPrice}) => (
+                  <li key={token.address} className="transaction-fee-item">
+                    <RadioButton
+                      id={`token-${token.address}`}
+                      name="fee"
+                      checked={token.address === tokenAddress}
+                      onChange={() => onTokenChanged(token.address, gasPrice)}
+                    >
+                      <div className="transaction-fee-row">
+                        <div className="transaction-fee-details">
+                          <img src="" alt="" className="transaction-fee-item-icon" />
+                          <div>
+                            <p className="transaction-fee-amount">{formatWeiToEther(gasPrice)} {token.symbol}</p>
+                            <p className="transaction-fee-amount-usd">0.09 USD</p>
+                          </div>
+                        </div>
+                        <div className="transaction-fee-balance">
+                          <p className="transaction-fee-balance-text">Your balance</p>
+                          <p className="transaction-fee-balance-amount">250 {token.symbol}</p>
                         </div>
                       </div>
-                      <div className="transaction-fee-balance">
-                        <p className="transaction-fee-balance-text">Your balance</p>
-                        <p className="transaction-fee-balance-amount">250 DAI</p>
-                      </div>
-                    </div>
-                  </RadioButton>
-                </li>
-                <li className="transaction-fee-item">
-                  <RadioButton
-                    id={'token-0x0000000000000000000000000000000000000000'}
-                    name="fee"
-                    checked={gasTokenAddress === '0x0000000000000000000000000000000000000000'}
-                    onChange={() => setGasTokenAddress('0x0000000000000000000000000000000000000000')}
-                  >
-                    <div className="transaction-fee-row">
-                      <div className="transaction-fee-details">
-                        <img src="" alt="" className="transaction-fee-item-icon" />
-                        <div>
-                          <p className="transaction-fee-amount">{getGasPriceFromGasModes(gasModes, gasModeName, gasTokenAddress).div('1000000000').toNumber() / 1000} ETH</p>
-                          <p className="transaction-fee-amount-usd">0.09 USD</p>
-                        </div>
-                      </div>
-                      <div className="transaction-fee-balance">
-                        <p className="transaction-fee-balance-text">Your balance</p>
-                        <p className="transaction-fee-balance-amount">20 ETH</p>
-                      </div>
-                    </div>
-                  </RadioButton>
-                </li>
+                    </RadioButton>
+                  </li>
+                ))
+                }
               </ul>
             </div>
           </div>
         }
       </div>
     </div>
+  );
+  return (
+    gasModes ? renderComponent(gasModes) : <div>Loading</div>
   );
 };
 
