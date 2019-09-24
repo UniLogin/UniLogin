@@ -1,4 +1,4 @@
-export interface ReactConfig {
+export interface Config {
   domains: string[];
   relayerUrl: string;
   jsonRpcUrl: string;

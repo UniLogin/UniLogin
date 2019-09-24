@@ -1,9 +1,9 @@
-import {ReactConfig} from './types';
+import {Config} from './types';
 
 require('dotenv').config();
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
-const developmentConfig: ReactConfig = {
+const developmentConfig: Config = {
   domains: ['mylogin.eth'],
   relayerUrl: 'http://localhost:3311',
   jsonRpcUrl: 'http://localhost:18545',
