@@ -1,7 +1,7 @@
 import React from 'react';
 import {Onboarding, OnboardingProps} from './Onboarding';
 
-export function OnboardingModal({sdk, walletService, domains}: OnboardingProps) {
+export function OnboardingModal(props: OnboardingProps) {
   return (
     <div className="onboarding-modal-container">
       <div className="onboarding-modal-content">
@@ -11,11 +11,7 @@ export function OnboardingModal({sdk, walletService, domains}: OnboardingProps) 
         <p style={{color: 'white', fontSize: 15}}>
           Type a nickname you want
         </p>
-        <Onboarding
-          sdk={sdk}
-          walletService={walletService}
-          domains={domains}
-        />
+        <Onboarding {...props} />
       </div>
     </div>
   );
