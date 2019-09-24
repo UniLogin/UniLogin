@@ -1,25 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
-import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import daiIcon from '../../assets/icons/dai.svg';
 import ethIcon from '../../assets/icons/ethereum.svg';
 import {useToggler} from '../../hooks/useToggler';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
-  ensName: string;
+  tokenDetailsWithBalance: TokenDetailsWithBalance[];
   currency: string;
   setCurrency: (currency: string) => void;
   className?: string;
 }
 
-export const TransferDropdown = ({sdk, ensName, currency, setCurrency, className}: TransferDropdownProps) => {
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+export const TransferDropdown = ({sdk, tokenDetailsWithBalance, currency, setCurrency, className}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
-
-  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
 
   const onClick = (currency: string) => {
     toggle();
