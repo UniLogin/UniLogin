@@ -3,7 +3,6 @@
   "version": "0.3.39",
   "private": true,
   "dependencies": {
-    "@types/web3": "^1.0.19",
     "@universal-login/ops": "0.3.39",
     "@universal-login/relayer": "0.3.39",
     "@universal-login/web3": "0.3.39",
@@ -32,6 +31,7 @@
     ]
   },
   "devDependencies": {
+    "@types/web3": "^1.0.19",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
