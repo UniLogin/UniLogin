@@ -1,18 +1,8 @@
 import {utils} from 'ethers';
-import {TokenDetails, TokensPrices} from '@universal-login/commons';
+import {GasMode, TokensPrices} from '@universal-login/commons';
 import {GasPriceOracle} from '../../integration/http/gasPriceOracle';
 import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
 import {PriceObserver} from '../observers/PriceObserver';
-
-export interface GasOption {
-  token: TokenDetails;
-  gasPrice: utils.BigNumber;
-}
-
-export interface GasMode {
-  name: string;
-  gasOptions: GasOption[];
-}
 
 export class GasModeService {
   constructor(
