@@ -2,18 +2,18 @@ import React, {useState} from 'react';
 
 export interface AmountInputProps {
   amount: string;
-  seletedCode: string;
-  setCode: (code: string) => void;
+  selectedCurrency: string;
+  setCurrency: (currency: string) => void;
   onChange: (amount: string) => void;
 }
 
-export const AmountInput = ({amount, seletedCode, setCode, onChange}: AmountInputProps) => {
+export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
-  const codesList = ['GBP', 'EUR', 'PLN'];
+  const currenciesList = ['GBP', 'EUR', 'PLN'];
 
-  const onCurrencyItemClick = (code: string) => {
+  const onCurrencyItemClick = (currency: string) => {
     setExpanded(false);
-    setCode(code);
+    setCurrency(currency);
   };
 
   return (
@@ -29,15 +29,15 @@ export const AmountInput = ({amount, seletedCode, setCode, onChange}: AmountInpu
           className={`amount-dropdown-btn amount-dropdown-toggle ${expanded ? 'expanded' : ''}`}
           onClick={() => setExpanded(!expanded)}
         >
-          {seletedCode}
+          {selectedCurrency}
         </button>
         {expanded &&
           <ul className="amount-dropdown-list">
-            {codesList
-              .filter(code => code !== seletedCode)
-              .map(code => (
-                <li key={code}>
-                  <button onClick={() => onCurrencyItemClick(code)} className="amount-dropdown-btn">{code}</button>
+            {currenciesList
+              .filter(currency => currency !== selectedCurrency)
+              .map(currency => (
+                <li key={currency}>
+                  <button onClick={() => onCurrencyItemClick(currency)} className="amount-dropdown-btn">{currency}</button>
                 </li>
               ))
             }

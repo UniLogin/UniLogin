@@ -1,95 +1,71 @@
 import React, {useState} from 'react';
-import gbFlagIcon from './../../assets/flags/gb.svg';
-import frFlagIcon from './../../assets/flags/fr.svg';
-import deFlagIcon from './../../assets/flags/de.svg';
-import plFlagIcon from './../../assets/flags/pl.svg';
+import {Country} from '../../../core/models/Country';
+import {countries} from './countries';
 
 export interface CountrySelectProps {
-  selectedCountry: string;
+  selectedCountry?: string;
   setCountry: (selectedCountry: string) => void;
-  setCode: (code: string) => void;
+  setCurrency: (currency: string) => void;
 }
 
-export const CountryDropdown = ({selectedCountry, setCountry, setCode}: CountrySelectProps) => {
+export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: CountrySelectProps) => {
   const [expanded, setExpanded] = useState(false);
 
-  const onDropdownItemClick = (selectedCountry: string, code: string) => {
+  const onDropdownItemClick = (selectedCountry: string, currency: string) => {
     setExpanded(false);
     setCountry(selectedCountry);
-    setCode(code);
+    setCurrency(currency);
   };
 
-  return(
+  const countrySelectionButton = () => {
+    const country = countries.find(({name}) => name === selectedCountry);
+    const {name, flag} = country || {} as Partial<Country>;
+
+    return (
+      <button
+        onClick={() => setExpanded(!expanded)}
+        key={name || 'no-country'}
+        className={`country-select-btn country-select-toggle ${expanded ? 'expanded' : ''}`}
+      >
+        {flag && <img src={flag} alt="" className="country-select-img"/>}
+        <p className="country-select-text">{name || 'Select your country'}</p>
+      </button>
+    );
+  };
+
+  const countrySelectionList = () => {
+    if (expanded) {
+      return (
+        <ul className="country-select-list">
+          {countries.map(country => (
+            <li key={country.name} className="country-select-item">
+              <CountryDropdownItem
+                {...country}
+                onDropdownItemClick={onDropdownItemClick}
+              />
+            </li>
+          ))
+          }
+        </ul>
+      );
+    }
+  };
+
+  return (
     <div className="country-select">
-        {placeholderData.map(({country, flag}) => {
-            if (country === selectedCountry) {
-              return(
-                <button
-                  onClick={() => setExpanded(!expanded)}
-                  key={country}
-                  className={`country-select-btn country-select-toggle ${expanded ? 'expanded' : ''}`}
-                >
-                  <img src={flag} alt="" className="country-select-img"/>
-                  <p className="country-select-text">{country}</p>
-                </button>
-              );
-            }
-          })
-        }
-        {expanded &&
-          <ul className="country-select-list">
-              {placeholderData
-                .filter(({country}) => country !== selectedCountry)
-                .map(({country, flag, code}) => (
-                  <li key={country} className="country-select-item">
-                    <CountryDropdownItem
-                      country={country}
-                      flag={flag}
-                      code={code}
-                      onDropdownItemClick={onDropdownItemClick}
-                    />
-                  </li>
-                ))
-              }
-          </ul>
-        }
+      {countrySelectionButton()}
+      {countrySelectionList()}
     </div>
   );
 };
 
-interface CountryDropdownItemProps {
-  country: string;
-  flag: string;
-  code: string;
-  onDropdownItemClick: (selectedCountry: string, code: string) => void;
+interface CountryDropdownItemProps extends Country {
+  onDropdownItemClick: (selectedCountry: string, currency: string) => void;
 }
 
-const CountryDropdownItem = ({country, flag, onDropdownItemClick, code}: CountryDropdownItemProps) => (
-  <button onClick={() => onDropdownItemClick(country, code)} className="country-select-btn">
-    <img src={flag} alt={`${country} flag`} className="country-select-img"/>
-    <p className="country-select-text">{country}</p>
+const CountryDropdownItem = ({name, flag, currency, onDropdownItemClick}: CountryDropdownItemProps) => (
+  <button onClick={() => onDropdownItemClick(name, currency)} className="country-select-btn">
+    <img src={flag} alt={`${name} flag`} className="country-select-img"/>
+    <p className="country-select-text">{name}</p>
   </button>
 );
-
-const placeholderData = [
-  {
-    country: 'France',
-    flag: frFlagIcon,
-    code: 'EUR',
-  },
-  {
-    country: 'Germany',
-    flag: deFlagIcon,
-    code: 'EUR',
-  },
-  {
-    country: 'Poland',
-    flag: plFlagIcon,
-    code: 'PLN',
-  },
-  {
-    country: 'United Kingdom',
-    flag: gbFlagIcon,
-    code: 'GBP',
-  },
-];

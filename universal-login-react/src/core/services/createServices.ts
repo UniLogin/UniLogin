@@ -1,13 +1,8 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {providers} from 'ethers';
-
-export interface Config {
-  domains: string[];
-  relayerUrl: string;
-  jsonRpcUrl: string;
-  tokens: string[];
-}
+import {Config} from '../../config/types';
+import {IPGeolocationService} from '../../integration/http/IPGeolocationService';
 
 export interface Overrides {
   provider?: providers.Provider;
@@ -16,8 +11,10 @@ export interface Overrides {
 export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl);
+  const ipGeolocationService = new IPGeolocationService(config.ipGeolocationApi.baseUrl, config.ipGeolocationApi.accessKey);
   return {
     sdk,
+    ipGeolocationService,
     config
   };
 };

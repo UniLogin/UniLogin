@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="20px" viewBox="0 0 28 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>malta@3x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="20" rx="2"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags" transform="translate(-508.000000, -604.000000)">
+            <g id="malta" transform="translate(508.000000, 604.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <rect stroke="#F5F5F5" stroke-width="0.5" x="0.25" y="0.25" width="27.5" height="19.5" rx="2"></rect>
+                <rect id="Rectangle-2-Copy-2" fill="#DE233C" mask="url(#mask-2)" x="14.6666667" y="0" width="13.3333333" height="20"></rect>
+                <path d="M5.66616671,3.66641666 L7,3.66674995 L7,5.66683329 L5.66616671,5.66616671 L5.66683329,7 L3.66674995,7 L3.66641666,5.66616671 L2.33333333,5.66683342 L2.33333333,3.66675001 L3.66641666,3.66641666 L3.66675001,2.33333333 L5.66683342,2.33333333 L5.66616671,3.66641666 Z" id="Rectangle-364" stroke-opacity="0.66" stroke="#7B716A" stroke-width="0.666666667" fill="#CCCCCD" mask="url(#mask-2)"></path>
+                <circle id="Oval-20" fill="#7B716A" mask="url(#mask-2)" cx="4.66666667" cy="4.66666667" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

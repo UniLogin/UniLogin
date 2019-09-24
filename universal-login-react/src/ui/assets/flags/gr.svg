@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="28px" height="20px" viewBox="0 0 28 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
-    <title>FR</title>
+    <title>@Grecja</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <rect id="path-1" x="0" y="0" width="28" height="20" rx="2"></rect>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Artboard" transform="translate(-61.000000, -61.000000)">
-            <g id="FR" transform="translate(61.000000, 61.000000)">
+        <g id="Flags" transform="translate(-364.000000, -316.000000)">
+            <g id="Grecja" transform="translate(364.000000, 316.000000)">
                 <mask id="mask-2" fill="white">
                     <use xlink:href="#path-1"></use>
                 </mask>
                 <rect stroke="#F5F5F5" stroke-width="0.5" x="0.25" y="0.25" width="27.5" height="19.5" rx="2"></rect>
-                <rect id="Mask" fill="#F44653" mask="url(#mask-2)" x="18.6666667" y="0" width="9.33333333" height="20"></rect>
-                <rect id="Rectangle-2" fill="#1035BB" mask="url(#mask-2)" x="0" y="0" width="9.33333333" height="20"></rect>
+                <path d="M28,16 L28,18.6666667 L0,18.6666667 L0,16 L28,16 Z M13.3333333,8 L13.3333333,10.6666667 L28,10.6666667 L28,13.3333333 L8,13.3333333 L8,8 L13.3333333,8 Z M5.33333333,8 L5.33333333,13.3333333 L0,13.3333333 L0,8 L5.33333333,8 Z M28,5.33333333 L28,8 L13.3333333,8 L13.3333333,5.33333333 L28,5.33333333 Z M5.33333333,0 L5.33333333,5.33333333 L0,5.33333333 L0,0 L5.33333333,0 Z M28,0 L28,2.66666667 L13.3333333,2.66666667 L13.3333333,5.33333333 L8,5.33333333 L8,0 L28,0 Z" id="Rectangle-537" fill="#1C6DC1" mask="url(#mask-2)"></path>
             </g>
         </g>
     </g>

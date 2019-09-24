@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.0.1",
+    "@restless/sanitizers": "^0.2.2",
     "@universal-login/commons": "0.3.40",
     "@universal-login/sdk": "0.3.40",
     "dotenv": "^8.1.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
     "@types/enzyme": "^3.9.0",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/lodash.range": "^3.2.6",
@@ -43,6 +45,7 @@
     "@types/react-router-dom": "^4.3.4",
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "copy-webpack-plugin": "^5.0.3",
     "cpx": "^1.5.0",
     "cross-env": "^5.2.0",
@@ -52,6 +55,8 @@
     "jsdom": "^15.1.1",
     "jsdom-global": "^3.0.2",
     "mocha": "^6.1.4",
+    "nock": "^11.3.5",
+    "node-fetch": "^2.6.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "rimraf": "^2.6.3",
