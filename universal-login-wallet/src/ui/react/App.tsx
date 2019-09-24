@@ -49,7 +49,7 @@ const App = () => {
         <Route
           exact
           path="/create"
-          render={props => <CreateAccount {...props} />}
+          render={() => <CreateAccount />}
         />
         <Route
           exact

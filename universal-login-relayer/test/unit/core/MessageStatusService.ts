@@ -5,8 +5,8 @@ import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH} from '@unive
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
 import {MessageStatusService} from '../../../lib/core/services/messages/MessageStatusService';
 import MessageItem from '../../../lib/core/models/messages/MessageItem';
-import {createMessageItem} from '../../../lib/core/utils/utils';
 import getTestSignedMessage from '../../config/message';
+import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
 
 describe('UNIT: MessageStatusService', async () => {
   const signaturesService : any = {
@@ -53,7 +53,7 @@ describe('UNIT: MessageStatusService', async () => {
     expect(await messageStatusService.getStatus(messageHash)).to.include({state: 'Queued'});
   });
 
-  it('getStatus after success', async () => {
+  it('getStatus after starting handle', async () => {
     await messageRepository.markAsPending(messageHash, TEST_TRANSACTION_HASH);
     expect(await messageStatusService.getStatus(messageHash)).to.deep.include({
       state: 'Pending',

@@ -7,11 +7,12 @@ import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
-import {getKeyFromHashAndSignature, createMessageItem} from '../../../../../lib/core/utils/utils';
+import {getKeyFromHashAndSignature} from '../../../../../lib/core/utils/encodeData';
 import {getKnexConfig} from '../../../../helpers/knex';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
+import {createMessageItem} from '../../../../../lib/core/utils/messages/serialisation';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages : PendingMessages;

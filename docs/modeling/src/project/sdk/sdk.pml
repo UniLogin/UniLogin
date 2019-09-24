@@ -31,16 +31,22 @@ package UserInterface {
   }
 
   class DeployedWallet {
-    addKey(key);
-    removeKey(key);
-    setRequiredSignatures(number);
-    getKeyPurpose(key);
+    asApplicationWallet();
+    addKey(key, transactionDetails);
+    addKeys(key, transactionDetails);
+    removeKey(key, transactionDetails);
+    setRequiredSignatures(number, transactionDetails);
+    execute(message);
+    keyExist(key);
     getNonce();
-    subscribeToEvent()
-    subscribeToBalances()
-    subscribeToAggregatedBalance()
-    subscribeToPrices()
-    subscribeAuthorisations()
+    getConnectedDevices();
+    getRequiredSignatures();
+    generateBackupCodes();
+    subscribeToEvent();
+    subscribeToBalances();
+    subscribeToAggregatedBalance();
+    subscribeToPrices();
+    subscribeAuthorisations();
   }
 }
 

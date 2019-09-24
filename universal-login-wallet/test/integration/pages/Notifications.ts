@@ -21,10 +21,16 @@ export default class NotificationsPage {
         await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
       }
       else {
-        await waitForUI(this.wrapper, () => this.wrapper.exists('.connection-progress-bar'));
+        await waitForUI(this.wrapper, () => this.wrapper.exists('.correct-input'));
       }
     }
+    this.clickConnectDeviceButton();
+    await waitForUI(this.wrapper, () => this.wrapper.exists('.connection-progress-bar'));
     await this.waitForNotificationDisappear();
+  }
+
+  clickConnectDeviceButton() {
+    this.wrapper.find('.connect-approve-btn').simulate('click');
   }
 
   async waitForNotificationDisappear() {

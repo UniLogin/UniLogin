@@ -34,27 +34,11 @@
 .user-dropdown-header
   position: relative
   display: flex
-  padding-right: 32px
 
   +media(s, 168px)
-    padding-right: 0
     position: static
     display: block
     text-align: center
-
-.user-dropdown-header::after
-  content: ''
-  position: absolute
-  top: 50%
-  right: 9px
-  transform: translateY(-50%)
-  width: 11px
-  height: 6px
-  background: url('../assets/icons/triangle-dark.svg') center no-repeat
-  background-size: contain
-
-  +media(s, 168px)
-    display: none
 
 .user-dropdown-btn
   position: absolute

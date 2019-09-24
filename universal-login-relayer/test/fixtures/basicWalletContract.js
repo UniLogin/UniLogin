@@ -1,6 +1,5 @@
 import {utils} from 'ethers';
-import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, computeGasData, EMPTY_DATA} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, EMPTY_DATA} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
@@ -14,7 +13,7 @@ export default async function basicWalletContract(provider, wallets) {
   const [ , , wallet] = wallets;
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const factoryContract = await deployFactory(wallet, walletContract.address);
-  const walletContract = await createWalletContract(wallet);
+  const {proxy: walletContract} = await createWalletContract(wallet);
   return {wallet, provider, walletContract, ensService, walletContractAddress: walletContract.address, factoryContractAddress: factoryContract.address};
 }
 
@@ -24,8 +23,7 @@ export const transferMessage = {
   data: EMPTY_DATA,
   nonce: '0',
   gasPrice,
-  gasLimitExecution: gasLimit,
-  gasData: 0,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -36,8 +34,7 @@ export const addKeyMessage = {
   data: addKeyMessageDataField,
   nonce: 0,
   gasPrice,
-  gasLimitExecution: gasLimit,
-  gasData: computeGasData(addKeyMessageDataField),
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -48,7 +45,6 @@ export const removeKeyMessage = {
   data: removeKeyMessageDataField,
   nonce: 1,
   gasPrice,
-  gasLimitExecution: gasLimit,
-  gasData: computeGasData(removeKeyMessageDataField),
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000'
 };

@@ -26,8 +26,7 @@ export class TransferService {
         data: encodeTransfer(to, amount),
         gasToken: tokenAddress
       };
-      const {waitToBeMined} = await this.sdk.execute(message, this.applicationWallet!.privateKey);
-      return waitToBeMined();
+      return this.sdk.execute(message, this.applicationWallet!.privateKey);
   }
 
   private async transferEther({to, amount} : TransferDetails) {
@@ -38,8 +37,7 @@ export class TransferService {
         data: '0x',
         gasToken: ETHER_NATIVE_TOKEN.address
       };
-      const {waitToBeMined} = await this.sdk.execute(message, this.applicationWallet!.privateKey);
-      return waitToBeMined();
+      return this.sdk.execute(message, this.applicationWallet!.privateKey);
   }
 }
 

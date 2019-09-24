@@ -41,7 +41,8 @@ describe('INT: TransferService', () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
     const currency = 'Mock';
-    await transferService.transfer({to, amount, currency});
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
+    await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
   });
 
@@ -49,7 +50,8 @@ describe('INT: TransferService', () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '0.5';
     const currency = ETHER_NATIVE_TOKEN.symbol;
-    await transferService.transfer({to, amount, currency});
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
+    await waitToBeSuccess();
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
   });
 

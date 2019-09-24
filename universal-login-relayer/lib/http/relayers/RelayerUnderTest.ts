@@ -1,14 +1,23 @@
 import Knex from 'knex';
-import {providers, Wallet, utils, Contract} from 'ethers';
-const ENSBuilder = require('ens-builder');
-import {withENS, getContractHash, ContractJSON, ETHER_NATIVE_TOKEN, deployContract, deepMerge, DeepPartial} from '@universal-login/commons';
+import {Contract, providers, utils, Wallet} from 'ethers';
+import {
+  ContractJSON,
+  deepMerge,
+  DeepPartial,
+  deployContract,
+  ETHER_NATIVE_TOKEN,
+  getContractHash,
+  withENS,
+} from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
-import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
+
+const ENSBuilder = require('ens-builder');
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -22,9 +31,15 @@ type CreateRelayerArgs = {
 };
 
 export class RelayerUnderTest extends Relayer {
-  static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const walletContract = await deployContract(wallet, WalletMasterWithRefund);
+
+  static async deployBaseContracts(wallet: Wallet) {
+    const walletContract = await deployContract(wallet, WalletContract);
     const factoryContract = await deployFactory(wallet, walletContract.address);
+    return {walletContract, factoryContract};
+  }
+
+  static async createPreconfigured(wallet: Wallet, port = '33111') {
+    const {walletContract, factoryContract} = await RelayerUnderTest.deployBaseContracts(wallet);
     return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract});
   }
 
@@ -56,9 +71,13 @@ export class RelayerUnderTest extends Relayer {
       factoryAddress: factoryContract.address,
       supportedTokens,
     };
-    const config: Config = deepMerge(getConfig('test'),  overrideConfig);
-    const relayer = new RelayerUnderTest(config, providerWithENS);
+    const relayer = RelayerUnderTest.createTestRelayer(overrideConfig, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS};
+  }
+
+  public static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
+    const config: Config = deepMerge(getConfig('test'), overrideConfig);
+    return new RelayerUnderTest(config, providerWithENS);
   }
 
   url() {
@@ -84,6 +103,6 @@ export async function clearDatabase(knex: Knex) {
 }
 
 export const getContractWhiteList = () => ({
-  wallet: [],
+  wallet: [getContractHash(WalletContract as ContractJSON)],
   proxy: [getContractHash(ProxyContract as ContractJSON)]
 });

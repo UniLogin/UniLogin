@@ -22,8 +22,10 @@ const InputWithButton = ({placeholder, autoFocus, id, className, value}: InputPr
     <button
       autoFocus={autoFocus}
       onClick={() => copy(id)}
-      className="input-copy-btn"
-    />
+      className="copy-btn">
+      <span className="copy-btn-feedback"/>
+    </button>
+
   </div>
 );
 

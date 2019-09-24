@@ -1,11 +1,12 @@
 import {utils} from 'ethers';
 import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
+import cloneDeep from 'lodash.clonedeep';
 
-export const fillGasEstimatesToUnsignedMessage = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish): UnsignedMessage => {
-  const gasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
+export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
+  const gasData = utils.bigNumberify(estimateGasDataFromUnsignedMessage(unsignedMessage));
   const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
-  return {...unsignedMessage, gasData, gasLimitExecution};
+  return {gasData, gasLimitExecution};
 };
 
 export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
@@ -14,6 +15,7 @@ export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMess
 };
 
 export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) => {
-  const txdata = encodeDataForExecuteSigned(signedMessage);
+  const copySignedMessage = {...cloneDeep(signedMessage), gasData: utils.bigNumberify('0xFFFFFF'), gasLimitExecution: utils.bigNumberify('0xFFFFFF')};
+  const txdata = encodeDataForExecuteSigned(copySignedMessage);
   return computeGasData(txdata);
 };

@@ -7,10 +7,28 @@
   background: #FFFFFF
   border: 1px solid #E1E1F0
 
-.input-copy-btn
+.copy-btn
   width: 50px
   height: 45px
   display: block
   margin-left: 10px
   background: #fff url('./../assets/icons/copy.svg') center no-repeat
-  border: 1px solid #C9C9D7
+  border: 1px solid #E1E1F0
+
+.copy-btn-feedback
+  visibility: hidden
+  text-align: center
+  padding: 5px
+  z-index: 1
+  opacity: 0
+  color: green
+
+.copy-btn-feedback:before
+  content: '\2713'
+
+.copy-btn:focus .copy-btn-feedback
+  visibility: visible
+  opacity: 1
+
+.copy-btn:focus
+  background: none

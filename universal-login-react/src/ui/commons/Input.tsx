@@ -9,11 +9,12 @@ interface InputProps {
   type?: string;
   id: string;
   value?: string;
+  checkSpelling?: boolean;
 }
 
 const classesForInput = classesForElement('input', 'input');
 
-export const Input = ({onChange, placeholder, autoFocus, className, id, type, value}: InputProps) => {
+export const Input = ({onChange, placeholder, autoFocus, className, id, type, value, checkSpelling = true}: InputProps) => {
   return(
     <input
       id={id}
@@ -23,6 +24,7 @@ export const Input = ({onChange, placeholder, autoFocus, className, id, type, va
       type={type ? type : 'text'}
       autoFocus={autoFocus}
       placeholder={placeholder}
+      spellCheck={checkSpelling}
     />
   );
 };

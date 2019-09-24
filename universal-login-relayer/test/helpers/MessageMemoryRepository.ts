@@ -1,5 +1,5 @@
 import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageState} from '@universal-login/commons';
-import {getKeyFromHashAndSignature} from '../../lib/core/utils/utils';
+import {getKeyFromHashAndSignature} from '../../lib/core/utils/encodeData';
 import {InvalidMessage, MessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';

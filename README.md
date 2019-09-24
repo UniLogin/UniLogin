@@ -35,6 +35,21 @@ Packages maintained with this monorepo are listed below.
 - Wallet - Jarvis web wallet that used Universal Login
 - Commons - standard functions and data structures used throughout the projects
 
+## Testing environment:
+
+### Ropsten:
+- Domains: `poppularapp.test`, `my-login.test`, `universal-login.test`
+- Relayer url: `https://relayer.universallogin.io`
+- Jarvis Wallet (web wallet): [wallet.universallogin.io](https://wallet.universallogin.io)
+
+### Rinkeby:
+- Domain: `poppularapp.test`
+- Relayer url: `https://relayer-rinkeby.universallogin.io`
+
+### Mainnet:
+- Domain: unitest.eth
+- Relayer url: `https://relayer-mainnet.universallogin.io`
+Note: this is test relayer!
 
 ## Contributing
 

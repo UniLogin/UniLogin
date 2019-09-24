@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
-import {solidity, createFixtureLoader} from 'ethereum-waffle';
+import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
+import MockToken from '@universal-login/contracts/build/MockToken';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
@@ -26,9 +27,10 @@ describe('E2E: SDK', async () => {
   let mockToken;
   let message;
   let walletContract;
+  let wallet;
 
   beforeEach(async () => {
-    ({provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
+    ({wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address, data: '0x'};
   });
 
@@ -58,61 +60,64 @@ describe('E2E: SDK', async () => {
   describe('Execute signed message', async () => {
     it('Should execute signed message', async () => {
       const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-      const {waitToBeMined} = await sdk.execute({...message, to: otherWallet.address}, privateKey);
-      const {transactionHash} = await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.execute({...message, to: otherWallet.address}, privateKey);
+      const {transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
     });
 
-    it('Should return transaction hash', async () => {
-      const {waitToBeMined} = await sdk.execute(message, privateKey);
-      const {transactionHash} = await waitToBeMined();
+    it('Should return transaction hash and proper state', async () => {
+      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
+      const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
+      expect(state).to.be.eq('Success');
     });
 
     it('Should increment nonce', async () => {
       expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(0);
-      const {waitToBeMined} = await sdk.execute(message, privateKey);
-      await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
+      await waitToBeSuccess();
       expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(1);
-      ({waitToBeMined} = await sdk.execute(message, privateKey));
-      await waitToBeMined();
+      ({waitToBeSuccess} = await sdk.execute(message, privateKey));
+      await waitToBeSuccess();
       expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(2);
     });
 
     it('when not enough tokens ', async () => {
-      message = {...message, gasLimit: utils.parseEther('25').toString()};
-      const {waitToBeMined} = await sdk.execute(message, privateKey);
-      await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough tokens');
-    });
+      const mockToken = await deployContract(wallet, MockToken);
+      await mockToken.transfer(walletContract.address, 1);
+      message = {...message, gasToken: mockToken.address};
+      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
+      await expect(waitToBeSuccess()).to.be.eventually.rejectedWith('Error: Not enough tokens');
+  });
 
     it('when not enough gas', async () => {
-      const gasData = 8336;
+      const gasData = 8720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: gasData + notEnoughGasLimit};
-      const {waitToBeMined} = await sdk.execute(message, privateKey);
-      await expect(waitToBeMined()).to.be.eventually.rejectedWith('Error: Not enough gas');
+      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Insufficient Gas. gasLimit should be greater than 105000');
     });
   });
 
   describe('Add key', async () => {
     it('should return transaction hash', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      const {transactionHash} = await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
+      expect(state).to.be.eq('Success');
       expect(await walletContract.lastNonce()).to.be.eq(1);
     });
 
     it('should add a management key to the walletContract', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeSuccess();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
     it('should add a device to connected devices', async () => {
       const initiallyDevicesLength = (await sdk.getConnectedDevices(contractAddress, privateKey)).length;
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeSuccess();
       expect(await sdk.getConnectedDevices(contractAddress, privateKey)).length(initiallyDevicesLength + 1);
     });
   });
@@ -123,8 +128,8 @@ describe('E2E: SDK', async () => {
     });
 
     it('return a management key', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeSuccess();
       expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.true;
     });
   });
@@ -133,8 +138,8 @@ describe('E2E: SDK', async () => {
     it('getNonce should return correct nonce', async () => {
       const executionNonce = await sdk.getNonce(contractAddress, privateKey);
       expect(executionNonce).to.eq(0);
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeSuccess();
       expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(executionNonce.add(1));
     });
   });
@@ -152,10 +157,11 @@ describe('E2E: SDK', async () => {
   });
 
   describe('Add keys', async () => {
-    it('should return transaction hash', async () => {
-      const {waitToBeMined} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
-      const {transactionHash} = await waitToBeMined();
+    it('should return transaction hash and proper state', async () => {
+      const {waitToBeSuccess} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
+      const {state, transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
+      expect(state).to.be.eq('Success');
     });
   });
 
@@ -216,8 +222,8 @@ describe('E2E: SDK', async () => {
   describe('Devices', async () => {
     it('should return added devices', async () => {
       const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device) => device.publicKey);
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeSuccess();
       const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device) => device.publicKey);
       expect(devicesPublicKeys).length(initiallyPublicKeys.length + 1);
       expect(devicesPublicKeys).to.be.deep.eq([...initiallyPublicKeys, otherWallet.address]);
@@ -226,10 +232,10 @@ describe('E2E: SDK', async () => {
 
   describe('change required signatures', async () => {
     it('should change required signatures', async () => {
-      const {waitToBeMined} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await waitToBeMined();
-      ({waitToBeMined} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
-      const {transactionHash} = await waitToBeMined();
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      await waitToBeSuccess();
+      ({waitToBeSuccess} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
+      const {transactionHash} = await waitToBeSuccess();
       expect(await walletContract.requiredSignatures()).to.eq(2);
       expect(transactionHash).to.be.properHex(64);
     });

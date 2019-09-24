@@ -1,9 +1,10 @@
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
-import {utils, providers, Contract} from 'ethers';
+import {Wallet, providers, utils, Contract} from 'ethers';
 import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContractExist} from '@universal-login/commons';
-import {InvalidContract, NotEnoughTokens, NotEnoughGas} from '../../core/utils/errors';
+import IMessageValidator from '../../../core/services/validators/IMessageValidator';
+import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
 
-export const isContract = async (provider : providers.Provider, contractAddress : string) => {
+const isContract = async (provider : providers.Provider, contractAddress : string) => {
   // TODO: Only whitelisted contracts
   const bytecode = await provider.getCode(contractAddress);
   return isContractExist(bytecode);
@@ -23,10 +24,10 @@ export const hasEnoughToken = async (gasToken : string, walletContractAddress : 
   }
 };
 
-export const ensureEnoughToken = async (provider: providers.Provider, message: SignedMessage) =>
-  ensure(await hasEnoughToken(message.gasToken, message.from, message.gasLimitExecution, provider), NotEnoughTokens);
+export default class EnoughTokenValidator implements IMessageValidator {
+  constructor(private wallet: Wallet) {}
 
-export const ensureEnoughGas = async (provider: providers.Provider, walletAddress: string, transaction: providers.TransactionRequest, message: SignedMessage) => {
-  const estimateGas = await provider.estimateGas({ ...transaction, from: walletAddress });
-  ensure(utils.bigNumberify(message.gasLimitExecution as utils.BigNumberish).gte(estimateGas), NotEnoughGas); // TODO Add gasData to gasLimitExecution !!!!
-};
+  async validate(signedMessage: SignedMessage) {
+    ensure(await hasEnoughToken(signedMessage.gasToken, signedMessage.from, signedMessage.gasLimitExecution, this.wallet.provider), NotEnoughTokens);
+  }
+}

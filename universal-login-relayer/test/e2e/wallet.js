@@ -1,8 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
-import {createSignedMessage, waitExpect, createKeyPair} from '@universal-login/commons';
+import {waitExpect, createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields} from '@universal-login/commons';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
+import {messageToSignedMessage} from '@universal-login/contracts';
 
 chai.use(chaiHttp);
 
@@ -35,15 +36,17 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       nonce: '0',
       gasToken: mockToken.address,
       gasPrice: 110000000,
-      gasLimitExecution: 1000000,
-      gasData: 0
+      gasLimit: DEFAULT_GAS_LIMIT
     };
     const balanceBefore = await otherWallet.getBalance();
-    const signedMessage = createSignedMessage(msg, keyPair.privateKey);
+    const signedMessage = messageToSignedMessage(msg, keyPair.privateKey);
+    const stringifiedMessage = stringifySignedMessageFields(signedMessage);
     const {status, body} = await chai.request(relayer.server)
       .post('/wallet/execution')
-      .send(signedMessage);
+      .send(stringifiedMessage);
     expect(status).to.eq(201);
+
+
     await waitExpect(async () => expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value)));
     const checkStatusId = async () => {
       const statusById = await chai.request(relayer.server)

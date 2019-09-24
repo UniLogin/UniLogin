@@ -13,7 +13,8 @@ import {ConnectionNotificationModal} from '../ConnectAccount/ConnectionNotificat
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
   const {walletPresenter, walletService, sdk} = useServices();
-  const config = useRelayerConfig();
+  const relayerConfig = useRelayerConfig();
+
   switch (modalService.modalState) {
     case 'transfer':
       return (
@@ -38,26 +39,26 @@ const Modal = () => {
         </ModalWrapperClosable>
       );
     case 'topUpAccount':
-      return (
+      return relayerConfig ? (
         <TopUp
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
-          onRampConfig={config!.onRampProviders}
+          onRampConfig={relayerConfig.onRampProviders}
           contractAddress={walletPresenter.getContractAddress()}
           isModal
           logoColor="black"
         />
-      );
+      ) : null;
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <ModalWaitingFor action={'Txn pending'} />
+          <ModalWaitingFor action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0x5a63…f3a68a'}/>
         </ModalWrapper>
       );
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>
-          <ModalWaitingFor action={'Transferring funds'} />
+          <ModalWaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} transactionHash={modalService.modalProps.toString()}/>
         </ModalWrapperWithoutClose>
       );
     case 'transactionSuccess':
@@ -67,11 +68,11 @@ const Modal = () => {
         </ModalWrapper>
       );
     case 'safello':
-      return config ? (
+      return relayerConfig ? (
         <ModalWrapperWithoutClose>
           <Safello
-            localizationConfig={config.localization}
-            safelloConfig={config.onRampProviders.safello}
+            localizationConfig={relayerConfig.localization}
+            safelloConfig={relayerConfig.onRampProviders.safello}
             contractAddress={walletPresenter.getContractAddress()}
             crypto="eth"
           />

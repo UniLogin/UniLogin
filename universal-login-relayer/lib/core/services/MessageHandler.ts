@@ -1,7 +1,7 @@
 import {Wallet, providers} from 'ethers';
 import {EventEmitter} from 'fbemitter';
 import {SignedMessage, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import {isAddKeyCall, getKeyFromData, isAddKeysCall, isRemoveKeyCall} from '../utils/utils';
+import {isAddKeyCall, decodeParametersFromData, isAddKeysCall, isRemoveKeyCall} from '../utils/encodeData';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import QueueService from './messages/QueueService';
 import PendingMessages from './messages/PendingMessages';
@@ -11,6 +11,7 @@ import IMessageRepository from './messages/IMessagesRepository';
 import IQueueStore from './messages/IQueueStore';
 import {MessageStatusService} from './messages/MessageStatusService';
 import {DevicesService} from './DevicesService';
+import {GasValidator} from './validators/GasValidator';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
@@ -24,7 +25,8 @@ class MessageHandler {
     messageRepository: IMessageRepository,
     queueStore: IQueueStore,
     messageExecutor: MessageExecutor,
-    statusService: MessageStatusService
+    statusService: MessageStatusService,
+    private gasValidator: GasValidator
   ) {
     this.queueService = new QueueService(messageExecutor, queueStore, messageRepository, this.onTransactionMined.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
@@ -39,19 +41,24 @@ class MessageHandler {
     const message = decodeDataForExecuteSigned(data);
     if (message.to === to) {
       if (isAddKeyCall(message.data as string)) {
-        const key = getKeyFromData(message.data as string, 'addKey');
+        const [key] = decodeParametersFromData(message.data as string, ['address']);
         await this.updateDevicesAndAuthorisations(to, key);
         this.hooks.emit('added', {transaction: sentTransaction, contractAddress: to});
       } else if (isRemoveKeyCall(message.data as string)) {
-        const key = getKeyFromData(message.data as string, 'removeKey');
+        const [key] = decodeParametersFromData(message.data as string, ['address']);
         await this.devicesService.remove(to, key);
       } else if (isAddKeysCall(message.data as string)) {
+        const [keys] = decodeParametersFromData(message.data as string, ['address[]']);
+        for (const key of keys) {
+          await this.updateDevicesAndAuthorisations(to, key);
+        }
         this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: to});
       }
     }
   }
 
   async handleMessage(message: SignedMessage) {
+    await this.gasValidator.validate(message);
     return this.pendingMessages.add(message);
   }
 

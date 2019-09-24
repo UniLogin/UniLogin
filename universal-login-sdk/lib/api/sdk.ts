@@ -14,7 +14,8 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
-import {messageToUnsignedMessage} from '../core/utils/utils';
+import {messageToUnsignedMessage} from '@universal-login/contracts';
+import {ensureSufficientGas} from '../core/utils/validation';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -128,6 +129,7 @@ class UniversalLoginSDK {
     const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
     const unsignedMessage = messageToUnsignedMessage({gasLimit, gasPrice, gasToken, ...message});
     unsignedMessage.nonce = unsignedMessage.nonce || parseInt(await this.getNonce(message.from!), 10);
+    ensureSufficientGas(unsignedMessage);
 
     const signedMessage: SignedMessage = createSignedMessage(unsignedMessage, privateKey);
     return this.executionFactory.createExecution(signedMessage);

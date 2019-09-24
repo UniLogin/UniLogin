@@ -7,11 +7,11 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 export interface TransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSendClick: () => Promise<void>;
-  transferDetalis: TransferDetails;
+  transferDetails: TransferDetails;
   transferRecipientClassName?: string;
 }
 
-export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetalis: {amount, currency, to}}: TransferRecipientProps) => {
+export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetails: {amount, currency, to}}: TransferRecipientProps) => {
   const [showError, setShowError] = useState<boolean>(false);
   const errorMessage = 'Invalid address';
 
@@ -26,7 +26,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecip
     <div className="universal-login-recipient">
       <div className={getStyleForTopLevelComponent(transferRecipientClassName)}>
         <div className="transfer-recipient">
-          <p className="transfer-recipient-text">To who  are you sending {amount} {currency}?</p>
+          <p className="transfer-recipient-text">To who are you sending {amount} {currency}?</p>
           <label className="transfer-recipient-label" htmlFor="">Recipient</label>
           <div className="transfer-recipient-input-wrapper">
             <input
@@ -34,7 +34,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecip
               className="transfer-recipient-input"
               onChange={onChange}
             />
-            {showError && <div className={`hint red`}>{errorMessage}</div>}
+            {showError && <div className="hint">{errorMessage}</div>}
           </div>
           <button id="send-button" onClick={onClick} className="transfer-send-btn">Send</button>
         </div>

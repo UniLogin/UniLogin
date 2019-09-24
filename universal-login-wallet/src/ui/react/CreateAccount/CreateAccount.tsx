@@ -5,13 +5,10 @@ import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
 import {WalletSuggestionAction, defaultDeployOptions, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
+import {Link} from 'react-router-dom';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-interface CreateAccountProps {
-  location?: {state: {from: {pathname: string}}};
-}
-
-export const CreateAccount = ({location}: CreateAccountProps) => {
+export const CreateAccount = () => {
   const modalService = useContext(WalletModalContext);
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
@@ -35,7 +32,7 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
           </div>
           <div className="box-content create-account-content">
             <img src={vaultImage} srcSet={vaultImage2x} alt="vault" className="create-account-img" />
-            <div className="create-accoutn-selector-block">
+            <div className="create-account-selector-block">
               <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
               <WalletSelector
                 onCreateClick={onCreateClick}
@@ -44,10 +41,11 @@ export const CreateAccount = ({location}: CreateAccountProps) => {
                 domains={walletConfig.domains}
                 actions={[WalletSuggestionAction.create]}
                 className="jarvis"
+                placeholder="bob"
               />
             </div>
             <p className="info-text create-account-info-text">Your username is a human-readable address. Like Domain Name Service (DNS) allows website address to be facebook.com and not 66.220.144.0., Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not Oxeefc.. 0843.</p>
-            <button className="button-secondary create-account-cancel">Cancel</button>
+            <Link to="/welcome" className="button-secondary create-account-cancel">Cancel</Link>
           </div>
         </div>
       </div>

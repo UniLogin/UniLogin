@@ -4,8 +4,9 @@ import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
 import IMessageRepository from './IMessagesRepository';
-import {getKeyFromHashAndSignature, createMessageItem} from '../../utils/utils';
+import {getKeyFromHashAndSignature} from '../../utils/encodeData';
 import QueueService from './QueueService';
+import {createMessageItem} from '../../utils/messages/serialisation';
 
 export default class PendingMessages {
 
@@ -45,11 +46,11 @@ export default class PendingMessages {
     ensure(!messageItem.transactionHash, DuplicatedExecution);
     const isContainSignature = await this.messageRepository.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
-    await this.ensureCorrectKeyPurpose(message, messageItem.walletAddress, this.wallet);
+    await this.ensureKeyExist(message, messageItem.walletAddress, this.wallet);
     await this.messageRepository.addSignature(messageHash, message.signature);
   }
 
-  private async ensureCorrectKeyPurpose(message: SignedMessage, walletAddress: string, wallet: Wallet) {
+  private async ensureKeyExist(message: SignedMessage, walletAddress: string, wallet: Wallet) {
     const key = getKeyFromHashAndSignature(
       calculateMessageHash(message),
       message.signature
