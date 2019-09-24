@@ -1,11 +1,11 @@
 {
   "name": "@universal-login/example",
-  "version": "0.3.39",
+  "version": "0.3.40",
   "private": true,
   "dependencies": {
-    "@universal-login/ops": "0.3.39",
-    "@universal-login/relayer": "0.3.39",
-    "@universal-login/web3": "0.3.39",
+    "@universal-login/ops": "0.3.40",
+    "@universal-login/relayer": "0.3.40",
+    "@universal-login/web3": "0.3.40",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "web3": "^1.2.1"
