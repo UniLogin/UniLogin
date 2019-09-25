@@ -4,31 +4,34 @@ import './../styles/gasPriceDefault.sass';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
-import {getGasPriceFor, GasMode} from '@universal-login/commons';
+import {getGasPriceFor, GasMode, GasParameters} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-
 
 interface GasPriceProps {
   sdk: UniversalLoginSDK;
-  setGasTokenAddress: (gasTokenAddress: string) => void;
-  setGasPrice: (gasModeName: utils.BigNumber) => void;
+  onGasParametersChanged: (gasParameters: GasParameters) => void;
   className?: string;
 }
 
-export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice, className}: GasPriceProps) => {
+export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps) => {
   const [gasModes] = useAsync(() => sdk.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [tokenAddress, setTokenAddress] = useState<string>('');
 
   const onModeChanged = (name: string) => {
     setModeName(name);
-    setGasPrice(getGasPriceFor(gasModes!, name, tokenAddress));
+    onGasParametersChanged({
+      gasPrice: getGasPriceFor(gasModes!, name, tokenAddress),
+      gasToken: tokenAddress
+    });
   };
 
   const onTokenChanged = (address: string, gasPrice: utils.BigNumber) => {
     setTokenAddress(address);
-    setGasTokenAddress(address);
-    setGasPrice(gasPrice);
+    onGasParametersChanged({
+      gasPrice,
+      gasToken: address
+    });
   };
 
   useEffect(() => {
@@ -41,8 +44,6 @@ export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice, className}: GasP
     }
   }, [gasModes]);
   const [contentVisibility, setContentVisibility] = useState(false);
-
-  const formatWeiToEther = (wei: utils.BigNumber) => wei.div('1000000000').toNumber() / 1000000000;
 
   const renderComponent = (gasModes: GasMode[]) => (
     <div className="universal-login-gas">
@@ -105,7 +106,7 @@ export const GasPrice = ({sdk, setGasTokenAddress, setGasPrice, className}: GasP
                             <div className="transaction-fee-details">
                               <img src="" alt="" className="transaction-fee-item-icon" />
                               <div>
-                                <p className="transaction-fee-amount">{formatWeiToEther(gasPrice)} {token.symbol}</p>
+                                <p className="transaction-fee-amount">{utils.formatEther(gasPrice)} {token.symbol}</p>
                                 <p className="transaction-fee-amount-usd">0.09 USD</p>
                               </div>
                             </div>
