@@ -47,7 +47,7 @@ export const WalletSelector = ({
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
   const [name, setName] = useState('');
-  const [accountStatus, setAccountStatus] = useState('show-initial');
+  const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('bob.example.eth');
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
