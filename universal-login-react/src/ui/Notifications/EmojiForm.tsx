@@ -110,7 +110,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice sdk={sdk} setGasTokenAddress={setGasToken} setGasPrice={setGasPrice}/>
+            <GasPrice sdk={sdk} setGasTokenAddress={setGasToken} setGasPrice={setGasPrice} className={className}/>
             <div className="connect-buttons-row">
               <button onClick={() => sdk.denyRequests(contractAddress, privateKey)} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>
