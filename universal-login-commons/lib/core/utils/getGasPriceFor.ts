@@ -1,4 +1,4 @@
-import {GasMode, GasOption} from '../models/gasMode';
+import {GasMode, GasOption} from '../models/gas';
 
 export const getGasPriceFor = (gasModes: GasMode[], gasModeName: string, gasTokenAddress: string) => {
   const mode = gasModes.filter((gasPriceMode: GasMode) => gasPriceMode.name === gasModeName)[0];
