@@ -1,25 +1,15 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {TokensPrices} from '@universal-login/commons';
+import {TokensPrices, TEST_TOKEN_DETAILS} from '@universal-login/commons';
 import {GasModeService} from '../../../lib/core/services/GasModeService';
 import {utils} from 'ethers';
 
 chai.use(sinonChai);
 
 describe('UNIT: GasModeService', () => {
-  const tokensDetails = [{
-    address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-    symbol: 'Mock',
-    name: 'MockToken'
-  },
-  {
-    address: '0x0000000000000000000000000000000000000000',
-    symbol: 'ETH',
-    name: 'ether'
-  }];
   const tokensDetailsStore: any = {
-    tokensDetails
+    tokensDetails: TEST_TOKEN_DETAILS
   };
   const gasPrices = {
     fast: utils.bigNumberify('24000000000'),
@@ -45,22 +35,22 @@ describe('UNIT: GasModeService', () => {
         name: 'cheap',
         gasOptions: [{
           gasPrice: gasPrices.cheap,
-          token: tokensDetails[0],
+          token: TEST_TOKEN_DETAILS[0],
         },
         {
           gasPrice: gasPrices.cheap,
-          token: tokensDetails[1],
+          token: TEST_TOKEN_DETAILS[1],
         }]
       },
       {
         name: 'fast',
         gasOptions: [{
           gasPrice: gasPrices.fast,
-          token: tokensDetails[0],
+          token: TEST_TOKEN_DETAILS[0],
         },
         {
           gasPrice: gasPrices.fast,
-          token: tokensDetails[1],
+          token: TEST_TOKEN_DETAILS[1],
         }]
       }
     ]);
