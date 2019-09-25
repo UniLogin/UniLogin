@@ -19,8 +19,8 @@ describe('UNIT: GasModeService', () => {
     getGasPrices: sinon.stub().resolves(gasPrices)
   };
   const tokenPrices: TokensPrices = {
-    ETH: {USD: 1838.51, EUR: 1494.71, BTC: 0.09893},
-    Mock: {USD: 0.2391, EUR: 0.1942, BTC: 0.00001427}
+    ETH: {USD: 1838.51, DAI: 1494.71, ETH: 0.09893},
+    Mock: {USD: 0.2391, DAI: 0.1942, ETH: 0.00001427}
   };
   const priceObserver: any = {
     getCurrentPrices: sinon.stub().resolves(tokenPrices)

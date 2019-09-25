@@ -14,7 +14,7 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
   const storageService = new MockedStorageService();
   const services = createServices(config, {provider, storageService});
   services.sdk.priceObserver.getCurrentPrices = () => {
-    return Promise.resolve({ETH: {USD: 1, EUR: 1, BTC: 1}});
+    return Promise.resolve({ETH: {USD: 1, DAI: 1, ETH: 1}});
   };
   return services;
 };

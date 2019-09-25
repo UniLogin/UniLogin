@@ -13,8 +13,8 @@ export const SdkConfigDefault: SdkConfig = {
   ],
   observedCurrencies: [
     'USD',
-    'EUR',
-    'BTC'
+    'DAI',
+    'ETH'
   ],
   authorisationsObserverTick: 1000,
   executionFactoryTick: 1000,

@@ -49,8 +49,8 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback).to.have.been.calledTwice;
     unsubscribe();
 
-    expect(callback.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
-    expect(callback.secondCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
+    expect(callback.firstCall.args[0]).to.deep.equal({USD: 0, DAI: 0, ETH: 0});
+    expect(callback.secondCall.args[0]).to.deep.equal({USD: 0, DAI: 0, ETH: 0});
   });
 
   it('1 subscription - balance 0 -> balance changed -> prices changed', async () => {
@@ -72,9 +72,9 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback).to.have.been.calledThrice;
     unsubscribe();
 
-    expect(callback.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
-    expect(callback.secondCall.args[0]).to.deep.equal({USD: 109.105, EUR: 97.19, BTC: 0.009465});
-    expect(callback.thirdCall.args[0]).to.deep.equal({USD: 919.255, EUR: 747.355, BTC: 0.049465});
+    expect(callback.firstCall.args[0]).to.deep.equal({USD: 0, DAI: 0, ETH: 0});
+    expect(callback.secondCall.args[0]).to.deep.equal({USD: 109.105, DAI: 97.19, ETH: 0.009465});
+    expect(callback.thirdCall.args[0]).to.deep.equal({USD: 919.255, DAI: 747.355, ETH: 0.049465});
   });
 
   it('2 subscriptions - no change -> balance changed -> prices changed', async () => {
@@ -107,11 +107,11 @@ describe('INT: AggregateBalanceObserver', () => {
 
     unsubscribe2();
 
-    expect(callback1.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
-    expect(callback1.secondCall.args[0]).to.deep.equal({USD: 109.105, EUR: 97.19, BTC: 0.009465});
+    expect(callback1.firstCall.args[0]).to.deep.equal({USD: 0, DAI: 0, ETH: 0});
+    expect(callback1.secondCall.args[0]).to.deep.equal({USD: 109.105, DAI: 97.19, ETH: 0.009465});
 
-    expect(callback2.firstCall.args[0]).to.deep.equal({USD: 0, EUR: 0, BTC: 0});
-    expect(callback2.secondCall.args[0]).to.deep.equal({USD: 109.105, EUR: 97.19, BTC: 0.009465});
-    expect(callback2.thirdCall.args[0]).to.deep.equal({USD: 919.255, EUR: 747.355, BTC: 0.049465});
+    expect(callback2.firstCall.args[0]).to.deep.equal({USD: 0, DAI: 0, ETH: 0});
+    expect(callback2.secondCall.args[0]).to.deep.equal({USD: 109.105, DAI: 97.19, ETH: 0.009465});
+    expect(callback2.thirdCall.args[0]).to.deep.equal({USD: 919.255, DAI: 747.355, ETH: 0.049465});
   });
 });
