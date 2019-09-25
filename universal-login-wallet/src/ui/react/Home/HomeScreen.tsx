@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {Funds} from '@universal-login/react';
+import {Funds, Devices} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 
@@ -22,6 +22,16 @@ const HomeScreen = () => {
             onTopUpClick={() => {}}
             onSendClick={() => modalService.showModal('transfer')}
             className="jarvis-funds"
+          />
+        );
+      case 'devices':
+        return (
+          <Devices
+            sdk={sdk}
+            contractAddress={walletPresenter.getContractAddress()}
+            privateKey={walletPresenter.getPrivateKey()}
+            ensName={walletPresenter.getName()}
+            className="jarvis-devices"
           />
         );
       default:
