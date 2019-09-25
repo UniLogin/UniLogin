@@ -13,7 +13,7 @@ import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
-import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
+import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
 import {messageToUnsignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
