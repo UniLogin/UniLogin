@@ -16,7 +16,7 @@ import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserve
 import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
 import {messageToUnsignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
-import {GasPriceOracle} from '../integration/http/gasPriceOracle';
+import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
 
 class UniversalLoginSDK {

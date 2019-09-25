@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {GasPriceOracle} from '../../../lib/integration/http/gasPriceOracle';
+import {GasPriceOracle} from '../../../lib/integration/ethereum/gasPriceOracle';
 import {utils} from 'ethers';
 
 
