@@ -32,7 +32,7 @@ export function Header({setContent}: HeaderProps) {
           </li>
           <li className="header-list-item">
               <button
-              id="notificationsButton"
+              id="devicesButton"
               className="header-btn devices-btn"
               onClick={() => setContent('devices')}
             >
