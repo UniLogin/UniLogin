@@ -9,7 +9,7 @@ import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 const HomeScreen = () => {
   const {sdk, walletPresenter} = useServices();
   const modalService = useContext(WalletModalContext);
-  const [content] = useState('balance');
+  const [content, setContent] = useState('balance');
 
   const renderContent = () => {
     switch (content) {
@@ -31,6 +31,7 @@ const HomeScreen = () => {
             contractAddress={walletPresenter.getContractAddress()}
             privateKey={walletPresenter.getPrivateKey()}
             ensName={walletPresenter.getName()}
+            onManageDevicesClick={() => modalService.showModal('approveDevice')}
             className="jarvis-devices"
           />
         );
@@ -42,7 +43,7 @@ const HomeScreen = () => {
   return (
     <>
       <div className="dashboard">
-        <Header />
+        <Header setContent={setContent} />
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             {renderContent()}

@@ -103,6 +103,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             contractAddress={applicationWallet.contractAddress}
             privateKey={applicationWallet.privateKey}
             ensName={applicationWallet.name}
+            onManageDevicesClick={() => setDashboardContent('approveDevice')}
           />
         );
       case 'backup':

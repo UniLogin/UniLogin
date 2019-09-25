@@ -62,7 +62,7 @@ export const ConfirmationsEdit = ({deployedWallet, devicesAmount, confirmationsC
           value={requiredSignatures ? confirmationsCount : ''}
           onChange={event => setConfirmationsCount(event.target.value)}
           disabled={!isEditActive}
-          min="0"
+          min="1"
         />
         {isEditActive &&
           <div className="devices-amount-buttons">

@@ -3,13 +3,15 @@ import logo from '../../assets/logo.svg';
 import {useServices} from '../../hooks';
 import UserDropdown from '../common/UserDropdown';
 import {Link} from 'react-router-dom';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-export function Header() {
+export interface HeaderProps {
+  setContent: (content: string) => void;
+}
+
+export function Header({setContent}: HeaderProps) {
   const {sdk, walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
   const {contractAddress, privateKey} = walletService.getDeployedWallet();
-  const modalService = useContext(WalletModalContext);
 
   const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
@@ -23,7 +25,7 @@ export function Header() {
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <button className="header-btn funds-btn">Funds</button>
+            <button onClick={() => setContent('balance')} className="header-btn funds-btn">Funds</button>
           </li>
           <li className="header-list-item">
             <button className="header-btn transactions-btn">Transactions</button>
@@ -32,7 +34,7 @@ export function Header() {
               <button
               id="notificationsButton"
               className="header-btn devices-btn"
-              onClick={() => modalService.showModal('approveDevice')}
+              onClick={() => setContent('devices')}
             >
               Devices
               {newNotifications && <div className="new-notifications" />}

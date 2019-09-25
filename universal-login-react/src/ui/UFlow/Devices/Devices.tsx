@@ -13,9 +13,10 @@ export interface DevicesProps {
   contractAddress: string;
   privateKey: string;
   ensName: string;
+  onManageDevicesClick: () => void;
 }
 
-export const Devices = ({sdk, contractAddress, privateKey, ensName, className}: DevicesProps) => {
+export const Devices = ({sdk, contractAddress, privateKey, ensName, className, onManageDevicesClick}: DevicesProps) => {
   const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
@@ -26,7 +27,7 @@ export const Devices = ({sdk, contractAddress, privateKey, ensName, className}: 
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
-          {notifications.length > 0 && <NewDeviceMessage onClick={() => {}}/>}
+          {notifications.length > 0 && <NewDeviceMessage onClick={onManageDevicesClick}/>}
           {devices ?
             <ConnectedDevices
               devicesList={devices}
