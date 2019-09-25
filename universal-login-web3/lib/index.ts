@@ -20,11 +20,10 @@ export class ULWeb3Provider implements Provider {
     );
   }
 
-  private sdk: UniversalLoginSDK;
-  private walletService: WalletService;
-  private metamaskService: MetamaskService;
-  private uiController: UIController;
-  private metamaskService: MetamaskService;
+  private readonly sdk: UniversalLoginSDK;
+  private readonly walletService: WalletService;
+  private readonly metamaskService: MetamaskService;
+  private readonly uiController: UIController;
 
   constructor(
     private provider: Provider,
