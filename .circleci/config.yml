@@ -11,11 +11,11 @@ commands:
           name: Build contracts
           command: cd universal-login-contracts && yarn build
       - run:
-          name: Build sdk
-          command: cd universal-login-sdk && yarn build
-      - run:
           name: Build relayer
           command: cd universal-login-relayer && yarn build
+      - run:
+          name: Build sdk
+          command: cd universal-login-sdk && yarn build
       - run:
           name: Build ops
           command: cd universal-login-ops && yarn build
