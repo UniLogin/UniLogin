@@ -31,6 +31,8 @@ describe('UI: Notifications',  () => {
     expect(appPage.dashboard().isNotificationAlert()).to.be.true;
     await appPage.dashboard().clickNotificationButton();
     await appPage.notifications().inputSecurityCode(securityCode);
+    await appPage.notifications().selectGasMode();
+    await appPage.notifications().clickConnectDeviceButton();
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="20px" viewBox="0 0 28 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>@Slovenia</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="20" rx="2"></rect>
+        <rect id="path-3" x="0" y="13.3333333" width="28" height="6.66666667"></rect>
+        <filter x="-5.4%" y="-22.5%" width="110.7%" height="145.0%" filterUnits="objectBoundingBox" id="filter-4">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.06 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags" transform="translate(-172.000000, -892.000000)">
+            <g id="Slovenia" transform="translate(172.000000, 892.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <rect stroke="#F5F5F5" stroke-width="0.5" x="0.25" y="0.25" width="27.5" height="19.5" rx="2"></rect>
+                <path d="M7.33333333,4.66666667 C8.30367251,4.66666667 9.24397786,5.33333333 9.24397786,5.33333333 L9.24397786,6.66666667 L28,6.66666667 L28,13.3333333 L0,13.3333333 L0,6.66666667 L5.33333333,6.66666667 L5.33333333,5.33333333 C5.33333333,5.33333333 6.36299415,4.66666667 7.33333333,4.66666667 Z M7.33333333,6.66666667 C6.59695367,6.66666667 6,7.26362033 6,8 C6,8.73637967 6.59695367,9.33333333 7.33333333,9.33333333 C8.069713,9.33333333 8.66666667,8.73637967 8.66666667,8 C8.66666667,7.26362033 8.069713,6.66666667 7.33333333,6.66666667 Z" id="Combined-Shape" fill="#0C47B7" mask="url(#mask-2)"></path>
+                <g id="Rectangle-2" mask="url(#mask-2)">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <use fill="#E53B35" fill-rule="evenodd" xlink:href="#path-3"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const Dotenv = require("dotenv-webpack")
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: './src/main.tsx',
@@ -19,7 +19,13 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        options: {
+          reportFiles: [
+              '!../node_modules/nock/types/index.d.ts',
+              '!node_modules/nock/types/index.d.ts',
+          ]
+        }
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       {
@@ -67,4 +73,4 @@ module.exports = {
   node: {
     fs: 'empty'
   }
-}
+};

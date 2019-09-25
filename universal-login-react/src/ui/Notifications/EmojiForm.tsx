@@ -9,6 +9,7 @@ import {EmojiKeyboard} from './EmojiKeyboard';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
 import {GasPrice} from '../commons/GasPrice';
 import CheckmarkIcon from './../assets/icons/correct.svg';
+import {utils} from 'ethers';
 
 type InputModeType = 'keyboard' | 'panelWithFakes' | 'none';
 
@@ -30,6 +31,8 @@ interface EmojiFormProps {
 }
 
 export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
+  const [gasToken, setGasToken] = useState<string>('');
+  const [gasPrice, setGasPrice] = useState<utils.BigNumber>(utils.bigNumberify('0'));
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [inputMode, setInputMode] = useState<InputModeType>('none');
@@ -56,7 +59,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const confirmCode = (address: string) => {
-    sdk.addKey(contractAddress, address, privateKey, transactionDetails);
+    sdk.addKey(contractAddress, address, privateKey, {...transactionDetails, gasToken, gasPrice});
     showProgressBar();
   };
 
@@ -99,7 +102,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     if (isInputValid) {
       return (
         <div className="correct-input">
-          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark"/>
+          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark" />
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}
@@ -107,7 +110,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice />
+            <GasPrice sdk={sdk} setGasTokenAddress={setGasToken} setGasPrice={setGasPrice}/>
             <div className="connect-buttons-row">
               <button onClick={() => sdk.denyRequests(contractAddress, privateKey)} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>

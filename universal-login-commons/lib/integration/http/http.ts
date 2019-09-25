@@ -6,10 +6,10 @@ const COMMON_HEADERS = {
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export const http = (fetch: (url: string, body?: any) => Promise<any>) => (baseUrl: string) =>
-(method: HttpMethod, url: string, body?: any) =>
+(method: HttpMethod, url: string, body?: any, headers?: Record<string, string>) =>
 fetch(`${baseUrl}${url}`, {
   method,
-  headers: COMMON_HEADERS,
+  headers: headers || COMMON_HEADERS,
   body: body !== undefined
   ? JSON.stringify(body)
   : undefined

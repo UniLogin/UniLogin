@@ -13,12 +13,18 @@
   display: flex
   align-items: center
   justify-content: center
-  min-height: 370px
-  height: calc(50vh - 35px)
-  padding: 30px 30px 100px
+  min-height: calc(100vh - 70px)
+  padding: 35px 30px 100px
 
   +media(s, 168px)
     padding: 60px 15px 0
+
+.dashboard-content-box
+  max-width: 970px
+  width: 100%
+  background: #FFFFFF
+  box-shadow: 0px 3px 17px rgba(79, 55, 168, 0.088853)
+  z-index: 10
 
 .dashboard-content-subscreen
   +media(s, 168px)
@@ -40,10 +46,14 @@
   +media(s, 168px)
     margin-top: auto
 
-.my-assets-section
+.dashboard-content::after
+  content: ''
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 100%
   height: calc(50vh - 35px)
-  min-height: 370px
-  background: #fafbfd url('./../assets/dashboardBackground.jpg') bottom no-repeat
+  background: #fafbfd url('./../assets/dashboardBackground.jpg') center no-repeat
   background-size: cover
 
   +media(s, 168px)

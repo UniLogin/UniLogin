@@ -24,6 +24,7 @@ export class ULWeb3Provider implements Provider {
   private walletService: WalletService;
   private metamaskService: MetamaskService;
   private uiController: UIController;
+  private metamaskService: MetamaskService;
 
   constructor(
     private provider: Provider,

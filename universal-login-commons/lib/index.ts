@@ -39,6 +39,7 @@ export {sleep, waitUntil, waitExpect} from './core/utils/wait';
 export {parseDomain} from './core/utils/ens';
 export {debounce} from './core/utils/debounce';
 export {getEnv} from './core/utils/getEnv';
+export {getGasPriceFor} from './core/utils/getGasPriceFor';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {RelayerRequest} from './core/models/relayerRequest';
@@ -54,6 +55,7 @@ export {SECURITY_CODE_LENGTH, filterNotificationByCodePrefix, filterKeyWithCodeB
 export {deepMerge} from './core/utils/deepMerge';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
+export {GasMode, GasOption} from './core/models/gasMode';
 export {normalizeBigNumber} from './core/utils/bigNumbers';
 export {stringToEther} from './integration/ethereum/stringToEther';
 export {isValidAmount} from './core/utils/isValidAmount';
