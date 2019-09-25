@@ -5,7 +5,6 @@ import {useServices} from '../../hooks';
 import {Funds, Devices} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
-
 const HomeScreen = () => {
   const {sdk, walletPresenter} = useServices();
   const modalService = useContext(WalletModalContext);
