@@ -107,7 +107,7 @@ cd docs
 make html
 ```
 
-Documentation will be compile to `docs/build/html`.
+Documentation will be compiled to `docs/build/html`.
 
 ## License
 
