@@ -7,10 +7,10 @@ export class MetamaskService {
   async tryEnablingMetamask(): Promise<string | undefined> {
     if (!!window.ethereum) {
       try {
-        await ethereum!.enable();
+        await window.ethereum.enable();
 
-        this.metamaskProvider.set(ethereum!);
-        return ethereum!.selectedAddress;
+        setTimeout(() => this.metamaskProvider.set(window.ethereum), 2000);
+        return window.ethereum.selectedAddress;
       } catch (error) {
       }
     }
