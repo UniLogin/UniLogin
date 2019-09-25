@@ -14,7 +14,7 @@ export default class QueueSQLStore implements IQueueStore {
     await this.database
       .insert({
         hash: messageHash,
-        type: 'Mesasge',
+        type: 'Message',
         created_at: this.database.fn.now()
       })
       .into(this.tableName);
