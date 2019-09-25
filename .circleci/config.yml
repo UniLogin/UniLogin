@@ -4,7 +4,33 @@ commands:
   build_monorepo:
     description: "Builds all packages in monorepo. Must be run in repo root."
     steps:
-      - run: yarn build
+      - run:
+          name: Build commons
+          command: cd universal-login-commons && yarn build
+      - run:
+          name: Build contracts
+          command: cd universal-login-contracts && yarn build
+      - run:
+          name: Build sdk
+          command: cd universal-login-sdk && yarn build
+      - run:
+          name: Build relayer
+          command: cd universal-login-relayer && yarn build
+      - run:
+          name: Build ops
+          command: cd universal-login-ops && yarn build
+      - run:
+          name: Build react
+          command: cd universal-login-react && yarn build
+      - run:
+          name: Build web3
+          command: cd universal-login-web3 && yarn build
+      - run:
+          name: Build wallet
+          command: cd universal-login-wallet && yarn build
+      - run:
+          name: Build example
+          command: cd universal-login-example && yarn build
 
 jobs:
   lint_test_contracts_commons_ops:
