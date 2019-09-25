@@ -38,7 +38,7 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - checkout
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn lint
       - build_monorepo
       - run: cd universal-login-contracts && yarn test:nobuild
@@ -57,7 +57,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - build_monorepo
       - run: cd universal-login-sdk && yarn test:nobuild
       - run: cd universal-login-relayer && yarn test:nobuild
@@ -70,7 +70,7 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - build_monorepo
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
