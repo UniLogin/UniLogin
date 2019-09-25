@@ -1,9 +1,9 @@
 .universal-login-default .input-wallet-selector {
   font-weight: 500;
   font-size: 14px;
-  color: #333;
-  background: #FFF;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
+  color: #FFFFFF;
+  background: #262053;
+  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
   border: none;
   text-shadow: none;
 }
@@ -14,46 +14,37 @@
 }
 
 .universal-login-default .suggestions-list {
-  background: #fefefe;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
+  background: #262053;
+  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
 }
 
 .universal-login-default .suggestions-item-btn:hover,
 .universal-login-default .suggestions-item-btn:focus {
-  background: #ACE8FF;
+  background: #19143D;
   outline: none;
 }
 
 .universal-login-default .suggestions-item-btn-text {
   font-weight: 600;
   font-size: 13px;
-  color: #5068ED;
+  color: #0FB989;
   text-transform: uppercase;
 }
 
 .universal-login-default .suggestions-item-text {
   font-weight: 600;
   font-size: 14px;
-  color: #666;
+  color: #FFFFFF;
 }
 
+.universal-login-default .ethereum-account ,
 .universal-login-default .button-web3-provider {
   font-weight: 500;
   font-size: 14px;
-  color: #fff;
-  background: #5068ED;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
-  border: solid 1px #eee;
-  text-shadow: none;
-}
-
-.universal-login-default .ethereum-account {
-  font-weight: 500;
-  font-size: 14px;
-  color: #5068ED;
-  background: #fff;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
-  border: solid 1px #eee;
+  color: #34e4b2;
+  background: #262053;
+  box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
+  border: solid 1px #34e4b2;
   text-shadow: none;
 }
 
