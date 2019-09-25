@@ -1,4 +1,11 @@
-version: 2
+version: 2.1
+
+commands:
+  build_monorepo:
+    description: "Builds all packages in monorepo. Must be run in repo root."
+    steps:
+      - run: yarn build
+
 jobs:
   lint_test_contracts_commons_ops:
     docker:
@@ -7,7 +14,7 @@ jobs:
       - checkout
       - run: yarn install
       - run: yarn lint
-      - run: yarn build
+      - build_monorepo
       - run: cd universal-login-contracts && yarn test:nobuild
       - run: cd universal-login-commons && yarn test:nobuild
       - run: cd universal-login-ops && yarn test:nobuild
@@ -25,7 +32,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: yarn build
+      - build_monorepo
       - run: cd universal-login-sdk && yarn test:nobuild
       - run: cd universal-login-relayer && yarn test:nobuild
   test_react_wallet_web3:
@@ -38,7 +45,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: yarn build
+      - build_monorepo
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
       - run: cd universal-login-web3 && yarn test
