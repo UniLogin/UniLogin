@@ -1,9 +1,9 @@
 import {Provider} from 'web3/providers';
-import {providers} from 'ethers';
+import {providers, utils} from 'ethers';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {initUi} from './ui';
 import {UIController} from './services/UIController';
-import {Message} from '@universal-login/commons';
+import {ensure, Message} from '@universal-login/commons';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {waitFor} from './utils';
 import {Config, getConfigForNetwork, Network} from './config';
@@ -54,24 +54,36 @@ export class ULWeb3Provider implements Provider {
       return metamaskProvider.sendAsync(payload, callback);
     }
 
-    function respond(result: any) {
-      callback(null, {
-        id: payload.id,
-        jsonrpc: '2.0',
-        result,
-      });
-    }
-
     switch (payload.method) {
       case 'eth_sendTransaction':
-        const tx = payload.params[0];
-        this.sendTransaction(tx).then((hash) => respond(hash));
-        break;
       case 'eth_accounts':
-        respond(this.getAccounts());
+      case 'eth_sign':
+        try {
+          this.handle(payload.method, payload.params).then((result: any) => {
+            callback(null, {
+              id: payload.id,
+              jsonrpc: '2.0',
+              result,
+            });
+          });
+        } catch (err) {
+          callback(err);
+        }
         break;
       default:
         return this.provider.send(payload, callback as any);
+    }
+  }
+
+  async handle(method: string, params: any[]): Promise<any> {
+    switch (method) {
+      case 'eth_sendTransaction':
+        const tx = params[0];
+        return this.sendTransaction(tx);
+      case 'eth_accounts':
+        return this.getAccounts();
+      case 'eth_sign':
+        return this.sign(params[0], params[1]);
     }
   }
 
@@ -101,6 +113,17 @@ export class ULWeb3Provider implements Provider {
       throw new Error('Expected tx hash to not be null');
     }
     return succeeded.transactionHash;
+  }
+
+  async sign(address: string, message: string): Promise<string> {
+    const wallet = await this.walletService.getDeployedWallet();
+    ensure(wallet.contractAddress !== address, Error, `Address ${address} is not available to sign`);
+
+    const signingKey = new utils.SigningKey(wallet.privateKey);
+    const signature = signingKey.signDigest(
+      utils.hashMessage(utils.arrayify(message)),
+    );
+    return utils.joinSignature(signature);
   }
 
   create() {
