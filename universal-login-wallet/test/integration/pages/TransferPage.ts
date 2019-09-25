@@ -17,13 +17,22 @@ export default class TransferPage {
   }
 
   enterTransferAmount(amount: string) {
+    this.appWrapper.find('#max-button').simulate('click');
     const amountInput = this.appWrapper.find('input#amount-eth');
     amountInput.simulate('change', {target: {value: amount}});
-    this.appWrapper.find('#select-recipient').simulate('click');
+    this.clickSelectRecipient();
   }
 
   enterRecipient(address: string) {
     const addressInput = this.appWrapper.find('input#input-recipient');
     addressInput.simulate('change', {target: {value: address}});
+  }
+
+  clickSelectRecipient() {
+    this.appWrapper.find('#select-recipient').simulate('click');
+  }
+
+  clickMaxAmountButton() {
+    this.appWrapper.find('#max-button').simulate('click');
   }
 }

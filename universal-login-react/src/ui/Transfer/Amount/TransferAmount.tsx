@@ -19,6 +19,7 @@ export interface TransferAmountProps {
 export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [isAmountCorrect, setIsAmountCorrect] = useState(false);
+  const [amount, setAmount] = useState('');
 
   useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
   const balance = getBalanceOf(currency, tokenDetailsWithBalance);
@@ -29,6 +30,7 @@ export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTran
     } else {
       setIsAmountCorrect(false);
     }
+    setAmount(amount);
     updateTransferDetailsWith({amount});
   };
 
@@ -45,7 +47,7 @@ export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTran
         />
         <div className="transfer-amount-row">
           <label className="transfer-amount-label" htmlFor="amount-eth">How much are you sending?</label>
-          <button className="transfer-amount-max">Max</button>
+          <button id="max-button" className="transfer-amount-max" onClick={() => validateAndUpdateTransferDetails(balance!)}>Max</button>
         </div>
         <div className="transfer-amount-input-wrapper">
           <input
@@ -53,6 +55,7 @@ export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTran
             type="number"
             className="transfer-amount-input"
             onChange={event => validateAndUpdateTransferDetails(event.target.value)}
+            value={amount}
           />
           <span className="transfer-amount-code">{currency}</span>
         </div>

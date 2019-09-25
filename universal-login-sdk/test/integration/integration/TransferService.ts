@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {utils, providers, Contract} from 'ethers';
+import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
@@ -22,12 +22,14 @@ describe('INT: TransferService', () => {
   let mockTokenContract: Contract;
   let tokenDetailsService: TokenDetailsService;
   let tokenService: TokensDetailsStore;
+  let wallet: Wallet;
+  let walletService: WalletService;
 
-  before(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+  beforeEach(async () => {
+    [wallet] = await getWallets(createMockProvider());
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
-    const walletService = new WalletService(sdk);
+    walletService = new WalletService(sdk);
     const {contractAddress} = await createAndSetWallet('name.mylogin.eth', walletService, wallet, sdk);
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
     tokenDetailsService = new TokenDetailsService(provider);
@@ -43,7 +45,7 @@ describe('INT: TransferService', () => {
     const currency = 'Mock';
     const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
     await waitToBeSuccess();
-    expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
+    expect(await mockTokenContract.balanceOf(to)).to.eq(utils.parseEther(amount));
   });
 
   it('Should transfer ether', async () => {
@@ -55,6 +57,28 @@ describe('INT: TransferService', () => {
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
   });
 
+  it('Should transfer maximum amount of ether', async () => {
+    const address = walletService.getDeployedWallet().contractAddress;
+    const balance = await provider.getBalance(address);
+    const to = TEST_ACCOUNT_ADDRESS;
+    const amount = utils.formatEther((balance.toString()));
+    const currency = ETHER_NATIVE_TOKEN.symbol;
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
+    await waitToBeSuccess();
+    expect((await provider.getBalance(to)).gt(utils.parseEther('1.99'))).to.be.true;
+  });
+
+  it('Should transfer maximum amount of token', async () => {
+    const address = walletService.getDeployedWallet().contractAddress;
+    const balance = await mockTokenContract.balanceOf(address);
+    const to = TEST_ACCOUNT_ADDRESS;
+    const amount = utils.formatEther((balance.toString()));
+    const currency = 'Mock';
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
+    await waitToBeSuccess();
+    expect((await mockTokenContract.balanceOf(to)).gt(utils.parseEther('1.99'))).to.be.true;
+  });
+
   it('Should throw error if invalid address', async () => {
     const to = `${TEST_ACCOUNT_ADDRESS}3`;
     const amount = '0.5';
@@ -62,7 +86,7 @@ describe('INT: TransferService', () => {
     await expect(transferService.transfer({to, amount, currency})).to.be.rejectedWith(`Address ${to} is not valid`);
   });
 
-  after(async () => {
+  afterEach(async () => {
     await relayer.stop();
   });
 });

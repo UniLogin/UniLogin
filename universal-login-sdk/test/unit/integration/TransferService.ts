@@ -16,7 +16,20 @@ describe('UNIT: TransferService', () => {
     };
     const sdk = {
       execute: sinon.stub().returns({}),
-      tokensDetailsStore: tokenService
+      tokensDetailsStore: tokenService,
+      balanceChecker: {
+        getBalance: sinon.stub().returns(utils.parseEther('200'))
+      },
+      provider: {
+        estimateGas: sinon.stub().returns(utils.parseEther('10'))
+      },
+      sdkConfig: {
+        paymentOptions: {
+          gasPrice: '1',
+          gasLimit: '17000'
+        }
+      },
+      getNonce: sinon.stub().returns(1)
     } as any;
     const walletService = {
       applicationWallet: {
@@ -79,11 +92,39 @@ describe('UNIT: TransferService', () => {
         from: 'CONTRACT_ADDRESS',
         to: 'TOKEN_ADDRESS',
         value: 0,
-        data: encodeTransfer(recipient, '123'),
+        data: encodeTransfer(recipient, utils.parseEther('123')),
         gasToken: 'TOKEN_ADDRESS'
       },
       'PRIVATE_KEY',
     );
+  });
+
+  it('check if transfer amount is max', async () => {
+    const {transferService} = setup();
+    expect(await transferService.checkIfAmountIsMax('TOKEN_ADDRESS', utils.parseEther('200'))).to.be.true;
+    expect(await transferService.checkIfAmountIsMax('TOKEN_ADDRESS', utils.parseEther('123'))).to.be.false;
+  });
+
+  it('calculate new amount if amount is max', async () => {
+    const {transferService, walletService} = setup();
+    const recipient = Wallet.createRandom().address;
+    const etherMessage = {
+      from: '0x123',
+      to: TEST_ACCOUNT_ADDRESS,
+      value: utils.parseEther('200'),
+      data: '0x',
+      gasToken: ETHER_NATIVE_TOKEN.address
+    };
+    const tokenMessage = {
+      from: '0x123',
+      to: '0x17ec8597ff92C3F44523bDc65BF0f1bE632917ff',
+      value: 0,
+      data: encodeTransfer(recipient, utils.parseEther('200')),
+      gasToken: '0x17ec8597ff92C3F44523bDc65BF0f1bE632917ff'
+    };
+    walletService.applicationWallet.privateKey = '29F3EDEE0AD3ABF8E2699402E0E28CD6492C9BE7EAAB00D732A791C33552F989';
+    expect(await transferService.calculateNewAmount(etherMessage, utils.parseEther('200'))).to.eq(utils.parseEther('180'));
+    expect(await transferService.calculateNewAmount(tokenMessage, utils.parseEther('200'))).to.eq(utils.parseEther('180'));
   });
 
   it('throw an error if wallet is missing and transfering tokens', async () => {
