@@ -5,7 +5,7 @@ import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
+import {MissingConfiguration, InvalidEvent, InvalidContract, InvalidGasLimit} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
@@ -133,6 +133,9 @@ class UniversalLoginSDK {
 
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
     const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
+    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensure(gasLimit <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
+
     const unsignedMessage = messageToUnsignedMessage({gasLimit, gasPrice, gasToken, ...message});
     unsignedMessage.nonce = unsignedMessage.nonce || parseInt(await this.getNonce(message.from!), 10);
     ensureSufficientGas(unsignedMessage);
