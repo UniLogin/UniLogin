@@ -10,3 +10,8 @@ export interface GasMode {
   name: string;
   gasOptions: GasOption[];
 }
+
+export interface GasParameters {
+  gasToken: string;
+  gasPrice: utils.BigNumber;
+}

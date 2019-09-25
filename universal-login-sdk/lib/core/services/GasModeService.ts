@@ -11,7 +11,7 @@ export class GasModeService {
     private priceObserver: PriceObserver
     ) {}
 
-  private async getMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): Promise<GasMode> {
+  private createMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): GasMode {
     return {name, gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => ({
       token: tokenDetails,
       gasPrice,
@@ -23,8 +23,8 @@ export class GasModeService {
     const tokensPrices = await this.priceObserver.getCurrentPrices();
 
     return [
-      await this.getMode('cheap', gasPrices.cheap, tokensPrices),
-      await this.getMode('fast', gasPrices.fast, tokensPrices)
+      this.createMode('cheap', gasPrices.cheap, tokensPrices),
+      this.createMode('fast', gasPrices.fast, tokensPrices)
     ];
   }
 }
