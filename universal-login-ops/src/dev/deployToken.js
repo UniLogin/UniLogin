@@ -1,4 +1,4 @@
-import Token from '../contracts/Token.json';
+import Token from '../contracts/MockDai.json';
 import {deployContract} from 'ethereum-waffle';
 
 export default async function deployToken(deployWallet) {
