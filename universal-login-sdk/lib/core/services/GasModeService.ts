@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {GasMode, TokensPrices} from '@universal-login/commons';
-import {GasPriceOracle} from '../../integration/http/gasPriceOracle';
-import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
+import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
+import {TokensDetailsStore} from './TokensDetailsStore';
 import {PriceObserver} from '../observers/PriceObserver';
 
 export class GasModeService {

@@ -2,7 +2,7 @@ import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
 import {BalanceChecker, TokenDetailsWithBalance} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
-import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
+import {TokensDetailsStore} from '../services/TokensDetailsStore';
 
 export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
 

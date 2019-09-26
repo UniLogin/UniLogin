@@ -2,7 +2,7 @@ import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {ETHER_NATIVE_TOKEN, ensure, ensureNotNull, isProperAddress, TransferDetails, ApplicationWallet} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
-import {ApplicationWalletNotFound, InvalidAddress} from '../../core/utils/errors';
+import {ApplicationWalletNotFound, InvalidAddress} from '../utils/errors';
 
 export class TransferService {
   constructor(private sdk: UniversalLoginSDK, private applicationWallet: ApplicationWallet) {}

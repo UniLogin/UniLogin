@@ -8,7 +8,7 @@ import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBal
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
 import {createMockedPriceObserver} from '../../mock/PriceObserver';
 import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
-import {TokensDetailsStore} from '../../../lib/integration/ethereum/TokensDetailsStore';
+import {TokensDetailsStore} from '../../../lib/core/services/TokensDetailsStore';
 
 chai.use(sinonChai);
 
