@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import nock from 'nock';
 import {IPGeolocationService} from '../../../src/integration/http/IPGeolocationService';
+import {IPGeolocationError} from '../../../src/core/utils/errors';
 
 chai.use(chaiAsPromised);
 
@@ -28,7 +29,7 @@ describe('IPGeolocationService', function () {
         .get('/check?access_key=ABCD&fields=country_code')
         .reply(200, {country_code: null});
 
-      await expect(service.getCountryCode()).to.be.rejected;
+      await expect(service.getCountryCode()).to.be.rejectedWith(IPGeolocationError);
     });
   });
 });

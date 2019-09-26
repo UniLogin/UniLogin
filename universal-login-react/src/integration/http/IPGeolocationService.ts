@@ -1,6 +1,7 @@
 import {http, HttpFunction} from '@universal-login/commons';
 import {fetch} from './fetch';
 import {asObject, asString, cast} from '@restless/sanitizers';
+import {IPGeolocationError} from '../../core/utils/errors';
 
 interface CheckRequestResponse {
   country_code: string;
@@ -18,9 +19,13 @@ export class IPGeolocationService {
   }
 
   async getCountryCode(): Promise<string> {
-    const path = `/check?access_key=${this.apiAccessKey}&fields=country_code`;
-    const response = await this.fetch('GET', path, undefined, {Accept: 'application/json'});
-    const checkResponse = cast(response, asCheckRequestResponse);
-    return checkResponse.country_code;
+    try {
+      const path = `/check?access_key=${this.apiAccessKey}&fields=country_code`;
+      const response = await this.fetch('GET', path, undefined, {Accept: 'application/json'});
+      const checkResponse = cast(response, asCheckRequestResponse);
+      return checkResponse.country_code;
+    } catch (err) {
+      throw new IPGeolocationError(`Failed to establish user's country`, err);
+    }
   }
 }

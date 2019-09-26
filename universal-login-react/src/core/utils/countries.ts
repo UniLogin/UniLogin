@@ -1,0 +1,178 @@
+import {Country} from '../models/Country';
+
+export const countries: Country[] = [
+  {
+    name: 'Austria',
+    code: 'AT',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Belgium',
+    code: 'BE',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Bulgaria',
+    code: 'BG',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Croatia',
+    code: 'HR',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Cyprus',
+    code: 'CY',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Czechia',
+    code: 'CZ',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Denmark',
+    code: 'DK',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Estonia',
+    code: 'EE',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Finland',
+    code: 'FI',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'France',
+    code: 'FR',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Germany',
+    code: 'DE',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Greece',
+    code: 'GR',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Hungary',
+    code: 'HU',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Ireland',
+    code: 'IE',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Italy',
+    code: 'IT',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Latvia',
+    code: 'LV',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Lithuania',
+    code: 'LT',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Luxembourg',
+    code: 'LU',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Malta',
+    code: 'MT',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Netherlands',
+    code: 'NL',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Poland',
+    code: 'PL',
+    currency: 'PLN',
+    isEU: true,
+  },
+  {
+    name: 'Portugal',
+    code: 'PT',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Romania',
+    code: 'RO',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Slovakia',
+    code: 'SK',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Slovenia',
+    code: 'SI',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Spain',
+    code: 'ES',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'Sweden',
+    code: 'SE',
+    currency: 'EUR',
+    isEU: true,
+  },
+  {
+    name: 'United Kingdom',
+    code: 'GB',
+    currency: 'GBP',
+    isEU: true,
+  },
+  {
+    name: 'United States',
+    code: 'US',
+    currency: 'USD',
+    isEU: false,
+  }
+];
