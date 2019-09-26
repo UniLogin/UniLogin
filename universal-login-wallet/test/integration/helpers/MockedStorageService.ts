@@ -1,4 +1,4 @@
-import {StorageService} from '../../../src/core/services/StorageService';
+import {StorageService} from '@universal-login/react';
 
 export class MockedStorageService implements StorageService {
   private store: Record<string, string | undefined> = {};
