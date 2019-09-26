@@ -29,7 +29,8 @@ describe('UI: Notifications',  () => {
     const {securityCode} = await services.sdk.connect(services.walletService.getDeployedWallet().contractAddress);
     await appPage.dashboard().waitForNewNotifications();
     expect(appPage.dashboard().isNotificationAlert()).to.be.true;
-    await appPage.dashboard().clickNotificationButton();
+    await appPage.dashboard().clickDevicesButton();
+    await appPage.dashboard().clickManageDevicesButton();
     await appPage.notifications().inputSecurityCode(securityCode);
     await appPage.notifications().selectGasMode();
     await appPage.notifications().clickConnectDeviceButton();
@@ -40,7 +41,8 @@ describe('UI: Notifications',  () => {
     await services.sdk.connect(services.walletService.getDeployedWallet().contractAddress);
     await appPage.dashboard().waitForNewNotifications();
     expect(appPage.notifications().isNotificationAlert()).to.be.true;
-    await appPage.dashboard().clickNotificationButton();
+    await appPage.dashboard().clickDevicesButton();
+    await appPage.dashboard().clickManageDevicesButton();
     await appPage.notifications().clickRejectButton();
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });

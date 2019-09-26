@@ -25,6 +25,7 @@ import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
 export {LogoButton} from './ui/UFlow/LogoButton';
 export {Funds} from './ui/UFlow/Funds';
+export {Devices} from './ui/UFlow/Devices/Devices';
 export {ModalTransferRecipient} from './ui/Transfer/Recipient/ModalTransferRecipient';
 export {TransferDropdownItem} from './ui/Transfer/Amount/TransferDropdownItem';
 export {TransferDropdown} from './ui/Transfer/Amount/TransferDropdown';

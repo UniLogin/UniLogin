@@ -6,14 +6,32 @@ import {transactionDetails} from '../../../core/constants/TransactionDetails';
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
   deployedWallet: DeployedWallet;
+  confirmationsCount: string;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, contractAddress, publicKey, deployedWallet}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, confirmationsCount}: ConnectedDevicesItemProps) => {
   const {os, name, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
+  const confirmationsAmount = Number(confirmationsCount);
+  const [isWarningVisible, setIsWarningVisible] = useState(false);
+
+  const showWarningMessage = () => {
+    setIsWarningVisible(true);
+    setTimeout(() => {
+      setIsWarningVisible(false);
+    }, 3000);
+  };
+
+  const onTrashButtonClick = () => {
+    if (confirmationsAmount < devicesAmount) {
+      setToBeRemoved(true);
+    } else {
+      showWarningMessage();
+    }
+  };
 
   return (
-    <li className={`connected-devices-item ${name} ${toBeRemoved ? 'highlighted' : ''}`}>
+    <li className={`connected-devices-item ${name.toLocaleLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
       <div>
         <p className="connected-devices-type">{os} &bull; {city}</p>
         <p className="connected-devices-details">
@@ -30,8 +48,8 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, contractAddress
             <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
         </div>
         : <div className="connected-devices-trash-btn-wrapper">
-            <WarningMessage devicesAmount={devicesAmount} />
-            <button onClick={() => setToBeRemoved(true)} className="connected-devices-trash-btn" />
+            {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
+            <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
         </div>
       }
     </li >

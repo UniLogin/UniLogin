@@ -27,8 +27,13 @@ export default class DashboardPage {
     return this.wrapper.exists('.new-notifications');
   }
 
-  async clickNotificationButton() {
-    this.wrapper.find('#notificationsButton').simulate('click', { button: 0 });
+  async clickDevicesButton() {
+    this.wrapper.find('#devicesButton').simulate('click', { button: 0 });
+    await waitForUI(this.wrapper, () => this.wrapper.exists('div.devices'));
+  }
+
+  async clickManageDevicesButton() {
+    this.wrapper.find('button.devices-message-button').simulate('click', { button: 0 });
     await waitForUI(this.wrapper, () => this.wrapper.exists('#emojis'));
   }
 

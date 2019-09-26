@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
@@ -13,18 +13,21 @@ export interface DevicesProps {
   contractAddress: string;
   privateKey: string;
   ensName: string;
+  onManageDevicesClick: () => void;
 }
 
-export const Devices = ({sdk, contractAddress, privateKey, ensName, className}: DevicesProps) => {
-  const [newDevicesAmount] = useState(1);
+export const Devices = ({sdk, contractAddress, privateKey, ensName, className, onManageDevicesClick}: DevicesProps) => {
   const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
+
+  const [notifications, setNotifications] = useState([] as Notification[]);
+  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNotifications), []);
 
   return (
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
-          {newDevicesAmount > 0 && <NewDeviceMessage onClick={() => {}}/>}
+          {notifications.length > 0 && <NewDeviceMessage onClick={onManageDevicesClick}/>}
           {devices ?
             <ConnectedDevices
               devicesList={devices}
