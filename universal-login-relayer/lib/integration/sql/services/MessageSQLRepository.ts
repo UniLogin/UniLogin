@@ -5,24 +5,26 @@ import IMessageRepository from '../../../core/services/messages/IMessagesReposit
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import MessageItem from '../../../core/models/messages/MessageItem';
 import {ensureProperTransactionHash} from '../../../core/utils/validations';
+import SQLRepository from './SQLRepository';
 
-export class MessageSQLRepository implements IMessageRepository {
+export class MessageSQLRepository extends SQLRepository<MessageItem> implements IMessageRepository {
   constructor(public knex: Knex) {
+    super(knex, 'messages');
   }
 
+  // Override
   async add(messageHash: string, messageItem: MessageItem) {
     ensureNotNull(messageItem.message, MessageNotFound, messageHash);
-    return this.knex
-      .insert({
-        messageHash,
+    await super.add(messageHash, {
         transactionHash: messageItem.transactionHash,
         walletAddress: messageItem.walletAddress,
         state: 'AwaitSignature',
         message: stringifySignedMessageFields(messageItem.message)
-      })
-      .into('messages');
+    } as MessageItem
+    );
   }
 
+  // Override
   async get(messageHash: string) {
     const message = await this.getMessageEntry(messageHash);
     if (!message) {
@@ -40,12 +42,13 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   private async getMessageEntry(messageHash: string) {
-    return this.knex('messages')
+    return this.knex(this.tableName)
       .where('messageHash', messageHash)
       .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state'])
       .first();
   }
 
+  // Override
   async isPresent(messageHash: string) {
     const message = await this.getMessageEntry(messageHash);
     const signatureKeyPairs = await this.knex('signature_key_pairs')
@@ -53,14 +56,13 @@ export class MessageSQLRepository implements IMessageRepository {
     return !!message || signatureKeyPairs.length !== 0;
   }
 
+  // Override
   async remove(messageHash: string) {
     const messageItem: MessageItem = await this.get(messageHash);
     await this.knex('signature_key_pairs')
       .delete()
       .where('messageHash', messageHash);
-    await this.knex('messages')
-      .delete()
-      .where('messageHash', messageHash);
+    await super.remove(messageHash);
     return messageItem;
   }
 
@@ -82,21 +84,21 @@ export class MessageSQLRepository implements IMessageRepository {
   }
 
   async setMessageState(messageHash: string, state: MessageState) {
-    return this.knex('messages')
+    return this.knex(this.tableName)
       .where('messageHash', messageHash)
       .update('state', state);
   }
 
   async markAsPending(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
-    return this.knex('messages')
+    return this.knex(this.tableName)
       .where('messageHash', messageHash)
       .update('transactionHash', transactionHash)
       .update('state', 'Pending');
   }
 
   async markAsError(messageHash: string, error: string) {
-    return this.knex('messages')
+    return this.knex(this.tableName)
       .where('messageHash', messageHash)
       .update('error', error)
       .update('state', 'Error');

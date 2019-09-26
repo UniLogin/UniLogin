@@ -4,43 +4,36 @@ import {InvalidMessage, MessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
 import {ensureProperTransactionHash} from '../../lib/core/utils/validations';
+import MemoryRepository from './MemoryRepository';
 
-export default class MessageMemoryRepository implements IMessageRepository {
-  public messageItems: Record<string, MessageItem>;
-
-  constructor () {
-    this.messageItems = {};
-  }
-
+export default class MessageMemoryRepository extends MemoryRepository<MessageItem> implements IMessageRepository {
+  // Override
   async add(messageHash: string, messageItem: MessageItem) {
     ensureNotNull(messageItem.message, MessageNotFound, messageHash);
     messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
-    this.messageItems[messageHash] = messageItem;
-  }
-
-  async isPresent(messageHash: string) {
-    return messageHash in this.messageItems;
+    await super.add(messageHash, messageItem);
   }
 
   throwIfInvalidMessage(messageHash: string) {
-    if (!this.messageItems[messageHash]) {
+    if (!this.items[messageHash]) {
       throw new InvalidMessage(messageHash);
     }
   }
 
+  // Override
   async get(messageHash: string): Promise<MessageItem> {
     this.throwIfInvalidMessage(messageHash);
-    return this.messageItems[messageHash];
+    return super.get(messageHash);
   }
 
   async remove(messageHash: string): Promise<MessageItem> {
-    const messageItem = this.messageItems[messageHash];
-    delete this.messageItems[messageHash];
+    const messageItem = this.items[messageHash];
+    delete this.items[messageHash];
     return messageItem;
   }
 
   async containSignature(messageHash: string, signature: string) : Promise<boolean> {
-    const message = this.messageItems[messageHash];
+    const message = this.items[messageHash];
     return !!message && message
       .collectedSignatureKeyPairs
       .filter((collectedSignature) => collectedSignature.signature === signature)
@@ -48,11 +41,11 @@ export default class MessageMemoryRepository implements IMessageRepository {
   }
 
   async getCollectedSignatureKeyPairs(messageHash: string) {
-    return this.messageItems[messageHash].collectedSignatureKeyPairs;
+    return this.items[messageHash].collectedSignatureKeyPairs;
   }
 
   async addSignedMessage(messageHash: string, signedMessage: SignedMessage) {
-    this.messageItems[messageHash].message = bignumberifySignedMessageFields(stringifySignedMessageFields(signedMessage));
+    this.items[messageHash].message = bignumberifySignedMessageFields(stringifySignedMessageFields(signedMessage));
   }
 
   async getMessage(messageHash: string) {
@@ -63,21 +56,21 @@ export default class MessageMemoryRepository implements IMessageRepository {
 
   async addSignature(messageHash: string, signature: string) {
     const key = getKeyFromHashAndSignature(messageHash, signature);
-    this.messageItems[messageHash].collectedSignatureKeyPairs.push({signature, key});
+    this.items[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
 
   async markAsPending(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
-    this.messageItems[messageHash].transactionHash = transactionHash;
-    this.messageItems[messageHash].state = 'Pending';
+    this.items[messageHash].transactionHash = transactionHash;
+    this.items[messageHash].state = 'Pending';
   }
 
   async markAsError(messageHash: string, error: string) {
-    this.messageItems[messageHash].error = error;
-    this.messageItems[messageHash].state = 'Error';
+    this.items[messageHash].error = error;
+    this.items[messageHash].state = 'Error';
   }
 
   async setMessageState(messageHash: string, state: MessageState) {
-    this.messageItems[messageHash].state = state;
+    this.items[messageHash].state = state;
   }
 }
