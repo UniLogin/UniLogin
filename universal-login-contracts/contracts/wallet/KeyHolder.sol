@@ -52,6 +52,7 @@ contract KeyHolder {
     }
 
     function removeKey(address _key) public  onlyAuthorised returns(bool success) {
+        require(keyExist(_key), "Cannot remove a non-existing key");
         emit KeyRemoved(_key);
 
         delete keys[_key];
