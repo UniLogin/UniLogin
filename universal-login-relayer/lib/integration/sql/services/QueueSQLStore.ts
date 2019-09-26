@@ -1,8 +1,8 @@
 import Knex from 'knex';
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IQueueStore} from '../../../core/services/messages/IQueueStore';
+import {IMessageQueue} from '../../../core/services/messages/IQueueStore';
 
-export default class QueueSQLStore implements IQueueStore {
+export default class QueueSQLStore implements IMessageQueue {
   public tableName: string;
 
   constructor(public database: Knex) {

@@ -83,7 +83,7 @@ package Integration {
       containSignature(messageHash, signature)
     }
 
-    class QueueStore {
+    class MessageQueue {
       add(signedMessage)
       getNext()
       markAsSuccess(messageHash, transactionHash)
@@ -111,7 +111,7 @@ MessageHandler --> PendingMessages
 MessageHandler --> MessageQueueService
 
 PendingMessages --> PendingMessagesSQLStore
-MessageQueueService --> QueueStore
+MessageQueueService --> MessageQueue
 
 Authorisation --> AuthorisationService
 
