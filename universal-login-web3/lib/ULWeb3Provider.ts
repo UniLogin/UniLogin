@@ -5,16 +5,18 @@ import {MetamaskService} from './services/MetamaskService';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ensure, Message} from '@universal-login/commons';
+import {ensure, Message, walletFromBrain} from '@universal-login/commons';
 import {waitFor} from './utils';
 import {initUi} from './ui';
 import {AppProps} from './ui/App';
+import {StorageService, WalletStorageService} from '@universal-login/react';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
   relayerUrl: string;
   ensDomains: string[];
   uiInitializer?: (services: AppProps) => void;
+  storageService?: StorageService;
 }
 
 export class ULWeb3Provider implements Provider {
@@ -42,6 +44,7 @@ export class ULWeb3Provider implements Provider {
       relayerUrl,
       ensDomains,
       uiInitializer = initUi,
+      storageService = new StorageService(),
     } = options;
 
     this.provider = provider;
@@ -49,7 +52,8 @@ export class ULWeb3Provider implements Provider {
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
     );
-    this.walletService = new WalletService(this.sdk);
+    const walletStorageService = new WalletStorageService(storageService);
+    this.walletService = new WalletService(this.sdk, walletFromBrain, walletStorageService);
     this.metamaskService = new MetamaskService();
     this.uiController = new UIController(this.walletService, this.metamaskService);
 
