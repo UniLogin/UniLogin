@@ -3,36 +3,48 @@ import {Config, getConfigForNetwork, Network} from './config';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {MetamaskService} from './services/MetamaskService';
 import {UIController} from './services/UIController';
-import {initUi} from './ui';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message} from '@universal-login/commons';
 import {waitFor} from './utils';
+import {initUi} from './ui';
+import {AppProps} from './ui/App';
+
+export interface ULWeb3ProviderOptions {
+  provider: Provider;
+  relayerUrl: string;
+  ensDomains: string[];
+  uiInitializer?: (services: AppProps) => void;
+}
 
 export class ULWeb3Provider implements Provider {
   static getDefaultProvider(networkOrConfig: Network | Config) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
-    return new ULWeb3Provider(
-      config.provider,
-      config.relayerUrl,
-      config.ensDomains,
-    );
+    return new ULWeb3Provider({
+      provider: config.provider,
+      relayerUrl: config.relayerUrl,
+      ensDomains: config.ensDomains,
+    });
   }
 
   public readonly isUniversalLogin = true;
 
+  private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
   private readonly metamaskService: MetamaskService;
   private readonly uiController: UIController;
 
-  constructor(
-    private provider: Provider,
-    relayerUrl: string,
-    ensDomains: string[],
-    uiInitializer = initUi,
-  ) {
+  constructor(options: ULWeb3ProviderOptions) {
+    const {
+      provider,
+      relayerUrl,
+      ensDomains,
+      uiInitializer = initUi,
+    } = options;
+
+    this.provider = provider;
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),

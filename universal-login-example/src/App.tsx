@@ -8,11 +8,10 @@ const config = {
   ensDomains: [process.env.ENS_DOMAIN_1!],
 };
 
-const universalLogin = new ULWeb3Provider(
-  new Web3.providers.HttpProvider(config.jsonRpcURl),
-  config.relayerUrl,
-  config.ensDomains,
-);
+const universalLogin = ULWeb3Provider.getDefaultProvider({
+  ...config,
+  provider: new Web3.providers.HttpProvider(config.jsonRpcURl),
+});
 const web3 = new Web3(universalLogin);
 
 function App() {
