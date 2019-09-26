@@ -2,9 +2,6 @@
   box-sizing: border-box
 }
 
-textarea, select, input, button { outline: none; }
-
-
 .perspective {
   perspective: 1000px;
 }
