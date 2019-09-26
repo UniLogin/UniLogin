@@ -9,22 +9,20 @@ interface BackupCodesViewProps {
 
 export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodesViewProps) => {
   return (
-    <>
+    <div className="backup-codes-list">
       {codes.map((code: string) =>
-        <ul key={code} className="backup-codes-list">
-          <div className="backup-codes-item" key={code}>
-            <img src={Avatar} alt="avatar" className="backup-codes-img" />
-            <div>
-              <p className="backup-code-contract">{walletContract}</p>
-              <p className="backup-code">{code}</p>
-            </div>
+        <div className="backup-codes-item" key={code}>
+          <img src={Avatar} alt="avatar" className="backup-codes-img" />
+          <div>
+            <p className="backup-code-contract">{walletContract}</p>
+            <p className="backup-code">{code}</p>
           </div>
-        </ul>
+        </div>
       )}
       <div className="backup-codes-buttons">
         <button onClick={printCodes} className="backup-print-btn">Print codes</button>
       </div>
-    </>
+    </div>
   );
 };
 

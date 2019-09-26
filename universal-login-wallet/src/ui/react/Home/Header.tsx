@@ -31,7 +31,7 @@ export function Header({setContent}: HeaderProps) {
             <button className="header-btn transactions-btn">Transactions</button>
           </li>
           <li className="header-list-item">
-              <button
+            <button
               id="devicesButton"
               className="header-btn devices-btn"
               onClick={() => setContent('devices')}
@@ -41,7 +41,12 @@ export function Header({setContent}: HeaderProps) {
             </button>
           </li>
           <li className="header-list-item">
-            <button className="header-btn backup-btn">Backup</button>
+            <button
+              className="header-btn backup-btn"
+              onClick={() => setContent('backup')}
+            >
+                Backup
+            </button>
           </li>
         </ul>
         <UserDropdown />
