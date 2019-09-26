@@ -42,12 +42,12 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
             </div>
             <div>
               <p className="assets-name">{name}</p>
-              <p className="assets-price">$ {usdPrice}</p>
+              <p className="assets-price-left">$ {usdPrice}</p>
             </div>
           </div>
           <div className="assets-item-right">
             {balance ? <p className="assets-balance">{balance} {symbol}</p> : <Spinner/>}
-            <p className="assets-price">${usdAmount}</p>
+            <p className="assets-price-right">${usdAmount}</p>
           </div>
         </div>
       </div>
