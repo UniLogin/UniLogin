@@ -2,11 +2,11 @@ import React, {useState, useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {Funds, Devices} from '@universal-login/react';
+import {Funds, Devices, BackupCodes} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
-  const {sdk, walletPresenter} = useServices();
+  const {sdk, walletPresenter, walletService} = useServices();
   const modalService = useContext(WalletModalContext);
   const [content, setContent] = useState('balance');
 
@@ -32,6 +32,13 @@ const HomeScreen = () => {
             ensName={walletPresenter.getName()}
             onManageDevicesClick={() => modalService.showModal('approveDevice')}
             className="jarvis-devices"
+          />
+        );
+      case 'backup':
+        return (
+          <BackupCodes
+            deployedWallet={walletService.getDeployedWallet()}
+            className="jarvis-backup"
           />
         );
       default:
