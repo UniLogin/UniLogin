@@ -20,6 +20,8 @@ export class ULWeb3Provider implements Provider {
     );
   }
 
+  public readonly isUniversalLogin = true;
+
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
   private readonly metamaskService: MetamaskService;
@@ -84,6 +86,8 @@ export class ULWeb3Provider implements Provider {
         return this.getAccounts();
       case 'eth_sign':
         return this.sign(params[0], params[1]);
+      default:
+        throw new Error(`Method not supported: ${method}`);
     }
   }
 
