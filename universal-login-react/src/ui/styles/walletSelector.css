@@ -116,16 +116,37 @@ textarea, select, input, button { outline: none; }
   border-radius: 5px;
   list-style: none;
   background: #fff;
+  text-align: center;
+  font-family: helvetica, helvetica neue, arial;
+}
+
+.universal-login .suggestions-list .suggestions-title {
+
 }
 
 .universal-login .suggestions-item-btn {
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 10px 20.5px;
-  background: none;
+  margin-top: 5px;
   border: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 100%;
+  transition: transform ease-in-out 0.5s;
+}
+
+.universal-login .suggestions-item-btn:hover {
+  background: transparent;
+  transform: scale(1.05);
+}
+
+.universal-login .suggestion-element {
+  font-style: italic;
+  color: #aaa;
 }
 
 .universal-login .suggestions-item-btn-text {

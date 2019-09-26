@@ -18,11 +18,11 @@
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
 }
 
-.universal-login-default .suggestions-item-btn:hover,
+/* .universal-login-default .suggestions-item-btn:hover,
 .universal-login-default .suggestions-item-btn:focus {
   background: #ACE8FF;
   outline: none;
-}
+} */
 
 .universal-login-default .suggestions-item-btn-text {
   font-weight: 600;
@@ -59,4 +59,8 @@
 
 .universal-login-default .ethereum-account:after {
   background: #e43471;
+}
+
+.universal-login .suggestions-item-btn {
+  color: #3682DE;
 }
