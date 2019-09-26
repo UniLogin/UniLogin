@@ -8,7 +8,7 @@ import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import IMessageRepository from './messages/IMessagesRepository';
-import {IMessageQueue} from './messages/IQueueStore';
+import {IExecutionQueue} from './messages/IExecutionQueue';
 import {MessageStatusService} from './messages/MessageStatusService';
 import {DevicesService} from './DevicesService';
 import {GasValidator} from './validators/GasValidator';
@@ -23,7 +23,7 @@ class MessageHandler {
     private devicesService: DevicesService,
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
-    messageQueue: IMessageQueue,
+    messageQueue: IExecutionQueue,
     messageExecutor: MessageExecutor,
     statusService: MessageStatusService,
     private gasValidator: GasValidator

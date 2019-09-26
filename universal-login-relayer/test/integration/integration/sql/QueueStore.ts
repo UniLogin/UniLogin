@@ -5,7 +5,7 @@ import {getTestSignedMessage} from '../../../config/message';
 import {getKnexConfig} from '../../../helpers/knex';
 import QueueSQLStore from '../../../../lib/integration/sql/services/QueueSQLStore';
 import QueueMemoryStore from '../../../helpers/QueueMemoryStore';
-import {IMessageQueue} from '../../../../lib/core/services/messages/IQueueStore';
+import {IExecutionQueue} from '../../../../lib/core/services/messages/IExecutionQueue';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 for (const config of [{
@@ -15,7 +15,7 @@ for (const config of [{
 }]
 ) {
 describe(`INT: IQueueStore: ${config.type.name}`, async () => {
-  let messageQueue: IMessageQueue;
+  let messageQueue: IExecutionQueue;
   let signedMessage: SignedMessage;
   let expectedMessageHash: string;
   const knex = getKnexConfig();
@@ -39,15 +39,15 @@ describe(`INT: IQueueStore: ${config.type.name}`, async () => {
   });
 
   it('add message', async () =>  {
-    const messageHash = await messageQueue.add(signedMessage);
+    const messageHash = await messageQueue.addMessage(signedMessage);
     expect(messageHash).to.be.a('string');
     expect(messageHash).to.be.eq(expectedMessageHash);
   });
 
   it('message round trip', async () => {
-    const messageHash1 = await messageQueue.add(signedMessage);
+    const messageHash1 = await messageQueue.addMessage(signedMessage);
     const signedMessage2 = getTestSignedMessage({value: utils.parseEther('2')});
-    const messageHash2 = await messageQueue.add(signedMessage2);
+    const messageHash2 = await messageQueue.addMessage(signedMessage2);
     const nextMessageHash = (await messageQueue.getNext())!.hash;
     expect(nextMessageHash).to.be.equal(messageHash1);
     expect(nextMessageHash).to.be.eq(expectedMessageHash);

@@ -18,7 +18,7 @@ import QueueSQLStore from '../../integration/sql/services/QueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';
 import MessageSQLRepository from '../../integration/sql/services/MessageSQLRepository';
 import AuthorisationService from '../../core/services/AuthorisationService';
-import {IMessageQueue} from '../../core/services/messages/IQueueStore';
+import {IExecutionQueue} from '../../core/services/messages/IExecutionQueue';
 import IMessageRepository from '../../core/services/messages/IMessagesRepository';
 import {WalletDeployer} from '../../integration/ethereum/WalletDeployer';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
@@ -55,7 +55,7 @@ class Relayer {
   private balanceChecker: BalanceChecker = {} as BalanceChecker;
   private requiredBalanceChecker: RequiredBalanceChecker = {} as RequiredBalanceChecker;
   private walletContractService: WalletService = {} as WalletService;
-  private messageQueue: IMessageQueue = {} as IMessageQueue;
+  private messageQueue: IExecutionQueue = {} as IExecutionQueue;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private gasValidator: GasValidator = {} as GasValidator;
   private messageRepository: IMessageRepository = {} as IMessageRepository;
