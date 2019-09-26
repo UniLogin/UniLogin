@@ -34,7 +34,7 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
           <div className="box-content connect-emoji-content">
             <div className="connect-emoji-section">
               <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
-              <p className="box-text connect-emoji-text">Thanks, now check another device controling this account and enter the emojis in this order:</p>
+              <p className="box-text connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
               {!connectValues && !error && 'Loading...'}
               {connectValues && <div className="universal-login-emojis">
                 <EmojiPanel className="jarvis-emojis" code={connectValues!.securityCode} />
