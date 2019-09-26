@@ -3,11 +3,18 @@ import Web3 from 'web3';
 import {Provider} from 'web3/providers';
 import {ULWeb3Provider} from '../../lib';
 import {AppProps} from '../../lib/ui/App';
+import {MemoryStorageService} from '@universal-login/react';
 
-function createProvider(provider: Provider, relaterUrl: string): [ULWeb3Provider, AppProps] {
+function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, AppProps] {
   let services: AppProps;
-  const ulProvider = new ULWeb3Provider(provider, relaterUrl, ['mylogin.eth'], (props: AppProps) => {
-    services = props;
+  const ulProvider = new ULWeb3Provider({
+    provider,
+    relayerUrl,
+    ensDomains: ['mylogin.eth'],
+    uiInitializer: (props: AppProps) => {
+      services = props;
+    },
+    storageService: new MemoryStorageService(),
   });
 
   return [ulProvider, services!];
