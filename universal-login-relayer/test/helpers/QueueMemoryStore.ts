@@ -1,20 +1,30 @@
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IQueueStore} from '../../lib/core/services/messages/IQueueStore';
-import {QueueItem} from '../../lib/core/models/messages/QueueItem';
+import {IExecutionQueue} from '../../lib/core/services/messages/IExecutionQueue';
+import {QueueItem} from '../../lib/core/models/QueueItem';
+import Deployment from '../../lib/core/models/Deployment';
 
-export default class QueueMemoryStore implements IQueueStore {
+export default class QueueMemoryStore implements IExecutionQueue {
   public queueItems: QueueItem[];
 
   constructor() {
     this.queueItems = [];
   }
 
-  async add(signedMessage: SignedMessage) {
+  async addMessage(signedMessage: SignedMessage) {
     const hash = calculateMessageHash(signedMessage);
     this.queueItems.push({
+      type: 'Message',
       hash
     });
     return hash;
+  }
+
+  async addDeployment(deployment: Deployment) {
+    this.queueItems.push({
+      type: 'Deployment',
+      hash: deployment.hash
+    });
+    return deployment.hash;
   }
 
   async getNext() {

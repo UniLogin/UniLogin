@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix} from '@universal-login/commons';
+import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
@@ -30,6 +30,7 @@ interface EmojiFormProps {
 }
 
 export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
+  const [gasParameters, setGasParameters] = useState<GasParameters>(INITIAL_GAS_PARAMETERS);
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [inputMode, setInputMode] = useState<InputModeType>('none');
@@ -56,7 +57,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const confirmCode = (address: string) => {
-    sdk.addKey(contractAddress, address, privateKey, transactionDetails);
+    sdk.addKey(contractAddress, address, privateKey, {...transactionDetails, ...gasParameters});
     showProgressBar();
   };
 
@@ -99,7 +100,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
     if (isInputValid) {
       return (
         <div className="correct-input">
-          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark"/>
+          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark" />
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}
@@ -107,7 +108,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice />
+            <GasPrice sdk={sdk} onGasParametersChanged={setGasParameters} className={className}/>
             <div className="connect-buttons-row">
               <button onClick={() => sdk.denyRequests(contractAddress, privateKey)} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>

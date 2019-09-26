@@ -1,5 +1,5 @@
-import {MetamaskEthereum} from '../models/metamask';
-import {State} from 'reactive-properties';
+import { MetamaskEthereum } from "../models/metamask";
+import { State } from "reactive-properties";
 
 export class MetamaskService {
   metamaskProvider = new State<MetamaskEthereum | undefined>(undefined);
@@ -7,12 +7,11 @@ export class MetamaskService {
   async tryEnablingMetamask(): Promise<string | undefined> {
     if (!!window.ethereum) {
       try {
-        await ethereum!.enable();
+        await window.ethereum.enable();
 
-        this.metamaskProvider.set(ethereum!);
-        return ethereum!.selectedAddress;
-      } catch (error) {
-      }
+        setTimeout(() => this.metamaskProvider.set(window.ethereum), 2000);
+        return window.ethereum.selectedAddress;
+      } catch (error) {}
     }
   }
 }

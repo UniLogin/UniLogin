@@ -15,7 +15,8 @@ type ErrorType =
   'WalletOverridden' |
   'FutureWalletNotSet' |
   'InvalidContract' |
-  'NoSet';
+  'NoSet' |
+  'InvalidGasLimit';
 
 export class SDKError extends Error {
   errorType : ErrorType;
@@ -96,6 +97,13 @@ export class InsufficientGas extends ValidationFailed {
   constructor (message: string) {
     super(`Insufficient Gas. ${message}`, 'InsufficientGas');
     Object.setPrototypeOf(this, InsufficientGas.prototype);
+  }
+}
+
+export class InvalidGasLimit extends ValidationFailed {
+  constructor (message: string) {
+    super(`Invalid gas limit. ${message}`, 'InvalidGasLimit');
+    Object.setPrototypeOf(this, InvalidGasLimit.prototype);
   }
 }
 

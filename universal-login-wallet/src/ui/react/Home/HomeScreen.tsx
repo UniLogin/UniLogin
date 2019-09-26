@@ -1,26 +1,59 @@
-import React from 'react';
-import {Assets} from '@universal-login/react';
+import React, {useState, useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
-import Balance from './Balance';
 import {useServices} from '../../hooks';
-
+import {Funds, Devices, BackupCodes} from '@universal-login/react';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
-  const {sdk, walletPresenter} = useServices();
+  const {sdk, walletPresenter, walletService} = useServices();
+  const modalService = useContext(WalletModalContext);
+  const [content, setContent] = useState('balance');
+
+  const renderContent = () => {
+    switch (content) {
+      case 'balance':
+        return (
+          <Funds
+            contractAddress={walletPresenter.getContractAddress()}
+            ensName={walletPresenter.getName()}
+            sdk={sdk}
+            onTopUpClick={() => {}}
+            onSendClick={() => modalService.showModal('transfer')}
+            className="jarvis-funds"
+          />
+        );
+      case 'devices':
+        return (
+          <Devices
+            sdk={sdk}
+            contractAddress={walletPresenter.getContractAddress()}
+            privateKey={walletPresenter.getPrivateKey()}
+            ensName={walletPresenter.getName()}
+            onManageDevicesClick={() => modalService.showModal('approveDevice')}
+            className="jarvis-devices"
+          />
+        );
+      case 'backup':
+        return (
+          <BackupCodes
+            deployedWallet={walletService.getDeployedWallet()}
+            className="jarvis-backup"
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <div className="dashboard">
-        <Header />
+        <Header setContent={setContent} />
         <div className="dashboard-content">
-          <Balance />
-        </div>
-        <div className="my-assets-section">
-          <Assets
-            sdk={sdk}
-            ensName={walletPresenter.getName()}
-            className="jarvis-assets"
-          />
+          <div className="dashboard-content-box">
+            {renderContent()}
+          </div>
         </div>
       </div>
       <Modal />

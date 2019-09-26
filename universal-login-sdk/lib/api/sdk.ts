@@ -5,7 +5,7 @@ import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {MissingConfiguration, InvalidEvent, InvalidContract} from '../core/utils/errors';
+import {MissingConfiguration, InvalidEvent, InvalidContract, InvalidGasLimit} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
@@ -13,9 +13,11 @@ import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
-import {TokensDetailsStore} from '../integration/ethereum/TokensDetailsStore';
+import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
 import {messageToUnsignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
+import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
+import {GasModeService} from '../core/services/GasModeService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -31,6 +33,8 @@ class UniversalLoginSDK {
   tokenDetailsService: TokenDetailsService;
   tokensDetailsStore: TokensDetailsStore;
   blockchainService: BlockchainService;
+  gasPriceOracle: GasPriceOracle;
+  gasModeService: GasModeService;
   futureWalletFactory?: FutureWalletFactory;
   sdkConfig: SdkConfig;
   relayerConfig?: PublicRelayerConfig;
@@ -54,6 +58,8 @@ class UniversalLoginSDK {
     this.tokenDetailsService = new TokenDetailsService(this.provider);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies);
+    this.gasPriceOracle = new GasPriceOracle(this.provider);
+    this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
   }
 
@@ -127,6 +133,9 @@ class UniversalLoginSDK {
 
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
     const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
+    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensure(gasLimit <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
+
     const unsignedMessage = messageToUnsignedMessage({gasLimit, gasPrice, gasToken, ...message});
     unsignedMessage.nonce = unsignedMessage.nonce || parseInt(await this.getNonce(message.from!), 10);
     ensureSufficientGas(unsignedMessage);
@@ -226,6 +235,10 @@ class UniversalLoginSDK {
     return this.relayerApi.getConnectedDevices(
       signRelayerRequest({contractAddress}, privateKey)
     );
+  }
+
+  async getGasModes() {
+    return this.gasModeService.getModes();
   }
 
   async start() {

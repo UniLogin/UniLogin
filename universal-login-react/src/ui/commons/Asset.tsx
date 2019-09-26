@@ -42,7 +42,7 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
             </div>
             <div>
               <p className="assets-name">{name}</p>
-              <p className="assets-price">$ {usdPrice}</p>
+              <p className="assets-price">${usdPrice}</p>
             </div>
           </div>
           <div className="assets-item-right">

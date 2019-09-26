@@ -18,12 +18,18 @@ describe('UNIT: Queue Service', async () => {
   const wait = sinon.spy();
   const onTransactionMined = sinon.spy();
   const executor: any = {
+    canExecute: sinon.fake.returns(true),
     execute: sinon.fake.returns({
       hash: TEST_TRANSACTION_HASH,
       wait
     }),
   };
   const executorReturnsNull: any = {
+    canExecute: sinon.fake.returns(true),
+    execute: sinon.fake.returns(null),
+  };
+  const executorCannotExecute: any = {
+    canExecute: sinon.fake.returns(false),
     execute: sinon.fake.returns(null),
   };
   let signedMessage: SignedMessage;
@@ -71,6 +77,18 @@ describe('UNIT: Queue Service', async () => {
     expect(queueMemoryStore.remove).to.be.calledOnce;
     expect(queueMemoryStore.remove).to.be.calledAfter(markAsErrorSpy);
     expect(onTransactionMined).to.be.not.called;
+  });
+
+  it('should not execute if the executor cannot execute, but remove from the queue', async () => {
+    queueService = new QueueService(executorCannotExecute, queueMemoryStore, messageRepository, onTransactionMined, 1);
+    queueService.start();
+    queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
+    await messageRepository.add(messageHash, createMessageItem(signedMessage));
+    messageHash = await queueService.add(signedMessage);
+
+    await waitExpect(() => expect(queueMemoryStore.remove).to.be.calledOnce, 3000);
+    expect(executorCannotExecute.canExecute).to.be.calledOnce;
+    expect(executorCannotExecute.execute).to.not.be.called;
   });
 
   afterEach(async () => {

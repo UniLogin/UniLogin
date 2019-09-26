@@ -5,9 +5,7 @@ import HomeScreen from './Home/HomeScreen';
 import TransferringFundsScreen from './Login/TransferringFundsScreen';
 import NotFound from './NotFound';
 import {PrivateRoute} from './PrivateRoute';
-import ApproveScreen from './Login/ApproveScreen';
 import RecoveryScreen from './Login/RecoveryScreen';
-import SettingsScreen from './Settings/SettingsScreen';
 import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
@@ -58,11 +56,6 @@ const App = () => {
         />
         <Route
           exact
-          path="/approve"
-          render={() => <ApproveScreen />}
-        />
-        <Route
-          exact
           path="/recovery"
           render={() => <RecoveryScreen />}
         />
@@ -76,11 +69,6 @@ const App = () => {
           path="/transferring"
           authorized={authorized}
           render={() => <TransferringFundsScreen />}
-        />
-        <PrivateRoute
-          path="/settings"
-          authorized={authorized}
-          render={() => <SettingsScreen />}
         />
         <Route component={NotFound} />
       </Switch>

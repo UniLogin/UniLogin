@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture, deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
-import {utils, Contract} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
 import KeyHolder from '../../../build/KeyHolder.json';
 import testableKeyHolder from '../../fixtures/testableKeyHolder';
 import {createKeyPair} from '@universal-login/commons';
@@ -114,6 +114,10 @@ describe('CONTRACT: KeyHolder', async () => {
     it('Should not allow to remove key with unknown key', async () => {
       expect(await keyHolder.keyExist(publicKey)).to.be.true;
       await expect(fromUnknownWallet.removeKey(publicKey)).to.be.reverted;
+    });
+
+    it('won`t remove a non-existing key', async () => {
+      await expect(keyHolder.removeKey(Wallet.createRandom().address)).to.be.eventually.rejectedWith('Cannot remove a non-existing key');
     });
   });
 });

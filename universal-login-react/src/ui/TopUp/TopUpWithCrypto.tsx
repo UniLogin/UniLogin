@@ -28,7 +28,8 @@ export const TopUpWithCrypto = ({contractAddress}: TopUpWithCryptoProps) => {
           <span className="copy-btn-feedback"/>
         </button>
       </div>
-      <p className="info-text">Minimum amount is 0.005 ETH or 2 dai</p>
+      <p className="info-text">Send 0.005 ETH or 2 dai to this address</p>
+      <p className="info-text">This screen will update itself as soon as we detect an upcoming transaction</p>
     </div>
   );
 };

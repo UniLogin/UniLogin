@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="20px" viewBox="0 0 28 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>@denmark</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="20" rx="2"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags" transform="translate(-28.000000, -172.000000)">
+            <g id="denmark" transform="translate(28.000000, 172.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <rect stroke="#F5F5F5" stroke-width="0.5" x="0.25" y="0.25" width="27.5" height="19.5" rx="2"></rect>
+                <path d="M0,12 L8,12 L8,20 L1.99124431,20 C0.891510444,20 0,19.1017876 0,18.0092049 L0,12 Z M28,12 L28,18.0092049 C28,19.1086907 27.1001025,20 26.0087557,20 L12,20 L12,12 L28,12 Z M26.0087557,0 C27.1084896,0 28,0.898212381 28,1.99079514 L28,8 L12,8 L12,0 L26.0087557,0 Z M8,8 L0,8 L0,1.99079514 C0,0.891309342 0.899897516,0 1.99124431,0 L8,0 L8,8 Z" id="Combined-Shape" fill="#EF264D" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

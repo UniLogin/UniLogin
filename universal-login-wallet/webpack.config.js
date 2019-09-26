@@ -70,5 +70,6 @@ module.exports = {
   },
   node: {
     fs: 'empty'
-  }
+  },
+  stats: 'minimal',
 }

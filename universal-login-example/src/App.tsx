@@ -8,21 +8,24 @@ const config = {
   ensDomains: [process.env.ENS_DOMAIN_1!],
 };
 
-const universalLogin = new ULWeb3Provider(
-  new Web3.providers.HttpProvider(config.jsonRpcURl),
-  config.relayerUrl,
-  config.ensDomains,
-);
+const universalLogin = ULWeb3Provider.getDefaultProvider({
+  ...config,
+  provider: new Web3.providers.HttpProvider(config.jsonRpcURl),
+});
 const web3 = new Web3(universalLogin);
 
 function App() {
-  function sendTx() {
-    web3.eth.sendTransaction({
-      from: '0x0000000000000000000000000000000000000000',
-      to: '0x7ffC57839B00206D1ad20c69A1981b489f772031',
-      value: '500000000000000',
-    })
-      .then(console.log, console.error);
+  async function sendTx() {
+    try {
+      const res = await web3.eth.sendTransaction({
+        from: (await web3.eth.getAccounts())[0],
+        to: '0x7ffC57839B00206D1ad20c69A1981b489f772031',
+        value: '500000000000000',
+      });
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   function create() {

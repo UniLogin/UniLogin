@@ -28,15 +28,28 @@
     .devices-confirmation-text
       color: #F7F7F9
 
-    .devices-confirmation-input:disabled
-      background: none
-      color: #FFFFFF
-      border-color: #262053
+    .devices-confirmation-input-wrapper
+      border-color: #4a4b83
 
-    .devices-confirmation-input:enabled
+    .devices-confirmation-input
       background: none
       color: #FFFFFF
-      border-color: #696a9e
+
+    .devices-amount-buttons
+      border-left: 1px solid #4a4b83
+
+    .devices-amount-decrease-btn
+      border-top: 1px solid #4a4b83
+
+    .devices-amount-increase-btn::before
+      border-left: 4px solid transparent
+      border-right: 4px solid transparent
+      border-bottom: 4px solid #fff
+
+    .devices-amount-decrease-btn::before
+      border-left: 4px solid transparent
+      border-right: 4px solid transparent
+      border-top: 4px solid #fff
 
     .devices-confirmation-edit-button
       background: #262053

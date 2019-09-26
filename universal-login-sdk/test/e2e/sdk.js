@@ -6,7 +6,7 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {signRelayerRequest} from '@universal-login/commons';
+import {signRelayerRequest, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
@@ -97,6 +97,22 @@ describe('E2E: SDK', async () => {
       message = {...message, gasLimit: gasData + notEnoughGasLimit};
       await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Insufficient Gas. gasLimit should be greater than 105000');
     });
+
+    it('Throws when the gas limit is above the relayers maxGasLimit', async () => {
+      const {sdk: secondSdk} = await loadFixture(basicSDK);
+      secondSdk.sdkConfig.paymentOptions.gasLimit = DEFAULT_GAS_LIMIT + 1;
+
+      await expect(secondSdk.execute(message, privateKey)).to.be.eventually
+        .rejectedWith('Invalid gas limit. 500001 provided, when relayer\'s max gas limit is 500000');
+    });
+
+    it('Passes when the gas limit is equal to the relayers maxGasLimit', async () => {
+      const {sdk: secondSdk} = await loadFixture(basicSDK);
+      secondSdk.sdkConfig.paymentOptions.gasLimit = DEFAULT_GAS_LIMIT;
+
+      const {waitToBeSuccess} = await secondSdk.execute(message, privateKey);
+      await expect(waitToBeSuccess()).to.be.eventually.fulfilled;
+    });
   });
 
   describe('Add key', async () => {
@@ -153,6 +169,7 @@ describe('E2E: SDK', async () => {
       expect(relayerConfig).to.haveOwnProperty('contractWhiteList');
       expect(relayerConfig).to.haveOwnProperty('localization');
       expect(relayerConfig).to.haveOwnProperty('onRampProviders');
+      expect(relayerConfig).to.haveOwnProperty('maxGasLimit');
     });
   });
 

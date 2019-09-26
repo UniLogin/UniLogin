@@ -1,3 +1,6 @@
+import {utils} from 'ethers';
+import {ETHER_NATIVE_TOKEN} from './constants';
+
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
 export const TEST_CONTRACT_ADDRESS = '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d';
@@ -28,3 +31,35 @@ export const TEST_DEVICE_INFO = {
   time: '18 minutes ago',
   browser: 'Safari'
 };
+
+export const TEST_TOKEN_DETAILS = [
+  {
+    address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+    symbol: 'DAI',
+    name: 'MockToken'
+  },
+  ETHER_NATIVE_TOKEN
+];
+
+export const TEST_GAS_MODES = [{
+  name: 'cheap',
+  gasOptions: [{
+    gasPrice: utils.bigNumberify('20000000000'),
+    token: TEST_TOKEN_DETAILS[0],
+  },
+  {
+    gasPrice: utils.bigNumberify('20000000000'),
+    token: TEST_TOKEN_DETAILS[1],
+  }]
+},
+{
+  name: 'fast',
+  gasOptions: [{
+    gasPrice: utils.bigNumberify('24000000000'),
+    token: TEST_TOKEN_DETAILS[0],
+  },
+  {
+    gasPrice: utils.bigNumberify('24000000000'),
+    token: TEST_TOKEN_DETAILS[1],
+  }]
+}];

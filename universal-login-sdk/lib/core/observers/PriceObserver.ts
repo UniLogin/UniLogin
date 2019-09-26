@@ -2,7 +2,7 @@ const cryptocompare = require('cryptocompare');
 import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
-import {TokensDetailsStore} from '../../integration/ethereum/TokensDetailsStore';
+import {TokensDetailsStore} from '../services/TokensDetailsStore';
 
 export type OnTokenPricesChange = (data: TokensPrices) => void;
 

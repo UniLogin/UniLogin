@@ -1,7 +1,7 @@
 import {createServices} from '../../../src/ui/createServices';
 import {providers} from 'ethers';
 import {testJsonRpcUrl} from '@universal-login/commons';
-import {MockedStorageService} from './MockedStorageService';
+import {MemoryStorageService} from '@universal-login/react';
 
 export const createPreconfiguredServices = async (provider: providers.Provider, relayer: any, tokens: string[]) => {
   const domains = relayer.config.ensRegistrars;
@@ -11,10 +11,10 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
     domains,
     tokens,
   };
-  const storageService = new MockedStorageService();
+  const storageService = new MemoryStorageService();
   const services = createServices(config, {provider, storageService});
   services.sdk.priceObserver.getCurrentPrices = () => {
-    return Promise.resolve({ETH: {USD: 1, EUR: 1, BTC: 1}});
+    return Promise.resolve({ETH: {USD: 1, DAI: 1, ETH: 1}});
   };
   return services;
 };

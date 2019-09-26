@@ -1,26 +1,55 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
-import {TopUpComponentType} from '../../../core/models/TopUpComponentType';
 import {FiatFooter} from './FiatFooter';
 import {FiatPaymentMethods, LogoColor} from './FiatPaymentMethods';
+import {useServices} from '../../../core/services/useServices';
+import {useAsyncEffect} from '../../../ui/hooks/useAsyncEffect';
+import {countries} from '../../../core/utils/countries';
+import {TopUpProvider} from '../../../core/models/TopUpProvider';
 
-export type PaymentMethod = TopUpComponentType.ramp | TopUpComponentType.safello | TopUpComponentType.wyre | undefined;
 export interface TopUpWithFiatProps {
-  onPayClick: (topUpModalType: TopUpComponentType, amount: string) => void;
+  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   logoColor?: LogoColor;
 }
 
 export const TopUpWithFiat = ({onPayClick, logoColor}: TopUpWithFiatProps) => {
-  const [country, selectCountry] = useState('United Kingdom');
-  const [selectedCode, setCode] = useState('GBP');
+  const [country, setCountry] = useState<string | undefined>(undefined);
+  const [currency, setCurrency] = useState('EUR');
   const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(undefined);
+  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const [fiatClass, setFiatClass] = useState('');
+  const {ipGeolocationService, topUpProviderSupportService} = useServices();
+
+  const changeCountry = (newCountry: string) => {
+    if (newCountry === country) {
+      return;
+    }
+    const providers = topUpProviderSupportService.getProviders(newCountry);
+    if (providers.length === 1) {
+      setPaymentMethod(providers[0]);
+    } else {
+      setPaymentMethod(undefined);
+    }
+    setCountry(newCountry);
+  };
 
   useEffect(() => {
     setFiatClass('fiat-selected');
   }, []);
+
+  async function recognizeUserCountry() {
+    const userCountryCode = await ipGeolocationService.getCountryCode().catch(console.error);
+
+    const userCountry = countries.find(({code}) => code === userCountryCode);
+    if (country === undefined && userCountry) {
+      changeCountry(userCountry.name);
+      setCurrency(userCountry.currency);
+    }
+    return () => {};
+  }
+
+  useAsyncEffect(() => recognizeUserCountry(), []);
 
   return (
     <div className={`fiat ${fiatClass}`}>
@@ -29,25 +58,38 @@ export const TopUpWithFiat = ({onPayClick, logoColor}: TopUpWithFiatProps) => {
           <p className="top-up-label">Country</p>
           <CountryDropdown
             selectedCountry={country}
-            setCountry={(country: string) => selectCountry(country)}
-            setCode={(code: string) => setCode(code)}
+            setCountry={changeCountry}
+            setCurrency={setCurrency}
           />
         </div>
         <div className="fiat-input-item">
           <p className="top-up-label">Amount</p>
           <AmountInput
-            seletedCode={selectedCode}
-            setCode={setCode}
+            selectedCurrency={currency}
+            setCurrency={setCurrency}
             amount={amount}
             onChange={(amount: string) => setAmount(amount)}
           />
         </div>
       </div>
-      <p className="top-up-label fiat-payment-methods-title">Payment method</p>
-      <FiatPaymentMethods paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} logoColor={logoColor}/>
+      {!!country && <>
+          <p className="top-up-label fiat-payment-methods-title">Payment method</p>
+          <FiatPaymentMethods
+              selectedCountry={country}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
+              logoColor={logoColor}
+          />
+      </>}
       <div className="fiat-bottom">
-        <FiatFooter isPaymentMethodChecked={!!paymentMethod} />
-        <button onClick={() => onPayClick(paymentMethod!, amount)} className="pay-btn" disabled={!paymentMethod || !amount}>Pay</button>
+        {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod}/>}
+        <button
+          onClick={() => onPayClick(paymentMethod!, amount)}
+          className="pay-btn"
+          disabled={!paymentMethod || !amount}
+        >
+          Pay
+        </button>
       </div>
     </div>
   );

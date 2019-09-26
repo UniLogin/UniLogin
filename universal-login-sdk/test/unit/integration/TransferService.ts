@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
 import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {TransferService, encodeTransfer} from '../../../lib/integration/ethereum/TransferService';
+import {TransferService, encodeTransfer} from '../../../lib/core/services/TransferService';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

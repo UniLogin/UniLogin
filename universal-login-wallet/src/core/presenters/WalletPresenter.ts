@@ -5,6 +5,16 @@ export class WalletPresenter {
     private walletService: WalletService
   ) {}
 
+  getPrivateKey() {
+    switch (this.walletService.state.kind) {
+      case 'Connecting':
+      case 'Deployed':
+        return this.walletService.state.wallet.privateKey;
+      default:
+        throw new Error('Invalid wallet state: expected Deployed or Connecting wallet');
+    }
+  }
+
   getName(): string {
     switch (this.walletService.state.kind) {
       case 'Connecting':

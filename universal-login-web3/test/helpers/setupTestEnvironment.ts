@@ -6,7 +6,7 @@ import {Config, getContractWhiteList, RelayerUnderTest} from '@universal-login/r
 
 const loadFixture = createFixtureLoader();
 
-const PORT = '33111';
+const PORT = '55111';
 
 export async function setupTestEnvironment() {
   const {deployer, walletContract, factoryContract, ensAddress, ensDomains, mockToken, wallets} = await loadFixture(prerequisites);

@@ -16,7 +16,7 @@ class WalletService {
     private hooks: EventEmitter,
     private walletDeployer: WalletDeployer,
     private requiredBalanceChecker: RequiredBalanceChecker,
-    private devicesSevice: DevicesService) {
+    private devicesService: DevicesService) {
   }
 
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
@@ -29,7 +29,7 @@ class WalletService {
     const initWithENS = encodeInitializeWithENSData(args);
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const transaction = await this.walletDeployer.deploy({publicKey, signature, intializeData: initWithENS}, {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
-    await this.devicesSevice.addOrUpdate(contractAddress, publicKey, deviceInfo);
+    await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     this.hooks.emit('created', {transaction, contractAddress});
     return transaction;
   }
