@@ -23,7 +23,7 @@ export class TokensValueConverter {
   getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue) {
     const tokenValues = {} as CurrencyToValue;
     for (const symbol in tokenPrices) {
-      tokenValues[symbol as ObservedCurrency] = this.safeMultiply(balance, tokenPrices[symbol as ObservedCurrency]);
+      tokenValues[symbol as ObservedCurrency] = Number(this.safeMultiply(balance, tokenPrices[symbol as ObservedCurrency]));
     }
     return tokenValues;
   }
@@ -31,7 +31,7 @@ export class TokensValueConverter {
   safeMultiply(balance: utils.BigNumber, price: number) {
     const priceAsBigNumber = utils.parseUnits(price.toString(), SAFE_MULTIPLY_UNITS_DENORMALIZE);
     const multiplied = priceAsBigNumber.mul(balance);
-    return Number(utils.formatUnits(multiplied, SAFE_MULTIPLY_UNITS_NORMALIZE));
+    return utils.formatUnits(multiplied, SAFE_MULTIPLY_UNITS_NORMALIZE);
   }
 
   addBalances(totalBalances: CurrencyToValue, toAddBalances: CurrencyToValue) {
