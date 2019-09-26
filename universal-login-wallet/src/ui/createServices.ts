@@ -2,7 +2,7 @@ import React from 'react';
 import {providers} from 'ethers';
 import {walletFromBrain} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {StorageService,WalletStorageService} from '@universal-login/react';
+import {StorageService, WalletStorageService} from '@universal-login/react';
 import UserDropdownService from '../core/app/UserDropdownService';
 import connectToWallet from '../core/services/ConnectToWallet';
 import WalletPresenter from '../core/presenters/WalletPresenter';
