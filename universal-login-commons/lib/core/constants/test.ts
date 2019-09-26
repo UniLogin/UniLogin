@@ -35,7 +35,7 @@ export const TEST_DEVICE_INFO = {
 export const TEST_TOKEN_DETAILS = [
   {
     address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-    symbol: 'Mock',
+    symbol: 'DAI',
     name: 'MockToken'
   },
   ETHER_NATIVE_TOKEN

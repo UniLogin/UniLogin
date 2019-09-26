@@ -6,7 +6,7 @@ import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
 import {TEST_CONTRACT_ADDRESS} from '../../../lib/core/constants/test';
 
 describe('UNIT: TokensValueConverter', () => {
-  const tokensValueConverter = new TokensValueConverter(['USD', 'EUR', 'BTC']);
+  const tokensValueConverter = new TokensValueConverter(['USD', 'DAI', 'ETH']);
 
   context('safeMultiply', () => {
     it('111.11 USD/ETH * 2 ETH = 222.22 USD', () => {
@@ -30,30 +30,30 @@ describe('UNIT: TokensValueConverter', () => {
 
   context('getTokenTotalWorth', () => {
     it('0 ETH', () => {
-      const tokenPrices = {USD: 2000, EUR: 1600, BTC: 1};
+      const tokenPrices = {USD: 2000, DAI: 1600, ETH: 1};
 
       const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth(utils.parseEther('0'), tokenPrices);
 
-      expect(actualEthTotalWorth).to.be.deep.equal({USD: 0, EUR: 0, BTC: 0});
+      expect(actualEthTotalWorth).to.be.deep.equal({USD: 0, DAI: 0, ETH: 0});
     });
 
     it('2 ETH', () => {
-      const tokenPrices = {USD: 2000, EUR: 1600, BTC: 1};
+      const tokenPrices = {USD: 2000, DAI: 1600, ETH: 1};
 
       const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth(utils.parseEther('2'), tokenPrices);
 
-      expect(actualEthTotalWorth).to.be.deep.equal({USD: 2 * 2000, EUR: 2 * 1600, BTC: 2 * 1});
+      expect(actualEthTotalWorth).to.be.deep.equal({USD: 2 * 2000, DAI: 2 * 1600, ETH: 2 * 1});
     });
   });
 
   context('addBalances', () => {
-    it('{USD, EUR, BTC} + {USD, EUR, BTC}', () => {
-      const token1TotalWorth = {USD: 2000, EUR: 1600, BTC: 1};
-      const token2TotalWorth = {USD: 2 * 2000, EUR: 2 * 1600, BTC: 2 * 1};
+    it('{USD, DAI, ETH} + {USD, DAI, ETH}', () => {
+      const token1TotalWorth = {USD: 2000, DAI: 1600, ETH: 1};
+      const token2TotalWorth = {USD: 2 * 2000, DAI: 2 * 1600, ETH: 2 * 1};
 
       const tokensTotalWorth = tokensValueConverter.addBalances(token1TotalWorth, token2TotalWorth);
 
-      expect(tokensTotalWorth).to.deep.equal({USD: 3 * 2000, EUR: 3 * 1600, BTC: 3 * 1});
+      expect(tokensTotalWorth).to.deep.equal({USD: 3 * 2000, DAI: 3 * 1600, ETH: 3 * 1});
     });
   });
 
@@ -64,21 +64,21 @@ describe('UNIT: TokensValueConverter', () => {
     ];
 
     const tokenPrices = {
-      ETH: {USD: 1000, EUR: 800, BTC: 0.1},
-      Mock: {USD: 200, EUR: 160, BTC: 0.02}
+      ETH: {USD: 1000, DAI: 800, ETH: 0.1},
+      Mock: {USD: 200, DAI: 160, ETH: 0.02}
     };
 
     it('[]', async () => {
       const actualTotalWorth = tokensValueConverter.getTotal([], tokenPrices);
 
-      expect(actualTotalWorth).to.be.deep.equal({USD: 0, EUR: 0, BTC: 0});
+      expect(actualTotalWorth).to.be.deep.equal({USD: 0, DAI: 0, ETH: 0});
     });
 
     it('[ETH , DAI]', async () => {
       const expectedTotalWorth = {
         USD: 1 * 1000 + 2 * 200,
-        EUR: 1 * 800 + 2 * 160,
-        BTC: 1 * 0.1 + 2 * 0.02
+        DAI: 1 * 800 + 2 * 160,
+        ETH: 1 * 0.1 + 2 * 0.02
       };
 
       const actualTotalWorth = tokensValueConverter.getTotal(tokenDetailsWithBalance, tokenPrices);
