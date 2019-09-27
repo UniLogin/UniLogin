@@ -1,7 +1,7 @@
 import {ApplicationWallet, Message, generateBackupCode, walletFromBrain, ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
-import {Contract} from 'ethers';
+import {Contract, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
 
@@ -74,5 +74,15 @@ export class DeployedWallet implements ApplicationWallet {
     const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
     await execution.waitToBeSuccess();
     return codes;
+  }
+
+  signMessage(message: string | Uint8Array) {
+    const bytes = typeof message === 'string' ? utils.toUtf8Bytes(message) : message;
+    const hash = utils.hexlify(bytes);
+    const signingKey = new utils.SigningKey(this.privateKey);
+    const signature = signingKey.signDigest(
+      utils.hashMessage(utils.arrayify(hash))
+    );
+    return utils.joinSignature(signature);
   }
 }
