@@ -4,6 +4,7 @@ import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useRouter} from '../../hooks';
 import {ConnectModal} from './ConnectAccount';
+import {ensure} from '@universal-login/commons';
 
 
 interface ConnectWithEmojiProps {
@@ -18,11 +19,18 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
 
   const onCancelClick = async () => {
     const {contractAddress, privateKey} = walletService.getConnectingWallet();
-    await sdk.cancelRequest(contractAddress, privateKey);
+    await cancelRequest(contractAddress, privateKey);
     walletService.disconnect();
-
     connectValues!.unsubscribe();
     setConnectModal('connectionMethod');
+  };
+
+  const cancelRequest = async (contractAddress: string, privateKey: string) => {
+    try {
+      await sdk.cancelRequest(contractAddress, privateKey);
+    } catch (error) {
+      ensure(error.response === 0, Error, 'Invalid cancel request');
+    }
   };
 
   return (

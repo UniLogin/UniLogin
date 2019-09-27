@@ -118,7 +118,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
       const {status} = await chai.request(relayer.server)
         .delete(`/authorisation/${contract.address}`)
         .send({authorisationRequest});
-      expect(status).to.eq(401);
+      expect(status).to.eq(404);
 
       const {response} = await getAuthorisation(relayer, contract, keyPair);
       expect(response).to.have.lengthOf(1);
