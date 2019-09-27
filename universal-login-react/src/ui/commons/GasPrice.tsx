@@ -16,10 +16,12 @@ interface GasPriceProps {
 export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps) => {
   const [gasModes] = useAsync(() => sdk.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
+  const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('');
   const [tokenAddress, setTokenAddress] = useState<string>('');
 
-  const onModeChanged = (name: string) => {
+  const onModeChanged = (name: string, usdAmount: utils.BigNumberish) => {
     setModeName(name);
+    setUsdAmount(usdAmount);
     onGasParametersChanged({
       gasPrice: getGasPriceFor(gasModes!, name, tokenAddress),
       gasToken: tokenAddress
@@ -36,9 +38,10 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
 
   useEffect(() => {
     if (gasModes) {
-      const name = gasModes[0].name;
+      const {name, usdAmount} = gasModes[0];
       const address = gasModes[0].gasOptions[0].token.address;
       const gasPrice = getGasPriceFor(gasModes, name, address);
+      setUsdAmount(usdAmount);
       setModeName(name);
       onTokenChanged(address, gasPrice);
     }
@@ -57,8 +60,8 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
                   <div className="transaction-fee-details">
                     <img src="" alt="" className="transaction-fee-item-icon" />
                     <div>
-                      <p className="transaction-fee-amount">0.09 DAI</p>
-                      <p className="transaction-fee-amount-usd">0.09 USD</p>
+                      <p className="transaction-fee-amount">{usdAmount} DAI</p>
+                      <p className="transaction-fee-amount-usd">{usdAmount} USD</p>
                     </div>
                   </div>
                 </div>
@@ -75,13 +78,13 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
                 <div className="transaction-speed">
                   <p className="transaction-speed-title">Transaction speed</p>
                   <ul className="transaction-speed-list">
-                    {gasModes.map(({name}) => (
+                    {gasModes.map(({name, usdAmount}) => (
                       <li key={name} className="transaction-speed-item">
                         <RadioButton
                           id={name}
                           name="speed"
                           checked={name === modeName}
-                          onChange={() => onModeChanged(name)}
+                          onChange={() => onModeChanged(name, usdAmount)}
                         >
                           <div className="transaction-speed-block">
                             <p className="transaction-speed-type">{name}</p>
@@ -107,7 +110,7 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
                               <img src="" alt="" className="transaction-fee-item-icon" />
                               <div>
                                 <p className="transaction-fee-amount">{utils.formatEther(gasPrice)} {token.symbol}</p>
-                                <p className="transaction-fee-amount-usd">0.09 USD</p>
+                                <p className="transaction-fee-amount-usd">{usdAmount} USD</p>
                               </div>
                             </div>
                             <div className="transaction-fee-balance">
