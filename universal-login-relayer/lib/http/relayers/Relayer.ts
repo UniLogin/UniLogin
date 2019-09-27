@@ -32,6 +32,7 @@ import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@univ
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import {GasValidator} from '../../core/services/validators/GasValidator';
+import DeploymentHandler from '../../core/services/DeploymentHandler';
 
 const defaultPort = '3311';
 
@@ -57,6 +58,7 @@ class Relayer {
   private walletContractService: WalletService = {} as WalletService;
   private messageQueue: IExecutionQueue = {} as IExecutionQueue;
   private messageHandler: MessageHandler = {} as MessageHandler;
+  private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
   private gasValidator: GasValidator = {} as GasValidator;
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private signaturesService: SignaturesService = {} as SignaturesService;
@@ -109,8 +111,9 @@ class Relayer {
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.messageQueue, this.messageExecutor, this.statusService, this.gasValidator);
+    this.deploymentHandler = new DeploymentHandler(this.walletContractService);
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(this.walletContractService, this.messageHandler));
+    this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
     this.app.use('/devices', DevicesRouter(this.devicesService));
