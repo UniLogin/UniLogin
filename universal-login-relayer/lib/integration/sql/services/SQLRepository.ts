@@ -9,7 +9,7 @@ export class SQLRepository<T> implements IRepository<T> {
   async add(hash: string, item: T) {
     return this.knex
       .insert({
-        messageHash: hash,
+        hash,
         ...item
       })
       .into(this.tableName);
@@ -17,7 +17,7 @@ export class SQLRepository<T> implements IRepository<T> {
 
   async get(hash: string) {
     const item = await this.knex(this.tableName)
-      .where('messageHash', hash)
+      .where('hash', hash)
       .first();
 
     if (!item) {
@@ -28,7 +28,7 @@ export class SQLRepository<T> implements IRepository<T> {
 
   async isPresent(hash: string) {
     const item = await this.knex(this.tableName)
-      .where('messageHash', hash)
+      .where('hash', hash)
       .first();
 
     return !!item;
@@ -38,7 +38,7 @@ export class SQLRepository<T> implements IRepository<T> {
     const item = await this.get(hash);
     await this.knex(this.tableName)
       .delete()
-      .where('messageHash', hash);
+      .where('hash', hash);
     return item;
   }
 }

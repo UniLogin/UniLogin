@@ -43,7 +43,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
 
   private async getMessageEntry(messageHash: string) {
     return this.knex(this.tableName)
-      .where('messageHash', messageHash)
+      .where('hash', messageHash)
       .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state'])
       .first();
   }
@@ -85,21 +85,21 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
 
   async setMessageState(messageHash: string, state: MessageState) {
     return this.knex(this.tableName)
-      .where('messageHash', messageHash)
+      .where('hash', messageHash)
       .update('state', state);
   }
 
   async markAsPending(messageHash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
     return this.knex(this.tableName)
-      .where('messageHash', messageHash)
+      .where('hash', messageHash)
       .update('transactionHash', transactionHash)
       .update('state', 'Pending');
   }
 
   async markAsError(messageHash: string, error: string) {
     return this.knex(this.tableName)
-      .where('messageHash', messageHash)
+      .where('hash', messageHash)
       .update('error', error)
       .update('state', 'Error');
   }

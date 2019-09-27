@@ -33,6 +33,9 @@ import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import {GasValidator} from '../../core/services/validators/GasValidator';
 import DeploymentHandler from '../../core/services/DeploymentHandler';
+import IRepository from '../../core/services/messages/IRepository';
+import Deployment from '../../core/models/Deployment';
+import SQLRepository from '../../integration/sql/services/SQLRepository';
 import QueueService from '../../core/services/messages/QueueService';
 
 const defaultPort = '3311';
@@ -62,6 +65,7 @@ class Relayer {
   private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
   private gasValidator: GasValidator = {} as GasValidator;
   private messageRepository: IMessageRepository = {} as IMessageRepository;
+  private deploymentRepository: IRepository<Deployment> = {} as IRepository<Deployment>;
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
   private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
@@ -107,11 +111,12 @@ class Relayer {
     this.devicesService = new DevicesService(this.devicesStore, this.walletMasterContractService);
     this.walletContractService = new WalletService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
     this.messageRepository = new MessageSQLRepository(this.database);
+    this.deploymentRepository = new SQLRepository(this.database, 'deployments');
     this.executionQueue = new QueueSQLStore(this.database);
     this.signaturesService = new SignaturesService(this.wallet);
     this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
-    this.deploymentHandler = new DeploymentHandler(this.walletContractService);
+    this.deploymentHandler = new DeploymentHandler(this.walletContractService, this.deploymentRepository, this.executionQueue);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.messageHandler.onTransactionMined.bind(this.messageHandler));
     this.queueService = new QueueService(this.messageExecutor, this.executionQueue);
