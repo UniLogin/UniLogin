@@ -4,8 +4,9 @@ import './../styles/gasPriceDefault.sass';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
-import {getGasPriceFor, GasMode, GasParameters} from '@universal-login/commons';
+import {getGasPriceFor, GasMode, GasParameters, GasOption} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
 
 interface GasPriceProps {
   sdk: UniversalLoginSDK;
@@ -17,33 +18,43 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
   const [gasModes] = useAsync(() => sdk.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('');
-  const [tokenAddress, setTokenAddress] = useState<string>('');
+  const [gasOption, setGasOption] = useState<GasOption>({
+    token: {
+      name: '',
+      symbol: '',
+      address: ''
+    },
+    gasPrice: utils.bigNumberify('0')
+  });
 
   const onModeChanged = (name: string, usdAmount: utils.BigNumberish) => {
+    const gasTokenAddress = gasOption.token.address;
+    const gasOptions = findGasMode(gasModes!, name).gasOptions;
+
     setModeName(name);
     setUsdAmount(usdAmount);
+    onGasOptionChanged(findGasOption(gasOptions, gasTokenAddress));
     onGasParametersChanged({
-      gasPrice: getGasPriceFor(gasModes!, name, tokenAddress),
-      gasToken: tokenAddress
+      gasPrice: getGasPriceFor(gasModes!, name, gasTokenAddress),
+      gasToken: gasTokenAddress
     });
   };
 
-  const onTokenChanged = (address: string, gasPrice: utils.BigNumber) => {
-    setTokenAddress(address);
+  const onGasOptionChanged = (gasOption: GasOption) => {
+    setGasOption(gasOption);
     onGasParametersChanged({
-      gasPrice,
-      gasToken: address
+      gasPrice: gasOption.gasPrice,
+      gasToken: gasOption.token.address
     });
   };
 
   useEffect(() => {
     if (gasModes) {
       const {name, usdAmount} = gasModes[0];
-      const address = gasModes[0].gasOptions[0].token.address;
-      const gasPrice = getGasPriceFor(gasModes, name, address);
+      const gasOption = gasModes[0].gasOptions[0];
       setUsdAmount(usdAmount);
       setModeName(name);
-      onTokenChanged(address, gasPrice);
+      onGasOptionChanged(gasOption);
     }
   }, [gasModes]);
   const [contentVisibility, setContentVisibility] = useState(false);
@@ -60,7 +71,7 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
                   <div className="transaction-fee-details">
                     <img src="" alt="" className="transaction-fee-item-icon" />
                     <div>
-                      <p className="transaction-fee-amount">{usdAmount} DAI</p>
+                      <p className="transaction-fee-amount">{gasOption.gasPrice.toString()} {gasOption.token.symbol}</p>
                       <p className="transaction-fee-amount-usd">{usdAmount} USD</p>
                     </div>
                   </div>
@@ -97,25 +108,25 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
                 <div className="transaction-fee">
                   <p className="transaction-fee-title">Transaction fee</p>
                   <ul className="transaction-fee-list">
-                    {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map(({token, gasPrice}) => (
-                      <li key={token.address} className="transaction-fee-item">
+                    {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map((option: GasOption) => (
+                      <li key={option.token.address} className="transaction-fee-item">
                         <RadioButton
-                          id={`token-${token.address}`}
+                          id={`token-${option.token.address}`}
                           name="fee"
-                          checked={token.address === tokenAddress}
-                          onChange={() => onTokenChanged(token.address, gasPrice)}
+                          checked={option.token.address === gasOption.token.address}
+                          onChange={() => onGasOptionChanged(option)}
                         >
                           <div className="transaction-fee-row">
                             <div className="transaction-fee-details">
                               <img src="" alt="" className="transaction-fee-item-icon" />
                               <div>
-                                <p className="transaction-fee-amount">{utils.formatEther(gasPrice)} {token.symbol}</p>
+                                <p className="transaction-fee-amount">{utils.formatEther(option.gasPrice)} {option.token.symbol}</p>
                                 <p className="transaction-fee-amount-usd">{usdAmount} USD</p>
                               </div>
                             </div>
                             <div className="transaction-fee-balance">
                               <p className="transaction-fee-balance-text">Your balance</p>
-                              <p className="transaction-fee-balance-amount">250 {token.symbol}</p>
+                              <p className="transaction-fee-balance-amount">250 {option.token.symbol}</p>
                             </div>
                           </div>
                         </RadioButton>
