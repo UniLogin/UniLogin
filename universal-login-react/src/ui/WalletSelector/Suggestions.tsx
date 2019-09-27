@@ -38,14 +38,14 @@ const getCreationSuggestionsItems = (
 ) =>
   array.map(element => (
     <li key={`${operationType}_${element}`} className="suggestions-item">
-      <h3 className="suggestions-title"> This username is available </h3>
-      <span className="suggestion-element">{element} </span>
+      <h3 className="suggestions-title">{element} </h3>
+      <span className="suggestion-element"> This username is available! </span>
       <button
         className="suggestions-item-btn"
         id={getSuggestionId(operationType)}
         onClick={() => onClick(element)}
       >
-        Create new account
+        Create New Account
       </button>
     </li>
   ));

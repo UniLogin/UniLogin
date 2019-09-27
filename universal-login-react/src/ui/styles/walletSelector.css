@@ -4,6 +4,9 @@
 
 textarea, select, input, button { outline: none; }
 
+.universal-login {
+  font-family: 'Fira Sans', helvetica neue, helvetica, arial, sans-serif;
+}
 
 .perspective {
   perspective: 1000px;
@@ -41,7 +44,7 @@ textarea, select, input, button { outline: none; }
 .universal-login .button-web3-provider {
   position: absolute;
   top: 0;
-  font-family: helvetica neue, helvetica, arial, sans-serif;
+  /* font-family: helvetica neue, helvetica, arial, sans-serif; */
   font-size: 80%;
   line-height: 1;
   margin: 0;
@@ -59,7 +62,7 @@ textarea, select, input, button { outline: none; }
   position: absolute;
   top: 0;
   padding-top: 14px;
-  font-family: helvetica neue, helvetica, arial, sans-serif;
+  /* font-family: helvetica neue, helvetica, arial, sans-serif; */
   color: #666;
   text-align: center;
   background: #fff;
@@ -117,19 +120,20 @@ textarea, select, input, button { outline: none; }
   list-style: none;
   background: #fff;
   text-align: center;
-  font-family: helvetica, helvetica neue, arial;
+  /* font-family: helvetica, helvetica neue, arial; */
 }
 
 .universal-login .suggestions-list .suggestions-title {
-
+  margin-bottom: 10px;
 }
 
 .universal-login .suggestions-item-btn {
-  /* display: flex; */
-  justify-content: space-between;
-  align-items: center;
+  display: block;
+  font-family: 'Fira Sans', helvetica neue, helvetica, arial, sans-serif;
+  /* justify-content: space-between; */
+  /* align-items: center; */
   width: 100%;
-  padding: 10px 20.5px;
+  padding: 10px 0;
   margin-top: 5px;
   border: none;
   text-align: center;
@@ -145,7 +149,6 @@ textarea, select, input, button { outline: none; }
 }
 
 .universal-login .suggestion-element {
-  font-style: italic;
   color: #aaa;
 }
 
