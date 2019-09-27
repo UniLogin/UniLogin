@@ -18,12 +18,6 @@ export const UHeader = ({activeTab, setActiveTab}: UHeaderProps) => {
         Funds
       </button>
       <button
-        className={`udashboard-tab udashboard-tab-approve ${activeTab === 'approveDevice' ? 'active' : ''}`}
-        onClick={() => setActiveTab('approveDevice')}
-      >
-        Approve Device
-      </button>
-      <button
         className={`udashboard-tab udashboard-tab-devices ${activeTab === 'devices' ? 'active' : ''}`}
         onClick={() => setActiveTab('devices')}
       >
