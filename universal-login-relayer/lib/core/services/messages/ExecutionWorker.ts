@@ -2,10 +2,10 @@ import {sleep, onCritical} from '@universal-login/commons';
 import {IExecutionQueue} from './IExecutionQueue';
 import MessageExecutor from '../../../integration/ethereum/MessageExecutor';
 
-type QueueState = 'running' | 'stopped' | 'stopping';
+type ExecutionWorkerState = 'running' | 'stopped' | 'stopping';
 
-class QueueService {
-  private state: QueueState;
+class ExecutionWorker {
+  private state: ExecutionWorkerState;
 
   constructor(
     private messageExecutor: MessageExecutor,
@@ -60,4 +60,4 @@ class QueueService {
   }
 }
 
-export default QueueService;
+export default ExecutionWorker;

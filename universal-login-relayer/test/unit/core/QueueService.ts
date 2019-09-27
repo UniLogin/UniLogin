@@ -2,7 +2,7 @@ import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {calculateMessageHash, waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import QueueService from '../../../lib/core/services/messages/QueueService';
+import ExecutionWorker from '../../../lib/core/services/messages/ExecutionWorker';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
@@ -13,7 +13,7 @@ import MessageExecutor from '../../../lib/integration/ethereum/MessageExecutor';
 use(sinonChai);
 
 describe('UNIT: Queue Service', async () => {
-  let queueService: QueueService;
+  let executionWorker: ExecutionWorker;
   let queueMemoryStore: QueueMemoryStore;
   let messageRepository: IMessageRepository;
   let messageExecutor: MessageExecutor;
@@ -35,7 +35,7 @@ describe('UNIT: Queue Service', async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
     messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, onTransactionMined);
-    queueService = new QueueService(messageExecutor, queueMemoryStore);
+    executionWorker = new ExecutionWorker(messageExecutor, queueMemoryStore);
     signedMessage = getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
@@ -47,7 +47,7 @@ describe('UNIT: Queue Service', async () => {
 
   it('signedMessage round trip', async () => {
     const executeSpy = sinon.spy(messageExecutor, 'execute');
-    queueService.start();
+    executionWorker.start();
     await queueMemoryStore.addMessage(signedMessage);
     await waitExpect(() => expect(executeSpy).to.be.calledOnce);
     expect(wait).to.be.calledAfter(executeSpy);
@@ -59,15 +59,15 @@ describe('UNIT: Queue Service', async () => {
   it('should execute pending signedMessage after start', async () => {
     const executeSpy = sinon.spy(messageExecutor, 'execute');
     await queueMemoryStore.addMessage(signedMessage);
-    queueService.start();
+    executionWorker.start();
     await waitExpect(() => expect(executeSpy).to.be.calledOnce);
     expect(wait).to.be.calledAfter(executeSpy);
   });
 
   it('should throw error when hash is null', async () => {
     messageExecutor.execute = sinon.fake.returns(null);
-    queueService = new QueueService(messageExecutor, queueMemoryStore);
-    queueService.start();
+    executionWorker = new ExecutionWorker(messageExecutor, queueMemoryStore);
+    executionWorker.start();
     const markAsErrorSpy = sinon.spy(messageRepository.markAsError);
     messageRepository.markAsError = markAsErrorSpy;
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
@@ -82,8 +82,8 @@ describe('UNIT: Queue Service', async () => {
   it('should not execute if the executor cannot execute, but remove from the queue', async () => {
     messageExecutor.canExecute = sinon.fake.returns(false);
     const executeSpy = sinon.spy(messageExecutor, 'execute');
-    queueService = new QueueService(messageExecutor, queueMemoryStore);
-    queueService.start();
+    executionWorker = new ExecutionWorker(messageExecutor, queueMemoryStore);
+    executionWorker.start();
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
     await messageRepository.add(messageHash, createMessageItem(signedMessage));
     messageHash = await queueMemoryStore.addMessage(signedMessage);
@@ -94,6 +94,6 @@ describe('UNIT: Queue Service', async () => {
   });
 
   afterEach(async () => {
-    await queueService.stopLater();
+    await executionWorker.stopLater();
   });
 });

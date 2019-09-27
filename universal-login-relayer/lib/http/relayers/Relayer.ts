@@ -36,7 +36,7 @@ import DeploymentHandler from '../../core/services/DeploymentHandler';
 import IRepository from '../../core/services/messages/IRepository';
 import Deployment from '../../core/models/Deployment';
 import SQLRepository from '../../integration/sql/services/SQLRepository';
-import QueueService from '../../core/services/messages/QueueService';
+import ExecutionWorker from '../../core/services/messages/ExecutionWorker';
 
 const defaultPort = '3311';
 
@@ -69,7 +69,7 @@ class Relayer {
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
   private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
-  private queueService: QueueService = {} as QueueService;
+  private executionWorker: ExecutionWorker = {} as ExecutionWorker;
   private messageExecutor: MessageExecutor = {} as MessageExecutor;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
@@ -90,7 +90,7 @@ class Relayer {
     await this.database.migrate.latest();
     this.runServer();
     await this.ensService.start();
-    this.queueService.start();
+    this.executionWorker.start();
   }
 
   runServer() {
@@ -119,7 +119,7 @@ class Relayer {
     this.deploymentHandler = new DeploymentHandler(this.walletContractService, this.deploymentRepository, this.executionQueue);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.messageHandler.onTransactionMined.bind(this.messageHandler));
-    this.queueService = new QueueService(this.messageExecutor, this.executionQueue);
+    this.executionWorker = new ExecutionWorker(this.messageExecutor, this.executionQueue);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
@@ -130,13 +130,13 @@ class Relayer {
   }
 
   async stop() {
-    await this.queueService.stop();
+    await this.executionWorker.stop();
     await this.database.destroy();
     await this.server.close();
   }
 
   async stopLater() {
-    await this.queueService.stopLater();
+    await this.executionWorker.stopLater();
     await this.database.destroy();
     await this.server.close();
   }

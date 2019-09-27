@@ -18,19 +18,19 @@ describe('INT: MultiSignatureExecute', async () => {
   let msg;
   let otherWallet;
   let actionKey;
-  let queueService;
+  let executionWorker;
   const config = getConfig('test');
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, queueService} = await setupMessageService(knex, config));
+    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, qexecutionWorker} = await setupMessageService(knex, config));
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
-    queueService.start();
+    executionWorker.start();
   });
 
   afterEach(async () => {
-    queueService.stopLater();
+    executionWorker.stopLater();
     await clearDatabase(knex);
   });
 
@@ -43,7 +43,7 @@ describe('INT: MultiSignatureExecute', async () => {
     const signedMessage1 = messageToSignedMessage(message, actionKey);
     await messageHandler.handleMessage(signedMessage0);
     const {messageHash} = await messageHandler.handleMessage(signedMessage1);
-    await queueService.stopLater();
+    await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
     expect(messageEntry.error).to.be.eq('Error: Not enough tokens');
   });
@@ -68,7 +68,7 @@ describe('INT: MultiSignatureExecute', async () => {
       const signedMessage1 = messageToSignedMessage(msg, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       const {messageHash} = await messageHandler.handleMessage(signedMessage1);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const {state, transactionHash} = await messageHandler.getStatus(messageHash);
       expect(transactionHash).to.not.be.null;
@@ -86,7 +86,7 @@ describe('INT: MultiSignatureExecute', async () => {
       const signedMessage1 = messageToSignedMessage(msg, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
@@ -101,12 +101,12 @@ describe('INT: MultiSignatureExecute', async () => {
         const status = await messageHandler.getStatus(messageHash);
         expect(status.required).to.be.eq(2);
         expect(status.totalCollected).to.be.eq(status.required);
-        await queueService.stopLater();
+        await executionWorker.stopLater();
       });
 
       it('should fail to get pending execution status when there it is unable to find it', async () => {
         await expect(messageHandler.getStatus('0x0')).become(null);
-        await queueService.stopLater();
+        await executionWorker.stopLater();
       });
     });
   });
@@ -127,7 +127,7 @@ describe('INT: MultiSignatureExecute', async () => {
       const signedMessage1 = messageToSignedMessage(message, actionKey);
       await messageHandler.handleMessage(signedMessage0);
       await messageHandler.handleMessage(signedMessage1);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect((await walletContract.keyExist(otherWallet.address))).to.be.false;
     });
   });
