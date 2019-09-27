@@ -64,7 +64,7 @@ export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps
                 </div>
                 <hr className="gas-price-selected-divider" />
                 <div>
-                  <p className="transaction-speed-type">Fast</p>
+                  <p className="transaction-speed-type">{modeName}</p>
                 </div>
               </div>
               <button className="gas-price-btn" onClick={() => setContentVisibility(!contentVisibility)} />

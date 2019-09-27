@@ -40,7 +40,7 @@ describe('INT: TransferService', () => {
   it('Should transfer tokens', async () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
-    const currency = 'Mock';
+    const currency = 'DAI';
     const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
     await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
