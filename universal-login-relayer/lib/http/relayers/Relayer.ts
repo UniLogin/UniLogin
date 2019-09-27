@@ -56,7 +56,7 @@ class Relayer {
   private balanceChecker: BalanceChecker = {} as BalanceChecker;
   private requiredBalanceChecker: RequiredBalanceChecker = {} as RequiredBalanceChecker;
   private walletContractService: WalletService = {} as WalletService;
-  private messageQueue: IExecutionQueue = {} as IExecutionQueue;
+  private executionQueue: IExecutionQueue = {} as IExecutionQueue;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
   private gasValidator: GasValidator = {} as GasValidator;
@@ -105,12 +105,12 @@ class Relayer {
     this.devicesService = new DevicesService(this.devicesStore, this.walletMasterContractService);
     this.walletContractService = new WalletService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
     this.messageRepository = new MessageSQLRepository(this.database);
-    this.messageQueue = new QueueSQLStore(this.database);
+    this.executionQueue = new QueueSQLStore(this.database);
     this.signaturesService = new SignaturesService(this.wallet);
     this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.messageQueue, this.messageExecutor, this.statusService, this.gasValidator);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.executionQueue, this.messageExecutor, this.statusService, this.gasValidator);
     this.deploymentHandler = new DeploymentHandler(this.walletContractService);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
