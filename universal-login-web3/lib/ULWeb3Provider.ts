@@ -135,15 +135,11 @@ export class ULWeb3Provider implements Provider {
     return succeeded.transactionHash;
   }
 
-  async sign(address: string, message: string): Promise<string> {
-    const wallet = await this.walletService.getDeployedWallet();
+  sign(address: string, message: string) {
+    const wallet = this.walletService.getDeployedWallet();
     ensure(wallet.contractAddress !== address, Error, `Address ${address} is not available to sign`);
 
-    const signingKey = new utils.SigningKey(wallet.privateKey);
-    const signature = signingKey.signDigest(
-      utils.hashMessage(utils.arrayify(message)),
-    );
-    return utils.joinSignature(signature);
+    return wallet.signMessage(utils.arrayify(message));
   }
 
   create() {

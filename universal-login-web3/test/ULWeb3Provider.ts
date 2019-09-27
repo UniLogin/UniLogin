@@ -77,4 +77,18 @@ describe('ULWeb3Provier', () => {
     });
   });
 
+  describe('sign', () => {
+    const message = 'message';
+
+    it('web3.eth.sign', async () => {
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      const signature = await web3.eth.sign(message, deployedWallet.contractAddress);
+
+      const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      expect(signature).to.eq(expectedSignature);
+    });
+  });
+
 });
