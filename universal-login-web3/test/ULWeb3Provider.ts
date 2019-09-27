@@ -6,15 +6,17 @@ import {AppProps} from '../lib/ui/App';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createWallet} from './helpers/createWallet';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
+import {ULWeb3Provider} from '../lib';
 
 describe('ULWeb3Provier', () => {
   let relayer: RelayerUnderTest;
   let deployer: Wallet;
   let services: AppProps;
   let web3: Web3;
+  let ulProvider: ULWeb3Provider;
 
   beforeEach(async () => {
-    ({relayer, deployer, services, web3} = await setupTestEnvironmentWithWeb3());
+    ({relayer, deployer, services, web3, ulProvider} = await setupTestEnvironmentWithWeb3());
   });
 
   afterEach(async () => {
@@ -77,4 +79,38 @@ describe('ULWeb3Provier', () => {
     });
   });
 
+  describe('create', () => {
+    it('if there is not wallet it shows the UI and returns a promise that resolves once the wallet is created', async () => {
+      let isResolved = false;
+      ulProvider.create().then(() => {
+        isResolved = true;
+      });
+
+      expect(services.uiController.showOnboarding.get()).to.be.true;
+      expect(isResolved).to.be.false;
+
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      await waitExpect(() => {
+        expect(services.uiController.showOnboarding.get()).to.be.false;
+        expect(isResolved).to.be.true;
+      });
+    });
+
+    it('doesnt show the UI if wallet is already there', async () => {
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      let isResolved = false;
+      ulProvider.create().then(() => {
+        isResolved = true;
+      });
+
+      expect(services.uiController.showOnboarding.get()).to.be.false;
+      await waitExpect(() => {
+        expect(isResolved).to.be.true;
+      });
+    });
+  });
 });
