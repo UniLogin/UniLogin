@@ -76,13 +76,9 @@ export class DeployedWallet implements ApplicationWallet {
     return codes;
   }
 
-  signMessage(message: string | Uint8Array) {
-    const bytes = typeof message === 'string' ? utils.toUtf8Bytes(message) : message;
-    const hash = utils.hexlify(bytes);
+  signMessage(bytes: Uint8Array) {
     const signingKey = new utils.SigningKey(this.privateKey);
-    const signature = signingKey.signDigest(
-      utils.hashMessage(utils.arrayify(hash))
-    );
+    const signature = signingKey.signDigest(utils.hashMessage(bytes));
     return utils.joinSignature(signature);
   }
 }

@@ -15,11 +15,7 @@ describe('DeployedWallet', () => {
       expectedSignature = await wallet.signMessage(message);
     });
 
-    it('can sign a string', () => {
-      expect(deployedWallet.signMessage(message)).to.eq(expectedSignature);
-    });
-
-    it('can sign bytes array', () => {
+    it('can sign', () => {
       const bytes = utils.toUtf8Bytes(message);
       expect(deployedWallet.signMessage(bytes)).to.eq(expectedSignature);
     });
