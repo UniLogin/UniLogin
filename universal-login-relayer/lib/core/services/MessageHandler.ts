@@ -23,12 +23,12 @@ class MessageHandler {
     private devicesService: DevicesService,
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
-    messageQueue: IExecutionQueue,
+    executionQueue: IExecutionQueue,
     messageExecutor: MessageExecutor,
     statusService: MessageStatusService,
     private gasValidator: GasValidator
   ) {
-    this.queueService = new QueueService(messageExecutor, messageQueue, messageRepository, this.onTransactionMined.bind(this));
+    this.queueService = new QueueService(messageExecutor, executionQueue, messageRepository, this.onTransactionMined.bind(this));
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
   }
 

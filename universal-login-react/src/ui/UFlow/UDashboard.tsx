@@ -15,6 +15,7 @@ import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
 import {TransferInProgress} from './TransferInProgress';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
+import {DeleteAccount} from './DeleteAccount';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -104,6 +105,14 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             privateKey={applicationWallet.privateKey}
             ensName={applicationWallet.name}
             onManageDevicesClick={() => setDashboardContent('approveDevice')}
+            onDeleteAccountClick={() => setDashboardContent('deleteAccount')}
+          />
+        );
+      case 'deleteAccount':
+        return (
+          <DeleteAccount
+            onCancelClick={() => setDashboardContent('devices')}
+            onConfirmDeleteClick={() => {}}
           />
         );
       case 'backup':

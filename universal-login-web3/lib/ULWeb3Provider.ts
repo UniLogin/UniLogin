@@ -6,7 +6,7 @@ import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain} from '@universal-login/commons';
-import {waitFor} from './utils';
+import {waitForTrue} from './utils';
 import {initUi} from './ui';
 import {AppProps} from './ui/App';
 import {StorageService, WalletStorageService} from '@universal-login/react';
@@ -121,7 +121,7 @@ export class ULWeb3Provider implements Provider {
   async sendTransaction(tx: Partial<Message>): Promise<string> {
     if (!this.walletService.walletDeployed.get()) {
       this.uiController.requireWallet();
-      await waitFor((x: boolean) => x)(this.walletService.walletDeployed);
+      await waitForTrue(this.walletService.walletDeployed);
     }
     return this.executeTransaction(tx);
   }
@@ -145,7 +145,9 @@ export class ULWeb3Provider implements Provider {
     return wallet.signMessage(utils.arrayify(message));
   }
 
-  create() {
+  async create() {
     this.uiController.requireWallet();
+
+    await waitForTrue(this.walletService.walletDeployed);
   }
 }

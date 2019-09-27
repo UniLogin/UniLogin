@@ -1,5 +1,4 @@
 import {Router, Request} from 'express';
-import WalletService from '../../integration/ethereum/WalletService';
 import MessageHandler from '../../core/services/MessageHandler';
 import {SignedMessage, DeployArgs} from '@universal-login/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
@@ -7,6 +6,7 @@ import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 import {asArrayish} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
+import DeploymentHandler from '../../core/services/DeploymentHandler';
 
 
 const execution = (messageHandler : MessageHandler) =>
@@ -21,15 +21,14 @@ const getStatus = (messageHandler: MessageHandler) =>
     return responseOf(status);
   };
 
-const deploy = (walletContractService: WalletService) =>
+const deploy = (deploymentHandler: DeploymentHandler) =>
   async (data: {body: DeployArgs}, req: Request) => {
     const deviceInfo = getDeviceInfo(req);
-    const {publicKey, ensName, gasPrice, gasToken, signature} = data.body;
-    const transaction = await walletContractService.deploy({publicKey, ensName, gasPrice, gasToken, signature}, deviceInfo);
+    const transaction = await deploymentHandler.handleDeployment(data.body, deviceInfo);
     return responseOf(transaction, 201);
   };
 
-export default (walletContractService : WalletService, messageHandler: MessageHandler) => {
+export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHandler) => {
   const router = Router();
 
   router.post('/execution', asyncHandler(
@@ -67,7 +66,7 @@ export default (walletContractService : WalletService, messageHandler: MessageHa
         signature: asString
       })
     }),
-    deploy(walletContractService)
+    deploy(deploymentHandler)
   ));
 
   return router;

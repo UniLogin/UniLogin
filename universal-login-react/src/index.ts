@@ -25,6 +25,7 @@ import Avatar from './ui/assets/avatar.svg';
 export {Avatar};
 export {LogoButton} from './ui/UFlow/LogoButton';
 export {Funds} from './ui/UFlow/Funds';
+export {DeleteAccount} from './ui/UFlow/DeleteAccount';
 export {BackupCodes} from './ui/BackupCodes/BackupCodes';
 export {Devices} from './ui/UFlow/Devices/Devices';
 export {ModalTransferRecipient} from './ui/Transfer/Recipient/ModalTransferRecipient';
