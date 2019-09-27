@@ -127,14 +127,8 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(tx: Partial<Message>): Promise<string> {
-    if (!this.walletService.walletDeployed.get()) {
-      this.uiController.requireWallet();
-      await waitForTrue(this.walletService.walletDeployed);
-    }
-    return this.executeTransaction(tx);
-  }
+    await this.ensureWalletIsDeployed();
 
-  async executeTransaction(tx: Partial<Message>): Promise<string> {
     const execution = await this.walletService.getDeployedWallet().execute({
       ...tx,
       from: this.walletService.getDeployedWallet().contractAddress,
@@ -146,7 +140,9 @@ export class ULWeb3Provider implements Provider {
     return succeeded.transactionHash;
   }
 
-  sign(address: string, message: string) {
+  async sign(address: string, message: string) {
+    await this.ensureWalletIsDeployed();
+
     const wallet = this.walletService.getDeployedWallet();
     ensure(wallet.contractAddress !== address, Error, `Address ${address} is not available to sign`);
 
@@ -157,5 +153,12 @@ export class ULWeb3Provider implements Provider {
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
+  }
+
+  private async ensureWalletIsDeployed() {
+    if (!this.walletService.walletDeployed.get()) {
+      this.uiController.requireWallet();
+      await waitForTrue(this.walletService.walletDeployed);
+    }
   }
 }
