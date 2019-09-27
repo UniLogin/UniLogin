@@ -89,6 +89,17 @@ describe('ULWeb3Provier', () => {
       const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
       expect(signature).to.eq(expectedSignature);
     });
+
+    it('web3.eth.personal.sign', async () => {
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      // wrong library typedefs here
+      const signature = await (web3.eth.personal.sign as any)(message, deployedWallet.contractAddress, '');
+
+      const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      expect(signature).to.eq(expectedSignature);
+    });
   });
 
 });
