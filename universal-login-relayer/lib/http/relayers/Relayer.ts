@@ -33,6 +33,7 @@ import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import {GasValidator} from '../../core/services/validators/GasValidator';
 import DeploymentHandler from '../../core/services/DeploymentHandler';
+import QueueService from '../../core/services/messages/QueueService';
 
 const defaultPort = '3311';
 
@@ -64,6 +65,7 @@ class Relayer {
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
   private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
+  private queueService: QueueService = {} as QueueService;
   private messageExecutor: MessageExecutor = {} as MessageExecutor;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
@@ -84,7 +86,7 @@ class Relayer {
     await this.database.migrate.latest();
     this.runServer();
     await this.ensService.start();
-    this.messageHandler.start();
+    this.queueService.start();
   }
 
   runServer() {
@@ -109,9 +111,10 @@ class Relayer {
     this.signaturesService = new SignaturesService(this.wallet);
     this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
-    this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.executionQueue, this.messageExecutor, this.statusService, this.gasValidator);
     this.deploymentHandler = new DeploymentHandler(this.walletContractService);
+    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
+    this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.messageHandler.onTransactionMined.bind(this.messageHandler));
+    this.queueService = new QueueService(this.messageExecutor, this.executionQueue);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
@@ -122,13 +125,13 @@ class Relayer {
   }
 
   async stop() {
-    await this.messageHandler.stop();
+    await this.queueService.stop();
     await this.database.destroy();
     await this.server.close();
   }
 
   async stopLater() {
-    await this.messageHandler.stopLater();
+    await this.queueService.stopLater();
     await this.database.destroy();
     await this.server.close();
   }

@@ -5,6 +5,7 @@ import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContr
 import {SignedMessage, createSignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {providers, Wallet, Contract} from 'ethers';
 import {bigNumberify} from 'ethers/utils';
+import MessageMemoryRepository from '../../../helpers/MessageMemoryRepository';
 
 describe('INT: MessageExecutor', async () => {
   let messageExecutor: MessageExecutor;
@@ -18,7 +19,7 @@ describe('INT: MessageExecutor', async () => {
 
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
-    messageExecutor = new MessageExecutor(wallet, validator as any);
+    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), async () => {});
     signedMessage = createSignedMessage({from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()}, wallet.privateKey);
   });
 

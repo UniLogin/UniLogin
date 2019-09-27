@@ -33,7 +33,7 @@ describe('INT: PendingMessages', () => {
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
     signaturesService = new SignaturesService(wallet);
     statusService = new MessageStatusService(messageRepository, signaturesService);
-    pendingMessages = new PendingMessages(wallet, messageRepository, {add: spy} as any, statusService);
+    pendingMessages = new PendingMessages(wallet, messageRepository, {addMessage: spy} as any, statusService);
     message = createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);

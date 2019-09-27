@@ -5,15 +5,15 @@ import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
 import IMessageRepository from './IMessagesRepository';
 import {getKeyFromHashAndSignature} from '../../utils/encodeData';
-import QueueService from './QueueService';
 import {createMessageItem} from '../../utils/messages/serialisation';
+import {IExecutionQueue} from './IExecutionQueue';
 
 export default class PendingMessages {
 
   constructor(
     private wallet : Wallet,
     private messageRepository: IMessageRepository,
-    private queueService: QueueService,
+    private executionQueue: IExecutionQueue,
     private statusService: MessageStatusService
   ) {}
 
@@ -38,7 +38,8 @@ export default class PendingMessages {
 
   private async onReadyToExecute(messageHash: string, message: SignedMessage) {
     await this.ensureCorrectExecution(messageHash);
-    return this.queueService.add(message);
+    await this.messageRepository.setMessageState(messageHash, 'Queued');
+    return this.executionQueue.addMessage(message);
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {

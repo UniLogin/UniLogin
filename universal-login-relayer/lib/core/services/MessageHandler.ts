@@ -3,10 +3,8 @@ import {EventEmitter} from 'fbemitter';
 import {SignedMessage, EMPTY_DEVICE_INFO} from '@universal-login/commons';
 import {isAddKeyCall, decodeParametersFromData, isAddKeysCall, isRemoveKeyCall} from '../utils/encodeData';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
-import QueueService from './messages/QueueService';
 import PendingMessages from './messages/PendingMessages';
 import {decodeDataForExecuteSigned} from '../utils/messages/serialisation';
-import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import IMessageRepository from './messages/IMessagesRepository';
 import {IExecutionQueue} from './messages/IExecutionQueue';
 import {MessageStatusService} from './messages/MessageStatusService';
@@ -15,7 +13,6 @@ import {GasValidator} from './validators/GasValidator';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
-  private queueService: QueueService;
 
   constructor(
     wallet: Wallet,
@@ -23,17 +20,11 @@ class MessageHandler {
     private devicesService: DevicesService,
     private hooks: EventEmitter,
     messageRepository: IMessageRepository,
-    executionQueue: IExecutionQueue,
-    messageExecutor: MessageExecutor,
     statusService: MessageStatusService,
-    private gasValidator: GasValidator
+    private gasValidator: GasValidator,
+    private executionQueue: IExecutionQueue
   ) {
-    this.queueService = new QueueService(messageExecutor, executionQueue, messageRepository, this.onTransactionMined.bind(this));
-    this.pendingMessages = new PendingMessages(wallet, messageRepository, this.queueService, statusService);
-  }
-
-  start() {
-    this.queueService.start();
+    this.pendingMessages = new PendingMessages(wallet, messageRepository, this.executionQueue, statusService);
   }
 
   async onTransactionMined(sentTransaction: providers.TransactionResponse) {
@@ -74,14 +65,6 @@ class MessageHandler {
       return null;
     }
     return this.pendingMessages.getStatus(messageHash);
-  }
-
-  async stop() {
-    await this.queueService.stop();
-  }
-
-  async stopLater() {
-    return this.queueService.stopLater();
   }
 }
 
