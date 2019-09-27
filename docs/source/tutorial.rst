@@ -8,8 +8,26 @@ Tutorial
 Quickstart
 -----------
 
-New project
-^^^^^^^^^^^
+Starting with Web3 provider
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you are developing a web application the easiest way to get started with Universal-Login is by using out Web3 provider.
+
+Installation
+
+  To add the provider to your project using npm type the following:
+  ::
+
+    npm i web3 @universal-login/web3 react react-dom
+
+  If you are using yarn than type:
+  ::
+
+    yarn add @universal-login/web3 react react-dom
+
+
+Starting with SDK
+^^^^^^^^^^^^^^^^^
 
 Installation
   To add the SDK to your project using npm type the following:
@@ -401,3 +419,4 @@ To register your own ENS domain programmatically, you should use DomainRegistrar
         DOMAIN='extra-domain.test'
         PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
         REGISTRAR_ADDRESS='0xEe0b357352C7Ba455EFD0E20d192bC44F1Bf8d22'
+
