@@ -4,7 +4,7 @@ import './../styles/gasPriceDefault.sass';
 import {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
-import {getGasPriceFor, GasMode, GasParameters, GasOption} from '@universal-login/commons';
+import {GasMode, GasParameters, GasOption, EMPTY_GAS_OPTION} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
 
@@ -18,14 +18,7 @@ export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: Ga
   const [gasModes] = useAsync<GasMode[]>(() => deployedWallet.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('');
-  const [gasOption, setGasOption] = useState<GasOption>({
-    token: {
-      name: '',
-      symbol: '',
-      address: ''
-    },
-    gasPrice: utils.bigNumberify('0')
-  });
+  const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const onModeChanged = (name: string, usdAmount: utils.BigNumberish) => {
     const gasTokenAddress = gasOption.token.address;
@@ -34,10 +27,6 @@ export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: Ga
     setModeName(name);
     setUsdAmount(usdAmount);
     onGasOptionChanged(findGasOption(gasOptions, gasTokenAddress));
-    onGasParametersChanged({
-      gasPrice: getGasPriceFor(gasModes!, name, gasTokenAddress),
-      gasToken: gasTokenAddress
-    });
   };
 
   const onGasOptionChanged = (gasOption: GasOption) => {
