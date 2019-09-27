@@ -1,6 +1,6 @@
 import {utils, Wallet} from 'ethers';
 import {UnsignedMessage} from '../../models/message';
-import {sign} from '../signatures';
+import {signHexString} from '../signatures';
 import {DeployArgs} from '../../models/deploy';
 
 export const calculateDeployHash = (msg: DeployArgs) => {
@@ -17,7 +17,7 @@ export const calculateMessageHash = (msg: UnsignedMessage) => {
 };
 
 export const calculateMessageSignature = (privateKey: string, msg: UnsignedMessage) => {
-  return sign(calculateMessageHash(msg), privateKey);
+  return signHexString(calculateMessageHash(msg), privateKey);
 };
 
 export const calculateMessageSignatures = async (privateKeys: string[], msg: UnsignedMessage) => {

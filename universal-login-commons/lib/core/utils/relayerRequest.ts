@@ -1,11 +1,11 @@
 import {utils} from 'ethers';
 import {RelayerRequest} from '../models/relayerRequest';
-import {sign} from './signatures';
+import {signHexString} from './signatures';
 
 export const signRelayerRequest =
   (relayerRequest: RelayerRequest, privateKey: string) => {
     const payloadDigest = hashRelayerRequest(relayerRequest);
-    relayerRequest.signature = sign(payloadDigest, privateKey);
+    relayerRequest.signature = signHexString(payloadDigest, privateKey);
     return relayerRequest;
   };
 
