@@ -84,6 +84,7 @@ export class ULWeb3Provider implements Provider {
       case 'eth_sendTransaction':
       case 'eth_accounts':
       case 'eth_sign':
+      case 'personal_sign':
         try {
           this.handle(payload.method, payload.params).then((result: any) => {
             callback(null, {
@@ -110,6 +111,8 @@ export class ULWeb3Provider implements Provider {
         return this.getAccounts();
       case 'eth_sign':
         return this.sign(params[0], params[1]);
+      case 'personal_sign':
+        return this.sign(params[1], params[0]);
       default:
         throw new Error(`Method not supported: ${method}`);
     }
@@ -143,15 +146,11 @@ export class ULWeb3Provider implements Provider {
     return succeeded.transactionHash;
   }
 
-  async sign(address: string, message: string): Promise<string> {
-    const wallet = await this.walletService.getDeployedWallet();
+  sign(address: string, message: string) {
+    const wallet = this.walletService.getDeployedWallet();
     ensure(wallet.contractAddress !== address, Error, `Address ${address} is not available to sign`);
 
-    const signingKey = new utils.SigningKey(wallet.privateKey);
-    const signature = signingKey.signDigest(
-      utils.hashMessage(utils.arrayify(message)),
-    );
-    return utils.joinSignature(signature);
+    return wallet.signMessage(utils.arrayify(message));
   }
 
   async create() {

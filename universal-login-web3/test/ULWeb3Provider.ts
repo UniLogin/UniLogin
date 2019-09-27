@@ -79,6 +79,31 @@ describe('ULWeb3Provier', () => {
     });
   });
 
+  describe('sign', () => {
+    const message = 'message';
+
+    it('web3.eth.sign', async () => {
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      const signature = await web3.eth.sign(message, deployedWallet.contractAddress);
+
+      const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      expect(signature).to.eq(expectedSignature);
+    });
+
+    it('web3.eth.personal.sign', async () => {
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.connect(deployedWallet.asApplicationWallet);
+
+      // wrong library typedefs here
+      const signature = await (web3.eth.personal.sign as any)(message, deployedWallet.contractAddress, '');
+
+      const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      expect(signature).to.eq(expectedSignature);
+    });
+  });
+
   describe('create', () => {
     it('if there is not wallet it shows the UI and returns a promise that resolves once the wallet is created', async () => {
       let isResolved = false;
