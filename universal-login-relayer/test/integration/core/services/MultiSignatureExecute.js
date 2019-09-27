@@ -23,7 +23,7 @@ describe('INT: MultiSignatureExecute', async () => {
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, qexecutionWorker} = await setupMessageService(knex, config));
+    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, executionWorker} = await setupMessageService(knex, config));
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
     executionWorker.start();
