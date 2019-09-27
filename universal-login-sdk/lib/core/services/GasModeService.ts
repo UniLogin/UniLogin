@@ -12,7 +12,7 @@ export class GasModeService {
     private tokensValueConverter: TokensValueConverter
   ) {}
 
-  private getMultiplierFor(tokenPrices: TokensPrices, symbol: string) {
+  private getTokenPriceInversed(tokenPrices: TokensPrices, symbol: string) {
     const multiplier = tokenPrices.ETH[symbol as any as ObservedCurrency];
     ensureNotNull(multiplier, Error, 'Invalid fee token');
     return multiplier;
@@ -21,7 +21,7 @@ export class GasModeService {
   private createMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): GasMode {
     return {
       name, gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
-        const multiplier = this.getMultiplierFor(tokensPrices, tokenDetails.symbol);
+        const multiplier = this.getTokenPriceInversed(tokensPrices, tokenDetails.symbol);
         return ({
           token: tokenDetails,
           gasPrice: utils.parseUnits(this.tokensValueConverter.safeMultiply(gasPrice, multiplier)),
