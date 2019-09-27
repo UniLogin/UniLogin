@@ -1,20 +1,16 @@
 import React from 'react';
 import {ConnectionNotification} from '../Notifications/ConnectionNotification';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import './../styles/approve-device.sass';
 
 export interface ApproveDeviceProps {
-  contractAddress: string;
-  privateKey: string;
-  sdk: UniversalLoginSDK;
+  deployedWallet: DeployedWallet;
 }
 
-export const ApproveDevice = ({contractAddress, privateKey, sdk}: ApproveDeviceProps) => (
+export const ApproveDevice = ({deployedWallet}: ApproveDeviceProps) => (
   <div className="approve-device">
     <ConnectionNotification
-      contractAddress={contractAddress}
-      privateKey={privateKey}
-      sdk={sdk}
+      deployedWallet={deployedWallet}
     />
   </div>
 );

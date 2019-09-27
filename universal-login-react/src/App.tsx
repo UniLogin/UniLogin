@@ -123,9 +123,7 @@ export const App = () => {
                   <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
                   <hr/>
                   <EmojiForm
-                    sdk={sdk}
-                    contractAddress={TEST_CONTRACT_ADDRESS}
-                    privateKey={TEST_PRIVATE_KEY}
+                    deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
                   />
                 </div>
               )}
