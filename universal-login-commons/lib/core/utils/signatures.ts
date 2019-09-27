@@ -15,15 +15,12 @@ export const executionComparator = (execution1: any, execution2: any) =>  {
 export const sortSignatureKeyPairsByKey = (signatureKeyPairs: any) =>
     signatureKeyPairs.sort(executionComparator);
 
-export const signHexString = (payload: string, privateKey: string): string => {
+export const sign = (payload: Uint8Array, privateKey: string): string => {
   const signingKey = new utils.SigningKey(privateKey);
-  const signature = signingKey.signDigest(utils.hashMessage(utils.arrayify(payload)));
+  const signature = signingKey.signDigest(utils.hashMessage(payload));
   return utils.joinSignature(signature);
 };
 
-export const signString = (stringToSign: string, privateKey: string) => {
-  const signingKey = new utils.SigningKey(privateKey);
-  const hash = utils.hexlify(utils.toUtf8Bytes(stringToSign));
-  const signature = signingKey.signDigest(utils.hashMessage(utils.arrayify(hash)));
-  return utils.joinSignature(signature);
-};
+export const signHexString = (payload: string, privateKey: string): string => sign(utils.arrayify(payload), privateKey);
+
+export const signString = (stringToSign: string, privateKey: string) => sign(utils.toUtf8Bytes(stringToSign), privateKey);
