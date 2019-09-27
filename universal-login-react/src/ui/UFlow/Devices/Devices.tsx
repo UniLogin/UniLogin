@@ -14,9 +14,10 @@ export interface DevicesProps {
   privateKey: string;
   ensName: string;
   onManageDevicesClick: () => void;
+  onDeleteAccountClick: () => void;
 }
 
-export const Devices = ({sdk, contractAddress, privateKey, ensName, className, onManageDevicesClick}: DevicesProps) => {
+export const Devices = ({sdk, contractAddress, privateKey, ensName, className, onManageDevicesClick, onDeleteAccountClick}: DevicesProps) => {
   const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
@@ -27,13 +28,16 @@ export const Devices = ({sdk, contractAddress, privateKey, ensName, className, o
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
-          {notifications.length > 0 && <NewDeviceMessage onClick={onManageDevicesClick}/>}
-          {devices ?
-            <ConnectedDevices
-              devicesList={devices}
-              deployedWallet={deployedWallet}
-            /> : 'Loading devices..'
-          }
+          <div className="devices-inner">
+            {notifications.length > 0 && <NewDeviceMessage onClick={onManageDevicesClick}/>}
+            {devices ?
+              <ConnectedDevices
+                devicesList={devices}
+                deployedWallet={deployedWallet}
+              /> : 'Loading devices..'
+            }
+          </div>
+          <button onClick={onDeleteAccountClick} className="delete-account-link">Delete account</button>
         </div>
       </div>
     </div>
