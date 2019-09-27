@@ -44,7 +44,7 @@ Packages maintained with this monorepo are listed below.
 
 ### Kovan:
 - Domain: `poppularapp.test`
-- Relayer url: `https://kovan-rinkeby.universallogin.io`
+- Relayer url: `https://relayer-kovan.universallogin.io`
 
 
 ### Rinkeby:
