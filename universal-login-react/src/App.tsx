@@ -57,6 +57,18 @@ export const App = () => {
 
   const [applicationWallet, setApplicationWallet] = useState({name: '', contractAddress: '', privateKey: ''});
 
+  async function tryEnablingMetamask() {
+    const ethereum = (window as any).ethereum;
+    if (ethereum) {
+      try {
+        await ethereum.enable();
+
+        return ethereum.selectedAddress;
+      } catch (error) {
+      }
+    }
+  }
+
   return (
     <BrowserRouter>
       <div className="playground">
@@ -87,6 +99,7 @@ export const App = () => {
                   onConnect={onConnect}
                   onCreate={onCreate}
                   domains={['mylogin.eth', 'universal-id.eth']}
+                  tryEnablingMetamask={tryEnablingMetamask}
                 />
               )}
             />
@@ -110,9 +123,7 @@ export const App = () => {
                   <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
                   <hr/>
                   <EmojiForm
-                    sdk={sdk}
-                    contractAddress={TEST_CONTRACT_ADDRESS}
-                    privateKey={TEST_PRIVATE_KEY}
+                    deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
                   />
                 </div>
               )}
