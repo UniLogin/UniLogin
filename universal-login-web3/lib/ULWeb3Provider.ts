@@ -10,6 +10,7 @@ import {waitForTrue} from './utils';
 import {initUi} from './ui';
 import {AppProps} from './ui/App';
 import {StorageService, WalletStorageService} from '@universal-login/react';
+import {combine, Property} from 'reactive-properties';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -38,6 +39,8 @@ export class ULWeb3Provider implements Provider {
   private readonly metamaskService: MetamaskService;
   private readonly uiController: UIController;
 
+  public readonly isLoggedIn: Property<boolean>;
+
   constructor(options: ULWeb3ProviderOptions) {
     const {
       provider,
@@ -56,6 +59,11 @@ export class ULWeb3Provider implements Provider {
     this.walletService = new WalletService(this.sdk, walletFromBrain, walletStorageService);
     this.metamaskService = new MetamaskService();
     this.uiController = new UIController(this.walletService, this.metamaskService);
+
+    this.isLoggedIn = combine(
+      [this.walletService.isAuthorized, this.metamaskService.metamaskProvider],
+      (walletCreated, metamask) => walletCreated || !!metamask,
+    );
 
     uiInitializer({
       sdk: this.sdk,
@@ -148,6 +156,6 @@ export class ULWeb3Provider implements Provider {
   async create() {
     this.uiController.requireWallet();
 
-    await waitForTrue(this.walletService.walletDeployed);
+    await waitForTrue(this.isLoggedIn);
   }
 }

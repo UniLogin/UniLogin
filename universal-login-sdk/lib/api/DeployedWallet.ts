@@ -13,6 +13,7 @@ import {Execution} from '../core/services/ExecutionFactory';
 import {Contract} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
+import {OnBalanceChange} from '../core/observers/BalanceObserver';
 
 export class DeployedWallet implements ApplicationWallet {
   constructor(
@@ -43,6 +44,10 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.removeKey(this.contractAddress, key, this.privateKey, transactionDetails);
   }
 
+  async denyRequests() {
+    return this.sdk.denyRequests(this.contractAddress, this.privateKey);
+  }
+
   async setRequiredSignatures(requiredSignatures: number, transactionDetails: Partial<Message>): Promise<Execution> {
     return this.sdk.setRequiredSignatures(this.contractAddress, requiredSignatures, this.privateKey, transactionDetails);
   }
@@ -71,6 +76,10 @@ export class DeployedWallet implements ApplicationWallet {
     return walletContract.requiredSignatures();
   }
 
+  async getGasModes() {
+    return this.sdk.getGasModes();
+  }
+
   async generateBackupCodes(): Promise<string[]> {
     const codes: string[] = [generateBackupCode(), generateBackupCode()];
     const addresses: string[] = [];
@@ -87,5 +96,13 @@ export class DeployedWallet implements ApplicationWallet {
 
   signMessage(bytes: Uint8Array) {
     return sign(bytes, this.privateKey);
+  }
+
+  subscribeAuthorisations(callback: Function) {
+    return this.sdk.subscribeAuthorisations(this.contractAddress, this.privateKey, callback);
+  }
+
+  subscribeToBalances(callback: OnBalanceChange) {
+    return this.sdk.subscribeToBalances(this.name, callback);
   }
 }

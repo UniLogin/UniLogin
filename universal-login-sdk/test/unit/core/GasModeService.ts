@@ -34,15 +34,18 @@ describe('UNIT: GasModeService', () => {
     const modes = await gasModeService.getModes();
     expect(gasPriceOracle.getGasPrices).calledOnce;
 
-    expect(safeMultiplySpy.getCall(0)).calledWith(gasPrices.cheap, tokenPrices.ETH.DAI);
-    expect(safeMultiplySpy.getCall(1)).calledWith(gasPrices.cheap, tokenPrices.ETH.ETH);
-    expect(safeMultiplySpy.getCall(2)).calledWith(gasPrices.fast, tokenPrices.ETH.DAI);
-    expect(safeMultiplySpy.getCall(3)).calledWith(gasPrices.fast, tokenPrices.ETH.ETH);
-    expect(safeMultiplySpy.callCount).eq(4);
+    expect(safeMultiplySpy.getCall(0)).calledWith(gasPrices.cheap, tokenPrices.ETH.USD);
+    expect(safeMultiplySpy.getCall(1)).calledWith(gasPrices.cheap, tokenPrices.ETH.DAI);
+    expect(safeMultiplySpy.getCall(2)).calledWith(gasPrices.cheap, tokenPrices.ETH.ETH);
+    expect(safeMultiplySpy.getCall(3)).calledWith(gasPrices.fast, tokenPrices.ETH.USD);
+    expect(safeMultiplySpy.getCall(4)).calledWith(gasPrices.fast, tokenPrices.ETH.DAI);
+    expect(safeMultiplySpy.getCall(5)).calledWith(gasPrices.fast, tokenPrices.ETH.ETH);
+    expect(safeMultiplySpy.callCount).eq(6);
 
     expect(modes).to.be.deep.eq([
       {
         name: 'cheap',
+        usdAmount: '0.0000367702',
         gasOptions: [{
           gasPrice: utils.bigNumberify('29894200000000'),
           token: TEST_TOKEN_DETAILS[0],
@@ -54,6 +57,7 @@ describe('UNIT: GasModeService', () => {
       },
       {
         name: 'fast',
+        usdAmount: '0.00004412424',
         gasOptions: [{
           gasPrice: utils.bigNumberify('35873040000000'),
           token: TEST_TOKEN_DETAILS[0],

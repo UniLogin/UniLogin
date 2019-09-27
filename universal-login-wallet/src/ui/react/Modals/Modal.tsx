@@ -8,11 +8,10 @@ import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {ConnectionNotificationModal} from '../ConnectAccount/ConnectionNotificationModal';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, walletService, sdk} = useServices();
+  const {walletPresenter} = useServices();
   const relayerConfig = useRelayerConfig();
 
   switch (modalService.modalState) {
@@ -26,16 +25,6 @@ const Modal = () => {
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
           <ModalRequest />
-        </ModalWrapperClosable>
-      );
-    case 'approveDevice':
-      return (
-        <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ConnectionNotificationModal
-            sdk={sdk}
-            contractAddress={walletService.getDeployedWallet().contractAddress}
-            privateKey={walletService.getDeployedWallet().privateKey}
-          />
         </ModalWrapperClosable>
       );
     case 'topUpAccount':

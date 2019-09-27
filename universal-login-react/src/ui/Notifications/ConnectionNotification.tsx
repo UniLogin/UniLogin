@@ -1,22 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {Notification} from '@universal-login/commons';
 import {EmojiForm} from './EmojiForm';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
 
 interface ConnectNotificationProps {
-  contractAddress: string;
-  privateKey: string;
-  sdk: UniversalLoginSDK;
+  deployedWallet: DeployedWallet;
   className?: string;
 }
 
-export const ConnectionNotification = ({contractAddress, privateKey, sdk, className}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
-  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNotifications), []);
+  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   return (
     <div className="universal-login-emojis">
@@ -31,9 +29,7 @@ export const ConnectionNotification = ({contractAddress, privateKey, sdk, classN
               </>
             }
             <EmojiForm
-              sdk={sdk}
-              contractAddress={contractAddress}
-              privateKey={privateKey}
+              deployedWallet={deployedWallet}
               hideTitle={() => setShowTitle(false)}
               className={className}
             />

@@ -22,13 +22,11 @@ Prerequisites
 To run a relayer in a development mode and to run tests you need to have Postgres installed and running.
 You also need to have `universal_login_relayer_development` database created.
 
-You can do it in your favorite database UI, or from `psql`:
+You can do it in your favorite database UI, or using `psql`:
 
   ::
 
-    psql
-    > create database universal_login_relayer_development;
-    > \q
+    psql -c "create database universal_login_relayer_development;"
 
 
 **Factory contract**

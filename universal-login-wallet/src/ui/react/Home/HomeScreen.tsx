@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {Funds, Devices, BackupCodes, DeleteAccount} from '@universal-login/react';
+import {Funds, Devices, BackupCodes, DeleteAccount, ConnectionNotification} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
@@ -30,7 +30,7 @@ const HomeScreen = () => {
             contractAddress={walletPresenter.getContractAddress()}
             privateKey={walletPresenter.getPrivateKey()}
             ensName={walletPresenter.getName()}
-            onManageDevicesClick={() => modalService.showModal('approveDevice')}
+            onManageDevicesClick={() => setContent('approveDevice')}
             className="jarvis-devices"
             onDeleteAccountClick={() => setContent('deleteAccount')}
           />
@@ -49,6 +49,15 @@ const HomeScreen = () => {
             onConfirmDeleteClick={() => {}}
             className="jarvis-delete-account"
           />
+        );
+      case 'approveDevice':
+        return (
+          <div id="notifications">
+            <ConnectionNotification
+              deployedWallet={walletService.getDeployedWallet()}
+              className="jarvis-emojis"
+            />
+          </div>
         );
       default:
         return null;
