@@ -19,8 +19,11 @@ export class GasModeService {
   }
 
   private createMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): GasMode {
+    const usdAmount = this.tokensValueConverter.safeMultiply(gasPrice, this.getTokenPriceInversed(tokensPrices, 'USD'));
     return {
-      name, gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
+      name,
+      usdAmount,
+      gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
         const multiplier = this.getTokenPriceInversed(tokensPrices, tokenDetails.symbol);
         return ({
           token: tokenDetails,

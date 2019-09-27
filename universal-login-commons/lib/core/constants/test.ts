@@ -43,6 +43,7 @@ export const TEST_TOKEN_DETAILS = [
 
 export const TEST_GAS_MODES = [{
   name: 'cheap',
+  usdAmount: '0.0000367702',
   gasOptions: [{
     gasPrice: utils.bigNumberify('20000000000'),
     token: TEST_TOKEN_DETAILS[0],
@@ -54,6 +55,7 @@ export const TEST_GAS_MODES = [{
 },
 {
   name: 'fast',
+  usdAmount: '0.00004412424',
   gasOptions: [{
     gasPrice: utils.bigNumberify('24000000000'),
     token: TEST_TOKEN_DETAILS[0],
