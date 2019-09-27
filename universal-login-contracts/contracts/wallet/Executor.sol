@@ -48,6 +48,7 @@ contract Executor {
         bytes memory signatures) public returns (bytes32)
     {
         uint256 startingGas = gasleft();
+        require(gasLimitExecution <= startingGas, "Too low gas limit");
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);

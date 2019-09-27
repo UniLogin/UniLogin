@@ -10,7 +10,7 @@ import {TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOpti
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
-import {encodeDataForExecuteSigned} from '../../../lib/index.js';
+import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage} from '../../../lib/index.js';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -341,6 +341,21 @@ describe('WalletContract', async () => {
 
     it('updates master fails when sender has no permission', async () => {
       await expect(walletContractProxy.upgradeTo(newWallet.address)).to.be.revertedWith('Unauthorized');
+    });
+  });
+
+  describe('gasLimitExecution', () => {
+    it('reject execution that has to small gasLimit', async () => {
+      const tooLowGasLimit = utils.bigNumberify(msg.gasLimitExecution).sub(1);
+      await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: tooLowGasLimit})).to.be.eventually.rejectedWith('Too low gas limit');
+      expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
+    });
+
+    it('that has to small gasLimit', async () => {
+      const gasData = estimateGasDataFromSignedMessage({...msg, signature});
+      const validGasLimit = utils.bigNumberify(msg.gasLimitExecution).add(gasData).add(35000);
+      await wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: validGasLimit});
+      expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
     });
   });
 });
