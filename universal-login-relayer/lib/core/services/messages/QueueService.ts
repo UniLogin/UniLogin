@@ -1,13 +1,8 @@
-import {providers} from 'ethers';
-import {sleep, onCritical, SignedMessage, ensureNotNull} from '@universal-login/commons';
+import {sleep, onCritical} from '@universal-login/commons';
 import {IExecutionQueue} from './IExecutionQueue';
 import MessageExecutor from '../../../integration/ethereum/MessageExecutor';
-import IMessageRepository from './IMessagesRepository';
-import {TransactionHashNotFound} from '../../utils/errors';
 
 type QueueState = 'running' | 'stopped' | 'stopping';
-
-export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
 class QueueService {
   private state: QueueState;
@@ -15,33 +10,13 @@ class QueueService {
   constructor(
     private messageExecutor: MessageExecutor,
     private executionQueue: IExecutionQueue,
-    private messageRepository: IMessageRepository,
-    private onTransactionMined: OnTransactionMined,
     private tick: number = 100
   ) {
     this.state = 'stopped';
   }
 
-  async add(signedMessage: SignedMessage) {
-    const messageHash = await this.executionQueue.addMessage(signedMessage);
-    await this.messageRepository.setMessageState(messageHash, 'Queued');
-    return messageHash;
-  }
-
   async execute(messageHash: string) {
-    try {
-      const signedMessage = await this.messageRepository.getMessage(messageHash);
-      const transactionResponse = await this.messageExecutor.execute(signedMessage);
-      const {hash, wait} = transactionResponse;
-      ensureNotNull(hash, TransactionHashNotFound);
-      await this.messageRepository.markAsPending(messageHash, hash!);
-      await wait();
-      await this.onTransactionMined(transactionResponse);
-      await this.messageRepository.setMessageState(messageHash, 'Success');
-    } catch (error) {
-      const errorMessage = `${error.name}: ${error.message}`;
-      await this.messageRepository.markAsError(messageHash, errorMessage);
-    }
+    await this.messageExecutor.handleExecute(messageHash);
     await this.executionQueue.remove(messageHash);
   }
 
