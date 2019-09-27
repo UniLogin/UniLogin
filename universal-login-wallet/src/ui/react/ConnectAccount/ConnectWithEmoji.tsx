@@ -19,6 +19,7 @@ export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps)
   const onCancelClick = async () => {
     const {contractAddress, privateKey} = walletService.getConnectingWallet();
     await sdk.cancelRequest(contractAddress, privateKey);
+    walletService.disconnect();
 
     connectValues!.unsubscribe();
     setConnectModal('connectionMethod');
