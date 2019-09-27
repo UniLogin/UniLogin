@@ -12,7 +12,7 @@ export {ApplicationWallet} from './core/models/ApplicationWallet';
 export {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE, TEST_DEVICE_INFO, TEST_TOKEN_DETAILS, TEST_GAS_MODES} from './core/constants/test';
 export {EMOJI_COLORS} from './core/constants/emojiColors';
 export {EMPTY_DEVICE_INFO} from './core/constants/device';
-export {INITIAL_GAS_PARAMETERS} from './core/constants/gas';
+export {EMPTY_GAS_OPTION, INITIAL_GAS_PARAMETERS} from './core/constants/gas';
 export {DEV_DEFAULT_PRIVATE_KEY, devJsonRpcUrl} from './core/constants/dev';
 export {KEY_CODE_ESCAPE, DEFAULT_LOCATION} from './core/constants/ui';
 export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, EMPTY_DATA, DEPLOYMENT_REFUND, GAS_BASE} from './core/constants/constants';
