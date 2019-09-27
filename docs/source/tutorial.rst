@@ -11,7 +11,7 @@ Quickstart
 Starting with Web3 provider
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are developing a web application the easiest way to get started with Universal-Login is by using out Web3 provider.
+If you are developing a web application the easiest way to get started with Universal-Login is by using our Web3 provider.
 
 Installation
 
@@ -25,6 +25,32 @@ Installation
 
     yarn add @universal-login/web3 react react-dom
 
+Creating the provider
+  ::
+
+    const ulProvider = ULWeb3Provider.getDefaultProvider('mainnet');
+    const web3 = new Web3(ulProvider);
+
+  Now you can continue writing your application as a normal Web3 DApp.
+  To read more how to write web3 app go to `Web3 docs <https://web3js.readthedocs.io/>`_.
+
+User onboarding
+  First time you send a transaction the modal will appear asking users to create an account.
+  After user finishes the onboarding flow the transaction will be executed as normal
+
+  You can also trigger an early onboarding (for example if you have a "login" button on your website).
+  To do so call the ``create`` on the provider:
+  ::
+
+    await ulProvider.create();
+
+  The promise will be resolved once the user completes the flow.
+
+Detecting Universal-Login
+  To detect whether the web3 is running with UniversalLogin use the following code:
+  ::
+
+    const usingUniversalLogin = web3.currentProvider && web3.currentProvider.isUniversalLogin;
 
 Starting with SDK
 ^^^^^^^^^^^^^^^^^
