@@ -21,18 +21,18 @@ describe('INT: MessageHandler', async () => {
   let walletContract;
   let msg;
   let otherWallet;
-  let queueService;
+  let executionWorker;
   const config = getConfig('test');
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, queueService} = await setupMessageService(knex, config));
+    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex, config));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
-    queueService.start();
+    executionWorker.start();
   });
 
   afterEach(async () => {
-    queueService.stopLater();
+    executionWorker.stopLater();
     await clearDatabase(knex);
   });
 
@@ -42,7 +42,7 @@ describe('INT: MessageHandler', async () => {
 
     const signedMessage = messageToSignedMessage({...msg, gasToken: mockToken.address}, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
-    await queueService.stopLater();
+    await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
     expect(messageEntry.error).to.be.eq('Error: Not enough tokens');
   });
@@ -60,7 +60,7 @@ describe('INT: MessageHandler', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = messageToSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const {state, transactionHash} = await messageHandler.getStatus(messageHash);
       expect(transactionHash).to.not.be.null;
@@ -74,7 +74,7 @@ describe('INT: MessageHandler', async () => {
       const signedMessage = messageToSignedMessage(msg, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
@@ -85,7 +85,7 @@ describe('INT: MessageHandler', async () => {
         msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
         const signedMessage = messageToSignedMessage(msg, wallet.privateKey);
         await messageHandler.handleMessage(signedMessage);
-        await queueService.stopLater();
+        await executionWorker.stopLater();
         const authorisations = await authorisationStore.getPendingAuthorisations(walletContract.address);
         expect(authorisations).to.deep.eq([]);
         expect(await devicesStore.get(walletContract.address)).length(1);
@@ -100,7 +100,7 @@ describe('INT: MessageHandler', async () => {
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data};
       const signedMessage0 = messageToSignedMessage(msg, wallet.privateKey);
       await messageHandler.handleMessage(signedMessage0);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
       const devices = await devicesStore.get(walletContract.address);
       expect(devices.map(({publicKey}) => publicKey)).to.be.deep.eq(keys);
@@ -121,7 +121,7 @@ describe('INT: MessageHandler', async () => {
       const signedMessage = messageToSignedMessage(message, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
-      await queueService.stopLater();
+      await executionWorker.stopLater();
       expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.be.deep.eq([]);
       expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
     });
