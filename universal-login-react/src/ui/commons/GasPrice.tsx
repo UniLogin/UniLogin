@@ -1,20 +1,20 @@
 import React, {ReactNode, useState, useEffect} from 'react';
 import './../styles/gasPrice.sass';
 import './../styles/gasPriceDefault.sass';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
 import {getGasPriceFor, GasMode, GasParameters} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 
 interface GasPriceProps {
-  sdk: UniversalLoginSDK;
+  deployedWallet: DeployedWallet;
   onGasParametersChanged: (gasParameters: GasParameters) => void;
   className?: string;
 }
 
-export const GasPrice = ({sdk, onGasParametersChanged, className}: GasPriceProps) => {
-  const [gasModes] = useAsync(() => sdk.getGasModes(), []);
+export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: GasPriceProps) => {
+  const [gasModes] = useAsync<GasMode[]>(() => deployedWallet.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [tokenAddress, setTokenAddress] = useState<string>('');
 

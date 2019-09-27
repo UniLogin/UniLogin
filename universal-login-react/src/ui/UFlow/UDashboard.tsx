@@ -27,6 +27,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+  const {contractAddress, name, privateKey} = applicationWallet;
 
   const [newNotifications, setNewNotifications] = useState([] as Notification[]);
   useEffect(() => sdk.subscribeAuthorisations(applicationWallet.contractAddress, applicationWallet.privateKey, setNewNotifications), []);
@@ -57,9 +58,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'approveDevice':
         return (
           <ApproveDevice
-            contractAddress={applicationWallet.contractAddress}
-            privateKey={applicationWallet.privateKey}
-            sdk={sdk}
+            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
           />
         );
       case 'topup':
@@ -116,7 +115,6 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
           />
         );
       case 'backup':
-        const {contractAddress, name, privateKey} = applicationWallet;
         return (
           <BackupCodes
             deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}

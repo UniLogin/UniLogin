@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
 import ProgressBar from '../commons/ProgressBar';
@@ -22,14 +22,12 @@ const getInputModeFor = (addresses: string[], currentInputMode: InputModeType): 
 };
 
 interface EmojiFormProps {
-  sdk: UniversalLoginSDK;
-  contractAddress: string;
-  privateKey: string;
+  deployedWallet: DeployedWallet;
   hideTitle?: () => void;
   className?: string;
 }
 
-export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, className}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className}: EmojiFormProps) => {
   const [gasParameters, setGasParameters] = useState<GasParameters>(INITIAL_GAS_PARAMETERS);
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -38,7 +36,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   const {progressBar, showProgressBar} = useProgressBar();
   const [isInputValid, setIsInputValid] = useState(false);
 
-  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, (notifications: Notification[]) => {
+  useEffect(() => deployedWallet.subscribeAuthorisations((notifications: Notification[]) => {
     setNotifications(notifications);
     updateAddressesAndInputMode(notifications);
   }), []);
@@ -57,7 +55,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
   };
 
   const confirmCode = (address: string) => {
-    sdk.addKey(contractAddress, address, privateKey, {...transactionDetails, ...gasParameters});
+    deployedWallet.addKey(address, {...transactionDetails, ...gasParameters});
     showProgressBar();
   };
 
@@ -108,9 +106,9 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice sdk={sdk} onGasParametersChanged={setGasParameters} className={className}/>
+            <GasPrice deployedWallet={deployedWallet} onGasParametersChanged={setGasParameters} className={className}/>
             <div className="connect-buttons-row">
-              <button onClick={() => sdk.denyRequests(contractAddress, privateKey)} className="connect-cancel-btn">Cancel</button>
+              <button onClick={() => deployedWallet.denyRequests()} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>
             </div>
           </div>
@@ -129,7 +127,7 @@ export const EmojiForm = ({sdk, contractAddress, privateKey, hideTitle, classNam
         <button
           className="emojis-form-reject"
           id="reject"
-          onClick={() => sdk.denyRequests(contractAddress, privateKey)}
+          onClick={() => deployedWallet.denyRequests()}
         >
           Deny
         </button>

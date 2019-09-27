@@ -54,9 +54,7 @@ const HomeScreen = () => {
         return (
           <div id="notifications">
             <ConnectionNotification
-              contractAddress={walletService.getDeployedWallet().contractAddress}
-              privateKey={walletService.getDeployedWallet().privateKey}
-              sdk={sdk}
+              deployedWallet={walletService.getDeployedWallet()}
               className="jarvis-emojis"
             />
           </div>
