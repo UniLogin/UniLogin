@@ -71,7 +71,17 @@
 
 .currency-accordion {
   position: relative;
-  margin-bottom: 45px;
+  margin-bottom: 100px;
+}
+
+.currency-scrollable-list {
+  position: absolute;
+  bottom: -2px;
+  width: 100%;
+  height: 94px;
+  margin: 0 auto;
+  transform: translateY(100%);
+  overflow: auto;
 }
 
 .currency-accordion-btn::after {

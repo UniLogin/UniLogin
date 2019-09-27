@@ -45,8 +45,11 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, currency, setCur
 
   return (
     <div className="currency-accordion">
-      {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === currency, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
-      {visible && renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== currency, 'currency-accordion-item')}
+        {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === currency, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
+        {visible &&
+          <div className="currency-scrollable-list">
+            {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== currency, 'currency-accordion-item')}
+          </div>}
     </div >
   );
 };
