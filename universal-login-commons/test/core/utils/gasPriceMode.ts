@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getGasPriceFor, findGasMode} from '../../../lib/core/utils/gasPriceMode';
+import {getGasPriceFor, findGasMode, findGasOption} from '../../../lib/core/utils/gasPriceMode';
 import {TEST_GAS_MODES} from '../../../lib/core/constants/test';
 
 describe('Helpers for GasMode ', () => {
@@ -35,8 +35,26 @@ describe('Helpers for GasMode ', () => {
     });
 
     for (const gasMode of TEST_GAS_MODES) {
-      it(`gasMode: ${gasMode.name}`, () => {
+      it(`gas mode name: ${gasMode.name}`, () => {
         expect(findGasMode(TEST_GAS_MODES, gasMode.name)).to.be.eq(gasMode);
+      });
+    }
+  });
+
+  describe('findGasOption', () => {
+    const {gasOptions} = TEST_GAS_MODES[0];
+
+    it('empty array', () => {
+      expect(findGasOption([], '')).to.be.undefined;
+    });
+
+    it('invalid mode name', () => {
+      expect(findGasOption(gasOptions, 'invalidModeName')).to.be.undefined;
+    });
+
+    for (const gasOption of gasOptions) {
+      it(`gasToken: ${gasOption.token.symbol}`, () => {
+        expect(findGasOption(gasOptions, gasOption.token.address)).to.be.eq(gasOption);
       });
     }
   });

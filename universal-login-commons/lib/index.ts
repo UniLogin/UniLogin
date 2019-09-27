@@ -40,7 +40,7 @@ export {sleep, waitUntil, waitExpect} from './core/utils/wait';
 export {parseDomain} from './core/utils/ens';
 export {debounce} from './core/utils/debounce';
 export {getEnv} from './core/utils/getEnv';
-export {getGasPriceFor} from './core/utils/gasPriceMode';
+export {getGasPriceFor, findGasMode, findGasOption} from './core/utils/gasPriceMode';
 export {classesForElement} from './react/classesForElement';
 export {getSuggestionId} from './react/getSuggestionId';
 export {RelayerRequest} from './core/models/relayerRequest';
