@@ -42,14 +42,19 @@ Packages maintained with this monorepo are listed below.
 - Relayer url: `https://relayer.universallogin.io`
 - Jarvis Wallet (web wallet): [wallet.universallogin.io](https://wallet.universallogin.io)
 
+### Kovan:
+- Domain: `poppularapp.test`
+- Relayer url: `https://kovan-rinkeby.universallogin.io`
+
+
 ### Rinkeby:
 - Domain: `poppularapp.test`
 - Relayer url: `https://relayer-rinkeby.universallogin.io`
 
-### Mainnet:
-- Domain: unitest.eth
+### Mainnet (test environment):
+- Domain: `unitest.eth`
 - Relayer url: `https://relayer-mainnet.universallogin.io`
-Note: this is test relayer!
+
 
 ## Contributing
 
