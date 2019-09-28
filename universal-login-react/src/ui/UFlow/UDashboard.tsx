@@ -1,59 +1,76 @@
-import React, {useState, useEffect} from 'react';
-import {ModalWrapper} from '../Modals/ModalWrapper';
-import {UHeader} from './UHeader';
-import {Funds} from './Funds';
-import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
-import UniversalLoginSDK, {DeployedWallet, TransferService} from '@universal-login/sdk';
-import {useAsync} from '../hooks/useAsync';
-import logoIcon from '../assets/icons/U.svg';
-import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
-import './../styles/udashboard.sass';
-import {TopUp} from '../TopUp/TopUp';
-import {ApproveDevice} from './ApproveDevice';
-import {TransferAmount} from '../Transfer/Amount/TransferAmount';
-import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
-import {TransferInProgress} from './TransferInProgress';
-import {Devices} from './Devices/Devices';
-import BackupCodes from '../BackupCodes/BackupCodes';
+import React, { useState, useEffect } from "react";
+import { ModalWrapper } from "../Modals/ModalWrapper";
+import { UHeader } from "./UHeader";
+import { Funds } from "./Funds";
+import { ApplicationWallet, TransferDetails } from "@universal-login/commons";
+import UniversalLoginSDK, {
+  DeployedWallet,
+  TransferService
+} from "@universal-login/sdk";
+import { useAsync } from "../hooks/useAsync";
+import logoIcon from "../assets/icons/u-white.svg";
+import { DashboardContentType } from "../../core/models/ReactUDashboardContentType";
+import "./../styles/udashboard.sass";
+import { TopUp } from "../TopUp/TopUp";
+import { ApproveDevice } from "./ApproveDevice";
+import { TransferAmount } from "../Transfer/Amount/TransferAmount";
+import { TransferRecipient } from "../Transfer/Recipient/TransferRecipient";
+import { TransferInProgress } from "./TransferInProgress";
+import { Devices } from "./Devices/Devices";
+import BackupCodes from "../BackupCodes/BackupCodes";
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
   sdk: UniversalLoginSDK;
 }
 
-export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
-  const [transferDetails, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
-  const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
+export const UDashboard = ({ applicationWallet, sdk }: UDashboardProps) => {
+  const [transferDetails, setTransferDetails] = useState({
+    currency: sdk.tokensDetailsStore.tokensDetails[0].symbol
+  } as TransferDetails);
+  const [dashboardContent, setDashboardContent] = useState<
+    DashboardContentType
+  >("none");
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
 
-  const [newNotifications, setNewNotifications] = useState([] as Notification[]);
-  useEffect(() => sdk.subscribeAuthorisations(applicationWallet.contractAddress, applicationWallet.privateKey, setNewNotifications), []);
+  const [newNotifications, setNewNotifications] = useState(
+    [] as Notification[]
+  );
+  useEffect(
+    () =>
+      sdk.subscribeAuthorisations(
+        applicationWallet.contractAddress,
+        applicationWallet.privateKey,
+        setNewNotifications
+      ),
+    []
+  );
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
-    setTransferDetails({...transferDetails, ...args});
+    setTransferDetails({ ...transferDetails, ...args });
   };
 
   const transferService = new TransferService(sdk, applicationWallet);
 
   const onUButtonClick = () => {
     setDashboardVisibility(true);
-    setDashboardContent('funds');
+    setDashboardContent("funds");
   };
 
   const renderDashboardContent = () => {
     switch (dashboardContent) {
-      case 'funds':
+      case "funds":
         return (
           <Funds
             contractAddress={applicationWallet.contractAddress}
             ensName={applicationWallet.name}
             sdk={sdk}
-            onTopUpClick={() => setDashboardContent('topup')}
-            onSendClick={() => setDashboardContent('transferAmount')}
+            onTopUpClick={() => setDashboardContent("topup")}
+            onSendClick={() => setDashboardContent("transferAmount")}
           />
         );
-      case 'approveDevice':
+      case "approveDevice":
         return (
           <ApproveDevice
             contractAddress={applicationWallet.contractAddress}
@@ -61,7 +78,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             sdk={sdk}
           />
         );
-      case 'topup':
+      case "topup":
         return (
           <TopUp
             hideModal={() => setDashboardVisibility(false)}
@@ -69,48 +86,52 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             onRampConfig={relayerConfig!.onRampProviders}
           />
         );
-      case 'transferAmount':
+      case "transferAmount":
         return (
           <TransferAmount
             sdk={sdk}
             ensName={applicationWallet.name}
-            onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
+            onSelectRecipientClick={() =>
+              setDashboardContent("transferRecipient")
+            }
             updateTransferDetailsWith={updateTransferDetailsWith}
             currency={transferDetails.currency}
           />
         );
-      case 'transferRecipient':
+      case "transferRecipient":
         const onGenerateClick = async () => {
-          setDashboardContent('waitingForTransfer');
+          setDashboardContent("waitingForTransfer");
           await transferService.transfer(transferDetails);
-          setDashboardContent('funds');
+          setDashboardContent("funds");
         };
         return (
           <TransferRecipient
-            onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+            onRecipientChange={event =>
+              updateTransferDetailsWith({ to: event.target.value })
+            }
             onSendClick={onGenerateClick}
             transferDetails={transferDetails}
           />
         );
-      case 'waitingForTransfer':
-        return (
-          <TransferInProgress />
-        );
-      case 'devices':
+      case "waitingForTransfer":
+        return <TransferInProgress />;
+      case "devices":
         return (
           <Devices
             sdk={sdk}
             contractAddress={applicationWallet.contractAddress}
             privateKey={applicationWallet.privateKey}
             ensName={applicationWallet.name}
-            onManageDevicesClick={() => setDashboardContent('approveDevice')}
+            onManageDevicesClick={() => setDashboardContent("approveDevice")}
           />
         );
-      case 'backup':
-        const {contractAddress, name, privateKey} = applicationWallet;
+      case "backup":
+        const { contractAddress, name, privateKey } = applicationWallet;
         return (
           <BackupCodes
-            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
+            deployedWallet={
+              new DeployedWallet(contractAddress, name, privateKey, sdk)
+            }
           />
         );
       default:
@@ -118,23 +139,39 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
     }
   };
 
+  const bgc = "#fff";
 
   return (
     <>
-      <button className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`} onClick={() => onUButtonClick()}>
-        <img src={logoIcon} alt="U" />
-      </button>
-      {dashboardVisibility &&
+      <div
+        className={`ul-button-ethereum-account`}
+        onClick={() => onUButtonClick()}
+      >
+        <div
+          className={`ul-identicon ${
+            newNotifications.length > 0 ? "new-notifications" : ""
+          }`}
+          style={{
+            backgroundColor:
+              "#" + applicationWallet.contractAddress.substring(2, 6)
+          }}
+        >
+          <img src={logoIcon} alt="U" />
+        </div>
+        {applicationWallet.name}
+      </div>
+      {dashboardVisibility && (
         <ModalWrapper
           hideModal={() => setDashboardVisibility(false)}
           modalClassName="udashboard-modal"
         >
-          <UHeader activeTab={dashboardContent} setActiveTab={setDashboardContent} />
-          <div className="udashboard-content">
-            {renderDashboardContent()}
-          </div>
+          <UHeader
+            activeTab={dashboardContent}
+            setActiveTab={setDashboardContent}
+          />
+          <div className="udashboard-content">{renderDashboardContent()}</div>
         </ModalWrapper>
-      }
+      )}
     </>
   );
 };

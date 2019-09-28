@@ -14,6 +14,7 @@ import Logo from "./../assets/logo.svg";
 import "./../styles/walletSelector.css";
 import "./../styles/walletSelectorDefaults.css";
 import "./../styles/hint.css";
+import logoIcon from "../assets/icons/u-white.svg";
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
@@ -48,7 +49,8 @@ export const WalletSelector = ({
   const [creations, setCreations] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [accountStatus, setAccountStatus] = useState(
-    tryEnablingMetamask ? "show-initial" : "show-picker"
+    "show-initial" // How to I enable this to true?
+    // tryEnablingMetamask ? "show-initial" : "show-picker"
   );
   const [ethAccount, setEthAccount] = useState("bob.example.eth");
   const isOnlyCreateAction =
@@ -114,7 +116,13 @@ export const WalletSelector = ({
         <button className="button-web3-provider" onClick={onDetectClick}>
           Sign in with Ethereum
         </button>
-        <div className="ethereum-account">{ethAccount}</div>
+        <div className="ul-button-ethereum-account">
+          <div className="ul-identicon">
+            {" "}
+            <img src={logoIcon} alt="U" />
+          </div>
+          {ethAccount}
+        </div>
 
         {renderSuggestions()}
       </div>
