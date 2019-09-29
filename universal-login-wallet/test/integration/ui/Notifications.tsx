@@ -7,6 +7,7 @@ import {setupSdk} from '@universal-login/sdk/testutils';
 import {Services} from '../../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../helpers/setupUI';
+import {waitExpect} from '@universal-login/commons';
 
 describe('UI: Notifications',  () => {
   let services : Services;
@@ -44,7 +45,7 @@ describe('UI: Notifications',  () => {
     await appPage.dashboard().clickDevicesButton();
     await appPage.dashboard().clickManageDevicesButton();
     await appPage.notifications().clickRejectButton();
-    expect(appPage.notifications().isNotificationAlert()).to.be.false;
+    await waitExpect(() => expect(appPage.notifications().isNotificationAlert()).to.be.false);
   });
 
   afterEach(async () => {

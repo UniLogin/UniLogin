@@ -1,1 +1,1 @@
-export type DashboardContentType = 'funds' | 'approveDevice' | 'topup' | 'transferAmount' | 'transferRecipient' | 'waitingForTransfer' | 'devices' | 'backup' | 'deleteAccount' | 'none';
+export type DashboardContentType = 'funds' | 'topup' | 'transferAmount' | 'transferRecipient' | 'waitingForTransfer' | 'devices' | 'backup' | 'none';

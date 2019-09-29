@@ -9,16 +9,18 @@ import '../styles/emojiDefaults.sass';
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
   className?: string;
+  onDenyRequests?: () => void;
 }
 
-export const ConnectionNotification = ({deployedWallet, className}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, className, onDenyRequests}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   return (
-    <div className="universal-login-emojis">
+    <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
+        <div className="approve-device">
         {notifications.length > 0
           ?
           <>
@@ -32,10 +34,12 @@ export const ConnectionNotification = ({deployedWallet, className}: ConnectNotif
               deployedWallet={deployedWallet}
               hideTitle={() => setShowTitle(false)}
               className={className}
+              onDenyRequests={onDenyRequests}
             />
           </>
           : <p className="connection-device-status">No requests to connect from other applications</p>
         }
+        </div>
       </div>
     </div>
   );

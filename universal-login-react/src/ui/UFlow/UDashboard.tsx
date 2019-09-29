@@ -9,13 +9,11 @@ import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
 import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
-import {ApproveDevice} from './ApproveDevice';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
 import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
 import {TransferInProgress} from './TransferInProgress';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
-import {DeleteAccount} from './DeleteAccount';
 
 export interface UDashboardProps {
   applicationWallet: ApplicationWallet;
@@ -53,12 +51,6 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             sdk={sdk}
             onTopUpClick={() => setDashboardContent('topup')}
             onSendClick={() => setDashboardContent('transferAmount')}
-          />
-        );
-      case 'approveDevice':
-        return (
-          <ApproveDevice
-            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
           />
         );
       case 'topup':
@@ -102,16 +94,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
             sdk={sdk}
             contractAddress={applicationWallet.contractAddress}
             privateKey={applicationWallet.privateKey}
-            ensName={applicationWallet.name}
-            onManageDevicesClick={() => setDashboardContent('approveDevice')}
-            onDeleteAccountClick={() => setDashboardContent('deleteAccount')}
-          />
-        );
-      case 'deleteAccount':
-        return (
-          <DeleteAccount
-            onCancelClick={() => setDashboardContent('devices')}
-            onConfirmDeleteClick={() => {}}
+            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
           />
         );
       case 'backup':
