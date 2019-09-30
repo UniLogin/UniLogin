@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import {Wallet, Contract, utils} from 'ethers';
-import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeContractAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeCounterfactualAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
 import ENSService from '../../lib/integration/ethereum/ensService';
@@ -42,7 +42,7 @@ export class WalletCreator {
     await this.fetchEnsService();
     const {factoryAddress} = await this.relayerConfig;
     const keyPair = createKeyPair();
-    const futureContractAddress = computeContractAddress(factoryAddress, keyPair.publicKey, await this.getInitCode(factoryAddress));
+    const futureContractAddress = computeCounterfactualAddress(factoryAddress, keyPair.publicKey, await this.getInitCode(factoryAddress));
     return {privateKey: keyPair.privateKey, contractAddress: futureContractAddress, publicKey: keyPair.publicKey};
   }
 

@@ -37,7 +37,7 @@ describe('Counterfactual Factory', () => {
     expect(factoryContract.address).to.be.properAddress;
   });
 
-  it('computeContractAddress function works', async () => {
+  it('computeCounterfactualAddress function works', async () => {
     expect(futureAddress).to.be.properAddress;
   });
 
