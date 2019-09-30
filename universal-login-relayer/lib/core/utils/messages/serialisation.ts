@@ -7,6 +7,8 @@ import MessageItem from '../../models/messages/MessageItem';
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
 
+export const GAS_LIMIT_MARGIN = 40000;
+
 export const decodeDataForExecuteSigned = (data: string) => dataToMessage(
   new utils.AbiCoder((type, value) => value).decode(
     executeSigned.inputs,
@@ -27,7 +29,7 @@ const removeLeadingBytes = (n: number, data: string) => {
 export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>
   Object({
     gasPrice: message.gasPrice,
-    gasLimit: utils.bigNumberify(message.gasLimitExecution).add(message.gasData),
+    gasLimit: utils.bigNumberify(message.gasLimitExecution).add(message.gasData).add(GAS_LIMIT_MARGIN),
     to: message.from,
     value: 0,
     data: encodeDataForExecuteSigned(message)

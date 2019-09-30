@@ -45,7 +45,7 @@ export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWal
     gasData: 0,
     gasLimit: DEFAULT_GAS_LIMIT.toString(),
     gasPrice: '1',
-    gasLimitExecution: DEFAULT_GAS_LIMIT.toString(),
+    gasLimitExecution: utils.bigNumberify('100000'),
     gasToken: '0x0000000000000000000000000000000000000000'
   };
 };

@@ -2,14 +2,13 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
 import {utils, Contract, providers, Wallet} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, Message} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, Message, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../lib/encode';
 import {messageToSignedMessage} from '../../../lib/message';
-import TEST_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -34,11 +33,11 @@ describe('CONTRACT: Executor - refund', async () => {
   });
 
   it('refund works', async () => {
-    const message = {...transferMessage, gasPrice: 1, from: walletContract.address,  gasLimit: TEST_PAYMENT_OPTIONS.gasLimit};
+    const message = {...transferMessage, gasPrice: 1, from: walletContract.address, gasLimit: utils.bigNumberify('120000')};
     const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey);
     const executeData = encodeDataForExecuteSigned(signedMessage);
 
-    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1});
+    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
@@ -58,7 +57,7 @@ describe('CONTRACT: Executor - refund', async () => {
         nonce: 0,
         gasPrice: 1,
         gasToken: '0x0',
-        gasLimit: TEST_PAYMENT_OPTIONS.gasLimit
+        gasLimit: utils.bigNumberify('120000')
       };
     });
 
@@ -66,7 +65,7 @@ describe('CONTRACT: Executor - refund', async () => {
       const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address}, managementKeyPair.privateKey);
       const executeData = encodeDataForExecuteSigned(signedMessage);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: signedMessage.gasLimitExecution});
+      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
       const balanceAfter = await wallet.getBalance();
@@ -79,7 +78,7 @@ describe('CONTRACT: Executor - refund', async () => {
       const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: mockToken.address}, managementKeyPair.privateKey);
       const executeData = encodeDataForExecuteSigned(signedMessage);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: signedMessage.gasLimitExecution});
+      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
       const gasFee = computeFeeFor(receipt.gasUsed!);

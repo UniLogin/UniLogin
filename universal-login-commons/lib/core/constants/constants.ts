@@ -10,6 +10,8 @@ export const DEFAULT_GAS_PRICE = 10000000000;
 
 export const DEFAULT_GAS_LIMIT = 500000;
 
+export const DEFAULT_GAS_LIMIT_EXECUTION = 80000;
+
 export const GAS_BASE = 105000;
 
 export const EMPTY_DATA = utils.formatBytes32String('0');
