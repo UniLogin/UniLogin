@@ -26,9 +26,6 @@ const HomeScreen = () => {
       case 'devices':
         return (
           <Devices
-            sdk={sdk}
-            contractAddress={walletPresenter.getContractAddress()}
-            privateKey={walletPresenter.getPrivateKey()}
             deployedWallet={walletService.getDeployedWallet()}
             className="jarvis-styles"
           />

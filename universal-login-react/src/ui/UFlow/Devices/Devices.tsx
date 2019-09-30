@@ -1,29 +1,23 @@
 import React, {useState} from 'react';
 import {DevicesList} from './DevicesList';
-import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
 
 export interface DevicesProps {
-  sdk: UniversalLoginSDK;
-  contractAddress: string;
-  privateKey: string;
   deployedWallet: DeployedWallet;
   className?: string;
 }
 
 export type devicesContentType = 'devices' | 'approveDevice' | 'deleteAccount';
 
-export const Devices = ({sdk, contractAddress, privateKey, deployedWallet, className}: DevicesProps) => {
+export const Devices = ({deployedWallet, className}: DevicesProps) => {
   const [devicesContent, setDevicesContent] = useState<devicesContentType>('devices');
 
   switch (devicesContent) {
     case 'devices':
       return (
         <DevicesList
-          sdk={sdk}
-          contractAddress={contractAddress}
-          privateKey={privateKey}
           deployedWallet={deployedWallet}
           className={className}
           setDevicesContent={content => setDevicesContent(content)}
