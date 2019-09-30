@@ -5,7 +5,7 @@ import Spinner from './Spinner';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/assetsItem.sass';
 import './../styles/assetsItemDefault.sass';
-import {formatAmountInUSD} from '../../core/utils/formatAmountInUSD';
+import {formatCurrency} from '../../core/utils/formatCurrency';
 
 export interface AssetProps {
   sdk: UniversalLoginSDK;
@@ -48,7 +48,7 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
           </div>
           <div className="assets-item-right">
             {balance ? <p className="assets-balance">{balance} {symbol}</p> : <Spinner/>}
-            <p className="assets-price">{formatAmountInUSD(usdAmount)}</p>
+            <p className="assets-price">{formatCurrency(usdAmount)}</p>
           </div>
         </div>
       </div>
