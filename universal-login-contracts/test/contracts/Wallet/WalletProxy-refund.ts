@@ -3,9 +3,10 @@ import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity} from 'ethereum-waffle';
 import {transferMessage, createInfiniteCallMessage} from '../../helpers/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
-import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../../../lib';
 import {walletContractWithFundsFixture} from '../../fixtures/walletContract';
+import {estimateGasLimit} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -30,7 +31,8 @@ describe('CONTRACT: WalletProxy - refund', async  () => {
     const message = {...transferMessage, gasPrice: 1, from: proxyWallet.address};
     signature = calculateMessageSignature(keyPair.privateKey, message);
     const executeData = encodeDataForExecuteSigned({...message, signature});
-    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
+    const gasLimit = estimateGasLimit(message.gasLimitExecution, message.gasData);
+    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
     const expectedBalance = initialBalance.sub(receipt.gasUsed as utils.BigNumber);
@@ -42,7 +44,8 @@ describe('CONTRACT: WalletProxy - refund', async  () => {
     initialBalance = await deployer.getBalance();
     signature = calculateMessageSignature(keyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
+    const gasLimit = estimateGasLimit(infiniteCallMessage.gasLimitExecution, infiniteCallMessage.gasData);
+    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     const expectedBalance = initialBalance.sub(receipt.gasUsed as utils.BigNumber);
     expect(await deployer.getBalance()).to.be.above(expectedBalance);
@@ -53,7 +56,8 @@ describe('CONTRACT: WalletProxy - refund', async  () => {
     infiniteCallMessage = await createInfiniteCallMessage(deployer, {gasToken: mockToken.address, from: proxyWallet.address});
     signature = calculateMessageSignature(keyPair.privateKey, infiniteCallMessage);
     const executeData = encodeDataForExecuteSigned({...infiniteCallMessage, signature});
-    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
+    const gasLimit = estimateGasLimit(infiniteCallMessage.gasLimitExecution, infiniteCallMessage.gasData);
+    const transaction = await deployer.sendTransaction({to: proxyWallet.address, data: executeData, gasPrice: 1, gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
     const expectedBalance = initialTokenBalance.sub(receipt.gasUsed as utils.BigNumber);
     expect(await mockToken.balanceOf(deployer.address)).to.be.above(expectedBalance);

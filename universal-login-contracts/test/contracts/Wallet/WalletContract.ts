@@ -5,12 +5,12 @@ import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair} from '@universal-login/commons';
-import {TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage} from '@universal-login/commons';
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
 import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage} from '../../../lib/index.js';
+import {estimateGasLimit, calculatePaymentOptions} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -65,14 +65,16 @@ describe('WalletContract', async () => {
     describe('successful execution of transfer', () => {
       it('transfers funds', async () => {
         expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
-        await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+        const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+        await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
         expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('1.0'));
         expect(await proxyAsWalletContract.lastNonce()).to.eq(1);
       });
 
       it('emits ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msg);
-        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
+        const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
           .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
@@ -83,12 +85,14 @@ describe('WalletContract', async () => {
           signature = calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-          await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
 
         it('should refund after execute transfer ethers', async () => {
-          const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
           const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
 
@@ -99,8 +103,9 @@ describe('WalletContract', async () => {
 
     describe('failed execution of transfer', () => {
       it('nonce too low', async () => {
-        await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
+        const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+        await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
+        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
           .to.be.revertedWith('Invalid signature or nonce');
       });
 
@@ -109,7 +114,8 @@ describe('WalletContract', async () => {
         signature = calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
+        const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
           .to.be.revertedWith('Invalid signature or nonce');
       });
 
@@ -119,7 +125,8 @@ describe('WalletContract', async () => {
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
         const messageHash = calculateMessageHash(msg);
 
-        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
+        const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+        await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
           .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
@@ -129,7 +136,8 @@ describe('WalletContract', async () => {
         signature = calculateMessageSignature(privateKey, msg);
         data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-        await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+        const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+        await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
         expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
         expect(await proxyAsWalletContract.lastNonce()).to.eq(1);
       });
@@ -137,7 +145,8 @@ describe('WalletContract', async () => {
       describe('Invalid signature', () => {
         it('no signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), []]);
-          await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
             .to.be.revertedWith('Invalid signatures');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
           expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
@@ -145,7 +154,8 @@ describe('WalletContract', async () => {
 
         it('invalid signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), invalidSignature]);
-          await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT}))
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
             .to.be.revertedWith('Invalid signature or nonce');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);
           expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(parseEther('0.0'));
@@ -158,7 +168,8 @@ describe('WalletContract', async () => {
           signature = calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
 
-          const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          const transaction = await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
           const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
@@ -170,7 +181,8 @@ describe('WalletContract', async () => {
           msg = {...failedTransferMessage, from: walletContractProxy.address, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
           data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
-          await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          await wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit});
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -189,18 +201,18 @@ describe('WalletContract', async () => {
 
       it('called method', async () => {
         expect(await mockContract.wasCalled()).to.be.false;
-        await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+        await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall));
         expect(await mockContract.wasCalled()).to.be.true;
       });
 
       it('increase nonce', async () => {
-        await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+        await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall));
         expect(await proxyAsWalletContract.lastNonce()).to.eq(1);
       });
 
       it('should emit ExecutedSigned', async () => {
         const messageHash = calculateMessageHash(msgToCall);
-        await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+        await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall)))
           .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, true);
       });
@@ -210,7 +222,7 @@ describe('WalletContract', async () => {
           msgToCall = {...callMessage, from: walletContractProxy.address, to: mockContract.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
 
-          const transaction = await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+          const transaction = await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall));
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
           const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
@@ -221,7 +233,7 @@ describe('WalletContract', async () => {
         it('should refund tokens', async () => {
           msgToCall = {...callMessage, from: walletContractProxy.address, to: mockContract.address, gasToken: mockToken.address};
           signatureToCall = calculateMessageSignature(privateKey, msgToCall);
-          await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+          await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall));
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -234,13 +246,13 @@ describe('WalletContract', async () => {
       });
 
       it('should increase nonce', async () => {
-        await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+        await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall));
         expect(await proxyAsWalletContract.lastNonce()).to.eq(1);
       });
 
       it('should emit ExecutedSigned event', async () => {
         const messageHash = calculateMessageHash(msgToCall);
-        await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+        await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall)))
           .to.emit(proxyAsWalletContract, 'ExecutedSigned')
           .withArgs(messageHash, 0, false);
       });
@@ -249,13 +261,13 @@ describe('WalletContract', async () => {
         msg = {...msgToCall, nonce: 2};
         signature = calculateMessageSignature(privateKey, msg);
 
-        await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+        await expect(proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg)))
           .to.be.revertedWith('Invalid signature or nonce');
       });
 
       describe('refund', () => {
         it('should refund ether', async () => {
-          const transaction = await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+          const transaction = await proxyAsWalletContract.executeSigned(...getExecutionArgs(msgToCall), signatureToCall, calculatePaymentOptions(msgToCall));
 
           const {gasUsed} = await provider.getTransactionReceipt(transaction.hash);
           const totalCost = gasUsed!.mul(utils.bigNumberify(DEFAULT_GAS_PRICE));
@@ -266,7 +278,7 @@ describe('WalletContract', async () => {
         it('should refund tokens', async () => {
           msg = {...msgToCall, gasToken: mockToken.address};
           signature = calculateMessageSignature(privateKey, msg);
-          await proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+          await proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
@@ -312,13 +324,14 @@ describe('WalletContract', async () => {
   describe('Upgrade', () => {
     let newWallet: Contract;
     let updateData: string;
-    let gasLimit: utils.BigNumber;
+    let signedUpdateMessage: SignedMessage;
+    let gasLimit: any;
 
     beforeEach(async () => {
       newWallet = await deployContract(wallet, UpgradedWallet);
-      const signedMessage = messageToSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
-      updateData = encodeDataForExecuteSigned(signedMessage);
-      gasLimit = utils.bigNumberify(signedMessage.gasLimitExecution).add(signedMessage.gasData).add('33000');
+      signedUpdateMessage = messageToSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
+      updateData = encodeDataForExecuteSigned(signedUpdateMessage);
+      gasLimit = estimateGasLimit(signedUpdateMessage.gasLimitExecution, signedUpdateMessage.gasData);
     });
 
     it('before upgrade', async () => {
@@ -355,7 +368,7 @@ describe('WalletContract', async () => {
 
     it('execute message that has enough gas limit', async () => {
       const gasData = estimateGasDataFromSignedMessage({...msg, signature});
-      const validGasLimit = utils.bigNumberify(msg.gasLimitExecution).add(gasData).add(35000);
+      const validGasLimit = estimateGasLimit(msg.gasLimitExecution, gasData);
       await wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: validGasLimit});
       expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
     });

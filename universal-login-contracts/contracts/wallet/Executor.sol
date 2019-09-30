@@ -27,7 +27,7 @@ contract Executor {
     }
 
     function gasLimitMargin() public pure returns(uint) {
-        return 40000;
+        return 9000;
     }
 
     function transactionGasCost(uint gasData) public pure returns(uint) {

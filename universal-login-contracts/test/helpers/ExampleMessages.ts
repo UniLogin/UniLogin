@@ -1,11 +1,11 @@
 import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import TEST_PAYMENT_OPTIONS, {TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
+import TEST_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
-import {estimateGasDataFromUnsignedMessage} from '../../lib';
+import {calculatePaymentOptions, estimateGasDataFromUnsignedMessage} from '../../lib/estimateGas';
 
 const {parseEther} = utils;
 const {gasPrice} = TEST_PAYMENT_OPTIONS;
@@ -82,7 +82,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
   const setRequiredSignaturesMessageData = proxyAsWalletContract.interface.functions.setRequiredSignatures.encode([requiredSignatures]);
-  let msg = {
+  const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
     data: setRequiredSignaturesMessageData,
@@ -96,12 +96,12 @@ export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contra
   const gasData = estimateGasDataFromUnsignedMessage(msg);
   msg.gasData = gasData;
   const signature = calculateMessageSignature(privateKey, msg);
-  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
 };
 
 export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
   const addKeyMessageData = proxyAsWalletContract.interface.functions.addKey.encode([newKey]);
-  let msg = {
+  const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
     data: addKeyMessageData,
@@ -115,5 +115,5 @@ export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: str
   const gasData = estimateGasDataFromUnsignedMessage(msg);
   msg.gasData = gasData;
   const signature = calculateMessageSignature(privateKey, msg);
-  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
+  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
 };

@@ -9,6 +9,7 @@ import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../lib/encode';
 import {messageToSignedMessage} from '../../../lib/message';
+import {estimateGasLimit} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -36,8 +37,8 @@ describe('CONTRACT: Executor - refund', async () => {
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address,  gasLimit: DEFAULT_GAS_LIMIT};
     const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey);
     const executeData = encodeDataForExecuteSigned(signedMessage);
-
-    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
+    const gasLimit = estimateGasLimit(signedMessage.gasLimitExecution, signedMessage.gasData);
+    const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
@@ -64,8 +65,9 @@ describe('CONTRACT: Executor - refund', async () => {
     it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
       const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address}, managementKeyPair.privateKey);
       const executeData = encodeDataForExecuteSigned(signedMessage);
+      const gasLimit = estimateGasLimit(signedMessage.gasLimitExecution, signedMessage.gasData);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
+      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
       const balanceAfter = await wallet.getBalance();
@@ -77,8 +79,9 @@ describe('CONTRACT: Executor - refund', async () => {
       const initialTokenBalance = await mockToken.balanceOf(wallet.address);
       const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: mockToken.address}, managementKeyPair.privateKey);
       const executeData = encodeDataForExecuteSigned(signedMessage);
+      const gasLimit = estimateGasLimit(signedMessage.gasLimitExecution, signedMessage.gasData);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit: DEFAULT_GAS_LIMIT});
+      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
       const gasFee = computeFeeFor(receipt.gasUsed!);
