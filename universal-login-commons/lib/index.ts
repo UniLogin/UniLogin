@@ -22,6 +22,7 @@ export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {getEmojiColor, getEmojiNumber, CATEGORIES, getBaseEmojiCode, getEmojiSet, getColoredEmojiCode} from './core/utils/emoji';
 export {generateBackupCode} from './core/utils/generateBackupCode';
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
+export {safeMultiply} from './core/utils/safeMultiply';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
 export {computeCounterfactualAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';

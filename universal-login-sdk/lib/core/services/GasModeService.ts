@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {GasMode, TokensPrices, TokensValueConverter, ObservedCurrency, ensureNotNull} from '@universal-login/commons';
+import {GasMode, TokensPrices, ObservedCurrency, ensureNotNull, safeMultiply} from '@universal-login/commons';
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
@@ -9,7 +9,6 @@ export class GasModeService {
     private tokensStore: TokensDetailsStore,
     private gasPriceOracle: GasPriceOracle,
     private priceObserver: PriceObserver,
-    private tokensValueConverter: TokensValueConverter
   ) {}
 
   private getTokenPriceInversed(tokenPrices: TokensPrices, symbol: string) {
@@ -19,18 +18,22 @@ export class GasModeService {
   }
 
   private createMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): GasMode {
-    const usdAmount = this.tokensValueConverter.safeMultiply(gasPrice, this.getTokenPriceInversed(tokensPrices, 'USD'));
+    const usdAmount = this.getCurrencyAmount(gasPrice, 'USD', tokensPrices);
     return {
       name,
       usdAmount,
       gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
-        const multiplier = this.getTokenPriceInversed(tokensPrices, tokenDetails.symbol);
         return ({
           token: tokenDetails,
-          gasPrice: utils.parseUnits(this.tokensValueConverter.safeMultiply(gasPrice, multiplier)),
+          gasPrice: utils.parseEther(this.getCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices)),
         });
       })
     };
+  }
+
+  private getCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
+    const multiplier = this.getTokenPriceInversed(tokensPrices, symbol);
+    return safeMultiply(gasPrice, multiplier);
   }
 
   async getModes(): Promise<GasMode[]> {

@@ -60,7 +60,7 @@ class UniversalLoginSDK {
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies);
     this.gasPriceOracle = new GasPriceOracle(this.provider);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
-    this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver, this.tokensValueConverter);
+    this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
   }
 
   async createFutureWallet() {

@@ -112,7 +112,12 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests}
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice deployedWallet={deployedWallet} onGasParametersChanged={setGasParameters} className={className}/>
+            <GasPrice
+              deployedWallet={deployedWallet}
+              gasLimit={transactionDetails.gasLimit!}
+              onGasParametersChanged={setGasParameters}
+              className={className}
+            />
             <div className="connect-buttons-row">
               <button onClick={onCancelClick} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>

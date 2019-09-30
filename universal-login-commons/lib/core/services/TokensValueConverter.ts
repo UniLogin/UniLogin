@@ -1,9 +1,7 @@
 import {utils} from 'ethers';
 import {ObservedCurrency, TokensPrices, CurrencyToValue} from '../models/CurrencyData';
 import {TokenDetailsWithBalance} from '../models/TokenData';
-
-const SAFE_MULTIPLY_UNITS_NORMALIZE = 18 + 18;
-const SAFE_MULTIPLY_UNITS_DENORMALIZE = 18;
+import {safeMultiply} from '../utils/safeMultiply';
 
 export class TokensValueConverter {
   constructor(private observedCurrencies: ObservedCurrency[]) {}
@@ -23,16 +21,11 @@ export class TokensValueConverter {
   getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue) {
     const tokenValues = {} as CurrencyToValue;
     for (const symbol in tokenPrices) {
-      tokenValues[symbol as ObservedCurrency] = Number(this.safeMultiply(balance, tokenPrices[symbol as ObservedCurrency]));
+      tokenValues[symbol as ObservedCurrency] = Number(safeMultiply(balance, tokenPrices[symbol as ObservedCurrency]));
     }
     return tokenValues;
   }
 
-  safeMultiply(balance: utils.BigNumber, price: number) {
-    const priceAsBigNumber = utils.parseUnits(price.toString(), SAFE_MULTIPLY_UNITS_DENORMALIZE);
-    const multiplied = priceAsBigNumber.mul(balance);
-    return utils.formatUnits(multiplied, SAFE_MULTIPLY_UNITS_NORMALIZE);
-  }
 
   addBalances(totalBalances: CurrencyToValue, toAddBalances: CurrencyToValue) {
     for (const key in totalBalances) {
