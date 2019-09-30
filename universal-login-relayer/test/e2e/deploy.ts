@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
-import {createKeyPair, getDeployedBytecode, computeContractAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND} from '@universal-login/commons';
+import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../helpers/http';
 import Relayer from '../../lib';
@@ -29,7 +29,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(ProxyContract as any, [walletContract.address]);
-    contractAddress = computeContractAddress(factoryContract.address, keyPair.publicKey, initCode);
+    contractAddress = computeCounterfactualAddress(factoryContract.address, keyPair.publicKey, initCode);
     const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
   });
@@ -74,7 +74,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   it('Counterfactual deployment fail if ENS name is taken', async () => {
     await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletContract.address, factoryContract.address, ensAddress, ensName);
     const newKeyPair = createKeyPair();
-    contractAddress = computeContractAddress(factoryContract.address, newKeyPair.publicKey, initCode);
+    contractAddress = computeCounterfactualAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
     const initData = await getInitData(newKeyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, newKeyPair.privateKey);

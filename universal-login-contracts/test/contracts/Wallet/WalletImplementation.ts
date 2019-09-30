@@ -5,7 +5,7 @@ import {utils, Wallet, providers} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@universal-login/commons';
 import WalletContract from '../../../build/Wallet.json';
 
-const computeContractAddress = (address: string, nonce: number) => {
+const computeCounterfactualAddress = (address: string, nonce: number) => {
   const futureAddress = utils.solidityKeccak256(['bytes1', 'bytes1', 'address', 'bytes1'], ['0xd6', '0x94', address, utils.hexlify(nonce)]);
   return utils.getAddress(`0x${futureAddress.slice(26)}`);
 };
@@ -34,7 +34,7 @@ describe('WalletImplementation', () => {
 
   it('wallet implementation deployed and initialized successfully', async () => {
     const transactionCount = await wallet.getTransactionCount();
-    const futureAddress = computeContractAddress(wallet.address, transactionCount);
+    const futureAddress = computeCounterfactualAddress(wallet.address, transactionCount);
     await otherWallet.sendTransaction({to: futureAddress, value: utils.parseEther('1')});
     const walletContract = await deployContract(wallet, WalletContract, [], {gasLimit: 5000000});
 

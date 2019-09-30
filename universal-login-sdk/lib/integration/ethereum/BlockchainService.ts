@@ -1,6 +1,6 @@
 import {Contract, providers} from 'ethers';
 import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
-import {computeContractAddress, createKeyPair} from '@universal-login/commons';
+import {computeCounterfactualAddress, createKeyPair} from '@universal-login/commons';
 
 
 export class BlockchainService {
@@ -26,7 +26,7 @@ export class BlockchainService {
 
   createFutureWallet = async (factoryAddress: string) => {
     const {privateKey, publicKey} = createKeyPair();
-    const futureContractAddress = computeContractAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
+    const futureContractAddress = computeCounterfactualAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
     return [privateKey, futureContractAddress, publicKey];
   }
 }
