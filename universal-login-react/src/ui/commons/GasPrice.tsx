@@ -4,9 +4,10 @@ import './../styles/gasPriceDefault.sass';
 import {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
-import {GasMode, GasParameters, GasOption, EMPTY_GAS_OPTION} from '@universal-login/commons';
+import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, getBalanceOf, EMPTY_GAS_OPTION} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 interface GasPriceProps {
   deployedWallet: DeployedWallet;
@@ -15,6 +16,10 @@ interface GasPriceProps {
 }
 
 export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: GasPriceProps) => {
+  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+
+  useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
+
   const [gasModes] = useAsync<GasMode[]>(() => deployedWallet.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('');
@@ -115,7 +120,7 @@ export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: Ga
                             </div>
                             <div className="transaction-fee-balance">
                               <p className="transaction-fee-balance-text">Your balance</p>
-                              <p className="transaction-fee-balance-amount">250 {option.token.symbol}</p>
+                              <p className="transaction-fee-balance-amount">{getBalanceOf(option.token.symbol, tokenDetailsWithBalance)} {option.token.symbol}</p>
                             </div>
                           </div>
                         </RadioButton>
