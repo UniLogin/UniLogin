@@ -43,7 +43,12 @@ export const ConnectWithPassphrase = ({name}: ConnectWithPassphraseProps) => {
               />
               {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
               </div>
-              <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}><Spinner className="connect-spinner" dotClassName="connect-spinner-dot" /></button>
+              <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}>
+                {isLoading
+                  ? <Spinner className="connect-spinner" dotClassName="connect-spinner-dot" />
+                  : 'Recover'
+                }
+              </button>
           </div>
         </div>
       </div>
