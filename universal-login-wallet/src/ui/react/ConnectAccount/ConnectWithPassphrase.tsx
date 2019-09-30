@@ -34,7 +34,7 @@ export const ConnectWithPassphrase = ({name}: ConnectWithPassphraseProps) => {
           </div>
           <div className="box-content connect-passphrase-content">
             <div className="connect-passphrase-section">
-              <p className="box-text connect-passphrase-text">Write your 4 words passphrase to recover the access to your account</p>
+              <p className="box-text connect-passphrase-text">Write your passphrase to recover the access to your account</p>
               <InputLabel htmlFor="">Backup codes</InputLabel>
               <CustomInput
                 id="passphrase-input"
@@ -43,7 +43,7 @@ export const ConnectWithPassphrase = ({name}: ConnectWithPassphraseProps) => {
               />
               {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
               </div>
-              <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}>{isLoading ? <Spinner /> : 'Recover'}</button>
+              <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}><Spinner className="connect-spinner" dotClassName="connect-spinner-dot" /></button>
           </div>
         </div>
       </div>
