@@ -26,6 +26,7 @@ export const Devices = ({deployedWallet, className}: DevicesProps) => {
     case 'approveDevice':
       return (
         <ConnectionNotification
+          onConnectionSuccess={() => setDevicesContent('devices')}
           deployedWallet={deployedWallet}
           onDenyRequests={() => setDevicesContent('devices')}
           className={className}
