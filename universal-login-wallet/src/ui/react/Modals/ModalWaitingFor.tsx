@@ -2,19 +2,13 @@ import React from 'react';
 import {ProgressBar} from '@universal-login/react';
 import AvatarPending1x from './../../assets/illustrations/avatatPending@1x.png';
 import AvatarPending2x from './../../assets/illustrations/avatatPending@2x.png';
+import {getEtherscanUrl} from '../../../core/utils/getEtherscanUrl';
 
 interface ModalWaitingForProps {
   action: string;
   transactionHash: string;
   chainName: string;
 }
-
-const getEtherscanUrl = (chainName: string, transactionHash: string) => {
-  const formattedChainName = chainName.toLowerCase().trim();
-  return formattedChainName === 'mainnet'
-    ? `https://etherscan.io/tx/${transactionHash}`
-    : `https://${formattedChainName}.etherscan.io/tx/${transactionHash}`;
-};
 
 const ModalWaitingFor = ({action, chainName, transactionHash}: ModalWaitingForProps) => {
   return (
