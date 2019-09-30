@@ -8,10 +8,11 @@ import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter} = useServices();
+  const {walletPresenter, walletService} = useServices();
   const relayerConfig = useRelayerConfig();
 
   switch (modalService.modalState) {
@@ -36,6 +37,7 @@ const Modal = () => {
           contractAddress={walletPresenter.getContractAddress()}
           isModal
           logoColor="black"
+          hideModal={() => hideTopUpModal(walletService, modalService)}
         />
       ) : null;
     case 'waitingForDeploy':
