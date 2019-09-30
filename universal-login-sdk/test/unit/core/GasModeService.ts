@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {TokensPrices, TEST_TOKEN_DETAILS, TokensValueConverter, safeMultiply} from '@universal-login/commons';
+import {TokensPrices, TEST_TOKEN_DETAILS} from '@universal-login/commons';
 import {GasModeService} from '../../../lib/core/services/GasModeService';
 import {utils} from 'ethers';
 
@@ -24,23 +24,22 @@ describe('UNIT: GasModeService', () => {
     getCurrentPrices: sinon.stub().resolves(tokenPrices)
   };
 
-  const tokensValueConverter = new TokensValueConverter(['ETH', 'DAI']);
-  const safeMultiplySpy = sinon.spy(safeMultiply);
+  const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver);
 
-  const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver, tokensValueConverter);
-  (gasModeService as any).safeMultiply = safeMultiplySpy();
+  const getCurrencyAmountSpy = sinon.spy((gasModeService as any).getCurrencyAmount);
+  (gasModeService as any).getCurrencyAmount = getCurrencyAmountSpy;
 
   it('get modes', async () => {
     const modes = await gasModeService.getModes();
     expect(gasPriceOracle.getGasPrices).calledOnce;
 
-    expect(safeMultiplySpy.getCall(0)).calledWith(gasPrices.cheap, tokenPrices.ETH.USD);
-    expect(safeMultiplySpy.getCall(1)).calledWith(gasPrices.cheap, tokenPrices.ETH.DAI);
-    expect(safeMultiplySpy.getCall(2)).calledWith(gasPrices.cheap, tokenPrices.ETH.ETH);
-    expect(safeMultiplySpy.getCall(3)).calledWith(gasPrices.fast, tokenPrices.ETH.USD);
-    expect(safeMultiplySpy.getCall(4)).calledWith(gasPrices.fast, tokenPrices.ETH.DAI);
-    expect(safeMultiplySpy.getCall(5)).calledWith(gasPrices.fast, tokenPrices.ETH.ETH);
-    expect(safeMultiplySpy.callCount).eq(6);
+    expect(getCurrencyAmountSpy.getCall(0)).calledWith(gasPrices.cheap, 'USD');
+    expect(getCurrencyAmountSpy.getCall(1)).calledWith(gasPrices.cheap, 'DAI');
+    expect(getCurrencyAmountSpy.getCall(2)).calledWith(gasPrices.cheap, 'ETH');
+    expect(getCurrencyAmountSpy.getCall(3)).calledWith(gasPrices.fast, 'USD');
+    expect(getCurrencyAmountSpy.getCall(4)).calledWith(gasPrices.fast, 'DAI');
+    expect(getCurrencyAmountSpy.getCall(5)).calledWith(gasPrices.fast, 'ETH');
+    expect(getCurrencyAmountSpy.callCount).to.eq(6);
 
     expect(modes).to.be.deep.eq([
       {
