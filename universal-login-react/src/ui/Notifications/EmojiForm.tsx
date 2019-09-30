@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {utils} from 'ethers';
 import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
@@ -112,7 +113,12 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests}
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice deployedWallet={deployedWallet} onGasParametersChanged={setGasParameters} className={className}/>
+            <GasPrice
+              deployedWallet={deployedWallet}
+              gasLimit={transactionDetails.gasLimit!}
+              onGasParametersChanged={setGasParameters}
+              className={className}
+            />
             <div className="connect-buttons-row">
               <button onClick={onCancelClick} className="connect-cancel-btn">Cancel</button>
               <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>

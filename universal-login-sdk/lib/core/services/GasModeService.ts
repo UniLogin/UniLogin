@@ -25,7 +25,7 @@ export class GasModeService {
       gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
         return ({
           token: tokenDetails,
-          gasPrice: utils.parseUnits(this.getCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices)),
+          gasPrice: utils.parseEther(this.getCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices)),
         });
       })
     };

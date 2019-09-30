@@ -4,25 +4,26 @@ import './../styles/gasPriceDefault.sass';
 import {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../hooks/useAsync';
-import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, getBalanceOf, EMPTY_GAS_OPTION} from '@universal-login/commons';
+import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, getBalanceOf, EMPTY_GAS_OPTION, safeMultiply} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 interface GasPriceProps {
   deployedWallet: DeployedWallet;
+  gasLimit: utils.BigNumberish;
   onGasParametersChanged: (gasParameters: GasParameters) => void;
   className?: string;
 }
 
-export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: GasPriceProps) => {
+export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
 
   const [gasModes] = useAsync<GasMode[]>(() => deployedWallet.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
-  const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('');
+  const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('0');
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const onModeChanged = (name: string, usdAmount: utils.BigNumberish) => {
@@ -65,8 +66,8 @@ export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: Ga
                   <div className="transaction-fee-details">
                     <img src="" alt="" className="transaction-fee-item-icon" />
                     <div>
-                      <p className="transaction-fee-amount">{gasOption.gasPrice.toString()} {gasOption.token.symbol}</p>
-                      <p className="transaction-fee-amount-usd">{usdAmount} USD</p>
+                      <p className="transaction-fee-amount">{safeMultiply(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</p>
+                      <p className="transaction-fee-amount-usd">{safeMultiply(utils.parseEther(usdAmount.toString()), gasLimit)} USD</p>
                     </div>
                   </div>
                 </div>
@@ -114,8 +115,8 @@ export const GasPrice = ({deployedWallet, onGasParametersChanged, className}: Ga
                             <div className="transaction-fee-details">
                               <img src="" alt="" className="transaction-fee-item-icon" />
                               <div>
-                                <p className="transaction-fee-amount">{utils.formatEther(option.gasPrice)} {option.token.symbol}</p>
-                                <p className="transaction-fee-amount-usd">{usdAmount} USD</p>
+                                <p className="transaction-fee-amount">{safeMultiply(option.gasPrice, gasLimit)} {option.token.symbol}</p>
+                                <p className="transaction-fee-amount-usd">{safeMultiply(utils.parseEther(usdAmount.toString()), gasLimit)} USD</p>
                               </div>
                             </div>
                             <div className="transaction-fee-balance">
