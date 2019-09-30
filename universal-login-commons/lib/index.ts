@@ -15,7 +15,7 @@ export {EMPTY_DEVICE_INFO} from './core/constants/device';
 export {EMPTY_GAS_OPTION, INITIAL_GAS_PARAMETERS} from './core/constants/gas';
 export {DEV_DEFAULT_PRIVATE_KEY, devJsonRpcUrl} from './core/constants/dev';
 export {KEY_CODE_ESCAPE, DEFAULT_LOCATION} from './core/constants/ui';
-export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, EMPTY_DATA, DEPLOYMENT_REFUND, GAS_BASE} from './core/constants/constants';
+export {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, EMPTY_DATA, DEPLOYMENT_REFUND, GAS_BASE, DEFAULT_GAS_LIMIT_EXECUTION} from './core/constants/constants';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
