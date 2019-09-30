@@ -8,7 +8,7 @@ export interface GasOption {
 
 export interface GasMode {
   name: string;
-  usdAmount: utils.BigNumberish;
+  usdAmount: utils.BigNumber;
   gasOptions: GasOption[];
 }
 

@@ -23,10 +23,10 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
 
   const [gasModes] = useAsync<GasMode[]>(() => deployedWallet.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
-  const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('0');
+  const [usdAmount, setUsdAmount] = useState<utils.BigNumber>(utils.bigNumberify('0'));
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
-  const onModeChanged = (name: string, usdAmount: utils.BigNumberish) => {
+  const onModeChanged = (name: string, usdAmount: utils.BigNumber) => {
     const gasTokenAddress = gasOption.token.address;
     const gasOptions = findGasMode(gasModes!, name).gasOptions;
 
@@ -69,7 +69,7 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
                     <img src="" alt="" className="transaction-fee-item-icon" />
                     <div>
                       <p className="transaction-fee-amount">{multiplyWithGasLimit(gasOption.gasPrice)} {gasOption.token.symbol}</p>
-                      <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(utils.parseEther(usdAmount.toString()))} USD</p>
+                      <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(usdAmount)} USD</p>
                     </div>
                   </div>
                 </div>
@@ -118,7 +118,7 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
                               <img src="" alt="" className="transaction-fee-item-icon" />
                               <div>
                                 <p className="transaction-fee-amount">{multiplyWithGasLimit(option.gasPrice)} {option.token.symbol}</p>
-                                <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(utils.parseEther(usdAmount.toString()))} USD</p>
+                                <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(usdAmount)} USD</p>
                               </div>
                             </div>
                             <div className="transaction-fee-balance">

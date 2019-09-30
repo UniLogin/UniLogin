@@ -18,22 +18,23 @@ export class GasModeService {
   }
 
   private createMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): GasMode {
-    const usdAmount = this.getCurrencyAmount(gasPrice, 'USD', tokensPrices);
+    const usdAmount = this.getNormalizedCurrencyAmount(gasPrice, 'USD', tokensPrices);
     return {
       name,
       usdAmount,
       gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
         return ({
           token: tokenDetails,
-          gasPrice: utils.parseEther(this.getCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices)),
+          gasPrice: this.getNormalizedCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices),
         });
       })
     };
   }
 
-  private getCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
+  private getNormalizedCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
     const multiplier = this.getTokenPriceInversed(tokensPrices, symbol);
-    return safeMultiply(gasPrice, multiplier);
+    const amount = safeMultiply(gasPrice, multiplier);
+    return utils.parseUnits(amount, 18);
   }
 
   async getModes(): Promise<GasMode[]> {
