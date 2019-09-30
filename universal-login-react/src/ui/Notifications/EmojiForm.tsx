@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {utils} from 'ethers';
 import {isValidCode, SECURITY_CODE_LENGTH, Notification, filterNotificationByCodePrefix, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';

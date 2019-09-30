@@ -54,6 +54,8 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
   }, [gasModes]);
   const [contentVisibility, setContentVisibility] = useState(false);
 
+  const multiplyWithGasLimit = (number: utils.BigNumber) => safeMultiply(number, gasLimit);
+
   const renderComponent = (gasModes: GasMode[]) => (
     <div className="universal-login-gas">
       <div className={getStyleForTopLevelComponent(className)}>
@@ -66,8 +68,8 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
                   <div className="transaction-fee-details">
                     <img src="" alt="" className="transaction-fee-item-icon" />
                     <div>
-                      <p className="transaction-fee-amount">{safeMultiply(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</p>
-                      <p className="transaction-fee-amount-usd">{safeMultiply(utils.parseEther(usdAmount.toString()), gasLimit)} USD</p>
+                      <p className="transaction-fee-amount">{multiplyWithGasLimit(gasOption.gasPrice)} {gasOption.token.symbol}</p>
+                      <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(utils.parseEther(usdAmount.toString()))} USD</p>
                     </div>
                   </div>
                 </div>
@@ -115,8 +117,8 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
                             <div className="transaction-fee-details">
                               <img src="" alt="" className="transaction-fee-item-icon" />
                               <div>
-                                <p className="transaction-fee-amount">{safeMultiply(option.gasPrice, gasLimit)} {option.token.symbol}</p>
-                                <p className="transaction-fee-amount-usd">{safeMultiply(utils.parseEther(usdAmount.toString()), gasLimit)} USD</p>
+                                <p className="transaction-fee-amount">{multiplyWithGasLimit(option.gasPrice)} {option.token.symbol}</p>
+                                <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(utils.parseEther(usdAmount.toString()))} USD</p>
                               </div>
                             </div>
                             <div className="transaction-fee-balance">
