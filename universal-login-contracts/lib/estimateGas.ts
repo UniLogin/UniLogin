@@ -25,3 +25,6 @@ export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) =
   const txdata = encodeDataForExecuteSigned(copySignedMessage);
   return computeGasData(txdata);
 };
+
+export const estimateGasLimit = (gasLimitExecution: string | number | utils.BigNumberish, gasData: string | number | utils.BigNumberish) =>
+  utils.bigNumberify(gasLimitExecution).add(gasData).add('40000');
