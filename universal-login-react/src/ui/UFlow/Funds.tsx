@@ -32,7 +32,7 @@ export const Funds = ({contractAddress, ensName, sdk, onTopUpClick, onSendClick,
             <p className="ens-name">{ensName}</p>
           </div>
           <Balance
-            amount={`$${totalTokensValue['USD'] || '0.00'}`}
+            amount={`${totalTokensValue['USD'] || '0.00'}`}
             className={className}
           />
           <div className="funds-buttons">
