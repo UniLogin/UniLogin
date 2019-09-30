@@ -124,6 +124,7 @@ export const App = () => {
                   <hr/>
                   <EmojiForm
                     deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
+                    onConnectionSuccess={() => { console.log('connect'); }}
                   />
                 </div>
               )}

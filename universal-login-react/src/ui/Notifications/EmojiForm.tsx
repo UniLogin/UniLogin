@@ -23,12 +23,13 @@ const getInputModeFor = (addresses: string[], currentInputMode: InputModeType): 
 
 interface EmojiFormProps {
   deployedWallet: DeployedWallet;
+  onConnectionSuccess: () => void;
   onDenyRequests?: () => void;
   hideTitle?: () => void;
   className?: string;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
   const [gasParameters, setGasParameters] = useState<GasParameters>(INITIAL_GAS_PARAMETERS);
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -55,9 +56,11 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests}
     return isValidCode(enteredCode, addresses[0]);
   };
 
-  const confirmCode = (address: string) => {
-    deployedWallet.addKey(address, {...transactionDetails, ...gasParameters});
+  const confirmCode = async (address: string) => {
+    const {waitToBeSuccess} = await deployedWallet.addKey(address, {...transactionDetails, ...gasParameters});
     showProgressBar();
+    await waitToBeSuccess();
+    onConnectionSuccess();
   };
 
   const onEmojiAdd = (code: number) => {

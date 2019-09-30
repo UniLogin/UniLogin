@@ -8,11 +8,12 @@ import '../styles/emojiDefaults.sass';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
+  onConnectionSuccess: () => void;
   className?: string;
   onDenyRequests?: () => void;
 }
 
-export const ConnectionNotification = ({deployedWallet, className, onDenyRequests}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, className, onConnectionSuccess, onDenyRequests}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
@@ -35,6 +36,7 @@ export const ConnectionNotification = ({deployedWallet, className, onDenyRequest
               hideTitle={() => setShowTitle(false)}
               className={className}
               onDenyRequests={onDenyRequests}
+              onConnectionSuccess={onConnectionSuccess}
             />
           </>
           : <p className="connection-device-status">No requests to connect from other applications</p>
