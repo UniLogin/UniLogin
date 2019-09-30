@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture, deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, Message} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, Message, TEST_GAS_PRICE, computeContractAddress} from '@universal-login/commons';
 import {messageToSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EnoughTokenValidator, {hasEnoughToken} from '../../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
@@ -51,8 +51,8 @@ describe('INT: EnoughTokenValidator', async () => {
       [wallet, otherWallet] = await getWallets(provider);
       token = await deployContract(wallet, MockToken, []);
       walletContract = await deployContract(wallet, WalletContract, []);
-      await walletContract.initialize(wallet.address);
       await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
+      await walletContract.initialize(wallet.address, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
       await token.transfer(walletContract.address, utils.parseEther('1'));
     });
 
@@ -71,8 +71,9 @@ describe('INT: EnoughTokenValidator', async () => {
     });
 
     it('Should return true if contract has enough ethers', async () => {
+      const walletBalance = await provider.getBalance(walletContract.address);
       expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, gasLimit, provider)).to.be.true;
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('1.0'), provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, walletBalance, provider)).to.be.true;
     });
 
     it('Should return false if contract has not enough ethers', async () => {
