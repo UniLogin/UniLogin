@@ -20,7 +20,7 @@
   },
   "scripts": {
     "build": "yarn wsrun build --stages --fast-exit",
-    "test": "yarn wsrun test --stages --fast-exit",
+    "test": "yarn wsrun test --serial --fast-exit",
     "lint": "yarn wsrun lint --stages",
     "ci": "yarn && yarn clean && yarn build && yarn lint && yarn test",
     "clean": "yarn wsrun clean",
