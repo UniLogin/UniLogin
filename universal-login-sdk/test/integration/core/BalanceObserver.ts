@@ -1,11 +1,14 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
 import {TokensDetailsStore} from '../../../lib/core/services/TokensDetailsStore';
+
+chai.use(sinonChai);
 
 describe('INT: BalanceObserver', () => {
   let balanceChecker: BalanceChecker;
@@ -47,13 +50,13 @@ describe('INT: BalanceObserver', () => {
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
-      await waitUntil(() => !!callback.firstCall);
+      await waitUntil(() => !!callback.secondCall);
       unsubscribe();
 
-      expect(callback).to.have.been.calledOnce;
-      const actualtokenBalances = callback.firstCall.args[0] as TokenDetailsWithBalance[];
+      expect(callback).to.have.been.calledTwice;
+      const actualtokenBalances = callback.secondCall.args[0] as TokenDetailsWithBalance[];
       actualtokenBalances[0].balance = normalizeBigNumber(actualtokenBalances[0].balance);
-      expect(callback.firstCall.args[0]).to.deep.equal(expectedTokenBalances);
+      expect(callback.secondCall.args[0]).to.deep.equal(expectedTokenBalances);
     });
 
     it('1 subscription - change balance', async () => {
@@ -64,15 +67,16 @@ describe('INT: BalanceObserver', () => {
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
-      await waitUntil(() => !!callback.firstCall);
-      await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
       await waitUntil(() => !!callback.secondCall);
+      await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
+      await waitUntil(() => !!callback.thirdCall);
       unsubscribe();
 
-      const actualTokenBalancesAfterTransaction = callback.secondCall.args[0];
+      const actualTokenBalancesAfterTransaction = callback.thirdCall.args[0];
       actualTokenBalancesAfterTransaction[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction[0].balance);
       expect(actualTokenBalancesAfterTransaction).to.deep.eq(expectedTokenBalancesAfterTransaction);
-      expect(callback).to.have.been.calledTwice;
+      expect(callback).to.have.been.calledThrice;
+      expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
     });
 
     it('2 subscriptions - no change', async () => {
@@ -84,7 +88,7 @@ describe('INT: BalanceObserver', () => {
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
-      await waitUntil(() => !!callback1.firstCall);
+      await waitUntil(() => !!callback1.secondCall);
 
       const unsubscribe2 = balanceObserver.subscribe(callback2);
       await waitUntil(() => !!callback2.firstCall);
@@ -92,15 +96,15 @@ describe('INT: BalanceObserver', () => {
       unsubscribe1();
       unsubscribe2();
 
-      const actualTokenBalances1 = callback1.firstCall.args[0];
+      const actualTokenBalances1 = callback1.secondCall.args[0];
       actualTokenBalances1[0].balance = normalizeBigNumber(actualTokenBalances1[0].balance);
       expect(actualTokenBalances1).to.deep.equal(expectedTokenBalances);
-      expect(callback1).to.have.been.calledOnce;
-
+      expect(callback1).to.have.been.calledTwice;
       const actualTokenBalances2 = callback2.firstCall.args[0];
       actualTokenBalances2[0].balance = normalizeBigNumber(actualTokenBalances2[0].balance);
       expect(actualTokenBalances2).to.deep.equal(expectedTokenBalances);
       expect(callback2).to.have.been.calledOnce;
+      expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
     });
 
 
@@ -113,27 +117,28 @@ describe('INT: BalanceObserver', () => {
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
-      await waitUntil(() => !!callback1.firstCall);
-
       const unsubscribe2 = balanceObserver.subscribe(callback2);
-      await waitUntil(() => !!callback2.firstCall);
 
-      await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
       await waitUntil(() => !!callback1.secondCall);
       await waitUntil(() => !!callback2.secondCall);
+
+      await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
+      await waitUntil(() => !!callback1.thirdCall);
+      await waitUntil(() => !!callback2.thirdCall);
 
       unsubscribe1();
       unsubscribe2();
 
-      const actualTokenBalancesAfterTransaction1 = callback1.secondCall.args[0];
+      const actualTokenBalancesAfterTransaction1 = callback1.thirdCall.args[0];
       actualTokenBalancesAfterTransaction1[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction1[0].balance);
       expect(actualTokenBalancesAfterTransaction1).to.deep.equal(expectedTokenBalancesAfterTransaction);
-      expect(callback1).to.have.been.calledTwice;
+      expect(callback1).to.have.been.calledThrice;
 
-      const actualTokenBalancesAfterTransaction2 = callback2.secondCall.args[0];
+      const actualTokenBalancesAfterTransaction2 = callback2.thirdCall.args[0];
       actualTokenBalancesAfterTransaction2[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction2[0].balance);
       expect(actualTokenBalancesAfterTransaction2).to.deep.equal(expectedTokenBalancesAfterTransaction);
-      expect(callback2).to.have.been.calledTwice;
+      expect(callback2).to.have.been.calledThrice;
+      expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
     });
 
     afterEach(async () => {
