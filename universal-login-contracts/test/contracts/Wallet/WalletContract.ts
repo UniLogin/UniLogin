@@ -345,13 +345,13 @@ describe('WalletContract', async () => {
   });
 
   describe('gasLimitExecution', () => {
-    it('reject execution that has to small gasLimit', async () => {
+    it('reject execution that has too small gasLimit', async () => {
       const tooLowGasLimit = utils.bigNumberify(msg.gasLimitExecution).sub(1);
       await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: tooLowGasLimit})).to.be.eventually.rejectedWith('Too low gas limit');
       expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
     });
 
-    it('that has to small gasLimit', async () => {
+    it('execute message that has enough gas limit', async () => {
       const gasData = estimateGasDataFromSignedMessage({...msg, signature});
       const validGasLimit = utils.bigNumberify(msg.gasLimitExecution).add(gasData).add(35000);
       await wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: validGasLimit});
