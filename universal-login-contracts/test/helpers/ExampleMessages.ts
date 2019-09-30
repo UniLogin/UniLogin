@@ -1,10 +1,11 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, computeGasData, DEFAULT_GAS_LIMIT_EXECUTION} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import TEST_PAYMENT_OPTIONS, {TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../lib/defaultPaymentOptions';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
+import {estimateGasDataFromUnsignedMessage} from '../../lib';
 
 const {parseEther} = utils;
 const {gasPrice} = TEST_PAYMENT_OPTIONS;
@@ -16,7 +17,7 @@ export const transferMessage = {
   nonce: 0,
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: 0,
+  gasData: '7440',
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -28,7 +29,7 @@ export const failedTransferMessage = {
   nonce: 0,
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: 0,
+  gasData: '7440',
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -40,7 +41,7 @@ export const callMessage = {
   nonce: 0,
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: computeGasData(callMeMessageData),
+  gasData: '8720',
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -52,7 +53,7 @@ export const failedCallMessage = {
   nonce: 0,
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: computeGasData(revertingFunctionMessageData),
+  gasData: '8720',
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
@@ -64,7 +65,7 @@ type InfiniteCallOverrides = {
 export const createInfiniteCallMessage = async (deployer: Wallet, overrides: InfiniteCallOverrides): Promise<UnsignedMessage> => {
   const loopContract = await deployContract(deployer, Loop);
   const loopMessageData = encodeFunction(Loop, 'loop');
-  return {
+  const msg = {
     to: loopContract.address,
     value: utils.parseEther('0'),
     data: loopMessageData,
@@ -72,9 +73,11 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasPrice: 1,
     gasToken: '0x0',
     gasLimitExecution: utils.bigNumberify('240000'),
-    gasData: computeGasData(loopMessageData),
+    gasData: 0,
     ...overrides
   };
+  const gasData = estimateGasDataFromUnsignedMessage(msg);
+  return {...msg, gasData};
 };
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
@@ -87,9 +90,11 @@ export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contra
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
     gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-    gasData: computeGasData(setRequiredSignaturesMessageData),
+    gasData: 0,
     gasToken: '0x0000000000000000000000000000000000000000'
   };
+  const gasData = estimateGasDataFromUnsignedMessage(msg);
+  msg.gasData = gasData;
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 };
@@ -104,9 +109,11 @@ export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: str
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
     gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-    gasData: computeGasData(addKeyMessageData),
+    gasData: 0,
     gasToken: '0x0000000000000000000000000000000000000000'
   };
+  const gasData = estimateGasDataFromUnsignedMessage(msg);
+  msg.gasData = gasData;
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN);
 };
