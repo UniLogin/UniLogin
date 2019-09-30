@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {TokensPrices, TEST_TOKEN_DETAILS, TokensValueConverter} from '@universal-login/commons';
+import {TokensPrices, TEST_TOKEN_DETAILS, TokensValueConverter, safeMultiply} from '@universal-login/commons';
 import {GasModeService} from '../../../lib/core/services/GasModeService';
 import {utils} from 'ethers';
 
@@ -25,10 +25,10 @@ describe('UNIT: GasModeService', () => {
   };
 
   const tokensValueConverter = new TokensValueConverter(['ETH', 'DAI']);
-  const safeMultiplySpy = sinon.spy(tokensValueConverter.safeMultiply);
-  tokensValueConverter.safeMultiply = safeMultiplySpy;
+  const safeMultiplySpy = sinon.spy(safeMultiply);
 
   const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver, tokensValueConverter);
+  (gasModeService as any).safeMultiply = safeMultiplySpy();
 
   it('get modes', async () => {
     const modes = await gasModeService.getModes();
