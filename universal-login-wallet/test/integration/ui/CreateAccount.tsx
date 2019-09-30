@@ -17,7 +17,7 @@ describe('UI: Creation flow', () => {
     let services: Services;
     let relayer: any;
     let provider: providers.Provider;
-    const expectedHomeBalance = '$1.99';
+    const expectedHomeBalance = '$1.98';
 
     before(async () => {
         const [wallet] = await getWallets(createMockProvider());
