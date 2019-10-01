@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, getDeployedBytecode, createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE} from '@universal-login/commons';
+import {createSignedMessage} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import UniversaLoginSDK from '../../lib/api/sdk';

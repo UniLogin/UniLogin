@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
+import {MessageWithFrom, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
+import {createSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import CorrectProxyValidator from '../../../../../lib/integration/ethereum/validators/CorrectProxyValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';

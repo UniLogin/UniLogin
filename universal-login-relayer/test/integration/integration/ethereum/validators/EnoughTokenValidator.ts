@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture, deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {createSignedMessage, MessageWithFrom, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {MessageWithFrom, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EnoughTokenValidator, {hasEnoughToken} from '../../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
