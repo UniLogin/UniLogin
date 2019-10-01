@@ -8,7 +8,8 @@ export interface Notification {
 
 export interface DeviceInfo {
   ipAddress: string;
-  name: string;
+  applicationName: string;
+  platform: string;
   city: string;
   os: string;
   browser: string;

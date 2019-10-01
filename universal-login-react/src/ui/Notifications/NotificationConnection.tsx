@@ -12,7 +12,7 @@ export const NotificationConnection = ({data, device, confirm, reject}: Notifica
   return (
     <div className="notifications-item">
       <div className={`notification-connected ${device}`}>
-        <h3 className="notification-title">{data.deviceInfo.name}</h3>
+        <h3 className="notification-title">{data.deviceInfo.applicationName}</h3>
         <p className="notification-connected-id">{data.deviceInfo.os} ({data.deviceInfo.browser})</p>
         <p className="notification-connected-id">{data.deviceInfo.city}</p>
         <div className="notification-buttons-row">

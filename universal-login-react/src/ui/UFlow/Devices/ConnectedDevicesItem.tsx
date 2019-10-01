@@ -10,7 +10,7 @@ export interface ConnectedDevicesItemProps extends Device {
 }
 
 export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, confirmationsCount}: ConnectedDevicesItemProps) => {
-  const {os, name, ipAddress, city, time} = deviceInfo;
+  const {os, applicationName, platform, ipAddress, city, time} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
   const [isWarningVisible, setIsWarningVisible] = useState(false);
@@ -31,9 +31,10 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   };
 
   return (
-    <li className={`connected-devices-item ${name.toLocaleLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
+    <li className={`connected-devices-item ${platform.toLocaleLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
       <div>
-        <p className="connected-devices-type">{os} &bull; {city}</p>
+        <p className="connected-devices-type">{applicationName}</p>
+        <p className="connected-devices-details">{os} &bull; {city}</p>
         <p className="connected-devices-details">
           IP adress {ipAddress}
           {time

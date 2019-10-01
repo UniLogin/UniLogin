@@ -9,7 +9,8 @@ export const getDeviceInfo = (req: Request, applicationName: string): DeviceInfo
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   return {
     ipAddress,
-    name: platform,
+    applicationName,
+    platform,
     city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
     os,
     browser,

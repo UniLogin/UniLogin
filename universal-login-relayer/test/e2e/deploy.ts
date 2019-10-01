@@ -62,10 +62,11 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       contractAddress,
       publicKey: keyPair.publicKey,
       deviceInfo: {
+        applicationName,
         browser: 'node-superagent',
         city: 'unknown',
         ipAddress: '::ffff:127.0.0.1',
-        name: 'unknown',
+        platform: 'unknown',
         os: 'unknown',
         time: body[0].deviceInfo.time
       }
