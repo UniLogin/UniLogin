@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage} from '../lib/estimateGas';
+import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage, calculateGasLimitExecution} from '../lib/estimateGas';
 
 describe('UNIT: estimateGas', () => {
   describe('estimateGasDataFromSignedMessage', () => {
@@ -179,6 +179,27 @@ describe('UNIT: estimateGas', () => {
         gasData: 0
       };
       expect(estimateGasDataFromUnsignedMessage(message)).to.be.equal(2576 + 65 * 64);
+    });
+  });
+
+  describe('calculateGasLimitExecution', () => {
+    it('gasData is smaller than gasLimit', () => {
+      const gasData = '3000';
+      const gasLimit = '10000';
+      const expectedGasLimitExecution = '7000';
+      expect(calculateGasLimitExecution(gasLimit, gasData)).to.eq(expectedGasLimitExecution);
+    });
+
+    it('throw an error if gasData is higher than gasLimit', () => {
+      const gasData = '10000';
+      const gasLimit = '3000';
+      expect(() => calculateGasLimitExecution(gasLimit, gasData)).to.throw('Gas limit too low');
+    });
+
+    it('throw an error if gasData and gasLimit are equal', () => {
+      const gasData = '10000';
+      const gasLimit = '10000';
+      expect(() => calculateGasLimitExecution(gasLimit, gasData)).to.throw('Gas limit too low');
     });
   });
 });
