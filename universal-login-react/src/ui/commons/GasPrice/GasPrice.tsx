@@ -113,4 +113,3 @@ const GasPriceTitle = () => (
     </div>
   </div>
 );
-
