@@ -1,13 +1,15 @@
-import React, {ReactNode, useState, useEffect} from 'react';
-import './../styles/gasPrice.sass';
-import './../styles/gasPriceDefault.sass';
+import React, {useState, useEffect} from 'react';
+import './../../styles/gasPrice.sass';
+import './../../styles/gasPriceDefault.sass';
 import {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
-import {useAsync} from '../hooks/useAsync';
+import {useAsync} from '../../hooks/useAsync';
 import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, getBalanceOf, EMPTY_GAS_OPTION, safeMultiply} from '@universal-login/commons';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import {useAsyncEffect} from '../../hooks/useAsyncEffect';
+import {GasPriceSpeedChoose} from './GasPriceSpeed';
+import {TransactionFeeChoose} from './TransactionFeeChoose';
 
 interface GasPriceProps {
   deployedWallet: DeployedWallet;
@@ -83,54 +85,20 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
             {contentVisibility &&
               <div className="gas-price-selector">
                 <GasPriceTitle />
-                <div className="transaction-speed">
-                  <p className="transaction-speed-title">Transaction speed</p>
-                  <ul className="transaction-speed-list">
-                    {gasModes.map(({name, usdAmount}) => (
-                      <li key={name} className="transaction-speed-item">
-                        <RadioButton
-                          id={name}
-                          name="speed"
-                          checked={name === modeName}
-                          onChange={() => onModeChanged(name, usdAmount)}
-                        >
-                          <div className="transaction-speed-block">
-                            <p className="transaction-speed-type">{name}</p>
-                          </div>
-                        </RadioButton>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="transaction-fee">
-                  <p className="transaction-fee-title">Transaction fee</p>
-                  <ul className="transaction-fee-list">
-                    {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map((option: GasOption) => (
-                      <li key={option.token.address} className="transaction-fee-item">
-                        <RadioButton
-                          id={`token-${option.token.address}`}
-                          name="fee"
-                          checked={option.token.address === gasOption.token.address}
-                          onChange={() => onGasOptionChanged(option)}
-                        >
-                          <div className="transaction-fee-row">
-                            <div className="transaction-fee-details">
-                              <img src="" alt="" className="transaction-fee-item-icon" />
-                              <div>
-                                <p className="transaction-fee-amount">{multiplyWithGasLimit(option.gasPrice)} {option.token.symbol}</p>
-                                <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(utils.parseEther(usdAmount.toString()))} USD</p>
-                              </div>
-                            </div>
-                            <div className="transaction-fee-balance">
-                              <p className="transaction-fee-balance-text">Your balance</p>
-                              <p className="transaction-fee-balance-amount">{getBalanceOf(option.token.symbol, tokenDetailsWithBalance)} {option.token.symbol}</p>
-                            </div>
-                          </div>
-                        </RadioButton>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <GasPriceSpeedChoose
+                  gasModes={gasModes}
+                  modeName={modeName}
+                  onModeChanged={onModeChanged}
+                />
+                <TransactionFeeChoose
+                  gasModes={gasModes}
+                  modeName={modeName}
+                  tokenAddress={gasOption.token.address}
+                  gasLimit={gasLimit}
+                  usdAmount={usdAmount}
+                  tokensDetailsWithBalance={tokenDetailsWithBalance}
+                  onGasOptionChanged={onGasOptionChanged}
+                />
               </div>
             }
           </div>
@@ -152,19 +120,3 @@ const GasPriceTitle = () => (
   </div>
 );
 
-interface RadioButtonProps {
-  id: string;
-  name: string;
-  checked: boolean;
-  onChange: () => void;
-  children: ReactNode;
-}
-
-const RadioButton = ({id, name, checked, onChange, children}: RadioButtonProps) => (
-  <label className="gas-price-label">
-    <input id={id} checked={checked} onChange={onChange} type="radio" name={name} className="gas-price-radio" />
-    <div className="gas-price-radio-custom">
-      {children}
-    </div>
-  </label>
-);
