@@ -60,7 +60,7 @@ export const Onboarding = (props: OnboardingProps) => {
               tryEnablingMetamask={props.tryEnablingMetamask}
             />
           </div>
-          <Modals modalClassName={props.modalClassName}/>
+          <Modals sdk={props.sdk} modalClassName={props.modalClassName}/>
         </ReactModalContext.Provider>
       </div>
     </div>
