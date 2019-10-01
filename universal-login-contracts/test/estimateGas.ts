@@ -190,18 +190,16 @@ describe('UNIT: estimateGas', () => {
       expect(calculateGasLimitExecution(gasLimit, gasData)).to.eq(expectedGasLimitExecution);
     });
 
-    it('gasData is higher than gasLimit', () => {
+    it('throw an error if gasData is higher than gasLimit', () => {
       const gasData = '10000';
       const gasLimit = '3000';
-      const expectedGasLimitExecution = '0';
-      expect(calculateGasLimitExecution(gasLimit, gasData)).to.eq(expectedGasLimitExecution);
+      expect(() => calculateGasLimitExecution(gasLimit, gasData)).to.throw('Gas limit too low');
     });
 
-    it('gasData and gasLimit are equal', () => {
+    it('throw an error if gasData and gasLimit are equal', () => {
       const gasData = '10000';
       const gasLimit = '10000';
-      const expectedGasLimitExecution = '0';
-      expect(calculateGasLimitExecution(gasLimit, gasData)).to.eq(expectedGasLimitExecution);
+      expect(() => calculateGasLimitExecution(gasLimit, gasData)).to.throw('Gas limit too low');
     });
   });
 });

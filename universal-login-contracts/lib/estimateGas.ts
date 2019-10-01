@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString} from '@universal-login/commons';
+import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString, ensure} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 import cloneDeep from 'lodash.clonedeep';
 
@@ -11,7 +11,8 @@ export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: uti
 
 export const calculateGasLimitExecution = (gasLimit: utils.BigNumberish, gasData: utils.BigNumberish) => {
   const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
-  return gasLimitExecution.gt(0) ? gasLimitExecution : '0';
+  ensure(gasLimitExecution.gt(0), Error, 'Gas limit too low');
+  return gasLimitExecution;
 };
 
 export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
