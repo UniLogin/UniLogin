@@ -3,7 +3,7 @@ import {fetch} from './fetch';
 
 export class RelayerApi {
   private http: HttpFunction;
-  constructor(relayerUrl: string) {
+  constructor(relayerUrl: string, private applicationName: string) {
     this.http = http(fetch)(relayerUrl);
   }
 
