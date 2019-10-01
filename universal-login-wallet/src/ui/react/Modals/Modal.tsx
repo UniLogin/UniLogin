@@ -32,6 +32,7 @@ const Modal = () => {
       return relayerConfig ? (
         <TopUp
           sdk={sdk}
+          onGasParametersChanged={() => {}}
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
           onRampConfig={relayerConfig.onRampProviders}

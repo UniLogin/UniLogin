@@ -138,13 +138,15 @@ export const App = () => {
                 }
                 const topUpProps = {
                   contractAddress: Wallet.createRandom().address,
-                  onRampConfig: relayerConfig!.onRampProviders
+                  onRampConfig: relayerConfig!.onRampProviders,
+                  onGasParametersChanged: console.log,
+                  sdk
                 };
                 return (
                   <>
                     <ReactModalContext.Provider value={modalService}>
                       <button onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
-                      <Modals sdk={sdk}/>
+                      <Modals />
                     </ReactModalContext.Provider>
                   </>
                   );

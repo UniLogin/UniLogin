@@ -57,6 +57,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         return (
           <TopUp
             sdk={sdk}
+            onGasParametersChanged={() => {}}
             hideModal={() => setDashboardVisibility(false)}
             contractAddress={applicationWallet.contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
