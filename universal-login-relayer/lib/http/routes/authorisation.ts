@@ -10,8 +10,9 @@ import {AddAuthorisationRequest} from '../../core/models/AddAuthorisationRequest
 
 
 const request = (authorisationService: AuthorisationService) =>
-  async (data: {body: {key: string, walletContractAddress: string}}, req: Request) => {
-    const addAuthorisationRequest: AddAuthorisationRequest = {...data.body, deviceInfo: getDeviceInfo(req)};
+  async (data: {body: {key: string, walletContractAddress: string, applicationName: string}}, req: Request) => {
+    const {applicationName, ...relayerRequest} = data.body;
+    const addAuthorisationRequest: AddAuthorisationRequest = {...relayerRequest, deviceInfo: getDeviceInfo(req, applicationName)};
     const result = await authorisationService.addRequest(addAuthorisationRequest);
     return responseOf({response: result}, 201);
   };
@@ -46,7 +47,8 @@ export default (authorisationService: AuthorisationService) => {
     sanitize({
       body: asObject({
         walletContractAddress: asEthAddress,
-        key: asString
+        key: asString,
+        applicationName: asString
       })
     }),
     request(authorisationService)

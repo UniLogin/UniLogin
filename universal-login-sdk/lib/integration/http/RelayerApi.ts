@@ -27,6 +27,7 @@ export class RelayerApi {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
+      applicationName: this.applicationName
     });
   }
 
@@ -60,7 +61,8 @@ export class RelayerApi {
       ensName,
       gasPrice,
       gasToken,
-      signature
+      signature,
+      applicationName: this.applicationName
     });
   }
 }
