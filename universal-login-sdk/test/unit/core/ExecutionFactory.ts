@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import sinon, {SinonStub} from 'sinon';
 import {utils} from 'ethers';
-import {createSignedMessage, TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY} from '@universal-login/commons';
-
+import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {createSignedMessage} from '@universal-login/contracts';
 import {ExecutionFactory} from '../../../lib/core/services/ExecutionFactory';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
 
