@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {OnRampConfig, stringToEther, GasParameters} from '@universal-login/commons';
+import {OnRampConfig, OnGasParametersChanged, stringToEther} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
@@ -10,8 +11,9 @@ import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 
 interface TopUpProps {
+  sdk: UniversalLoginSDK;
   contractAddress: string;
-  onGasParametersChanged: (gasParameters: GasParameters) => void;
+  onGasParametersChanged: OnGasParametersChanged;
   startModal?: TopUpComponentType;
   onRampConfig: OnRampConfig;
   topUpClassName?: string;
