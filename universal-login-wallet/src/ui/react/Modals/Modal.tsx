@@ -43,13 +43,13 @@ const Modal = () => {
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <ModalWaitingFor action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0x5a63…f3a68a'}/>
+          <ModalWaitingFor action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} message={'0x5a63…f3a68a'}/>
         </ModalWrapper>
       );
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>
-          <ModalWaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} transactionHash={modalService.modalProps.toString()}/>
+          <ModalWaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} message={modalService.modalProps.toString()}/>
         </ModalWrapperWithoutClose>
       );
     case 'transactionSuccess':

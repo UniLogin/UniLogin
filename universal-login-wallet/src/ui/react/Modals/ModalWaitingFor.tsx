@@ -3,14 +3,15 @@ import {ProgressBar} from '@universal-login/react';
 import AvatarPending1x from './../../assets/illustrations/avatatPending@1x.png';
 import AvatarPending2x from './../../assets/illustrations/avatatPending@2x.png';
 import {getEtherscanUrl} from '../../../core/utils/getEtherscanUrl';
+import {utils} from 'ethers';
 
 interface ModalWaitingForProps {
   action: string;
-  transactionHash: string;
+  message: string;
   chainName: string;
 }
 
-const ModalWaitingFor = ({action, chainName, transactionHash}: ModalWaitingForProps) => {
+const ModalWaitingFor = ({action, chainName, message}: ModalWaitingForProps) => {
   return (
     <>
       <div className="box-header">
@@ -27,7 +28,11 @@ const ModalWaitingFor = ({action, chainName, transactionHash}: ModalWaitingForPr
         <div className="modal-pending-section">
           <ProgressBar className="modal-pending-loader"/>
           <h3 className="modal-section-title transaction-hash-title">Transaction hash</h3>
-          <p className="txn-hash-text"><a href={getEtherscanUrl(chainName, transactionHash)} target="_blank">{transactionHash}</a> </p>
+          <p className="txn-hash-text">
+            {utils.isHexString(message)
+              ? <a href={getEtherscanUrl(chainName, message)} target="_blank">{message}</a>
+              : message}
+          </p>
         </div>
         <p className="info-text">It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...</p>
       </div>
