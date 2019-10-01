@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {MessageWithFrom, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
-import {createSignedMessage, messageToSignedMessage, createSignedMessageFromUnsigned} from '@universal-login/contracts';
+import {UnsignedMessage, TEST_ACCOUNT_ADDRESS, ContractWhiteList} from '@universal-login/commons';
+import {createSignedMessage, messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
 import MessageExecutionValidator from '../../../../../lib/integration/ethereum/validators/MessageExecutionValidator';
@@ -13,7 +13,7 @@ import {transferMessage} from '../../../../fixtures/basicWalletContract';
 import MockToken from '@universal-login/contracts/build/MockToken';
 
 describe('INT: MessageExecutionValidator', async () => {
-  let message: MessageWithFrom;
+  let message: UnsignedMessage;
   let master: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
@@ -22,7 +22,7 @@ describe('INT: MessageExecutionValidator', async () => {
 
   before(async () => {
     ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS};
+    message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS};
     messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList);
   });
 
@@ -32,7 +32,7 @@ describe('INT: MessageExecutionValidator', async () => {
   });
 
   it('throws when not enough gas', async () => {
-    const signedMessage = createSignedMessageFromUnsigned({...message, gasLimitExecution: 100, gasData: 100}, wallet.privateKey);
+    const signedMessage = unsignedMessageToSignedMessage({...message, gasLimitExecution: 100, gasData: 100}, wallet.privateKey);
     await expect(messageExecutionValidator.validate(signedMessage)).to.be.eventually.rejectedWith('Not enough gas');
   });
 

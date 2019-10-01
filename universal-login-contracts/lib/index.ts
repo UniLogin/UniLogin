@@ -4,4 +4,4 @@ export {createProxyDeployWithENSArgs} from './ProxyUtils';
 export {createFutureDeployment, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, getFutureAddress} from './FutureDeployment';
 export {deployWalletContract} from './deployMaster';
 export {computeGasFields, estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage}  from './estimateGas';
-export {messageToUnsignedMessage, messageToSignedMessage, createSignedMessage, createSignedMessageFromUnsigned}  from './message';
+export {messageToUnsignedMessage, messageToSignedMessage, createSignedMessage, unsignedMessageToSignedMessage, emptyMessage}  from './message';

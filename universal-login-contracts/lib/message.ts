@@ -24,7 +24,7 @@ export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMes
   return {...messageWithoutGasEstimates, ...computeGasFields(messageWithoutGasEstimates, message.gasLimit!)};
 };
 
-const emptyMessage = {
+export const emptyMessage = {
   to: '',
   value: utils.parseEther('0.0'),
   data: EMPTY_DATA,
@@ -35,13 +35,12 @@ const emptyMessage = {
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
-export const createSignedMessageFromUnsigned = (override: MessageWithFrom, privateKey: string) => {
-  const message: UnsignedMessage = {...emptyMessage, ...override};
-  const signature = calculateMessageSignature(privateKey, message);
-  return {...message, signature};
+export const unsignedMessageToSignedMessage = (unsignedMessage: UnsignedMessage, privateKey: string) => {
+  const signature = calculateMessageSignature(privateKey, unsignedMessage);
+  return {...unsignedMessage, signature};
 };
 
 export const createSignedMessage = (override: Partial<Message>, privateKey: string) => {
   const unsignedMessage = messageToUnsignedMessage({...emptyMessage, gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT).sub('100000'), ...override});
-  return createSignedMessageFromUnsigned(unsignedMessage, privateKey);
+  return unsignedMessageToSignedMessage(unsignedMessage, privateKey);
 };
