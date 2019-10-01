@@ -1,8 +1,9 @@
 import {expect} from 'chai';
 import {getDeviceInfo} from '../../../../lib/http/utils/getDeviceInfo';
+import {TEST_APPLICATION_NAME} from '@universal-login/commons';
 
 describe('UNIT: Http utils test', async () => {
-  const applicationName = 'UniversalLogin';
+  const applicationName = TEST_APPLICATION_NAME;
 
   it('Test getDeviceInfo', async () => {
     const req = {

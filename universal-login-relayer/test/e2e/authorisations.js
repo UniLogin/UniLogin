@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
-import {signRelayerRequest, createKeyPair} from '@universal-login/commons';
+import {signRelayerRequest, createKeyPair, TEST_APPLICATION_NAME} from '@universal-login/commons';
 import {utils} from 'ethers';
 
 chai.use(chaiHttp);
@@ -12,7 +12,7 @@ async function postAuthorisationRequest(relayer, contract, keyPair, applicationN
     .send({
       walletContractAddress: contract.address,
       key: keyPair.publicKey,
-      applicationName: 'UniversalLogin'
+      applicationName: TEST_APPLICATION_NAME
     });
   expect(result.status).to.eq(201);
 }
@@ -45,7 +45,6 @@ describe('E2E: Relayer - Authorisation routes', async () => {
 
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
-  const applicationName = 'UniversalLogin';
 
   beforeEach(async () => {
     keyPair = createKeyPair();

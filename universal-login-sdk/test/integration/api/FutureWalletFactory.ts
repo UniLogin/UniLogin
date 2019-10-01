@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_NAME} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {FutureWalletFactory} from '../../../lib/api/FutureWalletFactory';
@@ -39,7 +39,7 @@ describe('INT: FutureWalletFactory', async () => {
       }
     };
     const blockchainService = new BlockchainService(provider);
-    const relayerApi = new RelayerApi(relayerUrl, 'UniversalLogin');
+    const relayerApi = new RelayerApi(relayerUrl, TEST_APPLICATION_NAME);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
       provider,
