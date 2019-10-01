@@ -5,8 +5,13 @@ import cloneDeep from 'lodash.clonedeep';
 
 export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
   const gasData = utils.bigNumberify(estimateGasDataFromUnsignedMessage(unsignedMessage));
-  const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
+  const gasLimitExecution = calculateGasLimitExecution(gasLimit, gasData);
   return {gasData, gasLimitExecution};
+};
+
+export const calculateGasLimitExecution = (gasLimit: utils.BigNumberish, gasData: utils.BigNumberish) => {
+  const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
+  return gasLimitExecution.gt(0) ? gasLimitExecution : '0';
 };
 
 export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
