@@ -26,6 +26,7 @@ export const createServices = (config: Config, overrides : Overrides = {}) => {
     config.relayerUrl,
     providerOrProviderUrl,
     {
+      applicationName: 'Jarvis',
       paymentOptions: {},
       observedTokensAddresses: config.tokens
     }
