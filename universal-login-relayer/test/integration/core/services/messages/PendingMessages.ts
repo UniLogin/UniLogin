@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, TEST_MESSAGE_HASH, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {createSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
@@ -35,7 +35,7 @@ describe('INT: PendingMessages', () => {
     signaturesService = new SignaturesService(wallet);
     statusService = new MessageStatusService(messageRepository, signaturesService);
     pendingMessages = new PendingMessages(wallet, messageRepository, {addMessage: spy} as any, statusService);
-    message = createSignedMessage({from: walletContract.address, to: '0x'}, wallet.privateKey);
+    message = createSignedMessage({from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, wallet.privateKey);
     messageHash = calculateMessageHash(message);
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
   });

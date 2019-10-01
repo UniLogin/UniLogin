@@ -2,7 +2,7 @@ import {utils} from 'ethers';
 import {expect} from 'chai';
 import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import TEST_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
-import {messageToUnsignedMessage, createSignedMessage} from '../lib/message';
+import {messageToUnsignedMessage, createSignedMessageFromUnsigned} from '../lib/message';
 
 const {bigNumberify} = utils;
 
@@ -65,7 +65,7 @@ describe('createSignedMessage', async () => {
 
     const privateKey = '0x899d97b42f840d59d60f3a18514b28042a1d86fa400d6cf9425ec3a9217d0cea';
 
-    const signedMessage = createSignedMessage({...transferMessage, from: '0x'}, privateKey);
+    const signedMessage = createSignedMessageFromUnsigned({...transferMessage, from: '0x'}, privateKey);
     expect(signedMessage).to.deep.eq(expectedMessage);
   });
 });

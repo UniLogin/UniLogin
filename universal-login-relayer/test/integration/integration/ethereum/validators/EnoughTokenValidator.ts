@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture, deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {MessageWithFrom, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {createSignedMessage} from '@universal-login/contracts';
+import {createSignedMessage, createSignedMessageFromUnsigned} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EnoughTokenValidator, {hasEnoughToken} from '../../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
@@ -28,12 +28,12 @@ describe('INT: EnoughTokenValidator', async () => {
   });
 
   it('passes when not enough gas', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimitExecution: 100}, wallet.privateKey);
+    const signedMessage = createSignedMessageFromUnsigned({...message, gasLimitExecution: 100, gasData: 1000}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.be.eventually.fulfilled;
   });
 
   it('throws when not enough tokens', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimitExecution: utils.parseEther('2.0')}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
     await expect(validator.validate(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });

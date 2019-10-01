@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, Wallet, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {MessageWithFrom, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {createSignedMessage} from '@universal-login/contracts';
+import {createSignedMessage, createSignedMessageFromUnsigned} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EstimateGasValidator from '../../../../../lib/integration/ethereum/validators/EstimateGasValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
@@ -26,12 +26,12 @@ describe('INT: EstimateGasValidator', async () => {
   });
 
   it('throws when not enough gas', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimitExecution: 100}, wallet.privateKey);
+    const signedMessage = createSignedMessageFromUnsigned({...message, gasLimitExecution: 100, gasData: 100}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
   it('passes when not enough tokens', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimitExecution: utils.parseEther('2.0')}, wallet.privateKey);
+    const signedMessage = createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.be.eventually.fulfilled;
   });
 });

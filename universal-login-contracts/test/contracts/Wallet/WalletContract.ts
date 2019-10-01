@@ -312,11 +312,13 @@ describe('WalletContract', async () => {
   describe('Upgrade', () => {
     let newWallet: Contract;
     let updateData: string;
+    let gasLimit: utils.BigNumber;
 
     beforeEach(async () => {
       newWallet = await deployContract(wallet, UpgradedWallet);
       const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
       updateData = encodeDataForExecuteSigned(signedMessage);
+      gasLimit = utils.bigNumberify(signedMessage.gasLimitExecution).add(signedMessage.gasData).add('33000');
     });
 
     it('before upgrade', async () => {
@@ -324,7 +326,7 @@ describe('WalletContract', async () => {
     });
 
     it('updates master', async () => {
-      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit: DEFAULT_GAS_LIMIT});
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit});
       expect(await walletContractProxy.implementation()).to.eq(newWallet.address);
       const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
       expect(await proxyAsUpdatedWallet.getFive()).to.eq(5);
@@ -332,7 +334,7 @@ describe('WalletContract', async () => {
     });
 
     it('updates store', async () => {
-      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit: DEFAULT_GAS_LIMIT});
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit});
       const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
       expect(await proxyAsUpdatedWallet.someNumber()).to.eq(0);
       await proxyAsUpdatedWallet.change(10);

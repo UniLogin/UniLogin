@@ -35,9 +35,13 @@ const emptyMessage = {
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
-
-export const createSignedMessage = (override: MessageWithFrom, privateKey: string) => {
+export const createSignedMessageFromUnsigned = (override: MessageWithFrom, privateKey: string) => {
   const message: UnsignedMessage = {...emptyMessage, ...override};
   const signature = calculateMessageSignature(privateKey, message);
   return {...message, signature};
+};
+
+export const createSignedMessage = (override: Partial<Message>, privateKey: string) => {
+  const unsignedMessage = messageToUnsignedMessage({...emptyMessage, gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT).sub('100000'), ...override});
+  return createSignedMessageFromUnsigned(unsignedMessage, privateKey);
 };
