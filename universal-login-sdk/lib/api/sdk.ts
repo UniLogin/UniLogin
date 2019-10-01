@@ -18,6 +18,7 @@ import {messageToUnsignedMessage, createSignedMessage} from '@universal-login/co
 import {ensureSufficientGas} from '../core/utils/validation';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
+import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -39,6 +40,7 @@ class UniversalLoginSDK {
   sdkConfig: SdkConfig;
   relayerConfig?: PublicRelayerConfig;
   factoryAddress?: string;
+  featureFlagsService: FeatureFlagsService;
 
   constructor(
     relayerUrl: string,
@@ -61,6 +63,7 @@ class UniversalLoginSDK {
     this.gasPriceOracle = new GasPriceOracle(this.provider);
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
+    this.featureFlagsService = new FeatureFlagsService();
   }
 
   async createFutureWallet() {

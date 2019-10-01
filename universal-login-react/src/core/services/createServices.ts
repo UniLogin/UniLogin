@@ -15,6 +15,7 @@ export const createServices = (config: Config, {provider} : Overrides = {}) => {
   const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl);
   const ipGeolocationService = new IPGeolocationService(config.ipGeolocationApi.baseUrl, config.ipGeolocationApi.accessKey);
   const topUpProviderSupportService = new TopUpProviderSupportService(countries);
+  sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
     sdk,
     ipGeolocationService,
