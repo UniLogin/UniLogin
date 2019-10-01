@@ -11,10 +11,10 @@ import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
-import {WalletModalContext, WalletModalType} from '../../core/entities/WalletModalContext';
+import {WalletModalContext, WalletModalType, WalletModalPropType} from '../../core/entities/WalletModalContext';
 
 const App = () => {
-  const modalService = createModalService<WalletModalType, string>();
+  const modalService = createModalService<WalletModalType, WalletModalPropType>();
   const {walletService} = useServices();
   const [appReady, setAppReady] = useState(false);
 

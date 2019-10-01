@@ -4,10 +4,6 @@ import {HashZero} from 'ethers/constants';
 
 describe('UNIT: getEtherscanUrl', () => {
   it('Empty transaction hash', () => {
-    expect(getEtherscanUrl('rinkeby', '')).to.eq('');
-  });
-
-  it('Empty transaction hash', () => {
     expect(() => getEtherscanUrl('', HashZero)).to.throw('Invalid chain name');
   });
 
