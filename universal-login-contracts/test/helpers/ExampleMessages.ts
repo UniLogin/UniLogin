@@ -82,7 +82,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
   const setRequiredSignaturesMessageData = proxyAsWalletContract.interface.functions.setRequiredSignatures.encode([requiredSignatures]);
-  const msg = {
+  let msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
     data: setRequiredSignaturesMessageData,
@@ -101,7 +101,7 @@ export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contra
 
 export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
   const addKeyMessageData = proxyAsWalletContract.interface.functions.addKey.encode([newKey]);
-  const msg = {
+  let msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
     data: addKeyMessageData,
