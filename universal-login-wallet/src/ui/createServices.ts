@@ -38,6 +38,7 @@ export const createServices = (config: Config, overrides : Overrides = {}) => {
   const walletPresenter = new WalletPresenter(walletService);
   const configService = new ConfigService(sdk);
   const _connectToWallet = connectToWallet(sdk, walletService);
+  sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
     sdk,
     config,

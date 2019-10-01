@@ -16,6 +16,7 @@ type ErrorType =
   'FutureWalletNotSet' |
   'InvalidContract' |
   'NoSet' |
+  'UnexpectedError' |
   'InvalidGasLimit';
 
 export class SDKError extends Error {
@@ -25,6 +26,13 @@ export class SDKError extends Error {
     super(message);
     this.errorType = errorType;
     Object.setPrototypeOf(this, SDKError.prototype);
+  }
+}
+
+export class UnexpectedError extends SDKError {
+  constructor(message: string) {
+    super(`Unexpected error: ${message}`, 'UnexpectedError');
+    Object.setPrototypeOf(this, UnexpectedError.prototype);
   }
 }
 

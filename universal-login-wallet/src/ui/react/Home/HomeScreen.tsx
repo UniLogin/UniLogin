@@ -26,6 +26,7 @@ const HomeScreen = () => {
       case 'devices':
         return (
           <Devices
+            sdk={sdk}
             deployedWallet={walletService.getDeployedWallet()}
             className="jarvis-styles"
           />

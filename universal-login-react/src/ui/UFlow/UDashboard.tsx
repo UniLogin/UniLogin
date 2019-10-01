@@ -91,6 +91,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'devices':
         return (
           <Devices
+            sdk={sdk}
             deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
           />
         );
