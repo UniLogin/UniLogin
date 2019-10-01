@@ -3,7 +3,7 @@ import {ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@univers
 import {SdkConfig} from './SdkConfig';
 
 export const SdkConfigDefault: SdkConfig = {
-  applicationName: 'UniversalLogin',
+  applicationName: 'Unknown application',
   paymentOptions: {
     gasToken: ETHER_NATIVE_TOKEN.address,
     gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
