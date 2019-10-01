@@ -31,7 +31,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   };
 
   return (
-    <li className={`connected-devices-item ${platform.toLocaleLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
+    <li className={`connected-devices-item ${platform.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
       <div>
         <p className="connected-devices-type">{applicationName}</p>
         <p className="connected-devices-details">{os} &bull; {city}</p>
