@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, SignedMessage, createSignedMessage, MessageWithFrom, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields, EMPTY_DATA} from '../../../lib';
+import {TEST_ACCOUNT_ADDRESS, SignedMessage, TEST_PRIVATE_KEY, bignumberifySignedMessageFields, stringifySignedMessageFields, EMPTY_DATA, calculateMessageSignature} from '../../../lib';
 
 describe('UNIT: Parsing Transaction', () => {
-  const message: MessageWithFrom = {
+  const message = {
     from: TEST_ACCOUNT_ADDRESS,
     to: TEST_ACCOUNT_ADDRESS,
     value: utils.parseEther('2'),
@@ -31,7 +31,7 @@ describe('UNIT: Parsing Transaction', () => {
   let signedMessage: SignedMessage;
 
   before(async () => {
-    signedMessage = createSignedMessage(message, TEST_PRIVATE_KEY);
+    signedMessage = {...message, signature: calculateMessageSignature(TEST_PRIVATE_KEY, message)};
   });
 
   it('should parse BigNumber to string', () => {

@@ -1,27 +1,7 @@
-import {utils} from 'ethers';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, EMPTY_DATA} from '../../constants/constants';
-import {MessageWithFrom, UnsignedMessage, CollectedSignatureKeyPair, SignedMessage} from '../../models/message';
-import {calculateMessageSignature, concatenateSignatures} from './calculateMessageSignature';
-import { sortSignatureKeyPairsByKey } from '../signatures';
 
-
-const emptyMessage = {
-  to: '',
-  value: utils.parseEther('0.0'),
-  data: EMPTY_DATA,
-  nonce: 0,
-  gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimitExecution: utils.bigNumberify(DEFAULT_GAS_LIMIT),
-  gasData: utils.bigNumberify(0),
-  gasToken: '0x0000000000000000000000000000000000000000'
-};
-
-
-export const createSignedMessage = (override: MessageWithFrom, privateKey: string) => {
-  const message: UnsignedMessage = {...emptyMessage, ...override};
-  const signature = calculateMessageSignature(privateKey, message);
-  return {...message, signature};
-};
+import {UnsignedMessage, CollectedSignatureKeyPair, SignedMessage} from '../../models/message';
+import {concatenateSignatures} from './calculateMessageSignature';
+import {sortSignatureKeyPairsByKey} from '../signatures';
 
 export const getMessageWithSignatures = async (message: UnsignedMessage, collectedSignatureKeyPairs: CollectedSignatureKeyPair[]) : Promise<SignedMessage> => {
   const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
