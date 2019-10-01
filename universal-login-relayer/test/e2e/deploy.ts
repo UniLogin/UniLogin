@@ -24,6 +24,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
   const ensName = 'myname.mylogin.eth';
   let signature: string;
+  const applicationName = 'UniversalLogin';
 
   beforeEach(async () => {
     ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
@@ -44,7 +45,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         ensName,
         gasPrice: TEST_GAS_PRICE,
         gasToken: ETHER_NATIVE_TOKEN.address,
-        signature
+        signature,
+        applicationName
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -60,10 +62,11 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       contractAddress,
       publicKey: keyPair.publicKey,
       deviceInfo: {
+        applicationName,
         browser: 'node-superagent',
         city: 'unknown',
         ipAddress: '::ffff:127.0.0.1',
-        name: 'unknown',
+        platform: 'unknown',
         os: 'unknown',
         time: body[0].deviceInfo.time
       }
@@ -85,7 +88,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         ensName,
         gasPrice: TEST_GAS_PRICE,
         gasToken: ETHER_NATIVE_TOKEN.address,
-        signature
+        signature,
+        applicationName
       });
     expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
   });
@@ -104,7 +108,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         ensName,
         gasPrice: TEST_GAS_PRICE,
         gasToken: mockToken.address,
-        signature
+        signature,
+        applicationName
       });
     expect(result.status).to.eq(201);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
@@ -119,7 +124,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         ensName,
         gasPrice: TEST_GAS_PRICE,
         gasToken: ETHER_NATIVE_TOKEN.address,
-        signature
+        signature,
+        applicationName
       });
     expect(result.status).to.eq(402);
     expect(result.body.type).to.eq('NotEnoughBalance');
@@ -137,7 +143,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         ensName: invalidEnsName,
         gasPrice: TEST_GAS_PRICE,
         gasToken: ETHER_NATIVE_TOKEN.address,
-        signature
+        signature,
+        applicationName
       });
     expect(result.status).to.eq(404);
     expect(result.body.type).to.eq('InvalidENSDomain');
@@ -156,7 +163,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         ensName,
         gasPrice: TEST_GAS_PRICE,
         gasToken: ETHER_NATIVE_TOKEN.address,
-        signature
+        signature,
+        applicationName
       });
     expect(result.body.type).to.eq('InvalidSignature');
     expect(result.body.error).to.eq(`Error: Invalid signature `);

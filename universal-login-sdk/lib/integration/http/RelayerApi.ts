@@ -3,7 +3,7 @@ import {fetch} from './fetch';
 
 export class RelayerApi {
   private http: HttpFunction;
-  constructor(relayerUrl: string) {
+  constructor(relayerUrl: string, private applicationName: string) {
     this.http = http(fetch)(relayerUrl);
   }
 
@@ -27,6 +27,7 @@ export class RelayerApi {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
+      applicationName: this.applicationName
     });
   }
 
@@ -60,7 +61,8 @@ export class RelayerApi {
       ensName,
       gasPrice,
       gasToken,
-      signature
+      signature,
+      applicationName: this.applicationName
     });
   }
 }

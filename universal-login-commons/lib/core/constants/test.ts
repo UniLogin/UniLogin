@@ -25,7 +25,8 @@ export const TEST_GAS_PRICE = '1';
 
 export const TEST_DEVICE_INFO = {
   os: 'Mac',
-  name: 'laptop',
+  applicationName: 'UniversalLogin',
+  platform: 'laptop',
   city: 'Warsaw, Poland',
   ipAddress: '84.10.249.134',
   time: '18 minutes ago',

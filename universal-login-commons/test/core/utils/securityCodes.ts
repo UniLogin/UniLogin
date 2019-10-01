@@ -125,7 +125,8 @@ describe('UNIT: security codes', () => {
           key: '0x6f475fa97d9d0ab1149068c1c81bd7e3a8be2139',
           deviceInfo: {
             ipAddress: '::ffff:127.0.0.1',
-            name: 'unknown',
+            applicationName: 'unknown',
+            platform: 'unknown',
             city: 'unknown',
             os: 'unknown',
             browser: 'node-fetch',

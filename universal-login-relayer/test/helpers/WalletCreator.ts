@@ -60,7 +60,8 @@ export class WalletCreator {
       ensName,
       gasPrice: TEST_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
-      signature
+      signature,
+      applicationName: 'UniversalLogin'
     });
     return {privateKey, contractAddress, publicKey};
   }

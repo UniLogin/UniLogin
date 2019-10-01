@@ -6,12 +6,13 @@ import {utils} from 'ethers';
 
 chai.use(chaiHttp);
 
-async function postAuthorisationRequest(relayer, contract, keyPair) {
+async function postAuthorisationRequest(relayer, contract, keyPair, applicationName) {
   const result = await chai.request(relayer.server)
     .post('/authorisation')
     .send({
       walletContractAddress: contract.address,
       key: keyPair.publicKey,
+      applicationName: 'UniversalLogin'
     });
   expect(result.status).to.eq(201);
 }
@@ -44,6 +45,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
 
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
+  const applicationName = 'UniversalLogin';
 
   beforeEach(async () => {
     keyPair = createKeyPair();

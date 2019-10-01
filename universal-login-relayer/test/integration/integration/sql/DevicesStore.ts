@@ -8,7 +8,8 @@ describe('INT: DevicesStore', () => {
   let devicesStore: DevicesStore;
   const device2 = {
     os: 'iPhone',
-    name: 'phone',
+    applicationName: 'UniversalLogin',
+    platform: 'iphone',
     city: 'Warsaw, Poland',
     ipAddress: '84.10.249.134',
     time: '18 minutes ago',
