@@ -2,7 +2,8 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
-import {createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON} from '@universal-login/commons';
+import WalletContract from '../../../build/Wallet.json';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../../lib';
 
@@ -11,6 +12,7 @@ chai.use(solidity);
 
 const deployProxyCost = '380000';
 const deployProxyWithENSCost = '570000';
+const deployWalletCost = '3060000';
 
 
 describe('Performance test', async () => {
@@ -43,6 +45,14 @@ describe('Performance test', async () => {
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy with ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyWithENSCost);
+  });
+
+  it('Wallet deployment', async () => {
+    const deployTransaction = getDeployTransaction(WalletContract as ContractJSON);
+    const transaction = await deployer.sendTransaction(deployTransaction);
+    const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
+    gasCosts['Wallet deployment'] = gasUsed;
+    expect(gasUsed).to.be.below(deployWalletCost);
   });
 
   after(() => {
