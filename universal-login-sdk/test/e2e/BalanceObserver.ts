@@ -12,12 +12,11 @@ const loadFixture = createFixtureLoader();
 describe('E2E: BalanceObserver', () => {
   let sdk: UniversalLoginSDK;
   let relayer: RelayerUnderTest;
-  let ensName: string;
   let wallet: Wallet;
   let contractAddress: string;
 
   beforeEach(async () => {
-    ({sdk, relayer, ensName, wallet, contractAddress} = await loadFixture(basicSDK));
+    ({sdk, relayer, wallet, contractAddress} = await loadFixture(basicSDK));
   });
 
   it('1 subscription', async () => {
