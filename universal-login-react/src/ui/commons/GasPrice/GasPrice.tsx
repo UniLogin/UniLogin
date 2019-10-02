@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import './../../styles/gasPrice.sass';
 import './../../styles/gasPriceDefault.sass';
-import {DeployedWallet} from '@universal-login/sdk';
+import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
-import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION} from '@universal-login/commons';
+import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotNull} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
@@ -13,18 +13,24 @@ import {TransactionFeeChoose} from './TransactionFeeChoose';
 import {SelectedGasPrice} from './SelectedGasPrice';
 
 interface GasPriceProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet?: DeployedWallet;
+  sdk?: UniversalLoginSDK;
+  isDeployed: boolean;
   gasLimit: utils.BigNumberish;
   onGasParametersChanged: (gasParameters: GasParameters) => void;
   className?: string;
 }
 
-export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
+export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+  if (isDeployed) {
+    ensureNotNull(deployedWallet, Error, 'Missing parameter: deployedWallet');
+    useAsyncEffect(() => deployedWallet!.subscribeToBalances(setTokenDetailsWithBalance), []);
+  } else {
+    ensureNotNull(sdk, Error, 'Missing parameter: sdk');
+  }
 
-  useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
-
-  const [gasModes] = useAsync<GasMode[]>(() => deployedWallet.getGasModes(), []);
+  const [gasModes] = useAsync<GasMode[]>(() => isDeployed ? deployedWallet!.getGasModes() : sdk!.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
   const [usdAmount, setUsdAmount] = useState<utils.BigNumberish>('0');
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
