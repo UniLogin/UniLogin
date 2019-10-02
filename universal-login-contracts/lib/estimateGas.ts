@@ -26,8 +26,8 @@ export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) =
   return computeGasData(txdata);
 };
 
-export const estimateGasLimit = (gasLimitExecution: utils.BigNumberish, gasData: utils.BigNumberish) =>
+export const calculateFinalGasLimit = (gasLimitExecution: utils.BigNumberish, gasData: utils.BigNumberish) =>
   utils.bigNumberify(gasLimitExecution).add(gasData).add('30000');
 
 export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
-  ({gasLimit: estimateGasLimit(msg.gasLimitExecution, msg.gasData)});
+  ({gasLimit: calculateFinalGasLimit(msg.gasLimitExecution, msg.gasData)});
