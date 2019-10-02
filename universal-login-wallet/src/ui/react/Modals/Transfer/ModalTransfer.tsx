@@ -36,7 +36,7 @@ const ModalTransfer = () => {
     return (
       <ModalTransferAmount
         sdk={sdk}
-        ensName={applicationWallet.name}
+        contractAddress={applicationWallet.contractAddress}
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
         currency={transferDetails.currency}

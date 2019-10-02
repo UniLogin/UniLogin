@@ -21,7 +21,7 @@ interface FundsProps {
 export const Funds = ({contractAddress, ensName, sdk, onTopUpClick, onSendClick, className}: FundsProps) => {
   const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
 
-  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(ensName, setTotalTokensValue), []);
+  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(contractAddress, setTotalTokensValue), []);
 
   return (
     <div className="universal-login-funds">
@@ -41,7 +41,7 @@ export const Funds = ({contractAddress, ensName, sdk, onTopUpClick, onSendClick,
           </div>
           <Assets
             sdk={sdk}
-            ensName={ensName}
+            contractAddress={contractAddress}
             className={className}
           />
         </div>

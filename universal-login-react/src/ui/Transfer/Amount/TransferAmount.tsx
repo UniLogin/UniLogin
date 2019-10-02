@@ -9,18 +9,18 @@ import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 
 export interface TransferAmountProps {
   sdk: UniversalLoginSDK;
-  ensName: string;
+  contractAddress: string;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   currency: string;
   transferAmountClassName?: string;
 }
 
-export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
+export const TransferAmount = ({sdk, contractAddress, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [isAmountCorrect, setIsAmountCorrect] = useState(false);
 
-  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
   const balance = getBalanceOf(currency, tokenDetailsWithBalance);
 
   const validateAndUpdateTransferDetails = (amount: string) => {

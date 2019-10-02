@@ -65,7 +65,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
         return (
           <TransferAmount
             sdk={sdk}
-            ensName={applicationWallet.name}
+            contractAddress={applicationWallet.contractAddress}
             onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
             updateTransferDetailsWith={updateTransferDetailsWith}
             currency={transferDetails.currency}

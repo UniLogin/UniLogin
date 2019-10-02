@@ -6,7 +6,7 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 
 export interface ModalTransferAmountProps {
   sdk: UniversalLoginSDK;
-  ensName: string;
+  contractAddress: string;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   currency: string;
@@ -16,7 +16,7 @@ export interface ModalTransferAmountProps {
 
 export const ModalTransferAmount = ({
   sdk,
-  ensName,
+  contractAddress,
   onSelectRecipientClick,
   updateTransferDetailsWith,
   currency,
@@ -33,7 +33,7 @@ export const ModalTransferAmount = ({
           <div className="modal-content">
             <TransferAmount
               sdk={sdk}
-              ensName={ensName}
+              contractAddress={contractAddress}
               onSelectRecipientClick={onSelectRecipientClick}
               updateTransferDetailsWith={updateTransferDetailsWith}
               currency={currency}

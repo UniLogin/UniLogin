@@ -12,16 +12,16 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 
 export interface AssetsProps {
   sdk: UniversalLoginSDK;
-  ensName: string;
+  contractAddress: string;
   className?: string;
 }
 
 const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
-export const Assets = ({sdk, ensName, className}: AssetsProps) => {
+export const Assets = ({sdk, contractAddress, className}: AssetsProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
-  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
 
   return (
     <div className="universal-login-assets">
