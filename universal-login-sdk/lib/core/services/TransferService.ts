@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {ETHER_NATIVE_TOKEN, ensure, ensureNotNull, isProperAddress, TransferDetails} from '@universal-login/commons';
-import {DeployedWalletNotFound, InvalidAddress} from '../utils/errors';
+import {WalletNotFound, InvalidAddress} from '../utils/errors';
 import {DeployedWallet} from '../../api/DeployedWallet';
 
 export class TransferService {
@@ -9,7 +9,7 @@ export class TransferService {
 
   async transfer(transferDetails: TransferDetails) {
     ensure(isProperAddress(transferDetails.to), InvalidAddress, transferDetails.to);
-    ensureNotNull(this.deployedWallet, DeployedWalletNotFound);
+    ensureNotNull(this.deployedWallet, WalletNotFound);
     if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
       return this.transferEther(transferDetails);
     } else {

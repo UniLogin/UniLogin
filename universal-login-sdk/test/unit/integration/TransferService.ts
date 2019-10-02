@@ -59,7 +59,7 @@ describe('UNIT: TransferService', () => {
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
-    })).to.be.rejectedWith('Deployed wallet not found');
+    })).to.be.rejectedWith('Wallet not found');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
@@ -97,7 +97,7 @@ describe('UNIT: TransferService', () => {
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: 'TOKEN_SYMBOL'
-    })).to.be.rejectedWith('Deployed wallet not found');
+    })).to.be.rejectedWith('Wallet not found');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
