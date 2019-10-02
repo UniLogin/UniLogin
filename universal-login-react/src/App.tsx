@@ -55,7 +55,7 @@ export const App = () => {
     return () => {};
   };
 
-  const [applicationWallet, setApplicationWallet] = useState({name: '', contractAddress: '', privateKey: ''});
+  const [deployedWallet, setDeployedWallet] = useState(new DeployedWallet('', '', '', sdk));
 
   async function tryEnablingMetamask() {
     const ethereum = (window as any).ethereum;
@@ -81,11 +81,10 @@ export const App = () => {
               path="/logobutton"
               render={() => (
                 <div>
-                  <CreateRandomInstance setApplicationWallet={setApplicationWallet}/>
+                  <CreateRandomInstance setDeployedWallet={setDeployedWallet}/>
                   <hr/>
                   <LogoButton
-                    applicationWallet={applicationWallet}
-                    sdk={sdk}
+                    deployedWallet={deployedWallet}
                   />
                 </div>
               )}

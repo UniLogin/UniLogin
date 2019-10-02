@@ -12,7 +12,7 @@ import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, walletService, sdk} = useServices();
+  const {walletPresenter, walletService} = useServices();
   const relayerConfig = useRelayerConfig();
 
   switch (modalService.modalState) {
@@ -31,7 +31,6 @@ const Modal = () => {
     case 'topUpAccount':
       return relayerConfig ? (
         <TopUp
-          sdk={sdk}
           onGasParametersChanged={() => {}}
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"

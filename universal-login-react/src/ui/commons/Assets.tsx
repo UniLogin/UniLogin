@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {utils} from 'ethers';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
 import daiIcon from './../assets/icons/dai.svg';
 import ethIcon from './../assets/icons/ether.svg';
@@ -11,17 +11,17 @@ import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 
 export interface AssetsProps {
-  sdk: UniversalLoginSDK;
-  ensName: string;
+  deployedWallet: DeployedWallet;
   className?: string;
 }
 
 const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
-export const Assets = ({sdk, ensName, className}: AssetsProps) => {
+export const Assets = ({deployedWallet, className}: AssetsProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+  const {sdk, name} = deployedWallet;
 
-  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(name, setTokenDetailsWithBalance), []);
 
   return (
     <div className="universal-login-assets">

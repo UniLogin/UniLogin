@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -10,13 +10,12 @@ import {devicesContentType} from './Devices';
 import {FeatureFlag} from '../../commons/FeatureFlag';
 
 export interface DevicesListProps {
-  sdk: UniversalLoginSDK;
   deployedWallet: DeployedWallet;
   className?: string;
   setDevicesContent: (content: devicesContentType) => void;
 }
 
-export const DevicesList = ({sdk, setDevicesContent, deployedWallet, className}: DevicesListProps) => {
+export const DevicesList = ({setDevicesContent, deployedWallet, className}: DevicesListProps) => {
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
   const [notifications, setNotifications] = useState([] as Notification[]);
@@ -35,7 +34,7 @@ export const DevicesList = ({sdk, setDevicesContent, deployedWallet, className}:
               /> : 'Loading devices..'
             }
           </div>
-          <FeatureFlag sdk={sdk} feature="deleteAccount">
+          <FeatureFlag sdk={deployedWallet.sdk} feature="deleteAccount">
             <button onClick={() => setDevicesContent('deleteAccount')} className="delete-account-link">Delete account</button>
           </FeatureFlag>
         </div>

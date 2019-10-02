@@ -20,7 +20,7 @@ export class DeployedWallet implements ApplicationWallet {
     public readonly contractAddress: string,
     public readonly name: string,
     public readonly privateKey: string,
-    private readonly sdk: UniversalLoginSDK,
+    public readonly sdk: UniversalLoginSDK,
   ) {
   }
 

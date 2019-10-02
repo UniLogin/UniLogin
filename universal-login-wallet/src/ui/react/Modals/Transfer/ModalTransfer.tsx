@@ -12,9 +12,9 @@ const ModalTransfer = () => {
   const {walletService, sdk} = useServices();
   const [transferDetails, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
 
-  const applicationWallet = walletService.getDeployedWallet();
+  const deployedWallet = walletService.getDeployedWallet();
 
-  const transferService = new TransferService(sdk, applicationWallet);
+  const transferService = new TransferService(deployedWallet);
   const onGenerateClick = async () => {
     const message = 'The transaction will start in a moment';
     modalService.showModal('waitingForTransfer', {message});
@@ -36,8 +36,7 @@ const ModalTransfer = () => {
   if (modal === 'transferAmount') {
     return (
       <ModalTransferAmount
-        sdk={sdk}
-        ensName={applicationWallet.name}
+        deployedWallet={deployedWallet}
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
         currency={transferDetails.currency}
