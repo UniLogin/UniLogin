@@ -1,7 +1,9 @@
 import {expect} from 'chai';
 import {computeContractAddress} from '../../../lib';
+import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
+import {MockToken} from '../..';
 
-describe('computeContractAddress', () => {
+describe('UNIT: computeContractAddress', () => {
   function testFor(walletAddress: string, nonce: number, expectedAddress: string) {
     it(`for nonce ${nonce} computedContractAddress is ${expectedAddress}`, () => {
       expect(computeContractAddress(walletAddress, nonce)).to.eq(expectedAddress);
@@ -24,4 +26,20 @@ describe('computeContractAddress', () => {
   testFor('0x6763ae279735330de79a73d2add09424927bc121', 262, '0xBc54aB885fA044362a8ce32909852C535687fb9d');
   testFor('0x6763ae279735330de79a73d2add09424927bc121', 1842, '0xe4Af30ea54269c8796832E802f6C029eA7703539');
   testFor('0x6763ae279735330de79a73d2add09424927bc121', 4445, '0x23b30dE23F788ED7AC1d7Cfa9dC95f1c24AB5633');
+});
+
+describe('INT: computeContractAddress', () => {
+  const [wallet] = getWallets(createMockProvider());
+
+  function test(nonce: number) {
+    it(`deployed contract has computed address for nonce ${nonce}`, async () => {
+      const contract = await deployContract(wallet, MockToken);
+      const expectedAddress = computeContractAddress(wallet.address, nonce);
+      expect(contract.address).to.eq(expectedAddress);
+    });
+  }
+
+  for(let count = 0; count < 20; count++) {
+    test(count);
+  }
 });
