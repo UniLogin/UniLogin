@@ -16,6 +16,7 @@ import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
 import {Notice} from '../commons/Notice';
+import {UNavBarMobile} from './UNavBarMobile';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -67,11 +68,14 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
     switch (dashboardContent) {
       case 'funds':
         return (
-          <Funds
-            deployedWallet={deployedWallet}
-            onTopUpClick={() => setDashboardContent('topup')}
-            onSendClick={() => setDashboardContent('transferAmount')}
-          />
+          <>
+            <Funds
+              deployedWallet={deployedWallet}
+              onTopUpClick={() => setDashboardContent('topup')}
+              onSendClick={() => setDashboardContent('transferAmount')}
+            />
+            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
+          </>
         );
       case 'topup':
         return (
@@ -110,15 +114,21 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'devices':
         return (
-          <Devices
-            deployedWallet={deployedWallet}
-          />
+          <>
+            <Devices
+              deployedWallet={deployedWallet}
+            />
+            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
+          </>
         );
       case 'backup':
         return (
-          <BackupCodes
-            deployedWallet={deployedWallet}
-          />
+          <>
+            <BackupCodes
+              deployedWallet={deployedWallet}
+            />
+            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
+          </>
         );
       default:
         return null;
@@ -136,10 +146,12 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
           hideModal={() => setDashboardVisibility(false)}
           modalClassName="udashboard-modal"
         >
-          <UHeader activeTab={dashboardContent} setActiveTab={setDashboardContent} />
-          <Notice message={notice}/>
-          <div className="udashboard-content">
-            {renderDashboardContent()}
+          <div className="udashboard">
+            <UHeader activeTab={dashboardContent} setActiveTab={setDashboardContent} />
+            <Notice message={notice}/>
+            <div className="udashboard-content">
+              {renderDashboardContent()}
+            </div>
           </div>
         </ModalWrapper>
       }
