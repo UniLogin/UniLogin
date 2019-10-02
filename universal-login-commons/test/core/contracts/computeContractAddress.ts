@@ -8,7 +8,7 @@ describe('UNIT: computeContractAddress', () => {
     it(`for nonce ${nonce} computedContractAddress is ${expectedAddress}`, () => {
       expect(computeContractAddress(walletAddress, nonce)).to.eq(expectedAddress);
     });
-  };
+  }
 
   const testWalletAddress = '0xd59ca627Af68D29C547B91066297a7c469a7bF72';
 
@@ -39,7 +39,7 @@ describe('INT: computeContractAddress', () => {
     });
   }
 
-  for(let count = 0; count < 20; count++) {
+  for (let count = 0; count < 20; count++) {
     test(count);
   }
 });
