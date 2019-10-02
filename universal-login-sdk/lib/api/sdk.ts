@@ -66,6 +66,14 @@ class UniversalLoginSDK {
     this.featureFlagsService = new FeatureFlagsService();
   }
 
+  getNotice() {
+    return this.sdkConfig.notice;
+  }
+
+  setNotice(notice: string) {
+    this.sdkConfig.notice = notice;
+  }
+
   async createFutureWallet() {
     await this.getRelayerConfig();
     this.fetchFutureWalletFactory();

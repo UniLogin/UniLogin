@@ -19,4 +19,5 @@ export const SdkConfigDefault: SdkConfig = {
   ],
   authorisationsObserverTick: 1000,
   executionFactoryTick: 1000,
+  notice: '',
 };

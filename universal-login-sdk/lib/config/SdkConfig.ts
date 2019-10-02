@@ -7,4 +7,5 @@ export interface SdkConfig {
   observedCurrencies: ObservedCurrency[];
   authorisationsObserverTick: number;
   executionFactoryTick: number;
+  notice: string;
 }
