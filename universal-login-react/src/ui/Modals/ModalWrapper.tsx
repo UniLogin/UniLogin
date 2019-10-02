@@ -1,7 +1,7 @@
 import React, {ReactNode, useEffect} from 'react';
 import { ModalPosition } from '../../core/models/ModalPosition';
-import './../styles/modal.css';
-import './../styles/modalDefaults.css';
+import './../styles/modal.sass';
+import './../styles/modalDefaults.sass';
 import {escapePressed} from '@universal-login/commons';
 
 interface ModalWrapperProps {
