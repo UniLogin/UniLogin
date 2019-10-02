@@ -44,7 +44,6 @@ contract KeyHolder {
 
     function addKeys(address[] memory _keys) public onlyAuthorised returns(bool success) {
         for (uint i = 0; i < _keys.length; i++) {
-            require(_keys[i] != msg.sender, "Invalid key");
             addKey(_keys[i]);
         }
         emit MultipleKeysAdded(_keys.length);
