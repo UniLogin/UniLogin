@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, MessageWithFrom} from '@universal-login/commons';
+import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {computeGasFields} from './estimateGas';
 
 export const messageToSignedMessage = (message: Partial<Message>, privateKey: string): SignedMessage => {

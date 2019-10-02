@@ -14,7 +14,7 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
-import {messageToUnsignedMessage, messageToSignedMessage} from '@universal-login/contracts';
+import {messageToSignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
@@ -138,12 +138,10 @@ class UniversalLoginSDK {
     const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     ensure(gasLimit <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
-
-    const unsignedMessage = messageToUnsignedMessage({gasLimit, gasPrice, gasToken, ...message});
-    unsignedMessage.nonce = unsignedMessage.nonce || parseInt(await this.getNonce(message.from!), 10);
-    ensureSufficientGas(unsignedMessage);
-
-    const signedMessage: SignedMessage = messageToSignedMessage(unsignedMessage, privateKey);
+    const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
+    const partialMessage = {gasLimit, gasPrice, gasToken, ...message, nonce};
+    const signedMessage: SignedMessage = messageToSignedMessage(partialMessage, privateKey);
+    ensureSufficientGas(signedMessage);
     return this.executionFactory.createExecution(signedMessage);
   }
 

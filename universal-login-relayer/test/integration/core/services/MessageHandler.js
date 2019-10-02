@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {waitExpect, waitExpect} from '@universal-login/commons';
+import {GAS_BASE, waitExpect, waitExpect} from '@universal-login/commons';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {deployContract} from 'ethereum-waffle';
@@ -52,7 +52,7 @@ describe('INT: MessageHandler', async () => {
     const gasData = 7696;
     const gasLimit = gasData + gasLimitExecution;
     const signedMessage = messageToSignedMessage({...msg, gasLimit}, wallet.privateKey);
-    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith('Insufficient Gas. Got GasLimitExecution 1 but should greater than 105000');
+    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got GasLimitExecution 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {

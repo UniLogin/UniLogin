@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import {calculateMessageHash, waitExpect} from '@universal-login/commons';
+import {calculateMessageHash, waitExpect, GAS_BASE} from '@universal-login/commons';
 import {messageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
@@ -58,7 +58,7 @@ describe('INT: MultiSignatureExecute', async () => {
     const gasLimit = gasData + gasLimitExecution;
     const message1 = {...msg, gasLimit};
     const signedMessage1 = messageToSignedMessage(message1, actionKey);
-    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith('Insufficient Gas. Got GasLimitExecution 1 but should greater than 105000');
+    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got GasLimitExecution 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {
