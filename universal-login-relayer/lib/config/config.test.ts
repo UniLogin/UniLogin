@@ -47,7 +47,11 @@ export const config: Config =  Object.freeze({
       directory: path.join(__dirname, '../integration/sql/migrations'),
     }
   },
-  maxGasLimit: 500000
+  maxGasLimit: 500000,
+  ipGeolocationApi: {
+    baseUrl: 'http://api.ipstack.com',
+    accessKey: '52e66f1c79bb597131fd0c133704ee03',
+  }
 });
 
 export default config;

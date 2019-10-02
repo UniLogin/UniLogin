@@ -69,3 +69,4 @@ export {convertTenthGweiToWei} from './core/utils/conversion';
 export {computeGasData} from './core/utils/messages/computeGasData';
 export {getEnumKeys} from './core/utils/getEnumsKeys';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
+export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';

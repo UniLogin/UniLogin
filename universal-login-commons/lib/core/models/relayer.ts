@@ -1,4 +1,5 @@
 import {LocalizationConfig, SafelloConfig, RampConfig} from './onRamp';
+import {IPGeolocationApiConfig} from './IPGeolocationApiConfig';
 
 export interface SupportedToken {
   address: string;
@@ -29,4 +30,5 @@ export interface PublicRelayerConfig {
   localization: LocalizationConfig;
   onRampProviders: OnRampConfig;
   maxGasLimit: number;
+  ipGeolocationApi: IPGeolocationApiConfig;
 }

@@ -84,6 +84,14 @@ export class RelayerUnderTest extends Relayer {
     return `http://127.0.0.1:${this.port}`;
   }
 
+  getConfig() {
+    return this.config;
+  }
+
+  getServer() {
+    return this.server;
+  }
+
   async clearDatabase() {
     return clearDatabase(this.database);
   }
