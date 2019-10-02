@@ -26,6 +26,10 @@ contract Executor {
         return 21000;
     }
 
+    function gasLimitMargin() public pure returns(uint) {
+        return 9000;
+    }
+
     function transactionGasCost(uint gasData) public pure returns(uint) {
         return gasData.add(21000); // 21000 - cost for initiating transaction
     }
@@ -48,7 +52,8 @@ contract Executor {
         bytes memory signatures) public returns (bytes32)
     {
         uint256 startingGas = gasleft();
-        require(gasLimitExecution <= startingGas, "Gas limit too low");
+        require(gasLimitExecution <= startingGas, "Relayer set gas limit too low");
+        require(startingGas <= gasLimitExecution.add(gasLimitMargin()), "Relayer set gas limit too high");
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);

@@ -3,8 +3,8 @@ import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
 import Executor from '../../../build/TestableExecutor.json';
 import {constants, Contract} from 'ethers';
 import {transferMessage} from '../../helpers/ExampleMessages';
-import {getExecutionArgs} from '../../helpers/argumentsEncoding';
-import {TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOptions';
+import {getExecutionArgs, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
+import {calculateFinalGasLimit} from '../../../lib/estimateGas';
 
 
 describe('Void Executor', () => {
@@ -23,7 +23,8 @@ describe('Void Executor', () => {
   it('execute signed fails', async () => {
     signature = [];
     message = {...transferMessage, from: walletContractWithZeroKey.address};
-    await expect(walletContractWithZeroKey.executeSigned(...getExecutionArgs(message), signature, TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN))
+    const gasLimit = calculateFinalGasLimit(message.gasLimitExecution, estimateGasDataForNoSignature(message));
+    await expect(walletContractWithZeroKey.executeSigned(...getExecutionArgs(message), signature, {gasLimit}))
       .to.be.revertedWith('Invalid signatures');
   });
 });

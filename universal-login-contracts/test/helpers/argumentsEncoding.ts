@@ -1,7 +1,8 @@
-import {UnsignedMessage, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {UnsignedMessage} from '@universal-login/commons';
 import {Interface, BigNumberish, Arrayish, arrayify, solidityKeccak256} from 'ethers/utils';
 import {Wallet, utils, Contract} from 'ethers';
 import WalletProxy from '../../build/WalletProxy.json';
+import {estimateGasDataFromSignedMessage} from '../../lib/estimateGas';
 
 export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: string, domain = 'mylogin.eth') => {
   const ensName = `${label}.${domain}`;
@@ -42,8 +43,10 @@ export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWal
     data: updateData,
     value: 0,
     nonce: await proxyAsWalletContract.lastNonce(),
-    gasLimit: DEFAULT_GAS_LIMIT.toString(),
+    gasLimit: '200000',
     gasPrice: '1',
     gasToken: '0x0000000000000000000000000000000000000000'
   };
 };
+
+export const estimateGasDataForNoSignature = (unsignedMessage: UnsignedMessage) => estimateGasDataFromSignedMessage({...unsignedMessage, signature: '0x0'});

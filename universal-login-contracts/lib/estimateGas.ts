@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString, ensure} from '@universal-login/commons';
+import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString, ensure, SignedMessagePaymentOptions} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 import cloneDeep from 'lodash.clonedeep';
 
@@ -25,3 +25,9 @@ export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) =
   const txdata = encodeDataForExecuteSigned(copySignedMessage);
   return computeGasData(txdata);
 };
+
+export const calculateFinalGasLimit = (gasLimitExecution: utils.BigNumberish, gasData: utils.BigNumberish) =>
+  utils.bigNumberify(gasLimitExecution).add(gasData).add('30000');
+
+export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
+  ({gasLimit: calculateFinalGasLimit(msg.gasLimitExecution, msg.gasData)});
