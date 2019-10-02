@@ -7,7 +7,7 @@ import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
 const Modal = () => {
@@ -32,7 +32,7 @@ const Modal = () => {
       return relayerConfig ? (
         <TopUp
           sdk={sdk}
-          onGasParametersChanged={() => {}}
+          {...modalService.modalProps as TopUpModalProps}
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
           onRampConfig={relayerConfig.onRampProviders}

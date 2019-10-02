@@ -20,12 +20,16 @@ export default class NotificationsPage {
         await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
       }
       else {
-        await waitForUI(this.wrapper, () => this.wrapper.exists('.gas-price-btn'));
+        await this.waitForGasMode();
       }
     }
   }
 
-  async selectGasMode() {
+  async waitForGasMode() {
+    return waitForUI(this.wrapper, () => this.wrapper.exists('.gas-price-btn'));
+  }
+
+  selectGasMode() {
     const button = this.wrapper.find('.gas-price-btn');
     button.simulate('click');
     const fastOption = this.wrapper.find('#fast').last();

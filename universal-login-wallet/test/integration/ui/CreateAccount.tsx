@@ -17,7 +17,7 @@ describe('UI: Creation flow', () => {
     let services: Services;
     let relayer: any;
     let provider: providers.Provider;
-    const expectedHomeBalance = '$1.98';
+    const expectedHomeBalance = '$1.99';
 
     before(async () => {
         const [wallet] = await getWallets(createMockProvider());
@@ -34,6 +34,8 @@ describe('UI: Creation flow', () => {
         await appPage.login().createNew('super-name');
         appPage.creation().chooseTopUpMethod();
         const address = appPage.creation().getAddress();
+        await appPage.notifications().waitForGasMode();
+        appPage.notifications().selectGasMode();
         expect(address).to.be.an('string');
         const [wallet] = await getWallets(provider);
         await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
