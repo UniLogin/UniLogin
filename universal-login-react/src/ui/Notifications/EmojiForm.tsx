@@ -116,6 +116,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
           />
           <div className="correct-input-footer">
             <GasPrice
+              isDeployed={true}
               deployedWallet={deployedWallet}
               gasLimit={transactionDetails.gasLimit!}
               onGasParametersChanged={setGasParameters}
