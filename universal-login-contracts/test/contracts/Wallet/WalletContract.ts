@@ -6,7 +6,7 @@ import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage} from '@universal-login/commons';
-import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
+import {getExecutionArgs, setupUpdateMessage, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
 import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage} from '../../../lib/index.js';
@@ -145,7 +145,7 @@ describe('WalletContract', async () => {
       describe('Invalid signature', () => {
         it('no signature', async () => {
           data = executeSignedFunc.encode([...getExecutionArgs(msg), []]);
-          const gasLimit = estimateGasLimit(msg.gasLimitExecution, msg.gasData);
+          const gasLimit = estimateGasLimit(msg.gasLimitExecution, estimateGasDataForNoSignature(msg));
           await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit}))
             .to.be.revertedWith('Invalid signatures');
           expect(await proxyAsWalletContract.lastNonce()).to.eq(0);

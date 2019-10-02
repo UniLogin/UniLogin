@@ -5,8 +5,8 @@ import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, SignedMessage} from '@universal-login/commons';
-import {getExecutionArgs} from '../../helpers/argumentsEncoding';
-import {calculatePaymentOptions, estimateGasDataForNoSignature, estimateGasDataFromSignedMessage} from '../../../lib/estimateGas';
+import {getExecutionArgs, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
+import {calculatePaymentOptions, estimateGasDataFromSignedMessage} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
