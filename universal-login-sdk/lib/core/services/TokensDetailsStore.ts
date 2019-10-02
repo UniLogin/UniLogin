@@ -6,7 +6,9 @@ export class TokensDetailsStore {
   constructor(private tokenDetailsService: TokenDetailsService, private tokensAddresses: string[]) {}
 
   async fetchTokensDetails() {
-    this.tokensDetails = await this.tokenDetailsService.getTokensDetails(this.tokensAddresses);
+    if (this.tokensDetails.length === 0) {
+      this.tokensDetails = await this.tokenDetailsService.getTokensDetails(this.tokensAddresses);
+    }
   }
 
   getTokenAddress(symbol: string) {
