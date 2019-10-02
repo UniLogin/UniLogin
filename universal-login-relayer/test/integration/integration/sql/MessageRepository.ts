@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair} from '@universal-login/commons';
-import {createSignedMessage} from '@universal-login/contracts';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {emptyMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import IMessageRepository from '../../../../lib/core/services/messages/IMessagesRepository';
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
@@ -24,7 +24,8 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
   let messageRepository: IMessageRepository;
   let wallet: Wallet;
   let walletContract: Contract;
-  let message: SignedMessage;
+  let unsignedMessage: UnsignedMessage;
+  let signedMessage: SignedMessage;
   let messageItem: MessageItem;
   let messageHash: string;
   let actionKey: string;
@@ -37,10 +38,12 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
       args = knex;
     }
     messageRepository = new config.type(args);
-    message = createSignedMessage({from: walletContract.address, to: '0x', nonce: await walletContract.lastNonce()}, wallet.privateKey);
+    const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: await walletContract.lastNonce()};
+    unsignedMessage = messageToUnsignedMessage(message);
+    signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
 
-    messageItem = createMessageItem(message);
-    messageHash = calculateMessageHash(message);
+    messageItem = createMessageItem(signedMessage);
+    messageHash = calculateMessageHash(signedMessage);
   });
 
   afterEach(async () => {
@@ -60,13 +63,13 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
   });
 
   it('containSignature should return false if signature not collected', async () => {
-    expect(await messageRepository.containSignature(messageHash, message.signature)).to.be.false;
+    expect(await messageRepository.containSignature(messageHash, signedMessage.signature)).to.be.false;
   });
 
   it('containSignature should return true if signature already collected', async () => {
     await messageRepository.add(messageHash, messageItem);
-    await messageRepository.addSignature(messageHash, message.signature);
-    expect(await messageRepository.containSignature(messageHash, message.signature)).to.be.true;
+    await messageRepository.addSignature(messageHash, signedMessage.signature);
+    expect(await messageRepository.containSignature(messageHash, signedMessage.signature)).to.be.true;
   });
 
   it('get throws error if message doesn`t exist', async () => {
@@ -76,7 +79,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
   it('should add signature', async () => {
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
     await messageRepository.add(messageHash, messageItem);
-    const message2 = createSignedMessage({from: walletContract.address, to: '0x', nonce: await walletContract.lastNonce()}, actionKey);
+    const message2 = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
     await messageRepository.addSignature(messageHash, message2.signature);
     const returnedMessageItem = await messageRepository.get(messageHash);
     const signatures = returnedMessageItem.collectedSignatureKeyPairs.map((signatureKeyPair: CollectedSignatureKeyPair) => signatureKeyPair.signature);
@@ -124,13 +127,13 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
 
   it('should get signatures', async () => {
     await messageRepository.add(messageHash, messageItem);
-    await messageRepository.addSignature(messageHash, message.signature);
-    const key = getKeyFromHashAndSignature(messageHash, message.signature);
-    expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}]);
-    const {signature} = createSignedMessage({from: walletContract.address, to: '0x', nonce: await walletContract.lastNonce()}, actionKey);
+    await messageRepository.addSignature(messageHash, signedMessage.signature);
+    const key = getKeyFromHashAndSignature(messageHash, signedMessage.signature);
+    expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}]);
+    const {signature} = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
     await messageRepository.addSignature(messageHash, signature);
     const key2 = getKeyFromHashAndSignature(messageHash, signature);
-    expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: message.signature}, {key: key2, signature}]);
+    expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
   });
 
   after(async () => {

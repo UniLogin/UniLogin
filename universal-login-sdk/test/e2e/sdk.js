@@ -6,7 +6,7 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import {utils, Wallet} from 'ethers';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {signRelayerRequest, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {signRelayerRequest, DEFAULT_GAS_LIMIT, GAS_BASE} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
@@ -95,7 +95,7 @@ describe('E2E: SDK', async () => {
       const gasData = 8720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: gasData + notEnoughGasLimit};
-      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Insufficient Gas. gasLimit should be greater than 105000');
+      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith(`Insufficient Gas. gasLimit should be greater than ${GAS_BASE}`);
     });
 
     it('Throws when the gas limit is above the relayers maxGasLimit', async () => {
