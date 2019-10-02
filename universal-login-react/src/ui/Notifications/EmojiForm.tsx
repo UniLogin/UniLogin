@@ -30,13 +30,13 @@ interface EmojiFormProps {
 }
 
 export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
-  const [gasParameters, setGasParameters] = useState<GasParameters>(INITIAL_GAS_PARAMETERS);
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [inputMode, setInputMode] = useState<InputModeType>('none');
   const [addresses, setAddresses] = useState<string[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [isInputValid, setIsInputValid] = useState(false);
+  let gasParameters = INITIAL_GAS_PARAMETERS;
 
   useEffect(() => deployedWallet.subscribeAuthorisations((notifications: Notification[]) => {
     setNotifications(notifications);
@@ -119,7 +119,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
               isDeployed={true}
               deployedWallet={deployedWallet}
               gasLimit={transactionDetails.gasLimit!}
-              onGasParametersChanged={setGasParameters}
+              onGasParametersChanged={(parameters: GasParameters) => { gasParameters = parameters; }}
               className={className}
             />
             <div className="connect-buttons-row">
