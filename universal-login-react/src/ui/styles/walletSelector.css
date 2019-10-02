@@ -17,8 +17,12 @@
   transform: translateY(-50%);
 }
 
-.universal-login .input-wallet-selector ,
-.universal-login .button-web3-provider ,
+.universal-login .input-wallet-selector {
+  text-transform: lowercase;
+}
+
+.universal-login .input-wallet-selector,
+.universal-login .button-web3-provider,
 .universal-login .ethereum-account {
   width: 100%;
   height: 45px;
