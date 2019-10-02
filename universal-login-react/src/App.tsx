@@ -138,7 +138,9 @@ export const App = () => {
                 }
                 const topUpProps = {
                   contractAddress: Wallet.createRandom().address,
-                  onRampConfig: relayerConfig!.onRampProviders
+                  onRampConfig: relayerConfig!.onRampProviders,
+                  onGasParametersChanged: console.log,
+                  sdk
                 };
                 return (
                   <>
