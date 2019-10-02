@@ -9,6 +9,7 @@ import UniversalLoginSDK, {
 } from "@universal-login/sdk";
 import { useAsync } from "../hooks/useAsync";
 import logoIcon from "../assets/icons/u-white.svg";
+import ethLogo from "../assets/icons/ethereum-logo.svg";
 import { DashboardContentType } from "../../core/models/ReactUDashboardContentType";
 import "./../styles/udashboard.sass";
 import { TopUp } from "../TopUp/TopUp";
@@ -144,21 +145,16 @@ export const UDashboard = ({ applicationWallet, sdk }: UDashboardProps) => {
   return (
     <>
       <div
-        className={`ul-button-ethereum-account`}
+        className={`ul-button-ethereum-account ${
+          newNotifications.length > 0 ? "new-notifications" : ""
+        }`}
         onClick={() => onUButtonClick()}
       >
-        <div
-          className={`ul-identicon ${
-            newNotifications.length > 0 ? "new-notifications" : ""
-          }`}
-          style={{
-            backgroundColor:
-              "#" + applicationWallet.contractAddress.substring(2, 6)
-          }}
-        >
-          <img src={logoIcon} alt="U" />
+        <div className="ul-logo">
+          <img src={ethLogo} alt="Ethereum Logo" />
         </div>
-        {applicationWallet.name}
+        <div className="ul-name">{applicationWallet.name}</div>
+        <div className="ul-balance"> $12.34 </div>
       </div>
       {dashboardVisibility && (
         <ModalWrapper
