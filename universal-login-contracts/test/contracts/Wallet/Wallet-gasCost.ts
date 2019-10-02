@@ -9,7 +9,7 @@ import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} fr
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const deployProxyCost = '380000';
+const deployProxyCost = '385000';
 const deployProxyWithENSCost = '570000';
 
 

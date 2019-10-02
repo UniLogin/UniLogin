@@ -24,7 +24,7 @@ export {generateBackupCode} from './core/utils/generateBackupCode';
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {safeMultiply} from './core/utils/safeMultiply';
 export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
-export {computeCounterfactualAddress} from './core/utils/contracts/computeContractAddress';
+export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {RequiredBalanceChecker} from './integration/ethereum/RequiredBalanceChecker';
 export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT} from './integration/ethereum/deployContract';

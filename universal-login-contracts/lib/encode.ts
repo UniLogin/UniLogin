@@ -10,7 +10,7 @@ export type EnsDomainData = {
 
 export const encodeInitializeWithENSData = (args: string[]) => new utils.Interface(WalletContract.interface).functions.initializeWithENS.encode(args);
 
-export const encodeInitializeData = (publicKey: string) => new utils.Interface(WalletContract.interface).functions.initialize.encode([publicKey]);
+export const encodeInitializeData = (args: string[]) => new utils.Interface(WalletContract.interface).functions.initialize.encode(args);
 
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;

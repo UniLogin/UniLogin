@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
-import {Wallet, Contract} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
 import WalletContract from '../../../build/TestableWallet.json';
-import {createKeyPair} from '@universal-login/commons';
+import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 describe('UNIT: WalletContract', () => {
   let walletContract: Contract;
@@ -11,7 +11,8 @@ describe('UNIT: WalletContract', () => {
   beforeEach(async () => {
     [wallet] = getWallets(createMockProvider());
     walletContract = await deployContract(wallet, WalletContract, []);
-    await walletContract.initialize(wallet.address);
+    await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('2')});
+    await walletContract.initialize(wallet.address, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
   });
 
   describe('setRequiredSignatures', async () => {

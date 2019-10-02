@@ -21,12 +21,14 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
     }
 
     // Disabled upgradability: persistent nonce not sync
-    function initialize(address _key) external initializer {
+    function initialize(address _key, uint gasPrice, address gasToken) external initializer {
         // Executor → KeyHolder
         keys[_key] = true;
         keyCount = 1;
         requiredSignatures = 1;
         emit KeyAdded(_key);
+        /* solium-disable security/no-tx-origin*/
+        refund(getDeploymentGasUsed(), gasPrice, gasToken, tx.origin);
     }
 
     // Disabled upgradability: persistent nonce not sync
