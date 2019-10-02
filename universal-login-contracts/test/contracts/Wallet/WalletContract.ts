@@ -10,7 +10,7 @@ import {TEST_PAYMENT_OPTIONS_NO_GAS_TOKEN} from '../../../lib/defaultPaymentOpti
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
-import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, createSignedMessage} from '../../../lib/index.js';
+import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage} from '../../../lib/index.js';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -316,7 +316,7 @@ describe('WalletContract', async () => {
 
     beforeEach(async () => {
       newWallet = await deployContract(wallet, UpgradedWallet);
-      const signedMessage = createSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
+      const signedMessage = messageToSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
       updateData = encodeDataForExecuteSigned(signedMessage);
       gasLimit = utils.bigNumberify(signedMessage.gasLimitExecution).add(signedMessage.gasData).add('33000');
     });

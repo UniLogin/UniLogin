@@ -30,17 +30,11 @@ export const emptyMessage = {
   data: EMPTY_DATA,
   nonce: 0,
   gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimitExecution: utils.bigNumberify(DEFAULT_GAS_LIMIT),
-  gasData: utils.bigNumberify(0),
+  gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
   gasToken: '0x0000000000000000000000000000000000000000'
 };
 
 export const unsignedMessageToSignedMessage = (unsignedMessage: UnsignedMessage, privateKey: string) => {
   const signature = calculateMessageSignature(privateKey, unsignedMessage);
   return {...unsignedMessage, signature};
-};
-
-export const createSignedMessage = (override: Partial<Message>, privateKey: string) => {
-  const unsignedMessage = messageToUnsignedMessage({...emptyMessage, gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT).sub('100000'), ...override});
-  return unsignedMessageToSignedMessage(unsignedMessage, privateKey);
 };

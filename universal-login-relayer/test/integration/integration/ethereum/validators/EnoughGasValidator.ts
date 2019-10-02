@@ -1,14 +1,14 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
-import {createSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
+import {TEST_ACCOUNT_ADDRESS, Message} from '@universal-login/commons';
+import {messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EstimateGasValidator from '../../../../../lib/integration/ethereum/validators/EstimateGasValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
 
 describe('INT: EstimateGasValidator', async () => {
-  let message: UnsignedMessage;
+  let message: Message;
   let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
@@ -21,7 +21,7 @@ describe('INT: EstimateGasValidator', async () => {
   });
 
   it('successfully pass the validation', async () => {
-    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.not.be.rejected;
   });
 
@@ -31,7 +31,7 @@ describe('INT: EstimateGasValidator', async () => {
   });
 
   it('passes when not enough tokens', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.be.eventually.fulfilled;
   });
 });

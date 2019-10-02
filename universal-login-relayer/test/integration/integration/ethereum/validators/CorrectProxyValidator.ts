@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom} from '@universal-login/commons';
-import {createSignedMessage} from '@universal-login/contracts';
+import {messageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import CorrectProxyValidator from '../../../../../lib/integration/ethereum/validators/CorrectProxyValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
@@ -18,12 +18,12 @@ describe('INT: CorrectProxyValidator', async () => {
 
   before(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
+    message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
     validator = new CorrectProxyValidator(wallet.provider, contractWhiteList);
   });
 
   it('successfully pass the validation', async () => {
-    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.not.be.rejected;
   });
 
@@ -32,7 +32,7 @@ describe('INT: CorrectProxyValidator', async () => {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy
     });
-    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually.fulfilled;
   });
 
@@ -41,7 +41,7 @@ describe('INT: CorrectProxyValidator', async () => {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS]
     });
-    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });

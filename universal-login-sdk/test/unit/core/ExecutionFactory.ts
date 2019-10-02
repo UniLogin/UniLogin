@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon, {SinonStub} from 'sinon';
 import {utils} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY} from '@universal-login/commons';
-import {createSignedMessage} from '@universal-login/contracts';
+import {messageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import {ExecutionFactory} from '../../../lib/core/services/ExecutionFactory';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
 
@@ -16,7 +16,7 @@ describe('UNIT: ExecutionFactory', async () => {
   const execute: SinonStub = sinon.stub();
 
   before(async () => {
-    signedMessage = createSignedMessage({from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
+    signedMessage = messageToSignedMessage({...emptyMessage, from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY);
     const messageHash = await calculateMessageHash(signedMessage);
     defaultStatus = {
       transactionHash: TEST_TRANSACTION_HASH,

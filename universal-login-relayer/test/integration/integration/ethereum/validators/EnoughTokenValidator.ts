@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils, providers} from 'ethers';
 import {loadFixture, deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, UnsignedMessage} from '@universal-login/commons';
-import {createSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from '@universal-login/contracts';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, Message} from '@universal-login/commons';
+import {messageToSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EnoughTokenValidator, {hasEnoughToken} from '../../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
 import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
@@ -10,7 +10,7 @@ import MockToken from '@universal-login/contracts/build/MockToken.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
 describe('INT: EnoughTokenValidator', async () => {
-  let message: UnsignedMessage;
+  let message: Message;
   let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
@@ -23,7 +23,7 @@ describe('INT: EnoughTokenValidator', async () => {
   });
 
   it('successfully pass the validation', async () => {
-    const signedMessage = createSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.not.be.rejected;
   });
 
@@ -33,7 +33,7 @@ describe('INT: EnoughTokenValidator', async () => {
   });
 
   it('throws when not enough tokens', async () => {
-    const signedMessage = createSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
     await expect(validator.validate(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
