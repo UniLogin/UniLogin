@@ -34,7 +34,7 @@ describe('INT: TransferService', () => {
     tokenService = new TokensDetailsStore(tokenDetailsService, [mockTokenContract.address]);
     await tokenService.fetchTokensDetails();
     sdk.tokensDetailsStore = tokenService;
-    transferService = new TransferService(sdk, walletService.getDeployedWallet());
+    transferService = new TransferService(walletService.getDeployedWallet());
   });
 
   it('Should transfer tokens', async () => {

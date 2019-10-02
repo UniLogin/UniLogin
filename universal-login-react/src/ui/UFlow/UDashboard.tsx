@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
-import {ApplicationWallet, TransferDetails} from '@universal-login/commons';
-import UniversalLoginSDK, {DeployedWallet, TransferService} from '@universal-login/sdk';
+import {TransferDetails} from '@universal-login/commons';
+import {DeployedWallet, TransferService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
@@ -16,25 +16,24 @@ import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 
 export interface UDashboardProps {
-  applicationWallet: ApplicationWallet;
-  sdk: UniversalLoginSDK;
+  deployedWallet: DeployedWallet;
 }
 
-export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
+export const UDashboard = ({deployedWallet}: UDashboardProps) => {
+  const {contractAddress, privateKey, sdk} = deployedWallet;
   const [transferDetails, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
-  const {contractAddress, name, privateKey} = applicationWallet;
 
   const [newNotifications, setNewNotifications] = useState([] as Notification[]);
-  useEffect(() => sdk.subscribeAuthorisations(applicationWallet.contractAddress, applicationWallet.privateKey, setNewNotifications), []);
+  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNewNotifications), []);
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
     setTransferDetails({...transferDetails, ...args});
   };
 
-  const transferService = new TransferService(sdk, applicationWallet);
+  const transferService = new TransferService(deployedWallet);
 
   const onUButtonClick = () => {
     setDashboardVisibility(true);
@@ -46,9 +45,7 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'funds':
         return (
           <Funds
-            contractAddress={applicationWallet.contractAddress}
-            ensName={applicationWallet.name}
-            sdk={sdk}
+            deployedWallet={deployedWallet}
             onTopUpClick={() => setDashboardContent('topup')}
             onSendClick={() => setDashboardContent('transferAmount')}
           />
@@ -56,18 +53,16 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'topup':
         return (
           <TopUp
-            sdk={sdk}
             onGasParametersChanged={() => {}}
             hideModal={() => setDashboardVisibility(false)}
-            contractAddress={applicationWallet.contractAddress}
+            contractAddress={contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
           />
         );
       case 'transferAmount':
         return (
           <TransferAmount
-            sdk={sdk}
-            ensName={applicationWallet.name}
+            deployedWallet={deployedWallet}
             onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
             updateTransferDetailsWith={updateTransferDetailsWith}
             currency={transferDetails.currency}
@@ -93,14 +88,13 @@ export const UDashboard = ({applicationWallet, sdk}: UDashboardProps) => {
       case 'devices':
         return (
           <Devices
-            sdk={sdk}
-            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
+            deployedWallet={deployedWallet}
           />
         );
       case 'backup':
         return (
           <BackupCodes
-            deployedWallet={new DeployedWallet(contractAddress, name, privateKey, sdk)}
+            deployedWallet={deployedWallet}
           />
         );
       default:

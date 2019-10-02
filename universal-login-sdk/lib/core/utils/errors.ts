@@ -1,6 +1,6 @@
 type ErrorType =
   'InsufficientGas' |
-  'ApplicationWalletNotFound' |
+  'WalletNotFound' |
   'ConcurrentAuthorisation' |
   'ConcurrentDeployment' |
   'UnsupportedBytecode' |
@@ -144,10 +144,10 @@ export class MissingMessageHash extends NotFound {
   }
 }
 
-export class ApplicationWalletNotFound extends NotFound {
+export class WalletNotFound extends NotFound {
   constructor() {
-    super('Application wallet not found', 'ApplicationWalletNotFound');
-    Object.setPrototypeOf(this, ApplicationWalletNotFound.prototype);
+    super('Wallet not found', 'WalletNotFound');
+    Object.setPrototypeOf(this, WalletNotFound.prototype);
   }
 }
 

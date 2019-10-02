@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TransferDropdown} from './TransferDropdown';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {DeployedWallet} from '@universal-login/sdk';
 import {TransferDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import './../../styles/transferAmount.css';
 import './../../styles/transferAmountDefaults.css';
@@ -8,19 +8,19 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 
 export interface TransferAmountProps {
-  sdk: UniversalLoginSDK;
-  ensName: string;
+  deployedWallet: DeployedWallet;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   currency: string;
   transferAmountClassName?: string;
 }
 
-export const TransferAmount = ({sdk, ensName, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
+export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [isAmountCorrect, setIsAmountCorrect] = useState(false);
+  const {sdk, name} = deployedWallet;
 
-  useAsyncEffect(() => sdk.subscribeToBalances(ensName, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(name, setTokenDetailsWithBalance), []);
   const balance = getBalanceOf(currency, tokenDetailsWithBalance);
 
   const validateAndUpdateTransferDetails = (amount: string) => {

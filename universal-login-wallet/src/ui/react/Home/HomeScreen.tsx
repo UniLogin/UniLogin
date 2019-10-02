@@ -6,7 +6,7 @@ import {Funds, Devices, BackupCodes} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
-  const {sdk, walletPresenter, walletService} = useServices();
+  const {walletService} = useServices();
   const modalService = useContext(WalletModalContext);
   const [content, setContent] = useState('balance');
 
@@ -15,9 +15,7 @@ const HomeScreen = () => {
       case 'balance':
         return (
           <Funds
-            contractAddress={walletPresenter.getContractAddress()}
-            ensName={walletPresenter.getName()}
-            sdk={sdk}
+            deployedWallet={walletService.getDeployedWallet()}
             onTopUpClick={() => {}}
             onSendClick={() => modalService.showModal('transfer')}
             className="jarvis-funds"
@@ -26,7 +24,6 @@ const HomeScreen = () => {
       case 'devices':
         return (
           <Devices
-            sdk={sdk}
             deployedWallet={walletService.getDeployedWallet()}
             className="jarvis-styles"
           />

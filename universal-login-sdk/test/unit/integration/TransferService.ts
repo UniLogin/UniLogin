@@ -19,12 +19,13 @@ describe('UNIT: TransferService', () => {
       tokensDetailsStore: tokenService
     } as any;
     const walletService = {
-      applicationWallet: {
+      deployedWallet: {
         privateKey: 'PRIVATE_KEY',
         contractAddress: 'CONTRACT_ADDRESS',
+        sdk
       } as any
     };
-    const transferService = new TransferService(sdk as any, walletService.applicationWallet as any);
+    const transferService = new TransferService(walletService.deployedWallet as any);
     return {sdk, walletService, tokenService, transferService};
   }
 
@@ -51,14 +52,14 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if wallet missing and transferring ETH', async () => {
-    const {sdk, tokenService} = setup();
-    const transferService = new TransferService(sdk as any, undefined as any);
+    const {tokenService} = setup();
+    const transferService = new TransferService(undefined as any);
 
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: ETHER_NATIVE_TOKEN.symbol
-    })).to.be.rejectedWith('Application wallet not found');
+    })).to.be.rejectedWith('Wallet not found');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
   });
@@ -87,16 +88,16 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if wallet is missing and transfering tokens', async () => {
-    const {sdk, tokenService, walletService} = setup();
-    walletService.applicationWallet = undefined;
+    const {tokenService, walletService} = setup();
+    walletService.deployedWallet = undefined;
 
-    const transferService = new TransferService(sdk as any, undefined as any);
+    const transferService = new TransferService(undefined as any);
 
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       currency: 'TOKEN_SYMBOL'
-    })).to.be.rejectedWith('Application wallet not found');
+    })).to.be.rejectedWith('Wallet not found');
 
     expect(tokenService.getTokenAddress).to.not.be.called;
   });

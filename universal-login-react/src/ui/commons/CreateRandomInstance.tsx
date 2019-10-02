@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import {WalletService} from '@universal-login/sdk';
-import {ApplicationWallet, DEFAULT_GAS_PRICE, DEV_DEFAULT_PRIVATE_KEY, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {WalletService, DeployedWallet} from '@universal-login/sdk';
+import {DEFAULT_GAS_PRICE, DEV_DEFAULT_PRIVATE_KEY, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {useServices} from '../../core/services/useServices';
 import {utils, Wallet} from 'ethers';
 
 export interface CreateRandomInstanceProps {
-  setApplicationWallet: (arg: ApplicationWallet) => void;
+  setDeployedWallet: (arg: DeployedWallet) => void;
 }
 
-export const CreateRandomInstance = ({setApplicationWallet}: CreateRandomInstanceProps) => {
+export const CreateRandomInstance = ({setDeployedWallet}: CreateRandomInstanceProps) => {
   const [contractAddress, setContractAddress] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [ensName, setEnsName] = useState<string>('');
@@ -31,7 +31,7 @@ export const CreateRandomInstance = ({setApplicationWallet}: CreateRandomInstanc
     setStatus(`Wallet contract deployed at ${contractAddress}`);
     setContractAddress(contractAddress);
     setStatus('');
-    setApplicationWallet(walletService.getDeployedWallet().asApplicationWallet);
+    setDeployedWallet(walletService.getDeployedWallet());
   };
 
   return (
