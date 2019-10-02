@@ -8,7 +8,7 @@ export const computeCounterfactualAddress = (factoryAddress: string, publicKey: 
 };
 
 export const computeContractAddress = (address: string, nonce: number) => {
-  let nonceBytes = nonce === 0 ? '0x80' : utils.hexlify(nonce);
+  const nonceBytes = nonce === 0 ? '0x80' : utils.hexlify(nonce);
   const futureAddress = utils.solidityKeccak256(['bytes1', 'bytes1', 'address', 'bytes1'], ['0xd6', '0x94', address, nonceBytes]);
   return utils.getAddress(`0x${futureAddress.slice(26)}`);
 };
