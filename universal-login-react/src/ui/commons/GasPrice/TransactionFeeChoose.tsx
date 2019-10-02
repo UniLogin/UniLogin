@@ -13,7 +13,7 @@ interface TransactionFeeProps {
   onGasOptionChanged: (gasOption: GasOption) => void;
 }
 
-export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, modeName, tokenAddress, tokensDetailsWithBalance, usdAmount} : TransactionFeeProps) => (
+export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, modeName, tokenAddress, tokensDetailsWithBalance, usdAmount}: TransactionFeeProps) => (
   <div className="transaction-fee">
     <p className="transaction-fee-title">Transaction fee</p>
     <ul className="transaction-fee-list">
@@ -43,4 +43,4 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
       ))}
     </ul>
   </div>
-)
+);

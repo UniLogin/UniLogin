@@ -4,12 +4,13 @@ import './../../styles/gasPriceDefault.sass';
 import {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
-import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, getBalanceOf, EMPTY_GAS_OPTION, safeMultiply} from '@universal-login/commons';
+import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import {GasPriceSpeedChoose} from './GasPriceSpeed';
 import {TransactionFeeChoose} from './TransactionFeeChoose';
+import {SelectedGasPrice} from './SelectedGasPrice';
 
 interface GasPriceProps {
   deployedWallet: DeployedWallet;
@@ -56,32 +57,19 @@ export const GasPrice = ({deployedWallet, gasLimit, onGasParametersChanged, clas
   }, [gasModes]);
   const [contentVisibility, setContentVisibility] = useState(false);
 
-  const multiplyWithGasLimit = (number: utils.BigNumber) => safeMultiply(number, gasLimit);
-
   const renderComponent = (gasModes: GasMode[]) => (
     <div className="universal-login-gas">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="gas-price">
           <GasPriceTitle />
           <div className="gas-price-dropdown">
-            <div className="gas-price-selected">
-              <div className="gas-price-selected-row">
-                <div>
-                  <div className="transaction-fee-details">
-                    <img src="" alt="" className="transaction-fee-item-icon" />
-                    <div>
-                      <p className="transaction-fee-amount">{multiplyWithGasLimit(gasOption.gasPrice)} {gasOption.token.symbol}</p>
-                      <p className="transaction-fee-amount-usd">{multiplyWithGasLimit(utils.parseEther(usdAmount.toString()))} USD</p>
-                    </div>
-                  </div>
-                </div>
-                <hr className="gas-price-selected-divider" />
-                <div>
-                  <p className="transaction-speed-type">{modeName}</p>
-                </div>
-              </div>
-              <button className="gas-price-btn" onClick={() => setContentVisibility(!contentVisibility)} />
-            </div>
+            <SelectedGasPrice
+              modeName={modeName}
+              gasLimit={gasLimit}
+              usdAmount={usdAmount}
+              gasOption={gasOption}
+              onClick={() => setContentVisibility(!contentVisibility)}
+            />
             {contentVisibility &&
               <div className="gas-price-selector">
                 <GasPriceTitle />
