@@ -11,7 +11,7 @@ import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
 import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
-import {ReactModalType, ReactModalContext, ReactModalProps} from './core/models/ReactModalContext';
+import {ReactModalType, ReactModalContext, ReactModalProps, TopUpProps} from './core/models/ReactModalContext';
 import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
@@ -135,9 +135,10 @@ export const App = () => {
                 if (!relayerConfig) {
                   return <div>Loading...</div>;
                 }
-                const topUpProps = {
+                const topUpProps: TopUpProps = {
                   contractAddress: Wallet.createRandom().address,
                   onRampConfig: relayerConfig!.onRampProviders,
+                  ipGeolocationApiConfig: relayerConfig!.ipGeolocationApi,
                   onGasParametersChanged: console.log,
                   sdk
                 };

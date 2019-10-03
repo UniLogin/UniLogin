@@ -6,11 +6,12 @@ import RampLogo from './../../assets/logos/ramp.png';
 import WyreLogoWhite from './../../assets/topUp/wyre-white.svg';
 import WyreLogo from './../../assets/logos/wyre@2x.png';
 import {TopUpRadio} from '../TopUpRadio';
-import {useServices} from '../../../core/services/useServices';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
+import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 
 interface FiatPaymentMethodsProps {
   selectedCountry: string;
+  supportService: TopUpProviderSupportService;
   paymentMethod?: TopUpProvider;
   setPaymentMethod: (paymentMethod: TopUpProvider) => void;
   logoColor?: LogoColor;
@@ -18,9 +19,7 @@ interface FiatPaymentMethodsProps {
 
 export type LogoColor = 'white' | 'black';
 
-export const FiatPaymentMethods = ({selectedCountry, paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => {
-  const {topUpProviderSupportService: supportService} = useServices();
-
+export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => {
   const rampLogo = logoColor === 'white' ? RampLogoWhite : RampLogo;
   const safelloLogo = logoColor === 'white' ? SafelloLogoWhite : Safello;
   const wyreLogo = logoColor === 'white' ? WyreLogoWhite : WyreLogo;

@@ -35,7 +35,8 @@ const Modal = () => {
           {...modalService.modalProps as TopUpModalProps}
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
-          onRampConfig={relayerConfig.onRampProviders}
+          onRampConfig={relayerConfig!.onRampProviders}
+          ipGeolocationApiConfig={relayerConfig!.ipGeolocationApi}
           contractAddress={walletPresenter.getContractAddress()}
           isModal
           logoColor="black"
@@ -64,8 +65,8 @@ const Modal = () => {
       return relayerConfig ? (
         <ModalWrapperWithoutClose>
           <Safello
-            localizationConfig={relayerConfig.localization}
-            safelloConfig={relayerConfig.onRampProviders.safello}
+            localizationConfig={relayerConfig!.localization}
+            safelloConfig={relayerConfig!.onRampProviders.safello}
             contractAddress={walletPresenter.getContractAddress()}
             crypto="eth"
           />

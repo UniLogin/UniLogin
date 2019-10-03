@@ -4,7 +4,7 @@ import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
 import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {ReactModalContext, ReactModalType, ReactModalProps} from '../../core/models/ReactModalContext';
+import {ReactModalContext, ReactModalType, ReactModalProps, TopUpProps} from '../../core/models/ReactModalContext';
 import {createModalService} from '../../core/services/createModalService';
 
 export interface OnboardingWalletService {
@@ -34,9 +34,10 @@ export const Onboarding = (props: OnboardingProps) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
     const relayerConfig = await props.sdk.getRelayerConfig();
-    const topUpProps = {
+    const topUpProps: TopUpProps = {
       contractAddress,
       onRampConfig: relayerConfig!.onRampProviders,
+      ipGeolocationApiConfig: relayerConfig!.ipGeolocationApi,
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
       sdk: props.sdk
     };
