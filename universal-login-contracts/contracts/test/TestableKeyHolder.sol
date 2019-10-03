@@ -12,4 +12,9 @@ contract TestableKeyHolder is KeyHolder {
         require(keyExist(msg.sender) || msg.sender == address(this), "Sender not permissioned");
         _;
     }
+
+    modifier onlySufficientKeyCount() {
+        require(keyCount >= 1, "Cannot remove the last key");
+        _;
+    }
 }

@@ -30,6 +30,11 @@ contract KeyHolder {
         _;
     }
 
+    modifier onlySufficientKeyCount() {
+        revert("Always reverts");
+        _;
+    }
+
     function keyExist(address _key) public view returns(bool) {
         return keys[_key];
     }
@@ -52,7 +57,7 @@ contract KeyHolder {
         return true;
     }
 
-    function removeKey(address _key) public  onlyAuthorised returns(bool success) {
+    function removeKey(address _key) public onlyAuthorised onlySufficientKeyCount returns(bool success) {
         require(keyExist(_key), "Cannot remove a non-existing key");
         emit KeyRemoved(_key);
 

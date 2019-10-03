@@ -20,6 +20,11 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
         return address(this);
     }
 
+    modifier onlySufficientKeyCount() {
+        require(keyCount > requiredSignatures, "Signatures exceed owned keys number");
+        _;
+    }
+
     // Disabled upgradability: persistent nonce not sync
     function initialize(address _key, uint gasPrice, address gasToken) external initializer {
         // Executor → KeyHolder
