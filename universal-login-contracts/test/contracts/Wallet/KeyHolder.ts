@@ -17,7 +17,7 @@ describe('CONTRACT: KeyHolder', async () => {
   let initialPublicKey: string;
   let publicKey: string;
   let publicKey2: string;
-  let wallet: Wallet
+  let wallet: Wallet;
 
   beforeEach(async () => {
     ({keyHolder, wallet, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(testableKeyHolder));
