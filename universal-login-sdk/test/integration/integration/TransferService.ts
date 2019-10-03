@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, providers, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_TOKEN_DETAILS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {WalletService} from '../../../lib/core/services/WalletService';
@@ -13,6 +13,11 @@ import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
+
+const gasParameters = {
+  gasPrice: utils.bigNumberify('1'),
+  gasToken: ETHER_NATIVE_TOKEN.address
+};
 
 describe('INT: TransferService', () => {
   let transferService: TransferService;
@@ -40,8 +45,8 @@ describe('INT: TransferService', () => {
   it('Should transfer tokens', async () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
-    const currency = 'DAI';
-    const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
+    const transferToken =  TEST_TOKEN_DETAILS[0].address;
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken, gasParameters});
     await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
   });
@@ -49,8 +54,7 @@ describe('INT: TransferService', () => {
   it('Should transfer ether', async () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '0.5';
-    const currency = ETHER_NATIVE_TOKEN.symbol;
-    const {waitToBeSuccess} = await transferService.transfer({to, amount, currency});
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
     await waitToBeSuccess();
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
   });
@@ -58,8 +62,7 @@ describe('INT: TransferService', () => {
   it('Should throw error if invalid address', async () => {
     const to = `${TEST_ACCOUNT_ADDRESS}3`;
     const amount = '0.5';
-    const currency = ETHER_NATIVE_TOKEN.symbol;
-    await expect(transferService.transfer({to, amount, currency})).to.be.rejectedWith(`Address ${to} is not valid`);
+    await expect(transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters})).to.be.rejectedWith(`Address ${to} is not valid`);
   });
 
   after(async () => {

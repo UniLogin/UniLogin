@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {TransferService} from '@universal-login/sdk';
-import {TransferDetails} from '@universal-login/commons';
-import {ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
+import {TransferDetails, DEFAULT_GAS_LIMIT, GasParameters} from '@universal-login/commons';
+import {GasPrice, ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
 
@@ -10,8 +10,8 @@ const ModalTransfer = () => {
   const [modal, setModal] = useState('transferAmount');
 
   const {walletService, sdk} = useServices();
-  const [transferDetails, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
-
+  const [transferDetails, setTransferDetails] = useState({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
+  const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken);
   const deployedWallet = walletService.getDeployedWallet();
 
   const transferService = new TransferService(deployedWallet);
@@ -39,19 +39,29 @@ const ModalTransfer = () => {
         deployedWallet={deployedWallet}
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
-        currency={transferDetails.currency}
+        token={selectedToken}
         transferAmountClassName="jarvis-transfer-amount"
       />
     );
   } else if (modal === 'transferRecipient') {
     return (
-      <ModalTransferRecipient
-        onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-        onSendClick={onGenerateClick}
-        onBackClick={() => setModal('transferAmount')}
-        transferDetails={transferDetails}
-        transferRecipientClassName="jarvis-transfer-recipient"
-      />
+      <div>
+        <ModalTransferRecipient
+          symbol={selectedToken.symbol}
+          onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+          onSendClick={onGenerateClick}
+          onBackClick={() => setModal('transferAmount')}
+          transferDetails={transferDetails}
+          transferRecipientClassName="jarvis-transfer-recipient"
+        />
+        <GasPrice
+          isDeployed={true}
+          deployedWallet={walletService.getDeployedWallet()}
+          gasLimit={DEFAULT_GAS_LIMIT}
+          onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+          className={'jarvis'}
+        />
+      </div>
     );
   }
   return null;

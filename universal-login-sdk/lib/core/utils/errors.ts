@@ -7,6 +7,7 @@ type ErrorType =
   'InvalidAddress' |
   'MissingConfiguration' |
   'TransactionHashNotFound' |
+  'TokenNotFound' |
   'MissingMessageHash' |
   'InvalidPassphrase' |
   'TimeoutError' |
@@ -148,6 +149,13 @@ export class WalletNotFound extends NotFound {
   constructor() {
     super('Wallet not found', 'WalletNotFound');
     Object.setPrototypeOf(this, WalletNotFound.prototype);
+  }
+}
+
+export class TokenNotFound extends NotFound {
+  constructor(tokenAddress: string) {
+    super(`Token not found (address = ${tokenAddress})`, 'TokenNotFound');
+    Object.setPrototypeOf(this, TokenNotFound.prototype);
   }
 }
 

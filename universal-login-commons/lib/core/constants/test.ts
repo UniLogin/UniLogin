@@ -37,7 +37,7 @@ export const TEST_DEVICE_INFO = {
 
 export const TEST_TOKEN_DETAILS = [
   {
-    address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+    address: '0x490932174cc4B7a0f546924a070D151D156095f0',
     symbol: 'DAI',
     name: 'MockToken'
   },

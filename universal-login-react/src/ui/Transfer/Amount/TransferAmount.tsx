@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TransferDropdown} from './TransferDropdown';
 import {DeployedWallet} from '@universal-login/sdk';
-import {TransferDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
+import {TransferDetails, TokenDetailsWithBalance, getBalanceOf, TokenDetails} from '@universal-login/commons';
 import './../../styles/transferAmount.css';
 import './../../styles/transferAmountDefaults.css';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -11,17 +11,17 @@ export interface TransferAmountProps {
   deployedWallet: DeployedWallet;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
-  currency: string;
+  token: TokenDetails;
   transferAmountClassName?: string;
 }
 
-export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
+export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, token, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [isAmountCorrect, setIsAmountCorrect] = useState(false);
   const {sdk, contractAddress} = deployedWallet;
 
   useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
-  const balance = getBalanceOf(currency, tokenDetailsWithBalance);
+  const balance = getBalanceOf(token.symbol, tokenDetailsWithBalance);
 
   const validateAndUpdateTransferDetails = (amount: string) => {
     if (balance && amount) {
@@ -39,8 +39,8 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
         <TransferDropdown
           sdk={sdk}
           tokenDetailsWithBalance={tokenDetailsWithBalance}
-          currency={currency}
-          setCurrency={(currency: string) => updateTransferDetailsWith({currency})}
+          token={token}
+          setToken={(token: TokenDetails) => updateTransferDetailsWith({transferToken: token.address})}
           className={transferAmountClassName}
         />
         <div className="transfer-amount-row">
@@ -54,7 +54,7 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
             className="transfer-amount-input"
             onChange={event => validateAndUpdateTransferDetails(event.target.value)}
           />
-          <span className="transfer-amount-code">{currency}</span>
+          <span className="transfer-amount-code">{token.symbol}</span>
         </div>
         <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!isAmountCorrect}>
           <span>Select recipient</span>

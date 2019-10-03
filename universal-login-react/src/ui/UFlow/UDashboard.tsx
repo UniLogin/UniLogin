@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
-import {asTransferDetails, TransferDetails} from '@universal-login/commons';
+import {asTransferDetails, TransferDetails, DEFAULT_GAS_LIMIT, GasParameters} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
@@ -16,6 +16,7 @@ import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
 import {Notice} from '../commons/Notice';
+import {GasPrice} from '../commons/GasPrice';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -31,7 +32,8 @@ function sanitizeTransferDetails(details: Partial<TransferDetails>) {
 
 export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const {contractAddress, privateKey, sdk} = deployedWallet;
-  const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol});
+  const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
+  const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
 
@@ -87,16 +89,25 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             deployedWallet={deployedWallet}
             onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
             updateTransferDetailsWith={updateTransferDetailsWith}
-            currency={transferDetails.currency!}
+            token={selectedToken}
           />
         );
       case 'transferRecipient':
         return (
-          <TransferRecipient
-            onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-            onSendClick={onTransferSendClick}
-            transferDetails={transferDetails}
-          />
+          <div>
+            <TransferRecipient
+              symbol={selectedToken.symbol}
+              onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+              onSendClick={onTransferSendClick}
+              transferDetails={transferDetails}
+            />
+            <GasPrice
+              isDeployed={true}
+              deployedWallet={deployedWallet}
+              gasLimit={DEFAULT_GAS_LIMIT}
+              onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+            />
+          </div>
         );
       case 'waitingForTransfer':
         return (

@@ -10,34 +10,35 @@ export class TransferService {
   async transfer(transferDetails: TransferDetails) {
     ensure(isProperAddress(transferDetails.to), InvalidAddress, transferDetails.to);
     ensureNotNull(this.deployedWallet, WalletNotFound);
-    if (transferDetails.currency === ETHER_NATIVE_TOKEN.symbol) {
+    if (transferDetails.transferToken === ETHER_NATIVE_TOKEN.address) {
       return this.transferEther(transferDetails);
     } else {
       return this.transferTokens(transferDetails);
     }
   }
 
-  private async transferTokens({to, amount, currency}: TransferDetails) {
+  private async transferTokens({to, amount, transferToken, gasParameters} : TransferDetails) {
     const {sdk, contractAddress, privateKey} = this.deployedWallet;
-    const tokenAddress = sdk.tokensDetailsStore.getTokenAddress(currency);
     const message = {
       from: contractAddress,
-      to: tokenAddress,
+      to: transferToken,
       value: 0,
       data: encodeTransfer(to, amount),
-      gasToken: tokenAddress
+      gasToken: gasParameters.gasToken,
+      gasPrice: gasParameters.gasPrice
     };
     return sdk.execute(message, privateKey);
   }
 
-  private async transferEther({to, amount}: TransferDetails) {
+  private async transferEther({to, amount, gasParameters}: TransferDetails) {
     const {sdk, contractAddress, privateKey} = this.deployedWallet;
     const message = {
       from: contractAddress,
       to,
       value: utils.parseEther(amount),
       data: '0x',
-      gasToken: ETHER_NATIVE_TOKEN.address
+      gasToken: gasParameters.gasToken,
+      gasPrice: gasParameters.gasPrice
     };
     return sdk.execute(message, privateKey);
   }

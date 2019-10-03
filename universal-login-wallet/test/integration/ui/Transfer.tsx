@@ -35,6 +35,8 @@ describe('UI: Transfer', () => {
     await appPage.transfer().chooseCurrency('ETH');
     appPage.transfer().enterTransferAmount('1');
     appPage.transfer().enterRecipient(receiverAddress);
+    await appPage.notifications().waitForGasMode();
+    appPage.notifications().selectGasMode();
     appPage.transfer().transfer();
     await appPage.dashboard().waitForHideModal();
     expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');

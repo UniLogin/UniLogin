@@ -9,17 +9,17 @@ import {useToggler} from '../../hooks/useToggler';
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
-  currency: string;
-  setCurrency: (currency: string) => void;
+  token: TokenDetails;
+  setToken: (token: TokenDetails) => void;
   className?: string;
 }
 
-export const TransferDropdown = ({sdk, tokenDetailsWithBalance, currency, setCurrency, className}: TransferDropdownProps) => {
+export const TransferDropdown = ({sdk, tokenDetailsWithBalance, token, setToken, className}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
 
-  const onClick = (currency: string) => {
+  const onClick = (token: TokenDetails) => {
     toggle();
-    setCurrency(currency);
+    setToken(token);
   };
 
   const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
@@ -27,28 +27,27 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, currency, setCur
   const renderTransferDropdownItems = (tokensDetails: TokenDetails[], predicate: (tokenDetails: TokenDetails) => boolean, dropdownClassName: string) =>
     tokensDetails
       .filter(predicate)
-      .map(({symbol, name}: TokenDetails) => renderTransferDropdownItem(symbol, name, dropdownClassName));
+      .map((tokenDetails: TokenDetails) => renderTransferDropdownItem(tokenDetails, dropdownClassName));
 
-  const renderTransferDropdownItem = (symbol: string, name: string, dropdownClassName: string) => (
+  const renderTransferDropdownItem = (tokenDetails: TokenDetails, dropdownClassName: string) => (
     <TransferDropdownItem
-      key={`${name}-${symbol}`}
+      key={`${tokenDetails.name}-${tokenDetails.symbol}`}
       sdk={sdk}
       dropdownClassName={dropdownClassName}
       className={className}
-      name={name}
-      symbol={symbol}
-      icon={iconForToken(symbol)}
-      balance={getBalanceOf(symbol, tokenDetailsWithBalance)}
+      tokenDetails={tokenDetails}
+      icon={iconForToken(tokenDetails.symbol)}
+      balance={getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)}
       onClick={onClick}
     />
   );
 
   return (
     <div className="currency-accordion">
-        {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === currency, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
+        {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === token.symbol, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
         {visible &&
           <div className="currency-scrollable-list">
-            {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== currency, 'currency-accordion-item')}
+            {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== token.symbol, 'currency-accordion-item')}
           </div>}
     </div >
   );

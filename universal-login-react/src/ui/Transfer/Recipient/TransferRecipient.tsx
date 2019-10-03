@@ -5,13 +5,14 @@ import './../../styles/transferRecipientDefaults.css';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 
 export interface TransferRecipientProps {
+  symbol: string;
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSendClick: () => Promise<void>;
   transferDetails: Partial<TransferDetails>;
   transferRecipientClassName?: string;
 }
 
-export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetails: {amount, currency, to}}: TransferRecipientProps) => {
+export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecipientClassName, transferDetails: {amount, to}, symbol}: TransferRecipientProps) => {
   const [showError, setShowError] = useState<boolean>(false);
   const errorMessage = 'Invalid address';
 
@@ -26,7 +27,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecip
     <div className="universal-login-recipient">
       <div className={getStyleForTopLevelComponent(transferRecipientClassName)}>
         <div className="transfer-recipient">
-          <p className="transfer-recipient-text">To who are you sending {amount} {currency}?</p>
+          <p className="transfer-recipient-text">To who are you sending {amount} {symbol}?</p>
           <label className="transfer-recipient-label" htmlFor="">Recipient</label>
           <div className="transfer-recipient-input-wrapper">
             <input

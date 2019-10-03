@@ -1,9 +1,11 @@
 import {utils} from 'ethers';
+import {GasParameters} from './gas';
 
 export interface TransferDetails {
   to: string;
   amount: string;
-  currency: string;
+  transferToken: string;
+  gasParameters: GasParameters;
 }
 
 export type TransactionOverrides = {
