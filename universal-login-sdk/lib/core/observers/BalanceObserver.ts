@@ -3,6 +3,7 @@ import clonedeep from 'lodash.clonedeep';
 import {BalanceChecker, TokenDetailsWithBalance} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
+import {BALANCE_OBSERVER_DEFAULT_TICK} from '../../config/observers';
 
 export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
 
@@ -10,7 +11,7 @@ export class BalanceObserver extends ObserverRunner {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
   private callbacks: OnBalanceChange[] = [];
 
-  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, tick: number = 500) {
+  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, tick: number = BALANCE_OBSERVER_DEFAULT_TICK) {
     super();
     this.tick = tick;
   }

@@ -3,13 +3,15 @@ import deepEqual from 'deep-equal';
 import ObserverRunner from './ObserverRunner';
 import {ensure, Notification, RelayerRequest} from '@universal-login/commons';
 import {ConcurrentAuthorisation} from '../utils/errors';
+import {AUTHORIZATION_OBSERVER_DEFAULT_TICK} from '../../config/observers';
+
 
 class AuthorisationsObserver extends ObserverRunner {
   private lastAuthorisations: Notification[] = [];
   private authorisationRequest?: RelayerRequest;
   private callbacks: Function[] = [];
 
-  constructor(private relayerApi: RelayerApi, tick: number = 1000) {
+  constructor(private relayerApi: RelayerApi, tick: number = AUTHORIZATION_OBSERVER_DEFAULT_TICK) {
     super();
     this.tick = tick;
   }
