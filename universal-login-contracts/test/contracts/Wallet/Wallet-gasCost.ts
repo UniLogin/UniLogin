@@ -13,7 +13,7 @@ chai.use(solidity);
 
 const deployProxyCost = '385000';
 const deployProxyWithENSCost = '570000';
-const deployWalletCost = '3090000';
+const deployWalletCost = '3125000';
 const executeAddKeyCost = '102000';
 
 

@@ -1,6 +1,7 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../openzeppelin/contracts/utils/Address.sol";
 
 
 contract KeyHolder {
@@ -35,6 +36,7 @@ contract KeyHolder {
 
     function addKey(address _key) public onlyAuthorised returns(bool success) {
         require(!keyExist(_key), "Key already added");
+        require(!OpenZeppelinUpgradesAddress.isContract(_key), "Contract cannot be a key");
         keys[_key] = true;
         keyCount = keyCount.add(1);
         emit KeyAdded(_key);

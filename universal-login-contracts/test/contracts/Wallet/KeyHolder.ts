@@ -3,6 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture, deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
 import KeyHolder from '../../../build/KeyHolder.json';
+import MockContract from '../../../build/MockContract.json';
 import testableKeyHolder from '../../fixtures/testableKeyHolder';
 import {createKeyPair} from '@universal-login/commons';
 
@@ -16,9 +17,10 @@ describe('CONTRACT: KeyHolder', async () => {
   let initialPublicKey: string;
   let publicKey: string;
   let publicKey2: string;
+  let wallet: Wallet
 
   beforeEach(async () => {
-    ({keyHolder, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(testableKeyHolder));
+    ({keyHolder, wallet, publicKey, publicKey2, initialPublicKey, unknownWalletKey, fromUnknownWallet} = await loadFixture(testableKeyHolder));
   });
 
   describe('onlyAuthorised', () => {
@@ -60,6 +62,11 @@ describe('CONTRACT: KeyHolder', async () => {
 
     it('Should not allow to add new key with unknown key', async () => {
       await expect(fromUnknownWallet.addKey(unknownWalletKey)).to.be.reverted;
+    });
+
+    it('Contract cannot be a key', async () => {
+      const mockContract = await deployContract(wallet, MockContract);
+      await expect(keyHolder.addKey(mockContract.address)).to.be.revertedWith('Contract cannot be a key');
     });
   });
 
