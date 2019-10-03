@@ -7,20 +7,22 @@ export interface IModalService<T, K> {
   hideModal: () => void;
 }
 
+interface IModal<T, K> {
+  state: T | 'none';
+  props: K | {};
+}
+
 export const createModalService = <T, K>(): IModalService<T, K> => {
-  const [modalState, setModalState] = useState<T | 'none'>('none');
-  const [modalProps, setModalProps] = useState<K | {}>({});
-  const showModal = (modalState: T | 'none', props: K | {} = {}) => {
-    setModalProps(props);
-    setModalState(modalState);
+  const emptyModal: IModal<T, K> = {
+    state: 'none',
+    props: {}
   };
-  const hideModal = () => {
-    setModalProps({});
-    setModalState('none');
-  };
+  const [modal, setModal] = useState<IModal<T, K>>(emptyModal);
+  const showModal = (state: T | 'none', props: K | {} = {}) => setModal({state, props});
+  const hideModal = () => setModal(emptyModal);
   return {
-    modalState,
-    modalProps,
+    modalState: modal.state,
+    modalProps: modal.props,
     showModal,
     hideModal
   };
