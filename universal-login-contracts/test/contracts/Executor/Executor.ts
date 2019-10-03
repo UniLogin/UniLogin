@@ -4,7 +4,7 @@ import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import {utils, providers, Contract, Wallet} from 'ethers';
-import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST} from '@universal-login/commons';
 import {getExecutionArgs, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
 import {calculatePaymentOptions, estimateGasDataFromSignedMessage} from '../../../lib/estimateGas';
 
@@ -13,7 +13,6 @@ chai.use(solidity);
 
 const {parseEther} = utils;
 const to = TEST_ACCOUNT_ADDRESS;
-const ONE_SIGNATURE_GAS_COST = utils.bigNumberify('4420');
 
 
 describe('CONTRACT: Executor - main', async  () => {
