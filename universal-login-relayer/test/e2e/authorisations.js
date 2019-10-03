@@ -6,7 +6,7 @@ import {utils} from 'ethers';
 
 chai.use(chaiHttp);
 
-async function postAuthorisationRequest(relayer, contract, keyPair, applicationName) {
+async function postAuthorisationRequest(relayer, contract, keyPair) {
   const result = await chai.request(relayer.server)
     .post('/authorisation')
     .send({
@@ -86,7 +86,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
       .send({authorisationRequest});
     expect(result.status).to.eq(204);
 
-    const {result, response} = await getAuthorisation(relayer, contract, keyPair);
+    const {response} = await getAuthorisation(relayer, contract, keyPair);
     expect(response).to.deep.eq([]);
   });
 

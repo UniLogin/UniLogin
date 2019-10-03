@@ -1,11 +1,11 @@
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
-import {ETHER_NATIVE_TOKEN, ensure, ensureNotNull, isProperAddress, TransferDetails} from '@universal-login/commons';
-import {WalletNotFound, InvalidAddress} from '../utils/errors';
+import {ensure, ensureNotNull, ETHER_NATIVE_TOKEN, isProperAddress, TransferDetails} from '@universal-login/commons';
+import {InvalidAddress, WalletNotFound} from '../utils/errors';
 import {DeployedWallet} from '../../api/DeployedWallet';
 
 export class TransferService {
-  constructor(private deployedWallet : DeployedWallet) {}
+  constructor(private deployedWallet: DeployedWallet) {}
 
   async transfer(transferDetails: TransferDetails) {
     ensure(isProperAddress(transferDetails.to), InvalidAddress, transferDetails.to);
@@ -17,7 +17,7 @@ export class TransferService {
     }
   }
 
-  private async transferTokens({to, amount, currency} : TransferDetails) {
+  private async transferTokens({to, amount, currency}: TransferDetails) {
     const {sdk, contractAddress, privateKey} = this.deployedWallet;
     const tokenAddress = sdk.tokensDetailsStore.getTokenAddress(currency);
     const message = {
@@ -30,7 +30,7 @@ export class TransferService {
     return sdk.execute(message, privateKey);
   }
 
-  private async transferEther({to, amount} : TransferDetails) {
+  private async transferEther({to, amount}: TransferDetails) {
     const {sdk, contractAddress, privateKey} = this.deployedWallet;
     const message = {
       from: contractAddress,
