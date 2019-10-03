@@ -53,6 +53,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
       case 'topup':
         return (
           <TopUp
+            sdk={sdk}
             onGasParametersChanged={() => {}}
             hideModal={() => setDashboardVisibility(false)}
             contractAddress={contractAddress}

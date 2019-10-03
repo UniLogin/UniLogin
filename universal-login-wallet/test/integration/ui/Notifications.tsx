@@ -33,7 +33,7 @@ describe('UI: Notifications',  () => {
     await appPage.dashboard().clickDevicesButton();
     await appPage.dashboard().clickManageDevicesButton();
     await appPage.notifications().inputSecurityCode(securityCode);
-    await appPage.notifications().selectGasMode();
+    appPage.notifications().selectGasMode();
     await appPage.notifications().clickConnectDeviceButton();
     expect(appPage.notifications().isNotificationAlert()).to.be.false;
   });

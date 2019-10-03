@@ -1,5 +1,5 @@
 import React from 'react';
-import {OnRampConfig, GasParameters} from '@universal-login/commons';
+import {OnRampConfig, OnGasParametersChanged} from '@universal-login/commons';
 import {IModalService} from '../services/createModalService';
 import UniversalLoginSDK from '@universal-login/sdk';
 
@@ -11,7 +11,7 @@ export type TopUpProps = {
   sdk: UniversalLoginSDK
   contractAddress: string;
   onRampConfig: OnRampConfig;
-  onGasParametersChanged: (gasParameters: GasParameters) => void;
+  onGasParametersChanged: OnGasParametersChanged;
 };
 
 export const ReactModalContext = React.createContext({} as IModalService<ReactModalType, ReactModalProps>);

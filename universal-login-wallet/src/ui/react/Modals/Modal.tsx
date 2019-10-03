@@ -7,12 +7,12 @@ import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalWaitingFor from './ModalWaitingFor';
 import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, walletService} = useServices();
+  const {walletPresenter, walletService, sdk} = useServices();
   const relayerConfig = useRelayerConfig();
 
   switch (modalService.modalState) {
@@ -31,7 +31,8 @@ const Modal = () => {
     case 'topUpAccount':
       return relayerConfig ? (
         <TopUp
-          onGasParametersChanged={() => {}}
+          sdk={sdk}
+          {...modalService.modalProps as TopUpModalProps}
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-topup"
           onRampConfig={relayerConfig.onRampProviders}

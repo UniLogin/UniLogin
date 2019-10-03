@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {OnRampConfig, stringToEther, GasParameters} from '@universal-login/commons';
+import {OnRampConfig, OnGasParametersChanged, stringToEther, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
@@ -8,10 +9,12 @@ import {ModalWrapper} from '../Modals/ModalWrapper';
 import {LogoColor} from './Fiat/FiatPaymentMethods';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
+import {GasPrice} from '../commons/GasPrice';
 
 interface TopUpProps {
+  sdk: UniversalLoginSDK;
   contractAddress: string;
-  onGasParametersChanged: (gasParameters: GasParameters) => void;
+  onGasParametersChanged: OnGasParametersChanged;
   startModal?: TopUpComponentType;
   onRampConfig: OnRampConfig;
   topUpClassName?: string;
@@ -21,7 +24,7 @@ interface TopUpProps {
   logoColor?: LogoColor;
 }
 
-export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -40,16 +43,32 @@ export const TopUp = ({contractAddress, startModal, onRampConfig, modalClassName
             topUpClassName={topUpClassName}
             logoColor={logoColor}
           />
+          <GasPrice
+            isDeployed={false}
+            sdk={sdk}
+            onGasParametersChanged={onGasParametersChanged}
+            gasLimit={DEPLOY_GAS_LIMIT}
+            className={topUpClassName}
+          />
         </ModalWrapper>
       );
     }
     return (
-      <ChooseTopUpMethod
-        contractAddress={contractAddress}
-        onPayClick={onPayClick}
-        topUpClassName={topUpClassName}
-        logoColor={logoColor}
-      />
+      <>
+        <ChooseTopUpMethod
+          contractAddress={contractAddress}
+          onPayClick={onPayClick}
+          topUpClassName={topUpClassName}
+          logoColor={logoColor}
+        />
+        <GasPrice
+          isDeployed={false}
+          sdk={sdk}
+          onGasParametersChanged={onGasParametersChanged}
+          gasLimit={DEPLOY_GAS_LIMIT}
+          className={topUpClassName}
+        />
+      </>
     );
   } else if (modal === TopUpComponentType.safello) {
     return (

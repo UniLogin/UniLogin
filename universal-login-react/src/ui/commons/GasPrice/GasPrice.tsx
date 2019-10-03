@@ -4,7 +4,7 @@ import './../../styles/gasPriceDefault.sass';
 import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
-import {GasMode, GasParameters, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotNull} from '@universal-login/commons';
+import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotNull, OnGasParametersChanged} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {findGasMode, findGasOption} from '@universal-login/commons/dist/lib/core/utils/gasPriceMode';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
@@ -17,7 +17,7 @@ interface GasPriceProps {
   sdk?: UniversalLoginSDK;
   isDeployed: boolean;
   gasLimit: utils.BigNumberish;
-  onGasParametersChanged: (gasParameters: GasParameters) => void;
+  onGasParametersChanged: OnGasParametersChanged;
   className?: string;
 }
 

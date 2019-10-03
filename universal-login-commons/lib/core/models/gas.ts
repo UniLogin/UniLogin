@@ -16,3 +16,6 @@ export interface GasParameters {
   gasToken: string;
   gasPrice: utils.BigNumber;
 }
+
+export type OnGasParametersChanged = (gasParameters: GasParameters) => void;
+

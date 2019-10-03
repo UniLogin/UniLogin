@@ -24,7 +24,6 @@ export interface OnboardingProps {
 }
 
 export const Onboarding = (props: OnboardingProps) => {
-  const [gasParameters, setGasParameters] = useState<GasParameters>(INITIAL_GAS_PARAMETERS);
   const modalService = createModalService<ReactModalType, ReactModalProps>();
   const [walletService] = useState<OnboardingWalletService>(props.walletService || new WalletService(props.sdk));
   const onConnectClick = () => {
@@ -32,12 +31,13 @@ export const Onboarding = (props: OnboardingProps) => {
   };
 
   const onCreateClick = async (ensName: string) => {
+    let gasParameters = INITIAL_GAS_PARAMETERS;
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
     const relayerConfig = await props.sdk.getRelayerConfig();
     const topUpProps = {
       contractAddress,
       onRampConfig: relayerConfig!.onRampProviders,
-      onGasParametersChanged: setGasParameters,
+      onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
       sdk: props.sdk
     };
     modalService.showModal('topUpAccount', topUpProps);
@@ -53,7 +53,7 @@ export const Onboarding = (props: OnboardingProps) => {
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
-      <ReactModalContext.Provider value={modalService}>
+        <ReactModalContext.Provider value={modalService}>
           <div className="perspective">
             <WalletSelector
               sdk={props.sdk}
@@ -63,7 +63,7 @@ export const Onboarding = (props: OnboardingProps) => {
               tryEnablingMetamask={props.tryEnablingMetamask}
             />
           </div>
-          <Modals  modalClassName={props.modalClassName}/>
+          <Modals modalClassName={props.modalClassName} />
         </ReactModalContext.Provider>
       </div>
     </div>
