@@ -1,7 +1,6 @@
 const cryptocompare = require('cryptocompare');
 import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
-import {PRICE_OBSERVER_DEFAULT_TICK} from '../../config/observers';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import deepEqual = require('deep-equal');
 import cloneDeep = require('lodash.clonedeep');
@@ -12,7 +11,7 @@ export class PriceObserver extends ObserverRunner {
   private lastTokenPrices: TokensPrices = {};
   private callbacks: OnTokenPricesChange[] = [];
 
-  constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], tick: number = PRICE_OBSERVER_DEFAULT_TICK) {
+  constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], tick: number) {
     super();
     this.tick = tick;
   }
