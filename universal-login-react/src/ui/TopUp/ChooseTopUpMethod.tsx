@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import UniversalLoginSDK from '@universal-login/sdk';
 import './../styles/topup.css';
 import './../styles/topUpModalDefaults.css';
 import daiIcon from './../assets/topUp/dai.svg';
@@ -11,17 +12,16 @@ import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {LogoColor} from './Fiat/FiatPaymentMethods';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
-import {IPGeolocationApiConfig} from '@universal-login/commons';
 
 export interface ChooseTopUpMethodProps {
+  sdk: UniversalLoginSDK;
   contractAddress: string;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
-  ipGeolocationApiConfig: IPGeolocationApiConfig;
   topUpClassName?: string;
   logoColor?: LogoColor;
 }
 
-export const ChooseTopUpMethod = ({contractAddress, onPayClick, ipGeolocationApiConfig, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState('');
 
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
@@ -67,12 +67,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, ipGeolocationApi
           <div className="top-up-body">
             <div className="top-up-body-inner">
               {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress}/>}
-              {topUpMethod === 'fiat' &&
-              <TopUpWithFiat
-                  onPayClick={onPayClick}
-                  logoColor={logoColor}
-                  ipGeolocationApiConfig={ipGeolocationApiConfig}
-              />}
+              {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor}/>}
             </div>
           </div>
         </div>

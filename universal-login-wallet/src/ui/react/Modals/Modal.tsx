@@ -2,12 +2,12 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
-import {useServices, useRelayerConfig} from '../../hooks';
+import {useRelayerConfig, useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
 import ModalWaitingFor from './ModalWaitingFor';
-import {Safello, TopUp, ModalWrapper} from '@universal-login/react';
+import {ModalWrapper, Safello, TopUp} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
-import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
+import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
 const Modal = () => {
@@ -35,8 +35,6 @@ const Modal = () => {
           {...modalService.modalProps as TopUpModalProps}
           modalClassName="topup-modal-wrapper"
           topUpClassName="jarvis-styles"
-          onRampConfig={relayerConfig!.onRampProviders}
-          ipGeolocationApiConfig={relayerConfig!.ipGeolocationApi}
           contractAddress={walletPresenter.getContractAddress()}
           isModal
           logoColor="black"

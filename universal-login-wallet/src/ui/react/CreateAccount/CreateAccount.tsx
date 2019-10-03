@@ -3,10 +3,15 @@ import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
-import {WalletSuggestionAction, ETHER_NATIVE_TOKEN, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
+import {
+  ETHER_NATIVE_TOKEN,
+  GasParameters,
+  INITIAL_GAS_PARAMETERS,
+  WalletSuggestionAction
+} from '@universal-login/commons';
 import Modal from '../Modals/Modal';
 import {Link} from 'react-router-dom';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 export const CreateAccount = () => {
   const modalService = useContext(WalletModalContext);
@@ -17,9 +22,10 @@ export const CreateAccount = () => {
   const onCreateClick = async (name: string) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
     const {deploy, waitForBalance} = await walletService.createFutureWallet();
-    modalService.showModal('topUpAccount', {
+    const topUpProps: TopUpModalProps = {
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; }
-    });
+    };
+    modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
     await deploy(name, gasParameters.gasPrice.toString(), ETHER_NATIVE_TOKEN.address);

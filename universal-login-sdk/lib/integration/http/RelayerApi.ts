@@ -1,13 +1,13 @@
-import {RelayerRequest, http, HttpFunction} from '@universal-login/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest} from '@universal-login/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
-  private http: HttpFunction;
+  private readonly http: HttpFunction;
   constructor(relayerUrl: string, private applicationName: string) {
     this.http = http(fetch)(relayerUrl);
   }
 
-  async getConfig() {
+  async getConfig(): Promise<{config: PublicRelayerConfig}> {
     return this.http('GET', '/config');
   }
 

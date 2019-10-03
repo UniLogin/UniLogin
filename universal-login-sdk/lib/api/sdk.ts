@@ -1,18 +1,36 @@
-import {utils, Contract, providers} from 'ethers';
+import {Contract, providers, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage, ensureNotEmpty} from '@universal-login/commons';
+import {
+  addCodesToNotifications,
+  BalanceChecker,
+  createKeyPair,
+  deepMerge,
+  DeepPartial,
+  ensure,
+  ensureNotEmpty,
+  ensureNotNull,
+  generateCode,
+  Message,
+  Notification,
+  PublicRelayerConfig,
+  resolveName,
+  SignedMessage,
+  signRelayerRequest,
+  TokenDetailsService,
+  TokensValueConverter
+} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {MissingConfiguration, InvalidEvent, InvalidContract, InvalidGasLimit} from '../core/utils/errors';
+import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
-import {ExecutionFactory, Execution} from '../core/services/ExecutionFactory';
+import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
-import {PriceObserver, OnTokenPricesChange} from '../core/observers/PriceObserver';
+import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
 import {messageToSignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
@@ -100,7 +118,7 @@ class UniversalLoginSDK {
     return this.relayerApi.getStatus(messageHash);
   }
 
-  async getRelayerConfig() {
+  async getRelayerConfig(): Promise<PublicRelayerConfig> {
     this.relayerConfig = this.relayerConfig || (await this.relayerApi.getConfig()).config;
     return this.relayerConfig;
   }
