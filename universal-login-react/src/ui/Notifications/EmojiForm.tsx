@@ -9,6 +9,7 @@ import {EmojiKeyboard} from './EmojiKeyboard';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
 import {GasPrice} from '../commons/GasPrice';
 import CheckmarkIcon from './../assets/icons/correct.svg';
+import {FooterSection} from '../commons/FooterSection';
 
 type InputModeType = 'keyboard' | 'panelWithFakes' | 'none';
 
@@ -115,17 +116,19 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
             className={className}
           />
           <div className="correct-input-footer">
-            <GasPrice
-              isDeployed={true}
-              deployedWallet={deployedWallet}
-              gasLimit={transactionDetails.gasLimit!}
-              onGasParametersChanged={(parameters: GasParameters) => { gasParameters = parameters; }}
-              className={className}
-            />
-            <div className="connect-buttons-row">
-              <button onClick={onCancelClick} className="connect-cancel-btn">Cancel</button>
-              <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>
-            </div>
+            <FooterSection className={className}>
+              <GasPrice
+                isDeployed={true}
+                deployedWallet={deployedWallet}
+                gasLimit={transactionDetails.gasLimit!}
+                onGasParametersChanged={(parameters: GasParameters) => { gasParameters = parameters; }}
+                className={className}
+              />
+              <div className="connect-buttons-row">
+                <button onClick={onCancelClick} className="connect-cancel-btn">Cancel</button>
+                <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>
+              </div>
+            </FooterSection>
           </div>
         </div>
       );

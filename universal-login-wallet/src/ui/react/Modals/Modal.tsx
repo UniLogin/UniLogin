@@ -34,7 +34,7 @@ const Modal = () => {
           sdk={sdk}
           {...modalService.modalProps as TopUpModalProps}
           modalClassName="topup-modal-wrapper"
-          topUpClassName="jarvis-topup"
+          topUpClassName="jarvis-styles"
           onRampConfig={relayerConfig!.onRampProviders}
           ipGeolocationApiConfig={relayerConfig!.ipGeolocationApi}
           contractAddress={walletPresenter.getContractAddress()}

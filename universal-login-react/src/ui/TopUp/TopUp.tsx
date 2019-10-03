@@ -16,6 +16,7 @@ import {LogoColor} from './Fiat/FiatPaymentMethods';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import {GasPrice} from '../commons/GasPrice';
+import {FooterSection} from '../commons/FooterSection';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -51,13 +52,15 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
             topUpClassName={topUpClassName}
             logoColor={logoColor}
           />
-          <GasPrice
-            isDeployed={false}
-            sdk={sdk}
-            onGasParametersChanged={onGasParametersChanged}
-            gasLimit={DEPLOY_GAS_LIMIT}
-            className={topUpClassName}
-          />
+          <FooterSection className={topUpClassName}>
+            <GasPrice
+              isDeployed={false}
+              sdk={sdk}
+              onGasParametersChanged={onGasParametersChanged}
+              gasLimit={DEPLOY_GAS_LIMIT}
+              className={topUpClassName}
+            />
+          </FooterSection>
         </ModalWrapper>
       );
     }
@@ -70,13 +73,15 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
           topUpClassName={topUpClassName}
           logoColor={logoColor}
         />
-        <GasPrice
-          isDeployed={false}
-          sdk={sdk}
-          onGasParametersChanged={onGasParametersChanged}
-          gasLimit={DEPLOY_GAS_LIMIT}
-          className={topUpClassName}
-        />
+        <FooterSection className={topUpClassName}>
+          <GasPrice
+            isDeployed={false}
+            sdk={sdk}
+            onGasParametersChanged={onGasParametersChanged}
+            gasLimit={DEPLOY_GAS_LIMIT}
+            className={topUpClassName}
+          />
+        </FooterSection>
       </>
     );
   } else if (modal === TopUpComponentType.safello) {
