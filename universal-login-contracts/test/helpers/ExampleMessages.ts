@@ -82,29 +82,19 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
   const setRequiredSignaturesMessageData = proxyAsWalletContract.interface.functions.setRequiredSignatures.encode([requiredSignatures]);
-  const msg = {
-    from: proxyAsWalletContract.address,
-    to: proxyAsWalletContract.address,
-    data: setRequiredSignaturesMessageData,
-    value: parseEther('0.0'),
-    nonce: await proxyAsWalletContract.lastNonce(),
-    gasPrice,
-    gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-    gasData: 0,
-    gasToken: '0x0000000000000000000000000000000000000000'
-  };
-  const gasData = estimateGasDataFromUnsignedMessage(msg);
-  msg.gasData = gasData;
-  const signature = calculateMessageSignature(privateKey, msg);
-  return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
+  return selfExecute(proxyAsWalletContract, setRequiredSignaturesMessageData, privateKey);
 };
 
 export const executeAddKey = async (proxyAsWalletContract: Contract, newKey: string, privateKey: string) => {
   const addKeyMessageData = proxyAsWalletContract.interface.functions.addKey.encode([newKey]);
+  return selfExecute(proxyAsWalletContract, addKeyMessageData, privateKey);
+};
+
+export const selfExecute = async (proxyAsWalletContract: Contract, data: string, privateKey: string) => {
   const msg = {
     from: proxyAsWalletContract.address,
     to: proxyAsWalletContract.address,
-    data: addKeyMessageData,
+    data,
     value: parseEther('0.0'),
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice,
