@@ -2,11 +2,12 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
-import MockToken from '@universal-login/contracts/build/MockToken';
-import {utils, Wallet} from 'ethers';
+import {utils, providers, Wallet, Contract} from 'ethers';
+import MockToken from '@universal-login/contracts/build/MockToken.json';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
+import {signRelayerRequest, Message, DEFAULT_GAS_LIMIT, GAS_BASE, Device} from '@universal-login/commons';
+import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import {signRelayerRequest, DEFAULT_GAS_LIMIT, GAS_BASE} from '@universal-login/commons';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
@@ -17,17 +18,17 @@ const loadFixture = createFixtureLoader();
 const jsonRpcUrl = 'http://localhost:18545';
 
 describe('E2E: SDK', async () => {
-  let provider;
-  let relayer;
-  let sdk;
-  let contractAddress;
-  let privateKey;
-  let otherWallet;
-  let otherWallet2;
-  let mockToken;
-  let message;
-  let walletContract;
-  let wallet;
+  let provider: providers.Provider;
+  let relayer: RelayerUnderTest;
+  let sdk: UniversalLoginSDK;
+  let contractAddress: string;
+  let privateKey: string;
+  let wallet: Wallet;
+  let otherWallet: Wallet;
+  let otherWallet2: Wallet;
+  let mockToken: Contract;
+  let message: Partial<Message>;
+  let walletContract: Contract;
 
   beforeEach(async () => {
     ({wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
@@ -42,7 +43,8 @@ describe('E2E: SDK', async () => {
     describe('Initalization', () => {
       it('creates provider from URL', () => {
         const universalLoginSDK = new UniversalLoginSDK(relayer.url(), jsonRpcUrl);
-        expect(universalLoginSDK.provider.connection.url).to.eq(jsonRpcUrl);
+        const provider = universalLoginSDK.provider as providers.JsonRpcProvider;
+        expect(provider.connection.url).to.eq(jsonRpcUrl);
       });
 
       it('should register ENS name', async () => {
@@ -50,9 +52,9 @@ describe('E2E: SDK', async () => {
       });
 
       it('should return ens config', async () => {
-        const expectedEnsAddress = relayer.config.chainSpec.ensAddress;
+        const expectedEnsAddress = relayer.getConfig().chainSpec.ensAddress;
         const response = await sdk.getRelayerConfig();
-        expect(response.chainSpec.ensAddress).to.eq(expectedEnsAddress);
+        expect(response!.chainSpec.ensAddress).to.eq(expectedEnsAddress);
       });
     });
   });
@@ -74,13 +76,13 @@ describe('E2E: SDK', async () => {
     });
 
     it('Should increment nonce', async () => {
-      expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(0);
-      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
+      expect(await sdk.getNonce(contractAddress)).to.eq(0);
+      let {waitToBeSuccess} = await sdk.execute(message, privateKey);
       await waitToBeSuccess();
-      expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(1);
+      expect(await sdk.getNonce(contractAddress)).to.eq(1);
       ({waitToBeSuccess} = await sdk.execute(message, privateKey));
       await waitToBeSuccess();
-      expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(2);
+      expect(await sdk.getNonce(contractAddress)).to.eq(2);
     });
 
     it('when not enough tokens ', async () => {
@@ -152,11 +154,11 @@ describe('E2E: SDK', async () => {
 
   describe('Get nonce', async () => {
     it('getNonce should return correct nonce', async () => {
-      const executionNonce = await sdk.getNonce(contractAddress, privateKey);
+      const executionNonce = await sdk.getNonce(contractAddress);
       expect(executionNonce).to.eq(0);
       const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeSuccess();
-      expect(await sdk.getNonce(contractAddress, privateKey)).to.eq(executionNonce.add(1));
+      expect(await sdk.getNonce(contractAddress)).to.eq(executionNonce.add(1));
     });
   });
 
@@ -238,10 +240,10 @@ describe('E2E: SDK', async () => {
 
   describe('Devices', async () => {
     it('should return added devices', async () => {
-      const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device) => device.publicKey);
+      const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device: Device) => device.publicKey);
       const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeSuccess();
-      const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device) => device.publicKey);
+      const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device: Device) => device.publicKey);
       expect(devicesPublicKeys).length(initiallyPublicKeys.length + 1);
       expect(devicesPublicKeys).to.be.deep.eq([...initiallyPublicKeys, otherWallet.address]);
     });
@@ -249,7 +251,7 @@ describe('E2E: SDK', async () => {
 
   describe('change required signatures', async () => {
     it('should change required signatures', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      let {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
       await waitToBeSuccess();
       ({waitToBeSuccess} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
       const {transactionHash} = await waitToBeSuccess();
