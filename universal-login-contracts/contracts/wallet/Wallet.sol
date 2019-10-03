@@ -21,7 +21,7 @@ contract Wallet is ENSUtils, Executor, KeyHolder, ERC1271Utils, StringUtils, IER
     }
 
     modifier onlySufficientKeyCount() {
-        require(keyCount > requiredSignatures, "Signatures exceed owned keys number");
+        require(keyCount > requiredSignatures, "More keys required");
         _;
     }
 
