@@ -3,6 +3,8 @@ import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {PRICE_OBSERVER_DEAFULT_TICK} from '../../config/observers';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
+import deepEqual = require('deep-equal');
+import cloneDeep = require('lodash.clonedeep');
 
 export type OnTokenPricesChange = (data: TokensPrices) => void;
 
@@ -30,8 +32,15 @@ export class PriceObserver extends ObserverRunner {
   }
 
   async execute() {
-    this.lastTokenPrices = await this.getCurrentPrices();
-    this.callbacks.forEach((callback) => callback(this.lastTokenPrices));
+    await this.checkTokenPricesNow();
+  }
+
+  async checkTokenPricesNow() {
+    const newTokenPrices = await this.getCurrentPrices();
+    if (!(deepEqual(this.lastTokenPrices, newTokenPrices))) {
+      this.lastTokenPrices = cloneDeep(newTokenPrices);
+      this.callbacks.forEach((callback) => callback(this.lastTokenPrices));
+    }
   }
 
   async getCurrentPrices(): Promise<TokensPrices> {

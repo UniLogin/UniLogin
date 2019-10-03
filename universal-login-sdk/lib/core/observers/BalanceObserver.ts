@@ -32,9 +32,8 @@ export class BalanceObserver extends ObserverRunner {
     const newTokenBalances = await this.getBalances();
     if (!deepEqual(this.lastTokenBalances, newTokenBalances)) {
       this.lastTokenBalances = clonedeep(newTokenBalances);
-      this.callbacks.forEach((callback) => callback(newTokenBalances));
+      this.callbacks.forEach((callback) => callback(this.lastTokenBalances));
     }
-    return this.lastTokenBalances;
   }
 
   subscribe(callback: OnBalanceChange) {
