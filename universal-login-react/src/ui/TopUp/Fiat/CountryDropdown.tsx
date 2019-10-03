@@ -8,6 +8,14 @@ export interface CountrySelectProps {
   setCurrency: (currency: string) => void;
 }
 
+const getAsset = (path: String) => {
+  return require(`../../assets/${path}`);
+};
+
+const getFlag = (code: string) => {
+  return getAsset(`/flags/${code.toLowerCase()}.svg`);
+};
+
 export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: CountrySelectProps) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -20,7 +28,7 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
   const countrySelectionButton = () => {
     const country = countries.find(({name}) => name === selectedCountry);
     const {name, code} = country || {} as Partial<Country>;
-    const flag = code && require(`../../assets/flags/${code.toLowerCase()}.svg`);
+    const flag = code && getFlag(code);
 
     return (
       <button
@@ -67,7 +75,7 @@ interface CountryDropdownItemProps extends Country {
 const CountryDropdownItem = ({name, code, currency, onDropdownItemClick}: CountryDropdownItemProps) => (
   <button onClick={() => onDropdownItemClick(name, currency)} className="country-select-btn">
     <img
-      src={require(`../../assets/flags/${code.toLowerCase()}.svg`)}
+      src={getFlag(code)}
       alt={`${name} flag`}
       className="country-select-img"
     />
