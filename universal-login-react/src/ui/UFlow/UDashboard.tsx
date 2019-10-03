@@ -3,7 +3,7 @@ import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
 import {asTransferDetails, TransferDetails} from '@universal-login/commons';
-import {DeployedWallet, TransferService} from '@universal-login/sdk';
+import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
@@ -16,6 +16,7 @@ import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
+import {Notice} from '../commons/Notice';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -35,6 +36,12 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+
+  const [notice, setNotice] = useState('');
+  useEffect(() => {
+    setBetaNotice(sdk);
+    setNotice(sdk.getNotice());
+  });
 
   const [newNotifications, setNewNotifications] = useState([] as Notification[]);
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNewNotifications), []);
@@ -128,6 +135,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
           modalClassName="udashboard-modal"
         >
           <UHeader activeTab={dashboardContent} setActiveTab={setDashboardContent} />
+          <Notice message={notice}/>
           <div className="udashboard-content">
             {renderDashboardContent()}
           </div>

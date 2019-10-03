@@ -6,6 +6,7 @@ export interface SdkConfig {
   observedTokensAddresses: string[];
   observedCurrencies: ObservedCurrency[];
   executionFactoryTick: number;
+  notice: string;
   authorizationsObserverTick: number;
   balanceObserverTick: number;
   priceObserverTick: number;

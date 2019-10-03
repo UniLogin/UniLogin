@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from '../../hooks';
+import {useRouter} from '../../hooks';
 
 export const WelcomeScreen = () => {
   const {history} = useRouter();

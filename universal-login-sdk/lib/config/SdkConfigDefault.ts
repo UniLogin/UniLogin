@@ -18,6 +18,7 @@ export const SdkConfigDefault: SdkConfig = {
     'ETH'
   ],
   executionFactoryTick: 1000,
+  notice: '',
   authorizationsObserverTick: 1000 * 3,
   balanceObserverTick: 1000 * 3,
   priceObserverTick: 1000 * 60 * 5
