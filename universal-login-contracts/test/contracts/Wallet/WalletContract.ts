@@ -300,10 +300,8 @@ describe('WalletContract', async () => {
 
     it('cannot remove the last key', async () => {
       const nonce = await proxyAsWalletContract.lastNonce();
-      const removeKeyUnsignedMessage = messageToUnsignedMessage({...removeKeyMessage, nonce});
-      removeKeyUnsignedMessage.gasData = utils.bigNumberify(removeKeyUnsignedMessage.gasData).add(ONE_SIGNATURE_GAS_COST);
-      const signature = calculateMessageSignature(privateKey, removeKeyUnsignedMessage);
-      await proxyAsWalletContract.executeSigned(...getExecutionArgs(removeKeyUnsignedMessage), signature, calculatePaymentOptions(removeKeyUnsignedMessage));
+      const removeKeySignedMessage = messageToSignedMessage({...removeKeyMessage, nonce}, privateKey);
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: encodeDataForExecuteSigned(removeKeySignedMessage), ...calculatePaymentOptions(removeKeySignedMessage)});
       expect(await proxyAsWalletContract.keyExist(publicKey)).to.be.true;
     });
 
