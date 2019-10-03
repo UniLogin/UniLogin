@@ -11,15 +11,17 @@ import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {LogoColor} from './Fiat/FiatPaymentMethods';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
+import {IPGeolocationApiConfig} from '@universal-login/commons';
 
 export interface ChooseTopUpMethodProps {
   contractAddress: string;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
+  ipGeolocationApiConfig: IPGeolocationApiConfig;
   topUpClassName?: string;
   logoColor?: LogoColor;
 }
 
-export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({contractAddress, onPayClick, ipGeolocationApiConfig, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState('');
 
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
@@ -36,7 +38,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName, 
                 onClick={() => setTopUpMethod('crypto')}
                 checked={topUpMethod === 'crypto'}
                 name="top-up-method"
-                className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : '' }`}
+                className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : ''}`}
               >
                 <div className="top-up-method-icons">
                   <img className="top-up-method-icon" src={daiIcon} alt="Dai"/>
@@ -50,7 +52,7 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName, 
                 onClick={() => setTopUpMethod('fiat')}
                 checked={topUpMethod === 'fiat'}
                 name="top-up-method"
-                className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : '' }`}
+                className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : ''}`}
               >
                 <div className="top-up-method-icons">
                   <img className="top-up-method-icon" src={cardIcon} alt="card"/>
@@ -64,8 +66,13 @@ export const ChooseTopUpMethod = ({contractAddress, onPayClick, topUpClassName, 
           </div>
           <div className="top-up-body">
             <div className="top-up-body-inner">
-              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} />}
-              {topUpMethod === 'fiat' && <TopUpWithFiat onPayClick={onPayClick} logoColor={logoColor}/>}
+              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress}/>}
+              {topUpMethod === 'fiat' &&
+              <TopUpWithFiat
+                  onPayClick={onPayClick}
+                  logoColor={logoColor}
+                  ipGeolocationApiConfig={ipGeolocationApiConfig}
+              />}
             </div>
           </div>
         </div>

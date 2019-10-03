@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {OnRampConfig, OnGasParametersChanged, stringToEther, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {
+  DEPLOY_GAS_LIMIT,
+  IPGeolocationApiConfig,
+  OnGasParametersChanged,
+  OnRampConfig,
+  stringToEther
+} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
@@ -17,6 +23,7 @@ interface TopUpProps {
   onGasParametersChanged: OnGasParametersChanged;
   startModal?: TopUpComponentType;
   onRampConfig: OnRampConfig;
+  ipGeolocationApiConfig: IPGeolocationApiConfig;
   topUpClassName?: string;
   modalClassName?: string;
   hideModal?: () => void;
@@ -24,7 +31,7 @@ interface TopUpProps {
   logoColor?: LogoColor;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, onRampConfig, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, onRampConfig, ipGeolocationApiConfig, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -40,6 +47,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
           <ChooseTopUpMethod
             contractAddress={contractAddress}
             onPayClick={onPayClick}
+            ipGeolocationApiConfig={ipGeolocationApiConfig}
             topUpClassName={topUpClassName}
             logoColor={logoColor}
           />
@@ -58,6 +66,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         <ChooseTopUpMethod
           contractAddress={contractAddress}
           onPayClick={onPayClick}
+          ipGeolocationApiConfig={ipGeolocationApiConfig}
           topUpClassName={topUpClassName}
           logoColor={logoColor}
         />

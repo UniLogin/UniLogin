@@ -58,6 +58,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             hideModal={() => setDashboardVisibility(false)}
             contractAddress={contractAddress}
             onRampConfig={relayerConfig!.onRampProviders}
+            ipGeolocationApiConfig={relayerConfig!.ipGeolocationApi}
           />
         );
       case 'transferAmount':
