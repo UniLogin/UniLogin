@@ -5,11 +5,11 @@ import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message} from '@universal-login/commons';
 import {getExecutionArgs, setupUpdateMessage, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
-import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage} from '../../../lib/index.js';
+import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index.js';
 import {calculateFinalGasLimit, calculatePaymentOptions} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
@@ -282,6 +282,42 @@ describe('WalletContract', async () => {
           expect(await mockToken.balanceOf(wallet.address)).to.be.above(relayerTokenBalance);
         });
       });
+    });
+  });
+
+  describe('remove key', async () => {
+    let removeKeyMessage: Message;
+    before(() => {
+      removeKeyMessage = {
+        ...emptyMessage,
+        from: proxyAsWalletContract.address,
+        to: proxyAsWalletContract.address,
+        data: proxyAsWalletContract.interface.functions.removeKey.encode([publicKey]),
+        gasPrice: TEST_GAS_PRICE,
+        gasLimit: '150000',
+      };
+    });
+
+    it('cannot remove the last key', async () => {
+      const nonce = await proxyAsWalletContract.lastNonce();
+      const removeKeySignedMessage = messageToSignedMessage({...removeKeyMessage, nonce}, privateKey);
+      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: encodeDataForExecuteSigned(removeKeySignedMessage), ...calculatePaymentOptions(removeKeySignedMessage)});
+      expect(await proxyAsWalletContract.keyExist(publicKey)).to.be.true;
+    });
+
+    it('cannot remove more key than is required to sign', async () => {
+      const secondKeyPair = createKeyPair();
+      const sortedKeys = sortPrivateKeysByAddress([secondKeyPair.privateKey, privateKey]);
+      await executeAddKey(proxyAsWalletContract, secondKeyPair.publicKey, privateKey);
+      await executeSetRequiredSignatures(proxyAsWalletContract, 2, privateKey);
+      const nonce = await proxyAsWalletContract.lastNonce();
+      const removeKeyUnsignedMessage = messageToUnsignedMessage({...removeKeyMessage, nonce});
+      removeKeyUnsignedMessage.gasData = utils.bigNumberify(removeKeyUnsignedMessage.gasData).add(ONE_SIGNATURE_GAS_COST);
+      const signature1 = calculateMessageSignature(sortedKeys[0], removeKeyUnsignedMessage);
+      const signature2 = calculateMessageSignature(sortedKeys[1], removeKeyUnsignedMessage);
+      const signatures = concatenateSignatures([signature1, signature2]);
+      await proxyAsWalletContract.executeSigned(...getExecutionArgs(removeKeyUnsignedMessage), signatures, calculatePaymentOptions(removeKeyUnsignedMessage));
+      expect(await proxyAsWalletContract.keyExist(secondKeyPair.publicKey)).to.be.true;
     });
   });
 
