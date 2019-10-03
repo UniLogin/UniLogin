@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
-import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {generateCode, ApplicationWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {ApplicationWallet, generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
 import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
-import {ReactModalType, ReactModalContext, ReactModalProps, TopUpProps} from './core/models/ReactModalContext';
+import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from './core/models/ReactModalContext';
 import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
@@ -137,8 +137,6 @@ export const App = () => {
                 }
                 const topUpProps: TopUpProps = {
                   contractAddress: Wallet.createRandom().address,
-                  onRampConfig: relayerConfig!.onRampProviders,
-                  ipGeolocationApiConfig: relayerConfig!.ipGeolocationApi,
                   onGasParametersChanged: console.log,
                   sdk
                 };

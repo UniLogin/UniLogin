@@ -4,7 +4,6 @@ import {UHeader} from './UHeader';
 import {Funds} from './Funds';
 import {asTransferDetails, TransferDetails} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
-import {useAsync} from '../hooks/useAsync';
 import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
 import './../styles/udashboard.sass';
@@ -35,7 +34,6 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol});
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
-  const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
 
   const [notice, setNotice] = useState('');
   useEffect(() => {
@@ -81,8 +79,6 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             onGasParametersChanged={() => {}}
             hideModal={() => setDashboardVisibility(false)}
             contractAddress={contractAddress}
-            onRampConfig={relayerConfig!.onRampProviders}
-            ipGeolocationApiConfig={relayerConfig!.ipGeolocationApi}
           />
         );
       case 'transferAmount':

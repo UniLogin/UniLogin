@@ -1,5 +1,5 @@
 import React from 'react';
-import {IPGeolocationApiConfig, OnGasParametersChanged, OnRampConfig} from '@universal-login/commons';
+import {OnGasParametersChanged} from '@universal-login/commons';
 import {IModalService} from '../services/createModalService';
 import UniversalLoginSDK from '@universal-login/sdk';
 
@@ -10,8 +10,6 @@ export type ReactModalProps = TopUpProps;
 export type TopUpProps = {
   sdk: UniversalLoginSDK
   contractAddress: string;
-  onRampConfig: OnRampConfig;
-  ipGeolocationApiConfig: IPGeolocationApiConfig;
   onGasParametersChanged: OnGasParametersChanged;
 };
 

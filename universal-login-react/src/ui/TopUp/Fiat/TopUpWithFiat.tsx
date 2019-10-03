@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
 import {FiatFooter} from './FiatFooter';
@@ -6,24 +7,22 @@ import {FiatPaymentMethods, LogoColor} from './FiatPaymentMethods';
 import {useAsyncEffect} from '../../../ui/hooks/useAsyncEffect';
 import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
-import {IPGeolocationApiConfig} from '@universal-login/commons';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 
 export interface TopUpWithFiatProps {
+  sdk: UniversalLoginSDK;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
-  ipGeolocationApiConfig: IPGeolocationApiConfig;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({onPayClick, ipGeolocationApiConfig, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('EUR');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const [fiatClass, setFiatClass] = useState('');
 
-  const ipGeolocationService = new IPGeolocationService(ipGeolocationApiConfig.baseUrl, ipGeolocationApiConfig.accessKey);
   const topUpProviderSupportService = new TopUpProviderSupportService(countries);
 
   const changeCountry = (newCountry: string) => {
@@ -44,6 +43,8 @@ export const TopUpWithFiat = ({onPayClick, ipGeolocationApiConfig, logoColor}: T
   }, []);
 
   async function recognizeUserCountry() {
+    const {ipGeolocationApi} = await sdk.getRelayerConfig();
+    const ipGeolocationService = new IPGeolocationService(ipGeolocationApi.baseUrl, ipGeolocationApi.accessKey);
     const userCountryCode = await ipGeolocationService.getCountryCode().catch(console.error);
 
     const userCountry = countries.find(({code}) => code === userCountryCode);
@@ -54,7 +55,7 @@ export const TopUpWithFiat = ({onPayClick, ipGeolocationApiConfig, logoColor}: T
     return () => {};
   }
 
-  useAsyncEffect(() => recognizeUserCountry(), []);
+  useAsyncEffect(recognizeUserCountry, []);
 
   return (
     <div className={`fiat ${fiatClass}`}>
