@@ -5,573 +5,575 @@
   background: none
   border: none
 
-.universal-login-topup .jarvis-topup .top-up
-  display: flex
-  flex-direction: column
-  width: 770px
-  max-width: 100%
-  height: 690px
-
-.universal-login-topup .jarvis-topup .top-up-header
-  display: flex
-  flex-direction: column
-  align-items: center
-  padding: 28px
-  flex-grow: 1
-  transition: flex-grow 0.2s linear
-  background: #fafbfd
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-header
-  flex-grow: initial
-
-.universal-login-topup .jarvis-topup .top-up-title
-  margin: 0
-  font-family: inherit
-  font-size: 20px
-  color: #31405E
-  text-align: center
-
-.universal-login-topup .jarvis-topup .top-up-radio-label
-  display: block
-  cursor: pointer
-
-.universal-login-topup .jarvis-topup .top-up-radio-inner
-  position: relative
-  background: #FFFFFF
-  border: 1px solid #E1E1F0
-
-.universal-login-topup .jarvis-topup .top-up-radio-inner::after
-  content: ''
-  display: none
-  position: absolute
-  top: 0
-  right: 0
-  width: 16px
-  height: 16px
-  background: #2EC9F5 url('./../assets/icons/checkmark.svg') center no-repeat
-
-.universal-login-topup .jarvis-topup .top-up-radio:checked + .top-up-radio-inner
-  border: 2px solid #2ec9f5
-
-.universal-login-topup .jarvis-topup .top-up-radio:checked + .top-up-radio-inner::after
-  display: block
-
-.universal-login-topup .jarvis-topup .top-up-radio-label input
-  position: absolute
-  z-index: -1
-  opacity: 0
-  margin: 10px 0 0 20px
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method
-  width: 270px
-  height: 98px
-
-.universal-login-topup .jarvis-topup .top-up-method
-  width: 270px
-  height: 270px
-  transition: height 0.2s linear
-
-.universal-login-topup .jarvis-topup .top-up-method .top-up-radio-inner
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: center
-  width: 100%
-  height: 100%
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-methods
-  margin-top: 40px
-
-.universal-login-topup .jarvis-topup .top-up-methods
-  display: flex
-  align-items: center
-  flex-grow: 1
-  width: 570px
-  max-width: 100%
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .top-up-method + .top-up-method
-  margin-left: 30px
-
-.universal-login-topup .jarvis-topup .top-up-method-icons
-  display: flex
-  justify-content: center
-  align-items: center
-  margin-bottom: 30px
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method-icons
-  margin-bottom: 8px
-
-.universal-login-topup .jarvis-topup .top-up-method-icon
-  width: 50px
-  height: 50px
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method-icon
-  width: 25px
-  height: 25px
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .top-up-method-icon + .top-up-method-icon
-  margin-left: 12px
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method-title
-  margin-bottom: 5px
-  font-size: 14px
-  line-height: 17px
-
-.universal-login-topup .jarvis-topup .top-up-method-title
-  margin: 0 0 8px
-  font-weight: 500
-  font-size: 18px
-  color: #31405E
-  text-align: center
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .top-up-method-text
-  max-width: 211px
-  margin: 0
-  font-size: 14px
-  color: #A4A8B4
-  text-align: center
-  line-height: 24px
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method-text
-  font-size: 12px
-  line-height: 14px
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-body
-  flex-grow: 1
-  padding: 0 20px
-
-.universal-login-topup .jarvis-topup .top-up-body-inner
-  max-width: 570px
-  margin: 0 auto
-
-.universal-login-topup .jarvis-topup .crypto
-  opacity: 0
-  padding: 60px 0 40px
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .crypto-selected.crypto
-  opacity: 1
-
-.universal-login-topup .jarvis-topup .input-address-wrapper
-  display: flex
-  align-items: center
-  background: #FFFFFF
-  border: none
-
-.universal-login-topup .jarvis-topup .top-up-label
-  display: block
-  margin-bottom: 6px
-  font-weight: 700
-  font-size: 10px
-  color: #AFB2BD
-  text-transform: uppercase
-
-.universal-login-topup .jarvis-topup .input-address
-  width: 100%
-  height: 45px
-  padding: 0 25px
-  background: #FFFFFF
-  font-size: 14px
-  color: #6e798e
-  border: 1px solid #E1E1F0
-
-.universal-login-topup .jarvis-topup .address-modal-text
-  margin-top: 12px
-  font-size: 13px
-  color: #A4A8B4
-  letter-spacing: -0.07px
-  line-height: 24px
-
-.universal-login-topup .jarvis-topup .info-text
-  position: relative
-  margin: 15px 0 0
-  padding-left: 28px
-  font-size: 12px
-  color: #A4A8B4
-  line-height: 24px
-
-.universal-login-topup .jarvis-topup .info-text::before
-  content: ''
-  position: absolute
-  top: 50%
-  left: 0
-  width: 18px
-  height: 18px
-  transform: translateY(-50%)
-  background: url('../assets/topUp/info.svg') center no-repeat
-
-.universal-login-topup .jarvis-topup .info-text-warning
-  font-size: 12px
-  color: #FF4C62
-.universal-login-topup .jarvis-topup .info-text-warning::before
-  background: url('../assets/topUp/info-warning.svg') center no-repeat
-
-.universal-login-topup .jarvis-topup .info-text-hint
-  margin: 0 15px 0 0
-  padding-left: 17px
-
-.universal-login-topup .jarvis-topup .info-text-hint::before
-  top: 5px
-  transform: translateY(0)
-  width: 12px
-  height: 12px
-  background: url('../assets/topUp/info-light.png') center no-repeat
-  background-size: contain
-
-.universal-login-topup .jarvis-topup .info-block
-  margin-top: 15px
-
-.universal-login-topup .jarvis-topup .info-row
-  display: flex
-  align-items: center
-
-.universal-login-topup .jarvis-topup .visa-logo
-  width: 22px
-  height: 11px
-
-.universal-login-topup .jarvis-topup .mastercard-logo
-  display: block
-  width: 18px
-  height: 13px
-  margin-left: 8px
-
-.universal-login-topup .jarvis-topup .fiat
-  padding: 25px 0 40px
-
-.universal-login-topup .jarvis-topup .fiat-inputs
-  display: flex
-  justify-content: space-between
-
-.universal-login-topup .jarvis-topup .fiat-input-item
-  width: 50%
-
-.universal-login-topup .jarvis-topup .fiat-input-item + .fiat-input-item
-  margin-left: 30px
-
-.universal-login-topup .jarvis-topup .country-select
-  position: relative
-  background: #fff
-
-.universal-login-topup .jarvis-topup .country-select-btn
-  display: flex
-  align-items: center
-  width: 100%
-  height: 30px
-  padding: 0 0 0 12px
-  border: none
-  background: none
-  cursor: pointer
-
-.universal-login-topup .jarvis-topup .country-select-toggle
-  position: relative
-  padding-right: 20px
-  border: 1px solid #E1E1F0
-
-.universal-login-topup .jarvis-topup .country-select-toggle::after
-  content: ''
-  position: absolute
-  top: 50%
-  right: 14px
-  width: 10px
-  height: 8px
-  transform: translateY(-50%)
-  background: url('./../assets/topUp/angle.svg') center no-repeat
-  background-size: contain
-
-.universal-login-topup .jarvis-topup .country-select-toggle.expanded::after
-  transform: translateY(-50%) rotate(180deg)
-
-.universal-login-topup .jarvis-topup .country-select-text
-  margin: 0
-  font-size: 12px
-  color: #000000
-
-.universal-login-topup .jarvis-topup .country-select-img
-  display: block
-  width: 17px
-  height: 12px
-  margin-right: 9px
-
-.universal-login-topup .jarvis-topup .country-select-list
-  position: absolute
-  bottom: 0
-  left: 0
-  transform: translateY(100%)
-  width: 100%
-  max-height: 270px
-  margin: 0
-  padding: 0
-  list-style: none
-  border: 1px solid #E1E1F0
-  border-top: none
-  overflow: auto
-  background: #fff
-  z-index: 10
-
-.universal-login-topup .jarvis-topup .amount-input-wrapper
-  display: flex
-  height: 32px
-  background: #fff
-  border: 1px solid #E1E1F0
-
-.universal-login-topup .jarvis-topup .amount-input
-  width: 100%
-  height: 100%
-  padding-left: 13px
-  font-weight: 700
-  font-size: 12px
-  color: #000000
-  border: none
-
-.universal-login-topup .jarvis-topup .amount-dropdown
-  position: relative
-  width: 90px
-  height: 100%
-
-.universal-login-topup .jarvis-topup .amount-dropdown-btn
-  width: 100%
-  height: 32px
-  padding: 0 25px
-  font-size: 12px
-  color: #000000
-  text-align: left
-  border: none
-  background: none
-  cursor: pointer
-
-.universal-login-topup .jarvis-topup .amount-dropdown-toggle
-  position: relative
-  padding: 0 31px 0 25px
-  border-left: 1px solid #E1E1F0
-
-.universal-login-topup .jarvis-topup .amount-dropdown-toggle::after
-  content: ''
-  position: absolute
-  top: 50%
-  right: 12px
-  width: 8px
-  height: 8px
-  transform: translateY(-50%)
-  background: url('../assets/topUp/angle.svg') center no-repeat
-  background-size: contain
-
-.universal-login-topup .jarvis-topup .amount-dropdown-btn.expanded::after
-  transform: translateY(-50%) rotate(180deg)
-
-.universal-login-topup .jarvis-topup .amount-dropdown-list
-  position: absolute
-  right: 0
-  bottom: 0
-  transform: translateY(100%)
-  width: 100%
-  margin: 0
-  padding: 0
-  list-style: none
-  background: #fff
-  border: 1px solid #E1E1F0
-  z-index: 10
-
-.universal-login-topup .jarvis-topup .fiat .fiat-payment-methods-title
-  margin-top: 35px
-
-.universal-login-topup .jarvis-topup .fiat-payment-methods
-  display: flex
-
-.universal-login-topup .jarvis-topup .fiat-payment-method
-  opacity: 0
-  transform: scale(0)
-  transition: all 0.2s linear
-
-.universal-login-topup .jarvis-topup .fiat-selected .fiat-payment-method
-  opacity: 1
-  transform: scale(1)
-
-.universal-login-topup .jarvis-topup .fiat-payment-method .top-up-radio-inne
-  display: flex
-  align-items: center
-  justify-content: center
-  width: 132px
-  height: 132px
-
-.universal-login-topup .jarvis-topup .fiat-payment-method + .fiat-payment-method
-  margin-left: 24px
-
-.universal-login-topup .jarvis-topup .ramp-logo
-  width: 70px
-  height: 27px
-
-.universal-login-topup .jarvis-topup .safello-logo
-  width: 88px
-  height: 32px
-
-.universal-login-topup .jarvis-topup .wyre-logo
-  width: 62px
-  height: 62px
-
-.universal-login-topup .jarvis-topup .fiat-bottom
-  opacity: 0
-  transform: translateY(30px)
-  transition: all 0.3s linear
-
-.universal-login-topup .jarvis-topup .fiat-selected .fiat-bottom
-  opacity: 1
-  transform: translateY(0)
-
-.universal-login-topup .jarvis-topup .pay-btn
-  display: block
-  margin: 60px auto 0
-  width: 100%
-  max-width: 370px
-  height: 50px
-  background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%)
-  font-weight: 500
-  font-size: 14px
-  color: #FFFFFF
-  letter-spacing: -0.08px
-  text-align: center
-  border: none
-  cursor: pointer
-.universal-login-topup .jarvis-topup .pay-btn[disabled]
-  background: #DBDBE4
-  color: #FFFFFF
-  cursor: not-allowed
-
-.universal-login-topup .jarvis-topup .top-up
-  +media(s)
-    min-height: 100vh
-    height: auto
-
-.universal-login-topup .jarvis-topup .top-up-modal .modal-close-btn
-  +media(s)
-    top: 15px
-    right: 15px
-
-.universal-login-topup .jarvis-topup .top-up-title
-  +media(s)
-    width: 100%
-    font-size: 16px
-    text-align: left
-
-.universal-login-topup .jarvis-topup .top-up-methods
-  +media(s)
-    margin-top: 16px
-    flex-direction: column
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-methods
-  +media(s)
-    margin-top: 16px
-    flex-direction: row
-
-.universal-login-topup .jarvis-topup .top-up-method
-  +media(s)
-    width: 265px
-    height: 232px
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method
-  +media(s)
-    height: 72px
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method + .top-up-method
-  +media(s)
-    margin: 0 0 0 15px
-
-.universal-login-topup .jarvis-topup .top-up-method + .top-up-method
-  +media(s)
-    margin: 15px 0 0
-
-.universal-login-topup .jarvis-topup .top-up.method-selected .top-up-method-text
-  +media(s)
-    display: none
-
-.universal-login-topup .jarvis-topup .crypto
-  +media(s)
-    position: relative
-    padding: 25px 0 75px
-
-.universal-login-topup .jarvis-topup .input-address
-  +media(s)
-    padding: 13px
-
-.universal-login-topup .jarvis-topup .crypto .address-copy-btn
-  +media(s)
-    position: absolute
-    bottom: 0
-    left: 50%
-    transform: translateX(-50%)
-    display: flex
-    align-items: center
-    justify-content: center
-    width: 180px
-    height: 50px
-    background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%)
-
-.universal-login-topup .jarvis-topup .crypto .address-copy-btn::before
-  +media(s)
-    width: 20px
-    height: 20px
-    background: url('../assets/topUp/copy-light.svg') center no-repeat
-
-.universal-login-topup .jarvis-topup .crypto .address-copy-btn span
-  +media(s)
-    display: block
-    margin: 0 0 0 5px
-    font-weight: 500
-    font-size: 14px
-    color: #FFFFFF
-    letter-spacing: -0.08px
-    text-align: center
-
-.universal-login-topup .jarvis-topup .fiat-inputs
-  +media(s)
-    flex-direction: column
-
-.universal-login-topup .jarvis-topup .fiat-input-item
-  +media(s)
-    width: 100%
-
-.universal-login-topup .jarvis-topup .fiat-input-item + .fiat-input-item
-  +media(s)
-    margin: 16px 0 0
-
-.universal-login-topup .jarvis-topup .fiat .fiat-payment-methods-title
-  +media(s)
-    margin-top: 15px
-
-.universal-login-topup .jarvis-topup .fiat-payment-methods
-  +media(s)
-    flex-wrap: wrap
-
-.universal-login-topup .jarvis-topup .fiat-payment-method + .fiat-payment-method
-  +media(s)
-    margin: 0
-
-.universal-login-topup .jarvis-topup .fiat-payment-method:nth-child(even)
-  +media(s)
-    margin-left: 5%
-
-.universal-login-topup .jarvis-topup .fiat-payment-method
-  +media(s)
-    margin-bottom: 5%
-
-.universal-login-topup .jarvis-topup .fiat-selected .fiat-payment-method
-  +media(s)
-    width: 47.5%
-
-.universal-login-topup .jarvis-topup .fiat-payment-method .top-up-radio-inner
-  +media(s)
-    width: 100%
-
-.universal-login-topup .jarvis-topup .universal-login .modal-wrapper
-  +media(s)
-    height: 100%
-
-.universal-login-topup .jarvis-topup .pay-btn
-  +media(s)
-    margin-top: 40px
+.universal-login-topup
+  .jarvis-styles
+    .top-up
+      display: flex
+      flex-direction: column
+      width: 770px
+      max-width: 100%
+      height: 590px
+
+    .top-up-header
+      display: flex
+      flex-direction: column
+      align-items: center
+      padding: 28px
+      flex-grow: 1
+      transition: flex-grow 0.2s linear
+      background: #fafbfd
+
+    .top-up.method-selected .top-up-header
+      flex-grow: initial
+
+    .top-up-title
+      margin: 0
+      font-family: inherit
+      font-size: 20px
+      color: #31405E
+      text-align: center
+
+    .top-up-radio-label
+      display: block
+      cursor: pointer
+
+    .top-up-radio-inner
+      position: relative
+      background: #FFFFFF
+      border: 1px solid #E1E1F0
+
+    .top-up-radio-inner::after
+      content: ''
+      display: none
+      position: absolute
+      top: 0
+      right: 0
+      width: 16px
+      height: 16px
+      background: #2EC9F5 url('./../assets/icons/checkmark.svg') center no-repeat
+
+    .top-up-radio:checked + .top-up-radio-inner
+      border: 2px solid #2ec9f5
+
+    .top-up-radio:checked + .top-up-radio-inner::after
+      display: block
+
+    .top-up-radio-label input
+      position: absolute
+      z-index: -1
+      opacity: 0
+      margin: 10px 0 0 20px
+
+    .top-up.method-selected .top-up-method
+      width: 270px
+      height: 98px
+
+    .top-up-method
+      width: 270px
+      height: 270px
+      transition: height 0.2s linear
+
+    .top-up-method .top-up-radio-inner
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      width: 100%
+      height: 100%
+
+    .top-up.method-selected .top-up-methods
+      margin-top: 40px
+
+    .top-up-methods
+      display: flex
+      align-items: center
+      flex-grow: 1
+      width: 570px
+      max-width: 100%
+      transition: all 0.2s linear
+
+    .top-up-method + .top-up-method
+      margin-left: 30px
+
+    .top-up-method-icons
+      display: flex
+      justify-content: center
+      align-items: center
+      margin-bottom: 30px
+      transition: all 0.2s linear
+
+    .top-up.method-selected .top-up-method-icons
+      margin-bottom: 8px
+
+    .top-up-method-icon
+      width: 50px
+      height: 50px
+
+    .top-up.method-selected .top-up-method-icon
+      width: 25px
+      height: 25px
+      transition: all 0.2s linear
+
+    .top-up-method-icon + .top-up-method-icon
+      margin-left: 12px
+
+    .top-up.method-selected .top-up-method-title
+      margin-bottom: 5px
+      font-size: 14px
+      line-height: 17px
+
+    .top-up-method-title
+      margin: 0 0 8px
+      font-weight: 500
+      font-size: 18px
+      color: #31405E
+      text-align: center
+      transition: all 0.2s linear
+
+    .top-up-method-text
+      max-width: 211px
+      margin: 0
+      font-size: 14px
+      color: #A4A8B4
+      text-align: center
+      line-height: 24px
+      transition: all 0.2s linear
+
+    .top-up.method-selected .top-up-method-text
+      font-size: 12px
+      line-height: 14px
+
+    .top-up.method-selected .top-up-body
+      flex-grow: 1
+      padding: 0 20px
+
+    .top-up-body-inner
+      max-width: 570px
+      margin: 0 auto
+
+    .crypto
+      opacity: 0
+      padding: 60px 0 40px
+      transition: all 0.2s linear
+
+    .crypto-selected.crypto
+      opacity: 1
+
+    .input-address-wrapper
+      display: flex
+      align-items: center
+      background: #FFFFFF
+      border: none
+
+    .top-up-label
+      display: block
+      margin-bottom: 6px
+      font-weight: 700
+      font-size: 10px
+      color: #AFB2BD
+      text-transform: uppercase
+
+    .input-address
+      width: 100%
+      height: 45px
+      padding: 0 25px
+      background: #FFFFFF
+      font-size: 14px
+      color: #6e798e
+      border: 1px solid #E1E1F0
+
+    .address-modal-text
+      margin-top: 12px
+      font-size: 13px
+      color: #A4A8B4
+      letter-spacing: -0.07px
+      line-height: 24px
+
+    .info-text
+      position: relative
+      margin: 15px 0 0
+      padding-left: 28px
+      font-size: 12px
+      color: #A4A8B4
+      line-height: 24px
+
+    .info-text::before
+      content: ''
+      position: absolute
+      top: 50%
+      left: 0
+      width: 18px
+      height: 18px
+      transform: translateY(-50%)
+      background: url('../assets/topUp/info.svg') center no-repeat
+
+    .info-text-warning
+      font-size: 12px
+      color: #FF4C62
+    .info-text-warning::before
+      background: url('../assets/topUp/info-warning.svg') center no-repeat
+
+    .info-text-hint
+      margin: 0 15px 0 0
+      padding-left: 17px
+
+    .info-text-hint::before
+      top: 5px
+      transform: translateY(0)
+      width: 12px
+      height: 12px
+      background: url('../assets/topUp/info-light.png') center no-repeat
+      background-size: contain
+
+    .info-block
+      margin-top: 15px
+
+    .info-row
+      display: flex
+      align-items: center
+
+    .visa-logo
+      width: 22px
+      height: 11px
+
+    .mastercard-logo
+      display: block
+      width: 18px
+      height: 13px
+      margin-left: 8px
+
+    .fiat
+      padding: 25px 0 40px
+
+    .fiat-inputs
+      display: flex
+      justify-content: space-between
+
+    .fiat-input-item
+      width: 50%
+
+    .fiat-input-item + .fiat-input-item
+      margin-left: 30px
+
+    .country-select
+      position: relative
+      background: #fff
+
+    .country-select-btn
+      display: flex
+      align-items: center
+      width: 100%
+      height: 30px
+      padding: 0 0 0 12px
+      border: none
+      background: none
+      cursor: pointer
+
+    .country-select-toggle
+      position: relative
+      padding-right: 20px
+      border: 1px solid #E1E1F0
+
+    .country-select-toggle::after
+      content: ''
+      position: absolute
+      top: 50%
+      right: 14px
+      width: 10px
+      height: 8px
+      transform: translateY(-50%)
+      background: url('./../assets/topUp/angle.svg') center no-repeat
+      background-size: contain
+
+    .country-select-toggle.expanded::after
+      transform: translateY(-50%) rotate(180deg)
+
+    .country-select-text
+      margin: 0
+      font-size: 12px
+      color: #000000
+
+    .country-select-img
+      display: block
+      width: 17px
+      height: 12px
+      margin-right: 9px
+
+    .country-select-list
+      position: absolute
+      bottom: 0
+      left: 0
+      transform: translateY(100%)
+      width: 100%
+      max-height: 270px
+      margin: 0
+      padding: 0
+      list-style: none
+      border: 1px solid #E1E1F0
+      border-top: none
+      overflow: auto
+      background: #fff
+      z-index: 10
+
+    .amount-input-wrapper
+      display: flex
+      height: 32px
+      background: #fff
+      border: 1px solid #E1E1F0
+
+    .amount-input
+      width: 100%
+      height: 100%
+      padding-left: 13px
+      font-weight: 700
+      font-size: 12px
+      color: #000000
+      border: none
+
+    .amount-dropdown
+      position: relative
+      width: 90px
+      height: 100%
+
+    .amount-dropdown-btn
+      width: 100%
+      height: 32px
+      padding: 0 25px
+      font-size: 12px
+      color: #000000
+      text-align: left
+      border: none
+      background: none
+      cursor: pointer
+
+    .amount-dropdown-toggle
+      position: relative
+      padding: 0 31px 0 25px
+      border-left: 1px solid #E1E1F0
+
+    .amount-dropdown-toggle::after
+      content: ''
+      position: absolute
+      top: 50%
+      right: 12px
+      width: 8px
+      height: 8px
+      transform: translateY(-50%)
+      background: url('../assets/topUp/angle.svg') center no-repeat
+      background-size: contain
+
+    .amount-dropdown-btn.expanded::after
+      transform: translateY(-50%) rotate(180deg)
+
+    .amount-dropdown-list
+      position: absolute
+      right: 0
+      bottom: 0
+      transform: translateY(100%)
+      width: 100%
+      margin: 0
+      padding: 0
+      list-style: none
+      background: #fff
+      border: 1px solid #E1E1F0
+      z-index: 10
+
+    .fiat .fiat-payment-methods-title
+      margin-top: 35px
+
+    .fiat-payment-methods
+      display: flex
+
+    .fiat-payment-method
+      opacity: 0
+      transform: scale(0)
+      transition: all 0.2s linear
+
+    .fiat-selected .fiat-payment-method
+      opacity: 1
+      transform: scale(1)
+
+    .fiat-payment-method .top-up-radio-inne
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 132px
+      height: 132px
+
+    .fiat-payment-method + .fiat-payment-method
+      margin-left: 24px
+
+    .ramp-logo
+      width: 70px
+      height: 27px
+
+    .safello-logo
+      width: 88px
+      height: 32px
+
+    .wyre-logo
+      width: 62px
+      height: 62px
+
+    .fiat-bottom
+      opacity: 0
+      transform: translateY(30px)
+      transition: all 0.3s linear
+
+    .fiat-selected .fiat-bottom
+      opacity: 1
+      transform: translateY(0)
+
+    .pay-btn
+      display: block
+      margin: 60px auto 0
+      width: 100%
+      max-width: 370px
+      height: 50px
+      background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%)
+      font-weight: 500
+      font-size: 14px
+      color: #FFFFFF
+      letter-spacing: -0.08px
+      text-align: center
+      border: none
+      cursor: pointer
+    .pay-btn[disabled]
+      background: #DBDBE4
+      color: #FFFFFF
+      cursor: not-allowed
+
+    .top-up
+      +media(s)
+        min-height: 100vh
+        height: auto
+
+    .top-up-modal .modal-close-btn
+      +media(s)
+        top: 15px
+        right: 15px
+
+    .top-up-title
+      +media(s)
+        width: 100%
+        font-size: 16px
+        text-align: left
+
+    .top-up-methods
+      +media(s)
+        margin-top: 16px
+        flex-direction: column
+
+    .top-up.method-selected .top-up-methods
+      +media(s)
+        margin-top: 16px
+        flex-direction: row
+
+    .top-up-method
+      +media(s)
+        width: 265px
+        height: 232px
+
+    .top-up.method-selected .top-up-method
+      +media(s)
+        height: 72px
+
+    .top-up.method-selected .top-up-method + .top-up-method
+      +media(s)
+        margin: 0 0 0 15px
+
+    .top-up-method + .top-up-method
+      +media(s)
+        margin: 15px 0 0
+
+    .top-up.method-selected .top-up-method-text
+      +media(s)
+        display: none
+
+    .crypto
+      +media(s)
+        position: relative
+        padding: 25px 0 75px
+
+    .input-address
+      +media(s)
+        padding: 13px
+
+    .crypto .address-copy-btn
+      +media(s)
+        position: absolute
+        bottom: 0
+        left: 50%
+        transform: translateX(-50%)
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 180px
+        height: 50px
+        background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%)
+
+    .crypto .address-copy-btn::before
+      +media(s)
+        width: 20px
+        height: 20px
+        background: url('../assets/topUp/copy-light.svg') center no-repeat
+
+    .crypto .address-copy-btn span
+      +media(s)
+        display: block
+        margin: 0 0 0 5px
+        font-weight: 500
+        font-size: 14px
+        color: #FFFFFF
+        letter-spacing: -0.08px
+        text-align: center
+
+    .fiat-inputs
+      +media(s)
+        flex-direction: column
+
+    .fiat-input-item
+      +media(s)
+        width: 100%
+
+    .fiat-input-item + .fiat-input-item
+      +media(s)
+        margin: 16px 0 0
+
+    .fiat .fiat-payment-methods-title
+      +media(s)
+        margin-top: 15px
+
+    .fiat-payment-methods
+      +media(s)
+        flex-wrap: wrap
+
+    .fiat-payment-method + .fiat-payment-method
+      +media(s)
+        margin: 0
+
+    .fiat-payment-method:nth-child(even)
+      +media(s)
+        margin-left: 5%
+
+    .fiat-payment-method
+      +media(s)
+        margin-bottom: 5%
+
+    .fiat-selected .fiat-payment-method
+      +media(s)
+        width: 47.5%
+
+    .fiat-payment-method .top-up-radio-inner
+      +media(s)
+        width: 100%
+
+    .universal-login .modal-wrapper
+      +media(s)
+        height: 100%
+
+    .pay-btn
+      +media(s)
+        margin-top: 40px
 
 

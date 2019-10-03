@@ -7,6 +7,6 @@ export async function setupSdk(deployer: Wallet, overridePort = '33111') {
   const {relayer} = await RelayerUnderTest.createPreconfigured(deployer, overridePort);
   await relayer.start();
   const {provider} = relayer;
-  const sdk = new UniversalLoginSDK(relayer.url(), provider, {authorisationsObserverTick: 10, executionFactoryTick: 10});
+  const sdk = new UniversalLoginSDK(relayer.url(), provider, {executionFactoryTick: 10, authorizationsObserverTick: 10, balanceObserverTick: 10, priceObserverTick: 10});
   return {sdk, relayer, provider};
 }

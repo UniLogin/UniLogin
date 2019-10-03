@@ -1,1 +1,0 @@
-export const PRICE_OBSERVER_DEAFULT_TICK = 1000 * 60;
