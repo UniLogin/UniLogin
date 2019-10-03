@@ -1,9 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "outDir": "dist",
-    "downlevelIteration": true,
     "lib": [
       "esnext",
       "dom"
