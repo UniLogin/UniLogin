@@ -28,7 +28,7 @@ class AuthorisationsObserver extends ObserverRunner {
     }
   }
 
-  private async fetchPendingAuthorisations(authorisationRequest: RelayerRequest) {
+  async fetchPendingAuthorisations(authorisationRequest: RelayerRequest) {
     const {response} = await this.relayerApi.getPendingAuthorisations(authorisationRequest);
     return response;
   }
