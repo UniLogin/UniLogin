@@ -1,9 +1,12 @@
 import chai, {expect} from 'chai';
-import sinonChai from 'sinon-chai';
-import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import {Contract, Wallet} from 'ethers';
+import {solidity, createFixtureLoader} from 'ethereum-waffle';
+import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK from '../fixtures/basicSDK';
 import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
+import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -11,12 +14,12 @@ chai.use(sinonChai);
 const loadFixture = createFixtureLoader();
 
 describe('E2E: Events', async () => {
-  let relayer;
-  let sdk;
-  let contractAddress;
-  let wallet;
-  let privateKey;
-  let mockToken;
+  let relayer: RelayerUnderTest;
+  let sdk: UniversalLoginSDK;
+  let contractAddress: string;
+  let wallet: Wallet;
+  let privateKey: string;
+  let mockToken: Contract;
 
   before(async () => {
     ({sdk, relayer, mockToken, privateKey, contractAddress, wallet} = await loadFixture(basicSDK));
