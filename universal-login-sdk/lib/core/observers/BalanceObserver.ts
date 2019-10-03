@@ -10,7 +10,7 @@ export class BalanceObserver extends ObserverRunner {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
   private callbacks: OnBalanceChange[] = [];
 
-  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, tick: number = 500) {
+  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, tick: number) {
     super();
     this.tick = tick;
   }

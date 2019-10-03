@@ -21,7 +21,7 @@ export const createMockedPriceObserver = () => {
   const resetCallCount = () => {
     callCount = 0;
   };
-  const mockedPriceObserver = new PriceObserver({} as TokensDetailsStore, ['USD', 'DAI', 'ETH']);
+  const mockedPriceObserver = new PriceObserver({} as TokensDetailsStore, ['USD', 'DAI', 'ETH'], 150);
 
   mockedPriceObserver.getCurrentPrices = async () => {
     return callCount < PRICES.length ? PRICES[callCount++] : {};

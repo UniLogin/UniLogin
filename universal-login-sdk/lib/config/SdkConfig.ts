@@ -5,6 +5,8 @@ export interface SdkConfig {
   paymentOptions: PaymentOptions;
   observedTokensAddresses: string[];
   observedCurrencies: ObservedCurrency[];
-  authorisationsObserverTick: number;
   executionFactoryTick: number;
+  authorizationsObserverTick: number;
+  balanceObserverTick: number;
+  priceObserverTick: number;
 }
