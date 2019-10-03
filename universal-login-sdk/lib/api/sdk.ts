@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage} from '@universal-login/commons';
+import {TokensValueConverter, TokenDetailsService, Notification, generateCode, addCodesToNotifications, resolveName, Message, ensureNotNull, PublicRelayerConfig, createKeyPair, signRelayerRequest, ensure, BalanceChecker, deepMerge, DeepPartial, SignedMessage, ensureNotEmpty} from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -97,23 +97,22 @@ class UniversalLoginSDK {
     return this.relayerConfig;
   }
 
-  async fetchBalanceObserver(ensName: string) {
+  async fetchBalanceObserver(contractAddress: string) {
     if (this.balanceObserver) {
       return;
     }
-    const walletContractAddress = await this.getWalletContractAddress(ensName);
-    ensureNotNull(walletContractAddress, InvalidContract);
-    ensureNotNull(this.relayerConfig, MissingConfiguration);
+    ensureNotNull(contractAddress, InvalidContract);
+    ensureNotEmpty(this.sdkConfig, MissingConfiguration);
 
     await this.tokensDetailsStore.fetchTokensDetails();
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, walletContractAddress, this.tokensDetailsStore);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore);
   }
 
-  async fetchAggregateBalanceObserver(ensName: string) {
+  async fetchAggregateBalanceObserver(contractAddress: string) {
     if (this.aggregateBalanceObserver) {
       return;
     }
-    await this.fetchBalanceObserver(ensName);
+    await this.fetchBalanceObserver(contractAddress);
     this.aggregateBalanceObserver = new AggregateBalanceObserver(this.balanceObserver!, this.priceObserver, this.tokensValueConverter);
   }
 
@@ -211,13 +210,13 @@ class UniversalLoginSDK {
     return this.blockchainObserver.subscribe(eventType, filter, callback);
   }
 
-  async subscribeToBalances(ensName: string, callback: OnBalanceChange) {
-    await this.fetchBalanceObserver(ensName);
+  async subscribeToBalances(contractAddress: string, callback: OnBalanceChange) {
+    await this.fetchBalanceObserver(contractAddress);
     return this.balanceObserver!.subscribe(callback);
   }
 
-  async subscribeToAggregatedBalance(ensName: string, callback: OnAggregatedBalanceChange) {
-    await this.fetchAggregateBalanceObserver(ensName);
+  async subscribeToAggregatedBalance(contractAddress: string, callback: OnAggregatedBalanceChange) {
+    await this.fetchAggregateBalanceObserver(contractAddress);
     return this.aggregateBalanceObserver!.subscribe(callback);
   }
 

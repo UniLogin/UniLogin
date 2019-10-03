@@ -19,9 +19,9 @@ const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
 export const Assets = ({deployedWallet, className}: AssetsProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-  const {sdk, name} = deployedWallet;
+  const {sdk, contractAddress} = deployedWallet;
 
-  useAsyncEffect(() => sdk.subscribeToBalances(name, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
 
   return (
     <div className="universal-login-assets">

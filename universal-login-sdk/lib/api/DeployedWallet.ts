@@ -103,6 +103,6 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   subscribeToBalances(callback: OnBalanceChange) {
-    return this.sdk.subscribeToBalances(this.name, callback);
+    return this.sdk.subscribeToBalances(this.contractAddress, callback);
   }
 }

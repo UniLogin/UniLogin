@@ -23,7 +23,7 @@ export {getEmojiColor, getEmojiNumber, CATEGORIES, getBaseEmojiCode, getEmojiSet
 export {generateBackupCode} from './core/utils/generateBackupCode';
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {safeMultiply} from './core/utils/safeMultiply';
-export {ensure, ensureNotNull, onCritical} from './core/utils/errors';
+export {ensure, ensureNotNull, ensureNotEmpty, onCritical} from './core/utils/errors';
 export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {RequiredBalanceChecker} from './integration/ethereum/RequiredBalanceChecker';
