@@ -1,4 +1,4 @@
-type ErrorType = 'InvalidNumber' | 'IpGeolocationError';
+type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError';
 
 export class ReactError extends Error {
   errorType: ErrorType;
@@ -21,6 +21,13 @@ export class InvalidNumber extends ValidationFailed {
   constructor(additionalMessage: string = '') {
     super(`Invalid number. ${additionalMessage}`, 'InvalidNumber');
     Object.setPrototypeOf(this, InvalidNumber.prototype);
+  }
+}
+
+export class InvalidTransferDetails extends ValidationFailed {
+  constructor() {
+    super('Invalid transfer details.', 'InvalidTransferDetails');
+    Object.setPrototypeOf(this, InvalidTransferDetails.prototype);
   }
 }
 

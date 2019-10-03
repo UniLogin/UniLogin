@@ -7,7 +7,7 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 export interface TransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSendClick: () => Promise<void>;
-  transferDetails: TransferDetails;
+  transferDetails: Partial<TransferDetails>;
   transferRecipientClassName?: string;
 }
 
@@ -15,7 +15,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, transferRecip
   const [showError, setShowError] = useState<boolean>(false);
   const errorMessage = 'Invalid address';
 
-  const onClick = () => isProperAddress(to) ? onSendClick() : setShowError(true);
+  const onClick = () => isProperAddress(to || '') ? onSendClick() : setShowError(true);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     showError && setShowError(false);

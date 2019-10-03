@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
-import {TransferDetails} from '@universal-login/commons';
+import {asTransferDetails, TransferDetails} from '@universal-login/commons';
 import {DeployedWallet, TransferService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import logoIcon from '../assets/icons/U.svg';
@@ -14,14 +14,24 @@ import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
 import {TransferInProgress} from './TransferInProgress';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
+import {cast} from '@restless/sanitizers';
+import {InvalidTransferDetails} from '../../core/utils/errors';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
 }
 
+function sanitizeTransferDetails(details: Partial<TransferDetails>) {
+  try {
+    return cast(details, asTransferDetails);
+  } catch (e) {
+    throw new InvalidTransferDetails();
+  }
+}
+
 export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const {contractAddress, privateKey, sdk} = deployedWallet;
-  const [transferDetails, setTransferDetails] = useState({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol} as TransferDetails);
+  const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({currency: sdk.tokensDetailsStore.tokensDetails[0].symbol});
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
@@ -33,10 +43,17 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
     setTransferDetails({...transferDetails, ...args});
   };
 
-  const transferService = new TransferService(deployedWallet);
-
   const onUButtonClick = () => {
     setDashboardVisibility(true);
+    setDashboardContent('funds');
+  };
+
+  const transferService = new TransferService(deployedWallet);
+
+  const onTransferSendClick = async () => {
+    const sanitizedDetails = sanitizeTransferDetails(transferDetails);
+    setDashboardContent('waitingForTransfer');
+    await transferService.transfer(sanitizedDetails);
     setDashboardContent('funds');
   };
 
@@ -67,19 +84,14 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             deployedWallet={deployedWallet}
             onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
             updateTransferDetailsWith={updateTransferDetailsWith}
-            currency={transferDetails.currency}
+            currency={transferDetails.currency!}
           />
         );
       case 'transferRecipient':
-        const onGenerateClick = async () => {
-          setDashboardContent('waitingForTransfer');
-          await transferService.transfer(transferDetails);
-          setDashboardContent('funds');
-        };
         return (
           <TransferRecipient
             onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-            onSendClick={onGenerateClick}
+            onSendClick={onTransferSendClick}
             transferDetails={transferDetails}
           />
         );
