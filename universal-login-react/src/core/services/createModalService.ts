@@ -1,26 +1,28 @@
 import {useState} from 'react';
 
 export interface IModalService<T, K> {
-  modalState: T | 'none';
+  modalName: T | 'none';
   modalProps: K | {};
   showModal: (name: T | 'none', props?: K) => void;
   hideModal: () => void;
 }
 
+interface IModal<T, K> {
+  name: T | 'none';
+  props: K | {};
+}
+
 export const createModalService = <T, K>(): IModalService<T, K> => {
-  const [modalState, setModalState] = useState<T | 'none'>('none');
-  const [modalProps, setModalProps] = useState<K | {}>({});
-  const showModal = (modalState: T | 'none', props: K | {} = {}) => {
-    setModalProps(props);
-    setModalState(modalState);
+  const emptyModal: IModal<T, K> = {
+    name: 'none',
+    props: {}
   };
-  const hideModal = () => {
-    setModalProps({});
-    setModalState('none');
-  };
+  const [modal, setModal] = useState<IModal<T, K>>(emptyModal);
+  const showModal = (name: T | 'none', props: K | {} = {}) => setModal({name, props});
+  const hideModal = () => setModal(emptyModal);
   return {
-    modalState,
-    modalProps,
+    modalName: modal.name,
+    modalProps: modal.props,
     showModal,
     hideModal
   };

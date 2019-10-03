@@ -10,7 +10,7 @@ export interface ModalsProps {
 
 const Modals = ({modalClassName}: ModalsProps) => {
   const modalService = useContext(ReactModalContext);
-  switch (modalService.modalState) {
+  switch (modalService.modalName) {
     case 'topUpAccount':
       return (
         <TopUp

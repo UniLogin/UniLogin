@@ -15,7 +15,7 @@ const Modal = () => {
   const {walletPresenter, walletService, sdk} = useServices();
   const relayerConfig = useRelayerConfig();
 
-  switch (modalService.modalState) {
+  switch (modalService.modalName) {
     case 'transfer':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
