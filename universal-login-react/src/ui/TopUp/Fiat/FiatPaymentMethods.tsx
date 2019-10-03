@@ -1,6 +1,6 @@
 import React from 'react';
 import SafelloLogoWhite from './../../assets/topUp/safello-white.png';
-import Safello from './../../assets/logos/safello@2x.png';
+import SafelloLogo from './../../assets/logos/safello@2x.png';
 import RampLogoWhite from './../../assets/topUp/ramp-white.png';
 import RampLogo from './../../assets/logos/ramp.png';
 import WyreLogoWhite from './../../assets/topUp/wyre-white.svg';
@@ -19,10 +19,20 @@ interface FiatPaymentMethodsProps {
 
 export type LogoColor = 'white' | 'black';
 
+const getLogos = (color: LogoColor) => {
+  return color === 'white' ? {
+    ramp: RampLogoWhite,
+    safello: SafelloLogoWhite,
+    wyre: WyreLogoWhite,
+  } : {
+    ramp: RampLogo,
+    safello: SafelloLogo,
+    wyre: WyreLogo,
+  };
+};
+
 export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => {
-  const rampLogo = logoColor === 'white' ? RampLogoWhite : RampLogo;
-  const safelloLogo = logoColor === 'white' ? SafelloLogoWhite : Safello;
-  const wyreLogo = logoColor === 'white' ? WyreLogoWhite : WyreLogo;
+  const logos = getLogos(logoColor);
 
   return (
     <div className="fiat-payment-methods">
@@ -34,7 +44,7 @@ export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMeth
           name="payment-method"
           className="fiat-payment-method"
       >
-          <img src={rampLogo} srcSet={rampLogo} alt="ramp" className="ramp-logo"/>
+          <img src={logos.ramp} srcSet={logos.ramp} alt="ramp" className="ramp-logo"/>
       </TopUpRadio>}
 
       {supportService.checkSafelloSupport(selectedCountry) &&
@@ -44,7 +54,7 @@ export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMeth
           name="payment-method"
           className="fiat-payment-method"
       >
-          <img src={safelloLogo} srcSet={safelloLogo} alt="safello" className="safello-logo"/>
+          <img src={logos.safello} srcSet={logos.safello} alt="safello" className="safello-logo"/>
       </TopUpRadio>}
 
       {supportService.checkWyreSupport(selectedCountry) &&
@@ -54,7 +64,7 @@ export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMeth
           name="payment-method"
           className="fiat-payment-method"
       >
-          <img src={wyreLogo} srcSet={wyreLogo} alt="wyre" className="wyre-logo"/>
+          <img src={logos.wyre} srcSet={logos.wyre} alt="wyre" className="wyre-logo"/>
       </TopUpRadio>}
     </div>
   );
