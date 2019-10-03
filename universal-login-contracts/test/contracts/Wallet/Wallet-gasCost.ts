@@ -2,10 +2,11 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
-import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON, KeyPair} from '@universal-login/commons';
 import WalletContract from '../../../build/Wallet.json';
-import {ensAndMasterFixture} from '../../fixtures/walletContract';
+import {ensAndMasterFixture, walletContractFixture} from '../../fixtures/walletContract';
 import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../../lib';
+import {executeAddKey} from '../../helpers/ExampleMessages.js';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -13,6 +14,7 @@ chai.use(solidity);
 const deployProxyCost = '385000';
 const deployProxyWithENSCost = '570000';
 const deployWalletCost = '3090000';
+const executeAddKeyCost = '102000';
 
 
 describe('Performance test', async () => {
@@ -53,6 +55,26 @@ describe('Performance test', async () => {
     const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Wallet deployment'] = gasUsed;
     expect(gasUsed).to.be.below(deployWalletCost);
+  });
+
+  describe('Functions call', () => {
+    let proxyWallet: Contract;
+    let provider: providers.Provider;
+    let keyPair: KeyPair;
+    let deployer: Wallet;
+    let proxyWithSigner: Contract;
+
+    before(async () => {
+      ({provider, proxyWallet, keyPair, deployer} = await loadFixture(walletContractFixture));
+      proxyWithSigner = proxyWallet.connect(deployer);
+    });
+
+    it('Execute addKey function', async () => {
+      const transaction = await executeAddKey(proxyWithSigner, createKeyPair().publicKey, keyPair.privateKey);
+      const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
+      gasCosts['Execute addKey function'] = gasUsed;
+      expect(gasUsed).to.be.below(executeAddKeyCost);
+    });
   });
 
   after(() => {
