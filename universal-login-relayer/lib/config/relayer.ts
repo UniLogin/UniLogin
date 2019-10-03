@@ -1,4 +1,4 @@
-import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, OnRampConfig} from '@universal-login/commons';
+import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig} from '@universal-login/commons';
 import {KnexConfig} from './KnexConfig';
 
 export interface Config {
@@ -15,4 +15,5 @@ export interface Config {
   onRampProviders: OnRampConfig;
   database: KnexConfig;
   maxGasLimit: number;
+  ipGeolocationApi: IPGeolocationApiConfig;
 }

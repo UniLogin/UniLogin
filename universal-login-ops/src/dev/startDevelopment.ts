@@ -71,7 +71,11 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
       }
     },
     database: databaseConfig,
-    maxGasLimit: 500000
+    maxGasLimit: 500000,
+    ipGeolocationApi: {
+      baseUrl: 'http://api.ipstack.com',
+      accessKey: '52e66f1c79bb597131fd0c133704ee03',
+    }
   };
 }
 
