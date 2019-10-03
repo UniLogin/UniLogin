@@ -12,18 +12,17 @@ const loadFixture = createFixtureLoader();
 describe('E2E: BalanceObserver', () => {
   let sdk: UniversalLoginSDK;
   let relayer: RelayerUnderTest;
-  let ensName: string;
   let wallet: Wallet;
   let contractAddress: string;
 
   beforeEach(async () => {
-    ({sdk, relayer, ensName, wallet, contractAddress} = await loadFixture(basicSDK));
+    ({sdk, relayer, wallet, contractAddress} = await loadFixture(basicSDK));
   });
 
   it('1 subscription', async () => {
     const callback = sinon.spy();
 
-    const unsubscribe = await sdk.subscribeToBalances(ensName, callback);
+    const unsubscribe = await sdk.subscribeToBalances(contractAddress, callback);
     await waitUntil(() => !!callback.firstCall);
     unsubscribe();
 
@@ -33,7 +32,7 @@ describe('E2E: BalanceObserver', () => {
   it('1 subscription - balance changed', async () => {
     const callback = sinon.spy();
 
-    const unsubscribe = await sdk.subscribeToBalances(ensName, callback);
+    const unsubscribe = await sdk.subscribeToBalances(contractAddress, callback);
     await waitUntil(() => !!callback.firstCall);
 
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
@@ -47,10 +46,10 @@ describe('E2E: BalanceObserver', () => {
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
-    const unsubscribe1 = await sdk.subscribeToBalances(ensName, callback1);
+    const unsubscribe1 = await sdk.subscribeToBalances(contractAddress, callback1);
     await waitUntil(() => !!callback1.firstCall);
 
-    const unsubscribe2 = await sdk.subscribeToBalances(ensName, callback2);
+    const unsubscribe2 = await sdk.subscribeToBalances(contractAddress, callback2);
     await waitUntil(() => !!callback2.firstCall);
 
     unsubscribe1();

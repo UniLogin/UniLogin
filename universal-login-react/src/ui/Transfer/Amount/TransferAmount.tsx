@@ -18,9 +18,9 @@ export interface TransferAmountProps {
 export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, currency, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [isAmountCorrect, setIsAmountCorrect] = useState(false);
-  const {sdk, name} = deployedWallet;
+  const {sdk, contractAddress} = deployedWallet;
 
-  useAsyncEffect(() => sdk.subscribeToBalances(name, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
   const balance = getBalanceOf(currency, tokenDetailsWithBalance);
 
   const validateAndUpdateTransferDetails = (amount: string) => {
