@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   max-width: 100%;
+  min-height: 670px;
 }
 
 .universal-login-topup .top-up-header {
