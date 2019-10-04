@@ -5,7 +5,6 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-const Blockies = require('react-blockies').default;
 import './../styles/funds.sass';
 import './../styles/fundsDefault.sass';
 
@@ -26,22 +25,20 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className}: Fu
     <div className="universal-login-funds">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="funds">
-          <div className="ens-name-row">
-            <Blockies seed={contractAddress} size={8} scale={4} />
-            <p className="ens-name">{name}</p>
-          </div>
           <Balance
             amount={`${totalTokensValue['USD'] || '0.00'}`}
             className={className}
           />
-          <div className="funds-buttons">
-            <button className="funds-btn funds-topup" onClick={onTopUpClick}>Top-up</button>
-            <button id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}>Send</button>
+          <div className="funds-row">
+            <div className="funds-buttons">
+              <button className="funds-btn funds-topup" onClick={onTopUpClick}>Top-up</button>
+              <button id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}>Send</button>
+            </div>
+            <Assets
+              deployedWallet={deployedWallet}
+              className={className}
+            />
           </div>
-          <Assets
-            deployedWallet={deployedWallet}
-            className={className}
-          />
         </div>
       </div>
     </div>

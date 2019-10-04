@@ -1,8 +1,15 @@
+@import helpers/breakpoints
+
 .universal-login-assets
 
   .assets-title
     margin: 0 0 8px
     font-size: 16px
+
+    +media(s)
+      font-weight: 500
+      font-size: 12px
+      line-height: 18px
 
   .assets-list
     width: 100%
@@ -10,6 +17,10 @@
     padding: 10px 23px
     background: #fff
     border-radius: 6px
+
+    +media(s)
+      padding: 0
+      border-radius: 3px
 
   .universal-login-assets-item + .universal-login-assets-item
     border-top: 1px solid

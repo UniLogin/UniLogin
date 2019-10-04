@@ -1,3 +1,5 @@
+@import helpers/breakpoints
+
 .universal-login-balance
 
   .universal-login-balance-text
@@ -6,10 +8,18 @@
     font-size: 20px
     text-align: center
 
+    +media(s)
+      font-size: 16px
+      line-height: 24px
+      margin-bottom: 8px
 
   .universal-login-balance-amount
     margin: 0
     font-weight: 600
     font-size: 44px
     text-align: center
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
 
