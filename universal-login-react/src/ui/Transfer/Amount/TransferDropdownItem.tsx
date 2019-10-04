@@ -1,25 +1,25 @@
 import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Asset} from '../../commons/Asset';
+import {TokenDetails} from '@universal-login/commons';
 
 export interface DropdownItemProps {
     sdk: UniversalLoginSDK;
-    name: string;
-    symbol: string;
+    tokenDetails: TokenDetails;
     balance: string | null;
     icon: string;
-    onClick: (transferCurrency: string) => void;
+    onClick: (transferToken: TokenDetails) => void;
     dropdownClassName: string;
     className?: string;
   }
 
-export const TransferDropdownItem = ({sdk, name, symbol, balance, icon, onClick, className, dropdownClassName}: DropdownItemProps) => {
+export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick, className, dropdownClassName}: DropdownItemProps) => {
   return (
-    <button onClick={() => onClick(symbol)} className={dropdownClassName}>
+    <button onClick={() => onClick(tokenDetails)} className={dropdownClassName}>
       <Asset
         sdk={sdk}
-        name={name}
-        symbol={symbol}
+        name={tokenDetails.name}
+        symbol={tokenDetails.symbol}
         balance={balance}
         icon={icon}
         className={className}

@@ -9,14 +9,15 @@ import {TransferService, encodeTransfer} from '../../../lib/core/services/Transf
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
+const gasParameters = {
+  gasPrice: utils.bigNumberify('1'),
+  gasToken: ETHER_NATIVE_TOKEN.address
+};
+
 describe('UNIT: TransferService', () => {
   function setup() {
-    const tokenService = {
-      getTokenAddress: sinon.fake(() => 'TOKEN_ADDRESS')
-    };
     const sdk = {
-      execute: sinon.stub().returns({}),
-      tokensDetailsStore: tokenService
+      execute: sinon.stub().returns({})
     } as any;
     const walletService = {
       deployedWallet: {
@@ -26,80 +27,77 @@ describe('UNIT: TransferService', () => {
       } as any
     };
     const transferService = new TransferService(walletService.deployedWallet as any);
-    return {sdk, walletService, tokenService, transferService};
+    return {sdk, walletService, transferService};
   }
 
   it('can transfer ether', async () => {
-    const {sdk, transferService, tokenService} = setup();
+    const {sdk, transferService} = setup();
 
     await transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      currency: ETHER_NATIVE_TOKEN.symbol
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters
     });
 
-    expect(tokenService.getTokenAddress).to.not.be.called;
     expect(sdk.execute).to.be.calledWith(
       {
         from: 'CONTRACT_ADDRESS',
         to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('123'),
         data: '0x',
-        gasToken: ETHER_NATIVE_TOKEN.address
+        gasToken: gasParameters.gasToken,
+        gasPrice: gasParameters.gasPrice
       },
       'PRIVATE_KEY',
     );
   });
 
   it('throw an error if wallet missing and transferring ETH', async () => {
-    const {tokenService} = setup();
     const transferService = new TransferService(undefined as any);
 
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      currency: ETHER_NATIVE_TOKEN.symbol
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters
     })).to.be.rejectedWith('Wallet not found');
-
-    expect(tokenService.getTokenAddress).to.not.be.called;
   });
 
   it('can transfer tokens', async () => {
-    const {sdk, transferService, tokenService} = setup();
+    const {sdk, transferService} = setup();
     const recipient = Wallet.createRandom().address;
-
     await transferService.transfer({
       to: recipient,
       amount: '123',
-      currency: 'TOKEN_SYMBOL'
+      transferToken: 'TOKEN_ADDRESS',
+      gasParameters,
     });
 
-    expect(tokenService.getTokenAddress).to.be.calledWith('TOKEN_SYMBOL');
     expect(sdk.execute).to.be.calledWith(
       {
         from: 'CONTRACT_ADDRESS',
         to: 'TOKEN_ADDRESS',
         value: 0,
         data: encodeTransfer(recipient, '123'),
-        gasToken: 'TOKEN_ADDRESS'
+        gasToken: gasParameters.gasToken,
+        gasPrice: gasParameters.gasPrice
       },
       'PRIVATE_KEY',
     );
   });
 
-  it('throw an error if wallet is missing and transfering tokens', async () => {
-    const {tokenService, walletService} = setup();
+  it('throw an error if wallet is missing and transferring tokens', async () => {
+    const {walletService} = setup();
     walletService.deployedWallet = undefined;
 
     const transferService = new TransferService(undefined as any);
-
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      currency: 'TOKEN_SYMBOL'
+      transferToken: 'TOKEN_ADDRESS',
+      gasParameters
     })).to.be.rejectedWith('Wallet not found');
-
-    expect(tokenService.getTokenAddress).to.not.be.called;
   });
 
   it('throw an error if not enough tokens', async () => {
@@ -108,7 +106,8 @@ describe('UNIT: TransferService', () => {
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      currency: ETHER_NATIVE_TOKEN.symbol
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters
     })).to.be.rejectedWith('Not enough tokens');
   });
 
@@ -117,7 +116,8 @@ describe('UNIT: TransferService', () => {
     await expect(transferService.transfer({
       to: '0x',
       amount: '123',
-      currency: ETHER_NATIVE_TOKEN.symbol
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters
     })).to.be.rejectedWith(`Address 0x is not valid`);
   });
 });

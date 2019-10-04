@@ -1,4 +1,5 @@
-import {TokenDetails, TokenDetailsService} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsService, ensureNotNull} from '@universal-login/commons';
+import {TokenNotFound} from '../utils/errors';
 
 export class TokensDetailsStore {
   tokensDetails: TokenDetails[] = [];
@@ -14,5 +15,11 @@ export class TokensDetailsStore {
   getTokenAddress(symbol: string) {
     const token = this.tokensDetails.find((token) => token.symbol === symbol);
     return token ? token.address : undefined;
+  }
+
+  getTokenByAddress(address: string): TokenDetails {
+    const token = this.tokensDetails.find((token) => token.address === address);
+    ensureNotNull(token, TokenNotFound, address);
+    return token!;
   }
 }

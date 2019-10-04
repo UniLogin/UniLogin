@@ -48,4 +48,16 @@ describe('INT: TokensDetailsStore', () => {
 
     expect(tokensDetailsStore.getTokenAddress('FAKE')).to.equal(undefined);
   });
+
+  it('address -> token', async () => {
+    await tokensDetailsStore.fetchTokensDetails();
+    const expectedToken = tokensDetailsStore.tokensDetails[0];
+    expect(tokensDetailsStore.getTokenByAddress(expectedToken.address)).to.deep.equal(expectedToken);
+  });
+
+  it('address -> error', async () => {
+    await tokensDetailsStore.fetchTokensDetails();
+
+    expect(() => tokensDetailsStore.getTokenByAddress('FAKE')).to.throw('Token not found (address = FAKE)');
+  });
 });
