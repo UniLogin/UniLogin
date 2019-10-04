@@ -23,7 +23,12 @@ interface Overrides {
 }
 
 export const createServices = (config: Config, overrides: Overrides = {}) => {
-  const sdkConfig = {...overrides.sdkConfig, applicationName: 'Jarvis', paymentOptions: {}, observedTokensAddresses: config.tokens};
+  const sdkConfig = {
+    ...overrides.sdkConfig,
+    applicationName: 'Jarvis',
+    paymentOptions: {},
+    observedTokensAddresses: config.tokens
+  };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(
     config.relayerUrl,
