@@ -1,9 +1,9 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest} from '@universal-login/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo} from '@universal-login/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
   private readonly http: HttpFunction;
-  constructor(relayerUrl: string, private applicationName: string) {
+  constructor(relayerUrl: string, private applicationInfo: ApplicationInfo) {
     this.http = http(fetch)(relayerUrl);
   }
 
@@ -27,7 +27,7 @@ export class RelayerApi {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
-      applicationName: this.applicationName
+      applicationInfo: this.applicationInfo
     });
   }
 
@@ -62,7 +62,7 @@ export class RelayerApi {
       gasPrice,
       gasToken,
       signature,
-      applicationName: this.applicationName
+      applicationInfo: this.applicationInfo
     });
   }
 }

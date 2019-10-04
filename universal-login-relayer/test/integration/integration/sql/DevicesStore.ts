@@ -13,7 +13,9 @@ describe('INT: DevicesStore', () => {
     city: 'Warsaw, Poland',
     ipAddress: '84.10.249.134',
     time: '18 minutes ago',
-    browser: 'Safari'
+    browser: 'Safari',
+    logo: 'logo2',
+    type: 'laptop'
   };
   const knex = getKnexConfig();
 

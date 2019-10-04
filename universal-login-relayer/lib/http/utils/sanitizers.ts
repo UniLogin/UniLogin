@@ -1,5 +1,5 @@
-import { Sanitizer, Result, asObject, asOptional, asString } from '@restless/sanitizers';
-import {TransactionOverrides, RelayerRequest} from '@universal-login/commons';
+import {Sanitizer, Result, asObject, asOptional, asString} from '@restless/sanitizers';
+import {TransactionOverrides, RelayerRequest, ApplicationInfo} from '@universal-login/commons';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 
 export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
@@ -20,4 +20,10 @@ export const asRelayerRequest: Sanitizer<RelayerRequest> = asObject({
 export const asOverrideOptions: Sanitizer<TransactionOverrides> = asObject({
   gasLimit: asOptional(asBigNumber),
   gasPrice: asOptional(asBigNumber)
+});
+
+export const asApplicationInfo: Sanitizer<ApplicationInfo> = asObject({
+  applicationName: asString,
+  type: asString,
+  logo: asString
 });

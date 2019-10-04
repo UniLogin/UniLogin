@@ -130,7 +130,9 @@ describe('UNIT: security codes', () => {
             city: 'unknown',
             os: 'unknown',
             browser: 'node-fetch',
-            time: '1:30'
+            time: '1:30',
+            type: 'laptop',
+            logo: 'icon'
           }
         }
       ];
