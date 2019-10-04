@@ -25,7 +25,7 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
 
   const validateAndUpdateTransferDetails = (amount: string) => {
     if (balance && amount) {
-      setIsAmountCorrect(amount <= balance);
+      setIsAmountCorrect(Number(amount) <= Number(balance));
     } else {
       setIsAmountCorrect(false);
     }
