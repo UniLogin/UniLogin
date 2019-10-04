@@ -2,11 +2,11 @@ import {expect} from 'chai';
 import ECDSAUtils from '../../../build/ECDSAUtils.json';
 import {constants, Contract, utils} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
-import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH,  signHexString} from '@universal-login/commons';
+import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH,  signHexString, concatenateSignatures} from '@universal-login/commons';
 import {transferMessage} from '../../helpers/ExampleMessages.js';
 
 describe('Contract: ECDSAUtils', async () => {
-  const [wallet] = getWallets(createMockProvider());
+  const [wallet, wallet2] = getWallets(createMockProvider());
   let ecdsaUtils : Contract;
   let msg: UnsignedMessage;
 
@@ -37,12 +37,27 @@ describe('Contract: ECDSAUtils', async () => {
         .to.eq(wallet.address);
     });
 
-    xit('proper recovery (two signatures)', async () => {
+    it('proper recovery (two signatures)', async () => {
+      const hash = utils.hashMessage(TEST_MESSAGE_HASH);
+      const signature1 = signHexString(hash, wallet.privateKey);
+      const signature2 = signHexString(hash, wallet2.privateKey);
+      const signatures = concatenateSignatures([signature1, signature2]);
+      expect(await ecdsaUtils.recoverSigner(hash, signatures, 0))
+        .to.eq(wallet.address);
+      expect(await ecdsaUtils.recoverSigner(hash, signatures, 1))
+        .to.eq(wallet2.address);
+    });
+
+    it('invalid recovery (one signature)', async () => {
+      const hash = utils.hashMessage(TEST_MESSAGE_HASH);
+      const invalidHash = utils.hashMessage(TEST_MESSAGE_HASH.replace('1', '2'));
+      const signatures = signHexString(hash, wallet.privateKey);
+      expect(await ecdsaUtils.recoverSigner(invalidHash, signatures, 0))
+        .not.to.eq(wallet.address);
     });
 
     xit('signatures too short (one signature)');
     xit('signatures too short (two signature)');
-    xit('invalid recovery (one signature)');
     xit('invalid recovery (two signatures)');
     xit('signature insecure');
     // .to.be.revertedWith('Invalid signature or nonce');
