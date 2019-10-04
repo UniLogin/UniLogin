@@ -39,7 +39,7 @@ const ModalTransfer = () => {
         deployedWallet={deployedWallet}
         onSelectRecipientClick={() => setModal('transferRecipient')}
         updateTransferDetailsWith={updateTransferDetailsWith}
-        token={selectedToken}
+        tokenDetails={selectedToken}
         transferAmountClassName="jarvis-transfer-amount"
       />
     );

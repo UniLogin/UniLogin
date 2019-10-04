@@ -11,17 +11,17 @@ export interface TransferAmountProps {
   deployedWallet: DeployedWallet;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
-  token: TokenDetails;
+  tokenDetails: TokenDetails;
   transferAmountClassName?: string;
 }
 
-export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, token, transferAmountClassName}: TransferAmountProps) => {
+export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, tokenDetails, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   const [isAmountCorrect, setIsAmountCorrect] = useState(false);
   const {sdk, contractAddress} = deployedWallet;
 
   useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
-  const balance = getBalanceOf(token.symbol, tokenDetailsWithBalance);
+  const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
 
   const validateAndUpdateTransferDetails = (amount: string) => {
     if (balance && amount) {
@@ -39,7 +39,7 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
         <TransferDropdown
           sdk={sdk}
           tokenDetailsWithBalance={tokenDetailsWithBalance}
-          token={token}
+          tokenDetails={tokenDetails}
           setToken={(token: TokenDetails) => updateTransferDetailsWith({transferToken: token.address})}
           className={transferAmountClassName}
         />
@@ -54,7 +54,7 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
             className="transfer-amount-input"
             onChange={event => validateAndUpdateTransferDetails(event.target.value)}
           />
-          <span className="transfer-amount-code">{token.symbol}</span>
+          <span className="transfer-amount-code">{tokenDetails.symbol}</span>
         </div>
         <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!isAmountCorrect}>
           <span>Select recipient</span>

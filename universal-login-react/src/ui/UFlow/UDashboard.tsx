@@ -89,7 +89,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             deployedWallet={deployedWallet}
             onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
             updateTransferDetailsWith={updateTransferDetailsWith}
-            token={selectedToken}
+            tokenDetails={selectedToken}
           />
         );
       case 'transferRecipient':

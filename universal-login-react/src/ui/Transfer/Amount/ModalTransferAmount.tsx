@@ -8,7 +8,7 @@ export interface ModalTransferAmountProps {
   deployedWallet: DeployedWallet;
   onSelectRecipientClick: () => void;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
-  token: TokenDetails;
+  tokenDetails: TokenDetails;
   modalLayoutClassName?: string;
   transferAmountClassName?: string;
 }
@@ -17,7 +17,7 @@ export const ModalTransferAmount = ({
   deployedWallet,
   onSelectRecipientClick,
   updateTransferDetailsWith,
-  token,
+  tokenDetails,
   modalLayoutClassName,
   transferAmountClassName
 }: ModalTransferAmountProps) => {
@@ -33,7 +33,7 @@ export const ModalTransferAmount = ({
               deployedWallet={deployedWallet}
               onSelectRecipientClick={onSelectRecipientClick}
               updateTransferDetailsWith={updateTransferDetailsWith}
-              token={token}
+              tokenDetails={tokenDetails}
               transferAmountClassName={transferAmountClassName}
             />
           </div>

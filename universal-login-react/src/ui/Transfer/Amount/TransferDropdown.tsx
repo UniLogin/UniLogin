@@ -9,12 +9,12 @@ import {useToggler} from '../../hooks/useToggler';
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
-  token: TokenDetails;
+  tokenDetails: TokenDetails;
   setToken: (token: TokenDetails) => void;
   className?: string;
 }
 
-export const TransferDropdown = ({sdk, tokenDetailsWithBalance, token, setToken, className}: TransferDropdownProps) => {
+export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, setToken, className}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
 
   const onClick = (token: TokenDetails) => {
@@ -44,10 +44,10 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, token, setToken,
 
   return (
     <div className="currency-accordion">
-        {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === token.symbol, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
+        {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === tokenDetails.symbol, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
         {visible &&
           <div className="currency-scrollable-list">
-            {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== token.symbol, 'currency-accordion-item')}
+            {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== tokenDetails.symbol, 'currency-accordion-item')}
           </div>}
     </div >
   );
