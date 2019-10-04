@@ -63,7 +63,7 @@ contract Executor is ECDSAUtils {
         bool success;
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
-        require(nonce == lastNonce, "Invalid nonce after call");
+        require(nonce == lastNonce, "Reentry");
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
         uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasData)).add(refundGas(gasToken));
         refund(gasUsed, gasPrice, gasToken, msg.sender);
