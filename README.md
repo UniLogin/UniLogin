@@ -40,12 +40,11 @@ Packages maintained with this monorepo are listed below.
 ### Ropsten:
 - Domains: `poppularapp.test`, `my-login.test`, `universal-login.test`
 - Relayer url: `https://relayer-ropsten.universallogin.io`
-- Jarvis Wallet (web wallet): [wallet.universallogin.io](https://wallet.universallogin.io)
+- Jarvis Wallet (web wallet): [wallet-ropsten.universallogin.io](https://wallet-ropsten.universallogin.io)
 
 ### Kovan:
 - Domain: `poppularapp.test`
 - Relayer url: `https://relayer-kovan.universallogin.io`
-
 
 ### Rinkeby:
 - Domain: `poppularapp.test`
@@ -54,6 +53,7 @@ Packages maintained with this monorepo are listed below.
 ### Mainnet (test environment):
 - Domain: `unitest.eth`
 - Relayer url: `https://relayer-mainnet.universallogin.io`
+- Jarvis Wallet (web wallet): [wallet.universallogin.io](https://wallet.universallogin.io)
 
 
 ## Contributing
