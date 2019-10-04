@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {DevicesStore} from '../../../../lib/integration/sql/services/DevicesStore';
-import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_NAME} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_INFO} from '@universal-login/commons';
 import {getKnexConfig} from '../../../helpers/knex';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
@@ -8,12 +8,14 @@ describe('INT: DevicesStore', () => {
   let devicesStore: DevicesStore;
   const device2 = {
     os: 'iPhone',
-    applicationName: TEST_APPLICATION_NAME,
+    ...TEST_APPLICATION_INFO,
     platform: 'iphone',
     city: 'Warsaw, Poland',
     ipAddress: '84.10.249.134',
     time: '18 minutes ago',
-    browser: 'Safari'
+    browser: 'Safari',
+    logo: 'logo2',
+    type: 'laptop'
   };
   const knex = getKnexConfig();
 

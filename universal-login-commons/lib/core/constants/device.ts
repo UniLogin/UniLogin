@@ -7,5 +7,7 @@ export const EMPTY_DEVICE_INFO: DeviceInfo = {
   city: '',
   ipAddress: '',
   time: '',
-  browser: ''
+  browser: '',
+  type: '',
+  logo: ''
 };

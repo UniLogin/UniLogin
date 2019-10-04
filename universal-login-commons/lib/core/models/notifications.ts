@@ -6,12 +6,17 @@ export interface Notification {
   deviceInfo: DeviceInfo;
 }
 
-export interface DeviceInfo {
+export interface DeviceInfo extends ApplicationInfo {
   ipAddress: string;
-  applicationName: string;
   platform: string;
   city: string;
   os: string;
   browser: string;
   time: string;
+}
+
+export interface ApplicationInfo {
+  applicationName: string;
+  type: string;
+  logo: string;
 }

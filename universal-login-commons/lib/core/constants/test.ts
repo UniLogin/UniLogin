@@ -23,16 +23,20 @@ export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = '1';
 
-export const TEST_APPLICATION_NAME = 'UniversalLogin';
+export const TEST_APPLICATION_INFO = {
+  applicationName: 'UniversalLogin',
+  logo: 'logo',
+  type: 'laptop'
+};
 
 export const TEST_DEVICE_INFO = {
+  ...TEST_APPLICATION_INFO,
   os: 'Mac',
-  applicationName: TEST_APPLICATION_NAME,
   platform: 'laptop',
   city: 'Warsaw, Poland',
   ipAddress: '84.10.249.134',
   time: '18 minutes ago',
-  browser: 'Safari'
+  browser: 'Safari',
 };
 
 export const TEST_TOKEN_DETAILS = [

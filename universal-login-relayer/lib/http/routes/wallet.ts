@@ -1,10 +1,10 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/MessageHandler';
-import {SignedMessage, DeployArgs} from '@universal-login/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo} from '@universal-login/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
-import {asArrayish} from '../utils/sanitizers';
+import {asArrayish, asApplicationInfo} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import DeploymentHandler from '../../core/services/DeploymentHandler';
 
@@ -22,9 +22,9 @@ const getStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploy = (deploymentHandler: DeploymentHandler) =>
-  async (data: {body: DeployArgs & {applicationName: string}}, req: Request) => {
-    const {applicationName, ...deployArgs} = data.body;
-    const deviceInfo = getDeviceInfo(req, applicationName);
+  async (data: {body: DeployArgs & {applicationInfo: ApplicationInfo}}, req: Request) => {
+    const {applicationInfo, ...deployArgs} = data.body;
+    const deviceInfo = getDeviceInfo(req, applicationInfo);
     const transaction = await deploymentHandler.handleDeployment(deployArgs, deviceInfo);
     return responseOf(transaction, 201);
   };
@@ -65,7 +65,7 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
         gasPrice: asString,
         gasToken: asString,
         signature: asString,
-        applicationName: asString
+        applicationInfo: asApplicationInfo
       })
     }),
     deploy(deploymentHandler)

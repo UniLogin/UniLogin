@@ -56,7 +56,7 @@ export class FutureWalletFactory {
     const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
       const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
       const signature = await calculateInitializeSignature(initData, privateKey);
-      await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature);
+      await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
 
       const deploymentObserver = new DeploymentObserver(this.blockchainService, this.config.contractWhiteList);
       const address = await new Promise<string>((resolve) => deploymentObserver.startAndSubscribe(contractAddress, resolve));
