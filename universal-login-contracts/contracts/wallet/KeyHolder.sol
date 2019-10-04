@@ -56,7 +56,6 @@ contract KeyHolder {
         return true;
     }
 
-    /* solium-disable-next-line security/no-call-value */
     function removeKey(address _key) public onlyAuthorised onlySufficientKeyCount returns(bool success) {
         require(keyExist(_key), "Cannot remove a non-existing key");
         emit KeyRemoved(_key);
