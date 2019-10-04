@@ -1,9 +1,5 @@
-import React from "react";
-import {
-  getSuggestionId,
-  WalletSuggestionAction,
-  WALLET_SUGGESTION_ALL_ACTIONS
-} from "@universal-login/commons";
+import React from 'react';
+import {getSuggestionId, WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
 
 interface SuggestionsProps {
   connections: string[];
@@ -64,19 +60,19 @@ export const Suggestions = ({
   actions
 }: SuggestionsProps) => {
   const connectionsSuggestions = getSuggestionsItems(
-    "connect to existing",
+    'connect to existing',
     getSuggestions(connections, actions, WalletSuggestionAction.connect),
     onConnectClick
   );
   const creationsSuggestions = getCreationSuggestionsItems(
-    "create new",
+    'create new',
     getSuggestions(creations, actions, WalletSuggestionAction.create),
     onCreateClick
   );
   const recoversSuggestions = getSuggestionsItems(
-    "recover",
+    'recover',
     getSuggestions(connections, actions, WalletSuggestionAction.recover),
-    () => alert("not implemented")
+    () => alert('not implemented')
   );
   return (
     <ul className="suggestions-list">

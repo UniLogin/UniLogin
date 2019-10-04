@@ -1,20 +1,15 @@
-import React, { useState, ChangeEvent } from "react";
-import {
-  DebouncedSuggestionsService,
-  WalletSuggestionAction,
-  WALLET_SUGGESTION_ALL_ACTIONS,
-  SuggestionsService
-} from "@universal-login/commons";
-import UniversalLoginSDK from "@universal-login/sdk";
-import { Input } from "../commons/Input";
-import { Suggestions } from "./Suggestions";
-import { renderBusyIndicator } from "./BusyIndicator";
-import { getStyleForTopLevelComponent } from "../../core/utils/getStyleForTopLevelComponent";
-import Logo from "./../assets/logo.svg";
-import "./../styles/walletSelector.css";
-import "./../styles/walletSelectorDefaults.css";
-import "./../styles/hint.css";
-import ethLogo from "../assets/icons/ethereum-logo.svg";
+import React, {useState, ChangeEvent} from 'react';
+import {DebouncedSuggestionsService, WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, SuggestionsService} from '@universal-login/commons';
+import UniversalLoginSDK from '@universal-login/sdk';
+import {Input} from '../commons/Input';
+import {Suggestions} from './Suggestions';
+import {renderBusyIndicator} from './BusyIndicator';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import Logo from './../assets/logo.svg';
+import './../styles/walletSelector.css';
+import './../styles/walletSelectorDefaults.css';
+import './../styles/hint.css';
+import ethLogo from '../assets/icons/ethereum-logo.svg';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
@@ -27,7 +22,7 @@ interface WalletSelector {
   tryEnablingMetamask?: () => Promise<string | undefined>;
 }
 
-const defaultInputPlaceholder = "type a name";
+const defaultInputPlaceholder = 'type a name';
 
 export const WalletSelector = ({
   onCreateClick,
@@ -47,12 +42,12 @@ export const WalletSelector = ({
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [accountStatus, setAccountStatus] = useState(
-    "show-initial" // How to I enable this to true?
+    'show-initial' // How to I enable this to true?
     // tryEnablingMetamask ? "show-initial" : "show-picker"
   );
-  const [ethAccount, setEthAccount] = useState("bob.example.eth");
+  const [ethAccount, setEthAccount] = useState('bob.example.eth');
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
@@ -73,10 +68,10 @@ export const WalletSelector = ({
     const result = tryEnablingMetamask && (await tryEnablingMetamask());
     if (result) {
       setEthAccount(result);
-      setAccountStatus("show-account");
+      setAccountStatus('show-account');
     } else {
-      setEthAccount("bob.example.eth");
-      setAccountStatus("show-picker");
+      setEthAccount('bob.example.eth');
+      setAccountStatus('show-picker');
     }
   };
 
