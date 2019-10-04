@@ -1,5 +1,5 @@
 import React from 'react';
-import {getEtherscanUrl} from '@universal-login/react';
+import {getEtherscanUrl} from '../../core/utils/getEtherscanUrl';
 
 interface ExplorerLinkOrMessageProps {
   chainName: string;

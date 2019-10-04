@@ -5,18 +5,18 @@ import {Funds} from './Funds';
 import {asTransferDetails, TransferDetails, DEFAULT_GAS_LIMIT, GasParameters} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
-import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
+import {DashboardContentType, DashboardOptionalArgs} from '../../core/models/ReactUDashboardContentType';
 import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
 import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
-import {TransferInProgress} from './TransferInProgress';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
 import {Notice} from '../commons/Notice';
 import {GasPrice} from '../commons/GasPrice';
+import WaitingForTransfer from './WaitingForTransfer';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -32,9 +32,11 @@ function sanitizeTransferDetails(details: Partial<TransferDetails>) {
 
 export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const {contractAddress, privateKey, sdk} = deployedWallet;
+  const {relayerConfig} = deployedWallet.sdk;
   const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
+  const [dashboardOptionalArgs, setDashboardOptionalArgs] = useState<DashboardOptionalArgs>({});
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
 
   const [notice, setNotice] = useState('');
@@ -58,10 +60,22 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const transferService = new TransferService(deployedWallet);
 
   const onTransferSendClick = async () => {
-    const sanitizedDetails = sanitizeTransferDetails(transferDetails);
+    try {
+      setInitialTransferringState();
+      const sanitizedDetails = sanitizeTransferDetails(transferDetails);
+      const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(sanitizedDetails);
+      const transactionHash = await waitForTransactionHash();
+      setDashboardOptionalArgs(transactionHash);
+      await waitToBeSuccess();
+      setDashboardContent('funds');
+    } catch (err) {
+      setDashboardOptionalArgs({error: `${err.name}: ${err.message}`});
+    }
+  };
+
+  const setInitialTransferringState = () => {
     setDashboardContent('waitingForTransfer');
-    await transferService.transfer(sanitizedDetails);
-    setDashboardContent('funds');
+    setDashboardOptionalArgs({message: 'The transaction will start in a moment'});
   };
 
   const renderDashboardContent = () => {
@@ -111,7 +125,11 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'waitingForTransfer':
         return (
-          <TransferInProgress />
+          <WaitingForTransfer
+            {...dashboardOptionalArgs}
+            action={'Transferring funds'}
+            chainName={relayerConfig!.chainSpec.name}
+          />
         );
       case 'devices':
         return (

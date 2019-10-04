@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getEtherscanUrl} from '../../../../src/core/utils/getEtherscanUrl';
+import {getEtherscanUrl} from '../../../src/core/utils/getEtherscanUrl';
 import {HashZero} from 'ethers/constants';
 
 describe('UNIT: getEtherscanUrl', () => {
