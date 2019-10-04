@@ -3,7 +3,7 @@ import {fetch} from './fetch';
 
 export class RelayerApi {
   private readonly http: HttpFunction;
-  constructor(relayerUrl: string, private applicationInfo: ApplicationInfo) {
+  constructor(relayerUrl: string) {
     this.http = http(fetch)(relayerUrl);
   }
 
@@ -23,11 +23,11 @@ export class RelayerApi {
     return this.http('GET', `/wallet/execution/${messageHash}`);
   }
 
-  async connect(walletContractAddress: string, key: string) {
+  async connect(walletContractAddress: string, key: string, applicationInfo: ApplicationInfo) {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
-      applicationInfo: this.applicationInfo
+      applicationInfo
     });
   }
 
@@ -55,14 +55,14 @@ export class RelayerApi {
     return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
   }
 
-  async deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string) {
+  async deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
       gasPrice,
       gasToken,
       signature,
-      applicationInfo: this.applicationInfo
+      applicationInfo
     });
   }
 }

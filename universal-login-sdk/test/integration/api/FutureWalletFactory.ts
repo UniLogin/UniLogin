@@ -39,13 +39,13 @@ describe('INT: FutureWalletFactory', async () => {
       }
     };
     const blockchainService = new BlockchainService(provider);
-    const relayerApi = new RelayerApi(relayerUrl, TEST_APPLICATION_INFO);
+    const relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
       provider,
       blockchainService,
       relayerApi,
-      null as any,
+      {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}} as any,
     );
   });
 
