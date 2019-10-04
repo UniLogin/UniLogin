@@ -7,9 +7,9 @@ export const TEST_CONTRACT_ADDRESS = '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d
 
 export const TEST_PRIVATE_KEY = '0x63f01680950dc70f2eb8f373de0c360fcbb89ef437f2f6f2f0a1797979e490a4';
 
-export const TEST_MESSAGE_HASH = '0xjfasd89yhfoi3hpuhfaif3hfasoihf89ph3faoihfouhsfkusahp8h3fa3ouhusd';
+export const TEST_MESSAGE_HASH = '0x06c81cd35a49c66824bc0b84bff850d1a2a56a09260c6fd332ee22a8b15fc9ca';
 
-export const TEST_TRANSACTION_HASH = '0x9djflkdasjfijfiao73f46dbefoniasiofjiefh37ka3hdakdu378h2euh33jmvb';
+export const TEST_TRANSACTION_HASH = '0x06c81cd35a49c66824bc0b84bff850d1a2a56a09260c6fd332ee22a8b15fc9ca';
 
 export const TEST_SIGNATURE_KEY_PAIRS = [{
   key: '0xD1D84F0e28D6fedF03c73151f98dF95139700aa7',

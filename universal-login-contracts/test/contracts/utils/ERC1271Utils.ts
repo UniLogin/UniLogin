@@ -3,7 +3,7 @@ import ERC1271Utils from '../../../build/ERC1271Utils.json';
 import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 
-describe('ERC1271Utils', async () => {
+describe('Contract: ERC1271Utils', async () => {
   let erc1271Utils : Contract;
   const [wallet] = getWallets(createMockProvider());
 

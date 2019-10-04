@@ -58,22 +58,7 @@ describe('CONTRACT: Executor - main', async  () => {
     });
   });
 
-  describe('signing message', () => {
-    it('calculates hash', async () => {
-      const jsHash = calculateMessageHash(msg);
-      const solidityHash = await walletContract.calculateMessageHash(
-        msg.from,
-        msg.to,
-        msg.value,
-        msg.data,
-        msg.nonce,
-        msg.gasPrice,
-        msg.gasToken,
-        msg.gasLimitExecution,
-        msg.gasData);
-      expect(jsHash).to.eq(solidityHash);
-    });
-  });
+
 
   describe('Transfer', async () => {
     describe('successful execution of transfer', () => {

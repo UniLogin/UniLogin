@@ -3,10 +3,10 @@ pragma solidity ^0.5.2;
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../utils/ECDSAUtils.sol";
 
 
-contract Executor {
-    using ECDSA for bytes32;
+contract Executor is ECDSAUtils {
     using SafeMath for uint;
 
     uint public lastNonce;
@@ -40,7 +40,6 @@ contract Executor {
 
     function keyExist(address _key) public view returns(bool);
 
-
     function executeSigned(
         address to,
         uint256 value,
@@ -57,7 +56,7 @@ contract Executor {
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);
-        require(verifySignatures(signatures, messageHash.toEthSignedMessageHash()), "Invalid signature or nonce");
+        require(verifySignatures(signatures, messageHash), "Invalid signature or nonce");
         lastNonce++;
         bytes memory _data;
         bool success;
@@ -67,31 +66,6 @@ contract Executor {
         uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasData)).add(refundGas(gasToken));
         refund(gasUsed, gasPrice, gasToken, msg.sender);
         return messageHash;
-    }
-
-    function calculateMessageHash(
-        address from,
-        address to,
-        uint256 value,
-        bytes memory data,
-        uint nonce,
-        uint gasPrice,
-        address gasToken,
-        uint gasLimitExecution,
-        uint gasData) public pure returns (bytes32)
-    {
-        return keccak256(
-            abi.encodePacked(
-                from,
-                to,
-                value,
-                keccak256(data),
-                nonce,
-                gasPrice,
-                gasToken,
-                gasLimitExecution,
-                gasData
-        ));
     }
 
     function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
@@ -111,27 +85,12 @@ contract Executor {
         }
     }
 
-    function recoverSigner(bytes memory signatures, uint256 index, bytes32 dataHash) public pure returns(address) {
-        uint8 v;
-        bytes32 r;
-        bytes32 s;
-        /* solium-disable-next-line security/no-inline-assembly*/
-        assembly {
-            let signaturePos := mul(0x41, index)
-            r := mload(add(signatures, add(signaturePos, 0x20)))
-            s := mload(add(signatures, add(signaturePos, 0x40)))
-            v := and(mload(add(signatures, add(signaturePos, 0x41))), 0xff)
-        }
-        return ecrecover(dataHash, v, r, s);
-    }
-
     function verifySignatures(bytes memory signatures, bytes32 dataHash) private view returns(bool) {
-        // There cannot be an owner with address 0.
         uint256 i;
         address lastSigner = address(0);
         uint sigCount = signatures.length / 65;
         for (i = 0; i < sigCount; i++) {
-            address signer = recoverSigner(signatures, i, dataHash);
+            address signer = recoverSigner(dataHash, signatures, i);
             bool properKey = keyExist(signer) && lastSigner < signer;
             if (!properKey) {
                 return false;

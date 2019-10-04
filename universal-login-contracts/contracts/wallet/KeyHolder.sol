@@ -1,5 +1,4 @@
 pragma solidity ^0.5.2;
-
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../openzeppelin/contracts/utils/Address.sol";
 
@@ -57,6 +56,7 @@ contract KeyHolder {
         return true;
     }
 
+    /* solium-disable-next-line security/no-call-value */
     function removeKey(address _key) public onlyAuthorised onlySufficientKeyCount returns(bool success) {
         require(keyExist(_key), "Cannot remove a non-existing key");
         emit KeyRemoved(_key);

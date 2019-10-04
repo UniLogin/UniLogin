@@ -5,7 +5,7 @@ import {BigNumberish, bigNumberify} from 'ethers/utils';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 
 
-describe('StringUtils', () => {
+describe('Contract: StringUtils', () => {
   let stringUtils : Contract;
   const [wallet] = getWallets(createMockProvider());
 

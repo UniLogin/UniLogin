@@ -12,7 +12,7 @@ const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
 const name = `${label}.${domain}`;
 const node = utils.namehash(name);
 
-describe('ENSUtils', async () => {
+describe('Contract: ENSUtils', async () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let ensRegisteredContract: Contract;
