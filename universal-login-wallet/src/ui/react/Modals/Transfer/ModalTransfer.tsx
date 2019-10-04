@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {TransferService} from '@universal-login/sdk';
-import {TransferDetails, DEFAULT_GAS_LIMIT, GasParameters} from '@universal-login/commons';
-import {GasPrice, ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
+import {TransferDetails, GasParameters} from '@universal-login/commons';
+import {ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
 
@@ -52,14 +52,9 @@ const ModalTransfer = () => {
           onSendClick={onGenerateClick}
           onBackClick={() => setModal('transferAmount')}
           transferDetails={transferDetails}
-          transferRecipientClassName="jarvis-transfer-recipient"
-        />
-        <GasPrice
-          isDeployed={true}
+          className="jarvis-styles"
           deployedWallet={walletService.getDeployedWallet()}
-          gasLimit={DEFAULT_GAS_LIMIT}
           onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-          className={'jarvis'}
         />
       </div>
     );

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
-import {asTransferDetails, TransferDetails, DEFAULT_GAS_LIMIT, GasParameters} from '@universal-login/commons';
+import {asTransferDetails, TransferDetails, GasParameters} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
@@ -16,7 +16,6 @@ import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
 import {Notice} from '../commons/Notice';
-import {GasPrice} from '../commons/GasPrice';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -96,16 +95,12 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         return (
           <div>
             <TransferRecipient
+              deployedWallet={deployedWallet}
+              onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
               symbol={selectedToken.symbol}
               onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
               onSendClick={onTransferSendClick}
               transferDetails={transferDetails}
-            />
-            <GasPrice
-              isDeployed={true}
-              deployedWallet={deployedWallet}
-              gasLimit={DEFAULT_GAS_LIMIT}
-              onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
             />
           </div>
         );
