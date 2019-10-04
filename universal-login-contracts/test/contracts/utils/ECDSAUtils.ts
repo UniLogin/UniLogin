@@ -60,7 +60,7 @@ describe('Contract: ECDSAUtils', async () => {
     it('signature invalid length', async () => {
       const signatures = signHexString(hash, wallet.privateKey).slice(0, 64);
       await expect(ecdsaUtils.recoverSigner(invalidHash, signatures, 0))
-        .to.be.revertedWith('Invalid signature');
+        .to.be.revertedWith('Invalid signature length');
     });
 
     it('signature index out of bound', async () => {
@@ -69,8 +69,17 @@ describe('Contract: ECDSAUtils', async () => {
         .to.be.revertedWith('Signature out of bound');
     });
 
-    xit('insecure signature', async () => {
+    it('insecure signature (invalid v)', async () => {
+      const signatureWithoutVersion = '0x5d99b6f7f6d1f73d1a26497f2b1c89b24c0993913f86e9a2d02cd69887d9c94f3c880358579d811b21dd1b7fd9bb01c1d81d10e69f0384e675c32b39643be892';
+      const signatures = signatureWithoutVersion + '00';
+      await expect(ecdsaUtils.recoverSigner(hash, signatures, 0))
+        .to.be.revertedWith('Invalid signature: v');
+    });
 
+    it('insecure signature (s too high)', async () => {
+      const signatures = '0xe742ff452d41413616a5bf43fe15dd88294e983d3d36206c2712f39083d638bde0a0fc89be718fbc1033e1d30d78be1c68081562ed2e97af876f286f3453231d1b';
+      await expect(ecdsaUtils.recoverSigner(hash, signatures, 0))
+        .to.be.revertedWith('Invalid signature: s');
     });
   });
 

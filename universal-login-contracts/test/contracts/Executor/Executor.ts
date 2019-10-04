@@ -240,7 +240,7 @@ describe('CONTRACT: Executor - main', async  () => {
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, calculatePaymentOptions(msgToCall)))
-          .to.be.revertedWith('Invalid signature or nonce');
+          .to.be.revertedWith('Invalid signature length');
       });
 
       it('should fail 0 length input in signatures', async () => {
@@ -355,7 +355,7 @@ describe('CONTRACT: Executor - main', async  () => {
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), corruptedSignatures, calculatePaymentOptions(msgToCall)))
-          .to.be.revertedWith('Invalid signature or nonce');
+          .to.be.revertedWith('Invalid signature length');
       });
 
       it('should fail 0 length input in signatures', async () => {
