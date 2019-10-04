@@ -23,10 +23,8 @@ export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = '1';
 
-export const TEST_APPLICATION_NAME = 'UniversalLogin';
-
 export const TEST_APPLICATION_INFO = {
-  applicationName: TEST_APPLICATION_NAME,
+  applicationName: 'UniversalLogin',
   logo: 'logo',
   type: 'laptop'
 };
