@@ -3,9 +3,10 @@ pragma solidity ^0.5.2;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "./WalletProxy.sol";
+import "../utils/ECDSAUtils.sol";
 
 
-contract WalletProxyFactory is Ownable {
+contract WalletProxyFactory is Ownable, ECDSAUtils {
     bytes public initCode;
     using ECDSA for bytes32;
 
@@ -30,6 +31,6 @@ contract WalletProxyFactory is Ownable {
     }
 
     function getSigner(bytes memory initializeWithENS, bytes memory signature) public pure returns (address) {
-        return keccak256(abi.encodePacked(initializeWithENS)).toEthSignedMessageHash().recover(signature);
+        return ECDSAUtils.recoverSigner(keccak256(abi.encodePacked(initializeWithENS)), signature, 0);
     }
 }

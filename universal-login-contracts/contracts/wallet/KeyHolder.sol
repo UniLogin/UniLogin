@@ -1,5 +1,4 @@
 pragma solidity ^0.5.2;
-
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../openzeppelin/contracts/utils/Address.sol";
 

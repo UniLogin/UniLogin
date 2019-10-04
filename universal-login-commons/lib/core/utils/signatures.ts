@@ -21,6 +21,8 @@ export const sign = (payload: Uint8Array, privateKey: string): string => {
   return utils.joinSignature(signature);
 };
 
-export const signHexString = (payload: string, privateKey: string): string => sign(utils.arrayify(payload), privateKey);
+export const signHexString = (payload: string, privateKey: string): string =>
+  sign(utils.arrayify(payload), privateKey);
 
-export const signString = (stringToSign: string, privateKey: string) => sign(utils.toUtf8Bytes(stringToSign), privateKey);
+export const signString = (stringToSign: string, privateKey: string) =>
+  sign(utils.toUtf8Bytes(stringToSign), privateKey);
