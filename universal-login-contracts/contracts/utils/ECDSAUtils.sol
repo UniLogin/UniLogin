@@ -6,6 +6,8 @@ contract ECDSAUtils {
     using ECDSA for bytes32;
 
     function recoverSigner(bytes32 dataHash, bytes memory signatures, uint256 index) public pure returns(address) {
+        require(signatures.length % 65 == 0, "Invalid signature");
+        require(index < signatures.length / 65, "Signature out of bound");
         uint8 v;
         bytes32 r;
         bytes32 s;
