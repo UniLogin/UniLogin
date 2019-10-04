@@ -124,9 +124,9 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
                 onGasParametersChanged={(parameters: GasParameters) => { gasParameters = parameters; }}
                 className={className}
               />
-              <div className="connect-buttons-row">
-                <button onClick={onCancelClick} className="connect-cancel-btn">Cancel</button>
-                <button onClick={() => confirmCode(addresses[0])} className="connect-approve-btn">Connect device</button>
+              <div className="footer-buttons-row">
+                <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
+                <button onClick={() => confirmCode(addresses[0])} className="footer-approve-btn">Connect device</button>
               </div>
             </FooterSection>
           </div>

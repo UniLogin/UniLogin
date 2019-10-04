@@ -1,7 +1,8 @@
 import React from 'react';
-import {TransferDetails} from '@universal-login/commons';
+import {TransferDetails, OnGasParametersChanged} from '@universal-login/commons';
 import {TransferRecipient} from './TransferRecipient';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
+import {DeployedWallet} from '@universal-login/sdk';
 
 export interface ModalTransferRecipientProps {
   onRecipientChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -10,7 +11,9 @@ export interface ModalTransferRecipientProps {
   symbol: string;
   transferDetails: TransferDetails;
   modalLayoutClassName?: string;
-  transferRecipientClassName?: string;
+  className?: string;
+  deployedWallet: DeployedWallet;
+  onGasParametersChanged: OnGasParametersChanged;
 }
 
 export const ModalTransferRecipient = (modalTransferRecipientProps: ModalTransferRecipientProps) => {
@@ -25,7 +28,7 @@ export const ModalTransferRecipient = (modalTransferRecipientProps: ModalTransfe
               <h2 className="box-title">Send</h2>
             </div>
           </div>
-          <div className="modal-content">
+          <div>
             <div id="modal-send-recipient">
               <TransferRecipient
                 {...transferRecipientProps}
