@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {TransferService} from '@universal-login/sdk';
-import {TransferDetails, GasParameters} from '@universal-login/commons';
+import {TransferDetails, GasParameters, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
@@ -10,7 +10,7 @@ const ModalTransfer = () => {
   const [modal, setModal] = useState('transferAmount');
 
   const {walletService, sdk} = useServices();
-  const [transferDetails, setTransferDetails] = useState({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
+  const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken);
   const deployedWallet = walletService.getDeployedWallet();
 

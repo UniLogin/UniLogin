@@ -2,6 +2,7 @@ import React from 'react';
 import {RadioButton} from './RadioButton';
 import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply} from '@universal-login/commons';
 import {utils} from 'ethers';
+import {isDisabled} from '../../../core/utils/isDisabled';
 
 interface TransactionFeeProps {
   gasModes: GasMode[];
@@ -28,6 +29,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
         {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map((option: GasOption) => (
           <li key={option.token.address} className="transaction-fee-item">
             <RadioButton
+              disabled={isDisabled(option.token.symbol)}
               id={`token-${option.token.address}`}
               name="fee"
               checked={option.token.address === tokenAddress}

@@ -2,6 +2,7 @@ import React from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Asset} from '../../commons/Asset';
 import {TokenDetails} from '@universal-login/commons';
+import {isDisabled} from '../../../core/utils/isDisabled';
 
 export interface DropdownItemProps {
     sdk: UniversalLoginSDK;
@@ -15,7 +16,7 @@ export interface DropdownItemProps {
 
 export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick, className, dropdownClassName}: DropdownItemProps) => {
   return (
-    <button onClick={() => onClick(tokenDetails)} className={dropdownClassName}>
+    <button disabled={isDisabled(tokenDetails.symbol)} onClick={() => onClick(tokenDetails)} className={dropdownClassName}>
       <Asset
         sdk={sdk}
         name={tokenDetails.name}
