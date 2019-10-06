@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/relayer",
-  "version": "0.3.40",
+  "version": "0.3.43",
   "license": "MIT",
   "main": "build/lib/index.js",
   "types": "build/lib/index.d.ts",
@@ -8,8 +8,8 @@
     "@restless/ethereum": "^0.2.1",
     "@restless/restless": "^0.4.2",
     "@restless/sanitizers": "^0.2.2",
-    "@universal-login/commons": "0.3.40",
-    "@universal-login/contracts": "0.3.40",
+    "@universal-login/commons": "0.3.43",
+    "@universal-login/contracts": "0.3.43",
     "body-parser": "^1.19.0",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
