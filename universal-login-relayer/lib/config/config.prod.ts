@@ -32,8 +32,8 @@ export const config: Config =  Object.freeze({
   },
   onRampProviders: {
     safello: {
-      appId: '1234-5678',
-      baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
+      appId: getEnv('SAFELLO_APP_ID', ''),
+      baseAddress: getEnv('SAFELLO_URL', ''),
       addressHelper: true
     },
     ramp: {
