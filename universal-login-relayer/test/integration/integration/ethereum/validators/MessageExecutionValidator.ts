@@ -20,9 +20,9 @@ describe('INT: MessageExecutionValidator', async () => {
   let messageExecutionValidator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
 
-  before(async () => {
+  beforeEach(async () => {
     ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS};
+    message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList);
   });
 
@@ -33,7 +33,7 @@ describe('INT: MessageExecutionValidator', async () => {
 
   it('throws when not enough gas', async () => {
     const signedMessage = unsignedMessageToSignedMessage({...message, gasLimitExecution: 100, gasData: 100}, wallet.privateKey);
-    await expect(messageExecutionValidator.validate(signedMessage)).to.be.eventually.rejectedWith('Not enough gas');
+    await expect(messageExecutionValidator.validate(signedMessage)).to.be.eventually.rejectedWith('out of gas');
   });
 
   it('throws when not enough tokens', async () => {
