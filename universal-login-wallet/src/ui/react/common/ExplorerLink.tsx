@@ -1,17 +1,15 @@
 import React from 'react';
 import {getEtherscanUrl} from '@universal-login/react';
 
-interface ExplorerLinkOrMessageProps {
+interface ExplorerLinkProps {
   chainName: string;
   transactionHash?: string;
-  message?: string;
-  error?: string;
 }
 
-export const ExplorerLinkOrMessage = ({chainName, transactionHash, message, error} : ExplorerLinkOrMessageProps) => (
+export const ExplorerLink = ({chainName, transactionHash}: ExplorerLinkProps) => (
   <p className="txn-hash-text">
     {transactionHash
       ? <a href={getEtherscanUrl(chainName, transactionHash!)} target="_blank">{transactionHash}</a>
-      : message || error}
+      : 'The transaction will start in a moment'}
   </p>
 );
