@@ -6,7 +6,7 @@ import {ConnectWithEmoji} from './ConnectWithEmoji';
 
 export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 
-interface ConnectFlowProps {
+interface ConnectionFlowProps {
   name: string;
   onCancel: () => void;
   onSuccess: () => void;
@@ -15,7 +15,7 @@ interface ConnectFlowProps {
   className?: string;
 }
 
-export const ConnectFlow = ({name, onCancel, onSuccess, sdk, walletService, className}: ConnectFlowProps) => {
+export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, className}: ConnectionFlowProps) => {
   const [connectModal, setConnectModal] = useState<ConnectModal>('chooseMethod');
 
   switch (connectModal) {

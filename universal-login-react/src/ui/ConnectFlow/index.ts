@@ -1,1 +1,1 @@
-export {ConnectFlow} from './ConnectFlow';
+export {ConnectionFlow} from './ConnectionFlow';

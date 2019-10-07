@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ConnectFlow} from '@universal-login/react';
+import {ConnectionFlow} from '@universal-login/react';
 import {ConnectSelector} from './ConnectSelector';
 import {useServices, useRouter} from '../../hooks';
 
@@ -11,7 +11,7 @@ export const ConnectAccount = () => {
   const [name, setName] = useState<string | undefined>(undefined);
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');
   if (connectModal === 'connectionFlow') {
-    return <ConnectFlow
+    return <ConnectionFlow
       name={name!}
       sdk={sdk}
       walletService={walletService}
