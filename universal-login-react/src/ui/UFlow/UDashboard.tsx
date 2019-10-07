@@ -10,13 +10,13 @@ import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
 import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
-import {TransferInProgress} from './TransferInProgress';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
 import {Notice} from '../commons/Notice';
 import {UNavBarMobile} from './UNavBarMobile';
+import {WaitingFor} from '../commons/WaitingFor';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -32,10 +32,12 @@ function sanitizeTransferDetails(details: Partial<TransferDetails>) {
 
 export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const {contractAddress, privateKey, sdk} = deployedWallet;
+  const {relayerConfig} = deployedWallet.sdk;
   const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
   const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
+  const [transactionHash, setTransactionHash] = useState('');
 
   const [notice, setNotice] = useState('');
   useEffect(() => {
@@ -60,7 +62,10 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
   const onTransferSendClick = async () => {
     const sanitizedDetails = sanitizeTransferDetails(transferDetails);
     setDashboardContent('waitingForTransfer');
-    await transferService.transfer(sanitizedDetails);
+    const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(sanitizedDetails);
+    const {transactionHash} = await waitForTransactionHash();
+    setTransactionHash(transactionHash!);
+    await waitToBeSuccess();
     setDashboardContent('funds');
   };
 
@@ -110,7 +115,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'waitingForTransfer':
         return (
-          <TransferInProgress />
+          <WaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} transactionHash={transactionHash}/>
         );
       case 'devices':
         return (
