@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {ProgressBar} from '../commons/ProgressBar';
 import {ExplorerLink} from '../commons/ExplorerLink';
 import '../styles/waitingFor.sass';
