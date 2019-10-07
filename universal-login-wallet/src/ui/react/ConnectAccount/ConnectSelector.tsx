@@ -18,7 +18,7 @@ export const ConnectSelector = ({setName, setConnectModal}: ConnectSelectorProps
 
   const onConnectClick = async (name: string) => {
     setName(name);
-    setConnectModal('connectFlow');
+    setConnectModal('connectionFlow');
   };
 
   return (
