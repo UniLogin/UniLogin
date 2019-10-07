@@ -24,7 +24,10 @@ interface Overrides {
 export const createServices = (config: Config, overrides: Overrides = {}) => {
   const sdkConfig = {
     ...overrides.sdkConfig,
-    applicationName: 'Jarvis',
+    applicationInfo: {
+      applicationName:'Jarvis',
+      type: 'laptop'
+    },
     paymentOptions: {},
     observedTokensAddresses: config.tokens
   };
