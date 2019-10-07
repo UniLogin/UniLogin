@@ -1,4 +1,5 @@
 export enum Feature {
   deleteAccount,
-  requiredConfirmations
+  requiredConfirmations,
+  maxButton
 }
