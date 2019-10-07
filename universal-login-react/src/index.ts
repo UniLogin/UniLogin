@@ -39,3 +39,4 @@ export {StorageService} from './core/services/StorageService';
 export {WalletStorageService} from './core/services/WalletStorageService';
 export {MemoryStorageService} from './core/services/MemoryStorageService';
 export {Notice} from './ui/commons/Notice';
+export {ExplorerLink} from './ui/commons/ExplorerLink';
