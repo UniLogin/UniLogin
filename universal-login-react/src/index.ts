@@ -42,5 +42,3 @@ export {Notice} from './ui/commons/Notice';
 export {ConnectionFlow} from './ui/ConnectionFlow';
 export {ExplorerLink} from './ui/commons/ExplorerLink';
 export {WaitingFor} from './ui/commons/WaitingFor';
-export {WaitingForProps} from './ui/commons/WaitingFor';
-
