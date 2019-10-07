@@ -7,7 +7,7 @@ import MessageItem from '../../models/messages/MessageItem';
 
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
 
-export const GAS_LIMIT_MARGIN = 40000;
+export const GAS_LIMIT_MARGIN = 30000;
 
 export const decodeDataForExecuteSigned = (data: string) => dataToMessage(
   new utils.AbiCoder((type, value) => value).decode(
