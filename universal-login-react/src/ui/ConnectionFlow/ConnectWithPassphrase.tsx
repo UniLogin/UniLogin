@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {WalletService} from '@universal-login/sdk';
 import {CustomInput} from '../commons/CustomInput';
 import {InputLabel} from '../commons/InputLabel';
 import Spinner from '../commons/Spinner';
+import {OnboardingWalletService} from '../Onboarding/Onboarding';
 
 interface ConnectWithPassphraseProps {
   name: string;
-  walletService: WalletService;
+  walletService: OnboardingWalletService;
   onRecover: () => void;
 }
 
