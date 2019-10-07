@@ -8,6 +8,7 @@
 
 .transfer-amount {
   max-width: 500px;
+  min-height: 640px;
   margin: 0 auto;
 }
 
