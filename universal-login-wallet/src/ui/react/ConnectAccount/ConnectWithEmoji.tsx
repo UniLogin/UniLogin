@@ -2,27 +2,27 @@ import React from 'react';
 import {EmojiPanel, useAsync} from '@universal-login/react';
 import vault1x from './../../assets/illustrations/vault.png';
 import vault2x from './../../assets/illustrations/vault@2x.png';
-import {useServices, useRouter} from '../../hooks';
-import {ConnectModal} from './ConnectAccount';
 import {ensure} from '@universal-login/commons';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 
 
 interface ConnectWithEmojiProps {
   name: string;
-  setConnectModal: (modal: ConnectModal) => void;
+  sdk: UniversalLoginSDK;
+  walletService: WalletService;
+  onCancel: () => void;
+  onConnect: () => void;
 }
 
-export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps) => {
-  const {sdk, walletService} = useServices();
-  const [connectValues, error] = useAsync(async () => walletService.connect(name, () => history.push('/')), []);
-  const {history} = useRouter();
+export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService}: ConnectWithEmojiProps) => {
+  const [connectValues, error] = useAsync(async () => walletService.connect(name, onConnect), []);
 
   const onCancelClick = async () => {
     const {contractAddress, privateKey} = walletService.getConnectingWallet();
     await cancelRequest(contractAddress, privateKey);
     walletService.disconnect();
     connectValues!.unsubscribe();
-    setConnectModal('connectionMethod');
+    onCancel();
   };
 
   const cancelRequest = async (contractAddress: string, privateKey: string) => {
