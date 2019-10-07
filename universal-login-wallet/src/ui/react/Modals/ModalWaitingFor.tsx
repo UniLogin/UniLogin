@@ -1,8 +1,7 @@
 import React from 'react';
-import {ProgressBar} from '@universal-login/react';
+import {ProgressBar, ExplorerLink} from '@universal-login/react';
 import AvatarPending1x from './../../assets/illustrations/avatatPending@1x.png';
 import AvatarPending2x from './../../assets/illustrations/avatatPending@2x.png';
-import {ExplorerLink} from '../common/ExplorerLink';
 
 export interface ModalWaitingForProps {
   action: string;
