@@ -10,7 +10,6 @@ describe('Services', () => {
     expect(services).to.not.be.null;
     expect(services.sdk).to.not.be.null;
     expect(services.userDropdownService).to.not.be.null;
-    expect(services.connectToWallet).to.not.be.null;
     expect(services.walletService).to.not.be.null;
     expect(services.walletPresenter).to.not.be.null;
     expect(services.sdk.tokensDetailsStore).to.not.be.null;

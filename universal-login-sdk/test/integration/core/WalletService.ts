@@ -28,14 +28,14 @@ describe('INT: WalletService', () => {
   });
 
   it('disconnect resets state to None', () => {
-    walletService.connect(applicationWallet);
+    walletService.setWallet(applicationWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
     expect(storage.remove).to.be.called;
   });
 
   it('connect set state to Deployed', () => {
-    walletService.connect(applicationWallet);
+    walletService.setWallet(applicationWallet);
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
   });
 
@@ -63,7 +63,7 @@ describe('INT: WalletService', () => {
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
-    walletService.connect(applicationWallet);
+    walletService.setWallet(applicationWallet);
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
 
     walletService.saveToStorage(applicationWallet);
@@ -75,7 +75,7 @@ describe('INT: WalletService', () => {
   });
 
   it('should throw if wallet is overridden', () => {
-    walletService.connect(applicationWallet);
+    walletService.setWallet(applicationWallet);
     expect(() => walletService.setFutureWallet(futureWallet)).to.throw('Wallet cannot be overridded');
   });
 
