@@ -8,16 +8,13 @@ import {
   ETHER_NATIVE_TOKEN,
   waitExpect,
   generateCode,
-  Procedure,
   TEST_GAS_PRICE,
 } from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
-import ConnectionToWalletService, {Connection} from '../../../src/core/services/ConnectToWallet';
 import Relayer from '@universal-login/relayer';
 
 describe('Login', () => {
-  let connectToWalletService: (name: string, callback: Procedure) => Promise<Connection>;
   let walletService: WalletService;
   let walletServiceForConnect: WalletService;
   let sdk: UniversalLoginSDK;
@@ -34,7 +31,6 @@ describe('Login', () => {
     [wallet] = await getWallets(provider);
     walletService = new WalletService(sdk);
     walletServiceForConnect = new WalletService(sdk);
-    connectToWalletService = ConnectionToWalletService(sdk, walletServiceForConnect);
     (sdk.blockchainObserver as any).lastBlock = 0;
     await sdk.start();
   });
@@ -64,7 +60,7 @@ describe('Login', () => {
 
     it('should request connect to existing wallet and call callback when add key', async () => {
       const callback = sinon.spy();
-      const {unsubscribe, securityCode} = await connectToWalletService(name, callback);
+      const {unsubscribe, securityCode} = await walletServiceForConnect.connect(name, callback);
       const newPublicKey = utils.computeAddress((walletServiceForConnect.state as any).wallet.privateKey);
       const expectedSecurityCode = await generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;

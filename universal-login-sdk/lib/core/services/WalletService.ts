@@ -1,8 +1,8 @@
-import {ensure, ApplicationWallet, walletFromBrain} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
-import {Wallet} from 'ethers';
+import {Wallet, utils} from 'ethers';
 import {DeployedWallet} from '../..';
 import {State, map} from 'reactive-properties';
 
@@ -100,6 +100,30 @@ export class WalletService {
     ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
     const applicationWallet: ApplicationWallet = {contractAddress, name, privateKey: wallet.privateKey};
     this.setWallet(applicationWallet);
+  }
+
+  async connect(name: string, callback: Procedure) {
+    const contractAddress = await this.sdk.getWalletContractAddress(name);
+    const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
+
+    const applicationWallet: ApplicationWallet = {privateKey, contractAddress, name};
+    this.setConnecting(applicationWallet);
+
+    const filter = {
+      contractAddress,
+      key: utils.computeAddress(privateKey)
+    };
+
+    const subscription = this.sdk.subscribe('KeyAdded', filter, () => {
+      this.setWallet(applicationWallet);
+      subscription.remove();
+      callback();
+    });
+
+    return {
+      unsubscribe: () => subscription.remove(),
+      securityCode
+    };
   }
 
   disconnect(): void {

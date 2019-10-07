@@ -40,7 +40,7 @@ describe('ULWeb3Provier', () => {
 
     it('can send a simple eth transfer', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       const {transactionHash} = await web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
@@ -58,7 +58,7 @@ describe('ULWeb3Provier', () => {
       });
 
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       const { transactionHash } = await promise;
       const receipt = await web3.eth.getTransactionReceipt(transactionHash);
@@ -73,7 +73,7 @@ describe('ULWeb3Provier', () => {
 
     it('returns single address when wallet is connected', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       expect(await web3.eth.getAccounts()).to.deep.eq([deployedWallet.contractAddress]);
     });
@@ -84,7 +84,7 @@ describe('ULWeb3Provier', () => {
 
     it('web3.eth.sign', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       const signature = await web3.eth.sign(message, deployedWallet.contractAddress);
 
@@ -94,7 +94,7 @@ describe('ULWeb3Provier', () => {
 
     it('web3.eth.personal.sign', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       // wrong library typedefs here
       const signature = await (web3.eth.personal.sign as any)(message, deployedWallet.contractAddress, '');
@@ -115,7 +115,7 @@ describe('ULWeb3Provier', () => {
       expect(isResolved).to.be.false;
 
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       await waitExpect(() => {
         expect(services.uiController.showOnboarding.get()).to.be.false;
@@ -125,7 +125,7 @@ describe('ULWeb3Provier', () => {
 
     it('doesnt show the UI if wallet is already there', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.connect(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       let isResolved = false;
       ulProvider.create().then(() => {
