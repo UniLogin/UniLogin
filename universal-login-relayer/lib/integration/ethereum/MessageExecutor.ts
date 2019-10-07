@@ -31,7 +31,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
       await this.messageRepository.markAsPending(messageHash, hash!);
       await wait();
       await this.onTransactionMined(transactionResponse);
-      await this.messageRepository.setMessageState(messageHash, 'Success');
+      await this.messageRepository.setState(messageHash, 'Success');
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.messageRepository.markAsError(messageHash, errorMessage);

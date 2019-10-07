@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures, MessageState} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures, RepositoryItemState} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../../core/utils/encodeData';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
@@ -83,7 +83,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       .select(['key', 'signature']);
   }
 
-  async setMessageState(messageHash: string, state: MessageState) {
+  async setState(messageHash: string, state: RepositoryItemState) {
     return this.knex(this.tableName)
       .where('hash', messageHash)
       .update('state', state);

@@ -35,14 +35,14 @@ export type MessageStatus = {
   collectedSignatures: string[],
   totalCollected: number,
   required: number,
-  state: MessageState
+  state: RepositoryItemState
 };
 
 export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
 
-export type MessageState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
+export type RepositoryItemState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
 
 export type CollectedSignatureKeyPair = {
   key: string;
