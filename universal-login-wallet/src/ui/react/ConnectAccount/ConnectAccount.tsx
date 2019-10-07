@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {ConnectSelector} from './ConnectSelector';
-import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
 import {useServices, useRouter} from '../../hooks';
+import {ChooseConnectionScreen} from './ChooseConnectionScreen';
 
 export type ConnectModal = 'connectionMethod' | 'selector' | 'recover' | 'emoji';
 
@@ -13,7 +13,13 @@ export const ConnectAccount = () => {
   const [name, setName] = useState<string | undefined>(undefined);
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');
   if (connectModal === 'connectionMethod') {
-    return <ChooseConnectionMethod setConnectModal={setConnectModal} onCancel={() => setConnectModal('selector')} />;
+    return (
+      <ChooseConnectionScreen
+        onConnectWithDeviceClick={() => setConnectModal('emoji')}
+        onConnectWithPassphraseClick={() => setConnectModal('recover')}
+        onCancel={() => setConnectModal('selector')}
+      />
+    );
   } else if (connectModal === 'recover') {
     return <ConnectWithPassphrase
       name={name!}
