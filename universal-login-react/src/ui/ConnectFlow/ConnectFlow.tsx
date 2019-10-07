@@ -12,9 +12,10 @@ interface ConnectFlowProps {
   onFlowSucceeded: () => void;
   sdk: UniversalLoginSDK;
   walletService: WalletService;
+  className?: string;
 }
 
-export const ConnectFlow = ({name, onCancel, onFlowSucceeded, sdk, walletService}: ConnectFlowProps) => {
+export const ConnectFlow = ({name, onCancel, onFlowSucceeded, sdk, walletService, className}: ConnectFlowProps) => {
   const [connectModal, setConnectModal] = useState<ConnectModal>('chooseMethod');
 
   switch (connectModal) {
@@ -24,6 +25,7 @@ export const ConnectFlow = ({name, onCancel, onFlowSucceeded, sdk, walletService
           onConnectWithDeviceClick={() => setConnectModal('emoji')}
           onConnectWithPassphraseClick={() => setConnectModal('recover')}
           onCancel={onCancel}
+          className={className}
         />
       );
     case 'recover':
