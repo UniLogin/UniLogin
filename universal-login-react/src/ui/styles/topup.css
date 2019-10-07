@@ -180,7 +180,7 @@
   border: none;
 }
 
-.universal-login-topup .address-copy-btn {
+.universal-login-topup .copy-btn {
   position: relative;
   margin: 0;
   border: none;
@@ -190,12 +190,12 @@
   width: 50px;
   height: 45px;
   margin-left: 5px;
-  background: #FFFFFF;
-  border: 1px solid #C9C9D7;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
-.universal-login-topup .address-copy-btn::before {
+.universal-login-topup .copy-btn::before {
   content: '';
   height: 20px;
   width: 20px;
