@@ -3,7 +3,6 @@ import {ModalWrapper} from './ModalWrapper';
 import WaitingFor from '../commons/WaitingFor';
 import {ReactModalContext, TopUpProps} from '../../core/models/ReactModalContext';
 import {TopUp} from '../TopUp/TopUp';
-import {ChooseConnectionMethod} from '../Connect/ChooseConnectionMethod';
 
 export interface ModalsProps {
   modalClassName?: string;
@@ -31,16 +30,6 @@ const Modals = ({modalClassName}: ModalsProps) => {
       return (
         <ModalWrapper modalPosition="bottom">
           <WaitingFor />
-        </ModalWrapper>
-      );
-    case 'chooseConnectionMethod':
-      return (
-        <ModalWrapper modalPosition="center">
-          <ChooseConnectionMethod
-            onConnectWithDeviceClick={() => {}}
-            onConnectWithPassphraseClick={() => {}}
-            onCancel={() => {}}
-          />
         </ModalWrapper>
       );
     default:

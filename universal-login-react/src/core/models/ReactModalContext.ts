@@ -3,7 +3,7 @@ import {OnGasParametersChanged} from '@universal-login/commons';
 import {IModalService} from '../services/createModalService';
 import UniversalLoginSDK from '@universal-login/sdk';
 
-export type ReactModalType = 'topUpAccount' | 'topUp' | 'address' | 'waitingForDeploy' | 'waitingForTransfer' | 'safello' | 'chooseConnectionMethod';
+export type ReactModalType = 'topUpAccount' | 'topUp' | 'address' | 'waitingForDeploy' | 'waitingForTransfer' | 'safello' ;
 
 export type ReactModalProps = TopUpProps;
 
