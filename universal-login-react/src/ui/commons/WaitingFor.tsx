@@ -7,18 +7,15 @@ export interface WaitingForProps {
   action: string;
   chainName: string;
   transactionHash?: string;
-  children?: ReactNode;
 }
 
-export const WaitingFor = ({action, chainName, transactionHash, children}: WaitingForProps) => {
+export const WaitingFor = ({action, chainName, transactionHash}: WaitingForProps) => {
   return (
     <div className="universal-login-waiting-for">
       <div className="action-title-box">
         <h1 className="action-title">{action}</h1>
       </div>
       <div>
-        <h3 className="transaction-status">Transaction status: pending</h3>
-        {children}
         <div>
           <ProgressBar className="pending-bar"/>
           <h3 className="transaction-hash-title">Transaction hash</h3>
