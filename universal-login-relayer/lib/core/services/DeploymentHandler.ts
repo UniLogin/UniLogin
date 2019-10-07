@@ -15,7 +15,8 @@ class DeploymentHandler {
   async handleDeployment(deployArgs: DeployArgs, deviceInfo: DeviceInfo) {
     const deployment : Deployment = {
       ...deployArgs,
-      hash: calculateDeployHash(deployArgs)
+      hash: calculateDeployHash(deployArgs),
+      deviceInfo
     };
     await this.deploymentRepository.add(deployment.hash, deployment);
     await this.executionQueue.addDeployment(deployment);
