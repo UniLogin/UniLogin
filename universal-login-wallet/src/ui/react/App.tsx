@@ -52,7 +52,14 @@ const App = () => {
         <Route
           exact
           path="/connect"
-          render={() => <ConnectAccount />}
+          render={() =>
+            <div className="main-bg">
+              <div className="box-wrapper">
+                <div className="box">
+                  <ConnectAccount />
+                </div>
+              </div>
+            </div>}
         />
         <Route
           exact
