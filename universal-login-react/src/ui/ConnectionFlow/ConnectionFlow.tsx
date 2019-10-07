@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK from '@universal-login/sdk';
 import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
+import {OnboardingWalletService} from '../Onboarding/Onboarding';
 
 export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 
-interface ConnectionFlowProps {
+export interface ConnectionFlowProps {
   name: string;
   onCancel: () => void;
   onSuccess: () => void;
   sdk: UniversalLoginSDK;
-  walletService: WalletService;
+  walletService: OnboardingWalletService;
   className?: string;
 }
 
