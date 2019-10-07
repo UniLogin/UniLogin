@@ -13,8 +13,8 @@ interface ConnectWithEmojiProps {
 }
 
 export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps) => {
-  const {sdk, connectToWallet, walletService} = useServices();
-  const [connectValues, error] = useAsync(async () => connectToWallet(name, () => history.push('/')), []);
+  const {sdk, walletService} = useServices();
+  const [connectValues, error] = useAsync(async () => walletService.connect(name, () => history.push('/')), []);
   const {history} = useRouter();
 
   const onCancelClick = async () => {
