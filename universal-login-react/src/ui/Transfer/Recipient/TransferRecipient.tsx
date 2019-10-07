@@ -32,15 +32,17 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, className, de
     <div className="universal-login-recipient">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="transfer-recipient">
-          <p className="transfer-recipient-text">To who are you sending {amount} {symbol}?</p>
-          <div className="transfer-recipient-input-wrapper">
-            <label className="transfer-recipient-label" htmlFor="">Recipient</label>
-            <input
-              id="input-recipient"
-              className="transfer-recipient-input"
-              onChange={onChange}
-            />
-            {showError && <div className="hint">{errorMessage}</div>}
+          <div>
+            <p className="transfer-recipient-text">To who are you sending {amount} {symbol}?</p>
+            <div className="transfer-recipient-input-wrapper">
+              <label className="transfer-recipient-label" htmlFor="">Recipient</label>
+              <input
+                id="input-recipient"
+                className="transfer-recipient-input"
+                onChange={onChange}
+              />
+              {showError && <div className="hint">{errorMessage}</div>}
+            </div>
           </div>
           <FooterSection className={className}>
             <GasPrice
