@@ -8,11 +8,11 @@ import documentIcon from './../../assets/icons/document.svg';
 import {ConnectModal} from './ConnectAccount';
 
 interface ChooseConnectionMethodProps {
-  name: string;
   setConnectModal: (modal: ConnectModal) => void;
+  onCancel: () => void;
 }
 
-export const ChooseConnectionMethod = ({name, setConnectModal}: ChooseConnectionMethodProps) => {
+export const ChooseConnectionMethod = ({onCancel, setConnectModal}: ChooseConnectionMethodProps) => {
   return (
     <div className="main-bg">
       <div className="box-wrapper">
@@ -44,7 +44,7 @@ export const ChooseConnectionMethod = ({name, setConnectModal}: ChooseConnection
               </div>
             </div>
             <div className="choose-connection-btn-wrapper">
-              <button onClick={() => setConnectModal('selector')} className="button-secondary">Cancel</button>
+              <button onClick={onCancel} className="button-secondary">Cancel</button>
             </div>
           </div>
         </div>

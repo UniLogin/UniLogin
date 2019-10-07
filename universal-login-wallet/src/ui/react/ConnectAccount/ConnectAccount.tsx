@@ -10,7 +10,7 @@ export const ConnectAccount = () => {
   const [name, setName] = useState<string | undefined>(undefined);
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');
   if (connectModal === 'connectionMethod') {
-    return <ChooseConnectionMethod name={name!} setConnectModal={setConnectModal}/>;
+    return <ChooseConnectionMethod setConnectModal={setConnectModal} onCancel={() => setConnectModal('selector')}/>;
   } else if (connectModal === 'recover') {
     return <ConnectWithPassphrase name={name!}/>;
   } else if (connectModal === 'emoji') {
