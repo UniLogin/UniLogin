@@ -17,11 +17,15 @@ const ModalTransfer = () => {
   const transferService = new TransferService(deployedWallet);
   const onGenerateClick = async () => {
     modalService.showModal('waitingForTransfer');
-    const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
-    const {transactionHash} = await waitForTransactionHash();
-    modalService.showModal('waitingForTransfer', {transactionHash});
-    await waitToBeSuccess();
-    modalService.hideModal();
+    try {
+      const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
+      const {transactionHash} = await waitForTransactionHash();
+      modalService.showModal('waitingForTransfer', {transactionHash});
+      await waitToBeSuccess();
+      modalService.hideModal();
+    } catch (e) {
+      modalService.showModal('error', `${e.name}: ${e.message}`);
+    }
   };
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
