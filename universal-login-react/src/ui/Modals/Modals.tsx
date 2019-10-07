@@ -30,10 +30,12 @@ const Modals = ({modalClassName}: ModalsProps) => {
       );
     case 'connectionFlow':
       return (
-        <ConnectionFlow
-          onCancel={modalService.hideModal}
-          {...modalService.modalProps as ConnectionFlowProps}
-        />
+        <ModalWrapper modalPosition="bottom">
+          <ConnectionFlow
+            onCancel={modalService.hideModal}
+            {...modalService.modalProps as ConnectionFlowProps}
+          />
+        </ModalWrapper>
       );
     default:
       return null;
