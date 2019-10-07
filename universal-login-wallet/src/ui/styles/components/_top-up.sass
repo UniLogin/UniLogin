@@ -164,6 +164,7 @@
       align-items: center
       background: #FFFFFF
       border: none
+      border: 1px solid #E1E1F0
 
     .top-up-label
       display: block
@@ -180,7 +181,31 @@
       background: #FFFFFF
       font-size: 14px
       color: #6e798e
-      border: 1px solid #E1E1F0
+
+    .copy-btn::before
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      background: url('../assets/icons/copy.svg') center no-repeat
+
+    .copy-btn-feedback
+      visibility: hidden
+      text-align: center
+      padding: 5px
+      z-index: 1
+      opacity: 0
+      color: green
+
+    .copy-btn-feedback:before
+      content: '\2713'
+
+    .copy-btn:active .copy-btn-feedback
+      visibility: visible
+      opacity: 1
+
+    .copy-btn:active::before
+      background: none
 
     .address-modal-text
       margin-top: 12px
