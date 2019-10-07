@@ -5,7 +5,7 @@ import UniversalLoginSDK from '@universal-login/sdk';
 import {OnboardingWalletService} from '../../ui/Onboarding/Onboarding';
 import {WaitingForProps} from '../../ui/commons/WaitingFor';
 
-export type ReactModalType = 'connectionFlow' | topUpAccount' | 'topUp' | 'address' | 'waitingFor' | 'safello';
+export type ReactModalType = 'connectionFlow' | 'topUpAccount' | 'topUp' | 'address' | 'waitingFor' | 'safello';
 
 export type ReactModalProps = TopUpProps | WaitingForProps  | ConnectionFlowProps;
 
