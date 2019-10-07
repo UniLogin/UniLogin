@@ -28,13 +28,13 @@ const Modals = ({modalClassName}: ModalsProps) => {
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalPosition="center">
-          <WaitingFor {...modalService.modalProps} action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0x5a63…f3a68a'}/>
+          <WaitingFor {...modalService.modalProps} action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}/>
         </ModalWrapper>
       );
     case 'topUp':
       return (
         <ModalWrapper modalPosition="center">
-          <WaitingFor {...modalService.modalProps} action={'Top up'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0x5a63…f3a68a'}/>
+          <WaitingFor {...modalService.modalProps} action={'Top up'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}/>
         </ModalWrapper>
       );
     default:
