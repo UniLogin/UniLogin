@@ -44,7 +44,7 @@ const Modal = () => {
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <ModalWaitingFor {...modalService.modalProps} action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0x5a63…f3a68a'}/>
+          <ModalWaitingFor {...modalService.modalProps} action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}/>
         </ModalWrapper>
       );
     case 'waitingForTransfer':
