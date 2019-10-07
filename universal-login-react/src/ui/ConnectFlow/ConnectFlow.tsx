@@ -9,13 +9,13 @@ export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 interface ConnectFlowProps {
   name: string;
   onCancel: () => void;
-  onFlowSucceeded: () => void;
+  onSuccess: () => void;
   sdk: UniversalLoginSDK;
   walletService: WalletService;
   className?: string;
 }
 
-export const ConnectFlow = ({name, onCancel, onFlowSucceeded, sdk, walletService, className}: ConnectFlowProps) => {
+export const ConnectFlow = ({name, onCancel, onSuccess, sdk, walletService, className}: ConnectFlowProps) => {
   const [connectModal, setConnectModal] = useState<ConnectModal>('chooseMethod');
 
   switch (connectModal) {
@@ -33,7 +33,7 @@ export const ConnectFlow = ({name, onCancel, onFlowSucceeded, sdk, walletService
         <ConnectWithPassphrase
           name={name!}
           walletService={walletService}
-          onRecover={onFlowSucceeded}
+          onRecover={onSuccess}
         />
       );
     case 'emoji':
@@ -42,7 +42,7 @@ export const ConnectFlow = ({name, onCancel, onFlowSucceeded, sdk, walletService
           name={name!}
           sdk={sdk}
           walletService={walletService}
-          onConnect={onFlowSucceeded}
+          onConnect={onSuccess}
           onCancel={() => setConnectModal('chooseMethod')}
         />
       );

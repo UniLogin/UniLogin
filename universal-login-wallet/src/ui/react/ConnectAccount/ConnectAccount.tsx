@@ -16,7 +16,7 @@ export const ConnectAccount = () => {
       sdk={sdk}
       walletService={walletService}
       onCancel={() => setConnectModal('selector')}
-      onFlowSucceeded={() => history.push('/')}
+      onSuccess={() => history.push('/')}
       className={'jarvis-connect'}
     />;
   } else {
