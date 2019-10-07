@@ -15,17 +15,19 @@ export const ConnectAccount = () => {
   if (connectModal === 'connectionMethod') {
     return <ChooseConnectionMethod setConnectModal={setConnectModal} onCancel={() => setConnectModal('selector')} />;
   } else if (connectModal === 'recover') {
-    return <ConnectWithPassphrase name={name!} />;
+    return <ConnectWithPassphrase
+      name={name!}
+      walletService={walletService}
+      onRecover={() => history.push('/')}
+    />;
   } else if (connectModal === 'emoji') {
-    return (
-      <ConnectWithEmoji
-        name={name!}
-        sdk={sdk}
-        walletService={walletService}
-        onConnect={() => history.push('/')}
-        onCancel={() => setConnectModal('connectionMethod')}
-      />
-    );
+    return <ConnectWithEmoji
+      name={name!}
+      sdk={sdk}
+      walletService={walletService}
+      onConnect={() => history.push('/')}
+      onCancel={() => setConnectModal('connectionMethod')}
+    />;
   } else {
     return <ConnectSelector setName={setName} setConnectModal={setConnectModal} />;
   }
