@@ -33,6 +33,7 @@ export const Onboarding = (props: OnboardingProps) => {
   const onCreateClick = async (ensName: string) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
     const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
+    await props.sdk.getRelayerConfig();
     const topUpProps: TopUpProps = {
       contractAddress,
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
