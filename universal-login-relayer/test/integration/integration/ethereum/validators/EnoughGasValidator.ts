@@ -14,9 +14,9 @@ describe('INT: EstimateGasValidator', async () => {
   let wallet: Wallet;
   let validator: IMessageValidator;
 
-  before(async () => {
+  beforeEach(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
+    message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS, gasLimit: '200000', nonce: 1};
     validator = new EstimateGasValidator(wallet);
   });
 
@@ -30,8 +30,8 @@ describe('INT: EstimateGasValidator', async () => {
     await expect(validator.validate(signedMessage)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
-  it('passes when not enough tokens', async () => {
+  it('throws when not enough tokens', async () => {
     const signedMessage = messageToSignedMessage({...message, gasLimit: utils.parseEther('2.0')}, wallet.privateKey);
-    await expect(validator.validate(signedMessage)).to.be.eventually.fulfilled;
+    await expect(validator.validate(signedMessage)).to.be.rejectedWith('Not enough gas');
   });
 });

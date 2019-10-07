@@ -1,5 +1,5 @@
-import {Wallet, providers, utils} from 'ethers';
-import {SignedMessage, ensure} from '@universal-login/commons';
+import {Wallet, providers} from 'ethers';
+import {SignedMessage, ensure, calculateMessageHash} from '@universal-login/commons';
 import IMessageValidator from '../../../core/services/validators/IMessageValidator';
 import {messageToTransaction} from '../../../core/utils/messages/serialisation';
 import {NotEnoughGas} from '../../../core/utils/errors';
@@ -9,8 +9,14 @@ export default class EstimateGasValidator implements IMessageValidator {
 
   async validate(signedMessage: SignedMessage) {
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    const estimateGas = await this.wallet.provider.estimateGas({ ...transactionReq, from: this.wallet.address });
-    const totalGas = utils.bigNumberify(signedMessage.gasLimitExecution).add(utils.bigNumberify(signedMessage.gasData));
-    ensure(totalGas.gte(estimateGas), NotEnoughGas);
+    let messageHash;
+    try {
+      messageHash = await this.wallet.provider.call({ ...transactionReq, from: this.wallet.address }); // TODO estimate gas
+    }
+    catch (e) {
+      throw new NotEnoughGas();
+    }
+    const calculatedMessageHash = calculateMessageHash(signedMessage);
+    ensure(messageHash === calculatedMessageHash, NotEnoughGas);
   }
 }

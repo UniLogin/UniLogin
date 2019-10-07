@@ -20,9 +20,9 @@ describe('INT: MessageExecutionValidator', async () => {
   let messageExecutionValidator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
 
-  before(async () => {
+  beforeEach(async () => {
     ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS};
+    message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList);
   });
 
