@@ -1,24 +1,24 @@
 import React, {useState} from 'react';
 import {Spinner, InputLabel} from '@universal-login/react';
 import {CustomInput} from '../common/CustomInput';
-import {useServices, useRouter} from '../../hooks';
+import {WalletService} from '@universal-login/sdk';
 
 interface ConnectWithPassphraseProps {
   name: string;
+  walletService: WalletService;
+  onRecover: () => void;
 }
 
-export const ConnectWithPassphrase = ({name}: ConnectWithPassphraseProps) => {
+export const ConnectWithPassphrase = ({onRecover, name, walletService}: ConnectWithPassphraseProps) => {
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const {walletService} = useServices();
-  const {history} = useRouter();
 
   const onRecoveryClick = async () => {
     setIsLoading(true);
     try {
       await walletService.recover(name, code);
-      history.push('/');
+      onRecover();
     } catch (e) {
       setIsLoading(false);
       setErrorMessage(e.message);
