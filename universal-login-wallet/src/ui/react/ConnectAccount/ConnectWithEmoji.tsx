@@ -5,15 +5,17 @@ import vault2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useRouter} from '../../hooks';
 import {ConnectModal} from './ConnectAccount';
 import {ensure} from '@universal-login/commons';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 
 
 interface ConnectWithEmojiProps {
   name: string;
   setConnectModal: (modal: ConnectModal) => void;
+  sdk: UniversalLoginSDK;
+  walletService: WalletService;
 }
 
-export const ConnectWithEmoji = ({name, setConnectModal}: ConnectWithEmojiProps) => {
-  const {sdk, walletService} = useServices();
+export const ConnectWithEmoji = ({name, sdk, setConnectModal, walletService}: ConnectWithEmojiProps) => {
   const [connectValues, error] = useAsync(async () => walletService.connect(name, () => history.push('/')), []);
   const {history} = useRouter();
 

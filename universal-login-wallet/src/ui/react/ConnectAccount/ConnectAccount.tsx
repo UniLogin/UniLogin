@@ -3,10 +3,12 @@ import {ConnectSelector} from './ConnectSelector';
 import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
+import {useServices} from '../../hooks';
 
 export type ConnectModal = 'connectionMethod' | 'selector' | 'recover' | 'emoji';
 
 export const ConnectAccount = () => {
+  const {sdk, walletService} = useServices();
   const [name, setName] = useState<string | undefined>(undefined);
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');
   if (connectModal === 'connectionMethod') {
@@ -14,7 +16,7 @@ export const ConnectAccount = () => {
   } else if (connectModal === 'recover') {
     return <ConnectWithPassphrase name={name!}/>;
   } else if (connectModal === 'emoji') {
-    return <ConnectWithEmoji name={name!} setConnectModal={setConnectModal} />;
+    return <ConnectWithEmoji name={name!} sdk={sdk} setConnectModal={setConnectModal} walletService={walletService}/>;
   } else {
     return <ConnectSelector setName={setName} setConnectModal={setConnectModal}/>;
   }
