@@ -25,7 +25,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
   const sdkConfig = {
     ...overrides.sdkConfig,
     applicationInfo: {
-      applicationName:'Jarvis',
+      applicationName: 'Jarvis',
       type: 'laptop'
     },
     paymentOptions: {},
