@@ -41,7 +41,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
     await this.messageValidator.validate(signedMessage);
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
-    return this.wallet.sendTransaction({...transactionReq});
+    return this.wallet.sendTransaction(transactionReq);
   }
 }
 
