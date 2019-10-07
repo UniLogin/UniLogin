@@ -9,6 +9,8 @@ export interface TopUpModalProps {
   onGasParametersChanged: OnGasParametersChanged;
 }
 
-export type WalletModalPropType = Partial<ModalWaitingForProps> | TopUpModalProps;
+type ErrorMessageType = string;
+
+export type WalletModalPropType = Partial<ModalWaitingForProps> | TopUpModalProps | ErrorMessageType;
 
 export const WalletModalContext = React.createContext({} as IModalService<WalletModalType, WalletModalPropType>);
