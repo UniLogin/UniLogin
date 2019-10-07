@@ -13,6 +13,6 @@ export const createWallet = async (name: string, sdk: UniversalLoginSDK, wallet:
 
 export const createAndSetWallet = async (name: string, walletService: WalletService, wallet: Wallet, sdk: UniversalLoginSDK) => {
   const {privateKey, contractAddress} = await createWallet(name, sdk, wallet);
-  walletService.connect({privateKey, contractAddress, name});
+  walletService.setWallet({privateKey, contractAddress, name});
   return {contractAddress, privateKey, walletService};
 };

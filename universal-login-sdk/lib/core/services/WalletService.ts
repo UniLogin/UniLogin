@@ -83,7 +83,7 @@ export class WalletService {
     this.stateProperty.set({kind: 'Connecting', wallet});
   }
 
-  connect(wallet: ApplicationWallet) {
+  setWallet(wallet: ApplicationWallet) {
     if (this.state.kind !== 'None' && this.state.kind !== 'Connecting') {
       throw new WalletOverridden();
     }
@@ -99,7 +99,7 @@ export class WalletService {
     const wallet = await this.walletFromPassphrase(name, passphrase);
     ensure(await this.sdk.keyExist(contractAddress, wallet.address), InvalidPassphrase);
     const applicationWallet: ApplicationWallet = {contractAddress, name, privateKey: wallet.privateKey};
-    this.connect(applicationWallet);
+    this.setWallet(applicationWallet);
   }
 
   disconnect(): void {
