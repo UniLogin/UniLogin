@@ -9,7 +9,8 @@ export interface AmountInputProps {
 
 export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
-  const currenciesList = ['GBP', 'EUR', 'PLN', 'USD'];
+  const currenciesList = ['ETH'];
+  const disabled = currenciesList.length < 2;
 
   const onCurrencyItemClick = (currency: string) => {
     setExpanded(false);
@@ -26,8 +27,8 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
       />
       <div className="amount-dropdown">
         <button
-          className={`amount-dropdown-btn amount-dropdown-toggle ${expanded ? 'expanded' : ''}`}
-          onClick={() => setExpanded(!expanded)}
+          className={`amount-dropdown-btn ${disabled ? '' : 'amount-dropdown-toggle'} ${expanded ? 'expanded' : ''}`}
+          onClick={() => disabled || setExpanded(!expanded)}
         >
           {selectedCurrency}
         </button>

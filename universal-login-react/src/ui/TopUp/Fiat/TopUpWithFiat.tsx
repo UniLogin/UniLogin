@@ -18,7 +18,7 @@ export interface TopUpWithFiatProps {
 
 export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
-  const [currency, setCurrency] = useState('EUR');
+  const [currency, setCurrency] = useState('ETH');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const [fiatClass, setFiatClass] = useState('');
@@ -50,7 +50,6 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
     const userCountry = countries.find(({code}) => code === userCountryCode);
     if (country === undefined && userCountry) {
       changeCountry(userCountry.name);
-      setCurrency(userCountry.currency);
     }
     return () => {};
   }
