@@ -50,10 +50,9 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     <li className={`connected-devices-item ${type.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
       {getApplicationLogo(applicationName ? applicationName.toLowerCase() : '')}
       <div>
-        <p className="connected-devices-type">{applicationName}</p>
-        <p className="connected-devices-details">{os} &bull; {city}</p>
+        <p className="connected-devices-type">{applicationName} &bull; {os}</p>
         <p className="connected-devices-details">
-          IP adress {ipAddress}
+          IP adress {ipAddress} {city}
           {time
             ? time
             : <span className="connected-devices-active"> Active device</span>

@@ -29,13 +29,15 @@ export const ModalTransferAmount = ({
             <h2 className="box-title">Send</h2>
           </div>
           <div className="modal-content">
-            <TransferAmount
-              deployedWallet={deployedWallet}
-              onSelectRecipientClick={onSelectRecipientClick}
-              updateTransferDetailsWith={updateTransferDetailsWith}
-              tokenDetails={tokenDetails}
-              transferAmountClassName={transferAmountClassName}
-            />
+            <div className="modal">
+              <TransferAmount
+                deployedWallet={deployedWallet}
+                onSelectRecipientClick={onSelectRecipientClick}
+                updateTransferDetailsWith={updateTransferDetailsWith}
+                tokenDetails={tokenDetails}
+                transferAmountClassName={transferAmountClassName}
+              />
+            </div>
           </div>
         </div>
       </div>
