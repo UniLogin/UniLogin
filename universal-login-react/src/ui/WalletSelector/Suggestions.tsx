@@ -9,16 +9,34 @@ interface SuggestionsProps {
   actions?: WalletSuggestionAction[];
 }
 
+const getButton = (length: number, operationType: string, suggestion: string, onClick: (...args: any[]) => void) => {
+  if (length === 1 && operationType === 'create new') {
+    return (
+      <>
+        <h3 className="suggestions-title">{suggestion}</h3>
+        <span className="suggestion-element"> This username is available </span>
+        <button className="suggestions-item-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
+          Create New Account
+        </button>
+      </>
+    );
+  } else {
+    return (
+      <button className="suggestions-item-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
+        <p className="suggestions-item-text">{suggestion}</p>
+        <p className="suggestions-item-btn-text">{operationType}</p>
+      </button>
+    );
+  }
+};
+
 const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void) =>
   array.map((element => (
     <li
       key={`${operationType}_${element}`}
       className="suggestions-item"
     >
-      <button className="suggestions-item-btn" id={getSuggestionId(operationType)} onClick={() => onClick(element)}>
-        <p className="suggestions-item-text">{element}</p>
-        <p className="suggestions-item-btn-text">{operationType}</p>
-      </button>
+      {getButton(array.length, operationType, element, onClick)}
     </li>
   )));
 

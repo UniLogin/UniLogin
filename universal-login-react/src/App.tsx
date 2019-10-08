@@ -109,7 +109,7 @@ export const App = () => {
                   onCreateClick={() => { console.log('create'); }}
                   onConnectClick={() => { console.log('connect'); }}
                   sdk={sdk}
-                  domains={['mylogin.eth', 'myapp.eth']}
+                  domains={['mylogin.eth']}
                 />
               )}
             />
