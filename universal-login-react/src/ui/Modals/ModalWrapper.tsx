@@ -29,7 +29,7 @@ export const ModalWrapper = ({ modalPosition, children, modalClassName, hideModa
 
   return (
     <>
-      <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-defaults'}>
+      <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-default'}>
         <div className="modal-overlay" onClick={hideModal} />
         <div className={`modal-wrapper ${modalPosition ? modalPosition : 'center'}`}>
           <div className="modal">
