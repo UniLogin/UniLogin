@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/react",
-  "version": "0.3.51",
+  "version": "0.3.55",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -17,8 +17,8 @@
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.0.1",
     "@restless/sanitizers": "^0.2.2",
-    "@universal-login/commons": "0.3.51",
-    "@universal-login/sdk": "0.3.51",
+    "@universal-login/commons": "0.3.55",
+    "@universal-login/sdk": "0.3.55",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.36",
     "lodash.range": "^3.2.0",
