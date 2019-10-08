@@ -44,8 +44,7 @@ export const Onboarding = (props: OnboardingProps) => {
     modalService.showModal('waitingFor', {
       relayerConfig,
       action: 'Wallet creation',
-      transactionHash: '0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}
-    );
+    });
     const wallet = await deploy(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken);
     walletService.setDeployed(ensName);
     modalService.hideModal();
