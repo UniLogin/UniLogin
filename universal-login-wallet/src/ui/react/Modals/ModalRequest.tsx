@@ -13,18 +13,20 @@ const ModalRequest = () => {
         <h2 className="box-title">Recieve</h2>
       </div>
       <div className="modal-content">
-        <div className="qr-code">
-          <QRCode level="M" width={128} height={128} value={walletPresenter.getContractAddress()} />
-        </div>
-        <InputLabel htmlFor="address">Receiving address</InputLabel>
-        <InputWithButton
-          id="address"
-          value={walletPresenter.getContractAddress()}
-          className="request-modal-address"
-        />
-        <div className="receive-modal-hints">
-          <Hint color="yellow">All your Ethereum tokens have the same address</Hint>
-          <Hint color="red">Only send Ethereum token to this address.</Hint>
+        <div className="modal">
+          <div className="qr-code">
+            <QRCode level="M" width={128} height={128} value={walletPresenter.getContractAddress()} />
+          </div>
+          <InputLabel htmlFor="address">Receiving address</InputLabel>
+          <InputWithButton
+            id="address"
+            value={walletPresenter.getContractAddress()}
+            className="request-modal-address"
+          />
+          <div className="receive-modal-hints">
+            <Hint color="yellow">All your Ethereum tokens have the same address</Hint>
+            <Hint color="red">Only send Ethereum token to this address.</Hint>
+          </div>
         </div>
       </div>
     </div>
