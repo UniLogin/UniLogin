@@ -1,5 +1,5 @@
 import React from 'react';
-import './../styles/test-network-notice.sass';
+import './../styles/notice.sass';
 
 export interface TestNetworkNoticeProps {
   message: string;
@@ -7,7 +7,11 @@ export interface TestNetworkNoticeProps {
 
 export const Notice = ({message}: TestNetworkNoticeProps) => {
   if (message) {
-    return <div className="notice">{message}</div>;
+    return (
+      <div className="notice-wrapper">
+        <div className="notice">{message}</div>
+      </div>
+    );
   }
   return null;
 };
