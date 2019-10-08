@@ -32,7 +32,12 @@ export const Onboarding = (props: OnboardingProps) => {
 
   const onCreateClick = async (ensName: string) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
-    const {deploy, waitForBalance, contractAddress} = await walletService.createFutureWallet();
+    const {deploy, waitForBalance, contractAddress, privateKey} = await walletService.createFutureWallet();
+    localStorage.setItem('BACKUP_DEMO', JSON.stringify({
+      ensName,
+      contractAddress,
+      privateKey
+    }));
     const relayerConfig = await props.sdk.getRelayerConfig();
     const topUpProps: TopUpProps = {
       contractAddress,
