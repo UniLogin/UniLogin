@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
+import KickbackLogo from '../../assets/ucomponent/logo-kickback.svg';
+import EvidanceLogo from '../../assets/ucomponent/evidance-logo.png';
+import JarvisLogo from '../../assets/ucomponent/jarvis-logo.png';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
@@ -28,6 +31,19 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     } else {
       showWarningMessage();
     }
+  };
+
+  // tslint:disable-next-line:no-unused-variable
+  const getApplicationLogo = (applicationName : string) => {
+    const getImage = (logo: string) => (<img src={logo}/>);
+    if (applicationName === 'kickback') {
+      return getImage(KickbackLogo);
+    } else if (applicationName === 'evidance') {
+      return getImage(EvidanceLogo);
+    } else if (applicationName === 'jarvis') {
+      return getImage(JarvisLogo);
+    }
+    return <div/>;
   };
 
   return (
