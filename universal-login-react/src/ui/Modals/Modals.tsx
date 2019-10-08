@@ -30,7 +30,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
       );
     case 'connectionFlow':
       return (
-        <ModalWrapper modalPosition="bottom">
+        <ModalWrapper>
           <ConnectionFlow
             onCancel={modalService.hideModal}
             {...modalService.modalProps as ConnectionFlowProps}
