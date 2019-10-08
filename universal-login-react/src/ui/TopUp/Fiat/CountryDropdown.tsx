@@ -14,7 +14,6 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
   const onDropdownItemClick = (selectedCountry: string, currency: string) => {
     setExpanded(false);
     setCountry(selectedCountry);
-    setCurrency(currency);
   };
 
   const countrySelectionButton = () => {
