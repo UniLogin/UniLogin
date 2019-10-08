@@ -35,7 +35,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
 
   // tslint:disable-next-line:no-unused-variable
   const getApplicationLogo = (applicationName : string) => {
-    const getImage = (logo: string) => (<img src={logo}/>);
+    const getImage = (logo: string) => (<img src={logo} className="connected-devices-img" />);
     if (applicationName === 'kickback') {
       return getImage(KickbackLogo);
     } else if (applicationName === 'evidance') {
@@ -43,11 +43,12 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     } else if (applicationName === 'jarvis') {
       return getImage(JarvisLogo);
     }
-    return <div/>;
+    return null;
   };
 
   return (
     <li className={`connected-devices-item ${type.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
+      {getApplicationLogo(applicationName ? applicationName.toLowerCase() : '')}
       <div>
         <p className="connected-devices-type">{applicationName}</p>
         <p className="connected-devices-details">{os} &bull; {city}</p>
