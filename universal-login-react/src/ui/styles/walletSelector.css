@@ -4,8 +4,14 @@
 
 textarea, select, input, button { outline: none; }
 
+.universal-login-default {
+  position: relative;
+}
+
 .universal-login {
   font-family: 'Fira Sans', helvetica neue, helvetica, arial, sans-serif;
+  width: 100%;
+  max-width: 320px;
 }
 
 .perspective {
@@ -23,10 +29,11 @@ textarea, select, input, button { outline: none; }
   transform: translateY(-50%);
 }
 
-.universal-login .input-wallet-selector ,
-.universal-login .button-web3-provider ,
-.universal-login .ethereum-account {
+.universal-login-default .input-wallet-selector ,
+.universal-login-default .button-web3-provider ,
+.universal-login-default .ul-button-ethereum-account {
   width: 100%;
+  max-width: 320px;
   height: 45px;
   padding: 12px 46px 12px 42px;
   border-radius: 5px;
@@ -34,7 +41,7 @@ textarea, select, input, button { outline: none; }
 
 .universal-login .selector-input-wrapper ,
 .universal-login .button-web3-provider ,
-.universal-login .ethereum-account {
+.universal-login .ul-button-ethereum-account {
   transition: transform 0.8s;
   transform-style: preserve-3d;
   transform: rotateX(170deg);
@@ -51,36 +58,64 @@ textarea, select, input, button { outline: none; }
   text-transform: uppercase;
   font-weight: bold;
   transform: rotateX(-180deg);
-  padding-left: 6px;
-  padding-right: 6px;
+  padding: 0;
+  /* padding-left: 6px;
+  padding-right: 6px; */
   cursor: pointer;
 }
 
 
-.universal-login .ethereum-account {
-  /* custom something */
+.universal-login-default .ul-button-ethereum-account {
   position: absolute;
   top: 0;
-  padding-top: 14px;
-  /* font-family: helvetica neue, helvetica, arial, sans-serif; */
   color: #666;
-  text-align: center;
   background: #fff;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 12px 0;
+  min-width: 46px;
+
 }
 
-.universal-login .ethereum-account::after {
+.universal-login-default .ul-logo {
+  flex: 0 1 50px;
+  border-right: solid 1px rgba(255,255,255,0.5);
+  text-align: center;
+}
+
+.universal-login-default .ul-name {
+  flex: 2;
+  padding: 0 20px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.universal-login-default .ul-button-ethereum-account .ul-balance {
+  flex: 1;
+  padding: 0 10px;
+  text-align: right;
+  font-weight: 100;
+  opacity: 0.5;
+}
+
+
+
+/* .universal-login-default .ul-button-ethereum-account .ul-identicon {
   position: absolute;
   top: 9px;
   left: 9px;
   content: " ";
-  background: #ccc;
+  background: #9911ff;
   width: 28px;
   height: 28px;
   border-radius: 50%;
+  text-indent: 0;
 }
+
+.universal-login-default .ul-button-ethereum-account .ul-identicon img {
+  width: 100%;
+} */
 
 .universal-login .selector-input-wrapper {
   /* custom something */
@@ -108,7 +143,7 @@ textarea, select, input, button { outline: none; }
   transform: rotateX(-60deg);
 }
 
-.universal-login.show-account .ethereum-account {
+.universal-login.show-account .ul-button-ethereum-account {
   transform: rotateX(0);
   opacity: 1;
 }

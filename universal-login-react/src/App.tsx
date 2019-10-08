@@ -98,6 +98,7 @@ export const App = () => {
                   onConnect={onConnect}
                   onCreate={onCreate}
                   domains={['mylogin.eth', 'universal-id.eth']}
+                  tryEnablingMetamask={tryEnablingMetamask}
                 />
               )}
             />
@@ -110,6 +111,7 @@ export const App = () => {
                   onConnectClick={() => { console.log('connect'); }}
                   sdk={sdk}
                   domains={['mylogin.eth']}
+                  tryEnablingMetamask={tryEnablingMetamask}
                 />
               )}
             />

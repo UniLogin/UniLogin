@@ -14,6 +14,7 @@ import Logo from './../assets/logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
+import ethLogo from '../assets/icons/ethereum-logo.svg';
 
 interface WalletSelector {
   onCreateClick: (...args: any[]) => void;
@@ -110,9 +111,18 @@ export const WalletSelector = ({
           {renderBusyIndicator(busy)}
         </div>
         <button className="button-web3-provider" onClick={onDetectClick}>
-          Sign in with Ethereum
+          <div className="ul-logo">
+            <img src={ethLogo} alt="Ethereum Logo" />
+          </div>
+          <div className="ul-name">Sign in with Ethereum</div>
         </button>
-        <div className="ethereum-account">{ethAccount}</div>
+        <div className="ul-button-ethereum-account">
+          <div className="ul-logo">
+            <img src={ethLogo} alt="Ethereum Logo" />
+          </div>
+          <div className="ul-name">{ethAccount}</div>
+          <div className="ul-balance"> $12.34 </div>
+        </div>
 
         {renderSuggestions()}
       </div>

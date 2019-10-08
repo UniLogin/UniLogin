@@ -9,8 +9,8 @@ interface SuggestionsProps {
   actions?: WalletSuggestionAction[];
 }
 
-const getButton = (length: number, operationType: string, suggestion: string, onClick: (...args: any[]) => void) => {
-  if (length === 1 && operationType === 'create new') {
+const getButton = (operationType: string, suggestion: string, onClick: (...args: any[]) => void, isSingleCreation?: boolean) => {
+  if (isSingleCreation) {
     return (
       <>
         <h3 className="suggestions-title">{suggestion}</h3>
@@ -30,13 +30,13 @@ const getButton = (length: number, operationType: string, suggestion: string, on
   }
 };
 
-const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void) =>
+const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void, isSingleCreation?: boolean) =>
   array.map((element => (
     <li
       key={`${operationType}_${element}`}
       className="suggestions-item"
     >
-      {getButton(array.length, operationType, element, onClick)}
+      {getButton(operationType, element, onClick, isSingleCreation)}
     </li>
   )));
 
@@ -44,8 +44,9 @@ const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[]
   actions.includes(flag) ? suggestions : [];
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions}: SuggestionsProps) => {
+  const isSingleCreation = connections.length === 0 && creations.length === 1;
   const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectClick);
-  const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick);
+  const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick, isSingleCreation);
   const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSuggestionAction.recover), () => alert('not implemented'));
   return (
     <ul className="suggestions-list">

@@ -37,7 +37,7 @@
   color: #FFFFFF;
 }
 
-.universal-login-default .ethereum-account ,
+.universal-login-default .ul-button-ethereum-account ,
 .universal-login-default .button-web3-provider {
   font-weight: 500;
   font-size: 14px;
@@ -48,6 +48,6 @@
   text-shadow: none;
 }
 
-.universal-login-default .ethereum-account:after {
+.universal-login-default .ul-button-ethereum-account:after {
   background: #e43471;
 }

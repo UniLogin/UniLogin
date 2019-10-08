@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {UHeader} from './UHeader';
 import {Funds} from './Funds';
-import {asTransferDetails, TransferDetails, GasParameters} from '@universal-login/commons';
+import {asTransferDetails, TransferDetails, GasParameters, CurrencyToValue} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
-import logoIcon from '../assets/icons/U.svg';
+import ethLogo from '../assets/icons/ethereum-logo.svg';
 import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
 import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
@@ -17,6 +17,7 @@ import {InvalidTransferDetails} from '../../core/utils/errors';
 import {Notice} from '../commons/Notice';
 import {UNavBarMobile} from './UNavBarMobile';
 import {WaitingFor} from '../commons/WaitingFor';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -44,6 +45,9 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
     setBetaNotice(sdk);
     setNotice(sdk.getNotice());
   });
+
+  const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
+  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(contractAddress, setTotalTokensValue), []);
 
   const [newNotifications, setNewNotifications] = useState([] as Notification[]);
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, setNewNotifications), []);
@@ -79,7 +83,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
               onTopUpClick={() => setDashboardContent('topup')}
               onSendClick={() => setDashboardContent('transferAmount')}
             />
-            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
+            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent} />
           </>
         );
       case 'topup':
@@ -115,7 +119,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'waitingForTransfer':
         return (
-          <WaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} transactionHash={transactionHash}/>
+          <WaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} transactionHash={transactionHash} />
         );
       case 'devices':
         return (
@@ -123,7 +127,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             <Devices
               deployedWallet={deployedWallet}
             />
-            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
+            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent} />
           </>
         );
       case 'backup':
@@ -132,7 +136,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             <BackupCodes
               deployedWallet={deployedWallet}
             />
-            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
+            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent} />
           </>
         );
       default:
@@ -143,9 +147,16 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
 
   return (
     <>
-      <button className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`} onClick={() => onUButtonClick()}>
-        <img src={logoIcon} alt="U" />
-      </button>
+      <div
+        className={`ul-button-ethereum-account ${newNotifications.length > 0 ? 'new-notifications' : ''}`}
+        onClick={() => onUButtonClick()}
+      >
+        <div className="ul-logo">
+          <img src={ethLogo} alt="Ethereum Logo" />
+        </div>
+        <div className="ul-name">{deployedWallet.name}</div>
+        <div className="ul-balance"> ${totalTokensValue.USD} </div>
+      </div>
       {dashboardVisibility &&
         <ModalWrapper
           hideModal={() => setDashboardVisibility(false)}
@@ -153,7 +164,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         >
           <div className="udashboard">
             <UHeader activeTab={dashboardContent} setActiveTab={setDashboardContent} />
-            <Notice message={notice}/>
+            <Notice message={notice} />
             <div className="udashboard-content">
               {renderDashboardContent()}
             </div>
