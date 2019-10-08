@@ -50,12 +50,6 @@ Packages maintained with this monorepo are listed below.
 - Domain: `poppularapp.test`
 - Relayer url: `https://relayer-rinkeby.universallogin.io`
 
-### Mainnet (test environment):
-- Domain: `unitest.eth`
-- Relayer url: `https://relayer-mainnet.universallogin.io`
-- Jarvis Wallet (web wallet): [wallet.universallogin.io](https://wallet.universallogin.io)
-
-
 ## Contributing
 
 Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/UniversalLogin/UniversalLoginSDK/blob/master/CONTRIBUTION.md).
