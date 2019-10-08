@@ -98,7 +98,6 @@ export const App = () => {
                   onConnect={onConnect}
                   onCreate={onCreate}
                   domains={['mylogin.eth', 'universal-id.eth']}
-                  tryEnablingMetamask={tryEnablingMetamask}
                 />
               )}
             />
