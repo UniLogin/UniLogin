@@ -50,6 +50,7 @@
     "@types/geoip-lite": "^1.1.29",
     "@types/mocha": "^5.2.5",
     "@types/node-fetch": "^2.5.0",
+    "@types/ua-parser-js": "^0.7.33",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.0.0",
