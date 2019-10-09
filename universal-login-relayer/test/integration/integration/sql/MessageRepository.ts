@@ -106,7 +106,7 @@ describe(`INT: IMessageRepository (${config.type.name})`, async () => {
   it('should set message state', async () => {
     await messageRepository.add(messageHash, messageItem);
     const expectedState = 'Queued';
-    await messageRepository.setMessageState(messageHash, expectedState);
+    await messageRepository.setState(messageHash, expectedState);
     const {state} = await messageRepository.get(messageHash);
     expect(state).to.be.eq(expectedState);
   });

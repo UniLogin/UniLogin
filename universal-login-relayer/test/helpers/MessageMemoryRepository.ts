@@ -70,7 +70,7 @@ export default class MessageMemoryRepository extends MemoryRepository<MessageIte
     this.items[messageHash].state = 'Error';
   }
 
-  async setMessageState(messageHash: string, state: MessageState) {
+  async setState(messageHash: string, state: MessageState) {
     this.items[messageHash].state = state;
   }
 }

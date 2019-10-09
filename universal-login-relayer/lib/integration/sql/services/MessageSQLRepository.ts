@@ -83,7 +83,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       .select(['key', 'signature']);
   }
 
-  async setMessageState(messageHash: string, state: MessageState) {
+  async setState(messageHash: string, state: MessageState) {
     return this.knex(this.tableName)
       .where('hash', messageHash)
       .update('state', state);

@@ -42,7 +42,9 @@ export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
 
-export type MessageState = 'AwaitSignature' | 'Queued' | 'Pending' | 'Error' | 'Success';
+export type DeploymentState = 'Queued' | 'Pending' | 'Error' | 'Success';
+export type MessageState = 'AwaitSignature' | DeploymentState;
+export type MineableState = DeploymentState | MessageState;
 
 export type CollectedSignatureKeyPair = {
   key: string;
