@@ -3,6 +3,7 @@ import {ProgressBar} from '../commons/ProgressBar';
 import {ExplorerLink} from '../commons/ExplorerLink';
 import '../styles/waitingFor.sass';
 import {PublicRelayerConfig} from '@universal-login/commons';
+import {Spinner} from './Spinner';
 
 export interface WaitingForProps {
   action: string;
@@ -10,9 +11,9 @@ export interface WaitingForProps {
   transactionHash?: string;
 }
 
-export const WaitingFor = ({action, relayerConfig, transactionHash}: WaitingForProps) => {
+const renderWaitingFor = (action: string, relayerConfig: PublicRelayerConfig, transactionHash?: string) => {
   return (
-    <div className="universal-login-waiting-for">
+    <div>
       <div className="action-title-box">
         <h1 className="action-title">{action}</h1>
       </div>
@@ -24,6 +25,14 @@ export const WaitingFor = ({action, relayerConfig, transactionHash}: WaitingForP
         </div>
         <p className="info-text">It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...</p>
       </div>
+    </div>
+  );
+};
+
+export const WaitingFor = ({action, relayerConfig, transactionHash}: WaitingForProps) => {
+  return (
+    <div className="universal-login-waiting-for">
+      {relayerConfig ? renderWaitingFor(action, relayerConfig, transactionHash) : <Spinner className="waiting-for-spinner" />}
     </div>
   );
 };
