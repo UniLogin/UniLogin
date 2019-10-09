@@ -33,7 +33,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
               id={`token-${option.token.address}`}
               name="fee"
               checked={option.token.address === tokenAddress}
-              onChange={() => onGasOptionChanged(option)}
+              onClick={() => onGasOptionChanged(option)}
             >
               <div className="transaction-fee-row">
                 <div className="transaction-fee-details">

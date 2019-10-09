@@ -19,7 +19,7 @@ export const GasPriceSpeedChoose = ({gasModes, modeName, onModeChanged}: GasPric
             id={name}
             name="speed"
             checked={name === modeName}
-            onChange={() => onModeChanged(name, usdAmount)}
+            onClick={() => onModeChanged(name, usdAmount)}
           >
             <div className="transaction-speed-block">
               <p className="transaction-speed-type">{name}</p>

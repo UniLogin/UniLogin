@@ -1,6 +1,7 @@
 import {sleep, onCritical} from '@universal-login/commons';
 import {IExecutionQueue} from './IExecutionQueue';
 import MessageExecutor from '../../../integration/ethereum/MessageExecutor';
+import {QueueItem} from '../../models/QueueItem';
 
 type ExecutionWorkerState = 'running' | 'stopped' | 'stopping';
 
@@ -28,18 +29,28 @@ class ExecutionWorker {
   }
 
   async loop() {
+    const tick = async () => {
+      if (this.state === 'stopping'){
+        this.state = 'stopped';
+      } else {
+        await sleep(this.tick);
+      }
+    };
+
+    const tryExecute = async (nextMessage: QueueItem) => {
+      if (this.messageExecutor.canExecute(nextMessage)){
+        await this.execute(nextMessage.hash);
+      } else {
+        await this.executionQueue.remove(nextMessage.hash);
+      }
+    };
+
     do {
       const nextMessage = await this.executionQueue.getNext();
-      if (nextMessage && this.messageExecutor.canExecute(nextMessage)){
-        await this.execute(nextMessage.hash);
-      } else if (nextMessage) {
-        await this.executionQueue.remove(nextMessage.hash);
+      if (nextMessage){
+        await tryExecute(nextMessage);
       } else {
-        if (this.state === 'stopping'){
-          this.state = 'stopped';
-        } else {
-          await sleep(this.tick);
-        }
+        await tick();
       }
     } while (this.state !== 'stopped');
   }
