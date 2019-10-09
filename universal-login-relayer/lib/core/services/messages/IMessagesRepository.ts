@@ -1,4 +1,4 @@
-import {CollectedSignatureKeyPair, SignedMessage, RepositoryItemState} from '@universal-login/commons';
+import {CollectedSignatureKeyPair, SignedMessage, MessageState} from '@universal-login/commons';
 import MessageItem from '../../models/messages/MessageItem';
 import IRepository from './IRepository';
 
@@ -8,6 +8,6 @@ export default interface IMessageRepository extends IRepository<MessageItem> {
   getCollectedSignatureKeyPairs: (messageHash: string) => Promise<CollectedSignatureKeyPair[]>;
   markAsPending: (messageHash: string, transactionHash: string) => Promise<void>;
   markAsError: (messageHash: string, error: string) => Promise<void>;
-  setState: (messageHash: string, state: RepositoryItemState) => Promise<void>;
+  setState: (messageHash: string, state: MessageState) => Promise<void>;
   containSignature: (messageHash: string, signature: string) => Promise<boolean>;
 }
