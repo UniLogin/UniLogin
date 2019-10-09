@@ -119,7 +119,7 @@ class Relayer {
     this.deploymentHandler = new DeploymentHandler(this.walletContractService, this.deploymentRepository, this.executionQueue);
     this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.messageHandler.onTransactionMined.bind(this.messageHandler));
-    this.executionWorker = new ExecutionWorker(this.messageExecutor, this.executionQueue);
+    this.executionWorker = new ExecutionWorker([this.messageExecutor], this.executionQueue);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
