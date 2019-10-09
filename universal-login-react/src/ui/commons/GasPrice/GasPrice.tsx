@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import './../../styles/gasPrice.sass';
 import './../../styles/gasPriceDefault.sass';
 import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
@@ -11,6 +11,7 @@ import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import {GasPriceSpeedChoose} from './GasPriceSpeed';
 import {TransactionFeeChoose} from './TransactionFeeChoose';
 import {SelectedGasPrice} from './SelectedGasPrice';
+import {useOutsideClick} from '../../hooks/useClickOutside';
 
 interface GasPriceProps {
   deployedWallet?: DeployedWallet;
@@ -63,6 +64,13 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
   }, [gasModes]);
   const [contentVisibility, setContentVisibility] = useState(false);
 
+  const ref = useRef(null);
+  useOutsideClick(ref, () => {
+    if (contentVisibility) {
+      setContentVisibility(false);
+    }
+  });
+
   const renderComponent = (gasModes: GasMode[]) => (
     <div className="universal-login-gas">
       <div className={getStyleForTopLevelComponent(className)}>
@@ -77,7 +85,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
               onClick={() => setContentVisibility(!contentVisibility)}
             />
             {contentVisibility &&
-              <div className="gas-price-selector">
+              <div ref={ref} className="gas-price-selector">
                 <GasPriceTitle />
                 <GasPriceSpeedChoose
                   gasModes={gasModes}
