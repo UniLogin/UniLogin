@@ -1,9 +1,8 @@
 import React from 'react';
 import {ensure} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
-import {OnboardingWalletService} from '../Onboarding/Onboarding';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/emoji.sass'
 import './../styles/emojiDefaults.sass'
@@ -12,7 +11,7 @@ import './../styles/emojiDefaults.sass'
 interface ConnectWithEmojiProps {
   name: string;
   sdk: UniversalLoginSDK;
-  walletService: OnboardingWalletService;
+  walletService: WalletService;
   onCancel: () => void;
   onConnect: () => void;
   className?: string;
@@ -45,7 +44,7 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
           <div className="connect-emoji-content">
             <div className="connect-emoji-section">
               <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
-              {!connectValues && !error && 'Loading...'}
+              {!connectValues && !error && <p className="loading-text">Loading...</p>}
               {connectValues && <div className="universal-login-emojis">
                 <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
               </div>}

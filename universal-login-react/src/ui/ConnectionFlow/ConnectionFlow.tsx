@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
-import {OnboardingWalletService} from '../Onboarding/Onboarding';
 
 export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 
@@ -12,7 +11,7 @@ export interface ConnectionFlowProps {
   onCancel: () => void;
   onSuccess: () => void;
   sdk: UniversalLoginSDK;
-  walletService: OnboardingWalletService;
+  walletService: WalletService;
   className?: string;
 }
 
@@ -35,6 +34,7 @@ export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, c
           name={name!}
           walletService={walletService}
           onRecover={onSuccess}
+          className={className}
         />
       );
     case 'emoji':
@@ -45,6 +45,7 @@ export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, c
           walletService={walletService}
           onConnect={onSuccess}
           onCancel={() => setConnectModal('chooseMethod')}
+          className={className}
         />
       );
   }

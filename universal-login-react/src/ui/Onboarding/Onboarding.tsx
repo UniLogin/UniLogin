@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
-import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS, Procedure} from '@universal-login/commons';
+import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
 import {createModalService} from '../../core/services/createModalService';

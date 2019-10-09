@@ -17,7 +17,7 @@ export const ConnectAccount = () => {
       walletService={walletService}
       onCancel={() => setConnectModal('selector')}
       onSuccess={() => history.push('/')}
-      className={'jarvis-connect'}
+      className="jarvis-styles"
     />;
   } else {
     return <ConnectSelector setName={setName} setConnectModal={setConnectModal} />;
