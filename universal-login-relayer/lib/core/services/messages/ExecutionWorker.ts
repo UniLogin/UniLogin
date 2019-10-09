@@ -11,9 +11,17 @@ class ExecutionWorker {
   constructor(
     private messageExecutor: MessageExecutor,
     private executionQueue: IExecutionQueue,
-    private tick: number = 100
+    private tickInterval: number = 100
   ) {
     this.state = 'stopped';
+  }
+
+  private async tryExecute(nextMessage: QueueItem) {
+    if (this.messageExecutor.canExecute(nextMessage)){
+      await this.execute(nextMessage.hash);
+    } else {
+      await this.executionQueue.remove(nextMessage.hash);
+    }
   }
 
   async execute(messageHash: string) {
@@ -28,29 +36,21 @@ class ExecutionWorker {
     }
   }
 
+  private async tick() {
+    if (this.state === 'stopping'){
+      this.state = 'stopped';
+    } else {
+      await sleep(this.tickInterval);
+    }
+  }
+
   async loop() {
-    const tick = async () => {
-      if (this.state === 'stopping'){
-        this.state = 'stopped';
-      } else {
-        await sleep(this.tick);
-      }
-    };
-
-    const tryExecute = async (nextMessage: QueueItem) => {
-      if (this.messageExecutor.canExecute(nextMessage)){
-        await this.execute(nextMessage.hash);
-      } else {
-        await this.executionQueue.remove(nextMessage.hash);
-      }
-    };
-
     do {
       const nextMessage = await this.executionQueue.getNext();
       if (nextMessage){
-        await tryExecute(nextMessage);
+        await this.tryExecute(nextMessage);
       } else {
-        await tick();
+        await this.tick();
       }
     } while (this.state !== 'stopped');
   }
@@ -62,7 +62,7 @@ class ExecutionWorker {
   async stopLater() {
     this.state = 'stopping';
     while (!this.isStopped()) {
-      await sleep(this.tick);
+      await sleep(this.tickInterval);
     }
   }
 
