@@ -5,13 +5,13 @@ interface RadioButtonProps {
   name: string;
   checked: boolean;
   disabled?: boolean;
-  onChange: () => void;
+  onClick: () => void;
   children: ReactNode;
 }
 
-export const RadioButton = ({id, name, checked, disabled = false, onChange, children}: RadioButtonProps) => (
+export const RadioButton = ({id, name, checked, disabled = false, onClick, children}: RadioButtonProps) => (
   <label className="gas-price-label">
-    <input disabled={disabled} id={id} checked={checked} onChange={onChange} type="radio" name={name} className="gas-price-radio" />
+    <input disabled={disabled} id={id} checked={checked} onClick={onClick} type="radio" name={name} className="gas-price-radio" />
     <div className="gas-price-radio-custom">
       {children}
     </div>
