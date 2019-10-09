@@ -2,16 +2,15 @@ import React from 'react';
 import vault1x from './../assets/illustrations/vault.png';
 import vault2x from './../assets/illustrations/vault@2x.png';
 import {ensure} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
-import {OnboardingWalletService} from '../Onboarding/Onboarding';
 
 
 interface ConnectWithEmojiProps {
   name: string;
   sdk: UniversalLoginSDK;
-  walletService: OnboardingWalletService;
+  walletService: WalletService;
   onCancel: () => void;
   onConnect: () => void;
 }
