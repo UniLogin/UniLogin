@@ -52,6 +52,11 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     });
   };
 
+  const onGasOptionSelected = (gasOption: GasOption) => {
+    onGasOptionChanged(gasOption);
+    setContentVisibility(visibility => !visibility);
+  };
+
   useEffect(() => {
     if (gasModes) {
       const {name, usdAmount} = gasModes[0];
@@ -91,7 +96,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
                   gasLimit={gasLimit}
                   usdAmount={usdAmount}
                   tokensDetailsWithBalance={tokenDetailsWithBalance}
-                  onGasOptionChanged={onGasOptionChanged}
+                  onGasOptionChanged={onGasOptionSelected}
                 />
               </div>
             }
