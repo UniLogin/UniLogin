@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {FutureWallet, WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
 import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS, Procedure} from '@universal-login/commons';
@@ -7,21 +7,9 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
 import {createModalService} from '../../core/services/createModalService';
 
-export interface OnboardingWalletService {
-  createFutureWallet(): Promise<FutureWallet>;
-  setDeployed(ensName: string): void;
-  getConnectingWallet(): ApplicationWallet;
-  disconnect(): void;
-  recover(name: string, passphrase: string): Promise<void>;
-  connect(name: string, callback: Procedure): Promise<{
-    unsubscribe: () => void;
-    securityCode: number[];
-  }>;
-}
-
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  walletService?: OnboardingWalletService;
+  walletService?: WalletService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -32,7 +20,7 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
-  const [walletService] = useState<OnboardingWalletService>(props.walletService || new WalletService(props.sdk));
+  const [walletService] = useState<WalletService>(props.walletService || new WalletService(props.sdk));
   const onConnectClick = (ensName: string) => {
     const connectionFlowProps = {
       name: ensName,

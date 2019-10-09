@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {CustomInput} from '../commons/CustomInput';
 import {InputLabel} from '../commons/InputLabel';
 import Spinner from '../commons/Spinner';
-import {OnboardingWalletService} from '../Onboarding/Onboarding';
+import {WalletService} from '@universal-login/sdk';
 
 interface ConnectWithPassphraseProps {
   name: string;
-  walletService: OnboardingWalletService;
+  walletService: WalletService;
   onRecover: () => void;
 }
 
