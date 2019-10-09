@@ -4,8 +4,8 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import './../styles/emoji.sass'
-import './../styles/emojiDefaults.sass'
+import './../styles/emoji.sass';
+import './../styles/emojiDefaults.sass';
 
 
 interface ConnectWithEmojiProps {

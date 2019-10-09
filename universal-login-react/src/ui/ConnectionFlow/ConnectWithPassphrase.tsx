@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import Spinner from '../commons/Spinner';
 import {WalletService} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import './../styles/connectPassphrase.sass'
-import './../styles/connectPassphraseDefault.sass'
+import './../styles/connectPassphrase.sass';
+import './../styles/connectPassphraseDefault.sass';
 
 interface ConnectWithPassphraseProps {
   name: string;
