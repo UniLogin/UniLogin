@@ -5,12 +5,13 @@ import {MetamaskService} from './services/MetamaskService';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ensure, Message, walletFromBrain} from '@universal-login/commons';
+import {ensure, ETHER_NATIVE_TOKEN, Message, walletFromBrain} from '@universal-login/commons';
 import {waitForTrue} from './utils';
 import {initUi} from './ui';
 import {AppProps} from './ui/App';
-import {StorageService, WalletStorageService} from '@universal-login/react';
+import {StorageService, WalletStorageService, LogoButton} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
+import {renderLogoButton} from './ui/logoButton';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -64,6 +65,8 @@ export class ULWeb3Provider implements Provider {
       [this.walletService.isAuthorized, this.metamaskService.metamaskProvider],
       (walletCreated, metamask) => walletCreated || !!metamask,
     );
+
+    this.sdk.start();
 
     uiInitializer({
       sdk: this.sdk,
@@ -160,5 +163,11 @@ export class ULWeb3Provider implements Provider {
       this.uiController.requireWallet();
       await waitForTrue(this.walletService.walletDeployed);
     }
+  }
+
+  initWeb3Button(element: Element) {
+    renderLogoButton(element, {
+      walletService: this.walletService,
+    });
   }
 }
