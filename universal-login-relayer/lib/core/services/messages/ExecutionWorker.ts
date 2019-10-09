@@ -16,7 +16,7 @@ class ExecutionWorker {
     this.state = 'stopped';
   }
 
-  async tryExecute(nextMessage: QueueItem) {
+  private async tryExecute(nextMessage: QueueItem) {
     if (this.messageExecutor.canExecute(nextMessage)){
       await this.execute(nextMessage.hash);
     } else {
@@ -36,7 +36,7 @@ class ExecutionWorker {
     }
   }
 
-  async tick() {
+  private async tick() {
     if (this.state === 'stopping'){
       this.state = 'stopped';
     } else {
