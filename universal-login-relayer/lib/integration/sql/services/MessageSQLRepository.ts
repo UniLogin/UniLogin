@@ -83,27 +83,6 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       .select(['key', 'signature']);
   }
 
-  async setState(messageHash: string, state: MessageState) {
-    return this.knex(this.tableName)
-      .where('hash', messageHash)
-      .update('state', state);
-  }
-
-  async markAsPending(messageHash: string, transactionHash: string) {
-    ensureProperTransactionHash(transactionHash);
-    return this.knex(this.tableName)
-      .where('hash', messageHash)
-      .update('transactionHash', transactionHash)
-      .update('state', 'Pending');
-  }
-
-  async markAsError(messageHash: string, error: string) {
-    return this.knex(this.tableName)
-      .where('hash', messageHash)
-      .update('error', error)
-      .update('state', 'Error');
-  }
-
   async containSignature(messageHash: string, signature: string) {
     const foundSignature = await this.knex('signature_key_pairs')
       .where('messageHash', messageHash)

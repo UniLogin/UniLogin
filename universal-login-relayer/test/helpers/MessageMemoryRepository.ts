@@ -58,19 +58,4 @@ export default class MessageMemoryRepository extends MemoryRepository<MessageIte
     const key = getKeyFromHashAndSignature(messageHash, signature);
     this.items[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
-
-  async markAsPending(messageHash: string, transactionHash: string) {
-    ensureProperTransactionHash(transactionHash);
-    this.items[messageHash].transactionHash = transactionHash;
-    this.items[messageHash].state = 'Pending';
-  }
-
-  async markAsError(messageHash: string, error: string) {
-    this.items[messageHash].error = error;
-    this.items[messageHash].state = 'Error';
-  }
-
-  async setState(messageHash: string, state: MessageState) {
-    this.items[messageHash].state = state;
-  }
 }
