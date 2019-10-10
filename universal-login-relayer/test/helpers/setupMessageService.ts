@@ -18,12 +18,16 @@ import WalletMasterContractService from '../../lib/integration/ethereum/services
 import {GasValidator} from '../../lib/core/services/validators/GasValidator';
 import {Config} from '../../lib';
 import ExecutionWorker from '../../lib/core/services/messages/ExecutionWorker';
+import DeploymentExecutor from '../../lib/integration/ethereum/DeploymentExecutor';
+import SQLRepository from '../../lib/integration/sql/services/SQLRepository';
+import Deployment from '../../lib/core/models/Deployment';
 
 export default async function setupMessageService(knex: Knex, config: Config) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
   const hooks = new EventEmitter();
   const authorisationStore = new AuthorisationStore(knex);
   const messageRepository = new MessageSQLRepository(knex);
+  const deploymentRepository = new SQLRepository<Deployment>(knex, 'deployments');
   const devicesStore = new DevicesStore(knex);
   const executionQueue = new QueueSQLStore(knex);
   const walletMasterContractService = new WalletMasterContractService(provider);
@@ -34,6 +38,7 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const gasValidator = new GasValidator(config.maxGasLimit);
   const messageHandler = new MessageHandler(wallet, authorisationStore, devicesService, hooks, messageRepository, statusService, gasValidator, executionQueue);
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, messageHandler.onTransactionMined.bind(messageHandler));
-  const executionWorker = new ExecutionWorker([messageExecutor], executionQueue);
+  const deploymentExecutor = new DeploymentExecutor(deploymentRepository);
+  const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
   return { wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker };
 }

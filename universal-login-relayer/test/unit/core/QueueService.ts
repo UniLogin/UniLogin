@@ -9,6 +9,10 @@ import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
 import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
 import IMessageRepository from '../../../lib/core/services/messages/IMessagesRepository';
 import MessageExecutor from '../../../lib/integration/ethereum/MessageExecutor';
+import DeploymentExecutor from '../../../lib/integration/ethereum/DeploymentExecutor';
+import IRepository from '../../../lib/core/services/messages/IRepository';
+import MemoryRepository from '../../helpers/MemoryRepository';
+import Deployment from '../../../lib/core/models/Deployment';
 
 use(sinonChai);
 
@@ -16,7 +20,9 @@ describe('UNIT: Queue Service', async () => {
   let executionWorker: ExecutionWorker;
   let queueMemoryStore: QueueMemoryStore;
   let messageRepository: IMessageRepository;
+  let deploymentRepository: IRepository<Deployment>;
   let messageExecutor: MessageExecutor;
+  let deploymentExecutor: DeploymentExecutor;
   const wait = sinon.spy();
   const wallet: any = {
     sendTransaction: sinon.fake.returns({
@@ -34,8 +40,10 @@ describe('UNIT: Queue Service', async () => {
   beforeEach(async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
+    deploymentRepository = new MemoryRepository<Deployment>();
     messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, onTransactionMined);
-    executionWorker = new ExecutionWorker([messageExecutor], queueMemoryStore);
+    deploymentExecutor = new DeploymentExecutor(deploymentRepository);
+    executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     signedMessage = getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
@@ -66,7 +74,7 @@ describe('UNIT: Queue Service', async () => {
 
   it('should throw error when hash is null', async () => {
     messageExecutor.execute = sinon.fake.returns(null);
-    executionWorker = new ExecutionWorker([messageExecutor], queueMemoryStore);
+    executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     executionWorker.start();
     const markAsErrorSpy = sinon.spy(messageRepository.markAsError);
     messageRepository.markAsError = markAsErrorSpy;
@@ -82,7 +90,7 @@ describe('UNIT: Queue Service', async () => {
   it('should not execute if the executor cannot execute, but remove from the queue', async () => {
     messageExecutor.canExecute = sinon.fake.returns(false);
     const executeSpy = sinon.spy(messageExecutor, 'execute');
-    executionWorker = new ExecutionWorker([messageExecutor], queueMemoryStore);
+    executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     executionWorker.start();
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
     await messageRepository.add(messageHash, createMessageItem(signedMessage));
