@@ -12,9 +12,9 @@ const getButton = (operationType: string, suggestion: string, onClick: (...args:
   if (isSingleCreation) {
     return (
       <>
-        <h3 className="suggestions-title">{suggestion}</h3>
-        <span className="suggestion-element"> This username is available </span>
-        <button className="suggestions-item-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
+        <p className="suggestions-ens-name">{suggestion}</p>
+        <p className="suggestions-hint"> This username is available </p>
+        <button className="suggestions-create-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
           Create New Account
         </button>
       </>
