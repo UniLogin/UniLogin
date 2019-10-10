@@ -1,4 +1,4 @@
-import {CollectedSignatureKeyPair, SignedMessage, MessageState} from '@universal-login/commons';
+import {CollectedSignatureKeyPair, SignedMessage} from '@universal-login/commons';
 import MessageItem from '../../models/messages/MessageItem';
 import IRepository from './IRepository';
 

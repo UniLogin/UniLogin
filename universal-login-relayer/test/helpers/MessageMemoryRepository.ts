@@ -1,9 +1,8 @@
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, MessageState} from '@universal-login/commons';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/encodeData';
 import {InvalidMessage, MessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
 import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
-import {ensureProperTransactionHash} from '../../lib/core/utils/validations';
 import MemoryRepository from './MemoryRepository';
 
 export default class MessageMemoryRepository extends MemoryRepository<MessageItem> implements IMessageRepository {

@@ -1,10 +1,9 @@
 import Knex from 'knex';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures, MessageState} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../../core/utils/encodeData';
 import IMessageRepository from '../../../core/services/messages/IMessagesRepository';
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import MessageItem from '../../../core/models/messages/MessageItem';
-import {ensureProperTransactionHash} from '../../../core/utils/validations';
 import SQLRepository from './SQLRepository';
 
 export class MessageSQLRepository extends SQLRepository<MessageItem> implements IMessageRepository {
