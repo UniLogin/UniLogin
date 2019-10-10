@@ -1,10 +1,11 @@
 import React, {ReactNode} from 'react';
 import {ProgressBar} from '../commons/ProgressBar';
 import {ExplorerLink} from '../commons/ExplorerLink';
-import '../styles/waitingFor.sass';
 import {PublicRelayerConfig} from '@universal-login/commons';
 import {Spinner} from './Spinner';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import '../styles/waitingFor.sass';
+import '../styles/waitingForDefault.sass';
 
 export interface WaitingForProps {
   action: string;
