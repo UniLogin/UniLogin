@@ -17,19 +17,19 @@ class ExecutionWorker {
     this.state = 'stopped';
   }
 
-  private async tryExecute(nextMessage: QueueItem) {
+  private async tryExecute(nextItem: QueueItem) {
     for (let i = 0; i < this.executors.length; i++) {
-      if (this.executors[i].canExecute(nextMessage)){
-        await this.execute(this.executors[i], nextMessage.hash);
+      if (this.executors[i].canExecute(nextItem)){
+        await this.execute(this.executors[i], nextItem.hash);
         return;
       }
     }
-    await this.executionQueue.remove(nextMessage.hash);
+    await this.executionQueue.remove(nextItem.hash);
   }
 
-  async execute(executor: IExecutor<SignedMessage | Deployment>, messageHash: string) {
-    await executor.handleExecute(messageHash);
-    await this.executionQueue.remove(messageHash);
+  async execute(executor: IExecutor<SignedMessage | Deployment>, itemHash: string) {
+    await executor.handleExecute(itemHash);
+    await this.executionQueue.remove(itemHash);
   }
 
   start() {
@@ -49,9 +49,9 @@ class ExecutionWorker {
 
   async loop() {
     do {
-      const nextMessage = await this.executionQueue.getNext();
-      if (nextMessage){
-        await this.tryExecute(nextMessage);
+      const nextItem = await this.executionQueue.getNext();
+      if (nextItem){
+        await this.tryExecute(nextItem);
       } else {
         await this.tick();
       }
