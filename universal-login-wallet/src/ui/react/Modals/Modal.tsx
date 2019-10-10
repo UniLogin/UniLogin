@@ -4,11 +4,11 @@ import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
 import {useRelayerConfig, useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import ModalWaitingFor from './ModalWaitingFor';
-import {ModalWrapper, Safello, TopUp} from '@universal-login/react';
+import {ModalWrapper, Safello, TopUp, WaitingFor} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
+import {ImageWaitingFor} from '../common/ImageWaitingFor';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
@@ -42,15 +42,28 @@ const Modal = () => {
         />
       ) : null;
     case 'waitingForDeploy':
-      return (
+    return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <ModalWaitingFor {...modalService.modalProps} action={'Wallet creation'} chainName={relayerConfig!.chainSpec.name} transactionHash={'0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}/>
+          <WaitingFor
+            {...modalService.modalProps}
+            action={'Wallet creation'}
+            relayerConfig={relayerConfig!}
+            transactionHash={'0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}
+            children={ImageWaitingFor()}
+            className={'jarvis-waiting-for'}
+          />
         </ModalWrapper>
       );
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>
-          <ModalWaitingFor {...modalService.modalProps} action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} />
+          <WaitingFor
+            {...modalService.modalProps}
+            action={'Transferring funds'}
+            relayerConfig={relayerConfig!}
+            children={ImageWaitingFor()}
+            className={'jarvis-waiting-for'}
+          />
         </ModalWrapperWithoutClose>
       );
     case 'transactionSuccess':
