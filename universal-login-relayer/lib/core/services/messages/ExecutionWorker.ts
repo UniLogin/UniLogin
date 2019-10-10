@@ -1,7 +1,8 @@
-import {sleep, onCritical} from '@universal-login/commons';
+import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
 import {IExecutionQueue} from './IExecutionQueue';
-import MessageExecutor from '../../../integration/ethereum/MessageExecutor';
 import {QueueItem} from '../../models/QueueItem';
+import Deployment from '../../models/Deployment';
+import {IExecutor} from '../execution/IExecutor';
 
 type ExecutionWorkerState = 'running' | 'stopped' | 'stopping';
 
@@ -9,7 +10,7 @@ class ExecutionWorker {
   private state: ExecutionWorkerState;
 
   constructor(
-    private messageExecutor: MessageExecutor,
+    private executors: Array<IExecutor<SignedMessage | Deployment>>,
     private executionQueue: IExecutionQueue,
     private tickInterval: number = 100
   ) {
@@ -17,15 +18,17 @@ class ExecutionWorker {
   }
 
   private async tryExecute(nextMessage: QueueItem) {
-    if (this.messageExecutor.canExecute(nextMessage)){
-      await this.execute(nextMessage.hash);
-    } else {
-      await this.executionQueue.remove(nextMessage.hash);
+    for (let i = 0; i < this.executors.length; i++) {
+      if (this.executors[i].canExecute(nextMessage)){
+        await this.execute(this.executors[i], nextMessage.hash);
+        return;
+      }
     }
+    await this.executionQueue.remove(nextMessage.hash);
   }
 
-  async execute(messageHash: string) {
-    await this.messageExecutor.handleExecute(messageHash);
+  async execute(executor: IExecutor<SignedMessage | Deployment>, messageHash: string) {
+    await executor.handleExecute(messageHash);
     await this.executionQueue.remove(messageHash);
   }
 
