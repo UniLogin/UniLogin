@@ -22,7 +22,7 @@
 }
 
 .universal-login .input-wallet-selector,
-.universal-login .button-web3-provider,
+.universal-login .selector-sign-button,
 .universal-login .ethereum-account {
   width: 100%;
   height: 45px;
@@ -31,7 +31,7 @@
 }
 
 .universal-login .selector-input-wrapper ,
-.universal-login .button-web3-provider ,
+.universal-login .selector-sign-button,
 .universal-login .ethereum-account {
   transition: transform 0.8s;
   -webkit-perspective: 0;
@@ -43,28 +43,24 @@
   backface-visibility: hidden;
 }
 
-.universal-login .button-web3-provider {
+.universal-login .selector-sign-button {
   position: absolute;
   top: 0;
-  font-family: helvetica neue, helvetica, arial, sans-serif;
-  font-size: 80%;
-  line-height: 1;
-  margin: 0;
-  text-transform: uppercase;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  border: 0;
   transform: rotateX(-180deg);
-  padding-left: 6px;
-  padding-right: 6px;
+  padding: 0 15px;
   cursor: pointer;
 }
 
-
 .universal-login .ethereum-account {
-  /* custom something */
   position: absolute;
   top: 0;
-  padding-top: 14px;
-  font-family: helvetica neue, helvetica, arial, sans-serif;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  color: #fff;
   color: #666;
   text-align: center;
   background: #fff;
@@ -73,46 +69,42 @@
   white-space: nowrap;
 }
 
-.universal-login .ethereum-account::after {
-  position: absolute;
-  top: 9px;
-  left: 9px;
-  content: " ";
-  background: #ccc;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.universal-login .selector-sign-img,
+.universal-login .ethereum-account-img {
+  padding: 0 15px 0 0;
+  border-right: 1px solid #fff;
+  margin-right: 15px;
 }
 
-.universal-login .selector-input-wrapper {
-  /* custom something */
+.universal-login .selector-sign-text,
+.universal-login .ethereum-account-text {
+  margin: 0;
+  color: #fff;
+  text-transform: uppercase;
 }
 
-.universal-login.show-picker  .selector-input-wrapper {
+.universal-login .ethereum-account-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.universal-login.show-picker  .selector-input-wrapper,
+.universal-login.show-initial .selector-sign-button,
+.universal-login.show-account .ethereum-account {
   transform: rotateX(0);
   opacity: 1;
 }
 
-.universal-login.show-initial .button-web3-provider {
-  transform: rotateX(0);
-  opacity: 1;
-}
-
-
-.universal-login.show-initial .button-web3-provider:hover ,
-.universal-login.show-initial .button-web3-provider:focus {
+.universal-login.show-initial .selector-sign-button:hover ,
+.universal-login.show-initial .selector-sign-button:focus {
   border-width: 2px;
   transform: rotateX(15deg) scale(1.05);
 }
 
-.universal-login.show-initial .button-web3-provider:active {
+.universal-login.show-initial .selector-sign-button:active {
   border-width: 2px;
   transform: rotateX(-60deg);
-}
-
-.universal-login.show-account .ethereum-account {
-  transform: rotateX(0);
-  opacity: 1;
 }
 
 .universal-login .suggestions-list {
