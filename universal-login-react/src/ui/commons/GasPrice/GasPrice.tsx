@@ -12,6 +12,7 @@ import {GasPriceSpeedChoose} from './GasPriceSpeed';
 import {TransactionFeeChoose} from './TransactionFeeChoose';
 import {SelectedGasPrice} from './SelectedGasPrice';
 import {useOutsideClick} from '../../hooks/useClickOutside';
+import {Spinner} from '../Spinner';
 
 interface GasPriceProps {
   deployedWallet?: DeployedWallet;
@@ -114,7 +115,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     </div>
   );
   return (
-    gasModes ? renderComponent(gasModes) : <div>Loading</div>
+    gasModes ? renderComponent(gasModes) : <Spinner className="spinner-small" />
   );
 };
 

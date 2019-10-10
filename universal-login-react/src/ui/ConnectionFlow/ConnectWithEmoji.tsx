@@ -6,6 +6,7 @@ import {EmojiPanel} from '../WalletSelector/EmojiPanel';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
+import Spinner from '../commons/Spinner';
 
 
 interface ConnectWithEmojiProps {
@@ -44,7 +45,7 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
           <div className="connect-emoji-content">
             <div className="connect-emoji-section">
               <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
-              {!connectValues && !error && <p className="loading-text">Loading...</p>}
+              {!connectValues && !error && <Spinner className="spinner-center" />}
               {connectValues && <div className="universal-login-emojis">
                 <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
               </div>}
