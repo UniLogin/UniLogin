@@ -71,10 +71,12 @@ jobs:
             yarn start:dev & > /dev/null
             PID=$!
             RETRY=0;
+            set +e
             while [ "$RETRY" != 60 ] && ! curl -s 0.0.0.0:8080 | grep -q "Universal Login React Playground"; do
               echo sleeping...
               sleep 1 && ((RETRY++));
             done;
+            set -e
             cd test; node screenshots.js
             kill $PID
             [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
