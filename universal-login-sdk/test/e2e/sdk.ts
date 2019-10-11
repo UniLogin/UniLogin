@@ -102,8 +102,7 @@ describe('E2E: SDK', async () => {
 
     it('Throws when the gas limit is above the relayers maxGasLimit', async () => {
       const {sdk: secondSdk} = await loadFixture(basicSDK);
-      secondSdk.sdkConfig.paymentOptions.gasLimit = (await secondSdk.getRelayerConfig()).maxGasLimit + 1;
-
+      message.gasLimit = (await secondSdk.getRelayerConfig()).maxGasLimit + 1;
       await expect(secondSdk.execute(message, privateKey)).to.be.eventually
         .rejectedWith('Invalid gas limit. 500001 provided, when relayer\'s max gas limit is 500000');
     });
