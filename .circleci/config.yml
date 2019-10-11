@@ -84,6 +84,10 @@ jobs:
             cd universal-login-react;
             yarn start:dev &
             PID=$!
+            RETRY=0;
+            while [ \"$RETRY\" != 60 ] && ! nc -z localhost 8080; do
+              sleep 1 && ((RETRY++));
+            done;
             sleep 20
             cd test; node screenshots.js
             [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
