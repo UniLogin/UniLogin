@@ -169,6 +169,13 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.body.error).to.eq(`Error: Invalid signature `);
   });
 
+  it('Endpoint for checking deployment status should exist', async () => {
+    const result = await chai.request(relayerUrl)
+      .get(`/wallet/deploy/xyz`);
+    expect(result.status).to.eq(501);
+    expect(result.body).to.eq('Not implemented');
+  });
+
   afterEach(async () => {
     await relayer.stop();
   });
