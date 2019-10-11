@@ -1,8 +1,8 @@
 import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
-import {IExecutionQueue} from './IExecutionQueue';
+import {IExecutionQueue} from '../../models/execution/IExecutionQueue';
 import {QueueItem} from '../../models/QueueItem';
 import Deployment from '../../models/Deployment';
-import {IExecutor} from '../execution/IExecutor';
+import {IExecutor} from '../../models/execution/IExecutor';
 
 type ExecutionWorkerState = 'running' | 'stopped' | 'stopping';
 

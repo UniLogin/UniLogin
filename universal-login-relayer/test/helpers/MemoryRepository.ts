@@ -1,5 +1,5 @@
 import {NotFound} from '../../lib/core/utils/errors';
-import IRepository from '../../lib/core/services/messages/IRepository';
+import IRepository from '../../lib/core/models/messages/IRepository';
 import {MineableState} from '@universal-login/commons';
 import {ensureProperTransactionHash} from '../../lib/core/utils/validations';
 import {Mineable} from '../../lib/core/models/Mineable';

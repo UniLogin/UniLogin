@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {Provider} from 'ethers/providers';
 import {ContractWhiteList, SignedMessage, ensure} from '@universal-login/commons';
-import IMessageValidator from '../../../core/services/validators/IMessageValidator';
+import IMessageValidator from '../../../core/models/IMessageValidator';
 import {InvalidProxy} from '../../../core/utils/errors';
 
 export default class CorrectProxyValidator implements IMessageValidator {

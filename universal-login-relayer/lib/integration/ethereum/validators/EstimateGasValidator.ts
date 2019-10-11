@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage, ensure, calculateMessageHash} from '@universal-login/commons';
-import IMessageValidator from '../../../core/services/validators/IMessageValidator';
+import IMessageValidator from '../../../core/models/IMessageValidator';
 import {messageToTransaction} from '../../../core/utils/messages/serialisation';
 import {NotEnoughGas} from '../../../core/utils/errors';
 

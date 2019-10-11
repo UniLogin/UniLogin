@@ -1,5 +1,5 @@
 import {MessageStatus} from '@universal-login/commons';
-import IMessageRepository from './IMessagesRepository';
+import IMessageRepository from '../../models/messages/IMessagesRepository';
 import {SignaturesService} from '../../../integration/ethereum/SignaturesService';
 
 export class MessageStatusService {

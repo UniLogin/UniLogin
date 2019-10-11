@@ -1,5 +1,5 @@
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IExecutionQueue} from '../../lib/core/services/messages/IExecutionQueue';
+import {IExecutionQueue} from '../../lib/core/models/execution/IExecutionQueue';
 import {QueueItem} from '../../lib/core/models/QueueItem';
 import Deployment from '../../lib/core/models/Deployment';
 
