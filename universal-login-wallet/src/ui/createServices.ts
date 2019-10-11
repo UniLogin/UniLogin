@@ -1,12 +1,11 @@
 import React from 'react';
 import {providers} from 'ethers';
 import {walletFromBrain, DeepPartial} from '@universal-login/commons';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import UserDropdownService from '../core/app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 import {ConfigService} from '../core/services/ConfigService';
-import {SdkConfig} from '@universal-login/sdk/dist/lib/config/SdkConfig';
 
 interface Config {
   domains: string[];
