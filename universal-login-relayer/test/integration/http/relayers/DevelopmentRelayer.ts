@@ -30,11 +30,11 @@ describe('INT: Development Relayer', async () => {
     (await tokenContract.balanceOf(contractAddress)).eq(value);
 
   it('Grants 100 ether to newly created wallet contract', async () => {
-    await waitUntil(isBalanceEqual(utils.parseEther('100')) as any, 5, 50);
+    await waitUntil(isBalanceEqual(utils.parseEther('100')) as any, 5, 1000);
   });
 
   it('Grants 100 tokens to newly created wallet contract', async () => {
-    await waitUntil(isTokenBalanceEqual(utils.parseEther('100')) as any, 5, 50);
+    await waitUntil(isTokenBalanceEqual(utils.parseEther('100')) as any, 5, 1000);
   });
 
   afterEach(async () => {

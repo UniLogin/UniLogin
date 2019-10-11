@@ -5,11 +5,13 @@ import Deployment from '../../core/models/Deployment';
 import IRepository from '../../core/services/messages/IRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
 import {ensureNotNull} from '@universal-login/commons';
+import WalletService from './WalletService';
 
 export class DeploymentExecutor implements IExecutor<Deployment> {
 
   constructor(
     private deploymentRepository: IRepository<Deployment>,
+    private walletService: WalletService
   ) {}
 
   canExecute(item: QueueItem): boolean {
@@ -32,7 +34,7 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
   }
 
   async execute(deployment: Deployment): Promise<providers.TransactionResponse> {
-    return {hash: 'xyz', wait: async () => {}} as any;
+    return this.walletService.deploy(deployment, deployment.deviceInfo);
   }
 }
 

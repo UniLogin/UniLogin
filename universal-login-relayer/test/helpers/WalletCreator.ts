@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import {Wallet, Contract, utils} from 'ethers';
-import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeCounterfactualAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO} from '@universal-login/commons';
+import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeCounterfactualAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO, sleep} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
 import ENSService from '../../lib/integration/ethereum/ensService';
@@ -63,6 +63,7 @@ export class WalletCreator {
       signature,
       applicationInfo: TEST_APPLICATION_INFO
     });
+    await sleep(1000); // TODO: waitFor - get status and wait for 'Success' status for the hash received in POST
     return {privateKey, contractAddress, publicKey};
   }
 }

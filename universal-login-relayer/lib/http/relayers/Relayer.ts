@@ -124,7 +124,7 @@ class Relayer {
     this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
     this.messageHandler = new MessageHandler(this.wallet, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
-    this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository);
+    this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository, this.walletContractService);
     this.executionWorker = new ExecutionWorker([this.messageExecutor, this.deploymentExecutor], this.executionQueue);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
