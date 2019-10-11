@@ -90,7 +90,8 @@ workflows:
       - test_sdk_relayer
       - test_react_wallet_web3
       - react_screenshots:
-          branches:
-            only:
-              - master
-              - /ss-.*/
+          filters:
+            branches:
+              only:
+                - master
+                - /ss-.*/

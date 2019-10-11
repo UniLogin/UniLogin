@@ -22,6 +22,7 @@ const react = async () => {
         devices: async () => {
           await page.click('button.udashboard-logo-btn', {waitForFunction: 'domcontentloaded'});
           await page.click('button.udashboard-tab-devices', {waitForFunction: 'domcontentloaded'});
+          await sleep(1000);
         },
         backup: async () => {
           await page.click('button.udashboard-logo-btn', {waitForFunction: 'domcontentloaded'});
