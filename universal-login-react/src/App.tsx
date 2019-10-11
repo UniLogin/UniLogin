@@ -144,7 +144,7 @@ export const App = () => {
                 return (
                   <>
                     <ReactModalContext.Provider value={modalService}>
-                      <button onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
+                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
                       <Modals />
                     </ReactModalContext.Provider>
                   </>
