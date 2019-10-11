@@ -8,9 +8,9 @@ type ENSInfo = {
 };
 
 class ENSRegistrarBase {
-  protected ens : Contract;
+  public ens : Contract;
   protected variables : Record<string, string>;
-  protected registrarAddress: ContractFunction | any;
+  public registrarAddress: ContractFunction | any;
   protected resolverAddress: ContractFunction | any;
   protected provider: providers.Provider;
 

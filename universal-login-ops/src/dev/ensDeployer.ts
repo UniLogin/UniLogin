@@ -6,7 +6,7 @@ import {parseDomain} from '@universal-login/commons';
 
 class ENSDeployer {
   private readonly deployer : Wallet;
-  private variables : Record<string, string>;
+  public variables : Record<string, string>;
   constructor(provider : providers.Provider, deployerPrivateKey : string) {
     this.deployer = new Wallet(deployerPrivateKey, provider);
     this.variables = {};

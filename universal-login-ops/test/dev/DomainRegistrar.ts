@@ -3,9 +3,8 @@ import sinonChai from 'sinon-chai';
 import {basicENS} from '@universal-login/commons/testutils';
 import DomainRegistrar from '../../src/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
-import {utils, Contract} from 'ethers';
-import PublicResolver from '@universal-login/contracts/build/PublicResolver';
-import sinon from 'sinon';
+import {utils, Contract, Wallet} from 'ethers';
+import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
 import {loadFixture} from 'ethereum-waffle';
 
 
@@ -15,13 +14,13 @@ chai.use(sinonChai);
 const nullConsole = () => {};
 
 describe('ENS register', async () => {
-  let wallet;
-  let ensAddress;
-  let ensRegistrars;
-  let publicResolver;
-  let label;
-  let node;
-  let labelHash;
+  let wallet: Wallet;
+  let ensAddress: string;
+  let ensRegistrars: string[];
+  let publicResolver: string;
+  let label: string;
+  let node: string;
+  let labelHash: string;
   const transactionOverrides = {gasPrice: utils.bigNumberify(100)};
 
 
@@ -30,7 +29,7 @@ describe('ENS register', async () => {
   });
 
   describe('DomainRegistrar', async () => {
-    let domainRegistrar;
+    let domainRegistrar: DomainRegistrar;
     const tld = 'eth';
 
     before(() => {
@@ -38,7 +37,6 @@ describe('ENS register', async () => {
       label = 'universal-login';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       node = utils.namehash(`${label}.${tld}`);
-      domainRegistrar.save = sinon.fake.returns('');
     });
 
     it('Should register label to register', async () => {
@@ -81,9 +79,9 @@ describe('ENS register', async () => {
   });
 
   describe('ENS Address registrar', async () => {
-    let nameRegistrar;
-    let domain;
-    let publicResolverContract;
+    let nameRegistrar: ENSNameRegistrar;
+    let domain: string;
+    let publicResolverContract: Contract;
 
     before(async () => {
       nameRegistrar = new ENSNameRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, {} , nullConsole);
