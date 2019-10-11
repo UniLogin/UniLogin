@@ -18,8 +18,7 @@ class DeploymentHandler {
       state: 'Queued'
     } as Deployment;
     await this.deploymentRepository.add(deployment.hash, deployment);
-    const hash = await this.executionQueue.addDeployment(deployment);
-    return hash;
+    return this.executionQueue.addDeployment(deployment);
   }
 
   async getStatus(deploymentHash: string) : Promise<DeploymentStatus | null> {
