@@ -1,7 +1,6 @@
 import Deployment from '../models/Deployment';
 import WalletService from '../../integration/ethereum/WalletService';
-import {DeviceInfo, DeployArgs} from '@universal-login/commons';
-import {calculateDeployHash} from '@universal-login/commons/dist/lib/core/utils/messages/calculateMessageSignature';
+import {calculateDeployHash, DeviceInfo, DeployArgs} from '@universal-login/commons';
 import IRepository from './messages/IRepository';
 import {IExecutionQueue} from './messages/IExecutionQueue';
 
