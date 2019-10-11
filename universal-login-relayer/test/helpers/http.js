@@ -43,7 +43,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
     signature,
     applicationInfo: TEST_APPLICATION_INFO
   });
-  await sleep(1000); // TODO: wait for 'Success' status in the Deployment repository
+  await sleep(1000); // TODO: check status and wait for 'Success' state
   return new Contract(futureAddress, WalletContract.interface, wallet);
 };
 

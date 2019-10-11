@@ -63,7 +63,7 @@ export class WalletCreator {
       signature,
       applicationInfo: TEST_APPLICATION_INFO
     });
-    await sleep(1000); // TODO: waitFor - get status and wait for 'Success' status for the hash received in POST
+    await sleep(1000); // TODO: check status and wait for 'Success' state
     return {privateKey, contractAddress, publicKey};
   }
 }
