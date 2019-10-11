@@ -7,9 +7,7 @@ let page;
 const react = async () => {
   await page.goto('http://0.0.0.0:8080/', {waitUntil: 'domcontentloaded'});
   return {
-    onboarding: async () => {
-      await page.click('[href="/onboarding"]', {waitUntil: 'domcontentloaded'});
-    },
+    onboarding: async () => page.click('[href="/onboarding"]', {waitUntil: 'domcontentloaded'}),
     u: async () => {
       await page.click('[href="/logobutton"]', {waitUntil: 'domcontentloaded'});
       await page.click('#random-instance-button', {waitForFunction: 'domcontentloaded'});
@@ -18,9 +16,7 @@ const react = async () => {
         funds: async () => {
           await page.click('button.udashboard-logo-btn', {waitForFunction: 'domcontentloaded'});
           return {
-            send: async () => {
-              await page.click('button.funds-send', {waitForFunction: 'domcontentloaded'});
-            }
+            send: async () => page.click('button.funds-send', {waitForFunction: 'domcontentloaded'})
           }
         },
         devices: async () => {
@@ -40,30 +36,18 @@ const react = async () => {
         }
       }
     },
-    wallet: async () => {
-      await page.click('[href="/walletselector"]', {waitUntil: 'domcontentloaded'});
-    },
-    keyboard: async () => {
-      await page.click('[href="/keyboard"]', {waitUntil: 'domcontentloaded'});
-    },
+    wallet: async () => page.click('[href="/walletselector"]', {waitUntil: 'domcontentloaded'}),
+    keyboard: async () => page.click('[href="/keyboard"]', {waitUntil: 'domcontentloaded'}),
     topup: async () => {
       await page.click('[href="/topup"]', {waitUntil: 'domcontentloaded'});
       await page.click('button#show-topup-button', {waitUntil: 'domcontentloaded'});
       return {
-        crypto: async () => {
-          await page.click('label#topup-btn-crypto', {waitForFunction: 'domcontentloaded'});
-        },
-        fiat: async () => {
-          await page.click('label#topup-btn-fiat', {waitForFunction: 'domcontentloaded'});
-        }
+        crypto: async () => page.click('label#topup-btn-crypto', {waitForFunction: 'domcontentloaded'}),
+        fiat: async () => page.click('label#topup-btn-fiat', {waitForFunction: 'domcontentloaded'})
       }
     },
-    recover: async () => {
-      await page.click('[href="/recover"]', {waitUntil: 'domcontentloaded'});
-    },
-    settings: async () => {
-      await page.click('[href="/settings"]', {waitUntil: 'domcontentloaded'});
-    }
+    recover: async () => page.click('[href="/recover"]', {waitUntil: 'domcontentloaded'}),
+    settings: async () => page.click('[href="/settings"]', {waitUntil: 'domcontentloaded'})
   }
 };
 
