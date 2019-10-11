@@ -1,24 +1,29 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {ProgressBar} from '../commons/ProgressBar';
 import {ExplorerLink} from '../commons/ExplorerLink';
-import '../styles/waitingFor.sass';
 import {PublicRelayerConfig} from '@universal-login/commons';
 import {Spinner} from './Spinner';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import '../styles/waitingFor.sass';
+import '../styles/waitingForDefault.sass';
 
 export interface WaitingForProps {
   action: string;
   relayerConfig: PublicRelayerConfig;
   transactionHash?: string;
+  children?: ReactNode;
+  className?: string;
 }
 
-const renderWaitingFor = (action: string, relayerConfig: PublicRelayerConfig, transactionHash?: string) => {
+const renderWaitingFor = (action: string, relayerConfig: PublicRelayerConfig, transactionHash?: string, children?: ReactNode) => {
   return (
     <div>
       <div className="action-title-box">
         <h1 className="action-title">{action}</h1>
       </div>
       <div>
-        <div>
+        {children}
+        <div className="modal-pending-section">
           <ProgressBar className="pending-bar"/>
           <h3 className="transaction-hash-title">Transaction hash</h3>
           <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
@@ -29,10 +34,12 @@ const renderWaitingFor = (action: string, relayerConfig: PublicRelayerConfig, tr
   );
 };
 
-export const WaitingFor = ({action, relayerConfig, transactionHash}: WaitingForProps) => {
+export const WaitingFor = ({action, relayerConfig, transactionHash, children, className}: WaitingForProps) => {
   return (
     <div className="universal-login-waiting-for">
-      {relayerConfig ? renderWaitingFor(action, relayerConfig, transactionHash) : <Spinner className="waiting-for-spinner" />}
+      <div className={getStyleForTopLevelComponent(className)}>
+        {relayerConfig ? renderWaitingFor(action, relayerConfig, transactionHash, children) : <Spinner className="waiting-for-spinner" />}
+      </div>
     </div>
   );
 };
