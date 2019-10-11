@@ -6,7 +6,7 @@ import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/services/execution/IExecutor';
 import IMessageRepository from '../../core/services/messages/IMessagesRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
-import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
+import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
@@ -16,7 +16,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     private wallet: Wallet,
     private messageValidator: IMessageValidator,
     private messageRepository: IMessageRepository,
-    private minedTransactionHandler: MinedTransactionHandler,
+    private minedTransactionHandler: IMinedTransactionHandler,
   ) {}
 
   canExecute(item: QueueItem): boolean {
