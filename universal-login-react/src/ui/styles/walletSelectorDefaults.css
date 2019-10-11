@@ -33,21 +33,15 @@
 
 .universal-login-default .suggestions-item-text {
   font-weight: 600;
-  font-size: 14px;
   color: #FFFFFF;
 }
 
-.universal-login-default .ethereum-account ,
-.universal-login-default .button-web3-provider {
+.universal-login-default .selector-sign-button,
+.universal-login-default .ethereum-account {
   font-weight: 500;
   font-size: 14px;
   color: #34e4b2;
   background: #262053;
   box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90);
-  border: solid 1px #34e4b2;
   text-shadow: none;
-}
-
-.universal-login-default .ethereum-account:after {
-  background: #e43471;
 }
