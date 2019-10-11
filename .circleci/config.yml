@@ -86,7 +86,7 @@ jobs:
 workflows:
   universal_login_all:
     jobs:
-      # - lint_test_contracts_commons_ops
-      # - test_sdk_relayer
-      # - test_react_wallet_web3
+      - lint_test_contracts_commons_ops
+      - test_sdk_relayer
+      - test_react_wallet_web3
       - react_screenshots
