@@ -4,8 +4,8 @@ commands:
     steps:
       - run: sudo apt-get update
       - run: |
-          sudo apt-get install -yq --no-install-recommends libnss3 \
-          libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+          sudo apt-get install -yq --no-install-recommends curl \
+          libnss3 libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
           libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
           libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 \
           libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
@@ -49,23 +49,9 @@ jobs:
       - checkout
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      # - run: cd universal-login-react && yarn test
-      # - run: cd universal-login-wallet && yarn test
-      # - run: cd universal-login-web3 && yarn test
-      - run: install-chrome-dependencies
-      - run:
-          name: Make React screenshots
-          command: |
-            cd universal-login-react;
-            yarn start:dev &
-            PID=$!
-            sleep 20
-            cd test; node screenshots.js
-            [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
-            kill $PID
-      - store_artifacts:
-          path: universal-login-react/test/screenshots
-          destination: screenshots
+      - run: cd universal-login-react && yarn test
+      - run: cd universal-login-wallet && yarn test
+      - run: cd universal-login-web3 && yarn test
   react_screenshots:
     docker:
       - image: circleci/node:10.15
@@ -82,16 +68,16 @@ jobs:
           name: Make React screenshots
           command: |
             cd universal-login-react;
-            yarn start:dev &
+            yarn start:dev & > /dev/null
             PID=$!
             RETRY=0;
-            while [ \"$RETRY\" != 60 ] && ! nc -z localhost 8080; do
+            while [ "$RETRY" != 60 ] && ! curl -s 0.0.0.0:8080 | grep -q "Universal Login React Playground"; do
+              echo sleeping...
               sleep 1 && ((RETRY++));
             done;
-            sleep 20
             cd test; node screenshots.js
-            [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
             kill $PID
+            [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
       - store_artifacts:
           path: universal-login-react/test/screenshots
           destination: screenshots

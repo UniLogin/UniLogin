@@ -110,6 +110,7 @@ const main = async () => {
   await browser.close();
 };
 
+() => console.log('Starting screenshots')
 main()
   .then(() => console.log('Screenshots finished'))
   .catch((e) => {
