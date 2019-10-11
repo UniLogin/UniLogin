@@ -1,17 +1,17 @@
 const spawn = require('cross-spawn');
 
-function spawnProcess(name, command, args, options) {
+const spawnProcess = (name: string, command: string, args: string[], options: object) => {
   const child = spawn(command, args, options);
-  child.stdout.on('data', (data) => {
+  child.stdout.on('data', (data: object) => {
     console.log(`${name}: ${data}`);
   });
-  child.stderr.on('data', (data) => {
+  child.stderr.on('data', (data: object) => {
     console.log(`ERROR ${name}:  ${data}`);
   });
-  child.on('close', (code) => {
+  child.on('close', (code: string) => {
     console.log(`${name} exited with code ${code}`);
   });
   return child;
-}
+};
 
-module.exports = spawnProcess;
+export default spawnProcess;
