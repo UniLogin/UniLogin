@@ -7,6 +7,7 @@ import './../styles/settingsDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import Accordion from './Accordion';
 import {useAsync} from '../hooks/useAsync';
+import Spinner from '../commons/Spinner';
 
 export interface SettingsProps {
   deployedWallet: DeployedWallet;
@@ -31,7 +32,7 @@ export const Settings = ({deployedWallet, className}: SettingsProps) => {
                 devices={devices}
               />
             </Accordion>
-            : 'Devices are loading..'}
+            : <Spinner className="spinner-small-center" dotClassName="spinner-dot-black"/>}
           <Accordion
             title="Backup code"
             subtitle="Back up your account"

@@ -4,6 +4,26 @@
   height: 65px;
 }
 
+.universal-login .spinner-small {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.universal-login .spinner-center {
+  position: relative;
+  width: 65px;
+  height: 65px;
+  margin: auto;
+}
+
+.universal-login .spinner-small-center {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: auto;
+}
+
 .universal-login .spinner-busy-indicator {
   position: absolute;
   right: 10px;
@@ -47,6 +67,10 @@
 
 .universal-login-default .spinner-dot {
   background: #ffffff;
+}
+
+.universal-login .spinner-dot-black {
+  background: #000000;
 }
 
 .universal-login .spinner-dot-desktop {
