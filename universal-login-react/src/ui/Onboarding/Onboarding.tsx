@@ -1,20 +1,15 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {FutureWallet, WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
-import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
+import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
 import {createModalService} from '../../core/services/createModalService';
 
-export interface OnboardingWalletService {
-  createFutureWallet(): Promise<FutureWallet>;
-  setDeployed(ensName: string): void;
-}
-
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  walletService?: OnboardingWalletService;
+  walletService?: WalletService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -25,8 +20,19 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
-  const [walletService] = useState<OnboardingWalletService>(props.walletService || new WalletService(props.sdk));
-  const onConnectClick = () => {
+  const [walletService] = useState<WalletService>(props.walletService || new WalletService(props.sdk));
+  const onConnectClick = (ensName: string) => {
+    const connectionFlowProps = {
+      name: ensName,
+      sdk: props.sdk,
+      walletService,
+      onSuccess
+    };
+    modalService.showModal('connectionFlow', connectionFlowProps);
+  };
+
+  const onSuccess = () => {
+    modalService.hideModal();
     props.onConnect && props.onConnect();
   };
 
@@ -69,6 +75,7 @@ export const Onboarding = (props: OnboardingProps) => {
               onConnectClick={onConnectClick}
               domains={props.domains}
               tryEnablingMetamask={props.tryEnablingMetamask}
+              actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
             />
           </div>
           <Modals modalClassName={props.modalClassName} />

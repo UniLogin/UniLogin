@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
 import {ModalWrapper} from './ModalWrapper';
 import {WaitingFor, WaitingForProps} from '../commons/WaitingFor';
-import {ReactModalContext, TopUpProps} from '../../core/models/ReactModalContext';
+import {ReactModalContext, TopUpProps, ConnectionFlowProps} from '../../core/models/ReactModalContext';
 import {TopUp} from '../TopUp/TopUp';
+import {ConnectionFlow} from '../ConnectionFlow';
 
 export interface ModalsProps {
   modalClassName?: string;
@@ -23,8 +24,17 @@ const Modals = ({modalClassName}: ModalsProps) => {
       );
     case 'waitingFor':
       return (
-        <ModalWrapper modalPosition="center">
+        <ModalWrapper>
             <WaitingFor {...modalService.modalProps as WaitingForProps}/>
+        </ModalWrapper>
+      );
+    case 'connectionFlow':
+      return (
+        <ModalWrapper>
+          <ConnectionFlow
+            onCancel={modalService.hideModal}
+            {...modalService.modalProps as ConnectionFlowProps}
+          />
         </ModalWrapper>
       );
     default:
