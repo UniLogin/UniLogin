@@ -69,16 +69,16 @@ jobs:
           command: |
             cd universal-login-react;
             yarn start:dev & > /dev/null
-            PID=$!
-            RETRY=0;
-            set +e
+            RETRY=0; set +e;
             while [ "$RETRY" != 60 ] && ! curl -s 0.0.0.0:8080 | grep -q "Universal Login React Playground"; do
               echo sleeping...
               sleep 1 && ((RETRY++));
             done;
-            set -e
-            cd test; node screenshots.js
-            kill $PID
+            set -e; cd test; node screenshots.js
+      - run:
+          name: Make sure screenshots are taken
+          command: |
+            cd universal-login-react/test
             [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
       - store_artifacts:
           path: universal-login-react/test/screenshots
@@ -89,4 +89,8 @@ workflows:
       - lint_test_contracts_commons_ops
       - test_sdk_relayer
       - test_react_wallet_web3
-      - react_screenshots
+      - react_screenshots:
+          branches:
+            only:
+              - master
+              - /ss-.*/
