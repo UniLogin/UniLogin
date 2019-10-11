@@ -162,9 +162,9 @@ class UniversalLoginSDK {
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
     const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
-    ensure(gasLimit <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
     const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
     const partialMessage = {gasLimit, gasPrice, gasToken, ...message, nonce};
+    ensure(partialMessage.gasLimit <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
     const signedMessage: SignedMessage = messageToSignedMessage(partialMessage, privateKey);
     ensureSufficientGas(signedMessage);
     return this.executionFactory.createExecution(signedMessage);
