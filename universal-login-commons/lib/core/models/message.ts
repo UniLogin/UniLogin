@@ -38,6 +38,13 @@ export type MessageStatus = {
   state: MessageState
 };
 
+export type DeploymentStatus = {
+  deploymentHash: string,
+  error: string | null,
+  transactionHash: string | null,
+  state: DeploymentState
+};
+
 export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;
 
 export type MessageWithoutFrom = Omit<SignedMessage, 'from'>;
