@@ -34,6 +34,9 @@ describe('UNIT: Queue Service', async () => {
     validate: sinon.fake.returns(true)
   };
   const onTransactionMined = sinon.spy();
+  const minedTransactionHandler = {
+    handle: onTransactionMined
+  };
   let signedMessage: SignedMessage;
   let messageHash: string;
 
@@ -41,7 +44,7 @@ describe('UNIT: Queue Service', async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
     deploymentRepository = new MemoryRepository<Deployment>();
-    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, onTransactionMined);
+    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler as any);
     deploymentExecutor = new DeploymentExecutor(deploymentRepository);
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     signedMessage = getTestSignedMessage();
