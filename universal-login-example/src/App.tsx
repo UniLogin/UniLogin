@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Web3 from 'web3';
 import {ULWeb3Provider} from '@universal-login/web3';
 
@@ -15,6 +15,8 @@ const universalLogin = ULWeb3Provider.getDefaultProvider({
 const web3 = new Web3(universalLogin);
 
 function App() {
+  const ulButton = useRef<HTMLDivElement | null>(null);
+
   async function sendTx() {
     try {
       const res = await web3.eth.sendTransaction({
@@ -28,8 +30,9 @@ function App() {
     }
   }
 
-  function create() {
-    universalLogin.create();
+  async function create() {
+    await universalLogin.create();
+    universalLogin.initWeb3Button(ulButton.current!);
   }
 
   return (
@@ -37,6 +40,7 @@ function App() {
       Hello from host app!
       <button onClick={sendTx}>Send TX</button>
       <button onClick={create}>Create wallet</button>
+      <div ref={ref => { ulButton.current = ref; }} />
     </div>
   );
 }
