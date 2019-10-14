@@ -1,8 +1,11 @@
 import Knex from 'knex';
 import {NotFound} from '../../../core/utils/errors';
 import IRepository from '../../../core/services/messages/IRepository';
+import {MineableState} from '@universal-login/commons';
+import {ensureProperTransactionHash} from '../../../core/utils/validations';
+import {Mineable} from '../../../core/models/Mineable';
 
-export class SQLRepository<T> implements IRepository<T> {
+export class SQLRepository<T extends Mineable> implements IRepository<T> {
   constructor(public knex: Knex, protected tableName: string) {
   }
 
@@ -40,6 +43,27 @@ export class SQLRepository<T> implements IRepository<T> {
       .delete()
       .where('hash', hash);
     return item;
+  }
+
+  async setState(hash: string, state: MineableState) {
+    return this.knex(this.tableName)
+      .where('hash', hash)
+      .update('state', state);
+  }
+
+  async markAsPending(hash: string, transactionHash: string) {
+    ensureProperTransactionHash(transactionHash);
+    return this.knex(this.tableName)
+      .where('hash', hash)
+      .update('transactionHash', transactionHash)
+      .update('state', 'Pending');
+  }
+
+  async markAsError(hash: string, error: string) {
+    return this.knex(this.tableName)
+      .where('hash', hash)
+      .update('error', error)
+      .update('state', 'Error');
   }
 }
 

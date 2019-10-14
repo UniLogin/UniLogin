@@ -12,6 +12,7 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import {GasPrice} from '../commons/GasPrice';
 import {useAsync} from '../../ui/hooks/useAsync';
 import {FooterSection} from '../commons/FooterSection';
+import Spinner from '../commons/Spinner';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -58,7 +59,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
   );
 
   if (!relayerConfig) {
-    return <div>Loading...</div>;
+    return <Spinner />;
 
   } else if (modal === TopUpComponentType.choose) {
     if (isModal) {

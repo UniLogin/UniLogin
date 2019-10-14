@@ -11,6 +11,7 @@ import {Suggestions} from './Suggestions';
 import {renderBusyIndicator} from './BusyIndicator';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import Logo from './../assets/logo.svg';
+import ethLogo from '../assets/icons/ethereum-logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
@@ -48,7 +49,7 @@ export const WalletSelector = ({
   const [creations, setCreations] = useState<string[]>([]);
   const [name, setName] = useState('');
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
-  const [ethAccount, setEthAccount] = useState('bob.example.eth');
+  const [ethAccount, setEthAccount] = useState('');
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
@@ -109,11 +110,14 @@ export const WalletSelector = ({
           )}
           {renderBusyIndicator(busy)}
         </div>
-        <button className="button-web3-provider" onClick={onDetectClick}>
-          Sign in with Ethereum
+        <button className="selector-sign-button" onClick={onDetectClick}>
+          <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />
+          <p className="selector-sign-text">Sign in with Ethereum</p>
         </button>
-        <div className="ethereum-account">{ethAccount}</div>
-
+        <div className="ethereum-account">
+          <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
+          <p className="ethereum-account-text">{ethAccount}</p>
+        </div>
         {renderSuggestions()}
       </div>
     </div>

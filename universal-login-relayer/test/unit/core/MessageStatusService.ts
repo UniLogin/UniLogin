@@ -49,7 +49,7 @@ describe('UNIT: MessageStatusService', async () => {
   });
 
   it('getStatus after being queued', async () => {
-    await messageRepository.setMessageState(messageHash, 'Queued');
+    await messageRepository.setState(messageHash, 'Queued');
     expect(await messageStatusService.getStatus(messageHash)).to.include({state: 'Queued'});
   });
 

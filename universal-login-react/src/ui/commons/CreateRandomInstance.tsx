@@ -36,7 +36,7 @@ export const CreateRandomInstance = ({setDeployedWallet}: CreateRandomInstancePr
 
   return (
     <div>
-      <button onClick={createRandomInstance}>Create Random Instance</button>
+      <button id="random-instance-button" onClick={createRandomInstance}>Create Random Instance</button>
       <p>{`ENS name: ${ensName}`}</p>
       <p>{`Wallet Contract address: ${contractAddress}`}</p>
       <p>{`Status: ${status}`}</p>

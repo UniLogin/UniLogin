@@ -18,6 +18,7 @@ import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
 import {asMock} from './core/utils/asMock';
 import {DeployedWallet} from '@universal-login/sdk';
+import {Spinner} from './ui/commons/Spinner';
 
 const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
 
@@ -133,7 +134,7 @@ export const App = () => {
               path="/topup"
               render={() => {
                 if (!relayerConfig) {
-                  return <div>Loading...</div>;
+                  return <Spinner />;
                 }
                 const topUpProps: TopUpProps = {
                   contractAddress: Wallet.createRandom().address,
@@ -143,7 +144,7 @@ export const App = () => {
                 return (
                   <>
                     <ReactModalContext.Provider value={modalService}>
-                      <button onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
+                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
                       <Modals />
                     </ReactModalContext.Provider>
                   </>

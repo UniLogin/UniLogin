@@ -1,10 +1,12 @@
 import React from 'react';
-import vault1x from './../assets/illustrations/vault.png';
-import vault2x from './../assets/illustrations/vault@2x.png';
 import {ensure} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {useAsync} from '../hooks/useAsync';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import './../styles/emoji.sass';
+import './../styles/emojiDefaults.sass';
+import Spinner from '../commons/Spinner';
 
 
 interface ConnectWithEmojiProps {
@@ -13,9 +15,10 @@ interface ConnectWithEmojiProps {
   walletService: WalletService;
   onCancel: () => void;
   onConnect: () => void;
+  className?: string;
 }
 
-export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService}: ConnectWithEmojiProps) => {
+export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
   const [connectValues, error] = useAsync(async () => walletService.connect(name, onConnect), []);
 
   const onCancelClick = async () => {
@@ -35,22 +38,23 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService}
   };
 
   return (
-    <div>
-      <div className="box-header">
-        <h1 className="box-title">Confirmation</h1>
-      </div>
-      <div className="box-content connect-emoji-content">
-        <div className="connect-emoji-section">
-          <img src={vault1x} srcSet={vault2x} alt="avatar" className="connect-emoji-img" />
-          <p className="box-text connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
-          {!connectValues && !error && 'Loading...'}
-          {connectValues && <div className="universal-login-emojis">
-            <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
-          </div>}
-          {error && `Error: ${error}`}
-          <button onClick={onCancelClick} className="button-secondary connect-emoji-btn">Cancel Request</button>
+    <div className="universal-login-emojis">
+      <div className={getStyleForTopLevelComponent(className)}>
+        <div className="connect-emoji">
+          <h1 className="connect-emoji-title">Confirmation</h1>
+          <div className="connect-emoji-content">
+            <div className="connect-emoji-section">
+              <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
+              {!connectValues && !error && <Spinner className="spinner-center" />}
+              {connectValues && <div className="universal-login-emojis">
+                <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
+              </div>}
+              {error && `Error: ${error}`}
+              <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      </div>
   );
 };

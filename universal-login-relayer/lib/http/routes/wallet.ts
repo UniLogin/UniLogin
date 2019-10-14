@@ -9,24 +9,29 @@ import {getDeviceInfo} from '../utils/getDeviceInfo';
 import DeploymentHandler from '../../core/services/DeploymentHandler';
 
 
-const execution = (messageHandler : MessageHandler) =>
+const messageHandling = (messageHandler : MessageHandler) =>
   async (data: {body: SignedMessage}) => {
     const status = await messageHandler.handleMessage(data.body);
     return responseOf({status}, 201);
   };
 
-const getStatus = (messageHandler: MessageHandler) =>
+const getMessageStatus = (messageHandler: MessageHandler) =>
   async (data: {messageHash: string}) => {
     const status = await messageHandler.getStatus(data.messageHash);
     return responseOf(status);
   };
 
-const deploy = (deploymentHandler: DeploymentHandler) =>
+const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
   async (data: {body: DeployArgs & {applicationInfo: ApplicationInfo}}, req: Request) => {
     const {applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const transaction = await deploymentHandler.handleDeployment(deployArgs, deviceInfo);
     return responseOf(transaction, 201);
+  };
+
+const getDeploymentStatus = () =>
+  async () => {
+    return responseOf('Not implemented', 501);
   };
 
 export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHandler) => {
@@ -47,14 +52,14 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
         signature: asString
       })
     }),
-    execution(messageHandler)
+    messageHandling(messageHandler)
   ));
 
   router.get('/execution/:messageHash', asyncHandler(
     sanitize({
       messageHash: asString,
     }),
-    getStatus(messageHandler)
+    getMessageStatus(messageHandler)
   ));
 
   router.post('/deploy', asyncHandler(
@@ -68,7 +73,14 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
         applicationInfo: asApplicationInfo
       })
     }),
-    deploy(deploymentHandler)
+    deploymentHandling(deploymentHandler)
+  ));
+
+  router.get('/deploy/:deploymentHash', asyncHandler(
+    sanitize({
+      deploymentHash: asString,
+    }),
+    getDeploymentStatus()
   ));
 
   return router;

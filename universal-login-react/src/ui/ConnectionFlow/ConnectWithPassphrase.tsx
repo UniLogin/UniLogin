@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import {WalletService} from '@universal-login/sdk';
-import {CustomInput} from '../commons/CustomInput';
-import {InputLabel} from '../commons/InputLabel';
 import Spinner from '../commons/Spinner';
+import {WalletService} from '@universal-login/sdk';
+import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import './../styles/connectPassphrase.sass';
+import './../styles/connectPassphraseDefault.sass';
 
 interface ConnectWithPassphraseProps {
   name: string;
   walletService: WalletService;
   onRecover: () => void;
+  className?: string;
 }
 
-export const ConnectWithPassphrase = ({onRecover, name, walletService}: ConnectWithPassphraseProps) => {
+export const ConnectWithPassphrase = ({onRecover, name, walletService, className}: ConnectWithPassphraseProps) => {
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,28 +29,32 @@ export const ConnectWithPassphrase = ({onRecover, name, walletService}: ConnectW
   };
 
   return (
-    <div>
-      <div className="box-header">
-        <h1 className="box-title">Connect with passphrase</h1>
-      </div>
-      <div className="box-content connect-passphrase-content">
+    <div className="universal-login-passphrase">
+    <div className={getStyleForTopLevelComponent(className)}>
+    <div className="connect-passphrase">
+      <h1 className="connect-passphrase-title">Connect with passphrase</h1>
+      <div className="connect-passphrase-content">
         <div className="connect-passphrase-section">
-          <p className="box-text connect-passphrase-text">Write your passphrase to recover the access to your account</p>
-          <InputLabel htmlFor="">Backup codes</InputLabel>
-          <CustomInput
+          <p className="connect-passphrase-text">Write your passphrase to recover the access to your account</p>
+          <label className="connect-passphrase-label" htmlFor="passphrase-input">Backup codes</label>
+          <input
             id="passphrase-input"
+            className="connect-passphrase-input"
             value={code}
             onChange={event => setCode(event.target.value)}
+            type="text"
           />
           {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
         </div>
-        <button onClick={onRecoveryClick} className="button-primary connect-passphrase-btn" disabled={!code || isLoading}>
+        <button onClick={onRecoveryClick} className="connect-passphrase-btn" disabled={!code || isLoading}>
           {isLoading
             ? <Spinner className="connect-spinner" dotClassName="connect-spinner-dot" />
             : 'Recover'
           }
         </button>
       </div>
+    </div>
+    </div>
     </div>
   );
 };

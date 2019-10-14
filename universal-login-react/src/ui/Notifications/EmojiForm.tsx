@@ -142,13 +142,15 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
           className={className}
         />
         {renderKeyboard(inputMode)}
-        <button
-          className="emojis-form-reject"
-          id="reject"
-          onClick={onCancelClick}
-        >
-          Deny
-        </button>
+        <div className="emojis-form-reject-wrapper">
+          <button
+            className="emojis-form-reject"
+            id="reject"
+            onClick={onCancelClick}
+          >
+            Deny
+          </button>
+        </div>
       </div>
     );
   };

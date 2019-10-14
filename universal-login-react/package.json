@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/react",
-  "version": "0.3.46",
+  "version": "0.3.56",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -11,14 +11,14 @@
     "clean": "rimraf dist",
     "build": "tsc -p tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/config -t 10000 --exit \"dist/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.0.1",
     "@restless/sanitizers": "^0.2.2",
-    "@universal-login/commons": "0.3.46",
-    "@universal-login/sdk": "0.3.46",
+    "@universal-login/commons": "0.3.56",
+    "@universal-login/sdk": "0.3.56",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.36",
     "lodash.range": "^3.2.0",
@@ -63,6 +63,7 @@
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
-    "tslint-react": "^4.0.0"
+    "tslint-react": "^4.0.0",
+    "puppeteer": "1.19.0"
   }
 }

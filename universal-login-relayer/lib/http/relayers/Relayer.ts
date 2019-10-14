@@ -37,6 +37,8 @@ import IRepository from '../../core/services/messages/IRepository';
 import Deployment from '../../core/models/Deployment';
 import SQLRepository from '../../integration/sql/services/SQLRepository';
 import ExecutionWorker from '../../core/services/messages/ExecutionWorker';
+import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
+import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 
 const defaultPort = '3311';
 
@@ -71,6 +73,8 @@ class Relayer {
   private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
   private executionWorker: ExecutionWorker = {} as ExecutionWorker;
   private messageExecutor: MessageExecutor = {} as MessageExecutor;
+  private deploymentExecutor: DeploymentExecutor = {} as DeploymentExecutor;
+  private minedTransactionHandler: MinedTransactionHandler = {} as MinedTransactionHandler;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
@@ -117,9 +121,11 @@ class Relayer {
     this.statusService = new MessageStatusService(this.messageRepository, this.signaturesService);
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
     this.deploymentHandler = new DeploymentHandler(this.walletContractService, this.deploymentRepository, this.executionQueue);
-    this.messageHandler = new MessageHandler(this.wallet, this.authorisationStore, this.devicesService, this.hooks, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
-    this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.messageHandler.onTransactionMined.bind(this.messageHandler));
-    this.executionWorker = new ExecutionWorker(this.messageExecutor, this.executionQueue);
+    this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
+    this.messageHandler = new MessageHandler(this.wallet, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
+    this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
+    this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository);
+    this.executionWorker = new ExecutionWorker([this.messageExecutor, this.deploymentExecutor], this.executionQueue);
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));

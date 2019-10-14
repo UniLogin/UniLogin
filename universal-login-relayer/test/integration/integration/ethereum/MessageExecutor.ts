@@ -20,12 +20,12 @@ describe('INT: MessageExecutor', async () => {
 
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
-    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), async () => {});
+    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any);
     const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = messageToSignedMessage(message, wallet.privateKey);
   });
 
-  it('should execute transaction and wait for it', async () =>  {
+  it('should execute transaction and wait for it', async () => {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
     const transactionResponse = await messageExecutor.execute(signedMessage);
     await transactionResponse.wait();

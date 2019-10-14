@@ -115,7 +115,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'waitingForTransfer':
         return (
-          <WaitingFor action={'Transferring funds'} chainName={relayerConfig!.chainSpec.name} transactionHash={transactionHash}/>
+          <WaitingFor action={'Transferring funds'} relayerConfig={relayerConfig!} transactionHash={transactionHash}/>
         );
       case 'devices':
         return (

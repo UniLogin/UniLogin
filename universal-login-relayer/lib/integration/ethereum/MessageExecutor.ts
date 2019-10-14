@@ -6,6 +6,7 @@ import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/services/execution/IExecutor';
 import IMessageRepository from '../../core/services/messages/IMessagesRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
+import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
@@ -15,7 +16,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     private wallet: Wallet,
     private messageValidator: IMessageValidator,
     private messageRepository: IMessageRepository,
-    private onTransactionMined: OnTransactionMined,
+    private minedTransactionHandler: IMinedTransactionHandler,
   ) {}
 
   canExecute(item: QueueItem): boolean {
@@ -30,8 +31,8 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
       ensureNotNull(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!);
       await wait();
-      await this.onTransactionMined(transactionResponse);
-      await this.messageRepository.setMessageState(messageHash, 'Success');
+      await this.minedTransactionHandler.handle(transactionResponse);
+      await this.messageRepository.setState(messageHash, 'Success');
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.messageRepository.markAsError(messageHash, errorMessage);

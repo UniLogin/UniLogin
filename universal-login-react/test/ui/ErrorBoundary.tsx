@@ -1,12 +1,7 @@
-import 'jsdom-global/register';
 import {expect} from 'chai';
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import {configure, mount} from 'enzyme';
+import {mount} from 'enzyme';
 import {ErrorBoundary} from '../../src/ui/commons/ErrorBoundary';
-
-configure({adapter: new Adapter()});
-
 
 describe('ErrorBoundary', () => {
   it('Should show error view', () => {

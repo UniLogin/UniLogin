@@ -8,7 +8,7 @@ import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache.js';
 import {deployENS} from './deployEns.js';
-import deployWalletContract from './deployWalletContract';
+import deployWalletContractOnDev from './deployWalletContractOnDev';
 import deployToken from './deployToken';
 import deployFactory from '../ops/deployFactory';
 
@@ -100,7 +100,7 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [, , , , ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
-  const {address, walletContractHash} = await deployWalletContract(deployWallet);
+  const {address, walletContractHash} = await deployWalletContractOnDev(deployWallet);
   const proxyContractHash = getProxyContractHash();
   const factoryAddress = await deployFactory(deployWallet, {walletContractAddress: address, nodeUrl: 'dev', privateKey: 'dev'});
   const tokenAddress = await deployToken(deployWallet);
