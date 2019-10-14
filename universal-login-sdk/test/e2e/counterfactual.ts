@@ -5,13 +5,13 @@ import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_
 import {emptyMessage} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
-import UniversaLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
 
 describe('E2E: SDK counterfactual deployment', () => {
   let provider: providers.Provider;
-  let sdk: UniversaLoginSDK;
+  let sdk: UniversalLoginSDK;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
 
@@ -20,7 +20,7 @@ describe('E2E: SDK counterfactual deployment', () => {
     [wallet] = getWallets(provider);
     ({relayer, provider} = await RelayerUnderTest.createPreconfigured(wallet));
     await relayer.start();
-    sdk = new UniversaLoginSDK(relayer.url(), provider);
+    sdk = new UniversalLoginSDK(relayer.url(), provider);
   });
 
   it('createFutureWallet returns private key and contract address', async () => {
