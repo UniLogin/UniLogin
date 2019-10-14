@@ -30,7 +30,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
-  const [relayerConfig] = useAsync<PublicRelayerConfig>(() => sdk.getRelayerConfig(), []);
+  const relayerConfig = sdk.getRelayerConfig();
 
   const onPayClick = (provider: TopUpProvider, amount: string) => {
     setModal(toTopUpComponentType(provider));

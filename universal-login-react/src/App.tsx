@@ -41,7 +41,7 @@ const mockedNotifications = asMock<Notification[]>([
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
-  const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+  const relayerConfig = sdk.getRelayerConfig();
 
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);

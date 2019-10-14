@@ -11,17 +11,17 @@ chai.use(solidity);
 describe('INT: ConfigService', async () => {
   let sdk: UniversalLoginSDK;
   let relayer: Relayer;
-  let relayerConfig: PublicRelayerConfig | undefined;
+  let relayerConfig: PublicRelayerConfig;
 
   before(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+    const [wallet] = getWallets(createMockProvider());
     ({sdk, relayer} = await setupSdk(wallet));
-    relayerConfig = await sdk.getRelayerConfig();
+    await sdk.fetchRelayerConfig();
   });
 
   it('Cache and get config', async () => {
     const configService = new ConfigService(sdk);
-    expect(await configService.getRelayerConfig()).to.eq(relayerConfig);
+    expect(await configService.getRelayerConfig()).to.eq(sdk.getRelayerConfig());
   });
 
   after(async () => {

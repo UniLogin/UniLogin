@@ -44,7 +44,7 @@ export const Onboarding = (props: OnboardingProps) => {
       contractAddress,
       privateKey
     }));
-    const relayerConfig = await props.sdk.getRelayerConfig();
+    const relayerConfig = props.sdk.getRelayerConfig();
     const topUpProps: TopUpProps = {
       contractAddress,
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },

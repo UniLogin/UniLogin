@@ -24,6 +24,7 @@ describe('UI: Creation flow', () => {
         ({relayer, provider} = await setupSdk(wallet, '33113'));
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
         await services.sdk.tokensDetailsStore.fetchTokensDetails();
+        await services.sdk.fetchRelayerConfig();
     });
 
     it('create wallet and disconnect roundtrip', async () => {
@@ -37,7 +38,7 @@ describe('UI: Creation flow', () => {
         await appPage.notifications().waitForGasMode();
         appPage.notifications().selectGasMode();
         expect(address).to.be.an('string');
-        const [wallet] = await getWallets(provider);
+        const [wallet] = getWallets(provider);
         await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
         await appPage.creation().waitAndGoToWallet();
         await appPage.login().waitForHomeView(expectedHomeBalance);

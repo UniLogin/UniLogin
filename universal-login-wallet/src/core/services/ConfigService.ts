@@ -11,7 +11,7 @@ export class ConfigService {
 
   async fetchRelayerConfig() {
     if (!this.relayerConfig) {
-      this.relayerConfig = await this.sdk.getRelayerConfig();
+      this.relayerConfig = this.sdk.getRelayerConfig();
     }
   }
 
