@@ -1,18 +1,21 @@
 import fetch from 'node-fetch';
 import {Wallet, Contract, utils} from 'ethers';
-import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeCounterfactualAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO, sleep} from '@universal-login/commons';
+import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeCounterfactualAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
 import ENSService from '../../lib/integration/ethereum/ensService';
 import {RelayerUnderTest} from '../../lib';
+import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 
 export class WalletCreator {
   private http: HttpFunction;
   private ensService?: ENSService;
   private relayerConfig: PublicRelayerConfig;
+  private relayerUrl: string;
 
   constructor(relayer: RelayerUnderTest, private wallet: Wallet) {
-    this.http = http(fetch)(relayer.url());
+    this.relayerUrl = relayer.url();
+    this.http = http(fetch)(this.relayerUrl);
     this.relayerConfig = relayer.publicConfig;
   }
 
@@ -55,7 +58,7 @@ export class WalletCreator {
     const {contractAddress, privateKey, publicKey} = await this.createFutureWallet();
     await this.wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     const signature = await this.getSignature(privateKey, publicKey, ensName);
-    await this.http('POST', '/wallet/deploy', {
+    const result = await this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
       gasPrice: TEST_GAS_PRICE,
@@ -63,7 +66,7 @@ export class WalletCreator {
       signature,
       applicationInfo: TEST_APPLICATION_INFO
     });
-    await sleep(1000); // TODO: check status and wait for 'Success' state
+    await waitForDeploymentStatus(this.relayerUrl, result.deploymentHash, 'Success');
     return {privateKey, contractAddress, publicKey};
   }
 }

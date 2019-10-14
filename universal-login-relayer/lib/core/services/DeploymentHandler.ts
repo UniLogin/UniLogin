@@ -32,7 +32,11 @@ class DeploymentHandler {
         transactionHash: deployment.transactionHash
       };
       return status;
-    } catch (_) {}
+    } catch (e) {
+      if (e.errorType !== 'NotFound') {
+        throw e;
+      }
+    }
     return null;
   }
 }

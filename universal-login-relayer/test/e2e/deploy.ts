@@ -2,10 +2,11 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {getDeployData} from '@universal-login/contracts';
-import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, DeploymentState, waitExpect} from '@universal-login/commons';
+import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, isProperHexString} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../helpers/http';
 import Relayer from '../../lib';
+import {waitForDeploymentStatus} from '../helpers/waitForDeploymentStatus';
 
 chai.use(chaiHttp);
 
@@ -34,22 +35,10 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
   });
 
-  const waitForDeploymentStatus = async (hash: string, expectedState: DeploymentState, expectedError: string | null = null) =>
-    waitExpect(async () => {
-      const deploymentStatus = await chai.request(relayerUrl).get(`/wallet/deploy/${hash}`);
-      expect(deploymentStatus.body.state).to.be.equal(expectedState);
-      expect(deploymentStatus.body.error).to.be.equal(expectedError);
-  });
-
-  const checkTransactionHash = async (hash: string, shouldExist: boolean = true) =>
-  waitExpect(async () => {
-    const deploymentStatus = await chai.request(relayerUrl).get(`/wallet/deploy/${hash}`);
-    if (shouldExist) {
-      expect(deploymentStatus.body.transactionHash).to.be.a('string');
-    } else {
-      expect(deploymentStatus.body.transactionHash).to.be.null;
-    }
-});
+  const checkTransactionHash = (transactionHash: string | null) => {
+    expect(transactionHash).to.be.a('string');
+    expect(isProperHexString(transactionHash!)).to.be.true;
+  };
 
   it('Counterfactual deployment with ether payment and refund', async () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
@@ -65,8 +54,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
-    await waitForDeploymentStatus(result.body, 'Success');
-    await checkTransactionHash(result.body);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
+    checkTransactionHash(status.transactionHash);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
 
@@ -110,8 +99,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
-    await waitForDeploymentStatus(result.body, 'Error', `Error: ENS name ${ensName} already taken`);
-    await checkTransactionHash(result.body, false);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: ENS name ${ensName} already taken`);
   });
 
 
@@ -132,8 +122,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
-    await waitForDeploymentStatus(result.body, 'Success');
-    await checkTransactionHash(result.body);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
+    checkTransactionHash(status.transactionHash);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOYMENT_REFUND));
   });
@@ -150,8 +140,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
-    await waitForDeploymentStatus(result.body, 'Error', `Error: Not enough balance`);
-    await checkTransactionHash(result.body, false);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: Not enough balance`);
   });
 
   it('Counterfactual deployment fail if invalid ENS name', async () => {
@@ -169,8 +160,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
-    await waitForDeploymentStatus(result.body, 'Error', `Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
-    await checkTransactionHash(result.body, false);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
   });
 
   it('Counterfactual deployment fail if invalid signature', async () => {
@@ -189,8 +181,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
-    await waitForDeploymentStatus(result.body, 'Error', `Error: Invalid signature `);
-    await checkTransactionHash(result.body, false);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: Invalid signature `);
   });
 
   it('Endpoint for checking deployment status should return 404 for not-existing hash', async () => {

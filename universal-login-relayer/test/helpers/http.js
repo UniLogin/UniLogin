@@ -1,11 +1,12 @@
 import {Wallet, utils, Contract} from 'ethers';
 import {RelayerUnderTest} from '../../lib/http/relayers/RelayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, parseDomain, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO, sleep} from '@universal-login/commons';
+import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, parseDomain, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ENS from '@universal-login/contracts/build/ENS.json';
 import chai from 'chai';
 import {deployFactory, getFutureAddress, deployWalletContract, encodeInitializeWithENSData} from '@universal-login/contracts';
+import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -33,7 +34,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
   const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);
   const signature = await calculateInitializeSignature(initData, keyPair.privateKey);
-  await chai.request(relayerUrlOrServer)
+  const result = await chai.request(relayerUrlOrServer)
   .post('/wallet/deploy')
   .send({
     publicKey: keyPair.publicKey,
@@ -43,7 +44,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
     signature,
     applicationInfo: TEST_APPLICATION_INFO
   });
-  await sleep(1000); // TODO: check status and wait for 'Success' state
+  await waitForDeploymentStatus(relayerUrlOrServer, result.body.deploymentHash, 'Success');
   return new Contract(futureAddress, WalletContract.interface, wallet);
 };
 

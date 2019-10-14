@@ -6,7 +6,7 @@ export const createWallet = async (name: string, sdk: UniversalLoginSDK, wallet:
   const {contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet();
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   await waitForBalance();
-  const {waitToBeSuccess, deployedWallet} = await deploy(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-  await waitToBeSuccess();
+  const {waitToBeSuccess} = await deploy(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+  const deployedWallet = await waitToBeSuccess();
   return deployedWallet;
 };

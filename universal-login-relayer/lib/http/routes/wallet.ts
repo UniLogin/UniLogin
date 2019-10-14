@@ -26,7 +26,8 @@ const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
     const {applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const hash = await deploymentHandler.handleDeployment(deployArgs, deviceInfo);
-    return responseOf(hash, 201);
+    const status = await deploymentHandler.getStatus(hash);
+    return responseOf(status, 201);
   };
 
 const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>

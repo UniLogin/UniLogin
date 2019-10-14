@@ -18,9 +18,8 @@ export type BalanceDetails = {
 };
 
 export interface Deployment {
-  waitForTransactionHash: () => Promise<string>;
-  waitToBeSuccess: () => Promise<void>;
-  deployedWallet: DeployedWallet;
+  waitForTransactionHash: () => Promise<DeploymentStatus>;
+  waitToBeSuccess: () => Promise<DeployedWallet>;
 }
 
 export type FutureWallet = {
@@ -45,7 +44,7 @@ export class FutureWalletFactory {
       this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
-  private isExecuted(deploymentStatus: DeploymentStatus) {
+  private isMined(deploymentStatus: DeploymentStatus) {
     return deploymentStatus.state === 'Error' || deploymentStatus.state === 'Success';
   }
 
@@ -53,22 +52,27 @@ export class FutureWalletFactory {
     return ['Pending', 'Success', 'Error'].includes(deploymentStatus.state) && deploymentStatus.transactionHash !== null;
   }
 
-  private createWaitToBeSuccess(deploymentHash: string) {
+  private createWaitToBeSuccess(deploymentHash: string, deployedWallet: DeployedWallet) {
     return async () => {
-      const getStatus = async () => this.relayerApi.getDeploymentStatus(deploymentHash);
-      const isNotExecuted = (deploymentStatus: DeploymentStatus) => !this.isExecuted(deploymentStatus);
-      const status = await retry(getStatus, isNotExecuted, DEFAULT_EXECUTION_TIMEOUT, DEFAULT_EXECUTION_TICK);
+      const predicate = (deploymentStatus: DeploymentStatus) => !this.isMined(deploymentStatus);
+      const status : DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
       ensure(!status.error, Error, status.error!);
+      return deployedWallet;
     };
   }
 
   private createWaitForTransactionHash(deploymentHash: string) {
     return async () => {
-      const getStatus = async () => this.relayerApi.getDeploymentStatus(deploymentHash);
-      const isNotPending = (deploymentStatus: DeploymentStatus) => !this.hasTransactionHash(deploymentStatus);
-      const status = await retry(getStatus, isNotPending, DEFAULT_EXECUTION_TIMEOUT, DEFAULT_EXECUTION_TICK);
-      return status.transactionHash!;
+      const predicate = (deploymentStatus: DeploymentStatus) => !this.hasTransactionHash(deploymentStatus);
+      const status : DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
+      return status;
     };
+  }
+
+  private async waitForDeploymentStatus(deploymentHash: string, predicate: (status: DeploymentStatus) => boolean) : Promise<DeploymentStatus> {
+    const getStatus = async () => this.relayerApi.getDeploymentStatus(deploymentHash);
+    const status : DeploymentStatus = await retry(getStatus, predicate, DEFAULT_EXECUTION_TIMEOUT, DEFAULT_EXECUTION_TICK);
+    return status;
   }
 
   async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
@@ -91,17 +95,18 @@ export class FutureWalletFactory {
     const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
       const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
       const signature = await calculateInitializeSignature(initData, privateKey);
-      const deploymentHash = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
+      const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
+
+      const deployedWallet = new DeployedWallet(
+        contractAddress,
+        ensName,
+        privateKey,
+        this.sdk
+      );
 
       const deployment: Deployment = {
         waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
-        waitToBeSuccess: this.createWaitToBeSuccess(deploymentHash),
-        deployedWallet: new DeployedWallet(
-          contractAddress,
-          ensName,
-          privateKey,
-          this.sdk,
-        )
+        waitToBeSuccess: this.createWaitToBeSuccess(deploymentHash, deployedWallet),
       };
       return deployment;
     };
