@@ -5,7 +5,7 @@ import {getTestSignedMessage} from '../../../config/message';
 import {getKnexConfig} from '../../../helpers/knex';
 import QueueSQLStore from '../../../../lib/integration/sql/services/QueueSQLStore';
 import QueueMemoryStore from '../../../helpers/QueueMemoryStore';
-import {IExecutionQueue} from '../../../../lib/core/services/messages/IExecutionQueue';
+import {IExecutionQueue} from '../../../../lib/core/models/execution/IExecutionQueue';
 import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
 
 for (const config of [{

@@ -4,7 +4,7 @@ import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
 import {emptyMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
-import IMessageRepository from '../../../../lib/core/services/messages/IMessagesRepository';
+import IMessageRepository from '../../../../lib/core/models/messages/IMessagesRepository';
 import MessageItem from '../../../../lib/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKeyFromHashAndSignature} from '../../../../lib/core/utils/encodeData';

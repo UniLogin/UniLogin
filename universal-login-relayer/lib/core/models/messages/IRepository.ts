@@ -1,5 +1,5 @@
 import {MineableState} from '@universal-login/commons';
-import {Mineable} from '../../models/Mineable';
+import {Mineable} from '../Mineable';
 
 export default interface IRepository<T extends Mineable> {
   add: (hash: string, item: T) => Promise<void>;

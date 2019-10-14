@@ -1,8 +1,8 @@
 import {Wallet} from 'ethers';
 import {SignedMessage} from '@universal-login/commons';
 import PendingMessages from './messages/PendingMessages';
-import IMessageRepository from './messages/IMessagesRepository';
-import {IExecutionQueue} from './messages/IExecutionQueue';
+import IMessageRepository from '../models/messages/IMessagesRepository';
+import {IExecutionQueue} from '../models/execution/IExecutionQueue';
 import {MessageStatusService} from './messages/MessageStatusService';
 import {GasValidator} from './validators/GasValidator';
 

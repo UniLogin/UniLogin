@@ -1,5 +1,5 @@
 import {CollectedSignatureKeyPair, SignedMessage} from '@universal-login/commons';
-import MessageItem from '../../models/messages/MessageItem';
+import MessageItem from './MessageItem';
 import IRepository from './IRepository';
 
 export default interface IMessageRepository extends IRepository<MessageItem> {
