@@ -17,7 +17,7 @@ describe('UI: Notifications',  () => {
   let mockTokenContract: Contract;
 
   beforeEach(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+    const [wallet] = getWallets(createMockProvider());
     ({relayer} = await RelayerUnderTest.createPreconfigured(wallet, '33113'));
     await relayer.start();
     ({mockTokenContract} = await createFixtureLoader(relayer.provider as providers.Web3Provider)(deployMockToken));

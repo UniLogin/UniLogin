@@ -24,7 +24,7 @@ export async function setupTestEnvironmentWithWeb3() {
   const {relayer, deployer, provider, wallets} = await setupTestEnvironment();
 
   const [ulProvider, services] = createProvider(provider._web3Provider as any, relayer.url());
-
+  await services.sdk.fetchRelayerConfig();
   const web3 = new Web3(ulProvider);
   web3.eth.defaultAccount = `0x${'00'.repeat(20)}`;
 
