@@ -109,7 +109,7 @@ describe('ULWeb3Provier', () => {
       let isResolved = false;
       ulProvider.create().then(() => {
         isResolved = true;
-      });
+      }).catch();
 
       expect(services.uiController.showOnboarding.get()).to.be.true;
       expect(isResolved).to.be.false;
@@ -130,7 +130,7 @@ describe('ULWeb3Provier', () => {
       let isResolved = false;
       ulProvider.create().then(() => {
         isResolved = true;
-      });
+      }).catch();
 
       expect(services.uiController.showOnboarding.get()).to.be.false;
       await waitExpect(() => {

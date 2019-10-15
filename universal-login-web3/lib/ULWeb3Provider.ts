@@ -5,11 +5,11 @@ import {MetamaskService} from './services/MetamaskService';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ensure, ETHER_NATIVE_TOKEN, Message, walletFromBrain} from '@universal-login/commons';
+import {ensure, Message, walletFromBrain} from '@universal-login/commons';
 import {waitForTrue} from './utils';
 import {initUi} from './ui';
 import {AppProps} from './ui/App';
-import {StorageService, WalletStorageService, LogoButton} from '@universal-login/react';
+import {StorageService, WalletStorageService} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 
@@ -77,7 +77,7 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
+  async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     const metamaskProvider = this.metamaskService.metamaskProvider.get();
     if (metamaskProvider) {
       return metamaskProvider.sendAsync(payload, callback);
@@ -89,12 +89,11 @@ export class ULWeb3Provider implements Provider {
       case 'eth_sign':
       case 'personal_sign':
         try {
-          this.handle(payload.method, payload.params).then((result: any) => {
-            callback(null, {
-              id: payload.id,
-              jsonrpc: '2.0',
-              result,
-            });
+          const result = await this.handle(payload.method, payload.params);
+          callback(null, {
+            id: payload.id,
+            jsonrpc: '2.0',
+            result,
           });
         } catch (err) {
           callback(err);
