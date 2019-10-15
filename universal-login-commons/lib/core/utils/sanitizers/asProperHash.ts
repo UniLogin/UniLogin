@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {Sanitizer, Result} from '@restless/sanitizers';
 
-export const asProperHash : (length: number) => Sanitizer<string> = (length: number) => {
+export const asHexString: (length: number) => Sanitizer<string> = (length: number) => {
   return (value: unknown, path: string) => {
     try {
       if (typeof value === 'string') {
@@ -14,4 +14,4 @@ export const asProperHash : (length: number) => Sanitizer<string> = (length: num
   };
 };
 
-export const asDeploymentHash : Sanitizer<string> = asProperHash(66);
+export const asDeploymentHash: Sanitizer<string> = asHexString(66);
