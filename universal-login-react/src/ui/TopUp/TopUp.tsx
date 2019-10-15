@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, PublicRelayerConfig, stringToEther} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
@@ -10,7 +10,6 @@ import {LogoColor} from './Fiat/FiatPaymentMethods';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import {GasPrice} from '../commons/GasPrice';
-import {useAsync} from '../../ui/hooks/useAsync';
 import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 
