@@ -14,13 +14,13 @@ describe('INT: UDashboard', () => {
   let contractAddress: string;
   let privateKey: string;
   const ensName = `jarek.mylogin.eth`;
-  const initialAmount = `1.99`;
+  const initialAmount = `199.99`;
 
   beforeEach(async () => {
     ([wallet] = await getWallets(createMockProvider()));
     const {sdk} = await setupSdk(wallet, '33113');
     sdk.priceObserver.getCurrentPrices = () => {
-      return Promise.resolve({ETH: {USD: 1, DAI: 1, ETH: 1}});
+      return Promise.resolve({ETH: {USD: 100, DAI: 99, ETH: 1}});
     };
     sdk.start();
     ({contractAddress, privateKey} = await createWallet(ensName, sdk, wallet));
@@ -33,7 +33,7 @@ describe('INT: UDashboard', () => {
     uButton.simulate('click');
     const balanceComponent = appWrapper.find('.universal-login-balance-amount');
     await waitExpect(() => expect(balanceComponent.text()).to.be.eq(`$${initialAmount}`));
-    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther(`2.01`)});
-    await waitExpect(() => expect(balanceComponent.text()).to.be.eq(`$4.00`));
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther(`2`)});
+    await waitExpect(() => expect(balanceComponent.text()).to.be.eq(`$399.99`));
   });
 });
