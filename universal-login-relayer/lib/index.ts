@@ -4,6 +4,5 @@ export {Config} from './config/relayer';
 export {getConfig} from './core/utils/config';
 export {RelayerClass};
 export {DevelopmentRelayer} from './http/relayers/DevelopmentRelayer';
-export {TokenGrantingRelayer} from './http/relayers/TokenGrantingRelayer';
 export {getContractWhiteList, RelayerUnderTest} from './http/relayers/RelayerUnderTest';
 export {UnauthorisedAddress} from './core/utils/errors';

@@ -21,6 +21,7 @@ describe('E2E: SDK counterfactual deployment', () => {
     ({relayer, provider} = await RelayerUnderTest.createPreconfigured(wallet));
     await relayer.start();
     sdk = new UniversalLoginSDK(relayer.url(), provider);
+    await sdk.fetchRelayerConfig();
   });
 
   it('createFutureWallet returns private key and contract address', async () => {

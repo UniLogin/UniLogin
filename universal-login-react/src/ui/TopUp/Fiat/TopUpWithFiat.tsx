@@ -43,7 +43,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
   }, []);
 
   async function recognizeUserCountry() {
-    const {ipGeolocationApi} = await sdk.getRelayerConfig();
+    const {ipGeolocationApi} = sdk.getRelayerConfig();
     const ipGeolocationService = new IPGeolocationService(ipGeolocationApi.baseUrl, ipGeolocationApi.accessKey);
     const userCountryCode = await ipGeolocationService.getCountryCode().catch(console.error);
 

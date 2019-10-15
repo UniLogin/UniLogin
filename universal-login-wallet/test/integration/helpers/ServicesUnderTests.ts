@@ -18,5 +18,7 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
   services.sdk.priceObserver.getCurrentPrices = () => {
     return Promise.resolve({ETH: {USD: 1, DAI: 1, ETH: 1}});
   };
+  await services.sdk.tokensDetailsStore.fetchTokensDetails();
+  await services.sdk.fetchRelayerConfig();
   return services;
 };
