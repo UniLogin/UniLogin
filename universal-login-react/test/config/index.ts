@@ -1,3 +1,6 @@
 import 'jsdom-global/register';
-import './enzymeConfig';
+import './setupEnzyme';
 import './nullCompiler';
+import {setupGlobalFetch} from './setupGlobalFetch';
+
+setupGlobalFetch();

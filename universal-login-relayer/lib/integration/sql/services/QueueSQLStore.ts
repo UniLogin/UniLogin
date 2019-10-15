@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IExecutionQueue} from '../../../core/services/messages/IExecutionQueue';
+import {IExecutionQueue} from '../../../core/models/execution/IExecutionQueue';
 import Deployment from '../../../core/models/Deployment';
 
 export default class QueueSQLStore implements IExecutionQueue {

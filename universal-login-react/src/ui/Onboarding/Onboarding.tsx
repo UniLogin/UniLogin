@@ -57,7 +57,8 @@ export const Onboarding = (props: OnboardingProps) => {
       action: 'Wallet creation',
       transactionHash: '0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}
     );
-    const wallet = await deploy(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken);
+    const {waitToBeSuccess} = await deploy(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken);
+    const wallet = await waitToBeSuccess();
     walletService.setDeployed(ensName);
     modalService.hideModal();
     props.onCreate && props.onCreate(wallet);

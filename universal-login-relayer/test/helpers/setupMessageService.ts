@@ -9,7 +9,7 @@ import MessageSQLRepository from '../../lib/integration/sql/services/MessageSQLR
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../lib/core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../lib/integration/ethereum/SignaturesService';
-import IMessageValidator from '../../lib/core/services/validators/IMessageValidator';
+import IMessageValidator from '../../lib/core/models/IMessageValidator';
 import MessageExecutionValidator from '../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../lib/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../lib/integration/sql/services/DevicesStore';
@@ -22,6 +22,7 @@ import DeploymentExecutor from '../../lib/integration/ethereum/DeploymentExecuto
 import SQLRepository from '../../lib/integration/sql/services/SQLRepository';
 import Deployment from '../../lib/core/models/Deployment';
 import {MinedTransactionHandler} from '../../lib/core/services/execution/MinedTransactionHandler';
+import setupWalletService from './setupWalletService';
 
 export default async function setupMessageService(knex: Knex, config: Config) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -40,7 +41,8 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
   const messageHandler = new MessageHandler(wallet, messageRepository, statusService, gasValidator, executionQueue);
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler);
-  const deploymentExecutor = new DeploymentExecutor(deploymentRepository);
+  const {walletService} = await setupWalletService(wallet);
+  const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
   return {wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker};
 }

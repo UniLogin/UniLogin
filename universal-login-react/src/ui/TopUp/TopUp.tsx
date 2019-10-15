@@ -13,6 +13,8 @@ import {GasPrice} from '../commons/GasPrice';
 import {useAsync} from '../../ui/hooks/useAsync';
 import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
+import './../styles/topUp.sass';
+import './../styles/topUpDefaults.sass';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;

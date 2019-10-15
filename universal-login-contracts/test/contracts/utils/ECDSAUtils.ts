@@ -3,7 +3,7 @@ import ECDSAUtils from '../../../build/ECDSAUtils.json';
 import {Contract, utils} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH,  signHexString, concatenateSignatures} from '@universal-login/commons';
-import {transferMessage} from '../../helpers/ExampleMessages.js';
+import {transferMessage} from '../../helpers/ExampleMessages';
 
 const hash = utils.hashMessage(TEST_MESSAGE_HASH);
 const invalidHash = utils.hashMessage(TEST_MESSAGE_HASH.replace('1', '2'));

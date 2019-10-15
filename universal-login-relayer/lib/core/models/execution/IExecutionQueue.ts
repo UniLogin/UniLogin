@@ -1,6 +1,6 @@
 import {SignedMessage} from '@universal-login/commons';
-import {QueueItem} from '../../models/QueueItem';
-import Deployment from '../../models/Deployment';
+import {QueueItem} from '../QueueItem';
+import Deployment from '../Deployment';
 
 export interface IExecutionQueue {
   addMessage (item: SignedMessage) : Promise<string>;

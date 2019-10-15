@@ -1,12 +1,10 @@
 import Deployment from '../models/Deployment';
-import WalletService from '../../integration/ethereum/WalletService';
-import {calculateDeployHash, DeviceInfo, DeployArgs} from '@universal-login/commons';
-import IRepository from './messages/IRepository';
-import {IExecutionQueue} from './messages/IExecutionQueue';
+import {calculateDeployHash, DeviceInfo, DeployArgs, DeploymentStatus} from '@universal-login/commons';
+import IRepository from '../models/messages/IRepository';
+import {IExecutionQueue} from '../models/execution/IExecutionQueue';
 
 class DeploymentHandler {
   constructor(
-    private walletService: WalletService,
     private deploymentRepository: IRepository<Deployment>,
     private executionQueue: IExecutionQueue
   ) {}
@@ -19,8 +17,26 @@ class DeploymentHandler {
       state: 'Queued'
     } as Deployment;
     await this.deploymentRepository.add(deployment.hash, deployment);
-    await this.executionQueue.addDeployment(deployment);
-    return this.walletService.deploy(deployment, deviceInfo);
+    return this.executionQueue.addDeployment(deployment);
+  }
+
+  async getStatus(deploymentHash: string) : Promise<DeploymentStatus | null> {
+    let deployment: Deployment;
+    try {
+      deployment = await this.deploymentRepository.get(deploymentHash);
+      const status : DeploymentStatus = {
+        deploymentHash,
+        error: deployment.error,
+        state: deployment.state,
+        transactionHash: deployment.transactionHash
+      };
+      return status;
+    } catch (e) {
+      if (e.errorType !== 'NotFound') {
+        throw e;
+      }
+    }
+    return null;
   }
 }
 

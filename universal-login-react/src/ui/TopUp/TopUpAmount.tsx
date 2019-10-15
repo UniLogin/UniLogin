@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ensure, isValidAmount} from '@universal-login/commons';
 import {InvalidNumber} from '../../core/utils/errors';
 import {Input} from '../commons/Input';
-import './../styles/topUpModalDefaults.css';
 
 interface TopUpAmountProps {
   onNextClick: (amount: string) => void;

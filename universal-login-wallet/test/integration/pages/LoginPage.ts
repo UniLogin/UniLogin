@@ -23,9 +23,13 @@ export default class LoginPage {
   async pickUsername(userName: string, action: string, result: string) {
     const input = this.wrapper.find('input');
     input.simulate('change', {target: {value: userName}});
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes(action));
-    this.wrapper.find(`#${getSuggestionId(action)}`).simulate('click');
+    await this.clickAction(action);
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(result));
+  }
+
+  async clickAction(action: string) {
+    await waitForUI(this.wrapper, () => this.wrapper.exists(`#${getSuggestionId(action)}`));
+    this.wrapper.find(`#${getSuggestionId(action)}`).simulate('click');
   }
 
   async createNew(userName: string) {

@@ -32,7 +32,7 @@ export const ConnectSelector = ({setName, setConnectModal}: ConnectSelectorProps
         <div className="connect-accoutn-selector-block">
           <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
           <WalletSelector
-            onCreateClick={() => null}
+            onCreateClick={() => {}}
             onConnectClick={onConnectClick}
             sdk={sdk}
             domains={walletConfig.domains}

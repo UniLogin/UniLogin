@@ -7,12 +7,13 @@ import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
 import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
-import IMessageRepository from '../../../lib/core/services/messages/IMessagesRepository';
+import IMessageRepository from '../../../lib/core/models/messages/IMessagesRepository';
 import MessageExecutor from '../../../lib/integration/ethereum/MessageExecutor';
 import DeploymentExecutor from '../../../lib/integration/ethereum/DeploymentExecutor';
-import IRepository from '../../../lib/core/services/messages/IRepository';
+import IRepository from '../../../lib/core/models/messages/IRepository';
 import MemoryRepository from '../../helpers/MemoryRepository';
 import Deployment from '../../../lib/core/models/Deployment';
+import WalletService from '../../../lib/integration/ethereum/WalletService';
 
 use(sinonChai);
 
@@ -30,6 +31,9 @@ describe('UNIT: Queue Service', async () => {
       wait
     }),
   };
+  const walletService: WalletService = {
+
+  } as WalletService;
   const messageValidator: any = {
     validate: sinon.fake.returns(true)
   };
@@ -45,7 +49,7 @@ describe('UNIT: Queue Service', async () => {
     messageRepository = new MessageMemoryRepository();
     deploymentRepository = new MemoryRepository<Deployment>();
     messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler);
-    deploymentExecutor = new DeploymentExecutor(deploymentRepository);
+    deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     signedMessage = getTestSignedMessage();
     messageHash = calculateMessageHash(signedMessage);

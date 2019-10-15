@@ -1,11 +1,11 @@
 import React from 'react';
 import './../styles/notice.sass';
 
-export interface TestNetworkNoticeProps {
+export interface NoticeProps {
   message: string;
 }
 
-export const Notice = ({message}: TestNetworkNoticeProps) => {
+export const Notice = ({message}: NoticeProps) => {
   if (message) {
     return (
       <div className="notice-wrapper">

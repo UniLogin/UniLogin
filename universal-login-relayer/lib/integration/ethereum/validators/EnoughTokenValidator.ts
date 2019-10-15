@@ -1,7 +1,7 @@
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {Wallet, providers, utils, Contract} from 'ethers';
 import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContractExist} from '@universal-login/commons';
-import IMessageValidator from '../../../core/services/validators/IMessageValidator';
+import IMessageValidator from '../../../core/models/IMessageValidator';
 import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
 
 const isContract = async (provider : providers.Provider, contractAddress : string) => {

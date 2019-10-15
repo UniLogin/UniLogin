@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
-  <g fill="none" fill-rule="evenodd">
-    <circle cx="15" cy="15" r="15" fill="#DDDFF5" opacity=".648"/>
-    <g transform="translate(7.783 3.913)">
-      <polygon fill="#9497FF" points="7.031 .004 6.887 .495 6.887 14.748 7.031 14.893 13.647 10.982"/>
-      <polygon fill="#F7F6FD" points="7.031 .004 .415 10.982 7.031 14.893 7.031 7.975"/>
-      <polygon fill="#9497FF" points="7.031 16.145 6.95 16.245 6.95 21.322 7.031 21.56 13.651 12.236"/>
-      <polygon fill="#F7F6FD" points="7.031 21.56 7.031 16.145 .415 12.236"/>
-      <polygon fill="#5053DD" points="7.031 14.893 13.647 10.982 7.031 7.975" opacity=".85"/>
-      <polygon fill="#8C96F1" points=".415 10.982 7.031 14.893 7.031 7.975" opacity=".59"/>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><g fill="none" fill-rule="evenodd"><circle cx="15" cy="15" r="15" fill="#DDDFF5" opacity=".648"/><path fill="#9497FF" d="M14.814 3.917l-.144.491v14.253l.144.145 6.616-3.911z"/><path fill="#F7F6FD" d="M14.814 3.917L8.198 14.895l6.616 3.911v-6.918z"/><path fill="#9497FF" d="M14.814 20.058l-.081.1v5.077l.081.238 6.62-9.324z"/><path fill="#F7F6FD" d="M14.814 25.473v-5.415l-6.616-3.909z"/><path fill="#5053DD" opacity=".85" d="M14.814 18.806l6.616-3.911-6.616-3.007z"/><path fill="#8C96F1" opacity=".59" d="M8.198 14.895l6.616 3.911v-6.918z"/></g></svg>
