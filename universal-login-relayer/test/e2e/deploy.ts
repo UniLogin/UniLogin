@@ -183,7 +183,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
   it('Endpoint for checking deployment status should return 404 for not-existing hash', async () => {
     const result = await chai.request(relayerUrl)
-      .get(`/wallet/deploy/not-existing-hash`);
+      .get(`/wallet/deploy/0xa4ebe7c508b5ed32427f0d9fe1802fc2af027aada5e985ebc1e18ff8d11e854e`);
     expect(result.status).to.eq(404);
     expect(result.body).to.eq('Not Found');
   });
