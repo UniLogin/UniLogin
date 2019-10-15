@@ -4,13 +4,10 @@ import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
-import {setupGlobalFetch} from '@universal-login/react/testutils';
 import {setupSdk} from '@universal-login/sdk/testutils';
 import {Services} from '../../../src/ui/createServices';
 import {setupUI} from '../helpers/setupUI';
 import {AppPage} from '../pages/AppPage';
-
-setupGlobalFetch();
 
 describe('UI: Transfer', () => {
   let appWrapper: ReactWrapper;
