@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
-import './../styles/topup.css';
-import './../styles/topUpModalDefaults.css';
 import daiIcon from './../assets/topUp/dai.svg';
 import EthereumIcon from './../assets/topUp/ethereum.svg';
 import cardIcon from './../assets/topUp/card.svg';

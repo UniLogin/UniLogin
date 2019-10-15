@@ -12,19 +12,19 @@ export const Nav = ({activeTab, setActiveTab}: NavProps) => (
       className={`udashboard-tab udashboard-tab-funds ${activeTab === 'funds' ? 'active' : ''}`}
       onClick={() => setActiveTab('funds')}
     >
-      Funds
+      <span className="udashboard-tab-text">Funds</span>
     </button>
     <button
       className={`udashboard-tab udashboard-tab-devices ${activeTab === 'devices' ? 'active' : ''}`}
       onClick={() => setActiveTab('devices')}
     >
-      Devices
+      <span className="udashboard-tab-text">Devices</span>
     </button>
     <button
       className={`udashboard-tab udashboard-tab-backup ${activeTab === 'backup' ? 'active' : ''}`}
       onClick={() => setActiveTab('backup')}
     >
-      Backup
+      <span className="udashboard-tab-text">Backup</span>
     </button>
   </>
 );
