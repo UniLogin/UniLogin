@@ -5,7 +5,6 @@ import {IExecutionQueue} from '../models/execution/IExecutionQueue';
 
 class DeploymentHandler {
   constructor(
-    _: any,
     private deploymentRepository: IRepository<Deployment>,
     private executionQueue: IExecutionQueue
   ) {}
