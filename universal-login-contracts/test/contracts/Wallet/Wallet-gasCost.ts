@@ -6,7 +6,7 @@ import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON, K
 import WalletContract from '../../../build/Wallet.json';
 import {ensAndMasterFixture, walletContractFixture} from '../../fixtures/walletContract';
 import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../../lib';
-import {executeAddKey} from '../../helpers/ExampleMessages.js';
+import {executeAddKey} from '../../helpers/ExampleMessages';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
