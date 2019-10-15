@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import './../styles/topUpModalDefaults.css';
 import {copy} from '@universal-login/commons';
 
 interface TopUpWithCryptoProps {

@@ -4,7 +4,6 @@ import {Button} from '../commons/Button';
 import Ether from './../assets/icons/ether.svg';
 import Card from './../assets/icons/card.svg';
 import Bank from './../assets/icons/bank.svg';
-import './../styles/topUpModalDefaults.css';
 
 interface TopUpChooseProps {
   onMethodChoose: (topUpModalType: TopUpComponentType) => void;
