@@ -20,6 +20,7 @@ describe('ULWeb3Provier', () => {
   });
 
   afterEach(async () => {
+    await ulProvider.finalizeAndStop();
     await relayer.clearDatabase();
     await relayer.stop();
   });

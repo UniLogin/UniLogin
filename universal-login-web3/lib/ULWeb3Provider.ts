@@ -169,4 +169,8 @@ export class ULWeb3Provider implements Provider {
       walletService: this.walletService,
     });
   }
+
+  finalizeAndStop() {
+    return this.sdk.finalizeAndStop();
+  }
 }
