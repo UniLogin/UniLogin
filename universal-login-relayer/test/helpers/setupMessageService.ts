@@ -9,7 +9,7 @@ import MessageSQLRepository from '../../lib/integration/sql/services/MessageSQLR
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../lib/core/services/messages/MessageStatusService';
 import {SignaturesService} from '../../lib/integration/ethereum/SignaturesService';
-import IMessageValidator from '../../lib/core/services/validators/IMessageValidator';
+import IMessageValidator from '../../lib/core/models/IMessageValidator';
 import MessageExecutionValidator from '../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../lib/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../lib/integration/sql/services/DevicesStore';

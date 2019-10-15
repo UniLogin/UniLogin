@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, Message} from '@universal-login/commons';
 import {messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EstimateGasValidator from '../../../../../lib/integration/ethereum/validators/EstimateGasValidator';
-import IMessageValidator from '../../../../../lib/core/services/validators/IMessageValidator';
+import IMessageValidator from '../../../../../lib/core/models/IMessageValidator';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;

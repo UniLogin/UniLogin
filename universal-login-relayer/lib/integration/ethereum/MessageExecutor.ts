@@ -1,10 +1,10 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage, ensureNotNull} from '@universal-login/commons';
-import IMessageValidator from '../../core/services/validators/IMessageValidator';
+import IMessageValidator from '../../core/models/IMessageValidator';
 import {messageToTransaction} from '../../core/utils/messages/serialisation';
 import {QueueItem} from '../../core/models/QueueItem';
-import {IExecutor} from '../../core/services/execution/IExecutor';
-import IMessageRepository from '../../core/services/messages/IMessagesRepository';
+import {IExecutor} from '../../core/models/execution/IExecutor';
+import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
 import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
 

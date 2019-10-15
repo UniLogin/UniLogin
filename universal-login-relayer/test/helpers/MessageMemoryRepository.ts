@@ -2,7 +2,7 @@ import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFi
 import {getKeyFromHashAndSignature} from '../../lib/core/utils/encodeData';
 import {InvalidMessage, MessageNotFound} from '../../lib/core/utils/errors';
 import MessageItem from '../../lib/core/models/messages/MessageItem';
-import IMessageRepository from '../../lib/core/services/messages/IMessagesRepository';
+import IMessageRepository from '../../lib/core/models/messages/IMessagesRepository';
 import MemoryRepository from './MemoryRepository';
 
 export default class MessageMemoryRepository extends MemoryRepository<MessageItem> implements IMessageRepository {

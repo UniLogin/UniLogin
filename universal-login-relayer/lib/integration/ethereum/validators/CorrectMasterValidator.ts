@@ -2,7 +2,7 @@ import {utils, Contract} from 'ethers';
 import {Provider} from 'ethers/providers';
 import WalletProxy from '@universal-login/contracts/build/WalletProxy.json';
 import {ContractWhiteList, SignedMessage, ensure} from '@universal-login/commons';
-import IMessageValidator from '../../../core/services/validators/IMessageValidator';
+import IMessageValidator from '../../../core/models/IMessageValidator';
 import {InvalidMaster} from '../../../core/utils/errors';
 
 export default class CorrectMasterValidator implements IMessageValidator {

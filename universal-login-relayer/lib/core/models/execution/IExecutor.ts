@@ -1,4 +1,4 @@
-import {QueueItem} from '../../models/QueueItem';
+import {QueueItem} from '../QueueItem';
 
 export interface IExecutor<A> {
   canExecute(item: QueueItem): boolean;
