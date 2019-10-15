@@ -13,6 +13,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const {relayer, provider} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
   const sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
+  await sdk.fetchRelayerConfig();
   const ensName = 'alex.mylogin.eth';
   const  {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
   const mockToken = await deployContract(wallet, MockToken);

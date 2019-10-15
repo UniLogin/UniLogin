@@ -93,7 +93,7 @@ class UniversalLoginSDK {
   }
 
   async createFutureWallet(): Promise<FutureWallet> {
-    await this.getRelayerConfig();
+    this.getRelayerConfig();
     this.fetchFutureWalletFactory();
     return this.futureWalletFactory!.createFutureWallet();
   }
