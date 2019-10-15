@@ -6,7 +6,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {Dashboard} from '../../src/ui/UFlow/Dashboard';
 import {waitExpect} from '@universal-login/commons';
 import {Wallet, utils} from 'ethers';
-import {DashboardReactWrapper} from '../helpers/wrappers/DashboardReactWrapper';
+import {DashboardPage} from '../helpers/pages/DashboardPage';
 import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
 
 describe('INT: Dashboard', () => {
@@ -14,13 +14,13 @@ describe('INT: Dashboard', () => {
   const ensName = `jarek.mylogin.eth`;
   const initialAmount = `199.99`;
   let deployedWallet: DeployedWallet;
-  let dashboard: DashboardReactWrapper;
+  let dashboard: DashboardPage;
 
   beforeEach(async () => {
     ([wallet] = await getWallets(createMockProvider()));
     deployedWallet = await setupDeployedWallet(wallet, ensName);
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
-    dashboard = new DashboardReactWrapper(appWrapper);
+    dashboard = new DashboardPage(appWrapper);
   });
 
   it('update usd balance amount', async () => {

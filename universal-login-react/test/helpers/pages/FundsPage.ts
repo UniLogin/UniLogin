@@ -1,6 +1,6 @@
 import {ReactWrapper} from 'enzyme';
 
-export class FundsReactWrapper {
+export class FundsPage {
   constructor(private wrapper: ReactWrapper) {}
 
   getUsdBalance() {
