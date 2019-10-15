@@ -17,9 +17,8 @@ describe('INT: WalletService', () => {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploy: async () => ({
-      deployedWallet: new DeployedWallet(TEST_ACCOUNT_ADDRESS, '', TEST_PRIVATE_KEY, null as any),
       waitForTransactionHash: sinon.stub(),
-      waitToBeSuccess: sinon.stub()
+      waitToBeSuccess: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, '', TEST_PRIVATE_KEY, null as any)
     }),
     waitForBalance: (async () => { }) as any
   };
