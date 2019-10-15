@@ -35,11 +35,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
   });
 
-  const checkTransactionHash = (transactionHash: string | null) => {
-    expect(transactionHash).to.be.a('string');
-    expect(isProperHexString(transactionHash!)).to.be.true;
-  };
-
   it('Counterfactual deployment with ether payment and refund', async () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     const initialRelayerBalance = await deployer.getBalance();
@@ -55,7 +50,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
-    checkTransactionHash(status.transactionHash);
+    expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
 
@@ -123,7 +118,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
-    checkTransactionHash(status.transactionHash);
+    expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOYMENT_REFUND));
   });
