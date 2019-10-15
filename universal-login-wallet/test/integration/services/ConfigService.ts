@@ -14,7 +14,6 @@ describe('INT: ConfigService', async () => {
   before(async () => {
     const [wallet] = getWallets(createMockProvider());
     ({sdk, relayer} = await setupSdk(wallet));
-    await sdk.fetchRelayerConfig();
   });
 
   it('Cache and get config', async () => {
