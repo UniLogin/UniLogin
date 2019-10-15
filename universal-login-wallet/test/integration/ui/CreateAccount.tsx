@@ -23,8 +23,6 @@ describe('UI: Creation flow', () => {
         const [wallet] = await getWallets(createMockProvider());
         ({relayer, provider} = await setupSdk(wallet, '33113'));
         services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-        await services.sdk.tokensDetailsStore.fetchTokensDetails();
-        await services.sdk.fetchRelayerConfig();
     });
 
     it('create wallet and disconnect roundtrip', async () => {
