@@ -1,12 +1,12 @@
 
 import React from 'react';
-import {Nav, NavProps} from '../commons/Nav';
+import {Nav, NavProps} from '../../commons/Nav';
 
-export interface UHeaderProps extends NavProps {
+export interface DialogHeaderProps extends NavProps {
   ensName: string;
 }
 
-export const UHeader = ({activeTab, setActiveTab, ensName}: UHeaderProps) => {
+export const DialogHeader = ({activeTab, setActiveTab, ensName}: DialogHeaderProps) => {
 
   return (
     <div className="udashboard-header">

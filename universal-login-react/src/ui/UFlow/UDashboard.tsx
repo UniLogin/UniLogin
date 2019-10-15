@@ -14,8 +14,8 @@ import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
 import {WaitingFor} from '../commons/WaitingFor';
-import {UScreenWrapper} from './ScreenWrappers/UScreenWrapper';
-import {USubScreenWrapper} from './ScreenWrappers/USubScreenWrapper';
+import {DialogWrapper} from './DialogWrappers/DialogWrapper';
+import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -72,7 +72,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
     switch (dashboardContent) {
       case 'funds':
         return (
-          <UScreenWrapper
+          <DialogWrapper
             message={notice}
             ensName={name}
             activeTab={dashboardContent}
@@ -83,11 +83,11 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
               onTopUpClick={() => setDashboardContent('topup')}
               onSendClick={() => setDashboardContent('transferAmount')}
             />
-          </UScreenWrapper>
+          </DialogWrapper>
         );
       case 'topup':
         return (
-          <USubScreenWrapper
+          <SubDialogWrapper
             message={notice}
             ensName={name}
             onBackButtonClick={() => setDashboardContent('funds')}
@@ -98,11 +98,11 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
               hideModal={() => setDashboardVisibility(false)}
               contractAddress={contractAddress}
             />
-          </USubScreenWrapper>
+          </SubDialogWrapper>
         );
       case 'transferAmount':
         return (
-          <USubScreenWrapper
+          <SubDialogWrapper
             message={notice}
             ensName={name}
             onBackButtonClick={() => setDashboardContent('funds')}
@@ -113,11 +113,11 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
               updateTransferDetailsWith={updateTransferDetailsWith}
               tokenDetails={selectedToken}
             />
-          </USubScreenWrapper>
+          </SubDialogWrapper>
         );
       case 'transferRecipient':
         return (
-          <USubScreenWrapper
+          <SubDialogWrapper
             message={notice}
             ensName={name}
             onBackButtonClick={() => setDashboardContent('transferAmount')}
@@ -130,7 +130,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
               onSendClick={onTransferSendClick}
               transferDetails={transferDetails}
             />
-          </USubScreenWrapper>
+          </SubDialogWrapper>
         );
       case 'waitingForTransfer':
         return (
@@ -138,7 +138,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'devices':
         return (
-          <UScreenWrapper
+          <DialogWrapper
             message={notice}
             ensName={name}
             activeTab={dashboardContent}
@@ -147,18 +147,18 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
             <Devices
               deployedWallet={deployedWallet}
             />
-          </UScreenWrapper>
+          </DialogWrapper>
         );
       case 'backup':
         return (
-          <UScreenWrapper
+          <DialogWrapper
             message={notice}
             ensName={name}
             activeTab={dashboardContent}
             setActiveTab={setDashboardContent}
           >
             <BackupCodes deployedWallet={deployedWallet} />
-          </UScreenWrapper>
+          </DialogWrapper>
         );
       default:
         return null;
