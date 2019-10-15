@@ -25,13 +25,15 @@ const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
   async (data: {body: DeployArgs & {applicationInfo: ApplicationInfo}}, req: Request) => {
     const {applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
-    const transaction = await deploymentHandler.handleDeployment(deployArgs, deviceInfo);
-    return responseOf(transaction, 201);
+    const deploymentHash = await deploymentHandler.handleDeployment(deployArgs, deviceInfo);
+    const status = await deploymentHandler.getStatus(deploymentHash);
+    return responseOf(status, 201);
   };
 
-const getDeploymentStatus = () =>
-  async () => {
-    return responseOf('Not implemented', 501);
+const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>
+async (data: {deploymentHash: string}) => {
+  const status = await deploymentHandler.getStatus(data.deploymentHash);
+  return status ? responseOf(status, 200) : responseOf('Not Found', 404);
   };
 
 export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHandler) => {
@@ -80,7 +82,7 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
     sanitize({
       deploymentHash: asString,
     }),
-    getDeploymentStatus()
+    getDeploymentStatus(deploymentHandler)
   ));
 
   return router;

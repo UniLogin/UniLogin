@@ -9,7 +9,7 @@ import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST
 import {getExecutionArgs, setupUpdateMessage, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
-import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index.js';
+import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index';
 import {calculateFinalGasLimit, calculatePaymentOptions} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);

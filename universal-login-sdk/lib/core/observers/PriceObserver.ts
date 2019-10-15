@@ -1,7 +1,7 @@
-const cryptocompare = require('cryptocompare');
 import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
+import {getPrices} from '../../integration/http/cryptocompare';
 import deepEqual = require('deep-equal');
 import cloneDeep = require('lodash.clonedeep');
 
@@ -44,6 +44,6 @@ export class PriceObserver extends ObserverRunner {
 
   async getCurrentPrices(): Promise<TokensPrices> {
     const observedTokensSymbols = this.tokensDetailsStore.tokensDetails.map((token) => token.symbol);
-    return cryptocompare.priceMulti(observedTokensSymbols, this.observedCurrencies);
+    return getPrices(observedTokensSymbols, this.observedCurrencies);
   }
 }

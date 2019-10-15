@@ -52,7 +52,7 @@ describe('INT: Token Granting Relayer', async () => {
 
   describe('Token granting', async () => {
     it('Grants 100 tokens on contract creation', async () => {
-      await waitUntil(isTokenBalanceEqual(utils.parseEther('100')), 5, 50);
+      await waitUntil(isTokenBalanceEqual(utils.parseEther('100')), 5, 1000);
     });
 
     it('Grants 5 tokens on key add', async () => {

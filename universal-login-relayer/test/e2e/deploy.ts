@@ -6,6 +6,7 @@ import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPai
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../helpers/http';
 import Relayer from '../../lib';
+import {waitForDeploymentStatus} from '../helpers/waitForDeploymentStatus';
 
 chai.use(chaiHttp);
 
@@ -48,6 +49,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
+    expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
 
@@ -90,7 +93,10 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO
       });
-    expect(result.body.error).to.eq(`Error: ENS name ${ensName} already taken`);
+    expect(result.status).to.eq(201);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: ENS name ${ensName} already taken`);
   });
 
 
@@ -111,6 +117,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         applicationInfo: TEST_APPLICATION_INFO
       });
     expect(result.status).to.eq(201);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
+    expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOYMENT_REFUND));
   });
@@ -126,9 +134,10 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO
       });
-    expect(result.status).to.eq(402);
-    expect(result.body.type).to.eq('NotEnoughBalance');
-    expect(result.body.error).to.eq(`Error: Not enough balance`);
+    expect(result.status).to.eq(201);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: Not enough balance`);
   });
 
   it('Counterfactual deployment fail if invalid ENS name', async () => {
@@ -145,9 +154,10 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO
       });
-    expect(result.status).to.eq(404);
-    expect(result.body.type).to.eq('InvalidENSDomain');
-    expect(result.body.error).to.eq(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
+    expect(result.status).to.eq(201);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
   });
 
   it('Counterfactual deployment fail if invalid signature', async () => {
@@ -165,15 +175,17 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO
       });
-    expect(result.body.type).to.eq('InvalidSignature');
-    expect(result.body.error).to.eq(`Error: Invalid signature `);
+    expect(result.status).to.eq(201);
+    const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
+    expect(status.transactionHash).to.be.null;
+    expect(status.error).to.be.equal(`Error: Invalid signature `);
   });
 
-  it('Endpoint for checking deployment status should exist', async () => {
+  it('Endpoint for checking deployment status should return 404 for not-existing hash', async () => {
     const result = await chai.request(relayerUrl)
-      .get(`/wallet/deploy/xyz`);
-    expect(result.status).to.eq(501);
-    expect(result.body).to.eq('Not implemented');
+      .get(`/wallet/deploy/0xa4ebe7c508b5ed32427f0d9fe1802fc2af027aada5e985ebc1e18ff8d11e854e`);
+    expect(result.status).to.eq(404);
+    expect(result.body).to.eq('Not Found');
   });
 
   afterEach(async () => {

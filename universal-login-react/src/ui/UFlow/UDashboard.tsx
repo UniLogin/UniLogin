@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
-import {UHeader} from './UHeader';
 import {Funds} from './Funds';
 import {asTransferDetails, TransferDetails, GasParameters} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
@@ -14,9 +13,9 @@ import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
-import {Notice} from '../commons/Notice';
-import {UNavBarMobile} from './UNavBarMobile';
 import {WaitingFor} from '../commons/WaitingFor';
+import {DialogWrapper} from './DialogWrappers/DialogWrapper';
+import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 
 export interface UDashboardProps {
   deployedWallet: DeployedWallet;
@@ -31,7 +30,7 @@ function sanitizeTransferDetails(details: Partial<TransferDetails>) {
 }
 
 export const UDashboard = ({deployedWallet}: UDashboardProps) => {
-  const {contractAddress, privateKey, sdk} = deployedWallet;
+  const {contractAddress, privateKey, sdk, name} = deployedWallet;
   const {relayerConfig} = deployedWallet.sdk;
   const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
@@ -73,36 +72,56 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
     switch (dashboardContent) {
       case 'funds':
         return (
-          <>
+          <DialogWrapper
+            message={notice}
+            ensName={name}
+            activeTab={dashboardContent}
+            setActiveTab={setDashboardContent}
+          >
             <Funds
               deployedWallet={deployedWallet}
               onTopUpClick={() => setDashboardContent('topup')}
               onSendClick={() => setDashboardContent('transferAmount')}
             />
-            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
-          </>
+          </DialogWrapper>
         );
       case 'topup':
         return (
-          <TopUp
-            sdk={sdk}
-            onGasParametersChanged={() => {}}
-            hideModal={() => setDashboardVisibility(false)}
-            contractAddress={contractAddress}
-          />
+          <SubDialogWrapper
+            message={notice}
+            ensName={name}
+            onBackButtonClick={() => setDashboardContent('funds')}
+          >
+            <TopUp
+              sdk={sdk}
+              onGasParametersChanged={() => {}}
+              hideModal={() => setDashboardVisibility(false)}
+              contractAddress={contractAddress}
+            />
+          </SubDialogWrapper>
         );
       case 'transferAmount':
         return (
-          <TransferAmount
-            deployedWallet={deployedWallet}
-            onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
-            updateTransferDetailsWith={updateTransferDetailsWith}
-            tokenDetails={selectedToken}
-          />
+          <SubDialogWrapper
+            message={notice}
+            ensName={name}
+            onBackButtonClick={() => setDashboardContent('funds')}
+          >
+            <TransferAmount
+              deployedWallet={deployedWallet}
+              onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
+              updateTransferDetailsWith={updateTransferDetailsWith}
+              tokenDetails={selectedToken}
+            />
+          </SubDialogWrapper>
         );
       case 'transferRecipient':
         return (
-          <div>
+          <SubDialogWrapper
+            message={notice}
+            ensName={name}
+            onBackButtonClick={() => setDashboardContent('transferAmount')}
+          >
             <TransferRecipient
               deployedWallet={deployedWallet}
               onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
@@ -111,7 +130,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
               onSendClick={onTransferSendClick}
               transferDetails={transferDetails}
             />
-          </div>
+          </SubDialogWrapper>
         );
       case 'waitingForTransfer':
         return (
@@ -119,21 +138,27 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
         );
       case 'devices':
         return (
-          <>
+          <DialogWrapper
+            message={notice}
+            ensName={name}
+            activeTab={dashboardContent}
+            setActiveTab={setDashboardContent}
+          >
             <Devices
               deployedWallet={deployedWallet}
             />
-            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
-          </>
+          </DialogWrapper>
         );
       case 'backup':
         return (
-          <>
-            <BackupCodes
-              deployedWallet={deployedWallet}
-            />
-            <UNavBarMobile activeTab={dashboardContent} setActiveTab={setDashboardContent}/>
-          </>
+          <DialogWrapper
+            message={notice}
+            ensName={name}
+            activeTab={dashboardContent}
+            setActiveTab={setDashboardContent}
+          >
+            <BackupCodes deployedWallet={deployedWallet} />
+          </DialogWrapper>
         );
       default:
         return null;
@@ -152,11 +177,7 @@ export const UDashboard = ({deployedWallet}: UDashboardProps) => {
           modalClassName="udashboard-modal"
         >
           <div className="udashboard">
-            <UHeader activeTab={dashboardContent} setActiveTab={setDashboardContent} />
-            <Notice message={notice}/>
-            <div className="udashboard-content">
-              {renderDashboardContent()}
-            </div>
+            {renderDashboardContent()}
           </div>
         </ModalWrapper>
       }
