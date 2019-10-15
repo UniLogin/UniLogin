@@ -3,13 +3,9 @@ import {Sanitizer, Result} from '@restless/sanitizers';
 
 export const asHexString: (length: number) => Sanitizer<string> = (length: number) => {
   return (value: unknown, path: string) => {
-    try {
-      if (typeof value === 'string') {
-        if (utils.isHexString(value) && value.length === length) {
-          return Result.ok(value);
-        }
-      }
-    } catch {}
+    if (typeof value === 'string' && utils.isHexString(value) && value.length === length) {
+      return Result.ok(value);
+    }
     return Result.error([{path, expected: `proper hash with length of ${length}, including 0x prefix`}]);
   };
 };
