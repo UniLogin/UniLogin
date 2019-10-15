@@ -3,6 +3,7 @@ import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {ConnectedDevicesItem} from './ConnectedDevicesItem';
 import {ConfirmationsEdit} from './ConfirmationsEdit';
+import {FeatureFlag} from '../../commons/FeatureFlag';
 
 export interface ConnectedDevicesProps {
   devicesList: Device[];
@@ -16,12 +17,14 @@ export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevices
     <div className="connected-devices">
       <div className="connected-devices-header">
         <h2 className="connected-devices-title">{devicesList.length} connected devices</h2>
-        <ConfirmationsEdit
-          confirmationsCount={confirmationsCount}
-          setConfirmationsCount={confirmations => setConfirmationsCount(confirmations)}
-          deployedWallet={deployedWallet}
-          devicesAmount={devicesList.length}
-        />
+        <FeatureFlag sdk={deployedWallet.sdk} feature="requiredConfirmations">
+          <ConfirmationsEdit
+            confirmationsCount={confirmationsCount}
+            setConfirmationsCount={confirmations => setConfirmationsCount(confirmations)}
+            deployedWallet={deployedWallet}
+            devicesAmount={devicesList.length}
+          />
+        </FeatureFlag>
       </div>
       <ul className="connected-devices-list">
         {devicesList.map(device => {
