@@ -1,0 +1,4 @@
+{
+  "main": "../dist/test/index.js",
+  "types": "../dist/test/index.d.ts"
+}
