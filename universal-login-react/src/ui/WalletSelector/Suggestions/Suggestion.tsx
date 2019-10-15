@@ -1,33 +1,19 @@
 import React from 'react';
 import {SuggestionType} from '../../../core/models/SuggestionType';
-import {getSuggestionId} from '@universal-login/commons';
+import {SingleCreationSuggestion} from './SingleCreationSuggestion';
+import {MultipleSuggestion} from './MultipleSuggestion';
+import {SuggestionProps} from '../../../core/models/SuggestionProps';
 
-interface SuggestionProps {
+interface SuggestionWithTypeProps extends SuggestionProps {
   type?: SuggestionType;
-  suggestion: string;
-  operationType: string;
-  onClick(suggestion: string): Promise<void>;
 }
 
-export const Suggestion = ({onClick, suggestion, operationType, type}: SuggestionProps) => {
+export const Suggestion = ({type, ...props}: SuggestionWithTypeProps) => {
   switch (type) {
     case 'SingleCreation':
-      return (
-        <>
-          <p className="suggestions-ens-name">{suggestion}</p>
-          <p className="suggestions-hint"> This username is available </p>
-          <button className="suggestions-create-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
-            Create New Account
-            </button>
-        </>
-      );
+      return (<SingleCreationSuggestion {...props} />);
     case 'Multiple':
     default:
-      return (
-        <button className="suggestions-item-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
-          <p className="suggestions-item-text">{suggestion}</p>
-          <p className="suggestions-item-btn-text">{operationType}</p>
-        </button>
-      );
+      return (<MultipleSuggestion {...props} />);
   }
 };
