@@ -7,6 +7,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {Dashboard} from '../../src/ui/UFlow/Dashboard';
 import {waitExpect} from '@universal-login/commons';
 import {Wallet, utils} from 'ethers';
+import {DashboardReactWrapper} from '../helpers/wrappers/DashboardReactWrapper';
 
 describe('INT: Dashboard', () => {
   let wallet: Wallet;
@@ -15,6 +16,8 @@ describe('INT: Dashboard', () => {
   let privateKey: string;
   const ensName = `jarek.mylogin.eth`;
   const initialAmount = `199.99`;
+  let dashboard: DashboardReactWrapper;
+  let appWrapper: any;
 
   beforeEach(async () => {
     ([wallet] = await getWallets(createMockProvider()));
@@ -25,15 +28,18 @@ describe('INT: Dashboard', () => {
     sdk.start();
     ({contractAddress, privateKey} = await createWallet(ensName, sdk, wallet));
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+    appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
+    dashboard = new DashboardReactWrapper(appWrapper);
   });
 
   it('update usd balance amount', async () => {
-    const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
-    const uButton = appWrapper.find('.udashboard-logo-btn');
-    uButton.simulate('click');
-    const balanceComponent = appWrapper.find('.universal-login-balance-amount');
-    await waitExpect(() => expect(balanceComponent.text()).to.be.eq(`$${initialAmount}`));
+    dashboard.clickInitButton();
+    await waitExpect(() =>
+      expect(dashboard.funds().getUsdBalance()).to.be.eq(`$${initialAmount}`)
+    );
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther(`2`)});
-    await waitExpect(() => expect(balanceComponent.text()).to.be.eq(`$399.99`));
+    await waitExpect(() =>
+      expect(dashboard.funds().getUsdBalance()).to.be.eq(`$399.99`)
+    );
   });
 });
