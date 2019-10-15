@@ -5,6 +5,7 @@
   "types": "dist/lib/index.d.ts",
   "license": "MIT",
   "dependencies": {
+    "@restless/sanitizers": "^0.2.2",
     "@universal-login/commons": "0.3.56",
     "@universal-login/contracts": "0.3.56",
     "cryptocompare": "^1.0.0",
