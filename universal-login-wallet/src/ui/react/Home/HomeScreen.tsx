@@ -1,12 +1,13 @@
 import React, {useState, useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
-import {useServices} from '../../hooks';
+import {useServices, useRouter} from '../../hooks';
 import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
   const {walletService} = useServices();
+  const router = useRouter();
   const modalService = useContext(WalletModalContext);
   const [content, setContent] = useState('balance');
 
@@ -33,6 +34,7 @@ const HomeScreen = () => {
         return (
           <Devices
             deployedWallet={walletService.getDeployedWallet()}
+            onDeleteAccountClick={() => disconnectFromWallet(walletService, router)}
             className="jarvis-styles"
           />
         );

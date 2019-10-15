@@ -1,17 +1,13 @@
 import React from 'react';
-import {useRouter, useServices, useSubscription} from '../../hooks';
+import {useServices, useSubscription, useRouter} from '../../hooks';
+import {disconnectFromWallet} from '../../../core/utils/disconnectFromWallet';
 
 const UserDropdown = () => {
   const {walletService, userDropdownService, walletPresenter: walletFormatter} = useServices();
+  const router = useRouter();
   const isExpanded = useSubscription(userDropdownService);
   const collapseDropdown = () => userDropdownService.setDropdownVisibility(false);
   const expandDropdown = () => userDropdownService.setDropdownVisibility(true);
-  const {history} = useRouter();
-
-  const onDisconnectClick = () => {
-    walletService.disconnect();
-    history.push('/welcome');
-  };
 
   return (
     <div className={`user-dropdown-wrapper ${isExpanded ? 'expanded' : ''}`}>
@@ -23,7 +19,7 @@ const UserDropdown = () => {
           <button onClick={isExpanded ? collapseDropdown : expandDropdown} className="user-dropdown-btn" />
         </div>
         <div className={`user-dropdown-content ${isExpanded ? 'expanded' : ''}`}>
-          <button className="sign-out-btn" onClick={onDisconnectClick}>Disconnect</button>
+          <button className="sign-out-btn" onClick={() => disconnectFromWallet(walletService, router)}>Disconnect</button>
         </div>
       </div>
     </div>
