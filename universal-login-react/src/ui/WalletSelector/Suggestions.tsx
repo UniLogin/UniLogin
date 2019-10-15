@@ -4,11 +4,11 @@ import {getSuggestionId, WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} 
 interface SuggestionsProps {
   connections: string[];
   creations: string[];
-  onCreateClick: (...args: any[]) => void;
-  onConnectClick: (...args: any[]) => void;
+  onCreateClick(ensName: string): Promise<void>;
+  onConnectClick(ensName: string): Promise<void>;
   actions?: WalletSuggestionAction[];
 }
-const getButton = (operationType: string, suggestion: string, onClick: (...args: any[]) => void, isSingleCreation?: boolean) => {
+const getButton = (operationType: string, suggestion: string, onClick: (ensName: string) => void, isSingleCreation?: boolean) => {
   if (isSingleCreation) {
     return (
       <>
@@ -29,7 +29,7 @@ const getButton = (operationType: string, suggestion: string, onClick: (...args:
   }
 };
 
-const getSuggestionsItems = (operationType: string, array: string[], onClick: (...args: any[]) => void, isSingleCreation?: boolean) =>
+const getSuggestionsItems = (operationType: string, array: string[], onClick: (ensName: string) => Promise<void>, isSingleCreation?: boolean) =>
   array.map((element => (
     <li
       key={`${operationType}_${element}`}
@@ -46,7 +46,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   const isSingleCreation = connections.length === 0 && creations.length === 1;
   const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectClick);
   const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick, isSingleCreation);
-  const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSuggestionAction.recover), () => alert('not implemented'));
+  const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSuggestionAction.recover), async () => alert('not implemented'));
   return (
     <ul className="suggestions-list">
       {connectionsSuggestions}
