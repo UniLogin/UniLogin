@@ -24,7 +24,7 @@ import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration} from '../core/utils/errors';
-import {FutureWalletFactory} from './FutureWalletFactory';
+import {FutureWalletFactory, FutureWallet} from './FutureWalletFactory';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
@@ -92,7 +92,7 @@ class UniversalLoginSDK {
     this.sdkConfig.notice = notice;
   }
 
-  async createFutureWallet() {
+  async createFutureWallet(): Promise<FutureWallet> {
     await this.getRelayerConfig();
     this.fetchFutureWalletFactory();
     return this.futureWalletFactory!.createFutureWallet();
