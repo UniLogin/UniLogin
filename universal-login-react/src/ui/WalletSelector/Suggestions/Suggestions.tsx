@@ -7,12 +7,12 @@ import {Suggestion} from './Suggestion';
 interface SuggestionsProps {
   connections: string[];
   creations: string[];
-  onCreateClick(ensName: string): Promise<void>;
-  onConnectClick(ensName: string): Promise<void>;
+  onCreateClick(ensName: string): Promise<void> | void;
+  onConnectClick(ensName: string): Promise<void> | void;
   actions?: WalletSuggestionAction[];
 }
 
-const getSuggestionsItems = (operationType: string, array: string[], onClick: (ensName: string) => Promise<void>, suggestionType?: SuggestionType) =>
+const getSuggestionsItems = (operationType: string, array: string[], onClick: (ensName: string) => Promise<void> | void, suggestionType?: SuggestionType) =>
   array.map((element => (
     <li
       key={`${operationType}_${element}`}

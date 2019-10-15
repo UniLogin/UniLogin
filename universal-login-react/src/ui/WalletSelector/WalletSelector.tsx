@@ -17,8 +17,8 @@ import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
 
 interface WalletSelector {
-  onCreateClick: (ensName: string) => Promise<void>;
-  onConnectClick: (ensName: string) => Promise<void>;
+  onCreateClick(ensName: string): Promise<void> | void;
+  onConnectClick(ensName: string): Promise<void> | void;
   sdk: UniversalLoginSDK;
   domains: string[];
   actions?: WalletSuggestionAction[];

@@ -108,8 +108,8 @@ export const App = () => {
               path="/walletselector"
               render={() => (
                 <WalletSelector
-                  onCreateClick={async () => { console.log('create'); }}
-                  onConnectClick={async () => { console.log('connect'); }}
+                  onCreateClick={() => { console.log('create'); }}
+                  onConnectClick={() => { console.log('connect'); }}
                   sdk={sdk}
                   domains={['mylogin.eth', 'myapp.eth']}
                 />

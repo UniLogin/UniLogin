@@ -1,13 +1,8 @@
 import React from 'react';
 import {getSuggestionId} from '@universal-login/commons';
+import {SuggestionProps} from '../../../core/models/SuggestionProps';
 
-interface SingleCreationSuggestionProps {
-  suggestion: string;
-  operationType: string;
-  onClick(suggestion: string): Promise<void>;
-}
-
-export const SingleCreationSuggestion = ({onClick, operationType, suggestion}: SingleCreationSuggestionProps) => (
+export const SingleCreationSuggestion = ({onClick, operationType, suggestion}: SuggestionProps) => (
   <>
     <p className="suggestions-ens-name">{suggestion}</p>
     <p className="suggestions-hint"> This username is available </p>
