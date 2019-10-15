@@ -1,5 +1,5 @@
 import React from 'react';
-import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
+import {DashboardContentType} from '../../core/models/ReactDashboardContentType';
 
 export interface NavProps {
   activeTab: DashboardContentType;
