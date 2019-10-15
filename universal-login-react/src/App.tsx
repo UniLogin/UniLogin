@@ -12,7 +12,6 @@ import {useServices} from './core/services/useServices';
 import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
 import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from './core/models/ReactModalContext';
-import {useAsync} from './ui/hooks/useAsync';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
@@ -41,7 +40,7 @@ const mockedNotifications = asMock<Notification[]>([
 export const App = () => {
   const modalService = createModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
-  const [relayerConfig] = useAsync(() => sdk.getRelayerConfig(), []);
+  const relayerConfig = sdk.getRelayerConfig();
 
   const onCreate = (applicationWallet: ApplicationWallet) => {
     alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);

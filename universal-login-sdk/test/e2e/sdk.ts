@@ -53,7 +53,7 @@ describe('E2E: SDK', async () => {
 
       it('should return ens config', async () => {
         const expectedEnsAddress = relayer.getConfig().chainSpec.ensAddress;
-        const response = await sdk.getRelayerConfig();
+        const response = sdk.getRelayerConfig();
         expect(response!.chainSpec.ensAddress).to.eq(expectedEnsAddress);
       });
     });
@@ -102,7 +102,7 @@ describe('E2E: SDK', async () => {
 
     it('Throws when the gas limit is above the relayers maxGasLimit', async () => {
       const {sdk: secondSdk} = await loadFixture(basicSDK);
-      message.gasLimit = (await secondSdk.getRelayerConfig()).maxGasLimit + 1;
+      message.gasLimit = secondSdk.getRelayerConfig().maxGasLimit + 1;
       await expect(secondSdk.execute(message, privateKey)).to.be.eventually
         .rejectedWith('Invalid gas limit. 500001 provided, when relayer\'s max gas limit is 500000');
     });
@@ -163,7 +163,7 @@ describe('E2E: SDK', async () => {
 
   describe('Get relayer config', async () => {
     it('getRelayerConfig return config which should have properties', async () => {
-      const relayerConfig = await sdk.getRelayerConfig();
+      const relayerConfig = sdk.getRelayerConfig();
       expect(relayerConfig).to.haveOwnProperty('supportedTokens');
       expect(relayerConfig).to.haveOwnProperty('chainSpec');
       expect(relayerConfig).to.haveOwnProperty('factoryAddress');
