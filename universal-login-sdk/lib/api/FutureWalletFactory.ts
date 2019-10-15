@@ -1,24 +1,32 @@
 import {providers} from 'ethers';
-import {PublicRelayerConfig, calculateInitializeSignature} from '@universal-login/commons';
+import {PublicRelayerConfig, calculateInitializeSignature, DeploymentStatus, ensure} from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
-import {DeploymentObserver} from '../core/observers/DeploymentObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import {DeployedWallet} from './DeployedWallet';
 import UniversalLoginSDK from './sdk';
+import {retry} from '../core/utils/retry';
+
+const DEFAULT_EXECUTION_TIMEOUT = 600000;
+const DEFAULT_EXECUTION_TICK = 1000;
 
 export type BalanceDetails = {
   tokenAddress: string,
   contractAddress: string
 };
 
+export interface Deployment {
+  waitForTransactionHash: () => Promise<DeploymentStatus>;
+  waitToBeSuccess: () => Promise<DeployedWallet>;
+}
+
 export type FutureWallet = {
   privateKey: string,
   contractAddress: string,
   waitForBalance: () => Promise<BalanceDetails>,
-  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployedWallet>
+  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<Deployment>
 };
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
@@ -34,6 +42,37 @@ export class FutureWalletFactory {
     private sdk: UniversalLoginSDK,
   ) {
       this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
+  }
+
+  private isMined(deploymentStatus: DeploymentStatus) {
+    return deploymentStatus.state === 'Error' || deploymentStatus.state === 'Success';
+  }
+
+  private hasTransactionHash(deploymentStatus: DeploymentStatus) {
+    return ['Pending', 'Success', 'Error'].includes(deploymentStatus.state) && deploymentStatus.transactionHash !== null;
+  }
+
+  private createWaitToBeSuccess(deploymentHash: string, deployedWallet: DeployedWallet) {
+    return async () => {
+      const predicate = (deploymentStatus: DeploymentStatus) => !this.isMined(deploymentStatus);
+      const status : DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
+      ensure(!status.error, Error, status.error!);
+      return deployedWallet;
+    };
+  }
+
+  private createWaitForTransactionHash(deploymentHash: string) {
+    return async () => {
+      const predicate = (deploymentStatus: DeploymentStatus) => !this.hasTransactionHash(deploymentStatus);
+      const status : DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
+      return status;
+    };
+  }
+
+  private async waitForDeploymentStatus(deploymentHash: string, predicate: (status: DeploymentStatus) => boolean) : Promise<DeploymentStatus> {
+    const getStatus = async () => this.relayerApi.getDeploymentStatus(deploymentHash);
+    const status : DeploymentStatus = await retry(getStatus, predicate, DEFAULT_EXECUTION_TIMEOUT, DEFAULT_EXECUTION_TICK);
+    return status;
   }
 
   async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
@@ -56,16 +95,20 @@ export class FutureWalletFactory {
     const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
       const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
       const signature = await calculateInitializeSignature(initData, privateKey);
-      await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
+      const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
 
-      const deploymentObserver = new DeploymentObserver(this.blockchainService, this.config.contractWhiteList);
-      const address = await new Promise<string>((resolve) => deploymentObserver.startAndSubscribe(contractAddress, resolve));
-      return new DeployedWallet(
-        address,
+      const deployedWallet = new DeployedWallet(
+        contractAddress,
         ensName,
         privateKey,
-        this.sdk,
+        this.sdk
       );
+
+      const deployment: Deployment = {
+        waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
+        waitToBeSuccess: this.createWaitToBeSuccess(deploymentHash, deployedWallet),
+      };
+      return deployment;
     };
 
     return {

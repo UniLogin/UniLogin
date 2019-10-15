@@ -65,4 +65,8 @@ export class RelayerApi {
       applicationInfo
     });
   }
+
+  async getDeploymentStatus(deploymentHash: string) {
+    return this.http('GET', `/wallet/deploy/${deploymentHash}`);
+  }
 }

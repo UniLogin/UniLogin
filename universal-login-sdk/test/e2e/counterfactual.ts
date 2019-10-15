@@ -39,7 +39,8 @@ describe('E2E: SDK counterfactual deployment', () => {
 
   it('should not deploy contract which does not have balance', async () => {
     const {deploy} = (await sdk.createFutureWallet());
-    await expect(deploy('login.mylogin.eth', TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address)).to.be.rejected;
+    const {waitToBeSuccess} = await deploy('login.mylogin.eth', TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+    await expect(waitToBeSuccess()).to.be.eventually.rejected;
   });
 
   it('counterfactual deployment roundtrip', async () => {
@@ -47,7 +48,8 @@ describe('E2E: SDK counterfactual deployment', () => {
     const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet());
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
-    const deployedWallet = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+    const {waitToBeSuccess} = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+    const deployedWallet = await waitToBeSuccess();
     expect(deployedWallet.contractAddress).to.be.eq(contractAddress);
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
     const message = {...emptyMessage, from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1'), gasLimit: DEFAULT_GAS_LIMIT};
