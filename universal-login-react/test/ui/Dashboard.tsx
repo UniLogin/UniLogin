@@ -4,11 +4,11 @@ import React from 'react';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
 import {DeployedWallet} from '@universal-login/sdk';
-import {UDashboard} from '../../src/ui/UFlow/UDashboard';
+import {Dashboard} from '../../src/ui/UFlow/Dashboard';
 import {waitExpect} from '@universal-login/commons';
 import {Wallet, utils} from 'ethers';
 
-describe('INT: UDashboard', () => {
+describe('INT: Dashboard', () => {
   let wallet: Wallet;
   let deployedWallet: DeployedWallet;
   let contractAddress: string;
@@ -28,7 +28,7 @@ describe('INT: UDashboard', () => {
   });
 
   it('update usd balance amount', async () => {
-    const appWrapper = mount(<UDashboard deployedWallet={deployedWallet} />);
+    const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     const uButton = appWrapper.find('.udashboard-logo-btn');
     uButton.simulate('click');
     const balanceComponent = appWrapper.find('.universal-login-balance-amount');
