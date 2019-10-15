@@ -6,7 +6,7 @@ import Token from '../../lib/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {ETHER_NATIVE_TOKEN, deepMerge} from '@universal-login/commons';
-import {getConfig} from '../../lib/index.js';
+import {getConfig} from '../../lib/index';
 
 const defaultDomain = 'mylogin.eth';
 

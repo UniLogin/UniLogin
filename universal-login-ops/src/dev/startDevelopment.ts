@@ -6,7 +6,7 @@ import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
-import {startGanache} from './startGanache.js';
+import {startGanache} from './startGanache';
 import {deployENS} from './deployEns';
 import deployWalletContractOnDev from './deployWalletContractOnDev';
 import deployToken from './deployToken';
