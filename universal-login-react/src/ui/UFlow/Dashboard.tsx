@@ -4,7 +4,7 @@ import {Funds} from './Funds';
 import {asTransferDetails, TransferDetails, GasParameters} from '@universal-login/commons';
 import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
-import {DashboardContentType} from '../../core/models/ReactUDashboardContentType';
+import {DashboardContentType} from '../../core/models/ReactDashboardContentType';
 import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
@@ -17,7 +17,7 @@ import {WaitingFor} from '../commons/WaitingFor';
 import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 
-export interface UDashboardProps {
+export interface DashboardProps {
   deployedWallet: DeployedWallet;
 }
 
@@ -29,7 +29,7 @@ function sanitizeTransferDetails(details: Partial<TransferDetails>) {
   }
 }
 
-export const UDashboard = ({deployedWallet}: UDashboardProps) => {
+export const Dashboard = ({deployedWallet}: DashboardProps) => {
   const {contractAddress, privateKey, sdk, name} = deployedWallet;
   const {relayerConfig} = deployedWallet.sdk;
   const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);

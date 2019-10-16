@@ -1,6 +1,6 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo} from '@universal-login/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash} from '@universal-login/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
@@ -80,7 +80,7 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
 
   router.get('/deploy/:deploymentHash', asyncHandler(
     sanitize({
-      deploymentHash: asString,
+      deploymentHash: asDeploymentHash,
     }),
     getDeploymentStatus(deploymentHandler)
   ));

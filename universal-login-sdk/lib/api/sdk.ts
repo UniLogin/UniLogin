@@ -93,7 +93,7 @@ class UniversalLoginSDK {
   }
 
   async createFutureWallet(): Promise<FutureWallet> {
-    await this.getRelayerConfig();
+    this.getRelayerConfig();
     this.fetchFutureWalletFactory();
     return this.futureWalletFactory!.createFutureWallet();
   }
@@ -118,9 +118,15 @@ class UniversalLoginSDK {
     return this.relayerApi.getStatus(messageHash);
   }
 
-  async getRelayerConfig(): Promise<PublicRelayerConfig> {
-    this.relayerConfig = this.relayerConfig || (await this.relayerApi.getConfig()).config;
-    return this.relayerConfig;
+  getRelayerConfig(): PublicRelayerConfig {
+    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    return this.relayerConfig!;
+  }
+
+  async fetchRelayerConfig() {
+    if (!this.relayerConfig) {
+      this.relayerConfig = (await this.relayerApi.getConfig()).config;
+    }
   }
 
   async fetchBalanceObserver(contractAddress: string) {
@@ -205,7 +211,6 @@ class UniversalLoginSDK {
   }
 
   async resolveName(ensName: string) {
-    await this.getRelayerConfig();
     const {ensAddress} = this.relayerConfig!.chainSpec;
     return resolveName(this.provider, ensAddress, ensName);
   }
@@ -268,6 +273,7 @@ class UniversalLoginSDK {
   }
 
   async start() {
+    await this.fetchRelayerConfig();
     await this.blockchainObserver.start();
     await this.tokensDetailsStore.fetchTokensDetails();
   }

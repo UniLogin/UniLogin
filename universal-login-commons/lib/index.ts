@@ -71,3 +71,4 @@ export {getEnumKeys} from './core/utils/getEnumsKeys';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
+export {asHexString, asDeploymentHash} from './core/utils/sanitizers/asHexString';
