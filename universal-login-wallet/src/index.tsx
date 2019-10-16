@@ -9,13 +9,17 @@ import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
 import {Spinner, ErrorBoundary, useAsync} from '@universal-login/react';
 
 const AppBootstrapper = () => {
-  const [services] = useAsync(async () => {
+  const [services, err] = useAsync(async () => {
     const config = getConfig();
 
     const services = createServices(config);
     await services.start();
     return services;
   }, []);
+
+  if (err) {
+    throw err;
+  }
 
   if (!services) {
     return <Spinner className="spinner-center"/>;
@@ -24,12 +28,13 @@ const AppBootstrapper = () => {
   return (
     <ServiceContext.Provider value={services}>
       <CustomBrowserRouter>
-        <ErrorBoundary>
           <App/>
-        </ErrorBoundary>
       </CustomBrowserRouter>
     </ServiceContext.Provider>
   );
 };
 
-render(<AppBootstrapper/>, document.getElementById('app'));
+render(
+  <ErrorBoundary>
+    <AppBootstrapper/>
+  </ErrorBoundary>, document.getElementById('app'));
