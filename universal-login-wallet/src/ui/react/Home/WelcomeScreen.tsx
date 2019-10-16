@@ -11,7 +11,7 @@ export const WelcomeScreen = () => {
   useEffect(() => {
     setBetaNotice(sdk);
     setNotice(sdk.getNotice());
-  });
+  }, []);
 
   return (
     <div className="main-bg">
