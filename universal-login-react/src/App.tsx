@@ -142,12 +142,17 @@ export const App = () => {
                 const topUpProps: TopUpProps = {
                   contractAddress: Wallet.createRandom().address,
                   onGasParametersChanged: console.log,
-                  sdk
+                  sdk,
+                  isDeployment: false
                 };
                 return (
                   <>
                     <ReactModalContext.Provider value={modalService}>
                       <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
+                      <Modals />
+                    </ReactModalContext.Provider>
+                    <ReactModalContext.Provider value={modalService}>
+                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', {...topUpProps, isDeployment: true})}>Show Deployment Topup</button>
                       <Modals />
                     </ReactModalContext.Provider>
                   </>

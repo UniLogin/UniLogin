@@ -25,9 +25,10 @@ interface TopUpProps {
   hideModal?: () => void;
   isModal?: boolean;
   logoColor?: LogoColor;
+  isDeployment: boolean;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -46,16 +47,19 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         onPayClick={onPayClick}
         topUpClassName={topUpClassName}
         logoColor={logoColor}
+        isDeployment={isDeployment}
       />
-      <FooterSection className={topUpClassName}>
-        <GasPrice
-          isDeployed={false}
-          sdk={sdk}
-          onGasParametersChanged={onGasParametersChanged}
-          gasLimit={DEPLOY_GAS_LIMIT}
-          className={topUpClassName}
-        />
-      </FooterSection>
+      { isDeployment &&
+        <FooterSection className={topUpClassName}>
+          <GasPrice
+            isDeployed={false}
+            sdk={sdk}
+            onGasParametersChanged={onGasParametersChanged}
+            gasLimit={DEPLOY_GAS_LIMIT}
+            className={topUpClassName}
+          />
+        </FooterSection>
+      }
     </>
   );
 

@@ -56,7 +56,8 @@ export const Onboarding = (props: OnboardingProps) => {
     const topUpProps: TopUpProps = {
       contractAddress,
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
-      sdk: props.sdk
+      sdk: props.sdk,
+      isDeployment: true
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();

@@ -97,6 +97,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
               onGasParametersChanged={() => {}}
               hideModal={() => setDashboardVisibility(false)}
               contractAddress={contractAddress}
+              isDeployment={false}
             />
           </SubDialogWrapper>
         );
