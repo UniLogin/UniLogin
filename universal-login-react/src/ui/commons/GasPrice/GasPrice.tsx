@@ -59,9 +59,10 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
   };
 
   useEffect(() => {
+    const fastGasModeIndex = 1;
     if (gasModes) {
-      const {name, usdAmount} = gasModes[0];
-      const gasOption = findGasOption(gasModes[0].gasOptions, ETHER_NATIVE_TOKEN.address);
+      const {name, usdAmount} = gasModes[fastGasModeIndex];
+      const gasOption = findGasOption(gasModes[fastGasModeIndex].gasOptions, ETHER_NATIVE_TOKEN.address);
       setUsdAmount(usdAmount);
       setModeName(name);
       onGasOptionChanged(gasOption);
