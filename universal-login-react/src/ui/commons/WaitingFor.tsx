@@ -36,7 +36,7 @@ const renderWaitingForTransaction = (action: string, relayerConfig: PublicRelaye
 
 export const WaitingForTransaction = ({action, relayerConfig, transactionHash, children, className}: WaitingForTransactionProps) => {
   return (
-    <div className="universal-login-waiting-for">
+    <div className="universal-login-waiting-for-transaction">
       <div className={getStyleForTopLevelComponent(className)}>
         {relayerConfig ? renderWaitingForTransaction(action, relayerConfig, transactionHash, children) : <Spinner className="waiting-for-spinner" />}
       </div>
