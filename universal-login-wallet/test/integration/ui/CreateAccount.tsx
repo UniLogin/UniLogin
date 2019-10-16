@@ -38,7 +38,7 @@ describe('UI: Creation flow', () => {
         expect(address).to.be.an('string');
         const [wallet] = getWallets(provider);
         await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
-        await appPage.creation().waitAndGoToWallet();
+        await appPage.creation().waitAndGoToWallet(4000);
         await appPage.login().waitForHomeView(expectedHomeBalance);
         expect(appWrapper.text().includes(expectedHomeBalance)).to.be.true;
         expect(appWrapper.find('a.button-secondary')).to.have.length(0);

@@ -36,6 +36,15 @@ export const Onboarding = (props: OnboardingProps) => {
     props.onConnect && props.onConnect();
   };
 
+  const showWalletCreationModal = (transactionHash?: string) => {
+    const relayerConfig = props.sdk.getRelayerConfig();
+    modalService.showModal('waitingFor', {
+      relayerConfig,
+      action: 'Wallet creation',
+      transactionHash,
+    });
+  };
+
   const onCreateClick = async (ensName: string) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
     const {waitForBalance, contractAddress, privateKey} = await walletService.createFutureWallet();
@@ -44,7 +53,6 @@ export const Onboarding = (props: OnboardingProps) => {
       contractAddress,
       privateKey
     }));
-    const relayerConfig = props.sdk.getRelayerConfig();
     const topUpProps: TopUpProps = {
       contractAddress,
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
@@ -52,12 +60,8 @@ export const Onboarding = (props: OnboardingProps) => {
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
-    modalService.showModal('waitingFor', {
-      relayerConfig,
-      action: 'Wallet creation',
-      transactionHash: '0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}
-    );
-    const wallet = await walletService.deployFutureWallet(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken);
+    showWalletCreationModal();
+    const wallet = await walletService.deployFutureWallet(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken, showWalletCreationModal);
     modalService.hideModal();
     props.onCreate && props.onCreate(wallet);
   };
