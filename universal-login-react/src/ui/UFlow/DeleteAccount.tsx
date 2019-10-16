@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {deleteAccount} from '../../core/services/DeleteAccountService';
+import {deleteAccount, getInputClassName} from '../../core/services/DeleteAccountService';
 import {DeployedWallet} from '@universal-login/sdk';
 import './../styles/deleteAccount.sass';
 import './../styles/deleteAccountDefault.sass';
@@ -13,8 +13,8 @@ export interface DeleteAccountProps {
 }
 
 export const DeleteAccount = ({deployedWallet, onDeleteAccountClick, onCancelClick, className}: DeleteAccountProps) => {
-  const [username] = useState('');
-  const [verifyField] = useState('');
+  const [inputs, setInputs] = useState({username: '', verifyField: ''});
+  const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 
   return (
     <div className="universal-login-delete-account">
@@ -25,16 +25,28 @@ export const DeleteAccount = ({deployedWallet, onDeleteAccountClick, onCancelCli
           <div className="delete-account-form">
             <div className="delete-account-input-wrapper">
               <label htmlFor="username" className="delete-account-label">Type your username</label>
-              <input id="username" className="delete-account-input" type="text" value={username}/>
+              <input
+                id="username"
+                className={getInputClassName(errors.usernameError)}
+                type="text"
+                value={inputs.username}
+                onChange={e => setInputs({...inputs, username: e.target.value})}
+              />
             </div>
             <div className="delete-account-input-wrapper">
               <label htmlFor="verifyField" className="delete-account-label">To verify, type <span><i>DELETE MY ACCOUNT</i></span> below:</label>
-              <input id="verifyField" className="delete-account-input" type="text" value={verifyField}/>
+              <input
+                id="verifyField"
+                className={getInputClassName(errors.verifyFieldError)}
+                type="text"
+                value={inputs.verifyField}
+                onChange={e => setInputs({...inputs, verifyField: e.target.value})}
+              />
             </div>
           </div>
           <div className="delete-account-buttons">
             <button onClick={onCancelClick} className="delete-account-cancel">Cancel</button>
-            <button onClick={() => deleteAccount(deployedWallet, onDeleteAccountClick, username, verifyField)} className="delete-account-confirm">Delete account</button>
+            <button onClick={() => deleteAccount(deployedWallet, inputs, setErrors, onDeleteAccountClick)} className="delete-account-confirm">Delete account</button>
           </div>
         </div>
       </div>
