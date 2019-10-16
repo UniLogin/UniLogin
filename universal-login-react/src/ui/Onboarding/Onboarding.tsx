@@ -41,8 +41,8 @@ export const Onboarding = (props: OnboardingProps) => {
     modalService.showModal('waitingFor', {
       relayerConfig,
       action: 'Wallet creation',
-      transactionHash}
-    );
+      transactionHash
+    });
   };
 
   const onCreateClick = async (ensName: string) => {
