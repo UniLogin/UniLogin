@@ -6,20 +6,30 @@ import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
 import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
-import {ErrorBoundary} from '@universal-login/react';
+import {Spinner, ErrorBoundary, useAsync} from '@universal-login/react';
 
-const config = getConfig();
+const AppBootstrapper = () => {
+  const [services] = useAsync(async () => {
+    const config = getConfig();
 
-const services = createServices(config);
-services.start();
+    const services = createServices(config);
+    await services.start();
+    return services;
+  }, []);
 
-render(
-  <ServiceContext.Provider value={services}>
+  if (!services) {
+    return <Spinner className="spinner-center"/>;
+  }
+
+  return (
+    <ServiceContext.Provider value={services}>
       <CustomBrowserRouter>
         <ErrorBoundary>
           <App/>
         </ErrorBoundary>
       </CustomBrowserRouter>
-  </ServiceContext.Provider>,
-  document.getElementById('app'),
-);
+    </ServiceContext.Provider>
+  );
+};
+
+render(<AppBootstrapper/>, document.getElementById('app'));

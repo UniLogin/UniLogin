@@ -16,6 +16,7 @@ import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 
 export class DeployedWallet implements ApplicationWallet {
+
   constructor(
     public readonly contractAddress: string,
     public readonly name: string,
