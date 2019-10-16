@@ -71,7 +71,8 @@ export class WalletService {
     const applicationWallet = {contractAddress, name: ensName, privateKey};
     this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet});
 
-    const deployedWallet = await deploy(ensName, gasPrice, gasToken);
+    const execution = await deploy(ensName, gasPrice, gasToken);
+    const deployedWallet = await execution.waitToBeSuccess();
     this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
     this.storage && this.storage.save(deployedWallet.asApplicationWallet);
     return deployedWallet;
