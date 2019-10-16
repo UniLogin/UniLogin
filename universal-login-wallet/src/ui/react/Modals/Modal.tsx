@@ -4,7 +4,7 @@ import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, Safello, TopUp, WaitingFor} from '@universal-login/react';
+import {ModalWrapper, Safello, TopUp, WaitingFor, useAsync} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
@@ -13,7 +13,10 @@ import {ImageWaitingFor} from '../common/ImageWaitingFor';
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
   const {walletPresenter, walletService, sdk} = useServices();
-  const relayerConfig = sdk.getRelayerConfig();
+  const [relayerConfig] = useAsync(async () => {
+    await sdk.fetchRelayerConfig();
+    return sdk.getRelayerConfig();
+  }, []);
 
   switch (modalService.modalName) {
     case 'transfer':
