@@ -7,6 +7,7 @@ import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
 import {CustomBrowserRouter} from './ui/react/CustomBrowserRouter';
 import {Spinner, ErrorBoundary, useAsync} from '@universal-login/react';
+import {setBetaNotice} from '@universal-login/sdk';
 
 const AppBootstrapper = () => {
   const [services] = useAsync(async () => {
@@ -14,6 +15,8 @@ const AppBootstrapper = () => {
 
     const services = createServices(config);
     await services.start();
+    const {sdk} = services;
+    setBetaNotice(sdk);
     return services;
   }, []);
 
