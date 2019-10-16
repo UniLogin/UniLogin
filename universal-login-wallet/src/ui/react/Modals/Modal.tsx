@@ -48,7 +48,6 @@ const Modal = () => {
             {...modalService.modalProps}
             action={'Wallet creation'}
             relayerConfig={relayerConfig!}
-            transactionHash={'0xee9270ccdeb9fcb92b3ec509ba11ba2362ab32ba8f...'}
             children={ImageWaitingFor()}
             className={'jarvis-waiting-for'}
           />
