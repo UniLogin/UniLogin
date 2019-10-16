@@ -11,6 +11,7 @@ import {initUi} from './ui';
 import {AppProps} from './ui/App';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
+import {renderLogoButton} from './ui/logoButton';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -65,6 +66,8 @@ export class ULWeb3Provider implements Provider {
       (walletCreated, metamask) => walletCreated || !!metamask,
     );
 
+    this.sdk.start();
+
     uiInitializer({
       sdk: this.sdk,
       domains: ensDomains,
@@ -74,7 +77,7 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any {
+  async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     const metamaskProvider = this.metamaskService.metamaskProvider.get();
     if (metamaskProvider) {
       return metamaskProvider.sendAsync(payload, callback);
@@ -86,12 +89,11 @@ export class ULWeb3Provider implements Provider {
       case 'eth_sign':
       case 'personal_sign':
         try {
-          this.handle(payload.method, payload.params).then((result: any) => {
-            callback(null, {
-              id: payload.id,
-              jsonrpc: '2.0',
-              result,
-            });
+          const result = await this.handle(payload.method, payload.params);
+          callback(null, {
+            id: payload.id,
+            jsonrpc: '2.0',
+            result,
           });
         } catch (err) {
           callback(err);
@@ -160,5 +162,15 @@ export class ULWeb3Provider implements Provider {
       this.uiController.requireWallet();
       await waitForTrue(this.walletService.walletDeployed);
     }
+  }
+
+  initWeb3Button(element: Element) {
+    renderLogoButton(element, {
+      walletService: this.walletService,
+    });
+  }
+
+  finalizeAndStop() {
+    return this.sdk.finalizeAndStop();
   }
 }
