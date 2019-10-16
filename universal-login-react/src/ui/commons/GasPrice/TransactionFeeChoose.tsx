@@ -39,8 +39,8 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
                 <div className="transaction-fee-details">
                   <img src="" alt="" className="transaction-fee-item-icon" />
                   <div>
-                    <p className="transaction-fee-amount">{safeMultiply(option.gasPrice, gasLimit)} {option.token.symbol}</p>
                     <p className="transaction-fee-amount-usd">{safeMultiply(utils.parseEther(usdAmount.toString()), gasLimit)} USD</p>
+                    <p className="transaction-fee-amount">{safeMultiply(option.gasPrice, gasLimit)} {option.token.symbol}</p>
                   </div>
                 </div>
                 {renderBalance(option)}
