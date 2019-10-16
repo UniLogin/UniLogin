@@ -21,15 +21,14 @@ export const CreateAccount = () => {
 
   const onCreateClick = async (name: string) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
-    const {deploy, waitForBalance} = await walletService.createFutureWallet();
+    const {waitForBalance} = await walletService.createFutureWallet();
     const topUpProps: TopUpModalProps = {
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; }
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
     modalService.showModal('waitingForDeploy');
-    await deploy(name, gasParameters.gasPrice.toString(), ETHER_NATIVE_TOKEN.address);
-    walletService.setDeployed(name);
+    await walletService.deployFutureWallet(name, gasParameters.gasPrice.toString(), ETHER_NATIVE_TOKEN.address);
     modalService.showModal('transactionSuccess');
   };
 

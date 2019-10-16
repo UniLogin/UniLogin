@@ -15,6 +15,9 @@ type WalletState = {
   kind: 'Connecting'
   wallet: ApplicationWallet
 } | {
+  kind: 'Deploying'
+  wallet: ApplicationWallet
+} | {
   kind: 'Deployed'
   wallet: DeployedWallet
 };
@@ -57,6 +60,22 @@ export class WalletService {
     const futureWallet = await this.sdk.createFutureWallet();
     this.setFutureWallet(futureWallet);
     return futureWallet;
+  }
+
+  async deployFutureWallet(ensName: string, gasPrice: string, gasToken: string) {
+    if (this.state.kind !== 'Future') {
+      throw new Error('Invalid state: expected future wallet');
+    }
+    const {deploy, contractAddress, privateKey} = this.state.wallet;
+
+    const applicationWallet = {contractAddress, name: ensName, privateKey};
+    this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet});
+
+    const execution = await deploy(ensName, gasPrice, gasToken);
+    const deployedWallet = await execution.waitToBeSuccess();
+    this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
+    this.storage && this.storage.save(deployedWallet.asApplicationWallet);
+    return deployedWallet;
   }
 
   setFutureWallet(wallet: FutureWallet) {
