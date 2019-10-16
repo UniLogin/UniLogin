@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import sinon, {StubbableType} from 'sinon';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {validateVerifyField, deleteAccount} from '../../../src/core/services/DeleteAccountService';
 import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
@@ -42,7 +42,7 @@ describe('DeleteAccountService', () => {
       expect(onDeleteAccountClick).to.be.calledOnce;
     });
 
-    it('dont delete account if inputs are invalid', async() => {
+    it('dont delete account if inputs are invalid', async () => {
       await deleteAccount(deployedWallet, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onDeleteAccountClick);
       expect(setErrors).to.be.calledOnce;
       expect(sdk.stop).to.not.be.called;
