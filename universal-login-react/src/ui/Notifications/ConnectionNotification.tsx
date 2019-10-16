@@ -22,8 +22,7 @@ export const ConnectionNotification = ({deployedWallet, className, onConnectionS
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-        {notifications.length > 0
-          ?
+        {notifications.length > 0 && (
           <>
             {showTitle &&
               <>
@@ -39,8 +38,7 @@ export const ConnectionNotification = ({deployedWallet, className, onConnectionS
               onConnectionSuccess={onConnectionSuccess}
             />
           </>
-          : <p className="connection-device-status">No requests to connect from other applications</p>
-        }
+        )}
         </div>
       </div>
     </div>

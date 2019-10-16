@@ -3,13 +3,14 @@ import {DevicesList} from './DevicesList';
 import {DeployedWallet} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
+import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
 
 export interface DevicesProps {
   deployedWallet: DeployedWallet;
   className?: string;
 }
 
-export type devicesContentType = 'devices' | 'approveDevice' | 'deleteAccount';
+export type devicesContentType = 'devices' | 'approveDevice' | 'deleteAccount' | 'connectionSuccess';
 
 export const Devices = ({deployedWallet, className}: DevicesProps) => {
   const [devicesContent, setDevicesContent] = useState<devicesContentType>('devices');
@@ -26,11 +27,15 @@ export const Devices = ({deployedWallet, className}: DevicesProps) => {
     case 'approveDevice':
       return (
         <ConnectionNotification
-          onConnectionSuccess={() => setDevicesContent('devices')}
+          onConnectionSuccess={() => setDevicesContent('connectionSuccess')}
           deployedWallet={deployedWallet}
           onDenyRequests={() => setDevicesContent('devices')}
           className={className}
         />
+      );
+    case 'connectionSuccess':
+      return (
+        <ConnectionSuccessNotification onClose={() => setDevicesContent('devices')} className={className} />
       );
     case 'deleteAccount':
       return (
