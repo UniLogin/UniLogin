@@ -25,4 +25,12 @@ export class TopUpProviderSupportService {
     this.checkWyreSupport(countryName) && providers.push(TopUpProvider.WYRE);
     return providers;
   }
+
+  isInputAmountUsed(topUpProvider?: TopUpProvider) {
+    if (!!topUpProvider) {
+      return [TopUpProvider.RAMP].includes(topUpProvider);
+    } else {
+      return false;
+    }
+  }
 }

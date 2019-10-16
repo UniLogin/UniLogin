@@ -50,4 +50,18 @@ describe('TopUpProviderSupportService', function () {
       expect(service.getProviders('Albania')).to.be.an('array').that.is.empty;
     });
   });
+
+  describe('isInputAmountRequired', () => {
+    it('Safello', () => {
+      expect(service.isInputAmountUsed(TopUpProvider.SAFELLO)).to.be.false;
+    });
+
+    it('Ramp', () => {
+      expect(service.isInputAmountUsed(TopUpProvider.RAMP)).to.be.true;
+    });
+
+    it('undefined', () => {
+      expect(service.isInputAmountUsed()).to.be.false;
+    });
+  });
 });

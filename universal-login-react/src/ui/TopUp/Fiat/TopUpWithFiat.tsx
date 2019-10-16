@@ -67,28 +67,29 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
             setCurrency={setCurrency}
           />
         </div>
-        <div className="fiat-input-item">
-          <p className="top-up-label">Amount</p>
-          <AmountInput
-            selectedCurrency={currency}
-            setCurrency={setCurrency}
-            amount={amount}
-            onChange={(amount: string) => setAmount(amount)}
-          />
-        </div>
+        {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
+          <div className="fiat-input-item">
+            <p className="top-up-label">Amount</p>
+            <AmountInput
+              selectedCurrency={currency}
+              setCurrency={setCurrency}
+              amount={amount}
+              onChange={(amount: string) => setAmount(amount)}
+            />
+        </div>}
       </div>
       {!!country && <>
-          <p className="top-up-label fiat-payment-methods-title">Payment method</p>
-          <FiatPaymentMethods
-              selectedCountry={country}
-              supportService={topUpProviderSupportService}
-              paymentMethod={paymentMethod}
-              setPaymentMethod={setPaymentMethod}
-              logoColor={logoColor}
-          />
+        <p className="top-up-label fiat-payment-methods-title">Payment method</p>
+        <FiatPaymentMethods
+          selectedCountry={country}
+          supportService={topUpProviderSupportService}
+          paymentMethod={paymentMethod}
+          setPaymentMethod={setPaymentMethod}
+          logoColor={logoColor}
+        />
       </>}
       <div className="fiat-bottom">
-        {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod}/>}
+        {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod} />}
         <button
           onClick={() => onPayClick(paymentMethod!, amount)}
           className="pay-btn"

@@ -35,7 +35,7 @@ describe('UNIT: TokensValueConverter', () => {
 
       const tokensTotalWorth = tokensValueConverter.addBalances(currencyToValue, token2TotalWorth);
 
-      expect(tokensTotalWorth).to.deep.equal({USD: 3 * 2000, DAI: 3 * 1600, ETH: 3 * 1, GBP: 3 * 1500});
+      expect(tokensTotalWorth).to.deep.equal({USD: 3 * 2000, DAI: 3 * 1600, ETH: 3 * 1});
     });
   });
 
@@ -49,8 +49,8 @@ describe('UNIT: TokensValueConverter', () => {
     ];
 
     const tokensPrices = {
-      ETH: {USD: 1000, DAI: 800, ETH: 0.1, GBP: 500},
-      Mock: {USD: 200, DAI: 160, ETH: 0.02, GBP: 150}
+      ETH: {USD: 1000, DAI: 800, ETH: 0.1},
+      Mock: {USD: 200, DAI: 160, ETH: 0.02}
     };
 
     it('[]', async () => {
