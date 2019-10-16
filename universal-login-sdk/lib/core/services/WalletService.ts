@@ -62,7 +62,7 @@ export class WalletService {
     return futureWallet;
   }
 
-  async deployFutureWallet(ensName: string, gasPrice: string, gasToken: string, onTransactionHash?: Function) {
+  async deployFutureWallet(ensName: string, gasPrice: string, gasToken: string, onTransactionHash?: (txHash: string) => void) {
     if (this.state.kind !== 'Future') {
       throw new Error('Invalid state: expected future wallet');
     }
