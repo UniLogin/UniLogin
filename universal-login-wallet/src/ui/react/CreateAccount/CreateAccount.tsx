@@ -18,7 +18,7 @@ export const CreateAccount = () => {
   const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
 
-  const showWaitingModal = (transactionHash: string) => modalService.showModal('waitingForDeploy', {transactionHash});
+  const showWaitingModal = (transactionHash?: string) => modalService.showModal('waitingForDeploy', {transactionHash});
 
   const onCreateClick = async (name: string) => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
@@ -28,7 +28,7 @@ export const CreateAccount = () => {
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
-    showWaitingModal('Not yet available...');
+    showWaitingModal();
     await walletService.deployFutureWallet(name, gasParameters.gasPrice.toString(), ETHER_NATIVE_TOKEN.address, showWaitingModal);
     modalService.showModal('transactionSuccess');
   };

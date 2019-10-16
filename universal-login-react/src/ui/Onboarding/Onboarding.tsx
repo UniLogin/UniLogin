@@ -36,7 +36,7 @@ export const Onboarding = (props: OnboardingProps) => {
     props.onConnect && props.onConnect();
   };
 
-  const showWalletCreationModal = (transactionHash: string) => {
+  const showWalletCreationModal = (transactionHash?: string) => {
     const relayerConfig = props.sdk.getRelayerConfig();
     modalService.showModal('waitingFor', {
       relayerConfig,
@@ -60,7 +60,7 @@ export const Onboarding = (props: OnboardingProps) => {
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
-    showWalletCreationModal('Not yet available...');
+    showWalletCreationModal();
     const wallet = await walletService.deployFutureWallet(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken, showWalletCreationModal);
     modalService.hideModal();
     props.onCreate && props.onCreate(wallet);
