@@ -7,12 +7,11 @@ import ModalWrapperClosable from './ModalWrapperClosable';
 import {ModalWrapper, Safello, TopUp, WaitingForTransaction} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 import {ImageWaitingFor} from '../common/ImageWaitingFor';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, walletService, sdk} = useServices();
+  const {walletPresenter, sdk} = useServices();
   const relayerConfig = sdk.getRelayerConfig();
 
   switch (modalService.modalName) {
@@ -38,7 +37,6 @@ const Modal = () => {
           contractAddress={walletPresenter.getContractAddress()}
           isModal
           logoColor="black"
-          hideModal={() => hideTopUpModal(walletService, modalService)}
         />
       ) : null;
     case 'waitingForDeploy':

@@ -12,6 +12,7 @@ import {
 import Modal from '../Modals/Modal';
 import {Link} from 'react-router-dom';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
 export const CreateAccount = () => {
   const modalService = useContext(WalletModalContext);
@@ -25,7 +26,8 @@ export const CreateAccount = () => {
     const {waitForBalance} = await walletService.createFutureWallet();
     const topUpProps: TopUpModalProps = {
       onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
-      isDeployment: true
+      isDeployment: true,
+      hideModal: () => hideTopUpModal(walletService, modalService)
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
