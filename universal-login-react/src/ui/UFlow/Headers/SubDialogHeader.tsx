@@ -6,7 +6,7 @@ export interface SubDialogHeaderProps {
 }
 
 export const SubDialogHeader = ({ensName}: SubDialogHeaderProps) => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <div className="udashboard-subheader">
       <button onClick={() => history.goBack()} className="udashboard-back-btn"/>
