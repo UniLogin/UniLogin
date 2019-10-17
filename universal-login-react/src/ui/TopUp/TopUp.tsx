@@ -6,7 +6,7 @@ import {Ramp} from '../../integration/Ramp';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
-import {LogoColor} from './Fiat/FiatPaymentMethods';
+import {LogoColor} from './Fiat';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import {GasPrice} from '../commons/GasPrice';
