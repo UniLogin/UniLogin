@@ -1,22 +1,17 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
 import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
-import {setBetaNotice} from '@universal-login/sdk';
 
 const HomeScreen = () => {
   const {walletService} = useServices();
   const modalService = useContext(WalletModalContext);
   const [content, setContent] = useState('balance');
 
-  const [notice, setNotice] = useState('');
   const {sdk} = walletService.getDeployedWallet();
-  useEffect(() => {
-    setBetaNotice(sdk);
-    setNotice(sdk.getNotice());
-  });
+  const notice = sdk.getNotice();
 
   const topUpProps: TopUpModalProps = {
     isDeployment: false,
