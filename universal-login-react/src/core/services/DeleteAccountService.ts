@@ -1,41 +1,30 @@
-import {utils} from 'ethers';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
-import {DeployedWallet} from '@universal-login/sdk';
+import {WalletService} from '@universal-login/sdk';
 
-type ErrorsType = {
+interface ErrorsType {
   usernameError: boolean;
   verifyFieldError: boolean;
-};
+}
 
-type InputsType = {
-  username: string,
-  verifyField: string
-};
-
-const validateUsername = (usernameFromInput: string, usernameLogged: string): boolean =>
-  usernameFromInput === usernameLogged;
-
-export const validateVerifyField = (verifyFieldFromInput: string): boolean => {
-  const verifyFieldText = 'DELETE MY ACCOUNT';
-  return verifyFieldFromInput === verifyFieldText;
-};
+interface InputsType {
+  username: string;
+  verifyField: string;
+}
 
 const checkInputsAgainstError = (usernameLogged: string, inputs: InputsType) => ({
-  usernameError: !validateUsername(inputs.username, usernameLogged),
-  verifyFieldError: !validateVerifyField(inputs.verifyField)
+  usernameError: inputs.username !== usernameLogged,
+  verifyFieldError: inputs.verifyField !== 'DELETE MY ACCOUNT'
 });
 
 export const getInputClassName = (inputError: boolean) => inputError ? 'delete-account-input-error' : 'delete-account-input';
 
 const doesAnyErrorExists = (errors: ErrorsType) => errors.usernameError || errors.verifyFieldError;
 
-export const deleteAccount = async (deployedWallet: DeployedWallet, inputs: InputsType, setErrors: (errors: ErrorsType) => void, onDeleteAccountClick: () => void) => {
-  const errors = checkInputsAgainstError(deployedWallet.name, inputs);
+export const deleteAccount = async (walletService: WalletService, inputs: InputsType, setErrors: (errors: ErrorsType) => void, onDeleteAccountClick: () => void) => {
+  const errors = checkInputsAgainstError(walletService.getDeployedWallet().name, inputs);
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
-    const publicKey = utils.computeAddress(deployedWallet.privateKey);
-    await deployedWallet.removeKey(publicKey, transactionDetails);
-    deployedWallet.sdk.stop();
+    await walletService.removeWallet(transactionDetails);
     onDeleteAccountClick();
   }
 };

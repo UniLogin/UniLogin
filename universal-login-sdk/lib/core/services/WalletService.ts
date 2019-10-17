@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, Message} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
@@ -145,6 +145,13 @@ export class WalletService {
       unsubscribe: () => subscription.remove(),
       securityCode
     };
+  }
+
+  async removeWallet(transactionDetails: Partial<Message>) {
+    if (this.state.kind === 'Deployed') {
+      await this.state.wallet.removeOwnKey(transactionDetails);
+    }
+    this.disconnect();
   }
 
   disconnect(): void {

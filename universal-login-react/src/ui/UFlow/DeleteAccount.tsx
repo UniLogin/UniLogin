@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {deleteAccount, getInputClassName} from '../../core/services/DeleteAccountService';
-import {DeployedWallet} from '@universal-login/sdk';
+import {WalletService} from '@universal-login/sdk';
 import './../styles/deleteAccount.sass';
 import './../styles/deleteAccountDefault.sass';
 
 export interface DeleteAccountProps {
-  deployedWallet: DeployedWallet;
+  walletService: WalletService;
   onDeleteAccountClick: () => void;
   onCancelClick: () => void;
   className?: string;
 }
 
-export const DeleteAccount = ({deployedWallet, onDeleteAccountClick, onCancelClick, className}: DeleteAccountProps) => {
+export const DeleteAccount = ({walletService, onDeleteAccountClick, onCancelClick, className}: DeleteAccountProps) => {
   const [inputs, setInputs] = useState({username: '', verifyField: ''});
   const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 
@@ -46,7 +46,7 @@ export const DeleteAccount = ({deployedWallet, onDeleteAccountClick, onCancelCli
           </div>
           <div className="delete-account-buttons">
             <button onClick={onCancelClick} className="delete-account-cancel">Cancel</button>
-            <button onClick={() => deleteAccount(deployedWallet, inputs, setErrors, onDeleteAccountClick)} className="delete-account-confirm">Delete account</button>
+            <button onClick={() => deleteAccount(walletService, inputs, setErrors, onDeleteAccountClick)} className="delete-account-confirm">Delete account</button>
           </div>
         </div>
       </div>

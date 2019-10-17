@@ -10,8 +10,16 @@ export default class DashboardPage {
     this.wrapper.update();
   }
 
-  disconnect() {
-    this.wrapper.find('.sign-out-btn').simulate('click');
+  areDeleteAccountInputsValid() {
+    return this.wrapper.exists('delete-account-input-error');
+  }
+
+  async disconnect() {
+    await this.clickDevicesButton();
+    this.wrapper.find('.delete-account-link').simulate('click');
+    this.wrapper.find('#username').simulate('change', {target: {value: 'super-name.mylogin.eth'}});
+    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DELETE MY ACCOUNT'}});
+    this.wrapper.find('.delete-account-confirm').simulate('click');
   }
 
   async waitForHideModal() {

@@ -10,7 +10,7 @@ import {
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
-import {Contract} from 'ethers';
+import {Contract, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
@@ -43,6 +43,11 @@ export class DeployedWallet implements ApplicationWallet {
 
   async removeKey(key: string, transactionDetails: Partial<Message>): Promise<Execution> {
     return this.sdk.removeKey(this.contractAddress, key, this.privateKey, transactionDetails);
+  }
+
+  async removeOwnKey(transactionDetails: Partial<Message>): Promise<Execution> {
+    const ownKey = utils.computeAddress(this.privateKey);
+    return this.sdk.removeKey(this.contractAddress, ownKey, this.privateKey, transactionDetails);
   }
 
   async denyRequests() {

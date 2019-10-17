@@ -33,8 +33,8 @@ const HomeScreen = () => {
       case 'devices':
         return (
           <Devices
-            deployedWallet={walletService.getDeployedWallet()}
-            onDeleteAccountClick={() => disconnectFromWallet(walletService, router)}
+            walletService={walletService}
+            onDeleteAccountClick={() => router.history.push('/welcome')}
             className="jarvis-styles"
           />
         );

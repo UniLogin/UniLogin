@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {asTransferDetails, GasParameters, TransferDetails} from '@universal-login/commons';
-import {DeployedWallet, setBetaNotice, TransferService} from '@universal-login/sdk';
+import {DeployedWallet, setBetaNotice, TransferService, WalletService} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
@@ -61,6 +61,9 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
     await waitToBeSuccess();
     changeContent('funds');
   };
+
+  const walletService = new WalletService(sdk);
+  walletService.setWallet(deployedWallet.asApplicationWallet);
 
   return (
     <>
@@ -143,7 +146,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 </Route>
                 <Route path="/dashboard/devices">
                   <DialogWrapper message={notice} ensName={name}>
-                    <Devices deployedWallet={deployedWallet} basePath="/dashboard/devices"/>
+                    <Devices walletService={walletService} basePath="/dashboard/devices"/>
                   </DialogWrapper>
                 </Route>
                 <Route path="/dashboard/backup" exact>
