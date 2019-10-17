@@ -4,7 +4,7 @@ import ModalTransfer from './Transfer/ModalTransfer';
 import ModalRequest from './ModalRequest';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, Safello, TopUp, WaitingFor} from '@universal-login/react';
+import {ModalWrapper, Safello, TopUp, WaitingForTransaction} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
@@ -44,7 +44,7 @@ const Modal = () => {
     case 'waitingForDeploy':
     return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <WaitingFor
+          <WaitingForTransaction
             {...modalService.modalProps}
             action={'Wallet creation'}
             relayerConfig={relayerConfig!}
@@ -56,7 +56,7 @@ const Modal = () => {
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>
-          <WaitingFor
+          <WaitingForTransaction
             {...modalService.modalProps}
             action={'Transferring funds'}
             relayerConfig={relayerConfig!}
