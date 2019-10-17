@@ -94,9 +94,9 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
           >
             <TopUp
               sdk={sdk}
-              onGasParametersChanged={() => {}}
               hideModal={() => setDashboardVisibility(false)}
               contractAddress={contractAddress}
+              isDeployment={false}
             />
           </SubDialogWrapper>
         );

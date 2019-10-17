@@ -16,9 +16,10 @@ export interface ChooseTopUpMethodProps {
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   topUpClassName?: string;
   logoColor?: LogoColor;
+  isDeployment: boolean;
 }
 
-export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState('');
 
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
@@ -63,7 +64,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
           </div>
           <div className="top-up-body">
             <div className="top-up-body-inner">
-              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress}/>}
+              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} isDeployment={isDeployment}/>}
               {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor}/>}
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
@@ -14,20 +14,25 @@ import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
+import {MissingParameter} from '../../core/utils/errors';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
   contractAddress: string;
-  onGasParametersChanged: OnGasParametersChanged;
+  onGasParametersChanged?: OnGasParametersChanged;
   startModal?: TopUpComponentType;
   topUpClassName?: string;
   modalClassName?: string;
   hideModal?: () => void;
   isModal?: boolean;
   logoColor?: LogoColor;
+  isDeployment: boolean;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
+  if (isDeployment) {
+    ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
+  }
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -46,16 +51,19 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         onPayClick={onPayClick}
         topUpClassName={topUpClassName}
         logoColor={logoColor}
+        isDeployment={isDeployment}
       />
-      <FooterSection className={topUpClassName}>
-        <GasPrice
-          isDeployed={false}
-          sdk={sdk}
-          onGasParametersChanged={onGasParametersChanged}
-          gasLimit={DEPLOY_GAS_LIMIT}
-          className={topUpClassName}
-        />
-      </FooterSection>
+      { isDeployment &&
+        <FooterSection className={topUpClassName}>
+          <GasPrice
+            isDeployed={false}
+            sdk={sdk}
+            onGasParametersChanged={onGasParametersChanged!}
+            gasLimit={DEPLOY_GAS_LIMIT}
+            className={topUpClassName}
+          />
+        </FooterSection>
+      }
     </>
   );
 

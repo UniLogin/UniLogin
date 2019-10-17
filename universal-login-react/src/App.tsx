@@ -139,15 +139,22 @@ export const App = () => {
                 if (!relayerConfig) {
                   return <Spinner />;
                 }
-                const topUpProps: TopUpProps = {
+                const regularTopUpProps: TopUpProps = {
                   contractAddress: Wallet.createRandom().address,
-                  onGasParametersChanged: console.log,
-                  sdk
+                  sdk,
+                  isDeployment: false
+                };
+                const deploymentTopUpProps: TopUpProps = {
+                  contractAddress: Wallet.createRandom().address,
+                  sdk,
+                  isDeployment: true,
+                  onGasParametersChanged: console.log
                 };
                 return (
                   <>
                     <ReactModalContext.Provider value={modalService}>
-                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', topUpProps)}>Show Topup</button>
+                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', regularTopUpProps)}>Show Topup</button>
+                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', deploymentTopUpProps)}>Show Deployment Topup</button>
                       <Modals />
                     </ReactModalContext.Provider>
                   </>

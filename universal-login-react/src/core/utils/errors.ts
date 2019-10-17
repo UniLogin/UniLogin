@@ -1,4 +1,4 @@
-type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError';
+type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError' | 'MissingParameter';
 
 export class ReactError extends Error {
   errorType: ErrorType;
@@ -28,6 +28,13 @@ export class InvalidTransferDetails extends ValidationFailed {
   constructor() {
     super('Invalid transfer details.', 'InvalidTransferDetails');
     Object.setPrototypeOf(this, InvalidTransferDetails.prototype);
+  }
+}
+
+export class MissingParameter extends ValidationFailed {
+  constructor(parameterName: string) {
+    super(`Missing parameter: ${parameterName}`, 'MissingParameter');
+    Object.setPrototypeOf(this, MissingParameter.prototype);
   }
 }
 

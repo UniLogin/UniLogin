@@ -18,7 +18,8 @@ export type ConnectionFlowProps = {
 export type TopUpProps = {
   sdk: UniversalLoginSDK
   contractAddress: string;
-  onGasParametersChanged: OnGasParametersChanged;
+  onGasParametersChanged?: OnGasParametersChanged;
+  isDeployment: boolean;
 };
 
 export const ReactModalContext = React.createContext({} as IModalService<ReactModalType, ReactModalProps>);

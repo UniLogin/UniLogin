@@ -24,7 +24,8 @@ export const CreateAccount = () => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
     const {waitForBalance} = await walletService.createFutureWallet();
     const topUpProps: TopUpModalProps = {
-      onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; }
+      onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
+      isDeployment: true
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
