@@ -102,11 +102,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 path="/dashboard/topup"
                 exact
                 render={({history}) => (
-                  <SubDialogWrapper
-                    message={notice}
-                    ensName={name}
-                    onBackButtonClick={() => history.goBack()}
-                  >
+                  <SubDialogWrapper message={notice} ensName={name}>
                     <TopUp
                       sdk={sdk}
                       hideModal={() => setDashboardVisibility(false)}
@@ -120,11 +116,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 path="/dashboard/transferAmount"
                 exact
                 render={({history}) => (
-                  <SubDialogWrapper
-                    message={notice}
-                    ensName={name}
-                    onBackButtonClick={() => history.goBack()}
-                  >
+                  <SubDialogWrapper message={notice} ensName={name}>
                     <TransferAmount
                       deployedWallet={deployedWallet}
                       onSelectRecipientClick={() => history.push('/dashboard/transferRecipient')}
@@ -138,11 +130,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 path="/dashboard/transferRecipient"
                 exact
                 render={({history}) => (
-                  <SubDialogWrapper
-                    message={notice}
-                    ensName={name}
-                    onBackButtonClick={() => history.goBack()}
-                  >
+                  <SubDialogWrapper message={notice} ensName={name}>
                     <TransferRecipient
                       deployedWallet={deployedWallet}
                       onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
@@ -158,11 +146,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 path="/dashboard/waitingForTransfer"
                 exact
                 render={({history}) => (
-                  <SubDialogWrapper
-                    message={notice}
-                    ensName={name}
-                    onBackButtonClick={() => history.goBack()}
-                  >
+                  <SubDialogWrapper message={notice} ensName={name}>
                     <WaitingForTransaction
                       action="Transferring funds"
                       relayerConfig={relayerConfig!}

@@ -6,9 +6,9 @@ export interface SubDialogWrapperProps extends SubDialogHeaderProps, NoticeProps
   children: ReactNode;
 }
 
-export const SubDialogWrapper = ({children, ensName, message, onBackButtonClick}: SubDialogWrapperProps) => (
+export const SubDialogWrapper = ({children, ensName, message}: SubDialogWrapperProps) => (
   <>
-    <SubDialogHeader onBackButtonClick={onBackButtonClick} ensName={ensName} />
+    <SubDialogHeader ensName={ensName} />
     <Notice message={message} />
     <div className="udashboard-content">
       {children}
