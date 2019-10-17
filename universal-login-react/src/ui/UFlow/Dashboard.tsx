@@ -86,10 +86,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 path="/dashboard/funds"
                 exact
                 render={({history}) => (
-                  <DialogWrapper
-                    message={notice}
-                    ensName={name}
-                  >
+                  <DialogWrapper message={notice} ensName={name}>
                     <Funds
                       deployedWallet={deployedWallet}
                       onTopUpClick={() => history.push('/dashboard/topup')}
@@ -98,20 +95,16 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   </DialogWrapper>
                 )}
               />
-              <Route
-                path="/dashboard/topup"
-                exact
-                render={({history}) => (
-                  <SubDialogWrapper message={notice} ensName={name}>
-                    <TopUp
-                      sdk={sdk}
-                      hideModal={() => setDashboardVisibility(false)}
-                      contractAddress={contractAddress}
-                      isDeployment={false}
-                    />
-                  </SubDialogWrapper>
-                )}
-              />
+              <Route path="/dashboard/topup" exact>
+                <SubDialogWrapper message={notice} ensName={name}>
+                  <TopUp
+                    sdk={sdk}
+                    hideModal={() => setDashboardVisibility(false)}
+                    contractAddress={contractAddress}
+                    isDeployment={false}
+                  />
+                </SubDialogWrapper>
+              </Route>
               <Route
                 path="/dashboard/transferAmount"
                 exact
@@ -142,45 +135,25 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   </SubDialogWrapper>
                 )}
               />
-              <Route
-                path="/dashboard/waitingForTransfer"
-                exact
-                render={({history}) => (
-                  <SubDialogWrapper message={notice} ensName={name}>
-                    <WaitingForTransaction
-                      action="Transferring funds"
-                      relayerConfig={relayerConfig!}
-                      transactionHash={transactionHash}
-                    />
-                  </SubDialogWrapper>
-                )}
-              />
-              <Route
-                path="/dashboard/devices"
-                exact
-                render={({history}) => (
-                  <DialogWrapper
-                    message={notice}
-                    ensName={name}
-                  >
-                    <Devices
-                      deployedWallet={deployedWallet}
-                    />
-                  </DialogWrapper>
-                )}
-              />
-              <Route
-                path="/dashboard/backup"
-                exact
-                render={({history}) => (
-                  <DialogWrapper
-                    message={notice}
-                    ensName={name}
-                  >
-                    <BackupCodes deployedWallet={deployedWallet}/>
-                  </DialogWrapper>
-                )}
-              />
+              <Route path="/dashboard/waitingForTransfer" exact>
+                <SubDialogWrapper message={notice} ensName={name}>
+                  <WaitingForTransaction
+                    action="Transferring funds"
+                    relayerConfig={relayerConfig!}
+                    transactionHash={transactionHash}
+                  />
+                </SubDialogWrapper>
+              </Route>
+              <Route path="/dashboard/devices" exact>
+                <DialogWrapper message={notice} ensName={name}>
+                  <Devices deployedWallet={deployedWallet}/>
+                </DialogWrapper>
+              </Route>
+              <Route path="/dashboard/backup" exact>
+                <DialogWrapper message={notice} ensName={name}>
+                  <BackupCodes deployedWallet={deployedWallet}/>
+                </DialogWrapper>
+              </Route>
             </Switch>
           </div>
         </ModalWrapper>
