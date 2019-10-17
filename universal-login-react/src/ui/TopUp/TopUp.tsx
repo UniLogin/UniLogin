@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
@@ -30,8 +30,8 @@ interface TopUpProps {
 }
 
 export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
-  if (isDeployment && onGasParametersChanged === undefined) {
-    throw new MissingParameter('onGasParametersChanged');
+  if (isDeployment) {
+    ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
   }
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
