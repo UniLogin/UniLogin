@@ -89,8 +89,6 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   <DialogWrapper
                     message={notice}
                     ensName={name}
-                    activeTab="funds"
-                    setActiveTab={tab => history.replace(`/dashboard/${tab}`)}
                   >
                     <Funds
                       deployedWallet={deployedWallet}
@@ -180,8 +178,6 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   <DialogWrapper
                     message={notice}
                     ensName={name}
-                    activeTab="devices"
-                    setActiveTab={tab => history.replace(`/dashboard/${tab}`)}
                   >
                     <Devices
                       deployedWallet={deployedWallet}
@@ -196,8 +192,6 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   <DialogWrapper
                     message={notice}
                     ensName={name}
-                    activeTab="backup"
-                    setActiveTab={tab => history.replace(`/dashboard/${tab}`)}
                   >
                     <BackupCodes deployedWallet={deployedWallet}/>
                   </DialogWrapper>

@@ -7,13 +7,13 @@ export interface DialogWrapperProps extends DialogHeaderProps, NoticeProps {
   children: ReactNode;
 }
 
-export const DialogWrapper = ({message, ensName, activeTab, setActiveTab, children}: DialogWrapperProps) => (
+export const DialogWrapper = ({message, ensName, children}: DialogWrapperProps) => (
   <>
-    <DialogHeader ensName={ensName} activeTab={activeTab} setActiveTab={setActiveTab} />
+    <DialogHeader ensName={ensName} />
     <Notice message={message}/>
     <div className="udashboard-content">
       {children}
     </div>
-    <UNavBarMobile activeTab={activeTab} setActiveTab={setActiveTab}/>
+    <UNavBarMobile />
   </>
 );

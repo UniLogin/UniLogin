@@ -1,11 +1,8 @@
 import React from 'react';
-import {Nav, NavProps} from '../commons/Nav';
+import {Nav} from '../commons/Nav';
 
-export const UNavBarMobile = ({activeTab, setActiveTab}: NavProps) => {
-
-  return (
+export const UNavBarMobile = () => (
     <div className="udashboard-navbar">
-      <Nav activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <Nav/>
     </div>
   );
-};
