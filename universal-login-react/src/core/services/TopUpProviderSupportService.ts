@@ -27,10 +27,6 @@ export class TopUpProviderSupportService {
   }
 
   isInputAmountUsed(topUpProvider?: TopUpProvider) {
-    if (!!topUpProvider) {
-      return [TopUpProvider.RAMP].includes(topUpProvider);
-    } else {
-      return false;
-    }
+    return !!topUpProvider && [TopUpProvider.RAMP].includes(topUpProvider);
   }
 }

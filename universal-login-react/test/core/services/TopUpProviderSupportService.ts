@@ -51,7 +51,7 @@ describe('TopUpProviderSupportService', function () {
     });
   });
 
-  describe('isInputAmountRequired', () => {
+  describe('isInputAmountUsed', () => {
     it('Safello', () => {
       expect(service.isInputAmountUsed(TopUpProvider.SAFELLO)).to.be.false;
     });
