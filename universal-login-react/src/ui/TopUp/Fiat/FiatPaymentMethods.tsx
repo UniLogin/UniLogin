@@ -2,7 +2,7 @@ import React from 'react';
 import {TopUpRadio} from '../TopUpRadio';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
-import {getOnRampProviderLogo} from './utils';
+import {getOnRampProviderLogo} from './getOnRampProviderLogo';
 
 interface FiatPaymentMethodsProps {
   selectedCountry: string;

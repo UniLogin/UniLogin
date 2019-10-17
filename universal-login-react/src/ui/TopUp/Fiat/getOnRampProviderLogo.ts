@@ -11,17 +11,17 @@ const logosBlack: Record<OnRampProviderName, string> = {
   ramp: RampLogo,
   safello: SafelloLogo,
   wyre: WyreLogo,
-}
+};
 
 const logosWhite: Record<OnRampProviderName, string> = {
   ramp: RampLogoWhite,
   safello: SafelloLogoWhite,
   wyre: WyreLogoWhite,
-}
+};
 
 export const getOnRampProviderLogo = (providerName: OnRampProviderName, color?: string) => {
-  switch(color) {
-    case 'white': return logosWhite[providerName]
-    default: return logosBlack[providerName]
+  switch (color) {
+    case 'white': return logosWhite[providerName];
+    default: return logosBlack[providerName];
   }
 };
