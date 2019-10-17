@@ -41,7 +41,7 @@ const react = async () => {
     keyboard: async () => page.click('[href="/keyboard"]', {waitUntil: 'domcontentloaded'}),
     topup: async () => {
       await page.click('[href="/topup"]', {waitUntil: 'domcontentloaded'});
-      await page.click('button#show-topup-button', {waitUntil: 'domcontentloaded'});
+      await page.click('button#show-topup-button-0', {waitUntil: 'domcontentloaded'});
       return {
         crypto: async () => page.click('label#topup-btn-crypto', {waitForFunction: 'domcontentloaded'}),
         fiat: async () => page.click('label#topup-btn-fiat', {waitForFunction: 'domcontentloaded'})

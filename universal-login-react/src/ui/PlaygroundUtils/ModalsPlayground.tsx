@@ -15,7 +15,7 @@ export const ModalsPlayground = ({modalService, modalNames, modalProps}: ModalsP
       <ReactModalContext.Provider value={modalService}>
         {
           modalNames.map((modalName, index) =>
-            <button id="show-topup-button" key={index} onClick={() => modalService.showModal(modalName, modalProps[index])}>
+            <button id={`show-topup-button-${index}`} key={index} onClick={() => modalService.showModal(modalName, modalProps[index])}>
               {`Show ${modalName}`}
             </button>)
         }
