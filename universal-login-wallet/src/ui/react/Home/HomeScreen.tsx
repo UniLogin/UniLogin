@@ -3,7 +3,7 @@ import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
 import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 import {setBetaNotice} from '@universal-login/sdk';
 
 const HomeScreen = () => {
@@ -18,13 +18,18 @@ const HomeScreen = () => {
     setNotice(sdk.getNotice());
   });
 
+  const topUpProps: TopUpModalProps = {
+    isDeployment: false,
+    hideModal: modalService.hideModal
+  };
+
   const renderContent = () => {
     switch (content) {
       case 'balance':
         return (
           <Funds
             deployedWallet={walletService.getDeployedWallet()}
-            onTopUpClick={() => {}}
+            onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
             onSendClick={() => modalService.showModal('transfer')}
             className="jarvis-funds"
           />

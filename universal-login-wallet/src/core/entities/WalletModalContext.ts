@@ -7,6 +7,7 @@ export type WalletModalType = 'error' | 'transfer' | 'transferRecipient' | 'requ
 export interface TopUpModalProps {
   onGasParametersChanged?: OnGasParametersChanged;
   isDeployment: boolean;
+  hideModal?: () => void;
 }
 
 type ErrorMessageType = string;
