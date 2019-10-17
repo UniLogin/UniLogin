@@ -7,11 +7,11 @@ import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
 export interface EmojiInputProps {
   value: number[];
   onChange: (value: number[]) => void;
-  hint?: string;
+  publicKey?: string;
   className?: string;
 }
 
-export const EmojiInput = ({value, onChange, hint, className}: EmojiInputProps) => {
+export const EmojiInput = ({value, onChange, publicKey, className}: EmojiInputProps) => {
   const onEmojiAdd = (code: number) => {
     if (value.length < SECURITY_CODE_LENGTH) {
       onChange([...value, code]);
@@ -31,10 +31,10 @@ export const EmojiInput = ({value, onChange, hint, className}: EmojiInputProps) 
         onEmojiClick={onEmojiRemove}
         className={className}
       />
-      {hint
+      {publicKey
         ? (
           <EmojiPanelWithFakes
-            publicKey={hint}
+            publicKey={publicKey}
             onEmojiClick={onEmojiAdd}
             className={className}
           />

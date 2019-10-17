@@ -92,7 +92,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
         <EmojiInput
           value={enteredCode}
           onChange={setEnteredCode}
-          hint={soleAddress}
+          publicKey={soleAddress}
           className={className}
         />
         <div className="emojis-form-reject-wrapper">
