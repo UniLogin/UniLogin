@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
-import {asTransferDetails, TransferDetails, GasParameters} from '@universal-login/commons';
-import {DeployedWallet, TransferService, setBetaNotice} from '@universal-login/sdk';
+import {asTransferDetails, GasParameters, TransferDetails} from '@universal-login/commons';
+import {DeployedWallet, setBetaNotice, TransferService} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
-import {DashboardContentType} from '../../core/models/ReactDashboardContentType';
 import './../styles/udashboard.sass';
 import {TopUp} from '../TopUp/TopUp';
 import {TransferAmount} from '../Transfer/Amount/TransferAmount';
@@ -16,6 +15,7 @@ import {InvalidTransferDetails} from '../../core/utils/errors';
 import {WaitingForTransaction} from '../commons/WaitingFor';
 import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
+import {MemoryRouter, Route, Switch} from 'react-router';
 
 export interface DashboardProps {
   deployedWallet: DeployedWallet;
@@ -34,7 +34,6 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
   const {relayerConfig} = deployedWallet.sdk;
   const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
-  const [dashboardContent, setDashboardContent] = useState<DashboardContentType>('none');
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
   const [transactionHash, setTransactionHash] = useState('');
 
@@ -53,134 +52,162 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
 
   const onUButtonClick = () => {
     setDashboardVisibility(true);
-    setDashboardContent('funds');
   };
 
   const transferService = new TransferService(deployedWallet);
 
-  const onTransferSendClick = async () => {
+  const onTransferSendClick = async (changeContent: (argument: string) => void) => {
     const sanitizedDetails = sanitizeTransferDetails(transferDetails);
-    setDashboardContent('waitingForTransfer');
+    changeContent('waitingForTransfer');
     const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(sanitizedDetails);
     const {transactionHash} = await waitForTransactionHash();
     setTransactionHash(transactionHash!);
     await waitToBeSuccess();
-    setDashboardContent('funds');
+    changeContent('funds');
   };
-
-  const renderDashboardContent = () => {
-    switch (dashboardContent) {
-      case 'funds':
-        return (
-          <DialogWrapper
-            message={notice}
-            ensName={name}
-            activeTab={dashboardContent}
-            setActiveTab={setDashboardContent}
-          >
-            <Funds
-              deployedWallet={deployedWallet}
-              onTopUpClick={() => setDashboardContent('topup')}
-              onSendClick={() => setDashboardContent('transferAmount')}
-            />
-          </DialogWrapper>
-        );
-      case 'topup':
-        return (
-          <SubDialogWrapper
-            message={notice}
-            ensName={name}
-            onBackButtonClick={() => setDashboardContent('funds')}
-          >
-            <TopUp
-              sdk={sdk}
-              hideModal={() => setDashboardVisibility(false)}
-              contractAddress={contractAddress}
-              isDeployment={false}
-            />
-          </SubDialogWrapper>
-        );
-      case 'transferAmount':
-        return (
-          <SubDialogWrapper
-            message={notice}
-            ensName={name}
-            onBackButtonClick={() => setDashboardContent('funds')}
-          >
-            <TransferAmount
-              deployedWallet={deployedWallet}
-              onSelectRecipientClick={() => setDashboardContent('transferRecipient')}
-              updateTransferDetailsWith={updateTransferDetailsWith}
-              tokenDetails={selectedToken}
-            />
-          </SubDialogWrapper>
-        );
-      case 'transferRecipient':
-        return (
-          <SubDialogWrapper
-            message={notice}
-            ensName={name}
-            onBackButtonClick={() => setDashboardContent('transferAmount')}
-          >
-            <TransferRecipient
-              deployedWallet={deployedWallet}
-              onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-              symbol={selectedToken.symbol}
-              onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-              onSendClick={onTransferSendClick}
-              transferDetails={transferDetails}
-            />
-          </SubDialogWrapper>
-        );
-      case 'waitingForTransfer':
-        return (
-          <WaitingForTransaction action={'Transferring funds'} relayerConfig={relayerConfig!} transactionHash={transactionHash}/>
-        );
-      case 'devices':
-        return (
-          <DialogWrapper
-            message={notice}
-            ensName={name}
-            activeTab={dashboardContent}
-            setActiveTab={setDashboardContent}
-          >
-            <Devices
-              deployedWallet={deployedWallet}
-            />
-          </DialogWrapper>
-        );
-      case 'backup':
-        return (
-          <DialogWrapper
-            message={notice}
-            ensName={name}
-            activeTab={dashboardContent}
-            setActiveTab={setDashboardContent}
-          >
-            <BackupCodes deployedWallet={deployedWallet} />
-          </DialogWrapper>
-        );
-      default:
-        return null;
-    }
-  };
-
 
   return (
     <>
-      <button className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`} onClick={() => onUButtonClick()}>
-        <img src={logoIcon} alt="U" />
+      <button
+        className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`}
+        onClick={() => onUButtonClick()}
+      >
+        <img src={logoIcon} alt="U"/>
       </button>
-      {dashboardVisibility &&
+      <MemoryRouter initialEntries={['/dashboard/funds']}>
+        {dashboardVisibility &&
         <ModalWrapper
           hideModal={() => setDashboardVisibility(false)}
           modalClassName="udashboard-modal"
         >
           <div className="udashboard">
-            {renderDashboardContent()}
+            <Switch>
+              <Route
+                path="/dashboard/funds"
+                exact
+                render={({history}) => (
+                  <DialogWrapper
+                    message={notice}
+                    ensName={name}
+                    activeTab="funds"
+                    setActiveTab={tab => history.replace(`/dashboard/${tab}`)}
+                  >
+                    <Funds
+                      deployedWallet={deployedWallet}
+                      onTopUpClick={() => history.push('/dashboard/topup')}
+                      onSendClick={() => history.push('/dashboard/transferAmount')}
+                    />
+                  </DialogWrapper>
+                )}
+              />
+              <Route
+                path="/dashboard/topup"
+                exact
+                render={({history}) => (
+                  <SubDialogWrapper
+                    message={notice}
+                    ensName={name}
+                    onBackButtonClick={() => history.goBack()}
+                  >
+                    <TopUp
+                      sdk={sdk}
+                      hideModal={() => setDashboardVisibility(false)}
+                      contractAddress={contractAddress}
+                      isDeployment={false}
+                    />
+                  </SubDialogWrapper>
+                )}
+              />
+              <Route
+                path="/dashboard/transferAmount"
+                exact
+                render={({history}) => (
+                  <SubDialogWrapper
+                    message={notice}
+                    ensName={name}
+                    onBackButtonClick={() => history.goBack()}
+                  >
+                    <TransferAmount
+                      deployedWallet={deployedWallet}
+                      onSelectRecipientClick={() => history.push('/dashboard/transferRecipient')}
+                      updateTransferDetailsWith={updateTransferDetailsWith}
+                      tokenDetails={selectedToken}
+                    />
+                  </SubDialogWrapper>
+                )}
+              />
+              <Route
+                path="/dashboard/transferRecipient"
+                exact
+                render={({history}) => (
+                  <SubDialogWrapper
+                    message={notice}
+                    ensName={name}
+                    onBackButtonClick={() => history.goBack()}
+                  >
+                    <TransferRecipient
+                      deployedWallet={deployedWallet}
+                      onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+                      symbol={selectedToken.symbol}
+                      onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+                      onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
+                      transferDetails={transferDetails}
+                    />
+                  </SubDialogWrapper>
+                )}
+              />
+              <Route
+                path="/dashboard/waitingForTransfer"
+                exact
+                render={({history}) => (
+                  <SubDialogWrapper
+                    message={notice}
+                    ensName={name}
+                    onBackButtonClick={() => history.goBack()}
+                  >
+                    <WaitingForTransaction
+                      action="Transferring funds"
+                      relayerConfig={relayerConfig!}
+                      transactionHash={transactionHash}
+                    />
+                  </SubDialogWrapper>
+                )}
+              />
+              <Route
+                path="/dashboard/devices"
+                exact
+                render={({history}) => (
+                  <DialogWrapper
+                    message={notice}
+                    ensName={name}
+                    activeTab="devices"
+                    setActiveTab={tab => history.replace(`/dashboard/${tab}`)}
+                  >
+                    <Devices
+                      deployedWallet={deployedWallet}
+                    />
+                  </DialogWrapper>
+                )}
+              />
+              <Route
+                path="/dashboard/backup"
+                exact
+                render={({history}) => (
+                  <DialogWrapper
+                    message={notice}
+                    ensName={name}
+                    activeTab="backup"
+                    setActiveTab={tab => history.replace(`/dashboard/${tab}`)}
+                  >
+                    <BackupCodes deployedWallet={deployedWallet}/>
+                  </DialogWrapper>
+                )}
+              />
+            </Switch>
           </div>
         </ModalWrapper>
-      }
+        }
+      </MemoryRouter>
     </>
   );
 };
