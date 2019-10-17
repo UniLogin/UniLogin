@@ -9,9 +9,8 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import Modals from './ui/Modals/Modals';
 import {createModalService} from './core/services/createModalService';
-import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from './core/models/ReactModalContext';
+import {ReactModalProps, ReactModalType, TopUpProps} from './core/models/ReactModalContext';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
@@ -19,6 +18,7 @@ import {asMock} from './core/utils/asMock';
 import {DeployedWallet} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
+import {renderModal} from './ui/PlaygroundUtils/renderModal';
 
 const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
 
