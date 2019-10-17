@@ -6,10 +6,9 @@ import '../styles/emojiDefaults.sass';
 import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
 import range from 'lodash.range';
 
-
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
-  onEmojiClick: (index: number) => void;
+  onEmojiClick?: (index: number) => void;
   className?: string;
 }
 
@@ -18,7 +17,7 @@ export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiP
     enteredCode.map((code: number, i: number) => (
       <li className="emoji-item" key={i}>
         <button
-          onClick={() => onEmojiClick(i)}
+          onClick={() => onEmojiClick && onEmojiClick(i)}
           className="emoji-keyboard-button"
         >
           <Emoji code={code} />
