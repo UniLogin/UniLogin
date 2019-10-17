@@ -6,6 +6,14 @@ interface LogoProps {
 }
 
 export const Logo = ({logo, applicationName}: LogoProps) => {
-  const alt = logo === 'none' ? logo : applicationName;
-  return <img src={logo} alt={alt} className="connected-devices-img" />;
+  const src = logo === 'none'
+    ? 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png'
+    : logo;
+  return (
+    <img
+      src={src}
+      alt={applicationName}
+      className={`connected-devices-img ${logo === 'none' ? 'default' : ''}`}
+    />
+  );
 };
