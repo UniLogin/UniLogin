@@ -33,9 +33,9 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const addresses = filterNotificationByCodePrefix(notifications, enteredCode);
-  const hint = addresses.length === 1 ? addresses[0] : undefined;
+  const soleAddress = addresses.length === 1 ? addresses[0] : undefined;
 
-  const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && addresses.length === 1 && isValidCode(enteredCode, addresses[0]);
+  const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && soleAddress && isValidCode(enteredCode, soleAddress);
 
   useEffect(() => {
     if (isInputValid) {
@@ -44,7 +44,10 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
   }, [isInputValid]);
 
   const onConnectClick = async () => {
-    const {waitToBeSuccess} = await deployedWallet.addKey(addresses[0], {...transactionDetails, ...gasParameters});
+    if (!soleAddress) {
+      throw new TypeError();
+    }
+    const {waitToBeSuccess} = await deployedWallet.addKey(soleAddress, {...transactionDetails, ...gasParameters});
     showProgressBar();
     await waitToBeSuccess();
     onConnectionSuccess();
@@ -89,7 +92,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
         <EmojiInput
           value={enteredCode}
           onChange={setEnteredCode}
-          hint={hint}
+          hint={soleAddress}
           className={className}
         />
         <div className="emojis-form-reject-wrapper">
