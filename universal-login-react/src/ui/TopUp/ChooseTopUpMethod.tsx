@@ -9,6 +9,10 @@ import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
+import {FooterSection} from '../commons/FooterSection';
+import {GasPrice} from '../commons/GasPrice';
+import {OnGasParametersChanged, DEPLOY_GAS_LIMIT, ensureNotNull} from '@universal-login/commons';
+import {MissingParameter} from '../../core/utils/errors';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -17,11 +21,14 @@ export interface ChooseTopUpMethodProps {
   topUpClassName?: string;
   logoColor?: LogoColor;
   isDeployment: boolean;
+  onGasParametersChanged?: OnGasParametersChanged;
 }
 
-export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, onGasParametersChanged}: ChooseTopUpMethodProps) => {
+  if (isDeployment) {
+    ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
+  }
   const [topUpMethod, setTopUpMethod] = useState('');
-
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
 
   return (
@@ -68,6 +75,18 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
               {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor}/>}
             </div>
           </div>
+
+          {isDeployment &&
+            <FooterSection className={topUpClassName}>
+              <GasPrice
+                isDeployed={false}
+                sdk={sdk}
+                onGasParametersChanged={onGasParametersChanged!}
+                gasLimit={DEPLOY_GAS_LIMIT}
+                className={topUpClassName}
+              />
+            </FooterSection>
+          }
         </div>
       </div>
     </div>

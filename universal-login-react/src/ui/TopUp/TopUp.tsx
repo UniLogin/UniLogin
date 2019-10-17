@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther, ensureNotNull} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
@@ -9,12 +9,9 @@ import {ModalWrapper} from '../Modals/ModalWrapper';
 import {LogoColor} from './Fiat';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
-import {GasPrice} from '../commons/GasPrice';
-import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
-import {MissingParameter} from '../../core/utils/errors';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -30,9 +27,6 @@ interface TopUpProps {
 }
 
 export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
-  if (isDeployment) {
-    ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
-  }
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -44,27 +38,15 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
   };
 
   const getTopUpMethodChooser = () => (
-    <>
-      <ChooseTopUpMethod
-        sdk={sdk}
-        contractAddress={contractAddress}
-        onPayClick={onPayClick}
-        topUpClassName={topUpClassName}
-        logoColor={logoColor}
-        isDeployment={isDeployment}
-      />
-      { isDeployment &&
-        <FooterSection className={topUpClassName}>
-          <GasPrice
-            isDeployed={false}
-            sdk={sdk}
-            onGasParametersChanged={onGasParametersChanged!}
-            gasLimit={DEPLOY_GAS_LIMIT}
-            className={topUpClassName}
-          />
-        </FooterSection>
-      }
-    </>
+    <ChooseTopUpMethod
+      sdk={sdk}
+      contractAddress={contractAddress}
+      onPayClick={onPayClick}
+      topUpClassName={topUpClassName}
+      logoColor={logoColor}
+      onGasParametersChanged={onGasParametersChanged}
+      isDeployment={isDeployment}
+    />
   );
 
   if (!relayerConfig) {
@@ -72,7 +54,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
 
   } else if (modal === TopUpComponentType.choose) {
     if (isModal) {
-      return <ModalWrapper modalClassName={modalClassName} hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
+      return <ModalWrapper modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
     }
     return getTopUpMethodChooser();
 
