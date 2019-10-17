@@ -6,7 +6,12 @@ export const renderModals = (modalService: any, modalNames: ReactModalType[], mo
   return (
     <>
       <ReactModalContext.Provider value={modalService}>
-        {modalNames.map((modalName, index) => <button id="show-topup-button" key={index} onClick={() => modalService.showModal(modalName, modalProps[index])}>{`Show ${modalName}`}</button>)}
+        {
+          modalNames.map((modalName, index) =>
+            <button id="show-topup-button" key={index} onClick={() => modalService.showModal(modalName, modalProps[index])}>
+              {`Show ${modalName}`}
+            </button>)
+        }
         <Modals />
       </ReactModalContext.Provider>
     </>

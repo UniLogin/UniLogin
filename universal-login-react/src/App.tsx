@@ -150,7 +150,7 @@ export const App = () => {
                     isDeployment: true,
                     onGasParametersChanged: console.log
                   };
-                  return renderModals(modalService, ['topUpAccount', 'topUpAccount'], [regularTopUpProps, deploymentTopUpProps])
+                  return renderModals(modalService, ['topUpAccount', 'topUpAccount'], [regularTopUpProps, deploymentTopUpProps]);
                 }
               }
             />
