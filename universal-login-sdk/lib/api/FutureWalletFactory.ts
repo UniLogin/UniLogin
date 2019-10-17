@@ -8,9 +8,7 @@ import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import {DeployedWallet} from './DeployedWallet';
 import UniversalLoginSDK from './sdk';
 import {retry} from '../core/utils/retry';
-
-const DEFAULT_EXECUTION_TIMEOUT = 600000;
-const DEFAULT_EXECUTION_TICK = 1000;
+import {MineableFactory} from '../core/services/MineableFactory';
 
 export type BalanceDetails = {
   tokenAddress: string,
@@ -31,7 +29,7 @@ export type FutureWallet = {
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
-export class FutureWalletFactory {
+export class FutureWalletFactory extends MineableFactory {
   private ensService: ENSService;
 
   constructor(
@@ -40,7 +38,10 @@ export class FutureWalletFactory {
     private blockchainService: BlockchainService,
     private relayerApi: RelayerApi,
     private sdk: UniversalLoginSDK,
+    tick?: number,
+    timeout?: number
   ) {
+      super(tick, timeout);
       this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
@@ -71,7 +72,7 @@ export class FutureWalletFactory {
 
   private async waitForDeploymentStatus(deploymentHash: string, predicate: (status: DeploymentStatus) => boolean) : Promise<DeploymentStatus> {
     const getStatus = async () => this.relayerApi.getDeploymentStatus(deploymentHash);
-    const status : DeploymentStatus = await retry(getStatus, predicate, DEFAULT_EXECUTION_TIMEOUT, DEFAULT_EXECUTION_TICK);
+    const status : DeploymentStatus = await retry(getStatus, predicate, this.timeout, this.tick);
     return status;
   }
 
