@@ -13,7 +13,7 @@ import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
-import {WaitingFor} from '../commons/WaitingFor';
+import {WaitingForTransaction} from '../commons/WaitingFor';
 import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 
@@ -135,7 +135,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
         );
       case 'waitingForTransfer':
         return (
-          <WaitingFor action={'Transferring funds'} relayerConfig={relayerConfig!} transactionHash={transactionHash}/>
+          <WaitingForTransaction action={'Transferring funds'} relayerConfig={relayerConfig!} transactionHash={transactionHash}/>
         );
       case 'devices':
         return (

@@ -7,7 +7,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import '../styles/waitingFor.sass';
 import '../styles/waitingForDefault.sass';
 
-export interface WaitingForProps {
+export interface WaitingForTransactionProps {
   action: string;
   relayerConfig: PublicRelayerConfig;
   transactionHash?: string;
@@ -15,7 +15,7 @@ export interface WaitingForProps {
   className?: string;
 }
 
-const renderWaitingFor = (action: string, relayerConfig: PublicRelayerConfig, transactionHash?: string, children?: ReactNode) => {
+const renderWaitingForTransaction = (action: string, relayerConfig: PublicRelayerConfig, transactionHash?: string, children?: ReactNode) => {
   return (
     <div>
       <div className="action-title-box">
@@ -34,11 +34,11 @@ const renderWaitingFor = (action: string, relayerConfig: PublicRelayerConfig, tr
   );
 };
 
-export const WaitingFor = ({action, relayerConfig, transactionHash, children, className}: WaitingForProps) => {
+export const WaitingForTransaction = ({action, relayerConfig, transactionHash, children, className}: WaitingForTransactionProps) => {
   return (
-    <div className="universal-login-waiting-for">
+    <div className="universal-login-waiting-for-transaction">
       <div className={getStyleForTopLevelComponent(className)}>
-        {relayerConfig ? renderWaitingFor(action, relayerConfig, transactionHash, children) : <Spinner className="waiting-for-spinner" />}
+        {relayerConfig ? renderWaitingForTransaction(action, relayerConfig, transactionHash, children) : <Spinner className="waiting-for-spinner" />}
       </div>
     </div>
   );
