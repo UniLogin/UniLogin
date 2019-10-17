@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
+import {Logo} from './Logo';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
@@ -32,7 +33,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
 
   return (
     <li className={`connected-devices-item ${type.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
-      <img src={logo} alt={applicationName} className="connected-devices-img" />
+      <Logo logo={logo} applicationName={applicationName} />
       <div>
         <p className="connected-devices-type">{applicationName} &bull; {os}</p>
         <p className="connected-devices-details">

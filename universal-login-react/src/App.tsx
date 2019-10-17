@@ -111,8 +111,8 @@ export const App = () => {
               path="/walletselector"
               render={() => (
                 <WalletSelector
-                  onCreateClick={() => {console.log('create');}}
-                  onConnectClick={() => {console.log('connect');}}
+                  onCreateClick={() => {console.log('create'); }}
+                  onConnectClick={() => {console.log('connect'); }}
                   sdk={sdk}
                   domains={['mylogin.eth', 'myapp.eth']}
                 />
@@ -127,7 +127,7 @@ export const App = () => {
                   <hr />
                   <EmojiForm
                     deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
-                    onConnectionSuccess={() => {console.log('connect');}}
+                    onConnectionSuccess={() => {console.log('connect'); }}
                   />
                 </div>
               )}
