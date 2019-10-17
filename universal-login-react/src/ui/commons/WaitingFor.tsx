@@ -38,4 +38,4 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName}: Waitin
       </div>
     </div>
   );
-}
+};

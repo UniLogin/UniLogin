@@ -43,7 +43,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
         <ModalWrapper>
           <WaitingForOnRampProvider {...modalService.modalProps as WaitingForOnRampProviderProps}/>
         </ModalWrapper>
-      )
+      );
     default:
       return null;
   }
