@@ -24,7 +24,8 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     ...overrides.sdkConfig,
     applicationInfo: {
       applicationName: 'Jarvis',
-      type: 'laptop'
+      type: 'laptop',
+      logo: 'https://universal-login-mainnet.netlify.com/logo.ico'
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens
