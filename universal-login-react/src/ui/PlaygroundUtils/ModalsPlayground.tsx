@@ -2,7 +2,13 @@ import React from 'react';
 import {ReactModalType, ReactModalProps, ReactModalContext} from '../../core/models/ReactModalContext';
 import Modals from '../Modals/Modals';
 
-export const renderModals = (modalService: any, modalNames: ReactModalType[], modalProps: ReactModalProps[]) => {
+interface ModalsPlaygroundProps {
+  modalService: any;
+  modalNames: ReactModalType[];
+  modalProps: ReactModalProps[];
+}
+
+export const ModalsPlayground = ({modalService, modalNames, modalProps}: ModalsPlaygroundProps) => {
   return (
     <>
       <ReactModalContext.Provider value={modalService}>

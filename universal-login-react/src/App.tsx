@@ -18,7 +18,7 @@ import {asMock} from './core/utils/asMock';
 import {DeployedWallet} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
-import {renderModals} from './ui/PlaygroundUtils/renderModal';
+import {ModalsPlayground} from './ui/PlaygroundUtils/ModalsPlayground';
 
 const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
 
@@ -150,7 +150,7 @@ export const App = () => {
                     isDeployment: true,
                     onGasParametersChanged: console.log
                   };
-                  return renderModals(modalService, ['topUpAccount', 'topUpAccount'], [regularTopUpProps, deploymentTopUpProps]);
+                  return <ModalsPlayground modalService={modalService} modalNames={['topUpAccount', 'topUpAccount']} modalProps={[regularTopUpProps, deploymentTopUpProps]} />;
                 }
               }
             />
