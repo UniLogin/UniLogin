@@ -1,9 +1,10 @@
 import React from 'react';
 import {ReactModalType, ReactModalProps, ReactModalContext} from '../../core/models/ReactModalContext';
 import Modals from '../Modals/Modals';
+import {IModalService} from '../../core/services/createModalService';
 
 interface ModalsPlaygroundProps {
-  modalService: any;
+  modalService: IModalService<ReactModalType, ReactModalProps>;
   modalNames: ReactModalType[];
   modalProps: ReactModalProps[];
 }
