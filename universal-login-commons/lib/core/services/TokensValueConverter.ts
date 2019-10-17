@@ -9,9 +9,9 @@ export class TokensValueConverter {
   getTotal(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices) {
     const tokensTotalWorth = this.getTokensTotalWorth(tokensDetailsWithBalance, tokensPrices);
     return tokensTotalWorth.reduce(
-      (tokensTotal, tokenTotal) =>
-        (this.addBalances(tokensTotal, tokenTotal)), this.getZeroedBalances()
-      );
+      (tokensTotal, tokenTotal) => this.addBalances(tokensTotal, tokenTotal),
+      this.getZeroedBalances()
+    );
   }
 
   getTokensTotalWorth(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices) {

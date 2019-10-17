@@ -1,13 +1,8 @@
 import React from 'react';
-import SafelloLogoWhite from './../../assets/topUp/safello-white.png';
-import Safello from './../../assets/logos/safello@2x.png';
-import RampLogoWhite from './../../assets/topUp/ramp-white.png';
-import RampLogo from './../../assets/logos/ramp.png';
-import WyreLogoWhite from './../../assets/topUp/wyre-white.svg';
-import WyreLogo from './../../assets/logos/wyre@2x.png';
 import {TopUpRadio} from '../TopUpRadio';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
+import {getOnRampProviderLogo} from './getOnRampProviderLogo';
 
 interface FiatPaymentMethodsProps {
   selectedCountry: string;
@@ -20,9 +15,9 @@ interface FiatPaymentMethodsProps {
 export type LogoColor = 'white' | 'black';
 
 export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => {
-  const rampLogo = logoColor === 'white' ? RampLogoWhite : RampLogo;
-  const safelloLogo = logoColor === 'white' ? SafelloLogoWhite : Safello;
-  const wyreLogo = logoColor === 'white' ? WyreLogoWhite : WyreLogo;
+  const rampLogo = getOnRampProviderLogo('ramp', logoColor);
+  const safelloLogo = getOnRampProviderLogo('safello', logoColor);
+  const wyreLogo = getOnRampProviderLogo('wyre', logoColor);
 
   return (
     <div className="fiat-payment-methods">

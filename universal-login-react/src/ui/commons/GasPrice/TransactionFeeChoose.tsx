@@ -3,6 +3,8 @@ import {RadioButton} from './RadioButton';
 import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {isDisabled} from '../../../core/utils/isDisabled';
+import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
+import {TokenIcon} from './TokenIcon';
 
 interface TransactionFeeProps {
   gasModes: GasMode[];
@@ -36,10 +38,10 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
               onClick={() => onGasOptionChanged(option)}
             >
               <div className="transaction-fee-row">
+                <TokenIcon tokenName={option.token.symbol} />
                 <div className="transaction-fee-details">
-                  <img src="" alt="" className="transaction-fee-item-icon" />
                   <div>
-                    <p className="transaction-fee-amount-usd">{safeMultiply(utils.parseEther(usdAmount.toString()), gasLimit)} USD</p>
+                    <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
                     <p className="transaction-fee-amount">{safeMultiply(option.gasPrice, gasLimit)} {option.token.symbol}</p>
                   </div>
                 </div>
