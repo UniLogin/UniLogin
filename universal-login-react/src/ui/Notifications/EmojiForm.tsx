@@ -63,7 +63,6 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}
-            onEmojiClick={() => {}}
             className={className}
           />
           <div className="correct-input-footer">
