@@ -18,7 +18,7 @@ export type ConnectionFlowProps = {
 export type TopUpProps = {
   sdk: UniversalLoginSDK
   contractAddress: string;
-  onGasParametersChanged: OnGasParametersChanged;
+  onGasParametersChanged?: OnGasParametersChanged;
   isDeployment: boolean;
 };
 

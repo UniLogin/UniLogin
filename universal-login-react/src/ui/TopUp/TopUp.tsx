@@ -14,11 +14,12 @@ import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
+import {MissingParameter} from '../../core/utils/errors';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
   contractAddress: string;
-  onGasParametersChanged: OnGasParametersChanged;
+  onGasParametersChanged?: OnGasParametersChanged;
   startModal?: TopUpComponentType;
   topUpClassName?: string;
   modalClassName?: string;
@@ -29,6 +30,9 @@ interface TopUpProps {
 }
 
 export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
+  if (isDeployment && onGasParametersChanged === undefined) {
+    throw new MissingParameter('onGasParametersChanged');
+  }
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -54,7 +58,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
           <GasPrice
             isDeployed={false}
             sdk={sdk}
-            onGasParametersChanged={onGasParametersChanged}
+            onGasParametersChanged={onGasParametersChanged!}
             gasLimit={DEPLOY_GAS_LIMIT}
             className={topUpClassName}
           />
