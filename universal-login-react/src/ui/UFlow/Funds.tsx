@@ -26,7 +26,7 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className}: Fu
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="funds">
           <Balance
-            amount={`${totalTokensValue['USD'] || '0.00'}`}
+            amount={totalTokensValue['USD']}
             className={className}
           />
           <div className="funds-row">
