@@ -138,11 +138,36 @@
   .transaction-fee-item + .transaction-fee-item
     margin-top: 8px
 
+  .transaction-fee-item-icon
+    display: block
+    margin-right: 9px
+
   .transaction-fee-row
+    position: relative
     display: flex
     justify-content: space-between
     align-items: center
     padding: 9px 16px
+
+  .gas-price-radio[disabled] + .gas-price-radio-custom
+    cursor: not-allowed
+
+    .transaction-fee-row
+      justify-content: flex-start
+
+    .transaction-fee-row::after
+      content: 'Comming soon'
+      font-weight: 700
+      font-size: 12px
+      line-height: 15px
+      color: #959dae
+
+    .transaction-fee-item-icon
+      filter: grayscale(1)
+
+    .transaction-fee-details,
+    .transaction-fee-balance
+      display: none
 
   .transaction-fee-list
     margin: 0
@@ -164,6 +189,9 @@
     font-size: 10px
     line-height: 15px
     opacity: 0.5
+
+  .transaction-fee-balance
+    margin-left: auto
 
   .transaction-fee-balance-text,
   .transaction-fee-balance-amount

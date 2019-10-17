@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
-import daiIcon from './../assets/topUp/dai.svg';
-import EthereumIcon from './../assets/topUp/ethereum.svg';
+import daiIcon from './../assets/topUp/tokensIcons/DAI.svg';
+import EthereumIcon from './../assets/topUp/tokensIcons/ETH.svg';
 import cardIcon from './../assets/topUp/card.svg';
 import bankIcon from './../assets/topUp/bank.svg';
 import {TopUpRadio} from './TopUpRadio';
