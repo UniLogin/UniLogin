@@ -52,27 +52,19 @@
 
   .transfer-amount-btn
     display: block
+    width: 200px
+    height: 40px
     margin: 0 auto
+    background: linear-gradient(270deg, #0FB1EF -2.26%, #55FD77 100%)
+    border-radius: 2px
 
-  .transfer-amount-btn:disabled span
-    color: #A4A8B4
+  .transfer-amount-btn[disabled]
+    background: #DBDBE4
+    border: none
 
   .transfer-amount-btn span
-    position: relative
-    padding-left: 22px
-    font-size: 16px
-    color: #31405E
-    text-align: center
+    color: #FFFFFF
 
-  .transfer-amount-btn span::before
-    content: ''
-    position: absolute
-    top: 50%
-    left: 0
-    transform: translateY(-50%)
-    width: 10px
-    height: 15px
-    background: url('./../assets/icons/arrow-down.svg') center no-repeat
 
   .assets-name,
   .assets-balance
