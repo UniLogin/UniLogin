@@ -5,10 +5,10 @@ interface LogoProps {
   applicationName: string;
 }
 
+const DEFAULT_LOGO = 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png';
+
 export const Logo = ({logo, applicationName}: LogoProps) => {
-  const src = logo === 'none'
-    ? 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png'
-    : logo;
+  const src = logo === 'none' ? DEFAULT_LOGO : logo;
   return (
     <img
       src={src}
