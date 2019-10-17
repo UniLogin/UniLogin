@@ -18,7 +18,7 @@ import {asMock} from './core/utils/asMock';
 import {DeployedWallet} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
-import {renderModal} from './ui/PlaygroundUtils/renderModal';
+import {renderModals} from './ui/PlaygroundUtils/renderModal';
 
 const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
 
@@ -136,29 +136,21 @@ export const App = () => {
               exact
               path="/topup"
               render={() => {
-                if (!relayerConfig) {
-                  return <Spinner />;
-                }
-                const regularTopUpProps: TopUpProps = {
-                  contractAddress: Wallet.createRandom().address,
-                  sdk,
-                  isDeployment: false
-                };
-                const deploymentTopUpProps: TopUpProps = {
-                  contractAddress: Wallet.createRandom().address,
-                  sdk,
-                  isDeployment: true,
-                  onGasParametersChanged: console.log
-                };
-                return (
-                  <>
-                    <ReactModalContext.Provider value={modalService}>
-                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', regularTopUpProps)}>Show Topup</button>
-                      <button id="show-topup-button" onClick={() => modalService.showModal('topUpAccount', deploymentTopUpProps)}>Show Deployment Topup</button>
-                      <Modals />
-                    </ReactModalContext.Provider>
-                  </>
-                  );
+                  if (!relayerConfig) {
+                    return <Spinner />;
+                  }
+                  const regularTopUpProps: TopUpProps = {
+                    contractAddress: Wallet.createRandom().address,
+                    sdk,
+                    isDeployment: false
+                  };
+                  const deploymentTopUpProps: TopUpProps = {
+                    contractAddress: Wallet.createRandom().address,
+                    sdk,
+                    isDeployment: true,
+                    onGasParametersChanged: console.log
+                  };
+                  return renderModals(modalService, ['topUpAccount', 'topUpAccount'], [regularTopUpProps, deploymentTopUpProps])
                 }
               }
             />
