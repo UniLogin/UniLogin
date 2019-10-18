@@ -10,22 +10,23 @@ import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 import {isInputAmountUsed} from '../../../core/utils/isInputAmountUsed';
+import {FiatOptions} from '../../../core/models/FiatOptions';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
-  amount: string;
-  onAmountChange(amount: string): void;
-  paymentMethod: TopUpProvider | undefined;
-  onPaymentMethodChanged(topUpProvider: TopUpProvider | undefined): void;
+  fiatOptions: FiatOptions;
+  onFiatOptionsChanged(fiatOptions: FiatOptions): void;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({amount, onAmountChange, onPaymentMethodChanged, paymentMethod, sdk, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({fiatOptions, onFiatOptionsChanged, sdk, logoColor}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
   const [fiatClass, setFiatClass] = useState('');
 
   const topUpProviderSupportService = new TopUpProviderSupportService(countries);
+
+  const onTopUpProviderChanged = (topUpProvider?: TopUpProvider) => onFiatOptionsChanged({...fiatOptions, topUpProvider});
 
   const changeCountry = (newCountry: string) => {
     if (newCountry === country) {
@@ -33,9 +34,9 @@ export const TopUpWithFiat = ({amount, onAmountChange, onPaymentMethodChanged, p
     }
     const providers = topUpProviderSupportService.getProviders(newCountry);
     if (providers.length === 1) {
-      onPaymentMethodChanged(providers[0]);
+      onTopUpProviderChanged(providers[0]);
     } else {
-      onPaymentMethodChanged(undefined);
+      onTopUpProviderChanged(undefined);
     }
     setCountry(newCountry);
   };
@@ -69,29 +70,29 @@ export const TopUpWithFiat = ({amount, onAmountChange, onPaymentMethodChanged, p
             setCurrency={setCurrency}
           />
         </div>
-        {isInputAmountUsed(paymentMethod) &&
+        {isInputAmountUsed(fiatOptions.topUpProvider) &&
           <div className="fiat-input-item">
             <p className="top-up-label">Amount</p>
             <AmountInput
               selectedCurrency={currency}
               setCurrency={setCurrency}
-              amount={amount}
-              onChange={(amount: string) => onAmountChange(amount)}
+              amount={fiatOptions.amount}
+              onChange={(amount: string) => onFiatOptionsChanged({...fiatOptions, amount})}
             />
-        </div>}
+          </div>}
       </div>
       {!!country && <>
         <p className="top-up-label fiat-payment-methods-title">Payment method</p>
         <FiatPaymentMethods
           selectedCountry={country}
           supportService={topUpProviderSupportService}
-          paymentMethod={paymentMethod}
-          setPaymentMethod={onPaymentMethodChanged}
+          paymentMethod={fiatOptions.topUpProvider}
+          setPaymentMethod={onTopUpProviderChanged}
           logoColor={logoColor}
         />
       </>}
       <div className="fiat-bottom">
-        {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod} />}
+        {!!country && <FiatFooter isPaymentMethodChecked={!!fiatOptions.topUpProvider} />}
       </div>
     </div>
   );

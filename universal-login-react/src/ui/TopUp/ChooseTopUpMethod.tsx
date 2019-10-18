@@ -14,6 +14,7 @@ import {GasPrice} from '../commons/GasPrice';
 import {OnGasParametersChanged, DEPLOY_GAS_LIMIT, ensureNotNull} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 import {isInputAmountUsed} from '../../core/utils/isInputAmountUsed';
+import {FiatOptions} from '../../core/models/FiatOptions';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -31,9 +32,10 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   }
   const [topUpMethod, setTopUpMethod] = useState<'fiat' | 'crypto' | ''>('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
-  const [amount, setAmount] = useState('');
-  const [topUpProvider, setTopUpProvider] = useState<TopUpProvider | undefined>(undefined);
-  const isPayButtonDisabled = topUpMethod !== 'fiat' || !topUpProvider || (isInputAmountUsed(topUpProvider) && Number(amount) <= 0);
+  const [fiatOptions, setFiatOptions] = useState<FiatOptions>({
+    amount: ''
+  });
+  const isPayButtonDisabled = topUpMethod !== 'fiat' || !fiatOptions.topUpProvider || (isInputAmountUsed(fiatOptions.topUpProvider) && Number(fiatOptions.amount) <= 0);
 
   return (
     <div className="universal-login-topup">
@@ -78,11 +80,9 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
               {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} isDeployment={isDeployment} />}
               {topUpMethod === 'fiat' &&
                 <TopUpWithFiat
+                  fiatOptions={fiatOptions}
+                  onFiatOptionsChanged={setFiatOptions}
                   sdk={sdk}
-                  amount={amount}
-                  onAmountChange={setAmount}
-                  paymentMethod={topUpProvider}
-                  onPaymentMethodChanged={setTopUpProvider}
                   logoColor={logoColor}
                 />}
             </div>
@@ -100,7 +100,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
               />
             }
             <button
-              onClick={() => onPayClick(topUpProvider!, amount)}
+              onClick={() => onPayClick(fiatOptions.topUpProvider!, fiatOptions.amount)}
               className="pay-btn"
               disabled={isPayButtonDisabled}
             >
