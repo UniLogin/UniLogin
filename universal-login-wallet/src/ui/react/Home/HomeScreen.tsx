@@ -4,11 +4,11 @@ import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
 import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
+import {Route, Switch} from 'react-router';
 
 const HomeScreen = () => {
   const {walletService} = useServices();
   const modalService = useContext(WalletModalContext);
-  const [content, setContent] = useState('balance');
 
   const {sdk} = walletService.getDeployedWallet();
   const notice = sdk.getNotice();
@@ -18,44 +18,36 @@ const HomeScreen = () => {
     hideModal: modalService.hideModal
   };
 
-  const renderContent = () => {
-    switch (content) {
-      case 'balance':
-        return (
-          <Funds
-            deployedWallet={walletService.getDeployedWallet()}
-            onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
-            onSendClick={() => modalService.showModal('transfer')}
-            className="jarvis-funds"
-          />
-        );
-      case 'devices':
-        return (
-          <Devices
-            deployedWallet={walletService.getDeployedWallet()}
-            className="jarvis-styles"
-          />
-        );
-      case 'backup':
-        return (
-          <BackupCodes
-            deployedWallet={walletService.getDeployedWallet()}
-            className="jarvis-backup"
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <>
       <div className="dashboard">
-        <Header setContent={setContent} />
+        <Header/>
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice}/>
-            {renderContent()}
+            <Switch>
+              <Route path="/" exact>
+                <Funds
+                  deployedWallet={walletService.getDeployedWallet()}
+                  onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
+                  onSendClick={() => modalService.showModal('transfer')}
+                  className="jarvis-funds"
+                />
+              </Route>
+              <Route path="/devices" exact>
+                <Devices
+                  deployedWallet={walletService.getDeployedWallet()}
+                  basePath="/devices"
+                  className="jarvis-styles"
+                />
+              </Route>
+              <Route path="/backup" exact>
+                <BackupCodes
+                  deployedWallet={walletService.getDeployedWallet()}
+                  className="jarvis-backup"
+                />
+              </Route>
+            </Switch>
           </div>
         </div>
       </div>
