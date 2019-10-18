@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
