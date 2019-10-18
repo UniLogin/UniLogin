@@ -32,7 +32,7 @@ export const WaitingFor = ({action, children, className} : WaitingForProps) => {
       </div>
     </div>
   );
-}
+};
 
 const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children}: WaitingForTransactionProps) => {
   return (
