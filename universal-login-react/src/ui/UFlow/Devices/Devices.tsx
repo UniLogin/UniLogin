@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {Route, Switch} from 'react-router';
 import {DevicesList} from './DevicesList';
 import {DeployedWallet} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
-import {Route, Switch} from 'react-router';
 
 export interface DevicesProps {
   deployedWallet: DeployedWallet;
@@ -12,22 +12,15 @@ export interface DevicesProps {
   className?: string;
 }
 
-export type devicesContentType = 'devices' | 'approveDevice' | 'deleteAccount' | 'connectionSuccess';
-
 export const Devices = ({deployedWallet, className, basePath = ''}: DevicesProps) => {
   return (
     <Switch>
-      <Route
-        path={`${basePath}/`}
-        exact
-        render={({history}) => (
-          <DevicesList
-            deployedWallet={deployedWallet}
-            className={className}
-            setDevicesContent={content => history.replace(`${basePath}/${content}`)}
-          />
-        )}
-      />
+      <Route path={`${basePath}/`} exact>
+        <DevicesList
+          deployedWallet={deployedWallet}
+          className={className}
+        />
+      </Route>
       <Route
         path={`${basePath}/approveDevice`}
         exact
