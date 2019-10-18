@@ -9,7 +9,7 @@ import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
-import {isInputAmountUsed} from '../../../core/utils/isInputAmountUsed';
+import {isPrefilledAmountUsedBy} from '../../../core/utils/isPrefilledAmountUsedBy';
 import {FiatOptions} from '../../../core/models/FiatOptions';
 
 export interface TopUpWithFiatProps {
@@ -70,7 +70,7 @@ export const TopUpWithFiat = ({fiatOptions, onFiatOptionsChanged, sdk, logoColor
             setCurrency={setCurrency}
           />
         </div>
-        {isInputAmountUsed(fiatOptions.topUpProvider) &&
+        {isPrefilledAmountUsedBy(fiatOptions.topUpProvider) &&
           <div className="fiat-input-item">
             <p className="top-up-label">Amount</p>
             <AmountInput

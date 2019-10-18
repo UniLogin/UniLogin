@@ -13,7 +13,7 @@ import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {OnGasParametersChanged, DEPLOY_GAS_LIMIT, ensureNotNull} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
-import {isInputAmountUsed} from '../../core/utils/isInputAmountUsed';
+import {isPrefilledAmountUsedBy} from '../../core/utils/isPrefilledAmountUsedBy';
 import {FiatOptions} from '../../core/models/FiatOptions';
 
 export interface ChooseTopUpMethodProps {
@@ -36,7 +36,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
     amount: ''
   });
 
-  const isInputAmountInvalid = isInputAmountUsed(fiatOptions.topUpProvider) && Number(fiatOptions.amount) <= 0;
+  const isInputAmountInvalid = isPrefilledAmountUsedBy(fiatOptions.topUpProvider) && Number(fiatOptions.amount) <= 0;
   const isTopUpProviderSelected = !!fiatOptions.topUpProvider;
   const isPayButtonDisabled = topUpMethod !== 'fiat' || !isTopUpProviderSelected || isInputAmountInvalid;
 
