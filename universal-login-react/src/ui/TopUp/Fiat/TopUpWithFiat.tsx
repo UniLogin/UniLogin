@@ -67,7 +67,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
             setCurrency={setCurrency}
           />
         </div>
-        {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
+        {isInputAmountUsed(paymentMethod) &&
           <div className="fiat-input-item">
             <p className="top-up-label">Amount</p>
             <AmountInput
