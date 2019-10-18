@@ -35,7 +35,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   const isCurrentDevice = () => utils.computeAddress(deployedWallet.privateKey) === publicKey;
 
   const renderTrashButton = () => (
-    !isCurrentDevice && (
+    !isCurrentDevice() && (
       <div className="connected-devices-trash-btn-wrapper">
         {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
         <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
