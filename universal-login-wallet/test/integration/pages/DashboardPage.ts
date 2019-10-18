@@ -48,4 +48,8 @@ export default class DashboardPage {
   async waitForNewNotifications() {
     await waitForUI(this.wrapper, () => this.wrapper.exists('.new-notifications'), 3000, 100);
   }
+
+  async waitForWelcomeScreen() {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Welcome in the Jarvis Network'));
+  }
 }

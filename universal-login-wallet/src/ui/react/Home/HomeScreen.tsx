@@ -7,7 +7,7 @@ import {WalletModalContext, TopUpModalProps} from '../../../core/entities/Wallet
 
 const HomeScreen = () => {
   const {walletService} = useServices();
-  const router = useRouter();
+  const {history} = useRouter();
   const modalService = useContext(WalletModalContext);
   const [content, setContent] = useState('balance');
 
@@ -34,7 +34,7 @@ const HomeScreen = () => {
         return (
           <Devices
             walletService={walletService}
-            onDeleteAccountClick={() => router.history.push('/welcome')}
+            onDeleteAccountClick={() => history.push('/welcome')}
             className="jarvis-styles"
           />
         );

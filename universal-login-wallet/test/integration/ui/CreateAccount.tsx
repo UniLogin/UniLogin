@@ -43,7 +43,8 @@ describe('UI: Creation flow', () => {
     expect(appWrapper.text().includes(expectedHomeBalance)).to.be.true;
     expect(appWrapper.find('a.button-secondary')).to.have.length(0);
     await appPage.dashboard().disconnect();
-    expect(appPage.dashboard().areDeleteAccountInputsValid()).to.be.false;
+    await appPage.dashboard().waitForWelcomeScreen();
+    expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   after(async () => {
