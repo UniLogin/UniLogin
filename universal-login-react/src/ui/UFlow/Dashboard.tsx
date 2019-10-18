@@ -146,10 +146,9 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                 </Route>
                 <Route
                   path="/dashboard/devices"
-                  exact
                   render={({history}) => (
                     <SubDialogWrapper message={notice} ensName={name}>
-                      <Devices walletService={walletService} onDeleteAccountClick={() => history.goBack()} basePath="/dashboard/devices" />
+                      <Devices walletService={walletService} onDeleteAccountClick={() => setDashboardVisibility(false)} basePath="/dashboard/devices" />
                     </SubDialogWrapper>
                   )}
                 />

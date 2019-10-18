@@ -37,7 +37,7 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
               />
               : <Spinner className="spinner-center"/>}
           </div>
-          <button onClick={() => history.push('deleteAccount')} className="delete-account-link">Delete account</button>
+          <button onClick={() => history.push(join(history.location.pathname, 'deleteAccount'))} className="delete-account-link">Delete account</button>
         </div>
       </div>
     </div>

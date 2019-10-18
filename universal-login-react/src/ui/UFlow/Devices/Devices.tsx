@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router';
+import {Route, Switch, useHistory} from 'react-router';
 import {DevicesList} from './DevicesList';
 import {WalletService} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
@@ -15,6 +15,8 @@ export interface DevicesProps {
 
 export const Devices = ({walletService, onDeleteAccountClick, className, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
+  const history = useHistory();
+
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
@@ -26,18 +28,14 @@ export const Devices = ({walletService, onDeleteAccountClick, className, basePat
       <Route path={`${basePath}/connectionSuccess`} exact>
         <ConnectionSuccessNotification className={className}/>
       </Route>
-      <Route
-        path={`${basePath}/deleteAccount`}
-        exact
-        render={({history}) => (
-          <DeleteAccount
-            walletService={walletService}
-            onDeleteAccountClick={onDeleteAccountClick}
-            onCancelClick={() => history.replace(`${basePath}/`)}
-            className={className}
-          />
-        )}
-      />
+      <Route path={`${basePath}/deleteAccount`} exact>
+        <DeleteAccount
+          walletService={walletService}
+          onDeleteAccountClick={onDeleteAccountClick}
+          onCancelClick={() => history.replace(`${basePath}/`)}
+          className={className}
+        />
+      </Route>
     </Switch>
   );
 };
