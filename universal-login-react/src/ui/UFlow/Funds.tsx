@@ -16,9 +16,9 @@ interface FundsProps {
 }
 
 export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className}: FundsProps) => {
-  const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
   const {sdk, contractAddress} = deployedWallet;
 
+  const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
   useAsyncEffect(() => sdk.subscribeToAggregatedBalance(contractAddress, setTotalTokensValue), []);
 
   return (
