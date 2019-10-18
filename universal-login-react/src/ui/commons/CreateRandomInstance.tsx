@@ -26,12 +26,13 @@ export const CreateRandomInstance = ({setDeployedWallet}: CreateRandomInstancePr
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('4')});
     await waitForBalance();
     setStatus('waiting for wallet contract to be deployed');
-    await deploy(name, DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
+    const {waitToBeSuccess} = await deploy(name, DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
+    const deployedWallet = await waitToBeSuccess();
     walletService.setDeployed(name);
     setStatus(`Wallet contract deployed at ${contractAddress}`);
     setContractAddress(contractAddress);
     setStatus('');
-    setDeployedWallet(walletService.getDeployedWallet());
+    setDeployedWallet(deployedWallet);
   };
 
   return (
