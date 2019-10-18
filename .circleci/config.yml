@@ -52,17 +52,6 @@ jobs:
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
       - run: cd universal-login-web3 && yarn test
-  react_screenshots:
-    docker:
-      - image: circleci/node:10.15
-      - image: circleci/postgres:9.6-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: universal_login_relayer_test
-    steps:
-      - checkout
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
       - install-chrome-dependencies
       - run:
           name: Make React screenshots
@@ -89,9 +78,3 @@ workflows:
       - lint_test_contracts_commons_ops
       - test_sdk_relayer
       - test_react_wallet_web3
-      - react_screenshots:
-          filters:
-            branches:
-              only:
-                - master
-                - /ss-.*/
