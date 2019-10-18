@@ -19,7 +19,7 @@ export default class DashboardPage {
   }
 
   getWalletBalance() : string {
-    return this.wrapper.find('p.universal-login-balance-amount').text();
+    return this.wrapper.find('p.balance-amount').text();
   }
 
   isNotificationAlert(): boolean {
