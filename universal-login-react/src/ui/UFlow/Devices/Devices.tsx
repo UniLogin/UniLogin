@@ -8,11 +8,12 @@ import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSucce
 
 export interface DevicesProps {
   walletService: WalletService;
+  onDeleteAccountClick: () => void;
   basePath?: string;
   className?: string;
 }
 
-export const Devices = ({walletService, className, basePath = ''}: DevicesProps) => {
+export const Devices = ({walletService, onDeleteAccountClick, className, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   return (
     <Switch>
@@ -26,13 +27,13 @@ export const Devices = ({walletService, className, basePath = ''}: DevicesProps)
         <ConnectionSuccessNotification className={className}/>
       </Route>
       <Route
-        path={`${basePath}/`}
+        path={`${basePath}/deleteAccount`}
         exact
         render={({history}) => (
           <DeleteAccount
             walletService={walletService}
+            onDeleteAccountClick={onDeleteAccountClick}
             onCancelClick={() => history.replace(`${basePath}/`)}
-            onConfirmDeleteClick={() => {}}
             className={className}
           />
         )}

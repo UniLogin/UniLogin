@@ -6,7 +6,6 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 import {NewDeviceMessage} from './NewDeviceMessage';
 import {ConnectedDevices} from './ConnectedDevices';
 import {useAsync} from '../../hooks/useAsync';
-import {devicesContentType} from './Devices';
 import Spinner from '../../commons/Spinner';
 import {useHistory} from 'react-router';
 import {join} from 'path';
@@ -38,7 +37,7 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
               />
               : <Spinner className="spinner-center"/>}
           </div>
-          <button onClick={() => setDevicesContent('deleteAccount')} className="delete-account-link">Delete account</button>
+          <button onClick={() => history.push('deleteAccount')} className="delete-account-link">Delete account</button>
         </div>
       </div>
     </div>

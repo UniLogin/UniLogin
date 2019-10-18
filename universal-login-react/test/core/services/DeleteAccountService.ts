@@ -6,7 +6,7 @@ import {DeployedWallet, WalletService} from '@universal-login/sdk';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {setupDeployedWallet} from '../../helpers/setupDeploymentWallet';
-import Relayer from '@universal-login/relayer';
+import RelayerUnderTest from '@universal-login/relayer';
 
 chai.use(sinonChai);
 
@@ -14,7 +14,7 @@ describe('DeleteAccountService', () => {
   let wallet: Wallet;
   let walletService: WalletService;
   let deployedWallet: DeployedWallet;
-  let relayer: Relayer;
+  let relayer: RelayerUnderTest;
   let setErrors: () => void;
   let onDeleteAccountClick: sinon.SinonStub;
   const ensName = `test.mylogin.eth`;

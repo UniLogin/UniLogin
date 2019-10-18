@@ -144,11 +144,15 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                     />
                   </SubDialogWrapper>
                 </Route>
-                <Route path="/dashboard/devices">
-                  <DialogWrapper message={notice} ensName={name}>
-                    <Devices walletService={walletService} basePath="/dashboard/devices"/>
-                  </DialogWrapper>
-                </Route>
+                <Route
+                  path="/dashboard/devices"
+                  exact
+                  render={({history}) => (
+                    <SubDialogWrapper message={notice} ensName={name}>
+                      <Devices walletService={walletService} onDeleteAccountClick={() => history.goBack()} basePath="/dashboard/devices" />
+                    </SubDialogWrapper>
+                  )}
+                />
                 <Route path="/dashboard/backup" exact>
                   <DialogWrapper message={notice} ensName={name}>
                     <BackupCodes deployedWallet={deployedWallet}/>
