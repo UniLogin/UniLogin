@@ -5,7 +5,7 @@ import RampLogo from './../../assets/logos/ramp.png';
 import WyreLogoWhite from './../../assets/topUp/wyre-white.svg';
 import WyreLogo from './../../assets/logos/wyre@2x.png';
 
-type OnRampProviderName = 'ramp' | 'safello' | 'wyre';
+export type OnRampProviderName = 'ramp' | 'safello' | 'wyre';
 
 const logosBlack: Record<OnRampProviderName, string> = {
   ramp: RampLogo,
