@@ -13,6 +13,7 @@ import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {OnGasParametersChanged, DEPLOY_GAS_LIMIT, ensureNotNull} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
+import {isInputAmountUsed} from '../../core/utils/isInputAmountUsed';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -28,8 +29,11 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   if (isDeployment) {
     ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
   }
-  const [topUpMethod, setTopUpMethod] = useState('');
+  const [topUpMethod, setTopUpMethod] = useState<'fiat' | 'crypto' | ''>('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
+  const [amount, setAmount] = useState('');
+  const [topUpProvider, setTopUpProvider] = useState<TopUpProvider | undefined>(undefined);
+  const isPayButtonDisabled = topUpMethod !== 'fiat' || !topUpProvider || (isInputAmountUsed(topUpProvider) && Number(amount) <= 0);
 
   return (
     <div className="universal-login-topup">
@@ -46,8 +50,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : ''}`}
               >
                 <div className="top-up-method-icons">
-                  <img className="top-up-method-icon" src={daiIcon} alt="Dai"/>
-                  <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum"/>
+                  <img className="top-up-method-icon" src={daiIcon} alt="Dai" />
+                  <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum" />
                 </div>
                 <p className="top-up-method-title">Crypto</p>
                 <p className="top-up-method-text">Free-Deposit ETH or DAI</p>
@@ -60,8 +64,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : ''}`}
               >
                 <div className="top-up-method-icons">
-                  <img className="top-up-method-icon" src={cardIcon} alt="card"/>
-                  <img className="top-up-method-icon" src={bankIcon} alt="Dai"/>
+                  <img className="top-up-method-icon" src={cardIcon} alt="card" />
+                  <img className="top-up-method-icon" src={bankIcon} alt="Dai" />
                 </div>
                 <p className="top-up-method-title">Fiat</p>
                 <p className="top-up-method-text">Buy using credit card or bank account</p>
@@ -71,13 +75,22 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
           </div>
           <div className="top-up-body">
             <div className="top-up-body-inner">
-              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} isDeployment={isDeployment}/>}
-              {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor}/>}
+              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} isDeployment={isDeployment} />}
+              {topUpMethod === 'fiat' &&
+                <TopUpWithFiat
+                  sdk={sdk}
+                  amount={amount}
+                  onAmountChange={setAmount}
+                  paymentMethod={topUpProvider}
+                  onPaymentMethodChanged={setTopUpProvider}
+                  logoColor={logoColor}
+                />}
             </div>
           </div>
 
-          {isDeployment &&
-            <FooterSection className={topUpClassName}>
+
+          <FooterSection className={topUpClassName}>
+            {isDeployment &&
               <GasPrice
                 isDeployed={false}
                 sdk={sdk}
@@ -85,8 +98,15 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 gasLimit={DEPLOY_GAS_LIMIT}
                 className={topUpClassName}
               />
-            </FooterSection>
-          }
+            }
+            <button
+              onClick={() => onPayClick(topUpProvider!, amount)}
+              className="pay-btn"
+              disabled={isPayButtonDisabled}
+            >
+              Pay
+            </button>
+          </FooterSection>
         </div>
       </div>
     </div>

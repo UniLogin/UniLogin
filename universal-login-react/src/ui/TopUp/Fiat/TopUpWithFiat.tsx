@@ -9,18 +9,20 @@ import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
+import {isInputAmountUsed} from '../../../core/utils/isInputAmountUsed';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
-  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
+  amount: string;
+  onAmountChange(amount: string): void;
+  paymentMethod: TopUpProvider | undefined;
+  onPaymentMethodChanged(topUpProvider: TopUpProvider | undefined): void;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({amount, onAmountChange, onPaymentMethodChanged, paymentMethod, sdk, logoColor}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const [fiatClass, setFiatClass] = useState('');
 
   const topUpProviderSupportService = new TopUpProviderSupportService(countries);
@@ -31,9 +33,9 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
     }
     const providers = topUpProviderSupportService.getProviders(newCountry);
     if (providers.length === 1) {
-      setPaymentMethod(providers[0]);
+      onPaymentMethodChanged(providers[0]);
     } else {
-      setPaymentMethod(undefined);
+      onPaymentMethodChanged(undefined);
     }
     setCountry(newCountry);
   };
@@ -74,7 +76,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
               selectedCurrency={currency}
               setCurrency={setCurrency}
               amount={amount}
-              onChange={(amount: string) => setAmount(amount)}
+              onChange={(amount: string) => onAmountChange(amount)}
             />
         </div>}
       </div>
@@ -84,19 +86,12 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
           selectedCountry={country}
           supportService={topUpProviderSupportService}
           paymentMethod={paymentMethod}
-          setPaymentMethod={setPaymentMethod}
+          setPaymentMethod={onPaymentMethodChanged}
           logoColor={logoColor}
         />
       </>}
       <div className="fiat-bottom">
         {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod} />}
-        <button
-          onClick={() => onPayClick(paymentMethod!, amount)}
-          className="pay-btn"
-          disabled={!paymentMethod}
-        >
-          Pay
-        </button>
       </div>
     </div>
   );
