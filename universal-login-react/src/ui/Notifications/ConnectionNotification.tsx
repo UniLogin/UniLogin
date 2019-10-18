@@ -36,7 +36,7 @@ export const ConnectionNotification = ({deployedWallet, className}: ConnectNotif
               hideTitle={() => setShowTitle(false)}
               className={className}
               onDenyRequests={() => history.goBack()}
-              onConnectionSuccess={() => history.replace('../connectionSuccess')}
+              onConnectionSuccess={() => history.replace('connectionSuccess')}
             />
           </>
         )}
