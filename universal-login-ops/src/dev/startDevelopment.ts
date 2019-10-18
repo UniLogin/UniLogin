@@ -1,7 +1,7 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet, utils} from 'ethers';
-import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
@@ -66,7 +66,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
       },
       ramp: {
         appName: 'Universal Login',
-        logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
+        logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
         rampUrl: 'https://ri-widget-staging.firebaseapp.com/'
       }
     },

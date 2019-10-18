@@ -1,5 +1,6 @@
 import path from 'path';
 import {Config} from './relayer';
+import {UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 
 export const config: Config =  Object.freeze({
   port: 'GENERATED',
@@ -32,7 +33,7 @@ export const config: Config =  Object.freeze({
     },
     ramp: {
       appName: 'Universal Login',
-      logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
+      logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
       rampUrl: 'https://ri-widget-staging.firebaseapp.com/'
     }
   },

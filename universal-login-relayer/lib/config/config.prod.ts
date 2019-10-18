@@ -1,5 +1,5 @@
 import path from 'path';
-import {getEnv, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {Config} from './relayer';
 
 export const config: Config =  Object.freeze({
@@ -38,7 +38,7 @@ export const config: Config =  Object.freeze({
     },
     ramp: {
       appName: 'Universal Login',
-      logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
+      logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
       rampUrl: getEnv('RAMP_URL', '')
     }
   },
