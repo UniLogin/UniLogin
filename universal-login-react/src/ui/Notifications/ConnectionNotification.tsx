@@ -5,18 +5,19 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
+import {useHistory} from 'react-router';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
-  onConnectionSuccess: () => void;
   className?: string;
-  onDenyRequests?: () => void;
 }
 
-export const ConnectionNotification = ({deployedWallet, className, onConnectionSuccess, onDenyRequests}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
+
+  const history = useHistory();
 
   return (
     <div id="notifications" className="universal-login-emojis">
@@ -34,8 +35,8 @@ export const ConnectionNotification = ({deployedWallet, className, onConnectionS
               deployedWallet={deployedWallet}
               hideTitle={() => setShowTitle(false)}
               className={className}
-              onDenyRequests={onDenyRequests}
-              onConnectionSuccess={onConnectionSuccess}
+              onDenyRequests={() => history.goBack()}
+              onConnectionSuccess={() => history.replace('../connectionSuccess')}
             />
           </>
         )}

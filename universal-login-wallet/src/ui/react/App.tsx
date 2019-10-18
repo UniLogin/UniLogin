@@ -61,7 +61,6 @@ const App = () => {
         />
         <PrivateRoute
           authorized={authorized}
-          exact
           path="/"
           render={() => <HomeScreen />}
         />

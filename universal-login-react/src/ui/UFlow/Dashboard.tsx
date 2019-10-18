@@ -141,9 +141,9 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                     />
                   </SubDialogWrapper>
                 </Route>
-                <Route path="/dashboard/devices" exact>
+                <Route path="/dashboard/devices">
                   <DialogWrapper message={notice} ensName={name}>
-                    <Devices deployedWallet={deployedWallet}/>
+                    <Devices deployedWallet={deployedWallet} basePath="/dashboard/devices"/>
                   </DialogWrapper>
                 </Route>
                 <Route path="/dashboard/backup" exact>

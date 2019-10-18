@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {Route, Switch} from 'react-router';
 import {DevicesList} from './DevicesList';
 import {DeployedWallet} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
@@ -7,45 +8,33 @@ import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSucce
 
 export interface DevicesProps {
   deployedWallet: DeployedWallet;
+  basePath?: string;
   className?: string;
 }
 
-export type devicesContentType = 'devices' | 'approveDevice' | 'deleteAccount' | 'connectionSuccess';
-
-export const Devices = ({deployedWallet, className}: DevicesProps) => {
-  const [devicesContent, setDevicesContent] = useState<devicesContentType>('devices');
-
-  switch (devicesContent) {
-    case 'devices':
-      return (
-        <DevicesList
-          deployedWallet={deployedWallet}
-          className={className}
-          setDevicesContent={content => setDevicesContent(content)}
-        />
-      );
-    case 'approveDevice':
-      return (
-        <ConnectionNotification
-          onConnectionSuccess={() => setDevicesContent('connectionSuccess')}
-          deployedWallet={deployedWallet}
-          onDenyRequests={() => setDevicesContent('devices')}
-          className={className}
-        />
-      );
-    case 'connectionSuccess':
-      return (
-        <ConnectionSuccessNotification onClose={() => setDevicesContent('devices')} className={className} />
-      );
-    case 'deleteAccount':
-      return (
-        <DeleteAccount
-          onCancelClick={() => setDevicesContent('devices')}
-          onConfirmDeleteClick={() => {}}
-          className={className}
-        />
-      );
-    default:
-      return null;
-  }
+export const Devices = ({deployedWallet, className, basePath = ''}: DevicesProps) => {
+  return (
+    <Switch>
+      <Route path={`${basePath}/`} exact>
+        <DevicesList deployedWallet={deployedWallet} className={className}/>
+      </Route>
+      <Route path={`${basePath}/approveDevice`} exact>
+        <ConnectionNotification deployedWallet={deployedWallet} className={className}/>
+      </Route>
+      <Route path={`${basePath}/connectionSuccess`} exact>
+        <ConnectionSuccessNotification className={className}/>
+      </Route>
+      <Route
+        path={`${basePath}/`}
+        exact
+        render={({history}) => (
+          <DeleteAccount
+            onCancelClick={() => history.replace(`${basePath}/`)}
+            onConfirmDeleteClick={() => {}}
+            className={className}
+          />
+        )}
+      />
+    </Switch>
+  );
 };
