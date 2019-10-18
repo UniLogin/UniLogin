@@ -41,4 +41,4 @@ export {MemoryStorageService} from './core/services/MemoryStorageService';
 export {Notice} from './ui/commons/Notice';
 export {ConnectionFlow} from './ui/ConnectionFlow';
 export {ExplorerLink} from './ui/commons/ExplorerLink';
-export {WaitingForTransaction, WaitingForTransactionProps} from './ui/commons/WaitingFor';
+export {WaitingForTransaction, WaitingForTransactionProps} from './ui/commons/WaitingForTransaction';

@@ -12,7 +12,7 @@ import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
 import {InvalidTransferDetails} from '../../core/utils/errors';
-import {WaitingForTransaction} from '../commons/WaitingFor';
+import {WaitingForTransaction} from '../commons/WaitingForTransaction';
 import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {MemoryRouter, Route, Switch} from 'react-router';
