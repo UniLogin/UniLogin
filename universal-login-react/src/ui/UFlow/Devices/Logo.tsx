@@ -1,11 +1,10 @@
 import React from 'react';
+import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO} from '@universal-login/commons';
 
 interface LogoProps {
   logo: string;
   applicationName: string;
 }
-
-const DEFAULT_LOGO = 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png';
 
 export const Logo = ({logo, applicationName}: LogoProps) => {
   const src = logo === 'none' ? DEFAULT_LOGO : logo;
