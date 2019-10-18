@@ -13,7 +13,7 @@ import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
 import {ShowReactModal} from '../../core/models/ReactModalContext';
-import {WaitingForOnRampProviderProps} from './Fiat/WaitingForOnRampProvider';
+import {OnRampProviderName} from './Fiat/getOnRampProviderLogo';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -52,8 +52,8 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
     />
   );
 
-  const showWaitingFor = (provider: string) => {
-    showModal && showModal('waitingForOnRampProvider', {onRampProviderName: provider} as WaitingForOnRampProviderProps);
+  const showWaitingFor = (onRampProviderName: OnRampProviderName) => {
+    showModal && showModal('waitingForOnRampProvider', {onRampProviderName});
   };
 
   if (!relayerConfig) {
