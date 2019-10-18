@@ -12,6 +12,8 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
+import {ShowReactModal} from '../../core/models/ReactModalContext';
+import {WaitingForOnRampProviderProps} from './Fiat/WaitingForOnRampProvider';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -24,9 +26,10 @@ interface TopUpProps {
   isModal?: boolean;
   logoColor?: LogoColor;
   isDeployment: boolean;
+  showModal?: ShowReactModal;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor, showModal}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -49,6 +52,10 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
     />
   );
 
+  const showWaitingFor = (provider: string) => {
+    showModal && showModal('waitingForOnRampProvider', {onRampProviderName: provider} as WaitingForOnRampProviderProps);
+  }
+
   if (!relayerConfig) {
     return <Spinner />;
 
@@ -60,7 +67,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
 
   } else if (modal === TopUpComponentType.safello) {
     return (
-      <ModalWrapper modalClassName={modalClassName} hideModal={() => setModal(TopUpComponentType.choose)}>
+      <ModalWrapper modalClassName={modalClassName} hideModal={() => showWaitingFor('safello')}>
         <Safello
           localizationConfig={{} as any}
           safelloConfig={relayerConfig.onRampProviders.safello}
@@ -77,7 +84,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         amount={stringToEther(amount)}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.ramp}
-        onClose={() => setModal(TopUpComponentType.choose)}
+        onClose={() => showWaitingFor('ramp')}
       />
     );
 
