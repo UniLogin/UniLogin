@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {ModalWrapper} from './ModalWrapper';
 import {WaitingForTransaction, WaitingForTransactionProps} from '../commons/WaitingForTransaction';
-import {WaitingForOnRampProviderProps, WaitingForOnRampProvider} from '../commons/WaitingFor';
+import {WaitingForOnRampProviderProps, WaitingForOnRampProvider} from '../TopUp/Fiat/WaitingForOnRampProvider';
 import {ReactModalContext, TopUpProps, ConnectionFlowProps} from '../../core/models/ReactModalContext';
 import {TopUp} from '../TopUp/TopUp';
 import {ConnectionFlow} from '../ConnectionFlow';
