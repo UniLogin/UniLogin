@@ -35,7 +35,10 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   const [fiatOptions, setFiatOptions] = useState<FiatOptions>({
     amount: ''
   });
-  const isPayButtonDisabled = topUpMethod !== 'fiat' || !fiatOptions.topUpProvider || (isInputAmountUsed(fiatOptions.topUpProvider) && Number(fiatOptions.amount) <= 0);
+
+  const isInputAmountInvalid = isInputAmountUsed(fiatOptions.topUpProvider) && Number(fiatOptions.amount) <= 0;
+  const isTopUpProviderSelected = !!fiatOptions.topUpProvider;
+  const isPayButtonDisabled = topUpMethod !== 'fiat' || !isTopUpProviderSelected || isInputAmountInvalid;
 
   return (
     <div className="universal-login-topup">
