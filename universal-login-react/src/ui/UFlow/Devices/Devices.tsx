@@ -21,18 +21,9 @@ export const Devices = ({deployedWallet, className, basePath = ''}: DevicesProps
           className={className}
         />
       </Route>
-      <Route
-        path={`${basePath}/approveDevice`}
-        exact
-        render={({history}) => (
-          <ConnectionNotification
-            onConnectionSuccess={() => history.replace(`${basePath}/connectionSuccess`)}
-            deployedWallet={deployedWallet}
-            onDenyRequests={() => history.replace(`${basePath}/`)}
-            className={className}
-          />
-        )}
-      />
+      <Route path={`${basePath}/approveDevice`} exact>
+        <ConnectionNotification deployedWallet={deployedWallet} className={className}/>
+      </Route>
       <Route
         path={`${basePath}/connectionSuccess`}
         exact
