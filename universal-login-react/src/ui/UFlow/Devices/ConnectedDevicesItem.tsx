@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
-import KickbackLogo from '../../assets/ucomponent/logo-kickback.svg';
-import EvidanceLogo from '../../assets/ucomponent/evidance-logo.png';
-import JarvisLogo from '../../assets/ucomponent/jarvis-logo.png';
+import {Logo} from './Logo';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
@@ -13,7 +11,7 @@ export interface ConnectedDevicesItemProps extends Device {
 }
 
 export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, confirmationsCount}: ConnectedDevicesItemProps) => {
-  const {os, applicationName, type, ipAddress, city} = deviceInfo;
+  const {os, applicationName, type, ipAddress, city, logo} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
   const [isWarningVisible, setIsWarningVisible] = useState(false);
@@ -33,22 +31,9 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     }
   };
 
-  // tslint:disable-next-line:no-unused-variable
-  const getApplicationLogo = (applicationName : string) => {
-    const getImage = (logo: string) => (<img src={logo} className="connected-devices-img" />);
-    if (applicationName === 'kickback') {
-      return getImage(KickbackLogo);
-    } else if (applicationName === 'evidance') {
-      return getImage(EvidanceLogo);
-    } else if (applicationName === 'jarvis') {
-      return getImage(JarvisLogo);
-    }
-    return null;
-  };
-
   return (
     <li className={`connected-devices-item ${type.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
-      {getApplicationLogo(applicationName ? applicationName.toLowerCase() : '')}
+      <Logo logo={logo} applicationName={applicationName} />
       <div>
         <p className="connected-devices-type">{applicationName} &bull; {os}</p>
         <p className="connected-devices-details">

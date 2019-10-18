@@ -85,8 +85,8 @@ export const App = () => {
               path="/logobutton"
               render={() => (
                 <div>
-                  <CreateRandomInstance setDeployedWallet={setDeployedWallet}/>
-                  <hr/>
+                  <CreateRandomInstance setDeployedWallet={setDeployedWallet} />
+                  <hr />
                   <LogoButton
                     deployedWallet={deployedWallet}
                   />
@@ -124,7 +124,7 @@ export const App = () => {
               render={() => (
                 <div>
                   <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
-                  <hr/>
+                  <hr />
                   <EmojiForm
                     deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
                     onConnectionSuccess={() => { console.log('connect'); }}
@@ -154,7 +154,7 @@ export const App = () => {
                 }
               }
             />
-            <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}/>} />
+            <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
             <Route component={() => (<p>not found</p>)} />
           </Switch>
