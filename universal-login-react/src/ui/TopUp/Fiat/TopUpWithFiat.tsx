@@ -93,7 +93,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
         <button
           onClick={() => onPayClick(paymentMethod!, amount)}
           className="pay-btn"
-          disabled={!paymentMethod || !amount}
+          disabled={!paymentMethod}
         >
           Pay
         </button>
