@@ -16,6 +16,7 @@ import {WaitingForTransaction} from '../commons/WaitingForTransaction';
 import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {MemoryRouter, Route, Switch} from 'react-router';
+import {NewDeviceMessage} from './Devices/NewDeviceMessage';
 
 export interface DashboardProps {
   deployedWallet: DeployedWallet;
@@ -84,6 +85,10 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   exact
                   render={({history}) => (
                     <DialogWrapper message={notice} ensName={name}>
+                      <NewDeviceMessage
+                        deployedWallet={deployedWallet}
+                        onClick={() => history.push('/dashboard/devices/approveDevice')}
+                      />
                       <Funds
                         deployedWallet={deployedWallet}
                         onTopUpClick={() => history.push('/dashboard/topup')}
