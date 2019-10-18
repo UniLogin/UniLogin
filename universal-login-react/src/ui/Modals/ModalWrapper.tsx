@@ -26,7 +26,6 @@ export const ModalWrapper = ({ modalPosition, children, modalClassName, hideModa
     };
   });
 
-
   return (
     <>
       <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-default'}>
