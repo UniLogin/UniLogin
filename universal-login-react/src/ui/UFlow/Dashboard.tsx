@@ -50,10 +50,6 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
     setTransferDetails({...transferDetails, ...args});
   };
 
-  const onUButtonClick = () => {
-    setDashboardVisibility(true);
-  };
-
   const transferService = new TransferService(deployedWallet);
 
   const onTransferSendClick = async (changeContent: (argument: string) => void) => {
@@ -70,94 +66,95 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
     <>
       <button
         className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`}
-        onClick={() => onUButtonClick()}
+        onClick={() => setDashboardVisibility(true)}
       >
         <img src={logoIcon} alt="U"/>
       </button>
+
       <MemoryRouter initialEntries={['/dashboard/funds']}>
-        {dashboardVisibility &&
-        <ModalWrapper
-          hideModal={() => setDashboardVisibility(false)}
-          modalClassName="udashboard-modal"
-        >
-          <div className="udashboard">
-            <Switch>
-              <Route
-                path="/dashboard/funds"
-                exact
-                render={({history}) => (
+        {dashboardVisibility && (
+          <ModalWrapper
+            hideModal={() => setDashboardVisibility(false)}
+            modalClassName="udashboard-modal"
+          >
+            <div className="udashboard">
+              <Switch>
+                <Route
+                  path="/dashboard/funds"
+                  exact
+                  render={({history}) => (
+                    <DialogWrapper message={notice} ensName={name}>
+                      <Funds
+                        deployedWallet={deployedWallet}
+                        onTopUpClick={() => history.push('/dashboard/topup')}
+                        onSendClick={() => history.push('/dashboard/transferAmount')}
+                      />
+                    </DialogWrapper>
+                  )}
+                />
+                <Route path="/dashboard/topup" exact>
+                  <SubDialogWrapper message={notice} ensName={name}>
+                    <TopUp
+                      sdk={sdk}
+                      hideModal={() => setDashboardVisibility(false)}
+                      contractAddress={contractAddress}
+                      isDeployment={false}
+                    />
+                  </SubDialogWrapper>
+                </Route>
+                <Route
+                  path="/dashboard/transferAmount"
+                  exact
+                  render={({history}) => (
+                    <SubDialogWrapper message={notice} ensName={name}>
+                      <TransferAmount
+                        deployedWallet={deployedWallet}
+                        onSelectRecipientClick={() => history.push('/dashboard/transferRecipient')}
+                        updateTransferDetailsWith={updateTransferDetailsWith}
+                        tokenDetails={selectedToken}
+                      />
+                    </SubDialogWrapper>
+                  )}
+                />
+                <Route
+                  path="/dashboard/transferRecipient"
+                  exact
+                  render={({history}) => (
+                    <SubDialogWrapper message={notice} ensName={name}>
+                      <TransferRecipient
+                        deployedWallet={deployedWallet}
+                        onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+                        symbol={selectedToken.symbol}
+                        onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+                        onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
+                        transferDetails={transferDetails}
+                      />
+                    </SubDialogWrapper>
+                  )}
+                />
+                <Route path="/dashboard/waitingForTransfer" exact>
+                  <SubDialogWrapper message={notice} ensName={name}>
+                    <WaitingForTransaction
+                      action="Transferring funds"
+                      relayerConfig={relayerConfig!}
+                      transactionHash={transactionHash}
+                    />
+                  </SubDialogWrapper>
+                </Route>
+                <Route path="/dashboard/devices" exact>
                   <DialogWrapper message={notice} ensName={name}>
-                    <Funds
-                      deployedWallet={deployedWallet}
-                      onTopUpClick={() => history.push('/dashboard/topup')}
-                      onSendClick={() => history.push('/dashboard/transferAmount')}
-                    />
+                    <Devices deployedWallet={deployedWallet}/>
                   </DialogWrapper>
-                )}
-              />
-              <Route path="/dashboard/topup" exact>
-                <SubDialogWrapper message={notice} ensName={name}>
-                  <TopUp
-                    sdk={sdk}
-                    hideModal={() => setDashboardVisibility(false)}
-                    contractAddress={contractAddress}
-                    isDeployment={false}
-                  />
-                </SubDialogWrapper>
-              </Route>
-              <Route
-                path="/dashboard/transferAmount"
-                exact
-                render={({history}) => (
-                  <SubDialogWrapper message={notice} ensName={name}>
-                    <TransferAmount
-                      deployedWallet={deployedWallet}
-                      onSelectRecipientClick={() => history.push('/dashboard/transferRecipient')}
-                      updateTransferDetailsWith={updateTransferDetailsWith}
-                      tokenDetails={selectedToken}
-                    />
-                  </SubDialogWrapper>
-                )}
-              />
-              <Route
-                path="/dashboard/transferRecipient"
-                exact
-                render={({history}) => (
-                  <SubDialogWrapper message={notice} ensName={name}>
-                    <TransferRecipient
-                      deployedWallet={deployedWallet}
-                      onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-                      symbol={selectedToken.symbol}
-                      onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-                      onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
-                      transferDetails={transferDetails}
-                    />
-                  </SubDialogWrapper>
-                )}
-              />
-              <Route path="/dashboard/waitingForTransfer" exact>
-                <SubDialogWrapper message={notice} ensName={name}>
-                  <WaitingForTransaction
-                    action="Transferring funds"
-                    relayerConfig={relayerConfig!}
-                    transactionHash={transactionHash}
-                  />
-                </SubDialogWrapper>
-              </Route>
-              <Route path="/dashboard/devices" exact>
-                <DialogWrapper message={notice} ensName={name}>
-                  <Devices deployedWallet={deployedWallet}/>
-                </DialogWrapper>
-              </Route>
-              <Route path="/dashboard/backup" exact>
-                <DialogWrapper message={notice} ensName={name}>
-                  <BackupCodes deployedWallet={deployedWallet}/>
-                </DialogWrapper>
-              </Route>
-            </Switch>
-          </div>
-        </ModalWrapper>
-        }
+                </Route>
+                <Route path="/dashboard/backup" exact>
+                  <DialogWrapper message={notice} ensName={name}>
+                    <BackupCodes deployedWallet={deployedWallet}/>
+                  </DialogWrapper>
+                </Route>
+              </Switch>
+            </div>
+          </ModalWrapper>
+        )}
       </MemoryRouter>
     </>
   );
