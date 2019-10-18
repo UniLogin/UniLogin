@@ -2,9 +2,7 @@ import {MessageStatus, ensure, SignedMessage, stringifySignedMessageFields, ensu
 import {RelayerApi} from '../../integration/http/RelayerApi';
 import {retry} from '../utils/retry';
 import {MissingMessageHash} from '../utils/errors';
-
-const DEFAULT_EXECUTION_TIMEOUT = 600000;
-const DEFAULT_EXECUTION_TICK = 1000;
+import {MineableFactory} from './MineableFactory';
 
 export interface Execution {
   waitForTransactionHash: () => Promise<MessageStatus>;
@@ -12,12 +10,14 @@ export interface Execution {
   messageStatus: MessageStatus;
 }
 
-export class ExecutionFactory {
+export class ExecutionFactory extends MineableFactory {
   constructor(
     private relayerApi: RelayerApi,
-    private tick: number = DEFAULT_EXECUTION_TICK,
-    private timeout: number = DEFAULT_EXECUTION_TIMEOUT
-  ) {}
+    tick?: number,
+    timeout?: number
+  ) {
+    super(tick, timeout);
+  }
 
   async createExecution(signedMessage: SignedMessage): Promise<Execution> {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
