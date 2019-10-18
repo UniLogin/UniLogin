@@ -16,21 +16,14 @@ export const Devices = ({deployedWallet, className, basePath = ''}: DevicesProps
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
-        <DevicesList
-          deployedWallet={deployedWallet}
-          className={className}
-        />
+        <DevicesList deployedWallet={deployedWallet} className={className}/>
       </Route>
       <Route path={`${basePath}/approveDevice`} exact>
         <ConnectionNotification deployedWallet={deployedWallet} className={className}/>
       </Route>
-      <Route
-        path={`${basePath}/connectionSuccess`}
-        exact
-        render={({history}) => (
-          <ConnectionSuccessNotification onClose={() => history.replace(`${basePath}/`)} className={className}/>
-        )}
-      />
+      <Route path={`${basePath}/connectionSuccess`} exact>
+        <ConnectionSuccessNotification className={className}/>
+      </Route>
       <Route
         path={`${basePath}/`}
         exact
