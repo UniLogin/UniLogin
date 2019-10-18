@@ -18,9 +18,6 @@ export interface DevicesListProps {
 export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
-  const [notifications, setNotifications] = useState([] as Notification[]);
-  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
-
   const history = useHistory();
 
   return (
@@ -28,7 +25,7 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
           <div className="devices-inner">
-            {notifications.length > 0 && <NewDeviceMessage onClick={() => history.push('approveDevice')}/>}
+            <NewDeviceMessage deployedWallet={deployedWallet} onClick={() => history.push('approveDevice')}/>
             {devices ?
               <ConnectedDevices
                 devicesList={devices}
