@@ -54,7 +54,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
 
   const showWaitingFor = (provider: string) => {
     showModal && showModal('waitingForOnRampProvider', {onRampProviderName: provider} as WaitingForOnRampProviderProps);
-  }
+  };
 
   if (!relayerConfig) {
     return <Spinner />;
