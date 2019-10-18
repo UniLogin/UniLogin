@@ -1,30 +1,28 @@
 import React from 'react';
-import {DashboardContentType} from '../../core/models/ReactDashboardContentType';
+import {NavLink} from 'react-router-dom';
 
-export interface NavProps {
-  activeTab: DashboardContentType;
-  setActiveTab: (tab: DashboardContentType) => void;
-}
-
-export const Nav = ({activeTab, setActiveTab}: NavProps) => (
+export const Nav = () => (
   <>
-    <button
-      className={`udashboard-tab udashboard-tab-funds ${activeTab === 'funds' ? 'active' : ''}`}
-      onClick={() => setActiveTab('funds')}
+    <NavLink
+      className="udashboard-tab udashboard-tab-funds"
+      activeClassName="active"
+      to="/dashboard/funds"
     >
       <span className="udashboard-tab-text">Funds</span>
-    </button>
-    <button
-      className={`udashboard-tab udashboard-tab-devices ${activeTab === 'devices' ? 'active' : ''}`}
-      onClick={() => setActiveTab('devices')}
+    </NavLink>
+    <NavLink
+      className="udashboard-tab udashboard-tab-devices"
+      activeClassName="active"
+      to="/dashboard/devices"
     >
       <span className="udashboard-tab-text">Devices</span>
-    </button>
-    <button
-      className={`udashboard-tab udashboard-tab-backup ${activeTab === 'backup' ? 'active' : ''}`}
-      onClick={() => setActiveTab('backup')}
+    </NavLink>
+    <NavLink
+      className="udashboard-tab udashboard-tab-backup"
+      activeClassName="active"
+      to="/dashboard/backup"
     >
       <span className="udashboard-tab-text">Backup</span>
-    </button>
+    </NavLink>
   </>
 );
