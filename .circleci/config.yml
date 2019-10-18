@@ -73,8 +73,6 @@ jobs:
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
       - run: cd universal-login-web3 && yarn test
-      - install-chrome-dependencies
-      - make-react-screenshots
 workflows:
   universal_login_all:
     jobs:
