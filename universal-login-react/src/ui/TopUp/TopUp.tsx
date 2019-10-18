@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DEPLOY_GAS_LIMIT, OnGasParametersChanged, stringToEther} from '@universal-login/commons';
+import {OnGasParametersChanged, stringToEther} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Safello} from '../../integration/Safello';
 import {Ramp} from '../../integration/Ramp';
