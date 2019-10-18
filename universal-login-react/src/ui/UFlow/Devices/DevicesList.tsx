@@ -28,7 +28,7 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
           <div className="devices-inner">
-            {notifications.length > 0 && <NewDeviceMessage onClick={() => history.push('approveDevice')}/>}
+            {notifications.length > 0 && <NewDeviceMessage onClick={() => history.push('/dashboard/devices/approveDevice')}/>}
             {devices ?
               <ConnectedDevices
                 devicesList={devices}
