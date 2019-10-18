@@ -9,6 +9,27 @@ commands:
           libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
           libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 \
           libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
+  make-react-screenshots:
+    steps:
+      - run:
+          name: Make React screenshots
+          command: |
+            cd universal-login-react;
+            yarn start:dev & > /dev/null
+            RETRY=0; set +e;
+            while [ "$RETRY" != 60 ] && ! curl -s 0.0.0.0:8080 | grep -q "Universal Login React Playground"; do
+              echo sleeping...
+              sleep 1 && ((RETRY++));
+            done;
+            set -e; cd test; node screenshots.js
+      - run:
+          name: Make sure screenshots are taken
+          command: |
+            cd universal-login-react/test
+            [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
+      - store_artifacts:
+          path: universal-login-react/test/screenshots
+          destination: screenshots
 jobs:
   lint_test_contracts_commons_ops:
     docker:
@@ -53,25 +74,7 @@ jobs:
       - run: cd universal-login-wallet && yarn test
       - run: cd universal-login-web3 && yarn test
       - install-chrome-dependencies
-      - run:
-          name: Make React screenshots
-          command: |
-            cd universal-login-react;
-            yarn start:dev & > /dev/null
-            RETRY=0; set +e;
-            while [ "$RETRY" != 60 ] && ! curl -s 0.0.0.0:8080 | grep -q "Universal Login React Playground"; do
-              echo sleeping...
-              sleep 1 && ((RETRY++));
-            done;
-            set -e; cd test; node screenshots.js
-      - run:
-          name: Make sure screenshots are taken
-          command: |
-            cd universal-login-react/test
-            [ $(ls screenshots | grep .png | wc -l) -gt 0 ]
-      - store_artifacts:
-          path: universal-login-react/test/screenshots
-          destination: screenshots
+      - make-react-screenshots
 workflows:
   universal_login_all:
     jobs:
