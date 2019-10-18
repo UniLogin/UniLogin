@@ -30,7 +30,7 @@ export const Devices = ({deployedWallet, className, basePath = ''}: DevicesProps
         render={({history}) => (
           <DeleteAccount
             onCancelClick={() => history.replace(`${basePath}/`)}
-            onConfirmDeleteClick={() => {
+            onConfirmDeleteClick={() => {}}
             className={className}
           />
         )}
