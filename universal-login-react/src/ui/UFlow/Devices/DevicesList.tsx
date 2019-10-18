@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
@@ -9,6 +9,7 @@ import {useAsync} from '../../hooks/useAsync';
 import {FeatureFlag} from '../../commons/FeatureFlag';
 import Spinner from '../../commons/Spinner';
 import {useHistory} from 'react-router';
+import {join} from 'path';
 
 export interface DevicesListProps {
   deployedWallet: DeployedWallet;
@@ -18,9 +19,6 @@ export interface DevicesListProps {
 export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
-  const [notifications, setNotifications] = useState([] as Notification[]);
-  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
-
   const history = useHistory();
 
   return (
@@ -28,7 +26,11 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
           <div className="devices-inner">
-            {notifications.length > 0 && <NewDeviceMessage onClick={() => history.push('approveDevice')}/>}
+            <NewDeviceMessage
+              deployedWallet={deployedWallet}
+              onClick={() => history.push(join(history.location.pathname, 'approveDevice'))}
+              className={className}
+            />
             {devices ?
               <ConnectedDevices
                 devicesList={devices}
