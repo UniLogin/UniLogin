@@ -3,9 +3,11 @@ import {useState} from 'react';
 export interface IModalService<T, K> {
   modalName: T | 'none';
   modalProps: K | {};
-  showModal: (name: T | 'none', props?: K) => void;
+  showModal: ShowModal<T, K>;
   hideModal: () => void;
 }
+
+export type ShowModal<T, K> = (name: T | 'none', props?: K) => void;
 
 interface IModal<T, K> {
   name: T | 'none';
