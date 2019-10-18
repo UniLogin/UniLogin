@@ -21,12 +21,12 @@ const react = async () => {
         },
         devices: async () => {
           await page.click('button.udashboard-logo-btn', {waitForFunction: 'domcontentloaded'});
-          await page.click('button.udashboard-tab-devices', {waitForFunction: 'domcontentloaded'});
+          await page.click('a.udashboard-tab-devices', {waitForFunction: 'domcontentloaded'});
           await sleep(1000);
         },
         backup: async () => {
           await page.click('button.udashboard-logo-btn', {waitForFunction: 'domcontentloaded'});
-          await page.click('button.udashboard-tab-backup', {waitForFunction: 'domcontentloaded'});
+          await page.click('a.udashboard-tab-backup', {waitForFunction: 'domcontentloaded'});
           await sleep(1000);
           return {
             generate: async () => {
