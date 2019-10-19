@@ -22,7 +22,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "tsc --build tsconfig.json",
-    "lint": "eslint '{src,test}/**/*.{js,ts,tsx}'",
+    "lint": "eslint '{lib,test}/**/*.{js,ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist"

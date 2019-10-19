@@ -5,7 +5,6 @@ import {App, AppProps} from './App';
 export function initUi(props: AppProps) {
   const reactRootElement = createReactRoot();
   render(<App {...props}/>, reactRootElement);
-
 }
 
 function createReactRoot() {

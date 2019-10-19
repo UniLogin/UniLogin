@@ -28,4 +28,3 @@ export const App = ({sdk, walletService, uiController, domains, metamaskService}
     </>
   );
 };
-

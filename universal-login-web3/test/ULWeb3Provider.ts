@@ -15,18 +15,18 @@ describe('ULWeb3Provier', () => {
   let web3: Web3;
   let ulProvider: ULWeb3Provider;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     ({relayer, deployer, services, web3, ulProvider} = await setupTestEnvironmentWithWeb3());
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     await ulProvider.finalizeAndStop();
     await relayer.clearDatabase();
     await relayer.stop();
   });
 
   describe('send transaction', () => {
-    it('triggers wallet create flow', async() => {
+    it('triggers wallet create flow', async () => {
       expect(services.uiController.showOnboarding.get()).to.be.false;
 
       web3.eth.sendTransaction({
@@ -39,7 +39,7 @@ describe('ULWeb3Provier', () => {
       });
     });
 
-    it('can send a simple eth transfer', async() => {
+    it('can send a simple eth transfer', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
@@ -52,7 +52,7 @@ describe('ULWeb3Provier', () => {
       expect(receipt.to).to.eq(deployedWallet.contractAddress.toLowerCase());
     });
 
-    it('sends transactions that originated before wallet was created', async() => {
+    it('sends transactions that originated before wallet was created', async () => {
       const promise = web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
         value: utils.parseEther('0.005').toString(),
@@ -68,11 +68,11 @@ describe('ULWeb3Provier', () => {
   });
 
   describe('get accounts', () => {
-    it('returns empty array when wallet does not exist', async() => {
+    it('returns empty array when wallet does not exist', async () => {
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
     });
 
-    it('returns single address when wallet is connected', async() => {
+    it('returns single address when wallet is connected', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
@@ -83,7 +83,7 @@ describe('ULWeb3Provier', () => {
   describe('sign', () => {
     const message = 'message';
 
-    it('web3.eth.sign', async() => {
+    it('web3.eth.sign', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
@@ -93,7 +93,7 @@ describe('ULWeb3Provier', () => {
       expect(signature).to.eq(expectedSignature);
     });
 
-    it('web3.eth.personal.sign', async() => {
+    it('web3.eth.personal.sign', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
@@ -106,7 +106,7 @@ describe('ULWeb3Provier', () => {
   });
 
   describe('create', () => {
-    it('shows the UI and returns a promise that resolves once the wallet is created', async() => {
+    it('shows the UI and returns a promise that resolves once the wallet is created', async () => {
       const promise = ulProvider.create();
 
       expect(services.uiController.showOnboarding.get()).to.be.true;
@@ -118,7 +118,7 @@ describe('ULWeb3Provier', () => {
       expect(services.uiController.showOnboarding.get()).to.be.false;
     });
 
-    it('doesnt show the UI if wallet is already there', async() => {
+    it('doesnt show the UI if wallet is already there', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
