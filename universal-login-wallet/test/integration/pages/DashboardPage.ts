@@ -28,7 +28,7 @@ export default class DashboardPage {
   }
 
   async clickDevicesButton() {
-    this.wrapper.find('#devicesButton').simulate('click', { button: 0 });
+    this.wrapper.find('#devicesButton').first().simulate('click', { button: 0 });
     await waitForUI(this.wrapper, () => this.wrapper.exists('div.devices'));
   }
 
