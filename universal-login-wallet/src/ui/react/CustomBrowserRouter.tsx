@@ -8,7 +8,7 @@ export interface CustomBrowserRouterProps {
 }
 
 export const CustomBrowserRouter = ({children}: CustomBrowserRouterProps) => {
-  return(
+  return (
     <BrowserRouter>
       <Route>
         {(routeProps: RouteComponentProps) => (

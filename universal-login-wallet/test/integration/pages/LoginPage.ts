@@ -3,7 +3,6 @@ import {waitForUI} from '../helpers/utils';
 import {getSuggestionId} from '@universal-login/commons';
 
 export default class LoginPage {
-
   constructor(private wrapper: ReactWrapper) {
   }
 

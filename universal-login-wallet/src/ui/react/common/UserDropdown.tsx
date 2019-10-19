@@ -20,7 +20,7 @@ const UserDropdown = () => {
           <div>
             <p className="user-dropdown-name">{walletFormatter.getName()}</p>
           </div>
-          <button onClick={isExpanded ?  collapseDropdown : expandDropdown} className="user-dropdown-btn" />
+          <button onClick={isExpanded ? collapseDropdown : expandDropdown} className="user-dropdown-btn" />
         </div>
         <div className={`user-dropdown-content ${isExpanded ? 'expanded' : ''}`}>
           <button className="sign-out-btn" onClick={onDisconnectClick}>Disconnect</button>

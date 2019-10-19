@@ -1,3 +1,3 @@
 export interface NavigationProps {
-  location? : {state: {from: {pathname : string}}};
+  location? : {state: {from: {pathname: string}}};
 }

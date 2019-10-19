@@ -1,13 +1,12 @@
-let Module = require('module');
-let originalRequire = Module.prototype.require;
+const Module = require('module');
+const originalRequire = Module.prototype.require;
 
-Module.prototype.require = function (){
-  const name = arguments[0];
+Module.prototype.require = function (...args: any[]) {
+  const name = args[0];
   if (name === 'react') {
-    const React = originalRequire.apply(this, arguments);
-    return { ...React, useEffect: React.useLayoutEffect };
+    const React = originalRequire.apply(this, args);
+    return {...React, useEffect: React.useLayoutEffect};
   } else {
-    return originalRequire.apply(this, arguments);
+    return originalRequire.apply(this, args);
   }
 };
-

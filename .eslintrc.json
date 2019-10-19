@@ -53,7 +53,7 @@
       "error",
       {
         "multiline": {
-          "delimiter": "comma",
+          "delimiter": "semi",
           "requireLast": true
         },
         "singleline": {
@@ -63,6 +63,7 @@
       }
     ],
     "@typescript-eslint/no-parameter-properties": "off",
+    "@typescript-eslint/no-var-requires": "warn",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -417,7 +418,11 @@
     ],
     "space-before-function-paren": [
       "error",
-      "never"
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
     ],
     "space-in-parens": [
       "error",

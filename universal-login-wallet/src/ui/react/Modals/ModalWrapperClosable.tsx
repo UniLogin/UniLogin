@@ -6,8 +6,8 @@ interface ModalWrapperProps {
   children: any;
 }
 
-const ModalWrapperClosable = ({children, hideModal} : ModalWrapperProps) => {
-  const listenKeyboard = (event : any) => {
+const ModalWrapperClosable = ({children, hideModal}: ModalWrapperProps) => {
+  const listenKeyboard = (event: any) => {
     if (event.key === 'Escape' || event.keyCode === KEY_CODE_ESCAPE) {
       hideModal();
     }

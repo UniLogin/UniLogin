@@ -31,7 +31,7 @@ const AppBootstrapper = () => {
   return (
     <ServiceContext.Provider value={services}>
       <CustomBrowserRouter>
-          <App/>
+        <App/>
       </CustomBrowserRouter>
     </ServiceContext.Provider>
   );

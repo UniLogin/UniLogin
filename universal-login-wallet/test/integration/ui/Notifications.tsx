@@ -9,11 +9,11 @@ import {setupUI} from '../helpers/setupUI';
 import {waitExpect} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 
-describe('UI: Notifications',  () => {
-  let services : Services;
-  let relayer : any;
-  let appWrapper : ReactWrapper;
-  let appPage : AppPage;
+describe('UI: Notifications', () => {
+  let services: Services;
+  let relayer: any;
+  let appWrapper: ReactWrapper;
+  let appPage: AppPage;
   let mockTokenContract: Contract;
 
   beforeEach(async () => {

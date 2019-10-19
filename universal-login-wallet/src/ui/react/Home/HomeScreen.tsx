@@ -15,7 +15,7 @@ const HomeScreen = () => {
 
   const topUpProps: TopUpModalProps = {
     isDeployment: false,
-    hideModal: modalService.hideModal
+    hideModal: modalService.hideModal,
   };
 
   const renderContent = () => {
