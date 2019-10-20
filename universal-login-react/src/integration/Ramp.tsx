@@ -17,9 +17,9 @@ export const Ramp = (props: RampProps) => {
     swapAmount: amount,
     swapAsset: currency,
     url: config.rampUrl,
-    userAddress: address
+    userAddress: address,
   }).on(RampInstantEventTypes.WIDGET_CLOSE, onClose)
-  .on('*', console.log);
+    .on('*', console.log);
   ramp.domNodes.overlay.style.zIndex = '99999';
   ramp.show();
   return null;

@@ -23,23 +23,23 @@ export const ConnectionNotification = ({deployedWallet, className}: ConnectNotif
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-        {notifications.length > 0 && (
-          <>
-            {showTitle &&
+          {notifications.length > 0 && (
+            <>
+              {showTitle &&
               <>
                 <p className="approve-device-title">Approve device</p>
                 <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
               </>
-            }
-            <EmojiForm
-              deployedWallet={deployedWallet}
-              hideTitle={() => setShowTitle(false)}
-              className={className}
-              onDenyRequests={() => history.goBack()}
-              onConnectionSuccess={() => history.replace('../connectionSuccess')}
-            />
-          </>
-        )}
+              }
+              <EmojiForm
+                deployedWallet={deployedWallet}
+                hideTitle={() => setShowTitle(false)}
+                className={className}
+                onDenyRequests={() => history.goBack()}
+                onConnectionSuccess={() => history.replace('../connectionSuccess')}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

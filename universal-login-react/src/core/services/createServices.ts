@@ -7,13 +7,13 @@ export interface Overrides {
   provider?: providers.Provider;
 }
 
-export const createServices = (config: Config, {provider} : Overrides = {}) => {
-  const providerOrProviderUrl = provider ? provider : config.jsonRpcUrl;
+export const createServices = (config: Config, {provider}: Overrides = {}) => {
+  const providerOrProviderUrl = provider || config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl, {applicationInfo: {type: 'laptop'}});
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
     sdk,
-    config
+    config,
   };
 };
 

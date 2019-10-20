@@ -27,7 +27,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
     case 'waitingFor':
       return (
         <ModalWrapper>
-            <WaitingForTransaction {...modalService.modalProps as WaitingForTransactionProps}/>
+          <WaitingForTransaction {...modalService.modalProps as WaitingForTransactionProps}/>
         </ModalWrapper>
       );
     case 'connectionFlow':

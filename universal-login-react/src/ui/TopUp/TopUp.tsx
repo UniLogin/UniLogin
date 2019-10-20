@@ -58,13 +58,11 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
 
   if (!relayerConfig) {
     return <Spinner />;
-
   } else if (modal === TopUpComponentType.choose) {
     if (isModal) {
       return <ModalWrapper modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
     }
     return getTopUpMethodChooser();
-
   } else if (modal === TopUpComponentType.safello) {
     return (
       <ModalWrapper modalClassName={modalClassName} hideModal={() => showWaitingFor('safello')}>
@@ -76,7 +74,6 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         />
       </ModalWrapper>
     );
-
   } else if (modal === TopUpComponentType.ramp) {
     return (
       <Ramp
@@ -87,7 +84,6 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         onClose={() => showWaitingFor('ramp')}
       />
     );
-
   } else {
     throw new Error(`Unsupported type: ${modal}`);
   }

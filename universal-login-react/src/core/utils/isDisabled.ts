@@ -1,1 +1,1 @@
-export const isDisabled = (symbol: string) =>  symbol === 'DAI';
+export const isDisabled = (symbol: string) => symbol === 'DAI';

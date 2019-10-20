@@ -24,32 +24,32 @@ export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMeth
 
       {supportService.checkRampSupport(selectedCountry) &&
       <TopUpRadio
-          checked={paymentMethod === TopUpProvider.RAMP}
-          onClick={() => setPaymentMethod(TopUpProvider.RAMP)}
-          name="payment-method"
-          className="fiat-payment-method"
+        checked={paymentMethod === TopUpProvider.RAMP}
+        onClick={() => setPaymentMethod(TopUpProvider.RAMP)}
+        name="payment-method"
+        className="fiat-payment-method"
       >
-          <img src={rampLogo} srcSet={rampLogo} alt="ramp" className="ramp-logo"/>
+        <img src={rampLogo} srcSet={rampLogo} alt="ramp" className="ramp-logo"/>
       </TopUpRadio>}
 
       {supportService.checkSafelloSupport(selectedCountry) &&
       <TopUpRadio
-          checked={paymentMethod === TopUpProvider.SAFELLO}
-          onClick={() => setPaymentMethod(TopUpProvider.SAFELLO)}
-          name="payment-method"
-          className="fiat-payment-method"
+        checked={paymentMethod === TopUpProvider.SAFELLO}
+        onClick={() => setPaymentMethod(TopUpProvider.SAFELLO)}
+        name="payment-method"
+        className="fiat-payment-method"
       >
-          <img src={safelloLogo} srcSet={safelloLogo} alt="safello" className="safello-logo"/>
+        <img src={safelloLogo} srcSet={safelloLogo} alt="safello" className="safello-logo"/>
       </TopUpRadio>}
 
       {supportService.checkWyreSupport(selectedCountry) &&
       <TopUpRadio
-          checked={paymentMethod === TopUpProvider.WYRE}
-          onClick={() => setPaymentMethod(TopUpProvider.WYRE)}
-          name="payment-method"
-          className="fiat-payment-method"
+        checked={paymentMethod === TopUpProvider.WYRE}
+        onClick={() => setPaymentMethod(TopUpProvider.WYRE)}
+        name="payment-method"
+        className="fiat-payment-method"
       >
-          <img src={wyreLogo} srcSet={wyreLogo} alt="wyre" className="wyre-logo"/>
+        <img src={wyreLogo} srcSet={wyreLogo} alt="wyre" className="wyre-logo"/>
       </TopUpRadio>}
     </div>
   );

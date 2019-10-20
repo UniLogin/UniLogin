@@ -6,6 +6,6 @@ export const useProgressBar = () => {
   return {
     progressBar,
     showProgressBar: () => setProgressBar(true),
-    hideProgressBar: () => setProgressBar(false)
+    hideProgressBar: () => setProgressBar(false),
   };
 };

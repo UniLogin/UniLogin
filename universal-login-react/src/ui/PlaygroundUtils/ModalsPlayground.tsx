@@ -1,7 +1,7 @@
 import React from 'react';
 import {ReactModalType, ReactModalProps, ReactModalContext} from '../../core/models/ReactModalContext';
 import Modals from '../Modals/Modals';
-import {IModalService} from '../../core/services/createModalService';
+import {IModalService} from '../../core/services/useModalService';
 
 interface ModalsPlaygroundProps {
   modalService: IModalService<ReactModalType, ReactModalProps>;
@@ -22,5 +22,5 @@ export const ModalsPlayground = ({modalService, modalNames, modalProps}: ModalsP
         <Modals />
       </ReactModalContext.Provider>
     </>
-    );
+  );
 };

@@ -75,4 +75,3 @@ export const ConfirmationsEdit = ({deployedWallet, devicesAmount, confirmationsC
     </div>
   );
 };
-

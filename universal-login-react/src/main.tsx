@@ -8,9 +8,9 @@ const services = createServices(config);
 services.sdk.start();
 
 render((
-    <ServiceContext.Provider value={services}>
-      <App/>
-    </ServiceContext.Provider>
-  ),
-  document.getElementById('app')
+  <ServiceContext.Provider value={services}>
+    <App/>
+  </ServiceContext.Provider>
+),
+document.getElementById('app'),
 );

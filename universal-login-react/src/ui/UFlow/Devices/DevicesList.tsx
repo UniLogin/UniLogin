@@ -31,8 +31,8 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
               onClick={() => history.push(join(history.location.pathname, 'approveDevice'))}
               className={className}
             />
-            {devices ?
-              <ConnectedDevices
+            {devices
+              ? <ConnectedDevices
                 devicesList={devices}
                 deployedWallet={deployedWallet}
               />

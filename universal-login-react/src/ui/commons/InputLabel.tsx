@@ -6,6 +6,6 @@ export interface InputLabelProps {
   className?: string;
 }
 
-export const InputLabel = ({children, htmlFor, className} : InputLabelProps) => (
-  <label className={`label-text ${className ? className : ''}`} htmlFor={htmlFor}>{children}</label>
+export const InputLabel = ({children, htmlFor, className}: InputLabelProps) => (
+  <label className={`label-text ${className || ''}`} htmlFor={htmlFor}>{children}</label>
 );

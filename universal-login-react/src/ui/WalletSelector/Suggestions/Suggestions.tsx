@@ -13,7 +13,7 @@ interface SuggestionsProps {
 }
 
 const getSuggestionsItems = (operationType: string, array: string[], onClick: (ensName: string) => Promise<void> | void, suggestionType?: SuggestionType) =>
-  array.map((element => (
+  array.map(element => (
     <li
       key={`${operationType}_${element}`}
       className="suggestions-item"
@@ -25,7 +25,7 @@ const getSuggestionsItems = (operationType: string, array: string[], onClick: (e
         onClick={onClick}
       />
     </li>
-  )));
+  ));
 
 const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS, flag: WalletSuggestionAction): string[] =>
   actions.includes(flag) ? suggestions : [];

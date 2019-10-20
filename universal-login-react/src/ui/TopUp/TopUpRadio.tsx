@@ -13,7 +13,7 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
   <label
     id={id}
     onClick={onClick}
-    className={`top-up-radio-label ${className ? className : ''}`}
+    className={`top-up-radio-label ${className || ''}`}
   >
     <input
       className="top-up-radio"

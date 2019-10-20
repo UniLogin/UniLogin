@@ -8,7 +8,7 @@ interface CheckRequestResponse {
 }
 
 const asCheckRequestResponse = asObject<CheckRequestResponse>({
-  country_code: asString
+  country_code: asString,
 });
 
 export class IPGeolocationService {
@@ -25,7 +25,7 @@ export class IPGeolocationService {
       const checkResponse = cast(response, asCheckRequestResponse);
       return checkResponse.country_code;
     } catch (err) {
-      throw new IPGeolocationError(`Failed to establish user's country`, err);
+      throw new IPGeolocationError('Failed to establish user\'s country', err);
     }
   }
 }

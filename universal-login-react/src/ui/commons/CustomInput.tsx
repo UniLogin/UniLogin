@@ -11,13 +11,13 @@ interface CustomInputProps {
 }
 
 export const CustomInput = ({onChange, placeholder, autoFocus, className, id, type, value}: CustomInputProps) => {
-  return(
+  return (
     <input
       id={id}
-      className={`custom-input ${className ? className : ''}`}
+      className={`custom-input ${className || ''}`}
       value={value}
       onChange={onChange}
-      type={type ? type : 'text'}
+      type={type || 'text'}
       autoFocus={autoFocus}
       placeholder={placeholder}
     />

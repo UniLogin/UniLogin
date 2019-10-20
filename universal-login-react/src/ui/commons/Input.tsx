@@ -15,13 +15,13 @@ interface InputProps {
 const classesForInput = classesForElement('input', 'input');
 
 export const Input = ({onChange, placeholder, autoFocus, className, id, type, value, checkSpelling = true}: InputProps) => {
-  return(
+  return (
     <input
       id={id}
       className={classesForInput(className)}
       value={value}
       onChange={onChange}
-      type={type ? type : 'text'}
+      type={type || 'text'}
       autoFocus={autoFocus}
       placeholder={placeholder}
       spellCheck={checkSpelling}

@@ -7,7 +7,7 @@ interface ProgressBarProps {
 }
 
 export const ProgressBar = ({dual, className}: ProgressBarProps) => (
-  <div className={`progress-bar ${className ? className : ''}`}>
+  <div className={`progress-bar ${className || ''}`}>
     <div className={`progress-bar-line ${dual ? 'dual' : ''}`} />
   </div>
 );

@@ -8,7 +8,7 @@ interface ButtonProps {
   onClick: () => void;
 }
 
-export const Button = ({ id, image, title, text, onClick }: ButtonProps) => (
+export const Button = ({id, image, title, text, onClick}: ButtonProps) => (
   <button id={`topup-btn-${id}`} onClick={onClick} className="topup-btn">
     <img src={image} alt="Ethereum logo" className="topup-btn-img"/>
     <div>

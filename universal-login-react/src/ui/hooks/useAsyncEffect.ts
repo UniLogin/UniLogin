@@ -1,12 +1,12 @@
 import {useEffect} from 'react';
 
-type Unsubscribe = () => void;
+type Unsubscribe = () => void | undefined;
 
-export const useAsyncEffect = (asyncCallback: () => Promise<Unsubscribe>, deps?: any[]) => {
+export const useAsyncEffect = (asyncCallback: () => Promise<Unsubscribe | void | undefined>, deps?: any[]) => {
   useEffect(() => {
     const promise = asyncCallback();
     return () => {
-      promise.then((unsubscribe: Unsubscribe) => unsubscribe(), e => console.error(e));
+      promise.then((unsubscribe) => unsubscribe && unsubscribe(), e => console.error(e));
     };
   }, deps);
 };

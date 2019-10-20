@@ -4,7 +4,6 @@ import {mount} from 'enzyme';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {Safello} from '../../src/integration/Safello';
 
-
 describe('Safello', () => {
   it('should be mounted', async () => {
     expect(() =>
@@ -17,8 +16,8 @@ describe('Safello', () => {
             addressHelper: true}}
           contractAddress={TEST_ACCOUNT_ADDRESS}
           crypto="eth"
-        />
-      )
+        />,
+      ),
     ).to.not.throw;
   });
 });
