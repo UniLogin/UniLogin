@@ -5,7 +5,6 @@ import {utils, Wallet, providers, Contract} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, computeContractAddress} from '@universal-login/commons';
 import WalletContract from '../../../build/Wallet.json';
 
-
 describe('WalletImplementation', () => {
   let provider: providers.Provider;
   let publicResolver: string;

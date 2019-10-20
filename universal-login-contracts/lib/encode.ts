@@ -12,7 +12,6 @@ export const encodeInitializeWithENSData = (args: string[]) => new utils.Interfa
 
 export const encodeInitializeData = (args: string[]) => new utils.Interface(WalletContract.interface).functions.initialize.encode(args);
 
-
 const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
 
 export const encodeDataForExecuteSigned = (message: SignedMessage) =>
@@ -24,7 +23,7 @@ export const encodeDataForExecuteSigned = (message: SignedMessage) =>
     message.gasToken,
     message.gasLimitExecution,
     message.gasData,
-    message.signature
+    message.signature,
   ]);
 
 export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>

@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import ECDSAUtils from '../../../build/ECDSAUtils.json';
 import {Contract, utils} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
-import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH,  signHexString, concatenateSignatures} from '@universal-login/commons';
+import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH, signHexString, concatenateSignatures} from '@universal-login/commons';
 import {transferMessage} from '../../helpers/ExampleMessages';
 
 const hash = utils.hashMessage(TEST_MESSAGE_HASH);
@@ -10,7 +10,7 @@ const invalidHash = utils.hashMessage(TEST_MESSAGE_HASH.replace('1', '2'));
 
 describe('Contract: ECDSAUtils', async () => {
   const [wallet, wallet2] = getWallets(createMockProvider());
-  let ecdsaUtils : Contract;
+  let ecdsaUtils: Contract;
   let msg: UnsignedMessage;
 
   before(async () => {
@@ -97,5 +97,4 @@ describe('Contract: ECDSAUtils', async () => {
       msg.gasData);
     expect(jsHash).to.eq(solidityHash);
   });
-
 });

@@ -11,7 +11,6 @@ import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 
 chai.use(solidity);
 
-
 describe('Counterfactual Factory', () => {
   const keyPair = createKeyPair();
   let provider: providers.Provider;

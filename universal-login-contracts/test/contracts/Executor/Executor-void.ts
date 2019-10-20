@@ -6,11 +6,10 @@ import {transferMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
 import {calculateFinalGasLimit} from '../../../lib/estimateGas';
 
-
 describe('Void Executor', () => {
   let provider;
-  let walletContractWithZeroKey : Contract;
-  let signature : string [];
+  let walletContractWithZeroKey: Contract;
+  let signature: string [];
   let message;
   let wallet;
 

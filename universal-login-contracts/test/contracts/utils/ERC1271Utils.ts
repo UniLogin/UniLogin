@@ -4,7 +4,7 @@ import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 
 describe('Contract: ERC1271Utils', async () => {
-  let erc1271Utils : Contract;
+  let erc1271Utils: Contract;
   const [wallet] = getWallets(createMockProvider());
 
   before(async () => {

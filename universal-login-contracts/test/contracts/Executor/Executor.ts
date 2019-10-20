@@ -14,8 +14,7 @@ chai.use(solidity);
 const {parseEther} = utils;
 const to = TEST_ACCOUNT_ADDRESS;
 
-
-describe('CONTRACT: Executor - main', async  () => {
+describe('CONTRACT: Executor - main', async () => {
   let provider: providers.Provider;
   let walletContract: Contract;
   let signature: string;
@@ -57,8 +56,6 @@ describe('CONTRACT: Executor - main', async  () => {
       expect(await walletContract.keyExist('0x0000000000000000000000000000000000000000')).to.be.false;
     });
   });
-
-
 
   describe('Transfer', async () => {
     describe('successful execution of transfer', () => {
