@@ -6,7 +6,7 @@ export const defaultDeployOptions = {
   gasPrice: utils.bigNumberify(20000000000),
 };
 
-export const getDeployTransaction = (contractJSON : ContractJSON, args : string[] = []) => {
+export const getDeployTransaction = (contractJSON: ContractJSON, args: string[] = []) => {
   const bytecode = `0x${contractJSON.bytecode}`;
   const abi = contractJSON.interface;
   const transaction = {

@@ -30,7 +30,7 @@ describe('sanitizers', () => {
   it('asGasParameters', () => {
     const expectedGasParameters = {
       gasPrice: utils.bigNumberify('1'),
-      gasToken: ETHER_NATIVE_TOKEN.address
+      gasToken: ETHER_NATIVE_TOKEN.address,
     };
     const gasParameters = cast(expectedGasParameters, asGasParameters);
     expect(gasParameters).to.deep.eq(expectedGasParameters);
@@ -43,8 +43,8 @@ describe('sanitizers', () => {
       transferToken: '0x0000000000000000000000000000000000000000',
       gasParameters: {
         gasPrice: utils.bigNumberify('2000000000'),
-        gasToken: '0x0000000000000000000000000000000000000000'
-      }
+        gasToken: '0x0000000000000000000000000000000000000000',
+      },
     };
     const transferDetails = cast(expectedTransferDetails, asTransferDetails);
     expect(transferDetails).to.deep.eq(expectedTransferDetails);

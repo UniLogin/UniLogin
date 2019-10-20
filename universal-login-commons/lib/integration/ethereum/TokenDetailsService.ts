@@ -4,12 +4,12 @@ import {TokenDetails} from '../../core/models/TokenData';
 
 const tokenAbiString = [
   'function name() public view returns (string)',
-  'function symbol() public view returns (string)'
+  'function symbol() public view returns (string)',
 ];
 
 const tokenAbiBytes32 = [
   'function name() public view returns (bytes32)',
-  'function symbol() public view returns (bytes32)'
+  'function symbol() public view returns (bytes32)',
 ];
 
 export class TokenDetailsService {

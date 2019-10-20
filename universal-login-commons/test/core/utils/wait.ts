@@ -33,16 +33,15 @@ describe('waitUntil', async () => {
 });
 
 describe('waitExpect', async () => {
+  let expected = false;
+  const changeExpected = async () => {
+    await sleep(5);
+    expected = !expected;
+  };
 
-    let expected = false;
-    const changeExpected = async () => {
-      await sleep(5);
-      expected = !expected;
-    };
-
-    beforeEach(() => {
-      expected = false;
-    });
+  beforeEach(() => {
+    expected = false;
+  });
 
   it('should pass test using waitExpect ', async () => {
     await changeExpected();

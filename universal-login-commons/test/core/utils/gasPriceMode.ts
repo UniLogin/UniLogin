@@ -5,15 +5,15 @@ import {TEST_GAS_MODES} from '../../../lib/core/constants/test';
 describe('Helpers for GasMode ', () => {
   describe('getGasPriceFor', () => {
     it('empty array', () => {
-      expect(() => getGasPriceFor([], '', '')).to.throw(`Cannot read property 'gasOptions' of undefined`);
+      expect(() => getGasPriceFor([], '', '')).to.throw('Cannot read property \'gasOptions\' of undefined');
     });
 
     it('invalid mode name', () => {
-      expect(() => getGasPriceFor(TEST_GAS_MODES, 'invalidModeName', TEST_GAS_MODES[0].gasOptions[0].token.address)).to.throw(`Cannot read property 'gasOptions' of undefined`);
+      expect(() => getGasPriceFor(TEST_GAS_MODES, 'invalidModeName', TEST_GAS_MODES[0].gasOptions[0].token.address)).to.throw('Cannot read property \'gasOptions\' of undefined');
     });
 
     it('invalid token address', () => {
-      expect(() => getGasPriceFor(TEST_GAS_MODES, TEST_GAS_MODES[0].name, 'invalidTokenAddress')).to.throw(`Cannot read property 'gasPrice' of undefined`);
+      expect(() => getGasPriceFor(TEST_GAS_MODES, TEST_GAS_MODES[0].name, 'invalidTokenAddress')).to.throw('Cannot read property \'gasPrice\' of undefined');
     });
 
     for (const gasMode of TEST_GAS_MODES) {

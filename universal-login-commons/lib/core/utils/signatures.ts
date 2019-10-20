@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 
-export const executionComparator = (execution1: any, execution2: any) =>  {
+export const executionComparator = (execution1: any, execution2: any) => {
   const key1 = utils.bigNumberify(execution1.key);
   const key2 = utils.bigNumberify(execution2.key);
   if (key1.gt(key2)) {
@@ -13,7 +13,7 @@ export const executionComparator = (execution1: any, execution2: any) =>  {
 };
 
 export const sortSignatureKeyPairsByKey = (signatureKeyPairs: any) =>
-    signatureKeyPairs.sort(executionComparator);
+  signatureKeyPairs.sort(executionComparator);
 
 export const sign = (payload: Uint8Array, privateKey: string): string => {
   const signingKey = new utils.SigningKey(privateKey);

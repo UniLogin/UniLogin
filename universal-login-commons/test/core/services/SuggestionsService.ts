@@ -248,7 +248,7 @@ describe('SuggestionsService', () => {
       const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], []);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: [],
-        creations: []
+        creations: [],
       });
     });
 
@@ -256,7 +256,7 @@ describe('SuggestionsService', () => {
       const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth']);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
-        creations: ['a.you.eth']
+        creations: ['a.you.eth'],
       });
     });
 
@@ -264,7 +264,7 @@ describe('SuggestionsService', () => {
       const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.connect]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
-        creations: []
+        creations: [],
       });
     });
 
@@ -272,7 +272,7 @@ describe('SuggestionsService', () => {
       const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.create]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: [],
-        creations: ['a.you.eth']
+        creations: ['a.you.eth'],
       });
     });
 
@@ -280,9 +280,8 @@ describe('SuggestionsService', () => {
       const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.recover]);
       expect(await service.getSuggestions('a')).to.deep.eq({
         connections: ['a.my.eth', 'a.them.eth'],
-        creations: []
+        creations: [],
       });
     });
-
   });
 });

@@ -7,9 +7,9 @@ interface ErrorConstructor<T extends any[]> {
   new (...args: T): Error;
 }
 
-export function ensure<T extends any[]>(condition: boolean, error: ErrorConstructor<T>, ...errorArgs: T) {
+export function ensure<T extends any[]>(condition: boolean, ErrorToThrow: ErrorConstructor<T>, ...errorArgs: T) {
   if (!condition) {
-    throw new error(...errorArgs);
+    throw new ErrorToThrow(...errorArgs);
   }
 }
 

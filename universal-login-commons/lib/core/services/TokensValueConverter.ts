@@ -10,7 +10,7 @@ export class TokensValueConverter {
     const tokensTotalWorth = this.getTokensTotalWorth(tokensDetailsWithBalance, tokensPrices);
     return tokensTotalWorth.reduce(
       (tokensTotal, tokenTotal) => this.addBalances(tokensTotal, tokenTotal),
-      this.getZeroedBalances()
+      this.getZeroedBalances(),
     );
   }
 
@@ -25,7 +25,6 @@ export class TokensValueConverter {
     }
     return tokenValues;
   }
-
 
   addBalances(totalBalances: CurrencyToValue, toAddBalances: CurrencyToValue) {
     for (const key in totalBalances) {

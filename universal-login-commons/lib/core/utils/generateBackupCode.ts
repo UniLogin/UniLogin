@@ -2,8 +2,8 @@ import {utils} from 'ethers';
 
 const {bigNumberify} = utils;
 
-const consonants: string = 'bcdfghjklmnprstvwz';
-const vowels: string = 'aeiouy';
+const consonants = 'bcdfghjklmnprstvwz';
+const vowels = 'aeiouy';
 
 export function getSyllables() {
   const syllables: string[] = [];
@@ -118,7 +118,7 @@ export function fromWords(words: string) {
 
 export function generateBackupCode(
   random1: utils.BigNumber = bigNumberify(utils.randomBytes(8)),
-  random2: utils.BigNumber = bigNumberify(utils.randomBytes(8))
+  random2: utils.BigNumber = bigNumberify(utils.randomBytes(8)),
 ) {
   const prefix = toWords(random1)
     .replace(/\s/g, '-')

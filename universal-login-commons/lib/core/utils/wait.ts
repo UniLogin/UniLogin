@@ -1,10 +1,10 @@
 import {Predicate} from '../types/common';
 import Assertion = Chai.Assertion;
 
-export const sleep = (ms : number) =>
+export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const waitUntil = async (predicate : Predicate, tick: number = 5, timeout: number = 1000, args: any[] = []) => {
+export const waitUntil = async (predicate: Predicate, tick = 5, timeout = 1000, args: any[] = []) => {
   let elapsed = 0;
   while (!await predicate(...args)) {
     if (elapsed > timeout) {
@@ -16,7 +16,7 @@ export const waitUntil = async (predicate : Predicate, tick: number = 5, timeout
   return true;
 };
 
-export async function waitExpect(callback: () => void | Promise<void> | Assertion, timeout: number = 1000, tick: number = 5) {
+export async function waitExpect(callback: () => void | Promise<void> | Assertion, timeout = 1000, tick = 5) {
   let elapsed = 0;
   let lastError;
   while (elapsed < timeout) {

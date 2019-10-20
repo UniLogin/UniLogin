@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 export const ETHER_NATIVE_TOKEN = {
   address: '0x0000000000000000000000000000000000000000',
   symbol: 'ETH',
-  name: 'ether'
+  name: 'ether',
 };
 
 export const DEFAULT_GAS_PRICE = 10000000000;

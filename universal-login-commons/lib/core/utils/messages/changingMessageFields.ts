@@ -8,16 +8,16 @@ export function stringifySignedMessageFields(signedMessage: SignedMessage) {
     gasLimitExecution: signedMessage.gasLimitExecution && signedMessage.gasLimitExecution.toString(),
     gasData: signedMessage.gasData && signedMessage.gasData.toString(),
     gasPrice: signedMessage.gasPrice && signedMessage.gasPrice.toString(),
-    nonce: signedMessage.nonce.toString()
+    nonce: signedMessage.nonce.toString(),
   };
 }
 
 export function bignumberifySignedMessageFields(signedMessage: any) {
   return {
     ...signedMessage,
-    value:  utils.bigNumberify(signedMessage.value),
+    value: utils.bigNumberify(signedMessage.value),
     gasLimitExecution: utils.bigNumberify(signedMessage.gasLimitExecution),
-    gasPrice:  utils.bigNumberify(signedMessage.gasPrice),
-    gasData:  utils.bigNumberify(signedMessage.gasData)
+    gasPrice: utils.bigNumberify(signedMessage.gasPrice),
+    gasData: utils.bigNumberify(signedMessage.gasData),
   };
 }

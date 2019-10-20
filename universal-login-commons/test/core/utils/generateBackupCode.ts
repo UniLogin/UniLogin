@@ -168,7 +168,7 @@ describe('Daefen', () => {
     }
   });
 
-  it(`Unexpected overflow`, () => {
+  it('Unexpected overflow', () => {
     const value = bigNumberify(2).pow(bigNumberify(64));
     expect(fromWords(toWords(value))).to.deep.eq(value);
   });

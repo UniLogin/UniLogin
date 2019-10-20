@@ -1,4 +1,4 @@
-export function copy(id : string) {
+export function copy(id: string) {
   const content = document.getElementById(id);
   if (content instanceof HTMLInputElement) {
     content.select();

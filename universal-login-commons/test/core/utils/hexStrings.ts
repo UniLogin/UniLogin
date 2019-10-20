@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import {isProperAddress, reverseHexString, isProperHexString} from '../../../lib/core/utils/hexStrings';
 import {TEST_ACCOUNT_ADDRESS} from '../../../lib';
 
-
 describe('UNIT: hex strings', () => {
   describe('isProperAddress', () => {
     it('proper address', () => {

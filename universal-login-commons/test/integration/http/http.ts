@@ -20,7 +20,7 @@ describe('handleApiResponse', () => {
     );
 
     const result = await handleApiResponse(response as any);
-    expect(result).to.deep.equal({ x: 1 });
+    expect(result).to.deep.equal({x: 1});
   });
 
   it('works for error response', async () => {
