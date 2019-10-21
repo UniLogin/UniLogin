@@ -27,6 +27,7 @@ export {Funds} from './ui/UFlow/Funds';
 export {DeleteAccount} from './ui/UFlow/DeleteAccount';
 export {BackupCodes} from './ui/BackupCodes/BackupCodes';
 export {Devices} from './ui/UFlow/Devices/Devices';
+export {NewDeviceMessage} from './ui/UFlow/Devices/NewDeviceMessage';
 export {ModalTransferRecipient} from './ui/Transfer/Recipient/ModalTransferRecipient';
 export {TransferDropdownItem} from './ui/Transfer/Amount/TransferDropdownItem';
 export {TransferDropdown} from './ui/Transfer/Amount/TransferDropdown';
