@@ -34,7 +34,7 @@ const HomeScreen = () => {
         return (
           <Devices
             walletService={walletService}
-            onDeleteAccountClick={() => history.push('/welcome')}
+            onAccountDeleted={() => history.push('/welcome')}
             className="jarvis-styles"
           />
         );

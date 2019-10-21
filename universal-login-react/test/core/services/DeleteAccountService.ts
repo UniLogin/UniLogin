@@ -16,7 +16,7 @@ describe('DeleteAccountService', () => {
   let deployedWallet: DeployedWallet;
   let relayer: RelayerUnderTest;
   let setErrors: () => void;
-  let onDeleteAccountClick: sinon.SinonStub;
+  let onAccountDeleted: sinon.SinonStub;
   const ensName = `test.mylogin.eth`;
 
   before(async () => {
@@ -28,20 +28,27 @@ describe('DeleteAccountService', () => {
     walletService = new WalletService(deployedWallet.sdk);
     walletService.setWallet(deployedWallet.asApplicationWallet);
     setErrors = sinon.stub();
-    onDeleteAccountClick = sinon.stub();
+    onAccountDeleted = sinon.stub();
   });
 
   it('delete account if inputs are valid', async () => {
-    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onDeleteAccountClick);
+    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
-    expect(onDeleteAccountClick).to.be.calledOnce;
+    expect(onAccountDeleted).to.be.calledOnce;
     expect(() => walletService.getDeployedWallet()).to.throw('Invalid state: expected deployed wallet');
   });
 
-  it('dont delete account if inputs are invalid', async () => {
-    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onDeleteAccountClick);
+  it('dont delete account if username are invalid', async () => {
+    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
-    expect(onDeleteAccountClick).to.not.be.called;
+    expect(onAccountDeleted).to.not.be.called;
+    expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
+  });
+
+  it('dont delete account if verifyField are invalid', async () => {
+    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'test'}, setErrors, onAccountDeleted);
+    expect(setErrors).to.be.calledOnce;
+    expect(onAccountDeleted).to.not.be.called;
     expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
   });
 

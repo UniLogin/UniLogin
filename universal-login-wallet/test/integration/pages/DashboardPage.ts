@@ -10,10 +10,6 @@ export default class DashboardPage {
     this.wrapper.update();
   }
 
-  areDeleteAccountInputsValid() {
-    return this.wrapper.exists('delete-account-input-error');
-  }
-
   async disconnect() {
     await this.clickDevicesButton();
     this.wrapper.find('.delete-account-link').simulate('click');

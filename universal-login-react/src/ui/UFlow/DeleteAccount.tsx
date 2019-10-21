@@ -7,12 +7,12 @@ import './../styles/deleteAccountDefault.sass';
 
 export interface DeleteAccountProps {
   walletService: WalletService;
-  onDeleteAccountClick: () => void;
+  onAccountDeleted: () => void;
   onCancelClick: () => void;
   className?: string;
 }
 
-export const DeleteAccount = ({walletService, onDeleteAccountClick, onCancelClick, className}: DeleteAccountProps) => {
+export const DeleteAccount = ({walletService, onAccountDeleted, onCancelClick, className}: DeleteAccountProps) => {
   const [inputs, setInputs] = useState({username: '', verifyField: ''});
   const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 
@@ -46,7 +46,7 @@ export const DeleteAccount = ({walletService, onDeleteAccountClick, onCancelClic
           </div>
           <div className="delete-account-buttons">
             <button onClick={onCancelClick} className="delete-account-cancel">Cancel</button>
-            <button onClick={() => deleteAccount(walletService, inputs, setErrors, onDeleteAccountClick)} className="delete-account-confirm">Delete account</button>
+            <button onClick={() => deleteAccount(walletService, inputs, setErrors, onAccountDeleted)} className="delete-account-confirm">Delete account</button>
           </div>
         </div>
       </div>

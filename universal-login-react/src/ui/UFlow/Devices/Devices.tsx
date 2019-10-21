@@ -8,12 +8,12 @@ import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSucce
 
 export interface DevicesProps {
   walletService: WalletService;
-  onDeleteAccountClick: () => void;
+  onAccountDeleted: () => void;
   basePath?: string;
   className?: string;
 }
 
-export const Devices = ({walletService, onDeleteAccountClick, className, basePath = ''}: DevicesProps) => {
+export const Devices = ({walletService, onAccountDeleted, className, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   const history = useHistory();
 
@@ -31,7 +31,7 @@ export const Devices = ({walletService, onDeleteAccountClick, className, basePat
       <Route path={`${basePath}/deleteAccount`} exact>
         <DeleteAccount
           walletService={walletService}
-          onDeleteAccountClick={onDeleteAccountClick}
+          onAccountDeleted={onAccountDeleted}
           onCancelClick={() => history.replace(`${basePath}/`)}
           className={className}
         />

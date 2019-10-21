@@ -148,7 +148,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   path="/dashboard/devices"
                   render={({history}) => (
                     <SubDialogWrapper message={notice} ensName={name}>
-                      <Devices walletService={walletService} onDeleteAccountClick={() => setDashboardVisibility(false)} basePath="/dashboard/devices" />
+                      <Devices walletService={walletService} onAccountDeleted={() => setDashboardVisibility(false)} basePath="/dashboard/devices" />
                     </SubDialogWrapper>
                   )}
                 />
