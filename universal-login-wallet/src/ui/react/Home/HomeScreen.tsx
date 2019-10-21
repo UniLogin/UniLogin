@@ -2,10 +2,9 @@ import React, {useContext} from 'react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
+import {Funds, Devices, BackupCodes, Notice, NewDeviceMessage} from '@universal-login/react';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 import {Route, Switch, useHistory} from 'react-router';
-import {NewDeviceMessage} from '@universal-login/react/dist/src/ui/UFlow/Devices/NewDeviceMessage';
 
 const HomeScreen = () => {
   const {walletService} = useServices();
