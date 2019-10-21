@@ -12,7 +12,7 @@ export const SECURITY_CODE_WITH_FAKES_LENGTH = 12;
 export const MASK = 1023;
 
 class KeyWithCode {
-  public code: number[];
+  code: number[];
   constructor(public key: string) {
     this.code = generateCode(key);
   }
@@ -63,7 +63,7 @@ export const addCodesToNotifications = (notifications: Notification[]) =>
   });
 
 export const isProperCodeNumber = (code: number) => {
-  return 0 <= code && code < ALPHABET_SIZE;
+  return code >= 0 && code < ALPHABET_SIZE;
 };
 
 export const isProperSecurityCode = (securityCode: number[]) => {

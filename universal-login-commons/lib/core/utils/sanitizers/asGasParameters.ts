@@ -4,5 +4,5 @@ import {asBigNumber} from './asBigNumber';
 
 export const asGasParameters: Sanitizer<GasParameters> = asObject<GasParameters>({
   gasToken: asString,
-  gasPrice: asBigNumber
+  gasPrice: asBigNumber,
 });

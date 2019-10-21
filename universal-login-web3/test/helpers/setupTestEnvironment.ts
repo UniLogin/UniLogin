@@ -9,7 +9,15 @@ const loadFixture = createFixtureLoader();
 const PORT = '55111';
 
 export async function setupTestEnvironment() {
-  const {deployer, walletContract, factoryContract, ensAddress, ensDomains, mockToken, wallets} = await loadFixture(prerequisites);
+  const {
+    deployer,
+    walletContract,
+    factoryContract,
+    ensAddress,
+    ensDomains,
+    mockToken,
+    wallets,
+  } = await loadFixture(prerequisites);
 
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
 

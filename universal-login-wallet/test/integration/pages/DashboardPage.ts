@@ -2,7 +2,7 @@ import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '../helpers/utils';
 
 export default class DashboardPage {
-  constructor(private wrapper : ReactWrapper) {
+  constructor(private wrapper: ReactWrapper) {
   }
 
   clickTransferButton() {
@@ -10,15 +10,19 @@ export default class DashboardPage {
     this.wrapper.update();
   }
 
-  disconnect() {
-    this.wrapper.find('.sign-out-btn').simulate('click');
+  async disconnect() {
+    await this.clickDevicesButton();
+    this.wrapper.find('.delete-account-link').simulate('click');
+    this.wrapper.find('#username').simulate('change', {target: {value: 'super-name.mylogin.eth'}});
+    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DELETE MY ACCOUNT'}});
+    this.wrapper.find('.delete-account-confirm').simulate('click');
   }
 
   async waitForHideModal() {
     await waitForUI(this.wrapper, () => !this.wrapper.exists('.modal-wrapper'), 4000);
   }
 
-  getWalletBalance() : string {
+  getWalletBalance(): string {
     return this.wrapper.find('p.balance-amount').text();
   }
 
@@ -28,16 +32,20 @@ export default class DashboardPage {
   }
 
   async clickDevicesButton() {
-    this.wrapper.find('#devicesButton').first().simulate('click', { button: 0 });
+    this.wrapper.find('#devicesButton').first().simulate('click', {button: 0});
     await waitForUI(this.wrapper, () => this.wrapper.exists('div.devices'));
   }
 
   async clickManageDevicesButton() {
-    this.wrapper.find('button.devices-message-button').simulate('click', { button: 0 });
+    this.wrapper.find('button.devices-message-button').simulate('click', {button: 0});
     await waitForUI(this.wrapper, () => this.wrapper.exists('#emojis'));
   }
 
   async waitForNewNotifications() {
     await waitForUI(this.wrapper, () => this.wrapper.exists('.new-notifications'), 3000, 100);
+  }
+
+  async waitForWelcomeScreen() {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Welcome in the Jarvis Network'));
   }
 }

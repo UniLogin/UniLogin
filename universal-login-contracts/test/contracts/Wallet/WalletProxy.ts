@@ -22,7 +22,6 @@ describe('CONTRACT: WalletProxy', async () => {
     ({walletProxy, proxyAsWallet, wallet} = await loadFixture(basicWalletAndProxy));
   });
 
-
   describe('WalletProxy', async () => {
     it('deployment fails if masterCopy is zero', async () => {
       await expect(deployContract(wallet, WalletProxy, [0x0])).to.be.eventually.rejectedWith('invalid address');

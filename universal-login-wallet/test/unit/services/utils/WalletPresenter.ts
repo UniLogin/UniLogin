@@ -9,7 +9,7 @@ describe('WalletFormatter', async () => {
   const applicationWallet = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_ACCOUNT_ADDRESS,
-    privateKey: TEST_PRIVATE_KEY
+    privateKey: TEST_PRIVATE_KEY,
   };
 
   beforeEach(() => {
@@ -32,6 +32,7 @@ describe('WalletFormatter', async () => {
   });
 
   it('return empty string if applicationWallet not exist', () => {
-    expect(() => walletPresenter.getContractAddress()).throws('Invalid wallet state: expected Deployed, Connecting or Future wallet');
+    expect(() => walletPresenter.getContractAddress())
+      .throws('Invalid wallet state: expected Deployed, Connecting or Future wallet');
   });
 });

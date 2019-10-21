@@ -8,14 +8,14 @@ describe('UNIT: deepMerge', () => {
     b: {
       c1: 1,
       c2: 2,
-    }
+    },
   };
 
   const obj2 = {
     a1: 10,
     b: {
       c2: 20,
-    }
+    },
   };
 
   it('merge obj1 with obj2', () => {
@@ -25,7 +25,7 @@ describe('UNIT: deepMerge', () => {
       b: {
         c1: 1,
         c2: 20,
-      }
+      },
     });
   });
 
@@ -42,7 +42,7 @@ describe('UNIT: deepMerge', () => {
   });
 
   it('non-empty merged to undefined', () => {
-    expect(() => deepMerge(undefined, obj1)).to.throws(`Cannot set property 'a1' of undefined`);
+    expect(() => deepMerge(undefined, obj1)).to.throws('Cannot set property \'a1\' of undefined');
   });
 
   it('undefined merged to non-empty', () => {
@@ -52,16 +52,16 @@ describe('UNIT: deepMerge', () => {
   it('flat merged to flat', () => {
     const a = {
       a: '10',
-      c: '30'
+      c: '30',
     };
     const b = {
       b: '20',
-      c: '50'
+      c: '50',
     };
     expect(deepMerge(a, b)).to.deep.eq({
       a: '10',
       b: '20',
-      c: '50'
+      c: '50',
     });
   });
 
@@ -73,18 +73,18 @@ describe('UNIT: deepMerge', () => {
         c1: 1,
         c2: {
           d1: 1,
-          d2: 2
+          d2: 2,
         },
-      }
+      },
     };
     const b = {
       a1: 10,
       b: {
         c2: {
-          d1: 10
+          d1: 10,
         },
-        c3: 30
-      }
+        c3: 30,
+      },
     };
     expect(deepMerge(a, b)).to.be.deep.eq({
       a1: 10,
@@ -93,10 +93,10 @@ describe('UNIT: deepMerge', () => {
         c1: 1,
         c2: {
           d1: 10,
-          d2: 2
+          d2: 2,
         },
-        c3: 30
-      }
+        c3: 30,
+      },
     });
   });
 

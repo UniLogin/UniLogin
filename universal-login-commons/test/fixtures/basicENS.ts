@@ -15,5 +15,13 @@ export async function basicENS(provider: providers.Provider, [wallet]: Wallet[])
   const domain = 'mylogin.eth';
   const {ensAddress, resolverAddress, ensBuilder, registrarAddress} = await deployENS(wallet, domain);
   const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
-  return {wallet, ensRegistrars: [domain], provider: providerWithENS, ensBuilder, ensAddress, publicResolver: resolverAddress, registrarAddress};
+  return {
+    wallet,
+    ensRegistrars: [domain],
+    provider: providerWithENS,
+    ensBuilder,
+    ensAddress,
+    publicResolver: resolverAddress,
+    registrarAddress,
+  };
 }

@@ -6,17 +6,17 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 import {NewDeviceMessage} from './NewDeviceMessage';
 import {ConnectedDevices} from './ConnectedDevices';
 import {useAsync} from '../../hooks/useAsync';
-import {FeatureFlag} from '../../commons/FeatureFlag';
 import Spinner from '../../commons/Spinner';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 
 export interface DevicesListProps {
   deployedWallet: DeployedWallet;
+  devicesBasePath: string;
   className?: string;
 }
 
-export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
+export const DevicesList = ({deployedWallet, devicesBasePath, className}: DevicesListProps) => {
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
 
   const history = useHistory();
@@ -28,19 +28,17 @@ export const DevicesList = ({deployedWallet, className}: DevicesListProps) => {
           <div className="devices-inner">
             <NewDeviceMessage
               deployedWallet={deployedWallet}
-              onClick={() => history.push(join(history.location.pathname, 'approveDevice'))}
+              onClick={() => history.push(join(devicesBasePath, 'approveDevice'))}
               className={className}
             />
-            {devices ?
-              <ConnectedDevices
+            {devices
+              ? <ConnectedDevices
                 devicesList={devices}
                 deployedWallet={deployedWallet}
               />
               : <Spinner className="spinner-center"/>}
           </div>
-          <FeatureFlag sdk={deployedWallet.sdk} feature="deleteAccount">
-            <button onClick={() => history.push('deleteAccount')} className="delete-account-link">Delete account</button>
-          </FeatureFlag>
+          <button onClick={() => history.push(join(devicesBasePath, 'deleteAccount'))} className="delete-account-link">Delete account</button>
         </div>
       </div>
     </div>

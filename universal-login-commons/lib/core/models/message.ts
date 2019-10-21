@@ -16,33 +16,33 @@ export type MessageCore = {
 export type PaymentOptions = {
   gasLimit: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
-  gasToken: string
+  gasToken: string;
 };
 
 export type SignedMessagePaymentOptions = {
   gasLimitExecution: utils.BigNumberish;
   gasData: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
-  gasToken: string
+  gasToken: string;
 };
 
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
 
 export type MessageStatus = {
-  messageHash: string,
-  error?: string,
-  transactionHash?: string,
-  collectedSignatures: string[],
-  totalCollected: number,
-  required: number,
-  state: MessageState
+  messageHash: string;
+  error?: string;
+  transactionHash?: string;
+  collectedSignatures: string[];
+  totalCollected: number;
+  required: number;
+  state: MessageState;
 };
 
 export type DeploymentStatus = {
-  deploymentHash: string,
-  error: string | null,
-  transactionHash: string | null,
-  state: DeploymentState
+  deploymentHash: string;
+  error: string | null;
+  transactionHash: string | null;
+  state: DeploymentState;
 };
 
 export type MessageWithFrom = PartialRequired<SignedMessage, 'from'>;

@@ -7,5 +7,5 @@ export enum WalletSuggestionAction {
 export const WALLET_SUGGESTION_ALL_ACTIONS: WalletSuggestionAction[] = [
   WalletSuggestionAction.create,
   WalletSuggestionAction.connect,
-  WalletSuggestionAction.recover
+  WalletSuggestionAction.recover,
 ];

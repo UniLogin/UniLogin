@@ -3,7 +3,7 @@ import {
   DebouncedSuggestionsService,
   WalletSuggestionAction,
   WALLET_SUGGESTION_ALL_ACTIONS,
-  SuggestionsService
+  SuggestionsService,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
@@ -41,8 +41,8 @@ export const WalletSelector = ({
 }: WalletSelector) => {
   const [debouncedSuggestionsService] = useState(
     new DebouncedSuggestionsService(
-      new SuggestionsService(sdk, domains, actions)
-    )
+      new SuggestionsService(sdk, domains, actions),
+    ),
   );
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);

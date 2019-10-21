@@ -18,19 +18,19 @@ export const Safello = (props: SafelloProps) => {
       width="500px"
       height="650px"
       sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups"
-      style={{ border: 'none', maxWidth: '100%' }}
+      style={{border: 'none', maxWidth: '100%'}}
     />
   );
 };
 
 export const getSafelloUrl = (
-    localizationConfig: LocalizationConfig,
-    safelloConfig: SafelloConfig,
-    crypto: string,
-    contractAddress: string
-  ) => `${safelloConfig.baseAddress}?` +
+  localizationConfig: LocalizationConfig,
+  safelloConfig: SafelloConfig,
+  crypto: string,
+  contractAddress: string,
+) => `${safelloConfig.baseAddress}?` +
     `appId=${safelloConfig.appId}` +
-    `&border=true` +
+    '&border=true' +
     `&address-helper=${safelloConfig.addressHelper}` +
     `&lang=${localizationConfig.language}` +
     `&country=${localizationConfig.country}` +

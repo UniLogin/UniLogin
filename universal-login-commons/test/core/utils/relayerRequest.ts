@@ -14,7 +14,7 @@ describe('UNIT: RelayerRequest', () => {
   beforeEach(() => {
     relayerRequest = {
       contractAddress,
-      signature: ''
+      signature: '',
     };
   });
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import logo from '../../assets/logo.svg';
 import {useServices} from '../../hooks';
-import UserDropdown from '../common/UserDropdown';
 import {Link, NavLink} from 'react-router-dom';
 
 export function Header() {
@@ -40,7 +39,6 @@ export function Header() {
             <NavLink to="/backup" className="header-btn backup-btn">Backup</NavLink>
           </li>
         </ul>
-        <UserDropdown />
       </div>
     </div>
   );

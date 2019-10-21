@@ -7,5 +7,5 @@ export const asTransferDetails: Sanitizer<TransferDetails> = asObject<TransferDe
   to: asEthAddress,
   amount: asString,
   transferToken: asString,
-  gasParameters: asGasParameters
+  gasParameters: asGasParameters,
 });

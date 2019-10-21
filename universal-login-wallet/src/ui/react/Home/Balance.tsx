@@ -11,9 +11,12 @@ const Balance = () => {
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const {sdk, walletPresenter} = useServices();
 
-  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(walletPresenter.getContractAddress(), (totalBalances: CurrencyToValue) => setTotalBalance(totalBalances['USD'])), []);
+  useAsyncEffect(() => sdk.subscribeToAggregatedBalance(
+    walletPresenter.getContractAddress(),
+    (totalBalances: CurrencyToValue) => setTotalBalance(totalBalances['USD']),
+  ), []);
 
-  return(
+  return (
     <section className="balance">
       <h2 className="balance-title">Total Balance</h2>
       <p className="balance-amount"><span className="balance-amount-highlighted">{totalBalance}</span> $</p>

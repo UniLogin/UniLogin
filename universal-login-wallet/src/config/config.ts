@@ -1,7 +1,6 @@
 require('dotenv').config();
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
-
 export default Object.freeze({
 
   development: {
@@ -23,5 +22,5 @@ export default Object.freeze({
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address],
-  }
+  },
 });

@@ -37,21 +37,21 @@ describe('UNIT: argumentsEncoding', async () => {
     });
 
     it('Should concatenate two signatures arrays', async () => {
-        const expected = `${signature1}${signature2.replace('0x', '')}`;
-        const concatenate = concatenateSignatures([signature1, signature2]);
-        expect(concatenate).to.be.equal(expected);
+      const expected = `${signature1}${signature2.replace('0x', '')}`;
+      const concatenate = concatenateSignatures([signature1, signature2]);
+      expect(concatenate).to.be.equal(expected);
     });
 
     it('Should not concatenate two signatures arrays without 0x prefix', async () => {
-        signature1 = `${signature1.replace('0x', '')}aa`;
-        signature2 = `${signature2.replace('0x', '')}aa`;
-        expect(concatenateSignatures.bind(null, [signature1, signature2])).to.throw(`Invalid Signature: ${signature1} needs prefix 0x`);
+      signature1 = `${signature1.replace('0x', '')}aa`;
+      signature2 = `${signature2.replace('0x', '')}aa`;
+      expect(concatenateSignatures.bind(null, [signature1, signature2])).to.throw(`Invalid Signature: ${signature1} needs prefix 0x`);
     });
 
-      it('Should not concatenate two signatures arrays with invalid length', async () => {
-        const sig1 = '0xffff';
-        const sig2 = '0xffe2';
-        expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid signature length: ${sig1} should be 132`);
+    it('Should not concatenate two signatures arrays with invalid length', async () => {
+      const sig1 = '0xffff';
+      const sig2 = '0xffe2';
+      expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid signature length: ${sig1} should be 132`);
     });
   });
 
@@ -66,7 +66,7 @@ describe('UNIT: argumentsEncoding', async () => {
         gasPrice: 0,
         gasLimitExecution: 0,
         gasToken: '0x0000000000000000000000000000000000000000',
-        gasData: 68
+        gasData: 68,
       };
 
       const expectedResult = [
@@ -76,7 +76,7 @@ describe('UNIT: argumentsEncoding', async () => {
         0,
         '0x0000000000000000000000000000000000000000',
         0,
-        68
+        68,
       ];
       expect(getExecutionArgs(msg)).to.deep.eq(expectedResult);
     });

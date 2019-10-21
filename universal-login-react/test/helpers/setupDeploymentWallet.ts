@@ -4,9 +4,10 @@ import {mockSdkPrices} from './mockSdkPrices';
 import {Wallet} from 'ethers';
 
 export const setupDeployedWallet = async (wallet: Wallet, ensName: string) => {
-  const {sdk} = await setupSdk(wallet, '33113');
+  const {relayer, sdk} = await setupSdk(wallet, '33113');
   mockSdkPrices(sdk);
-  sdk.start();
+  await sdk.start();
   const {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
-  return new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+  const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+  return {deployedWallet, relayer};
 };

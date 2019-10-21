@@ -2,7 +2,7 @@ import {WalletService} from '@universal-login/sdk';
 
 export class WalletPresenter {
   constructor(
-    private walletService: WalletService
+    private walletService: WalletService,
   ) {}
 
   getPrivateKey() {

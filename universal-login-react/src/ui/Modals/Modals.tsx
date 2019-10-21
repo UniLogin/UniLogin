@@ -19,6 +19,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
         <TopUp
           hideModal={modalService.hideModal}
           modalClassName={modalClassName}
+          showModal={modalService.showModal}
           {...modalService.modalProps as TopUpProps}
           isModal
         />
@@ -26,7 +27,7 @@ const Modals = ({modalClassName}: ModalsProps) => {
     case 'waitingFor':
       return (
         <ModalWrapper>
-            <WaitingForTransaction {...modalService.modalProps as WaitingForTransactionProps}/>
+          <WaitingForTransaction {...modalService.modalProps as WaitingForTransactionProps}/>
         </ModalWrapper>
       );
     case 'connectionFlow':

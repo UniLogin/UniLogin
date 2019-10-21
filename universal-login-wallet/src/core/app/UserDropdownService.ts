@@ -1,4 +1,4 @@
-import { EventEmitter } from 'fbemitter';
+import {EventEmitter} from 'fbemitter';
 
 export type dropdownType = true | false;
 
@@ -11,7 +11,7 @@ class UserDropdownService {
     this.emitter.emit(DROPDOWN_EVENT, dropdownType);
   }
 
-  subscribe (callback: (type: dropdownType) => void) {
+  subscribe(callback: (type: dropdownType) => void) {
     const subscription = this.emitter.addListener(DROPDOWN_EVENT, callback);
     return function unsubscribe() {
       subscription.remove();

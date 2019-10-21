@@ -7,10 +7,11 @@ import {createServices, ServiceContext} from './core/services/createServices';
 const services = createServices(config);
 services.sdk.start();
 
-render((
+render(
+  (
     <ServiceContext.Provider value={services}>
       <App/>
     </ServiceContext.Provider>
   ),
-  document.getElementById('app')
+  document.getElementById('app'),
 );

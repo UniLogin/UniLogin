@@ -8,7 +8,7 @@ export interface CustomMemoryRouterProps {
 }
 
 export const CustomMemoryRouter = ({children, initialEntries}: CustomMemoryRouterProps) => {
-  return(
+  return (
     <MemoryRouter initialEntries={initialEntries}>
       <Route>
         {(routeProps: RouteComponentProps) => (

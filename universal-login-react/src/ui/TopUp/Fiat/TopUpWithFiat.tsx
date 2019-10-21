@@ -76,7 +76,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
               amount={amount}
               onChange={(amount: string) => setAmount(amount)}
             />
-        </div>}
+          </div>}
       </div>
       {!!country && <>
         <p className="top-up-label fiat-payment-methods-title">Payment method</p>

@@ -12,7 +12,7 @@ export const CATEGORIES: EmojiCategory[] = [
   {name: 'Food', startIndex: 30, endIndex: 60},
   {name: 'Activities', startIndex: 60, endIndex: 90},
   {name: 'Shapes', startIndex: 90, endIndex: 109},
-  {name: 'Emojis', startIndex: 109, endIndex: 128}
+  {name: 'Emojis', startIndex: 109, endIndex: 128},
 ];
 
 export const getBaseEmojiCode = (iconIndex: number) => iconIndex * EMOJI_COLORS.length;

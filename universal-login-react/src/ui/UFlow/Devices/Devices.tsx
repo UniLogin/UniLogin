@@ -1,40 +1,49 @@
 import React from 'react';
-import {Route, Switch} from 'react-router';
+import {Route, Switch, useHistory} from 'react-router';
 import {DevicesList} from './DevicesList';
-import {DeployedWallet} from '@universal-login/sdk';
+import {WalletService} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
 
 export interface DevicesProps {
-  deployedWallet: DeployedWallet;
+  walletService: WalletService;
+  onAccountDeleted: () => void;
   basePath?: string;
   className?: string;
 }
 
-export const Devices = ({deployedWallet, className, basePath = ''}: DevicesProps) => {
+export const Devices = ({walletService, onAccountDeleted, className, basePath = ''}: DevicesProps) => {
+  const deployedWallet = walletService.getDeployedWallet();
+  const history = useHistory();
+
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
-        <DevicesList deployedWallet={deployedWallet} className={className}/>
+        <DevicesList
+          deployedWallet={deployedWallet}
+          devicesBasePath={basePath}
+          className={className}
+        />
       </Route>
       <Route path={`${basePath}/approveDevice`} exact>
-        <ConnectionNotification deployedWallet={deployedWallet} className={className}/>
+        <ConnectionNotification
+          deployedWallet={deployedWallet}
+          devicesBasePath={basePath}
+          className={className}
+        />
       </Route>
       <Route path={`${basePath}/connectionSuccess`} exact>
         <ConnectionSuccessNotification className={className}/>
       </Route>
-      <Route
-        path={`${basePath}/`}
-        exact
-        render={({history}) => (
-          <DeleteAccount
-            onCancelClick={() => history.replace(`${basePath}/`)}
-            onConfirmDeleteClick={() => {}}
-            className={className}
-          />
-        )}
-      />
+      <Route path={`${basePath}/deleteAccount`} exact>
+        <DeleteAccount
+          walletService={walletService}
+          onAccountDeleted={onAccountDeleted}
+          onCancelClick={() => history.replace(`${basePath}/`)}
+          className={className}
+        />
+      </Route>
     </Switch>
   );
 };

@@ -9,8 +9,6 @@ export interface LogoButtonProps {
 }
 
 export const LogoButton = ({deployedWallet, className}: LogoButtonProps) => {
-
-
   if (deployedWallet.contractAddress.length > 10) {
     return (
       <div className={getStyleForTopLevelComponent(className)}>

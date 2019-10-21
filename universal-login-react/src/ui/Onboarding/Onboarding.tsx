@@ -5,7 +5,7 @@ import Modals from '../Modals/Modals';
 import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
-import {createModalService} from '../../core/services/createModalService';
+import {useModalService} from '../../core/services/useModalService';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -19,14 +19,14 @@ export interface OnboardingProps {
 }
 
 export const Onboarding = (props: OnboardingProps) => {
-  const modalService = createModalService<ReactModalType, ReactModalProps>();
+  const modalService = useModalService<ReactModalType, ReactModalProps>();
   const [walletService] = useState<WalletService>(props.walletService || new WalletService(props.sdk));
   const onConnectClick = (ensName: string) => {
     const connectionFlowProps = {
       name: ensName,
       sdk: props.sdk,
       walletService,
-      onSuccess
+      onSuccess,
     };
     modalService.showModal('connectionFlow', connectionFlowProps);
   };
@@ -51,13 +51,13 @@ export const Onboarding = (props: OnboardingProps) => {
     localStorage.setItem('BACKUP_DEMO', JSON.stringify({
       ensName,
       contractAddress,
-      privateKey
+      privateKey,
     }));
     const topUpProps: TopUpProps = {
       contractAddress,
-      onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
+      onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
       sdk: props.sdk,
-      isDeployment: true
+      isDeployment: true,
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
@@ -66,7 +66,6 @@ export const Onboarding = (props: OnboardingProps) => {
     modalService.hideModal();
     props.onCreate && props.onCreate(wallet);
   };
-
 
   return (
     <div className="universal-login">

@@ -19,7 +19,7 @@
     "test": "yarn build:ts && yarn test:nobuild",
     "test:nobuild": "mocha -t 10000 \"dist/test/**/*.js\"",
     "lint": "yarn lint:js && yarn lint:sol",
-    "lint:js": "tslint -p tsconfig.json \"{lib,test}/**/*.{ts,js}\"",
+    "lint:js": "eslint '{lib,test}/**/*.{js,ts}'",
     "lint:sol": "solium -d contracts",
     "clean": "rimraf build dist"
   },
@@ -29,16 +29,18 @@
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.5",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "ethereum-waffle": "2.0.15",
     "ethlint": "^1.2.3",
+    "eslint": "^6.5.0",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",
     "rimraf": "^2.6.3",
     "ts-node": "^8.0.2",
-    "tslint": "^5.16.0",
     "typescript": "^3.3.3"
   }
 }

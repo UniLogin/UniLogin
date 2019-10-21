@@ -29,8 +29,8 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
       </button>
       {palette === index
         ? <ul className="emoji-keyboard-color-row">
-            {renderColors(emojiCode)}
-          </ul>
+          {renderColors(emojiCode)}
+        </ul>
         : null }
     </li>
   );
@@ -54,7 +54,7 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   };
 
   const renderCategories = () => (
-    CATEGORIES.map(({name} : {name: string}, index: number) => (
+    CATEGORIES.map(({name}: {name: string}, index: number) => (
       <li
         key={`li-category-${name}`}
         className={`emoji-category-item ${category === index ? 'active' : ''}`}

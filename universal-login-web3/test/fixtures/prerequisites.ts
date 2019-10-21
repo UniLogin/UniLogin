@@ -18,4 +18,3 @@ export async function prerequisites(givenProvider: providers.Provider, [deployer
 
   return {deployer, walletContract, factoryContract, ensAddress, ensDomains: [DOMAIN], mockToken, wallets};
 }
-

@@ -9,5 +9,5 @@ export const EMPTY_DEVICE_INFO: DeviceInfo = {
   time: '',
   browser: '',
   type: '',
-  logo: ''
+  logo: '',
 };

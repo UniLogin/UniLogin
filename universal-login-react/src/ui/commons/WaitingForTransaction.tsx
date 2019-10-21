@@ -13,7 +13,7 @@ export interface WaitingForTransactionProps extends WaitingForProps {
 const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children}: WaitingForTransactionProps) => {
   return (
     <div>
-      <WaitingFor action={action} children={children}/>
+      <WaitingFor action={action}>{children}</WaitingFor>
       <div>
         <div className="modal-pending-section">
           <h3 className="transaction-hash-title">Transaction hash</h3>

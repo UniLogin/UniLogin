@@ -18,4 +18,3 @@ export const getInitializeSigner = (initializeData: string, signature: string) =
   const dataHash = utils.solidityKeccak256(['bytes'], [initializeData]);
   return utils.verifyMessage(utils.arrayify(dataHash), signature);
 };
-

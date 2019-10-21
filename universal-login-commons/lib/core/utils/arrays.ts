@@ -1,6 +1,6 @@
 import deepEqual = require('deep-equal');
 
-export function *slices(array: number[], sliceSize: number) {
+export function * slices(array: number[], sliceSize: number) {
   for (let i = 0; i < array.length; i++) {
     if (i % sliceSize === 0) {
       yield array.slice(i, i + sliceSize);
@@ -20,7 +20,7 @@ export const shuffle = (array: number[]): number[] => {
 export const array8bitTo16bit = (numbers: number[]) => {
   return Array.from(
     slices(numbers, 2),
-    ([high, low]) => ((high << 8) | low & 0xFF) & 0xFFFF
+    ([high, low]) => ((high << 8) | low & 0xFF) & 0xFFFF,
   );
 };
 

@@ -24,12 +24,15 @@ interface GasPriceProps {
 
 export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-  if (isDeployed) {
-    ensureNotNull(deployedWallet, Error, 'Missing parameter: deployedWallet');
-    useAsyncEffect(() => deployedWallet!.subscribeToBalances(setTokenDetailsWithBalance), []);
-  } else {
-    ensureNotNull(sdk, Error, 'Missing parameter: sdk');
-  }
+
+  useAsyncEffect(async () => {
+    if (isDeployed) {
+      ensureNotNull(deployedWallet, Error, 'Missing parameter: deployedWallet');
+      return deployedWallet!.subscribeToBalances(setTokenDetailsWithBalance);
+    } else {
+      ensureNotNull(sdk, Error, 'Missing parameter: sdk');
+    }
+  }, [isDeployed, deployedWallet]);
 
   const [gasModes] = useAsync<GasMode[]>(() => isDeployed ? deployedWallet!.getGasModes() : sdk!.getGasModes(), []);
   const [modeName, setModeName] = useState<string>('');
@@ -49,7 +52,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     setGasOption(gasOption);
     onGasParametersChanged({
       gasPrice: gasOption.gasPrice,
-      gasToken: gasOption.token.address
+      gasToken: gasOption.token.address,
     });
   };
 

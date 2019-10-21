@@ -35,35 +35,35 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
 
   return (
     <div className="universal-login-amount">
-    <div className={getStyleForTopLevelComponent(transferAmountClassName)}>
-      <div className="transfer-amount">
-        <TransferDropdown
-          sdk={sdk}
-          tokenDetailsWithBalance={tokenDetailsWithBalance}
-          tokenDetails={tokenDetails}
-          setToken={(token: TokenDetails) => updateTransferDetailsWith({transferToken: token.address})}
-          className={transferAmountClassName}
-        />
-        <div className="transfer-amount-row">
-          <label className="transfer-amount-label" htmlFor="amount-eth">How much are you sending?</label>
-          <FeatureFlag sdk={sdk} feature="maxButton">
-            <button className="transfer-amount-max">Max</button>
-          </FeatureFlag>
-        </div>
-        <div className="transfer-amount-input-wrapper">
-          <input
-            id="amount-eth"
-            type="number"
-            className="transfer-amount-input"
-            onChange={event => validateAndUpdateTransferDetails(event.target.value)}
+      <div className={getStyleForTopLevelComponent(transferAmountClassName)}>
+        <div className="transfer-amount">
+          <TransferDropdown
+            sdk={sdk}
+            tokenDetailsWithBalance={tokenDetailsWithBalance}
+            tokenDetails={tokenDetails}
+            setToken={(token: TokenDetails) => updateTransferDetailsWith({transferToken: token.address})}
+            className={transferAmountClassName}
           />
-          <span className="transfer-amount-code">{tokenDetails.symbol}</span>
+          <div className="transfer-amount-row">
+            <label className="transfer-amount-label" htmlFor="amount-eth">How much are you sending?</label>
+            <FeatureFlag sdk={sdk} feature="maxButton">
+              <button className="transfer-amount-max">Max</button>
+            </FeatureFlag>
+          </div>
+          <div className="transfer-amount-input-wrapper">
+            <input
+              id="amount-eth"
+              type="number"
+              className="transfer-amount-input"
+              onChange={event => validateAndUpdateTransferDetails(event.target.value)}
+            />
+            <span className="transfer-amount-code">{tokenDetails.symbol}</span>
+          </div>
+          <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!isAmountCorrect}>
+            <span>Select recipient</span>
+          </button>
         </div>
-        <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!isAmountCorrect}>
-          <span>Select recipient</span>
-        </button>
       </div>
     </div>
-  </div>
   );
 };

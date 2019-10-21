@@ -5,7 +5,6 @@ import {walletContractFixture} from '../../fixtures/walletContract';
 import WalletContract from '../../../build/Wallet.json';
 import {KeyPair} from '@universal-login/commons';
 
-
 describe('WalletContract fixture test', () => {
   let proxyWallet: Contract;
   let keyPair: KeyPair;

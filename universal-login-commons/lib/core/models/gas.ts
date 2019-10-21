@@ -18,4 +18,3 @@ export interface GasParameters {
 }
 
 export type OnGasParametersChanged = (gasParameters: GasParameters) => void;
-

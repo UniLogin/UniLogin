@@ -6,7 +6,6 @@ export interface DialogHeaderProps {
 }
 
 export const DialogHeader = ({ensName}: DialogHeaderProps) => {
-
   return (
     <div className="udashboard-header">
       <div className="udashboard-header-nav">

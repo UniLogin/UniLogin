@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect} from 'react';
-import { ModalPosition } from '../../core/models/ModalPosition';
+import {ModalPosition} from '../../core/models/ModalPosition';
 import './../styles/modal.sass';
 import './../styles/modalDefaults.sass';
 import {escapePressed} from '@universal-login/commons';
@@ -11,9 +11,8 @@ interface ModalWrapperProps {
   hideModal?: () => void;
 }
 
-export const ModalWrapper = ({ modalPosition, children, modalClassName, hideModal}: ModalWrapperProps) => {
-
-  const listenKeyboard = (event : KeyboardEvent) => {
+export const ModalWrapper = ({modalPosition, children, modalClassName, hideModal}: ModalWrapperProps) => {
+  const listenKeyboard = (event: KeyboardEvent) => {
     if (escapePressed(event) && hideModal) {
       hideModal();
     }
@@ -30,7 +29,7 @@ export const ModalWrapper = ({ modalPosition, children, modalClassName, hideModa
     <>
       <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-default'}>
         <div className="modal-overlay" onClick={hideModal} />
-        <div className={`modal-wrapper ${modalPosition ? modalPosition : 'center'}`}>
+        <div className={`modal-wrapper ${modalPosition || 'center'}`}>
           <div className="modal">
             {!!hideModal && <button onClick={hideModal} className="modal-close-btn" />}
             {children}

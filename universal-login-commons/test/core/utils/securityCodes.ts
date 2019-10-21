@@ -8,7 +8,7 @@ describe('UNIT: security codes', () => {
   describe('filterNotificationByCodePrefix', () => {
     const notifications = [
       {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301270'},
-      {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301271'}
+      {key: '0x121323c0564ac2b0d5ae5d71773e8f208e301271'},
     ] as unknown as Notification[];
 
     it('no match', () => {
@@ -17,7 +17,7 @@ describe('UNIT: security codes', () => {
 
     it('1 match', () => {
       expect(filterNotificationByCodePrefix(notifications, [544])).to.deep.eq([
-        '0x121323c0564ac2b0d5ae5d71773e8f208e301270'
+        '0x121323c0564ac2b0d5ae5d71773e8f208e301270',
       ]);
     });
   });
@@ -30,7 +30,7 @@ describe('UNIT: security codes', () => {
     describe('single address', () => {
       const keyWithCode = {
         key: '0x321323c0564ac2b0d5ae5d71773e8f208e30127d',
-        code: [ 385, 951, 760, 594, 456, 349 ]
+        code: [385, 951, 760, 594, 456, 349],
       };
 
       it('no match, single addresses', () => {
@@ -45,13 +45,13 @@ describe('UNIT: security codes', () => {
     describe('many addresses', () => {
       const keyWithCodes = [{
         key: '0x121323c0564ac2b0d5ae5d71773e8f208e301270',
-        code: [ 544, 680, 528, 350, 51, 414 ]
+        code: [544, 680, 528, 350, 51, 414],
       }, {
         key: '0x121323c0564ac2b0d5ae5d71773e8f208e301271',
-        code: [ 854, 444, 123, 102, 545, 328 ]
+        code: [854, 444, 123, 102, 545, 328],
       }, {
         key: '0x121323c0564ac2b0d5ae5d71773e8f208e301272',
-        code: [ 544, 167, 198, 145, 541, 1009 ]
+        code: [544, 167, 198, 145, 541, 1009],
       }];
 
       it('no match, mulitple addresses', () => {
@@ -61,13 +61,13 @@ describe('UNIT: security codes', () => {
       it('multiple matches, multiple addresses', () => {
         expect(filterKeyWithCodeByPrefix(keyWithCodes, [544])).to.deep.eq([
           '0x121323c0564ac2b0d5ae5d71773e8f208e301270',
-          '0x121323c0564ac2b0d5ae5d71773e8f208e301272'
+          '0x121323c0564ac2b0d5ae5d71773e8f208e301272',
         ]);
       });
 
       it('multiple matches, multiple addresses, two digit prefix', () => {
         expect(filterKeyWithCodeByPrefix(keyWithCodes, [544, 167])).to.deep.eq([
-          '0x121323c0564ac2b0d5ae5d71773e8f208e301272'
+          '0x121323c0564ac2b0d5ae5d71773e8f208e301272',
         ]);
       });
     });
@@ -76,7 +76,7 @@ describe('UNIT: security codes', () => {
   describe('generateCode', () => {
     it('returns 6 numbers', () => {
       const encoding = generateCode(mockedAddress);
-      expect(encoding).to.deep.eq([ 619, 192, 20, 934, 264, 392 ]);
+      expect(encoding).to.deep.eq([619, 192, 20, 934, 264, 392]);
     });
 
     it('returns 6 numbers', () => {
@@ -132,9 +132,9 @@ describe('UNIT: security codes', () => {
             browser: 'node-fetch',
             time: '1:30',
             type: 'laptop',
-            logo: 'icon'
-          }
-        }
+            logo: 'icon',
+          },
+        },
       ];
       const [resultNotification] = addCodesToNotifications(notifications);
       expect(resultNotification).to.have.property('securityCodeWithFakes');

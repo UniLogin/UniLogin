@@ -13,7 +13,7 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment}: TopUpWithCrypto
     setCryptoClass('crypto-selected');
   }, []);
 
-  return(
+  return (
     <div className={`crypto ${cryptoClass}`}>
       <label htmlFor="input-address" className="top-up-label">Send to</label>
       <div className="input-address-wrapper">

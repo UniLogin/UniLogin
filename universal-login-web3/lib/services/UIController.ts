@@ -4,11 +4,11 @@ import {MetamaskService} from './MetamaskService';
 
 export class UIController {
   private walletNeeded = new State(false);
-  public showOnboarding: Property<boolean>;
+  showOnboarding: Property<boolean>;
 
   constructor(
     walletService: WalletService,
-    metamaskService: MetamaskService
+    metamaskService: MetamaskService,
   ) {
     this.showOnboarding = combine(
       [this.walletNeeded, walletService.stateProperty, metamaskService.metamaskProvider],

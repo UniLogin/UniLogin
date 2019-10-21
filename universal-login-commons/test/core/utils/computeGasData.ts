@@ -29,13 +29,13 @@ describe('UNIT: computeGasData', async () => {
   });
 
   it('invalid hex', async () => {
-    const data = ``;
+    const data = '';
 
     expect(() => computeGasData(data)).to.throw('Not a valid hex string');
   });
 
   it('invalid hex layout - odd number of symbols', async () => {
-    const data = `0xbee`;
+    const data = '0xbee';
 
     expect(() => computeGasData(data)).to.throw('Not a valid hex string');
   });
