@@ -28,6 +28,7 @@ export type TopUpProps = {
   contractAddress: string;
   onGasParametersChanged?: OnGasParametersChanged;
   isDeployment: boolean;
+  hideModal?: () => void;
 };
 
 export const ReactModalContext = React.createContext({} as IModalService<ReactModalType, ReactModalProps>);
