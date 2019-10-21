@@ -1,23 +1,26 @@
 .devices-message
   position: relative
-  padding: 30px 35px 25px 70px
-  margin-bottom: 40px
-  border: 1px solid
-  border-radius: 3px
-
-.devices-message::before
-  content: ''
-  position: absolute
-  top: 32px
-  left: 25px
-  width: 28px
-  height: 32px
-  background: url('../assets/ucomponent/new-device.svg') center no-repeat
+  width: 100%
+  padding: 20px 30px
 
 .devices-message-row
+  position: relative
   display: flex
   justify-content: space-between
   align-items: center
+  max-width: 770px
+  margin: 0 auto
+  padding-left: 63px
+
+.devices-message-row::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  transform: translateY(-50%)
+  width: 36px
+  height: 34px
+  background: url('../assets/icons/new-devices.svg') center no-repeat
 
 .devices-message-desription
   max-width: 430px
@@ -27,11 +30,13 @@
   margin: 0 0 9px
   font-weight: 600
   font-size: 14px
+  line-height: 21px
 
 .devices-message-text
   margin: 0
   font-size: 12px
   letter-spacing: 0
+  line-height: 18px
 
 .devices-message-button
   width: 165px
