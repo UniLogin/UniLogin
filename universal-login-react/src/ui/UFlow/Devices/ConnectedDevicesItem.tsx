@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {utils} from 'ethers';
 import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
@@ -32,7 +31,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     }
   };
 
-  const isCurrentDevice = () => utils.computeAddress(deployedWallet.privateKey) === publicKey;
+  const isCurrentDevice = () => deployedWallet.publicKey === publicKey;
 
   const renderTrashButton = () => (
     !isCurrentDevice() && (
