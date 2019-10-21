@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import logo from '../../assets/logo.svg';
 import {useServices} from '../../hooks';
-import UserDropdown from '../common/UserDropdown';
 import {Link} from 'react-router-dom';
 
 export interface HeaderProps {
@@ -49,7 +48,6 @@ export function Header({setContent}: HeaderProps) {
             </button>
           </li>
         </ul>
-        <UserDropdown />
       </div>
     </div>
   );

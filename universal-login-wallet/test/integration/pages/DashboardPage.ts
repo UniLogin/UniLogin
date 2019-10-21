@@ -10,8 +10,12 @@ export default class DashboardPage {
     this.wrapper.update();
   }
 
-  disconnect() {
-    this.wrapper.find('.sign-out-btn').simulate('click');
+  async disconnect() {
+    await this.clickDevicesButton();
+    this.wrapper.find('.delete-account-link').simulate('click');
+    this.wrapper.find('#username').simulate('change', {target: {value: 'super-name.mylogin.eth'}});
+    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DELETE MY ACCOUNT'}});
+    this.wrapper.find('.delete-account-confirm').simulate('click');
   }
 
   async waitForHideModal() {
@@ -39,5 +43,9 @@ export default class DashboardPage {
 
   async waitForNewNotifications() {
     await waitForUI(this.wrapper, () => this.wrapper.exists('.new-notifications'), 3000, 100);
+  }
+
+  async waitForWelcomeScreen() {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Welcome in the Jarvis Network'));
   }
 }
