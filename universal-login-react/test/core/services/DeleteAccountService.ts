@@ -17,7 +17,7 @@ describe('DeleteAccountService', () => {
   let relayer: RelayerUnderTest;
   let setErrors: () => void;
   let onAccountDeleted: sinon.SinonStub;
-  const ensName = `test.mylogin.eth`;
+  const ensName = 'test.mylogin.eth';
 
   before(async () => {
     ([wallet] = getWallets(createMockProvider()));

@@ -13,7 +13,7 @@ interface InputsType {
 
 const checkInputsAgainstError = (usernameLogged: string, inputs: InputsType) => ({
   usernameError: inputs.username !== usernameLogged,
-  verifyFieldError: inputs.verifyField !== 'DELETE MY ACCOUNT'
+  verifyFieldError: inputs.verifyField !== 'DELETE MY ACCOUNT',
 });
 
 export const getInputClassName = (inputError: boolean) => inputError ? 'delete-account-input-error' : 'delete-account-input';
