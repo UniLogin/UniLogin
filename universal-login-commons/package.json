@@ -11,7 +11,7 @@
     "clean": "rimraf dist",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "mocha -t 10000 \"dist/test/**/*.js\"",
-    "lint": "eslint '{lib,test}/**/*.{js,ts}'"
+    "lint": "eslint '{lib,test}/**/*.ts'"
   },
   "devDependencies": {
     "@types/lodash.clonedeep": "^4.5.6",
