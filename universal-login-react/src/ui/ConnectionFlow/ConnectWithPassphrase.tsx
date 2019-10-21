@@ -30,31 +30,31 @@ export const ConnectWithPassphrase = ({onRecover, name, walletService, className
 
   return (
     <div className="universal-login-passphrase">
-    <div className={getStyleForTopLevelComponent(className)}>
-    <div className="connect-passphrase">
-      <h1 className="connect-passphrase-title">Connect with passphrase</h1>
-      <div className="connect-passphrase-content">
-        <div className="connect-passphrase-section">
-          <p className="connect-passphrase-text">Write your passphrase to recover the access to your account</p>
-          <label className="connect-passphrase-label" htmlFor="passphrase-input">Backup codes</label>
-          <input
-            id="passphrase-input"
-            className="connect-passphrase-input"
-            value={code}
-            onChange={event => setCode(event.target.value)}
-            type="text"
-          />
-          {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
+      <div className={getStyleForTopLevelComponent(className)}>
+        <div className="connect-passphrase">
+          <h1 className="connect-passphrase-title">Connect with passphrase</h1>
+          <div className="connect-passphrase-content">
+            <div className="connect-passphrase-section">
+              <p className="connect-passphrase-text">Write your passphrase to recover the access to your account</p>
+              <label className="connect-passphrase-label" htmlFor="passphrase-input">Backup codes</label>
+              <input
+                id="passphrase-input"
+                className="connect-passphrase-input"
+                value={code}
+                onChange={event => setCode(event.target.value)}
+                type="text"
+              />
+              {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
+            </div>
+            <button onClick={onRecoveryClick} className="connect-passphrase-btn" disabled={!code || isLoading}>
+              {isLoading
+                ? <Spinner className="connect-spinner" dotClassName="connect-spinner-dot" />
+                : 'Recover'
+              }
+            </button>
+          </div>
         </div>
-        <button onClick={onRecoveryClick} className="connect-passphrase-btn" disabled={!code || isLoading}>
-          {isLoading
-            ? <Spinner className="connect-spinner" dotClassName="connect-spinner-dot" />
-            : 'Recover'
-          }
-        </button>
       </div>
-    </div>
-    </div>
     </div>
   );
 };

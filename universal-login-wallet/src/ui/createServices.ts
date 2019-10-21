@@ -25,16 +25,16 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     applicationInfo: {
       applicationName: 'Jarvis',
       type: 'laptop',
-      logo: 'https://universal-login-mainnet.netlify.com/logo.ico'
+      logo: 'https://universal-login-mainnet.netlify.com/logo.ico',
     },
     paymentOptions: {},
-    observedTokensAddresses: config.tokens
+    observedTokensAddresses: config.tokens,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(
     config.relayerUrl,
     providerOrProviderUrl,
-    sdkConfig
+    sdkConfig,
   );
   const userDropdownService = new UserDropdownService();
   const storageService = overrides.storageService || new StorageService();

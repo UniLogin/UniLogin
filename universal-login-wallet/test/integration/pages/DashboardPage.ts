@@ -2,7 +2,7 @@ import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '../helpers/utils';
 
 export default class DashboardPage {
-  constructor(private wrapper : ReactWrapper) {
+  constructor(private wrapper: ReactWrapper) {
   }
 
   clickTransferButton() {
@@ -18,7 +18,7 @@ export default class DashboardPage {
     await waitForUI(this.wrapper, () => !this.wrapper.exists('.modal-wrapper'), 4000);
   }
 
-  getWalletBalance() : string {
+  getWalletBalance(): string {
     return this.wrapper.find('p.balance-amount').text();
   }
 
@@ -28,12 +28,12 @@ export default class DashboardPage {
   }
 
   async clickDevicesButton() {
-    this.wrapper.find('#devicesButton').simulate('click', { button: 0 });
+    this.wrapper.find('#devicesButton').simulate('click', {button: 0});
     await waitForUI(this.wrapper, () => this.wrapper.exists('div.devices'));
   }
 
   async clickManageDevicesButton() {
-    this.wrapper.find('button.devices-message-button').simulate('click', { button: 0 });
+    this.wrapper.find('button.devices-message-button').simulate('click', {button: 0});
     await waitForUI(this.wrapper, () => this.wrapper.exists('#emojis'));
   }
 

@@ -11,7 +11,7 @@ const developmentConfig: Config = {
   ipGeolocationApi: {
     baseUrl: 'http://api.ipstack.com',
     accessKey: '52e66f1c79bb597131fd0c133704ee03',
-  }
+  },
 };
 
 export default developmentConfig;

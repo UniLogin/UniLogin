@@ -1,6 +1,6 @@
 import {Wallet} from 'ethers';
 
-export const createKeyPair = () : KeyPair => {
+export const createKeyPair = (): KeyPair => {
   const {address, privateKey} = Wallet.createRandom();
   return {publicKey: address, privateKey};
 };

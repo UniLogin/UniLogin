@@ -1,6 +1,14 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, CollectedSignatureKeyPair, TEST_SIGNATURE_KEY_PAIRS, getMessageWithSignatures, EMPTY_DATA} from '../../../lib';
+import {
+  DEFAULT_GAS_PRICE,
+  DEFAULT_GAS_LIMIT,
+  TEST_ACCOUNT_ADDRESS,
+  CollectedSignatureKeyPair,
+  TEST_SIGNATURE_KEY_PAIRS,
+  getMessageWithSignatures,
+  EMPTY_DATA,
+} from '../../../lib';
 
 const expectedMessage = {
   from: '0x',
@@ -12,13 +20,15 @@ const expectedMessage = {
   gasLimitExecution: DEFAULT_GAS_LIMIT,
   gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
-  signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c'
+  // eslint-disable-next-line max-len
+  signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c',
 };
 
 describe('UNIT: getMessageWithSignatures', async () => {
   it('should return message with signature', async () => {
     const collectedSignatureKeyPairs: CollectedSignatureKeyPair[] = TEST_SIGNATURE_KEY_PAIRS;
     const {signature, ...unsignedMessage} = expectedMessage;
+    // eslint-disable-next-line max-len
     const expectedSignature = '0xf65bc65a5043e6582b38aa2269bafd759fcdfe32a3640a3b2b9086260c5f090306bb9b821eb5e452748687c69b13f3cb67b74fb1f49b45fbe60b0c90b73a73651b97a061e4965a13cda63e18cf4786ef174d04407dbede36982194b2316717afdd5737a0f24458f2798419dcbf6fc3198598c12693db80149ddc9846a7f17b747f1c';
     const messageWithSignaures = await getMessageWithSignatures(unsignedMessage, collectedSignatureKeyPairs);
     expect(messageWithSignaures).to.deep.eq({...unsignedMessage, signature: expectedSignature});

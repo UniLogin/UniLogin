@@ -21,7 +21,7 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
   const {sdk} = useServices();
   const symbols = sdk.tokensDetailsStore.tokensDetails.map(element => element.symbol);
   const onDropdownItemClick = (currency: string) => {
-    if (setCurrency) { setCurrency(currency); }
+    if (setCurrency) {setCurrency(currency);}
     toggle();
   };
 
@@ -37,8 +37,8 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
       />
       <div className="currency-dropdown">
         <button onClick={toggle} className="currency-dropdown-btn">{currency}</button>
-        {visible ?
-          <ul className="currency-dropdown-list">
+        {visible
+          ? <ul className="currency-dropdown-list">
             {symbols.map((currency, i) => (
               <li key={i} className="currency-item">
                 <button className="currency-item-btn" onClick={() => onDropdownItemClick(currency)}>
@@ -46,8 +46,8 @@ const InputWithDropdown = ({onChange, placeholder, autoFocus, id, className, cur
                 </button>
               </li>
             ))}
-         </ul>
-         : null
+          </ul>
+          : null
         }
       </div>
     </div>

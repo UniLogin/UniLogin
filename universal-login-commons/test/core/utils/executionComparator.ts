@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {executionComparator} from '../../../lib';
 
-
 describe('UNIT: Execution Comparator', () => {
   it('should correctly compare two addresses', () => {
     const address1 = {key: '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'};

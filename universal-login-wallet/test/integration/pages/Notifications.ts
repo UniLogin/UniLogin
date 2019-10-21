@@ -4,7 +4,7 @@ import {waitForUI} from '../helpers/utils';
 export default class NotificationsPage {
   constructor(private wrapper: ReactWrapper) {}
 
-  async clickRejectButton () {
+  async clickRejectButton() {
     await waitForUI(this.wrapper, () => this.wrapper.exists('#reject'));
     this.wrapper.find('#reject').simulate('click');
     await this.waitForNotificationDisappear();
@@ -18,8 +18,7 @@ export default class NotificationsPage {
       button.simulate('click');
       if (index < securityCode.length - 1) {
         await waitForUI(this.wrapper, () => this.wrapper.find('.fa').length === emojiCount + 1);
-      }
-      else {
+      } else {
         await this.waitForGasMode();
       }
     }

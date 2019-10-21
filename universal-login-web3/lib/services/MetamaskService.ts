@@ -5,7 +5,7 @@ export class MetamaskService {
   metamaskProvider = new State<MetamaskEthereum | undefined>(undefined);
 
   async tryEnablingMetamask(): Promise<string | undefined> {
-    if (!!window.ethereum) {
+    if (window.ethereum) {
       try {
         await window.ethereum.enable();
 

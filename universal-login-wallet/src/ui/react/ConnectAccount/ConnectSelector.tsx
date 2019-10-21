@@ -27,7 +27,12 @@ export const ConnectSelector = ({setName, setConnectModal}: ConnectSelectorProps
         <h1 className="box-title">Connect with another device</h1>
       </div>
       <div className="box-content connect-account-content">
-        <img src={girlWithDocument1x} srcSet={girlWithDocument2x} alt="girl with document" className="connect-account-img" />
+        <img
+          src={girlWithDocument1x}
+          srcSet={girlWithDocument2x}
+          alt="girl with document"
+          className="connect-account-img"
+        />
         <p className="connect-account-info-text">Type your username</p>
         <div className="connect-accoutn-selector-block">
           <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>

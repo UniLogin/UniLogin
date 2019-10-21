@@ -14,10 +14,10 @@ interface IModal<T, K> {
   props: K | {};
 }
 
-export const createModalService = <T, K>(): IModalService<T, K> => {
+export const useModalService = <T, K>(): IModalService<T, K> => {
   const emptyModal: IModal<T, K> = {
     name: 'none',
-    props: {}
+    props: {},
   };
   const [modal, setModal] = useState<IModal<T, K>>(emptyModal);
   const showModal = (name: T | 'none', props: K | {} = {}) => setModal({name, props});
@@ -26,6 +26,6 @@ export const createModalService = <T, K>(): IModalService<T, K> => {
     modalName: modal.name,
     modalProps: modal.props,
     showModal,
-    hideModal
+    hideModal,
   };
 };

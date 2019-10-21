@@ -13,10 +13,12 @@ export const TEST_TRANSACTION_HASH = '0x06c81cd35a49c66824bc0b84bff850d1a2a56a09
 
 export const TEST_SIGNATURE_KEY_PAIRS = [{
   key: '0xD1D84F0e28D6fedF03c73151f98dF95139700aa7',
-  signature: '0x97a061e4965a13cda63e18cf4786ef174d04407dbede36982194b2316717afdd5737a0f24458f2798419dcbf6fc3198598c12693db80149ddc9846a7f17b747f1c'
+  // eslint-disable-next-line max-len
+  signature: '0x97a061e4965a13cda63e18cf4786ef174d04407dbede36982194b2316717afdd5737a0f24458f2798419dcbf6fc3198598c12693db80149ddc9846a7f17b747f1c',
 }, {
   key: '0x8221157B2423906FFbb5FaF2A6B062C3d3A6050f',
-  signature: '0xf65bc65a5043e6582b38aa2269bafd759fcdfe32a3640a3b2b9086260c5f090306bb9b821eb5e452748687c69b13f3cb67b74fb1f49b45fbe60b0c90b73a73651b'
+  // eslint-disable-next-line max-len
+  signature: '0xf65bc65a5043e6582b38aa2269bafd759fcdfe32a3640a3b2b9086260c5f090306bb9b821eb5e452748687c69b13f3cb67b74fb1f49b45fbe60b0c90b73a73651b',
 }];
 
 export const testJsonRpcUrl = 'http://localhost:8545';
@@ -26,7 +28,7 @@ export const TEST_GAS_PRICE = '1';
 export const TEST_APPLICATION_INFO = {
   applicationName: 'UniversalLogin',
   logo: 'logo',
-  type: 'laptop'
+  type: 'laptop',
 };
 
 export const TEST_DEVICE_INFO = {
@@ -43,9 +45,9 @@ export const TEST_TOKEN_DETAILS = [
   {
     address: '0x490932174cc4B7a0f546924a070D151D156095f0',
     symbol: 'DAI',
-    name: 'MockToken'
+    name: 'MockToken',
   },
-  ETHER_NATIVE_TOKEN
+  ETHER_NATIVE_TOKEN,
 ];
 
 export const TEST_GAS_MODES = [{
@@ -58,7 +60,7 @@ export const TEST_GAS_MODES = [{
   {
     gasPrice: utils.bigNumberify('20000000000'),
     token: TEST_TOKEN_DETAILS[1],
-  }]
+  }],
 },
 {
   name: 'fast',
@@ -70,12 +72,12 @@ export const TEST_GAS_MODES = [{
   {
     gasPrice: utils.bigNumberify('24000000000'),
     token: TEST_TOKEN_DETAILS[1],
-  }]
+  }],
 }];
 
 export const TEST_SDK_CONFIG = {
   executionFactoryTick: 10,
   authorizationsObserverTick: 10,
   balanceObserverTick: 10,
-  priceObserverTick: 10
+  priceObserverTick: 10,
 };

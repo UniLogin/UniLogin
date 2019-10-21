@@ -18,14 +18,14 @@ export type CreateFutureDeploymentWithENS = {
   gasToken: string;
 };
 
-export function createFutureDeploymentWithENS({keyPair, walletContractAddress, ensDomainData, factoryContract, gasPrice, gasToken} : CreateFutureDeploymentWithENS): FutureDeployment {
+export function createFutureDeploymentWithENS({keyPair, walletContractAddress, ensDomainData, factoryContract, gasPrice, gasToken}: CreateFutureDeploymentWithENS): FutureDeployment {
   const [, initializeData] = createProxyDeployWithENSArgs(keyPair, ensDomainData, walletContractAddress, gasPrice, gasToken);
   const signature = calculateInitializeSignature(initializeData, keyPair.privateKey);
   const futureAddress = getFutureAddress(walletContractAddress, factoryContract.address, keyPair.publicKey);
   return {
     initializeData,
     futureAddress,
-    signature
+    signature,
   };
 }
 
@@ -36,7 +36,7 @@ export function createFutureDeployment(keyPair: KeyPair, walletContractAddress: 
   return {
     initializeData,
     futureAddress,
-    signature
+    signature,
   };
 }
 

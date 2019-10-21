@@ -17,13 +17,13 @@ export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: s
 export const messageSignature = (
   wallet: Wallet, to: string, from: string, value: BigNumberish, data: Arrayish, nonce: string | number, gasToken: string, gasPrice: BigNumberish, gasLimitExecution: BigNumberish, gasData: BigNumberish) =>
   wallet.signMessage(
-    getMessageArrayify({to, from, value, data, nonce, gasToken, gasPrice, gasLimitExecution, gasData})
-   );
+    getMessageArrayify({to, from, value, data, nonce, gasToken, gasPrice, gasLimitExecution, gasData}),
+  );
 
-const getMessageArrayify = (message : Partial<UnsignedMessage>) =>
+const getMessageArrayify = (message: Partial<UnsignedMessage>) =>
   arrayify(solidityKeccak256(
     ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint', 'uint'],
-    [message.to, message.from, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimitExecution, message.gasData]
+    [message.to, message.from, message.value, message.data, message.nonce, message.gasToken, message.gasPrice, message.gasLimitExecution, message.gasData],
   ));
 
 export const messageSignatureForApprovals = (wallet: Wallet, id: BigNumberish) =>
@@ -45,7 +45,7 @@ export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWal
     nonce: await proxyAsWalletContract.lastNonce(),
     gasLimit: '200000',
     gasPrice: '1',
-    gasToken: '0x0000000000000000000000000000000000000000'
+    gasToken: '0x0000000000000000000000000000000000000000',
   };
 };
 

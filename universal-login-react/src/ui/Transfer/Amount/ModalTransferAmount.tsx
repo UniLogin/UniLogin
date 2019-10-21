@@ -19,7 +19,7 @@ export const ModalTransferAmount = ({
   updateTransferDetailsWith,
   tokenDetails,
   modalLayoutClassName,
-  transferAmountClassName
+  transferAmountClassName,
 }: ModalTransferAmountProps) => {
   return (
     <div className="universal-login-modal">
@@ -42,4 +42,3 @@ export const ModalTransferAmount = ({
     </div>
   );
 };
-

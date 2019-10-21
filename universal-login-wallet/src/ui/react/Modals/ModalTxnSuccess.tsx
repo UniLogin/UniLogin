@@ -30,7 +30,9 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
             <p className="created-account-hash">{walletPresenter.getContractAddress()}</p>
           </div>
         </div>
-        <p className="info-text">Your wallet is ready but not secure. Go to your wallet and make sure to follow the steps to.</p>
+        <p className="info-text">
+          Your wallet is ready but not secure. Go to your wallet and make sure to follow the steps to.
+        </p>
         <Link to="/" onClick={hideModal} className="button-secondary modal-success-btn">Go to your wallet</Link>
       </div>
     </>

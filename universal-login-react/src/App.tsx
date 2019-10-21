@@ -9,7 +9,7 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import {createModalService} from './core/services/createModalService';
+import {useModalService} from './core/services/useModalService';
 import {ReactModalProps, ReactModalType, TopUpProps} from './core/models/ReactModalContext';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
@@ -35,11 +35,11 @@ const ATTACKER_ADDRESS_NO_COMMON_CODE = [
 const mockedNotifications = asMock<Notification[]>([
   {key: CONNECTION_REAL_ADDRESS},
   ...ATTACKER_ADDRESS_1_COMMON_CODE.map(address => ({key: address})),
-  ...ATTACKER_ADDRESS_NO_COMMON_CODE.map(address => ({key: address}))
+  ...ATTACKER_ADDRESS_NO_COMMON_CODE.map(address => ({key: address})),
 ]);
 
 export const App = () => {
-  const modalService = createModalService<ReactModalType, ReactModalProps>();
+  const modalService = useModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
   const [relayerConfig] = useAsync(async () => {
     await sdk.fetchRelayerConfig();
@@ -111,8 +111,8 @@ export const App = () => {
               path="/walletselector"
               render={() => (
                 <WalletSelector
-                  onCreateClick={() => { console.log('create'); }}
-                  onConnectClick={() => { console.log('connect'); }}
+                  onCreateClick={() => {console.log('create');}}
+                  onConnectClick={() => {console.log('connect');}}
                   sdk={sdk}
                   domains={['mylogin.eth', 'myapp.eth']}
                 />
@@ -127,7 +127,7 @@ export const App = () => {
                   <hr />
                   <EmojiForm
                     deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
-                    onConnectionSuccess={() => { console.log('connect'); }}
+                    onConnectionSuccess={() => {console.log('connect');}}
                   />
                 </div>
               )}
@@ -136,22 +136,22 @@ export const App = () => {
               exact
               path="/topup"
               render={() => {
-                  if (!relayerConfig) {
-                    return <Spinner />;
-                  }
-                  const regularTopUpProps: TopUpProps = {
-                    contractAddress: Wallet.createRandom().address,
-                    sdk,
-                    isDeployment: false
-                  };
-                  const deploymentTopUpProps: TopUpProps = {
-                    contractAddress: Wallet.createRandom().address,
-                    sdk,
-                    isDeployment: true,
-                    onGasParametersChanged: console.log
-                  };
-                  return <ModalsPlayground modalService={modalService} modalNames={['topUpAccount', 'topUpAccount']} modalProps={[regularTopUpProps, deploymentTopUpProps]} />;
+                if (!relayerConfig) {
+                  return <Spinner />;
                 }
+                const regularTopUpProps: TopUpProps = {
+                  contractAddress: Wallet.createRandom().address,
+                  sdk,
+                  isDeployment: false,
+                };
+                const deploymentTopUpProps: TopUpProps = {
+                  contractAddress: Wallet.createRandom().address,
+                  sdk,
+                  isDeployment: true,
+                  onGasParametersChanged: console.log,
+                };
+                return <ModalsPlayground modalService={modalService} modalNames={['topUpAccount', 'topUpAccount']} modalProps={[regularTopUpProps, deploymentTopUpProps]} />;
+              }
               }
             />
             <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />

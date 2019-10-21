@@ -18,7 +18,7 @@ export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMes
     gasPrice: message.gasPrice!,
     gasToken: message.gasToken!,
     gasData: 0,
-    gasLimitExecution: 0
+    gasLimitExecution: 0,
   };
 
   return {...messageWithoutGasEstimates, ...computeGasFields(messageWithoutGasEstimates, message.gasLimit!)};
@@ -31,7 +31,7 @@ export const emptyMessage = {
   nonce: 0,
   gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
   gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
-  gasToken: '0x0000000000000000000000000000000000000000'
+  gasToken: '0x0000000000000000000000000000000000000000',
 };
 
 export const unsignedMessageToSignedMessage = (unsignedMessage: UnsignedMessage, privateKey: string) => {

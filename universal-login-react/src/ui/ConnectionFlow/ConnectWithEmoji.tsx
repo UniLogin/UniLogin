@@ -8,7 +8,6 @@ import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
 import Spinner from '../commons/Spinner';
 
-
 interface ConnectWithEmojiProps {
   name: string;
   sdk: UniversalLoginSDK;
@@ -55,6 +54,6 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
           </div>
         </div>
       </div>
-      </div>
+    </div>
   );
 };

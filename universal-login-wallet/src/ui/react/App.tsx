@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {createModalService, useProperty} from '@universal-login/react';
+import {useModalService, useProperty} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import NotFound from './NotFound';
 import {PrivateRoute} from './PrivateRoute';
@@ -12,7 +12,7 @@ import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType, WalletModalPropType} from '../../core/entities/WalletModalContext';
 
 const App = () => {
-  const modalService = createModalService<WalletModalType, WalletModalPropType>();
+  const modalService = useModalService<WalletModalType, WalletModalPropType>();
   const {walletService} = useServices();
   const [appReady, setAppReady] = useState(false);
 

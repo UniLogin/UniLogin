@@ -32,7 +32,7 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  public readonly isUniversalLogin = true;
+  readonly isUniversalLogin = true;
 
   private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
@@ -40,7 +40,7 @@ export class ULWeb3Provider implements Provider {
   private readonly metamaskService: MetamaskService;
   private readonly uiController: UIController;
 
-  public readonly isLoggedIn: Property<boolean>;
+  readonly isLoggedIn: Property<boolean>;
 
   constructor(options: ULWeb3ProviderOptions) {
     const {

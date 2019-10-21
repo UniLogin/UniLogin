@@ -174,5 +174,5 @@ export const countries: Country[] = [
     code: 'US',
     currency: 'USD',
     isEU: false,
-  }
+  },
 ];

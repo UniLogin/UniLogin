@@ -8,7 +8,6 @@ import {TEST_ACCOUNT_ADDRESS} from '../../../lib/core/constants/test';
 import MockToken from '../../fixtures/MockToken.json';
 import {SupportedToken} from '../../../lib';
 
-
 describe('INT: RequiredBalanceChecker', () => {
   const provider = createMockProvider();
   const balanceChecker = new BalanceChecker(provider);
@@ -22,12 +21,12 @@ describe('INT: RequiredBalanceChecker', () => {
     supportedTokens = [
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: utils.parseEther('0.5').toString()
+        minimalAmount: utils.parseEther('0.5').toString(),
       },
       {
         address: mockToken.address,
-        minimalAmount: utils.parseEther('0.3').toString()
-      }
+        minimalAmount: utils.parseEther('0.3').toString(),
+      },
     ];
   });
 
@@ -38,7 +37,8 @@ describe('INT: RequiredBalanceChecker', () => {
   it('one token with just enough balance', async () => {
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('0.3'));
 
-    const actualTokenAddress = await requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS);
+    const actualTokenAddress = await requiredBalanceChecker
+      .findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS);
     expect(actualTokenAddress).to.eq(mockToken.address);
   });
 
@@ -46,7 +46,8 @@ describe('INT: RequiredBalanceChecker', () => {
     await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('0.5')});
     await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.parseEther('0.3'));
 
-    const actualTokenAddress = await requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS);
+    const actualTokenAddress = await requiredBalanceChecker
+      .findTokenWithRequiredBalance(supportedTokens, TEST_ACCOUNT_ADDRESS);
     expect(actualTokenAddress).to.eq(ETHER_NATIVE_TOKEN.address);
   });
 });

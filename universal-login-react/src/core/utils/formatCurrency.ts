@@ -3,7 +3,7 @@ const withPrecision = (value: number, fixed: number) => {
   return Math.floor(value * magnitude) / magnitude;
 };
 
-export const formatCurrency = (value: string, currency: string = 'USD') : string => {
+export const formatCurrency = (value: string, currency = 'USD'): string => {
   const maximumFractionDigits = 2;
   const style = currency ? 'currency' : 'decimal';
   const formatter = new Intl.NumberFormat('en-US', {currency: 'USD', style});

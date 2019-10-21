@@ -17,7 +17,7 @@ export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodes
             <p className="backup-code-contract">{walletContract}</p>
             <p className="backup-code">{code}</p>
           </div>
-        </div>
+        </div>,
       )}
       <div className="backup-codes-buttons">
         <button onClick={printCodes} className="backup-print-btn">Print codes</button>

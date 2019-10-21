@@ -5,7 +5,7 @@ import {utils} from 'ethers';
 
 describe('UNIT: getBalanceOf', () => {
   const tokensDetailsWithBalance: TokenDetailsWithBalance[] = [
-    {symbol: 'ETH', name: 'ether', address: ETHER_NATIVE_TOKEN.address, balance: utils.parseEther('1.2')}
+    {symbol: 'ETH', name: 'ether', address: ETHER_NATIVE_TOKEN.address, balance: utils.parseEther('1.2')},
   ];
 
   it('null', () => {

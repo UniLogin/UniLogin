@@ -29,17 +29,17 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
         <div className="assets">
           <p className="assets-title">My Assets</p>
           <div className="assets-list">
-          {tokenDetailsWithBalance.map(({name, symbol, balance}: TokenDetailsWithBalance) => (
-            <Asset
-              key={`${name}-${symbol}`}
-              sdk={sdk}
-              name={name}
-              symbol={symbol}
-              balance={utils.formatEther(balance)}
-              icon={iconForToken(symbol)}
-              className={className}
-            />
-          ))}
+            {tokenDetailsWithBalance.map(({name, symbol, balance}: TokenDetailsWithBalance) => (
+              <Asset
+                key={`${name}-${symbol}`}
+                sdk={sdk}
+                name={name}
+                symbol={symbol}
+                balance={utils.formatEther(balance)}
+                icon={iconForToken(symbol)}
+                className={className}
+              />
+            ))}
           </div>
         </div>
       </div>

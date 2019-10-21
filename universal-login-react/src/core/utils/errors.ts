@@ -18,7 +18,7 @@ export class ValidationFailed extends ReactError {
 }
 
 export class InvalidNumber extends ValidationFailed {
-  constructor(additionalMessage: string = '') {
+  constructor(additionalMessage = '') {
     super(`Invalid number. ${additionalMessage}`, 'InvalidNumber');
     Object.setPrototypeOf(this, InvalidNumber.prototype);
   }

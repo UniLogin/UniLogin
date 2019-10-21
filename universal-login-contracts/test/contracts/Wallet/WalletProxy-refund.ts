@@ -11,7 +11,7 @@ import {calculateFinalGasLimit} from '../../../lib/estimateGas';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-describe('CONTRACT: WalletProxy - refund', async  () => {
+describe('CONTRACT: WalletProxy - refund', async () => {
   let provider: providers.Provider;
   let signature: string;
   let deployer: Wallet;
@@ -20,7 +20,6 @@ describe('CONTRACT: WalletProxy - refund', async  () => {
   let initialBalance: utils.BigNumber;
   let keyPair: KeyPair;
   let proxyWallet: Contract;
-
 
   beforeEach(async () => {
     ({provider, deployer, proxyWallet, keyPair, mockToken} = await loadFixture(walletContractWithFundsFixture));

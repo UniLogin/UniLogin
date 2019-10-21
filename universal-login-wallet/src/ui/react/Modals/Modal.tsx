@@ -40,15 +40,16 @@ const Modal = () => {
         />
       ) : null;
     case 'waitingForDeploy':
-    return (
+      return (
         <ModalWrapper modalClassName="jarvis-modal">
           <WaitingForTransaction
             {...modalService.modalProps}
             action={'Wallet creation'}
             relayerConfig={relayerConfig!}
-            children={ImageWaitingFor()}
             className={'jarvis-waiting-for'}
-          />
+          >
+            <ImageWaitingFor />
+          </WaitingForTransaction>
         </ModalWrapper>
       );
     case 'waitingForTransfer':
@@ -58,9 +59,10 @@ const Modal = () => {
             {...modalService.modalProps}
             action={'Transferring funds'}
             relayerConfig={relayerConfig!}
-            children={ImageWaitingFor()}
             className={'jarvis-waiting-for'}
-          />
+          >
+            <ImageWaitingFor/>
+          </WaitingForTransaction>
         </ModalWrapperWithoutClose>
       );
     case 'transactionSuccess':

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useRouter } from '../../hooks';
+/* eslint-disable max-len */
+import React, {useState} from 'react';
+import {useRouter} from '../../hooks';
 
 export const TermsAndConditionsScreen = () => {
   const [isRead, setIsRead] = useState(false);

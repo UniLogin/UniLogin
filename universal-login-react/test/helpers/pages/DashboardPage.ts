@@ -16,4 +16,3 @@ export class DashboardPage {
     uButton.simulate('click');
   }
 }
-

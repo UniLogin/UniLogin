@@ -7,7 +7,7 @@ import {
   ETHER_NATIVE_TOKEN,
   GasParameters,
   INITIAL_GAS_PARAMETERS,
-  WalletSuggestionAction
+  WalletSuggestionAction,
 } from '@universal-login/commons';
 import Modal from '../Modals/Modal';
 import {Link} from 'react-router-dom';
@@ -25,14 +25,19 @@ export const CreateAccount = () => {
     let gasParameters = INITIAL_GAS_PARAMETERS;
     const {waitForBalance} = await walletService.createFutureWallet();
     const topUpProps: TopUpModalProps = {
-      onGasParametersChanged: (parameters: GasParameters) => { gasParameters = parameters; },
+      onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
       isDeployment: true,
-      hideModal: () => hideTopUpModal(walletService, modalService)
+      hideModal: () => hideTopUpModal(walletService, modalService),
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
     showWaitingModal();
-    await walletService.deployFutureWallet(name, gasParameters.gasPrice.toString(), ETHER_NATIVE_TOKEN.address, showWaitingModal);
+    await walletService.deployFutureWallet(
+      name,
+      gasParameters.gasPrice.toString(),
+      ETHER_NATIVE_TOKEN.address,
+      showWaitingModal,
+    );
     modalService.showModal('transactionSuccess');
   };
 
@@ -57,7 +62,11 @@ export const CreateAccount = () => {
                 placeholder="bob"
               />
             </div>
-            <p className="info-text create-account-info-text">Your username is a human-readable address. Like Domain Name Service (DNS) allows website address to be facebook.com and not 66.220.144.0., Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not Oxeefc.. 0843.</p>
+            <p className="info-text create-account-info-text">
+              Your username is a human-readable address.
+              Like Domain Name Service (DNS) allows website address to be facebook.com and not 66.220.144.0.,
+              Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not Oxeefc.. 0843.
+            </p>
             <Link to="/welcome" className="button-secondary create-account-cancel">Cancel</Link>
           </div>
         </div>

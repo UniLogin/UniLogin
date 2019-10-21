@@ -42,12 +42,12 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
       </div>
       {toBeRemoved
         ? <div className="connected-devices-buttons">
-            <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-            <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
+          <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
+          <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
         </div>
         : <div className="connected-devices-trash-btn-wrapper">
-            {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
-            <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
+          {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
+          <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
         </div>
       }
     </li >

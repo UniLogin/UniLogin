@@ -45,12 +45,12 @@ describe('UNIT: TokensValueConverter', () => {
 
     const tokenDetailsWithBalance: TokenDetailsWithBalance[] = [
       {...ETHER_NATIVE_TOKEN, balance: utils.parseEther(etherAmount.toString())},
-      {address: TEST_CONTRACT_ADDRESS, symbol: 'Mock', name: 'MockToken', balance: utils.parseEther(mockTokenAmount.toString())}
+      {address: TEST_CONTRACT_ADDRESS, symbol: 'Mock', name: 'MockToken', balance: utils.parseEther(mockTokenAmount.toString())},
     ];
 
     const tokensPrices = {
       ETH: {USD: 1000, DAI: 800, ETH: 0.1},
-      Mock: {USD: 200, DAI: 160, ETH: 0.02}
+      Mock: {USD: 200, DAI: 160, ETH: 0.02},
     };
 
     it('[]', async () => {

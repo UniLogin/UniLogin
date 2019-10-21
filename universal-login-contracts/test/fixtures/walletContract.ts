@@ -6,7 +6,6 @@ import {deployENS} from '@universal-login/commons/testutils';
 import {deployFactory, createFutureDeploymentWithENS, deployWalletContract} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 
-
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
   const {factoryContract, walletContract} = await setupMasterWithRefundAndFactory(deployer);
@@ -15,12 +14,12 @@ export async function setupEnsAndMaster(deployer: Wallet) {
     ensDomainData: {
       ensAddress,
       registrarAddress,
-      resolverAddress
+      resolverAddress,
     },
     walletContract,
     provider: providerWithENS,
     deployer,
-    factoryContract
+    factoryContract,
   };
 }
 
@@ -29,7 +28,7 @@ export async function setupMasterWithRefundAndFactory(deployer: Wallet) {
   const factoryContract = await deployFactory(deployer, walletContract.address);
   return {
     walletContract,
-    factoryContract
+    factoryContract,
   };
 }
 
@@ -44,7 +43,7 @@ export async function setupWalletContract(deployer: Wallet) {
     proxyWallet,
     keyPair,
     deployer,
-    provider
+    provider,
   };
 }
 
@@ -58,7 +57,7 @@ export async function walletContractWithTokenAndEther(deployer: Wallet) {
     proxyWallet,
     keyPair,
     deployer,
-    mockToken
+    mockToken,
   };
 }
 

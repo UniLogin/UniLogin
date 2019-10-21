@@ -14,14 +14,13 @@ import Relayer from '@universal-login/relayer';
 
 chai.use(require('chai-string'));
 
-
 describe('UI: Connection flow', () => {
-  let services : Services;
+  let services: Services;
   let relayer: Relayer;
   let provider: providers.Provider;
   let appWrapper: ReactWrapper;
-  let privateKey : string;
-  let contractAddress : string;
+  let privateKey: string;
+  let contractAddress: string;
   const name = 'name.mylogin.eth';
 
   beforeEach(async () => {

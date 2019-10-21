@@ -14,7 +14,7 @@ export const TEST_MESSAGE_OPTIONS = {
   gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT,
   gasToken: '0x0000000000000000000000000000000000000000',
-  data: EMPTY_DATA
+  data: EMPTY_DATA,
 };
 
 export default TEST_PAYMENT_OPTIONS;

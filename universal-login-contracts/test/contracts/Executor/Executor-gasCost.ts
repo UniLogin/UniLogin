@@ -16,7 +16,6 @@ const callCost = 100000;
 const etherTransferCost = 105000;
 const tokenTransferCost = 80000;
 
-
 describe('Executor - gas cost', async () => {
   const gasCosts = {} as Record<string, utils.BigNumber>;
   let provider: providers.Provider;

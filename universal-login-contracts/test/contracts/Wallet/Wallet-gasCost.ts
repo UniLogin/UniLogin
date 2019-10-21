@@ -16,7 +16,6 @@ const deployProxyWithENSCost = '570000';
 const deployWalletCost = '3400000';
 const executeAddKeyCost = '103000';
 
-
 describe('Performance test', async () => {
   const gasCosts = {} as any;
   const keyPair = createKeyPair();

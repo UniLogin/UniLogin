@@ -27,13 +27,13 @@ export const calculateMessageSignatures = async (privateKeys: string[], msg: Uns
   return concatenateSignatures(sortedSignatures);
 };
 
-const removePrefix = (value: string, index: number, array: string[])  => {
+const removePrefix = (value: string, index: number, array: string[]) => {
   const signature = value;
   if (value.length !== 132) {
-    throw `Invalid signature length: ${signature} should be 132`;
+    throw new Error(`Invalid signature length: ${signature} should be 132`);
   }
   if (value.indexOf('0x') !== 0) {
-    throw `Invalid Signature: ${signature} needs prefix 0x`;
+    throw new Error(`Invalid Signature: ${signature} needs prefix 0x`);
   }
   return signature.slice(2);
 };
@@ -41,7 +41,7 @@ const removePrefix = (value: string, index: number, array: string[])  => {
 export const concatenateSignatures = (signatures: string[]) =>
   `0x${signatures.map(removePrefix).join('')}`;
 
-const addressComparator = (privateKey1: string, privateKey2: string) =>  {
+const addressComparator = (privateKey1: string, privateKey2: string) => {
   const address1 = parseInt(new Wallet(privateKey1).address, 16);
   const address2 = parseInt(new Wallet(privateKey2).address, 16);
   if (address1 > address2) {

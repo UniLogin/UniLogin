@@ -13,7 +13,7 @@ describe('Calculate Signature', () => {
     ensName,
     hashLabel,
     node,
-    gasPrice
+    gasPrice,
   };
   const signer = Wallet.createRandom();
 

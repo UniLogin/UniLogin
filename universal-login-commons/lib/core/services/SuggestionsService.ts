@@ -11,8 +11,8 @@ export class SuggestionsService {
   constructor(
     private sdk: WalletExistenceVerifier,
     private domains: string[] = ensDomains,
-    private actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS
-    ) {}
+    private actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS,
+  ) {}
 
   isCorrectDomainPrefix(domain: string) {
     return this.domains
@@ -84,9 +84,9 @@ export class SuggestionsService {
     if (splitted.length === 1) {
       return this.getSuggestionsForNodePrefix(namePrefix);
     } else if (splitted.length === 2) {
-      return this.isCorrectDomainPrefix(domain) ?
-        this.getSuggestionsForNodeAndSldPrefix(name, domain) :
-        {connections: [], creations: []};
+      return this.isCorrectDomainPrefix(domain)
+        ? this.getSuggestionsForNodeAndSldPrefix(name, domain)
+        : {connections: [], creations: []};
     } else if (splitted.length === 3) {
       if (!this.isCorrectDomainPrefix(`${domain}.`)) {
         return {connections: [], creations: []};
@@ -94,9 +94,9 @@ export class SuggestionsService {
         if (tld.length < 3) {
           return this.getSuggestionsForNodeAndSldPrefix(name, domain);
         }
-        return (await this.sdk.walletContractExist(namePrefix)) ?
-          {connections: [namePrefix], creations: []} :
-          {connections: [], creations: [namePrefix]};
+        return (await this.sdk.walletContractExist(namePrefix))
+          ? {connections: [namePrefix], creations: []}
+          : {connections: [], creations: [namePrefix]};
       }
     }
   }

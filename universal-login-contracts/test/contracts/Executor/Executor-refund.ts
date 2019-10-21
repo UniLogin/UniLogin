@@ -24,7 +24,6 @@ describe('CONTRACT: Executor - refund', async () => {
   let infiniteCallMessage: Message;
   let initialBalance: utils.BigNumber;
 
-
   const computeFeeFor = (gasUsed: utils.BigNumber) => gasUsed.div(5); // 20% fee
 
   beforeEach(async () => {
@@ -34,7 +33,7 @@ describe('CONTRACT: Executor - refund', async () => {
   });
 
   it('refund works', async () => {
-    const message = {...transferMessage, gasPrice: 1, from: walletContract.address,  gasLimit: DEFAULT_GAS_LIMIT};
+    const message = {...transferMessage, gasPrice: 1, from: walletContract.address, gasLimit: DEFAULT_GAS_LIMIT};
     const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey);
     const executeData = encodeDataForExecuteSigned(signedMessage);
     const gasLimit = calculateFinalGasLimit(signedMessage.gasLimitExecution, signedMessage.gasData);
@@ -58,7 +57,7 @@ describe('CONTRACT: Executor - refund', async () => {
         nonce: 0,
         gasPrice: 1,
         gasToken: '0x0',
-        gasLimit: DEFAULT_GAS_LIMIT
+        gasLimit: DEFAULT_GAS_LIMIT,
       };
     });
 

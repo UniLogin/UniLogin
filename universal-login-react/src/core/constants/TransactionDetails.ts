@@ -3,5 +3,5 @@ import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, Message} from 
 export const transactionDetails: Partial<Message> = {
   gasPrice: DEFAULT_GAS_PRICE,
   gasLimit: DEFAULT_GAS_LIMIT,
-  gasToken: ETHER_NATIVE_TOKEN.address
+  gasToken: ETHER_NATIVE_TOKEN.address,
 };

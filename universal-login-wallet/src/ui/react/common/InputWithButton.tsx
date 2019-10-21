@@ -13,7 +13,7 @@ const InputWithButton = ({placeholder, autoFocus, id, className, value}: InputPr
   <div className="input-copy-wrapper">
     <input
       id={id}
-      className={`input input-copy ${className ? className : ''}`}
+      className={`input input-copy ${className || ''}`}
       type="text"
       readOnly
       defaultValue={value}

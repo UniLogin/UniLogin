@@ -18,9 +18,8 @@ export const transferMessage = {
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '7440',
-  gasToken: '0x0000000000000000000000000000000000000000'
+  gasToken: '0x0000000000000000000000000000000000000000',
 };
-
 
 export const failedTransferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
@@ -30,7 +29,7 @@ export const failedTransferMessage = {
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '7440',
-  gasToken: '0x0000000000000000000000000000000000000000'
+  gasToken: '0x0000000000000000000000000000000000000000',
 };
 
 const callMeMessageData = encodeFunction(MockContract, 'callMe');
@@ -42,7 +41,7 @@ export const callMessage = {
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '8720',
-  gasToken: '0x0000000000000000000000000000000000000000'
+  gasToken: '0x0000000000000000000000000000000000000000',
 };
 
 const revertingFunctionMessageData = encodeFunction(MockContract, 'revertingFunction');
@@ -54,7 +53,7 @@ export const failedCallMessage = {
   gasPrice,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '8720',
-  gasToken: '0x0000000000000000000000000000000000000000'
+  gasToken: '0x0000000000000000000000000000000000000000',
 };
 
 type InfiniteCallOverrides = {
@@ -74,7 +73,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasToken: '0x0',
     gasLimitExecution: utils.bigNumberify('240000'),
     gasData: 0,
-    ...overrides
+    ...overrides,
   };
   const gasData = estimateGasDataFromUnsignedMessage(msg);
   return {...msg, gasData};
@@ -100,7 +99,7 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     gasPrice,
     gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
     gasData: 0,
-    gasToken: '0x0000000000000000000000000000000000000000'
+    gasToken: '0x0000000000000000000000000000000000000000',
   };
   const gasData = estimateGasDataFromUnsignedMessage(msg);
   msg.gasData = gasData;

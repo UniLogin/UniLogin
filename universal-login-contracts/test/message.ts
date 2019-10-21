@@ -16,7 +16,7 @@ describe('messageToUnsignedMessage', () => {
       gasToken: TEST_PAYMENT_OPTIONS.gasToken,
       data: '0xbeef',
       gasLimit: bigNumberify(100000),
-      nonce: 0
+      nonce: 0,
     };
 
     const expectedUnsignedMessage: Partial<SignedMessage> = {
@@ -60,7 +60,7 @@ describe('unsignedMessageToSignedMessage', async () => {
       gasLimitExecution: transferMessage.gasLimitExecution,
       gasData: '0',
       gasToken: '0x0000000000000000000000000000000000000000',
-      signature: '0xd632d56c1558e60e59cf2332d8e0e47bb52e34ea92c8dc210bec90b0b60f39204959e832ba6a3efa67be0f6cae082cf7bea3a849dd0091bfe75babc281235f9d1b'
+      signature: '0xd632d56c1558e60e59cf2332d8e0e47bb52e34ea92c8dc210bec90b0b60f39204959e832ba6a3efa67be0f6cae082cf7bea3a849dd0091bfe75babc281235f9d1b',
     };
 
     const privateKey = '0x899d97b42f840d59d60f3a18514b28042a1d86fa400d6cf9425ec3a9217d0cea';

@@ -5,14 +5,14 @@ import {TokenDetails} from '@universal-login/commons';
 import {isDisabled} from '../../../core/utils/isDisabled';
 
 export interface DropdownItemProps {
-    sdk: UniversalLoginSDK;
-    tokenDetails: TokenDetails;
-    balance: string | null;
-    icon: string;
-    onClick: (transferToken: TokenDetails) => void;
-    dropdownClassName: string;
-    className?: string;
-  }
+  sdk: UniversalLoginSDK;
+  tokenDetails: TokenDetails;
+  balance: string | null;
+  icon: string;
+  onClick: (transferToken: TokenDetails) => void;
+  dropdownClassName: string;
+  className?: string;
+}
 
 export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick, className, dropdownClassName}: DropdownItemProps) => {
   return (
