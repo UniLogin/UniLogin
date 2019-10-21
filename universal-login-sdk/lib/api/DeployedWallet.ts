@@ -16,7 +16,6 @@ import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 
 export class DeployedWallet implements ApplicationWallet {
-  publicKey: string;
 
   constructor(
     public readonly contractAddress: string,
@@ -24,7 +23,10 @@ export class DeployedWallet implements ApplicationWallet {
     public readonly privateKey: string,
     public readonly sdk: UniversalLoginSDK,
   ) {
-    this.publicKey = privateKey ? utils.computeAddress(privateKey) : '';
+  }
+
+  get publicKey() {
+    return utils.computeAddress(this.privateKey);
   }
 
   get asApplicationWallet(): ApplicationWallet {
