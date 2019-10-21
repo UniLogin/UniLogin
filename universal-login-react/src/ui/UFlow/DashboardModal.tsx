@@ -1,5 +1,5 @@
 import {TransferService, WalletService} from '@universal-login/sdk';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {asTransferDetails, GasParameters, TransferDetails} from '@universal-login/commons';
 import {Route, Switch} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
@@ -14,7 +14,6 @@ import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
-
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -32,7 +31,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   const [transactionHash, setTransactionHash] = useState('');
 
   const notice = sdk.getNotice();
-
 
   const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
     setTransferDetails({...transferDetails, ...args});
@@ -136,7 +134,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
       </div>
     </ModalWrapper>
   );
-}
+};
 
 function sanitizeTransferDetails(details: Partial<TransferDetails>) {
   try {
