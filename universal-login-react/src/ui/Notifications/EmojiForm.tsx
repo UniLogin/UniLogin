@@ -79,7 +79,6 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
     if (isInputValid) {
       return (
         <div className="correct-input">
-          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark" />
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}
