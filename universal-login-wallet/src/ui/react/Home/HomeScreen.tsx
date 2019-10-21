@@ -1,12 +1,10 @@
 import React, {useContext} from 'react';
+import {Route, Switch, useHistory} from 'react-router';
+import {Funds, Devices, BackupCodes, Notice, NewDeviceMessage} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {Funds, Devices, BackupCodes, Notice, NewDeviceMessage} from '@universal-login/react';
-import {useServices, useRouter} from '../../hooks';
-import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
-import {Route, Switch, useHistory} from 'react-router';
 
 const HomeScreen = () => {
   const {walletService} = useServices();
@@ -45,7 +43,8 @@ const HomeScreen = () => {
               </Route>
               <Route path="/devices">
                 <Devices
-                  deployedWallet={walletService.getDeployedWallet()}
+                  walletService={walletService}
+                  onAccountDeleted={() => history.push('/welcome')}
                   basePath="/devices"
                   className="jarvis-styles"
                 />
