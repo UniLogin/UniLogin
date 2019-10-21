@@ -5,6 +5,7 @@ import {WalletService} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
+import {WaitingFor} from '../../commons/WaitingFor';
 
 export interface DevicesProps {
   walletService: WalletService;
@@ -43,6 +44,9 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
           onCancelClick={() => history.replace(`${basePath}/`)}
           className={className}
         />
+      </Route>
+      <Route path={`${basePath}/waitingForDeleteAccount`} exact>
+        <WaitingFor action={'Deleting account'} className={className} />
       </Route>
     </Switch>
   );

@@ -3,6 +3,8 @@ import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
 import {Logo} from './Logo';
+import {useHistory} from 'react-router';
+import {join} from 'path';
 
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
@@ -15,6 +17,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
   const [isWarningVisible, setIsWarningVisible] = useState(false);
+  const history = useHistory();
 
   const showWarningMessage = () => {
     setIsWarningVisible(true);
@@ -44,9 +47,17 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   const renderConfirmationButtons = () => (
     <div className="connected-devices-buttons">
       <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-      <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
+      <button onClick={onConfirmDeleteClick} className="connected-devices-delete">Delete</button>
     </div>
   );
+
+  const onConfirmDeleteClick = async () => {
+    const currentLocation = history.location.pathname;
+    history.push(join(history.location.pathname, '/waitingForDeleteAccount'));
+    const {waitToBeSuccess} = await deployedWallet.removeKey(publicKey, transactionDetails);
+    await waitToBeSuccess();
+    history.replace(currentLocation);
+  };
 
   return (
     <li className={`connected-devices-item ${type.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
