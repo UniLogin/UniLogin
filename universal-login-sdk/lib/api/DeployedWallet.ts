@@ -45,9 +45,9 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.removeKey(this.contractAddress, key, this.privateKey, transactionDetails);
   }
 
-  async removeOwnKey(transactionDetails: Partial<Message>): Promise<Execution> {
+  async removeCurrentKey(transactionDetails: Partial<Message>): Promise<Execution> {
     const ownKey = utils.computeAddress(this.privateKey);
-    return this.sdk.removeKey(this.contractAddress, ownKey, this.privateKey, transactionDetails);
+    return this.removeKey(ownKey, transactionDetails);
   }
 
   async denyRequests() {
