@@ -6,13 +6,15 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
 import {useHistory} from 'react-router';
+import {join} from 'path';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
+  devicesBasePath: string;
   className?: string;
 }
 
-export const ConnectionNotification = ({deployedWallet, className}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, devicesBasePath, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
@@ -36,7 +38,7 @@ export const ConnectionNotification = ({deployedWallet, className}: ConnectNotif
                 hideTitle={() => setShowTitle(false)}
                 className={className}
                 onDenyRequests={() => history.goBack()}
-                onConnectionSuccess={() => history.replace('../connectionSuccess')}
+                onConnectionSuccess={() => history.replace(join(devicesBasePath, 'connectionSuccess'))}
               />
             </>
           )}
