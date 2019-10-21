@@ -31,16 +31,15 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     }
   };
 
-  const isCurrentDevice = () => deployedWallet.publicKey === publicKey;
-
-  const renderTrashButton = () => (
-    !isCurrentDevice() && (
+  const renderTrashButton = () => {
+    const isCurrentDevice = deployedWallet.publicKey === publicKey;
+    return !isCurrentDevice && (
       <div className="connected-devices-trash-btn-wrapper">
         {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
         <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
       </div>
-    )
-  );
+    );
+  };
 
   const renderConfirmationButtons = () => (
     <div className="connected-devices-buttons">
