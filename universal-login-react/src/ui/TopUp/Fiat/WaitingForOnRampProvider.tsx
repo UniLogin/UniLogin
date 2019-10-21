@@ -12,10 +12,14 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName}: Waitin
   const onRampProviderLogo = getOnRampProviderLogo(onRampProviderName, 'white');
   const note = `Waiting for ${onRampProviderName} to send you money`;
   return (
-    <div className="universal-login-waiting-for-on-ramp-provider">
+    <div className="universal-login-waiting-for-ramp">
       <div className={getStyleForTopLevelComponent(className)}>
-        <img src={onRampProviderLogo}/>
-        <WaitingFor action={note} className={className}/>
+        <div className="waiting-for-ramp">
+          <div className="waiting-for-ramp-content">
+            <img src={onRampProviderLogo} className="waiting-for-ramp-img"/>
+            <WaitingFor action={note} className={className}/>
+          </div>
+        </div>
       </div>
     </div>
   );
