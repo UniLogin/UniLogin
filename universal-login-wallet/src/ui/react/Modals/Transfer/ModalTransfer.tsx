@@ -10,7 +10,6 @@ const ModalTransfer = () => {
   const [modal, setModal] = useState('transferAmount');
 
   const {walletService, sdk} = useServices();
-  // FIXME: This cast looks like a bug
   const [transferDetails, setTransferDetails] = useState(
     {transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails,
   );
