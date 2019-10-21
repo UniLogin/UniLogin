@@ -1,15 +1,14 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext} from 'react';
+import {Route, Switch, useHistory} from 'react-router';
+import {Funds, Devices, BackupCodes, Notice, NewDeviceMessage} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
-import {useServices, useRouter} from '../../hooks';
-import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
+import {useServices} from '../../hooks';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
   const {walletService} = useServices();
-  const {history} = useRouter();
   const modalService = useContext(WalletModalContext);
-  const [content, setContent] = useState('balance');
 
   const {sdk} = walletService.getDeployedWallet();
   const notice = sdk.getNotice();
@@ -19,45 +18,44 @@ const HomeScreen = () => {
     hideModal: modalService.hideModal,
   };
 
-  const renderContent = () => {
-    switch (content) {
-      case 'balance':
-        return (
-          <Funds
-            deployedWallet={walletService.getDeployedWallet()}
-            onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
-            onSendClick={() => modalService.showModal('transfer')}
-            className="jarvis-funds"
-          />
-        );
-      case 'devices':
-        return (
-          <Devices
-            walletService={walletService}
-            onAccountDeleted={() => history.push('/welcome')}
-            className="jarvis-styles"
-          />
-        );
-      case 'backup':
-        return (
-          <BackupCodes
-            deployedWallet={walletService.getDeployedWallet()}
-            className="jarvis-backup"
-          />
-        );
-      default:
-        return null;
-    }
-  };
+  const history = useHistory();
 
   return (
     <>
       <div className="dashboard">
-        <Header setContent={setContent} />
+        <Header/>
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice}/>
-            {renderContent()}
+            <Switch>
+              <Route path="/" exact>
+                <NewDeviceMessage
+                  deployedWallet={walletService.getDeployedWallet()}
+                  onClick={() => history.push('/devices/approveDevice')}
+                  className="jarvis-styles"
+                />
+                <Funds
+                  deployedWallet={walletService.getDeployedWallet()}
+                  onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
+                  onSendClick={() => modalService.showModal('transfer')}
+                  className="jarvis-funds"
+                />
+              </Route>
+              <Route path="/devices">
+                <Devices
+                  walletService={walletService}
+                  onAccountDeleted={() => history.push('/welcome')}
+                  basePath="/devices"
+                  className="jarvis-styles"
+                />
+              </Route>
+              <Route path="/backup" exact>
+                <BackupCodes
+                  deployedWallet={walletService.getDeployedWallet()}
+                  className="jarvis-backup"
+                />
+              </Route>
+            </Switch>
           </div>
         </div>
       </div>
