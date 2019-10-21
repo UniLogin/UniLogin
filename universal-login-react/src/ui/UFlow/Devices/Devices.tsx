@@ -20,10 +20,18 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
-        <DevicesList deployedWallet={deployedWallet} className={className}/>
+        <DevicesList
+          deployedWallet={deployedWallet}
+          devicesBasePath={basePath}
+          className={className}
+        />
       </Route>
       <Route path={`${basePath}/approveDevice`} exact>
-        <ConnectionNotification deployedWallet={deployedWallet} className={className}/>
+        <ConnectionNotification
+          deployedWallet={deployedWallet}
+          devicesBasePath={basePath}
+          className={className}
+        />
       </Route>
       <Route path={`${basePath}/connectionSuccess`} exact>
         <ConnectionSuccessNotification className={className}/>
