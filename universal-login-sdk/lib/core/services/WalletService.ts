@@ -40,7 +40,11 @@ export class WalletService {
     return this.stateProperty.get();
   }
 
-  constructor(private sdk: UniversalLoginSDK, private walletFromPassphrase: WalletFromBackupCodes = walletFromBrain, private storage?: WalletStorage) {}
+  constructor(
+    public readonly sdk: UniversalLoginSDK,
+    private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
+    private readonly storage?: WalletStorage,
+  ) {}
 
   getDeployedWallet(): DeployedWallet {
     if (this.state.kind !== 'Deployed') {
