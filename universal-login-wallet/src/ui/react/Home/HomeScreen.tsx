@@ -31,7 +31,7 @@ const HomeScreen = () => {
               <Route path="/" exact>
                 <NewDeviceMessage
                   deployedWallet={walletService.getDeployedWallet()}
-                  onClick={() => history.push('/devices/approveDevice')}
+                  onManageClick={() => history.push('/devices/approveDevice')}
                   className="jarvis-styles"
                 />
                 <Funds

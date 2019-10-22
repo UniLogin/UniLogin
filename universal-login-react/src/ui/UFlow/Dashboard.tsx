@@ -90,7 +90,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                     <DialogWrapper message={notice} deployedWallet={deployedWallet}>
                       <NewDeviceMessage
                         deployedWallet={deployedWallet}
-                        onClick={() => history.push('/dashboard/devices/approveDevice')}
+                        onManageClick={() => history.push('/dashboard/devices/approveDevice')}
                       />
                       <Funds
                         deployedWallet={deployedWallet}

@@ -21,6 +21,11 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const history = useHistory();
 
+  const onDenyButtonClick = () => {
+    deployedWallet.denyRequests();
+    history.goBack()
+  }
+
   return (
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
@@ -37,7 +42,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 deployedWallet={deployedWallet}
                 hideTitle={() => setShowTitle(false)}
                 className={className}
-                onDenyRequests={() => history.goBack()}
+                onDenyRequests={onDenyButtonClick}
                 onConnectionSuccess={() => history.replace(join(devicesBasePath, 'connectionSuccess'))}
               />
             </>
