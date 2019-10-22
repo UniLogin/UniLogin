@@ -17,7 +17,7 @@ export interface TransferRecipientProps {
   onGasParametersChanged: OnGasParametersChanged;
 }
 
-export const TransferRecipient = ({onRecipientChange, onSendClick, className, deployedWallet, onGasParametersChanged, transferDetails: {amount, to}, symbol}: TransferRecipientProps) => {
+export const TransferRecipient = ({onRecipientChange, onSendClick, className, deployedWallet, onGasParametersChanged, transferDetails: {amount, to, gasParameters}, symbol}: TransferRecipientProps) => {
   const [showError, setShowError] = useState<boolean>(false);
   const errorMessage = 'Invalid address';
 
@@ -53,7 +53,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, className, de
               className={className}
             />
             <div className="footer-buttons-row">
-              <button id="send-button" onClick={onClick} className="footer-approve-btn">Send</button>
+              <button id="send-button" onClick={onClick} className="footer-approve-btn" disabled={!gasParameters}>Send</button>
             </div>
           </FooterSection>
         </div>
