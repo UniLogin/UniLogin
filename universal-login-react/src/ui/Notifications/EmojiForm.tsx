@@ -30,7 +30,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
+  useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
 
   const addresses = filterNotificationByCodePrefix(notifications, enteredCode);
   const soleAddress = addresses.length === 1 ? addresses[0] : undefined;
@@ -42,6 +42,10 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
       hideTitle && hideTitle();
     }
   }, [isInputValid]);
+
+  const updateNotifications = (notifications: Notification[]) => notifications.length === 0
+    ? onDenyRequests && onDenyRequests()
+    : setNotifications(notifications);
 
   const onConnectClick = async () => {
     if (!soleAddress || !gasParameters) {
