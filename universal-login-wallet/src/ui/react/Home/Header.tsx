@@ -12,7 +12,7 @@ export function Header() {
 
   useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifictions), []);
 
-  const {walletPresenter: walletFormatter} = useServices();
+  const {walletPresenter} = useServices();
 
   return (
     <div className="header">
@@ -41,7 +41,7 @@ export function Header() {
             <NavLink to="/backup" className="header-btn backup-btn">Backup</NavLink>
           </li>
         </ul>
-        <p className="header-user-name">{walletFormatter.getName()}</p>
+        <p className="header-user-name">{walletPresenter.getName()}</p>
       </div>
     </div>
   );
