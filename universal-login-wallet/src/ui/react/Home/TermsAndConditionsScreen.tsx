@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import React, {useState} from 'react';
-import {useRouter} from '../../hooks';
+import {useHistory} from 'react-router';
 
 export const TermsAndConditionsScreen = () => {
   const [isRead, setIsRead] = useState(false);
-  const {history} = useRouter();
+  const history = useHistory();
 
   return (
     <div className="main-bg">
