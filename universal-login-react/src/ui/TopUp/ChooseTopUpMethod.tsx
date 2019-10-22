@@ -11,7 +11,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
-import {OnGasParametersChanged, DEPLOY_GAS_LIMIT, ensureNotNull} from '@universal-login/commons';
+import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 
 export interface ChooseTopUpMethodProps {
@@ -82,7 +82,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 isDeployed={false}
                 sdk={sdk}
                 onGasParametersChanged={onGasParametersChanged!}
-                gasLimit={DEPLOY_GAS_LIMIT}
+                gasLimit={DEPLOYMENT_REFUND}
                 className={topUpClassName}
               />
             </FooterSection>
