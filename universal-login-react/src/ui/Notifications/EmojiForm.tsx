@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {
   filterNotificationByCodePrefix,
-  INITIAL_GAS_PARAMETERS,
   isValidCode,
   Notification,
   SECURITY_CODE_LENGTH,
+  GasParameters,
 } from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
@@ -27,7 +27,7 @@ export interface EmojiFormProps {
 export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
-  const [gasParameters, setGasParameters] = useState(INITIAL_GAS_PARAMETERS);
+  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
@@ -44,7 +44,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
   }, [isInputValid]);
 
   const onConnectClick = async () => {
-    if (!soleAddress) {
+    if (!soleAddress || !gasParameters) {
       throw new TypeError();
     }
     const {waitToBeSuccess} = await deployedWallet.addKey(soleAddress, {...transactionDetails, ...gasParameters});
@@ -79,7 +79,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
               />
               <div className="footer-buttons-row">
                 <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
-                <button onClick={onConnectClick} className="footer-approve-btn">Connect device</button>
+                <button onClick={onConnectClick} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
               </div>
             </FooterSection>
           </div>
