@@ -9,10 +9,11 @@ import {join} from 'path';
 export interface ConnectedDevicesItemProps extends Device {
   devicesAmount: number;
   deployedWallet: DeployedWallet;
+  devicesBasePath: string;
   confirmationsCount: string;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, confirmationsCount}: ConnectedDevicesItemProps) => {
+export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, devicesBasePath, confirmationsCount}: ConnectedDevicesItemProps) => {
   const {os, applicationName, type, ipAddress, city, logo} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
@@ -52,11 +53,10 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   );
 
   const onConfirmDeleteClick = async () => {
-    const currentLocation = history.location.pathname;
-    history.push(join(history.location.pathname, '/waitingForDeleteAccount'));
+    history.push(join(devicesBasePath, '/waitingForDeleteAccount'));
     const {waitToBeSuccess} = await deployedWallet.removeKey(publicKey, transactionDetails);
     await waitToBeSuccess();
-    history.replace(currentLocation);
+    history.replace(devicesBasePath);
   };
 
   return (
