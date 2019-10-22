@@ -35,6 +35,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
               ? <ConnectedDevices
                 devicesList={devices}
                 deployedWallet={deployedWallet}
+                devicesBasePath={devicesBasePath}
               />
               : <Spinner className="spinner-center"/>}
           </div>

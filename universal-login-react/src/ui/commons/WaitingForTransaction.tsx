@@ -10,10 +10,10 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   transactionHash?: string;
 }
 
-const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children}: WaitingForTransactionProps) => {
+const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children, className}: WaitingForTransactionProps) => {
   return (
     <div>
-      <WaitingFor action={action}>{children}</WaitingFor>
+      <WaitingFor action={action} className={className}>{children}</WaitingFor>
       <div>
         <div className="modal-pending-section">
           <h3 className="transaction-hash-title">Transaction hash</h3>
@@ -29,7 +29,7 @@ export const WaitingForTransaction = ({action, relayerConfig, transactionHash, c
   return (
     <div className="universal-login-waiting-for-transaction">
       <div className={getStyleForTopLevelComponent(className)}>
-        {relayerConfig ? renderWaitingForTransaction({action, relayerConfig, transactionHash, children}) : <Spinner className="waiting-for-spinner" />}
+        {relayerConfig ? renderWaitingForTransaction({action, relayerConfig, transactionHash, children, className}) : <Spinner className="waiting-for-spinner" />}
       </div>
     </div>
   );

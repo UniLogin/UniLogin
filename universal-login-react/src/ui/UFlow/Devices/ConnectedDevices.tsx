@@ -8,9 +8,10 @@ import {FeatureFlag} from '../../commons/FeatureFlag';
 export interface ConnectedDevicesProps {
   devicesList: Device[];
   deployedWallet: DeployedWallet;
+  devicesBasePath: string;
 }
 
-export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevicesProps) => {
+export const ConnectedDevices = ({devicesList, deployedWallet, devicesBasePath}: ConnectedDevicesProps) => {
   const [confirmationsCount, setConfirmationsCount] = useState<string>('');
 
   return (
@@ -34,6 +35,7 @@ export const ConnectedDevices = ({devicesList, deployedWallet}: ConnectedDevices
               confirmationsCount={confirmationsCount}
               devicesAmount={devicesList.length}
               deployedWallet={deployedWallet}
+              devicesBasePath={devicesBasePath}
               {...device}
             />
           );
