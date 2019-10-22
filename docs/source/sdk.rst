@@ -10,12 +10,23 @@ An SDK is a JS library that helps to communicate with a relayer. The SDK makes i
 Creating an SDK
 ---------------
 
-**new UniversalLoginSDK(relayerURL, providerURL, messageOptions)**
+**new UniversalLoginSDK(relayerURL, providerURL, sdkConfig)**
 
   Parameters:
     - **relayerURL** : string - a URL address of a relayer
     - **providerURL** : string - JSON-RPC URL of an Ethereum node
-    - **messageOptions** (optional) : object - specific message options as ``gasPrice`` or ``gasLimit``
+    - **sdkConfig** (optional) : object - specific sdk options listed below:
+
+      - applicationInfo : object - detailed info about application: applicationName, type (e.g. laptop, mobile), logo (image source)
+      - paymentOptions : object - specific transaction options: gasLimit, gasPrice, gasToken
+      - observedTokensAddresses : array of strings - addresses of tokens used
+      - observedCurrencies: array with combination of USD, ETH and DAI - shortcuts of currencies used
+      - notice : string - additional info shown on the top of React components e.g. 'Beta version'
+      - executionFactoryTick : number - perdiod of time in miliseconds which factory wait with retry if transaction failed
+      - authorizationsObserverTick : number - perdiod of time in miliseconds which last between authorization check
+      - balanceObserverTick : number - perdiod of time in miliseconds which last between balance update
+      - priceObserverTick : number - perdiod of time in miliseconds which last between price update
+
   Returns:
     UniversalLoginSDK instance
 
