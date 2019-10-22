@@ -23,8 +23,8 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const onDenyButtonClick = () => {
     deployedWallet.denyRequests();
-    history.goBack()
-  }
+    history.goBack();
+  };
 
   return (
     <div id="notifications" className="universal-login-emojis">
