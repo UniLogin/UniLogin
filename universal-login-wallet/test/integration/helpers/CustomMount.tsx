@@ -9,5 +9,5 @@ export const mountWithContext = (component: any, value: Services, initialEntries
       <MemoryRouter initialEntries={initialEntries}>
         {component}
       </MemoryRouter>
-    </ServiceContext.Provider>
+    </ServiceContext.Provider>,
   );
