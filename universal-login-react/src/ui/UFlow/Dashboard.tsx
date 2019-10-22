@@ -87,7 +87,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   path="/dashboard/funds"
                   exact
                   render={({history}) => (
-                    <DialogWrapper message={notice} ensName={name}>
+                    <DialogWrapper message={notice} deployedWallet={deployedWallet}>
                       <NewDeviceMessage
                         deployedWallet={deployedWallet}
                         onClick={() => history.push('/dashboard/devices/approveDevice')}
@@ -158,7 +158,7 @@ export const Dashboard = ({deployedWallet}: DashboardProps) => {
                   )}
                 />
                 <Route path="/dashboard/backup" exact>
-                  <DialogWrapper message={notice} ensName={name}>
+                  <DialogWrapper message={notice} deployedWallet={deployedWallet}>
                     <BackupCodes deployedWallet={deployedWallet}/>
                   </DialogWrapper>
                 </Route>

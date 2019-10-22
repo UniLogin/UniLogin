@@ -7,13 +7,13 @@ export interface DialogWrapperProps extends DialogHeaderProps, NoticeProps {
   children: ReactNode;
 }
 
-export const DialogWrapper = ({message, ensName, children}: DialogWrapperProps) => (
+export const DialogWrapper = ({message, deployedWallet, children}: DialogWrapperProps) => (
   <>
-    <DialogHeader ensName={ensName} />
+    <DialogHeader deployedWallet={deployedWallet} />
     <Notice message={message}/>
     <div className="udashboard-content">
       {children}
     </div>
-    <UNavBarMobile />
+    <UNavBarMobile deployedWallet={deployedWallet} />
   </>
 );
