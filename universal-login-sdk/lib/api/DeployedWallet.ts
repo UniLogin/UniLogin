@@ -25,6 +25,10 @@ export class DeployedWallet implements ApplicationWallet {
   ) {
   }
 
+  get publicKey() {
+    return utils.computeAddress(this.privateKey);
+  }
+
   get asApplicationWallet(): ApplicationWallet {
     return {
       contractAddress: this.contractAddress,

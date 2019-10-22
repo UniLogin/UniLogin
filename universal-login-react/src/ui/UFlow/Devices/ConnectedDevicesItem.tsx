@@ -31,6 +31,23 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     }
   };
 
+  const renderTrashButton = () => {
+    const isCurrentDevice = deployedWallet.publicKey === publicKey;
+    return !isCurrentDevice && (
+      <div className="connected-devices-trash-btn-wrapper">
+        {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
+        <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
+      </div>
+    );
+  };
+
+  const renderConfirmationButtons = () => (
+    <div className="connected-devices-buttons">
+      <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
+      <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
+    </div>
+  );
+
   return (
     <li className={`connected-devices-item ${type.toLowerCase()} ${toBeRemoved ? 'highlighted' : ''}`}>
       <Logo logo={logo} applicationName={applicationName} />
@@ -40,16 +57,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
           IP address {ipAddress} {' '}{city}
         </p>
       </div>
-      {toBeRemoved
-        ? <div className="connected-devices-buttons">
-          <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
-          <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="connected-devices-delete">Delete</button>
-        </div>
-        : <div className="connected-devices-trash-btn-wrapper">
-          {isWarningVisible && <WarningMessage devicesAmount={devicesAmount} />}
-          <button onClick={onTrashButtonClick} className="connected-devices-trash-btn" />
-        </div>
-      }
+      {toBeRemoved ? renderConfirmationButtons() : renderTrashButton()}
     </li >
   );
 };
