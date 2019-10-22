@@ -25,16 +25,17 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
     <div className="universal-login-devices">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="devices">
+          <NewDeviceMessage
+            deployedWallet={deployedWallet}
+            onClick={() => history.push(join(devicesBasePath, 'approveDevice'))}
+            className={className}
+          />
           <div className="devices-inner">
-            <NewDeviceMessage
-              deployedWallet={deployedWallet}
-              onClick={() => history.push(join(devicesBasePath, 'approveDevice'))}
-              className={className}
-            />
             {devices
               ? <ConnectedDevices
                 devicesList={devices}
                 deployedWallet={deployedWallet}
+                devicesBasePath={devicesBasePath}
               />
               : <Spinner className="spinner-center"/>}
           </div>

@@ -40,6 +40,7 @@
 
 .header-btn
   position: relative
+  display: flex
   font-size: 14px
   line-height: 16px
   color: #838c9e
@@ -119,63 +120,10 @@
     width: 20px
     height: 20px
 
-.header-dropdown
-  position: relative
-
-.header-dropdown-content
-  position: absolute
-  left: 50%
-  bottom: -30px
-  transform: translate(-50%, 100%)
-  width: 500px
-  max-height: 500px
-  overflow-y: auto
-  z-index: 10
-
-  +media(s, 168px)
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    bottom: 53px
-    width: 100%
-    transform: translate(0, 0)
-    overflow: auto
-    max-height: unset
-
-.header-dropdown-content .universal-login .settings
-  +media(s, 168px)
-    background: #fafbfd
-
-.header-dropdown-content-title
-  display: none
-  font-size: 20px
-  color: #31405E
-  padding: 30px 20px
-  background: #fff
-
-  +media(s, 168px)
-    display: flex
-    align-items: center
-
-.header-dropdown-content .universal-login .settings-title
-  +media(s, 168px)
-    display: none
-
-.back-btn
-  display: block
-  width: 18px
-  height: 12px
-  margin-right: 14px
-  background: url('./../assets/icons/arrow-left.svg') center no-repeat
-  background-size: contain
-
-.header-dropdown-content .universal-login .accordion
-  +media(s, 168)
-    background: #fff
-    border: 1px solid #E1E1F0
-
-.header-dropdown-content .universal-login .settings
-  +media(s, 168px)
-    overflow: auto
-    padding: 25px 20px
+.header-user-name
+  margin-bottom: 2px
+  font-weight: 500
+  font-size: 13px
+  color: #3D3D41
+  line-height: 16px
+  text-align: left

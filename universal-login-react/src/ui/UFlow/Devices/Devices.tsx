@@ -5,6 +5,8 @@ import {WalletService} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
+import {WaitingFor} from '../../commons/WaitingFor';
+import {join} from 'path';
 
 export interface DevicesProps {
   walletService: WalletService;
@@ -26,23 +28,26 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
           className={className}
         />
       </Route>
-      <Route path={`${basePath}/approveDevice`} exact>
+      <Route path={join(basePath, 'approveDevice')} exact>
         <ConnectionNotification
           deployedWallet={deployedWallet}
           devicesBasePath={basePath}
           className={className}
         />
       </Route>
-      <Route path={`${basePath}/connectionSuccess`} exact>
+      <Route path={join(basePath, 'connectionSuccess')} exact>
         <ConnectionSuccessNotification className={className}/>
       </Route>
-      <Route path={`${basePath}/deleteAccount`} exact>
+      <Route path={join(basePath, 'deleteAccount')} exact>
         <DeleteAccount
           walletService={walletService}
           onAccountDeleted={onAccountDeleted}
           onCancelClick={() => history.replace(`${basePath}/`)}
           className={className}
         />
+      </Route>
+      <Route path={join(basePath, 'waitingForDeleteAccount')} exact>
+        <WaitingFor action="Deleting account" className={className} />
       </Route>
     </Switch>
   );
