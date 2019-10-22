@@ -1,5 +1,4 @@
-import {MineableState} from '@universal-login/commons';
-import {MineableStatus} from '@universal-login/commons/lib/core/models/message';
+import {MineableState, MineableStatus} from '@universal-login/commons';
 
 const DEFAULT_TIMEOUT = 600000;
 const DEFAULT_TICK = 1000;
