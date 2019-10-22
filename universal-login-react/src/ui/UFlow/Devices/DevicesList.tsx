@@ -27,7 +27,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
         <div className="devices">
           <NewDeviceMessage
             deployedWallet={deployedWallet}
-            onClick={() => history.push(join(devicesBasePath, 'approveDevice'))}
+            onManageClick={() => history.push(join(devicesBasePath, 'approveDevice'))}
             className={className}
           />
           <div className="devices-inner">
