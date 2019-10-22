@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import logo from '../../assets/logo.svg';
 import {useServices} from '../../hooks';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
-export interface HeaderProps {
-  setContent: (content: string) => void;
-}
-
-export function Header({setContent}: HeaderProps) {
+export function Header() {
   const {sdk, walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
   const {contractAddress, privateKey} = walletService.getDeployedWallet();
@@ -24,28 +20,23 @@ export function Header({setContent}: HeaderProps) {
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <button onClick={() => setContent('balance')} className="header-btn funds-btn">Funds</button>
+            <NavLink to="/" className="header-btn funds-btn">Funds</NavLink>
           </li>
           <li className="header-list-item">
-            <button className="header-btn transactions-btn">Transactions</button>
+            <NavLink to="/" className="header-btn transactions-btn">Transactions</NavLink>
           </li>
           <li className="header-list-item">
-            <button
+            <NavLink
+              to="/devices"
               id="devicesButton"
               className="header-btn devices-btn"
-              onClick={() => setContent('devices')}
             >
               Devices
               {newNotifications && <div className="new-notifications" />}
-            </button>
+            </NavLink>
           </li>
           <li className="header-list-item">
-            <button
-              className="header-btn backup-btn"
-              onClick={() => setContent('backup')}
-            >
-                Backup
-            </button>
+            <NavLink to="/backup" className="header-btn backup-btn">Backup</NavLink>
           </li>
         </ul>
       </div>

@@ -58,6 +58,7 @@ export const Onboarding = (props: OnboardingProps) => {
       onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
       sdk: props.sdk,
       isDeployment: true,
+      hideModal: () => {walletService.disconnect(); modalService.hideModal();},
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();

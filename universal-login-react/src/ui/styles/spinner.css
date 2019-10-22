@@ -58,8 +58,8 @@
 
 .universal-login .spinner-dot {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
   background: #000;

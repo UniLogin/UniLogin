@@ -7,7 +7,7 @@ interface LogoProps {
 }
 
 export const Logo = ({logo, applicationName}: LogoProps) => {
-  const src = logo === 'none' ? DEFAULT_LOGO : logo;
+  const src = isLogoEmpty(logo) ? DEFAULT_LOGO : logo;
   return (
     <img
       src={src}
@@ -16,3 +16,5 @@ export const Logo = ({logo, applicationName}: LogoProps) => {
     />
   );
 };
+
+const isLogoEmpty = (logo: string) => logo === 'none' || logo === '';

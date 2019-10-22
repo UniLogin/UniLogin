@@ -14,6 +14,7 @@ import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
+import {NewDeviceMessage} from './Devices/NewDeviceMessage';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -121,6 +122,10 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             path="/dashboard/devices"
             render={({history}) => (
               <DialogWrapper message={notice} ensName={name}>
+                <NewDeviceMessage
+                  deployedWallet={deployedWallet}
+                  onClick={() => history.push('/dashboard/devices/approveDevice')}
+                />
                 <Devices walletService={walletService} onAccountDeleted={onClose} basePath="/dashboard/devices" />
               </DialogWrapper>
             )}
