@@ -32,10 +32,6 @@ export class ExecutionFactory extends MineableFactory {
     };
   }
 
-  private isExecuted(messageStatus: MessageStatus) {
-    return messageStatus.state === 'Error' || messageStatus.state === 'Success';
-  }
-
   private hasTransactionHash(messageStatus: MessageStatus) {
     return ['Pending', 'Success', 'Error'].includes(messageStatus.state);
   }
@@ -51,7 +47,7 @@ export class ExecutionFactory extends MineableFactory {
   private createWaitToBeSuccess(messageHash: string) {
     return async () => {
       const getStatus = async () => this.relayerApi.getStatus(messageHash);
-      const isNotExecuted = (messageStatus: MessageStatus) => !this.isExecuted(messageStatus);
+      const isNotExecuted = (messageStatus: MessageStatus) => !this.isMined(messageStatus.state);
       const status = await retry(getStatus, isNotExecuted, this.timeout, this.tick);
       ensure(!status.error, Error, status.error!);
       return status;
