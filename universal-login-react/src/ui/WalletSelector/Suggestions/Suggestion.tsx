@@ -15,11 +15,11 @@ export const Suggestion = ({type, ...props}: SuggestionWithTypeProps) => {
         hint='This username is available'
         {...props}
       />);
-      case 'SingleConnection':
-        return (<SingleSuggestion
-          hint='Do you want connect to this account?'
-          {...props}
-        />);
+    case 'SingleConnection':
+      return (<SingleSuggestion
+        hint='Do you want connect to this account?'
+        {...props}
+      />);
     case 'Multiple':
     default:
       return (<MultipleSuggestion {...props} />);

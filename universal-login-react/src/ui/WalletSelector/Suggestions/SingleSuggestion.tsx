@@ -7,7 +7,7 @@ export const SingleSuggestion = ({onClick, operationType, suggestion, hint}: Sin
     <p className="suggestions-ens-name">{suggestion}</p>
     <p className="suggestions-hint">{hint}</p>
     <button className="suggestions-create-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
-      Create New Account
+      {operationType}
     </button>
   </>
 );
