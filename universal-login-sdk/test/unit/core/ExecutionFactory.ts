@@ -99,6 +99,12 @@ describe('UNIT: ExecutionFactory', async () => {
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
+
+    it('should throw when a status should have transaction hash but does not', async () => {
+      getStatus.returns({...defaultStatus, state: 'Success', transactionHash: undefined});
+      const execution = await executionFactory.createExecution(signedMessage);
+      await expect(execution.waitForTransactionHash()).to.be.eventually.rejected;
+    });
   });
 
   afterEach(() => {
