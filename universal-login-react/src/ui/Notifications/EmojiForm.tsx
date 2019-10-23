@@ -12,7 +12,6 @@ import {transactionDetails} from '../../core/constants/TransactionDetails';
 import ProgressBar from '../commons/ProgressBar';
 import {useProgressBar} from '../hooks/useProgressBar';
 import {GasPrice} from '../commons/GasPrice';
-import CheckmarkIcon from './../assets/icons/correct.svg';
 import {FooterSection} from '../commons/FooterSection';
 import {EmojiInput} from './EmojiInput';
 
