@@ -23,8 +23,8 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const history = useHistory();
 
-  const onDenyButtonClick = () => {
-    deployedWallet.denyRequests();
+  const onDenyButtonClick = async () => {
+    await deployedWallet.denyRequests();
     history.goBack();
   };
 
