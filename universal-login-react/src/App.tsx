@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {Wallet, utils} from 'ethers';
+import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
@@ -55,10 +55,10 @@ export const App = () => {
     console.log('connect clicked');
   };
 
-  // sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
-  //   callback(mockedNotifications);
-  //   return () => {};
-  // };
+  sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
+    callback(mockedNotifications);
+    return () => {};
+  };
 
   const [walletService] = useState(new WalletService(sdk));
 
@@ -121,19 +121,13 @@ export const App = () => {
               exact
               path="/keyboard"
               render={() => {
-                let gasParameters = {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: utils.bigNumberify(1)};
-
                 return relayerConfig ? (
                   <div>
                     <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
                     <hr />
                     <EmojiForm
-                      deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
                       notifications={[]}
-                      gasParameters={gasParameters}
-                      setGasParameters={(newGasParameters => gasParameters = newGasParameters)}
                       onCancelClick={() => {}}
-                      onConnectClick={() => {}}
                       setPublicKey={() => {}}
                     />
                   </div>

@@ -7,8 +7,6 @@ import {
   ensureNotNull,
 } from '@universal-login/commons';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
-import ProgressBar from '../commons/ProgressBar';
-import {useProgressBar} from '../hooks/useProgressBar';
 import {EmojiInput} from './EmojiInput';
 
 export interface EmojiFormProps {
@@ -21,7 +19,6 @@ export interface EmojiFormProps {
 
 export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
-  const {progressBar} = useProgressBar();
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
   useEffect(() => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)), [notifications]);
@@ -85,14 +82,7 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
 
   return (
     <div id="emojis">
-      {progressBar ? <Loader /> : renderContent()}
+      {renderContent()}
     </div>
   );
 };
-
-const Loader = () => (
-  <div className="emoji-form-loader">
-    <p className="emojis-form-title">Connecting new device...</p>
-    <ProgressBar className="connection-progress-bar" />
-  </div>
-);

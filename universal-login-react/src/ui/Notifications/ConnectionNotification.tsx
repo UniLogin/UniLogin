@@ -10,6 +10,8 @@ import {useHistory} from 'react-router';
 import {join} from 'path';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
+import {useProgressBar} from '../hooks/useProgressBar';
+import ProgressBar from '../commons/ProgressBar';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
@@ -22,6 +24,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   const [showTitle, setShowTitle] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
+  const {progressBar, showProgressBar} = useProgressBar();
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const history = useHistory();
@@ -42,8 +45,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     }
     ensureNotNull(publicKey, Error, 'Invalid key');
     const {waitToBeSuccess} = await deployedWallet.addKey(publicKey!, {...transactionDetails, ...gasParameters});
-    console.log('show progress bar');
-    // showProgressBar();
+    showProgressBar();
     await waitToBeSuccess();
     history.replace(join(devicesBasePath, 'connectionSuccess'));
   };
@@ -52,7 +54,8 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-          {notifications.length > 0 && (
+          {progressBar ?  <Loader/> :
+            notifications.length > 0 && (
             <>
               {showTitle &&
               <>
@@ -61,19 +64,15 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
               </>
               }
               <EmojiForm
-                deployedWallet={deployedWallet}
                 hideTitle={() => setShowTitle(false)}
                 className={className}
                 notifications={notifications}
-                gasParameters={gasParameters}
-                setGasParameters={setGasParameters}
                 onCancelClick={onCancelClick}
-                onConnectClick={onConnectClick}
                 setPublicKey={setPublicKey}
               />
             </>
           )}
-          {publicKey && notifications.length > 0  &&
+          {!progressBar && publicKey && notifications.length > 0  &&
             <div className="correct-input-footer">
             <FooterSection className={className}>
               <GasPrice
@@ -88,10 +87,17 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
               </div>
             </FooterSection>
-          </div>
-          }
+          </div>}
         </div>
       </div>
     </div>
   );
 };
+
+
+const Loader = () => (
+  <div className="emoji-form-loader">
+    <p className="emojis-form-title">Connecting new device...</p>
+    <ProgressBar className="connection-progress-bar" />
+  </div>
+);
