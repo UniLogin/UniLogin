@@ -19,6 +19,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
 import {ModalsPlayground} from './ui/PlaygroundUtils/ModalsPlayground';
+import {WalletService} from '@universal-login/sdk';
 
 const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
 
@@ -59,7 +60,7 @@ export const App = () => {
     return () => {};
   };
 
-  const [deployedWallet, setDeployedWallet] = useState(new DeployedWallet('', '', '', sdk));
+  const [walletService] = useState(new WalletService(sdk));
 
   async function tryEnablingMetamask() {
     const ethereum = (window as any).ethereum;
@@ -85,11 +86,9 @@ export const App = () => {
               path="/logobutton"
               render={() => (
                 <div>
-                  <CreateRandomInstance setDeployedWallet={setDeployedWallet} />
+                  <CreateRandomInstance walletService={walletService} />
                   <hr />
-                  <LogoButton
-                    deployedWallet={deployedWallet}
-                  />
+                  <LogoButton walletService={walletService} />
                 </div>
               )}
             />
