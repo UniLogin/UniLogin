@@ -1,10 +1,10 @@
 import {Wallet} from 'ethers';
 import {SignedMessage} from '@universal-login/commons';
-import PendingMessages from './messages/PendingMessages';
-import IMessageRepository from '../models/messages/IMessagesRepository';
-import {IExecutionQueue} from '../models/execution/IExecutionQueue';
-import {MessageStatusService} from './messages/MessageStatusService';
-import {GasValidator} from './validators/GasValidator';
+import PendingMessages from './PendingMessages';
+import IMessageRepository from '../../../models/messages/IMessagesRepository';
+import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
+import {MessageStatusService} from './MessageStatusService';
+import {GasValidator} from '../../validators/GasValidator';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
