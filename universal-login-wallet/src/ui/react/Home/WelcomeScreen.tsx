@@ -1,9 +1,10 @@
 import React from 'react';
-import {useRouter, useServices} from '../../hooks';
+import {useHistory} from 'react-router';
 import {Notice} from '@universal-login/react';
+import {useServices} from '../../hooks';
 
 export const WelcomeScreen = () => {
-  const {history} = useRouter();
+  const history = useHistory();
   const {sdk} = useServices();
   const notice = sdk.getNotice();
 

@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {useModalService, useProperty} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
@@ -14,20 +14,7 @@ import {WalletModalContext, WalletModalType, WalletModalPropType} from '../../co
 const App = () => {
   const modalService = useModalService<WalletModalType, WalletModalPropType>();
   const {walletService} = useServices();
-  const [appReady, setAppReady] = useState(false);
-
-  useLayoutEffect(() => {
-    if (walletService.state.kind === 'None') {
-      walletService.loadFromStorage();
-    }
-    setAppReady(true);
-  }, []);
-
   const authorized = useProperty(walletService.isAuthorized);
-
-  if (!appReady) {
-    return null;
-  }
 
   return (
     <WalletModalContext.Provider value={modalService}>

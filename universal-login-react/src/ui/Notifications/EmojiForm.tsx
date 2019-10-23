@@ -30,10 +30,14 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
+  const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
-  const addresses = filterNotificationByCodePrefix(notifications, enteredCode);
-  const soleAddress = addresses.length === 1 ? addresses[0] : undefined;
+  useEffect(() => deployedWallet.subscribeAuthorisations(onNotificationsChange), []);
+
+  const onNotificationsChange = (notifications: Notification[]) => {
+    setNotifications(notifications);
+    updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode));
+  };
 
   const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && soleAddress && isValidCode(enteredCode, soleAddress);
 
@@ -42,6 +46,19 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
       hideTitle && hideTitle();
     }
   }, [isInputValid]);
+
+  const updateEnteredCode = (code: number[]) => {
+    setEnteredCode(code);
+    updateSoleAddress(filterNotificationByCodePrefix(notifications, code));
+  };
+
+  const updateSoleAddress = (addresses: string[]) => {
+    if (addresses.length > 1) {
+      setSoleAddress(undefined);
+    } else if (addresses.length === 1) {
+      setSoleAddress(addresses[0]);
+    }
+  };
 
   const onConnectClick = async () => {
     if (!soleAddress || !gasParameters) {
@@ -53,8 +70,8 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
     onConnectionSuccess();
   };
 
-  const onCancelClick = () => {
-    deployedWallet.denyRequests();
+  const onCancelClick = async () => {
+    await deployedWallet.denyRequests();
     onDenyRequests && onDenyRequests();
   };
 
@@ -91,7 +108,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
       <div className="approve-device-form">
         <EmojiInput
           value={enteredCode}
-          onChange={setEnteredCode}
+          onChange={updateEnteredCode}
           publicKey={soleAddress}
           className={className}
         />
