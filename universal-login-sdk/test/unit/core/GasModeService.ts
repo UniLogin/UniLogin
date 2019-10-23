@@ -18,10 +18,10 @@ describe('UNIT: GasModeService', () => {
 
   const tokenPrices: TokensPrices = {
     ETH: {USD: 1838.51, DAI: 1494.71, ETH: 1},
-    DAI: {USD: 0.2391, DAI: 0.1942, ETH: 0.00001427}
+    DAI: {USD: 0.2391, DAI: 0.1942, ETH: 0.00001427},
   };
   const priceObserver: any = {
-    getCurrentPrices: sinon.stub().resolves(tokenPrices)
+    getCurrentPrices: sinon.stub().resolves(tokenPrices),
   };
 
   const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver);
@@ -52,7 +52,7 @@ describe('UNIT: GasModeService', () => {
         {
           gasPrice: gasPrices.cheap,
           token: TEST_TOKEN_DETAILS[1],
-        }]
+        }],
       },
       {
         name: 'fast',
@@ -64,8 +64,8 @@ describe('UNIT: GasModeService', () => {
         {
           gasPrice: gasPrices.fast,
           token: TEST_TOKEN_DETAILS[1],
-        }]
-      }
+        }],
+      },
     ]);
   });
 });

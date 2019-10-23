@@ -22,18 +22,18 @@ describe('UNIT: WalletService', () => {
 
     sdk = {
       getWalletContractAddress: sinon.stub().withArgs(name).returns(TEST_CONTRACT_ADDRESS),
-      keyExist
+      keyExist,
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({
       address: TEST_ACCOUNT_ADDRESS,
-      privateKey: TEST_PRIVATE_KEY
+      privateKey: TEST_PRIVATE_KEY,
     });
 
     walletFromPassphrase.resolves({
       address: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      privateKey: TEST_PRIVATE_KEY
-      });
+      privateKey: TEST_PRIVATE_KEY,
+    });
   });
 
   beforeEach(() => {

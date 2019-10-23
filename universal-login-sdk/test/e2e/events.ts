@@ -25,7 +25,6 @@ describe('E2E: Events', async () => {
     ({sdk, relayer, mockToken, privateKey, contractAddress, wallet} = await loadFixture(basicSDK));
   });
 
-
   it('create, request connection, addKey roundtrip', async () => {
     const connectionCallback = sinon.spy();
     const keyCallback = sinon.spy();

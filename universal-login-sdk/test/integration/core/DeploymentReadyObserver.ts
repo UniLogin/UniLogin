@@ -11,16 +11,15 @@ describe('INT: DeploymentReadyObserver', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let mockToken: Contract;
-  const minimalAmount =  utils.parseEther('0.5').toString();
+  const minimalAmount = utils.parseEther('0.5').toString();
   let supportedTokens = [
     {
       address: ETHER_NATIVE_TOKEN.address,
-      minimalAmount
-    }
+      minimalAmount,
+    },
   ];
   let callback: sinon.SinonSpy;
   let unsubscribe: any;
-
 
   beforeEach(async () => {
     provider = createMockProvider();

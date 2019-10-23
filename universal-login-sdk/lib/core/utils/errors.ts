@@ -21,9 +21,9 @@ type ErrorType =
   'InvalidGasLimit';
 
 export class SDKError extends Error {
-  errorType : ErrorType;
+  errorType: ErrorType;
 
-  constructor (message: string, errorType: ErrorType) {
+  constructor(message: string, errorType: ErrorType) {
     super(message);
     this.errorType = errorType;
     Object.setPrototypeOf(this, SDKError.prototype);
@@ -38,7 +38,7 @@ export class UnexpectedError extends SDKError {
 }
 
 export class Conflict extends SDKError {
-  constructor (message: string, errorType: ErrorType) {
+  constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, Conflict.prototype);
@@ -46,21 +46,21 @@ export class Conflict extends SDKError {
 }
 
 export class ConcurrentDeployment extends Conflict {
-  constructor () {
+  constructor() {
     super('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.', 'ConcurrentDeployment');
     Object.setPrototypeOf(this, ConcurrentDeployment.prototype);
   }
 }
 
 export class ConcurrentAuthorisation extends Conflict {
-  constructor () {
+  constructor() {
     super('Another wallet is subscribed for authorisations', 'ConcurrentAuthorisation');
     Object.setPrototypeOf(this, ConcurrentAuthorisation.prototype);
   }
 }
 
 export class ValidationFailed extends SDKError {
-  constructor (message: string, errorType: ErrorType) {
+  constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, ValidationFailed.prototype);
@@ -68,56 +68,56 @@ export class ValidationFailed extends SDKError {
 }
 
 export class InvalidAddress extends ValidationFailed {
-  constructor (address: string) {
+  constructor(address: string) {
     super(`Address ${address} is not valid`, 'InvalidAddress');
     Object.setPrototypeOf(this, InvalidAddress.prototype);
   }
 }
 
 export class InvalidContract extends ValidationFailed {
-  constructor () {
+  constructor() {
     super('Contract is not valid', 'InvalidContract');
     Object.setPrototypeOf(this, InvalidContract.prototype);
   }
 }
 
 export class UnsupportedBytecode extends ValidationFailed {
-  constructor () {
+  constructor() {
     super('Proxy Bytecode is not supported by relayer', 'UnsupportedBytecode');
     Object.setPrototypeOf(this, UnsupportedBytecode.prototype);
   }
 }
 
 export class InvalidEvent extends ValidationFailed {
-  constructor (eventType: string) {
+  constructor(eventType: string) {
     super(`Unknown event type: ${eventType}`, 'InvalidEvent');
     Object.setPrototypeOf(this, InvalidEvent.prototype);
   }
 }
 
 export class InvalidPassphrase extends ValidationFailed {
-  constructor () {
+  constructor() {
     super('Passphrase is not valid', 'InvalidPassphrase');
     Object.setPrototypeOf(this, InvalidPassphrase.prototype);
   }
 }
 
 export class InsufficientGas extends ValidationFailed {
-  constructor (message: string) {
+  constructor(message: string) {
     super(`Insufficient Gas. ${message}`, 'InsufficientGas');
     Object.setPrototypeOf(this, InsufficientGas.prototype);
   }
 }
 
 export class InvalidGasLimit extends ValidationFailed {
-  constructor (message: string) {
+  constructor(message: string) {
     super(`Invalid gas limit. ${message}`, 'InvalidGasLimit');
     Object.setPrototypeOf(this, InvalidGasLimit.prototype);
   }
 }
 
 export class NotFound extends SDKError {
-  constructor (message: string, errorType: ErrorType) {
+  constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, NotFound.prototype);
@@ -125,21 +125,21 @@ export class NotFound extends SDKError {
 }
 
 export class MissingConfiguration extends NotFound {
-  constructor () {
+  constructor() {
     super('Relayer configuration not yet loaded', 'MissingConfiguration');
     Object.setPrototypeOf(this, MissingConfiguration.prototype);
   }
 }
 
 export class TransactionHashNotFound extends NotFound {
-  constructor () {
+  constructor() {
     super('Transaction hash is not found in Message Status', 'TransactionHashNotFound');
     Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
   }
 }
 
 export class MissingMessageHash extends NotFound {
-  constructor () {
+  constructor() {
     super('Message hash is missing in Message Status', 'MissingMessageHash');
     Object.setPrototypeOf(this, MissingMessageHash.prototype);
   }
@@ -160,14 +160,14 @@ export class TokenNotFound extends NotFound {
 }
 
 export class TimeoutError extends SDKError {
-  constructor () {
+  constructor() {
     super('Timeout exceeded', 'TimeoutError');
     Object.setPrototypeOf(this, TimeoutError.prototype);
   }
 }
 
 export class NotSet extends SDKError {
-  constructor (message: string, errorType: ErrorType) {
+  constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, NotSet.prototype);
@@ -182,7 +182,7 @@ export class FutureWalletNotSet extends NotSet {
 }
 
 export class Overridden extends SDKError {
-  constructor (message: string, errorType: ErrorType) {
+  constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, Overridden.prototype);

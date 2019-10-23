@@ -65,7 +65,7 @@ describe('INT: BlockchainObserver', async () => {
 
     const filter = {contractAddress, key: otherWallet.address};
     const filter2 = {contractAddress, key: otherWallet2.address};
-    await blockchainObserver.subscribe('KeyAdded', filter,  callback);
+    await blockchainObserver.subscribe('KeyAdded', filter, callback);
     await blockchainObserver.subscribe('KeyAdded', filter2, callback2);
 
     const execution = await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);

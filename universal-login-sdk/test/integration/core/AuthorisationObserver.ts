@@ -10,7 +10,6 @@ import {waitUntil, signRelayerRequest, RelayerRequest} from '@universal-login/co
 import {utils, Wallet} from 'ethers';
 import {createWallet} from '../../helpers/createWallet';
 
-
 chai.use(solidity);
 chai.use(sinonChai);
 
@@ -28,7 +27,7 @@ describe('INT: AuthorisationsObserver', async () => {
   const createauthorisationRequest = (walletContractAddress: string, privateKey: string) => {
     const authorisationRequest: RelayerRequest = {
       contractAddress,
-      signature: ''
+      signature: '',
     };
     signRelayerRequest(authorisationRequest, privateKey);
     return authorisationRequest;
@@ -55,7 +54,7 @@ describe('INT: AuthorisationsObserver', async () => {
     await waitUntil(() => !!callback.secondCall);
     expect(callback.secondCall.args[0][0]).to.deep.include({
       walletContractAddress: contractAddress,
-      key: utils.computeAddress(privateKey)
+      key: utils.computeAddress(privateKey),
     });
     unsubscribe();
     expect(callback).to.have.been.calledTwice;
