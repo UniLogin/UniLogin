@@ -1,4 +1,5 @@
-import {MineableState} from '@universal-login/commons';
+import {MineableState, MineableStatus, ensureNotNull} from '@universal-login/commons';
+import {TransactionHashNotFound} from '../utils/errors';
 
 const DEFAULT_TIMEOUT = 600000;
 const DEFAULT_TICK = 1000;
@@ -11,5 +12,13 @@ export class MineableFactory {
 
   protected isMined(state: MineableState) {
     return state === 'Error' || state === 'Success';
+  }
+
+  protected hasTransactionHash(status: MineableStatus) {
+    if (['Pending', 'Success', 'Error'].includes(status.state)) {
+      ensureNotNull(status.transactionHash, TransactionHashNotFound);
+      return true;
+    }
+    return false;
   }
 }
