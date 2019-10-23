@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
+import {useHistory} from 'react-router';
 import {ConnectionFlow} from '@universal-login/react';
 import {ConnectSelector} from './ConnectSelector';
-import {useServices, useRouter} from '../../hooks';
+import {useServices} from '../../hooks';
 
 export type ConnectModal = 'connectionFlow' | 'selector';
 
 export const ConnectAccount = () => {
-  const {history} = useRouter();
+  const history = useHistory();
   const {sdk, walletService} = useServices();
   const [name, setName] = useState<string | undefined>(undefined);
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');

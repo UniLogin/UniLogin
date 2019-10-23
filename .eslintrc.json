@@ -330,7 +330,12 @@
     "no-unsafe-finally": "error",
     "no-unsafe-negation": "error",
     "no-restricted-imports": ["error", {
-      "patterns": ["original-works-core/src", "original-works-core/dist"]
+      "patterns": [
+        "@universal-login/*/src",
+        "@universal-login/*/lib",
+        "@universal-login/*/test",
+        "@universal-login/*/dist"
+      ]
     }],
     "no-use-before-define": [
       "error",
