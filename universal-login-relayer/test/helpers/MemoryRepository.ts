@@ -5,9 +5,9 @@ import {ensureProperTransactionHash} from '../../lib/core/utils/validations';
 import {Mineable} from '../../lib/core/models/Mineable';
 
 export default class MemoryRepository<T extends Mineable> implements IRepository<T> {
-  public items: Record<string, T>;
+  items: Record<string, T>;
 
-  constructor () {
+  constructor() {
     this.items = {};
   }
 

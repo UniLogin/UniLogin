@@ -3,27 +3,27 @@ import {NotFound, PaymentError, Conflict, ValidationFailed, RelayerError, Unauth
 import {SanitizeError} from '@restless/restless';
 
 export default function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-    const status = getCodeForException(err);
-    const content = getContentForException(err);
-    res.status(status)
-      .type('json')
-      .send(content);
+  const status = getCodeForException(err);
+  const content = getContentForException(err);
+  res.status(status)
+    .type('json')
+    .send(content);
 }
 
 function getContentForException(err: Error) {
   if (err instanceof RelayerError) {
-    const relayerError = <RelayerError>err;
+    const relayerError = err as RelayerError;
     return {
       error: err.toString(),
-      type: relayerError.errorType
+      type: relayerError.errorType,
     };
   } else if (err instanceof SanitizeError) {
     return {
-      error: err.errors
+      error: err.errors,
     };
   } else {
     return {
-      error: err.toString()
+      error: err.toString(),
     };
   }
 }
@@ -43,4 +43,3 @@ export function getCodeForException(err: Error) {
     return 500;
   }
 }
-

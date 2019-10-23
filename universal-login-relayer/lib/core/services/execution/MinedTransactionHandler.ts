@@ -10,7 +10,7 @@ export class MinedTransactionHandler {
   constructor(
     private hooks: EventEmitter,
     private authorisationStore: AuthorisationStore,
-    private devicesService: DevicesService
+    private devicesService: DevicesService,
   ) {}
 
   private async updateDevicesAndAuthorisations(contractAddress: string, key: string) {

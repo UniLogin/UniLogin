@@ -18,6 +18,6 @@ export default async function createWalletContract(wallet) {
   await wallet.sendTransaction({to: proxyContract.address, data: initData});
   return {
     proxy: new Contract(proxyContract.address, WalletContract.abi, wallet),
-    master: walletContract
+    master: walletContract,
   };
 }

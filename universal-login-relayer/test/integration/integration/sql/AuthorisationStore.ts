@@ -62,8 +62,8 @@ describe('INT: Authorisation Store', async () => {
     const requests = [1, 2, 3].map((_) => ({walletContractAddress: contractAddress, key: createKeyPair().publicKey, deviceInfo}));
     const ids = [];
     for (const request of requests) {
-       const [id] = await authorisationStore.addRequest(request);
-       ids.push(id);
+      const [id] = await authorisationStore.addRequest(request);
+      ids.push(id);
     }
 
     const authorisations = await authorisationStore.getPendingAuthorisations(contractAddress);

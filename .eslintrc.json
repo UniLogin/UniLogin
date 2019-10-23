@@ -405,7 +405,7 @@
       "error",
       "never"
     ],
-    "semi": [
+    "@typescript-eslint/semi": [
       "error",
       "always"
     ],

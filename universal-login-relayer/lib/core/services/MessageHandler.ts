@@ -14,7 +14,7 @@ class MessageHandler {
     messageRepository: IMessageRepository,
     statusService: MessageStatusService,
     private gasValidator: GasValidator,
-    private executionQueue: IExecutionQueue
+    private executionQueue: IExecutionQueue,
   ) {
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.executionQueue, statusService);
   }

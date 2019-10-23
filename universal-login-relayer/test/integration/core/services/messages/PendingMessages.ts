@@ -16,12 +16,12 @@ import {SignaturesService} from '../../../../../lib/integration/ethereum/Signatu
 import {createMessageItem} from '../../../../../lib/core/utils/messages/serialisation';
 
 describe('INT: PendingMessages', () => {
-  let pendingMessages : PendingMessages;
+  let pendingMessages: PendingMessages;
   let messageRepository: MessageSQLRepository;
   let signaturesService: SignaturesService;
   let statusService: MessageStatusService;
   let unsignedMessage: UnsignedMessage;
-  let signedMessage : SignedMessage;
+  let signedMessage: SignedMessage;
   let wallet: Wallet;
   let walletContract: Contract;
   let actionKey: string;
@@ -30,7 +30,7 @@ describe('INT: PendingMessages', () => {
   let messageHash: string;
 
   beforeEach(async () => {
-    ({ wallet, walletContract, actionKey } = await loadFixture(basicWalletContractWithMockToken));
+    ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
     signaturesService = new SignaturesService(wallet);
@@ -77,7 +77,6 @@ describe('INT: PendingMessages', () => {
   });
 
   describe('Add', async () => {
-
     it('should push one signature', async () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
@@ -98,16 +97,16 @@ describe('INT: PendingMessages', () => {
     it('should not accept same signature twice', async () => {
       await pendingMessages.add(signedMessage);
       await expect(pendingMessages.add(signedMessage))
-          .to.be.rejectedWith('Signature already collected');
+        .to.be.rejectedWith('Signature already collected');
     });
   });
 
-  describe('Ensure correct execution', async () =>  {
+  describe('Ensure correct execution', async () => {
     it('should throw when pending signedMessage already has transaction hash', async () => {
       await pendingMessages.add(signedMessage);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       await expect(pendingMessages.ensureCorrectExecution(messageHash))
-          .to.be.eventually.rejectedWith('Execution request already processed');
+        .to.be.eventually.rejectedWith('Execution request already processed');
     });
 
     it('should throw error when pending signedMessage has not enough signatures', async () => {

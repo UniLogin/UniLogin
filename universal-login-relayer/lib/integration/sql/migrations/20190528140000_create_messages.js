@@ -6,10 +6,10 @@
 
 exports.up = async (knex) => {
   await knex.schema.createTable('messages', (table) => {
-      table.string('messageHash').primary();
-      table.string('transactionHash');
-      table.string('walletAddress').notNullable();
-      table.timestamp('createdAt').notNullable();
+    table.string('messageHash').primary();
+    table.string('transactionHash');
+    table.string('walletAddress').notNullable();
+    table.timestamp('createdAt').notNullable();
   });
 };
 

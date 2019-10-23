@@ -15,11 +15,11 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   async add(messageHash: string, messageItem: MessageItem) {
     ensureNotNull(messageItem.message, MessageNotFound, messageHash);
     await super.add(messageHash, {
-        transactionHash: messageItem.transactionHash,
-        walletAddress: messageItem.walletAddress,
-        state: 'AwaitSignature',
-        message: stringifySignedMessageFields(messageItem.message)
-    } as MessageItem
+      transactionHash: messageItem.transactionHash,
+      walletAddress: messageItem.walletAddress,
+      state: 'AwaitSignature',
+      message: stringifySignedMessageFields(messageItem.message),
+    } as MessageItem,
     );
   }
 
@@ -35,7 +35,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
     const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     const messageItem: MessageItem = message && {
       ...message,
-      collectedSignatureKeyPairs: signatureKeyPairs
+      collectedSignatureKeyPairs: signatureKeyPairs,
     };
     return messageItem;
   }
@@ -71,7 +71,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       .insert({
         messageHash,
         signature,
-        key
+        key,
       })
       .into('signature_key_pairs');
   }

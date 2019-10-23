@@ -4,13 +4,13 @@ import {TEST_APPLICATION_INFO} from '@universal-login/commons';
 
 describe('UNIT: getDeviceInfo', () => {
   const req = {
-    headers: {'x-forwarded-for': `0.0.0.0`},
+    headers: {'x-forwarded-for': '0.0.0.0'},
     useragent: {
       os: 'unknown',
       platform: 'unknown',
       browser: 'unknown',
-      source: ''
-    }
+      source: '',
+    },
   } as any;
 
   it('iOS/Evidance', () => {
@@ -27,17 +27,17 @@ describe('UNIT: getDeviceInfo', () => {
         browser: 'unknown',
         time: deviceInfo.time,
         logo: 'none',
-        type: 'phone'
-      }
+        type: 'phone',
+      },
     );
   });
 
   it('OSX/Chrome/Jarvis', () => {
     req.useragent = {
-      source: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36`,
+      source: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36',
       os: 'Mac OS',
       platform: 'OSX',
-      browser: 'Mozilla'
+      browser: 'Mozilla',
     };
     const appInfo = {applicationName: 'Jarvis', type: 'laptop', logo: 'none'};
     const deviceInfo = getDeviceInfo(req, appInfo);
@@ -51,22 +51,21 @@ describe('UNIT: getDeviceInfo', () => {
         browser: 'Mozilla',
         time: deviceInfo.time,
         logo: 'none',
-        type: 'laptop'
-      }
+        type: 'laptop',
+      },
     );
-
   });
 
   it('Test getDeviceInfo', async () => {
     const req = {
       headers: {
-        'x-forwarded-for': '::ffff:127.0.0.1'
+        'x-forwarded-for': '::ffff:127.0.0.1',
       },
       useragent: {
         platform: 'AppleOS',
         os: 'MacOS',
-        browser: 'Chrome'
-      }
+        browser: 'Chrome',
+      },
     };
 
     const result = getDeviceInfo(req as any, TEST_APPLICATION_INFO);
@@ -77,7 +76,7 @@ describe('UNIT: getDeviceInfo', () => {
       city: 'unknown',
       os: 'MacOS',
       browser: 'Chrome',
-      time: '10:22'
+      time: '10:22',
     };
     result.time = expectedResult.time;
 
@@ -87,13 +86,13 @@ describe('UNIT: getDeviceInfo', () => {
   it('Test getDeviceInfo with real ip', async () => {
     const req = {
       headers: {
-        'x-forwarded-for': '::ffff:63.141.56.121'
+        'x-forwarded-for': '::ffff:63.141.56.121',
       },
       useragent: {
         platform: 'AppleOS',
         os: 'MacOS',
-        browser: 'Chrome'
-      }
+        browser: 'Chrome',
+      },
     };
 
     const result = getDeviceInfo(req as any, TEST_APPLICATION_INFO);
@@ -104,7 +103,7 @@ describe('UNIT: getDeviceInfo', () => {
       city: 'San Francisco',
       os: 'MacOS',
       browser: 'Chrome',
-      time: '10:22'
+      time: '10:22',
     };
     result.time = expectedResult.time;
 

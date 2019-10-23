@@ -8,7 +8,6 @@ import buildEnsService from './buildEnsService';
 import {WalletDeployer} from '../../lib/integration/ethereum/WalletDeployer';
 import ENSService from '../../lib/integration/ethereum/ensService';
 
-
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const walletContractAddress = (await deployWalletContract(wallet)).address;
@@ -17,10 +16,10 @@ export default async function setupWalletService(wallet: Wallet) {
   const config = {walletContractAddress, factoryAddress: factoryContract.address, supportedTokens: []};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
   const fakeBalanceChecker = {
-    findTokenWithRequiredBalance: () => true
+    findTokenWithRequiredBalance: () => true,
   };
   const fakeDevicesService = {
-    addOrUpdate: sinon.spy()
+    addOrUpdate: sinon.spy(),
   };
   const walletService = new WalletService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
   const callback = sinon.spy();

@@ -9,4 +9,4 @@ export default interface IRepository<T extends Mineable> {
   markAsPending: (hash: string, transactionHash: string) => Promise<void>;
   markAsError: (hash: string, error: string) => Promise<void>;
   setState: (hash: string, state: MineableState) => Promise<void>;
-}
+};;;;;;;;;;

@@ -5,9 +5,9 @@ import {UAParser} from 'ua-parser-js';
 import {DeviceInfo, ApplicationInfo} from '@universal-login/commons';
 
 export const getDeviceInfo = (req: Request, {applicationName, logo, type}: ApplicationInfo): DeviceInfo => {
-  const ipAddress : string = req.headers['x-forwarded-for'] as string || req.ip;
+  const ipAddress: string = req.headers['x-forwarded-for'] as string || req.ip;
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
-  const parse2 = new UAParser(req.useragent && req.useragent.source || '');
+  const parse2 = new UAParser((req.useragent && req.useragent.source) || '');
   return {
     ipAddress,
     applicationName,
@@ -17,6 +17,6 @@ export const getDeviceInfo = (req: Request, {applicationName, logo, type}: Appli
     browser,
     time: moment().format('h:mm'),
     logo,
-    type
+    type,
   };
 };

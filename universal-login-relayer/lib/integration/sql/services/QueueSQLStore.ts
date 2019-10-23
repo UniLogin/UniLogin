@@ -4,7 +4,7 @@ import {IExecutionQueue} from '../../../core/models/execution/IExecutionQueue';
 import Deployment from '../../../core/models/Deployment';
 
 export default class QueueSQLStore implements IExecutionQueue {
-  public tableName: string;
+  tableName: string;
 
   constructor(public database: Knex) {
     this.tableName = 'queue_items';
@@ -16,7 +16,7 @@ export default class QueueSQLStore implements IExecutionQueue {
       .insert({
         hash: messageHash,
         type: 'Message',
-        created_at: this.database.fn.now()
+        created_at: this.database.fn.now(),
       })
       .into(this.tableName);
     return messageHash;
@@ -27,7 +27,7 @@ export default class QueueSQLStore implements IExecutionQueue {
       .insert({
         hash: deployment.hash,
         type: 'Deployment',
-        created_at: this.database.fn.now()
+        created_at: this.database.fn.now(),
       })
       .into(this.tableName);
     return deployment.hash;

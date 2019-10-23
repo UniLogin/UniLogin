@@ -21,7 +21,7 @@ describe('UNIT: MessageToTransaction', () => {
       gasLimitExecution,
       gasPrice,
       gasData,
-      signature: '0x592fa743889fc7f92ac2a37bb1f5ba1daf2a5c84741ca0e0061d243a2e6707ba'
+      signature: '0x592fa743889fc7f92ac2a37bb1f5ba1daf2a5c84741ca0e0061d243a2e6707ba',
     };
 
     const expectedTransaction = {
@@ -29,7 +29,7 @@ describe('UNIT: MessageToTransaction', () => {
       gasLimit: gasLimitExecution.add(gasData).add(GAS_LIMIT_MARGIN),
       to: contractAddress,
       value: 0,
-      data: encodeDataForExecuteSigned(transferMessage)
+      data: encodeDataForExecuteSigned(transferMessage),
     };
     expect(messageToTransaction(transferMessage)).to.deep.eq(expectedTransaction);
   });
