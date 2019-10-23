@@ -55,10 +55,10 @@ export const App = () => {
     console.log('connect clicked');
   };
 
-  sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
-    callback(mockedNotifications);
-    return () => {};
-  };
+  // sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
+  //   callback(mockedNotifications);
+  //   return () => {};
+  // };
 
   const [walletService] = useState(new WalletService(sdk));
 
@@ -129,11 +129,11 @@ export const App = () => {
                     <hr />
                     <EmojiForm
                       deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
-                      onConnectionSuccess={() => {console.log('connect');}}
                       notifications={[]}
                       gasParameters={gasParameters}
                       setGasParameters={(newGasParameters => gasParameters = newGasParameters)}
                       onCancelClick={() => {}}
+                      onConnectClick={() => {}}
                     />
                   </div>
               ) : <Spinner/>}}

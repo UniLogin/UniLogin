@@ -17,16 +17,16 @@ import {EmojiInput} from './EmojiInput';
 
 export interface EmojiFormProps {
   deployedWallet: DeployedWallet;
-  onConnectionSuccess: () => void;
   hideTitle?: () => void;
   className?: string;
   notifications: Notification[];
   gasParameters?: GasParameters;
   setGasParameters: (gasParameters: GasParameters) => void;
   onCancelClick: () => void;
+  onConnectClick: (soleAddress?: string, gasParameters?: GasParameters) => void;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onConnectionSuccess, notifications, gasParameters, setGasParameters, onCancelClick}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, notifications, gasParameters, setGasParameters, onCancelClick, onConnectClick}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
@@ -54,16 +54,6 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onConnectionSuc
     }
   };
 
-  const onConnectClick = async () => {
-    if (!soleAddress || !gasParameters) {
-      throw new TypeError();
-    }
-    const {waitToBeSuccess} = await deployedWallet.addKey(soleAddress, {...transactionDetails, ...gasParameters});
-    showProgressBar();
-    await waitToBeSuccess();
-    onConnectionSuccess();
-  };
-
   const renderContent = () => {
     if (isInputValid) {
       return (
@@ -84,7 +74,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onConnectionSuc
               />
               <div className="footer-buttons-row">
                 <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
-                <button onClick={onConnectClick} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
+                <button onClick={() => onConnectClick(soleAddress, gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
               </div>
             </FooterSection>
           </div>

@@ -5,6 +5,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
+import {transactionDetails} from '../../core/constants/TransactionDetails';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 
@@ -32,6 +33,17 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     onDenyButtonClick();
   }
 
+  const onConnectClick = async (soleAddress: string | undefined, gasParameters: GasParameters | undefined) => {
+    if (!soleAddress || !gasParameters) {
+      throw new TypeError();
+    }
+    const {waitToBeSuccess} = await deployedWallet.addKey(soleAddress, {...transactionDetails, ...gasParameters});
+    console.log('show progress bar');
+    // showProgressBar();
+    await waitToBeSuccess();
+    history.replace(join(devicesBasePath, 'connectionSuccess'));
+  };
+
   return (
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
@@ -48,11 +60,11 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 deployedWallet={deployedWallet}
                 hideTitle={() => setShowTitle(false)}
                 className={className}
-                onConnectionSuccess={() => history.replace(join(devicesBasePath, 'connectionSuccess'))}
                 notifications={notifications}
                 gasParameters={gasParameters}
                 setGasParameters={setGasParameters}
                 onCancelClick={onCancelClick}
+                onConnectClick={onConnectClick}
               />
             </>
           )}
