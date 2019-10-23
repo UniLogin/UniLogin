@@ -5,6 +5,7 @@ import {
   Notification,
   SECURITY_CODE_LENGTH,
   GasParameters,
+  ensureNotNull,
 } from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
@@ -23,10 +24,11 @@ export interface EmojiFormProps {
   gasParameters?: GasParameters;
   setGasParameters: (gasParameters: GasParameters) => void;
   onCancelClick: () => void;
-  onConnectClick: (soleAddress?: string, gasParameters?: GasParameters) => void;
+  onConnectClick: (gasParameters?: GasParameters) => void;
+  setPublicKey: (arg: string) => void;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, notifications, gasParameters, setGasParameters, onCancelClick, onConnectClick}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, notifications, gasParameters, setGasParameters, onCancelClick, onConnectClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
@@ -38,6 +40,8 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, notifications, 
   useEffect(() => {
     if (isInputValid) {
       hideTitle && hideTitle();
+      ensureNotNull(soleAddress, Error, 'No matching keys');
+      setPublicKey(soleAddress!);
     }
   }, [isInputValid]);
 
@@ -74,7 +78,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, notifications, 
               />
               <div className="footer-buttons-row">
                 <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
-                <button onClick={() => onConnectClick(soleAddress, gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
+                <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
               </div>
             </FooterSection>
           </div>

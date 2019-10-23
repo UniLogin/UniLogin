@@ -134,6 +134,7 @@ export const App = () => {
                       setGasParameters={(newGasParameters => gasParameters = newGasParameters)}
                       onCancelClick={() => {}}
                       onConnectClick={() => {}}
+                      setPublicKey={() => {}}
                     />
                   </div>
               ) : <Spinner/>}}

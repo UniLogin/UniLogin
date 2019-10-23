@@ -19,6 +19,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
+  const [publicKey, setPublicKey] = useState('');
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const history = useHistory();
@@ -33,11 +34,11 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     onDenyButtonClick();
   }
 
-  const onConnectClick = async (soleAddress: string | undefined, gasParameters: GasParameters | undefined) => {
-    if (!soleAddress || !gasParameters) {
+  const onConnectClick = async (gasParameters: GasParameters | undefined) => {
+    if (!gasParameters) {
       throw new TypeError();
     }
-    const {waitToBeSuccess} = await deployedWallet.addKey(soleAddress, {...transactionDetails, ...gasParameters});
+    const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, {...transactionDetails, ...gasParameters});
     console.log('show progress bar');
     // showProgressBar();
     await waitToBeSuccess();
@@ -65,6 +66,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 setGasParameters={setGasParameters}
                 onCancelClick={onCancelClick}
                 onConnectClick={onConnectClick}
+                setPublicKey={setPublicKey}
               />
             </>
           )}
