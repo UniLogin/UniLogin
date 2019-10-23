@@ -17,7 +17,7 @@ export const Suggestion = ({type, ...props}: SuggestionWithTypeProps) => {
       />);
     case 'SingleConnection':
       return (<SingleSuggestion
-        hint='Do you want connect to this account?'
+        hint='Do you want to connect to this account?'
         {...props}
       />);
     case 'Multiple':
