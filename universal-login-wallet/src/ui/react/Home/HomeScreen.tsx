@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
-import {Funds, Devices, BackupCodes, Notice, NewDeviceMessage} from '@universal-login/react';
+import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
@@ -29,16 +29,12 @@ const HomeScreen = () => {
             <Notice message={notice}/>
             <Switch>
               <Route path="/" exact>
-                <NewDeviceMessage
-                  deployedWallet={walletService.getDeployedWallet()}
-                  onManageClick={() => history.push('/devices/approveDevice')}
-                  className="jarvis-styles"
-                />
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
                   onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
                   onSendClick={() => modalService.showModal('transfer')}
-                  className="jarvis-funds"
+                  basePath="/devices"
+                  className="jarvis-styles"
                 />
               </Route>
               <Route path="/devices">

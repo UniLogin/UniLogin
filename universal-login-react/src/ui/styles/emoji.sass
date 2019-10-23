@@ -251,11 +251,24 @@
     margin: 0 auto 12px
 
   .correct-input-title
+    position: relative
+    padding-top: 54px
     margin: 0 auto 54px
     font-weight: 600
     font-size: 20px
     line-height: 30px
     text-align: center
+
+  .correct-input-title::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 50%
+    transform: translateX(-50%)
+    width: 40px
+    height: 40px
+    background: url('../assets/icons/correct.svg') center no-repeat
+    background-size: contain
 
   .correct-input-footer
     margin-top: 285px

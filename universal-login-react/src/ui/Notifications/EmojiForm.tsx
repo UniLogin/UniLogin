@@ -12,7 +12,6 @@ import {transactionDetails} from '../../core/constants/TransactionDetails';
 import ProgressBar from '../commons/ProgressBar';
 import {useProgressBar} from '../hooks/useProgressBar';
 import {GasPrice} from '../commons/GasPrice';
-import CheckmarkIcon from './../assets/icons/correct.svg';
 import {FooterSection} from '../commons/FooterSection';
 import {EmojiInput} from './EmojiInput';
 
@@ -79,7 +78,6 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
     if (isInputValid) {
       return (
         <div className="correct-input">
-          <img className="correct-input-img" src={CheckmarkIcon} alt="checkmark" />
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
             enteredCode={enteredCode}

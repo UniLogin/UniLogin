@@ -1,13 +1,12 @@
 import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
-import ModalTransfer from './Transfer/ModalTransfer';
-import ModalRequest from './ModalRequest';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
 import {ModalWrapper, Safello, TopUp, WaitingForTransaction} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {ImageWaitingFor} from '../common/ImageWaitingFor';
+import ModalTransfer from './Transfer/ModalTransfer';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
@@ -19,12 +18,6 @@ const Modal = () => {
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
           <ModalTransfer />
-        </ModalWrapperClosable>
-      );
-    case 'request':
-      return (
-        <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ModalRequest />
         </ModalWrapperClosable>
       );
     case 'topUpAccount':
