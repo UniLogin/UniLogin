@@ -37,7 +37,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   const onCancelClick = async () => {
     await deployedWallet.denyRequests();
     onDenyButtonClick();
-  }
+  };
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
     if (!gasParameters) {
@@ -54,46 +54,45 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-          {progressBar ?  <Loader/> :
-            notifications.length > 0 && (
-            <>
-              {showTitle &&
+          {progressBar ? <Loader/>
+            : notifications.length > 0 && (
+              <>
+                {showTitle &&
               <>
                 <p className="approve-device-title">Approve device</p>
                 <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
               </>
-              }
-              <EmojiForm
-                hideTitle={() => setShowTitle(false)}
-                className={className}
-                notifications={notifications}
-                onCancelClick={onCancelClick}
-                setPublicKey={setPublicKey}
-              />
-            </>
-          )}
-          {!progressBar && publicKey && notifications.length > 0  &&
+                }
+                <EmojiForm
+                  hideTitle={() => setShowTitle(false)}
+                  className={className}
+                  notifications={notifications}
+                  onCancelClick={onCancelClick}
+                  setPublicKey={setPublicKey}
+                />
+              </>
+            )}
+          {!progressBar && publicKey && notifications.length > 0 &&
             <div className="correct-input-footer">
-            <FooterSection className={className}>
-              <GasPrice
-                isDeployed={true}
-                deployedWallet={deployedWallet}
-                gasLimit={transactionDetails.gasLimit!}
-                onGasParametersChanged={setGasParameters}
-                className={className}
-              />
-              <div className="footer-buttons-row">
-                <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
-                <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
-              </div>
-            </FooterSection>
-          </div>}
+              <FooterSection className={className}>
+                <GasPrice
+                  isDeployed={true}
+                  deployedWallet={deployedWallet}
+                  gasLimit={transactionDetails.gasLimit!}
+                  onGasParametersChanged={setGasParameters}
+                  className={className}
+                />
+                <div className="footer-buttons-row">
+                  <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
+                  <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
+                </div>
+              </FooterSection>
+            </div>}
         </div>
       </div>
     </div>
   );
 };
-
 
 const Loader = () => (
   <div className="emoji-form-loader">

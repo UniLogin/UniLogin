@@ -131,7 +131,8 @@ export const App = () => {
                       setPublicKey={() => {}}
                     />
                   </div>
-              ) : <Spinner/>}}
+                ) : <Spinner/>;
+              }}
             />
             <Route
               exact
