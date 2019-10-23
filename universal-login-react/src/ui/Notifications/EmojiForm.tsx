@@ -18,7 +18,6 @@ import {EmojiInput} from './EmojiInput';
 export interface EmojiFormProps {
   deployedWallet: DeployedWallet;
   onConnectionSuccess: () => void;
-  onDenyRequests?: () => void;
   hideTitle?: () => void;
   className?: string;
   notifications: Notification[];
@@ -27,7 +26,7 @@ export interface EmojiFormProps {
   onCancelClick: () => void;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess, notifications, gasParameters, setGasParameters, onCancelClick}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onConnectionSuccess, notifications, gasParameters, setGasParameters, onCancelClick}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);

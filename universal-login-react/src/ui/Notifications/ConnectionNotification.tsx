@@ -48,7 +48,6 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 deployedWallet={deployedWallet}
                 hideTitle={() => setShowTitle(false)}
                 className={className}
-                onDenyRequests={onDenyButtonClick}
                 onConnectionSuccess={() => history.replace(join(devicesBasePath, 'connectionSuccess'))}
                 notifications={notifications}
                 gasParameters={gasParameters}
