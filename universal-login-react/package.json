@@ -69,7 +69,6 @@
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "tslint-react": "^4.0.0",
     "sinon": "^7.4.1",
     "sinon-chai": "^3.3.0",
     "puppeteer": "1.19.0"
