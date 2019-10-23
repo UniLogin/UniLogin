@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {Wallet} from 'ethers';
+import {Wallet, utils} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {ApplicationWallet, generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {ApplicationWallet, generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -120,17 +120,22 @@ export const App = () => {
             <Route
               exact
               path="/keyboard"
-              render={() => (
-                <div>
-                  <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
-                  <hr />
-                  <EmojiForm
-                    deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
-                    onConnectionSuccess={() => {console.log('connect');}}
-                    notifications={[]}
-                  />
-                </div>
-              )}
+              render={() => {
+                let gasParameters = {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: utils.bigNumberify(1)};
+
+                return relayerConfig ? (
+                  <div>
+                    <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
+                    <hr />
+                    <EmojiForm
+                      deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
+                      onConnectionSuccess={() => {console.log('connect');}}
+                      notifications={[]}
+                      gasParameters={gasParameters}
+                      setGasParameters={(newGasParameters => gasParameters = newGasParameters)}
+                    />
+                  </div>
+              ) : <Spinner/>}}
             />
             <Route
               exact

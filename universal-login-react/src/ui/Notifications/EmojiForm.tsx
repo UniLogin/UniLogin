@@ -22,12 +22,14 @@ export interface EmojiFormProps {
   hideTitle?: () => void;
   className?: string;
   notifications: Notification[];
+  gasParameters?: GasParameters;
+  setGasParameters: (gasParameters: GasParameters) => void;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess, notifications}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess, notifications, gasParameters, setGasParameters}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
-  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
+  // const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
   useEffect(() => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)), [notifications]);

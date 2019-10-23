@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Notification} from '@universal-login/commons';
+import {Notification, GasParameters} from '@universal-login/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -17,6 +17,7 @@ interface ConnectNotificationProps {
 export const ConnectionNotification = ({deployedWallet, devicesBasePath, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
+  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const history = useHistory();
@@ -45,6 +46,8 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 onDenyRequests={onDenyButtonClick}
                 onConnectionSuccess={() => history.replace(join(devicesBasePath, 'connectionSuccess'))}
                 notifications={notifications}
+                gasParameters={gasParameters}
+                setGasParameters={setGasParameters}
               />
             </>
           )}
