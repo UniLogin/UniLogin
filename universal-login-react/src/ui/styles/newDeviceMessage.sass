@@ -1,8 +1,14 @@
+@import helpers/breakpoints
+
 .universal-login-devices-message
   .devices-message
     position: relative
     width: 100%
     padding: 20px 30px
+
+    +media(s)
+      padding: 15px
+      border-radius: 3px
 
   .devices-message-row
     position: relative
@@ -13,6 +19,10 @@
     margin: 0 auto
     padding-left: 63px
 
+    +media(s)
+      flex-direction: column
+      padding: 0
+
   .devices-message-row::before
     content: ''
     position: absolute
@@ -22,6 +32,9 @@
     width: 36px
     height: 34px
     background: url('../assets/icons/new-devices.svg') center no-repeat
+
+    +media(s)
+      display: none
 
   .devices-message-description
     max-width: 430px
@@ -50,6 +63,9 @@
   .devices-message-buttons-row
     display: flex
     align-items: center
+
+    +media(s)
+      margin-top: 10px
 
   .devices-message-cancel
     margin: 0 0 0 25px

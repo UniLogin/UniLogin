@@ -14,15 +14,17 @@ export const Balance = ({amount, className}: BalanceProps) => {
   return (
     <div className="universal-login-balance">
       <div className={getStyleForTopLevelComponent(className)}>
-        {amount === undefined
-          ? <div className="balance-spinner-wrapper">
-            <Spinner className="balance-spinner" />
-          </div>
-          : <>
-            <p className="balance-text">Balance</p>
-            <p className="balance-amount">{formatCurrency(amount.toString())}</p>
-          </>
-        }
+        <div className="balance">
+          {amount === undefined
+            ? <div className="balance-spinner-wrapper">
+              <Spinner className="balance-spinner" />
+            </div>
+            : <>
+              <p className="balance-text">Balance</p>
+              <p className="balance-amount">{formatCurrency(amount.toString())}</p>
+            </>
+          }
+        </div>
       </div>
     </div>
   );
