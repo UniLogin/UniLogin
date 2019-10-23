@@ -122,10 +122,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             path="/dashboard/devices"
             render={({history}) => (
               <DialogWrapper message={notice} deployedWallet={deployedWallet}>
-                <NewDeviceMessage
-                  deployedWallet={deployedWallet}
-                  onManageClick={() => history.push('/dashboard/devices/approveDevice')}
-                />
                 <Devices walletService={walletService} onAccountDeleted={onClose} basePath="/dashboard/devices" />
               </DialogWrapper>
             )}
