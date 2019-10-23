@@ -3,29 +3,44 @@ import {getSuggestionType} from '../../src/core/utils/getSuggestionType';
 import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
 
 describe('getSuggestionType', () => {
+  const ensName = 'user';
+  const domain1 = 'mylogin.eth';
+  const domain2 = 'mylogin2.eth';
+
   it('SingleCreation', () => {
-    expect(getSuggestionType(['user.mylogin.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS)).be.eq('SingleCreation');
+    expect(getSuggestionType([`${ensName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('SingleCreation');
   });
 
   it('SingleConnection', () => {
-    expect(getSuggestionType([], ['user.mylogin.eth'], [WalletSuggestionAction.connect, WalletSuggestionAction.create])).be.eq('SingleConnection');
+    expect(getSuggestionType([], [`${ensName}.${domain1}`], [WalletSuggestionAction.connect], ensName)).be.eq('SingleConnection');
   });
 
   describe('Multiple', () => {
-    it('More than 1 creations, 0 connections', () => {
-      expect(getSuggestionType(['user.mylogin.eth', 'user2.mylogin.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS)).be.eq('Multiple');
+    it('More than 1 creations, empty connections', () => {
+      expect(getSuggestionType([`${ensName}.${domain1}`, `${ensName}.${domain2}`], [], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('Multiple');
     });
 
-    it('More than 1 connections, 0 creations', () => {
-      expect(getSuggestionType([], ['user.mylogin.eth', 'user2.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS)).be.eq('Multiple');
+    it('More than 1 connections, empty creations', () => {
+      expect(getSuggestionType([], [`${ensName}.${domain1}`, `${ensName}.${domain2}`], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('Multiple');
     });
 
     it('1 connections with recover action', () => {
-      expect(getSuggestionType([], ['user.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS)).be.eq('Multiple');
+      expect(getSuggestionType([], [`${ensName}.${domain1}`], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('Multiple');
     });
   });
 
-  it('KeepTyping', () => {
-    expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS)).be.eq('KeepTyping');
+  describe('KeepTyping', () => {
+    const shortEnsName = 'us';
+    it('empty connections, empty creations', () => {
+      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
+    });
+
+    it('non-empty connections, empty creations', () => {
+      expect(getSuggestionType([], [`${shortEnsName}.${domain1}`], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
+    });
+
+    it('empty connections, non-empty creations', () => {
+      expect(getSuggestionType([`${shortEnsName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
+    });
   });
 });
