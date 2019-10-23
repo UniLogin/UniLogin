@@ -99,6 +99,19 @@ describe('UNIT: ExecutionFactory', async () => {
       expect(messageStatus).to.be.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
+
+    it('should throw when a status should have transaction hash but does not have it', async () => {
+      getStatus.onCall(1).returns({...defaultStatus, state: 'Success', transactionHash: undefined});
+      const execution = await executionFactory.createExecution(signedMessage);
+      await expect(execution.waitForTransactionHash()).to.be.eventually.rejectedWith('Transaction hash is not found in Message Status');
+    });
+
+    it('should not throw on missing transaction hash if status is queued', async () => {
+      getStatus.onCall(1).returns({...defaultStatus, state: 'Queued', transactionHash: undefined});
+      getStatus.onCall(2).returns({...defaultStatus, state: 'Pending'});
+      const execution = await executionFactory.createExecution(signedMessage);
+      await expect(execution.waitForTransactionHash()).to.be.eventually.fulfilled;
+    });
   });
 
   afterEach(() => {

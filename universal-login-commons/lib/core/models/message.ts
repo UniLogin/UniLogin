@@ -53,6 +53,8 @@ export type DeploymentState = 'Queued' | 'Pending' | 'Error' | 'Success';
 export type MessageState = 'AwaitSignature' | DeploymentState;
 export type MineableState = DeploymentState | MessageState;
 
+export type MineableStatus = MessageStatus | DeploymentStatus;
+
 export type CollectedSignatureKeyPair = {
   key: string;
   signature: string;
