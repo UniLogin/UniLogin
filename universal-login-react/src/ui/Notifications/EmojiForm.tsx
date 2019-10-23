@@ -24,7 +24,7 @@ export interface EmojiFormProps {
   className?: string;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onRequestsDenied: onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onRequestsDenied, onConnectionSuccess}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
@@ -72,7 +72,7 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onRequestsDenie
 
   const onCancelClick = async () => {
     await deployedWallet.denyRequests();
-    onDenyRequests && onDenyRequests();
+    onRequestsDenied && onRequestsDenied();
   };
 
   const renderContent = () => {
