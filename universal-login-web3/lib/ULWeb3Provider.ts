@@ -165,9 +165,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   initWeb3Button(element: Element) {
-    renderLogoButton(element, {
-      walletService: this.walletService,
-    });
+    renderLogoButton(element, this.walletService);
   }
 
   finalizeAndStop() {

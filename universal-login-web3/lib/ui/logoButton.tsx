@@ -1,22 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {LogoButton, useProperty} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
+import {LogoButton} from '@universal-login/react';
 
-export interface LogoButtonRendererProps {
-  walletService: WalletService;
-}
-
-const LogoButtonRenderer = ({walletService}: LogoButtonRendererProps) => {
-  const walletState = useProperty(walletService.stateProperty);
-
-  if (walletState.kind !== 'Deployed') {
-    return null;
-  }
-
-  return <LogoButton deployedWallet={walletState.wallet}/>;
-};
-
-export function renderLogoButton(element: Element, services: LogoButtonRendererProps) {
-  render(<LogoButtonRenderer {...services}/>, element);
+export function renderLogoButton(element: Element, walletService: WalletService) {
+  render(<LogoButton walletService={walletService}/>, element);
 }
