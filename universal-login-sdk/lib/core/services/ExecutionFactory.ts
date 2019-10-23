@@ -32,10 +32,6 @@ export class ExecutionFactory extends MineableFactory {
     };
   }
 
-  private hasTransactionHash(messageStatus: MessageStatus) {
-    return ['Pending', 'Success', 'Error'].includes(messageStatus.state);
-  }
-
   private createWaitForTransactionHash(messageHash: string) {
     return async () => {
       const getStatus = async () => this.relayerApi.getStatus(messageHash);
