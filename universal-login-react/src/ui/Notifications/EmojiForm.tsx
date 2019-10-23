@@ -4,33 +4,24 @@ import {
   isValidCode,
   Notification,
   SECURITY_CODE_LENGTH,
-  GasParameters,
   ensureNotNull,
 } from '@universal-login/commons';
-import {DeployedWallet} from '@universal-login/sdk';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
-import {transactionDetails} from '../../core/constants/TransactionDetails';
 import ProgressBar from '../commons/ProgressBar';
 import {useProgressBar} from '../hooks/useProgressBar';
-import {GasPrice} from '../commons/GasPrice';
-import {FooterSection} from '../commons/FooterSection';
 import {EmojiInput} from './EmojiInput';
 
 export interface EmojiFormProps {
-  deployedWallet: DeployedWallet;
   hideTitle?: () => void;
   className?: string;
   notifications: Notification[];
-  gasParameters?: GasParameters;
-  setGasParameters: (gasParameters: GasParameters) => void;
   onCancelClick: () => void;
-  onConnectClick: (gasParameters?: GasParameters) => void;
   setPublicKey: (arg: string) => void;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, notifications, gasParameters, setGasParameters, onCancelClick, onConnectClick, setPublicKey}: EmojiFormProps) => {
+export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
-  const {progressBar, showProgressBar} = useProgressBar();
+  const {progressBar} = useProgressBar();
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
   useEffect(() => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)), [notifications]);
