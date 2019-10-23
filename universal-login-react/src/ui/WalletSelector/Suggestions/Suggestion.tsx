@@ -1,6 +1,6 @@
 import React from 'react';
 import {SuggestionType} from '../../../core/models/SuggestionType';
-import {SingleCreationSuggestion} from './SingleCreationSuggestion';
+import {SingleSuggestion} from './SingleSuggestion';
 import {MultipleSuggestion} from './MultipleSuggestion';
 import {SuggestionProps} from '../../../core/models/SuggestionProps';
 
@@ -11,7 +11,10 @@ interface SuggestionWithTypeProps extends SuggestionProps {
 export const Suggestion = ({type, ...props}: SuggestionWithTypeProps) => {
   switch (type) {
     case 'SingleCreation':
-      return (<SingleCreationSuggestion {...props} />);
+      return (<SingleSuggestion
+        hint='This username is available'
+        {...props}
+      />);
     case 'Multiple':
     default:
       return (<MultipleSuggestion {...props} />);
