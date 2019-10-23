@@ -37,7 +37,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 deployedWallet={deployedWallet}
                 hideTitle={() => setShowTitle(false)}
                 className={className}
-                onDenyRequests={() => history.goBack()}
+                onRequestsDenied={() => history.goBack()}
                 onConnectionSuccess={() => history.replace(join(devicesBasePath, 'connectionSuccess'))}
               />
             </>

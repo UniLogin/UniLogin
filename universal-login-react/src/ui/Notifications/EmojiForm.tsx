@@ -19,12 +19,12 @@ import {EmojiInput} from './EmojiInput';
 export interface EmojiFormProps {
   deployedWallet: DeployedWallet;
   onConnectionSuccess: () => void;
-  onDenyRequests?: () => void;
+  onRequestsDenied?: () => void;
   hideTitle?: () => void;
   className?: string;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onRequestsDenied: onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
