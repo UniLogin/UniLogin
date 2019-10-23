@@ -331,10 +331,8 @@
     "no-unsafe-negation": "error",
     "no-restricted-imports": ["error", {
       "patterns": [
-        "@universal-login/*/src",
-        "@universal-login/*/lib",
-        "@universal-login/*/test",
-        "@universal-login/*/dist"
+        "@universal-login/*/*",
+        "!@universal-login/*/testutils"
       ]
     }],
     "no-use-before-define": [
