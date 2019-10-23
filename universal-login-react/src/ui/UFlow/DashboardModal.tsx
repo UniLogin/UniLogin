@@ -15,7 +15,6 @@ import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {NewDeviceMessage} from './Devices/NewDeviceMessage';
-import {join} from "path";
 
 export interface DashboardModalProps {
   walletService: WalletService;
