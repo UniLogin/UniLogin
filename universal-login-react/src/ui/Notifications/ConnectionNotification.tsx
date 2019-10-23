@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Notification, GasParameters} from '@universal-login/commons';
+import {Notification, GasParameters, ensureNotNull} from '@universal-login/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -8,6 +8,8 @@ import '../styles/emojiDefaults.sass';
 import {transactionDetails} from '../../core/constants/TransactionDetails';
 import {useHistory} from 'react-router';
 import {join} from 'path';
+import {FooterSection} from '../commons/FooterSection';
+import {GasPrice} from '../commons/GasPrice';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
@@ -19,7 +21,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
-  const [publicKey, setPublicKey] = useState('');
+  const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const history = useHistory();
@@ -38,7 +40,8 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     if (!gasParameters) {
       throw new TypeError();
     }
-    const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, {...transactionDetails, ...gasParameters});
+    ensureNotNull(publicKey, Error, 'Invalid key');
+    const {waitToBeSuccess} = await deployedWallet.addKey(publicKey!, {...transactionDetails, ...gasParameters});
     console.log('show progress bar');
     // showProgressBar();
     await waitToBeSuccess();
@@ -70,6 +73,23 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
               />
             </>
           )}
+          {publicKey && notifications.length > 0  &&
+            <div className="correct-input-footer">
+            <FooterSection className={className}>
+              <GasPrice
+                isDeployed={true}
+                deployedWallet={deployedWallet}
+                gasLimit={transactionDetails.gasLimit!}
+                onGasParametersChanged={setGasParameters}
+                className={className}
+              />
+              <div className="footer-buttons-row">
+                <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
+                <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
+              </div>
+            </FooterSection>
+          </div>
+          }
         </div>
       </div>
     </div>
