@@ -15,6 +15,7 @@ import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {NewDeviceMessage} from './Devices/NewDeviceMessage';
+import {join} from "path";
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -61,6 +62,10 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             exact
             render={({history}) => (
               <DialogWrapper message={notice} deployedWallet={deployedWallet}>
+                <NewDeviceMessage
+                  deployedWallet={deployedWallet}
+                  onManageClick={() => history.push('/dashboard/devices/approveDevice')}
+                />
                 <Funds
                   deployedWallet={deployedWallet}
                   onTopUpClick={() => history.push('/dashboard/topup')}
