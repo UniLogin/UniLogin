@@ -24,9 +24,10 @@ export interface EmojiFormProps {
   notifications: Notification[];
   gasParameters?: GasParameters;
   setGasParameters: (gasParameters: GasParameters) => void;
+  onCancelClick: () => void;
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess, notifications, gasParameters, setGasParameters}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess, notifications, gasParameters, setGasParameters, onCancelClick}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
@@ -62,11 +63,6 @@ export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests,
     showProgressBar();
     await waitToBeSuccess();
     onConnectionSuccess();
-  };
-
-  const onCancelClick = async () => {
-    await deployedWallet.denyRequests();
-    onDenyRequests && onDenyRequests();
   };
 
   const renderContent = () => {

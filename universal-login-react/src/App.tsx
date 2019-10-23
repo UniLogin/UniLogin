@@ -133,6 +133,7 @@ export const App = () => {
                       notifications={[]}
                       gasParameters={gasParameters}
                       setGasParameters={(newGasParameters => gasParameters = newGasParameters)}
+                      onCancelClick={() => {}}
                     />
                   </div>
               ) : <Spinner/>}}

@@ -27,6 +27,11 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     history.goBack();
   };
 
+  const onCancelClick = async () => {
+    await deployedWallet.denyRequests();
+    onDenyButtonClick();
+  }
+
   return (
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
@@ -48,6 +53,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 notifications={notifications}
                 gasParameters={gasParameters}
                 setGasParameters={setGasParameters}
+                onCancelClick={onCancelClick}
               />
             </>
           )}
