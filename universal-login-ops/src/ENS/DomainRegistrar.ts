@@ -8,7 +8,7 @@ import ENSRegistrarBase from './ENSRegistrarBase';
 class DomainRegistrar extends ENSRegistrarBase {
   private testRegistrar? : Contract;
 
-  async registerInRegistrar(label : string, labelHash : string, node : string, tld : string) {
+  async registerInRegistrar(label: string, labelHash: string, node: string, tld: string) {
     const tldRegistrarAddress = await this.ens.owner(utils.namehash(tld));
     this.testRegistrar = new Contract(tldRegistrarAddress, FIFSRegistrar.interface, this.deployer);
     this.log(`Registrar address for ${tld}: ${tldRegistrarAddress}`);
@@ -17,11 +17,11 @@ class DomainRegistrar extends ENSRegistrarBase {
     this.log(`Registered ${label}.${tld} with owner: ${await this.ens.owner(node)}`);
   }
 
-  async setAsResolverPublicResolver(label : string, node : string, tld : string) {
+  async setAsResolverPublicResolver(label: string, node: string, tld: string) {
     await this.setResolver(label, node, tld, this.ensInfo.publicResolverAddress!);
   }
 
-  async setResolver(label : string, node : string, tld : string, resolverAddress: string) {
+  async setResolver(label: string, node: string, tld: string, resolverAddress: string) {
     const transaction = await this.ens.setResolver(node, resolverAddress, this.overridesOptions);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${tld} set to ${await this.ens.resolver(node)} (public resolver)`);
@@ -35,13 +35,13 @@ class DomainRegistrar extends ENSRegistrarBase {
     return newPublicResolver;
   }
 
-  async deployAndSetPublicResolver(label : string, node : string, tld : string) {
+  async deployAndSetPublicResolver(label: string, node: string, tld: string) {
     const publicResolver = await this.deployNewPublicResolver();
     await this.setResolver(label, node, tld, publicResolver as string);
     return publicResolver;
   }
 
-  async deployNewRegistrar(node : string) {
+  async deployNewRegistrar(node: string) {
     const registrarDeployTransaction = getDeployTransaction(FIFSRegistrar, [this.ens.address, node]);
     this.registrarAddress = await sendAndWaitForTransaction(this.deployer, {...registrarDeployTransaction, ...this.overridesOptions});
     this.log(`New registrar deployed: ${this.registrarAddress}`);
@@ -49,13 +49,13 @@ class DomainRegistrar extends ENSRegistrarBase {
     return this.registrarAddress;
   }
 
-  async setRegistrarAsOwner(label : string, node : string, tld : string) {
+  async setRegistrarAsOwner(label: string, node: string, tld: string) {
     const transaction = await this.ens.setOwner(node, this.registrarAddress, this.overridesOptions);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`${label}.${tld} owner set to: ${await this.ens.owner(node)} (registrar)`);
   }
 
-  async start(label : string, tld : string) {
+  async start(label: string, tld: string) {
     const labelHash = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${tld}`);
     this.variables.DOMAIN = `${label}.${tld}`;
@@ -67,14 +67,14 @@ class DomainRegistrar extends ENSRegistrarBase {
     await this.setRegistrarAsOwner(label, node, tld);
   }
 
-  async registerAndSave(label : string, tld : string) {
+  async registerAndSave(label: string, tld: string) {
     await this.start(label, tld);
     const filename = `./${label}.${tld}_info`;
     saveVariables(filename, this.variables);
     this.log(`${filename} file updated.`);
   }
 
-  async registerEthDomain(label : string) {
+  async registerEthDomain(label: string) {
     const tld = 'eth';
     const node = utils.namehash(`${label}.${tld}`);
     this.log(`Registering ${label}.${tld}...`);

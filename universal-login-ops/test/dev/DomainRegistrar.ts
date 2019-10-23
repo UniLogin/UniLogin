@@ -7,7 +7,6 @@ import {utils, Contract, Wallet} from 'ethers';
 import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
 import {loadFixture} from 'ethereum-waffle';
 
-
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
@@ -22,7 +21,6 @@ describe('ENS register', async () => {
   let node: string;
   let labelHash: string;
   const transactionOverrides = {gasPrice: utils.bigNumberify(100)};
-
 
   before(async () => {
     ({wallet, ensAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
@@ -84,7 +82,7 @@ describe('ENS register', async () => {
     let publicResolverContract: Contract;
 
     before(async () => {
-      nameRegistrar = new ENSNameRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, {} , nullConsole);
+      nameRegistrar = new ENSNameRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, {}, nullConsole);
       label = 'justyna';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       [domain] = ensRegistrars;

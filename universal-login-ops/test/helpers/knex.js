@@ -10,7 +10,7 @@ const getKnex = () => knex({
   client: 'postgresql',
   connection: {
     database: 'universal_login_relayer_test',
-    user:     'postgres',
+    user: 'postgres',
     password: 'postgres',
   },
   migrations: {
