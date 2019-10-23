@@ -21,22 +21,16 @@ export interface EmojiFormProps {
   onDenyRequests?: () => void;
   hideTitle?: () => void;
   className?: string;
+  notifications: Notification[];
 }
 
-export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess}: EmojiFormProps) => {
+export const EmojiForm = ({deployedWallet, hideTitle, className, onDenyRequests, onConnectionSuccess, notifications}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const {progressBar, showProgressBar} = useProgressBar();
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
-
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
-  useEffect(() => deployedWallet.subscribeAuthorisations(onNotificationsChange), []);
-
-  const onNotificationsChange = (notifications: Notification[]) => {
-    setNotifications(notifications);
-    updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode));
-  };
+  useEffect(() => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)), [notifications]);
 
   const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && soleAddress && isValidCode(enteredCode, soleAddress);
 
