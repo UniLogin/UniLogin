@@ -2,10 +2,13 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
-import {Wallet, utils} from 'ethers';
+import {Wallet, utils, Contract} from 'ethers';
 import basicSDK from '../../fixtures/basicSDK';
 import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
-import {createWallet} from '../../helpers/createWallet';
+import {createWallet} from '../../helpers';
+import {RelayerUnderTest} from '@universal-login/relayer';
+import UniversalLoginSDK from '../../../lib';
+import BlockchainObserver from '../../../lib/core/observers/BlockchainObserver';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -13,20 +16,20 @@ chai.use(sinonChai);
 const loadFixture = createFixtureLoader();
 
 describe('INT: BlockchainObserver', async () => {
-  let relayer;
-  let sdk;
-  let blockchainObserver;
-  let privateKey;
-  let contractAddress;
-  let wallet;
-  let otherWallet;
-  let otherWallet2;
-  let mockToken;
+  let relayer: RelayerUnderTest;
+  let sdk: UniversalLoginSDK;
+  let blockchainObserver: BlockchainObserver;
+  let privateKey: string;
+  let contractAddress: string;
+  let wallet: Wallet;
+  let otherWallet: Wallet;
+  let otherWallet2: Wallet;
+  let mockToken: Contract;
 
   beforeEach(async () => {
     ({relayer, sdk, mockToken, contractAddress, wallet, otherWallet, otherWallet2, privateKey} = await loadFixture(basicSDK));
     ({blockchainObserver} = sdk);
-    blockchainObserver.lastBlock = 0;
+    (blockchainObserver as any).lastBlock = 0;
   });
 
   afterEach(async () => {
@@ -51,7 +54,7 @@ describe('INT: BlockchainObserver', async () => {
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await execution.waitToBeSuccess();
-    await blockchainObserver.fetchEvents(JSON.stringify({contractAddress, key: wallet.address}));
+    await blockchainObserver.fetchEvents();
     expect(callback).to.have.been.calledWith({key: wallet.address});
   });
 
@@ -67,7 +70,7 @@ describe('INT: BlockchainObserver', async () => {
 
     const execution = await sdk.addKey(contractAddress, otherWallet.address, privateKey, paymentOptions);
     await execution.waitToBeSuccess();
-    await blockchainObserver.fetchEvents(JSON.stringify(filter));
+    await blockchainObserver.fetchEvents();
 
     expect(callback).to.have.been.calledWith({key: otherWallet.address});
     expect(callback2).to.not.have.been.called;
@@ -83,7 +86,7 @@ describe('INT: BlockchainObserver', async () => {
     const removeKeyPaymentOption = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
     const {waitToBeSuccess} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await waitToBeSuccess();
-    await blockchainObserver.fetchEvents(JSON.stringify(filter));
+    await blockchainObserver.fetchEvents();
     expect(callback).to.have.been.calledWith({key: wallet.address});
   });
 
