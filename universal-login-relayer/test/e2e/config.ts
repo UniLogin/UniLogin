@@ -24,13 +24,12 @@ describe('E2E: Relayer - Config routes', async () => {
       localization,
       onRampProviders,
       maxGasLimit,
-      ipGeolocationApi
+      ipGeolocationApi,
     };
     const result = await chai.request(relayer.getServer())
       .get('/config');
     expect(result.body.config).to.be.deep.eq(expectedConfig);
   });
-
 
   it('getPublicConfig should return PublicConfig', () => {
     const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi} = relayer.getConfig();
@@ -42,7 +41,7 @@ describe('E2E: Relayer - Config routes', async () => {
       localization,
       onRampProviders,
       maxGasLimit,
-      ipGeolocationApi
+      ipGeolocationApi,
     };
     const publicConfig = getPublicConfig(relayer.getConfig());
 

@@ -5,9 +5,9 @@ import {executeAddKey} from '@universal-login/contracts/testutils';
 import createWalletContract from '../helpers/createWalletContract';
 import buildEnsService from '../helpers/buildEnsService';
 
-export default async function basicWalletContractWithMockToken(provider, wallets) {
+export default async function basicWalletContractWithMockToken(_, wallets) {
   const [, otherWallet, wallet] = wallets;
-  const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
+  const [, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const {master, proxy: walletContract} = await createWalletContract(wallet);
   const actionWallet = Wallet.createRandom();
   const actionKey = actionWallet.privateKey;
@@ -15,5 +15,5 @@ export default async function basicWalletContractWithMockToken(provider, wallets
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   await executeAddKey(walletContract, actionWallet.address, wallet.privateKey);
-  return { wallet, actionKey, provider, mockToken, master, walletContract, otherWallet };
+  return {wallet, actionKey, provider, mockToken, master, walletContract, otherWallet};
 }

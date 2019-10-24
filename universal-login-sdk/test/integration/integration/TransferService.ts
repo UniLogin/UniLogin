@@ -16,7 +16,7 @@ chai.use(chaiAsPromised);
 
 const gasParameters = {
   gasPrice: utils.bigNumberify('1'),
-  gasToken: ETHER_NATIVE_TOKEN.address
+  gasToken: ETHER_NATIVE_TOKEN.address,
 };
 
 describe('INT: TransferService', () => {
@@ -45,7 +45,7 @@ describe('INT: TransferService', () => {
   it('Should transfer tokens', async () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
-    const transferToken =  TEST_TOKEN_DETAILS[0].address;
+    const transferToken = TEST_TOKEN_DETAILS[0].address;
     const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken, gasParameters});
     await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));

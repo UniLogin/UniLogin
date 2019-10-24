@@ -9,7 +9,6 @@ import {WalletDeployer} from '../ethereum/WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 
 class WalletService {
-
   constructor(
     private config: Config,
     private ensService: ENSService,

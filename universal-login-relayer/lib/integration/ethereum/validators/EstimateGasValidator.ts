@@ -11,9 +11,8 @@ export default class EstimateGasValidator implements IMessageValidator {
     const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
     let messageHash;
     try {
-      messageHash = await this.wallet.provider.call({ ...transactionReq, from: this.wallet.address }); // TODO estimate gas
-    }
-    catch (e) {
+      messageHash = await this.wallet.provider.call({...transactionReq, from: this.wallet.address}); // TODO estimate gas
+    } catch (e) {
       throw new NotEnoughGas();
     }
     const calculatedMessageHash = calculateMessageHash(signedMessage);

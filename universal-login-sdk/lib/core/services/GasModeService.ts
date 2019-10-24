@@ -27,7 +27,7 @@ export class GasModeService {
           token: tokenDetails,
           gasPrice: utils.parseEther(this.getCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices)),
         });
-      })
+      }),
     };
   }
 
@@ -42,7 +42,7 @@ export class GasModeService {
 
     return [
       this.createMode('cheap', gasPrices.cheap, tokensPrices),
-      this.createMode('fast', gasPrices.fast, tokensPrices)
+      this.createMode('fast', gasPrices.fast, tokensPrices),
     ];
   }
 }

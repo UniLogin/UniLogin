@@ -11,8 +11,8 @@ import {retry} from '../core/utils/retry';
 import {MineableFactory} from '../core/services/MineableFactory';
 
 export type BalanceDetails = {
-  tokenAddress: string,
-  contractAddress: string
+  tokenAddress: string;
+  contractAddress: string;
 };
 
 export interface Deployment {
@@ -21,10 +21,10 @@ export interface Deployment {
 }
 
 export type FutureWallet = {
-  privateKey: string,
-  contractAddress: string,
-  waitForBalance: () => Promise<BalanceDetails>,
-  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<Deployment>
+  privateKey: string;
+  contractAddress: string;
+  waitForBalance: () => Promise<BalanceDetails>;
+  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<Deployment>;
 };
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
@@ -39,16 +39,16 @@ export class FutureWalletFactory extends MineableFactory {
     private relayerApi: RelayerApi,
     private sdk: UniversalLoginSDK,
     tick?: number,
-    timeout?: number
+    timeout?: number,
   ) {
-      super(tick, timeout);
-      this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
+    super(tick, timeout);
+    this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
   private createWaitToBeSuccess(deploymentHash: string, deployedWallet: DeployedWallet) {
     return async () => {
       const predicate = (deploymentStatus: DeploymentStatus) => !this.isMined(deploymentStatus.state);
-      const status : DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
+      const status: DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
       ensure(!status.error, Error, status.error!);
       return deployedWallet;
     };
@@ -57,14 +57,14 @@ export class FutureWalletFactory extends MineableFactory {
   private createWaitForTransactionHash(deploymentHash: string) {
     return async () => {
       const predicate = (deploymentStatus: DeploymentStatus) => !this.hasTransactionHash(deploymentStatus);
-      const status : DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
+      const status: DeploymentStatus = await this.waitForDeploymentStatus(deploymentHash, predicate);
       return status;
     };
   }
 
-  private async waitForDeploymentStatus(deploymentHash: string, predicate: (status: DeploymentStatus) => boolean) : Promise<DeploymentStatus> {
+  private async waitForDeploymentStatus(deploymentHash: string, predicate: (status: DeploymentStatus) => boolean): Promise<DeploymentStatus> {
     const getStatus = async () => this.relayerApi.getDeploymentStatus(deploymentHash);
-    const status : DeploymentStatus = await retry(getStatus, predicate, this.timeout, this.tick);
+    const status: DeploymentStatus = await retry(getStatus, predicate, this.timeout, this.tick);
     return status;
   }
 
@@ -82,7 +82,7 @@ export class FutureWalletFactory extends MineableFactory {
         const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
         deploymentReadyObserver.startAndSubscribe(contractAddress, onReadyToDeploy)
           .catch(console.error);
-      }
+      },
     ) as Promise<BalanceDetails>;
 
     const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
@@ -94,7 +94,7 @@ export class FutureWalletFactory extends MineableFactory {
         contractAddress,
         ensName,
         privateKey,
-        this.sdk
+        this.sdk,
       );
 
       const deployment: Deployment = {
@@ -108,7 +108,7 @@ export class FutureWalletFactory extends MineableFactory {
       privateKey,
       contractAddress,
       waitForBalance,
-      deploy
+      deploy,
     };
   }
 }

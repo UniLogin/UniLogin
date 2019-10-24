@@ -17,7 +17,7 @@ export class TransferService {
     }
   }
 
-  private async transferTokens({to, amount, transferToken, gasParameters} : TransferDetails) {
+  private async transferTokens({to, amount, transferToken, gasParameters}: TransferDetails) {
     const {sdk, contractAddress, privateKey} = this.deployedWallet;
     const message = {
       from: contractAddress,
@@ -25,7 +25,7 @@ export class TransferService {
       value: 0,
       data: encodeTransfer(to, amount),
       gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice
+      gasPrice: gasParameters.gasPrice,
     };
     return sdk.execute(message, privateKey);
   }
@@ -38,7 +38,7 @@ export class TransferService {
       value: utils.parseEther(amount),
       data: '0x',
       gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice
+      gasPrice: gasParameters.gasPrice,
     };
     return sdk.execute(message, privateKey);
   }

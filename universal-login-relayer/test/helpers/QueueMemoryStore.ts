@@ -4,17 +4,13 @@ import {QueueItem} from '../../lib/core/models/QueueItem';
 import Deployment from '../../lib/core/models/Deployment';
 
 export default class QueueMemoryStore implements IExecutionQueue {
-  public queueItems: QueueItem[];
-
-  constructor() {
-    this.queueItems = [];
-  }
+  queueItems: QueueItem[] = [];
 
   async addMessage(signedMessage: SignedMessage) {
     const hash = calculateMessageHash(signedMessage);
     this.queueItems.push({
       type: 'Message',
-      hash
+      hash,
     });
     return hash;
   }
@@ -22,7 +18,7 @@ export default class QueueMemoryStore implements IExecutionQueue {
   async addDeployment(deployment: Deployment) {
     this.queueItems.push({
       type: 'Deployment',
-      hash: deployment.hash
+      hash: deployment.hash,
     });
     return deployment.hash;
   }

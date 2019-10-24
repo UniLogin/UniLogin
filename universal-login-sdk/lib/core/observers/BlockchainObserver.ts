@@ -49,7 +49,7 @@ class BlockchainObserver extends ObserverBase {
       const {key} = args.values;
       return {key};
     }
-    throw `Not supported event with topic: ${event.topics[0]}`;
+    throw new TypeError(`Not supported event with topic: ${event.topics[0]}`);
   }
 }
 

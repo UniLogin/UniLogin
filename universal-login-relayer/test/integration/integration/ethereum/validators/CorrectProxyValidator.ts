@@ -30,7 +30,7 @@ describe('INT: CorrectProxyValidator', async () => {
   it('passes when invalid master but valid proxy', async () => {
     const validatorWithInvalidMaster = new CorrectProxyValidator(wallet.provider, {
       wallet: [TEST_ACCOUNT_ADDRESS],
-      proxy: contractWhiteList.proxy
+      proxy: contractWhiteList.proxy,
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually.fulfilled;
@@ -39,7 +39,7 @@ describe('INT: CorrectProxyValidator', async () => {
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new CorrectProxyValidator(wallet.provider, {
       wallet: contractWhiteList.wallet,
-      proxy: [TEST_ACCOUNT_ADDRESS]
+      proxy: [TEST_ACCOUNT_ADDRESS],
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);

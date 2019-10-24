@@ -3,9 +3,9 @@ import {TimeoutError} from './errors';
 
 export async function retry<R>(
   callback: () => R | Promise<R>,
-  predicate : (result: R) => boolean,
-  timeout: number = 5000,
-  tick: number = 1000
+  predicate: (result: R) => boolean,
+  timeout = 5000,
+  tick = 1000,
 ) {
   const stopTime = Date.now() + timeout;
   let result: R;

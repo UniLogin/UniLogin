@@ -3,7 +3,6 @@ import {UnexpectedError} from '../utils/errors';
 import {Feature} from '../models/Feature';
 
 export class FeatureFlagsService {
-
   private feature: Record<Feature, boolean> = {} as any;
 
   enableAll(featuresList: string[]) {
@@ -13,9 +12,10 @@ export class FeatureFlagsService {
   enable(feature: Feature | string) {
     if (typeof feature === 'string') {
       ensure(this.isFeature(feature), UnexpectedError, 'Invalid feature');
-      return this.feature[stringToEnumKey(Feature, feature) as Feature] = true;
+      this.feature[stringToEnumKey(Feature, feature) as Feature] = true;
+    } else {
+      this.feature[feature] = true;
     }
-    this.feature[feature] = true;
   }
 
   isFeature(name: string) {

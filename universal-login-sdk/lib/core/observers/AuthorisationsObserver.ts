@@ -37,7 +37,7 @@ class AuthorisationsObserver extends ObserverRunner {
     ensure(
       !this.authorisationRequest ||
       (this.authorisationRequest.contractAddress === authorisationRequest.contractAddress),
-      ConcurrentAuthorisation
+      ConcurrentAuthorisation,
     );
 
     callback(this.lastAuthorisations);

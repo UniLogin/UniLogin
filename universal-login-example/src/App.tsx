@@ -40,7 +40,7 @@ function App() {
       Hello from host app!
       <button onClick={sendTx}>Send TX</button>
       <button onClick={create}>Create wallet</button>
-      <div ref={ref => { ulButton.current = ref; }} />
+      <div ref={ref => {ulButton.current = ref;}} />
     </div>
   );
 }

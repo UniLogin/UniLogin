@@ -8,7 +8,7 @@ const getDevices = (devicesService: DevicesService) =>
   async (data: {contractAddress: string, query: {signature: string}}) => {
     const devicesRequest: RelayerRequest = {
       contractAddress: data.contractAddress,
-      signature: data.query.signature
+      signature: data.query.signature,
     };
 
     const result = await devicesService.getDevices(devicesRequest);
@@ -22,10 +22,10 @@ export default (devicesService: DevicesService) => {
     sanitize({
       contractAddress: asString,
       query: asObject({
-        signature: asString
-      })
+        signature: asString,
+      }),
     }),
-    getDevices(devicesService)
+    getDevices(devicesService),
   ));
   return router;
 };

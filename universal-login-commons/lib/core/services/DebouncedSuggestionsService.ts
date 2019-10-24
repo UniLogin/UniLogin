@@ -27,7 +27,7 @@ export class DebouncedSuggestionsService {
     }
   }
 
-  getSuggestions = (name: string, callback: SuggestionsCallback) => {
+  getSuggestions(name: string, callback: SuggestionsCallback) {
     this.debouncedGetSuggestions(name, callback);
   }
 }

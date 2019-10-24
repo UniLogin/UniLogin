@@ -18,9 +18,9 @@ describe('INT: WalletService', () => {
     privateKey: TEST_PRIVATE_KEY,
     deploy: async () => ({
       waitForTransactionHash: sinon.stub(),
-      waitToBeSuccess: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, '', TEST_PRIVATE_KEY, null as any)
+      waitToBeSuccess: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, '', TEST_PRIVATE_KEY, null as any),
     }),
-    waitForBalance: (async () => { }) as any
+    waitForBalance: (async () => { }) as any,
   };
   const storage = {load: () => applicationWallet, save: sinon.fake(), remove: sinon.fake()};
   let walletService: WalletService;

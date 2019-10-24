@@ -15,7 +15,7 @@ describe('INT: MessageExecutor', async () => {
   let wallet: Wallet;
   let walletContract: Contract;
   const validator = {
-    validate: async () => {}
+    validate: async () => {},
   };
 
   before(async () => {

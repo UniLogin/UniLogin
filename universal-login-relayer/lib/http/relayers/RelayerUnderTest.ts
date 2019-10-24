@@ -31,7 +31,6 @@ type CreateRelayerArgs = {
 };
 
 export class RelayerUnderTest extends Relayer {
-
   static async deployBaseContracts(wallet: Wallet) {
     const walletContract = await deployContract(wallet, WalletContract);
     const factoryContract = await deployFactory(wallet, walletContract.address);
@@ -52,12 +51,12 @@ export class RelayerUnderTest extends Relayer {
     const supportedTokens = [
       {
         address: mockToken.address,
-        minimalAmount: utils.parseEther('0.05').toString()
+        minimalAmount: utils.parseEther('0.05').toString(),
       },
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: '500000'
-      }
+        minimalAmount: '500000',
+      },
     ];
     const overrideConfig: DeepPartial<Config> = {
       port,
@@ -75,7 +74,7 @@ export class RelayerUnderTest extends Relayer {
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS};
   }
 
-  public static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
+  static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
     const config: Config = deepMerge(getConfig('test'), overrideConfig);
     return new RelayerUnderTest(config, providerWithENS);
   }
@@ -112,5 +111,5 @@ export async function clearDatabase(knex: Knex) {
 
 export const getContractWhiteList = () => ({
   wallet: [getContractHash(WalletContract as ContractJSON)],
-  proxy: [getContractHash(ProxyContract as ContractJSON)]
+  proxy: [getContractHash(ProxyContract as ContractJSON)],
 });

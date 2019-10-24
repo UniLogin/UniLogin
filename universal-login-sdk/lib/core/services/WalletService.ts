@@ -7,19 +7,19 @@ import {DeployedWallet} from '../..';
 import {State, map} from 'reactive-properties';
 
 type WalletState = {
-  kind: 'None'
+  kind: 'None';
 } | {
-  kind: 'Future'
-  wallet: FutureWallet
+  kind: 'Future';
+  wallet: FutureWallet;
 } | {
-  kind: 'Connecting'
-  wallet: ApplicationWallet
+  kind: 'Connecting';
+  wallet: ApplicationWallet;
 } | {
-  kind: 'Deploying'
-  wallet: ApplicationWallet
+  kind: 'Deploying';
+  wallet: ApplicationWallet;
 } | {
-  kind: 'Deployed'
-  wallet: DeployedWallet
+  kind: 'Deployed';
+  wallet: DeployedWallet;
 };
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
@@ -31,10 +31,10 @@ export interface WalletStorage {
 }
 
 export class WalletService {
-  public stateProperty = new State<WalletState>({kind: 'None'});
+  stateProperty = new State<WalletState>({kind: 'None'});
 
-  public walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
-  public isAuthorized = this.walletDeployed;
+  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
+  isAuthorized = this.walletDeployed;
 
   get state() {
     return this.stateProperty.get();
@@ -114,7 +114,7 @@ export class WalletService {
     }
     this.stateProperty.set({
       kind: 'Deployed',
-      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk)
+      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
     });
     this.storage && this.storage.save(wallet);
   }
@@ -136,7 +136,7 @@ export class WalletService {
 
     const filter = {
       contractAddress,
-      key: utils.computeAddress(privateKey)
+      key: utils.computeAddress(privateKey),
     };
 
     const subscription = this.sdk.subscribe('KeyAdded', filter, () => {
@@ -147,7 +147,7 @@ export class WalletService {
 
     return {
       unsubscribe: () => subscription.remove(),
-      securityCode
+      securityCode,
     };
   }
 

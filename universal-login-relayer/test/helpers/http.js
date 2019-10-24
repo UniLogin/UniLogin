@@ -20,11 +20,11 @@ export const startRelayer = async (port = '33111') => {
 
 export const createWalletContract = async (provider, relayerUrlOrServer, publicKey, ensName = 'marek.mylogin.eth') => {
   const result = await chai.request(relayerUrlOrServer)
-  .post('/wallet')
-  .send({
-    managementKey: publicKey,
-    ensName
-  });
+    .post('/wallet')
+    .send({
+      managementKey: publicKey,
+      ensName,
+    });
   const {transaction} = result.body;
   return waitForContractDeploy(provider, WalletContract, transaction.hash);
 };
@@ -35,19 +35,18 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
   const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);
   const signature = await calculateInitializeSignature(initData, keyPair.privateKey);
   const result = await chai.request(relayerUrlOrServer)
-  .post('/wallet/deploy')
-  .send({
-    publicKey: keyPair.publicKey,
-    ensName,
-    gasPrice: TEST_GAS_PRICE,
-    gasToken: ETHER_NATIVE_TOKEN.address,
-    signature,
-    applicationInfo: TEST_APPLICATION_INFO
-  });
+    .post('/wallet/deploy')
+    .send({
+      publicKey: keyPair.publicKey,
+      ensName,
+      gasPrice: TEST_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+      signature,
+      applicationInfo: TEST_APPLICATION_INFO,
+    });
   await waitForDeploymentStatus(relayerUrlOrServer, result.body.deploymentHash, 'Success');
   return new Contract(futureAddress, WalletContract.interface, wallet);
 };
-
 
 export const startRelayerWithRefund = async (port = '33111') => {
   const provider = createMockProvider();

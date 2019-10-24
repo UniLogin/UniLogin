@@ -15,7 +15,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
   await sdk.fetchRelayerConfig();
   const ensName = 'alex.mylogin.eth';
-  const  {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
+  const {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
   const mockToken = await deployContract(wallet, MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
   const walletContract = new Contract(contractAddress, WalletContract.abi, wallet);
@@ -25,5 +25,5 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
 export const transferMessage = {
   ...SdkConfigDefault.paymentOptions,
   to: TEST_ACCOUNT_ADDRESS,
-  value: utils.parseEther('0.5').toString()
+  value: utils.parseEther('0.5').toString(),
 };

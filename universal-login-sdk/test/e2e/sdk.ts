@@ -91,7 +91,7 @@ describe('E2E: SDK', async () => {
       message = {...message, gasToken: mockToken.address};
       const {waitToBeSuccess} = await sdk.execute(message, privateKey);
       await expect(waitToBeSuccess()).to.be.eventually.rejectedWith('Error: Not enough tokens');
-  });
+    });
 
     it('when not enough gas', async () => {
       const gasData = 8720;
@@ -218,7 +218,6 @@ describe('E2E: SDK', async () => {
         const authorisationRequest = signRelayerRequest({contractAddress}, privateKey);
         expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(authorisationRequest)).to.deep.eq([]);
       });
-
 
       it('should return pending authorisations', async () => {
         const {privateKey: devicePrivateKey} = await sdk.connect(contractAddress);

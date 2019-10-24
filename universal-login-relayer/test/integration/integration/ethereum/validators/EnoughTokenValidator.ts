@@ -39,12 +39,12 @@ describe('INT: EnoughTokenValidator', async () => {
   });
 
   describe('hasEnoughToken', async () => {
-    let provider : providers.Provider;
-    let wallet : Wallet;
-    let otherWallet : Wallet;
+    let provider: providers.Provider;
+    let wallet: Wallet;
+    let otherWallet: Wallet;
     const gasLimit = 1000000;
-    let token : Contract;
-    let walletContract : Contract;
+    let token: Contract;
+    let walletContract: Contract;
 
     before(async () => {
       provider = createMockProvider();

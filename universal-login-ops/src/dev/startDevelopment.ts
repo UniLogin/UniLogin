@@ -12,20 +12,19 @@ import deployWalletContractOnDev from './deployWalletContractOnDev';
 import deployToken from './deployToken';
 import deployFactory from '../ops/deployFactory';
 
-
 const ganachePort = 18545;
 
 const databaseConfig = {
   client: 'postgresql',
   connection: {
     database: 'universal_login_relayer_development',
-    user:     'postgres',
-    password: 'postgres'
+    user: 'postgres',
+    password: 'postgres',
   },
   migrations: {
     tableName: 'knex_migrations',
-    directory: getMigrationPath()
-  }
+    directory: getMigrationPath(),
+  },
 };
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
@@ -33,12 +32,12 @@ const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
     address: tokenAddress,
-    minimalAmount: utils.parseEther('0.05').toString()
-   },
-   {
+    minimalAmount: utils.parseEther('0.05').toString(),
+  },
+  {
     address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: '500000'
-   }];
+    minimalAmount: '500000',
+  }];
   return {
     jsonRpcUrl,
     port: '3311',
@@ -46,7 +45,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
     chainSpec: {
       name: 'development',
       ensAddress,
-      chainId: 0
+      chainId: 0,
     },
     ensRegistrars,
     walletContractAddress,
@@ -56,26 +55,26 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
     tokenContractAddress: tokenAddress,
     localization: {
       language: 'en',
-      country: 'any'
+      country: 'any',
     },
     onRampProviders: {
       safello: {
         appId: '1234-5678',
         baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
-        addressHelper: true
+        addressHelper: true,
       },
       ramp: {
         appName: 'Universal Login',
         logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
-        rampUrl: 'https://ri-widget-staging.firebaseapp.com/'
-      }
+        rampUrl: 'https://ri-widget-staging.firebaseapp.com/',
+      },
     },
     database: databaseConfig,
     maxGasLimit: 500000,
     ipGeolocationApi: {
       baseUrl: 'http://api.ipstack.com',
       accessKey: '52e66f1c79bb597131fd0c133704ee03',
-    }
+    },
   };
 }
 
@@ -95,8 +94,8 @@ declare interface StartDevelopmentOverrides {
   relayerClass?: RelayerClass;
 }
 
-async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverrides = {}) {
-  const jsonRpcUrl = nodeUrl ? nodeUrl : await startGanache(ganachePort);
+async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrides = {}) {
+  const jsonRpcUrl = nodeUrl || await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [, , , , ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
@@ -106,8 +105,8 @@ async function startDevelopment({nodeUrl, relayerClass} : StartDevelopmentOverri
   const tokenAddress = await deployToken(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
-    wallet:  [walletContractHash],
-    proxy: [proxyContractHash]
+    wallet: [walletContractHash],
+    proxy: [proxyContractHash],
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);

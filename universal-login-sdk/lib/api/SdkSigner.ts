@@ -1,11 +1,11 @@
 import UniversalLoginSDK from './sdk';
 import {ethers, Wallet, utils, providers} from 'ethers';
 import {ensureNotNull} from '@universal-login/commons';
-import { TransactionHashNotFound } from '../core/utils/errors';
+import {TransactionHashNotFound} from '../core/utils/errors';
 
 export class SdkSigner extends ethers.Signer {
   private wallet: Wallet;
-  public provider: providers.Provider;
+  provider: providers.Provider;
 
   constructor(
     private sdk: UniversalLoginSDK,

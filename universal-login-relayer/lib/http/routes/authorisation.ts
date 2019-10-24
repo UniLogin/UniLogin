@@ -8,7 +8,6 @@ import {asRelayerRequest, asApplicationInfo} from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
 import {AddAuthorisationRequest} from '../../core/models/AddAuthorisationRequest';
 
-
 const request = (authorisationService: AuthorisationService) =>
   async (data: {body: {key: string, walletContractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
     const {applicationInfo, ...relayerRequest} = data.body;
@@ -18,10 +17,10 @@ const request = (authorisationService: AuthorisationService) =>
   };
 
 const getPending = (authorisationService: AuthorisationService) =>
-  async (data: {contractAddress: string,  query: {signature: string}}) => {
+  async (data: {contractAddress: string, query: {signature: string}}) => {
     const authorisationRequest: RelayerRequest = {
       contractAddress: data.contractAddress,
-      signature: data.query.signature
+      signature: data.query.signature,
     };
     const result = await authorisationService.getAuthorisationRequests(authorisationRequest);
     return responseOf({response: result});
@@ -48,40 +47,39 @@ export default (authorisationService: AuthorisationService) => {
       body: asObject({
         walletContractAddress: asEthAddress,
         key: asString,
-        applicationInfo: asApplicationInfo
-      })
+        applicationInfo: asApplicationInfo,
+      }),
     }),
-    request(authorisationService)
+    request(authorisationService),
   ));
 
   router.get('/:contractAddress', asyncHandler(
     sanitize({
       contractAddress: asString,
       query: asObject({
-        signature: asString
-      })
+        signature: asString,
+      }),
     }),
-    getPending(authorisationService)
+    getPending(authorisationService),
   ));
 
   router.post('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
-        authorisationRequest: asRelayerRequest
-      })
+        authorisationRequest: asRelayerRequest,
+      }),
     }),
-    denyRequest(authorisationService)
+    denyRequest(authorisationService),
   ));
 
   router.delete('/:contractAddress', asyncHandler(
     sanitize({
       body: asObject({
-        authorisationRequest: asRelayerRequest
-      })
+        authorisationRequest: asRelayerRequest,
+      }),
     }),
-    cancelRequest(authorisationService)
+    cancelRequest(authorisationService),
   ));
 
   return router;
 };
-
