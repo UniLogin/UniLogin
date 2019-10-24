@@ -42,7 +42,6 @@ export class MineableFactory {
 
   private async waitForStatus(hash: string, predicate: (status: MineableStatus) => boolean) : Promise<MineableStatus> {
     const getStatus = async () => this.getStatus(hash);
-    const status: MineableStatus = await retry(getStatus, predicate, this.timeout, this.tick);
-    return status;
+    return retry(getStatus, predicate, this.timeout, this.tick);
   }
 }
