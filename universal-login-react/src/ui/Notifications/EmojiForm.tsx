@@ -44,9 +44,9 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
     }
   };
 
-  const renderContent = () => {
-    if (isInputValid) {
-      return (
+  return (
+    <div id="emojis">
+      {isInputValid ? (
         <div className="correct-input">
           <p className="correct-input-title">Correct!</p>
           <EmojiPlaceholders
@@ -54,33 +54,25 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
             className={className}
           />
         </div>
-      );
-    }
-
-    return (
-      <div className="approve-device-form">
-        <EmojiInput
-          value={enteredCode}
-          onChange={setEnteredCode}
-          publicKey={soleAddress}
-          className={className}
-        />
-        <div className="emojis-form-reject-wrapper">
-          <button
-            className="emojis-form-reject"
-            id="reject"
-            onClick={onCancelClick}
-          >
-            Deny
-          </button>
+      ) : (
+        <div className="approve-device-form">
+          <EmojiInput
+            value={enteredCode}
+            onChange={setEnteredCode}
+            publicKey={soleAddress}
+            className={className}
+          />
+          <div className="emojis-form-reject-wrapper">
+            <button
+              className="emojis-form-reject"
+              id="reject"
+              onClick={onCancelClick}
+            >
+          Deny
+            </button>
+          </div>
         </div>
-      </div>
-    );
-  };
-
-  return (
-    <div id="emojis">
-      {renderContent()}
+      )}
     </div>
   );
 };
