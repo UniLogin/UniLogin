@@ -3,3 +3,7 @@ export interface SuggestionProps {
   operationType: string;
   onClick(suggestion: string): Promise<void> | void;
 }
+
+export interface SingleSuggestionProps extends SuggestionProps {
+  hint: string;
+}

@@ -4,6 +4,7 @@ import {
   WalletSuggestionAction,
   WALLET_SUGGESTION_ALL_ACTIONS,
   SuggestionsService,
+  ensureNotNull,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
@@ -15,10 +16,11 @@ import ethLogo from '../assets/icons/ethereum-logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
+import {MissingParameter} from '../../core/utils/errors';
 
 interface WalletSelector {
-  onCreateClick(ensName: string): Promise<void> | void;
-  onConnectClick(ensName: string): Promise<void> | void;
+  onCreateClick?(ensName: string): Promise<void> | void;
+  onConnectClick?(ensName: string): Promise<void> | void;
   sdk: UniversalLoginSDK;
   domains: string[];
   actions?: WalletSuggestionAction[];
@@ -77,16 +79,19 @@ export const WalletSelector = ({
     }
   };
 
-  const renderSuggestions = () =>
-    !busy && (connections.length || creations.length) ? (
+  const renderSuggestions = () => {
+    actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
+    actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
+    return !busy && (connections.length || creations.length) ? (
       <Suggestions
         connections={connections}
         creations={creations}
-        onCreateClick={onCreateClick}
-        onConnectClick={onConnectClick}
+        onCreateClick={onCreateClick!}
+        onConnectClick={onConnectClick!}
         actions={actions}
       />
     ) : null;
+  };
 
   return (
     <div className={`universal-login ${accountStatus}`}>
