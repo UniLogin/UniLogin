@@ -6,7 +6,6 @@ export type WalletModalType =
   | 'error'
   | 'transfer'
   | 'transferRecipient'
-  | 'request'
   | 'topUpAccount'
   | 'waitingForDeploy'
   | 'waitingForTransfer'
