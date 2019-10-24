@@ -1,8 +1,13 @@
+@import helpers/breakpoints
+
 .universal-login-delete-account
 
   .delete-account
     position: relative
     padding: 115px 0 70px
+
+    +media(s)
+      padding: 115px 15px 100px
 
   .delete-account::before
    content: ''
@@ -29,6 +34,9 @@
   .delete-account-form
     max-width: 370px
     margin: 40px auto 95px
+
+    +media(s)
+      margin: 40px auto
 
   .delete-account-label
     display: block

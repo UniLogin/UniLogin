@@ -45,10 +45,6 @@ export class FutureWalletFactory extends MineableFactory {
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
-  private hasTransactionHash(deploymentStatus: DeploymentStatus) {
-    return ['Pending', 'Success', 'Error'].includes(deploymentStatus.state) && deploymentStatus.transactionHash !== null;
-  }
-
   private createWaitToBeSuccess(deploymentHash: string, deployedWallet: DeployedWallet) {
     return async () => {
       const predicate = (deploymentStatus: DeploymentStatus) => !this.isMined(deploymentStatus.state);

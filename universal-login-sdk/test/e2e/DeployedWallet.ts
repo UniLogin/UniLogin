@@ -57,6 +57,6 @@ describe('E2E: DeployedWallet', async () => {
       expect(await walletContract.keyExist(address)).to.be.true;
       const connectedDevices = await deployedWallet.getConnectedDevices();
       expect(connectedDevices.map(({publicKey}: any) => publicKey)).to.include(address);
-    });
+    }).timeout(15000);
   });
 });
