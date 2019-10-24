@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {GAS_BASE, waitExpect, waitExpect} from '@universal-login/commons';
+import {GAS_BASE, waitExpect} from '@universal-login/commons';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {deployContract} from 'ethereum-waffle';
@@ -109,7 +109,7 @@ describe('INT: MessageHandler', async () => {
 
   describe('Remove key ', async () => {
     beforeEach(async () => {
-      const message =  {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage = messageToSignedMessage(message, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
@@ -117,7 +117,7 @@ describe('INT: MessageHandler', async () => {
 
     it('should remove key', async () => {
       await waitExpect(async () => expect((await walletContract.keyExist(otherWallet.address))).to.be.true);
-      const message =  {...removeKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const message = {...removeKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
       const signedMessage = messageToSignedMessage(message, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
@@ -131,5 +131,3 @@ describe('INT: MessageHandler', async () => {
     await knex.destroy();
   });
 });
-
-

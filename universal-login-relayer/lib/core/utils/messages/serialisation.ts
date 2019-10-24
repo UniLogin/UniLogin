@@ -12,8 +12,8 @@ export const GAS_LIMIT_MARGIN = 35000;
 export const decodeDataForExecuteSigned = (data: string) => dataToMessage(
   new utils.AbiCoder((type, value) => value).decode(
     executeSigned.inputs,
-    removeFunctionSigFromData(data)
-  )
+    removeFunctionSigFromData(data),
+  ),
 );
 
 export const removeFunctionSigFromData = (hexData: string) => removeLeadingBytes(4, hexData);
@@ -26,13 +26,13 @@ const removeLeadingBytes = (n: number, data: string) => {
   }
 };
 
-export const messageToTransaction = (message: SignedMessage) : providers.TransactionRequest =>
+export const messageToTransaction = (message: SignedMessage): providers.TransactionRequest =>
   Object({
     gasPrice: message.gasPrice,
     gasLimit: utils.bigNumberify(message.gasLimitExecution).add(message.gasData).add(GAS_LIMIT_MARGIN),
     to: message.from,
     value: 0,
-    data: encodeDataForExecuteSigned(message)
+    data: encodeDataForExecuteSigned(message),
   });
 
 const dataToMessage = (data: any): DecodedMessage => ({
@@ -43,14 +43,14 @@ const dataToMessage = (data: any): DecodedMessage => ({
   gasToken: data[4],
   gasLimitExecution: data[5],
   gasData: data[6],
-  signature: data[7]
+  signature: data[7],
 });
 
-export const createMessageItem = (signedMessage: SignedMessage) : MessageItem => ({
+export const createMessageItem = (signedMessage: SignedMessage): MessageItem => ({
   walletAddress: signedMessage.from,
   collectedSignatureKeyPairs: [],
   transactionHash: null,
   error: null,
   message: signedMessage,
-  state: 'AwaitSignature'
+  state: 'AwaitSignature',
 });

@@ -42,7 +42,6 @@ import {MinedTransactionHandler} from '../../core/services/execution/MinedTransa
 
 const defaultPort = '3311';
 
-
 export type RelayerClass = {
   new (config: any, provider: providers.Provider): Relayer;
 };
@@ -50,9 +49,9 @@ export type RelayerClass = {
 class Relayer {
   protected readonly port: string;
   protected readonly hooks: EventEmitter;
-  public provider: providers.Provider;
+  provider: providers.Provider;
   protected readonly wallet: Wallet;
-  public readonly database: Knex;
+  readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
   private authorisationStore: AuthorisationStore = {} as AuthorisationStore;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
@@ -78,7 +77,7 @@ class Relayer {
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
-  public publicConfig: PublicRelayerConfig;
+  publicConfig: PublicRelayerConfig;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -101,7 +100,7 @@ class Relayer {
     this.app = express();
     this.app.use(useragent.express());
     this.app.use(cors({
-      origin : '*',
+      origin: '*',
       credentials: true,
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);

@@ -15,9 +15,9 @@ describe('UNIT: AuthorisationsObserver', () => {
         city: 'unknown',
         os: 'unknown',
         browser: 'node-fetch',
-        time: '1:30'
-      }
-    }
+        time: '1:30',
+      },
+    },
   ];
   const relayerApi = {getPendingAuthorisations: async () => ({response: notifications})};
   let authorisationsObserver: AuthorisationsObserver;
@@ -28,7 +28,7 @@ describe('UNIT: AuthorisationsObserver', () => {
   const createauthorisationRequest = (contractAddress: string, privateKey: string) => {
     const authorisationRequest: RelayerRequest = {
       contractAddress,
-      signature: ''
+      signature: '',
     };
     signRelayerRequest(authorisationRequest, privateKey);
     return authorisationRequest;

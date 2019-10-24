@@ -17,7 +17,7 @@ import {
   SignedMessage,
   signRelayerRequest,
   TokenDetailsService,
-  TokensValueConverter
+  TokensValueConverter,
 } from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
@@ -63,10 +63,10 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    sdkConfig?: DeepPartial<SdkConfig>
+    sdkConfig?: DeepPartial<SdkConfig>,
   ) {
-    this.provider = typeof(providerOrUrl) === 'string' ?
-      new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
+    this.provider = typeof (providerOrUrl) === 'string'
+      ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
       : providerOrUrl;
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.relayerApi = new RelayerApi(relayerUrl);
@@ -154,7 +154,7 @@ class UniversalLoginSDK {
       supportedTokens: this.relayerConfig!.supportedTokens,
       factoryAddress: this.relayerConfig!.factoryAddress,
       contractWhiteList: this.relayerConfig!.contractWhiteList,
-      chainSpec: this.relayerConfig!.chainSpec
+      chainSpec: this.relayerConfig!.chainSpec,
     };
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
@@ -176,13 +176,13 @@ class UniversalLoginSDK {
     return this.executionFactory.createExecution(signedMessage);
   }
 
-  protected selfExecute(to: string, method: string , args: any[], privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
+  protected selfExecute(to: string, method: string, args: any[], privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
     const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
     const message: Partial<Message> = {
       ...transactionDetails,
       to,
       from: to,
-      data
+      data,
     };
     return this.execute(message, privateKey);
   }
@@ -220,7 +220,7 @@ class UniversalLoginSDK {
     await this.relayerApi.connect(walletContractAddress, publicKey, this.sdkConfig.applicationInfo);
     return {
       privateKey,
-      securityCode: generateCode(publicKey)
+      securityCode: generateCode(publicKey),
     };
   }
 
@@ -258,13 +258,13 @@ class UniversalLoginSDK {
   subscribeAuthorisations(contractAddress: string, privateKey: string, callback: Function) {
     return this.authorisationsObserver.subscribe(
       signRelayerRequest({contractAddress}, privateKey),
-      (notifications: Notification[]) => callback(addCodesToNotifications(notifications))
+      (notifications: Notification[]) => callback(addCodesToNotifications(notifications)),
     );
   }
 
   async getConnectedDevices(contractAddress: string, privateKey: string) {
     return this.relayerApi.getConnectedDevices(
-      signRelayerRequest({contractAddress}, privateKey)
+      signRelayerRequest({contractAddress}, privateKey),
     );
   }
 

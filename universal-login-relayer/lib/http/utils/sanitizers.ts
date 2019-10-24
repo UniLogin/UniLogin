@@ -8,22 +8,22 @@ export const asArrayish: Sanitizer<string | number[]> = (value, path) => {
   } else if (Array.isArray(value)) {
     return Result.ok(value);
   } else {
-    return Result.error([{ path, expected: 'arrayish' }]);
+    return Result.error([{path, expected: 'arrayish'}]);
   }
 };
 
 export const asRelayerRequest: Sanitizer<RelayerRequest> = asObject({
   contractAddress: asEthAddress,
-  signature: asString
+  signature: asString,
 });
 
 export const asOverrideOptions: Sanitizer<TransactionOverrides> = asObject({
   gasLimit: asOptional(asBigNumber),
-  gasPrice: asOptional(asBigNumber)
+  gasPrice: asOptional(asBigNumber),
 });
 
 export const asApplicationInfo: Sanitizer<ApplicationInfo> = asObject({
   applicationName: asString,
   type: asString,
-  logo: asString
+  logo: asString,
 });

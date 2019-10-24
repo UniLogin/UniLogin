@@ -28,9 +28,9 @@ export class DeploymentObserver extends ObserverRunner {
     await this.checkContract(this.futureContractAddress!);
   }
 
-  private async checkContract(futureContractAddress: string){
+  private async checkContract(futureContractAddress: string) {
     const bytecode = await this.blockchainService.getCode(futureContractAddress);
-    if (isContractExist(bytecode)){
+    if (isContractExist(bytecode)) {
       ensure(this.contractWhiteList.proxy.includes(utils.keccak256(bytecode)), UnsupportedBytecode);
       await this.onContractDeployed!(futureContractAddress);
       this.stop();

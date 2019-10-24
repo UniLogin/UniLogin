@@ -13,7 +13,7 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
     return this.knex
       .insert({
         hash,
-        ...item
+        ...item,
       })
       .into(this.tableName);
   }

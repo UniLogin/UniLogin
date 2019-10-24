@@ -9,12 +9,12 @@ export class MessageStatusService {
   async getStatus(messageHash: string) {
     const message = await this.messageRepository.get(messageHash);
     const required = await this.signaturesService.getRequiredSignatures(message.walletAddress);
-    const status: MessageStatus =  {
+    const status: MessageStatus = {
       collectedSignatures: message.collectedSignatureKeyPairs.map((collected) => collected.signature),
       totalCollected: message.collectedSignatureKeyPairs.length,
       required: required.toNumber(),
       state: message.state,
-      messageHash
+      messageHash,
     };
     const {error, transactionHash} = message;
     if (error) {

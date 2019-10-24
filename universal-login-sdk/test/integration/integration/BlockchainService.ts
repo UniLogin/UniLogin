@@ -36,9 +36,9 @@ describe('INT: BlockchainService', async () => {
       address: '0xaC8444e7d45c34110B34Ed269AD86248884E78C7',
       data: '0x',
       topics:
-        [ '0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e',
+        ['0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e',
           '0x0000000000000000000000000000000000000000000000000000000000000000'],
-      logIndex: 0 };
+      logIndex: 0};
     const {address} = await deployWalletContract(deployer);
     const logs = await blockchainService.getLogs({address});
     expect(logs).to.have.length(1);

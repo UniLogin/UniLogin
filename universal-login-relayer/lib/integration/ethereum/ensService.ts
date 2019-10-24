@@ -3,7 +3,7 @@ import ENS from '@universal-login/contracts/build/ENS.json';
 import {parseDomain, resolveName, ENSDomainInfo} from '@universal-login/commons';
 
 class ENSService {
-  private domainsInfo : Record<string, ENSDomainInfo>  = {};
+  private domainsInfo: Record<string, ENSDomainInfo> = {};
 
   private ens: Contract;
 
@@ -37,7 +37,7 @@ class ENSService {
     return [hashLabel, ensName, node, this.ensAddress, registrarAddress, resolverAddress];
   }
 
-  resolveName = async (ensName: string) => {
+  async resolveName(ensName: string) {
     return resolveName(this.provider, this.ensAddress, ensName);
   }
 }

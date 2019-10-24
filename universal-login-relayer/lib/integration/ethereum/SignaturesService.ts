@@ -1,7 +1,6 @@
 import {Contract, Wallet, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
-
 export class SignaturesService {
   constructor(private wallet: Wallet) {
   }

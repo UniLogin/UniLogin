@@ -11,7 +11,6 @@ import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandl
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
 export class MessageExecutor implements IExecutor<SignedMessage> {
-
   constructor(
     private wallet: Wallet,
     private messageValidator: IMessageValidator,

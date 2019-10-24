@@ -31,7 +31,7 @@ export default class MessageMemoryRepository extends MemoryRepository<MessageIte
     return messageItem;
   }
 
-  async containSignature(messageHash: string, signature: string) : Promise<boolean> {
+  async containSignature(messageHash: string, signature: string): Promise<boolean> {
     const message = this.items[messageHash];
     return !!message && message
       .collectedSignatureKeyPairs

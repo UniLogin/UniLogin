@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "tsc --build tsconfig.build.json && cpx \"src/contracts/**/*\" dist/src/contracts",
-    "lint": "tslint -p tsconfig.json \"{src,test}/**/*.{ts,js}\"",
+    "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.{js,ts}\"",
     "cli": "ts-node ./scripts/cli",
@@ -39,18 +39,18 @@
     "@types/chai": "^4.1.7",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/mocha": "^5.2.5",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-string": "^1.5.0",
     "cpx": "^1.5.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.13.0",
-    "mocha": "^5.2.0",
+    "eslint": "^6.5.0",
     "rimraf": "^2.6.3",
     "sinon": "^7.4.1",
     "sinon-chai": "^3.3.0",
     "ts-node": "^8.0.2",
-    "tslint": "^5.16.0",
     "typescript": "^3.3.3"
   }
 }
