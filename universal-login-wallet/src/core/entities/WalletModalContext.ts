@@ -5,12 +5,10 @@ import {OnGasParametersChanged} from '@universal-login/commons';
 export type WalletModalType =
   | 'error'
   | 'transfer'
-  | 'transferRecipient'
   | 'topUpAccount'
   | 'waitingForDeploy'
   | 'waitingForTransfer'
   | 'transactionSuccess'
-  | 'safello'
   | 'none';
 
 export interface TopUpModalProps {
