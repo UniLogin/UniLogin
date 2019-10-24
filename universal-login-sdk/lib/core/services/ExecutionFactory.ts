@@ -1,6 +1,5 @@
-import {MessageStatus, ensure, SignedMessage, stringifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
+import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
 import {RelayerApi} from '../../integration/http/RelayerApi';
-import {retry} from '../utils/retry';
 import {MissingMessageHash} from '../utils/errors';
 import {MineableFactory} from './MineableFactory';
 
@@ -16,7 +15,11 @@ export class ExecutionFactory extends MineableFactory {
     tick?: number,
     timeout?: number,
   ) {
-    super(tick, timeout);
+    super(
+      tick,
+      timeout,
+      (hash: string) => this.relayerApi.getStatus(hash),
+    );
   }
 
   async createExecution(signedMessage: SignedMessage): Promise<Execution> {
@@ -29,24 +32,6 @@ export class ExecutionFactory extends MineableFactory {
       messageStatus: result.status,
       waitToBeSuccess,
       waitForTransactionHash,
-    };
-  }
-
-  private createWaitForTransactionHash(messageHash: string) {
-    return async () => {
-      const getStatus = async () => this.relayerApi.getStatus(messageHash);
-      const isNotPending = (messageStatus: MessageStatus) => !this.hasTransactionHash(messageStatus);
-      return retry(getStatus, isNotPending, this.timeout, this.tick);
-    };
-  }
-
-  private createWaitToBeSuccess(messageHash: string) {
-    return async () => {
-      const getStatus = async () => this.relayerApi.getStatus(messageHash);
-      const isNotExecuted = (messageStatus: MessageStatus) => !this.isMined(messageStatus.state);
-      const status = await retry(getStatus, isNotExecuted, this.timeout, this.tick);
-      ensure(!status.error, Error, status.error!);
-      return status;
     };
   }
 }
