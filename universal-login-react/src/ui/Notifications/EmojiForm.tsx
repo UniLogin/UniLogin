@@ -21,7 +21,10 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
-  useEffect(() => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)), [notifications]);
+  useEffect(
+    () => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)),
+    [notifications, enteredCode],
+  );
 
   const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && soleAddress && isValidCode(enteredCode, soleAddress);
 
@@ -32,11 +35,6 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
       setPublicKey(soleAddress!);
     }
   }, [isInputValid]);
-
-  const updateEnteredCode = (code: number[]) => {
-    setEnteredCode(code);
-    updateSoleAddress(filterNotificationByCodePrefix(notifications, code));
-  };
 
   const updateSoleAddress = (addresses: string[]) => {
     if (addresses.length > 1) {
@@ -63,7 +61,7 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
       <div className="approve-device-form">
         <EmojiInput
           value={enteredCode}
-          onChange={updateEnteredCode}
+          onChange={setEnteredCode}
           publicKey={soleAddress}
           className={className}
         />
