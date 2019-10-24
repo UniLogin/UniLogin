@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, Safello, TopUp, WaitingForTransaction} from '@universal-login/react';
+import {ModalWrapper, TopUp, WaitingForTransaction} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {ImageWaitingFor} from '../common/ImageWaitingFor';
@@ -64,17 +64,6 @@ const Modal = () => {
           <ModalTxnSuccess hideModal={modalService.hideModal} />
         </ModalWrapper>
       );
-    case 'safello':
-      return relayerConfig ? (
-        <ModalWrapperWithoutClose>
-          <Safello
-            localizationConfig={relayerConfig!.localization}
-            safelloConfig={relayerConfig!.onRampProviders.safello}
-            contractAddress={walletPresenter.getContractAddress()}
-            crypto="eth"
-          />
-        </ModalWrapperWithoutClose>
-      ) : null;
     case 'error':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
