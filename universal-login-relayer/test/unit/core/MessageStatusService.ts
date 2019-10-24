@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import {utils} from 'ethers';
 import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
-import {MessageStatusService} from '../../../lib/core/services/messages/MessageStatusService';
+import {MessageStatusService} from '../../../lib/core/services/execution/messages/MessageStatusService';
 import MessageItem from '../../../lib/core/models/messages/MessageItem';
 import getTestSignedMessage from '../../config/message';
 import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
