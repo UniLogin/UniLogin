@@ -5,13 +5,13 @@ import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, SignedMessage, TEST_MESSAGE_HASH, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
 import {emptyMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
-import PendingMessages from '../../../../../lib/core/services/messages/PendingMessages';
+import PendingMessages from '../../../../../lib/core/services/execution/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
 import {getKeyFromHashAndSignature} from '../../../../../lib/core/utils/encodeData';
 import {getKnexConfig} from '../../../../helpers/knex';
 import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
-import {MessageStatusService} from '../../../../../lib/core/services/messages/MessageStatusService';
+import {MessageStatusService} from '../../../../../lib/core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
 import {createMessageItem} from '../../../../../lib/core/utils/messages/serialisation';
 

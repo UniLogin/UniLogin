@@ -2,11 +2,11 @@ import {Wallet, Contract} from 'ethers';
 import {calculateMessageHash, SignedMessage, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {MessageStatusService} from './MessageStatusService';
-import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
-import IMessageRepository from '../../models/messages/IMessagesRepository';
-import {getKeyFromHashAndSignature} from '../../utils/encodeData';
-import {createMessageItem} from '../../utils/messages/serialisation';
-import {IExecutionQueue} from '../../models/execution/IExecutionQueue';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../../utils/errors';
+import IMessageRepository from '../../../models/messages/IMessagesRepository';
+import {getKeyFromHashAndSignature} from '../../../utils/encodeData';
+import {createMessageItem} from '../../../utils/messages/serialisation';
+import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 
 export default class PendingMessages {
 
