@@ -29,14 +29,9 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const history = useHistory();
 
-  const onDenyButtonClick = async () => {
-    await deployedWallet.denyRequests();
-    history.goBack();
-  };
-
   const onCancelClick = async () => {
     await deployedWallet.denyRequests();
-    onDenyButtonClick();
+    history.goBack();
   };
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
