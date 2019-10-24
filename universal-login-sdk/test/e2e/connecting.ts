@@ -15,7 +15,6 @@ describe('E2E: SDK connecting', async () => {
   let contractAddress: string;
   let sdk2: UniversalLoginSDK;
 
-
   beforeEach(async () => {
     ({provider, sdk, contractAddress, relayer} = await loadFixture(basicSDK));
     sdk2 = new UniversalLoginSDK(relayer.url(), provider);

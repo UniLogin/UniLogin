@@ -2,26 +2,25 @@ import {Wallet, Contract} from 'ethers';
 import {calculateMessageHash, SignedMessage, ensure, MessageStatus} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {MessageStatusService} from './MessageStatusService';
-import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../utils/errors';
-import IMessageRepository from '../../models/messages/IMessagesRepository';
-import {getKeyFromHashAndSignature} from '../../utils/encodeData';
-import {createMessageItem} from '../../utils/messages/serialisation';
-import {IExecutionQueue} from '../../models/execution/IExecutionQueue';
+import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../../utils/errors';
+import IMessageRepository from '../../../models/messages/IMessagesRepository';
+import {getKeyFromHashAndSignature} from '../../../utils/encodeData';
+import {createMessageItem} from '../../../utils/messages/serialisation';
+import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 
 export default class PendingMessages {
-
   constructor(
-    private wallet : Wallet,
+    private wallet: Wallet,
     private messageRepository: IMessageRepository,
     private executionQueue: IExecutionQueue,
-    private statusService: MessageStatusService
+    private statusService: MessageStatusService,
   ) {}
 
-  async isPresent(messageHash : string) {
+  async isPresent(messageHash: string) {
     return this.messageRepository.isPresent(messageHash);
   }
 
-  async add(message: SignedMessage) : Promise<MessageStatus> {
+  async add(message: SignedMessage): Promise<MessageStatus> {
     const messageHash = calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
       const messageItem = createMessageItem(message);
@@ -54,7 +53,7 @@ export default class PendingMessages {
   private async ensureKeyExist(message: SignedMessage, walletAddress: string, wallet: Wallet) {
     const key = getKeyFromHashAndSignature(
       calculateMessageHash(message),
-      message.signature
+      message.signature,
     );
     const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
     ensure(await walletContract.keyExist(key), InvalidSignature, 'Invalid key');
@@ -70,7 +69,7 @@ export default class PendingMessages {
     ensure(await this.isEnoughSignatures(messageHash), NotEnoughSignatures, required, totalCollected);
   }
 
-  async isEnoughSignatures(messageHash: string) : Promise<boolean> {
+  async isEnoughSignatures(messageHash: string): Promise<boolean> {
     const {totalCollected, required} = await this.getStatus(messageHash);
     return totalCollected >= required;
   }

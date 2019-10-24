@@ -16,7 +16,7 @@ async function depolyEns(wallet) {
   return ensBuilder.bootstrapWith(label, tld);
 }
 
-async function startRelayer(wallet, relayerConstructor) {
+async function startRelayer(wallet, RelayerConstructor) {
   const walletContract = await deployContract(wallet, WalletContract, [], {gasLimit: 5000000});
   const tokenContract = await deployContract(wallet, Token, []);
   const factoryContract = await deployFactory(wallet, walletContract.address);
@@ -36,16 +36,16 @@ async function startRelayer(wallet, relayerConstructor) {
     supportedTokens: [
       {
         address: tokenContract.address,
-        minimalAmount: utils.parseEther('0.5').toString()
+        minimalAmount: utils.parseEther('0.5').toString(),
       },
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: '500000'
-      }
+        minimalAmount: '500000',
+      },
     ],
   });
   const config = deepMerge(getConfig('test'), overrideConfig);
-  const relayer = new relayerConstructor(config, wallet.provider);
+  const relayer = new RelayerConstructor(config, wallet.provider);
   relayer.url = () => `http://localhost:${config.port}`;
   await relayer.start();
   return {relayer, tokenContract, factoryContract};

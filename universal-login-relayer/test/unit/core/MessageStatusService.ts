@@ -3,17 +3,17 @@ import sinon from 'sinon';
 import {utils} from 'ethers';
 import {SignedMessage, calculateMessageHash, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
-import {MessageStatusService} from '../../../lib/core/services/messages/MessageStatusService';
+import {MessageStatusService} from '../../../lib/core/services/execution/messages/MessageStatusService';
 import MessageItem from '../../../lib/core/models/messages/MessageItem';
 import getTestSignedMessage from '../../config/message';
 import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
 
 describe('UNIT: MessageStatusService', async () => {
-  const signaturesService : any = {
-    getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1))
+  const signaturesService: any = {
+    getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1)),
   };
-  let messageRepository : MessageMemoryRepository;
-  let messageStatusService : MessageStatusService;
+  let messageRepository: MessageMemoryRepository;
+  let messageStatusService: MessageStatusService;
   let message: SignedMessage;
   let messageItem: MessageItem;
   let messageHash: string;
@@ -33,7 +33,7 @@ describe('UNIT: MessageStatusService', async () => {
       totalCollected: 0,
       required: 1,
       state: 'AwaitSignature',
-      messageHash
+      messageHash,
     });
   });
 
@@ -44,7 +44,7 @@ describe('UNIT: MessageStatusService', async () => {
       totalCollected: 1,
       required: 1,
       state: 'AwaitSignature',
-      messageHash
+      messageHash,
     });
   });
 
@@ -57,7 +57,7 @@ describe('UNIT: MessageStatusService', async () => {
     await messageRepository.markAsPending(messageHash, TEST_TRANSACTION_HASH);
     expect(await messageStatusService.getStatus(messageHash)).to.deep.include({
       state: 'Pending',
-      transactionHash: TEST_TRANSACTION_HASH
+      transactionHash: TEST_TRANSACTION_HASH,
     });
   });
 
@@ -65,7 +65,7 @@ describe('UNIT: MessageStatusService', async () => {
     await messageRepository.markAsError(messageHash, 'Error message');
     expect(await messageStatusService.getStatus(messageHash)).to.include({
       state: 'Error',
-      error: 'Error message'
+      error: 'Error message',
     });
   });
 });

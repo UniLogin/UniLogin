@@ -2,7 +2,7 @@ import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {calculateMessageHash, waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import ExecutionWorker from '../../../lib/core/services/messages/ExecutionWorker';
+import ExecutionWorker from '../../../lib/core/services/execution/ExecutionWorker';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
@@ -28,18 +28,18 @@ describe('UNIT: Queue Service', async () => {
   const wallet: any = {
     sendTransaction: sinon.fake.returns({
       hash: TEST_TRANSACTION_HASH,
-      wait
+      wait,
     }),
   };
   const walletService: WalletService = {
 
   } as WalletService;
   const messageValidator: any = {
-    validate: sinon.fake.returns(true)
+    validate: sinon.fake.returns(true),
   };
   const onTransactionMined = sinon.spy();
   const minedTransactionHandler = {
-    handle: onTransactionMined
+    handle: onTransactionMined,
   };
   let signedMessage: SignedMessage;
   let messageHash: string;
@@ -55,7 +55,7 @@ describe('UNIT: Queue Service', async () => {
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
       messageHash,
-      createMessageItem(signedMessage)
+      createMessageItem(signedMessage),
     );
     sinon.resetHistory();
   });

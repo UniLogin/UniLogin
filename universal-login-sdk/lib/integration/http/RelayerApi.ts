@@ -27,14 +27,14 @@ export class RelayerApi {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
-      applicationInfo
+      applicationInfo,
     });
   }
 
   async denyConnection(authorisationRequest: RelayerRequest) {
     const {contractAddress} = authorisationRequest;
     return this.http('POST', `/authorisation/${contractAddress}`, {
-      authorisationRequest
+      authorisationRequest,
     }).catch((e: any) => {
       throw new Error(e.error);
     });
@@ -62,7 +62,7 @@ export class RelayerApi {
       gasPrice,
       gasToken,
       signature,
-      applicationInfo
+      applicationInfo,
     });
   }
 

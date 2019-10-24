@@ -3,7 +3,7 @@ import Knex = require('knex');
 
 export class DevicesStore {
   private devices: Device[] = [];
-  private tableName: string = 'devices';
+  private tableName = 'devices';
 
   constructor(public database: Knex) {
   }

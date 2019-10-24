@@ -8,10 +8,9 @@ import {ensureNotNull} from '@universal-login/commons';
 import WalletService from './WalletService';
 
 export class DeploymentExecutor implements IExecutor<Deployment> {
-
   constructor(
     private deploymentRepository: IRepository<Deployment>,
-    private walletService: WalletService
+    private walletService: WalletService,
   ) {}
 
   canExecute(item: QueueItem): boolean {

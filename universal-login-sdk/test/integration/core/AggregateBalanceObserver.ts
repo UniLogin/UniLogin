@@ -27,7 +27,7 @@ describe('INT: AggregateBalanceObserver', () => {
 
     balanceChecker = new BalanceChecker(provider);
     const observedTokens: TokenDetails[] = [
-      ETHER_NATIVE_TOKEN
+      ETHER_NATIVE_TOKEN,
     ];
     balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, 10);
 

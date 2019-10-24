@@ -14,12 +14,12 @@ describe('UNIT: DevicesService', () => {
   const relayerRequest = signRelayerRequest({contractAddress: TEST_CONTRACT_ADDRESS}, keyPair.privateKey);
   const invalidRequest = signRelayerRequest({contractAddress: TEST_CONTRACT_ADDRESS}, TEST_PRIVATE_KEY);
   const walletMasterContractService: any = {
-    ensureValidRelayerRequestSignature: sinon.stub()
+    ensureValidRelayerRequestSignature: sinon.stub(),
   };
   const devicesStore: any = {
     add: sinon.stub().resolves(),
     get: sinon.stub().resolves([{deviceInfo: TEST_DEVICE_INFO, contractAddress: TEST_CONTRACT_ADDRESS, pubilcKey: TEST_ACCOUNT_ADDRESS}]),
-    remove: sinon.stub().resolves(1)
+    remove: sinon.stub().resolves(1),
   };
   let devicesService: DevicesService;
 

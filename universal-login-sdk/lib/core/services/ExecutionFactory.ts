@@ -13,12 +13,12 @@ export class ExecutionFactory extends MineableFactory {
   constructor(
     private relayerApi: RelayerApi,
     tick?: number,
-    timeout?: number
+    timeout?: number,
   ) {
     super(
       tick,
       timeout,
-      (hash: string) => this.relayerApi.getStatus(hash)
+      (hash: string) => this.relayerApi.getStatus(hash),
     );
   }
 
@@ -31,7 +31,7 @@ export class ExecutionFactory extends MineableFactory {
     return {
       messageStatus: result.status,
       waitToBeSuccess,
-      waitForTransactionHash
+      waitForTransactionHash,
     };
   }
 }

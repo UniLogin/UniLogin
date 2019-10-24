@@ -1,15 +1,14 @@
 import {Router, Request} from 'express';
-import MessageHandler from '../../core/services/MessageHandler';
+import MessageHandler from '../../core/services/execution/messages/MessageHandler';
 import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash} from '@universal-login/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 import {asArrayish, asApplicationInfo} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import DeploymentHandler from '../../core/services/DeploymentHandler';
+import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
 
-
-const messageHandling = (messageHandler : MessageHandler) =>
+const messageHandling = (messageHandler: MessageHandler) =>
   async (data: {body: SignedMessage}) => {
     const status = await messageHandler.handleMessage(data.body);
     return responseOf({status}, 201);
@@ -31,12 +30,12 @@ const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
   };
 
 const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>
-async (data: {deploymentHash: string}) => {
-  const status = await deploymentHandler.getStatus(data.deploymentHash);
-  return status ? responseOf(status, 200) : responseOf('Not Found', 404);
+  async (data: {deploymentHash: string}) => {
+    const status = await deploymentHandler.getStatus(data.deploymentHash);
+    return status ? responseOf(status, 200) : responseOf('Not Found', 404);
   };
 
-export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHandler) => {
+export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHandler) => {
   const router = Router();
 
   router.post('/execution', asyncHandler(
@@ -51,17 +50,17 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
         gasData: asBigNumber,
         data: asArrayish,
         value: asBigNumber,
-        signature: asString
-      })
+        signature: asString,
+      }),
     }),
-    messageHandling(messageHandler)
+    messageHandling(messageHandler),
   ));
 
   router.get('/execution/:messageHash', asyncHandler(
     sanitize({
       messageHash: asString,
     }),
-    getMessageStatus(messageHandler)
+    getMessageStatus(messageHandler),
   ));
 
   router.post('/deploy', asyncHandler(
@@ -72,17 +71,17 @@ export default (deploymentHandler : DeploymentHandler, messageHandler: MessageHa
         gasPrice: asString,
         gasToken: asString,
         signature: asString,
-        applicationInfo: asApplicationInfo
-      })
+        applicationInfo: asApplicationInfo,
+      }),
     }),
-    deploymentHandling(deploymentHandler)
+    deploymentHandling(deploymentHandler),
   ));
 
   router.get('/deploy/:deploymentHash', asyncHandler(
     sanitize({
       deploymentHash: asDeploymentHash,
     }),
-    getDeploymentStatus(deploymentHandler)
+    getDeploymentStatus(deploymentHandler),
   ));
 
   return router;

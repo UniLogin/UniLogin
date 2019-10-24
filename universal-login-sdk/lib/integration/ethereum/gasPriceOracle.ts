@@ -12,7 +12,7 @@ export class GasPriceOracle {
     const basicGasPrice = await this.provider.getGasPrice();
     return {
       cheap: basicGasPrice,
-      fast: basicGasPrice.mul(6).div(5)
-      };
+      fast: basicGasPrice.mul(6).div(5),
+    };
   }
 }

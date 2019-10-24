@@ -24,11 +24,11 @@ describe('UNIT: ExecutionFactory', async () => {
       totalCollected: 1,
       state: 'AwaitSignature',
       messageHash,
-      collectedSignatures: [signedMessage.signature]
+      collectedSignatures: [signedMessage.signature],
     };
     relayerApi = {
       execute,
-      getStatus
+      getStatus,
     } as any;
     executionFactory = new ExecutionFactory(relayerApi, 10);
   });

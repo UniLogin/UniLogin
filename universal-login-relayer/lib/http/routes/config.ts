@@ -13,7 +13,7 @@ export function getPublicConfig(config: Config): PublicRelayerConfig {
     localization,
     onRampProviders,
     maxGasLimit,
-    ipGeolocationApi
+    ipGeolocationApi,
   };
 }
 

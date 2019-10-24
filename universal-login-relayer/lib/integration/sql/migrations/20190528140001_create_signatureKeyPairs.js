@@ -6,12 +6,12 @@
 
 exports.up = async (knex) => {
   await knex.schema.createTable('signature_key_pairs', (table) => {
-      table.increments();
-      table.string('messageHash').notNullable();
-      table.string('signature').notNullable();
-      table.string('key').notNullable();
+    table.increments();
+    table.string('messageHash').notNullable();
+    table.string('signature').notNullable();
+    table.string('key').notNullable();
 
-      table.foreign('messageHash').references('messageHash').inTable('messages');
+    table.foreign('messageHash').references('messageHash').inTable('messages');
   });
 };
 

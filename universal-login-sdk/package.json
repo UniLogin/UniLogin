@@ -18,8 +18,8 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc --build tsconfig.build.json && tsc -p tsconfig.declaration.json",
-    "lint": "tslint -p tsconfig.build.json \"{lib,test}/**/*.{ts,js}\"",
+    "build": "tsc",
+    "lint": "eslint '{lib,test}/**/*.{ts,js}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist"
@@ -32,19 +32,20 @@
     "@types/mocha": "^5.2.5",
     "@types/node-fetch": "^2.5.0",
     "@universal-login/relayer": "0.3.56",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",
     "cross-env": "^5.2.0",
     "ethereum-waffle": "2.0.15",
+    "eslint": "^6.5.0",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "node-fetch": "^2.6.0",
     "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",
-    "ts-node": "^8.0.2",
-    "tslint": "^5.16.0",
     "typescript": "^3.3.3"
   }
 }

@@ -9,9 +9,9 @@ chai.use(solidity);
 chai.use(chaiAsPromised);
 
 describe('SendFunds', () => {
-  let provider : providers.Provider;
-  let wallet : Wallet;
-  let args : SendFundsParameters;
+  let provider: providers.Provider;
+  let wallet: Wallet;
+  let args: SendFundsParameters;
 
   beforeEach(async () => {
     provider = createMockProvider();
@@ -22,7 +22,7 @@ describe('SendFunds', () => {
       to: TEST_ACCOUNT_ADDRESS,
       amount: '1',
       currency: ETHER_NATIVE_TOKEN.symbol,
-      provider
+      provider,
     };
   });
 
@@ -42,4 +42,3 @@ describe('SendFunds', () => {
     await expect(sendFunds({...args, amount: decimalAmount})).to.be.eventually.rejected;
   });
 });
-

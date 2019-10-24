@@ -29,7 +29,7 @@ export class WalletCreator {
     return this.ensService;
   }
 
-  private async getInitCode (factoryAddress: string){
+  private async getInitCode(factoryAddress: string) {
     const factoryContract = new Contract(factoryAddress, WalletProxyFactory.interface, this.wallet.provider);
     return factoryContract.initCode();
   }
@@ -54,7 +54,7 @@ export class WalletCreator {
     return calculateInitializeSignature(initData, privateKey);
   }
 
-  async deployWallet(ensName: string = 'name.mylogin.eth') {
+  async deployWallet(ensName = 'name.mylogin.eth') {
     const {contractAddress, privateKey, publicKey} = await this.createFutureWallet();
     await this.wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     const signature = await this.getSignature(privateKey, publicKey, ensName);
@@ -64,7 +64,7 @@ export class WalletCreator {
       gasPrice: TEST_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
       signature,
-      applicationInfo: TEST_APPLICATION_INFO
+      applicationInfo: TEST_APPLICATION_INFO,
     });
     await waitForDeploymentStatus(this.relayerUrl, result.deploymentHash, 'Success');
     return {privateKey, contractAddress, publicKey};

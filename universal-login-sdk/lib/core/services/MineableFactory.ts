@@ -9,7 +9,7 @@ export class MineableFactory {
   constructor(
     protected tick: number = DEFAULT_TICK,
     protected timeout: number = DEFAULT_TIMEOUT,
-    protected getStatus: (hash: string) => Promise<any>
+    protected getStatus: (hash: string) => Promise<any>,
   ) {}
 
   protected isMined(state: MineableState) {
@@ -40,7 +40,7 @@ export class MineableFactory {
     };
   }
 
-  private async waitForStatus(hash: string, predicate: (status: MineableStatus) => boolean) : Promise<MineableStatus> {
+  private async waitForStatus(hash: string, predicate: (status: MineableStatus) => boolean): Promise<MineableStatus> {
     const getStatus = async () => this.getStatus(hash);
     return retry(getStatus, predicate, this.timeout, this.tick);
   }

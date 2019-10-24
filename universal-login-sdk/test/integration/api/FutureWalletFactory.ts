@@ -35,8 +35,8 @@ describe('INT: FutureWalletFactory', async () => {
       chainSpec: {
         ensAddress,
         chainId: 0,
-        name: ''
-      }
+        name: '',
+      },
     };
     const blockchainService = new BlockchainService(provider);
     const relayerApi = new RelayerApi(relayerUrl);
