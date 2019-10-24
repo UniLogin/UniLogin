@@ -1,7 +1,7 @@
-import Deployment from '../models/Deployment';
+import Deployment from '../../../models/Deployment';
 import {calculateDeployHash, DeviceInfo, DeployArgs, DeploymentStatus} from '@universal-login/commons';
-import IRepository from '../models/messages/IRepository';
-import {IExecutionQueue} from '../models/execution/IExecutionQueue';
+import IRepository from '../../../models/messages/IRepository';
+import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 
 class DeploymentHandler {
   constructor(
