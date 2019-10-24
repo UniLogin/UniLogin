@@ -9,7 +9,7 @@ interface SuggestionsProps {
   creations: string[];
   onCreateClick(ensName: string): Promise<void> | void;
   onConnectClick(ensName: string): Promise<void> | void;
-  actions?: WalletSuggestionAction[];
+  actions: WalletSuggestionAction[];
 }
 
 const getSuggestionsItems = (operationType: string, array: string[], onClick: (ensName: string) => Promise<void> | void, suggestionType?: SuggestionType) =>
@@ -31,8 +31,8 @@ const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[]
   actions.includes(flag) ? suggestions : [];
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions}: SuggestionsProps) => {
-  const suggestionType = getSuggestionType(creations, connections);
-  const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectClick);
+  const suggestionType = getSuggestionType(creations, connections, actions);
+  const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectClick, suggestionType);
   const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick, suggestionType);
   const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSuggestionAction.recover), async () => alert('not implemented'));
   return (

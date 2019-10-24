@@ -1,12 +1,14 @@
 import {SuggestionType} from '../models/SuggestionType';
+import {WalletSuggestionAction} from '@universal-login/commons';
 
 export const getSuggestionType = (
   creations: string[],
   connections: string[],
+  actions: WalletSuggestionAction[],
 ): SuggestionType => {
   if (isSingleCreation(creations, connections)) {
     return 'SingleCreation';
-  } else if (isSingleConnection(creations, connections)) {
+  } else if (isSingleConnection(creations, connections, actions)) {
     return 'SingleConnection';
   } else if (isKeepTyping(creations, connections)) {
     return 'KeepTyping';
@@ -18,8 +20,8 @@ export const getSuggestionType = (
 const isSingleCreation = (creations: string[], connections: string[]) =>
   creations.length === 1 && connections.length === 0;
 
-const isSingleConnection = (creations: string[], connections: string[]) =>
-  creations.length === 0 && connections.length === 1;
+const isSingleConnection = (creations: string[], connections: string[], actions: WalletSuggestionAction[]) =>
+  !actions.includes(WalletSuggestionAction.recover) && creations.length === 0 && connections.length === 1;
 
 const isKeepTyping = (creations: string[], connections: string[]) =>
   creations.length === 0 && connections.length === 0;

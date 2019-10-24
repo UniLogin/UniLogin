@@ -20,8 +20,8 @@
 
 .universal-login-default .suggestions-item-btn:hover,
 .universal-login-default .suggestions-item-btn:focus,
-.universal-login-default .suggestions-create-btn:hover,
-.universal-login-default .suggestions-create-btn:focus {
+.universal-login-default .single-suggestion-btn:hover,
+.universal-login-default .single-suggestion-btn:focus {
   background: #19143D;
   outline: none;
 }
