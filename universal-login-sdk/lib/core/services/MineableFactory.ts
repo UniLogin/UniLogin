@@ -27,7 +27,7 @@ export class MineableFactory {
   protected createWaitForTransactionHash(hash: string) {
     return async () => {
       const predicate = (status: MineableStatus) => !this.hasTransactionHash(status);
-      const status: MineableStatus = await this.waitForStatus(hash, predicate);
+      const status = await this.waitForStatus(hash, predicate);
       return status;
     };
   }
@@ -35,7 +35,7 @@ export class MineableFactory {
   protected createWaitToBeSuccess(hash: string) {
     return async () => {
       const predicate = (status: MineableStatus) => !this.isMined(status.state);
-      const status: MineableStatus = await this.waitForStatus(hash, predicate);
+      const status = await this.waitForStatus(hash, predicate);
       ensure(!status.error, Error, status.error!);
       return status;
     };
