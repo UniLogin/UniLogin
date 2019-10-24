@@ -1,3 +1,5 @@
+@import helpers/breakpoints
+
 .universal-login-devices
   .universal-login-default
 
@@ -20,10 +22,10 @@
       color: #FFFFFF
 
     .devices-amount-buttons
-      border-left: 1px solid #4a4b83
+      border-color: #4a4b83
 
     .devices-amount-decrease-btn
-      border-top: 1px solid #4a4b83
+      border-color: #4a4b83
 
     .devices-amount-increase-btn::before
       border-left: 4px solid transparent
@@ -34,6 +36,11 @@
       border-left: 4px solid transparent
       border-right: 4px solid transparent
       border-top: 4px solid #fff
+
+    .devices-amount-increase-btn::before,
+    .devices-amount-decrease-btn::before
+      +media(s)
+        border: none
 
     .devices-confirmation-edit-button
       background: #262053
@@ -68,3 +75,6 @@
     .delete-account-link
       color: #FFFFFF
       opacity: 0.6
+
+      +media(s)
+        color: #FF345C
