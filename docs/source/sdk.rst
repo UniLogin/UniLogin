@@ -10,12 +10,23 @@ An SDK is a JS library that helps to communicate with a relayer. The SDK makes i
 Creating an SDK
 ---------------
 
-**new UniversalLoginSDK(relayerURL, providerURL, messageOptions)**
+**new UniversalLoginSDK(relayerURL, providerURL, sdkConfig)**
 
   Parameters:
     - **relayerURL** : string - a URL address of a relayer
     - **providerURL** : string - JSON-RPC URL of an Ethereum node
-    - **messageOptions** (optional) : object - specific message options as ``gasPrice`` or ``gasLimit``
+    - **sdkConfig** (optional) : object - specific sdk options listed below (each of them is optional):
+
+      - applicationInfo : object - detailed info about application: applicationName, type (e.g. laptop, mobile), logo (image source)
+      - paymentOptions : object - specific transaction options: gasLimit, gasPrice, gasToken
+      - observedTokensAddresses : array of strings - addresses of tokens used
+      - observedCurrencies: array with combination of USD, ETH and DAI - shortcuts of currencies used
+      - notice : string - additional info shown on the top of React components e.g. 'Beta version'
+      - executionFactoryTick : number - perdiod of time in miliseconds which factory wait with retry if transaction failed
+      - authorizationsObserverTick : number - perdiod of time in miliseconds which last between authorization check
+      - balanceObserverTick : number - perdiod of time in miliseconds which last between balance update
+      - priceObserverTick : number - perdiod of time in miliseconds which last between price update
+
   Returns:
     UniversalLoginSDK instance
 
@@ -24,17 +35,54 @@ Creating an SDK
 
       import UniversalLoginSDK from '@universal-login/sdk';
 
-      const messageOptions = {
-        gasPrice: 1500000000,
-        gasLimit: 2000000,
-        operationType: OPERATION_CALL
+      const sdkConfig = {
+        applicationInfo: {
+          applicationName: 'Universal Login Application',
+          type: 'laptop',
+          logo: 'http://logo.universallogin.io'
+        },
+        paymentOptions: {
+          gasPrice: 1500000000,
+          gasLimit: 2000000,
+          gasToken: '0x0000000000000000000000000000000000000000
+        },
+        observedTokensAddresses: ['0x0000000000000000000000000000000000000000', '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'],
+        observedCurrencies: ['USD', 'ETH'],
+        notice: 'This is beta version',
+        executionFactoryTick: 1000,
+        authorizationsObserverTick: 1000,
+        balanceObserverTick: 1000,
+        priceObserverTick: 1000
       };
+
       const universalLoginSDK = new UniversalLoginSDK(
         'http://myrelayer.ethworks.io',
         'http://localhost:18545',
-        messageOptions
+        sdkConfig
       );
 
+  Default sdkConfig:
+    ::
+
+      sdkConfig = {
+      applicationInfo: {
+          applicationName: 'Unknown application',
+          logo: 'none',
+          type: 'unknown'
+        },
+        paymentOptions: {
+          gasPrice: 10000000000,
+          gasLimit: 200000,
+          gasToken: '0x0000000000000000000000000000000000000000
+        },
+        observedTokensAddresses: ['0x0000000000000000000000000000000000000000'],
+        observedCurrencies: ['USD', 'DAI', 'ETH'],
+        notice: '',
+        executionFactoryTick: 1000,
+        authorizationsObserverTick: 3000,
+        balanceObserverTick: 3000,
+        priceObserverTick: 300000
+      };
 
 
 .. _sdk_create_contract:

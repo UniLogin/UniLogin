@@ -82,7 +82,7 @@ export const WalletSelector = ({
   const renderSuggestions = () => {
     actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
     actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
-    return !busy && (connections.length || creations.length) ? (
+    return !busy &&
       <Suggestions
         source={ensName}
         connections={connections}
@@ -90,8 +90,7 @@ export const WalletSelector = ({
         onCreateClick={onCreateClick!}
         onConnectClick={onConnectClick!}
         actions={actions}
-      />
-    ) : null;
+      />;
   };
 
   return (

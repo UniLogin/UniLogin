@@ -39,7 +39,7 @@ export default class NotificationsPage {
 
   async clickConnectDeviceButton() {
     this.wrapper.find('.footer-approve-btn').simulate('click');
-    await waitForUI(this.wrapper, () => this.wrapper.exists('.connection-progress-bar'));
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Connecting device'));
     await this.waitForNotificationDisappear();
   }
 
