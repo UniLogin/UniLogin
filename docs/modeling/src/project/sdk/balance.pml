@@ -14,6 +14,11 @@ package core {
     loop()
   }
 
+  class GasModeService {
+    constructor(tokensStore: TokensDetailsStore, gasPriceOracle: GasPriceOracle, priceObserver: PriceObserver)
+    getModes()
+  }
+
   class AggregatedBalanceObserver {
     constructor(balanceObserver: BalanceObserver, priceObserver: PriceObserver, tokensValueConverter: TokensValueConverter)
     subscribe(callback: OnAggregatedBalanceChange): Unsubscribe
@@ -22,7 +27,7 @@ package core {
   class BalanceObserver {
     lastTokenBalances: TokenDetailsWithBalance[]
     callbacks: OnBalanceChange[];
-    construtor(balanceChecker: BalanceChecker, walletAddress: string, tokenDetails: TokenDetails[]);
+    constructor(balanceChecker: BalanceChecker, walletAddress: string, tokenDetails: TokenDetails[]);
     checkBalancesNow();
     execute()
     subscribe(callback: OnBalanceChange): Unsubscribe
@@ -31,7 +36,7 @@ package core {
   class PriceObserver {
     lastTokenPrices: TokensPrices;
     callbacks: OnPriceChange[];
-    construtor(observedTokens: TokenDetails[], observedCurrencies: ObservedCurrency[]);
+    constructor(observedTokens: TokenDetails[], observedCurrencies: ObservedCurrency[]);
     getCurrentPrices();
     execute()
     subscribe(callback: OnPriceChange): Unsubscribe
@@ -54,6 +59,16 @@ package integration {
     getEtherBalance(address: string);
     getERC20Balance(address: string);
   }
+
+  class GasPriceOracle {
+    constructor(provider: providers.Provider)
+    getGasPrices()
+  }
+
+  class RequiredBalanceChecker {
+    constructor(private balanceChecker: BalanceChecker)
+    findTokenWithRequiredBalance()
+  }
 }
 
 SDK --> AggregatedBalanceObserver
@@ -64,5 +79,9 @@ AggregatedBalanceObserver --> PriceObserver
 AggregatedBalanceObserver --> TokensValueConverter
 BalanceObserver --|> ObserverRunner
 PriceObserver --|> ObserverRunner
+GasModeService --|> GasPriceOracle
+GasModeService --|> PriceObserver
+RequiredBalanceChecker --|> BalanceChecker
+RequiredBalanceChecker --|> GasModeService
 
 @enduml
