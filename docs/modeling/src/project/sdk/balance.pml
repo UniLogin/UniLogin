@@ -50,6 +50,11 @@ package commons {
     getTokensTotalWorth(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices)
     getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue)
   }
+
+  class RequiredBalanceChecker {
+    constructor(private balanceChecker: BalanceChecker)
+    findTokenWithRequiredBalance()
+  }
 }
 
 package integration {
@@ -64,11 +69,6 @@ package integration {
     constructor(provider: providers.Provider)
     getGasPrices()
   }
-
-  class RequiredBalanceChecker {
-    constructor(private balanceChecker: BalanceChecker)
-    findTokenWithRequiredBalance()
-  }
 }
 
 SDK --> AggregatedBalanceObserver
@@ -79,9 +79,9 @@ AggregatedBalanceObserver --> PriceObserver
 AggregatedBalanceObserver --> TokensValueConverter
 BalanceObserver --|> ObserverRunner
 PriceObserver --|> ObserverRunner
-GasModeService --|> GasPriceOracle
-GasModeService --|> PriceObserver
-RequiredBalanceChecker --|> BalanceChecker
-RequiredBalanceChecker --|> GasModeService
+GasModeService --> GasPriceOracle
+GasModeService --> PriceObserver
+RequiredBalanceChecker --> BalanceChecker
+SDK --> GasModeService
 
 @enduml
