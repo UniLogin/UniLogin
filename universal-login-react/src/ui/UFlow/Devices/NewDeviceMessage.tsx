@@ -29,8 +29,8 @@ export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: New
                   emoji sequence before you can access your account.</p>
             </div>
             <div className="devices-message-buttons-row">
-              <button onClick={onManageClick} className="devices-message-button">Manage</button>
-              <button onClick={() => deployedWallet.denyRequests()} className="devices-message-cancel">Cancel</button>
+              <button onClick={onManageClick} className="devices-message-button">Connect</button>
+              <button onClick={() => deployedWallet.denyRequests()} className="devices-message-cancel">Deny</button>
             </div>
           </div>
         </div>
