@@ -49,17 +49,17 @@ export const WalletSelector = ({
   const [busy, setBusy] = useState(false);
   const [connections, setConnections] = useState<string[]>([]);
   const [creations, setCreations] = useState<string[]>([]);
-  const [name, setName] = useState('');
+  const [ensName, setEnsName] = useState('');
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
-    creations.length === 0 && isOnlyCreateAction && !!name && !busy;
+    creations.length === 0 && isOnlyCreateAction && !!ensName && !busy;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
-    setName(name);
+    setEnsName(name);
     setBusy(true);
     debouncedSuggestionsService.getSuggestions(name, suggestions => {
       setConnections(suggestions.connections);
@@ -84,6 +84,7 @@ export const WalletSelector = ({
     actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
     return !busy && (connections.length || creations.length) ? (
       <Suggestions
+        source={ensName}
         connections={connections}
         creations={creations}
         onCreateClick={onCreateClick!}
