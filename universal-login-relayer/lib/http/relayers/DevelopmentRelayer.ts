@@ -38,7 +38,7 @@ class DevelopmentRelayer extends Relayer {
         await waitToBeMined(this.provider, tokenTransaction.hash);
         const transaction = {
           to: contractAddress,
-          value: etherAmount
+          value: etherAmount,
         };
         await this.wallet.sendTransaction(transaction);
       }

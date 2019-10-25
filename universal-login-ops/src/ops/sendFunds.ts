@@ -2,17 +2,16 @@ import {providers, utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {connect} from '../cli/connectAndExecute';
 
-
 export interface SendFundsParameters {
-  nodeUrl : string;
-  privateKey : string;
-  to : string;
-  amount : string;
-  currency : string;
+  nodeUrl: string;
+  privateKey: string;
+  to: string;
+  amount: string;
+  currency: string;
   provider?: providers.Provider;
 }
 
-export const sendFunds = async ({nodeUrl, privateKey, to, amount, currency, provider} : SendFundsParameters) => {
+export const sendFunds = async ({nodeUrl, privateKey, to, amount, currency, provider}: SendFundsParameters) => {
   const {wallet} = connect(nodeUrl, privateKey, provider);
   const value = utils.parseEther(amount);
 

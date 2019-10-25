@@ -13,7 +13,7 @@ import useragent from 'express-useragent';
 import Knex from 'knex';
 import {Server} from 'http';
 import {Config} from '../../config/relayer';
-import MessageHandler from '../../core/services/MessageHandler';
+import MessageHandler from '../../core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../integration/sql/services/QueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';
 import MessageSQLRepository from '../../integration/sql/services/MessageSQLRepository';
@@ -23,7 +23,7 @@ import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {WalletDeployer} from '../../integration/ethereum/WalletDeployer';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
-import {MessageStatusService} from '../../core/services/messages/MessageStatusService';
+import {MessageStatusService} from '../../core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
 import IMessageValidator from '../../core/models/IMessageValidator';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
@@ -32,16 +32,15 @@ import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@univ
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import {GasValidator} from '../../core/services/validators/GasValidator';
-import DeploymentHandler from '../../core/services/DeploymentHandler';
+import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
 import IRepository from '../../core/models/messages/IRepository';
 import Deployment from '../../core/models/Deployment';
 import SQLRepository from '../../integration/sql/services/SQLRepository';
-import ExecutionWorker from '../../core/services/messages/ExecutionWorker';
+import ExecutionWorker from '../../core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 
 const defaultPort = '3311';
-
 
 export type RelayerClass = {
   new (config: any, provider: providers.Provider): Relayer;
@@ -50,9 +49,9 @@ export type RelayerClass = {
 class Relayer {
   protected readonly port: string;
   protected readonly hooks: EventEmitter;
-  public provider: providers.Provider;
+  provider: providers.Provider;
   protected readonly wallet: Wallet;
-  public readonly database: Knex;
+  readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
   private authorisationStore: AuthorisationStore = {} as AuthorisationStore;
   private authorisationService: AuthorisationService = {} as AuthorisationService;
@@ -78,7 +77,7 @@ class Relayer {
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
-  public publicConfig: PublicRelayerConfig;
+  publicConfig: PublicRelayerConfig;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -101,7 +100,7 @@ class Relayer {
     this.app = express();
     this.app.use(useragent.express());
     this.app.use(cors({
-      origin : '*',
+      origin: '*',
       credentials: true,
     }));
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);

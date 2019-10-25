@@ -12,14 +12,14 @@ class ExecutionWorker {
   constructor(
     private executors: Array<IExecutor<SignedMessage | Deployment>>,
     private executionQueue: IExecutionQueue,
-    private tickInterval: number = 100
+    private tickInterval: number = 100,
   ) {
     this.state = 'stopped';
   }
 
   private async tryExecute(nextItem: QueueItem) {
     for (let i = 0; i < this.executors.length; i++) {
-      if (this.executors[i].canExecute(nextItem)){
+      if (this.executors[i].canExecute(nextItem)) {
         await this.execute(this.executors[i], nextItem.hash);
         return;
       }
@@ -40,7 +40,7 @@ class ExecutionWorker {
   }
 
   private async tick() {
-    if (this.state === 'stopping'){
+    if (this.state === 'stopping') {
       this.state = 'stopped';
     } else {
       await sleep(this.tickInterval);
@@ -50,7 +50,7 @@ class ExecutionWorker {
   async loop() {
     do {
       const nextItem = await this.executionQueue.getNext();
-      if (nextItem){
+      if (nextItem) {
         await this.tryExecute(nextItem);
       } else {
         await this.tick();

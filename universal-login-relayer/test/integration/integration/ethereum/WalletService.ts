@@ -12,7 +12,6 @@ import ENSService from '../../../../lib/integration/ethereum/ensService';
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
-
 describe('INT: WalletService', async () => {
   let walletService: WalletService;
   let provider: providers.Provider;

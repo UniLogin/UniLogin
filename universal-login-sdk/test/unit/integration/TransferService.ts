@@ -11,20 +11,20 @@ chai.use(chaiAsPromised);
 
 const gasParameters = {
   gasPrice: utils.bigNumberify('1'),
-  gasToken: ETHER_NATIVE_TOKEN.address
+  gasToken: ETHER_NATIVE_TOKEN.address,
 };
 
 describe('UNIT: TransferService', () => {
   function setup() {
     const sdk = {
-      execute: sinon.stub().returns({})
+      execute: sinon.stub().returns({}),
     } as any;
     const walletService = {
       deployedWallet: {
         privateKey: 'PRIVATE_KEY',
         contractAddress: 'CONTRACT_ADDRESS',
-        sdk
-      } as any
+        sdk,
+      } as any,
     };
     const transferService = new TransferService(walletService.deployedWallet as any);
     return {sdk, walletService, transferService};
@@ -37,7 +37,7 @@ describe('UNIT: TransferService', () => {
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters
+      gasParameters,
     });
 
     expect(sdk.execute).to.be.calledWith(
@@ -47,7 +47,7 @@ describe('UNIT: TransferService', () => {
         value: utils.parseEther('123'),
         data: '0x',
         gasToken: gasParameters.gasToken,
-        gasPrice: gasParameters.gasPrice
+        gasPrice: gasParameters.gasPrice,
       },
       'PRIVATE_KEY',
     );
@@ -60,7 +60,7 @@ describe('UNIT: TransferService', () => {
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters
+      gasParameters,
     })).to.be.rejectedWith('Wallet not found');
   });
 
@@ -81,7 +81,7 @@ describe('UNIT: TransferService', () => {
         value: 0,
         data: encodeTransfer(recipient, '123'),
         gasToken: gasParameters.gasToken,
-        gasPrice: gasParameters.gasPrice
+        gasPrice: gasParameters.gasPrice,
       },
       'PRIVATE_KEY',
     );
@@ -96,18 +96,18 @@ describe('UNIT: TransferService', () => {
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       transferToken: 'TOKEN_ADDRESS',
-      gasParameters
+      gasParameters,
     })).to.be.rejectedWith('Wallet not found');
   });
 
   it('throw an error if not enough tokens', async () => {
     const {transferService, sdk} = setup();
-    sdk.execute = () => { throw new Error('Not enough tokens'); };
+    sdk.execute = () => {throw new Error('Not enough tokens');};
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters
+      gasParameters,
     })).to.be.rejectedWith('Not enough tokens');
   });
 
@@ -117,7 +117,7 @@ describe('UNIT: TransferService', () => {
       to: '0x',
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters
-    })).to.be.rejectedWith(`Address 0x is not valid`);
+      gasParameters,
+    })).to.be.rejectedWith('Address 0x is not valid');
   });
 });

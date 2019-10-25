@@ -15,7 +15,7 @@ describe('INT: DevicesStore', () => {
     time: '18 minutes ago',
     browser: 'Safari',
     logo: 'logo2',
-    type: 'laptop'
+    type: 'laptop',
   };
   const knex = getKnexConfig();
 

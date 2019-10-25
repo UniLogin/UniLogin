@@ -8,9 +8,7 @@ import IMessageValidator from '../../../../../lib/core/models/IMessageValidator'
 import MessageExecutionValidator from '../../../../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../../fixtures/basicWalletContract';
-
-// @ts-ignore
-import MockToken from '@universal-login/contracts/build/MockToken';
+import MockToken from '@universal-login/contracts/build/MockToken.json';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: Message;
@@ -48,7 +46,7 @@ describe('INT: MessageExecutionValidator', async () => {
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new MessageExecutionValidator(wallet, {
       wallet: contractWhiteList.wallet,
-      proxy: [TEST_ACCOUNT_ADDRESS]
+      proxy: [TEST_ACCOUNT_ADDRESS],
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
@@ -57,10 +55,10 @@ describe('INT: MessageExecutionValidator', async () => {
   it('throws when invalid master', async () => {
     const messageValidatorWithInvalidMaster = new MessageExecutionValidator(wallet, {
       wallet: [TEST_ACCOUNT_ADDRESS],
-      proxy: contractWhiteList.proxy
+      proxy: contractWhiteList.proxy,
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
-    .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
+      .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });

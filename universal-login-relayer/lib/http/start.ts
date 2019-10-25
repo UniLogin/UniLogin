@@ -7,7 +7,7 @@ export const start = (nodeEnv: string) => {
   const relayer = new Relayer(config);
   relayer.start().then(
     () => console.log(`Server listening on port ${config.port}`),
-    console.error
+    console.error,
   );
 };
 

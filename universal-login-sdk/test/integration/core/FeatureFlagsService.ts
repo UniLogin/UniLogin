@@ -46,4 +46,3 @@ describe('FeatureFlagService', () => {
     expect(service.isFeature('nope')).to.be.false;
   });
 });
-

@@ -8,9 +8,9 @@ type ENSInfo = {
 };
 
 class ENSRegistrarBase {
-  public ens : Contract;
-  protected variables : Record<string, string>;
-  public registrarAddress: ContractFunction | any;
+  ens: Contract;
+  protected variables: Record<string, string>;
+  registrarAddress: ContractFunction | any;
   protected resolverAddress: ContractFunction | any;
   protected provider: providers.Provider;
 
@@ -20,7 +20,7 @@ class ENSRegistrarBase {
     this.variables = {};
   }
 
-  async prepareNameRegistration(domain : string) {
+  async prepareNameRegistration(domain: string) {
     this.registrarAddress = await this.ens.owner(utils.namehash(domain));
     this.resolverAddress = await this.ens.resolver(utils.namehash(domain));
   }

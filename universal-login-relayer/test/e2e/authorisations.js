@@ -12,7 +12,7 @@ async function postAuthorisationRequest(relayer, contract, keyPair) {
     .send({
       walletContractAddress: contract.address,
       key: keyPair.publicKey,
-      applicationInfo: TEST_APPLICATION_INFO
+      applicationInfo: TEST_APPLICATION_INFO,
     });
   expect(result.status).to.eq(201);
 }
@@ -20,7 +20,7 @@ async function postAuthorisationRequest(relayer, contract, keyPair) {
 async function getAuthorisation(relayer, contract, keyPair) {
   const authorisationRequest = {
     contractAddress: contract.address,
-    signature: ''
+    signature: '',
   };
   signRelayerRequest(authorisationRequest, keyPair.privateKey);
   const {signature} = authorisationRequest;
@@ -69,7 +69,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     });
     expect(response[0].deviceInfo).to.deep.include({
       city: 'unknown',
-      ipAddress: '::ffff:127.0.0.1'
+      ipAddress: '::ffff:127.0.0.1',
     });
   });
 

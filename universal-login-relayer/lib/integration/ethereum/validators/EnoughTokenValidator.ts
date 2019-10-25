@@ -4,13 +4,13 @@ import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContractExist} from '@unive
 import IMessageValidator from '../../../core/models/IMessageValidator';
 import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
 
-const isContract = async (provider : providers.Provider, contractAddress : string) => {
+const isContract = async (provider: providers.Provider, contractAddress: string) => {
   // TODO: Only whitelisted contracts
   const bytecode = await provider.getCode(contractAddress);
   return isContractExist(bytecode);
 };
 
-export const hasEnoughToken = async (gasToken : string, walletContractAddress : string, gasLimit : utils.BigNumberish, provider : providers.Provider) => {
+export const hasEnoughToken = async (gasToken: string, walletContractAddress: string, gasLimit: utils.BigNumberish, provider: providers.Provider) => {
   // TODO: Only whitelisted tokens/contracts
   if (gasToken === ETHER_NATIVE_TOKEN.address) {
     const walletBalance = await provider.getBalance(walletContractAddress);

@@ -5,8 +5,11 @@ export const getSuggestionType = (
   creations: string[],
   connections: string[],
   actions: WalletSuggestionAction[],
+  source: string,
 ): SuggestionType => {
-  if (isSingleCreation(creations, connections)) {
+  if (source.length < 3) {
+    return 'KeepTyping';
+  } else if (isSingleCreation(creations, connections)) {
     return 'SingleCreation';
   } else if (isSingleConnection(creations, connections, actions)) {
     return 'SingleConnection';

@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, Safello, TopUp, WaitingForTransaction} from '@universal-login/react';
+import {ModalWrapper, TopUp, WaitingForTransaction, WaitingForDeployment} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {ImageWaitingFor} from '../common/ImageWaitingFor';
@@ -35,14 +35,13 @@ const Modal = () => {
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <WaitingForTransaction
+          <WaitingForDeployment
             {...modalService.modalProps}
-            action={'Wallet creation'}
             relayerConfig={relayerConfig!}
             className={'jarvis-waiting-for-deploy'}
           >
             <ImageWaitingFor />
-          </WaitingForTransaction>
+          </WaitingForDeployment>
         </ModalWrapper>
       );
     case 'waitingForTransfer':
@@ -64,17 +63,6 @@ const Modal = () => {
           <ModalTxnSuccess hideModal={modalService.hideModal} />
         </ModalWrapper>
       );
-    case 'safello':
-      return relayerConfig ? (
-        <ModalWrapperWithoutClose>
-          <Safello
-            localizationConfig={relayerConfig!.localization}
-            safelloConfig={relayerConfig!.onRampProviders.safello}
-            contractAddress={walletPresenter.getContractAddress()}
-            crypto="eth"
-          />
-        </ModalWrapperWithoutClose>
-      ) : null;
     case 'error':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>

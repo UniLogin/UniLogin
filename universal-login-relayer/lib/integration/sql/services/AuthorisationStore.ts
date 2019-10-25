@@ -21,7 +21,7 @@ class AuthorisationStore {
     return this.database('authorisations')
       .where({
         walletContractAddress: contractAddress,
-        key
+        key,
       })
       .select('key', 'walletContractAddress', 'deviceInfo')
       .first();

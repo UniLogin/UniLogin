@@ -13,18 +13,18 @@ const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')
   .option('nodeUrl', {
     describe: 'Address of json rpc node to connect to',
-    default: ''
+    default: '',
   })
   .option('privateKey', {
     describe: 'private key to be used for ',
-    default: DEV_DEFAULT_PRIVATE_KEY
+    default: DEV_DEFAULT_PRIVATE_KEY,
   })
   .option('gasPrice', {
     describe: 'gasPrice',
-    default: defaultDeployOptions.gasPrice
+    default: defaultDeployOptions.gasPrice,
   })
   .option('nonce', {
-    describe: 'nonce for the transaction'
+    describe: 'nonce for the transaction',
   })
   .command('start:dev', 'Starts development environment',
     () => {
@@ -46,7 +46,7 @@ const commandLineBuilder = yargs
     (yargs) => {
       yargs
         .positional('walletMaster', {
-          describe: 'wallet master address'
+          describe: 'wallet master address',
         });
     },
     (argv) => {
@@ -56,15 +56,15 @@ const commandLineBuilder = yargs
     (yargs) => {
       yargs
         .positional('to', {
-          describe: 'Target address of transfer'
+          describe: 'Target address of transfer',
         })
         .positional('amount', {
           type: 'string',
-          describe: 'Amount to transfer'
+          describe: 'Amount to transfer',
         })
         .positional('currency', {
           describe: 'Currency of transfer',
-          default: ETHER_NATIVE_TOKEN.symbol
+          default: ETHER_NATIVE_TOKEN.symbol,
         });
     },
     (argv) => {
@@ -75,14 +75,14 @@ const commandLineBuilder = yargs
       yargs
         .positional('label', {
           type: 'string',
-          describe: 'Label domain to register'
+          describe: 'Label domain to register',
         })
         .positional('publicResolverAddress', {
           type: 'string',
-          describe: 'Address of the public resolver'
+          describe: 'Address of the public resolver',
         })
         .option('ensAddress', {
-          describe: 'ENS address'
+          describe: 'ENS address',
         });
     },
     (argv) => {
@@ -93,14 +93,14 @@ const commandLineBuilder = yargs
       yargs
         .positional('name', {
           type: 'string',
-          describe: 'Name to register'
+          describe: 'Name to register',
         })
         .positional('domain', {
           type: 'string',
-          describe: 'ENS domain'
+          describe: 'ENS domain',
         })
         .option('ensAddress', {
-          describe: 'ENS address'
+          describe: 'ENS address',
         });
     },
     (argv) => {
@@ -111,13 +111,13 @@ const commandLineBuilder = yargs
       yargs
         .positional('label', {
           type: 'string',
-          describe: 'Label domain to register'
+          describe: 'Label domain to register',
         })
         .option('ensAddress', {
-          describe: 'ENS address'
+          describe: 'ENS address',
         })
         .option('gasPrice', {
-          describe: 'Gas price'
+          describe: 'Gas price',
         });
     },
     (argv) => {

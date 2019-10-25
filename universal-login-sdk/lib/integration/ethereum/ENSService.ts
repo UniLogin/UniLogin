@@ -16,7 +16,7 @@ export class ENSService {
       return this.domainsInfo[domain];
     }
     const resolverAddress = await this.ens!.resolver(utils.namehash(`${domain}`));
-    const registrarAddress =  await this.ens!.owner(utils.namehash(`${domain}`));
+    const registrarAddress = await this.ens!.owner(utils.namehash(`${domain}`));
     this.domainsInfo[domain] = {resolverAddress, registrarAddress};
     return this.domainsInfo[domain];
   }

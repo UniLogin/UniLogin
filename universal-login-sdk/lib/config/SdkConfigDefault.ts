@@ -6,24 +6,24 @@ export const SdkConfigDefault: SdkConfig = {
   applicationInfo: {
     applicationName: 'Unknown application',
     logo: 'none',
-    type: 'unknown'
+    type: 'unknown',
   },
   paymentOptions: {
     gasToken: ETHER_NATIVE_TOKEN.address,
     gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
-    gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE)
+    gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
   },
   observedTokensAddresses: [
-    ETHER_NATIVE_TOKEN.address
+    ETHER_NATIVE_TOKEN.address,
   ],
   observedCurrencies: [
     'USD',
     'DAI',
-    'ETH'
+    'ETH',
   ],
   executionFactoryTick: 1000,
   notice: '',
   authorizationsObserverTick: 1000 * 3,
   balanceObserverTick: 1000 * 3,
-  priceObserverTick: 1000 * 60 * 5
+  priceObserverTick: 1000 * 60 * 5,
 };
