@@ -9,6 +9,7 @@ import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
+import {PayButton} from '../PayButton';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
@@ -56,9 +57,6 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
 
   useAsyncEffect(recognizeUserCountry, []);
 
-  const isPayButtonDisabled = !paymentMethod ||
-    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && !amount);
-
   return (
     <div className={`fiat ${fiatClass}`}>
       <div className="fiat-inputs">
@@ -93,13 +91,12 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
       </>}
       <div className="fiat-bottom">
         {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod} />}
-        <button
-          onClick={() => onPayClick(paymentMethod!, amount)}
-          className="pay-btn"
-          disabled={isPayButtonDisabled}
-        >
-          Pay
-        </button>
+        <PayButton
+          onClick={onPayClick}
+          amount={amount}
+          paymentMethod={paymentMethod}
+          topUpProviderSupportService={topUpProviderSupportService}
+        />
       </div>
     </div>
   );
