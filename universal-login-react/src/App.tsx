@@ -61,18 +61,15 @@ export const App = () => {
             <Route
               exact
               path="/logobutton"
-              render={() => {
-
-                return (
-                  <div>
-                    <button onClick={() => mockNotifications(sdk)}>Create mock notifications</button>
-                    <hr />
-                    <CreateRandomInstance walletService={walletService} />
-                    <hr />
-                    <LogoButton walletService={walletService} />
-                  </div>
-                );
-              }}
+              render={() => (
+                <div>
+                  <button onClick={() => mockNotifications(sdk)}>Create mock notifications</button>
+                  <hr />
+                  <CreateRandomInstance walletService={walletService} />
+                  <hr />
+                  <LogoButton walletService={walletService} />
+                </div>
+              )}
             />
             <Route
               exact
