@@ -8,11 +8,10 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
   transactionHash?: string;
+  info?: string;
 }
 
-const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
-
-const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children, className}: WaitingForTransactionProps) => {
+const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children, className, info}: WaitingForTransactionProps) => {
   return (
     <div>
       <WaitingFor action={action} className={className}>{children}</WaitingFor>
@@ -21,7 +20,7 @@ const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, ch
           <h3 className="transaction-hash-title">Transaction hash</h3>
           <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
         </div>
-        <p className="info-text">{DEPLOYMENT_INFO}</p>
+        <p className="info-text">{info}</p>
       </div>
     </div>
   );
