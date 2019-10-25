@@ -275,9 +275,13 @@ class UniversalLoginSDK {
   async start() {
     await Promise.all([
       this.fetchRelayerConfig(),
-      this.blockchainObserver.start(),
-      this.tokensDetailsStore.fetchTokensDetails(),
+      this.startBlockchainServices(),
     ]);
+  }
+
+  private async startBlockchainServices() {
+    await this.blockchainObserver.start();
+    await this.tokensDetailsStore.fetchTokensDetails();
   }
 
   stop() {
