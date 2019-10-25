@@ -54,10 +54,11 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
       </Route>
       <Route path={join(basePath, 'waitingForConnection')} exact>
         <WaitingForTransaction
-            action="Connecting device"
-            relayerConfig={relayerConfig!}
-            transactionHash={transactionHash}
-          />
+          action="Connecting device"
+          relayerConfig={relayerConfig!}
+          transactionHash={transactionHash}
+          className={className}
+        />
       </Route>
     </Switch>
     )
