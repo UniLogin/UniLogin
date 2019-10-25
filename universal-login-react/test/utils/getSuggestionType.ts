@@ -43,4 +43,19 @@ describe('getSuggestionType', () => {
       expect(getSuggestionType([`${shortEnsName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
     });
   });
+
+  describe('None', () => {
+    const emptyEnsName = '';
+    it('empty connections, empty creations', () => {
+      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
+    });
+
+    it('non-empty connections, empty creations', () => {
+      expect(getSuggestionType([], [`${emptyEnsName}.${domain1}`], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
+    });
+
+    it('empty connections, non-empty creations', () => {
+      expect(getSuggestionType([`${emptyEnsName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
+    });
+  });
 });

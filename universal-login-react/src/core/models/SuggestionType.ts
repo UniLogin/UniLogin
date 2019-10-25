@@ -1,1 +1,1 @@
-export type SuggestionType = 'SingleCreation' | 'SingleConnection' | 'Multiple' | 'KeepTyping';
+export type SuggestionType = 'None' | 'SingleCreation' | 'SingleConnection' | 'Multiple' | 'KeepTyping';
