@@ -120,16 +120,19 @@ export const App = () => {
             <Route
               exact
               path="/keyboard"
-              render={() => (
-                <div>
-                  <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
-                  <hr />
-                  <EmojiForm
-                    deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)}
-                    onConnectionSuccess={() => {console.log('connect');}}
-                  />
-                </div>
-              )}
+              render={() => {
+                return relayerConfig ? (
+                  <div>
+                    <EmojiPanel code={generateCode(CONNECTION_REAL_ADDRESS)} />
+                    <hr />
+                    <EmojiForm
+                      notifications={[]}
+                      onCancelClick={() => {}}
+                      setPublicKey={() => {}}
+                    />
+                  </div>
+                ) : <Spinner/>;
+              }}
             />
             <Route
               exact
