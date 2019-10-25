@@ -56,8 +56,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
 
   useAsyncEffect(recognizeUserCountry, []);
 
-  const isPayButtonDisabled = () =>
-    !paymentMethod ||
+  const isPayButtonDisabled = !paymentMethod ||
     (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && !amount);
 
   return (
@@ -97,7 +96,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
         <button
           onClick={() => onPayClick(paymentMethod!, amount)}
           className="pay-btn"
-          disabled={isPayButtonDisabled()}
+          disabled={isPayButtonDisabled}
         >
           Pay
         </button>
