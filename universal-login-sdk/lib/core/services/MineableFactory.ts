@@ -17,11 +17,10 @@ export class MineableFactory {
   }
 
   protected hasTransactionHash(status: MineableStatus) {
-    if (['Pending', 'Success', 'Error'].includes(status.state)) {
+    if (['Pending', 'Success'].includes(status.state)) {
       ensureNotNull(status.transactionHash, TransactionHashNotFound);
-      return true;
     }
-    return false;
+    return ['Pending', 'Success', 'Error'].includes(status.state);
   }
 
   protected createWaitForTransactionHash(hash: string) {
