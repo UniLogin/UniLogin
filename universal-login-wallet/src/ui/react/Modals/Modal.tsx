@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, TopUp, WaitingForTransaction, DEPLOYMENT_INFO} from '@universal-login/react';
+import {ModalWrapper, TopUp, WaitingForTransaction, WaitingForDeployment} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {ImageWaitingFor} from '../common/ImageWaitingFor';
@@ -35,15 +35,13 @@ const Modal = () => {
     case 'waitingForDeploy':
       return (
         <ModalWrapper modalClassName="jarvis-modal">
-          <WaitingForTransaction
+          <WaitingForDeployment
             {...modalService.modalProps}
-            action={'Wallet creation'}
             relayerConfig={relayerConfig!}
             className={'jarvis-waiting-for-deploy'}
-            info={DEPLOYMENT_INFO}
           >
             <ImageWaitingFor />
-          </WaitingForTransaction>
+          </WaitingForDeployment>
         </ModalWrapper>
       );
     case 'waitingForTransfer':

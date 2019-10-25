@@ -11,7 +11,7 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   info?: string;
 }
 
-const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children, className, info}: WaitingForTransactionProps) => {
+const Body = ({action, relayerConfig, transactionHash, children, className, info}: WaitingForTransactionProps) => {
   return (
     <div>
       <WaitingFor action={action} className={className}>{children}</WaitingFor>
@@ -26,12 +26,24 @@ const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, ch
   );
 };
 
-export const WaitingForTransaction = ({action, relayerConfig, transactionHash, children, className}: WaitingForTransactionProps) => {
+export const WaitingForTransaction = (props: WaitingForTransactionProps) => {
   return (
     <div className="universal-login-waiting-for-transaction">
-      <div className={getStyleForTopLevelComponent(className)}>
-        {relayerConfig ? renderWaitingForTransaction({action, relayerConfig, transactionHash, children, className}) : <Spinner className="waiting-for-spinner" />}
+      <div className={getStyleForTopLevelComponent(props.className)}>
+        {props.relayerConfig
+          ? <Body {...props} />
+          : <Spinner className="waiting-for-spinner" />
+        }
       </div>
     </div>
   );
 };
+
+const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
+
+export const WaitingForDeployment = (props: WaitingForTransactionProps) =>
+  (<WaitingForTransaction
+    action={'Wallet creation'}
+    {...props}
+    info={props.info || DEPLOYMENT_INFO}
+  />);
