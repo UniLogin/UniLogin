@@ -3,9 +3,9 @@
 actor user
 
 box "Wallet UI"
-  participant Login 
+  participant CreateAccount
   participant HomeScreen
-  participant Modal #LightGrey  
+  participant Modal #LightGrey
 endBox
 
 box "Core"
@@ -24,17 +24,17 @@ end box
 
 == Creation ==
 
-activate Login
+activate CreateAccount
 
-user -> Login: ensName
+user -> CreateAccount: ensName
 
-Login -> WalletService: await createFutureWallet()
+CreateAccount -> WalletService: await createFutureWallet()
 WalletService -> SDK: await createFutureWallet()
 SDK -> FutureWallet: new(...)
 WalletService -> WalletStore: setWallet()
-WalletService -> Login: Promise<FutureWallet>
-Login -> ModalService: showModal('topUpAccount')
-Login -> FutureWallet: await waitForBalance() 
+WalletService -> CreateAccount: Promise<FutureWallet>
+CreateAccount -> ModalService: showModal('topUpAccount')
+CreateAccount -> FutureWallet: await waitForBalance()
 activate FutureWallet
 ModalService -> Modal: ModalTopUp
 
@@ -51,17 +51,17 @@ ModalService -> Modal: ModalAddress
 
 activate Modal
 
-Login -> ModalService: showModal('deploying')
+CreateAccount -> ModalService: showModal('deploying')
 deactivate Modal
 
 ModalService -> Modal: ModalDeploing
 activate Modal
-FutureWallet -> Login
+FutureWallet -> CreateAccount
 deactivate FutureWallet
-Login -> FutureWallet: await deploy(ensName)
+CreateAccount -> FutureWallet: await deploy(ensName)
 
-Login -> HomeScreen: changeScreen()
-deactivate Login
+CreateAccount -> HomeScreen: changeScreen()
+deactivate CreateAccount
 deactivate Modal
 activate HomeScreen
 
