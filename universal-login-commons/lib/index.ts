@@ -26,7 +26,7 @@ export {safeMultiply} from './core/utils/safeMultiply';
 export {ensure, ensureNotNull, ensureNotEmpty, onCritical} from './core/utils/errors';
 export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
-export {RequiredBalanceChecker} from './integration/ethereum/RequiredBalanceChecker';
+export {RequiredBalanceChecker} from './core/services/RequiredBalanceChecker';
 export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/withENS';
 export {getContractHash, getDeployedBytecode, isContractExist} from './core/utils/contracts/contractHelpers';
