@@ -10,6 +10,8 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   transactionHash?: string;
 }
 
+const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
+
 const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, children, className}: WaitingForTransactionProps) => {
   return (
     <div>
@@ -19,7 +21,7 @@ const renderWaitingForTransaction = ({action, relayerConfig, transactionHash, ch
           <h3 className="transaction-hash-title">Transaction hash</h3>
           <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
         </div>
-        <p className="info-text">It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...</p>
+        <p className="info-text">{DEPLOYMENT_INFO}</p>
       </div>
     </div>
   );
