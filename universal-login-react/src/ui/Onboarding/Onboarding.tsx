@@ -38,9 +38,8 @@ export const Onboarding = (props: OnboardingProps) => {
 
   const showWalletCreationModal = (transactionHash?: string) => {
     const relayerConfig = props.sdk.getRelayerConfig();
-    modalService.showModal('waitingFor', {
+    modalService.showModal('waitingForDeployment', {
       relayerConfig,
-      action: 'Wallet creation',
       transactionHash,
     });
   };
