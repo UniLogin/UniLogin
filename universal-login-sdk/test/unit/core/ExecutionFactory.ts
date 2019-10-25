@@ -100,12 +100,18 @@ describe('UNIT: ExecutionFactory', async () => {
       expect(getStatus.callCount).be.eq(2);
     });
 
-    ['Success', 'Error', 'Pending'].forEach((state) => {
-      it(`should throw when state is ${state} but transaction has is missing`, async () => {
+    ['Success', 'Pending'].forEach((state) => {
+      it(`should throw when state is ${state} but transaction hash is missing`, async () => {
         getStatus.onCall(1).returns({...defaultStatus, state, transactionHash: undefined});
         const execution = await executionFactory.createExecution(signedMessage);
         await expect(execution.waitForTransactionHash()).to.be.eventually.rejectedWith('Transaction hash is not found in Message Status');
       });
+    });
+
+    it('should not throw when state is Error but transaction hash is missing - it could fail before being pending', async () => {
+      getStatus.onCall(1).returns({...defaultStatus, state: 'Error', transactionHash: undefined});
+      const execution = await executionFactory.createExecution(signedMessage);
+      await expect(execution.waitForTransactionHash()).to.be.eventually.fulfilled;
     });
 
     it('should not throw on missing transaction hash if status is queued', async () => {
