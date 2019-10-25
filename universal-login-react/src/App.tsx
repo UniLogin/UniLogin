@@ -55,11 +55,6 @@ export const App = () => {
     console.log('connect clicked');
   };
 
-  sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
-    callback(mockedNotifications);
-    return () => {};
-  };
-
   const [walletService] = useState(new WalletService(sdk));
 
   async function tryEnablingMetamask() {
@@ -84,13 +79,23 @@ export const App = () => {
             <Route
               exact
               path="/logobutton"
-              render={() => (
-                <div>
-                  <CreateRandomInstance walletService={walletService} />
-                  <hr />
-                  <LogoButton walletService={walletService} />
-                </div>
-              )}
+              render={() => {
+                const mockNotifications = () => {
+                  sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
+                    callback(mockedNotifications);
+                    return () => {};
+                  };
+                };
+                return (
+                  <div>
+                    <button onClick={mockNotifications}>Create mock notifications</button>
+                    <hr />
+                    <CreateRandomInstance walletService={walletService} />
+                    <hr />
+                    <LogoButton walletService={walletService} />
+                  </div>
+                );
+              }}
             />
             <Route
               exact
