@@ -57,5 +57,5 @@ describe('getSuggestionType', () => {
     it('empty connections, non-empty creations', () => {
       expect(getSuggestionType([`${emptyEnsName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
     });
-  })
+  });
 });

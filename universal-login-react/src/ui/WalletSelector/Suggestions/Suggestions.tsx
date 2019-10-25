@@ -36,6 +36,8 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   const suggestionType = getSuggestionType(creations, connections, actions, source);
   if (suggestionType === 'KeepTyping') {
     return <KeepTypingSuggestion />;
+  } else if (suggestionType === 'None') {
+    return null;
   }
   const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectClick, suggestionType);
   const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick, suggestionType);

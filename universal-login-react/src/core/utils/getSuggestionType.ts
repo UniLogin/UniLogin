@@ -7,7 +7,7 @@ export const getSuggestionType = (
   actions: WalletSuggestionAction[],
   source: string,
 ): SuggestionType => {
-  if (0 < source.length && source.length < 3) {
+  if (source.length > 0 && source.length < 3) {
     return 'KeepTyping';
   } else if (isNone(creations, connections, source)) {
     return 'None';
