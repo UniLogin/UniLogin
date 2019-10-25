@@ -15,10 +15,9 @@ interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
   devicesBasePath: string;
   className?: string;
-  setTransactionHash: (hash: string) => void;
 }
 
-export const ConnectionNotification = ({deployedWallet, devicesBasePath, className, setTransactionHash}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, devicesBasePath, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showTitle, setShowTitle] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
@@ -33,14 +32,16 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   };
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
-    if (!gasParameters) {
-      throw new TypeError();
-    }
+    ensureNotNull(gasParameters, TypeError);
     ensureNotNull(publicKey, Error, 'Invalid key');
-    history.replace(join(devicesBasePath,'waitingForConnection'));
+
+    history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash: undefined});
     const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.addKey(publicKey!, {...transactionDetails, ...gasParameters});
+
     const {transactionHash} = await waitForTransactionHash();
-    setTransactionHash(transactionHash!);
+    ensureNotNull(transactionHash, TypeError);
+    history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash});
+
     await waitToBeSuccess();
     history.replace(join(devicesBasePath, 'connectionSuccess'));
   };
@@ -49,23 +50,23 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-            {notifications.length > 0 && (
-              <>
-                {showTitle &&
+          {notifications.length > 0 && (
+            <>
+              {showTitle &&
               <>
                 <p className="approve-device-title">Approve device</p>
                 <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
               </>
-                }
-                <EmojiForm
-                  hideTitle={() => setShowTitle(false)}
-                  className={className}
-                  notifications={notifications}
-                  onCancelClick={onCancelClick}
-                  setPublicKey={setPublicKey}
-                />
-              </>
-            )}
+              }
+              <EmojiForm
+                hideTitle={() => setShowTitle(false)}
+                className={className}
+                notifications={notifications}
+                onCancelClick={onCancelClick}
+                setPublicKey={setPublicKey}
+              />
+            </>
+          )}
           {publicKey && notifications.length > 0 &&
             <div className="correct-input-footer">
               <FooterSection className={className}>

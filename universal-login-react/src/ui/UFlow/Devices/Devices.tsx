@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {DevicesList} from './DevicesList';
 import {WalletService} from '@universal-login/sdk';
@@ -7,7 +7,7 @@ import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
 import {WaitingFor} from '../../commons/WaitingFor';
 import {join} from 'path';
-import {WaitingForTransaction} from '../../commons/WaitingForTransaction';
+import {WaitingForConnection} from './WaitingForConnection';
 
 export interface DevicesProps {
   walletService: WalletService;
@@ -18,11 +18,11 @@ export interface DevicesProps {
 
 export const Devices = ({walletService, onAccountDeleted, className, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
-  const {relayerConfig} = walletService.sdk;
-  const [transactionHash, setTransactionHash] = useState<string>('');
+  const relayerConfig = walletService.sdk.getRelayerConfig();
   const history = useHistory();
 
-  return (<Switch>
+  return (
+    <Switch>
       <Route path={`${basePath}/`} exact>
         <DevicesList
           deployedWallet={deployedWallet}
@@ -35,7 +35,6 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
           deployedWallet={deployedWallet}
           devicesBasePath={basePath}
           className={className}
-          setTransactionHash={setTransactionHash}
         />
       </Route>
       <Route path={join(basePath, 'connectionSuccess')} exact>
@@ -50,16 +49,11 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
         />
       </Route>
       <Route path={join(basePath, 'waitingForDeleteAccount')} exact>
-        <WaitingFor action="Deleting account" className={className} />
+        <WaitingFor action="Deleting account" className={className}/>
       </Route>
       <Route path={join(basePath, 'waitingForConnection')} exact>
-        <WaitingForTransaction
-          action="Connecting device"
-          relayerConfig={relayerConfig!}
-          transactionHash={transactionHash}
-          className={className}
-        />
+        <WaitingForConnection relayerConfig={relayerConfig} className={className} />
       </Route>
     </Switch>
-    )
+  );
 };
