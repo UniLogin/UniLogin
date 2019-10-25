@@ -7,7 +7,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
 import {useModalService} from '../../core/services/useModalService';
 
-const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
+export const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -44,7 +44,7 @@ export const Onboarding = (props: OnboardingProps) => {
       relayerConfig,
       action: 'Wallet creation',
       transactionHash,
-      info: DEPLOYMENT_INFO
+      info: DEPLOYMENT_INFO,
     });
   };
 
