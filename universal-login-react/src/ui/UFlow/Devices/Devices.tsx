@@ -7,6 +7,7 @@ import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
 import {WaitingFor} from '../../commons/WaitingFor';
 import {join} from 'path';
+import {WaitingForConnection} from './WaitingForConnection';
 
 export interface DevicesProps {
   walletService: WalletService;
@@ -17,6 +18,7 @@ export interface DevicesProps {
 
 export const Devices = ({walletService, onAccountDeleted, className, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
+  const relayerConfig = walletService.sdk.getRelayerConfig();
   const history = useHistory();
 
   return (
@@ -47,7 +49,10 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
         />
       </Route>
       <Route path={join(basePath, 'waitingForDeleteAccount')} exact>
-        <WaitingFor action="Deleting account" className={className} />
+        <WaitingFor action="Deleting account" className={className}/>
+      </Route>
+      <Route path={join(basePath, 'waitingForConnection')} exact>
+        <WaitingForConnection relayerConfig={relayerConfig} className={className} />
       </Route>
     </Switch>
   );
