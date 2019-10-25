@@ -1,7 +1,7 @@
 import React from 'react';
-import {ExplorerLink} from '../commons/ExplorerLink';
 import {PublicRelayerConfig} from '@universal-login/commons';
-import {WaitingForProps, WaitingFor} from './WaitingFor';
+import {ExplorerLink} from './ExplorerLink';
+import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
@@ -35,8 +35,8 @@ export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
 
 export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
   <WaitingForTransaction
-    action={'Wallet creation'}
     {...props}
+    action={props.action || 'Wallet creation'}
     info={props.info || DEPLOYMENT_INFO}
   />
 );
