@@ -58,7 +58,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           <p className="backup-subtitle">
             If you lose all your devices you may not have other ways to recover your account.
             {state !== 'Initial'
-              ? <strong> Keep your generate the recovery code safe.</strong>
+              ? <strong> Keep your generated recovery code safe.</strong>
               : ' Generate a recovery code and keep it safe'
             }
           </p>
