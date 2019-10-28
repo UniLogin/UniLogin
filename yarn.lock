@@ -1024,10 +1024,12 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@ramp-network/ramp-instant-sdk@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-1.0.1.tgz#e8358392c76156c2f5db9a02aac26fed97ecc660"
-  integrity sha512-Y0nJJnWlkpxPx+IACPH3LgtL3A3Ak4CwpLEgrrEKsdDm6ZkWZJRHnfH2MqZwYwm+yPBz158OciMDRbD87UWRAw==
+"@ramp-network/ramp-instant-sdk@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-1.5.1.tgz#16656ddc5d1b3b62a4c4a25619ec963a613c25bc"
+  integrity sha512-dvgPvBSxCpz0VXFy7zH8X1ICdGlAilhUkU/zIlKkutC+u4ZVdbYf53p3uquaYP33/AKtOOqmmFefcaEBN9pUTg==
+  dependencies:
+    body-scroll-lock "^2.6.4"
 
 "@resolver-engine/core@^0.3.3":
   version "0.3.3"
@@ -3022,6 +3024,11 @@ body-parser@1.19.0, body-parser@^1.19.0:
     qs "6.7.0"
     raw-body "2.4.0"
     type-is "~1.6.17"
+
+body-scroll-lock@^2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-2.6.4.tgz#567abc60ef4d656a79156781771398ef40462e94"
+  integrity sha512-NP08WsovlmxEoZP9pdlqrE+AhNaivlTrz9a0FF37BQsnOrpN48eNqivKkE7SYpM9N+YIPjsdVzfLAUQDBm6OQw==
 
 bonjour@^3.5.0:
   version "3.5.0"
