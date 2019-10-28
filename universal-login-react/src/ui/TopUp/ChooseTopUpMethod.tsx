@@ -11,7 +11,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
-import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND} from '@universal-login/commons';
+import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND, MINIMAL_DEPLOYMENT_GAS_LIMIT, safeMultiply, GasParameters} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 
 export interface ChooseTopUpMethodProps {
@@ -25,11 +25,17 @@ export interface ChooseTopUpMethodProps {
 }
 
 export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, onGasParametersChanged}: ChooseTopUpMethodProps) => {
+  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   if (isDeployment) {
     ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
   }
+  const gasParametersChanged = (gasParameters: GasParameters) => {
+    setGasParameters(gasParameters);
+    onGasParametersChanged!(gasParameters);
+  };
   const [topUpMethod, setTopUpMethod] = useState('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
+  const minimalAmount = gasParameters && safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
 
   return (
     <div className="universal-login-topup">
@@ -46,8 +52,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : ''}`}
               >
                 <div className="top-up-method-icons">
-                  <img className="top-up-method-icon" src={daiIcon} alt="Dai"/>
-                  <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum"/>
+                  <img className="top-up-method-icon" src={daiIcon} alt="Dai" />
+                  <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum" />
                 </div>
                 <p className="top-up-method-title">Crypto</p>
                 <p className="top-up-method-text">Free-Deposit ETH or DAI</p>
@@ -60,8 +66,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : ''}`}
               >
                 <div className="top-up-method-icons">
-                  <img className="top-up-method-icon" src={cardIcon} alt="card"/>
-                  <img className="top-up-method-icon" src={bankIcon} alt="Dai"/>
+                  <img className="top-up-method-icon" src={cardIcon} alt="card" />
+                  <img className="top-up-method-icon" src={bankIcon} alt="Dai" />
                 </div>
                 <p className="top-up-method-title">Fiat</p>
                 <p className="top-up-method-text">Buy using credit card or bank account</p>
@@ -71,8 +77,13 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
           </div>
           <div className="top-up-body">
             <div className="top-up-body-inner">
-              {topUpMethod === 'crypto' && <TopUpWithCrypto contractAddress={contractAddress} isDeployment={isDeployment}/>}
-              {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor}/>}
+              {topUpMethod === 'crypto' &&
+                <TopUpWithCrypto
+                  contractAddress={contractAddress}
+                  isDeployment={isDeployment}
+                  minimalAmount={minimalAmount}
+                />}
+              {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor} />}
             </div>
           </div>
 
@@ -81,7 +92,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
               <GasPrice
                 isDeployed={false}
                 sdk={sdk}
-                onGasParametersChanged={onGasParametersChanged!}
+                onGasParametersChanged={gasParametersChanged}
                 gasLimit={DEPLOYMENT_REFUND}
                 className={topUpClassName}
               />

@@ -48,7 +48,7 @@ export class FutureWalletFactory extends MineableFactory {
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
-  async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
+  private async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
     const args = await this.ensService.argsFor(ensName) as string[];
     const initArgs = [publicKey, ...args, gasPrice, gasToken];
     return encodeInitializeWithENSData(initArgs);
