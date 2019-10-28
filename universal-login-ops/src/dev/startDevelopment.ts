@@ -72,8 +72,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
     database: databaseConfig,
     maxGasLimit: 500000,
     ipGeolocationApi: {
-      baseUrl: 'http://api.ipstack.com',
-      accessKey: '52e66f1c79bb597131fd0c133704ee03',
+      baseUrl: 'https://api.ipdata.co',
+      accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
     },
   };
 }
