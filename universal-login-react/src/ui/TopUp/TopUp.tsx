@@ -81,7 +81,8 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         amount={stringToEther(amount)}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.ramp}
-        onClose={() => showWaitingFor('ramp')}
+        onSuccess={() => showWaitingFor('ramp')}
+        onCancel={() => console.log('purchase canceled')}
       />
     );
   } else {
