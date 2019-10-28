@@ -1,5 +1,5 @@
-import {BalanceChecker} from './BalanceChecker';
-import {SupportedToken} from '../../core/models/relayer';
+import {BalanceChecker} from '../../integration/ethereum/BalanceChecker';
+import {SupportedToken} from '../models/relayer';
 
 export class RequiredBalanceChecker {
   constructor(private balanceChecker: BalanceChecker) {}
