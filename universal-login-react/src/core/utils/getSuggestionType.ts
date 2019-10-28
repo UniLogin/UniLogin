@@ -7,10 +7,10 @@ export const getSuggestionType = (
   actions: WalletSuggestionAction[],
   source: string,
 ): SuggestionType => {
-  if (source.length === 0) {
-    return 'None';
-  } else if (source.length < 3) {
+  if (source.length > 0 && source.length < 3) {
     return 'KeepTyping';
+  } else if (source.length === 0 || (creations.length === 0 && connections.length === 0)) {
+    return 'None';
   } else if (isSingleCreation(creations, connections)) {
     return 'SingleCreation';
   } else if (isSingleConnection(creations, connections, actions)) {
