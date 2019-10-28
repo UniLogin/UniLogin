@@ -9,7 +9,7 @@ export const getSuggestionType = (
 ): SuggestionType => {
   if (source.length > 0 && source.length < 3) {
     return 'KeepTyping';
-  } else if (source.length === 0 || (creations.length === 0 && connections.length === 0)) {
+  } else if (isNone(creations, connections, source)) {
     return 'None';
   } else if (isSingleCreation(creations, connections)) {
     return 'SingleCreation';
@@ -25,3 +25,6 @@ const isSingleCreation = (creations: string[], connections: string[]) =>
 
 const isSingleConnection = (creations: string[], connections: string[], actions: WalletSuggestionAction[]) =>
   !actions.includes(WalletSuggestionAction.recover) && creations.length === 0 && connections.length === 1;
+
+const isNone = (creations: string[], connections: string[], source: string) =>
+  source.length === 0 || (creations.length === 0 && connections.length === 0);
