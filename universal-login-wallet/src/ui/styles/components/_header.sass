@@ -7,11 +7,13 @@
   background: #fff
 
   +media(s, 168px)
-    height: 53px
+    height: 56px
     position: fixed
     width: 100%
     bottom: 0
     left: 0
+    box-shadow: 0px 3px 17px rgba(79, 55, 168, 0.088853)
+    z-index: 20
 
 .header-row
   display: flex
@@ -34,6 +36,7 @@
     justify-content: space-between
     width: 100%
     align-items: center
+    margin: 0
 
 .header-list-item + .header-list-item
   margin-left: 25px
@@ -52,22 +55,53 @@
   left: 0
   transform: translateY(-50%)
 
-.funds-btn
+  +media(s, 168px)
+    top: 0
+    left: 50%
+    transform: translate(-50%, 0)
+
+.header-btn.active
+  font-weight: 700
+  color: #2EC9F5
+
+.header-funds-btn
   padding-left: 16px
 
-.funds-btn::before
+  +media(s, 168px)
+    padding: 27px 0 0
+
+.header-funds-btn::before
   height: 18px
   width: 9px
   background: url('./../assets/icons/dollar.svg') center no-repeat
   background-size: contain
 
-.backup-btn
+  +media(s, 168px)
+    width: 11px
+    height: 21px
+
+.header-funds-btn.active::before
+  background: url('./../assets/icons/dollar-active.svg') center no-repeat
+  background-size: contain
+
+.header-backup-btn
   padding-left: 20px
 
-.backup-btn::before
+  +media(s, 168px)
+    padding: 28px 0 0
+
+.header-backup-btn::before
   height: 18px
   width: 12px
   background: url('./../assets/icons/backup.svg') center no-repeat
+  background-size: contain
+
+  +media(s, 168px)
+    width: 15px
+    height: 24px
+
+.header-backup-btn.active::before
+  background: url('./../assets/icons/backup-active.svg') center no-repeat
   background-size: contain
 
 .header-btn img
@@ -81,10 +115,21 @@
 .devices-btn
   padding-left: 25px
 
+  +media(s, 168px)
+    padding: 27px 0 0
+
 .devices-btn::before
   height: 16px
   width: 16px
   background: url('./../assets/icons/devices.svg') center no-repeat
+  background-size: contain
+
+  +media(s, 168px)
+    width: 21px
+    height: 21px
+
+.devices-btn.active::before
+  background: url('./../assets/icons/devices-active.svg') center no-repeat
   background-size: contain
 
 .transactions-btn
@@ -127,3 +172,6 @@
   color: #3D3D41
   line-height: 16px
   text-align: left
+
+  +media(s, 168px)
+    display: none

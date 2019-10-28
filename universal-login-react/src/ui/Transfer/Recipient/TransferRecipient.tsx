@@ -32,7 +32,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, className, de
     <div className="universal-login-recipient">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="transfer-recipient">
-          <div>
+          <div className="transfer-recipient-content">
             <p className="transfer-recipient-text">To who are you sending {amount} {symbol}?</p>
             <div className="transfer-recipient-input-wrapper">
               <label className="transfer-recipient-label" htmlFor="">Recipient</label>
