@@ -19,7 +19,11 @@ export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: New
 
   async function onDeny() {
     setIsLoading(true);
-    await deployedWallet.denyRequests();
+    try {
+      await deployedWallet.denyRequests();
+    } catch {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
