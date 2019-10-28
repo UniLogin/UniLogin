@@ -90,7 +90,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
         />
       </>}
       <div className="fiat-bottom">
-        {!!country && <FiatFooter isPaymentMethodChecked={!!paymentMethod} />}
+        {!!country && <FiatFooter paymentMethod={paymentMethod} />}
         <PayButton
           onClick={onPayClick}
           amount={amount}
