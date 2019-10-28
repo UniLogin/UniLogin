@@ -11,7 +11,9 @@ interface PayButtonProps {
 
 export const PayButton = ({onClick, amount, paymentMethod, topUpProviderSupportService}: PayButtonProps) => {
   const isPayButtonDisabled = !paymentMethod ||
-    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0);
+    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0) ||
+    paymentMethod === TopUpProvider.WYRE;
+
   return (
     <button
       onClick={() => onClick(paymentMethod!, amount)}
