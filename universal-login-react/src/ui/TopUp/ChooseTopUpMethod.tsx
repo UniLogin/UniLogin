@@ -30,10 +30,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
     ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
   }
   const gasParametersChanged = (gasParameters: GasParameters) => {
-    if (isDeployment) {
-      setGasParameters(gasParameters);
-      onGasParametersChanged!(gasParameters);
-    }
+    setGasParameters(gasParameters);
+    onGasParametersChanged!(gasParameters);
   };
   const [topUpMethod, setTopUpMethod] = useState('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
