@@ -23,7 +23,7 @@ const renderRampTopUp = (rampLogo: string, setPaymentMethod: (paymentMethod: Top
   >
     <img src={rampLogo} srcSet={rampLogo} alt="ramp" className="ramp-logo"/>
   </TopUpRadio>
-)
+);
 
 const renderSafelloTopUp = (safelloLogo: string, setPaymentMethod: (paymentMethod: TopUpProvider) => void, paymentMethod?: TopUpProvider) => (
   <TopUpRadio
@@ -34,7 +34,7 @@ const renderSafelloTopUp = (safelloLogo: string, setPaymentMethod: (paymentMetho
   >
     <img src={safelloLogo} srcSet={safelloLogo} alt="safello" className="safello-logo"/>
   </TopUpRadio>
-)
+);
 
 const renderWyreTopUp = (wyreLogo: string, setPaymentMethod: (paymentMethod: TopUpProvider) => void, paymentMethod?: TopUpProvider) => (
   <TopUpRadio
@@ -45,7 +45,7 @@ const renderWyreTopUp = (wyreLogo: string, setPaymentMethod: (paymentMethod: Top
   >
     <img src={wyreLogo} srcSet={wyreLogo} alt="wyre" className="wyre-logo"/>
   </TopUpRadio>
-)
+);
 
 export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => {
   const rampLogo = getOnRampProviderLogo('ramp', logoColor);

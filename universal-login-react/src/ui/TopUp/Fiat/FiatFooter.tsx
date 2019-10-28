@@ -14,7 +14,7 @@ interface FiatFooterProps {
 }
 
 export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
-  switch(paymentMethod){
+  switch (paymentMethod) {
     case TopUpProvider.RAMP:
       return (
         <>
@@ -28,7 +28,7 @@ export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
             <p className="info-text info-text-hint">Minimum amount is 1£</p>
           </div>
         </>
-      )
+      );
 
     case TopUpProvider.SAFELLO:
       return (
@@ -48,18 +48,18 @@ export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
             <p className="info-text info-text-hint">Minimum amount is 30€</p>
           </div>
         </>
-      )
+      );
 
     case TopUpProvider.WYRE:
       return (
         <div className="info-block info-row">
           <p className="info-text info-text-hint">Available soon</p>
         </div>
-      )
+      );
 
     default:
       return (
         <p className="info-text info-text-warning">Choose payment method</p>
-      )
+      );
   }
-}
+};
