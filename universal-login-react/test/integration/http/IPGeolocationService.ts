@@ -18,16 +18,16 @@ describe('IPGeolocationService', function () {
   describe('getCountryCode', function () {
     it('makes a correct request and returns country code', async function () {
       nock(baseUrl)
-        .get('/check?access_key=ABCD&fields=country_code')
-        .reply(200, {country_code: 'PL'});
+        .get('/country_code?api-key=ABCD')
+        .reply(200, 'PL');
 
       await expect(service.getCountryCode()).to.eventually.eq('PL');
     });
 
     it('throws error in case of invalid response', async function () {
       nock(baseUrl)
-        .get('/check?access_key=ABCD&fields=country_code')
-        .reply(200, {country_code: null});
+        .get('/country_code?api-key=ABCD')
+        .reply(200, {});
 
       await expect(service.getCountryCode()).to.be.rejectedWith(IPGeolocationError);
     });
