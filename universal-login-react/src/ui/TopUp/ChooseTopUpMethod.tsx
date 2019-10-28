@@ -11,7 +11,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
-import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND, safeMultiply, GasParameters} from '@universal-login/commons';
+import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND, MINIMAL_DEPLOYMENT_GAS_LIMIT, safeMultiply, GasParameters} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 
 export interface ChooseTopUpMethodProps {
@@ -37,7 +37,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   };
   const [topUpMethod, setTopUpMethod] = useState('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
-  const minimalAmount = gasParameters && safeMultiply(DEPLOYMENT_REFUND.mul(3).div(2), gasParameters.gasPrice);
+  const minimalAmount = gasParameters && safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
 
   return (
     <div className="universal-login-topup">
