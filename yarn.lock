@@ -1439,6 +1439,14 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/react@^16.8.23":
+  version "16.9.11"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.11.tgz#70e0b7ad79058a7842f25ccf2999807076ada120"
+  integrity sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
 "@types/react@^16.9.2":
   version "16.9.2"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.2.tgz#6d1765431a1ad1877979013906731aae373de268"
@@ -11684,6 +11692,13 @@ react-transition-group@^4.2.2:
     dom-helpers "^3.4.0"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-use-mutable@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-use-mutable/-/react-use-mutable-0.1.0.tgz#95cc696f7514b5373d01678178faf6a1d0d70d8f"
+  integrity sha512-a6gVbMEIdgc9U6P50v8DcDeoxvzHRqTGA9bJ1NGpGOCyrbeakBkkm9qPYrQWp6/lbBmG3AIlVYxk7mX0qZky/Q==
+  dependencies:
+    "@types/react" "^16.8.23"
 
 react@^16.8.6:
   version "16.8.6"

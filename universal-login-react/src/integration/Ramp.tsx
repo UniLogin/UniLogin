@@ -1,6 +1,7 @@
 import {RampInstantSDK, RampInstantEventTypes} from '@ramp-network/ramp-instant-sdk';
 import {RampConfig} from '@universal-login/commons';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useMutableCallback} from 'react-use-mutable';
 
 type RampProps = {
   address: string;
@@ -14,25 +15,21 @@ type RampProps = {
 export const Ramp = ({address, amount, currency, config, onSuccess, onCancel}: RampProps) => {
   const [purchaseCreated, setPurchaseCreated] = useState(false);
 
-  function onClose() {
-    if (purchaseCreated) {
-      onSuccess();
-    } else {
-      onCancel();
-    }
-  }
+  const onClose = useMutableCallback(purchaseCreated ? onSuccess : onCancel);
 
-  const ramp = new RampInstantSDK({
-    hostAppName: config.appName,
-    hostLogoUrl: config.logoUrl,
-    swapAmount: amount,
-    swapAsset: currency,
-    url: config.rampUrl,
-    userAddress: address,
-  }).on(RampInstantEventTypes.PURCHASE_CREATED, () => setPurchaseCreated(true))
-    .on(RampInstantEventTypes.WIDGET_CLOSE, onClose)
-    .on('*', console.log);
-  ramp.domNodes.overlay.style.zIndex = '99999';
-  ramp.show();
+  useEffect(() => {
+    const ramp = new RampInstantSDK({
+      hostAppName: config.appName,
+      hostLogoUrl: config.logoUrl,
+      swapAmount: amount,
+      swapAsset: currency,
+      url: config.rampUrl,
+      userAddress: address,
+    }).on(RampInstantEventTypes.PURCHASE_CREATED, () => setPurchaseCreated(true))
+      .on(RampInstantEventTypes.WIDGET_CLOSE, onClose);
+    ramp.domNodes.overlay.style.zIndex = '99999';
+    ramp.show();
+  }, []);
+
   return null;
 };
