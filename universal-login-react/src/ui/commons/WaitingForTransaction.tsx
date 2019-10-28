@@ -19,7 +19,7 @@ const Body = ({action, relayerConfig, transactionHash, children, className, info
           <h3 className="transaction-hash-title">Transaction hash</h3>
           <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
         </div>
-        <p className="info-text">{info}</p>
+        {info && <p className="info-text">{info}</p>}
       </div>
     </div>
   );
