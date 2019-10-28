@@ -13,43 +13,22 @@ interface FiatPaymentMethodsProps {
 }
 
 interface FiatProviderTopUpProps {
+  topUpProvider: TopUpProvider;
   providerLogo: string;
   setPaymentMethod: (paymentMethod: TopUpProvider) => void;
-  paymentMethod?: TopUpProvider;
+  currentPaymentMethod?: TopUpProvider;
 }
 
 export type LogoColor = 'white' | 'black';
 
-const RampTopUp = ({providerLogo, setPaymentMethod, paymentMethod}: FiatProviderTopUpProps) => (
+const FiatProviderTopUp = ({topUpProvider, providerLogo, setPaymentMethod, currentPaymentMethod}: FiatProviderTopUpProps) => (
   <TopUpRadio
-    checked={paymentMethod === TopUpProvider.RAMP}
-    onClick={() => setPaymentMethod(TopUpProvider.RAMP)}
+    checked={currentPaymentMethod === topUpProvider}
+    onClick={() => setPaymentMethod(topUpProvider)}
     name="payment-method"
     className="fiat-payment-method"
   >
-    <img src={providerLogo} srcSet={providerLogo} alt="ramp" className="ramp-logo"/>
-  </TopUpRadio>
-);
-
-const SafelloTopUp = ({providerLogo, setPaymentMethod, paymentMethod}: FiatProviderTopUpProps) => (
-  <TopUpRadio
-    checked={paymentMethod === TopUpProvider.SAFELLO}
-    onClick={() => setPaymentMethod(TopUpProvider.SAFELLO)}
-    name="payment-method"
-    className="fiat-payment-method"
-  >
-    <img src={providerLogo} srcSet={providerLogo} alt="safello" className="safello-logo"/>
-  </TopUpRadio>
-);
-
-const WyreTopUp = ({providerLogo, setPaymentMethod, paymentMethod}: FiatProviderTopUpProps) => (
-  <TopUpRadio
-    checked={paymentMethod === TopUpProvider.WYRE}
-    onClick={() => setPaymentMethod(TopUpProvider.WYRE)}
-    name="payment-method"
-    className="fiat-payment-method"
-  >
-    <img src={providerLogo} srcSet={providerLogo} alt="wyre" className="wyre-logo"/>
+    <img src={providerLogo} srcSet={providerLogo} alt={topUpProvider.toLowerCase()} className={`${topUpProvider.toLowerCase()}-logo`}/>
   </TopUpRadio>
 );
 
@@ -61,11 +40,11 @@ export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMeth
   return (
     <div className="fiat-payment-methods">
       {supportService.checkRampSupport(selectedCountry) &&
-        <RampTopUp providerLogo={rampLogo} setPaymentMethod={setPaymentMethod} paymentMethod={paymentMethod} />}
+        <FiatProviderTopUp topUpProvider={TopUpProvider.RAMP} providerLogo={rampLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
       {supportService.checkSafelloSupport(selectedCountry) &&
-        <SafelloTopUp providerLogo={safelloLogo} setPaymentMethod={setPaymentMethod} paymentMethod={paymentMethod} />}
+        <FiatProviderTopUp topUpProvider={TopUpProvider.SAFELLO} providerLogo={safelloLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
       {supportService.checkWyreSupport(selectedCountry) &&
-        <WyreTopUp providerLogo={wyreLogo} setPaymentMethod={setPaymentMethod} paymentMethod={paymentMethod} />}
+        <FiatProviderTopUp topUpProvider={TopUpProvider.WYRE} providerLogo={wyreLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
     </div>
   );
 };
