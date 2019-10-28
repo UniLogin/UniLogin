@@ -3,6 +3,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import './../../styles/newDeviceMessage.sass';
 import './../../styles/newDeviceMessageDefault.sass';
+import {Spinner} from '../../commons/Spinner';
 
 interface NewDeviceMessageProps {
   deployedWallet: DeployedWallet;
@@ -13,6 +14,23 @@ interface NewDeviceMessageProps {
 export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: NewDeviceMessageProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function onDeny() {
+    setIsLoading(true);
+    try {
+      await deployedWallet.denyRequests();
+    } catch {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (isLoading && notifications.length === 0) {
+      setIsLoading(false);
+    }
+  }, [notifications.length, isLoading]);
 
   if (notifications.length === 0) {
     return null;
@@ -28,10 +46,14 @@ export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: New
               <p className="devices-message-text">We noticed a connection from an unrecognized device, you need to enter an
                   emoji sequence before you can access your account.</p>
             </div>
-            <div className="devices-message-buttons-row">
-              <button onClick={onManageClick} className="devices-message-button">Manage</button>
-              <button onClick={() => deployedWallet.denyRequests()} className="devices-message-cancel">Cancel</button>
-            </div>
+            {isLoading ? (
+              <Spinner/>
+            ) : (
+              <div className="devices-message-buttons-row">
+                <button onClick={onManageClick} className="devices-message-button">Connect</button>
+                <button onClick={onDeny} className="devices-message-cancel">Deny</button>
+              </div>
+            )}
           </div>
         </div>
       </div>
