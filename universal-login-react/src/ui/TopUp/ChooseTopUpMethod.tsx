@@ -37,7 +37,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   };
   const [topUpMethod, setTopUpMethod] = useState('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
-  const getMinimalAmount = (gasParameters?: GasParameters) => gasParameters && safeMultiply(DEPLOYMENT_REFUND.mul(3).div(2), gasParameters.gasPrice);
+  const minimalAmount = gasParameters && safeMultiply(DEPLOYMENT_REFUND.mul(3).div(2), gasParameters.gasPrice);
 
   return (
     <div className="universal-login-topup">
@@ -83,7 +83,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 <TopUpWithCrypto
                   contractAddress={contractAddress}
                   isDeployment={isDeployment}
-                  minimalAmount={getMinimalAmount(gasParameters)}
+                  minimalAmount={minimalAmount}
                 />}
               {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor} />}
             </div>
