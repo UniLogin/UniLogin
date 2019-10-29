@@ -100,7 +100,6 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                   onAmountChange={setAmount}
                   paymentMethod={paymentMethod}
                   onPaymentMethodChange={setPaymentMethod}
-                  onPayClick={onPayClick}
                   logoColor={logoColor}
                 />
               )}
