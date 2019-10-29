@@ -65,7 +65,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
     return getTopUpMethodChooser();
   } else if (modal === TopUpComponentType.safello) {
     return (
-      <ModalWrapper modalClassName={modalClassName} hideModal={() => showWaitingFor('safello')}>
+      <ModalWrapper modalClassName={modalClassName} hideModal={() => setModal(TopUpComponentType.choose)}>
         <Safello
           localizationConfig={{} as any}
           safelloConfig={relayerConfig.onRampProviders.safello}
