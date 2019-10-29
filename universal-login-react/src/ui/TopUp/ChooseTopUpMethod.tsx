@@ -106,23 +106,22 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
             </div>
           </div>
 
-          {isDeployment &&
-            <FooterSection className={topUpClassName}>
-              <GasPrice
-                isDeployed={false}
-                sdk={sdk}
-                onGasParametersChanged={gasParametersChanged}
-                gasLimit={DEPLOYMENT_REFUND}
-                className={topUpClassName}
-              />
-              <PayButton
-                onClick={onPayClick}
-                amount={amount}
-                paymentMethod={paymentMethod}
-                topUpProviderSupportService={topUpProviderSupportService}
-              />
-            </FooterSection>
-          }
+          <FooterSection className={topUpClassName}>
+            {isDeployment && <GasPrice
+              isDeployed={false}
+              sdk={sdk}
+              onGasParametersChanged={gasParametersChanged}
+              gasLimit={DEPLOYMENT_REFUND}
+              className={topUpClassName}
+            />
+            }
+            <PayButton
+              onClick={onPayClick}
+              amount={amount}
+              paymentMethod={paymentMethod}
+              topUpProviderSupportService={topUpProviderSupportService}
+            />
+          </FooterSection>
         </div>
       </div>
     </div>
