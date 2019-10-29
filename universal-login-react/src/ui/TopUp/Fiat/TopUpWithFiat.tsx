@@ -22,9 +22,8 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
   const [currency, setCurrency] = useState('ETH');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
-  const [fiatClass, setFiatClass] = useState('');
 
-  const topUpProviderSupportService = new TopUpProviderSupportService(countries);
+  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
   const changeCountry = (newCountry: string) => {
     if (newCountry === country) {
@@ -38,10 +37,6 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
     }
     setCountry(newCountry);
   };
-
-  useEffect(() => {
-    setFiatClass('fiat-selected');
-  }, []);
 
   async function recognizeUserCountry() {
     const {ipGeolocationApi} = sdk.getRelayerConfig();
@@ -58,7 +53,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
   useAsyncEffect(recognizeUserCountry, []);
 
   return (
-    <div className={`fiat ${fiatClass}`}>
+    <div className="fiat fiat-selected">
       <div className="fiat-inputs">
         <div className="fiat-input-item">
           <p className="top-up-label">Country</p>
@@ -75,7 +70,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
               selectedCurrency={currency}
               setCurrency={setCurrency}
               amount={amount}
-              onChange={(amount: string) => setAmount(amount)}
+              onChange={setAmount}
             />
           </div>}
       </div>
