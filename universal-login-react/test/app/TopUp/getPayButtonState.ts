@@ -1,51 +1,64 @@
 import {expect} from 'chai';
-import {getPayButtonState} from '../../../src/app/TopUp/getPayButtonState';
 import {TopUpProviderSupportService} from '../../../src/core/services/TopUpProviderSupportService';
 import {countries} from '../../../src/core/utils/countries';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
+import {getPayButtonState} from '../../../src/app/TopUp/selectors';
+import {TopUpMethod} from '../../../src/core/models/TopUpMethod';
+import {ButtonState} from '../../../src/ui/TopUp/PayButton';
 
 describe('getPayButtonState', () => {
   const topUpProviderSupportService = new TopUpProviderSupportService(countries);
 
+  function test(provider: TopUpProvider | undefined, amount: string, method: TopUpMethod, result: ButtonState) {
+    expect(getPayButtonState(
+      {
+        provider,
+        amount,
+        method,
+      },
+      topUpProviderSupportService,
+    )).to.eq(result);
+  }
+
   describe('hidden', () => {
     it('topUpMethod is undefined', () => {
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '0', undefined)).to.be.eq('hidden');
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '1', undefined)).to.be.eq('hidden');
-      expect(getPayButtonState(TopUpProvider.SAFELLO, topUpProviderSupportService, '0', undefined)).to.be.eq('hidden');
-      expect(getPayButtonState(TopUpProvider.RAMP, topUpProviderSupportService, '0', undefined)).to.be.eq('hidden');
+      test(undefined, '0', undefined, 'hidden');
+      test(undefined, '1', undefined, 'hidden');
+      test(TopUpProvider.SAFELLO, '0', undefined, 'hidden');
+      test(TopUpProvider.RAMP, '0', undefined, 'hidden');
     });
 
     it('topUpMethod is crypto', () => {
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '0', 'crypto')).to.be.eq('hidden');
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '1', 'crypto')).to.be.eq('hidden');
-      expect(getPayButtonState(TopUpProvider.SAFELLO, topUpProviderSupportService, '0', 'crypto')).to.be.eq('hidden');
-      expect(getPayButtonState(TopUpProvider.RAMP, topUpProviderSupportService, '0', 'crypto')).to.be.eq('hidden');
+      test(undefined, '0', 'crypto', 'hidden');
+      test(undefined, '1', 'crypto', 'hidden');
+      test(TopUpProvider.SAFELLO, '0', 'crypto', 'hidden');
+      test(TopUpProvider.RAMP, '0', 'crypto', 'hidden');
     });
   });
 
   describe('disabled', () => {
     it('topUpProvider is not selected', () => {
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '10', 'fiat')).to.be.eq('disabled');
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '-1', 'fiat')).to.be.eq('disabled');
-      expect(getPayButtonState(undefined, topUpProviderSupportService, '', 'fiat')).to.be.eq('disabled');
+      test(undefined, '10', 'fiat', 'disabled');
+      test(undefined, '-1', 'fiat', 'disabled');
+      test(undefined, '', 'fiat', 'disabled');
     });
 
     it('ramp with amount <= 0 or invalid', () => {
-      expect(getPayButtonState(TopUpProvider.RAMP, topUpProviderSupportService, '0', 'fiat')).to.be.eq('disabled');
-      expect(getPayButtonState(TopUpProvider.RAMP, topUpProviderSupportService, '-1', 'fiat')).to.be.eq('disabled');
-      expect(getPayButtonState(TopUpProvider.RAMP, topUpProviderSupportService, '', 'fiat')).to.be.eq('disabled');
+      test(TopUpProvider.RAMP, '0', 'fiat', 'disabled');
+      test(TopUpProvider.RAMP, '-1', 'fiat', 'disabled');
+      test(TopUpProvider.RAMP, '', 'fiat', 'disabled');
     });
   });
 
   describe('active', () => {
     it('safello', () => {
-      expect(getPayButtonState(TopUpProvider.SAFELLO, topUpProviderSupportService, '10', 'fiat')).to.be.eq('active');
-      expect(getPayButtonState(TopUpProvider.SAFELLO, topUpProviderSupportService, '-1', 'fiat')).to.be.eq('active');
-      expect(getPayButtonState(TopUpProvider.SAFELLO, topUpProviderSupportService, '', 'fiat')).to.be.eq('active');
+      test(TopUpProvider.SAFELLO, '10', 'fiat', 'active');
+      test(TopUpProvider.SAFELLO, '-1', 'fiat', 'active');
+      test(TopUpProvider.SAFELLO, '', 'fiat', 'active');
     });
 
     it('ramp with amount > 0', () => {
-      expect(getPayButtonState(TopUpProvider.RAMP, topUpProviderSupportService, '5', 'fiat')).to.be.eq('active');
+      test(TopUpProvider.RAMP, '5', 'fiat', 'active');
     });
   });
 });

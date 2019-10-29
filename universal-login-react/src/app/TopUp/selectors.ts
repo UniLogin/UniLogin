@@ -1,21 +1,21 @@
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 import {ButtonState} from '../../ui/TopUp/PayButton';
-import {TopUpMethod} from '../../core/models/TopUpMethod';
+import {TopUpState} from './state';
+
+export const isCorrectAmount = (state: TopUpState) => Number(state.amount) > 0;
 
 export function getPayButtonState(
-  paymentMethod: TopUpProvider | undefined,
+  state: TopUpState,
   topUpProviderSupportService: TopUpProviderSupportService,
-  amount: string,
-  topUpMethod: TopUpMethod,
 ): ButtonState {
-  if (topUpMethod !== 'fiat') {
+  if (state.method !== 'fiat') {
     return 'hidden';
   }
 
-  const isPayButtonDisabled = !paymentMethod ||
-    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0) ||
-    paymentMethod === TopUpProvider.WYRE;
+  const isPayButtonDisabled = !state.provider ||
+    (topUpProviderSupportService.isInputAmountUsed(state.provider) && !isCorrectAmount(state)) ||
+    state.provider === TopUpProvider.WYRE;
 
   return isPayButtonDisabled ? 'disabled' : 'active';
 }
