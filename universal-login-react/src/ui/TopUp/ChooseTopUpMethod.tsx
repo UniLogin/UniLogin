@@ -15,6 +15,7 @@ import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND, MINIMAL_DEPLOY
 import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 import {countries} from '../../core/utils/countries';
+import {PayButton} from './PayButton';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -114,6 +115,12 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 onGasParametersChanged={gasParametersChanged}
                 gasLimit={DEPLOYMENT_REFUND}
                 className={topUpClassName}
+              />
+              <PayButton
+                onClick={onPayClick}
+                amount={amount}
+                paymentMethod={paymentMethod}
+                topUpProviderSupportService={topUpProviderSupportService}
               />
             </FooterSection>
           }

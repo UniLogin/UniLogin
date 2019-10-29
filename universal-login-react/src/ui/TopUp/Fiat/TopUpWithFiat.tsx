@@ -9,12 +9,10 @@ import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
-import {PayButton} from '../PayButton';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
   topUpProviderSupportService: TopUpProviderSupportService;
-  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   amount: string;
   onAmountChange: (value: string) => void;
   paymentMethod?: TopUpProvider;
@@ -22,7 +20,7 @@ export interface TopUpWithFiatProps {
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
 
@@ -87,12 +85,6 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportS
       </>}
       <div className="fiat-bottom">
         {!!country && <FiatFooter paymentMethod={paymentMethod} />}
-        <PayButton
-          onClick={onPayClick}
-          amount={amount}
-          paymentMethod={paymentMethod}
-          topUpProviderSupportService={topUpProviderSupportService}
-        />
       </div>
     </div>
   );
