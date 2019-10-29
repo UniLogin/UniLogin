@@ -41,6 +41,9 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
 
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
+  const [amount, setAmount] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
+
   return (
     <div className="universal-login-topup">
       <div className={`${getStyleForTopLevelComponent(topUpClassName)}`}>
@@ -92,6 +95,10 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
                 <TopUpWithFiat
                   sdk={sdk}
                   topUpProviderSupportService={topUpProviderSupportService}
+                  amount={amount}
+                  onAmountChange={setAmount}
+                  paymentMethod={paymentMethod}
+                  onPaymentMethodChange={setPaymentMethod}
                   onPayClick={onPayClick}
                   logoColor={logoColor}
                 />

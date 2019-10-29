@@ -15,14 +15,16 @@ export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
   topUpProviderSupportService: TopUpProviderSupportService;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
+  amount: string;
+  onAmountChange: (value: string) => void;
+  paymentMethod?: TopUpProvider;
+  onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportService}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
 
   const changeCountry = (newCountry: string) => {
     if (newCountry === country) {
@@ -30,9 +32,9 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportS
     }
     const providers = topUpProviderSupportService.getProviders(newCountry);
     if (providers.length === 1) {
-      setPaymentMethod(providers[0]);
+      onPaymentMethodChange(providers[0]);
     } else {
-      setPaymentMethod(undefined);
+      onPaymentMethodChange(undefined);
     }
     setCountry(newCountry);
   };
@@ -69,7 +71,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportS
               selectedCurrency={currency}
               setCurrency={setCurrency}
               amount={amount}
-              onChange={setAmount}
+              onChange={onAmountChange}
             />
           </div>}
       </div>
@@ -79,7 +81,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportS
           selectedCountry={country}
           supportService={topUpProviderSupportService}
           paymentMethod={paymentMethod}
-          setPaymentMethod={setPaymentMethod}
+          setPaymentMethod={onPaymentMethodChange}
           logoColor={logoColor}
         />
       </>}
