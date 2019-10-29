@@ -1,26 +1,24 @@
 import React from 'react';
-import {TopUpProvider} from '../../core/models/TopUpProvider';
-import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 
-interface PayButtonProps {
-  amount: string;
-  onClick: (topUpProvider: TopUpProvider, amount: string) => void;
-  paymentMethod?: TopUpProvider;
-  topUpProviderSupportService: TopUpProviderSupportService;
+export type ButtonState = 'active' | 'hidden' | 'disabled';
+
+export interface PayButtonProps {
+  onClick: () => void;
+  state: ButtonState;
 }
 
-export const PayButton = ({onClick, amount, paymentMethod, topUpProviderSupportService}: PayButtonProps) => {
-  const isPayButtonDisabled = !paymentMethod ||
-    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0) ||
-    paymentMethod === TopUpProvider.WYRE;
+export const PayButton = ({onClick, state}: PayButtonProps) => {
+  if (state === 'hidden') {
+    return null;
+  }
 
   return (
     <button
-      onClick={() => onClick(paymentMethod!, amount)}
+      onClick={onClick}
       className="pay-btn"
-      disabled={isPayButtonDisabled}
+      disabled={state === 'disabled'}
     >
       Pay
-    </button >
+    </button>
   );
 };
