@@ -1,9 +1,9 @@
 import React from 'react';
+import {useLocation} from 'react-router';
 import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {useLocation} from 'react-router';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
