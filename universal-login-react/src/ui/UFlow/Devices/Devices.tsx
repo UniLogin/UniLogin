@@ -48,8 +48,8 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
           className={className}
         />
       </Route>
-      <Route path={join(basePath, 'waitingForDeleteAccount')} exact>
-        <WaitingFor action="Deleting account" className={className}/>
+      <Route path={join(basePath, 'waitingForRemovingDevice')} exact>
+        <WaitingFor action="Removing device" className={className}/>
       </Route>
       <Route path={join(basePath, 'waitingForConnection')} exact>
         <WaitingForConnection relayerConfig={relayerConfig} className={className} />
