@@ -46,18 +46,16 @@ const ModalTransfer = () => {
     );
   } else if (modal === 'transferRecipient') {
     return (
-      <div>
-        <ModalTransferRecipient
-          symbol={selectedToken.symbol}
-          onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-          onSendClick={onGenerateClick}
-          onBackClick={() => setModal('transferAmount')}
-          transferDetails={transferDetails}
-          className="jarvis-styles"
-          deployedWallet={walletService.getDeployedWallet()}
-          onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-        />
-      </div>
+      <ModalTransferRecipient
+        symbol={selectedToken.symbol}
+        onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
+        onSendClick={onGenerateClick}
+        onBackClick={() => setModal('transferAmount')}
+        transferDetails={transferDetails}
+        className="jarvis-styles"
+        deployedWallet={walletService.getDeployedWallet()}
+        onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+      />
     );
   }
   return null;

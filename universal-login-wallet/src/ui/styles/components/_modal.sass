@@ -189,6 +189,11 @@
     width: 770px
     padding: 0
 
+  .modal
+    +media(s, 168px)
+      display: flex
+      flex-direction: column
+
 .modal-avatar-pending
   display: block
   width: 104px
@@ -228,6 +233,9 @@
 .modal-succes-content
   padding: 50px 75px 30px
 
+  +media(s, 168px)
+    flex-grow: 1
+
   +media(s)
     padding: 30px 15px
 
@@ -243,7 +251,7 @@
 .created-account
   display: flex
   align-items: center
-  max-width: 310px
+  max-width: 400px
   margin: 21px auto 115px
 
   +media(s)
@@ -271,6 +279,7 @@
   opacity: 0.7
   font-size: 14px
   color: #31405E
+  word-break: break-all
 
 .modal-success-btn
   display: flex

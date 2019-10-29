@@ -22,10 +22,7 @@ export function Header() {
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <NavLink to="/" className="header-btn funds-btn">Funds</NavLink>
-          </li>
-          <li className="header-list-item">
-            <NavLink to="/" className="header-btn transactions-btn">Transactions</NavLink>
+            <NavLink exact to="/" className="header-btn header-funds-btn">Funds</NavLink>
           </li>
           <li className="header-list-item">
             <NavLink
@@ -38,7 +35,7 @@ export function Header() {
             </NavLink>
           </li>
           <li className="header-list-item">
-            <NavLink to="/backup" className="header-btn backup-btn">Backup</NavLink>
+            <NavLink to="/backup" className="header-btn header-backup-btn">Backup</NavLink>
           </li>
         </ul>
         <p className="header-user-name">{walletPresenter.getName()}</p>

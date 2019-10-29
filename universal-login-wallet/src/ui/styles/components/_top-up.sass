@@ -4,6 +4,11 @@
   right: 25px
   background: none
   border: none
+  background: url('./../assets/icons/close.svg') center no-repeat
+
+  +media(s)
+    top: 25px
+    right: 15px
 
 .universal-login-topup
   .jarvis-styles
@@ -87,6 +92,7 @@
     .top-up-methods
       display: flex
       align-items: center
+      justify-content: center
       flex-grow: 1
       width: 570px
       max-width: 100%
@@ -481,11 +487,6 @@
       +media(s)
         min-height: 100vh
         height: auto
-
-    .top-up-modal .modal-close-btn
-      +media(s)
-        top: 15px
-        right: 15px
 
     .top-up-title
       +media(s)

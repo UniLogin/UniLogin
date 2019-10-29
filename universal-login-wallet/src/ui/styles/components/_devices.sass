@@ -4,6 +4,16 @@
     .devices
       min-height: 670px
 
+      +media(s, 168px)
+        min-height: initial
+        padding: 0 0 80px
+
+    .devices-inner
+      padding: 40px 50px 0
+
+      +media(s)
+        padding: 40px 15px 0
+
     .connected-devices-title
       color: #31405E
 
@@ -73,6 +83,12 @@
     .delete-account-link
       color: #31405E
       opacity: 0.6
+
+      +media(s, 168px)
+        position: static
+        margin: 30px auto 0
+        display: block
+        transform: translate(0, 0)
 
     .connected-devices-img-wrapper.laptop::before
       background: #fff url('./../assets/icons/laptop.svg') center no-repeat

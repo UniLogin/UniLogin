@@ -7,7 +7,7 @@ import {useServices} from '../../hooks';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
-  const {walletService} = useServices();
+  const {walletService, walletPresenter} = useServices();
   const modalService = useContext(WalletModalContext);
 
   const {sdk} = walletService.getDeployedWallet();
@@ -27,6 +27,7 @@ const HomeScreen = () => {
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice}/>
+            <p className="dashboard-ens-name">{walletPresenter.getName()}</p>
             <Switch>
               <Route path="/" exact>
                 <Funds
