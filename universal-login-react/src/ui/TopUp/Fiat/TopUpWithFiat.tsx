@@ -13,17 +13,16 @@ import {PayButton} from '../PayButton';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
+  topUpProviderSupportService: TopUpProviderSupportService;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, onPayClick, logoColor, topUpProviderSupportService}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
-
-  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
   const changeCountry = (newCountry: string) => {
     if (newCountry === country) {

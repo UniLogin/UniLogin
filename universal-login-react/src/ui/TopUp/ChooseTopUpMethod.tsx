@@ -13,6 +13,8 @@ import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND, MINIMAL_DEPLOYMENT_GAS_LIMIT, safeMultiply, GasParameters} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
+import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
+import {countries} from '../../core/utils/countries';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -36,6 +38,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   const [topUpMethod, setTopUpMethod] = useState('');
   const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
   const minimalAmount = gasParameters && safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
+
+  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
   return (
     <div className="universal-login-topup">
@@ -77,13 +81,21 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
           </div>
           <div className="top-up-body">
             <div className="top-up-body-inner">
-              {topUpMethod === 'crypto' &&
+              {topUpMethod === 'crypto' && (
                 <TopUpWithCrypto
                   contractAddress={contractAddress}
                   isDeployment={isDeployment}
                   minimalAmount={minimalAmount}
-                />}
-              {topUpMethod === 'fiat' && <TopUpWithFiat sdk={sdk} onPayClick={onPayClick} logoColor={logoColor} />}
+                />
+              )}
+              {topUpMethod === 'fiat' && (
+                <TopUpWithFiat
+                  sdk={sdk}
+                  topUpProviderSupportService={topUpProviderSupportService}
+                  onPayClick={onPayClick}
+                  logoColor={logoColor}
+                />
+              )}
             </div>
           </div>
 
