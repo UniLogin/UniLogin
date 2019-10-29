@@ -23,8 +23,8 @@ import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 import {countries} from '../../core/utils/countries';
 import {PayButton} from './PayButton';
-import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
+import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -124,10 +124,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
             />
             }
             <PayButton
-              onClick={onPayClick}
-              amount={amount}
-              paymentMethod={paymentMethod}
-              topUpProviderSupportService={topUpProviderSupportService}
+              onClick={() => onPayClick(paymentMethod!, amount)}
+              state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}
             />
           </FooterSection>
         </div>
