@@ -106,7 +106,7 @@ export const App = () => {
                     <hr />
                     <EmojiForm
                       notifications={[]}
-                      onCancelClick={() => {}}
+                      onDenyClick={() => {}}
                       setPublicKey={() => {}}
                     />
                   </div>

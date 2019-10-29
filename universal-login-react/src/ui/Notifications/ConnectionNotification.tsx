@@ -62,7 +62,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 hideTitle={() => setShowTitle(false)}
                 className={className}
                 notifications={notifications}
-                onCancelClick={onDenyClick}
+                onDenyClick={onDenyClick}
                 setPublicKey={setPublicKey}
               />
             </>

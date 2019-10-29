@@ -13,11 +13,11 @@ export interface EmojiFormProps {
   hideTitle?: () => void;
   className?: string;
   notifications: Notification[];
-  onCancelClick: () => void;
+  onDenyClick: () => void;
   setPublicKey: (arg: string) => void;
 }
 
-export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, setPublicKey}: EmojiFormProps) => {
+export const EmojiForm = ({hideTitle, className, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
@@ -66,7 +66,7 @@ export const EmojiForm = ({hideTitle, className, notifications, onCancelClick, s
             <button
               className="emojis-form-reject"
               id="reject"
-              onClick={onCancelClick}
+              onClick={onDenyClick}
             >
           Deny
             </button>
