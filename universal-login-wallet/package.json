@@ -7,6 +7,7 @@
     "start": "webpack-dev-server --mode development",
     "prebuild": "yarn clean",
     "build": "webpack --mode production --progress && cp \"src/_redirects\" dist/html/_redirects",
+    "rebuild:react": "cd ../universal-login-react && yarn build && cd ../universal-login-wallet",
     "pretest": "rm -fr dist/src dist/test && tsc && cpx \"src/ui/assets/**/*\" dist/src/ui/assets",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "cross-env NODE_ENV=test mocha \"dist/test/unit/**/*.js\"",
