@@ -53,7 +53,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   );
 
   const onConfirmDeleteClick = async () => {
-    history.push(join(devicesBasePath, '/waitingForDeleteAccount'));
+    history.push(join(devicesBasePath, '/waitingForRemovingDevice'));
     const {waitToBeSuccess} = await deployedWallet.removeKey(publicKey, transactionDetails);
     await waitToBeSuccess();
     history.replace(devicesBasePath);
