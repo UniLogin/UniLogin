@@ -22,9 +22,14 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   const [showTitle, setShowTitle] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
-  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const history = useHistory();
+
+  const updateNotifications = (notifications: Notification[]) => notifications.length === 0
+    ? history.goBack()
+    : setNotifications(notifications);
+
+  useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
 
   const onDenyClick = async () => {
     await deployedWallet.denyRequests();
@@ -50,23 +55,19 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-          {notifications.length > 0 && (
+          {showTitle &&
             <>
-              {showTitle &&
-              <>
-                <p className="approve-device-title">Approve device</p>
-                <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
-              </>
-              }
-              <EmojiForm
-                hideTitle={() => setShowTitle(false)}
-                className={className}
-                notifications={notifications}
-                onDenyClick={onDenyClick}
-                setPublicKey={setPublicKey}
-              />
+              <p className="approve-device-title">Approve device</p>
+              <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
             </>
-          )}
+          }
+          <EmojiForm
+            hideTitle={() => setShowTitle(false)}
+            className={className}
+            notifications={notifications}
+            onDenyClick={onDenyClick}
+            setPublicKey={setPublicKey}
+          />
           {publicKey && notifications.length > 0 &&
             <div className="correct-input-footer">
               <FooterSection className={className}>
