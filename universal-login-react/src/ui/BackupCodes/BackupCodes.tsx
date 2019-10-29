@@ -5,13 +5,14 @@ import BackupCodesView from './BackupCodesView';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
+import BackupCodesFailure from './BackupCodesFailure';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
   className?: string;
 }
 
-type BackupState = 'Initial' | 'Loading' | 'Generated';
+type BackupState = 'Initial' | 'Loading' | 'Generated' | 'Failure';
 
 export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
@@ -19,9 +20,14 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
 
   const generateBackupCodes = async () => {
     setState('Loading');
-    const codes = await deployedWallet.generateBackupCodes();
-    setBackupCodes(codes.concat(backupCodes));
-    setState('Generated');
+    try {
+      const codes = await deployedWallet.generateBackupCodes();
+      setBackupCodes(codes.concat(backupCodes));
+      setState('Generated');
+    } catch (e) {
+      console.error(e);
+      setState('Failure');
+    }
   };
 
   function renderContent() {
@@ -29,6 +35,12 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
       return (
         <div className="backup-loader-wrapper">
           <BackupCodesLoader title="Generating backup codes, please wait" />
+        </div>
+      );
+    } else if (state === 'Failure') {
+      return (
+        <div className="backup-loader-wrapper">
+          <BackupCodesFailure/>
         </div>
       );
     } else if (backupCodes.length > 0) {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
@@ -9,22 +9,20 @@ import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
-import {PayButton} from '../PayButton';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
-  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
+  topUpProviderSupportService: TopUpProviderSupportService;
+  amount: string;
+  onAmountChange: (value: string) => void;
+  paymentMethod?: TopUpProvider;
+  onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
-  const [fiatClass, setFiatClass] = useState('');
-
-  const topUpProviderSupportService = new TopUpProviderSupportService(countries);
 
   const changeCountry = (newCountry: string) => {
     if (newCountry === country) {
@@ -32,16 +30,12 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
     }
     const providers = topUpProviderSupportService.getProviders(newCountry);
     if (providers.length === 1) {
-      setPaymentMethod(providers[0]);
+      onPaymentMethodChange(providers[0]);
     } else {
-      setPaymentMethod(undefined);
+      onPaymentMethodChange(undefined);
     }
     setCountry(newCountry);
   };
-
-  useEffect(() => {
-    setFiatClass('fiat-selected');
-  }, []);
 
   async function recognizeUserCountry() {
     const {ipGeolocationApi} = sdk.getRelayerConfig();
@@ -58,7 +52,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
   useAsyncEffect(recognizeUserCountry, []);
 
   return (
-    <div className={`fiat ${fiatClass}`}>
+    <div className="fiat fiat-selected">
       <div className="fiat-inputs">
         <div className="fiat-input-item">
           <p className="top-up-label">Country</p>
@@ -75,7 +69,7 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
               selectedCurrency={currency}
               setCurrency={setCurrency}
               amount={amount}
-              onChange={(amount: string) => setAmount(amount)}
+              onChange={onAmountChange}
             />
           </div>}
       </div>
@@ -85,18 +79,12 @@ export const TopUpWithFiat = ({sdk, onPayClick, logoColor}: TopUpWithFiatProps) 
           selectedCountry={country}
           supportService={topUpProviderSupportService}
           paymentMethod={paymentMethod}
-          setPaymentMethod={setPaymentMethod}
+          setPaymentMethod={onPaymentMethodChange}
           logoColor={logoColor}
         />
       </>}
       <div className="fiat-bottom">
         {!!country && <FiatFooter paymentMethod={paymentMethod} />}
-        <PayButton
-          onClick={onPayClick}
-          amount={amount}
-          paymentMethod={paymentMethod}
-          topUpProviderSupportService={topUpProviderSupportService}
-        />
       </div>
     </div>
   );
