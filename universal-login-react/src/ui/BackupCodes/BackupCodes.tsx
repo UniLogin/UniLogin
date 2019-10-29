@@ -24,7 +24,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
       const codes = await deployedWallet.generateBackupCodes();
       setBackupCodes(codes.concat(backupCodes));
       setState('Generated');
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       setState('Failure');
     }
