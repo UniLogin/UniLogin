@@ -11,11 +11,20 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
-import {OnGasParametersChanged, ensureNotNull, DEPLOYMENT_REFUND, MINIMAL_DEPLOYMENT_GAS_LIMIT, safeMultiply, GasParameters} from '@universal-login/commons';
+import {
+  DEPLOYMENT_REFUND,
+  ensureNotNull,
+  GasParameters,
+  MINIMAL_DEPLOYMENT_GAS_LIMIT,
+  OnGasParametersChanged,
+  safeMultiply,
+} from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 import {countries} from '../../core/utils/countries';
 import {PayButton} from './PayButton';
+import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
+import {TopUpMethod} from '../../core/models/TopUpMethod';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -36,8 +45,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
     setGasParameters(gasParameters);
     onGasParametersChanged!(gasParameters);
   };
-  const [topUpMethod, setTopUpMethod] = useState('');
-  const methodSelectedClassName = topUpMethod !== '' ? 'method-selected' : '';
+  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const minimalAmount = gasParameters && safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
 
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
@@ -48,7 +56,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
   return (
     <div className="universal-login-topup">
       <div className={`${getStyleForTopLevelComponent(topUpClassName)}`}>
-        <div className={`top-up ${methodSelectedClassName}`}>
+        <div className={`top-up ${topUpMethod ? 'method-selected' : ''}`}>
           <div className="top-up-header">
             <h2 className="top-up-title">Choose a top-up method</h2>
             <div className="top-up-methods">
