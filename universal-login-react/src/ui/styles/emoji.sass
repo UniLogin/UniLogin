@@ -1,3 +1,5 @@
+@import helpers/breakpoints
+
 @font-face
   font-family: 'Font Awesome 5 Free'
   font-style: normal
@@ -276,6 +278,9 @@
   .connect-emoji
     min-height: 640px
     padding: 100px 30px
+    min-width: 500px
+    +media(s)
+      min-width: initial
 
   .connect-emoji-title
     margin: 0 auto 13px
