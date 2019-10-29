@@ -1,4 +1,5 @@
 import React from 'react';
+import {useLocation} from 'react-router';
 import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
@@ -10,7 +11,10 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   info?: string;
 }
 
-const Body = ({action, relayerConfig, transactionHash, children, className, info}: WaitingForTransactionProps) => {
+const Body = ({action, relayerConfig, transactionHash: givenTransactionHash, children, className, info}: WaitingForTransactionProps) => {
+  const location = useLocation();
+  const transactionHash = givenTransactionHash || (location.state && location.state.transactionHash);
+
   return (
     <div>
       <WaitingFor action={action} className={className}>{children}</WaitingFor>
