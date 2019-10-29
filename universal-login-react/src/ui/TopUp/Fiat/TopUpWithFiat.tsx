@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, useState} from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
@@ -6,21 +6,20 @@ import {FiatFooter} from './FiatFooter';
 import {FiatPaymentMethods, LogoColor} from './FiatPaymentMethods';
 import {useAsyncEffect} from '../../../ui/hooks/useAsyncEffect';
 import {countries} from '../../../core/utils/countries';
-import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
+import {TopUpState} from '../../../app/TopUp/state';
+import {TopUpAction} from '../../../app/TopUp/actions';
 
 export interface TopUpWithFiatProps {
   sdk: UniversalLoginSDK;
   topUpProviderSupportService: TopUpProviderSupportService;
-  amount: string;
-  onAmountChange: (value: string) => void;
-  paymentMethod?: TopUpProvider;
-  onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
+  state: TopUpState;
+  dispatch: Dispatch<TopUpAction>;
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, state, dispatch}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
 
@@ -29,11 +28,10 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
       return;
     }
     const providers = topUpProviderSupportService.getProviders(newCountry);
-    if (providers.length === 1) {
-      onPaymentMethodChange(providers[0]);
-    } else {
-      onPaymentMethodChange(undefined);
-    }
+    dispatch({
+      type: 'SET_PROVIDER',
+      provider: providers.length === 1 ? providers[0] : undefined,
+    });
     setCountry(newCountry);
   };
 
@@ -62,14 +60,14 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
             setCurrency={setCurrency}
           />
         </div>
-        {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
+        {topUpProviderSupportService.isInputAmountUsed(state.provider) &&
           <div className="fiat-input-item">
             <p className="top-up-label">Amount</p>
             <AmountInput
               selectedCurrency={currency}
               setCurrency={setCurrency}
-              amount={amount}
-              onChange={onAmountChange}
+              amount={state.amount}
+              onChange={amount => dispatch({type: 'SET_AMOUNT', amount})}
             />
           </div>}
       </div>
@@ -78,13 +76,13 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
         <FiatPaymentMethods
           selectedCountry={country}
           supportService={topUpProviderSupportService}
-          paymentMethod={paymentMethod}
-          setPaymentMethod={onPaymentMethodChange}
+          paymentMethod={state.provider}
+          setPaymentMethod={provider => dispatch({type: 'SET_PROVIDER', provider})}
           logoColor={logoColor}
         />
       </>}
       <div className="fiat-bottom">
-        {!!country && <FiatFooter paymentMethod={paymentMethod} />}
+        {!!country && <FiatFooter paymentMethod={state.provider} />}
       </div>
     </div>
   );

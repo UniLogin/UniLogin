@@ -1,10 +1,5 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
-import daiIcon from './../assets/topUp/tokensIcons/DAI.svg';
-import EthereumIcon from './../assets/topUp/tokensIcons/ETH.svg';
-import cardIcon from './../assets/topUp/card.svg';
-import bankIcon from './../assets/topUp/bank.svg';
-import {TopUpRadio} from './TopUpRadio';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -23,8 +18,10 @@ import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 import {countries} from '../../core/utils/countries';
 import {PayButton} from './PayButton';
-import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
+import {topUpReducer} from '../../app/TopUp/reducer';
+import {TOP_UP_INITIAL_STATE} from '../../app/TopUp/state';
+import {TopUpMethodSelector} from './TopUpMethodSelector';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -45,69 +42,32 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
     setGasParameters(gasParameters);
     onGasParametersChanged!(gasParameters);
   };
-  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const minimalAmount = gasParameters && safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
 
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
+  const [state, dispatch] = useReducer(topUpReducer, TOP_UP_INITIAL_STATE);
 
   return (
     <div className="universal-login-topup">
       <div className={`${getStyleForTopLevelComponent(topUpClassName)}`}>
-        <div className={`top-up ${topUpMethod ? 'method-selected' : ''}`}>
-          <div className="top-up-header">
-            <h2 className="top-up-title">Choose a top-up method</h2>
-            <div className="top-up-methods">
-              <TopUpRadio
-                id="topup-btn-crypto"
-                onClick={() => setTopUpMethod('crypto')}
-                checked={topUpMethod === 'crypto'}
-                name="top-up-method"
-                className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : ''}`}
-              >
-                <div className="top-up-method-icons">
-                  <img className="top-up-method-icon" src={daiIcon} alt="Dai" />
-                  <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum" />
-                </div>
-                <p className="top-up-method-title">Crypto</p>
-                <p className="top-up-method-text">Free-Deposit ETH or DAI</p>
-              </TopUpRadio>
-              <TopUpRadio
-                id="topup-btn-fiat"
-                onClick={() => setTopUpMethod('fiat')}
-                checked={topUpMethod === 'fiat'}
-                name="top-up-method"
-                className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : ''}`}
-              >
-                <div className="top-up-method-icons">
-                  <img className="top-up-method-icon" src={cardIcon} alt="card" />
-                  <img className="top-up-method-icon" src={bankIcon} alt="Dai" />
-                </div>
-                <p className="top-up-method-title">Fiat</p>
-                <p className="top-up-method-text">Buy using credit card or bank account</p>
-              </TopUpRadio>
-
-            </div>
-          </div>
+        <div className={`top-up ${state.method ? 'method-selected' : ''}`}>
+          <TopUpMethodSelector value={state.method} onChange={method => dispatch({type: 'SET_METHOD', method})} />
           <div className="top-up-body">
             <div className="top-up-body-inner">
-              {topUpMethod === 'crypto' && (
+              {state.method === 'crypto' && (
                 <TopUpWithCrypto
                   contractAddress={contractAddress}
                   isDeployment={isDeployment}
                   minimalAmount={minimalAmount}
                 />
               )}
-              {topUpMethod === 'fiat' && (
+              {state.method === 'fiat' && (
                 <TopUpWithFiat
                   sdk={sdk}
                   topUpProviderSupportService={topUpProviderSupportService}
-                  amount={amount}
-                  onAmountChange={setAmount}
-                  paymentMethod={paymentMethod}
-                  onPaymentMethodChange={setPaymentMethod}
+                  state={state}
+                  dispatch={dispatch}
                   logoColor={logoColor}
                 />
               )}
@@ -124,8 +84,8 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
             />
             }
             <PayButton
-              onClick={() => onPayClick(paymentMethod!, amount)}
-              state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}
+              onClick={() => onPayClick(state.provider!, state.amount)}
+              state={getPayButtonState(state.provider, topUpProviderSupportService, state.amount, state.method)}
             />
           </FooterSection>
         </div>
