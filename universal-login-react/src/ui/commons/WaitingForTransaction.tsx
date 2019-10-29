@@ -3,6 +3,7 @@ import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {useLocation} from 'react-router';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -11,13 +12,16 @@ export interface WaitingForTransactionProps extends WaitingForProps {
 }
 
 const Body = ({action, relayerConfig, transactionHash, children, className, info}: WaitingForTransactionProps) => {
+  const location = useLocation();
+  const hashOfTransaction = transactionHash || (location.state && location.state.transactionHash);
+
   return (
     <div>
       <WaitingFor action={action} className={className}>{children}</WaitingFor>
       <div>
         <div className="modal-pending-section">
           <h3 className="transaction-hash-title">Transaction hash</h3>
-          <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
+          <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={hashOfTransaction} />
         </div>
         {info && <p className="info-text">{info}</p>}
       </div>
