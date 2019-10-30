@@ -26,7 +26,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const history = useHistory();
 
-  const onCancelClick = async () => {
+  const onDenyClick = async () => {
     await deployedWallet.denyRequests();
     history.goBack();
   };
@@ -62,7 +62,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 hideTitle={() => setShowTitle(false)}
                 className={className}
                 notifications={notifications}
-                onCancelClick={onCancelClick}
+                onDenyClick={onDenyClick}
                 setPublicKey={setPublicKey}
               />
             </>
@@ -78,7 +78,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                   className={className}
                 />
                 <div className="footer-buttons-row">
-                  <button onClick={onCancelClick} className="footer-cancel-btn">Cancel</button>
+                  <button onClick={onDenyClick} className="footer-deny-btn">Deny</button>
                   <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
                 </div>
               </FooterSection>
