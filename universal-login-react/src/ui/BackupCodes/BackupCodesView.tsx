@@ -1,5 +1,4 @@
 import React from 'react';
-import Avatar from '../assets/avatar.svg';
 
 interface BackupCodesViewProps {
   codes: string[];
@@ -13,7 +12,6 @@ export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodes
       <div className="backup-codes-list">
         {codes.map((code: string) =>
           <div className="backup-codes-item" key={code}>
-            <img src={Avatar} alt="avatar" className="backup-codes-img" />
             <div>
               <p className="backup-code-contract">{walletContract}</p>
               <p className="backup-code">{code}</p>

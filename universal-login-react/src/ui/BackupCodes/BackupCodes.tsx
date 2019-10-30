@@ -1,58 +1,68 @@
 import React, {useState} from 'react';
+import {join} from 'path';
+import {Switch, Route, useHistory} from 'react-router';
 import {DeployedWallet} from '@universal-login/sdk';
-import BackupCodesLoader from './BackupCodesLoader';
 import BackupCodesView from './BackupCodesView';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {ErrorMessage} from '../commons/ErrorMessage';
+import {WaitingForTransaction} from '../commons/WaitingForTransaction';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
+  basePath?: string;
   className?: string;
 }
 
-type BackupState = 'Initial' | 'Loading' | 'Generated' | 'Failure';
-
-export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
+export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupProps) => {
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
-  const [state, setState] = useState<BackupState>('Initial');
+  const history = useHistory();
+  const relayerConfig = deployedWallet.sdk.getRelayerConfig();
 
   const generateBackupCodes = async () => {
-    setState('Loading');
     try {
-      const {waitToBeSuccess} = await deployedWallet.generateBackupCodes();
+      history.push(join(basePath, 'waitingForBackupCodes'));
+      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes();
+      const {transactionHash} = await waitForTransactionHash();
+      history.push(join(basePath, 'waitingForBackupCodes'), {transactionHash});
       const codes = await waitToBeSuccess();
       setBackupCodes(codes.concat(backupCodes));
-      setState('Generated');
+      history.push(join(basePath, 'backupCodesGenerated'));
     } catch (e) {
       console.error(e);
-      setState('Failure');
+      history.push(join(basePath, 'backupCodesFailure'));
     }
   };
 
-  function renderContent() {
-    if (state === 'Loading') {
-      return <BackupCodesLoader title="Generating backup codes, please wait" />;
-    } else if (state === 'Failure') {
-      return <div className="backup-loader-wrapper"><ErrorMessage className={className}/></div>;
-    } else if (backupCodes.length > 0) {
-      return (
-        <BackupCodesView
-          codes={backupCodes}
-          printCodes={window.print}
-          walletContract={deployedWallet.name}
-        />
-      );
-    }
-    return <BackupCodesInitial generateBackupCodes={generateBackupCodes} />;
-  }
-
   return (
-    <BackupCodesWrapper className={className}>
-      {renderContent()}
-    </BackupCodesWrapper>
+    <Switch>
+      <Route path={`${basePath}/`} exact>
+        <BackupCodesWrapper className={className}>
+          <BackupCodesInitial generateBackupCodes={generateBackupCodes} />
+        </BackupCodesWrapper>
+      </Route>
+      <Route path={join(basePath, 'backupCodesFailure')} exact>
+        <ErrorMessage className={className} />;
+      </Route>
+      <Route path={join(basePath, 'backupCodesGenerated')} exact>
+        <BackupCodesWrapper className={className}>
+          <BackupCodesView
+            codes={backupCodes}
+            printCodes={window.print}
+            walletContract={deployedWallet.name}
+          />
+        </BackupCodesWrapper>
+      </Route>
+      <Route path={join(basePath, 'waitingForBackupCodes')} exact>
+        <WaitingForTransaction
+          action='Generating backup codes'
+          relayerConfig={relayerConfig}
+          className={className}
+        />
+      </Route>
+    </Switch>
   );
 };
 
