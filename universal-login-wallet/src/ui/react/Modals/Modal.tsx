@@ -5,7 +5,6 @@ import ModalWrapperClosable from './ModalWrapperClosable';
 import {ModalWrapper, TopUp, WaitingForTransaction, WaitingForDeployment} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {ImageWaitingFor} from '../common/ImageWaitingFor';
 import ModalTransfer from './Transfer/ModalTransfer';
 
 const Modal = () => {
@@ -38,10 +37,8 @@ const Modal = () => {
           <WaitingForDeployment
             {...modalService.modalProps}
             relayerConfig={relayerConfig!}
-            className='jarvis-styles'
-          >
-            <ImageWaitingFor />
-          </WaitingForDeployment>
+            className="jarvis-styles"
+          />
         </ModalWrapper>
       );
     case 'waitingForTransfer':
@@ -51,10 +48,8 @@ const Modal = () => {
             {...modalService.modalProps}
             action={'Transferring funds'}
             relayerConfig={relayerConfig!}
-            className='jarvis-styles'
-          >
-            <ImageWaitingFor/>
-          </WaitingForTransaction>
+            className="jarvis-styles"
+          />
         </ModalWrapperWithoutClose>
       );
     case 'transactionSuccess':

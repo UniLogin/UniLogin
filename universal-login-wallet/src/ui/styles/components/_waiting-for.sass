@@ -17,10 +17,21 @@
       max-width: 570px
       padding: 10px 5px 30px
 
-    .modal-avatar-pending
+    .modal-pending-img::before
+      content: ''
+      position: absolute
+      top: 115px
+      left: 50%
+      width: 105px
+      height: 115px
+      transform: translateX(-50%)
+      background: url('./../assets/illustrations/avatatPending@2x.png') center no-repeat
+      background-size: contain
+
+    .modal-pending-img
       display: block
-      width: 104px
-      height: 114px
+      width: 105px
+      height: 115px
       margin: 38px auto 42px
 
     .transaction-hash-title
