@@ -108,10 +108,10 @@ export class DeployedWallet implements ApplicationWallet {
     const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
     return {
       waitToBeSuccess: async () => {
-        await execution.waitToBeSuccess()
+        await execution.waitToBeSuccess();
         return codes;
       },
-      waitForTransactionHash: execution.waitForTransactionHash
+      waitForTransactionHash: execution.waitForTransactionHash,
     };
   }
 
