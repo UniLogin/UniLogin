@@ -4,6 +4,7 @@ import {useHistory} from 'react-router';
 
 export const TermsAndConditionsScreen = () => {
   const [isRead, setIsRead] = useState(false);
+  const [agreeOnPrivacyPolicy, setAgreeOnPrivacyPolicy] = useState(false);
   const history = useHistory();
 
   return (
@@ -15,7 +16,7 @@ export const TermsAndConditionsScreen = () => {
           </div>
           <div className="terms-description">
 
-            <h3>Last updated: October 28, 2019</h3>
+            <p>Last updated: October 28, 2019</p>
 
             <p>Jarvis OOD (outlined as “Jarvis”, “we”, “us” or “our” in this document) provides a service (outlined as "Service" or "Services" in this document) to allow to interact with the Ethereum Blockchain (outlined as "Blockchain” in this document) and manage a personal smartcontract on the Blockchain (outlined as "Account” in this document) through its website located at jarvis.network (outlined as "Site” in this document), and a mobile, web, and desktop application (outlined as "Applications” in this document), which includes text, images, audio, code and other materials (outlined as "Content” in this document) and all of the features and services provided. </p>
             <p>Jarvis has developed these Terms of Service (outlined as “Terms” in this document) that govern your use of the Site, the Service and the Applications. You should acknowledge that cryptocurrencies, tokens, Blockchain related assets (outlined as "Digital Assets” in this document) and services, and more generally our Service, carry a lot of risks due to but not limited to, Digital Assets price volatility and low liquidity, experimental technology, software breach, that could result in losses of your funds; you are sole responsible and liable of any action initiated by you or a third party, whether it is malicious or not, that will occur a loss, including the loss of your credential. Therefore, you will need to carefully read the following Terms.</p>
@@ -91,13 +92,19 @@ export const TermsAndConditionsScreen = () => {
           </div>
           <div className="terms-box-footer">
             <p className="terms-text">Read the full text above. When you have scrolled the bottom, click the check box below to mark that you understand and agree</p>
-            <label className="checkbox terms-checkbox">
-              <input type="checkbox" checked={isRead} onChange={() => setIsRead(!isRead)} />
-              <div className="checkbox-text terms-checkbox-text">I have read and understood the above</div>
-            </label>
+            <div className="checkboxes">
+              <label className="checkbox terms-checkbox" id="terms-label">
+                <input type="checkbox" checked={isRead} onChange={() => setIsRead(!isRead)} />
+                <div className="checkbox-text terms-checkbox-text">I have read and understood the above</div>
+              </label>
+              <label className="checkbox privacy-checkbox" id="privacy-label">
+                <input type="checkbox" checked={agreeOnPrivacyPolicy} onChange={() => setAgreeOnPrivacyPolicy(!agreeOnPrivacyPolicy)} />
+                <div className="checkbox-text privacy-checkbox-text">I agree to the <a className="privacy-link" href="/privacy" target="_blank">Privacy Policy</a></div>
+              </label>
+            </div>
             <div className="row">
               <button onClick={() => history.push('/welcome')} className="terms-btn button-secondary">I refuse</button>
-              <button onClick={() => history.push('/create')} className="terms-btn button-secondary" disabled={!isRead}>I agree</button>
+              <button onClick={() => history.push('/create')} className="terms-btn button-secondary" disabled={!isRead || !agreeOnPrivacyPolicy}>I agree</button>
             </div>
           </div>
         </div>

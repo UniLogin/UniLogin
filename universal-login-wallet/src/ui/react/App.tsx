@@ -10,6 +10,7 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalType, WalletModalPropType} from '../../core/entities/WalletModalContext';
+import {PrivacyPolicy} from './Home/PrivacyPolicy';
 
 const App = () => {
   const modalService = useModalService<WalletModalType, WalletModalPropType>();
@@ -28,6 +29,12 @@ const App = () => {
           exact
           path="/terms"
           render={() => <TermsAndConditionsScreen />}
+        />
+        <Route
+          exact
+          path="/privacy"
+          target="_blank"
+          render={() => <PrivacyPolicy />}
         />
         <Route
           exact

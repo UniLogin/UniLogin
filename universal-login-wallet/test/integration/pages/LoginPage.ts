@@ -15,7 +15,8 @@ export default class LoginPage {
   }
 
   approveTerms() {
-    this.wrapper.find('.checkbox').childAt(0).simulate('change');
+    this.wrapper.find('#terms-label').childAt(0).simulate('change');
+    this.wrapper.find('#privacy-label').childAt(0).simulate('change');
     this.wrapper.find('button.terms-btn').last().simulate('click');
   }
 
