@@ -53,6 +53,7 @@ export const config: Config = Object.freeze({
     baseUrl: 'https://api.ipdata.co',
     accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
   },
+  httpsRedirect: false,
 });
 
 export default config;

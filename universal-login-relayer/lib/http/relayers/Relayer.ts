@@ -39,6 +39,7 @@ import SQLRepository from '../../integration/sql/services/SQLRepository';
 import ExecutionWorker from '../../core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
+import {httpsRedirect} from '../middlewares/httpsRedirect';
 
 const defaultPort = '3311';
 
@@ -98,11 +99,17 @@ class Relayer {
 
   runServer() {
     this.app = express();
+    this.app.set('trust proxy', true);
+
     this.app.use(useragent.express());
     this.app.use(cors({
       origin: '*',
       credentials: true,
     }));
+    if (this.config.httpsRedirect) {
+      this.app.use(httpsRedirect);
+    }
+
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
     this.authorisationStore = new AuthorisationStore(this.database);
     this.devicesStore = new DevicesStore(this.database);

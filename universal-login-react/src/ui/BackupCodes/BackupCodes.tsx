@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
 import BackupCodesLoader from './BackupCodesLoader';
 import BackupCodesView from './BackupCodesView';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 import BackupCodesFailure from './BackupCodesFailure';
+import {BackupCodesInitial} from './BackupCodesInitial';
+import {BackupCodesWrapper} from './BackupCodesWrapper';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
@@ -33,17 +34,9 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
 
   function renderContent() {
     if (state === 'Loading') {
-      return (
-        <div className="backup-loader-wrapper">
-          <BackupCodesLoader title="Generating backup codes, please wait" />
-        </div>
-      );
+      return <BackupCodesLoader title="Generating backup codes, please wait" />;
     } else if (state === 'Failure') {
-      return (
-        <div className="backup-loader-wrapper">
-          <BackupCodesFailure/>
-        </div>
-      );
+      return <BackupCodesFailure/>;
     } else if (backupCodes.length > 0) {
       return (
         <BackupCodesView
@@ -53,32 +46,13 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
         />
       );
     }
-    return (
-      <button
-        className="backup-btn backup-btn-primary generate-code-btn"
-        onClick={generateBackupCodes}
-      >
-        Generate new code
-      </button>
-    );
+    return <BackupCodesInitial generateBackupCodes={generateBackupCodes} />;
   }
 
   return (
-    <div className="universal-login-backup">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="backup">
-          <h2 className="backup-title">Backup code</h2>
-          <p className="backup-subtitle">
-            If you lose all your devices you may not have other ways to recover your account.
-            {state !== 'Initial'
-              ? <strong> Keep your generated recovery code safe.</strong>
-              : ' Generate a recovery code and keep it safe'
-            }
-          </p>
-          {renderContent()}
-        </div>
-      </div>
-    </div>
+    <BackupCodesWrapper className={className}>
+      {renderContent()}
+    </BackupCodesWrapper>
   );
 };
 
