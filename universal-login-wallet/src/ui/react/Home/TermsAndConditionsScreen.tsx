@@ -92,14 +92,16 @@ export const TermsAndConditionsScreen = () => {
           </div>
           <div className="terms-box-footer">
             <p className="terms-text">Read the full text above. When you have scrolled the bottom, click the check box below to mark that you understand and agree</p>
-            <label className="checkbox terms-checkbox">
-              <input type="checkbox" checked={isRead} onChange={() => setIsRead(!isRead)} />
-              <div className="checkbox-text terms-checkbox-text">I have read and understood the above</div>
-            </label>
-            <label className="checkbox terms-checkbox">
-              <input type="checkbox" checked={agreeOnPrivacyPolicy} onChange={() => setAgreeOnPrivacyPolicy(!agreeOnPrivacyPolicy)} />
-              <div className="checkbox-text terms-checkbox-text">I agree to the <a className="privacy-link" href="/privacy" target="_blank">Privacy Policy</a></div>
-            </label>
+            <div className="checkboxes">
+              <label className="checkbox terms-checkbox" id="terms-label">
+                <input type="checkbox" checked={isRead} onChange={() => setIsRead(!isRead)} />
+                <div className="checkbox-text terms-checkbox-text">I have read and understood the above</div>
+              </label>
+              <label className="checkbox privacy-checkbox" id="privacy-label">
+                <input type="checkbox" checked={agreeOnPrivacyPolicy} onChange={() => setAgreeOnPrivacyPolicy(!agreeOnPrivacyPolicy)} />
+                <div className="checkbox-text privacy-checkbox-text">I agree to the <a className="privacy-link" href="/privacy" target="_blank">Privacy Policy</a></div>
+              </label>
+            </div>
             <div className="row">
               <button onClick={() => history.push('/welcome')} className="terms-btn button-secondary">I refuse</button>
               <button onClick={() => history.push('/create')} className="terms-btn button-secondary" disabled={!isRead || !agreeOnPrivacyPolicy}>I agree</button>
