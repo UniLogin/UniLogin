@@ -2,11 +2,12 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import {setBetaNotice} from '@universal-login/sdk';
-import {Spinner, ErrorBoundary, useAsync} from '@universal-login/react';
+import {ErrorBoundary, useAsync} from '@universal-login/react';
 import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
 import './ui/styles/main.sass';
+import Logo from './ui/assets/logo.svg';
 
 const AppBootstrapper = () => {
   const [services, err] = useAsync(async () => {
@@ -26,13 +27,17 @@ const AppBootstrapper = () => {
   }
 
   if (!services) {
-    return <Spinner className="spinner-center"/>;
+    return (
+      <div id="preloader">
+        <img src={Logo} className="preloader_img" />
+      </div>
+    );
   }
 
   return (
     <ServiceContext.Provider value={services}>
       <BrowserRouter>
-        <App/>
+        <App />
       </BrowserRouter>
     </ServiceContext.Provider>
   );
@@ -40,5 +45,5 @@ const AppBootstrapper = () => {
 
 render(
   <ErrorBoundary>
-    <AppBootstrapper/>
+    <AppBootstrapper />
   </ErrorBoundary>, document.getElementById('app'));
