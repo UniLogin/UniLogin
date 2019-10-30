@@ -6,7 +6,7 @@ interface BackupCodesLoaderProps {
 }
 
 export const BackupCodesLoader = ({title}: BackupCodesLoaderProps) => (
-  <>
+  <div className="backup-loader-wrapper">
     <p className="backup-loader-label">{title}</p>
     <ProgressBar className="backup-loader" />
     <p className="backup-loader-info">
@@ -14,7 +14,7 @@ export const BackupCodesLoader = ({title}: BackupCodesLoaderProps) => (
       <br />
       Please <strong>do not close</strong> the window.
     </p>
-  </>
+  </div>
 );
 
 export default BackupCodesLoader;
