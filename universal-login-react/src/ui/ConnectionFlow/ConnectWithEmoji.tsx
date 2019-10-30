@@ -7,6 +7,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
 import Spinner from '../commons/Spinner';
+import {ErrorMessage} from '../commons/ErrorMessage';
 
 interface ConnectWithEmojiProps {
   name: string;
@@ -40,18 +41,22 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
     <div className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="connect-emoji">
-          <h1 className="connect-emoji-title">Confirmation</h1>
-          <div className="connect-emoji-content">
-            <div className="connect-emoji-section">
-              <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
-              {!connectValues && !error && <Spinner className="spinner-center" />}
-              {connectValues && <div className="universal-login-emojis">
-                <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
-              </div>}
-              {error && `Error: ${error}`}
-              <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
+          {error && <ErrorMessage className={className}>
+            <button onClick={onCancel} className="connect-emoji-btn">Return</button>
+          </ErrorMessage>}
+          {!error && <>
+            <h1 className="connect-emoji-title">Confirmation</h1>
+            <div className="connect-emoji-content">
+              <div className="connect-emoji-section">
+                <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
+                {!connectValues && <Spinner className="spinner-center" />}
+                {connectValues && <div className="universal-login-emojis">
+                  <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
+                </div>}
+                <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
+              </div>
             </div>
-          </div>
+          </>}
         </div>
       </div>
     </div>
