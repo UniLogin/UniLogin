@@ -7,6 +7,7 @@ import {
   DEFAULT_GAS_PRICE,
   DEFAULT_GAS_LIMIT,
   sign,
+  MessageStatus,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
@@ -14,6 +15,11 @@ import {Contract, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
+
+interface BackupCodesWithExecution {
+  waitToBeSuccess: () => Promise<string[]>;
+  waitForTransactionHash: () => Promise<MessageStatus>;
+}
 
 export class DeployedWallet implements ApplicationWallet {
   constructor(
@@ -89,7 +95,7 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.getGasModes();
   }
 
-  async generateBackupCodes(): Promise<string[]> {
+  async generateBackupCodes(): Promise<BackupCodesWithExecution> {
     const codes: string[] = [generateBackupCode(), generateBackupCode()];
     const addresses: string[] = [];
 
@@ -99,8 +105,13 @@ export class DeployedWallet implements ApplicationWallet {
     }
 
     const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-    await execution.waitToBeSuccess();
-    return codes;
+    return {
+      waitToBeSuccess: async () => {
+        await execution.waitToBeSuccess();
+        return codes;
+      },
+      waitForTransactionHash: execution.waitForTransactionHash,
+    };
   }
 
   signMessage(bytes: Uint8Array) {

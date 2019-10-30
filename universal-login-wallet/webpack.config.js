@@ -66,7 +66,8 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     host: '0.0.0.0',
-    compress: true
+    compress: true,
+    stats: 'errors-only'
   },
   node: {
     fs: 'empty'

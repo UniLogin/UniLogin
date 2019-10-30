@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Device} from '@universal-login/commons';
+import {Device, ensureNotNull} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
 import {Logo} from './Logo';
@@ -54,7 +54,10 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
 
   const onConfirmDeleteClick = async () => {
     history.push(join(devicesBasePath, '/waitingForRemovingDevice'));
-    const {waitToBeSuccess} = await deployedWallet.removeKey(publicKey, transactionDetails);
+    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(publicKey, transactionDetails);
+    const {transactionHash} = await waitForTransactionHash();
+    ensureNotNull(transactionHash, TypeError);
+    history.push(join(devicesBasePath, '/waitingForRemovingDevice'), {transactionHash});
     await waitToBeSuccess();
     history.replace(devicesBasePath);
   };
