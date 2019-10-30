@@ -16,4 +16,5 @@ export interface Config {
   database: KnexConfig;
   maxGasLimit: number;
   ipGeolocationApi: IPGeolocationApiConfig;
+  httpsRedirect: boolean;
 }
