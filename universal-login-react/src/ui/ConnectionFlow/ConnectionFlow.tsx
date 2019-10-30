@@ -35,6 +35,7 @@ export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, c
           walletService={walletService}
           onRecover={onSuccess}
           className={className}
+          onCancel={() => setConnectModal('chooseMethod')}
         />
       );
     case 'emoji':
