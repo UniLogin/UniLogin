@@ -19,7 +19,7 @@ interface ConnectNotificationProps {
 
 export const ConnectionNotification = ({deployedWallet, devicesBasePath, className}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
-  const [showTitle, setShowTitle] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
 
@@ -50,14 +50,14 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
-          {showTitle &&
+          {showHeader &&
             <>
               <p className="approve-device-title">Approve device</p>
               <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
             </>
           }
           <EmojiForm
-            hideTitle={() => setShowTitle(false)}
+            hideHeader={() => setShowHeader(false)}
             className={className}
             notifications={notifications}
             onDenyClick={() => deployedWallet.denyRequests()}
