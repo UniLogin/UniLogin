@@ -6,7 +6,6 @@ import BackupCodesView from './BackupCodesView';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
-import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
 
