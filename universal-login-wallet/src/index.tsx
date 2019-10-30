@@ -29,7 +29,7 @@ const AppBootstrapper = () => {
   if (!services) {
     return (
       <div id="preloader">
-        <img src={Logo} className="preloader_img" />
+        <img src={Logo} className="preloaderImg" />
       </div>
     );
   }
