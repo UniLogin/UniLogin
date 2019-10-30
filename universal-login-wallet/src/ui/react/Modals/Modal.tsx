@@ -38,7 +38,7 @@ const Modal = () => {
           <WaitingForDeployment
             {...modalService.modalProps}
             relayerConfig={relayerConfig!}
-            className={'jarvis-waiting-for-deploy'}
+            className='jarvis-styles'
           >
             <ImageWaitingFor />
           </WaitingForDeployment>
@@ -51,7 +51,7 @@ const Modal = () => {
             {...modalService.modalProps}
             action={'Transferring funds'}
             relayerConfig={relayerConfig!}
-            className={'jarvis-waiting-for-transaction'}
+            className='jarvis-styles'
           >
             <ImageWaitingFor/>
           </WaitingForTransaction>

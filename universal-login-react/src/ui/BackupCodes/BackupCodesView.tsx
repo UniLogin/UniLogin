@@ -1,19 +1,19 @@
 import React from 'react';
-import Avatar from '../assets/avatar.svg';
+import {BackupCodesWrapper} from './BackupCodesWrapper';
 
 interface BackupCodesViewProps {
   codes: string[];
   walletContract: string;
   printCodes: () => void;
+  className?: string;
 }
 
-export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodesViewProps) => {
+export const BackupCodesView = ({codes, printCodes, walletContract, className}: BackupCodesViewProps) => {
   return (
-    <div>
+    <BackupCodesWrapper className={className}>
       <div className="backup-codes-list">
         {codes.map((code: string) =>
           <div className="backup-codes-item" key={code}>
-            <img src={Avatar} alt="avatar" className="backup-codes-img" />
             <div>
               <p className="backup-code-contract">{walletContract}</p>
               <p className="backup-code">{code}</p>
@@ -29,7 +29,7 @@ export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodes
           Keep your generated recovery code safe.
         </strong>
       </p>
-    </div>
+    </BackupCodesWrapper>
   );
 };
 
