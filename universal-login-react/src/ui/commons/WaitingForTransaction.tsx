@@ -17,11 +17,17 @@ const Body = ({action, relayerConfig, transactionHash: givenTransactionHash, cla
 
   return (
     <div>
-      <WaitingFor action={action} className={className}></WaitingFor>
+      <WaitingFor
+        action={action}
+        className={className}
+      />
       <div>
         <div className="modal-pending-section">
           <h3 className="transaction-hash-title">Transaction hash</h3>
-          <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
+          <ExplorerLink
+            chainName={relayerConfig.chainSpec.name}
+            transactionHash={transactionHash}
+          />
         </div>
         {info && <p className="info-text">{info}</p>}
       </div>
