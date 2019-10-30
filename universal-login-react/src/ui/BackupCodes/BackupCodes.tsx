@@ -6,6 +6,8 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 import BackupCodesFailure from './BackupCodesFailure';
+import {BackupCodesInitial} from './BackupCodesInitial';
+import {BackupCodesWrapper} from './BackupCodesWrapper';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
@@ -31,31 +33,6 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
     }
   };
 
-  const BackupCodesInitial = () => (
-    <div>
-      <p className="backup-subtitle">Generate a recovery code and keep it safe</p>
-      <button
-        className="backup-btn backup-btn-primary generate-code-btn"
-        onClick={generateBackupCodes}
-      >
-        Generate new code
-      </button>
-    </div>
-  );
-
-  const BackupCodesWrapper = ({children}: {children: ReactNode}) => (
-    <div className="universal-login-backup">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="backup">
-          <h2 className="backup-title">Backup code</h2>
-          <p className="backup-subtitle">
-            If you lose all your devices you may not have other ways to recover your account.
-          </p>
-          {children}
-        </div>
-      </div>
-    </div>)
-
   function renderContent() {
     if (state === 'Loading') {
       return <BackupCodesLoader title="Generating backup codes, please wait" />;
@@ -70,11 +47,11 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
         />
       );
     }
-    return <BackupCodesInitial/>;
+    return <BackupCodesInitial generateBackupCodes={generateBackupCodes} />;
   }
 
   return (
-    <BackupCodesWrapper>
+    <BackupCodesWrapper className={className}>
       {renderContent()}
     </BackupCodesWrapper>
   );
