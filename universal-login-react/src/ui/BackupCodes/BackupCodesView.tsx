@@ -1,14 +1,16 @@
 import React from 'react';
+import {BackupCodesWrapper} from './BackupCodesWrapper';
 
 interface BackupCodesViewProps {
   codes: string[];
   walletContract: string;
   printCodes: () => void;
+  className?: string;
 }
 
-export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodesViewProps) => {
+export const BackupCodesView = ({codes, printCodes, walletContract, className}: BackupCodesViewProps) => {
   return (
-    <div>
+    <BackupCodesWrapper className={className}>
       <div className="backup-codes-list">
         {codes.map((code: string) =>
           <div className="backup-codes-item" key={code}>
@@ -27,7 +29,7 @@ export const BackupCodesView = ({codes, printCodes, walletContract}: BackupCodes
           Keep your generated recovery code safe.
         </strong>
       </p>
-    </div>
+    </BackupCodesWrapper>
   );
 };
 

@@ -39,21 +39,21 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
-        <BackupCodesWrapper className={className}>
-          <BackupCodesInitial generateBackupCodes={generateBackupCodes} />
-        </BackupCodesWrapper>
+        <BackupCodesInitial
+          generateBackupCodes={generateBackupCodes}
+          className={className}
+        />
       </Route>
       <Route path={join(basePath, 'backupCodesFailure')} exact>
         <ErrorMessage className={className} />;
       </Route>
       <Route path={join(basePath, 'backupCodesGenerated')} exact>
-        <BackupCodesWrapper className={className}>
-          <BackupCodesView
-            codes={backupCodes}
-            printCodes={window.print}
-            walletContract={deployedWallet.name}
-          />
-        </BackupCodesWrapper>
+        <BackupCodesView
+          codes={backupCodes}
+          printCodes={window.print}
+          walletContract={deployedWallet.name}
+          className={className}
+        />
       </Route>
       <Route path={join(basePath, 'waitingForBackupCodes')} exact>
         <WaitingForTransaction
