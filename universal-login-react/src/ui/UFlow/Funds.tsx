@@ -8,24 +8,20 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import './../styles/funds.sass';
 import './../styles/fundsDefault.sass';
 import {NewDeviceMessage} from './Devices/NewDeviceMessage';
-import {useHistory} from 'react-router';
-import {join} from 'path';
 
 interface FundsProps {
   deployedWallet: DeployedWallet;
-  basePath?: string;
+  onDeviceMessageClick: () => void;
   onTopUpClick: () => void;
   onSendClick: () => void;
   className?: string;
 }
 
-export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, basePath = ''}: FundsProps) => {
+export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onDeviceMessageClick}: FundsProps) => {
   const {sdk, contractAddress} = deployedWallet;
 
   const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
   useAsyncEffect(() => sdk.subscribeToAggregatedBalance(contractAddress, setTotalTokensValue), []);
-
-  const history = useHistory();
 
   return (
     <div className="universal-login-funds">
@@ -33,7 +29,7 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, bas
         <div className="funds">
           <NewDeviceMessage
             deployedWallet={deployedWallet}
-            onManageClick={() => history.push(join(basePath, 'approveDevice'))}
+            onManageClick={onDeviceMessageClick}
             className={className}
           />
           <Balance
