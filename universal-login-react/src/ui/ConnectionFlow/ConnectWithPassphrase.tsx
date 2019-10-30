@@ -10,9 +10,10 @@ interface ConnectWithPassphraseProps {
   walletService: WalletService;
   onRecover: () => void;
   className?: string;
+  onCancel: () => void;
 }
 
-export const ConnectWithPassphrase = ({onRecover, name, walletService, className}: ConnectWithPassphraseProps) => {
+export const ConnectWithPassphrase = ({onRecover, name, walletService, className, onCancel}: ConnectWithPassphraseProps) => {
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -46,12 +47,15 @@ export const ConnectWithPassphrase = ({onRecover, name, walletService, className
               />
               {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
             </div>
-            <button onClick={onRecoveryClick} className="connect-passphrase-btn" disabled={!code || isLoading}>
-              {isLoading
-                ? <Spinner className="connect-spinner" dotClassName="connect-spinner-dot" />
-                : 'Recover'
-              }
-            </button>
+            <div className='connect-buttons-wrapper'>
+              <button className="connect-cancel-button" onClick={onCancel}>Cancel</button>
+              <button onClick={onRecoveryClick} className="connect-passphrase-btn" disabled={!code || isLoading}>
+                {isLoading
+                  ? <Spinner className="connect-spinner" dotClassName="connect-spinner-dot" />
+                  : 'Recover'
+                }
+              </button>
+            </div>
           </div>
         </div>
       </div>
