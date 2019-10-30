@@ -1,8 +1,7 @@
-import React, {useState, ReactNode} from 'react';
+import React, {useState} from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
 import BackupCodesLoader from './BackupCodesLoader';
 import BackupCodesView from './BackupCodesView';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 import BackupCodesFailure from './BackupCodesFailure';
