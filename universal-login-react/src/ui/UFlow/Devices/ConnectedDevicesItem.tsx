@@ -53,11 +53,11 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
   );
 
   const onConfirmDeleteClick = async () => {
-    history.push(join(devicesBasePath, '/waitingForRemovingDevice'));
+    history.replace(join(devicesBasePath, '/waitingForRemovingDevice'));
     const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(publicKey, transactionDetails);
     const {transactionHash} = await waitForTransactionHash();
     ensureNotNull(transactionHash, TypeError);
-    history.push(join(devicesBasePath, '/waitingForRemovingDevice'), {transactionHash});
+    history.replace(join(devicesBasePath, '/waitingForRemovingDevice'), {transactionHash});
     await waitToBeSuccess();
     history.replace(devicesBasePath);
   };
