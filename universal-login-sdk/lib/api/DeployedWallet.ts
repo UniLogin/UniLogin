@@ -15,6 +15,11 @@ import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 
+interface BackupCodesWithExecution {
+  codes: string[];
+  execution: Execution;
+}
+
 export class DeployedWallet implements ApplicationWallet {
   constructor(
     public readonly contractAddress: string,
@@ -89,7 +94,7 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.getGasModes();
   }
 
-  async generateBackupCodes(): Promise<string[]> {
+  async generateBackupCodes(): Promise<BackupCodesWithExecution> {
     const codes: string[] = [generateBackupCode(), generateBackupCode()];
     const addresses: string[] = [];
 
@@ -99,8 +104,7 @@ export class DeployedWallet implements ApplicationWallet {
     }
 
     const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-    await execution.waitToBeSuccess();
-    return codes;
+    return {codes, execution};
   }
 
   signMessage(bytes: Uint8Array) {

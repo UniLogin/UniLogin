@@ -50,9 +50,12 @@ describe('E2E: DeployedWallet', async () => {
     });
   });
 
-  describe('generateBackupCode', () => {
+  describe('generateBackupCodes', () => {
     it('returns the code and update contract keys', async () => {
-      const codes = await deployedWallet.generateBackupCodes();
+      const {codes, execution} = await deployedWallet.generateBackupCodes();
+      const {transactionHash} = await execution.waitForTransactionHash();
+      expect(transactionHash).to.be.properHex;
+      await execution.waitToBeSuccess();
       const {address} = await walletFromBrain(ensName, codes[0]);
       expect(await walletContract.keyExist(address)).to.be.true;
       const connectedDevices = await deployedWallet.getConnectedDevices();
