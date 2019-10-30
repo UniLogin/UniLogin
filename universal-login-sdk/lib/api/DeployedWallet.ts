@@ -19,7 +19,6 @@ import {OnBalanceChange} from '../core/observers/BalanceObserver';
 interface BackupCodesWithExecution {
   waitToBeSuccess: () => Promise<string[]>;
   waitForTransactionHash: () => Promise<MessageStatus>;
-
 }
 
 export class DeployedWallet implements ApplicationWallet {
