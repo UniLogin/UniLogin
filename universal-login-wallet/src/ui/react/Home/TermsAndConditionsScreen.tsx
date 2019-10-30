@@ -4,6 +4,7 @@ import {useHistory} from 'react-router';
 
 export const TermsAndConditionsScreen = () => {
   const [isRead, setIsRead] = useState(false);
+  const [agreeOnPrivacyPolicy, setAgreeOnPrivacyPolicy] = useState(false);
   const history = useHistory();
 
   return (
@@ -95,9 +96,13 @@ export const TermsAndConditionsScreen = () => {
               <input type="checkbox" checked={isRead} onChange={() => setIsRead(!isRead)} />
               <div className="checkbox-text terms-checkbox-text">I have read and understood the above</div>
             </label>
+            <label className="checkbox terms-checkbox">
+              <input type="checkbox" checked={agreeOnPrivacyPolicy} onChange={() => setAgreeOnPrivacyPolicy(!agreeOnPrivacyPolicy)} />
+              <div className="checkbox-text terms-checkbox-text">I agree to the <a className="privacy-link" href="/privacy" target="_blank">Privacy Policy</a></div>
+            </label>
             <div className="row">
               <button onClick={() => history.push('/welcome')} className="terms-btn button-secondary">I refuse</button>
-              <button onClick={() => history.push('/create')} className="terms-btn button-secondary" disabled={!isRead}>I agree</button>
+              <button onClick={() => history.push('/create')} className="terms-btn button-secondary" disabled={!isRead || !agreeOnPrivacyPolicy}>I agree</button>
             </div>
           </div>
         </div>
