@@ -34,7 +34,7 @@ const HomeScreen = () => {
                   deployedWallet={walletService.getDeployedWallet()}
                   onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
                   onSendClick={() => modalService.showModal('transfer')}
-                  basePath="/devices"
+                  onDeviceMessageClick={() => history.push('/devices/approveDevice')}
                   className="jarvis-styles"
                 />
               </Route>
