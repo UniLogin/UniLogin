@@ -22,16 +22,16 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
 
   const generateBackupCodes = async () => {
     try {
-      history.push(join(basePath, 'waitingForBackupCodes'));
+      history.replace(join(basePath, 'waitingForBackupCodes'));
       const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes();
       const {transactionHash} = await waitForTransactionHash();
-      history.push(join(basePath, 'waitingForBackupCodes'), {transactionHash});
+      history.replace(join(basePath, 'waitingForBackupCodes'), {transactionHash});
       const codes = await waitToBeSuccess();
       setBackupCodes(codes.concat(backupCodes));
-      history.push(join(basePath, 'backupCodesGenerated'));
+      history.replace(join(basePath, 'backupCodesGenerated'));
     } catch (e) {
       console.error(e);
-      history.push(join(basePath, 'backupCodesFailure'));
+      history.replace(join(basePath, 'backupCodesFailure'));
     }
   };
 
