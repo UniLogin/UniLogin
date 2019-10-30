@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TransferDetails, isProperAddress, OnGasParametersChanged, DEPLOYMENT_REFUND} from '@universal-login/commons';
+import {TransferDetails, isProperAddress, OnGasParametersChanged, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import './../../styles/transferRecipient.sass';
 import './../../styles/transferRecipientDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -48,7 +48,7 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, className, de
             <GasPrice
               isDeployed={true}
               deployedWallet={deployedWallet}
-              gasLimit={DEPLOYMENT_REFUND}
+              gasLimit={DEFAULT_GAS_LIMIT}
               onGasParametersChanged={onGasParametersChanged}
               className={className}
             />
