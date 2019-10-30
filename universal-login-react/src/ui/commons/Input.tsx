@@ -25,6 +25,7 @@ export const Input = ({onChange, placeholder, autoFocus, className, id, type, va
       autoFocus={autoFocus}
       placeholder={placeholder}
       spellCheck={checkSpelling}
+      autoCapitalize='off'
     />
   );
 };
