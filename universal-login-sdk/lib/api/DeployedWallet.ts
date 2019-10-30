@@ -7,6 +7,7 @@ import {
   DEFAULT_GAS_PRICE,
   DEFAULT_GAS_LIMIT,
   sign,
+  MessageStatus,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
@@ -16,8 +17,9 @@ import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 
 interface BackupCodesWithExecution {
-  codes: string[];
-  execution: Execution;
+  waitToBeSuccess: () => Promise<string[]>;
+  waitForTransactionHash: () => Promise<MessageStatus>;
+
 }
 
 export class DeployedWallet implements ApplicationWallet {
@@ -104,7 +106,13 @@ export class DeployedWallet implements ApplicationWallet {
     }
 
     const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-    return {codes, execution};
+    return {
+      waitToBeSuccess: async () => {
+        await execution.waitToBeSuccess()
+        return codes;
+      },
+      waitForTransactionHash: execution.waitForTransactionHash
+    };
   }
 
   signMessage(bytes: Uint8Array) {
