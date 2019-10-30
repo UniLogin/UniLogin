@@ -11,17 +11,23 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   info?: string;
 }
 
-const Body = ({action, relayerConfig, transactionHash: givenTransactionHash, children, className, info}: WaitingForTransactionProps) => {
+const Body = ({action, relayerConfig, transactionHash: givenTransactionHash, className, info}: WaitingForTransactionProps) => {
   const location = useLocation();
   const transactionHash = givenTransactionHash || (location.state && location.state.transactionHash);
 
   return (
     <div>
-      <WaitingFor action={action} className={className}>{children}</WaitingFor>
+      <WaitingFor
+        action={action}
+        className={className}
+      />
       <div>
         <div className="modal-pending-section">
           <h3 className="transaction-hash-title">Transaction hash</h3>
-          <ExplorerLink chainName={relayerConfig.chainSpec.name} transactionHash={transactionHash} />
+          <ExplorerLink
+            chainName={relayerConfig.chainSpec.name}
+            transactionHash={transactionHash}
+          />
         </div>
         {info && <p className="info-text">{info}</p>}
       </div>
