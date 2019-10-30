@@ -10,14 +10,14 @@ import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiInput} from './EmojiInput';
 
 export interface EmojiFormProps {
-  hideTitle?: () => void;
+  hideHeader?: () => void;
   className?: string;
   notifications: Notification[];
   onDenyClick: () => void;
   setPublicKey: (arg: string) => void;
 }
 
-export const EmojiForm = ({hideTitle, className, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
+export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
@@ -30,7 +30,7 @@ export const EmojiForm = ({hideTitle, className, notifications, onDenyClick, set
 
   useEffect(() => {
     if (isInputValid) {
-      hideTitle && hideTitle();
+      hideHeader && hideHeader();
       ensureNotNull(soleAddress, Error, 'No matching keys');
       setPublicKey(soleAddress!);
     }
