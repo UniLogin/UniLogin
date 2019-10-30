@@ -31,11 +31,6 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
 
-  const onDenyClick = async () => {
-    await deployedWallet.denyRequests();
-    history.goBack();
-  };
-
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
     ensureNotNull(gasParameters, TypeError);
     ensureNotNull(publicKey, Error, 'Invalid key');
@@ -65,7 +60,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
             hideTitle={() => setShowTitle(false)}
             className={className}
             notifications={notifications}
-            onDenyClick={onDenyClick}
+            onDenyClick={() => deployedWallet.denyRequests()}
             setPublicKey={setPublicKey}
           />
           {publicKey && notifications.length > 0 &&
@@ -79,7 +74,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                   className={className}
                 />
                 <div className="footer-buttons-row">
-                  <button onClick={onDenyClick} className="footer-deny-btn">Deny</button>
+                  <button onClick={() => deployedWallet.denyRequests()} className="footer-deny-btn">Deny</button>
                   <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
                 </div>
               </FooterSection>
