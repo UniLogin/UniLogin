@@ -11,12 +11,14 @@ interface ErrorMessageProps {
 }
 
 export const ErrorMessage = ({title = 'Something went wrong', message = 'Please try again later.', children, className}: ErrorMessageProps) => (
-  <div className={getStyleForTopLevelComponent(className)}>
-    <h1 className="error-message-title">{title}</h1>
-    <div className="error-message-content">
-      <div className="error-message-section">
-        <p className="error-message-text">{message}</p>
-        {children}
+  <div className="universal-login-error-message">
+    <div className={getStyleForTopLevelComponent(className)}>
+      <h1 className="error-message-title">{title}</h1>
+      <div className="error-message-content">
+        <div className="error-message-section">
+          <p className="error-message-text">{message}</p>
+          {children}
+        </div>
       </div>
     </div>
   </div>
