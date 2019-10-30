@@ -21,7 +21,8 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
   const generateBackupCodes = async () => {
     setState('Loading');
     try {
-      const codes = await deployedWallet.generateBackupCodes();
+      const {waitToBeSuccess} = await deployedWallet.generateBackupCodes();
+      const codes = await waitToBeSuccess();
       setBackupCodes(codes.concat(backupCodes));
       setState('Generated');
     } catch (e) {
