@@ -5,9 +5,8 @@ import {WalletService} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DeleteAccount} from '../DeleteAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
-import {WaitingFor} from '../../commons/WaitingFor';
 import {join} from 'path';
-import {WaitingForConnection} from './WaitingForConnection';
+import {WaitingForTransaction} from '../../commons/WaitingForTransaction';
 
 export interface DevicesProps {
   walletService: WalletService;
@@ -49,10 +48,10 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
         />
       </Route>
       <Route path={join(basePath, 'waitingForRemovingDevice')} exact>
-        <WaitingFor action="Removing device" className={className}/>
+        <WaitingForTransaction action="Removing device" relayerConfig={relayerConfig} className={className} />
       </Route>
       <Route path={join(basePath, 'waitingForConnection')} exact>
-        <WaitingForConnection relayerConfig={relayerConfig} className={className} />
+        <WaitingForTransaction action="Connecting device" relayerConfig={relayerConfig} className={className} />
       </Route>
     </Switch>
   );
