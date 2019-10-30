@@ -15,7 +15,7 @@ export const TermsAndConditionsScreen = () => {
           </div>
           <div className="terms-description">
 
-            <h3>Last updated: October 28, 2019</h3>
+            <p>Last updated: October 28, 2019</p>
 
             <p>Jarvis OOD (outlined as “Jarvis”, “we”, “us” or “our” in this document) provides a service (outlined as "Service" or "Services" in this document) to allow to interact with the Ethereum Blockchain (outlined as "Blockchain” in this document) and manage a personal smartcontract on the Blockchain (outlined as "Account” in this document) through its website located at jarvis.network (outlined as "Site” in this document), and a mobile, web, and desktop application (outlined as "Applications” in this document), which includes text, images, audio, code and other materials (outlined as "Content” in this document) and all of the features and services provided. </p>
             <p>Jarvis has developed these Terms of Service (outlined as “Terms” in this document) that govern your use of the Site, the Service and the Applications. You should acknowledge that cryptocurrencies, tokens, Blockchain related assets (outlined as "Digital Assets” in this document) and services, and more generally our Service, carry a lot of risks due to but not limited to, Digital Assets price volatility and low liquidity, experimental technology, software breach, that could result in losses of your funds; you are sole responsible and liable of any action initiated by you or a third party, whether it is malicious or not, that will occur a loss, including the loss of your credential. Therefore, you will need to carefully read the following Terms.</p>
