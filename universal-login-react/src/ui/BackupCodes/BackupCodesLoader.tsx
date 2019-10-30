@@ -10,9 +10,9 @@ export const BackupCodesLoader = ({title}: BackupCodesLoaderProps) => (
     <p className="backup-loader-label">{title}</p>
     <ProgressBar className="backup-loader" />
     <p className="backup-loader-info">
-        This might take a couple of minutes.
+      This might take a couple of minutes.
       <br />
-        Please <strong>do not close</strong> the window.
+      Please <strong>do not close</strong> the window.
     </p>
   </div>
 );
