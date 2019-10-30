@@ -58,7 +58,7 @@ export const WalletSelector = ({
     creations.length === 0 && isOnlyCreateAction && !!ensName && !busy;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
+    const name = event.target.value.toLowerCase();
     setEnsName(name);
     setBusy(true);
     debouncedSuggestionsService.getSuggestions(name, suggestions => {
