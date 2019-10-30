@@ -4,9 +4,9 @@ import BackupCodesLoader from './BackupCodesLoader';
 import BackupCodesView from './BackupCodesView';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
-import BackupCodesFailure from './BackupCodesFailure';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
+import {ErrorMessage} from '../commons/ErrorMessage';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
@@ -36,7 +36,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
     if (state === 'Loading') {
       return <BackupCodesLoader title="Generating backup codes, please wait" />;
     } else if (state === 'Failure') {
-      return <BackupCodesFailure/>;
+      return <div className="backup-loader-wrapper"><ErrorMessage className={className}/></div>;
     } else if (backupCodes.length > 0) {
       return (
         <BackupCodesView
