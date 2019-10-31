@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {TopUpRadioCrypto, TopUpRadioFiat} from './TopUpRadio';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
@@ -21,6 +20,7 @@ import {PayButton} from './PayButton';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
 import {ChooseTopUpMethodWrapper} from './ChooseTopUpMethodWrapper';
+import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 
 export interface ChooseTopUpMethodProps {
   sdk: UniversalLoginSDK;
@@ -51,38 +51,24 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
 
   return (
     <ChooseTopUpMethodWrapper className={topUpClassName} topUpMethod={topUpMethod}>
-      <div className="top-up-header">
-        <div className="top-up-methods">
-          <TopUpRadioCrypto
-            id="topup-btn-crypto"
-            onClick={() => setTopUpMethod('crypto')}
-            checked={topUpMethod === 'crypto'}
-            name="top-up-method"
-            className={`top-up-method ${topUpMethod === 'crypto' ? 'active' : ''}`}
-          />
-          <TopUpRadioFiat
-            id="topup-btn-fiat"
-            onClick={() => setTopUpMethod('fiat')}
-            checked={topUpMethod === 'fiat'}
-            name="top-up-method"
-            className={`top-up-method ${topUpMethod === 'fiat' ? 'active' : ''}`}
-          />
-        </div>
-      </div>
+      <ChooseTopUpMethodHeader
+        topUpMethod={topUpMethod}
+        setTopUpMethod={setTopUpMethod}
+      />
       {topUpMethod === 'crypto' && <TopUpWithCrypto
-          contractAddress={contractAddress}
-          isDeployment={isDeployment}
-          minimalAmount={minimalAmount}
-        />}
+        contractAddress={contractAddress}
+        isDeployment={isDeployment}
+        minimalAmount={minimalAmount}
+      />}
       {topUpMethod === 'fiat' && <TopUpWithFiat
-          sdk={sdk}
-          topUpProviderSupportService={topUpProviderSupportService}
-          amount={amount}
-          onAmountChange={setAmount}
-          paymentMethod={paymentMethod}
-          onPaymentMethodChange={setPaymentMethod}
-          logoColor={logoColor}
-        />}
+        sdk={sdk}
+        topUpProviderSupportService={topUpProviderSupportService}
+        amount={amount}
+        onAmountChange={setAmount}
+        paymentMethod={paymentMethod}
+        onPaymentMethodChange={setPaymentMethod}
+        logoColor={logoColor}
+      />}
       {topUpMethod && <FooterSection className={topUpClassName}>
         {isDeployment && <GasPrice
           isDeployed={false}
