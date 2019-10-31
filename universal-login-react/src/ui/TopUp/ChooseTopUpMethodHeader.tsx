@@ -9,6 +9,7 @@ interface ChooseTopUpMethodHeaderProps {
 
 export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod}: ChooseTopUpMethodHeaderProps) => (
   <div className="top-up-header">
+    <h2 className="top-up-title">Choose a top-up method</h2>
     <div className="top-up-methods">
       <TopUpRadioCrypto
         id="topup-btn-crypto"
