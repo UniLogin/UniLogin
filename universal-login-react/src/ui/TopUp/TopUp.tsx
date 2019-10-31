@@ -53,6 +53,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
   );
 
   const showWaitingFor = (onRampProviderName: OnRampProviderName) => {
+    setModal(TopUpComponentType.choose)
     showModal && showModal('waitingForOnRampProvider', {onRampProviderName});
   };
 
