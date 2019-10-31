@@ -19,9 +19,8 @@ const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
 export const Assets = ({deployedWallet, className}: AssetsProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-  const {sdk, contractAddress} = deployedWallet;
 
-  useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
+  useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
 
   return (
     <div className="universal-login-assets">
@@ -32,7 +31,7 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
             {tokenDetailsWithBalance.map(({name, symbol, balance}: TokenDetailsWithBalance) => (
               <Asset
                 key={`${name}-${symbol}`}
-                sdk={sdk}
+                sdk={deployedWallet.sdk}
                 name={name}
                 symbol={symbol}
                 balance={utils.formatEther(balance)}
