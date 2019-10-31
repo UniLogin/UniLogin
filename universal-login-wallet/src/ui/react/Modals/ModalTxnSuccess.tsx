@@ -3,7 +3,6 @@ import send1x from './../../assets/illustrations/send@1x.png';
 import send2x from './../../assets/illustrations/send@2x.png';
 import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
-const Blockies = require('react-blockies').default;
 
 interface ModalTxnSuccessProps {
   hideModal: () => void;
@@ -24,14 +23,13 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
           alt="succes"
         />
         <div className="created-account">
-          <Blockies seed={walletPresenter.getContractAddress()} size={8} scale={4} />
           <div>
             <p className="created-account-label">{walletPresenter.getName()}</p>
             <p className="created-account-hash">{walletPresenter.getContractAddress()}</p>
           </div>
         </div>
-        <p className="info-text">
-          Your wallet is ready but not secure. Go to your wallet and make sure to follow the steps to.
+        <p className="congratulation-text">
+          Congratulations! You have just created your wallet.
         </p>
         <Link to="/" onClick={hideModal} className="button-primary modal-success-btn">Go to your wallet</Link>
       </div>
