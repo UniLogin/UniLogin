@@ -16,7 +16,7 @@ describe('DeleteAccountService', () => {
   let deployedWallet: DeployedWallet;
   let relayer: RelayerUnderTest;
   let setErrors: () => void;
-  let onBeginAccountDeletion: sinon.SinonStub;
+  let onAccountDeletion: sinon.SinonStub;
   let onAccountDeleted: sinon.SinonStub;
   const ensName = 'test.mylogin.eth';
 
@@ -29,12 +29,13 @@ describe('DeleteAccountService', () => {
     walletService = new WalletService(deployedWallet.sdk);
     walletService.setWallet(deployedWallet.asApplicationWallet);
     setErrors = sinon.stub();
+    onAccountDeletion = sinon.stub();
     onAccountDeleted = sinon.stub();
   });
 
   it('delete account if inputs are valid', async () => {
-    const promise = deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onBeginAccountDeletion, onAccountDeleted);
-    expect(onBeginAccountDeletion).to.be.calledOnce;
+    const promise = deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeletion, onAccountDeleted);
+    expect(onAccountDeletion).to.be.calledOnce;
     await promise;
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDeleted).to.be.calledOnce;
@@ -42,17 +43,17 @@ describe('DeleteAccountService', () => {
   });
 
   it('dont delete account if username are invalid', async () => {
-    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onBeginAccountDeletion, onAccountDeleted);
+    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeletion, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
-    expect(onBeginAccountDeletion).to.not.be.called;
+    expect(onAccountDeletion).to.not.be.called;
     expect(onAccountDeleted).to.not.be.called;
     expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
   });
 
   it('dont delete account if verifyField are invalid', async () => {
-    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'test'}, setErrors, onBeginAccountDeletion, onAccountDeleted);
+    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'test'}, setErrors, onAccountDeletion, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
-    expect(onBeginAccountDeletion).to.not.be.called;
+    expect(onAccountDeletion).to.not.be.called;
     expect(onAccountDeleted).to.not.be.called;
     expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
   });
