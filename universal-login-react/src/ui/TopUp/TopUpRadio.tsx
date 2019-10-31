@@ -1,4 +1,9 @@
 import React, {ReactNode} from 'react';
+import {Omit} from '@universal-login/commons';
+import daiIcon from './../assets/topUp/tokensIcons/DAI.svg';
+import EthereumIcon from './../assets/topUp/tokensIcons/ETH.svg';
+import cardIcon from './../assets/topUp/card.svg';
+import bankIcon from './../assets/topUp/bank.svg';
 
 export interface TopUpRadioProps {
   onClick: () => void;
@@ -26,4 +31,26 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
       {children}
     </div>
   </label>
+);
+
+export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
+  <TopUpRadio {...props}>
+    <div className="top-up-method-icons">
+      <img className="top-up-method-icon" src={daiIcon} alt="Dai" />
+      <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum" />
+    </div>
+    <p className="top-up-method-title">Crypto</p>
+    <p className="top-up-method-text">Free-Deposit ETH or DAI</p>
+  </TopUpRadio>
+);
+
+export const TopUpRadioFiat = (props: Omit<TopUpRadioProps, 'children'>) => (
+  <TopUpRadio {...props}>
+    <div className="top-up-method-icons">
+      <img className="top-up-method-icon" src={cardIcon} alt="card" />
+      <img className="top-up-method-icon" src={bankIcon} alt="Dai" />
+    </div>
+    <p className="top-up-method-title">Fiat</p>
+    <p className="top-up-method-text">Buy using credit card or bank account</p>
+  </TopUpRadio>
 );
