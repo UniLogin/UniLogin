@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, TopUp, WaitingForTransaction, WaitingForDeployment} from '@universal-login/react';
+import {ModalWrapper, TopUp, WaitingForTransaction, WaitingForDeployment, WaitingForOnRampProvider, WaitingForOnRampProviderProps} from '@universal-login/react';
 import {ModalTxnSuccess} from './ModalTxnSuccess';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import ModalTransfer from './Transfer/ModalTransfer';
@@ -56,6 +56,16 @@ const Modal = () => {
       return (
         <ModalWrapper modalClassName="jarvis-modal">
           <ModalTxnSuccess hideModal={modalService.hideModal} />
+        </ModalWrapper>
+      );
+    case 'waitingForOnRampProvider':
+      return (
+        <ModalWrapper modalClassName="jarvis-modal">
+          <WaitingForOnRampProvider
+            className="jarvis-modal"
+            logoColor="black"
+            {...modalService.modalProps as WaitingForOnRampProviderProps}
+          />
         </ModalWrapper>
       );
     case 'error':
