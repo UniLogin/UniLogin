@@ -66,7 +66,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     <li className={`connected-devices-item ${toBeRemoved ? 'highlighted' : ''}`}>
       <Logo deviceType={type.toLowerCase()} logo={logo} applicationName={applicationName} />
       <div>
-        <p className="connected-devices-type">{applicationName} &bull; {os}</p>
+        <p className="connected-devices-type">{applicationName}{os && ` • ${os}`}</p>
         <p className="connected-devices-details">
           {ipAddress && `IP address: ${ipAddress} ${city}`}
         </p>
