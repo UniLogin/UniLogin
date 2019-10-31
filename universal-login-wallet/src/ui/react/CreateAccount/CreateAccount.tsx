@@ -28,6 +28,7 @@ export const CreateAccount = () => {
       onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
       isDeployment: true,
       hideModal: () => hideTopUpModal(walletService, modalService),
+      showModal: modalService.showModal,
     };
     modalService.showModal('topUpAccount', topUpProps);
     await waitForBalance();
