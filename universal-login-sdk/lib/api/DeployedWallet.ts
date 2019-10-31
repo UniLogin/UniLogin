@@ -8,6 +8,9 @@ import {
   DEFAULT_GAS_LIMIT,
   sign,
   MessageStatus,
+  signRelayerRequest,
+  addCodesToNotifications,
+  Notification,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
@@ -15,6 +18,7 @@ import {Contract, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
+import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 
 interface BackupCodesWithExecution {
   waitToBeSuccess: () => Promise<string[]>;
@@ -22,12 +26,15 @@ interface BackupCodesWithExecution {
 }
 
 export class DeployedWallet implements ApplicationWallet {
+  private readonly authorisationsObserver: AuthorisationsObserver;
+
   constructor(
     public readonly contractAddress: string,
     public readonly name: string,
     public readonly privateKey: string,
     public readonly sdk: UniversalLoginSDK,
   ) {
+    this.authorisationsObserver = new AuthorisationsObserver(this.sdk.relayerApi, this.sdk.sdkConfig.authorizationsObserverTick);
   }
 
   get publicKey() {
@@ -119,7 +126,10 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   subscribeAuthorisations(callback: Function) {
-    return this.sdk.subscribeAuthorisations(this.contractAddress, this.privateKey, callback);
+    return this.authorisationsObserver.subscribe(
+      signRelayerRequest({contractAddress: this.contractAddress}, this.privateKey),
+      (notifications: Notification[]) => callback(addCodesToNotifications(notifications)),
+    );
   }
 
   subscribeToBalances(callback: OnBalanceChange) {

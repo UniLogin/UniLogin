@@ -6,13 +6,15 @@ import {WalletService} from '../../../lib/core/services/WalletService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {DeployedWallet} from '../../../lib';
+import basicSDK from '../../fixtures/basicSDK';
+import {loadFixture} from 'ethereum-waffle';
 
 chai.use(sinonChai);
 
 describe('INT: WalletService', () => {
-  const sdk = {} as UniversalLoginSDK;
-  const deployedWallet: DeployedWallet = new DeployedWallet('0x123', 'justyna.nylogin.eth', '0x29F3EDEE0AD3ABF8E2699402E0E28CD6492C9BE7EAAB00D732A791C33552F779', sdk);
-  const applicationWallet = deployedWallet.asApplicationWallet;
+  let sdk: UniversalLoginSDK;
+  let deployedWallet: DeployedWallet;
+
   const futureWallet: FutureWallet = {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
@@ -22,29 +24,31 @@ describe('INT: WalletService', () => {
     }),
     waitForBalance: (async () => { }) as any,
   };
-  const storage = {load: () => applicationWallet, save: sinon.fake(), remove: sinon.fake()};
+  const storage = {load: () => deployedWallet.asApplicationWallet, save: sinon.fake(), remove: sinon.fake()};
   let walletService: WalletService;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    ({sdk, deployedWallet} = await loadFixture(basicSDK));
+
     walletService = new WalletService(sdk, walletFromBrain, storage);
     storage.save.resetHistory();
   });
 
   it('disconnect resets state to None', () => {
-    walletService.setWallet(applicationWallet);
+    walletService.setWallet(deployedWallet.asApplicationWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
     expect(storage.remove).to.be.called;
   });
 
   it('connect set state to Deployed', () => {
-    walletService.setWallet(applicationWallet);
+    walletService.setWallet(deployedWallet.asApplicationWallet);
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
   });
 
-  it('should save applicationWallet to localstorage', () => {
-    walletService.saveToStorage(applicationWallet);
-    expect(storage.save).to.be.calledWith(applicationWallet);
+  it('should save deployedWallet.asApplicationWallet to localstorage', () => {
+    walletService.saveToStorage(deployedWallet.asApplicationWallet);
+    expect(storage.save).to.be.calledWith(deployedWallet.asApplicationWallet);
   });
 
   it('roundtrip', () => {
@@ -53,10 +57,10 @@ describe('INT: WalletService', () => {
     walletService.setFutureWallet(futureWallet);
     expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
 
-    walletService.setDeployed(applicationWallet.name);
+    walletService.setDeployed(deployedWallet.asApplicationWallet.name);
     const expectedWallet = new DeployedWallet(
       futureWallet.contractAddress,
-      applicationWallet.name,
+      deployedWallet.asApplicationWallet.name,
       futureWallet.privateKey,
       sdk,
     );
@@ -66,19 +70,19 @@ describe('INT: WalletService', () => {
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
-    walletService.setWallet(applicationWallet);
+    walletService.setWallet(deployedWallet.asApplicationWallet);
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
 
-    walletService.saveToStorage(applicationWallet);
-    expect(storage.save).to.be.calledWith(applicationWallet);
+    walletService.saveToStorage(deployedWallet.asApplicationWallet);
+    expect(storage.save).to.be.calledWith(deployedWallet.asApplicationWallet);
   });
 
   it('should throw if future wallet is not set', () => {
-    expect(() => walletService.setDeployed(applicationWallet.name)).to.throw('Future wallet was not set');
+    expect(() => walletService.setDeployed(deployedWallet.asApplicationWallet.name)).to.throw('Future wallet was not set');
   });
 
   it('should throw if wallet is overridden', () => {
-    walletService.setWallet(applicationWallet);
+    walletService.setWallet(deployedWallet.asApplicationWallet);
     expect(() => walletService.setFutureWallet(futureWallet)).to.throw('Wallet cannot be overridded');
   });
 

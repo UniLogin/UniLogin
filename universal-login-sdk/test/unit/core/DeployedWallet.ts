@@ -11,7 +11,7 @@ describe('DeployedWallet', () => {
 
     before(async () => {
       wallet = Wallet.createRandom();
-      deployedWallet = new DeployedWallet(wallet.address, 'bob.poppularapp.test', wallet.privateKey, {} as any);
+      deployedWallet = new DeployedWallet(wallet.address, 'bob.poppularapp.test', wallet.privateKey, {sdkConfig: {}} as any);
       expectedSignature = await wallet.signMessage(message);
     });
 

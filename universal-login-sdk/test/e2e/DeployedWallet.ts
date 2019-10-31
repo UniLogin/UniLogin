@@ -5,8 +5,9 @@ import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {DeployedWallet} from '../../lib';
-import {walletFromBrain} from '@universal-login/commons';
+import UniversalLoginSDK, {DeployedWallet} from '../../lib';
+import {waitExpect, walletFromBrain} from '@universal-login/commons';
+import sinon from 'sinon';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -19,12 +20,13 @@ describe('E2E: DeployedWallet', async () => {
   let otherWallet: Wallet;
   let mockToken: Contract;
   let deployedWallet: DeployedWallet;
+  let sdk: UniversalLoginSDK;
   let walletContract: Contract;
   let ensName: string;
 
   beforeEach(async () => {
-    const {contractAddress, sdk, privateKey, ...rest} = await loadFixture(basicSDK) as any;
-    ({relayer, otherWallet, mockToken, walletContract, ensName} = rest);
+    const {contractAddress, privateKey, ...rest} = await loadFixture(basicSDK) as any;
+    ({relayer, otherWallet, mockToken, walletContract, ensName, sdk} = rest);
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   });
 
@@ -61,5 +63,17 @@ describe('E2E: DeployedWallet', async () => {
       const connectedDevices = await deployedWallet.getConnectedDevices();
       expect(connectedDevices.map(({publicKey}: any) => publicKey)).to.include(address);
     }).timeout(15000);
+  });
+
+  describe('subscribeAuthorizations', () => {
+    it('notified when user tries to connect', async () => {
+      const connectionCallback = sinon.spy();
+      const unsubscribe = await deployedWallet.subscribeAuthorisations(connectionCallback);
+      await sdk.connect(deployedWallet.contractAddress);
+      await waitExpect(() => {
+        expect(connectionCallback.lastCall.args[0]).to.have.length.greaterThan(0);
+      });
+      unsubscribe();
+    });
   });
 });

@@ -7,6 +7,7 @@ import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../lib/api/sdk';
 import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 import {createWallet} from '../helpers/createWallet';
+import {DeployedWallet} from '../../lib';
 
 export default async function basicSDK(givenProvider: providers.Provider, wallets: Wallet[]) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
@@ -19,7 +20,8 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const mockToken = await deployContract(wallet, MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
   const walletContract = new Contract(contractAddress, WalletContract.abi, wallet);
-  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer, ensName};
+  const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+  return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer, ensName, deployedWallet};
 }
 
 export const transferMessage = {
