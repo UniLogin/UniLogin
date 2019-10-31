@@ -1,9 +1,9 @@
 import React, {ReactNode} from 'react';
+import {Omit} from '@universal-login/commons';
 import daiIcon from './../assets/topUp/tokensIcons/DAI.svg';
 import EthereumIcon from './../assets/topUp/tokensIcons/ETH.svg';
 import cardIcon from './../assets/topUp/card.svg';
 import bankIcon from './../assets/topUp/bank.svg';
-import {Omit} from '@universal-login/commons';
 
 export interface TopUpRadioProps {
   onClick: () => void;
