@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {QRCode} from 'react-qr-svg';
-import {copy, ensureNotNull} from '@universal-login/commons';
-import {MissingParameter} from '../../core/utils/errors';
+import {copy} from '@universal-login/commons';
 
 interface TopUpWithCryptoProps {
   contractAddress: string;
@@ -10,9 +9,6 @@ interface TopUpWithCryptoProps {
 }
 
 export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: TopUpWithCryptoProps) => {
-  if (isDeployment) {
-    ensureNotNull(minimalAmount, MissingParameter, 'minimalAmount');
-  }
   const [cryptoClass, setCryptoClass] = useState('');
 
   useEffect(() => {
@@ -48,7 +44,7 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: 
           </div>
           {isDeployment &&
             <>
-              <p className="info-text">Send {minimalAmount} ETH to this address</p>
+              <p className="info-text">Send {minimalAmount || '...'} ETH to this address</p>
               <p className="info-text">This screen will update itself as soon as we detect an upcoming transaction</p>
             </>
           }
