@@ -1,4 +1,4 @@
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {asMock} from '../../core/utils/asMock';
 
 export const CONNECTION_REAL_ADDRESS = '0xee2C70026a0E36ccC7B9446b57BA2bD98c28930b'; // [ 28, 133, 989, 653, 813, 746 ]
@@ -19,8 +19,8 @@ const mockedNotifications = asMock<Notification[]>([
   ...ATTACKER_ADDRESS_NO_COMMON_CODE.map(address => ({key: address})),
 ]);
 
-export const mockNotifications = (sdk: UniversalLoginSDK) => {
-  sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
+export const mockNotifications = (deployedWallet: DeployedWallet) => {
+  deployedWallet.subscribeAuthorisations = (callback: Function) => {
     callback(mockedNotifications);
     return () => {};
   };

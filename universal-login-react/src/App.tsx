@@ -63,7 +63,7 @@ export const App = () => {
               path="/logobutton"
               render={() => (
                 <div>
-                  <button onClick={() => mockNotifications(sdk)}>Create mock notifications</button>
+                  <button onClick={() => mockNotifications(walletService.getDeployedWallet())}>Create mock notifications</button>
                   <hr />
                   <CreateRandomInstance walletService={walletService} />
                   <hr />

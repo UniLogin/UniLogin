@@ -1,7 +1,6 @@
 import {Contract, providers, utils} from 'ethers';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {
-  addCodesToNotifications,
   BalanceChecker,
   createKeyPair,
   deepMerge,
@@ -11,7 +10,6 @@ import {
   ensureNotNull,
   generateCode,
   Message,
-  Notification,
   PublicRelayerConfig,
   resolveName,
   SignedMessage,
@@ -253,13 +251,6 @@ class UniversalLoginSDK {
 
   subscribeToPrices(callback: OnTokenPricesChange) {
     return this.priceObserver.subscribe(callback);
-  }
-
-  subscribeAuthorisations(contractAddress: string, privateKey: string, callback: Function) {
-    return this.authorisationsObserver.subscribe(
-      signRelayerRequest({contractAddress}, privateKey),
-      (notifications: Notification[]) => callback(addCodesToNotifications(notifications)),
-    );
   }
 
   async getConnectedDevices(contractAddress: string, privateKey: string) {
