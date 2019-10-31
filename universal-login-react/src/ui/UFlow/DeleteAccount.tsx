@@ -31,6 +31,7 @@ export const DeleteAccount = ({walletService, onAccountDeleted, onCancelClick, c
                 type="text"
                 value={inputs.username}
                 onChange={e => setInputs({...inputs, username: e.target.value})}
+                autoCapitalize='off'
               />
             </div>
             <div className="delete-account-input-wrapper">
