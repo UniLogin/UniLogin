@@ -16,6 +16,7 @@ describe('DeleteAccountService', () => {
   let deployedWallet: DeployedWallet;
   let relayer: RelayerUnderTest;
   let setErrors: () => void;
+  let onBeginAccountDeletion: sinon.SinonStub;
   let onAccountDeleted: sinon.SinonStub;
   const ensName = 'test.mylogin.eth';
 
@@ -32,22 +33,26 @@ describe('DeleteAccountService', () => {
   });
 
   it('delete account if inputs are valid', async () => {
-    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeleted);
+    const promise = deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onBeginAccountDeletion, onAccountDeleted);
+    expect(onBeginAccountDeletion).to.be.calledOnce;
+    await promise;
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDeleted).to.be.calledOnce;
     expect(() => walletService.getDeployedWallet()).to.throw('Invalid state: expected deployed wallet');
   });
 
   it('dont delete account if username are invalid', async () => {
-    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeleted);
+    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onBeginAccountDeletion, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
+    expect(onBeginAccountDeletion).to.not.be.called;
     expect(onAccountDeleted).to.not.be.called;
     expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
   });
 
   it('dont delete account if verifyField are invalid', async () => {
-    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'test'}, setErrors, onAccountDeleted);
+    await deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'test'}, setErrors, onBeginAccountDeletion, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
+    expect(onBeginAccountDeletion).to.not.be.called;
     expect(onAccountDeleted).to.not.be.called;
     expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
   });

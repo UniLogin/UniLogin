@@ -20,11 +20,23 @@ export const getInputClassName = (inputError: boolean) => inputError ? 'delete-a
 
 const doesAnyErrorExists = (errors: ErrorsType) => errors.usernameError || errors.verifyFieldError;
 
-export const deleteAccount = async (walletService: WalletService, inputs: InputsType, setErrors: (errors: ErrorsType) => void, onAccountDeleted: () => void) => {
+export const deleteAccount = async (
+  walletService: WalletService,
+  inputs: InputsType,
+  setErrors: (errors: ErrorsType) => void,
+  onAccountDeletion: (transactionHash?: string) => void,
+  onAccountDeleted: () => void,
+) => {
   const errors = checkInputsAgainstError(walletService.getDeployedWallet().name, inputs);
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
-    await walletService.removeWallet(transactionDetails);
+    onAccountDeletion();
+    const execution = await walletService.removeWallet(transactionDetails);
+    if (execution) {
+      const {transactionHash} = await execution.waitForTransactionHash();
+      onAccountDeletion(transactionHash);
+      await execution.waitToBeSuccess();
+    }
     onAccountDeleted();
   }
 };

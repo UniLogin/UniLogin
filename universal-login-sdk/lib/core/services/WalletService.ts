@@ -152,10 +152,13 @@ export class WalletService {
   }
 
   async removeWallet(transactionDetails: Partial<Message>) {
-    if (this.state.kind === 'Deployed') {
-      await this.state.wallet.removeCurrentKey(transactionDetails);
+    if (this.state.kind !== 'Deployed') {
+      this.disconnect();
+      return;
     }
-    this.disconnect();
+    const execution = await this.state.wallet.removeCurrentKey(transactionDetails);
+    execution.waitToBeSuccess().then(() => this.disconnect());
+    return execution;
   }
 
   disconnect(): void {
