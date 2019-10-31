@@ -4,13 +4,13 @@ import {useServices} from '../../hooks';
 import {Link, NavLink} from 'react-router-dom';
 
 export function Header() {
-  const {sdk, walletService} = useServices();
+  const {walletService} = useServices();
   const [newNotifications, setNewNotifications] = useState(false);
-  const {contractAddress, privateKey} = walletService.getDeployedWallet();
+  const deployedWallet = walletService.getDeployedWallet();
 
   const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
-  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifictions), []);
+  useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifictions), []);
 
   const {walletPresenter} = useServices();
 
