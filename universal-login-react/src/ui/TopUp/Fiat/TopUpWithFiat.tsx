@@ -52,39 +52,43 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
   useAsyncEffect(recognizeUserCountry, []);
 
   return (
-    <div className="fiat fiat-selected">
-      <div className="fiat-inputs">
-        <div className="fiat-input-item">
-          <p className="top-up-label">Country</p>
-          <CountryDropdown
-            selectedCountry={country}
-            setCountry={changeCountry}
-            setCurrency={setCurrency}
-          />
-        </div>
-        {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
-          <div className="fiat-input-item">
-            <p className="top-up-label">Amount</p>
-            <AmountInput
-              selectedCurrency={currency}
-              setCurrency={setCurrency}
-              amount={amount}
-              onChange={onAmountChange}
+    <div className="top-up-body">
+      <div className="top-up-body-inner">
+        <div className="fiat fiat-selected">
+          <div className="fiat-inputs">
+            <div className="fiat-input-item">
+              <p className="top-up-label">Country</p>
+              <CountryDropdown
+                selectedCountry={country}
+                setCountry={changeCountry}
+                setCurrency={setCurrency}
+              />
+            </div>
+            {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
+              <div className="fiat-input-item">
+                <p className="top-up-label">Amount</p>
+                <AmountInput
+                  selectedCurrency={currency}
+                  setCurrency={setCurrency}
+                  amount={amount}
+                  onChange={onAmountChange}
+                />
+              </div>}
+          </div>
+          {!!country && <>
+            <p className="top-up-label fiat-payment-methods-title">Payment method</p>
+            <FiatPaymentMethods
+              selectedCountry={country}
+              supportService={topUpProviderSupportService}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={onPaymentMethodChange}
+              logoColor={logoColor}
             />
-          </div>}
-      </div>
-      {!!country && <>
-        <p className="top-up-label fiat-payment-methods-title">Payment method</p>
-        <FiatPaymentMethods
-          selectedCountry={country}
-          supportService={topUpProviderSupportService}
-          paymentMethod={paymentMethod}
-          setPaymentMethod={onPaymentMethodChange}
-          logoColor={logoColor}
-        />
-      </>}
-      <div className="fiat-bottom">
-        {!!country && <FiatFooter paymentMethod={paymentMethod} />}
+          </>}
+          <div className="fiat-bottom">
+            {!!country && <FiatFooter paymentMethod={paymentMethod} />}
+          </div>
+        </div>
       </div>
     </div>
   );
