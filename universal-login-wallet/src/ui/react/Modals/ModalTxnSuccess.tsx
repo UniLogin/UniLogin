@@ -33,7 +33,7 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
         <p className="info-text">
           Your wallet is ready but not secure. Go to your wallet and make sure to follow the steps to.
         </p>
-        <Link to="/" onClick={hideModal} className="button-secondary modal-success-btn">Go to your wallet</Link>
+        <Link to="/" onClick={hideModal} className="button-primary modal-success-btn">Go to your wallet</Link>
       </div>
     </>
   );
