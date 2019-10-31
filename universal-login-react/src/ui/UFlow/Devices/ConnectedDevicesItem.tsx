@@ -68,7 +68,7 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
       <div>
         <p className="connected-devices-type">{applicationName} &bull; {os}</p>
         <p className="connected-devices-details">
-          IP address {ipAddress} {' '}{city}
+          {ipAddress && `IP address: ${ipAddress} ${city}`}
         </p>
       </div>
       {toBeRemoved ? renderConfirmationButtons() : renderTrashButton()}
