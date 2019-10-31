@@ -52,6 +52,7 @@ export const WalletSelector = ({
   const [ensName, setEnsName] = useState('');
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
+  const [suggestionsVisible, setSuggenstionsVisible] = useState(false);
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
@@ -109,6 +110,8 @@ export const WalletSelector = ({
             placeholder={placeholder}
             autoFocus
             checkSpelling={false}
+            onFocus={() => setSuggenstionsVisible(true)}
+            onBlur={() => setSuggenstionsVisible(false)}
           />
           {isNameAvailable && (
             <div className="hint">Name is already taken or is invalid</div>
@@ -123,7 +126,7 @@ export const WalletSelector = ({
           <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="ethereum-account-text">{ethAccount}</p>
         </div>
-        {renderSuggestions()}
+        {suggestionsVisible && renderSuggestions()}
       </div>
     </div>
   );
