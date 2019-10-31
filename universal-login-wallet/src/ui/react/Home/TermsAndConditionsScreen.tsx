@@ -104,7 +104,7 @@ export const TermsAndConditionsScreen = () => {
             </div>
             <div className="row">
               <button onClick={() => history.push('/welcome')} className="terms-btn button-secondary">I refuse</button>
-              <button onClick={() => history.push('/create')} className="terms-btn button-secondary" disabled={!isRead || !agreeOnPrivacyPolicy}>I agree</button>
+              <button onClick={() => history.push('/create')} className="terms-btn button-primary" disabled={!isRead || !agreeOnPrivacyPolicy}>I agree</button>
             </div>
           </div>
         </div>
