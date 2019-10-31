@@ -60,8 +60,12 @@ const Modal = () => {
       );
     case 'waitingForOnRampProvider':
       return (
-        <ModalWrapper>
-          <WaitingForOnRampProvider {...modalService.modalProps as WaitingForOnRampProviderProps}/>
+        <ModalWrapper modalClassName="jarvis-modal">
+          <WaitingForOnRampProvider
+            className="jarvis-modal"
+            logoColor="black"
+            {...modalService.modalProps as WaitingForOnRampProviderProps}
+          />
         </ModalWrapper>
       );
     case 'error':
