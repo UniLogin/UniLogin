@@ -96,12 +96,7 @@ export const WalletSelector = ({
   };
 
   const ref = useRef(null);
-
-  useOutsideClick(ref, () => {
-    if (suggestionsVisible) {
-      setSuggenstionsVisible(false);
-    }
-  });
+  useOutsideClick(ref, () => setSuggenstionsVisible(false));
 
   return (
     <div ref={ref} className={`universal-login ${accountStatus}`}>
