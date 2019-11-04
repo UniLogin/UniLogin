@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --mode development --progress",
     "prebuild": "yarn clean",
     "build": "webpack --mode production --progress",
     "pretest": "rm -fr dist/src dist/test && tsc && cpx \"src/ui/assets/**/*\" dist/src/ui/assets",
