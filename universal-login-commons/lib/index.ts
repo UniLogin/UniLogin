@@ -39,7 +39,7 @@ export {executionComparator, sortSignatureKeyPairsByKey, sign, signHexString, si
 export {waitToBeMined, waitForContractDeploy, sendAndWaitForTransaction} from './integration/ethereum/wait';
 export {getDeployTransaction, defaultDeployOptions} from './integration/ethereum/transaction';
 export {sleep, waitUntil, waitExpect} from './core/utils/wait';
-export {parseDomain} from './core/utils/ens';
+export {parseDomain, isValidEnsName} from './core/utils/ens';
 export {debounce} from './core/utils/debounce';
 export {getEnv} from './core/utils/getEnv';
 export {getGasPriceFor, findGasMode, findGasOption} from './core/utils/gasPriceMode';
