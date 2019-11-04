@@ -15,7 +15,6 @@ export interface ConnectedDeviceProps extends Device {
 }
 
 export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedWallet, devicesBasePath, confirmationsCount}: ConnectedDeviceProps) => {
-  const {os, applicationName, type, ipAddress, city, logo} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
   const [isWarningVisible, setIsWarningVisible] = useState(false);
