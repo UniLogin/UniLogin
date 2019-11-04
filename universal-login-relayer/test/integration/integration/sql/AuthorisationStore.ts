@@ -27,7 +27,13 @@ describe('INT: Authorisation Store', async () => {
     authorisationStore = new AuthorisationStore(database);
     const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
-    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+    await walletService.deploy({
+      publicKey: keyPair.publicKey,
+      ensName,
+      gasPrice: TEST_GAS_PRICE,
+      signature,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+    }, EMPTY_DEVICE_INFO);
     contractAddress = futureContractAddress;
   });
 

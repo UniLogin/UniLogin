@@ -1,6 +1,16 @@
 import fetch from 'node-fetch';
 import {Wallet, Contract, utils} from 'ethers';
-import {http, HttpFunction, PublicRelayerConfig, createKeyPair, calculateInitializeSignature, computeCounterfactualAddress, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO} from '@universal-login/commons';
+import {
+  calculateInitializeSignature,
+  createKeyPair,
+  computeCounterfactualAddress,
+  http,
+  HttpFunction,
+  PublicRelayerConfig,
+  ETHER_NATIVE_TOKEN,
+  TEST_APPLICATION_INFO,
+  TEST_GAS_PRICE,
+} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
 import ENSService from '../../lib/integration/ethereum/ensService';

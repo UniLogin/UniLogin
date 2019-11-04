@@ -26,7 +26,16 @@ describe('INT: MessageHandler', async () => {
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex, config));
+    ({
+      wallet,
+      provider,
+      messageHandler,
+      authorisationStore,
+      walletContract,
+      otherWallet,
+      devicesStore,
+      executionWorker,
+    } = await setupMessageService(knex, config));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
     executionWorker.start();
   });
@@ -52,7 +61,8 @@ describe('INT: MessageHandler', async () => {
     const gasData = 7696;
     const gasLimit = gasData + gasLimitExecution;
     const signedMessage = messageToSignedMessage({...msg, gasLimit}, wallet.privateKey);
-    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got GasLimitExecution 1 but should greater than ${GAS_BASE}`);
+    await expect(messageHandler.handleMessage(signedMessage))
+      .to.be.rejectedWith(`Insufficient Gas. Got GasLimitExecution 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {

@@ -30,7 +30,13 @@ describe('INT: WalletService', async () => {
     [wallet] = getWallets(provider);
     ({walletService, callback, factoryContract, ensService, provider, fakeDevicesService} = await setupWalletService(wallet));
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
-    transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+    transaction = await walletService.deploy({
+      publicKey: keyPair.publicKey,
+      ensName,
+      gasPrice: TEST_GAS_PRICE,
+      signature,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+    }, EMPTY_DEVICE_INFO);
     walletContract = new Contract(futureContractAddress, WalletContract.interface, provider);
   });
 
@@ -49,7 +55,13 @@ describe('INT: WalletService', async () => {
     });
 
     it('should fail with not existing ENS name', async () => {
-      const creationPromise = walletService.deploy({publicKey: wallet.address, ensName: 'alex.non-existing-id.eth', signature: 'SOME_SIGNATURE', gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+      const creationPromise = walletService.deploy({
+        publicKey: wallet.address,
+        ensName: 'alex.non-existing-id.eth',
+        signature: 'SOME_SIGNATURE',
+        gasPrice: '1',
+        gasToken: ETHER_NATIVE_TOKEN.address,
+      }, EMPTY_DEVICE_INFO);
       await expect(creationPromise)
         .to.be.eventually.rejectedWith('ENS domain alex.non-existing-id.eth does not exist or is not compatible with Universal Login');
     });
@@ -58,7 +70,8 @@ describe('INT: WalletService', async () => {
       const keyPair2 = createKeyPair();
       const ensName = 'jarek.mylogin.eth';
       const {futureContractAddress, signature} = await createFutureWallet(keyPair2, ensName, factoryContract, wallet, ensService);
-      const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+      const creationPromise =
+        walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.fulfilled;
       expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(futureContractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
     });

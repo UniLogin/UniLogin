@@ -49,6 +49,7 @@ describe('INT: MessageExecutionValidator', async () => {
       proxy: [TEST_ACCOUNT_ADDRESS],
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    // eslint-disable-next-line max-len
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 
@@ -58,7 +59,7 @@ describe('INT: MessageExecutionValidator', async () => {
       proxy: contractWhiteList.proxy,
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
-    await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
-      .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
+    // eslint-disable-next-line max-len
+    await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 });

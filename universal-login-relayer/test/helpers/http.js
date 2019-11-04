@@ -1,7 +1,14 @@
 import {Wallet, utils, Contract} from 'ethers';
 import {RelayerUnderTest} from '../../lib/http/relayers/RelayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {waitForContractDeploy, calculateInitializeSignature, TEST_GAS_PRICE, parseDomain, ETHER_NATIVE_TOKEN, TEST_APPLICATION_INFO} from '@universal-login/commons';
+import {
+  calculateInitializeSignature,
+  ETHER_NATIVE_TOKEN,
+  parseDomain,
+  TEST_APPLICATION_INFO,
+  TEST_GAS_PRICE,
+  waitForContractDeploy,
+} from '@universal-login/commons';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ENS from '@universal-login/contracts/build/ENS.json';
 import chai from 'chai';
@@ -29,7 +36,15 @@ export const createWalletContract = async (provider, relayerUrlOrServer, publicK
   return waitForContractDeploy(provider, WalletContract, transaction.hash);
 };
 
-export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, keyPair, walletContractAddress, factoryContractAddress, ensAddress, ensName = 'marek.mylogin.eth') => {
+export const createWalletCounterfactually = async (
+  wallet,
+  relayerUrlOrServer,
+  keyPair,
+  walletContractAddress,
+  factoryContractAddress,
+  ensAddress,
+  ensName = 'marek.mylogin.eth',
+) => {
   const futureAddress = getFutureAddress(walletContractAddress, factoryContractAddress, keyPair.publicKey);
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
   const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);

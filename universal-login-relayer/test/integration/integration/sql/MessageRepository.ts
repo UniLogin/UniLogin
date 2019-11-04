@@ -1,7 +1,16 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {
+  bignumberifySignedMessageFields,
+  calculateMessageHash,
+  CollectedSignatureKeyPair,
+  SignedMessage,
+  stringifySignedMessageFields,
+  TEST_TRANSACTION_HASH,
+  TEST_ACCOUNT_ADDRESS,
+  UnsignedMessage,
+} from '@universal-login/commons';
 import {emptyMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import IMessageRepository from '../../../../lib/core/models/messages/IMessagesRepository';
@@ -133,7 +142,8 @@ for (const config of [{
       const {signature} = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
       await messageRepository.addSignature(messageHash, signature);
       const key2 = getKeyFromHashAndSignature(messageHash, signature);
-      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
+      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash))
+        .to.be.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
     });
 
     after(async () => {

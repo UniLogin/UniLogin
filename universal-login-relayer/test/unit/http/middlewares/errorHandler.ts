@@ -1,6 +1,21 @@
 import {getCodeForException} from '../../../../lib/http/middlewares/errorHandler';
 import {expect} from 'chai';
-import {InvalidTransaction, NotEnoughSignatures, InvalidMessage, InvalidContract, NotFound, ValidationFailed, PaymentError, Conflict, InvalidSignature, InvalidENSDomain, NotEnoughGas, NotEnoughBalance, NotEnoughTokens, DuplicatedSignature, DuplicatedExecution} from '../../../../lib/core/utils/errors';
+import {InvalidTransaction,
+  Conflict,
+  DuplicatedExecution,
+  DuplicatedSignature,
+  InvalidContract,
+  InvalidENSDomain,
+  InvalidMessage,
+  InvalidSignature,
+  NotEnoughBalance,
+  NotEnoughGas,
+  NotEnoughSignatures,
+  NotEnoughTokens,
+  NotFound,
+  PaymentError,
+  ValidationFailed,
+} from '../../../../lib/core/utils/errors';
 
 describe('UNIT: Error Handler', () => {
   describe('getCodeForException', () => {

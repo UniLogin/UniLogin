@@ -72,6 +72,7 @@ export class InvalidContract extends ValidationFailed {
 
 export class InvalidProxy extends ValidationFailed {
   constructor(address: string, proxyHash: string, supportedProxyHashes: string[]) {
+    // eslint-disable-next-line max-len
     super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidProxy');
     Object.setPrototypeOf(this, InvalidProxy.prototype);
   }
@@ -79,6 +80,7 @@ export class InvalidProxy extends ValidationFailed {
 
 export class InvalidMaster extends ValidationFailed {
   constructor(address: string, masterHash: string, supportedMasterHashes: string[]) {
+    // eslint-disable-next-line max-len
     super(`Invalid master at address '${address}'. Deployed contract bytecode hash: '${masterHash}'. Supported bytecode hashes: [${supportedMasterHashes}]`, 'InvalidMaster');
     Object.setPrototypeOf(this, InvalidMaster.prototype);
   }

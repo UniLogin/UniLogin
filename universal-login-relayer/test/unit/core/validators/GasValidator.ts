@@ -32,11 +32,13 @@ describe('UNIT: GasValidator', () => {
   it('too less', async () => {
     (message.gasData as number) -= 1;
     const actualGasData = estimateGasDataFromSignedMessage(message);
-    await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasData ${message.gasData as number} but should be ${actualGasData}`);
+    await expect(gasValidator.validate(message))
+      .to.be.eventually.rejectedWith(`Insufficient Gas. Got GasData ${message.gasData as number} but should be ${actualGasData}`);
   });
 
   it('gas limit too high', async () => {
     (message.gasLimitExecution as number) += 1;
-    await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`GasLimit is too high. Got ${MAX_GAS_LIMIT + 1} but should be less than ${MAX_GAS_LIMIT}`);
+    await expect(gasValidator.validate(message))
+      .to.be.eventually.rejectedWith(`GasLimit is too high. Got ${MAX_GAS_LIMIT + 1} but should be less than ${MAX_GAS_LIMIT}`);
   });
 });

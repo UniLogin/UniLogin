@@ -44,6 +44,6 @@ describe('INT: CorrectMasterValidator', async () => {
     });
     const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
-      .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
+      .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`); // eslint-disable-line max-len
   });
 });
