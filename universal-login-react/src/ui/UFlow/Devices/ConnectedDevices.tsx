@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
-import {ConnectedDevicesItem} from './ConnectedDevicesItem';
+import {ConnectedDevice} from './ConnectedDevice';
 import {ConfirmationsEdit} from './ConfirmationsEdit';
 import {FeatureFlag} from '../../commons/FeatureFlag';
 
@@ -30,7 +30,7 @@ export const ConnectedDevices = ({devicesList, deployedWallet, devicesBasePath}:
       <ul className="connected-devices-list">
         {devicesList.map(device => {
           return (
-            <ConnectedDevicesItem
+            <ConnectedDevice
               key={device.publicKey}
               confirmationsCount={confirmationsCount}
               devicesAmount={devicesList.length}

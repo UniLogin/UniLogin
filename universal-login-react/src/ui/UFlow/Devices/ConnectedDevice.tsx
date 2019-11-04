@@ -2,19 +2,18 @@ import React, {useState} from 'react';
 import {Device, ensureNotNull} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {transactionDetails} from '../../../core/constants/TransactionDetails';
-import {Logo} from './Logo';
 import {useHistory} from 'react-router';
 import {join} from 'path';
+import {ConnectedDeviceView} from './ConnectedDeviceView';
 
-export interface ConnectedDevicesItemProps extends Device {
+export interface ConnectedDeviceProps extends Device {
   devicesAmount: number;
   deployedWallet: DeployedWallet;
   devicesBasePath: string;
   confirmationsCount: string;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, devicesBasePath, confirmationsCount}: ConnectedDevicesItemProps) => {
-  const {os, applicationName, type, ipAddress, city, logo} = deviceInfo;
+export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedWallet, devicesBasePath, confirmationsCount}: ConnectedDeviceProps) => {
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
   const [isWarningVisible, setIsWarningVisible] = useState(false);
@@ -62,18 +61,11 @@ export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, depl
     history.replace(devicesBasePath);
   };
 
-  return (
-    <li className={`connected-devices-item ${toBeRemoved ? 'highlighted' : ''}`}>
-      <Logo deviceType={type.toLowerCase()} logo={logo} applicationName={applicationName} />
-      <div>
-        <p className="connected-devices-type">{applicationName} &bull; {os}</p>
-        <p className="connected-devices-details">
-          {ipAddress && `IP address: ${ipAddress} ${city}`}
-        </p>
-      </div>
-      {toBeRemoved ? renderConfirmationButtons() : renderTrashButton()}
-    </li >
-  );
+  return <ConnectedDeviceView
+    deviceInfo={deviceInfo}
+    trashButton={toBeRemoved ? renderConfirmationButtons() : renderTrashButton()}
+    isHighlighted={toBeRemoved}
+  />;
 };
 
 export interface WarningMessageProps {
