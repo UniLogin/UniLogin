@@ -65,7 +65,7 @@ export const CreateAccount = () => {
             <p className="info-text create-account-info-text">
               Your username is a human-readable address.
               Like Domain Name Service (DNS) allows website address to be facebook.com and not 66.220.144.0.,
-              Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not Oxeefc.. 0843.
+              Ethereum Name Service (ENS) enables your address to be johndole.xyz., and not 0xeefc..0843.
             </p>
             <Link to="/welcome" className="button-secondary create-account-cancel">Cancel</Link>
           </div>
