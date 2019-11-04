@@ -42,7 +42,16 @@ export function setupInitializeWithENSArgs({keyPair, ensDomainData, gasPrice, ga
   const ensName = `${name}.${domain}`;
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
   const node = utils.namehash(ensName);
-  const args =
-    [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress, gasPrice, gasToken];
+  const args = [
+    keyPair.publicKey,
+    hashLabel,
+    ensName,
+    node,
+    ensDomainData.ensAddress,
+    ensDomainData.registrarAddress,
+    ensDomainData.resolverAddress,
+    gasPrice,
+    gasToken,
+  ];
   return args;
 }
