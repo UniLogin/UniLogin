@@ -1,25 +1,40 @@
 import {StorageEntry, StorageService} from './StorageService';
-import {ApplicationWallet} from '@universal-login/commons';
-import {asObject, asString, Sanitizer} from '@restless/sanitizers';
-import {WalletStorage} from '@universal-login/sdk';
+import {ApplicationWallet, asExactly, CounterfactualWallet} from '@universal-login/commons';
+import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
+import {WalletStorage, SerializedWalletState} from '@universal-login/sdk';
+
+const STORAGE_KEY = 'wallet';
 
 export class WalletStorageService implements WalletStorage {
-  private storage: StorageEntry<ApplicationWallet | null>;
+  private storage: StorageEntry<SerializedWalletState>;
 
-  constructor(storageService: StorageService) {
+  constructor(private storageService: StorageService) {
     this.storage = new StorageEntry(
-      'wallet',
-      asApplicationWallet,
+      STORAGE_KEY,
+      asSerializedState,
       storageService,
     );
   }
 
-  load(): ApplicationWallet | null {
+  private migrateStoredState() {
+    try {
+      const data = this.storageService.get(STORAGE_KEY);
+      if (data === null) {
+        return;
+      }
+      const wallet = cast(JSON.parse(data), asApplicationWallet);
+      this.storage.set({kind: 'Deployed', wallet});
+    } catch {
+    }
+  }
+
+  load(): SerializedWalletState | null {
+    this.migrateStoredState();
     return this.storage.get();
   }
 
-  save(wallet: ApplicationWallet): void {
-    this.storage.set(wallet);
+  save(state: SerializedWalletState): void {
+    this.storage.set(state);
   }
 
   remove() {
@@ -27,8 +42,24 @@ export class WalletStorageService implements WalletStorage {
   }
 }
 
-const asApplicationWallet: Sanitizer<ApplicationWallet> = asObject({
+const asCounterfactualWallet = asObject<CounterfactualWallet>({
+  contractAddress: asString,
+  privateKey: asString,
+});
+
+const asApplicationWallet = asObject<ApplicationWallet>({
   name: asString,
   contractAddress: asString,
   privateKey: asString,
 });
+
+const asSerializedState = asAnyOf([
+  asObject<SerializedWalletState>({
+    kind: asExactly('Future'),
+    wallet: asCounterfactualWallet,
+  }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('Deployed'),
+    wallet: asApplicationWallet,
+  }),
+], 'wallet state');
