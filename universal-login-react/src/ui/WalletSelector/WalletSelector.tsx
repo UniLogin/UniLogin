@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent} from 'react';
+import React, {useState, ChangeEvent, useRef} from 'react';
 import {
   DebouncedSuggestionsService,
   WalletSuggestionAction,
@@ -17,6 +17,7 @@ import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
 import {MissingParameter} from '../../core/utils/errors';
+import {useOutsideClick} from '../hooks/useClickOutside';
 
 interface WalletSelector {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -52,6 +53,7 @@ export const WalletSelector = ({
   const [ensName, setEnsName] = useState('');
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
+  const [suggestionsVisible, setSuggenstionsVisible] = useState(false);
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
@@ -93,8 +95,11 @@ export const WalletSelector = ({
       />;
   };
 
+  const ref = useRef(null);
+  useOutsideClick(ref, () => setSuggenstionsVisible(false));
+
   return (
-    <div className={`universal-login ${accountStatus}`}>
+    <div ref={ref} className={`universal-login ${accountStatus}`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="selector-input-wrapper">
           <img
@@ -109,6 +114,7 @@ export const WalletSelector = ({
             placeholder={placeholder}
             autoFocus
             checkSpelling={false}
+            onFocus={() => setSuggenstionsVisible(true)}
           />
           {isNameAvailable && (
             <div className="hint">Name is already taken or is invalid</div>
@@ -123,7 +129,7 @@ export const WalletSelector = ({
           <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="ethereum-account-text">{ethAccount}</p>
         </div>
-        {renderSuggestions()}
+        {suggestionsVisible && renderSuggestions()}
       </div>
     </div>
   );

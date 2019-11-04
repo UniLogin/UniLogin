@@ -22,6 +22,7 @@ export default class LoginPage {
 
   async pickUsername(userName: string, action: string, result: string) {
     const input = this.wrapper.find('input');
+    input.simulate('focus');
     input.simulate('change', {target: {value: userName}});
     await this.clickAction(action);
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(result));
