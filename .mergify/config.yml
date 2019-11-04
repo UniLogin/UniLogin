@@ -1,0 +1,9 @@
+pull_request_rules:
+  - name: automatic merge with 2 approvals
+    conditions:
+      - "#approved-reviews-by>=2"
+      - base=master
+    actions:
+      merge:
+        strict: smart
+        method: squash
