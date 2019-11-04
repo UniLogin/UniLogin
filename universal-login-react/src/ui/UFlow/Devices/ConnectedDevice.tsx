@@ -6,14 +6,14 @@ import {Logo} from './Logo';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 
-export interface ConnectedDevicesItemProps extends Device {
+export interface ConnectedDeviceProps extends Device {
   devicesAmount: number;
   deployedWallet: DeployedWallet;
   devicesBasePath: string;
   confirmationsCount: string;
 }
 
-export const ConnectedDevicesItem = ({devicesAmount, deviceInfo, publicKey, deployedWallet, devicesBasePath, confirmationsCount}: ConnectedDevicesItemProps) => {
+export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedWallet, devicesBasePath, confirmationsCount}: ConnectedDeviceProps) => {
   const {os, applicationName, type, ipAddress, city, logo} = deviceInfo;
   const [toBeRemoved, setToBeRemoved] = useState(false);
   const confirmationsAmount = Number(confirmationsCount);
