@@ -104,9 +104,9 @@ export const WalletSelector = ({
   });
 
   return (
-    <div className={`universal-login ${accountStatus}`}>
+    <div ref={ref} className={`universal-login ${accountStatus}`}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div ref={ref} className="selector-input-wrapper">
+        <div className="selector-input-wrapper">
           <img
             src={Logo}
             alt="Universal login logo"
