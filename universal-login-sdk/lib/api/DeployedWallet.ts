@@ -3,9 +3,6 @@ import {
   Message,
   generateBackupCode,
   walletFromBrain,
-  ETHER_NATIVE_TOKEN,
-  DEFAULT_GAS_PRICE,
-  DEFAULT_GAS_LIMIT,
   sign,
   MessageStatus,
 } from '@universal-login/commons';
