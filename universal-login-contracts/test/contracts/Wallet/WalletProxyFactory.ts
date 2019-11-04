@@ -5,9 +5,10 @@ import {createKeyPair, signString, ETHER_NATIVE_TOKEN, DEPLOYMENT_REFUND} from '
 import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
 import WalletContract from '../../../build/Wallet.json';
 import MockToken from '../../../build/MockToken.json';
-import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../../lib';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
+import {EnsDomainData, setupInitializeWithENSArgs, encodeInitializeWithENSData} from '../../../lib/encode.js';
+import {CreateFutureDeploymentWithENS, createFutureDeploymentWithENS} from '../../../lib/FutureDeployment.js';
 
 chai.use(solidity);
 
@@ -28,7 +29,14 @@ describe('Counterfactual Factory', () => {
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
     [wallet, anotherWallet] = getWallets(provider);
-    createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address};
+    createFutureDeploymentArgs = {
+      keyPair,
+      walletContractAddress: walletContract.address,
+      ensDomainData,
+      factoryContract,
+      gasPrice,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+    };
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });
 

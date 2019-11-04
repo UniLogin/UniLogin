@@ -3,9 +3,30 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import WalletContract from '../../../build/Wallet.json';
-import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey} from '../../helpers/ExampleMessages';
+import {
+  transferMessage,
+  failedTransferMessage,
+  callMessage,
+  failedCallMessage,
+  executeSetRequiredSignatures,
+  executeAddKey,
+} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message} from '@universal-login/commons';
+import {
+  calculateMessageHash,
+  calculateMessageSignature,
+  DEFAULT_GAS_PRICE,
+  TEST_ACCOUNT_ADDRESS,
+  UnsignedMessage,
+  signString,
+  createKeyPair,
+  SignedMessage,
+  ONE_SIGNATURE_GAS_COST,
+  sortPrivateKeysByAddress,
+  concatenateSignatures,
+  TEST_GAS_PRICE,
+  Message,
+} from '@universal-login/commons';
 import {getExecutionArgs, setupUpdateMessage, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
@@ -37,7 +58,17 @@ describe('WalletContract', async () => {
   let walletContractMaster: Contract;
 
   beforeEach(async () => {
-    ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, walletContractMaster, wallet} = await loadFixture(walletAndProxy));
+    ({
+      provider,
+      publicKey,
+      walletContractProxy,
+      proxyAsWalletContract,
+      privateKey,
+      mockToken,
+      mockContract,
+      walletContractMaster,
+      wallet,
+    } = await loadFixture(walletAndProxy));
     executeSignedFunc = new utils.Interface(WalletContract.interface).functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = calculateMessageSignature(privateKey, msg);
@@ -301,7 +332,11 @@ describe('WalletContract', async () => {
     it('cannot remove the last key', async () => {
       const nonce = await proxyAsWalletContract.lastNonce();
       const removeKeySignedMessage = messageToSignedMessage({...removeKeyMessage, nonce}, privateKey);
-      await wallet.sendTransaction({to: proxyAsWalletContract.address, data: encodeDataForExecuteSigned(removeKeySignedMessage), ...calculatePaymentOptions(removeKeySignedMessage)});
+      await wallet.sendTransaction({
+        to: proxyAsWalletContract.address,
+        data: encodeDataForExecuteSigned(removeKeySignedMessage),
+        ...calculatePaymentOptions(removeKeySignedMessage),
+      });
       expect(await proxyAsWalletContract.keyExist(publicKey)).to.be.true;
     });
 
@@ -398,7 +433,8 @@ describe('WalletContract', async () => {
   describe('gasLimitExecution', () => {
     it('reject execution that has too small gasLimit', async () => {
       const tooLowGasLimit = utils.bigNumberify(msg.gasLimitExecution).sub(1);
-      await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: tooLowGasLimit})).to.be.eventually.rejectedWith('Relayer set gas limit too low');
+      await expect(wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: tooLowGasLimit}))
+        .to.be.eventually.rejectedWith('Relayer set gas limit too low');
       expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(0);
     });
 

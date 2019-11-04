@@ -44,16 +44,19 @@ describe('WalletImplementation', () => {
 
   it('can`t initializeWithENS twice', async () => {
     await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address);
-    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address)).to.be.revertedWith('Contract instance has already been initialized');
+    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address))
+      .to.be.revertedWith('Contract instance has already been initialized');
   });
 
   it('can`t initialize twice', async () => {
     await walletContract.initialize(keyPair.publicKey, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    await expect(walletContract.initialize(keyPair.publicKey, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address)).to.be.revertedWith('Contract instance has already been initialized');
+    await expect(walletContract.initialize(keyPair.publicKey, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address))
+      .to.be.revertedWith('Contract instance has already been initialized');
   });
 
   it('Can`t initalize twice with and without ENS', async () => {
     await walletContract.initialize(keyPair.publicKey, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address)).to.be.revertedWith('Contract instance has already been initialized');
+    await expect(walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, '0', ETHER_NATIVE_TOKEN.address))
+      .to.be.revertedWith('Contract instance has already been initialized');
   });
 });

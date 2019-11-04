@@ -15,7 +15,17 @@ export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: s
 };
 
 export const messageSignature = (
-  wallet: Wallet, to: string, from: string, value: BigNumberish, data: Arrayish, nonce: string | number, gasToken: string, gasPrice: BigNumberish, gasLimitExecution: BigNumberish, gasData: BigNumberish) =>
+  wallet: Wallet,
+  to: string,
+  from: string,
+  value: BigNumberish,
+  data: Arrayish,
+  nonce: string | number,
+  gasToken: string,
+  gasPrice: BigNumberish,
+  gasLimitExecution: BigNumberish,
+  gasData: BigNumberish,
+) =>
   wallet.signMessage(
     getMessageArrayify({to, from, value, data, nonce, gasToken, gasPrice, gasLimitExecution, gasData}),
   );
