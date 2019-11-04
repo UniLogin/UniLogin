@@ -1,5 +1,10 @@
-import {providers} from 'ethers';
-import {PublicRelayerConfig, calculateInitializeSignature, MineableStatus} from '@universal-login/commons';
+import {providers, utils} from 'ethers';
+import {
+  calculateInitializeSignature,
+  CounterfactualWallet,
+  MineableStatus,
+  PublicRelayerConfig,
+} from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -19,12 +24,10 @@ export interface Deployment {
   waitToBeSuccess: () => Promise<DeployedWallet>;
 }
 
-export type FutureWallet = {
-  privateKey: string;
-  contractAddress: string;
+export interface FutureWallet extends CounterfactualWallet {
   waitForBalance: () => Promise<BalanceDetails>;
   deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<Deployment>;
-};
+}
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
@@ -54,44 +57,40 @@ export class FutureWalletFactory extends MineableFactory {
     return encodeInitializeWithENSData(initArgs);
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
-    const [privateKey, contractAddress, publicKey] = await this.blockchainService.createFutureWallet(this.config.factoryAddress);
-    const waitForBalance = async () => new Promise(
-      (resolve) => {
-        const onReadyToDeploy = (tokenAddress: string, contractAddress: string) => resolve({tokenAddress, contractAddress});
-        const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
-        deploymentReadyObserver.startAndSubscribe(contractAddress, onReadyToDeploy)
-          .catch(console.error);
-      },
-    ) as Promise<BalanceDetails>;
-
-    const deploy = async (ensName: string, gasPrice: string, gasToken: string) => {
-      const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
-      const signature = await calculateInitializeSignature(initData, privateKey);
-      const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
-
-      const deployedWallet = new DeployedWallet(
-        contractAddress,
-        ensName,
-        privateKey,
-        this.sdk,
-      );
-
-      const deployment: Deployment = {
-        waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
-        waitToBeSuccess: async () => {
-          await this.createWaitToBeSuccess(deploymentHash)();
-          return deployedWallet;
-        },
-      };
-      return deployment;
-    };
+  async createFromExistingCounterfactual(wallet: CounterfactualWallet): Promise<FutureWallet> {
+    const {privateKey, contractAddress} = wallet;
+    const publicKey = utils.computeAddress(privateKey);
 
     return {
       privateKey,
       contractAddress,
-      waitForBalance,
-      deploy,
+      waitForBalance: async () => new Promise<BalanceDetails>(
+        (resolve) => {
+          const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
+          deploymentReadyObserver.startAndSubscribe(
+            contractAddress,
+            (tokenAddress, contractAddress) => resolve({tokenAddress, contractAddress}),
+          ).catch(console.error);
+        },
+      ),
+      deploy: async (ensName: string, gasPrice: string, gasToken: string): Promise<Deployment> => {
+        const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
+        const signature = await calculateInitializeSignature(initData, privateKey);
+        const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
+
+        return {
+          waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
+          waitToBeSuccess: async () => {
+            await this.createWaitToBeSuccess(deploymentHash)();
+            return new DeployedWallet(contractAddress, ensName, privateKey, this.sdk);
+          },
+        };
+      },
     };
+  }
+
+  async createFutureWallet(): Promise<FutureWallet> {
+    const [privateKey, contractAddress] = await this.blockchainService.createFutureWallet(this.config.factoryAddress);
+    return this.createFromExistingCounterfactual({privateKey, contractAddress});
   }
 }
