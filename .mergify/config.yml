@@ -7,3 +7,4 @@ pull_request_rules:
       merge:
         strict: smart
         method: squash
+      delete_head_branch: {}
