@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent} from 'react';
+import React, {useState, ChangeEvent, useRef} from 'react';
 import {
   DebouncedSuggestionsService,
   WalletSuggestionAction,
@@ -17,6 +17,7 @@ import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
 import {MissingParameter} from '../../core/utils/errors';
+import {useOutsideClick} from '../hooks/useClickOutside';
 
 interface WalletSelector {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -94,10 +95,18 @@ export const WalletSelector = ({
       />;
   };
 
+  const ref = useRef(null);
+
+  useOutsideClick(ref, () => {
+    if (suggestionsVisible) {
+      setSuggenstionsVisible(false);
+    }
+  });
+
   return (
     <div className={`universal-login ${accountStatus}`}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="selector-input-wrapper">
+        <div ref={ref} className="selector-input-wrapper">
           <img
             src={Logo}
             alt="Universal login logo"
@@ -111,7 +120,6 @@ export const WalletSelector = ({
             autoFocus
             checkSpelling={false}
             onFocus={() => setSuggenstionsVisible(true)}
-            onBlur={() => setSuggenstionsVisible(false)}
           />
           {isNameAvailable && (
             <div className="hint">Name is already taken or is invalid</div>
