@@ -8,5 +8,5 @@ export const isValidEnsNameElement = (ensNameElement: string) => {
   return ensNameElementRegex.test(ensNameElement);
 };
 
-export const isProperENSName = (ensName: string) =>
+export const isValidEnsName = (ensName: string) =>
   !!ensName.match(/^[a-z0-9]*(-*[a-z0-9]+)\.[a-z0-9](-*[a-z0-9]+)\.(eth|xyz|test)/);
