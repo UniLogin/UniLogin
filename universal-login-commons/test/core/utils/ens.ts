@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {parseDomain, isValidEnsNameElement} from '../../../lib/core/utils/ens';
+import {parseDomain, isValidEnsNameElement, isProperENSName} from '../../../lib/core/utils/ens';
 
 describe('UNIT: ENS', () => {
   describe('parseDomain', () => {
@@ -104,5 +104,25 @@ describe('UNIT: ENS', () => {
       const actalIsValid = isValidEnsNameElement(ensNameElement);
       expect(actalIsValid).to.be.false;
     });
+  });
+
+  describe('isProperENSName', () => {
+    const isProperENSNameTest = (ensName: string, result: boolean) => {
+      it(`returns ${result} for ${ensName}`, () => {
+        expect(isProperENSName(ensName)).to.be.eq(result);
+      });
+    };
+
+    isProperENSNameTest('jaaaa.mylogin.eth', true);
+    isProperENSNameTest('jaaaa.mylogin.xyz', true);
+    isProperENSNameTest('jaaaa.mylogin.test', true);
+    isProperENSNameTest('jaaaa1234.mylogin.eth', true);
+    isProperENSNameTest('j-4.mylogin.eth', true);
+    isProperENSNameTest('jaaaa-4.mylogin.eth', true);
+    isProperENSNameTest('jaaaa123_4.mylogin.eth', false);
+    isProperENSNameTest('jaaaa123_&@@.mylogin.eth', false);
+    isProperENSNameTest('jaaaa123.wrong__domain.eth', false);
+    isProperENSNameTest('jaaaa123_4.mylogin.abc', false);
+    isProperENSNameTest('jaaaa123_4.mylogin.something', false);
   });
 });
