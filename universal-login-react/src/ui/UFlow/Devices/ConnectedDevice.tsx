@@ -5,6 +5,7 @@ import {transactionDetails} from '../../../core/constants/TransactionDetails';
 import {Logo} from './Logo';
 import {useHistory} from 'react-router';
 import {join} from 'path';
+import {ConnectedDeviceView} from './ConnectedDeviceView';
 
 export interface ConnectedDeviceProps extends Device {
   devicesAmount: number;
@@ -62,18 +63,11 @@ export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedW
     history.replace(devicesBasePath);
   };
 
-  return (
-    <li className={`connected-devices-item ${toBeRemoved ? 'highlighted' : ''}`}>
-      <Logo deviceType={type.toLowerCase()} logo={logo} applicationName={applicationName} />
-      <div>
-        <p className="connected-devices-type">{applicationName}{os && ` • ${os}`}</p>
-        <p className="connected-devices-details">
-          {ipAddress && `IP address: ${ipAddress} ${city}`}
-        </p>
-      </div>
-      {toBeRemoved ? renderConfirmationButtons() : renderTrashButton()}
-    </li >
-  );
+  return <ConnectedDeviceView
+    deviceInfo={deviceInfo}
+    trashButton={toBeRemoved ? renderConfirmationButtons() : renderTrashButton()}
+    isHighlighted={toBeRemoved}
+  />;
 };
 
 export interface WarningMessageProps {
