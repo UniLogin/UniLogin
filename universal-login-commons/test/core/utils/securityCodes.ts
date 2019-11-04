@@ -1,5 +1,14 @@
 import {expect} from 'chai';
-import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
+import {
+  filterKeyWithCodeByPrefix,
+  filterNotificationByCodePrefix,
+  generateCode,
+  generateCodeWithFakes,
+  isValidCode,
+  addCodesToNotifications,
+  isProperSecurityCode,
+  isProperSecurityCodeWithFakes,
+} from '../../../lib/core/utils/securityCodes';
 import {Notification} from '../../../lib';
 
 describe('UNIT: security codes', () => {
