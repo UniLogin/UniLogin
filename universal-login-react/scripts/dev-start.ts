@@ -7,8 +7,8 @@ function runWebServer(vars: any) {
 }
 
 async function start() {
-  const artefacts = await startDevelopment({relayerClass: Relayer});
-  const env = createEnv(artefacts);
+  const artifacts = await startDevelopment({relayerClass: Relayer});
+  const env = createEnv(artifacts);
   runWebServer(env);
 }
 
