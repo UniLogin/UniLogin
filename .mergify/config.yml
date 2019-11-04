@@ -3,6 +3,7 @@ pull_request_rules:
     conditions:
       - "#approved-reviews-by>=2"
       - base=master
+      - "status-success~=ci/circleci: *"
     actions:
       merge:
         strict: smart
