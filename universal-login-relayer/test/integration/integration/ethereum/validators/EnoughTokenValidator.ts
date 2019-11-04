@@ -43,6 +43,7 @@ describe('INT: EnoughTokenValidator', async () => {
     let wallet: Wallet;
     let otherWallet: Wallet;
     const gasLimit = 1000000;
+    const gasPrice = '2';
     let token: Contract;
     let walletContract: Contract;
 
@@ -57,32 +58,36 @@ describe('INT: EnoughTokenValidator', async () => {
     });
 
     it('Should return true if contract has enough token', async () => {
-      expect(await hasEnoughToken(token.address, walletContract.address, gasLimit, provider)).to.be.true;
-      expect(await hasEnoughToken(token.address, walletContract.address, gasLimit * 2, provider)).to.be.true;
-      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('0.09'), provider)).to.be.true;
-      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('0.9'), provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, gasLimit, gasPrice, provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, gasLimit * 2, gasPrice, provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('0.09'), '10', provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, '10', utils.parseEther('0.09'), provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('0.9'), '1', provider)).to.be.true;
+      expect(await hasEnoughToken(token.address, walletContract.address, '1', utils.parseEther('0.9'), provider)).to.be.true;
     });
 
     it('Should return false if contract has not enough token', async () => {
-      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('1.00001'), provider)).to.be.false;
-      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('1.1'), provider)).to.be.false;
-      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('2'), provider)).to.be.false;
-      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('10'), provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('1.00001'), gasPrice, provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('1.1'), gasPrice, provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('2'), gasPrice, provider)).to.be.false;
+      expect(await hasEnoughToken(token.address, walletContract.address, utils.parseEther('10'), gasPrice, provider)).to.be.false;
     });
 
     it('Should return true if contract has enough ethers', async () => {
       const walletBalance = await provider.getBalance(walletContract.address);
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, gasLimit, provider)).to.be.true;
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, walletBalance, provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, gasLimit, gasPrice, provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, walletBalance.div(gasPrice), gasPrice, provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, walletBalance, '1', provider)).to.be.true;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, '1', walletBalance, provider)).to.be.true;
     });
 
     it('Should return false if contract has not enough ethers', async () => {
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('1.01'), provider)).to.be.false;
-      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('2.0'), provider)).to.be.false;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('1.01'), gasPrice, provider)).to.be.false;
+      expect(await hasEnoughToken(ETHER_NATIVE_TOKEN.address, walletContract.address, utils.parseEther('2.0'), gasPrice, provider)).to.be.false;
     });
 
     it('Should throw error, when passed address is not a token address', async () => {
-      expect(hasEnoughToken(otherWallet.address, walletContract.address, utils.parseEther('2'), provider)).to.be.eventually.rejectedWith(Error);
+      expect(hasEnoughToken(otherWallet.address, walletContract.address, utils.parseEther('2'), gasPrice, provider)).to.be.eventually.rejectedWith(Error);
     });
   });
 });
