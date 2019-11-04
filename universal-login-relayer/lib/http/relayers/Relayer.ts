@@ -25,7 +25,7 @@ import AuthorisationStore from '../../integration/sql/services/AuthorisationStor
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 import {MessageStatusService} from '../../core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
-import IMessageValidator from '../../core/models/IMessageValidator';
+import IValidator from '../../core/models/IValidator';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
@@ -70,7 +70,7 @@ class Relayer {
   private deploymentRepository: IRepository<Deployment> = {} as IRepository<Deployment>;
   private signaturesService: SignaturesService = {} as SignaturesService;
   private statusService: MessageStatusService = {} as MessageStatusService;
-  private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
+  private messageExecutionValidator: IValidator = {} as IValidator;
   private executionWorker: ExecutionWorker = {} as ExecutionWorker;
   private messageExecutor: MessageExecutor = {} as MessageExecutor;
   private deploymentExecutor: DeploymentExecutor = {} as DeploymentExecutor;

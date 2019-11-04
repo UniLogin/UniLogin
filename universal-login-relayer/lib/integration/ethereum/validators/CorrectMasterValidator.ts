@@ -2,10 +2,10 @@ import {utils, Contract} from 'ethers';
 import {Provider} from 'ethers/providers';
 import WalletProxy from '@universal-login/contracts/build/WalletProxy.json';
 import {ContractWhiteList, SignedMessage, ensure} from '@universal-login/commons';
-import IMessageValidator from '../../../core/models/IMessageValidator';
+import IValidator from '../../../core/models/IValidator';
 import {InvalidMaster} from '../../../core/utils/errors';
 
-export default class CorrectMasterValidator implements IMessageValidator {
+export default class CorrectMasterValidator implements IValidator {
   constructor(private provider: Provider, private contractWhiteList: ContractWhiteList) {}
 
   async validate(signedMessage: SignedMessage) {

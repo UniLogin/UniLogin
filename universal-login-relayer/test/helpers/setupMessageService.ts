@@ -9,7 +9,7 @@ import MessageSQLRepository from '../../lib/integration/sql/services/MessageSQLR
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../lib/core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../lib/integration/ethereum/SignaturesService';
-import IMessageValidator from '../../lib/core/models/IMessageValidator';
+import IValidator from '../../lib/core/models/IValidator';
 import MessageExecutionValidator from '../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../lib/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../lib/integration/sql/services/DevicesStore';
@@ -36,7 +36,7 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const devicesService = new DevicesService(devicesStore, walletMasterContractService);
   const signaturesService = new SignaturesService(wallet);
   const statusService = new MessageStatusService(messageRepository, signaturesService);
-  const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList());
+  const messageExecutionValidator: IValidator = new MessageExecutionValidator(wallet, getContractWhiteList());
   const gasValidator = new GasValidator(config.maxGasLimit);
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
   const messageHandler = new MessageHandler(wallet, messageRepository, statusService, gasValidator, executionQueue);

@@ -5,14 +5,14 @@ import {TEST_ACCOUNT_ADDRESS, Message} from '@universal-login/commons';
 import {messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EstimateGasValidator from '../../../../../lib/integration/ethereum/validators/EstimateGasValidator';
-import IMessageValidator from '../../../../../lib/core/models/IMessageValidator';
+import IValidator from '../../../../../lib/core/models/IValidator';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;
   let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
-  let validator: IMessageValidator;
+  let validator: IValidator;
 
   beforeEach(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));

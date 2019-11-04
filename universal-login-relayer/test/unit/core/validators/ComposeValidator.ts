@@ -1,13 +1,13 @@
 import chai, {expect} from 'chai';
 import {SignedMessage} from '@universal-login/commons';
 import {ComposeValidator} from '../../../../lib/core/services/validators/ComposeValidator';
-import {IMessageValidator} from '../../../../lib/core/models/IMessageValidator';
+import {IValidator} from '../../../../lib/core/models/IValidator';
 import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 
 describe('UNIT: ComposeValidator', () => {
-  const passingValidator: IMessageValidator = {validate: async () => {}};
-  const createFailingValidator = (errorMsg: string) => ({validate: async () => {throw new Error(errorMsg);}} as IMessageValidator);
+  const passingValidator: IValidator = {validate: async () => {}};
+  const createFailingValidator = (errorMsg: string) => ({validate: async () => {throw new Error(errorMsg);}} as IValidator);
   const message: SignedMessage = {
     to: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',
     value: 0,

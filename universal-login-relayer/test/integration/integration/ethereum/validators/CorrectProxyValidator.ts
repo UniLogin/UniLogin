@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom} from '@univers
 import {messageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import CorrectProxyValidator from '../../../../../lib/integration/ethereum/validators/CorrectProxyValidator';
-import IMessageValidator from '../../../../../lib/core/models/IMessageValidator';
+import IValidator from '../../../../../lib/core/models/IValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: CorrectProxyValidator', async () => {
@@ -13,7 +13,7 @@ describe('INT: CorrectProxyValidator', async () => {
   let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
-  let validator: IMessageValidator;
+  let validator: IValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
 
   before(async () => {

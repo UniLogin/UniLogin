@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage, ensureNotNull} from '@universal-login/commons';
-import IMessageValidator from '../../core/models/IMessageValidator';
+import IValidator from '../../core/models/IValidator';
 import {messageToTransaction} from '../../core/utils/messages/serialisation';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
@@ -13,7 +13,7 @@ export type OnTransactionMined = (transaction: providers.TransactionResponse) =>
 export class MessageExecutor implements IExecutor<SignedMessage> {
   constructor(
     private wallet: Wallet,
-    private messageValidator: IMessageValidator,
+    private messageValidator: IValidator,
     private messageRepository: IMessageRepository,
     private minedTransactionHandler: IMinedTransactionHandler,
   ) {}

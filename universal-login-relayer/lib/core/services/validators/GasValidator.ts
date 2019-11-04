@@ -1,9 +1,9 @@
 import {estimateGasDataFromUnsignedMessage} from '@universal-login/contracts';
 import {SignedMessage, ensure, GAS_BASE} from '@universal-login/commons';
 import {InsufficientGas, GasLimitTooHigh} from '../../utils/errors';
-import IMessageValidator from '../../models/IMessageValidator';
+import IValidator from '../../models/IValidator';
 
-export class GasValidator implements IMessageValidator {
+export class GasValidator implements IValidator {
   constructor(private MAX_GAS_LIMIT: number) {}
 
   async validate(signedMessage: SignedMessage) {

@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, Message, TEST_GAS_PRICE} from 
 import {messageToSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EnoughTokenValidator, {hasEnoughToken} from '../../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
-import IMessageValidator from '../../../../../lib/core/models/IMessageValidator';
+import IValidator from '../../../../../lib/core/models/IValidator';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
@@ -14,7 +14,7 @@ describe('INT: EnoughTokenValidator', async () => {
   let mockToken: Contract;
   let walletContract: Contract;
   let wallet: Wallet;
-  let validator: IMessageValidator;
+  let validator: IValidator;
 
   before(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));

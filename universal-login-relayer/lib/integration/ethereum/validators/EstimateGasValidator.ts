@@ -1,10 +1,10 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage, ensure, calculateMessageHash} from '@universal-login/commons';
-import IMessageValidator from '../../../core/models/IMessageValidator';
+import IValidator from '../../../core/models/IValidator';
 import {messageToTransaction} from '../../../core/utils/messages/serialisation';
 import {NotEnoughGas} from '../../../core/utils/errors';
 
-export default class EstimateGasValidator implements IMessageValidator {
+export default class EstimateGasValidator implements IValidator {
   constructor(private wallet: Wallet) {}
 
   async validate(signedMessage: SignedMessage) {

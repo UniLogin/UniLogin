@@ -1,7 +1,7 @@
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
 import {providers, utils, Contract} from 'ethers';
 import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContract, PaymentOptions} from '@universal-login/commons';
-import IMessageValidator from '../../../core/models/IMessageValidator';
+import IValidator from '../../../core/models/IValidator';
 import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
 
 export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOptions, walletContractAddress: string, provider: providers.Provider) => {
@@ -16,7 +16,7 @@ export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOpti
   }
 };
 
-export default class EnoughTokenValidator implements IMessageValidator {
+export default class EnoughTokenValidator implements IValidator {
   constructor(private provider: providers.Provider) {}
 
   async validate(signedMessage: SignedMessage) {
