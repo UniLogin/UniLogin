@@ -8,17 +8,17 @@ import './../styles/deleteAccountDefault.sass';
 export interface DeleteAccountProps {
   walletService: WalletService;
   onAccountDeleted: () => void;
-  onAccountDeletion: (transactionHash?: string) => void;
+  onDeletionProgress: (transactionHash?: string) => void;
   onCancelClick: () => void;
   className?: string;
 }
 
-export const DeleteAccount = ({walletService, onAccountDeletion, onAccountDeleted, onCancelClick, className}: DeleteAccountProps) => {
+export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDeleted, onCancelClick, className}: DeleteAccountProps) => {
   const [inputs, setInputs] = useState({username: '', verifyField: ''});
   const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 
   function onDeleteClick() {
-    deleteAccount(walletService, inputs, setErrors, onAccountDeletion, onAccountDeleted);
+    deleteAccount(walletService, inputs, setErrors, onDeletionProgress, onAccountDeleted);
   }
 
   return (

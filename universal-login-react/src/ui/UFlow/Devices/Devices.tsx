@@ -42,7 +42,7 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
       <Route path={join(basePath, 'deleteAccount')} exact>
         <DeleteAccount
           walletService={walletService}
-          onAccountDeletion={transactionHash => history.replace(join(basePath, 'waitingForDeletingAccount'), {transactionHash})}
+          onDeletionProgress={transactionHash => history.replace(join(basePath, 'waitingForDeletingAccount'), {transactionHash})}
           onAccountDeleted={onAccountDeleted}
           onCancelClick={() => history.replace(`${basePath}/`)}
           className={className}

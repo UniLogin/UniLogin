@@ -24,17 +24,17 @@ export const deleteAccount = async (
   walletService: WalletService,
   inputs: InputsType,
   setErrors: (errors: ErrorsType) => void,
-  onAccountDeletion: (transactionHash?: string) => void,
+  onDeletionProgress: (transactionHash?: string) => void,
   onAccountDeleted: () => void,
 ) => {
   const errors = checkInputsAgainstError(walletService.getDeployedWallet().name, inputs);
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
-    onAccountDeletion();
+    onDeletionProgress();
     const execution = await walletService.removeWallet(transactionDetails);
     if (execution) {
       const {transactionHash} = await execution.waitForTransactionHash();
-      onAccountDeletion(transactionHash);
+      onDeletionProgress(transactionHash);
       await execution.waitToBeSuccess();
     }
     onAccountDeleted();
