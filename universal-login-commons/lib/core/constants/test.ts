@@ -13,11 +13,9 @@ export const TEST_TRANSACTION_HASH = '0x06c81cd35a49c66824bc0b84bff850d1a2a56a09
 
 export const TEST_SIGNATURE_KEY_PAIRS = [{
   key: '0xD1D84F0e28D6fedF03c73151f98dF95139700aa7',
-  // eslint-disable-next-line max-len
   signature: '0x97a061e4965a13cda63e18cf4786ef174d04407dbede36982194b2316717afdd5737a0f24458f2798419dcbf6fc3198598c12693db80149ddc9846a7f17b747f1c',
 }, {
   key: '0x8221157B2423906FFbb5FaF2A6B062C3d3A6050f',
-  // eslint-disable-next-line max-len
   signature: '0xf65bc65a5043e6582b38aa2269bafd759fcdfe32a3640a3b2b9086260c5f090306bb9b821eb5e452748687c69b13f3cb67b74fb1f49b45fbe60b0c90b73a73651b',
 }];
 
