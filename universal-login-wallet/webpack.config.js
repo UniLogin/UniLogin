@@ -64,7 +64,7 @@ module.exports = {
       'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
     }),
     new CopyPlugin([
-      {from: './src/ui/assets/jarvis-logo.png'},
+      {from: './src/ui/assets/jarvis-web-clip.png'},
       {from: './src/_redirects'}
     ]),
   ],
