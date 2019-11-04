@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "yarn clean",
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --mode development --progress",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "clean": "rimraf dist",
     "build": "tsc -p tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
