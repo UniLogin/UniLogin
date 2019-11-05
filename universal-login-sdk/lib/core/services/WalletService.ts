@@ -137,7 +137,7 @@ export class WalletService {
     };
   }
 
-  async removeWallet(paymentOptions: PaymentOptions) {
+  async removeWallet(paymentOptions: Partial<PaymentOptions>) {
     if (this.state.kind !== 'Deployed') {
       this.disconnect();
       return;

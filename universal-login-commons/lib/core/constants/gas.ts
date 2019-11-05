@@ -26,9 +26,3 @@ export const EMPTY_GAS_OPTION = {
   },
   gasPrice: utils.bigNumberify('0'),
 };
-
-export const DEFAULT_PAYMENT_OPTIONS = {
-  gasToken: ETHER_NATIVE_TOKEN.address,
-  gasPrice: DEFAULT_GAS_PRICE,
-  gasLimit: DEFAULT_GAS_LIMIT,
-};

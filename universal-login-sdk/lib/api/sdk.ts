@@ -103,19 +103,19 @@ class UniversalLoginSDK {
     return this.getFutureWalletFactory().createFutureWallet();
   }
 
-  async addKey(to: string, publicKey: string, privateKey: string, paymentOptions: PaymentOptions): Promise<Execution> {
+  async addKey(to: string, publicKey: string, privateKey: string, paymentOptions: Partial<PaymentOptions>): Promise<Execution> {
     return this.selfExecute(to, 'addKey', [publicKey], privateKey, paymentOptions);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, paymentOptions: PaymentOptions): Promise<Execution> {
+  async addKeys(to: string, publicKeys: string[], privateKey: string, paymentOptions: Partial<PaymentOptions>): Promise<Execution> {
     return this.selfExecute(to, 'addKeys', [publicKeys], privateKey, paymentOptions);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, paymentOptions: PaymentOptions): Promise<Execution> {
+  async removeKey(to: string, key: string, privateKey: string, paymentOptions: Partial<PaymentOptions>): Promise<Execution> {
     return this.selfExecute(to, 'removeKey', [key], privateKey, paymentOptions);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, paymentOptions: PaymentOptions): Promise<Execution> {
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, paymentOptions: Partial<PaymentOptions>): Promise<Execution> {
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, paymentOptions);
   }
 
@@ -181,7 +181,7 @@ class UniversalLoginSDK {
     return this.executionFactory.createExecution(signedMessage);
   }
 
-  protected selfExecute(to: string, method: string, args: any[], privateKey: string, paymentOptions: PaymentOptions): Promise<Execution> {
+  protected selfExecute(to: string, method: string, args: any[], privateKey: string, paymentOptions: Partial<PaymentOptions>): Promise<Execution> {
     const data = new utils.Interface(WalletContract.interface).functions[method].encode(args);
     const message: Partial<Message> = {
       ...paymentOptions,
