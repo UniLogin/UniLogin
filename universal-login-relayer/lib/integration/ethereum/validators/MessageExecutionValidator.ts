@@ -11,7 +11,7 @@ export class MessageExecutionValidator extends ComposeValidator {
     super([
       new CorrectProxyValidator(wallet.provider, contractWhiteList),
       new CorrectMasterValidator(wallet.provider, contractWhiteList),
-      new EnoughTokenValidator(wallet),
+      new EnoughTokenValidator(wallet.provider),
       new EstimateGasValidator(wallet),
     ]);
   }

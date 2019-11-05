@@ -19,7 +19,7 @@ describe('INT: EnoughTokenValidator', async () => {
   before(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
-    validator = new EnoughTokenValidator(wallet);
+    validator = new EnoughTokenValidator(wallet.provider);
   });
 
   it('successfully pass the validation', async () => {
@@ -70,9 +70,9 @@ describe('INT: EnoughTokenValidator', async () => {
 
     it('Should return false if contract has not enough token', async () => {
       expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.00001'), gasPrice), walletContract.address, provider)).to.be.false;
-      expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.1'), gasPrice,), walletContract.address, provider)).to.be.false;
-      expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('2'), gasPrice,), walletContract.address, provider)).to.be.false;
-      expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('10'), gasPrice,), walletContract.address, provider)).to.be.false;
+      expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.1'), gasPrice), walletContract.address, provider)).to.be.false;
+      expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('2'), gasPrice), walletContract.address, provider)).to.be.false;
+      expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('10'), gasPrice), walletContract.address, provider)).to.be.false;
     });
 
     it('Should return true if contract has enough ethers', async () => {
