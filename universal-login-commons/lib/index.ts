@@ -59,6 +59,7 @@ export {deepMerge} from './core/utils/deepMerge';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {GasMode, GasOption, GasParameters, OnGasParametersChanged} from './core/models/gas';
+export {IValidator} from './core/models/IValidator';
 export {normalizeBigNumber} from './core/utils/bigNumbers';
 export {stringToEther} from './integration/ethereum/stringToEther';
 export {isValidAmount} from './core/utils/isValidAmount';

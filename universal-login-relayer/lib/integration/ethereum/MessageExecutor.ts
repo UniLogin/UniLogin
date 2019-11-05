@@ -1,6 +1,5 @@
 import {Wallet, providers} from 'ethers';
-import {SignedMessage, ensureNotNull} from '@universal-login/commons';
-import IValidator from '../../core/models/IValidator';
+import {SignedMessage, ensureNotNull, IValidator} from '@universal-login/commons';
 import {messageToTransaction} from '../../core/utils/messages/serialisation';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';

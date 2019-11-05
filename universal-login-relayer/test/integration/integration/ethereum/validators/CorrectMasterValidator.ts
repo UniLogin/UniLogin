@@ -1,11 +1,10 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom, IValidator} from '@universal-login/commons';
 import {messageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import CorrectMasterValidator from '../../../../../lib/integration/ethereum/validators/CorrectMasterValidator';
-import IValidator from '../../../../../lib/core/models/IValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
 
 describe('INT: CorrectMasterValidator', async () => {

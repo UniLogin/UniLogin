@@ -1,10 +1,9 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IValidator} from '@universal-login/commons';
 import {messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import IValidator from '../../../../../lib/core/models/IValidator';
 import MessageExecutionValidator from '../../../../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../../fixtures/basicWalletContract';

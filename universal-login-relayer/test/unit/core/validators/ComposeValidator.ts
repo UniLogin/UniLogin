@@ -1,7 +1,6 @@
 import chai, {expect} from 'chai';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, IValidator} from '@universal-login/commons';
 import {ComposeValidator} from '../../../../lib/core/services/validators/ComposeValidator';
-import {IValidator} from '../../../../lib/core/models/IValidator';
 import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 

@@ -1,7 +1,5 @@
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from './message';
 
 export interface IValidator {
   validate: (message: SignedMessage) => Promise<void>;
 }
-
-export default IValidator;

@@ -1,6 +1,7 @@
 import Knex from 'knex';
 import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
+import {IValidator} from '@universal-login/commons';
 import MessageHandler from '../../lib/core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../lib/integration/sql/services/QueueSQLStore';
 import AuthorisationStore from '../../lib/integration/sql/services/AuthorisationStore';
@@ -9,7 +10,6 @@ import MessageSQLRepository from '../../lib/integration/sql/services/MessageSQLR
 import {getContractWhiteList} from '../../lib/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../lib/core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../lib/integration/ethereum/SignaturesService';
-import IValidator from '../../lib/core/models/IValidator';
 import MessageExecutionValidator from '../../lib/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../lib/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../lib/integration/sql/services/DevicesStore';
