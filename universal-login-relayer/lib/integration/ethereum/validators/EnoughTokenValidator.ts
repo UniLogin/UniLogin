@@ -15,9 +15,8 @@ export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOpti
   if (gasToken === ETHER_NATIVE_TOKEN.address) {
     const walletBalance = await provider.getBalance(walletContractAddress);
     return walletBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
-  } else if (!await isContract(provider, gasToken)) {
-    throw new InvalidContract(gasToken);
   } else {
+    ensure(await isContract(provider, gasToken), InvalidContract, gasToken);
     const token = new Contract(gasToken, ERC20.interface, provider);
     const walletContractTokenBalance = await token.balanceOf(walletContractAddress);
     return walletContractTokenBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
