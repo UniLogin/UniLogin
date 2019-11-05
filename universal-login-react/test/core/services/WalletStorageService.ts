@@ -2,11 +2,12 @@ import {StorageService, WalletStorageService} from '../../../src';
 import {ApplicationWallet, CounterfactualWallet} from '@universal-login/commons';
 import sinon from 'sinon';
 import {expect} from 'chai';
+import {Wallet} from 'ethers';
 
 describe('WalletStorageService', () => {
   const counterfactualWallet: CounterfactualWallet = {
-    contractAddress: '0xFOO',
-    privateKey: '0xBAR',
+    contractAddress: Wallet.createRandom().address,
+    privateKey: Wallet.createRandom().privateKey,
   };
   const applicationWallet: ApplicationWallet = {
     name: 'name',
