@@ -30,7 +30,7 @@ export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {RequiredBalanceChecker} from './core/services/RequiredBalanceChecker';
 export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/withENS';
-export {getContractHash, getDeployedBytecode, isContractExist} from './core/utils/contracts/contractHelpers';
+export {getContractHash, getDeployedBytecode, isContractExist, isContract} from './core/utils/contracts/contractHelpers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
 export {resolveName} from './integration/ethereum/resolveName';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress, calculateDeployHash} from './core/utils/messages/calculateMessageSignature';
