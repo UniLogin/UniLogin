@@ -1,49 +1,13 @@
-import {
-  ensure,
-  ApplicationWallet,
-  walletFromBrain,
-  Procedure,
-  Message,
-  CounterfactualWallet,
-} from '@universal-login/commons';
+import {ApplicationWallet, ensure, Message, Procedure, walletFromBrain} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
-import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
-import {Wallet, utils} from 'ethers';
-import {DeployedWallet} from '../..';
-import {State, map} from 'reactive-properties';
-
-type WalletState = {
-  kind: 'None';
-} | {
-  kind: 'Future';
-  wallet: FutureWallet;
-} | {
-  kind: 'Connecting';
-  wallet: ApplicationWallet;
-} | {
-  kind: 'Deploying';
-  wallet: ApplicationWallet;
-} | {
-  kind: 'Deployed';
-  wallet: DeployedWallet;
-};
-
-export type SerializedWalletState = {
-  kind: 'Future';
-  wallet: CounterfactualWallet;
-} | {
-  kind: 'Deployed';
-  wallet: ApplicationWallet;
-};
+import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden} from '../utils/errors';
+import {utils, Wallet} from 'ethers';
+import {DeployedWallet, WalletStorage} from '../..';
+import {map, State} from 'reactive-properties';
+import {WalletState} from '../models/WalletService';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
-
-export interface WalletStorage {
-  load(): SerializedWalletState | null;
-  save(state: SerializedWalletState): void;
-  remove(): void;
-}
 
 export class WalletService {
   stateProperty = new State<WalletState>({kind: 'None'});

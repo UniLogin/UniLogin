@@ -2,10 +2,10 @@ import chai, {expect} from 'chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, walletFromBrain} from '@universal-login/commons';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
-import {SerializedWalletState, WalletService} from '../../../lib/core/services/WalletService';
+import {WalletService} from '../../../lib/core/services/WalletService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {DeployedWallet} from '../../../lib';
+import {DeployedWallet, SerializedWalletState} from '../../../lib';
 
 chai.use(sinonChai);
 
