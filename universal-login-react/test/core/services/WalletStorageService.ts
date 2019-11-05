@@ -1,4 +1,4 @@
-import {StorageService, WalletStorageService} from '../../../src';
+import {MemoryStorageService, StorageService, WalletStorageService} from '../../../src';
 import {ApplicationWallet, CounterfactualWallet} from '@universal-login/commons';
 import sinon from 'sinon';
 import {expect} from 'chai';
@@ -67,5 +67,18 @@ describe('WalletStorageService', () => {
 
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});
     expect(storage.set).to.be.calledWith(STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+  });
+
+  it('roundtrip', () => {
+    const storage = new MemoryStorageService();
+    const service = new WalletStorageService(storage);
+
+    expect(service.load()).to.eq(null);
+
+    service.save({kind: 'Future', wallet: counterfactualWallet});
+    expect(service.load()).to.eq({kind: 'Future', wallet: counterfactualWallet});
+
+    service.save({kind: 'Deployed', wallet: applicationWallet});
+    expect(service.load()).to.eq({kind: 'Deployed', wallet: applicationWallet});
   });
 });
