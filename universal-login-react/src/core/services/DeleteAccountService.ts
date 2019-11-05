@@ -1,4 +1,4 @@
-import {transactionDetails} from '../../core/constants/TransactionDetails';
+import {paymentOptions} from '../constants/PaymentOptions';
 import {WalletService} from '@universal-login/sdk';
 
 interface ErrorsType {
@@ -31,7 +31,7 @@ export const deleteAccount = async (
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
     onDeletionProgress();
-    const execution = await walletService.removeWallet(transactionDetails);
+    const execution = await walletService.removeWallet(paymentOptions);
     if (execution) {
       const {transactionHash} = await execution.waitForTransactionHash();
       onDeletionProgress(transactionHash);

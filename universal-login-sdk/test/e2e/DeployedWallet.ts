@@ -6,7 +6,7 @@ import {Contract, Wallet} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {DeployedWallet} from '../../lib';
-import {walletFromBrain} from '@universal-login/commons';
+import {walletFromBrain, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -42,9 +42,9 @@ describe('E2E: DeployedWallet', async () => {
     });
 
     it('returns the correct number of required signatures after update', async function () {
-      let {waitToBeSuccess} = await deployedWallet.addKey(otherWallet.address, {gasToken: mockToken.address});
+      let {waitToBeSuccess} = await deployedWallet.addKey(otherWallet.address, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
-      ({waitToBeSuccess} = await deployedWallet.setRequiredSignatures(2, {gasToken: mockToken.address}));
+      ({waitToBeSuccess} = await deployedWallet.setRequiredSignatures(2, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address}));
       await waitToBeSuccess();
       await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(2);
     });

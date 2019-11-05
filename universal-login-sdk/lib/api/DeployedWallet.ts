@@ -5,6 +5,7 @@ import {
   walletFromBrain,
   sign,
   MessageStatus,
+  PaymentOptions,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
@@ -39,29 +40,29 @@ export class DeployedWallet implements ApplicationWallet {
     };
   }
 
-  async addKey(publicKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.sdk.addKey(this.contractAddress, publicKey, this.privateKey, transactionDetails);
+  async addKey(publicKey: string, paymentOptions: PaymentOptions): Promise<Execution> {
+    return this.sdk.addKey(this.contractAddress, publicKey, this.privateKey, paymentOptions);
   }
 
-  async addKeys(publicKeys: string[], transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.sdk.addKeys(this.contractAddress, publicKeys, this.privateKey, transactionDetails);
+  async addKeys(publicKeys: string[], paymentOptions: PaymentOptions): Promise<Execution> {
+    return this.sdk.addKeys(this.contractAddress, publicKeys, this.privateKey, paymentOptions);
   }
 
-  async removeKey(key: string, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.sdk.removeKey(this.contractAddress, key, this.privateKey, transactionDetails);
+  async removeKey(key: string, paymentOptions: PaymentOptions): Promise<Execution> {
+    return this.sdk.removeKey(this.contractAddress, key, this.privateKey, paymentOptions);
   }
 
-  async removeCurrentKey(transactionDetails: Partial<Message>): Promise<Execution> {
+  async removeCurrentKey(paymentOptions: PaymentOptions): Promise<Execution> {
     const ownKey = utils.computeAddress(this.privateKey);
-    return this.removeKey(ownKey, transactionDetails);
+    return this.removeKey(ownKey, paymentOptions);
   }
 
   async denyRequests() {
     return this.sdk.denyRequests(this.contractAddress, this.privateKey);
   }
 
-  async setRequiredSignatures(requiredSignatures: number, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.sdk.setRequiredSignatures(this.contractAddress, requiredSignatures, this.privateKey, transactionDetails);
+  async setRequiredSignatures(requiredSignatures: number, paymentOptions: PaymentOptions): Promise<Execution> {
+    return this.sdk.setRequiredSignatures(this.contractAddress, requiredSignatures, this.privateKey, paymentOptions);
   }
 
   async execute(message: Partial<Message>): Promise<Execution> {

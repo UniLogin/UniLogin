@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
 import {useAsync} from '../../..';
-import {transactionDetails} from '../../../core/constants/TransactionDetails';
+import {paymentOptions} from '../../../core/constants/PaymentOptions';
 
 interface ConfirmationsEditProps {
   deployedWallet: DeployedWallet;
@@ -26,7 +26,7 @@ export const ConfirmationsEdit = ({deployedWallet, devicesAmount, confirmationsC
       return;
     }
     setEditActive(false);
-    const execution = await deployedWallet.setRequiredSignatures(requiredSignatures, transactionDetails);
+    const execution = await deployedWallet.setRequiredSignatures(requiredSignatures, paymentOptions);
     await execution.waitToBeSuccess();
   };
 

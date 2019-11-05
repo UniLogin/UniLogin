@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
-import {signRelayerRequest, Message, DEFAULT_GAS_LIMIT, GAS_BASE, Device} from '@universal-login/commons';
+import {signRelayerRequest, Message, DEFAULT_GAS_LIMIT, GAS_BASE, Device, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/api/sdk';
@@ -118,7 +118,7 @@ describe('E2E: SDK', async () => {
 
   describe('Add key', async () => {
     it('should return transaction hash', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
       expect(state).to.be.eq('Success');
@@ -126,14 +126,14 @@ describe('E2E: SDK', async () => {
     });
 
     it('should add a management key to the walletContract', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
     it('should add a device to connected devices', async () => {
       const initiallyDevicesLength = (await sdk.getConnectedDevices(contractAddress, privateKey)).length;
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
       expect(await sdk.getConnectedDevices(contractAddress, privateKey)).length(initiallyDevicesLength + 1);
     });
@@ -145,7 +145,7 @@ describe('E2E: SDK', async () => {
     });
 
     it('return a management key', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
       expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.true;
     });
@@ -155,7 +155,7 @@ describe('E2E: SDK', async () => {
     it('getNonce should return correct nonce', async () => {
       const executionNonce = await sdk.getNonce(contractAddress);
       expect(executionNonce).to.eq(0);
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
       expect(await sdk.getNonce(contractAddress)).to.eq(executionNonce.add(1));
     });
@@ -176,7 +176,7 @@ describe('E2E: SDK', async () => {
 
   describe('Add keys', async () => {
     it('should return transaction hash and proper state', async () => {
-      const {waitToBeSuccess} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       const {state, transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
       expect(state).to.be.eq('Success');
@@ -239,7 +239,7 @@ describe('E2E: SDK', async () => {
   describe('Devices', async () => {
     it('should return added devices', async () => {
       const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device: Device) => device.publicKey);
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
       const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device: Device) => device.publicKey);
       expect(devicesPublicKeys).length(initiallyPublicKeys.length + 1);
@@ -249,9 +249,9 @@ describe('E2E: SDK', async () => {
 
   describe('change required signatures', async () => {
     it('should change required signatures', async () => {
-      let {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
+      let {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       await waitToBeSuccess();
-      ({waitToBeSuccess} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address}));
+      ({waitToBeSuccess} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address}));
       const {transactionHash} = await waitToBeSuccess();
       expect(await walletContract.requiredSignatures()).to.eq(2);
       expect(transactionHash).to.be.properHex(64);
@@ -260,8 +260,8 @@ describe('E2E: SDK', async () => {
 
   describe('get message status', async () => {
     it('should return message status', async () => {
-      await sdk.addKey(contractAddress, otherWallet.address, privateKey, {gasToken: mockToken.address});
-      await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {gasToken: mockToken.address});
+      await sdk.addKey(contractAddress, otherWallet.address, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
+      await sdk.setRequiredSignatures(contractAddress, 2, privateKey, {...DEFAULT_PAYMENT_OPTIONS, gasToken: mockToken.address});
       const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
       const {messageStatus} = await sdk.execute(msg, privateKey);
       const status = await sdk.getMessageStatus(messageStatus.messageHash);

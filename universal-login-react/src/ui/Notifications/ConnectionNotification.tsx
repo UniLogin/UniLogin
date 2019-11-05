@@ -5,7 +5,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
-import {transactionDetails} from '../../core/constants/TransactionDetails';
+import {paymentOptions} from '../../core/constants/PaymentOptions';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 import {FooterSection} from '../commons/FooterSection';
@@ -36,7 +36,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     ensureNotNull(publicKey, Error, 'Invalid key');
 
     history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash: undefined});
-    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.addKey(publicKey!, {...transactionDetails, ...gasParameters});
+    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.addKey(publicKey!, {...paymentOptions, ...gasParameters});
 
     const {transactionHash} = await waitForTransactionHash();
     ensureNotNull(transactionHash, TypeError);
@@ -69,7 +69,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 <GasPrice
                   isDeployed={true}
                   deployedWallet={deployedWallet}
-                  gasLimit={transactionDetails.gasLimit!}
+                  gasLimit={paymentOptions.gasLimit!}
                   onGasParametersChanged={setGasParameters}
                   className={className}
                 />
