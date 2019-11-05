@@ -3,7 +3,7 @@ pull_request_rules:
     conditions:
       - "#approved-reviews-by>=2"
       - base=master
-      - label!=WIP
+      - label=auto-merge
     actions:
       merge:
         strict: smart
