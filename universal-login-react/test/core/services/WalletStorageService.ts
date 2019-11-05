@@ -76,9 +76,9 @@ describe('WalletStorageService', () => {
     expect(service.load()).to.eq(null);
 
     service.save({kind: 'Future', wallet: counterfactualWallet});
-    expect(service.load()).to.eq({kind: 'Future', wallet: counterfactualWallet});
+    expect(service.load()).to.deep.eq({kind: 'Future', wallet: counterfactualWallet});
 
     service.save({kind: 'Deployed', wallet: applicationWallet});
-    expect(service.load()).to.eq({kind: 'Deployed', wallet: applicationWallet});
+    expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});
   });
 });
