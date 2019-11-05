@@ -5,7 +5,6 @@ import IMessageValidator from '../../../core/models/IMessageValidator';
 import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
 
 export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOptions, walletContractAddress: string, provider: providers.Provider) => {
-  // TODO: Only whitelisted tokens/contracts
   if (gasToken === ETHER_NATIVE_TOKEN.address) {
     const walletBalance = await provider.getBalance(walletContractAddress);
     return walletBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));

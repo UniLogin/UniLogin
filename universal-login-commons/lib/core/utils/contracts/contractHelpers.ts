@@ -12,7 +12,6 @@ export const isContractExist = (bytecode: string) => {
 };
 
 export const isContract = async (provider: providers.Provider, contractAddress: string) => {
-  // TODO: Only whitelisted contracts
   const bytecode = await provider.getCode(contractAddress);
   return isContractExist(bytecode);
 };
