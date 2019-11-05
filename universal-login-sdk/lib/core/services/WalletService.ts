@@ -187,21 +187,24 @@ export class WalletService {
       return;
     }
 
-    if (this.state.kind === 'None') {
-      this.storage.remove();
-    } else if (this.state.kind === 'Future') {
-      this.storage.save({
-        kind: 'Future',
-        wallet: {
-          contractAddress: this.state.wallet.contractAddress,
-          privateKey: this.state.wallet.privateKey,
-        },
-      });
-    } else if (this.state.kind === 'Deployed') {
-      this.storage.save({
-        kind: 'Deployed',
-        wallet: this.state.wallet.asApplicationWallet,
-      });
+    switch (this.state.kind) {
+      case 'None':
+        this.storage.remove();
+        break;
+      case 'Future':
+        this.storage.save({
+          kind: 'Future',
+          wallet: {
+            contractAddress: this.state.wallet.contractAddress,
+            privateKey: this.state.wallet.privateKey,
+          },
+        });
+        break;
+      case 'Deployed':
+        this.storage.save({
+          kind: 'Deployed',
+          wallet: this.state.wallet.asApplicationWallet,
+        });
     }
   }
 
@@ -214,18 +217,21 @@ export class WalletService {
       return;
     }
     ensure(this.state.kind === 'None', WalletOverridden);
-    if (state.kind === 'Future') {
-      this.stateProperty.set({
-        kind: 'Future',
-        wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
-      });
-    } else if (state.kind === 'Deployed') {
-      this.stateProperty.set({
-        kind: 'Deployed',
-        wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
-      });
-    } else {
-      console.error('Invalid saved wallet state', state);
+    switch (state.kind) {
+      case 'Future':
+        this.stateProperty.set({
+          kind: 'Future',
+          wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
+        });
+        break;
+      case 'Deployed':
+        this.stateProperty.set({
+          kind: 'Deployed',
+          wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
+        });
+        break;
+      default:
+        throw new TypeError('Invalid saved wallet state');
     }
   }
 }
