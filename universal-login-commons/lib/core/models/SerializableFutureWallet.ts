@@ -1,4 +1,4 @@
-export interface CounterfactualWallet {
+export interface SerializableFutureWallet {
   contractAddress: string;
   privateKey: string;
 }

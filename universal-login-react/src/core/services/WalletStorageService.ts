@@ -1,5 +1,5 @@
 import {StorageEntry, StorageService} from './StorageService';
-import {ApplicationWallet, asExactly, CounterfactualWallet} from '@universal-login/commons';
+import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@universal-login/commons';
 import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
 import {WalletStorage, SerializedWalletState} from '@universal-login/sdk';
 
@@ -42,7 +42,7 @@ export class WalletStorageService implements WalletStorage {
   }
 }
 
-const asCounterfactualWallet = asObject<CounterfactualWallet>({
+const asSerializableFutureWallet = asObject<SerializableFutureWallet>({
   contractAddress: asString,
   privateKey: asString,
 });
@@ -56,7 +56,7 @@ const asApplicationWallet = asObject<ApplicationWallet>({
 const asSerializedState = asAnyOf([
   asObject<SerializedWalletState>({
     kind: asExactly('Future'),
-    wallet: asCounterfactualWallet,
+    wallet: asSerializableFutureWallet,
   }),
   asObject<SerializedWalletState>({
     kind: asExactly('Deployed'),

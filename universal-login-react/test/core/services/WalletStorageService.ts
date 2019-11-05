@@ -1,17 +1,17 @@
 import {MemoryStorageService, StorageService, WalletStorageService} from '../../../src';
-import {ApplicationWallet, CounterfactualWallet} from '@universal-login/commons';
+import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
 import sinon from 'sinon';
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
 
 describe('WalletStorageService', () => {
-  const counterfactualWallet: CounterfactualWallet = {
+  const futureWallet: SerializableFutureWallet = {
     contractAddress: Wallet.createRandom().address,
     privateKey: Wallet.createRandom().privateKey,
   };
   const applicationWallet: ApplicationWallet = {
     name: 'name',
-    ...counterfactualWallet,
+    ...futureWallet,
   };
   const STORAGE_KEY = 'wallet';
 
@@ -34,8 +34,8 @@ describe('WalletStorageService', () => {
 
   it('can load future state', () => {
     const {storage, service} = setup();
-    storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', wallet: counterfactualWallet}));
-    expect(service.load()).to.deep.eq({kind: 'Future', wallet: counterfactualWallet});
+    storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', wallet: futureWallet}));
+    expect(service.load()).to.deep.eq({kind: 'Future', wallet: futureWallet});
     expect(storage.get).to.be.calledWith(STORAGE_KEY);
   });
 
@@ -75,8 +75,8 @@ describe('WalletStorageService', () => {
 
     expect(service.load()).to.eq(null);
 
-    service.save({kind: 'Future', wallet: counterfactualWallet});
-    expect(service.load()).to.deep.eq({kind: 'Future', wallet: counterfactualWallet});
+    service.save({kind: 'Future', wallet: futureWallet});
+    expect(service.load()).to.deep.eq({kind: 'Future', wallet: futureWallet});
 
     service.save({kind: 'Deployed', wallet: applicationWallet});
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});

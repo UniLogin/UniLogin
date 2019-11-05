@@ -1,7 +1,7 @@
 import {providers, utils} from 'ethers';
 import {
   calculateInitializeSignature,
-  CounterfactualWallet,
+  SerializableFutureWallet,
   MineableStatus,
   PublicRelayerConfig,
 } from '@universal-login/commons';
@@ -24,7 +24,7 @@ export interface Deployment {
   waitToBeSuccess: () => Promise<DeployedWallet>;
 }
 
-export interface FutureWallet extends CounterfactualWallet {
+export interface FutureWallet extends SerializableFutureWallet {
   waitForBalance: () => Promise<BalanceDetails>;
   deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<Deployment>;
 }
@@ -57,7 +57,7 @@ export class FutureWalletFactory extends MineableFactory {
     return encodeInitializeWithENSData(initArgs);
   }
 
-  async createFromExistingCounterfactual(wallet: CounterfactualWallet): Promise<FutureWallet> {
+  async createFromExistingCounterfactual(wallet: SerializableFutureWallet): Promise<FutureWallet> {
     const {privateKey, contractAddress} = wallet;
     const publicKey = utils.computeAddress(privateKey);
 

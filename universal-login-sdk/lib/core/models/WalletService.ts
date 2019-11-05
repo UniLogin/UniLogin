@@ -1,4 +1,4 @@
-import {ApplicationWallet, CounterfactualWallet} from '@universal-login/commons';
+import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
 import {DeployedWallet, FutureWallet} from '../..';
 
 export type WalletState = {
@@ -19,7 +19,7 @@ export type WalletState = {
 
 export type SerializedWalletState = {
   kind: 'Future';
-  wallet: CounterfactualWallet;
+  wallet: SerializableFutureWallet;
 } | {
   kind: 'Deployed';
   wallet: ApplicationWallet;
