@@ -15,25 +15,20 @@ interface BackupCodesInitialProps {
 
 export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasParameters, className}: BackupCodesInitialProps) => (
   <BackupCodesWrapper className={className}>
-    <div>
-      <p className="backup-subtitle">Generate a recovery code and keep it safe</p>
+    <FooterSection className={className}>
+      <GasPrice
+        isDeployed={true}
+        deployedWallet={deployedWallet}
+        gasLimit={transactionDetails.gasLimit!}
+        onGasParametersChanged={setGasParameters}
+        className={className}
+      />
       <button
         className="backup-btn backup-btn-primary generate-code-btn"
         onClick={generateBackupCodes}
       >
         Generate new code
       </button>
-    </div>
-    <div>
-      <FooterSection className={className}>
-        <GasPrice
-          isDeployed={true}
-          deployedWallet={deployedWallet}
-          gasLimit={transactionDetails.gasLimit!}
-          onGasParametersChanged={setGasParameters}
-          className={className}
-        />
-      </FooterSection>
-    </div>
+    </FooterSection>
   </BackupCodesWrapper>
 );
