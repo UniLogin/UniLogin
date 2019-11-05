@@ -1,33 +1,30 @@
 import ERC20 from '@universal-login/contracts/build/ERC20.json';
-import {Wallet, providers, utils, Contract} from 'ethers';
-import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContractExist} from '@universal-login/commons';
+import {providers, utils, Contract} from 'ethers';
+import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContract, PaymentOptions} from '@universal-login/commons';
 import IMessageValidator from '../../../core/models/IMessageValidator';
 import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
 
-const isContract = async (provider: providers.Provider, contractAddress: string) => {
-  // TODO: Only whitelisted contracts
-  const bytecode = await provider.getCode(contractAddress);
-  return isContractExist(bytecode);
-};
-
-export const hasEnoughToken = async (gasToken: string, walletContractAddress: string, gasLimit: utils.BigNumberish, provider: providers.Provider) => {
-  // TODO: Only whitelisted tokens/contracts
+export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOptions, walletContractAddress: string, provider: providers.Provider) => {
   if (gasToken === ETHER_NATIVE_TOKEN.address) {
     const walletBalance = await provider.getBalance(walletContractAddress);
-    return walletBalance.gte(utils.bigNumberify(gasLimit));
-  } else if (!await isContract(provider, gasToken)) {
-    throw new InvalidContract(gasToken);
+    return walletBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
   } else {
+    ensure(await isContract(provider, gasToken), InvalidContract, gasToken);
     const token = new Contract(gasToken, ERC20.interface, provider);
     const walletContractTokenBalance = await token.balanceOf(walletContractAddress);
-    return walletContractTokenBalance.gte(utils.bigNumberify(gasLimit));
+    return walletContractTokenBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
   }
 };
 
 export default class EnoughTokenValidator implements IMessageValidator {
-  constructor(private wallet: Wallet) {}
+  constructor(private provider: providers.Provider) {}
 
   async validate(signedMessage: SignedMessage) {
-    ensure(await hasEnoughToken(signedMessage.gasToken, signedMessage.from, signedMessage.gasLimitExecution, this.wallet.provider), NotEnoughTokens);
+    const paymentOptions: PaymentOptions = {
+      gasToken: signedMessage.gasToken,
+      gasLimit: signedMessage.gasLimitExecution,
+      gasPrice: signedMessage.gasPrice,
+    };
+    ensure(await hasEnoughToken(paymentOptions, signedMessage.from, this.provider), NotEnoughTokens);
   }
 }
