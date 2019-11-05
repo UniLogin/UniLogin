@@ -107,22 +107,27 @@ describe('UNIT: ENS', () => {
   });
 
   describe('isValidEnsName', () => {
-    const isValidEnsNameTest = (ensName: string, result: boolean) => {
+    const itValidatesEnsName = (ensName: string, result: boolean) => {
       it(`returns ${result} for ${ensName}`, () => {
         expect(isValidEnsName(ensName)).to.be.eq(result);
       });
     };
 
-    isValidEnsNameTest('jaaaa.mylogin.eth', true);
-    isValidEnsNameTest('jaaaa.mylogin.xyz', true);
-    isValidEnsNameTest('jaaaa.mylogin.test', true);
-    isValidEnsNameTest('jaaaa1234.mylogin.eth', true);
-    isValidEnsNameTest('j-4.mylogin.eth', true);
-    isValidEnsNameTest('jaaaa-4.mylogin.eth', true);
-    isValidEnsNameTest('jaaaa123_4.mylogin.eth', false);
-    isValidEnsNameTest('jaaaa123_&@@.mylogin.eth', false);
-    isValidEnsNameTest('jaaaa123.wrong__domain.eth', false);
-    isValidEnsNameTest('jaaaa123_4.mylogin.abc', false);
-    isValidEnsNameTest('jaaaa123_4.mylogin.something', false);
+    itValidatesEnsName('jaaaa.mylogin.eth', true);
+    itValidatesEnsName('jaaaa.mylogin.xyz', true);
+    itValidatesEnsName('jaaaa.mylogin.test', true);
+    itValidatesEnsName('jaaaa1234.mylogin.eth', true);
+    itValidatesEnsName('jaaaa1234.myl-ogin.eth', true);
+    itValidatesEnsName('j-4.mylogin.eth', true);
+    itValidatesEnsName('jsjsj-4jsjks.mylogin.eth', true);
+    itValidatesEnsName('jaaaa-4.mylogin.eth', true);
+    itValidatesEnsName('jaaaa-4.mylogin.pl', true);
+    itValidatesEnsName('jaaaa-4.mylogin.ethudud', true);
+    itValidatesEnsName('jaaaa-4.mylogin.comcom', true);
+    itValidatesEnsName('jaaaa123_4.mylogin.eth', false);
+    itValidatesEnsName('jaaaa123_&@@.mylogin.eth', false);
+    itValidatesEnsName('jaaaa123.wrong__domain.eth', false);
+    itValidatesEnsName('jaaaa123_4.mylogin.abc', false);
+    itValidatesEnsName('jaaaa123_4.mylogin.something', false);
   });
 });
