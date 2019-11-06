@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {utils, providers, Contract} from 'ethers';
+import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, TEST_TOKEN_DETAILS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
@@ -8,7 +8,7 @@ import UniversalLoginSDK from '../../../lib/api/sdk';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import {TransferService} from '../../../lib/core/services/TransferService';
 import {TokensDetailsStore} from '../../../lib/core/services/TokensDetailsStore';
-import {createAndSetWallet} from '../../helpers/createWallet';
+import {createAndSetWallet, createWallet} from '../../helpers/createWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
@@ -27,9 +27,10 @@ describe('INT: TransferService', () => {
   let mockTokenContract: Contract;
   let tokenDetailsService: TokenDetailsService;
   let tokenService: TokensDetailsStore;
+  let wallet: Wallet;
 
   before(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+    [wallet] = await getWallets(createMockProvider());
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     const walletService = new WalletService(sdk);
@@ -62,7 +63,32 @@ describe('INT: TransferService', () => {
   it('Should throw error if invalid address', async () => {
     const to = `${TEST_ACCOUNT_ADDRESS}3`;
     const amount = '0.5';
-    await expect(transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters})).to.be.rejectedWith(`Address ${to} is not valid`);
+    await expect(transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters})).to.be.rejectedWith(`${to} is not valid`);
+  });
+
+  it('transfer ether to ens name', async () => {
+    const targetENSName = 'ether.mylogin.eth';
+    const {contractAddress} = await createWallet(targetENSName, sdk, wallet);
+    const amount = '0.5';
+    const initialTargetBalance = await provider.getBalance(contractAddress);
+    const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters, amount});
+    await waitToBeSuccess();
+    expect(await provider.getBalance(contractAddress)).to.eq(initialTargetBalance.add(utils.parseEther(amount)));
+  });
+
+  it('transfer token to ens name', async () => {
+    const targetENSName = 'token.mylogin.eth';
+    const {contractAddress} = await createWallet(targetENSName, sdk, wallet);
+    const amount = '0.5';
+    const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount});
+    await waitToBeSuccess();
+    expect(await mockTokenContract.balanceOf(contractAddress)).to.eq(utils.parseEther(amount));
+  });
+
+  it('throw error if there is no such ens name', async () => {
+    const targetENSName = 'not-existing.mylogin.eth';
+    const amount = '0.5';
+    await expect(transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount})).to.be.rejectedWith(`${targetENSName} is not valid`);
   });
 
   after(async () => {

@@ -4,7 +4,7 @@ type ErrorType =
   'ConcurrentAuthorisation' |
   'ConcurrentDeployment' |
   'UnsupportedBytecode' |
-  'InvalidAddress' |
+  'InvalidAddressOrEnsName' |
   'MissingConfiguration' |
   'TransactionHashNotFound' |
   'TokenNotFound' |
@@ -67,10 +67,10 @@ export class ValidationFailed extends SDKError {
   }
 }
 
-export class InvalidAddress extends ValidationFailed {
+export class InvalidAddressOrEnsName extends ValidationFailed {
   constructor(address: string) {
-    super(`Address ${address} is not valid`, 'InvalidAddress');
-    Object.setPrototypeOf(this, InvalidAddress.prototype);
+    super(`Address ${address} is not valid`, 'InvalidAddressOrEnsName');
+    Object.setPrototypeOf(this, InvalidAddressOrEnsName.prototype);
   }
 }
 
