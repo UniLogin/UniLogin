@@ -7,15 +7,15 @@ interface TransferDetailsWithFrom extends TransferDetails {
 }
 
 export const transferToMessage = ({from, to, amount, gasParameters, transferToken}: TransferDetailsWithFrom) => {
-  if(transferToken === ETHER_NATIVE_TOKEN.address) {
+  if (transferToken === ETHER_NATIVE_TOKEN.address) {
     return {
       from,
       to,
       value: utils.parseEther(amount),
       data: '0x',
       gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice
-    }
+      gasPrice: gasParameters.gasPrice,
+    };
   } else {
     return {
       from,
@@ -23,10 +23,10 @@ export const transferToMessage = ({from, to, amount, gasParameters, transferToke
       value: 0,
       data: encodeTransfer(to, amount),
       gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice
-    }
+      gasPrice: gasParameters.gasPrice,
+    };
   }
-}
+};
 
 export function encodeTransfer(to: string, amount: string) {
   return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);

@@ -22,13 +22,13 @@ describe('UNIT: transferDetailsToMessage', () => {
       to,
       amount,
       transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters
+      gasParameters,
     };
     const expectedMessage = {
       ...basicMessage,
       data: '0x',
       gasPrice,
-      gasToken: gasParameters.gasToken
+      gasToken: gasParameters.gasToken,
     };
     expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
@@ -40,13 +40,13 @@ describe('UNIT: transferDetailsToMessage', () => {
       to,
       amount,
       transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters
+      gasParameters,
     };
     const expectedMessage = {
       ...basicMessage,
       data: '0x',
       gasPrice,
-      gasToken: gasParameters.gasToken
+      gasToken: gasParameters.gasToken,
     };
     expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
@@ -58,7 +58,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       to,
       amount,
       transferToken: TEST_TOKEN_ADDRESS,
-      gasParameters
+      gasParameters,
     };
     const expectedMessage = {
       ...basicMessage,
@@ -66,7 +66,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       value: 0,
       to: TEST_TOKEN_ADDRESS,
       gasPrice,
-      gasToken: gasParameters.gasToken
+      gasToken: gasParameters.gasToken,
     };
     expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
@@ -78,7 +78,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       to,
       amount,
       transferToken: TEST_TOKEN_ADDRESS,
-      gasParameters
+      gasParameters,
     };
     const expectedMessage = {
       ...basicMessage,
@@ -86,7 +86,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       to: TEST_TOKEN_ADDRESS,
       data: new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]),
       gasPrice,
-      gasToken: gasParameters.gasToken
+      gasToken: gasParameters.gasToken,
     };
     expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
