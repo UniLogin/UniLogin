@@ -5,7 +5,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
 import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {TransferService} from '../../../lib/core/services/TransferService';
-import {encodeTransfer} from '../../../lib/core/utils/transferToMessage';
+import {encodeERC20Transfer} from '../../../lib/core/utils/encodeTransferToMessage';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -75,7 +75,7 @@ describe('UNIT: TransferService', () => {
         from: 'CONTRACT_ADDRESS',
         to: 'TOKEN_ADDRESS',
         value: 0,
-        data: encodeTransfer(recipient, '123'),
+        data: encodeERC20Transfer(recipient, '123'),
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },

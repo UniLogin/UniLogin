@@ -6,7 +6,7 @@ interface TransferDetailsWithFrom extends TransferDetails {
   from: string;
 }
 
-export const transferToMessage = ({from, to, amount, gasParameters, transferToken}: TransferDetailsWithFrom) => {
+export const encodeTransferToMessage = ({from, to, amount, gasParameters, transferToken}: TransferDetailsWithFrom) => {
   const base = {
     from,
     gasPrice: gasParameters.gasPrice,
@@ -24,11 +24,11 @@ export const transferToMessage = ({from, to, amount, gasParameters, transferToke
       ...base,
       to: transferToken,
       value: 0,
-      data: encodeTransfer(to, amount),
+      data: encodeERC20Transfer(to, amount),
     };
   }
 };
 
-export function encodeTransfer(to: string, amount: string) {
+export function encodeERC20Transfer(to: string, amount: string) {
   return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
 }

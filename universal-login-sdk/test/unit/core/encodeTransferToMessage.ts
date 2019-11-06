@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@universal-login/commons';
-import {transferToMessage} from '../../../lib/core/utils/transferToMessage';
+import {encodeTransferToMessage} from '../../../lib/core/utils/encodeTransferToMessage';
 
 describe('UNIT: transferDetailsToMessage', () => {
   const from = TEST_CONTRACT_ADDRESS;
@@ -30,7 +30,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       gasPrice,
       gasToken: gasParameters.gasToken,
     };
-    expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
+    expect(encodeTransferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
 
   it('ether transfer and token refund', () => {
@@ -48,7 +48,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       gasPrice,
       gasToken: gasParameters.gasToken,
     };
-    expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
+    expect(encodeTransferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
 
   it('token transfer and ether refund', () => {
@@ -68,7 +68,7 @@ describe('UNIT: transferDetailsToMessage', () => {
       gasPrice,
       gasToken: gasParameters.gasToken,
     };
-    expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
+    expect(encodeTransferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
 
   it('token transfer and token refund', () => {
@@ -88,6 +88,6 @@ describe('UNIT: transferDetailsToMessage', () => {
       gasPrice,
       gasToken: gasParameters.gasToken,
     };
-    expect(transferToMessage(transfer)).to.deep.eq(expectedMessage);
+    expect(encodeTransferToMessage(transfer)).to.deep.eq(expectedMessage);
   });
 });

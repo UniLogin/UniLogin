@@ -8,4 +8,4 @@ export {WalletStorage, SerializedWalletState} from './core/models/WalletService'
 export {TransferService} from './core/services/TransferService';
 export {DeployedWallet} from './api/DeployedWallet';
 export {setBetaNotice} from './core/utils/setBetaNotice';
-export {encodeTransfer} from './core/utils/transferToMessage';
+export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
