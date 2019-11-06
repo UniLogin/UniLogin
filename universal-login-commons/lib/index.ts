@@ -25,6 +25,7 @@ export {generateBackupCode} from './core/utils/generateBackupCode';
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {safeMultiply} from './core/utils/safeMultiply';
 export {ensure, ensureNotNull, ensureNotEmpty, onCritical} from './core/utils/errors/heplers';
+export {InvalidContract, NotEnoughTokens} from './core/utils/errors/errors';
 export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {RequiredBalanceChecker} from './core/services/RequiredBalanceChecker';
