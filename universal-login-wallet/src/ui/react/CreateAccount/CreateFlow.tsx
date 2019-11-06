@@ -1,4 +1,6 @@
 import React, {useContext, useState} from 'react';
+import {Redirect} from 'react-router';
+import {useMutableCallback} from 'react-use-mutable';
 import {useServices} from '../../hooks';
 import {CreateAccount} from './CreateAccount';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
@@ -7,7 +9,6 @@ import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 import Modal from '../Modals/Modal';
 import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
 import {ModalTxnSuccess} from '../Modals/ModalTxnSuccess';
-import {Redirect} from 'react-router';
 
 export function CreateFlow() {
   const modalService = useContext(WalletModalContext);
@@ -15,16 +16,18 @@ export function CreateFlow() {
   const [gasParameters, setGasParameters] = useState<GasParameters>(INITIAL_GAS_PARAMETERS);
   const [transactionHash, setTransactionHash] = useState<string | undefined>(undefined); // TODO: Move to wallet state
 
+  const deployWallet = useMutableCallback((name: string) => walletService.deployFutureWallet(
+    name,
+    gasParameters.gasPrice.toString(),
+    ETHER_NATIVE_TOKEN.address,
+    setTransactionHash,
+  ));
+
   const onCreateClick = async (name: string) => {
     const {waitForBalance} = await walletService.createFutureWallet();
     await waitForBalance();
     modalService.hideModal(); // Needed to clear top-up modals after the funds have arrived
-    await walletService.deployFutureWallet(
-      name,
-      gasParameters.gasPrice.toString(),
-      ETHER_NATIVE_TOKEN.address,
-      setTransactionHash,
-    );
+    await deployWallet(name);
   };
 
   const walletState = useProperty(walletService.stateProperty);
