@@ -1,4 +1,4 @@
-import ERC20 from '@universal-login/contracts/build/ERC20.json';
+import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {providers, utils, Contract} from 'ethers';
 import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContract, PaymentOptions, IMessageValidator} from '@universal-login/commons';
 import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
@@ -9,7 +9,7 @@ export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOpti
     return walletBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
   } else {
     ensure(await isContract(provider, gasToken), InvalidContract, gasToken);
-    const token = new Contract(gasToken, ERC20.interface, provider);
+    const token = new Contract(gasToken, new utils.Interface(IERC20.abi), provider);
     const walletContractTokenBalance = await token.balanceOf(walletContractAddress);
     return walletContractTokenBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
   }
