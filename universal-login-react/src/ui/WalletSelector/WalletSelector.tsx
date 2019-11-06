@@ -53,7 +53,7 @@ export const WalletSelector = ({
   const [ensName, setEnsName] = useState('');
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
-  const [suggestionsVisible, setSuggenstionsVisible] = useState(false);
+  const [suggestionsVisible, setSuggestionsVisible] = useState(false);
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
@@ -96,7 +96,7 @@ export const WalletSelector = ({
   };
 
   const ref = useRef(null);
-  useOutsideClick(ref, () => setSuggenstionsVisible(false));
+  useOutsideClick(ref, () => setSuggestionsVisible(false));
 
   return (
     <div ref={ref} className={`universal-login ${accountStatus}`}>
@@ -114,7 +114,7 @@ export const WalletSelector = ({
             placeholder={placeholder}
             autoFocus
             checkSpelling={false}
-            onFocus={() => setSuggenstionsVisible(true)}
+            onFocus={() => setSuggestionsVisible(true)}
           />
           {isNameAvailable && (
             <div className="hint">Name is already taken or is invalid</div>

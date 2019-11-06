@@ -18,29 +18,27 @@ export class TransferService {
   }
 
   private async transferTokens({to, amount, transferToken, gasParameters}: TransferDetails) {
-    const {sdk, contractAddress, privateKey} = this.deployedWallet;
     const message = {
-      from: contractAddress,
+      from: this.deployedWallet.contractAddress,
       to: transferToken,
       value: 0,
       data: encodeTransfer(to, amount),
       gasToken: gasParameters.gasToken,
       gasPrice: gasParameters.gasPrice,
     };
-    return sdk.execute(message, privateKey);
+    return this.deployedWallet.execute(message);
   }
 
   private async transferEther({to, amount, gasParameters}: TransferDetails) {
-    const {sdk, contractAddress, privateKey} = this.deployedWallet;
     const message = {
-      from: contractAddress,
+      from: this.deployedWallet.contractAddress,
       to,
       value: utils.parseEther(amount),
       data: '0x',
       gasToken: gasParameters.gasToken,
       gasPrice: gasParameters.gasPrice,
     };
-    return sdk.execute(message, privateKey);
+    return this.deployedWallet.execute(message);
   }
 }
 
