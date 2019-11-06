@@ -1,11 +1,15 @@
 import chai, {expect} from 'chai';
-import {Contract, providers, Wallet, utils} from 'ethers';
-import {getWallets, solidity, loadFixture, deployContract} from 'ethereum-waffle';
-import {createKeyPair, signString, ETHER_NATIVE_TOKEN, DEPLOYMENT_REFUND} from '@universal-login/commons';
-import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
-import WalletContract from '../../../build/Wallet.json';
+import {Contract, providers, utils, Wallet} from 'ethers';
+import {deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
+import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, signString} from '@universal-login/commons';
 import MockToken from '../../../build/MockToken.json';
-import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../../lib';
+import {
+  createFutureDeploymentWithENS,
+  CreateFutureDeploymentWithENS,
+  encodeInitializeWithENSData,
+  EnsDomainData,
+  setupInitializeWithENSArgs,
+} from '../../../lib';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 import {WalletContractInterface, WalletProxyFactoryInterface} from '../../../lib/interfaces';

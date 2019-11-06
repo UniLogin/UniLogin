@@ -1,9 +1,8 @@
-import {providers, Wallet, utils, Contract} from 'ethers';
+import {Contract, providers, utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import WalletContract from '../../build/Wallet.json';
-import {withENS, createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, withENS} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
-import {deployFactory, createFutureDeploymentWithENS, deployWalletContract} from '../../lib';
+import {createFutureDeploymentWithENS, deployFactory, deployWalletContract} from '../../lib';
 import MockToken from '../../build/MockToken.json';
 import {WalletContractInterface} from '../../lib/interfaces';
 

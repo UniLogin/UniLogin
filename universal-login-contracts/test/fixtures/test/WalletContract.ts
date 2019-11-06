@@ -1,8 +1,7 @@
 import {expect} from 'chai';
-import {Contract, Wallet, utils, providers} from 'ethers';
+import {Contract, providers, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
-import WalletContract from '../../../build/Wallet.json';
 import {KeyPair} from '@universal-login/commons';
 import {WalletContractInterface} from '../../../lib/interfaces';
 
