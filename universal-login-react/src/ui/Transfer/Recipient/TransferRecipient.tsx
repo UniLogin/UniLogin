@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TransferDetails, isProperAddress, OnGasParametersChanged, DEFAULT_GAS_LIMIT, isValidEnsName, ensureNotNull} from '@universal-login/commons';
+import {TransferDetails, isProperAddress, OnGasParametersChanged, DEFAULT_GAS_LIMIT, isValidEnsName} from '@universal-login/commons';
 import './../../styles/transferRecipient.sass';
 import './../../styles/transferRecipientDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -21,10 +21,10 @@ export const TransferRecipient = ({onRecipientChange, onSendClick, className, de
   const [showError, setShowError] = useState<boolean>(false);
   const errorMessage = 'Invalid recipient';
 
-  const isValidRecipient = (to: string) => isProperAddress(to) || isValidEnsName(to)
+  const isValidRecipient = (to: string) => isProperAddress(to) || isValidEnsName(to);
+
   const onClick = () => {
-    ensureNotNull(to, TypeError, errorMessage);
-    isValidRecipient(to!) ? onSendClick() : setShowError(true);
+    to && isValidRecipient(to!) ? onSendClick() : setShowError(true);
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
