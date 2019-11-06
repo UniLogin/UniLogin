@@ -10,10 +10,12 @@ export const BackupCodesWrapper = ({children, className}: BackupCodesWrapperProp
   <div className="universal-login-backup">
     <div className={getStyleForTopLevelComponent(className)}>
       <div className="backup">
-        <h2 className="backup-title">Backup code</h2>
-        <p className="backup-subtitle">
-          If you lose all your devices you may not have other ways to recover your account.
-        </p>
+        <div>
+          <h2 className="backup-title">Backup code</h2>
+          <p className="backup-subtitle">
+            If you lose all your devices you may not have other ways to recover your account.
+          </p>
+        </div>
         {children}
       </div>
     </div>

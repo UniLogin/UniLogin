@@ -3,9 +3,6 @@ import {
   Message,
   generateBackupCode,
   walletFromBrain,
-  ETHER_NATIVE_TOKEN,
-  DEFAULT_GAS_PRICE,
-  DEFAULT_GAS_LIMIT,
   sign,
   MessageStatus,
 } from '@universal-login/commons';
@@ -95,7 +92,7 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.getGasModes();
   }
 
-  async generateBackupCodes(): Promise<BackupCodesWithExecution> {
+  async generateBackupCodes(transactionDetails: Partial<Message>): Promise<BackupCodesWithExecution> {
     const codes: string[] = [generateBackupCode(), generateBackupCode()];
     const addresses: string[] = [];
 
@@ -104,7 +101,7 @@ export class DeployedWallet implements ApplicationWallet {
       addresses.push(address);
     }
 
-    const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+    const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, transactionDetails);
     return {
       waitToBeSuccess: async () => {
         await execution.waitToBeSuccess();

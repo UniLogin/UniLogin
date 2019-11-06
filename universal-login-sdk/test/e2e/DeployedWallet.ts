@@ -52,7 +52,7 @@ describe('E2E: DeployedWallet', async () => {
 
   describe('generateBackupCodes', () => {
     it('returns the code and update contract keys', async () => {
-      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes();
+      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({gasToken: mockToken.address});
       const {transactionHash} = await waitForTransactionHash();
       expect(transactionHash).to.be.properHex;
       const codes = await waitToBeSuccess();
