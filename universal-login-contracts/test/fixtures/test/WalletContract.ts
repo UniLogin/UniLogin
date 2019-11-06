@@ -4,6 +4,7 @@ import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import WalletContract from '../../../build/Wallet.json';
 import {KeyPair} from '@universal-login/commons';
+import {WalletContractInterface} from '../../../lib/interfaces';
 
 describe('WalletContract fixture test', () => {
   let proxyWallet: Contract;
@@ -20,7 +21,7 @@ describe('WalletContract fixture test', () => {
   });
 
   it('walletOwner address should be managament key', async () => {
-    const keyExistInterface = new utils.Interface(WalletContract.interface).functions.keyExist;
+    const keyExistInterface = WalletContractInterface.functions.keyExist;
     const keyExistData = keyExistInterface.encode([keyPair.publicKey]);
     const callTransaction = {to: proxyWallet.address, data: keyExistData};
     const resultCall = await deployer.provider.call(callTransaction);

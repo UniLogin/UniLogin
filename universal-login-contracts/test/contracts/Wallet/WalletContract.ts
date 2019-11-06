@@ -2,7 +2,6 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {constants, utils, providers, Wallet, Contract} from 'ethers';
-import WalletContract from '../../../build/Wallet.json';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message} from '@universal-login/commons';
@@ -11,6 +10,7 @@ import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
 import {encodeDataForExecuteSigned, estimateGasDataFromSignedMessage, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index';
 import {calculateFinalGasLimit, calculatePaymentOptions} from '../../../lib/estimateGas';
+import {UpgradedWalletInterface, WalletContractInterface} from '../../../lib/interfaces';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -38,7 +38,7 @@ describe('WalletContract', async () => {
 
   beforeEach(async () => {
     ({provider, publicKey, walletContractProxy, proxyAsWalletContract, privateKey, mockToken, mockContract, walletContractMaster, wallet} = await loadFixture(walletAndProxy));
-    executeSignedFunc = new utils.Interface(WalletContract.interface).functions.executeSigned;
+    executeSignedFunc = WalletContractInterface.functions.executeSigned;
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = calculateMessageSignature(privateKey, msg);
     data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
@@ -377,14 +377,14 @@ describe('WalletContract', async () => {
     it('updates master', async () => {
       await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit});
       expect(await walletContractProxy.implementation()).to.eq(newWallet.address);
-      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
+      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWalletInterface, wallet);
       expect(await proxyAsUpdatedWallet.getFive()).to.eq(5);
       expect(await proxyAsUpdatedWallet.lastNonce()).to.eq(1);
     });
 
     it('updates store', async () => {
       await wallet.sendTransaction({to: proxyAsWalletContract.address, data: updateData, gasLimit});
-      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWallet.abi, wallet);
+      const proxyAsUpdatedWallet = new Contract(proxyAsWalletContract.address, UpgradedWalletInterface, wallet);
       expect(await proxyAsUpdatedWallet.someNumber()).to.eq(0);
       await proxyAsUpdatedWallet.change(10);
       expect(await proxyAsUpdatedWallet.someNumber()).to.eq(10);

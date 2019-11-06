@@ -5,6 +5,7 @@ import {withENS, createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commo
 import {deployENS} from '@universal-login/commons/testutils';
 import {deployFactory, createFutureDeploymentWithENS, deployWalletContract} from '../../lib';
 import MockToken from '../../build/MockToken.json';
+import {WalletContractInterface} from '../../lib/interfaces';
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
@@ -38,7 +39,7 @@ export async function setupWalletContract(deployer: Wallet) {
   const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS({keyPair, walletContractAddress: walletContract.address, gasPrice: '1000000', ensDomainData, factoryContract, gasToken: ETHER_NATIVE_TOKEN.address});
   await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('10.0')});
   await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-  const proxyWallet = new Contract(futureAddress, WalletContract.interface, provider);
+  const proxyWallet = new Contract(futureAddress, WalletContractInterface, provider);
   return {
     proxyWallet,
     keyPair,
