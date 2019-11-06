@@ -1,5 +1,4 @@
-import {SignedMessage} from '@universal-login/commons';
-import IMessageValidator from '../../models/IMessageValidator';
+import {SignedMessage, IMessageValidator} from '@universal-login/commons';
 
 export class ComposeValidator implements IMessageValidator {
   constructor(private validators: Array<IMessageValidator>) {}
