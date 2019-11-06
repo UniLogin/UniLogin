@@ -68,8 +68,8 @@ export class ValidationFailed extends SDKError {
 }
 
 export class InvalidAddressOrEnsName extends ValidationFailed {
-  constructor(address: string) {
-    super(`${address} is not valid`, 'InvalidAddressOrEnsName');
+   constructor(addressOrEnsName: string) {
+    super(`${addressOrEnsName} is not valid`, 'InvalidAddressOrEnsName');
     Object.setPrototypeOf(this, InvalidAddressOrEnsName.prototype);
   }
 }
