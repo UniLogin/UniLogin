@@ -74,6 +74,8 @@
     ],
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-useless-constructor": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "no-empty-function": "off",
     "accessor-pairs": "error",
     "array-bracket-spacing": [
       "error",
