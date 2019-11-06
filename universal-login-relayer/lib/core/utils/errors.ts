@@ -2,7 +2,6 @@ type ErrorType =
   'NotFound' |
   'GasLimitTooHigh' |
   'InsufficientGas' |
-  'InvalidContract' |
   'StatusNotFound' |
   'MessageNotFound' |
   'TransactionHashNotFound' |
@@ -11,7 +10,6 @@ type ErrorType =
   'PaymentError' |
   'NotEnoughGas' |
   'NotEnoughBalance' |
-  'NotEnoughTokens' |
   'InvalidExecution' |
   'InvalidMaster' |
   'InvalidProxy' |
@@ -60,13 +58,6 @@ export class InvalidSignature extends ValidationFailed {
   constructor(additionalMessage = '') {
     super(`Invalid signature ${additionalMessage}`, 'InvalidSignature');
     Object.setPrototypeOf(this, InvalidSignature.prototype);
-  }
-}
-
-export class InvalidContract extends ValidationFailed {
-  constructor(contractAddress: string) {
-    super(`Invalid contract address: ${contractAddress}`, 'InvalidContract');
-    Object.setPrototypeOf(this, InvalidContract.prototype);
   }
 }
 
@@ -187,13 +178,6 @@ export class NotEnoughBalance extends PaymentError {
   constructor() {
     super('Not enough balance', 'NotEnoughBalance');
     Object.setPrototypeOf(this, NotEnoughBalance.prototype);
-  }
-}
-
-export class NotEnoughTokens extends PaymentError {
-  constructor() {
-    super('Not enough tokens', 'NotEnoughTokens');
-    Object.setPrototypeOf(this, NotEnoughTokens.prototype);
   }
 }
 
