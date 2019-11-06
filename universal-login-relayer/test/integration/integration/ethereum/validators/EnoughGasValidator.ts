@@ -1,11 +1,10 @@
 import {expect} from 'chai';
 import {Contract, Wallet, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, Message} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, Message, IMessageValidator} from '@universal-login/commons';
 import {messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import EstimateGasValidator from '../../../../../lib/integration/ethereum/validators/EstimateGasValidator';
-import IMessageValidator from '../../../../../lib/core/models/IMessageValidator';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;
