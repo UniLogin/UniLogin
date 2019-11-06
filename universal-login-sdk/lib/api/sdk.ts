@@ -92,10 +92,14 @@ class UniversalLoginSDK {
     this.sdkConfig.notice = notice;
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
+  getFutureWalletFactory() {
     this.getRelayerConfig();
     this.fetchFutureWalletFactory();
-    return this.futureWalletFactory!.createFutureWallet();
+    return this.futureWalletFactory!;
+  }
+
+  async createFutureWallet(): Promise<FutureWallet> {
+    return this.getFutureWalletFactory().createFutureWallet();
   }
 
   async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {

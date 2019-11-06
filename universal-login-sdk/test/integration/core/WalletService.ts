@@ -5,7 +5,7 @@ import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {DeployedWallet} from '../../../lib';
+import {DeployedWallet, SerializedWalletState} from '../../../lib';
 
 chai.use(sinonChai);
 
@@ -22,7 +22,11 @@ describe('INT: WalletService', () => {
     }),
     waitForBalance: (async () => { }) as any,
   };
-  const storage = {load: () => applicationWallet, save: sinon.fake(), remove: sinon.fake()};
+  const storage = {
+    load: (): SerializedWalletState => ({kind: 'Deployed', wallet: applicationWallet}),
+    save: sinon.fake(),
+    remove: sinon.fake(),
+  };
   let walletService: WalletService;
 
   beforeEach(() => {
@@ -40,11 +44,7 @@ describe('INT: WalletService', () => {
   it('connect set state to Deployed', () => {
     walletService.setWallet(applicationWallet);
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
-  });
-
-  it('should save applicationWallet to localstorage', () => {
-    walletService.saveToStorage(applicationWallet);
-    expect(storage.save).to.be.calledWith(applicationWallet);
+    expect(storage.save).to.be.calledWith({kind: 'Deployed', wallet: applicationWallet});
   });
 
   it('roundtrip', () => {
@@ -52,6 +52,10 @@ describe('INT: WalletService', () => {
 
     walletService.setFutureWallet(futureWallet);
     expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
+    expect(storage.save).to.be.calledWith({
+      kind: 'Future',
+      wallet: {contractAddress: futureWallet.contractAddress, privateKey: futureWallet.privateKey},
+    });
 
     walletService.setDeployed(applicationWallet.name);
     const expectedWallet = new DeployedWallet(
@@ -61,7 +65,7 @@ describe('INT: WalletService', () => {
       sdk,
     );
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: expectedWallet});
-    expect(storage.save.args[0]).to.deep.eq([expectedWallet.asApplicationWallet]);
+    expect(storage.save).to.be.calledWith({kind: 'Deployed', wallet: expectedWallet.asApplicationWallet});
 
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
@@ -69,8 +73,7 @@ describe('INT: WalletService', () => {
     walletService.setWallet(applicationWallet);
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
 
-    walletService.saveToStorage(applicationWallet);
-    expect(storage.save).to.be.calledWith(applicationWallet);
+    expect(storage.save).to.be.calledWith({kind: 'Deployed', wallet: applicationWallet});
   });
 
   it('should throw if future wallet is not set', () => {
@@ -82,8 +85,8 @@ describe('INT: WalletService', () => {
     expect(() => walletService.setFutureWallet(futureWallet)).to.throw('Wallet cannot be overridded');
   });
 
-  it('should load from storage', () => {
-    walletService.loadFromStorage();
+  it('should load from storage', async () => {
+    await walletService.loadFromStorage();
     expect(walletService.state).to.deep.eq({kind: 'Deployed', wallet: deployedWallet});
   });
 });
