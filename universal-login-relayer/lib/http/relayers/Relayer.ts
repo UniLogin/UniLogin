@@ -25,10 +25,9 @@ import AuthorisationStore from '../../integration/sql/services/AuthorisationStor
 import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
 import {MessageStatusService} from '../../core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
-import IMessageValidator from '../../core/models/IMessageValidator';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
+import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig, IMessageValidator} from '@universal-login/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import {GasValidator} from '../../core/services/validators/GasValidator';
