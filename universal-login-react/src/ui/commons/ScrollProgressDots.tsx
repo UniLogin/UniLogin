@@ -1,4 +1,5 @@
 import React from 'react';
+import {clamp} from '@universal-login/commons';
 
 interface ScrollProgressDotsProps {
   dotOpacities: Array<number>;
@@ -7,10 +8,8 @@ interface ScrollProgressDotsProps {
 }
 
 export const ScrollProgressDots = ({dotOpacities, minimumOpacity = 0.0, maximumOpacity = 1.0}: ScrollProgressDotsProps) => {
-  dotOpacities = dotOpacities.map((opacity) => opacity < minimumOpacity ? minimumOpacity : opacity);
-  dotOpacities = dotOpacities.map((opacity) => opacity > maximumOpacity ? maximumOpacity : opacity);
   const dots = dotOpacities.map((opacity, i) =>
-    <div key={i} style={{opacity}} className='scroll-progress-dot'/>,
+    <div key={i} style={{opacity: clamp(opacity, minimumOpacity, maximumOpacity)}} className='scroll-progress-dot'/>,
   );
 
   return (
