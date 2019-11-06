@@ -6,10 +6,13 @@ import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
 import {WalletState} from '../models/WalletService';
+import {WalletSerializer} from './WalletSerializer';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
 export class WalletService {
+  private readonly walletSerializer: WalletSerializer;
+
   stateProperty = new State<WalletState>({kind: 'None'});
 
   walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
@@ -23,7 +26,9 @@ export class WalletService {
     public readonly sdk: UniversalLoginSDK,
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
     private readonly storage?: WalletStorage,
-  ) {}
+  ) {
+    this.walletSerializer = new WalletSerializer(sdk);
+  }
 
   getDeployedWallet(): DeployedWallet {
     if (this.state.kind !== 'Deployed') {
@@ -150,25 +155,11 @@ export class WalletService {
     if (!this.storage) {
       return;
     }
-
-    switch (this.state.kind) {
-      case 'None':
-        this.storage.remove();
-        break;
-      case 'Future':
-        this.storage.save({
-          kind: 'Future',
-          wallet: {
-            contractAddress: this.state.wallet.contractAddress,
-            privateKey: this.state.wallet.privateKey,
-          },
-        });
-        break;
-      case 'Deployed':
-        this.storage.save({
-          kind: 'Deployed',
-          wallet: this.state.wallet.asApplicationWallet,
-        });
+    const serialized = this.walletSerializer.serialize(this.state);
+    if (serialized === 'remove') {
+      this.storage.remove();
+    } else if (serialized !== undefined) {
+      this.storage.save(serialized);
     }
   }
 
@@ -181,21 +172,6 @@ export class WalletService {
       return;
     }
     ensure(this.state.kind === 'None', WalletOverridden);
-    switch (state.kind) {
-      case 'Future':
-        this.stateProperty.set({
-          kind: 'Future',
-          wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
-        });
-        break;
-      case 'Deployed':
-        this.stateProperty.set({
-          kind: 'Deployed',
-          wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
-        });
-        break;
-      default:
-        throw new TypeError('Invalid saved wallet state');
-    }
+    this.stateProperty.set(await this.walletSerializer.deserialize(state));
   }
 }
