@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {ContractJSON, KeyPair, SignedMessage} from '@universal-login/commons';
-import WalletContract from '../build/Wallet.json';
+import {WalletContractInterface} from './interfaces';
 
 export type EnsDomainData = {
   ensAddress: string;
@@ -8,11 +8,11 @@ export type EnsDomainData = {
   resolverAddress: string;
 };
 
-export const encodeInitializeWithENSData = (args: string[]) => new utils.Interface(WalletContract.interface).functions.initializeWithENS.encode(args);
+export const encodeInitializeWithENSData = (args: string[]) => WalletContractInterface.functions.initializeWithENS.encode(args);
 
-export const encodeInitializeData = (args: string[]) => new utils.Interface(WalletContract.interface).functions.initialize.encode(args);
+export const encodeInitializeData = (args: string[]) => WalletContractInterface.functions.initialize.encode(args);
 
-const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
+const {executeSigned} = WalletContractInterface.functions;
 
 export const encodeDataForExecuteSigned = (message: SignedMessage) =>
   executeSigned.encode([

@@ -20,7 +20,7 @@
     "@universal-login/commons": "0.3.56",
     "@universal-login/sdk": "0.3.56",
     "dotenv": "^8.1.0",
-    "ethers": "^4.0.36",
+    "ethers": "^4.0.39",
     "lodash.range": "^3.2.0",
     "node-sass": "^4.10.0",
     "react-blockies": "^1.4.1",

@@ -1,13 +1,18 @@
 import chai, {expect} from 'chai';
-import {Contract, providers, Wallet, utils} from 'ethers';
-import {getWallets, solidity, loadFixture, deployContract} from 'ethereum-waffle';
-import {createKeyPair, signString, ETHER_NATIVE_TOKEN, DEPLOYMENT_REFUND} from '@universal-login/commons';
-import WalletProxyFactory from '../../../build/WalletProxyFactory.json';
-import WalletContract from '../../../build/Wallet.json';
+import {Contract, providers, utils, Wallet} from 'ethers';
+import {deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
+import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, signString} from '@universal-login/commons';
 import MockToken from '../../../build/MockToken.json';
-import {EnsDomainData, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, encodeInitializeWithENSData, setupInitializeWithENSArgs} from '../../../lib';
+import {
+  createFutureDeploymentWithENS,
+  CreateFutureDeploymentWithENS,
+  encodeInitializeWithENSData,
+  EnsDomainData,
+  setupInitializeWithENSArgs,
+} from '../../../lib';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
+import {WalletContractInterface, WalletProxyFactoryInterface} from '../../../lib/interfaces';
 
 chai.use(solidity);
 
@@ -47,7 +52,7 @@ describe('Counterfactual Factory', () => {
   it('should deploy contract with computed address', async () => {
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const proxyContract = new Contract(futureAddress, WalletContract.abi, wallet);
+    const proxyContract = new Contract(futureAddress, WalletContractInterface, wallet);
     expect(await proxyContract.keyExist(keyPair.publicKey)).to.be.true;
   });
 
@@ -60,7 +65,7 @@ describe('Counterfactual Factory', () => {
   });
 
   it('only owner can create contract', async () => {
-    const factoryWithAnotherWallet = new Contract(factoryContract.address, WalletProxyFactory.abi, anotherWallet);
+    const factoryWithAnotherWallet = new Contract(factoryContract.address, WalletProxyFactoryInterface, anotherWallet);
     await expect(factoryWithAnotherWallet.createContract(keyPair.publicKey, initializeData, signature)).to.be.reverted;
   });
 
@@ -85,7 +90,7 @@ describe('Counterfactual Factory', () => {
     const MAGICVALUE = '0x20c13b0b';
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const proxyContract = new Contract(futureAddress, WalletContract.abi, wallet);
+    const proxyContract = new Contract(futureAddress, WalletContractInterface, wallet);
     const message = 'Hi, I am Justyna and I wonder if length of this message matters';
     const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
     const signature2 = signString(message, keyPair.privateKey);
