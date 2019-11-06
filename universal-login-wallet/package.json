@@ -23,7 +23,7 @@
     "@universal-login/sdk": "0.3.56",
     "create-react-context": "^0.2.3",
     "dotenv": "^6.2.0",
-    "ethers": "^4.0.36",
+    "ethers": "^4.0.39",
     "fbemitter": "^2.1.1",
     "react": "^16.8.6",
     "react-blockies": "^1.4.1",

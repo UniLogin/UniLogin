@@ -7,7 +7,7 @@
   "dependencies": {
     "@universal-login/commons": "0.3.56",
     "ens-builder": "^2.0.0",
-    "ethers": "^4.0.36",
+    "ethers": "^4.0.39",
     "lodash.clonedeep": "^4.5.0"
   },
   "scripts": {
@@ -40,7 +40,7 @@
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",
     "rimraf": "^2.6.3",
-    "ts-node": "^8.0.2",
-    "typescript": "^3.3.3"
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.0"
   }
 }

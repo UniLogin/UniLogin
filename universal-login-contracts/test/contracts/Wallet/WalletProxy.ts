@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
-import {utils, Contract, Wallet} from 'ethers';
-import MockWalletMaster from '../../../build/MockWalletMaster.json';
+import {Contract, Wallet} from 'ethers';
 import WalletProxy from '../../../build/WalletProxy.json';
 import DEFAULT_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 import basicWalletAndProxy from '../../fixtures/basicWalletAndProxy';
+import {MockWalletMasterInterface} from '../../../lib/interfaces';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -32,12 +32,12 @@ describe('CONTRACT: WalletProxy', async () => {
     });
 
     it('should call payable function in MasterCopy', async () => {
-      data = new utils.Interface(MockWalletMaster.interface).functions.giveAway.encode([]);
+      data = MockWalletMasterInterface.functions.giveAway.encode([]);
       await wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit});
     });
 
     it('should call function in MasterCopy', async () => {
-      data = new utils.Interface(MockWalletMaster.interface).functions.increase.encode([]);
+      data = MockWalletMasterInterface.functions.increase.encode([]);
       const countBefore = await proxyAsWallet.count();
       await wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit});
       const countAfter = await proxyAsWallet.count();
