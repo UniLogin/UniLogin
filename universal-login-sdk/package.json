@@ -10,7 +10,7 @@
     "@universal-login/contracts": "0.3.56",
     "cryptocompare": "^1.0.0",
     "deep-equal": "^1.0.1",
-    "ethers": "^4.0.36",
+    "ethers": "^4.0.39",
     "fbemitter": "^2.1.1",
     "lodash.clonedeep": "^4.5.0",
     "openzeppelin-solidity": "^2.3.0",

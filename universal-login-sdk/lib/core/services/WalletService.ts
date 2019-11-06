@@ -1,36 +1,19 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, Message} from '@universal-login/commons';
+import {ApplicationWallet, ensure, Message, Procedure, walletFromBrain} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
-import {WalletOverridden, FutureWalletNotSet, InvalidPassphrase} from '../utils/errors';
-import {Wallet, utils} from 'ethers';
-import {DeployedWallet} from '../..';
-import {State, map} from 'reactive-properties';
-
-type WalletState = {
-  kind: 'None';
-} | {
-  kind: 'Future';
-  wallet: FutureWallet;
-} | {
-  kind: 'Connecting';
-  wallet: ApplicationWallet;
-} | {
-  kind: 'Deploying';
-  wallet: ApplicationWallet;
-} | {
-  kind: 'Deployed';
-  wallet: DeployedWallet;
-};
+import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden} from '../utils/errors';
+import {utils, Wallet} from 'ethers';
+import {DeployedWallet, WalletStorage} from '../..';
+import {map, State} from 'reactive-properties';
+import {WalletState} from '../models/WalletService';
+import {WalletSerializer} from './WalletSerializer';
+import {NoopWalletStorage} from './NoopWalletStorage';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
-export interface WalletStorage {
-  load(): ApplicationWallet | null;
-  save(wallet: ApplicationWallet | null): void;
-  remove(): void;
-}
-
 export class WalletService {
+  private readonly walletSerializer: WalletSerializer;
+
   stateProperty = new State<WalletState>({kind: 'None'});
 
   walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
@@ -43,8 +26,10 @@ export class WalletService {
   constructor(
     public readonly sdk: UniversalLoginSDK,
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
-    private readonly storage?: WalletStorage,
-  ) {}
+    private readonly storage: WalletStorage = new NoopWalletStorage(),
+  ) {
+    this.walletSerializer = new WalletSerializer(sdk);
+  }
 
   getDeployedWallet(): DeployedWallet {
     if (this.state.kind !== 'Deployed') {
@@ -80,7 +65,7 @@ export class WalletService {
     onTransactionHash !== undefined && onTransactionHash(transactionHash!);
     const deployedWallet = await waitToBeSuccess();
     this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
-    this.storage && this.storage.save(deployedWallet.asApplicationWallet);
+    this.saveToStorage();
     return deployedWallet;
   }
 
@@ -89,6 +74,7 @@ export class WalletService {
       throw new WalletOverridden();
     }
     this.stateProperty.set({kind: 'Future', wallet});
+    this.saveToStorage();
   }
 
   setDeployed(name: string) {
@@ -98,7 +84,7 @@ export class WalletService {
     const {contractAddress, privateKey} = this.state.wallet;
     const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
     this.stateProperty.set({kind: 'Deployed', wallet});
-    this.storage && this.storage.save(wallet.asApplicationWallet);
+    this.saveToStorage();
   }
 
   setConnecting(wallet: ApplicationWallet) {
@@ -116,7 +102,7 @@ export class WalletService {
       kind: 'Deployed',
       wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
     });
-    this.storage && this.storage.save(wallet);
+    this.saveToStorage();
   }
 
   async recover(name: string, passphrase: string) {
@@ -163,29 +149,24 @@ export class WalletService {
 
   disconnect(): void {
     this.stateProperty.set({kind: 'None'});
-    this.removeFromStorage();
+    this.saveToStorage();
   }
 
-  saveToStorage(applicationWallet: ApplicationWallet) {
-    this.storage && this.storage.save(applicationWallet);
-  }
-
-  loadFromStorage() {
-    if (!this.storage) {
-      return;
+  saveToStorage() {
+    const serialized = this.walletSerializer.serialize(this.state);
+    if (serialized === 'remove') {
+      this.storage.remove();
+    } else if (serialized !== undefined) {
+      this.storage.save(serialized);
     }
-    const wallet = this.storage.load();
-    if (!wallet) {
+  }
+
+  async loadFromStorage() {
+    const state = this.storage.load();
+    if (!state) {
       return;
     }
     ensure(this.state.kind === 'None', WalletOverridden);
-    this.stateProperty.set({
-      kind: 'Deployed',
-      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
-    });
-  }
-
-  removeFromStorage() {
-    this.storage && this.storage.remove();
+    this.stateProperty.set(await this.walletSerializer.deserialize(state));
   }
 }
