@@ -16,22 +16,18 @@ const gasParameters = {
 
 describe('UNIT: TransferService', () => {
   function setup() {
-    const sdk = {
+    const deployedWallet = {
+      privateKey: 'PRIVATE_KEY',
+      contractAddress: 'CONTRACT_ADDRESS',
       execute: sinon.stub().returns({}),
     } as any;
-    const walletService = {
-      deployedWallet: {
-        privateKey: 'PRIVATE_KEY',
-        contractAddress: 'CONTRACT_ADDRESS',
-        sdk,
-      } as any,
-    };
+    const walletService = {deployedWallet};
     const transferService = new TransferService(walletService.deployedWallet as any);
-    return {sdk, walletService, transferService};
+    return {deployedWallet, walletService, transferService};
   }
 
   it('can transfer ether', async () => {
-    const {sdk, transferService} = setup();
+    const {deployedWallet, transferService} = setup();
 
     await transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
@@ -40,7 +36,7 @@ describe('UNIT: TransferService', () => {
       gasParameters,
     });
 
-    expect(sdk.execute).to.be.calledWith(
+    expect(deployedWallet.execute).to.be.calledWith(
       {
         from: 'CONTRACT_ADDRESS',
         to: TEST_ACCOUNT_ADDRESS,
@@ -49,7 +45,6 @@ describe('UNIT: TransferService', () => {
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },
-      'PRIVATE_KEY',
     );
   });
 
@@ -65,7 +60,7 @@ describe('UNIT: TransferService', () => {
   });
 
   it('can transfer tokens', async () => {
-    const {sdk, transferService} = setup();
+    const {deployedWallet, transferService} = setup();
     const recipient = Wallet.createRandom().address;
     await transferService.transfer({
       to: recipient,
@@ -74,7 +69,7 @@ describe('UNIT: TransferService', () => {
       gasParameters,
     });
 
-    expect(sdk.execute).to.be.calledWith(
+    expect(deployedWallet.execute).to.be.calledWith(
       {
         from: 'CONTRACT_ADDRESS',
         to: 'TOKEN_ADDRESS',
@@ -83,7 +78,6 @@ describe('UNIT: TransferService', () => {
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },
-      'PRIVATE_KEY',
     );
   });
 
@@ -101,8 +95,8 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if not enough tokens', async () => {
-    const {transferService, sdk} = setup();
-    sdk.execute = () => {throw new Error('Not enough tokens');};
+    const {transferService, deployedWallet} = setup();
+    deployedWallet.execute = () => {throw new Error('Not enough tokens');};
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
