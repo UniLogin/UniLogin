@@ -8,8 +8,7 @@ import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
-import {transactionDetails} from '../../core/constants/TransactionDetails';
-import {GasParameters} from '@universal-login/commons';
+import {GasParameters, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
@@ -27,7 +26,7 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
   const generateBackupCodes = async () => {
     try {
       history.replace(join(basePath, 'waitingForBackupCodes'));
-      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({...transactionDetails, ...gasParameters});
+      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({...DEFAULT_PAYMENT_OPTIONS, ...gasParameters});
       const {transactionHash} = await waitForTransactionHash();
       history.replace(join(basePath, 'waitingForBackupCodes'), {transactionHash});
       const codes = await waitToBeSuccess();
