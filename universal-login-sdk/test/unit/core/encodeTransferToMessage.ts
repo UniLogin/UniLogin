@@ -4,7 +4,7 @@ import {utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@universal-login/commons';
 import {encodeTransferToMessage} from '../../../lib/core/utils/encodeTransferToMessage';
 
-describe('UNIT: transferDetailsToMessage', () => {
+describe('UNIT: encodeTransferToMessage', () => {
   const from = TEST_CONTRACT_ADDRESS;
   const to = TEST_ACCOUNT_ADDRESS;
   const gasPrice = utils.bigNumberify(TEST_GAS_PRICE);
