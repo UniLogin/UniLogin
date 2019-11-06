@@ -7,23 +7,24 @@ interface TransferDetailsWithFrom extends TransferDetails {
 }
 
 export const transferToMessage = ({from, to, amount, gasParameters, transferToken}: TransferDetailsWithFrom) => {
+  const base = {
+    from,
+    gasPrice: gasParameters.gasPrice,
+    gasToken: gasParameters.gasToken,
+  };
   if (transferToken === ETHER_NATIVE_TOKEN.address) {
     return {
-      from,
+      ...base,
       to,
       value: utils.parseEther(amount),
       data: '0x',
-      gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice,
     };
   } else {
     return {
-      from,
+      ...base,
       to: transferToken,
       value: 0,
       data: encodeTransfer(to, amount),
-      gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice,
     };
   }
 };
