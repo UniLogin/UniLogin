@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import ScrollProgressDots from '../commons/ScrollProgressDots';
+import {calculateScrollProgress} from '../../app/scrollProgress';
 import './../styles/connection.sass';
 import './../styles/connectionDefault.sass';
 
@@ -11,13 +13,16 @@ interface ChooseConnectionMethodProps {
 }
 
 export const ChooseConnectionMethod = ({onCancel, onConnectWithDeviceClick, onConnectWithPassphraseClick, className}: ChooseConnectionMethodProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0.0);
+
   return (
     <div className="universal-login-connection">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="connection">
           <h1 className="connection-title">Connect with another device</h1>
           <div className="connection-content">
-            <div className="connection-row-wrapper">
+            <div className="connection-row-wrapper" ref={ref} onScroll={() => calculateScrollProgress(ref, setProgress)} >
               <div className="connection-row">
                 <div className="connection-method passwordless-method">
                   <h2 className="connection-method-title">Passwordless</h2>
@@ -35,6 +40,7 @@ export const ChooseConnectionMethod = ({onCancel, onConnectWithDeviceClick, onCo
                 </div>
               </div>
             </div>
+            <ScrollProgressDots dotOpacities={[1.0 - progress, progress]} minimumOpacity={0.3} maximumOpacity={0.8}/>
             <button onClick={onCancel} className="connection-cancel-button">Cancel</button>
           </div>
         </div>

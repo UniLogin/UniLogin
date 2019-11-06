@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "jsx": "react",
+    "allowJs": false,
     "lib": [
       "dom",
       "esnext"
