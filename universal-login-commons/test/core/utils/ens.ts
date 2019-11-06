@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {parseDomain, isValidEnsNameElement} from '../../../lib/core/utils/ens';
+import {parseDomain, isValidEnsNameElement, isValidEnsName} from '../../../lib/core/utils/ens';
 
 describe('UNIT: ENS', () => {
   describe('parseDomain', () => {
@@ -104,5 +104,30 @@ describe('UNIT: ENS', () => {
       const actalIsValid = isValidEnsNameElement(ensNameElement);
       expect(actalIsValid).to.be.false;
     });
+  });
+
+  describe('isValidEnsName', () => {
+    const itValidatesEnsName = (ensName: string, result: boolean) => {
+      it(`returns ${result} for ${ensName}`, () => {
+        expect(isValidEnsName(ensName)).to.be.eq(result);
+      });
+    };
+
+    itValidatesEnsName('jaaaa.mylogin.eth', true);
+    itValidatesEnsName('jaaaa.mylogin.xyz', true);
+    itValidatesEnsName('jaaaa.mylogin.test', true);
+    itValidatesEnsName('jaaaa1234.mylogin.eth', true);
+    itValidatesEnsName('jaaaa1234.myl-ogin.eth', true);
+    itValidatesEnsName('j-4.mylogin.eth', true);
+    itValidatesEnsName('jsjsj-4jsjks.mylogin.eth', true);
+    itValidatesEnsName('jaaaa-4.mylogin.eth', true);
+    itValidatesEnsName('jaaaa-4.mylogin.pl', true);
+    itValidatesEnsName('jaaaa-4.mylogin.ethudud', true);
+    itValidatesEnsName('jaaaa-4.mylogin.comcom', true);
+    itValidatesEnsName('jaaaa123_4.mylogin.eth', false);
+    itValidatesEnsName('jaaaa123_&@@.mylogin.eth', false);
+    itValidatesEnsName('jaaaa123.wrong__domain.eth', false);
+    itValidatesEnsName('jaaaa123_4.mylogin.abc', false);
+    itValidatesEnsName('jaaaa123_4.mylogin.something', false);
   });
 });
