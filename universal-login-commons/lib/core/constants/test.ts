@@ -39,9 +39,11 @@ export const TEST_DEVICE_INFO = {
   browser: 'Safari',
 };
 
+export const TEST_TOKEN_ADDRESS = '0x490932174cc4B7a0f546924a070D151D156095f0';
+
 export const TEST_TOKEN_DETAILS = [
   {
-    address: '0x490932174cc4B7a0f546924a070D151D156095f0',
+    address: TEST_TOKEN_ADDRESS,
     symbol: 'DAI',
     name: 'MockToken',
   },

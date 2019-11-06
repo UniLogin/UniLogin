@@ -1,8 +1,7 @@
-import {utils} from 'ethers';
-import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
-import {ensure, ensureNotNull, ETHER_NATIVE_TOKEN, isProperAddress, TransferDetails} from '@universal-login/commons';
+import {ensure, ensureNotNull, isProperAddress, TransferDetails} from '@universal-login/commons';
 import {InvalidAddress, WalletNotFound} from '../utils/errors';
 import {DeployedWallet} from '../../api/DeployedWallet';
+import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
 
 export class TransferService {
   constructor(private deployedWallet: DeployedWallet) {}
@@ -10,38 +9,7 @@ export class TransferService {
   async transfer(transferDetails: TransferDetails) {
     ensure(isProperAddress(transferDetails.to), InvalidAddress, transferDetails.to);
     ensureNotNull(this.deployedWallet, WalletNotFound);
-    if (transferDetails.transferToken === ETHER_NATIVE_TOKEN.address) {
-      return this.transferEther(transferDetails);
-    } else {
-      return this.transferTokens(transferDetails);
-    }
-  }
-
-  private async transferTokens({to, amount, transferToken, gasParameters}: TransferDetails) {
-    const message = {
-      from: this.deployedWallet.contractAddress,
-      to: transferToken,
-      value: 0,
-      data: encodeTransfer(to, amount),
-      gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice,
-    };
+    const message = encodeTransferToMessage({...transferDetails, from: this.deployedWallet.contractAddress});
     return this.deployedWallet.execute(message);
   }
-
-  private async transferEther({to, amount, gasParameters}: TransferDetails) {
-    const message = {
-      from: this.deployedWallet.contractAddress,
-      to,
-      value: utils.parseEther(amount),
-      data: '0x',
-      gasToken: gasParameters.gasToken,
-      gasPrice: gasParameters.gasPrice,
-    };
-    return this.deployedWallet.execute(message);
-  }
-}
-
-export function encodeTransfer(to: string, amount: string) {
-  return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
 }
