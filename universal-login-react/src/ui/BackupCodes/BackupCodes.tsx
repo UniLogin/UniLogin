@@ -8,6 +8,8 @@ import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
+import {transactionDetails} from '../../core/constants/TransactionDetails';
+import {GasParameters} from '@universal-login/commons';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
@@ -17,13 +19,15 @@ export interface BackupProps {
 
 export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupProps) => {
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
+  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
+
   const history = useHistory();
   const relayerConfig = deployedWallet.sdk.getRelayerConfig();
 
   const generateBackupCodes = async () => {
     try {
       history.replace(join(basePath, 'waitingForBackupCodes'));
-      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes();
+      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({...transactionDetails, ...gasParameters});
       const {transactionHash} = await waitForTransactionHash();
       history.replace(join(basePath, 'waitingForBackupCodes'), {transactionHash});
       const codes = await waitToBeSuccess();
@@ -40,6 +44,8 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
       <Route path={`${basePath}/`} exact>
         <BackupCodesInitial
           generateBackupCodes={generateBackupCodes}
+          deployedWallet={deployedWallet}
+          setGasParameters={setGasParameters}
           className={className}
         />
       </Route>
