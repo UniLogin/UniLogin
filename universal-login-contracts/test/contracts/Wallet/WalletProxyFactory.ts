@@ -90,7 +90,7 @@ describe('Counterfactual Factory', () => {
     const MAGICVALUE = '0x20c13b0b';
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const proxyContract = new Contract(futureAddress, WalletProxyFactoryInterface, wallet);
+    const proxyContract = new Contract(futureAddress, WalletContractInterface, wallet);
     const message = 'Hi, I am Justyna and I wonder if length of this message matters';
     const messageHex = utils.hexlify(utils.toUtf8Bytes(message));
     const signature2 = signString(message, keyPair.privateKey);
