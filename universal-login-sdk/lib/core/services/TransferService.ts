@@ -10,7 +10,7 @@ export class TransferService {
   async transfer(transferDetails: TransferDetails) {
     ensure(isProperAddress(transferDetails.to) || isValidEnsName(transferDetails.to), InvalidAddressOrEnsName, transferDetails.to);
     ensureNotNull(this.deployedWallet, WalletNotFound);
-    const targetAddress = await getTargetAddress(this.deployedWallet.sdk, transferDetails.to)
+    const targetAddress = await getTargetAddress(this.deployedWallet.sdk, transferDetails.to);
     const message = encodeTransferToMessage({...transferDetails, to: targetAddress, from: this.deployedWallet.contractAddress});
     return this.deployedWallet.execute(message);
   }

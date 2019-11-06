@@ -113,6 +113,6 @@ describe('UNIT: TransferService', () => {
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
-    })).to.be.rejectedWith('Address 0x is not valid');
+    })).to.be.rejectedWith('0x is not valid');
   });
 });
