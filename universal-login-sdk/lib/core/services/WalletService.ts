@@ -7,6 +7,7 @@ import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
 import {WalletState} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
+import {NoopWalletStorage} from './NoopWalletStorage';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -25,7 +26,7 @@ export class WalletService {
   constructor(
     public readonly sdk: UniversalLoginSDK,
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
-    private readonly storage?: WalletStorage,
+    private readonly storage: WalletStorage = new NoopWalletStorage(),
   ) {
     this.walletSerializer = new WalletSerializer(sdk);
   }
@@ -152,9 +153,6 @@ export class WalletService {
   }
 
   saveToStorage() {
-    if (!this.storage) {
-      return;
-    }
     const serialized = this.walletSerializer.serialize(this.state);
     if (serialized === 'remove') {
       this.storage.remove();
@@ -164,9 +162,6 @@ export class WalletService {
   }
 
   async loadFromStorage() {
-    if (!this.storage) {
-      return;
-    }
     const state = this.storage.load();
     if (!state) {
       return;
