@@ -1,6 +1,7 @@
 import {getCodeForException} from '../../../../lib/http/middlewares/errorHandler';
 import {expect} from 'chai';
 import {InvalidTransaction, NotEnoughSignatures, InvalidMessage, NotFound, ValidationFailed, PaymentError, Conflict, InvalidSignature, InvalidENSDomain, NotEnoughGas, NotEnoughBalance, DuplicatedSignature, DuplicatedExecution} from '../../../../lib/core/utils/errors';
+import {InvalidContract, NotEnoughTokens} from '@universal-login/commons';
 
 describe('UNIT: Error Handler', () => {
   describe('getCodeForException', () => {
@@ -13,12 +14,14 @@ describe('UNIT: Error Handler', () => {
 
     it('specific exceptions', () => {
       expect(getCodeForException(new InvalidSignature())).to.eq(400);
+      expect(getCodeForException(new InvalidContract('0x0'))).to.eq(400);
       expect(getCodeForException(new InvalidTransaction('0x0'))).to.eq(400);
       expect(getCodeForException(new NotEnoughSignatures(3, 2))).to.eq(400);
       expect(getCodeForException(new InvalidMessage('0x0'))).to.eq(404);
       expect(getCodeForException(new InvalidENSDomain('domain'))).to.eq(404);
       expect(getCodeForException(new NotEnoughGas())).to.eq(402);
       expect(getCodeForException(new NotEnoughBalance())).to.eq(402);
+      expect(getCodeForException(new NotEnoughTokens())).to.eq(402);
       expect(getCodeForException(new DuplicatedSignature())).to.eq(409);
       expect(getCodeForException(new DuplicatedExecution())).to.eq(409);
     });
