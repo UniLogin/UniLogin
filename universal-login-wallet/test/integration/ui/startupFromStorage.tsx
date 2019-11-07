@@ -1,16 +1,16 @@
+import React from 'react';
+import {providers} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai from 'chai';
-import React from 'react';
 import {createWallet, setupSdk} from '@universal-login/sdk/testutils';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import Relayer from '@universal-login/relayer';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
 import {Services} from '../../../src/ui/createServices';
 import App from '../../../src/ui/react/App';
-import {providers} from 'ethers';
 import {AppPage} from '../pages/AppPage';
-import Relayer from '@universal-login/relayer';
 
 chai.use(require('chai-string'));
 
