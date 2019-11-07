@@ -6,5 +6,5 @@ export interface IExecutionQueue {
   addMessage (item: SignedMessage): Promise<string>;
   addDeployment (item: Deployment): Promise<string>;
   getNext: () => Promise<QueueItem | undefined>;
-  remove: (hash: string) => Promise<number | void>;
+  remove: (hash: string) => Promise<void>;
 }
