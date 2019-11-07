@@ -5,6 +5,7 @@ import logoIcon from '../assets/icons/U.svg';
 import {useProperty} from '../..';
 import {DashboardModal} from './DashboardModal';
 import './../styles/udashboard.sass';
+import {getWindowConfirmation} from '../../core/utils/getWindowConfirmation';
 
 export interface DashboardProps {
   deployedWallet?: DeployedWallet;
@@ -37,7 +38,7 @@ export const Dashboard = (props: DashboardProps) => {
         <img src={logoIcon} alt="U"/>
       </button>
 
-      <MemoryRouter initialEntries={['/dashboard/funds']}>
+      <MemoryRouter initialEntries={['/dashboard/funds']} getUserConfirmation={getWindowConfirmation}>
         {dashboardVisibility && (
           <DashboardModal
             walletService={walletService}
