@@ -7,10 +7,10 @@ export class WalletSerializer {
   ) {
   }
 
-  serialize(state: WalletState): SerializedWalletState | 'remove' | undefined {
+  serialize(state: WalletState): SerializedWalletState | undefined {
     switch (state.kind) {
       case 'None':
-        return 'remove';
+        return {kind: 'None'};
       case 'Future':
         return {
           kind: 'Future',

@@ -25,6 +25,13 @@ describe('WalletStorageService', () => {
     return {storage, service};
   };
 
+  it('returns None state by default', () => {
+    const {storage, service} = setup();
+    storage.get = sinon.fake.returns(null);
+    expect(service.load()).to.deep.eq({kind: 'None'});
+    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+  });
+
   it('can load deployed state', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
@@ -51,12 +58,6 @@ describe('WalletStorageService', () => {
     expect(storage.set).to.be.calledWith(STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
-  it('can remove data', () => {
-    const {storage, service} = setup();
-    service.remove();
-    expect(storage.remove).to.be.calledWith(STORAGE_KEY);
-  });
-
   it('can migrate data from previous versions', () => {
     const {storage, service} = setup();
     let state = JSON.stringify(applicationWallet);
@@ -73,7 +74,7 @@ describe('WalletStorageService', () => {
     const storage = new MemoryStorageService();
     const service = new WalletStorageService(storage);
 
-    expect(service.load()).to.eq(null);
+    expect(service.load()).to.deep.eq({kind: 'None'});
 
     service.save({kind: 'Future', wallet: futureWallet});
     expect(service.load()).to.deep.eq({kind: 'Future', wallet: futureWallet});
