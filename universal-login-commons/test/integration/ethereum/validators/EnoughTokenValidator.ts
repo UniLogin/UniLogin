@@ -84,7 +84,7 @@ describe('INT: EnoughTokenValidator', () => {
     });
 
     it('Should throw error, when passed address is not a token address', async () => {
-      expect(hasEnoughToken(createPaymentOptions(wallet.address, utils.parseEther('2'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.eventually.rejectedWith(Error);
+      await expect(hasEnoughToken(createPaymentOptions(wallet.address, utils.parseEther('2'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.eventually.rejectedWith(`Invalid contract address: ${wallet.address}`);
     });
   });
 });
