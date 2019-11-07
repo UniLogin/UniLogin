@@ -1,5 +1,5 @@
 import React from 'react';
-import {Device, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
+import {Device} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 
 interface ManageDevicesProps {
@@ -13,7 +13,7 @@ export const ManageDevices = ({devices, deployedWallet}: ManageDevicesProps) => 
       devices.map(({contractAddress, publicKey}: Device, index: number) => (
         <div key={index}>
           device {index} : {publicKey}
-          <button onClick={() => deployedWallet.removeKey(publicKey, DEFAULT_PAYMENT_OPTIONS)} className="settings-btn">Remove this device</button>
+          <button onClick={() => deployedWallet.removeKey(publicKey)} className="settings-btn">Remove this device</button>
         </div>))
     }
   </div >

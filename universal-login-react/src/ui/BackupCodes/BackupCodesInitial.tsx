@@ -1,6 +1,6 @@
 import React from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
-import {OnGasParametersChanged, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
+import {OnGasParametersChanged, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
@@ -18,7 +18,7 @@ export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasP
       <GasPrice
         isDeployed={true}
         deployedWallet={deployedWallet}
-        gasLimit={DEFAULT_PAYMENT_OPTIONS.gasLimit}
+        gasLimit={DEFAULT_GAS_LIMIT}
         onGasParametersChanged={setGasParameters}
         className={className}
       />

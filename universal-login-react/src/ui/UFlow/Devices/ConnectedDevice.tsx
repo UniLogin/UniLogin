@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Device, ensureNotNull, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
+import {Device, ensureNotNull} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {useHistory} from 'react-router';
 import {join} from 'path';
@@ -52,7 +52,7 @@ export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedW
 
   const onConfirmDeleteClick = async () => {
     history.replace(join(devicesBasePath, '/waitingForRemovingDevice'));
-    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(publicKey, DEFAULT_PAYMENT_OPTIONS);
+    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(publicKey);
     const {transactionHash} = await waitForTransactionHash();
     ensureNotNull(transactionHash, TypeError);
     history.replace(join(devicesBasePath, '/waitingForRemovingDevice'), {transactionHash});

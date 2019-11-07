@@ -1,6 +1,5 @@
 import {utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
-import {PaymentOptions} from '../models/message';
 
 export const DEFAULT_GAS_PRICE = 10000000000;
 
@@ -26,10 +25,4 @@ export const EMPTY_GAS_OPTION = {
     address: '',
   },
   gasPrice: utils.bigNumberify('0'),
-};
-
-export const DEFAULT_PAYMENT_OPTIONS: PaymentOptions = {
-  gasToken: ETHER_NATIVE_TOKEN.address,
-  gasPrice: DEFAULT_GAS_PRICE,
-  gasLimit: DEFAULT_GAS_LIMIT,
 };
