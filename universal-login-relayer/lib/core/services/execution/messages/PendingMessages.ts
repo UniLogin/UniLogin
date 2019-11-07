@@ -1,8 +1,7 @@
-import {Wallet, Contract} from 'ethers';
-import {calculateMessageHash, SignedMessage, ensure, MessageStatus} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import {Contract, Wallet} from 'ethers';
+import {calculateMessageHash, ensure, MessageStatus, SignedMessage} from '@universal-login/commons';
 import {MessageStatusService} from './MessageStatusService';
-import {DuplicatedSignature, InvalidSignature, DuplicatedExecution, NotEnoughSignatures} from '../../../utils/errors';
+import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSignatures} from '../../../utils/errors';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {getKeyFromHashAndSignature} from '../../../utils/encodeData';
 import {createMessageItem} from '../../../utils/messages/serialisation';
