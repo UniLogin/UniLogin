@@ -29,6 +29,8 @@ export class WalletSerializer {
 
   async deserialize(state: SerializedWalletState): Promise<WalletState> {
     switch (state.kind) {
+      case 'None':
+        return {kind: 'None'};
       case 'Future':
         return {
           kind: 'Future',
