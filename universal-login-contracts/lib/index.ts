@@ -5,3 +5,4 @@ export {createFutureDeployment, createFutureDeploymentWithENS, CreateFutureDeplo
 export {deployWalletContract} from './deployMaster';
 export {computeGasFields, estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage} from './estimateGas';
 export {messageToUnsignedMessage, messageToSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from './message';
+export * from './interfaces';

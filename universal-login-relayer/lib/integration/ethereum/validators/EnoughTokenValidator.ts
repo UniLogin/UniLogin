@@ -1,7 +1,6 @@
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {providers, utils, Contract} from 'ethers';
-import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContract, PaymentOptions, IMessageValidator} from '@universal-login/commons';
-import {NotEnoughTokens, InvalidContract} from '../../../core/utils/errors';
+import {SignedMessage, ETHER_NATIVE_TOKEN, ensure, isContract, PaymentOptions, IMessageValidator, NotEnoughTokens, InvalidContract} from '@universal-login/commons';
 
 export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOptions, walletContractAddress: string, provider: providers.Provider) => {
   if (gasToken === ETHER_NATIVE_TOKEN.address) {

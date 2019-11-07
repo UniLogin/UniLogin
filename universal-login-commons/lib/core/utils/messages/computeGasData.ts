@@ -1,4 +1,4 @@
-import {ensure} from '../errors';
+import {ensure} from '../errors/heplers';
 import {isProperHexString} from '../hexStrings';
 
 export const ZERO_BYTE_GAS_COST = 4;

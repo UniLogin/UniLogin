@@ -4,6 +4,8 @@ import {
   SerializableFutureWallet,
   MineableStatus,
   PublicRelayerConfig,
+  ensure,
+  isValidEnsName,
 } from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
@@ -13,6 +15,7 @@ import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import {DeployedWallet} from './DeployedWallet';
 import UniversalLoginSDK from './sdk';
 import {MineableFactory} from '../core/services/MineableFactory';
+import {InvalidAddressOrEnsName} from '../core/utils/errors';
 
 export type BalanceDetails = {
   tokenAddress: string;
@@ -74,6 +77,7 @@ export class FutureWalletFactory extends MineableFactory {
         },
       ),
       deploy: async (ensName: string, gasPrice: string, gasToken: string): Promise<Deployment> => {
+        ensure(isValidEnsName(ensName), InvalidAddressOrEnsName, ensName);
         const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
         const signature = await calculateInitializeSignature(initData, privateKey);
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);

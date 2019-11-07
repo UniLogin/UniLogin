@@ -1,4 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
+import {ValidationError, PaymentError as CommonPaymentError} from '@universal-login/commons';
 import {NotFound, PaymentError, Conflict, ValidationFailed, RelayerError, UnauthorisedAddress} from '../../core/utils/errors';
 import {SanitizeError} from '@restless/restless';
 
@@ -29,11 +30,11 @@ function getContentForException(err: Error) {
 }
 
 export function getCodeForException(err: Error) {
-  if (err instanceof ValidationFailed || err instanceof SanitizeError) {
+  if (err instanceof ValidationFailed || err instanceof SanitizeError || err instanceof ValidationError) {
     return 400;
   } else if (err instanceof UnauthorisedAddress) {
     return 401;
-  } else if (err instanceof PaymentError) {
+  } else if (err instanceof PaymentError || err instanceof CommonPaymentError) {
     return 402;
   } else if (err instanceof NotFound) {
     return 404;

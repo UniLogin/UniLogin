@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {providers, Wallet, Contract, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import {WalletContractInterface} from '@universal-login/contracts';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 import WalletService from '../../../../lib/integration/ethereum/WalletService';
 import ENSService from '../../../../lib/integration/ethereum/ensService';
@@ -31,7 +31,7 @@ describe('INT: WalletService', async () => {
     ({walletService, callback, factoryContract, ensService, provider, fakeDevicesService} = await setupWalletService(wallet));
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
     transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
-    walletContract = new Contract(futureContractAddress, WalletContract.interface, provider);
+    walletContract = new Contract(futureContractAddress, WalletContractInterface, provider);
   });
 
   describe('Create', async () => {

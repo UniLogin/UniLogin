@@ -65,6 +65,19 @@ describe('INT: FutureWalletFactory', async () => {
     expect(deployedWallet.name).to.eq(ensName);
   });
 
+  it('should reject uppercase ens name, before sending the transaction to the blockchain', async () => {
+    const ensName = 'MYNAME.mylogin.eth';
+    const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createFutureWallet());
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
+    await waitForBalance();
+
+    const balanceBefore = await wallet.getBalance();
+    await expect(deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address))
+      .to.be.eventually.rejectedWith('MYNAME.mylogin.eth is not valid');
+    const balanceAfter = await wallet.getBalance();
+    expect(balanceBefore).to.be.equal(balanceAfter);
+  });
+
   after(async () => {
     await relayer.stop();
   });

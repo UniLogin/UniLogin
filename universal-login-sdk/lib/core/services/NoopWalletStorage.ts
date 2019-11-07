@@ -1,11 +1,8 @@
-import {WalletStorage} from '../..';
+import {SerializedWalletState, WalletStorage} from '../..';
 
 export class NoopWalletStorage implements WalletStorage {
-  load() {
-    return null;
-  }
-
-  remove() {
+  load(): SerializedWalletState {
+    return {kind: 'None'};
   }
 
   save() {
