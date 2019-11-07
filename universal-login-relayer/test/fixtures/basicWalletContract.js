@@ -3,13 +3,16 @@ import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} 
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
+const gasPrice = utils.bigNumberify(DEFAULT_GAS_PRICE);
+const gasLimit = utils.bigNumberify(DEFAULT_GAS_LIMIT);
+
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5'),
   data: EMPTY_DATA,
   nonce: '0',
-  gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
+  gasPrice,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -19,8 +22,8 @@ export const addKeyMessage = {
   value: utils.parseEther('0.0'),
   data: addKeyMessageDataField,
   nonce: 0,
-  gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
+  gasPrice,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -30,7 +33,7 @@ export const removeKeyMessage = {
   value: utils.parseEther('0.0'),
   data: removeKeyMessageDataField,
   nonce: 1,
-  gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
+  gasPrice,
+  gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
 };
