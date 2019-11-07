@@ -47,6 +47,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     config,
     userDropdownService,
     walletService,
+    storageService,
     walletPresenter,
     start: () => sdk.start(),
   };
