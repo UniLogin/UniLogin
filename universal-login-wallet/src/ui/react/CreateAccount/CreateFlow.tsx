@@ -1,10 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Redirect} from 'react-router';
-import {useMutableState} from 'react-use-mutable';
 import {useServices} from '../../hooks';
 import {CreateAccount} from './CreateAccount';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {ETHER_NATIVE_TOKEN, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 import Modal from '../Modals/Modal';
 import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
@@ -12,23 +10,15 @@ import {ModalTxnSuccess} from '../Modals/ModalTxnSuccess';
 
 export function CreateFlow() {
   const modalService = useContext(WalletModalContext);
-  const {sdk, walletService} = useServices();
-  const [getGasParameters, setGasParameters] = useMutableState<GasParameters>(INITIAL_GAS_PARAMETERS);
-  const [transactionHash, setTransactionHash] = useState<string | undefined>(undefined); // TODO: Move to wallet state
+  const {sdk, walletService, walletCreationService} = useServices();
 
   const onCreateClick = async (name: string) => {
-    const {waitForBalance} = await walletService.createFutureWallet();
-    await waitForBalance();
-    modalService.hideModal(); // Needed to clear top-up modals after the funds have arrived
-    await walletService.deployFutureWallet(
-      name,
-      getGasParameters().gasPrice.toString(),
-      ETHER_NATIVE_TOKEN.address,
-      setTransactionHash,
-    );
+    walletCreationService.onBalancePresent(() => modalService.hideModal());
+    await walletCreationService.initiateCreationFlow(name);
   };
 
   const walletState = useProperty(walletService.stateProperty);
+  const transactionHash = useProperty(walletCreationService.deploymentTransactionHash);
   switch (walletState.kind) {
     case 'None':
       return <CreateAccount onCreateClick={onCreateClick}/>;
@@ -40,7 +30,7 @@ export function CreateFlow() {
             contractAddress={walletState.wallet.contractAddress}
             isDeployment
             isModal
-            onGasParametersChanged={setGasParameters}
+            onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
             hideModal={() => hideTopUpModal(walletService, modalService)}
             showModal={modalService.showModal as any} // FIXME: Types don't match up between react and wallet modals
             modalClassName="topup-modal-wrapper"

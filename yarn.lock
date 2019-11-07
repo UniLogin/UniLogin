@@ -11718,13 +11718,6 @@ react-use-mutable@^0.1.0:
   dependencies:
     "@types/react" "^16.8.23"
 
-react-use-mutable@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-use-mutable/-/react-use-mutable-0.1.1.tgz#ce7418c8fdd621d459b73d1a9fa78b022edae757"
-  integrity sha512-w7rJM/f3UWKZdKGvt32HnUftLG9sYQ3758/Ns15ehZQm5wkbV/D+rHoKW19QbFsJfAj1c0sOQkbTJUPcvljp5Q==
-  dependencies:
-    "@types/react" "^16.8.23"
-
 react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"

@@ -30,8 +30,7 @@
     "react-dom": "^16.8.6",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-transition-group": "^2.8.0",
-    "react-use-mutable": "^0.1.1"
+    "react-transition-group": "^2.8.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
