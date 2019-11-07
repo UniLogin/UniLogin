@@ -12,7 +12,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   }
 
   // Override
-  async add(messageHash: string, messageItem: MessageItem) {
+  add(messageHash: string, messageItem: MessageItem) {
     ensureNotNull(messageItem.message, MessageNotFound, messageHash);
     return super.add(messageHash, {
       transactionHash: messageItem.transactionHash,
