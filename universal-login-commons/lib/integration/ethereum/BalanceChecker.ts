@@ -8,14 +8,14 @@ import {InvalidContract} from '../../core/utils/errors/errors';
 export class BalanceChecker {
   constructor(private provider: providers.Provider) {}
 
-  async getBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
+  getBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
       return this.getEthBalance(walletAddress);
     }
     return this.getTokenBalance(walletAddress, tokenAddress);
   }
 
-  private async getEthBalance(walletAddress: string): Promise<utils.BigNumber> {
+  private getEthBalance(walletAddress: string): Promise<utils.BigNumber> {
     return this.provider.getBalance(walletAddress);
   }
 
