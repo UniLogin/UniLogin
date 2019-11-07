@@ -1,11 +1,10 @@
 import {utils, providers} from 'ethers';
 import {DecodedMessage, SignedMessage} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '@universal-login/contracts';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import {encodeDataForExecuteSigned, WalletContractInterface} from '@universal-login/contracts';
 import {InvalidHexData} from '../errors';
 import MessageItem from '../../models/messages/MessageItem';
 
-const {executeSigned} = new utils.Interface(WalletContract.interface).functions;
+const {executeSigned} = WalletContractInterface.functions;
 
 export const GAS_LIMIT_MARGIN = 35000;
 

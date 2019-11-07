@@ -5,6 +5,7 @@ import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk'
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import UserDropdownService from '../core/app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
+import {WalletCreationService} from '../core/app/WalletCreationService';
 
 interface Config {
   domains: string[];
@@ -40,6 +41,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
   const storageService = overrides.storageService || new StorageService();
   const walletStorageService = new WalletStorageService(storageService);
   const walletService = new WalletService(sdk, walletFromBrain, walletStorageService);
+  const walletCreationService = new WalletCreationService(walletService);
   const walletPresenter = new WalletPresenter(walletService);
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
@@ -48,6 +50,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     userDropdownService,
     walletService,
     storageService,
+    walletCreationService,
     walletPresenter,
     start: () => sdk.start(),
   };
