@@ -2,18 +2,21 @@
   .jarvis-styles
 
     .devices
-      min-height: 650px
+      height: 650px
+      overflow: scroll
       padding: 0 10px
 
       +media(s, 168px)
         padding-top: 10px
-        min-height: initial
+        height: initial
         padding-bottom: 80px
 
     .devices-inner
+      min-height: 570px
       padding: 40px 50px 0
 
       +media(s)
+        min-height: initial
         padding: 40px 15px 0
 
     .connected-devices-title
@@ -83,8 +86,10 @@
       color: #FFFFFF
 
     .delete-account-link
+      position: static
       color: #31405E
       opacity: 0.6
+      margin: 20px 30px 40px
 
       +media(s, 168px)
         position: static
