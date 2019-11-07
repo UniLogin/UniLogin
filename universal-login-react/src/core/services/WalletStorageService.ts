@@ -51,6 +51,9 @@ const asApplicationWallet = asObject<ApplicationWallet>({
 
 const asSerializedState = asAnyOf([
   asObject<SerializedWalletState>({
+    kind: asExactly('None'),
+  }),
+  asObject<SerializedWalletState>({
     kind: asExactly('Future'),
     wallet: asSerializableFutureWallet,
   }),

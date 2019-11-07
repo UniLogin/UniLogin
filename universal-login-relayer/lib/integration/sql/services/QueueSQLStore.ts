@@ -43,7 +43,7 @@ export default class QueueSQLStore implements IExecutionQueue {
   }
 
   async remove(hash: string) {
-    return this.database(this.tableName)
+    await this.database(this.tableName)
       .where('hash', hash)
       .delete();
   }
