@@ -14,7 +14,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   // Override
   async add(messageHash: string, messageItem: MessageItem) {
     ensureNotNull(messageItem.message, MessageNotFound, messageHash);
-    await super.add(messageHash, {
+    return super.add(messageHash, {
       transactionHash: messageItem.transactionHash,
       walletAddress: messageItem.walletAddress,
       state: 'AwaitSignature',
