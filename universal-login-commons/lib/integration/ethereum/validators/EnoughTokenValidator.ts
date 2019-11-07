@@ -1,21 +1,18 @@
-import {providers, utils, Contract} from 'ethers';
-import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
-import {ETHER_NATIVE_TOKEN, ensure, isContract, InvalidContract, IMessageValidator, PaymentOptions, SignedMessage, NotEnoughTokens} from '../../..';
+import {providers, utils} from 'ethers';
+import {ensure, IMessageValidator, PaymentOptions, SignedMessage, NotEnoughTokens} from '../../..';
+import {BalanceChecker} from '../BalanceChecker';
 
-export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOptions, walletContractAddress: string, provider: providers.Provider) => {
-  if (gasToken === ETHER_NATIVE_TOKEN.address) {
-    const walletBalance = await provider.getBalance(walletContractAddress);
-    return walletBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
-  } else {
-    ensure(await isContract(provider, gasToken), InvalidContract, gasToken);
-    const token = new Contract(gasToken, IERC20.abi, provider);
-    const walletContractTokenBalance = await token.balanceOf(walletContractAddress);
-    return walletContractTokenBalance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
-  }
+export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOptions, walletContractAddress: string, balanceChecker: BalanceChecker) => {
+  const balance = await balanceChecker.getBalance(walletContractAddress, gasToken);
+  return balance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
 };
 
 export class EnoughTokenValidator implements IMessageValidator {
-  constructor(private provider: providers.Provider) {}
+  private balanceChecker: BalanceChecker;
+
+  constructor(private provider: providers.Provider) {
+    this.balanceChecker = new BalanceChecker(this.provider);
+  }
 
   async validate(signedMessage: SignedMessage) {
     const paymentOptions: PaymentOptions = {
@@ -23,6 +20,6 @@ export class EnoughTokenValidator implements IMessageValidator {
       gasLimit: signedMessage.gasLimitExecution,
       gasPrice: signedMessage.gasPrice,
     };
-    ensure(await hasEnoughToken(paymentOptions, signedMessage.from, this.provider), NotEnoughTokens);
+    ensure(await hasEnoughToken(paymentOptions, signedMessage.from, this.balanceChecker), NotEnoughTokens);
   }
 }
