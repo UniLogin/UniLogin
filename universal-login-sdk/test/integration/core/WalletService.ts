@@ -38,7 +38,7 @@ describe('INT: WalletService', () => {
     walletService.setWallet(applicationWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    expect(storage.remove).to.be.called;
+    expect(storage.save).to.be.calledWith({kind: 'None'});
   });
 
   it('connect set state to Deployed', () => {

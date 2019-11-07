@@ -18,6 +18,8 @@ export type WalletState = {
 };
 
 export type SerializedWalletState = {
+  kind: 'None';
+} | {
   kind: 'Future';
   wallet: SerializableFutureWallet;
 } | {
@@ -26,7 +28,6 @@ export type SerializedWalletState = {
 };
 
 export interface WalletStorage {
-  load(): SerializedWalletState | null;
+  load(): SerializedWalletState;
   save(state: SerializedWalletState): void;
-  remove(): void;
 }

@@ -154,19 +154,14 @@ export class WalletService {
 
   saveToStorage() {
     const serialized = this.walletSerializer.serialize(this.state);
-    if (serialized === 'remove') {
-      this.storage.remove();
-    } else if (serialized !== undefined) {
+    if (serialized !== undefined) {
       this.storage.save(serialized);
     }
   }
 
   async loadFromStorage() {
-    const state = this.storage.load();
-    if (!state) {
-      return;
-    }
     ensure(this.state.kind === 'None', WalletOverridden);
+    const state = this.storage.load();
     this.stateProperty.set(await this.walletSerializer.deserialize(state));
   }
 }
