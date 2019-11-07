@@ -1,6 +1,6 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const Dotenv = require("dotenv-webpack")
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -9,11 +9,12 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     filename: 'main.[hash].js',
-    path: path.join(__dirname, '/dist/html')
+    path: path.join(__dirname, '/dist/html'),
+    publicPath: '/',
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
     rules: [
@@ -23,16 +24,16 @@ module.exports = {
         include: [
           path.resolve(__dirname, 'src'),
         ],
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+      {enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'},
       {
         test: /\.(png|jpg|gif|svg|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]'
+              name: '[name].[hash].[ext]',
             },
           },
         ],
@@ -42,10 +43,10 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -54,28 +55,28 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      favicon: './src/ui/assets/logo.ico'
+      favicon: './src/ui/assets/logo.ico',
     }),
     new Dotenv(),
     new webpack.DefinePlugin({
       'process.env.TOKEN_CONTRACT_ADDRESS': JSON.stringify(process.env.TOKEN_CONTRACT_ADDRESS),
       'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
       'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
-      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
+      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL),
     }),
     new CopyPlugin([
       {from: './src/ui/assets/jarvis-web-clip.png'},
-      {from: './src/_redirects'}
+      {from: './src/_redirects'},
     ]),
   ],
   devServer: {
     historyApiFallback: true,
     host: '0.0.0.0',
     compress: true,
-    stats: 'errors-only'
+    stats: 'errors-only',
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
   },
   stats: 'minimal',
-}
+};
