@@ -28,17 +28,13 @@ export class WalletStorageService implements WalletStorage {
     }
   }
 
-  load(): SerializedWalletState | null {
+  load(): SerializedWalletState {
     this.migrateStoredState();
-    return this.storage.get();
+    return this.storage.get() || {kind: 'None'};
   }
 
   save(state: SerializedWalletState): void {
     this.storage.set(state);
-  }
-
-  remove() {
-    this.storage.remove();
   }
 }
 
