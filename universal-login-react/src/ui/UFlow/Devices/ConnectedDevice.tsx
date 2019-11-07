@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {Device, ensureNotNull} from '@universal-login/commons';
+import {Device, ensureNotNull, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
-import {DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 import {ConnectedDeviceView} from './ConnectedDeviceView';

@@ -1,7 +1,6 @@
 import React from 'react';
-import {Device} from '@universal-login/commons';
+import {Device, DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
-import {DEFAULT_PAYMENT_OPTIONS} from '@universal-login/commons';
 
 interface ManageDevicesProps {
   deployedWallet: DeployedWallet;
