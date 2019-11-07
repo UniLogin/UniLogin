@@ -7,6 +7,7 @@ import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {getKeyFromHashAndSignature} from '../../../utils/encodeData';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
+import {WalletContractInterface} from '@universal-login/contracts';
 
 export default class PendingMessages {
   constructor(
@@ -55,7 +56,7 @@ export default class PendingMessages {
       calculateMessageHash(message),
       message.signature,
     );
-    const walletContract = new Contract(walletAddress, WalletContract.interface, wallet);
+    const walletContract = new Contract(walletAddress, WalletContractInterface, wallet);
     ensure(await walletContract.keyExist(key), InvalidSignature, 'Invalid key');
   }
 
