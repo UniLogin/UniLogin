@@ -7,8 +7,5 @@
   "include": [
     "lib",
     "test"
-  ],
-  "exclude": [
-    "lib/integration/sql/migrations"
   ]
 }

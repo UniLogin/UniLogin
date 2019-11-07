@@ -26,8 +26,7 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc && yarn copy-migrations",
-    "copy-migrations": "cp -r lib/integration/sql/migrations build/lib/integration/sql",
+    "build": "tsc && rm build/lib/integration/sql/migrations/*.d.ts",
     "start": "node build/lib/http/start.js",
     "test": "yarn build && yarn test:nobuild",
     "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
