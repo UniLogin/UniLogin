@@ -7,10 +7,10 @@ import {PrivateRoute} from './PrivateRoute';
 import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
-import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
-import {WalletModalContext, WalletModalType, WalletModalPropType} from '../../core/entities/WalletModalContext';
+import {WalletModalContext, WalletModalPropType, WalletModalType} from '../../core/entities/WalletModalContext';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
+import {CreateFlow} from './CreateAccount/CreateFlow';
 
 const App = () => {
   const modalService = useModalService<WalletModalType, WalletModalPropType>();
@@ -39,7 +39,7 @@ const App = () => {
         <Route
           exact
           path="/create"
-          render={() => <CreateAccount />}
+          render={() => <CreateFlow />}
         />
         <Route
           exact

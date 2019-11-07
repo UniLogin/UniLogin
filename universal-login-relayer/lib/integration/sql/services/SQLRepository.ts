@@ -10,7 +10,7 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
   }
 
   async add(hash: string, item: T) {
-    return this.knex
+    await this.knex
       .insert({
         hash,
         ...item,
@@ -46,21 +46,21 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
   }
 
   async setState(hash: string, state: MineableState) {
-    return this.knex(this.tableName)
+    await this.knex(this.tableName)
       .where('hash', hash)
       .update('state', state);
   }
 
   async markAsPending(hash: string, transactionHash: string) {
     ensureProperTransactionHash(transactionHash);
-    return this.knex(this.tableName)
+    await this.knex(this.tableName)
       .where('hash', hash)
       .update('transactionHash', transactionHash)
       .update('state', 'Pending');
   }
 
   async markAsError(hash: string, error: string) {
-    return this.knex(this.tableName)
+    await this.knex(this.tableName)
       .where('hash', hash)
       .update('error', error)
       .update('state', 'Error');

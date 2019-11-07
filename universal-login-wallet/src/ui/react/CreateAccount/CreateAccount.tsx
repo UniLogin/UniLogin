@@ -1,46 +1,18 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
-import {
-  ETHER_NATIVE_TOKEN,
-  GasParameters,
-  INITIAL_GAS_PARAMETERS,
-  WalletSuggestionAction,
-} from '@universal-login/commons';
-import Modal from '../Modals/Modal';
+import {WalletSuggestionAction} from '@universal-login/commons';
 import {Link} from 'react-router-dom';
-import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 
-export const CreateAccount = () => {
-  const modalService = useContext(WalletModalContext);
-  const {sdk, walletService} = useServices();
+export interface CreateAccountProps {
+  onCreateClick: (ensName: string) => void;
+}
+
+export const CreateAccount = ({onCreateClick}: CreateAccountProps) => {
+  const {sdk} = useServices();
   const walletConfig = useWalletConfig();
-
-  const showWaitingModal = (transactionHash?: string) => modalService.showModal('waitingForDeploy', {transactionHash});
-
-  const onCreateClick = async (name: string) => {
-    let gasParameters = INITIAL_GAS_PARAMETERS;
-    const {waitForBalance} = await walletService.createFutureWallet();
-    const topUpProps: TopUpModalProps = {
-      onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
-      isDeployment: true,
-      hideModal: () => hideTopUpModal(walletService, modalService),
-      showModal: modalService.showModal,
-    };
-    modalService.showModal('topUpAccount', topUpProps);
-    await waitForBalance();
-    showWaitingModal();
-    await walletService.deployFutureWallet(
-      name,
-      gasParameters.gasPrice.toString(),
-      ETHER_NATIVE_TOKEN.address,
-      showWaitingModal,
-    );
-    modalService.showModal('transactionSuccess');
-  };
 
   return (
     <div className="main-bg">
@@ -71,7 +43,6 @@ export const CreateAccount = () => {
           </div>
         </div>
       </div>
-      <Modal />
     </div>
   );
 };
