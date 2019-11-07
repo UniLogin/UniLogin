@@ -18,7 +18,7 @@ export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasP
       <GasPrice
         isDeployed={true}
         deployedWallet={deployedWallet}
-        gasLimit={DEFAULT_PAYMENT_OPTIONS.gasLimit!}
+        gasLimit={DEFAULT_PAYMENT_OPTIONS.gasLimit}
         onGasParametersChanged={setGasParameters}
         className={className}
       />
