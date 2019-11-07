@@ -11718,6 +11718,13 @@ react-use-mutable@^0.1.0:
   dependencies:
     "@types/react" "^16.8.23"
 
+react-use-mutable@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-use-mutable/-/react-use-mutable-0.1.1.tgz#ce7418c8fdd621d459b73d1a9fa78b022edae757"
+  integrity sha512-w7rJM/f3UWKZdKGvt32HnUftLG9sYQ3758/Ns15ehZQm5wkbV/D+rHoKW19QbFsJfAj1c0sOQkbTJUPcvljp5Q==
+  dependencies:
+    "@types/react" "^16.8.23"
+
 react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
@@ -14074,14 +14081,14 @@ typescript@3.6.2, typescript@^3.6.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.2.tgz#105b0f1934119dde543ac8eb71af3a91009efe54"
   integrity sha512-lmQ4L+J6mnu3xweP8+rOrUwzmN+MRAj7TgtJtDaXE5PMyX2kCrklhg3rvOsOIfNeAWMQWO2F1GPc1kMD2vLAfw==
 
+typescript@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
+
 typescript@^3.7.0:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
   integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
-
-typescript@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
 
 typewise-core@^1.2, typewise-core@^1.2.0:
   version "1.2.0"
