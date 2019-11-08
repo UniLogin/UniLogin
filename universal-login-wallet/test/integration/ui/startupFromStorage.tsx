@@ -2,7 +2,7 @@ import React from 'react';
 import {providers} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import {createWallet, setupSdk} from '@universal-login/sdk/testutils';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import Relayer from '@universal-login/relayer';
@@ -35,18 +35,21 @@ describe('UI: Startup from stored wallet state', () => {
   it('starts when storage is empty', async () => {
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/']);
+    expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   it('starts when storage is None', async () => {
     services.storageService.set('wallet', JSON.stringify({kind: 'None'}));
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/']);
+    expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   it('starts when storage is Future', async () => {
     services.storageService.set('wallet', JSON.stringify({kind: 'Future', wallet: {contractAddress, privateKey}}));
     await services.walletService.loadFromStorage();
-    appWrapper = mountWithContext(<App/>, services, ['/']);
+    appWrapper = mountWithContext(<App/>, services, ['/create']);
+    expect(appWrapper.text().includes('Choose a top-up method')).to.be.true;
   });
 
   it('starts when storage is Deployed', async () => {
@@ -55,6 +58,7 @@ describe('UI: Startup from stored wallet state', () => {
     appWrapper = mountWithContext(<App/>, services, ['/']);
     const appPage = new AppPage(appWrapper);
     await appPage.dashboard().waitForDashboard();
+    expect(appWrapper.text().includes('My Assets')).to.be.true;
   });
 
   afterEach(async () => {
