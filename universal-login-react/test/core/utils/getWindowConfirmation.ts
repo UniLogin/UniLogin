@@ -5,7 +5,7 @@ import {getWindowConfirmation} from '../../../src/core/utils/getWindowConfirmati
 describe('UNIT: getWindowConfirmation', () => {
   it('should always get window confirmation in test environment', () => {
     const callback = sinon.spy();
-    getWindowConfirmation('Can I', callback)
+    getWindowConfirmation('Can I', callback);
     expect(callback).to.be.calledOnceWithExactly(true);
   });
 });
