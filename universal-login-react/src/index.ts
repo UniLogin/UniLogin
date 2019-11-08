@@ -36,6 +36,7 @@ export {GasPrice} from './ui/commons/GasPrice';
 export {StorageService} from './core/services/StorageService';
 export {WalletStorageService} from './core/services/WalletStorageService';
 export {MemoryStorageService} from './core/services/MemoryStorageService';
+export {WalletCreationService} from './core/services/WalletCreationService';
 export {Notice} from './ui/commons/Notice';
 export {ConnectionFlow} from './ui/ConnectionFlow';
 export {ExplorerLink} from './ui/commons/ExplorerLink';
