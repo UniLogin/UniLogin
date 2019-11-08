@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
-import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS, WalletSuggestionAction} from '@universal-login/commons';
+import {ApplicationWallet, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
+import {ReactModalContext, ReactModalProps, ReactModalType} from '../../core/models/ReactModalContext';
 import {useModalService} from '../../core/services/useModalService';
+import {ModalWrapper, TopUp, useProperty, WaitingForDeployment, WalletCreationService} from '../..';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -21,6 +22,8 @@ export interface OnboardingProps {
 export const Onboarding = (props: OnboardingProps) => {
   const modalService = useModalService<ReactModalType, ReactModalProps>();
   const [walletService] = useState<WalletService>(props.walletService || new WalletService(props.sdk));
+  const [walletCreationService] = useState(() => new WalletCreationService(walletService));
+
   const onConnectClick = (ensName: string) => {
     const connectionFlowProps = {
       name: ensName,
@@ -36,35 +39,45 @@ export const Onboarding = (props: OnboardingProps) => {
     props.onConnect && props.onConnect();
   };
 
-  const showWalletCreationModal = (transactionHash?: string) => {
-    const relayerConfig = props.sdk.getRelayerConfig();
-    modalService.showModal('waitingForDeployment', {
-      relayerConfig,
-      transactionHash,
-    });
-  };
-
   const onCreateClick = async (ensName: string) => {
-    let gasParameters = INITIAL_GAS_PARAMETERS;
-    const {waitForBalance, contractAddress, privateKey} = await walletService.createFutureWallet();
-    localStorage.setItem('BACKUP_DEMO', JSON.stringify({
-      ensName,
-      contractAddress,
-      privateKey,
-    }));
-    const topUpProps: TopUpProps = {
-      contractAddress,
-      onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
-      sdk: props.sdk,
-      isDeployment: true,
-      hideModal: () => {walletService.disconnect(); modalService.hideModal();},
-    };
-    modalService.showModal('topUpAccount', topUpProps);
-    await waitForBalance();
-    showWalletCreationModal();
-    const wallet = await walletService.deployFutureWallet(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken, showWalletCreationModal);
+    walletCreationService.onBalancePresent(() => modalService.hideModal());
+    const wallet = await walletCreationService.initiateCreationFlow(ensName);
     modalService.hideModal();
     props.onCreate && props.onCreate(wallet);
+  };
+
+  const walletState = useProperty(walletService.stateProperty);
+  const transactionHash = useProperty(walletCreationService.deploymentTransactionHash);
+  const renderModal = () => {
+    switch (walletState.kind) {
+      case 'Future':
+        return (
+          <TopUp
+            modalClassName={props.modalClassName}
+            showModal={modalService.showModal}
+            contractAddress={walletState.wallet.contractAddress}
+            onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
+            sdk={props.sdk}
+            isDeployment
+            hideModal={() => {
+              walletService.disconnect();
+              modalService.hideModal();
+            }}
+            isModal
+          />
+        );
+      case 'Deploying':
+        return (
+          <ModalWrapper>
+            <WaitingForDeployment
+              relayerConfig={props.sdk.getRelayerConfig()}
+              transactionHash={transactionHash}
+            />
+          </ModalWrapper>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -81,6 +94,7 @@ export const Onboarding = (props: OnboardingProps) => {
               actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
             />
           </div>
+          {renderModal()}
           <Modals modalClassName={props.modalClassName} />
         </ReactModalContext.Provider>
       </div>

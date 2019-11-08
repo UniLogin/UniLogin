@@ -45,12 +45,6 @@ const Modals = ({modalClassName}: ModalsProps) => {
           <WaitingForOnRampProvider {...modalService.modalProps as WaitingForOnRampProviderProps}/>
         </ModalWrapper>
       );
-    case 'waitingForDeployment':
-      return (
-        <ModalWrapper>
-          <WaitingForDeployment {...modalService.modalProps as WaitingForTransactionProps}/>
-        </ModalWrapper>
-      );
     default:
       return null;
   }
