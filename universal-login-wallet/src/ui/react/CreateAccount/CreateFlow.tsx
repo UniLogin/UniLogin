@@ -18,7 +18,6 @@ export function CreateFlow() {
   };
 
   const walletState = useProperty(walletService.stateProperty);
-  const transactionHash = useProperty(walletCreationService.deploymentTransactionHash);
   switch (walletState.kind) {
     case 'None':
       return <CreateAccount onCreateClick={onCreateClick}/>;
@@ -45,7 +44,7 @@ export function CreateFlow() {
         <div className="main-bg">
           <ModalWrapper modalClassName="jarvis-modal">
             <WaitingForDeployment
-              transactionHash={transactionHash}
+              transactionHash={walletState.transactionHash}
               relayerConfig={sdk.getRelayerConfig()}
               className="jarvis-styles"
             />
