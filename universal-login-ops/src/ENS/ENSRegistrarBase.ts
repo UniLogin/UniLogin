@@ -1,5 +1,5 @@
 import {providers, Contract, Wallet, utils, ContractFunction} from 'ethers';
-import ENS from '@universal-login/contracts/build/ENS.json';
+import {ENSInterface} from '@universal-login/contracts';
 import {TransactionOverrides} from '@universal-login/commons';
 
 type ENSInfo = {
@@ -16,7 +16,7 @@ class ENSRegistrarBase {
 
   constructor(protected ensInfo: ENSInfo, protected readonly deployer: Wallet, protected overridesOptions?: TransactionOverrides, protected log: any = console.log) {
     this.provider = deployer.provider;
-    this.ens = new Contract(ensInfo.ensAddress, ENS.interface, this.deployer);
+    this.ens = new Contract(ensInfo.ensAddress, ENSInterface, this.deployer);
     this.variables = {};
   }
 

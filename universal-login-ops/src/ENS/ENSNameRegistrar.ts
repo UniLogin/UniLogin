@@ -1,7 +1,5 @@
 import {utils, Contract} from 'ethers';
-import FIFSRegistrar from '@universal-login/contracts/build/FIFSRegistrar.json';
-import PublicResolver from '@universal-login/contracts/build/PublicResolver.json';
-import ReverseRegistrar from '@universal-login/contracts/build/ReverseRegistrar.json';
+import {FIFSRegistrarInterface, PublicResolverInterface, ReverseRegistrarInterface} from '@universal-login/contracts';
 import {waitToBeMined} from '@universal-login/commons';
 import ENSRegistrarBase from './ENSRegistrarBase';
 
@@ -12,14 +10,14 @@ class ENSNameRegistrar extends ENSRegistrarBase {
   private reverseResolver? : Contract;
 
   async registerName(labelHash: string, label: string, domain: string, node: string) {
-    this.registrar = new Contract(this.registrarAddress, FIFSRegistrar.interface, this.deployer);
+    this.registrar = new Contract(this.registrarAddress, FIFSRegistrarInterface, this.deployer);
     const transaction = await this.registrar!.register(labelHash, this.deployer.address, {gasLimit: 100000});
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Registered ${label}.${domain} with owner: ${await this.ens.owner(node)}`);
   }
 
   async setResolver(node: string, label: string, domain: string) {
-    this.publicResolver = new Contract(this.resolverAddress, PublicResolver.interface, this.deployer);
+    this.publicResolver = new Contract(this.resolverAddress, PublicResolverInterface, this.deployer);
     const transaction = await this.ens.setResolver(node, this.publicResolver!.address);
     await waitToBeMined(this.provider, transaction.hash);
     this.log(`Resolver for ${label}.${domain} set to: ${await this.ens.resolver(node)}`);
@@ -34,7 +32,7 @@ class ENSNameRegistrar extends ENSRegistrarBase {
 
   async setReverseName(label: string, domain: string) {
     const reverseRegistrarAddress = await this.ens.owner(utils.namehash('addr.reverse'));
-    this.reverseRegistrar = new Contract(reverseRegistrarAddress, ReverseRegistrar.interface, this.deployer);
+    this.reverseRegistrar = new Contract(reverseRegistrarAddress, ReverseRegistrarInterface, this.deployer);
     const transaction = await this.reverseRegistrar!.setName(`${label}.${domain}`, {gasLimit: 500000});
     await waitToBeMined(this.provider, transaction.hash);
   }
@@ -42,7 +40,7 @@ class ENSNameRegistrar extends ENSRegistrarBase {
   async checkReverseName(reverseNode: string, address: string) {
     const reverseAddress = await this.ens.resolver(reverseNode);
     this.log(`Reverse resolver for ${address} is ${reverseAddress}`);
-    this.reverseResolver = new Contract(reverseAddress, PublicResolver.interface, this.deployer);
+    this.reverseResolver = new Contract(reverseAddress, PublicResolverInterface, this.deployer);
     this.log(`ENS name for ${this.deployer.address} is ${await this.reverseResolver!.name(reverseNode)}`);
   }
 
