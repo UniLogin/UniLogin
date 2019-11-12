@@ -1,8 +1,8 @@
 import {expect} from 'chai';
-import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@universal-login/commons';
 import {encodeTransferToMessage} from '../../../lib/core/utils/encodeTransferToMessage';
+import {IERC20Interface} from '@universal-login/contracts';
 
 describe('UNIT: encodeTransferToMessage', () => {
   const from = TEST_CONTRACT_ADDRESS;
@@ -62,7 +62,7 @@ describe('UNIT: encodeTransferToMessage', () => {
     };
     const expectedMessage = {
       ...basicMessage,
-      data: new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]),
+      data: IERC20Interface.functions.transfer.encode([to, utils.parseEther(amount)]),
       value: 0,
       to: TEST_TOKEN_ADDRESS,
       gasPrice,
@@ -84,7 +84,7 @@ describe('UNIT: encodeTransferToMessage', () => {
       ...basicMessage,
       value: 0,
       to: TEST_TOKEN_ADDRESS,
-      data: new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]),
+      data: IERC20Interface.functions.transfer.encode([to, utils.parseEther(amount)]),
       gasPrice,
       gasToken: gasParameters.gasToken,
     };
