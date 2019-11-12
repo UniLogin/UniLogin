@@ -1,4 +1,4 @@
-import {transactionDetails} from '../../core/constants/TransactionDetails';
+import {transactionDetails} from '../constants/TransactionDetails';
 import {WalletService} from '@universal-login/sdk';
 
 interface ErrorsType {
@@ -20,23 +20,23 @@ export const getInputClassName = (inputError: boolean) => inputError ? 'disconne
 
 const doesAnyErrorExists = (errors: ErrorsType) => errors.usernameError || errors.verifyFieldError;
 
-export const deleteAccount = async (
+export const disconnectAccount = async (
   walletService: WalletService,
   inputs: InputsType,
   setErrors: (errors: ErrorsType) => void,
-  onDeletionProgress: (transactionHash?: string) => void,
-  onAccountDeleted: () => void,
+  onDisconnectProgress: (transactionHash?: string) => void,
+  onAccountDisconnected: () => void,
 ) => {
   const errors = checkInputsAgainstError(walletService.getDeployedWallet().name, inputs);
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
-    onDeletionProgress();
+    onDisconnectProgress();
     const execution = await walletService.removeWallet(transactionDetails);
     if (execution) {
       const {transactionHash} = await execution.waitForTransactionHash();
-      onDeletionProgress(transactionHash);
+      onDisconnectProgress(transactionHash);
       await execution.waitToBeSuccess();
     }
-    onAccountDeleted();
+    onAccountDisconnected();
   }
 };

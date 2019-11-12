@@ -1,24 +1,24 @@
 import React, {useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {deleteAccount, getInputClassName} from '../../core/services/DeleteAccountService';
+import {disconnectAccount, getInputClassName} from '../../core/services/DisconnectAccountService';
 import {WalletService} from '@universal-login/sdk';
 import './../styles/disconnectAccount.sass';
 import './../styles/disconnectAccountDefault.sass';
 
-export interface DeleteAccountProps {
+export interface DisconnectAccountProps {
   walletService: WalletService;
-  onAccountDeleted: () => void;
-  onDeletionProgress: (transactionHash?: string) => void;
+  onAccountDisconnected: () => void;
+  onDisconnectProgress: (transactionHash?: string) => void;
   onCancelClick: () => void;
   className?: string;
 }
 
-export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDeleted, onCancelClick, className}: DeleteAccountProps) => {
+export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccountDisconnected, onCancelClick, className}: DisconnectAccountProps) => {
   const [inputs, setInputs] = useState({username: '', verifyField: ''});
   const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 
   function onDisconnectClick() {
-    deleteAccount(walletService, inputs, setErrors, onDeletionProgress, onAccountDeleted);
+    disconnectAccount(walletService, inputs, setErrors, onDisconnectProgress, onAccountDisconnected);
   }
 
   return (
@@ -68,7 +68,6 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
     </div>
   );
 };
-
 
 interface HintProps {
   color: 'red' | 'yellow';

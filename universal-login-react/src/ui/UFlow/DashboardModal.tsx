@@ -122,7 +122,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             path="/dashboard/devices"
             render={({history}) => (
               <DialogWrapper message={notice} deployedWallet={deployedWallet}>
-                <Devices walletService={walletService} onAccountDeleted={onClose} basePath="/dashboard/devices" />
+                <Devices walletService={walletService} onAccountDisconnected={onClose} basePath="/dashboard/devices" />
               </DialogWrapper>
             )}
           />

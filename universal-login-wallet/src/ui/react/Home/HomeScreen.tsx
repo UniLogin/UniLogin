@@ -41,7 +41,7 @@ const HomeScreen = () => {
               <Route path="/devices">
                 <Devices
                   walletService={walletService}
-                  onAccountDeleted={() => history.push('/welcome')}
+                  onAccountDisconnected={() => history.push('/welcome')}
                   basePath="/devices"
                   className="jarvis-styles"
                 />
