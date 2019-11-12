@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {join} from 'path';
-import {Switch, Route, useHistory} from 'react-router';
+import {Switch, Route, useHistory, Prompt} from 'react-router';
+import {Location} from 'history';
 import {DeployedWallet} from '@universal-login/sdk';
 import BackupCodesView from './BackupCodesView';
 import './../styles/backup.sass';
@@ -39,6 +40,17 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
     }
   };
 
+  const waitingPromptMessage = (location: Location<any>) => {
+    if (
+      location.pathname.includes('waitingForBackupCodes') ||
+      location.pathname.includes('backupCodesFailure') ||
+      location.pathname.includes('backupCodesGenerated')
+    ) {
+      return true;
+    }
+    return 'Are you sure you want to leave? The backup codes are being generated.';
+  };
+
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
@@ -53,6 +65,7 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
         <ErrorMessage className={className} />;
       </Route>
       <Route path={join(basePath, 'backupCodesGenerated')} exact>
+        <Prompt message="Are you sure you want to leave? The backup codes will not be displayed again." />
         <BackupCodesView
           codes={backupCodes}
           printCodes={window.print}
@@ -61,6 +74,7 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
         />
       </Route>
       <Route path={join(basePath, 'waitingForBackupCodes')} exact>
+        <Prompt message={waitingPromptMessage} />
         <WaitingForTransaction
           action='Generating backup codes'
           relayerConfig={relayerConfig}
