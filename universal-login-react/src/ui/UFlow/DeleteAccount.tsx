@@ -17,7 +17,7 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
   const [inputs, setInputs] = useState({username: '', verifyField: ''});
   const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 
-  function onDeleteClick() {
+  function onDisconnectClick() {
     deleteAccount(walletService, inputs, setErrors, onDeletionProgress, onAccountDeleted);
   }
 
@@ -52,7 +52,7 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
           </div>
           <div className="delete-account-buttons">
             <button onClick={onCancelClick} className="delete-account-cancel">Cancel</button>
-            <button onClick={onDeleteClick} className="delete-account-confirm">Delete account</button>
+            <button onClick={onDisconnectClick} className="delete-account-confirm">Disconnect</button>
           </div>
         </div>
       </div>
