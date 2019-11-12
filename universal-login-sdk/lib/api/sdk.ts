@@ -11,6 +11,7 @@ import {
   ensureNotNull,
   generateCode,
   Message,
+  SdkExecutionOptions,
   Notification,
   PublicRelayerConfig,
   resolveName,
@@ -18,6 +19,7 @@ import {
   signRelayerRequest,
   TokenDetailsService,
   TokensValueConverter,
+  ETHER_NATIVE_TOKEN,
 } from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
@@ -102,20 +104,20 @@ class UniversalLoginSDK {
     return this.getFutureWalletFactory().createFutureWallet();
   }
 
-  async addKey(to: string, publicKey: string, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.selfExecute(to, 'addKey', [publicKey], privateKey, transactionDetails);
+  async addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    return this.selfExecute(to, 'addKey', [publicKey], privateKey, executionOptions);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.selfExecute(to, 'addKeys', [publicKeys], privateKey, transactionDetails);
+  async addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    return this.selfExecute(to, 'addKeys', [publicKeys], privateKey, executionOptions);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.selfExecute(to, 'removeKey', [key], privateKey, transactionDetails);
+  async removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    return this.selfExecute(to, 'removeKey', [key], privateKey, executionOptions);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
-    return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, transactionDetails);
+  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, executionOptions);
   }
 
   async getMessageStatus(messageHash: string) {
@@ -170,20 +172,19 @@ class UniversalLoginSDK {
   }
 
   async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
-    const {gasLimit, gasPrice, gasToken} = this.sdkConfig.paymentOptions;
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
-    const partialMessage = {gasLimit, gasPrice, gasToken, ...message, nonce};
-    ensure(partialMessage.gasLimit <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
+    const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce};
+    ensure(partialMessage.gasLimit! <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
     const signedMessage: SignedMessage = messageToSignedMessage(partialMessage, privateKey);
     ensureSufficientGas(signedMessage);
     return this.executionFactory.createExecution(signedMessage);
   }
 
-  protected selfExecute(to: string, method: string, args: any[], privateKey: string, transactionDetails: Partial<Message>): Promise<Execution> {
+  protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     const data = WalletContractInterface.functions[method].encode(args);
     const message: Partial<Message> = {
-      ...transactionDetails,
+      ...executionOptions,
       to,
       from: to,
       data,

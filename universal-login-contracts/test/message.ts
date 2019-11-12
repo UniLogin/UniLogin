@@ -1,7 +1,6 @@
 import {utils} from 'ethers';
 import {expect} from 'chai';
-import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
-import TEST_PAYMENT_OPTIONS from '../lib/defaultPaymentOptions';
+import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '../lib/message';
 
 const {bigNumberify} = utils;
@@ -12,8 +11,8 @@ describe('messageToUnsignedMessage', () => {
       from: TEST_CONTRACT_ADDRESS,
       to: TEST_CONTRACT_ADDRESS,
       value: utils.parseEther('1'),
-      gasPrice: TEST_PAYMENT_OPTIONS.gasPrice,
-      gasToken: TEST_PAYMENT_OPTIONS.gasToken,
+      gasPrice: DEFAULT_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
       gasLimit: bigNumberify(100000),
       nonce: 0,
@@ -23,8 +22,8 @@ describe('messageToUnsignedMessage', () => {
       from: TEST_CONTRACT_ADDRESS,
       to: TEST_CONTRACT_ADDRESS,
       value: utils.parseEther('1'),
-      gasPrice: TEST_PAYMENT_OPTIONS.gasPrice,
-      gasToken: TEST_PAYMENT_OPTIONS.gasToken,
+      gasPrice: DEFAULT_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
       gasData: bigNumberify(8976),
       gasLimitExecution: bigNumberify(100000 - 8976),

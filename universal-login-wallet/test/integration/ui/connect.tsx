@@ -3,7 +3,7 @@ import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
 import React from 'react';
 import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
-import {ETHER_NATIVE_TOKEN, waitExpect} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, waitExpect, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
 import {Services} from '../../../src/ui/createServices';
@@ -13,6 +13,10 @@ import {AppPage} from '../pages/AppPage';
 import Relayer from '@universal-login/relayer';
 
 chai.use(require('chai-string'));
+
+const gasPrice = DEFAULT_GAS_PRICE;
+const gasLimit = DEFAULT_GAS_LIMIT;
+const gasToken = ETHER_NATIVE_TOKEN.address;
 
 describe('UI: Connection flow', () => {
   let services: Services;
@@ -26,7 +30,7 @@ describe('UI: Connection flow', () => {
   beforeEach(async () => {
     const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
-    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
+    services = await createPreconfiguredServices(provider, relayer, [gasToken]);
     await services.sdk.tokensDetailsStore.fetchTokensDetails();
     await services.sdk.start();
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
@@ -40,7 +44,7 @@ describe('UI: Connection flow', () => {
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
     const publicKey = (new Wallet(services.walletService.getConnectingWallet().privateKey)).address;
-    await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasToken: ETHER_NATIVE_TOKEN.address});
+    await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasPrice, gasLimit, gasToken});
     await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
     await appPage.login().waitForHomeView('$1.99');
     expect(appPage.dashboard().getWalletBalance()).to.startWith('$1.99');

@@ -4,9 +4,9 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {Wallet, utils, Contract} from 'ethers';
 import basicSDK from '../../fixtures/basicSDK';
-import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
-import {createWallet} from '../../helpers';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
+import {createWallet} from '../../helpers';
 import UniversalLoginSDK from '../../../lib';
 import BlockchainObserver from '../../../lib/core/observers/BlockchainObserver';
 
@@ -14,6 +14,9 @@ chai.use(solidity);
 chai.use(sinonChai);
 
 const loadFixture = createFixtureLoader();
+
+const gasPrice = DEFAULT_GAS_PRICE;
+const gasLimit = DEFAULT_GAS_LIMIT;
 
 describe('INT: BlockchainObserver', async () => {
   let relayer: RelayerUnderTest;
@@ -49,7 +52,7 @@ describe('INT: BlockchainObserver', async () => {
 
   it('subscribe: should emit AddKey on addKey', async () => {
     const callback = sinon.spy();
-    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
+    const paymentOptions = {gasPrice, gasLimit, gasToken: mockToken.address};
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyAdded', filter, callback);
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
@@ -61,7 +64,7 @@ describe('INT: BlockchainObserver', async () => {
   it('subscribe: shouldn`t emit AddKey on add another key', async () => {
     const callback = sinon.spy();
     const callback2 = sinon.spy();
-    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
+    const paymentOptions = {gasPrice, gasLimit, gasToken: mockToken.address};
 
     const filter = {contractAddress, key: otherWallet.address};
     const filter2 = {contractAddress, key: otherWallet2.address};
@@ -78,12 +81,12 @@ describe('INT: BlockchainObserver', async () => {
 
   it('subscribe: should emit RemoveKey on removeKey', async () => {
     const callback = sinon.spy();
-    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
+    const paymentOptions = {gasPrice, gasLimit, gasToken: mockToken.address};
     const execution = await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await execution.waitToBeSuccess();
     const filter = {contractAddress, key: wallet.address};
     await blockchainObserver.subscribe('KeyRemoved', filter, callback);
-    const removeKeyPaymentOption = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
+    const removeKeyPaymentOption = {gasPrice, gasLimit, gasToken: mockToken.address};
     const {waitToBeSuccess} = await sdk.removeKey(contractAddress, wallet.address, privateKey, removeKeyPaymentOption);
     await waitToBeSuccess();
     await blockchainObserver.fetchEvents();

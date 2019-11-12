@@ -1,10 +1,10 @@
 import {utils} from 'ethers';
-import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import defaultPaymentOptions from '../../lib/config/defaultPaymentOptions';
 
-const {gasPrice, gasLimit} = defaultPaymentOptions;
+const gasPrice = utils.bigNumberify(DEFAULT_GAS_PRICE);
+const gasLimit = utils.bigNumberify(DEFAULT_GAS_LIMIT);
 
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,

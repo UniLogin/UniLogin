@@ -1,6 +1,6 @@
 import UniversalLoginSDK from './sdk';
 import {ethers, Wallet, utils, providers} from 'ethers';
-import {ensureNotNull} from '@universal-login/commons';
+import {ensureNotNull, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {TransactionHashNotFound} from '../core/utils/errors';
 
 export class SdkSigner extends ethers.Signer {
@@ -44,7 +44,7 @@ export class SdkSigner extends ethers.Signer {
     if (transaction.value !== undefined) {
       message.value = await transaction.value;
     }
-    const execution = await this.sdk.execute(message, this.wallet.privateKey);
+    const execution = await this.sdk.execute({gasLimit: DEFAULT_GAS_LIMIT, ...message}, this.wallet.privateKey);
     const {transactionHash} = await execution.waitToBeSuccess();
     ensureNotNull(transactionHash, TransactionHashNotFound);
     return this.provider.getTransaction(transactionHash!);
