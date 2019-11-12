@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {deleteAccount, getInputClassName} from '../../core/services/DeleteAccountService';
 import {WalletService} from '@universal-login/sdk';
-import './../styles/deleteAccount.sass';
-import './../styles/deleteAccountDefault.sass';
+import './../styles/disconnectAccount.sass';
+import './../styles/disconnectAccountDefault.sass';
 
 export interface DeleteAccountProps {
   walletService: WalletService;
