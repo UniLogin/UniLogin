@@ -62,7 +62,11 @@ export class WalletService {
 
     const {waitToBeSuccess, waitForTransactionHash} = await deploy(ensName, gasPrice, gasToken);
     const {transactionHash} = await waitForTransactionHash();
-    onTransactionHash !== undefined && onTransactionHash(transactionHash!);
+    if (transactionHash) {
+      this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet, transactionHash});
+      onTransactionHash !== undefined && onTransactionHash(transactionHash);
+    }
+
     const deployedWallet = await waitToBeSuccess();
     this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
     this.saveToStorage();
