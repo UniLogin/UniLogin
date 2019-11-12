@@ -12,6 +12,7 @@ export type WalletState = {
 } | {
   kind: 'Deploying';
   wallet: ApplicationWallet;
+  transactionHash?: string;
 } | {
   kind: 'Deployed';
   wallet: DeployedWallet;

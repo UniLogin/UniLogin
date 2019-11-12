@@ -48,4 +48,8 @@ export default class DashboardPage {
   async waitForWelcomeScreen() {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Welcome in the Jarvis Network'));
   }
+
+  async waitForDashboard() {
+    await waitForUI(this.wrapper, () => this.wrapper.exists('p.balance-amount'));
+  }
 }
