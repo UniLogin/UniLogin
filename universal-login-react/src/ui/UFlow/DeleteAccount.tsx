@@ -26,7 +26,7 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="delete-account">
           <h2 className="delete-account-title">Are you sure you want to disconnect this device? </h2>
-          <p className="delete-account-subtitle">Deleting your account is permanent and will remove all content.</p>
+          <p className="delete-account-subtitle">You will lost access to your funds from this device.</p>
           <div className="delete-account-form">
             <div className="delete-account-input-wrapper">
               <label htmlFor="username" className="delete-account-label">Type your username</label>
@@ -35,9 +35,13 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
                 className={getInputClassName(errors.usernameError)}
                 type="text"
                 value={inputs.username}
-                onChange={e => setInputs({...inputs, username: e.target.value})}
+                onChange={e => {
+                  setInputs({...inputs, username: e.target.value});
+                  setErrors({...errors, usernameError: false});
+                }}
                 autoCapitalize='off'
               />
+              {errors.usernameError && <div className="delete-account-hint">Wrong username</div>}
             </div>
             <div className="delete-account-input-wrapper">
               <label htmlFor="verifyField" className="delete-account-label">To verify, type <span><i>DELETE MY ACCOUNT</i></span> below:</label>
@@ -46,8 +50,13 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
                 className={getInputClassName(errors.verifyFieldError)}
                 type="text"
                 value={inputs.verifyField}
-                onChange={e => setInputs({...inputs, verifyField: e.target.value})}
+                onChange={e => {
+                  setInputs({...inputs, verifyField: e.target.value});
+                  setErrors({...errors, verifyFieldError: false});
+                }}
+                autoCapitalize='off'
               />
+              {errors.verifyFieldError && <div className="delete-account-hint">Wrong verify field</div>}
             </div>
           </div>
           <div className="delete-account-buttons">
@@ -58,4 +67,25 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
       </div>
     </div>
   );
+};
+
+
+interface HintProps {
+  color: 'red' | 'yellow';
+  children: string;
+}
+
+export const Hint = ({color, children}: HintProps) => {
+  const [hintVisibility, setHintVisibility] = useState(true);
+
+  if (hintVisibility) {
+    return (
+      <div className={`hint ${color}`}>
+        <p className="hint-text">{children}</p>
+        <button onClick={() => setHintVisibility(false)} className="hint-btn">Dismiss</button>
+      </div>
+    );
+  }
+
+  return null;
 };
