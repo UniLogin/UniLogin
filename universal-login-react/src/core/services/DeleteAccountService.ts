@@ -13,10 +13,10 @@ interface InputsType {
 
 const checkInputsAgainstError = (usernameLogged: string, inputs: InputsType) => ({
   usernameError: inputs.username !== usernameLogged,
-  verifyFieldError: inputs.verifyField !== 'DELETE MY ACCOUNT',
+  verifyFieldError: inputs.verifyField !== 'DISCONNECT',
 });
 
-export const getInputClassName = (inputError: boolean) => inputError ? 'delete-account-input-error' : 'delete-account-input';
+export const getInputClassName = (inputError: boolean) => inputError ? 'disconnect-account-input-error' : 'disconnect-account-input';
 
 const doesAnyErrorExists = (errors: ErrorsType) => errors.usernameError || errors.verifyFieldError;
 

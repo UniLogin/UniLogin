@@ -14,8 +14,8 @@ export default class DashboardPage {
     await this.clickDevicesButton();
     this.wrapper.find('.disconnect-account-link').simulate('click');
     this.wrapper.find('#username').simulate('change', {target: {value: 'super-name.mylogin.eth'}});
-    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DELETE MY ACCOUNT'}});
-    this.wrapper.find('.delete-account-confirm').simulate('click');
+    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DISCONNECT'}});
+    this.wrapper.find('.disconnect-account-confirm').simulate('click');
   }
 
   async waitForHideModal() {

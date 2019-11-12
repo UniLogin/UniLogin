@@ -22,14 +22,14 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
   }
 
   return (
-    <div className="universal-login-delete-account">
+    <div className="universal-login-disconnect-account">
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="delete-account">
-          <h2 className="delete-account-title">Are you sure you want to disconnect this device? </h2>
-          <p className="delete-account-subtitle">You will lost access to your funds from this device.</p>
-          <div className="delete-account-form">
-            <div className="delete-account-input-wrapper">
-              <label htmlFor="username" className="delete-account-label">Type your username</label>
+        <div className="disconnect-account">
+          <h2 className="disconnect-account-title">Are you sure you want to disconnect this device? </h2>
+          <p className="disconnect-account-subtitle">You will lost access to your funds from this device.</p>
+          <div className="disconnect-account-form">
+            <div className="disconnect-account-input-wrapper">
+              <label htmlFor="username" className="disconnect-account-label">Type your username</label>
               <input
                 id="username"
                 className={getInputClassName(errors.usernameError)}
@@ -41,10 +41,10 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
                 }}
                 autoCapitalize='off'
               />
-              {errors.usernameError && <div className="delete-account-hint">Wrong username</div>}
+              {errors.usernameError && <div className="disconnect-account-hint">Wrong username</div>}
             </div>
-            <div className="delete-account-input-wrapper">
-              <label htmlFor="verifyField" className="delete-account-label">To verify, type <span><i>DELETE MY ACCOUNT</i></span> below:</label>
+            <div className="disconnect-account-input-wrapper">
+              <label htmlFor="verifyField" className="disconnect-account-label">To verify, type <span><i>DISCONNECT</i></span> below:</label>
               <input
                 id="verifyField"
                 className={getInputClassName(errors.verifyFieldError)}
@@ -56,12 +56,12 @@ export const DeleteAccount = ({walletService, onDeletionProgress, onAccountDelet
                 }}
                 autoCapitalize='off'
               />
-              {errors.verifyFieldError && <div className="delete-account-hint">Wrong verify field</div>}
+              {errors.verifyFieldError && <div className="disconnect-account-hint">Wrong verify field</div>}
             </div>
           </div>
-          <div className="delete-account-buttons">
-            <button onClick={onCancelClick} className="delete-account-cancel">Cancel</button>
-            <button onClick={onDisconnectClick} className="delete-account-confirm">Disconnect</button>
+          <div className="disconnect-account-buttons">
+            <button onClick={onCancelClick} className="disconnect-account-cancel">Cancel</button>
+            <button onClick={onDisconnectClick} className="disconnect-account-confirm">Disconnect</button>
           </div>
         </div>
       </div>

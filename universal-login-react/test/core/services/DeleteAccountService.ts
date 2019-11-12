@@ -34,7 +34,7 @@ describe('DeleteAccountService', () => {
   });
 
   it('delete account if inputs are valid', async () => {
-    const promise = deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeletion, onAccountDeleted);
+    const promise = deleteAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DISCONNECT'}, setErrors, onAccountDeletion, onAccountDeleted);
     expect(onAccountDeletion).to.be.calledOnce;
     await promise;
     expect(setErrors).to.be.calledOnce;
@@ -43,7 +43,7 @@ describe('DeleteAccountService', () => {
   });
 
   it('dont delete account if username are invalid', async () => {
-    await deleteAccount(walletService, {username: 'test', verifyField: 'DELETE MY ACCOUNT'}, setErrors, onAccountDeletion, onAccountDeleted);
+    await deleteAccount(walletService, {username: 'test', verifyField: 'DISCONNECT'}, setErrors, onAccountDeletion, onAccountDeleted);
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDeletion).to.not.be.called;
     expect(onAccountDeleted).to.not.be.called;
