@@ -24,6 +24,7 @@ export class PriceObserver extends ObserverRunner {
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
+        this.lastTokenPrices = {};
         this.stop();
       }
     };

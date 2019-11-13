@@ -31,7 +31,7 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
   useEffect(() => {
     const tokenValue = Number(usdPrice) * Number(balance);
     setUsdAmount(tokenValue.toString());
-  }, [usdPrice]);
+  }, [usdPrice, balance]);
 
   return (
     <div key={name} className="universal-login-assets-item">
