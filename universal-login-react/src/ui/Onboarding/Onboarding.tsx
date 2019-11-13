@@ -12,6 +12,7 @@ import {OnboardingSteps} from './OnboardingSteps';
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
   walletService: WalletService;
+  walletCreationService?: WalletCreationService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -22,7 +23,7 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const modalService = useModalService<ReactModalType, ReactModalProps>();
-  const [walletCreationService] = useState(() => new WalletCreationService(props.walletService));
+  const [walletCreationService] = useState(() => props.walletCreationService || new WalletCreationService(props.walletService));
 
   const onConnectClick = (ensName: string) => {
     const connectionFlowProps = {
