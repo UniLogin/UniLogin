@@ -51,7 +51,7 @@ export class WalletService {
     return futureWallet;
   }
 
-  async deployFutureWallet(ensName: string, gasPrice: string, gasToken: string, onTransactionHash?: (txHash: string) => void) {
+  async deployFutureWallet(ensName: string, gasPrice: string, gasToken: string) {
     if (this.state.kind !== 'Future') {
       throw new Error('Invalid state: expected future wallet');
     }
@@ -62,10 +62,7 @@ export class WalletService {
 
     const {waitToBeSuccess, waitForTransactionHash} = await deploy(ensName, gasPrice, gasToken);
     const {transactionHash} = await waitForTransactionHash();
-    if (transactionHash) {
-      this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet, transactionHash});
-      onTransactionHash !== undefined && onTransactionHash(transactionHash);
-    }
+    transactionHash && this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet, transactionHash});
 
     const deployedWallet = await waitToBeSuccess();
     this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
