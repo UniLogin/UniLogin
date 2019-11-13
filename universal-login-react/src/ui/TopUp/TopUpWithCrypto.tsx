@@ -8,6 +8,18 @@ interface TopUpWithCryptoProps {
   minimalAmount?: string;
 }
 
+const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
+  <>
+    <p className="info-text">Send {minimalAmount || '...'} ETH to this address</p>
+    <p className="info-text">This screen will update itself as soon as we detect a mined transaction</p>
+  </>;
+
+const TopUpCryptoInfo = () =>
+  <>
+    <p className="info-text">All your Ethereum wallets have the same address</p>
+    <p className="info-text">Only send Ethererum tokens to this address</p>
+  </>;
+
 export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: TopUpWithCryptoProps) => {
   const [cryptoClass, setCryptoClass] = useState('');
 
@@ -42,11 +54,9 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: 
               value={contractAddress}
             />
           </div>
-          {isDeployment &&
-            <>
-              <p className="info-text">Send {minimalAmount || '...'} ETH to this address</p>
-              <p className="info-text">This screen will update itself as soon as we detect a mined transaction</p>
-            </>
+          {isDeployment
+            ? <DeploymentWithCryptoInfo minimalAmount = {minimalAmount}/>
+            : <TopUpCryptoInfo/>
           }
         </div>
       </div>
