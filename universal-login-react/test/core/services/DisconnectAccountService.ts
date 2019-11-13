@@ -7,6 +7,7 @@ import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {setupDeployedWallet} from '../../helpers/setupDeploymentWallet';
 import RelayerUnderTest from '@universal-login/relayer';
+import {DISCONNECT} from '../../../src/core/constants/verifyFields';
 
 chai.use(sinonChai);
 
@@ -34,7 +35,7 @@ describe('DisconnectAccountService', () => {
   });
 
   it('disconnect account if inputs are valid', async () => {
-    const promise = disconnectAccount(walletService, {username: 'test.mylogin.eth', verifyField: 'DISCONNECT'}, setErrors, onAccountDisconnection, onAccountDisconnected);
+    const promise = disconnectAccount(walletService, {username: 'test.mylogin.eth', verifyField: DISCONNECT}, setErrors, onAccountDisconnection, onAccountDisconnected);
     expect(onAccountDisconnection).to.be.calledOnce;
     await promise;
     expect(setErrors).to.be.calledOnce;
@@ -43,7 +44,7 @@ describe('DisconnectAccountService', () => {
   });
 
   it('dont disconnect account if username are invalid', async () => {
-    await disconnectAccount(walletService, {username: 'test', verifyField: 'DISCONNECT'}, setErrors, onAccountDisconnection, onAccountDisconnected);
+    await disconnectAccount(walletService, {username: 'test', verifyField: DISCONNECT}, setErrors, onAccountDisconnection, onAccountDisconnected);
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnection).to.not.be.called;
     expect(onAccountDisconnected).to.not.be.called;

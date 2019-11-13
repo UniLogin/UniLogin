@@ -1,5 +1,6 @@
 import {transactionDetails} from '../constants/TransactionDetails';
 import {WalletService} from '@universal-login/sdk';
+import {DISCONNECT} from '../constants/verifyFields';
 
 interface ErrorsType {
   usernameError: boolean;
@@ -13,7 +14,7 @@ interface InputsType {
 
 const checkInputsAgainstError = (usernameLogged: string, inputs: InputsType) => ({
   usernameError: inputs.username !== usernameLogged,
-  verifyFieldError: inputs.verifyField !== 'DISCONNECT',
+  verifyFieldError: inputs.verifyField !== DISCONNECT,
 });
 
 export const getInputClassName = (inputError: boolean) => inputError ? 'disconnect-account-input-error' : 'disconnect-account-input';
