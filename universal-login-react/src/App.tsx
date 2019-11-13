@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {ApplicationWallet, generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -28,14 +28,6 @@ export const App = () => {
     await sdk.fetchRelayerConfig();
     return sdk.getRelayerConfig();
   }, []);
-
-  const onCreate = (applicationWallet: ApplicationWallet) => {
-    alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
-  };
-
-  const onConnect = () => {
-    console.log('connect clicked');
-  };
 
   const [walletService] = useState(new WalletService(sdk));
 
@@ -77,8 +69,7 @@ export const App = () => {
               render={() => (
                 <Onboarding
                   sdk={sdk}
-                  onConnect={onConnect}
-                  onCreate={onCreate}
+                  walletService={walletService}
                   domains={['mylogin.eth', 'universal-id.eth']}
                   tryEnablingMetamask={tryEnablingMetamask}
                 />
