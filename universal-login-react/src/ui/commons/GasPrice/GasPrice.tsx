@@ -28,7 +28,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
   useAsyncEffect(async () => {
     if (isDeployed) {
       ensureNotNull(deployedWallet, Error, 'Missing parameter: deployedWallet');
-      return deployedWallet!.subscribeToBalances(setTokenDetailsWithBalance);
+      return deployedWallet.subscribeToBalances(setTokenDetailsWithBalance);
     } else {
       ensureNotNull(sdk, Error, 'Missing parameter: sdk');
     }
