@@ -13,7 +13,6 @@ interface OnboardingStepsProps {
 
 export function OnboardingSteps({sdk, walletService, walletCreationService, modalService, className}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);
-  const transactionHash = useProperty(walletCreationService.deploymentTransactionHash);
   switch (walletState.kind) {
     case 'Future':
       return (
@@ -36,7 +35,7 @@ export function OnboardingSteps({sdk, walletService, walletCreationService, moda
         <ModalWrapper>
           <WaitingForDeployment
             relayerConfig={sdk.getRelayerConfig()}
-            transactionHash={transactionHash}
+            transactionHash={walletState.transactionHash}
           />
         </ModalWrapper>
       );
