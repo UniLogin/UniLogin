@@ -1,10 +1,8 @@
-import {utils} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BlockchainService} from '../../integration/ethereum/BlockchainService';
 import ObserverBase from './ObserverBase';
+import {WalletContractInterface} from '@universal-login/contracts';
 
-const walletContractInterface = new utils.Interface(WalletContract.interface);
-const eventInterface = new utils.Interface(WalletContract.interface).events;
+const eventInterface = WalletContractInterface.events;
 
 class BlockchainObserver extends ObserverBase {
   private lastBlock?: number;
@@ -45,7 +43,7 @@ class BlockchainObserver extends ObserverBase {
 
   parseArgs(type: string, event: any) {
     if (event.topics[0] === eventInterface[type].topic) {
-      const args = walletContractInterface.parseLog(event);
+      const args = WalletContractInterface.parseLog(event);
       const {key} = args.values;
       return {key};
     }

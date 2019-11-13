@@ -9,9 +9,9 @@ import {
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
 import {Contract, utils} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
+import {WalletContractInterface} from '@universal-login/contracts';
 
 interface BackupCodesWithExecution {
   waitToBeSuccess: () => Promise<string[]>;
@@ -84,7 +84,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async getRequiredSignatures(): Promise<BigNumber> {
-    const walletContract = new Contract(this.contractAddress, WalletContract.interface, this.sdk.provider);
+    const walletContract = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
     return walletContract.requiredSignatures();
   }
 
