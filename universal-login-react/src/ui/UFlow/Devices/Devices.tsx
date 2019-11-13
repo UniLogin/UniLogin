@@ -3,19 +3,19 @@ import {Route, Switch, useHistory} from 'react-router';
 import {DevicesList} from './DevicesList';
 import {WalletService} from '@universal-login/sdk';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
-import {DeleteAccount} from '../DeleteAccount';
+import {DisconnectAccount} from '../DisconnectAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
 import {join} from 'path';
 import {WaitingForTransaction} from '../../commons/WaitingForTransaction';
 
 export interface DevicesProps {
   walletService: WalletService;
-  onAccountDeleted: () => void;
+  onAccountDisconnected: () => void;
   basePath?: string;
   className?: string;
 }
 
-export const Devices = ({walletService, onAccountDeleted, className, basePath = ''}: DevicesProps) => {
+export const Devices = ({walletService, onAccountDisconnected, className, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   const relayerConfig = walletService.sdk.getRelayerConfig();
   const history = useHistory();
@@ -39,11 +39,11 @@ export const Devices = ({walletService, onAccountDeleted, className, basePath = 
       <Route path={join(basePath, 'connectionSuccess')} exact>
         <ConnectionSuccessNotification className={className}/>
       </Route>
-      <Route path={join(basePath, 'deleteAccount')} exact>
-        <DeleteAccount
+      <Route path={join(basePath, 'disconnectAccount')} exact>
+        <DisconnectAccount
           walletService={walletService}
-          onDeletionProgress={transactionHash => history.replace(join(basePath, 'waitingForDeletingAccount'), {transactionHash})}
-          onAccountDeleted={onAccountDeleted}
+          onDisconnectProgress={transactionHash => history.replace(join(basePath, 'waitingForDeletingAccount'), {transactionHash})}
+          onAccountDisconnected={onAccountDisconnected}
           onCancelClick={() => history.replace(`${basePath}/`)}
           className={className}
         />
