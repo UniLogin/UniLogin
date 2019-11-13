@@ -45,7 +45,7 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: 
           {isDeployment &&
             <>
               <p className="info-text">Send {minimalAmount || '...'} ETH to this address</p>
-              <p className="info-text">This screen will update itself as soon as we detect an upcoming transaction</p>
+              <p className="info-text">This screen will update itself as soon as we detect an mined transaction</p>
             </>
           }
         </div>
