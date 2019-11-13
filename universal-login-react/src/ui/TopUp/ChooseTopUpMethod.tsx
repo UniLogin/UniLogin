@@ -69,7 +69,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
         onPaymentMethodChange={setPaymentMethod}
         logoColor={logoColor}
       />}
-      {topUpMethod && <FooterSection className={topUpClassName}>
+      {topUpMethod && isDeployment && <FooterSection className={topUpClassName}>
         {isDeployment && <GasPrice
           isDeployed={false}
           sdk={sdk}
