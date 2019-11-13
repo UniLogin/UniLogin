@@ -7,13 +7,17 @@ interface ErrorConstructor<T extends any[]> {
   new (...args: T): Error;
 }
 
-export function ensure<T extends any[]>(condition: boolean, ErrorToThrow: ErrorConstructor<T>, ...errorArgs: T) {
+export function ensure<T extends any[]>(condition: boolean, ErrorToThrow: ErrorConstructor<T>, ...errorArgs: T):
+  asserts condition {
   if (!condition) {
     throw new ErrorToThrow(...errorArgs);
   }
 }
 
-export function ensureNotNull<T extends any[]>(value: unknown | null, error: ErrorConstructor<T>, ...errorArgs: T) {
+export type NonFalsy<T> = T extends null | undefined | 0 | '' ? never : T;
+
+export function ensureNotNull<T, E extends any[]>(value: T, error: ErrorConstructor<E>, ...errorArgs: E):
+  asserts value is NonFalsy<T> {
   return ensure(!!value, error, ...errorArgs);
 }
 
