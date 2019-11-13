@@ -188,7 +188,11 @@
       font-size: 14px
       color: #6e798e
 
+    .copy-btn
+      outline: none
+
     .copy-btn::before
+      content: ''
       position: absolute
       top: 50%
       left: 50%
@@ -197,21 +201,30 @@
 
     .copy-btn-feedback
       visibility: hidden
-      text-align: center
-      padding: 5px
-      z-index: 1
       opacity: 0
-      color: green
+      position: absolute
+      top: -30px
+      padding: 0px 5px
+      font-size: 12px
+      line-height: 18px
+      transition: visibility 0s 1s, opacity 1s linear
+      color: #FFFFFF
+      background-color: #2ec9f5
 
-    .copy-btn-feedback:before
-      content: '\2713'
+    .copy-btn-feedback::after
+      content: ''
+      position: absolute
+      bottom: 0
+      left: calc(50% - 1px)
+      width: 6px
+      height: 6px
+      transform: rotate(-45deg) translateX(-50%)
+      background-color: #2ec9f5
 
     .copy-btn:active .copy-btn-feedback
       visibility: visible
       opacity: 1
-
-    .copy-btn:active::before
-      background: none
+      transition: opacity 0s linear
 
     .address-modal-text
       margin-top: 12px

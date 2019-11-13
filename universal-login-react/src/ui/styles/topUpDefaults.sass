@@ -122,3 +122,21 @@
     .pay-btn[disabled]
       background: #262053
       color: #928fa9
+
+    .copy-btn
+      background: none
+      border: none
+      cursor: pointer
+      outline: none
+
+    .copy-btn::before
+      content: ''
+      background: url('./../assets/icons/copy.svg') center no-repeat
+
+    .copy-btn-feedback
+      color: #FFFFFF
+      background-color: #0FB989
+
+    .copy-btn-feedback::after
+      content: ''
+      background-color: #0FB989

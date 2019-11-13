@@ -41,7 +41,7 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: 
               readOnly
             />
             <button onClick={() => copy('contract-address')} className="copy-btn">
-              <span className="copy-btn-feedback" />
+              <p className="copy-btn-feedback">Copied</p>
             </button>
           </div>
           <div className="qr-code-wrapper">
