@@ -45,8 +45,8 @@ export class WalletService {
     return this.state.wallet;
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
-    const futureWallet = await this.sdk.createFutureWallet();
+  async createFutureWallet(ensName: string): Promise<FutureWallet> {
+    const futureWallet = await this.sdk.createFutureWallet(ensName);
     this.setFutureWallet(futureWallet);
     return futureWallet;
   }

@@ -5,7 +5,7 @@ import {
   MineableStatus,
   PublicRelayerConfig,
   ensure,
-  isValidEnsName,
+  isValidEnsName, PaymentOptions,
 } from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
@@ -61,10 +61,11 @@ export class FutureWalletFactory extends MineableFactory {
   }
 
   async createFromExistingCounterfactual(wallet: SerializableFutureWallet): Promise<FutureWallet> {
-    const {privateKey, contractAddress} = wallet;
+    const {ensName, privateKey, contractAddress} = wallet;
     const publicKey = utils.computeAddress(privateKey);
 
     return {
+      ensName,
       privateKey,
       contractAddress,
       waitForBalance: async () => new Promise<BalanceDetails>(
@@ -93,8 +94,8 @@ export class FutureWalletFactory extends MineableFactory {
     };
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
+  async createFutureWallet(ensName: string): Promise<FutureWallet> {
     const [privateKey, contractAddress] = await this.blockchainService.createFutureWallet(this.config.factoryAddress);
-    return this.createFromExistingCounterfactual({privateKey, contractAddress});
+    return this.createFromExistingCounterfactual({ensName, privateKey, contractAddress});
   }
 }

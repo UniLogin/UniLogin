@@ -9,6 +9,8 @@ import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
 
+const ensName = 'name.mylogin.eth';
+
 describe('E2E: SDK counterfactual deployment', () => {
   let provider: providers.Provider;
   let sdk: UniversalLoginSDK;
@@ -25,13 +27,13 @@ describe('E2E: SDK counterfactual deployment', () => {
   });
 
   it('createFutureWallet returns private key and contract address', async () => {
-    const {privateKey, contractAddress} = await sdk.createFutureWallet();
+    const {privateKey, contractAddress} = await sdk.createFutureWallet(ensName);
     expect(privateKey).to.be.properPrivateKey;
     expect(contractAddress).to.be.properAddress;
   });
 
   it('waitForBalance returns promise, which resolves when balance update', async () => {
-    const {waitForBalance, contractAddress} = (await sdk.createFutureWallet());
+    const {waitForBalance, contractAddress} = (await sdk.createFutureWallet(ensName));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const result = await waitForBalance();
     expect(result.contractAddress).be.eq(contractAddress);
@@ -39,14 +41,13 @@ describe('E2E: SDK counterfactual deployment', () => {
   });
 
   it('should not deploy contract which does not have balance', async () => {
-    const {deploy} = (await sdk.createFutureWallet());
+    const {deploy} = (await sdk.createFutureWallet('login.mylogin.eth'));
     const {waitToBeSuccess} = await deploy('login.mylogin.eth', TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     await expect(waitToBeSuccess()).to.be.eventually.rejected;
   });
 
   it('counterfactual deployment roundtrip', async () => {
-    const ensName = 'name.mylogin.eth';
-    const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet());
+    const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet(ensName));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
     const {waitToBeSuccess} = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
