@@ -3,13 +3,14 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
 import {messageSignature, getExecutionArgs} from './helpers/argumentsEncoding';
 import {utils, Wallet} from 'ethers';
-import {TEST_MESSAGE_OPTIONS} from '../lib/defaultPaymentOptions';
-import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, computeGasData} from '@universal-login/commons';
+import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, computeGasData, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT_EXECUTION} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const {gasToken, gasPrice, gasLimitExecution} = TEST_MESSAGE_OPTIONS;
+const gasToken = ETHER_NATIVE_TOKEN.address;
+const gasPrice = DEFAULT_GAS_PRICE;
+const gasLimitExecution = DEFAULT_GAS_LIMIT_EXECUTION;
 
 describe('UNIT: argumentsEncoding', async () => {
   const wallet1 = Wallet.createRandom();

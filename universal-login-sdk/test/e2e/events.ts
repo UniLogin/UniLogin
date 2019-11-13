@@ -4,14 +4,17 @@ import sinonChai from 'sinon-chai';
 import {Contract, Wallet} from 'ethers';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import basicSDK from '../fixtures/basicSDK';
-import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 import UniversalLoginSDK from '../../lib/api/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
 const loadFixture = createFixtureLoader();
+
+const gasPrice = DEFAULT_GAS_PRICE;
+const gasLimit = DEFAULT_GAS_LIMIT;
 
 describe('E2E: Events', async () => {
   let relayer: RelayerUnderTest;
@@ -35,7 +38,7 @@ describe('E2E: Events', async () => {
     await sdk.subscribe('KeyAdded', {contractAddress, key: wallet.address}, keyCallback);
 
     await sdk.connect(contractAddress);
-    const paymentOptions = {...SdkConfigDefault.paymentOptions, gasToken: mockToken.address};
+    const paymentOptions = {gasPrice, gasLimit, gasToken: mockToken.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
     await sdk.finalizeAndStop();
     unsubscribe();

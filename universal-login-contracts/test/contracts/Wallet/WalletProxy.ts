@@ -2,15 +2,13 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import WalletProxy from '../../../build/WalletProxy.json';
-import DEFAULT_PAYMENT_OPTIONS from '../../../lib/defaultPaymentOptions';
 import basicWalletAndProxy from '../../fixtures/basicWalletAndProxy';
 import {MockWalletMasterInterface} from '../../../lib/interfaces';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
-
-const {gasPrice, gasLimit} = DEFAULT_PAYMENT_OPTIONS;
 
 describe('CONTRACT: WalletProxy', async () => {
   let walletProxy: Contract;
@@ -28,18 +26,18 @@ describe('CONTRACT: WalletProxy', async () => {
     });
 
     it('should be able to send transaction to wallet', async () => {
-      await expect(wallet.sendTransaction({to: proxyAsWallet.address, data: [], gasPrice, gasLimit})).to.be.fulfilled;
+      await expect(wallet.sendTransaction({to: proxyAsWallet.address, data: [], gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT})).to.be.fulfilled;
     });
 
     it('should call payable function in MasterCopy', async () => {
       data = MockWalletMasterInterface.functions.giveAway.encode([]);
-      await wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit});
+      await wallet.sendTransaction({to: walletProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
     });
 
     it('should call function in MasterCopy', async () => {
       data = MockWalletMasterInterface.functions.increase.encode([]);
       const countBefore = await proxyAsWallet.count();
-      await wallet.sendTransaction({to: walletProxy.address, data, gasPrice, gasLimit});
+      await wallet.sendTransaction({to: walletProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
       const countAfter = await proxyAsWallet.count();
       expect(countAfter - countBefore).to.be.equal(1);
     });

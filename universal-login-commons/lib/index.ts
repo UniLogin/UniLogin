@@ -1,7 +1,7 @@
 export {Omit, PartialRequired, Procedure, Predicate, DeepPartial} from './core/types/common';
 export {ApplicationInfo, DeviceInfo, Notification} from './core/models/notifications';
 export {Device} from './core/models/Device';
-export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, DeploymentStatus, DeploymentState, MessageState, MineableState, MineableStatus, CollectedSignatureKeyPair, SignedMessagePaymentOptions} from './core/models/message';
+export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, DeploymentStatus, DeploymentState, MessageState, MineableState, MineableStatus, CollectedSignatureKeyPair, SignedMessagePaymentOptions, ExecutionOptions, SdkExecutionOptions} from './core/models/message';
 export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, OnRampConfig, PublicRelayerConfig} from './core/models/relayer';
 export {LocalizationConfig, SafelloConfig, RampConfig} from './core/models/onRamp';
@@ -34,6 +34,7 @@ export {withENS} from './integration/ethereum/withENS';
 export {getContractHash, getDeployedBytecode, isContractExist, isContract} from './core/utils/contracts/contractHelpers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
 export {resolveName} from './integration/ethereum/resolveName';
+export {EnoughTokenValidator} from './integration/ethereum/validators/EnoughTokenValidator';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress, calculateDeployHash} from './core/utils/messages/calculateMessageSignature';
 export {getMessageWithSignatures} from './core/utils/messages/signMessage';
 export {executionComparator, sortSignatureKeyPairsByKey, sign, signHexString, signString} from './core/utils/signatures';

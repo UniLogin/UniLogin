@@ -1,4 +1,4 @@
-import {ApplicationWallet, ensure, Message, Procedure, walletFromBrain} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden} from '../utils/errors';
@@ -62,7 +62,11 @@ export class WalletService {
 
     const {waitToBeSuccess, waitForTransactionHash} = await deploy(ensName, gasPrice, gasToken);
     const {transactionHash} = await waitForTransactionHash();
-    onTransactionHash !== undefined && onTransactionHash(transactionHash!);
+    if (transactionHash) {
+      this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet, transactionHash});
+      onTransactionHash !== undefined && onTransactionHash(transactionHash);
+    }
+
     const deployedWallet = await waitToBeSuccess();
     this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
     this.saveToStorage();
@@ -137,12 +141,12 @@ export class WalletService {
     };
   }
 
-  async removeWallet(transactionDetails: Partial<Message>) {
+  async removeWallet(executionOptions: ExecutionOptions) {
     if (this.state.kind !== 'Deployed') {
       this.disconnect();
       return;
     }
-    const execution = await this.state.wallet.removeCurrentKey(transactionDetails);
+    const execution = await this.state.wallet.removeCurrentKey(executionOptions);
     execution.waitToBeSuccess().then(() => this.disconnect());
     return execution;
   }

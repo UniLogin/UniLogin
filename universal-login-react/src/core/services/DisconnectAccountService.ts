@@ -1,5 +1,6 @@
-import {transactionDetails} from '../../core/constants/TransactionDetails';
 import {WalletService} from '@universal-login/sdk';
+import {DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {DISCONNECT} from '../constants/verifyFields';
 
 interface ErrorsType {
   usernameError: boolean;
@@ -13,30 +14,30 @@ interface InputsType {
 
 const checkInputsAgainstError = (usernameLogged: string, inputs: InputsType) => ({
   usernameError: inputs.username !== usernameLogged,
-  verifyFieldError: inputs.verifyField !== 'DELETE MY ACCOUNT',
+  verifyFieldError: inputs.verifyField !== DISCONNECT,
 });
 
-export const getInputClassName = (inputError: boolean) => inputError ? 'delete-account-input-error' : 'delete-account-input';
+export const getInputClassName = (inputError: boolean) => inputError ? 'disconnect-account-input-error' : 'disconnect-account-input';
 
 const doesAnyErrorExists = (errors: ErrorsType) => errors.usernameError || errors.verifyFieldError;
 
-export const deleteAccount = async (
+export const disconnectAccount = async (
   walletService: WalletService,
   inputs: InputsType,
   setErrors: (errors: ErrorsType) => void,
-  onDeletionProgress: (transactionHash?: string) => void,
-  onAccountDeleted: () => void,
+  onDisconnectProgress: (transactionHash?: string) => void,
+  onAccountDisconnected: () => void,
 ) => {
   const errors = checkInputsAgainstError(walletService.getDeployedWallet().name, inputs);
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
-    onDeletionProgress();
-    const execution = await walletService.removeWallet(transactionDetails);
+    onDisconnectProgress();
+    const execution = await walletService.removeWallet({gasPrice: DEFAULT_GAS_PRICE});
     if (execution) {
       const {transactionHash} = await execution.waitForTransactionHash();
-      onDeletionProgress(transactionHash);
+      onDisconnectProgress(transactionHash);
       await execution.waitToBeSuccess();
     }
-    onAccountDeleted();
+    onAccountDisconnected();
   }
 };

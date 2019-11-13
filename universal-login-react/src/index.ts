@@ -21,7 +21,7 @@ export {Onboarding} from './ui/Onboarding/Onboarding';
 export {OnboardingModal} from './ui/Onboarding/OnboardingModal';
 export {LogoButton} from './ui/UFlow/LogoButton';
 export {Funds} from './ui/UFlow/Funds';
-export {DeleteAccount} from './ui/UFlow/DeleteAccount';
+export {DisconnectAccount} from './ui/UFlow/DisconnectAccount';
 export {BackupCodes} from './ui/BackupCodes/BackupCodes';
 export {Devices} from './ui/UFlow/Devices/Devices';
 export {NewDeviceMessage} from './ui/UFlow/Devices/NewDeviceMessage';

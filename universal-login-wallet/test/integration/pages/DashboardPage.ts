@@ -12,10 +12,10 @@ export default class DashboardPage {
 
   async disconnect() {
     await this.clickDevicesButton();
-    this.wrapper.find('.delete-account-link').simulate('click');
+    this.wrapper.find('.disconnect-account-link').simulate('click');
     this.wrapper.find('#username').simulate('change', {target: {value: 'super-name.mylogin.eth'}});
-    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DELETE MY ACCOUNT'}});
-    this.wrapper.find('.delete-account-confirm').simulate('click');
+    this.wrapper.find('#verifyField').simulate('change', {target: {value: 'DISCONNECT'}});
+    this.wrapper.find('.disconnect-account-confirm').simulate('click');
   }
 
   async waitForHideModal() {
@@ -47,5 +47,9 @@ export default class DashboardPage {
 
   async waitForWelcomeScreen() {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Welcome in the Jarvis Network'));
+  }
+
+  async waitForDashboard() {
+    await waitForUI(this.wrapper, () => this.wrapper.exists('p.balance-amount'));
   }
 }

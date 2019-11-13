@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {join} from 'path';
-import {Switch, Route, useHistory} from 'react-router';
+import {Switch, Route, useHistory, Prompt} from 'react-router';
+import {Location} from 'history';
 import {DeployedWallet} from '@universal-login/sdk';
 import BackupCodesView from './BackupCodesView';
 import './../styles/backup.sass';
@@ -8,8 +9,7 @@ import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
-import {transactionDetails} from '../../core/constants/TransactionDetails';
-import {GasParameters} from '@universal-login/commons';
+import {GasParameters, ensureNotNull} from '@universal-login/commons';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
@@ -27,7 +27,8 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
   const generateBackupCodes = async () => {
     try {
       history.replace(join(basePath, 'waitingForBackupCodes'));
-      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({...transactionDetails, ...gasParameters});
+      ensureNotNull(gasParameters, Error, 'Missing gas parameters');
+      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes(gasParameters!);
       const {transactionHash} = await waitForTransactionHash();
       history.replace(join(basePath, 'waitingForBackupCodes'), {transactionHash});
       const codes = await waitToBeSuccess();
@@ -37,6 +38,17 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
       console.error(e);
       history.replace(join(basePath, 'backupCodesFailure'));
     }
+  };
+
+  const waitingPromptMessage = (location: Location<any>) => {
+    if (
+      location.pathname.includes('waitingForBackupCodes') ||
+      location.pathname.includes('backupCodesFailure') ||
+      location.pathname.includes('backupCodesGenerated')
+    ) {
+      return true;
+    }
+    return 'Are you sure you want to leave? The backup codes are being generated.';
   };
 
   return (
@@ -53,6 +65,7 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
         <ErrorMessage className={className} />;
       </Route>
       <Route path={join(basePath, 'backupCodesGenerated')} exact>
+        <Prompt message="Are you sure you want to leave? The backup codes will not be displayed again." />
         <BackupCodesView
           codes={backupCodes}
           printCodes={window.print}
@@ -61,6 +74,7 @@ export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupPr
         />
       </Route>
       <Route path={join(basePath, 'waitingForBackupCodes')} exact>
+        <Prompt message={waitingPromptMessage} />
         <WaitingForTransaction
           action='Generating backup codes'
           relayerConfig={relayerConfig}
