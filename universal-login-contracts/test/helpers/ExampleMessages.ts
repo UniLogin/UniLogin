@@ -1,21 +1,19 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import TEST_PAYMENT_OPTIONS from '../../lib/defaultPaymentOptions';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
 import {calculatePaymentOptions, estimateGasDataFromUnsignedMessage} from '../../lib/estimateGas';
 
 const {parseEther} = utils;
-const {gasPrice} = TEST_PAYMENT_OPTIONS;
 
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,
   value: parseEther('1.0'),
   data: [],
   nonce: 0,
-  gasPrice,
+  gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '7440',
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -26,7 +24,7 @@ export const failedTransferMessage = {
   value: parseEther('10.0'),
   data: [],
   nonce: 0,
-  gasPrice,
+  gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '7440',
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -38,7 +36,7 @@ export const callMessage = {
   value: parseEther('0.0'),
   data: callMeMessageData,
   nonce: 0,
-  gasPrice,
+  gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '8720',
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -50,7 +48,7 @@ export const failedCallMessage = {
   value: parseEther('0.0'),
   data: revertingFunctionMessageData,
   nonce: 0,
-  gasPrice,
+  gasPrice: DEFAULT_GAS_PRICE,
   gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '8720',
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -96,7 +94,7 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     data,
     value: parseEther('0.0'),
     nonce: await proxyAsWalletContract.lastNonce(),
-    gasPrice,
+    gasPrice: DEFAULT_GAS_PRICE,
     gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
     gasData: 0,
     gasToken: '0x0000000000000000000000000000000000000000',

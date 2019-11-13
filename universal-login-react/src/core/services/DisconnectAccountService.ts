@@ -1,5 +1,5 @@
-import {transactionDetails} from '../constants/TransactionDetails';
 import {WalletService} from '@universal-login/sdk';
+import {DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {DISCONNECT} from '../constants/verifyFields';
 
 interface ErrorsType {
@@ -32,7 +32,7 @@ export const disconnectAccount = async (
   setErrors(errors);
   if (!doesAnyErrorExists(errors)) {
     onDisconnectProgress();
-    const execution = await walletService.removeWallet(transactionDetails);
+    const execution = await walletService.removeWallet({gasPrice: DEFAULT_GAS_PRICE});
     if (execution) {
       const {transactionHash} = await execution.waitForTransactionHash();
       onDisconnectProgress(transactionHash);

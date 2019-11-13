@@ -19,6 +19,15 @@ export type PaymentOptions = {
   gasToken: string;
 };
 
+export type ExecutionOptions = {
+  gasPrice: utils.BigNumberish;
+  gasLimit?: utils.BigNumberish;
+  gasToken?: string;
+  nonce?: string | number;
+};
+
+export type SdkExecutionOptions = ExecutionOptions & Required<Pick<ExecutionOptions, 'gasLimit'>>;
+
 export type SignedMessagePaymentOptions = {
   gasLimitExecution: utils.BigNumberish;
   gasData: utils.BigNumberish;

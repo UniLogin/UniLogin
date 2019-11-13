@@ -1,7 +1,6 @@
 import React from 'react';
-import {Device} from '@universal-login/commons';
+import {Device, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
-import {transactionDetails} from '../../core/constants/TransactionDetails';
 
 interface ManageDevicesProps {
   deployedWallet: DeployedWallet;
@@ -14,7 +13,7 @@ export const ManageDevices = ({devices, deployedWallet}: ManageDevicesProps) => 
       devices.map(({contractAddress, publicKey}: Device, index: number) => (
         <div key={index}>
           device {index} : {publicKey}
-          <button onClick={() => deployedWallet.removeKey(publicKey, transactionDetails)} className="settings-btn">Remove this device</button>
+          <button onClick={() => deployedWallet.removeKey(publicKey, {gasPrice: DEFAULT_GAS_PRICE})} className="settings-btn">Remove this device</button>
         </div>))
     }
   </div >

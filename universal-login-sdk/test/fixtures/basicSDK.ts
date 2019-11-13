@@ -1,11 +1,10 @@
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, TEST_SDK_CONFIG} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_SDK_CONFIG, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../lib/api/sdk';
-import {SdkConfigDefault} from '../../lib/config/SdkConfigDefault';
 import {createWallet} from '../helpers/createWallet';
 
 export default async function basicSDK(givenProvider: providers.Provider, wallets: Wallet[]) {
@@ -23,7 +22,9 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
 }
 
 export const transferMessage = {
-  ...SdkConfigDefault.paymentOptions,
+  gasPrice: DEFAULT_GAS_PRICE,
+  gasLimit: DEFAULT_GAS_LIMIT,
+  gasToken: ETHER_NATIVE_TOKEN.address,
   to: TEST_ACCOUNT_ADDRESS,
   value: utils.parseEther('0.5').toString(),
 };
