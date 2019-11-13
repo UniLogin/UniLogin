@@ -38,7 +38,7 @@ export default class LoginPage {
   }
 
   async connect(userName: string) {
-    await this.pickUsername(userName, 'connect to existing', 'Connect with another device');
+    await this.pickUsername(userName, 'connect', 'Connect with another device');
   }
 
   async waitForHomeView(balance: string, timeout?: number) {
