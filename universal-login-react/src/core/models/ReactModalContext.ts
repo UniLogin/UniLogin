@@ -12,8 +12,7 @@ export type ReactModalType =
   | 'address'
   | 'waitingFor'
   | 'safello'
-  | 'waitingForOnRampProvider'
-  | 'waitingForDeployment';
+  | 'waitingForOnRampProvider';
 
 export type ReactModalProps = TopUpProps | WaitingForTransactionProps | ConnectionFlowProps | WaitingForOnRampProviderProps;
 

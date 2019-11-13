@@ -5,7 +5,7 @@ import Spinner from './Spinner';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/assetsItem.sass';
 import './../styles/assetsItemDefault.sass';
-import {formatCurrency} from '../../core/utils/formatCurrency';
+import {formatCurrencyWithTilda} from '../../core/utils/formatCurrency';
 
 export interface AssetProps {
   sdk: UniversalLoginSDK;
@@ -31,7 +31,7 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
   useEffect(() => {
     const tokenValue = Number(usdPrice) * Number(balance);
     setUsdAmount(tokenValue.toString());
-  }, [usdPrice]);
+  }, [usdPrice, balance]);
 
   return (
     <div key={name} className="universal-login-assets-item">
@@ -43,12 +43,12 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
             </div>
             <div>
               <p className="assets-name">{name}</p>
-              <p className="assets-price">${usdPrice}</p>
+              <p className="assets-price">1 {symbol} = ${usdPrice}</p>
             </div>
           </div>
           <div className="assets-item-right">
-            {balance ? <p className="assets-balance">{balance} {symbol}</p> : <Spinner/>}
-            <p className="assets-price">{formatCurrency(usdAmount)}</p>
+            {balance ? <p className="assets-balance"> {balance} {symbol}</p> : <Spinner/>}
+            <p className="assets-price">{formatCurrencyWithTilda(usdAmount)}</p>
           </div>
         </div>
       </div>

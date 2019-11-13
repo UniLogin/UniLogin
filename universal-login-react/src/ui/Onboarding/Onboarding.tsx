@@ -2,14 +2,17 @@ import React, {useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
-import {ApplicationWallet, GasParameters, INITIAL_GAS_PARAMETERS, WalletSuggestionAction} from '@universal-login/commons';
+import {ApplicationWallet, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {ReactModalContext, ReactModalProps, ReactModalType, TopUpProps} from '../../core/models/ReactModalContext';
+import {ReactModalContext, ReactModalProps, ReactModalType} from '../../core/models/ReactModalContext';
 import {useModalService} from '../../core/services/useModalService';
+import {WalletCreationService} from '../..';
+import {OnboardingSteps} from './OnboardingSteps';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  walletService?: WalletService;
+  walletService: WalletService;
+  walletCreationService?: WalletCreationService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -20,12 +23,13 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const modalService = useModalService<ReactModalType, ReactModalProps>();
-  const [walletService] = useState<WalletService>(props.walletService || new WalletService(props.sdk));
+  const [walletCreationService] = useState(() => props.walletCreationService || new WalletCreationService(props.walletService));
+
   const onConnectClick = (ensName: string) => {
     const connectionFlowProps = {
       name: ensName,
       sdk: props.sdk,
-      walletService,
+      walletService: props.walletService,
       onSuccess,
     };
     modalService.showModal('connectionFlow', connectionFlowProps);
@@ -36,33 +40,9 @@ export const Onboarding = (props: OnboardingProps) => {
     props.onConnect && props.onConnect();
   };
 
-  const showWalletCreationModal = (transactionHash?: string) => {
-    const relayerConfig = props.sdk.getRelayerConfig();
-    modalService.showModal('waitingForDeployment', {
-      relayerConfig,
-      transactionHash,
-    });
-  };
-
   const onCreateClick = async (ensName: string) => {
-    let gasParameters = INITIAL_GAS_PARAMETERS;
-    const {waitForBalance, contractAddress, privateKey} = await walletService.createFutureWallet();
-    localStorage.setItem('BACKUP_DEMO', JSON.stringify({
-      ensName,
-      contractAddress,
-      privateKey,
-    }));
-    const topUpProps: TopUpProps = {
-      contractAddress,
-      onGasParametersChanged: (parameters: GasParameters) => {gasParameters = parameters;},
-      sdk: props.sdk,
-      isDeployment: true,
-      hideModal: () => {walletService.disconnect(); modalService.hideModal();},
-    };
-    modalService.showModal('topUpAccount', topUpProps);
-    await waitForBalance();
-    showWalletCreationModal();
-    const wallet = await walletService.deployFutureWallet(ensName, gasParameters.gasPrice.toString(), gasParameters.gasToken, showWalletCreationModal);
+    walletCreationService.onBalancePresent(() => modalService.hideModal());
+    const wallet = await walletCreationService.initiateCreationFlow(ensName);
     modalService.hideModal();
     props.onCreate && props.onCreate(wallet);
   };
@@ -81,6 +61,12 @@ export const Onboarding = (props: OnboardingProps) => {
               actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
             />
           </div>
+          <OnboardingSteps
+            sdk={props.sdk}
+            walletService={props.walletService}
+            walletCreationService={walletCreationService}
+            modalService={modalService}
+          />
           <Modals modalClassName={props.modalClassName} />
         </ReactModalContext.Provider>
       </div>
