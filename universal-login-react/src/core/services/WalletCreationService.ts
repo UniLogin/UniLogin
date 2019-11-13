@@ -17,7 +17,7 @@ export class WalletCreationService {
     const {waitForBalance} = await this.walletService.createFutureWallet();
     await waitForBalance();
     this.callbackOnBalancePresent && this.callbackOnBalancePresent();
-    await this.walletService.deployFutureWallet(
+    return this.walletService.deployFutureWallet(
       ensName,
       this.gasParameters.gasPrice.toString(),
       this.gasParameters.gasToken,
