@@ -15,7 +15,6 @@ export const ModalTxnSuccess = ({hideModal}: ModalTxnSuccessProps) => {
         <h1 className="box-title">Wallet creation</h1>
       </div>
       <div className="box-content modal-succes-content">
-        <h3 className="modal-section-title transaction-status-title">Transaction status: success</h3>
         <img
           className="modal-avatar-succes"
           src={send1x}
