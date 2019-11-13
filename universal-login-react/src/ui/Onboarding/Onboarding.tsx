@@ -10,7 +10,7 @@ import {ModalWrapper, TopUp, useProperty, WaitingForDeployment, WalletCreationSe
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
-  walletService?: WalletService;
+  walletService: WalletService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -21,14 +21,13 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const modalService = useModalService<ReactModalType, ReactModalProps>();
-  const [walletService] = useState<WalletService>(props.walletService || new WalletService(props.sdk));
-  const [walletCreationService] = useState(() => new WalletCreationService(walletService));
+  const [walletCreationService] = useState(() => new WalletCreationService(props.walletService));
 
   const onConnectClick = (ensName: string) => {
     const connectionFlowProps = {
       name: ensName,
       sdk: props.sdk,
-      walletService,
+      walletService: props.walletService,
       onSuccess,
     };
     modalService.showModal('connectionFlow', connectionFlowProps);
@@ -46,7 +45,7 @@ export const Onboarding = (props: OnboardingProps) => {
     props.onCreate && props.onCreate(wallet);
   };
 
-  const walletState = useProperty(walletService.stateProperty);
+  const walletState = useProperty(props.walletService.stateProperty);
   const transactionHash = useProperty(walletCreationService.deploymentTransactionHash);
   const renderModal = () => {
     switch (walletState.kind) {
@@ -60,7 +59,7 @@ export const Onboarding = (props: OnboardingProps) => {
             sdk={props.sdk}
             isDeployment
             hideModal={() => {
-              walletService.disconnect();
+              props.walletService.disconnect();
               modalService.hideModal();
             }}
             isModal

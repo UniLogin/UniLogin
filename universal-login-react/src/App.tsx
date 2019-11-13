@@ -29,14 +29,6 @@ export const App = () => {
     return sdk.getRelayerConfig();
   }, []);
 
-  const onCreate = (applicationWallet: ApplicationWallet) => {
-    alert(`Wallet contract deployed at ${applicationWallet.contractAddress}`);
-  };
-
-  const onConnect = () => {
-    console.log('connect clicked');
-  };
-
   const [walletService] = useState(new WalletService(sdk));
 
   async function tryEnablingMetamask() {
@@ -77,8 +69,7 @@ export const App = () => {
               render={() => (
                 <Onboarding
                   sdk={sdk}
-                  onConnect={onConnect}
-                  onCreate={onCreate}
+                  walletService={walletService}
                   domains={['mylogin.eth', 'universal-id.eth']}
                   tryEnablingMetamask={tryEnablingMetamask}
                 />
