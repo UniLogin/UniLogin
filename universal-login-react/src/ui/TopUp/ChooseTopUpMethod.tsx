@@ -70,14 +70,13 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
         logoColor={logoColor}
       />}
       {topUpMethod && isDeployment && <FooterSection className={topUpClassName}>
-        {isDeployment && <GasPrice
+        <GasPrice
           isDeployed={false}
           sdk={sdk}
           onGasParametersChanged={gasParametersChanged}
           gasLimit={DEPLOYMENT_REFUND}
           className={topUpClassName}
         />
-        }
         <PayButton
           onClick={() => onPayClick(paymentMethod!, amount)}
           state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}
