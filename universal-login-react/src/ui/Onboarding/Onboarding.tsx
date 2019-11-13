@@ -6,7 +6,8 @@ import {ApplicationWallet, WalletSuggestionAction} from '@universal-login/common
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ReactModalContext, ReactModalProps, ReactModalType} from '../../core/models/ReactModalContext';
 import {useModalService} from '../../core/services/useModalService';
-import {ModalWrapper, TopUp, useProperty, WaitingForDeployment, WalletCreationService} from '../..';
+import {WalletCreationService} from '../..';
+import {OnboardingSteps} from './OnboardingSteps';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -45,40 +46,6 @@ export const Onboarding = (props: OnboardingProps) => {
     props.onCreate && props.onCreate(wallet);
   };
 
-  const walletState = useProperty(props.walletService.stateProperty);
-  const transactionHash = useProperty(walletCreationService.deploymentTransactionHash);
-  const renderModal = () => {
-    switch (walletState.kind) {
-      case 'Future':
-        return (
-          <TopUp
-            modalClassName={props.modalClassName}
-            showModal={modalService.showModal}
-            contractAddress={walletState.wallet.contractAddress}
-            onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
-            sdk={props.sdk}
-            isDeployment
-            hideModal={() => {
-              props.walletService.disconnect();
-              modalService.hideModal();
-            }}
-            isModal
-          />
-        );
-      case 'Deploying':
-        return (
-          <ModalWrapper>
-            <WaitingForDeployment
-              relayerConfig={props.sdk.getRelayerConfig()}
-              transactionHash={transactionHash}
-            />
-          </ModalWrapper>
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
@@ -93,7 +60,12 @@ export const Onboarding = (props: OnboardingProps) => {
               actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
             />
           </div>
-          {renderModal()}
+          <OnboardingSteps
+            sdk={props.sdk}
+            walletService={props.walletService}
+            walletCreationService={walletCreationService}
+            modalService={modalService}
+          />
           <Modals modalClassName={props.modalClassName} />
         </ReactModalContext.Provider>
       </div>
