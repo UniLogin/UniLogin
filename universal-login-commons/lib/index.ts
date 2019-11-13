@@ -34,6 +34,7 @@ export {withENS} from './integration/ethereum/withENS';
 export {getContractHash, getDeployedBytecode, isContractExist, isContract} from './core/utils/contracts/contractHelpers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
 export {resolveName} from './integration/ethereum/resolveName';
+export {EnoughTokenValidator} from './integration/ethereum/validators/EnoughTokenValidator';
 export {calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, calculateMessageHash, sortPrivateKeysByAddress, calculateDeployHash} from './core/utils/messages/calculateMessageSignature';
 export {getMessageWithSignatures} from './core/utils/messages/signMessage';
 export {executionComparator, sortSignatureKeyPairsByKey, sign, signHexString, signString} from './core/utils/signatures';

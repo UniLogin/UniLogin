@@ -64,7 +64,6 @@ describe('UNIT: AuthorisationsObserver', () => {
     const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
     unsubscribe();
     const unsubscribe2 = authorisationsObserver.subscribe(authorisationRequest, callback2);
-    await waitUntil(() => !!callback2.firstCall);
     expect(callback2).to.have.been.calledOnce;
     unsubscribe2();
   });

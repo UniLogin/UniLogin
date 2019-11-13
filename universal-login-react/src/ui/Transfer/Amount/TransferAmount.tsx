@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TransferDropdown} from './TransferDropdown';
 import {DeployedWallet} from '@universal-login/sdk';
-import {TransferDetails, TokenDetailsWithBalance, getBalanceOf, TokenDetails} from '@universal-login/commons';
+import {TransferDetails, TokenDetailsWithBalance, getBalanceOf, TokenDetails, isValidAmount} from '@universal-login/commons';
 import './../../styles/transferAmount.sass';
 import './../../styles/transferAmountDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
@@ -18,19 +18,22 @@ export interface TransferAmountProps {
 
 export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTransferDetailsWith, tokenDetails, transferAmountClassName}: TransferAmountProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-  const [isAmountCorrect, setIsAmountCorrect] = useState(false);
+  const [validAmount, setValidAmount] = useState(true);
+  const [enableButton, setEnableButton] = useState(false);
   const {sdk, contractAddress} = deployedWallet;
 
   useAsyncEffect(() => sdk.subscribeToBalances(contractAddress, setTokenDetailsWithBalance), []);
   const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
 
   const validateAndUpdateTransferDetails = (amount: string) => {
-    if (balance && amount) {
-      setIsAmountCorrect(Number(amount) <= Number(balance));
+    if (balance && isValidAmount(amount, balance)) {
+      setValidAmount(true);
+      setEnableButton(true);
+      updateTransferDetailsWith({amount});
     } else {
-      setIsAmountCorrect(false);
+      setValidAmount(false);
+      setEnableButton(false);
     }
-    updateTransferDetailsWith({amount});
   };
 
   return (
@@ -51,15 +54,18 @@ export const TransferAmount = ({deployedWallet, onSelectRecipientClick, updateTr
             </FeatureFlag>
           </div>
           <div className="transfer-amount-input-wrapper">
-            <input
-              id="amount-eth"
-              type="number"
-              className="transfer-amount-input"
-              onChange={event => validateAndUpdateTransferDetails(event.target.value)}
-            />
-            <span className="transfer-amount-code">{tokenDetails.symbol}</span>
+            <div className="transfer-amount-input-content">
+              <input
+                id="amount-eth"
+                type="number"
+                className="transfer-amount-input"
+                onChange={event => validateAndUpdateTransferDetails(event.target.value)}
+              />
+              <span className="transfer-amount-code">{tokenDetails.symbol}</span>
+            </div>
+            {!validAmount && <div className="hint amount-input-hint">Invalid amount!</div>}
           </div>
-          <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!isAmountCorrect}>
+          <button id="select-recipient" onClick={onSelectRecipientClick} className="transfer-amount-btn" disabled={!enableButton}>
             <span>Select recipient</span>
           </button>
         </div>

@@ -2,27 +2,20 @@ import {expect} from 'chai';
 import {isValidAmount} from '../../../lib/core/utils/isValidAmount';
 
 describe('isValidAmount', () => {
-  it('return true for `1.0`', () => {
-    expect(isValidAmount('1.0')).to.be.true;
-  });
+  const itValidatesAmount = (result: boolean, amount: string, balance: string) => {
+    it(`returns ${result} for amount: ${amount} and balance: ${balance}`, () => {
+      expect(isValidAmount(amount, balance)).to.eq(result);
+    });
+  };
 
-  it('return true for `10`', () => {
-    expect(isValidAmount('10')).to.be.true;
-  });
-
-  it('return false for `ABC`', () => {
-    expect(isValidAmount('ABC')).to.be.false;
-  });
-
-  it('return false for `1a00.1`', () => {
-    expect(isValidAmount('1a00.1')).to.be.false;
-  });
-
-  it('return false for `14$.9`', () => {
-    expect(isValidAmount('14$.9')).to.be.false;
-  });
-
-  it('return false for `100.`', () => {
-    expect(isValidAmount('100.')).to.be.false;
-  });
+  itValidatesAmount(true, '1.0', '2');
+  itValidatesAmount(true, '10', '20');
+  itValidatesAmount(true, '2', '2.01');
+  itValidatesAmount(false, 'ABC', '1');
+  itValidatesAmount(false, '0', '1');
+  itValidatesAmount(false, '1a00.1', '1');
+  itValidatesAmount(false, '14$.9', '1');
+  itValidatesAmount(false, '100.', '1');
+  itValidatesAmount(false, '100', '1');
+  itValidatesAmount(false, '100', '99');
 });
