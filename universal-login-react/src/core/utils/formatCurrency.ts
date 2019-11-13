@@ -10,7 +10,7 @@ export const formatCurrency = (value: string, currency = 'USD'): string => {
   return formatter.format(withPrecision(Number.parseFloat(value || '0'), maximumFractionDigits));
 };
 
-export const formatUsdAmount = (amount: string, currency = 'USD') => {
+export const formatCurrencyWithTilda = (amount: string, currency = 'USD') => {
   const formattedAmount = formatCurrency(amount, currency);
-  return formattedAmount === '$0.00' ? formattedAmount : `~ ${formattedAmount}`;
+  return !amount || amount === '0' ? formattedAmount : `~ ${formattedAmount}`;
 };
