@@ -13,12 +13,16 @@ export const Suggestion = ({type, ...props}: SuggestionWithTypeProps) => {
     case 'Creation':
       return (<SingleSuggestion
         hint='This username is available'
-        {...props}
+        operationType={props.operationType}
+        onClick={props.onClick}
+        suggestion={type.name}
       />);
     case 'Connection':
       return (<SingleSuggestion
         hint='Do you want to connect to this account?'
-        {...props}
+        operationType={props.operationType}
+        onClick={props.onClick}
+        suggestion={type.name}
       />);
     case 'Available':
     default:

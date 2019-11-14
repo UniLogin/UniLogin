@@ -12,9 +12,9 @@ export const getSuggestionType = (
   } else if (isNone(creations, connections, source)) {
     return {kind: 'None'};
   } else if (isSingleCreation(creations, connections)) {
-    return {kind: 'Creation', name: ''};
+    return {kind: 'Creation', name: creations[0]};
   } else if (isSingleConnection(creations, connections, actions)) {
-    return {kind: 'Connection', name: ''};
+    return {kind: 'Connection', name: connections[0]};
   } else {
     return {kind: 'Available', suggestions: []};
   }
