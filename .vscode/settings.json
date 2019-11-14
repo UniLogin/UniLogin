@@ -17,5 +17,6 @@
   },
   "[solidity]": {
     "editor.tabSize": 4,
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
