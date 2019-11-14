@@ -10,8 +10,8 @@ interface SuggestionsProps {
   connections: string[];
   creations: string[];
   source: string;
-  onCreateClick(ensName: string): Promise<void> | void;
-  onConnectClick(ensName: string): Promise<void> | void;
+  onCreateClick?(ensName: string): Promise<void> | void;
+  onConnectClick?(ensName: string): Promise<void> | void;
   actions: WalletSuggestionAction[];
 }
 

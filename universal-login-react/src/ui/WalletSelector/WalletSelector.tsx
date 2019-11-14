@@ -118,8 +118,8 @@ export const WalletSelector = ({
             source={ensName}
             connections={connections}
             creations={creations}
-            onCreateClick={onCreateClick!}
-            onConnectClick={onConnectClick!}
+            onCreateClick={onCreateClick}
+            onConnectClick={onConnectClick}
             actions={actions}
           />}
       </div>
