@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, ensureNotNull} from '@universal-login/commons';
+import {ensureNotNull, WalletSuggestionAction} from '@universal-login/commons';
 import {getSuggestion} from '../../../core/utils/getSuggestion';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
@@ -14,31 +14,6 @@ interface SuggestionsProps {
   onConnectClick(ensName: string): Promise<void> | void;
   actions: WalletSuggestionAction[];
 }
-
-interface SuggestionItemsProps {
-  operationType: string;
-  array: string[];
-  selectedSuggestion: string;
-  onClick: (ensName: string) => Promise<void> | void;
-}
-
-const SuggestionItems = ({operationType, array, onClick, selectedSuggestion}: SuggestionItemsProps) => (
-  <>
-    {array.map(element => (
-      <li
-        key={`${operationType}_${element}`}
-        className="suggestions-item"
-      >
-        <MultipleSuggestion
-          suggestion={element}
-          selectedSuggestion={selectedSuggestion}
-          operationType={operationType}
-          onClick={onClick}
-        />
-      </li>
-    ))}
-  </>
-);
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
@@ -91,18 +66,16 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
     case 'Available':
       return (
         <ul className="suggestions-list">
-          <SuggestionItems
-            operationType='connect'
-            array={connections}
-            selectedSuggestion={selectedSuggestion}
-            onClick={handleConnectClick}
-          />
-          <SuggestionItems
-            operationType='create new'
-            array={creations}
-            selectedSuggestion={selectedSuggestion}
-            onClick={handleCreateClick}
-          />
+          {suggestion.suggestions.map(element => (
+            <li key={element.name} className="suggestions-item">
+              <MultipleSuggestion
+                suggestion={element.name}
+                selectedSuggestion={selectedSuggestion}
+                operationType={element.kind === 'Creation' ? 'create new' : 'connect'}
+                onClick={element.kind === 'Creation' ? handleCreateClick : handleConnectClick}
+              />
+            </li>
+          ))}
         </ul>
       );
   }

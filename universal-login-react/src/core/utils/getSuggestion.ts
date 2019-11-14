@@ -7,19 +7,22 @@ export const getSuggestion = (
   actions: WalletSuggestionAction[],
   source: string,
 ): Suggestion => {
+  const filteredCreations = actions.includes(WalletSuggestionAction.create) ? creations : [];
+  const filteredConnections = actions.includes(WalletSuggestionAction.connect) ? connections : [];
+
   if (source.length > 0 && source.length < 3) {
     return {kind: 'KeepTyping'};
-  } else if (isNone(creations, connections, source)) {
+  } else if (isNone(filteredCreations, filteredConnections, source)) {
     return {kind: 'None'};
-  } else if (isSingleCreation(creations, connections)) {
-    return {kind: 'Creation', name: creations[0]};
-  } else if (isSingleConnection(creations, connections, actions)) {
-    return {kind: 'Connection', name: connections[0]};
+  } else if (isSingleCreation(filteredCreations, filteredConnections)) {
+    return {kind: 'Creation', name: filteredCreations[0]};
+  } else if (isSingleConnection(filteredCreations, filteredConnections, actions)) {
+    return {kind: 'Connection', name: filteredConnections[0]};
   } else {
     return {kind: 'Available',
       suggestions: [
-        ...creations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
-        ...connections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
+        ...filteredCreations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
+        ...filteredConnections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
       ]};
   }
 };
