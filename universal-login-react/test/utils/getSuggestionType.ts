@@ -90,6 +90,6 @@ describe('getSuggestion', () => {
         .be.deep.eq({kind: 'None'});
       expect(getSuggestion([], ['user.mylogin.eth'], [], 'user'))
         .be.deep.eq({kind: 'None'});
-    })
+    });
   });
 });
