@@ -23,7 +23,7 @@ export const ConnectAccount = () => {
         className="jarvis-styles"
       />;
     case 'connectionSucceed':
-      return <ConnectionSuccess hideModal={() => {history.push('/');}}/>;
+      return <ConnectionSuccess hideModal={() => {history.replace('/');}}/>;
     case 'selector':
       return <ConnectSelector setName={setName} setConnectModal={setConnectModal} />;
   }
