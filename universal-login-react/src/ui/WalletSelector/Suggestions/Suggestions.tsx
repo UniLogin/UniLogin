@@ -40,9 +40,6 @@ const SuggestionItems = ({operationType, array, onClick, selectedSuggestion}: Su
   </>
 );
 
-const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS, flag: WalletSuggestionAction): string[] =>
-  actions.includes(flag) ? suggestions : [];
-
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
@@ -96,13 +93,13 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
         <ul className="suggestions-list">
           <SuggestionItems
             operationType='connect'
-            array={getSuggestions(connections, actions, WalletSuggestionAction.connect)}
+            array={connections}
             selectedSuggestion={selectedSuggestion}
             onClick={handleConnectClick}
           />
           <SuggestionItems
             operationType='create new'
-            array={getSuggestions(creations, actions, WalletSuggestionAction.create)}
+            array={creations}
             selectedSuggestion={selectedSuggestion}
             onClick={handleCreateClick}
           />
