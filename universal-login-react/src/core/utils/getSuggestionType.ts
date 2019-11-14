@@ -8,15 +8,15 @@ export const getSuggestionType = (
   source: string,
 ): SuggestionType => {
   if (source.length > 0 && source.length < 3) {
-    return 'KeepTyping';
+    return {kind:'KeepTyping'};
   } else if (isNone(creations, connections, source)) {
-    return 'None';
+    return {kind: 'None'};
   } else if (isSingleCreation(creations, connections)) {
-    return 'SingleCreation';
+    return {kind: 'Creation', name: ''};
   } else if (isSingleConnection(creations, connections, actions)) {
-    return 'SingleConnection';
+    return {kind: 'Connection', name: ''};
   } else {
-    return 'Multiple';
+    return {kind: 'Available', suggestions: []};
   }
 };
 

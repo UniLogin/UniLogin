@@ -44,9 +44,9 @@ const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[]
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
   const suggestionType = getSuggestionType(creations, connections, actions, source);
-  if (suggestionType === 'KeepTyping') {
+  if (suggestionType.kind === 'KeepTyping') {
     return <KeepTypingSuggestion />;
-  } else if (suggestionType === 'None') {
+  } else if (suggestionType.kind === 'None') {
     return null;
   }
   return (

@@ -9,18 +9,18 @@ interface SuggestionWithTypeProps extends SuggestionProps {
 }
 
 export const Suggestion = ({type, ...props}: SuggestionWithTypeProps) => {
-  switch (type) {
-    case 'SingleCreation':
+  switch (type?.kind) {
+    case 'Creation':
       return (<SingleSuggestion
         hint='This username is available'
         {...props}
       />);
-    case 'SingleConnection':
+    case 'Connection':
       return (<SingleSuggestion
         hint='Do you want to connect to this account?'
         {...props}
       />);
-    case 'Multiple':
+    case 'Available':
     default:
       return (<MultipleSuggestion {...props} />);
   }
