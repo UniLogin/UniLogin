@@ -57,7 +57,7 @@ describe('UI: Connection flow', () => {
     await appPage.login().connect(name);
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
-    await appPage.connection().clickCancel();
+    appPage.connection().clickCancel();
     await appPage.connection().waitForConnectionChoiceView();
     expect(appPage.connection().getConnectionWithPassphraseText()).to.startWith('Connect with passphrase');
   });

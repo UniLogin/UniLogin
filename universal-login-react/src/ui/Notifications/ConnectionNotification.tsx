@@ -51,7 +51,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
         <div className="approve-device">
           {showHeader &&
             <>
-              <p className="approve-device-title">Approve device</p>
+              <p className="approve-device-title">Confirm connection</p>
               <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
             </>
           }
