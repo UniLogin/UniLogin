@@ -46,13 +46,13 @@ interface CreationSuccessProps {
 export const CreationSuccess = ({hideModal}: CreationSuccessProps) =>
   <ModalTxnSuccess
     hideModal={hideModal}
-    operation='Wallet creation'
-    text='You have just created your wallet.'
+    operation="Wallet creation"
+    text="You have just created your wallet."
   />;
 
 export const ConnectionSuccess = ({hideModal}: CreationSuccessProps) =>
   <ModalTxnSuccess
     hideModal={hideModal}
-    operation='Connecting device succeed!'
-    text='You have just connected new device.'
+    operation="Connecting device succeed!"
+    text="You have just connected new device."
   />;
