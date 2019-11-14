@@ -46,7 +46,7 @@ export class SuggestionsService {
   }
 
   private includeConnections() {
-    return this.actions.includes(WalletSuggestionAction.connect) || this.actions.includes(WalletSuggestionAction.recover);
+    return this.actions.includes(WalletSuggestionAction.connect);
   }
 
   async splitByExistence(domains: string[]) {

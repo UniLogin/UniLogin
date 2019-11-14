@@ -275,13 +275,5 @@ describe('SuggestionsService', () => {
         creations: ['a.you.eth'],
       });
     });
-
-    it('only recover', async () => {
-      const service = new SuggestionsService(sdk, ['my.eth', 'you.eth', 'them.eth'], [WalletSuggestionAction.recover]);
-      expect(await service.getSuggestions('a')).to.deep.eq({
-        connections: ['a.my.eth', 'a.them.eth'],
-        creations: [],
-      });
-    });
   });
 });

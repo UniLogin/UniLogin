@@ -94,12 +94,6 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             suggestionType={suggestionType}
             onClick={onCreateClick}
           />
-          <SuggestionItems
-            operationType='recover'
-            array={getSuggestions(connections, actions, WalletSuggestionAction.recover)}
-            suggestionType={suggestionType}
-            onClick={async () => alert('not implemented')}
-          />
         </ul>
       );
   }

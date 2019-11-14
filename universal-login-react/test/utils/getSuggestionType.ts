@@ -11,6 +11,8 @@ describe('getSuggestionType', () => {
   it('Connection', () => {
     expect(getSuggestionType([], ['user.mylogin.eth'], [WalletSuggestionAction.connect], 'user'))
       .be.deep.eq({kind: 'Connection', name: 'user.mylogin.eth'});
+    expect(getSuggestionType([], ['user.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+      .be.deep.eq({kind: 'Connection', name: 'user.mylogin.eth'});
   });
 
   describe('Available', () => {
@@ -22,11 +24,6 @@ describe('getSuggestionType', () => {
     it('no creations, 2 connections', () => {
       expect(getSuggestionType([], ['user.mylogin.eth', 'user.mylogin2.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
         .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Connection', name: 'user.mylogin.eth'}, {kind: 'Connection', name: 'user.mylogin2.eth'}]});
-    });
-
-    it('no creations, 1 connection', () => {
-      expect(getSuggestionType([], ['user.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
-        .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Connection', name: 'user.mylogin.eth'}]});
     });
 
     it('Connection and creation', () => {
