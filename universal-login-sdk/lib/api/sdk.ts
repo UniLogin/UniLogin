@@ -1,5 +1,4 @@
-import {Contract, providers} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import {providers} from 'ethers';
 import {
   addCodesToNotifications,
   BalanceChecker,
@@ -34,7 +33,7 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
-import {messageToSignedMessage, WalletContractInterface} from '@universal-login/contracts';
+import {messageToSignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
