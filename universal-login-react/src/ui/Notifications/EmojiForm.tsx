@@ -47,13 +47,16 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
   return (
     <div id="emojis">
       {isInputValid ? (
-        <div className="correct-input">
-          <p className="correct-input-title">Correct!</p>
-          <EmojiPlaceholders
-            enteredCode={enteredCode}
-            className={className}
-          />
-        </div>
+        <>
+          <div className="correct-input">
+            <p className="correct-input-title">Correct!</p>
+            <EmojiPlaceholders
+              enteredCode={enteredCode}
+              className={className}
+            />
+          </div>
+          <p className="correct-input-confirmation-text">Confirm connecting new device</p>
+        </>
       ) : (
         <div className="approve-device-form">
           <EmojiInput
