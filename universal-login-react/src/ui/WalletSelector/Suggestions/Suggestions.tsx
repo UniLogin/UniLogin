@@ -28,7 +28,7 @@ export const SuggestionsComponent = ({onCreateClick, onConnectClick, actions, so
     onCreateClick!(ensName);
   };
 
-  const suggestion = getSuggestion(suggestions.creations, suggestions.connections, actions, source);
+  const suggestion = getSuggestion(suggestions, actions, source);
   switch (suggestion.kind) {
     case 'None':
       return null;

@@ -1,14 +1,13 @@
 import {Suggestion, SuggestionItem} from '../models/Suggestion';
-import {WalletSuggestionAction} from '@universal-login/commons';
+import {WalletSuggestionAction, Suggestions} from '@universal-login/commons';
 
 export const getSuggestion = (
-  creations: string[],
-  connections: string[],
+  suggestions: Suggestions,
   actions: WalletSuggestionAction[],
   source: string,
 ): Suggestion => {
-  const filteredCreations = actions.includes(WalletSuggestionAction.create) ? creations : [];
-  const filteredConnections = actions.includes(WalletSuggestionAction.connect) ? connections : [];
+  const filteredCreations = actions.includes(WalletSuggestionAction.create) ? suggestions.creations : [];
+  const filteredConnections = actions.includes(WalletSuggestionAction.connect) ? suggestions.connections : [];
 
   if (source.length > 0 && source.length < 3) {
     return {kind: 'KeepTyping'};
