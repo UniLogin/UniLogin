@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, ensureNotNull} from '@universal-login/commons';
-import {getSuggestionType} from '../../../core/utils/getSuggestionType';
+import {ensureNotNull, WalletSuggestionAction} from '@universal-login/commons';
+import {getSuggestion} from '../../../core/utils/getSuggestion';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
@@ -14,34 +14,6 @@ interface SuggestionsProps {
   onConnectClick(ensName: string): Promise<void> | void;
   actions: WalletSuggestionAction[];
 }
-
-interface SuggestionItemsProps {
-  operationType: string;
-  array: string[];
-  selectedSuggestion: string;
-  onClick: (ensName: string) => Promise<void> | void;
-}
-
-const SuggestionItems = ({operationType, array, onClick, selectedSuggestion}: SuggestionItemsProps) => (
-  <>
-    {array.map(element => (
-      <li
-        key={`${operationType}_${element}`}
-        className="suggestions-item"
-      >
-        <MultipleSuggestion
-          suggestion={element}
-          selectedSuggestion={selectedSuggestion}
-          operationType={operationType}
-          onClick={onClick}
-        />
-      </li>
-    ))}
-  </>
-);
-
-const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS, flag: WalletSuggestionAction): string[] =>
-  actions.includes(flag) ? suggestions : [];
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
@@ -57,8 +29,8 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
     onCreateClick(ensName);
   };
 
-  const suggestionType = getSuggestionType(creations, connections, actions, source);
-  switch (suggestionType.kind) {
+  const suggestion = getSuggestion(creations, connections, actions, source);
+  switch (suggestion.kind) {
     case 'None':
       return null;
     case 'KeepTyping':
@@ -71,7 +43,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
               hint='Do you want to connect to this account?'
               operationType='connect'
               onClick={handleConnectClick}
-              suggestion={suggestionType.name}
+              suggestion={suggestion.name}
               selectedSuggestion={selectedSuggestion}
             />
           </li>
@@ -85,7 +57,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
               hint='This username is available'
               operationType='create new'
               onClick={handleCreateClick}
-              suggestion={suggestionType.name}
+              suggestion={suggestion.name}
               selectedSuggestion={selectedSuggestion}
             />
           </li>
@@ -94,18 +66,16 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
     case 'Available':
       return (
         <ul className="suggestions-list">
-          <SuggestionItems
-            operationType='connect'
-            array={getSuggestions(connections, actions, WalletSuggestionAction.connect)}
-            selectedSuggestion={selectedSuggestion}
-            onClick={handleConnectClick}
-          />
-          <SuggestionItems
-            operationType='create new'
-            array={getSuggestions(creations, actions, WalletSuggestionAction.create)}
-            selectedSuggestion={selectedSuggestion}
-            onClick={handleCreateClick}
-          />
+          {suggestion.suggestions.map(element => (
+            <li key={element.name} className="suggestions-item">
+              <MultipleSuggestion
+                suggestion={element.name}
+                selectedSuggestion={selectedSuggestion}
+                operationType={element.kind === 'Creation' ? 'create new' : 'connect'}
+                onClick={element.kind === 'Creation' ? handleCreateClick : handleConnectClick}
+              />
+            </li>
+          ))}
         </ul>
       );
   }

@@ -1,4 +1,4 @@
-export type SuggestionType = {
+export type Suggestion = {
   kind: 'None';
 } | {
   kind: 'KeepTyping';
