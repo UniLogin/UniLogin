@@ -8,7 +8,7 @@ import {
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
-import {Suggestions as SuggestionsComponent} from './Suggestions';
+import {SuggestionsComponent} from './Suggestions';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import Logo from './../assets/logo.svg';
 import ethLogo from '../assets/icons/ethereum-logo.svg';
@@ -112,8 +112,7 @@ export const WalletSelector = ({
         {suggestionsVisible && !busy &&
           <SuggestionsComponent
             source={ensName}
-            connections={suggestions.connections}
-            creations={suggestions.creations}
+            suggestions={suggestions}
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             actions={actions}
