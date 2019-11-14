@@ -46,24 +46,24 @@ export const WalletSelector = ({
       new SuggestionsService(sdk, domains, actions),
     ),
   );
-  const [busy, setBusy] = useState(false);
-  const [suggestions, setSuggestions] = useState<Suggestions | undefined>(undefined);
-  const [ensName, setEnsName] = useState('');
+
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
-  const [suggestionsVisible, setSuggestionsVisible] = useState(false);
+
+  const [ensName, setEnsName] = useState('');
+
+  const [suggestions, setSuggestions] = useState<Suggestions | undefined>({connections: [], creations: []});
+  useEffect(() => {
+    setSuggestions(undefined);
+    debouncedSuggestionsService.getSuggestions(ensName, setSuggestions);
+  }, [ensName]);
+
+  const busy = suggestions === undefined;
+
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
     suggestions?.creations?.length === 0 && isOnlyCreateAction && !!ensName && !busy;
-
-  useEffect(() => {
-    setBusy(true);
-    debouncedSuggestionsService.getSuggestions(ensName, suggestions => {
-      setSuggestions(suggestions);
-      setBusy(false);
-    });
-  }, [ensName]);
 
   const onDetectClick = async () => {
     const result = await tryEnablingMetamask?.();
@@ -76,6 +76,7 @@ export const WalletSelector = ({
     }
   };
 
+  const [suggestionsVisible, setSuggestionsVisible] = useState(false);
   const ref = useRef(null);
   useOutsideClick(ref, () => setSuggestionsVisible(false));
 
