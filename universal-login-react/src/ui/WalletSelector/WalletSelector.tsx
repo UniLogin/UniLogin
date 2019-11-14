@@ -50,9 +50,9 @@ export const WalletSelector = ({
 
   const [ensName, setEnsName] = useState('');
 
-  const [suggestions, setSuggestions] = useState<Suggestions>({connections: [], creations: []});
+  const [suggestions, setSuggestions] = useState<Suggestions | undefined>({connections: [], creations: []});
   useEffect(() => {
-    setSuggestions({connections: [], creations: []});
+    setSuggestions(undefined);
     debouncedSuggestionsService.getSuggestions(ensName, setSuggestions);
   }, [ensName]);
 
@@ -112,7 +112,7 @@ export const WalletSelector = ({
         {suggestionsVisible && !busy &&
           <SuggestionsComponent
             source={ensName}
-            suggestions={suggestions}
+            suggestions={suggestions ?? {creations: [], connections: []}}
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             actions={actions}
