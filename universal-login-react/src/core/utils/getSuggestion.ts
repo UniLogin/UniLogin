@@ -1,12 +1,12 @@
-import {SuggestionType, SuggestionItem} from '../models/SuggestionType';
+import {Suggestion, SuggestionItem} from '../models/Suggestion';
 import {WalletSuggestionAction} from '@universal-login/commons';
 
-export const getSuggestionType = (
+export const getSuggestion = (
   creations: string[],
   connections: string[],
   actions: WalletSuggestionAction[],
   source: string,
-): SuggestionType => {
+): Suggestion => {
   if (source.length > 0 && source.length < 3) {
     return {kind: 'KeepTyping'};
   } else if (isNone(creations, connections, source)) {

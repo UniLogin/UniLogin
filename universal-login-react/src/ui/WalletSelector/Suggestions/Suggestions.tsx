@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, ensureNotNull} from '@universal-login/commons';
-import {getSuggestionType} from '../../../core/utils/getSuggestionType';
+import {getSuggestion} from '../../../core/utils/getSuggestion';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
@@ -54,7 +54,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
     onCreateClick(ensName);
   };
 
-  const suggestionType = getSuggestionType(creations, connections, actions, source);
+  const suggestionType = getSuggestion(creations, connections, actions, source);
   switch (suggestionType.kind) {
     case 'None':
       return null;
