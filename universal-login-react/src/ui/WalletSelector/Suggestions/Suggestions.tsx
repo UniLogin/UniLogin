@@ -54,8 +54,8 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
     onCreateClick(ensName);
   };
 
-  const suggestionType = getSuggestion(creations, connections, actions, source);
-  switch (suggestionType.kind) {
+  const suggestion = getSuggestion(creations, connections, actions, source);
+  switch (suggestion.kind) {
     case 'None':
       return null;
     case 'KeepTyping':
@@ -68,7 +68,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
               hint='Do you want to connect to this account?'
               operationType='connect'
               onClick={handleConnectClick}
-              suggestion={suggestionType.name}
+              suggestion={suggestion.name}
               selectedSuggestion={selectedSuggestion}
             />
           </li>
@@ -82,7 +82,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
               hint='This username is available'
               operationType='create new'
               onClick={handleCreateClick}
-              suggestion={suggestionType.name}
+              suggestion={suggestion.name}
               selectedSuggestion={selectedSuggestion}
             />
           </li>
