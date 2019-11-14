@@ -46,7 +46,16 @@ const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[]
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
+
   const [selectedSuggestion, setSelectedSuggestion] = useState('');
+  const handleConnectClick = (ensName: string) => {
+    setSelectedSuggestion(ensName);
+    onConnectClick(ensName);
+  };
+  const handleCreateClick = (ensName: string) => {
+    setSelectedSuggestion(ensName);
+    onCreateClick(ensName);
+  };
 
   const suggestionType = getSuggestionType(creations, connections, actions, source);
   switch (suggestionType.kind) {
@@ -61,10 +70,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             <SingleSuggestion
               hint='Do you want to connect to this account?'
               operationType='connect'
-              onClick={ensName => {
-                setSelectedSuggestion(ensName);
-                onConnectClick(ensName);
-              }}
+              onClick={handleConnectClick}
               suggestion={suggestionType.name}
               selectedSuggestion={selectedSuggestion}
             />
@@ -78,10 +84,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             <SingleSuggestion
               hint='This username is available'
               operationType='create new'
-              onClick={ensName => {
-                setSelectedSuggestion(ensName);
-                onCreateClick(ensName);
-              }}
+              onClick={handleCreateClick}
               suggestion={suggestionType.name}
               selectedSuggestion={selectedSuggestion}
             />
@@ -95,19 +98,13 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             operationType='connect'
             array={getSuggestions(connections, actions, WalletSuggestionAction.connect)}
             selectedSuggestion={selectedSuggestion}
-            onClick={ensName => {
-              setSelectedSuggestion(ensName);
-              onConnectClick(ensName);
-            }}
+            onClick={handleConnectClick}
           />
           <SuggestionItems
             operationType='create new'
             array={getSuggestions(creations, actions, WalletSuggestionAction.create)}
             selectedSuggestion={selectedSuggestion}
-            onClick={ensName => {
-              setSelectedSuggestion(ensName);
-              onCreateClick(ensName);
-            }}
+            onClick={handleCreateClick}
           />
         </ul>
       );
