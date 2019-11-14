@@ -33,15 +33,15 @@ export const ConnectSelector = ({setName, setConnectModal}: ConnectSelectorProps
           alt="girl with document"
           className="connect-account-img"
         />
-        <p className="connect-account-info-text">Type your username</p>
         <div className="connect-accoutn-selector-block">
-          <label htmlFor="loginInput" className="jarvis-input-label">Choose a username</label>
+          <label htmlFor="loginInput" className="jarvis-input-label">Type your username</label>
           <WalletSelector
             onConnectClick={onConnectClick}
             sdk={sdk}
             domains={walletConfig.domains}
             actions={[WalletSuggestionAction.connect]}
             className="jarvis"
+            placeholder="e.g. satoshi"
           />
           <Link to="/welcome" className="button-secondary connect-account-cancel">Cancel</Link>
         </div>
