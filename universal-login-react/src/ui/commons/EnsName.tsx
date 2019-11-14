@@ -5,6 +5,6 @@ interface EnsNameProps {
 }
 
 export const EnsName = ({value}: EnsNameProps) => {
-  const split = value.split('.');
-  return <p><b>{split.shift()}.</b>{split.join('.')}</p>;
+  const [name, ...domain] = value.split('.');
+  return <p><b>{name}.</b>{domain.join('.')}</p>;
 };
