@@ -192,7 +192,6 @@
       outline: none
 
     .copy-btn::before
-      content: ''
       position: absolute
       top: 50%
       left: 50%
@@ -200,31 +199,12 @@
       background: url('../assets/icons/copy.svg') center no-repeat
 
     .copy-btn-feedback
-      visibility: hidden
-      opacity: 0
-      position: absolute
       top: -15px
-      padding: 0px 5px
-      font-size: 12px
-      line-height: 18px
-      transition: visibility 0s 1s, opacity 1s linear
       color: #FFFFFF
       background-color: #2ec9f5
 
     .copy-btn-feedback::after
-      content: ''
-      position: absolute
-      bottom: 0
-      left: calc(50% - 1px)
-      width: 6px
-      height: 6px
-      transform: rotate(-45deg) translateX(-50%)
       background-color: #2ec9f5
-
-    .copy-btn:active .copy-btn-feedback
-      visibility: visible
-      opacity: 1
-      transition: opacity 0s linear
 
     .address-modal-text
       margin-top: 12px
