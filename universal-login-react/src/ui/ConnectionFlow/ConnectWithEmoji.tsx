@@ -45,7 +45,7 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
             <button onClick={onCancel} className="connect-emoji-btn">Return</button>
           </ErrorMessage>}
           {!error && <>
-            <h1 className="connect-emoji-title">Confirmation</h1>
+            <h1 className="connect-emoji-title">Connect to your account</h1>
             <div className="connect-emoji-content">
               <div className="connect-emoji-section">
                 <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
