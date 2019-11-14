@@ -1,9 +1,10 @@
 import React from 'react';
-import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
+import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, ensureNotNull} from '@universal-login/commons';
 import {getSuggestionType} from '../../../core/utils/getSuggestionType';
 import {SuggestionType} from '../../../core/models/SuggestionType';
 import {Suggestion} from './Suggestion';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
+import {MissingParameter} from '../../../core/utils/errors';
 
 interface SuggestionsProps {
   connections: string[];
@@ -43,6 +44,9 @@ const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[]
   actions.includes(flag) ? suggestions : [];
 
 export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
+  actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
+  actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
+
   const suggestionType = getSuggestionType(creations, connections, actions, source);
   if (suggestionType.kind === 'KeepTyping') {
     return <KeepTypingSuggestion />;
