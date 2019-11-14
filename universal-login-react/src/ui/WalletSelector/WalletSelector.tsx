@@ -39,7 +39,7 @@ export const WalletSelector = ({
   placeholder = 'type a name',
   tryEnablingMetamask,
 }: WalletSelector) => {
-  const [debouncedSuggestionsService] = useState(
+  const [debouncedSuggestionsService] = useState(() =>
     new DebouncedSuggestionsService(
       new SuggestionsService(sdk, domains, actions),
     ),
