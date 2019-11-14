@@ -14,20 +14,30 @@ interface SuggestionsProps {
   actions: WalletSuggestionAction[];
 }
 
-const getSuggestionsItems = (operationType: string, array: string[], onClick: (ensName: string) => Promise<void> | void, suggestionType?: SuggestionType) =>
-  array.map(element => (
-    <li
-      key={`${operationType}_${element}`}
-      className="suggestions-item"
-    >
-      <Suggestion
-        suggestion={element}
-        operationType={operationType}
-        type={suggestionType}
-        onClick={onClick}
-      />
-    </li>
-  ));
+interface SuggestionItemsProps {
+  operationType: string;
+  array: string[];
+  onClick: (ensName: string) => Promise<void> | void;
+  suggestionType?: SuggestionType;
+}
+
+const SuggestionItems = ({operationType, array, onClick, suggestionType}: SuggestionItemsProps) => (
+  <>
+    {array.map(element => (
+      <li
+        key={`${operationType}_${element}`}
+        className="suggestions-item"
+      >
+        <Suggestion
+          suggestion={element}
+          operationType={operationType}
+          type={suggestionType}
+          onClick={onClick}
+        />
+      </li>
+    ))}
+  </>
+);
 
 const getSuggestions = (suggestions: string[], actions: WalletSuggestionAction[] = WALLET_SUGGESTION_ALL_ACTIONS, flag: WalletSuggestionAction): string[] =>
   actions.includes(flag) ? suggestions : [];
@@ -39,14 +49,27 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   } else if (suggestionType === 'None') {
     return null;
   }
-  const connectionsSuggestions = getSuggestionsItems('connect to existing', getSuggestions(connections, actions, WalletSuggestionAction.connect), onConnectClick, suggestionType);
-  const creationsSuggestions = getSuggestionsItems('create new', getSuggestions(creations, actions, WalletSuggestionAction.create), onCreateClick, suggestionType);
-  const recoversSuggestions = getSuggestionsItems('recover', getSuggestions(connections, actions, WalletSuggestionAction.recover), async () => alert('not implemented'));
   return (
     <ul className="suggestions-list">
-      {connectionsSuggestions}
-      {creationsSuggestions}
-      {recoversSuggestions}
+      <SuggestionItems
+        operationType='connect to existing'
+        array={getSuggestions(connections, actions, WalletSuggestionAction.connect)}
+        suggestionType={suggestionType}
+        onClick={onConnectClick}
+      />
+      <SuggestionItems
+        operationType='create new'
+        array={getSuggestions(creations, actions, WalletSuggestionAction.create)}
+        suggestionType={suggestionType}
+        onClick={onCreateClick}
+      />
+      <SuggestionItems
+        operationType='recover'
+        array={getSuggestions(connections, actions, WalletSuggestionAction.recover)}
+        suggestionType={suggestionType}
+        onClick={async () => alert('not implemented')}
+      />
+
     </ul>
   );
 };
