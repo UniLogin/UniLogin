@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS, ensureNotNull} from '@universal-login/commons';
 import {getSuggestionType} from '../../../core/utils/getSuggestionType';
-import {SuggestionType} from '../../../core/models/SuggestionType';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
@@ -19,11 +18,11 @@ interface SuggestionsProps {
 interface SuggestionItemsProps {
   operationType: string;
   array: string[];
+  selectedSuggestion: string;
   onClick: (ensName: string) => Promise<void> | void;
-  suggestionType?: SuggestionType;
 }
 
-const SuggestionItems = ({operationType, array, onClick, suggestionType}: SuggestionItemsProps) => (
+const SuggestionItems = ({operationType, array, onClick, selectedSuggestion}: SuggestionItemsProps) => (
   <>
     {array.map(element => (
       <li
@@ -32,6 +31,7 @@ const SuggestionItems = ({operationType, array, onClick, suggestionType}: Sugges
       >
         <MultipleSuggestion
           suggestion={element}
+          selectedSuggestion={selectedSuggestion}
           operationType={operationType}
           onClick={onClick}
         />
@@ -47,6 +47,16 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
 
+  const [selectedSuggestion, setSelectedSuggestion] = useState('');
+  const handleConnectClick = (ensName: string) => {
+    setSelectedSuggestion(ensName);
+    onConnectClick(ensName);
+  };
+  const handleCreateClick = (ensName: string) => {
+    setSelectedSuggestion(ensName);
+    onCreateClick(ensName);
+  };
+
   const suggestionType = getSuggestionType(creations, connections, actions, source);
   switch (suggestionType.kind) {
     case 'None':
@@ -59,9 +69,10 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
           <li className="suggestions-item">
             <SingleSuggestion
               hint='Do you want to connect to this account?'
-              operationType='connect to existing'
-              onClick={onConnectClick}
+              operationType='connect'
+              onClick={handleConnectClick}
               suggestion={suggestionType.name}
+              selectedSuggestion={selectedSuggestion}
             />
           </li>
         </ul>
@@ -73,8 +84,9 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             <SingleSuggestion
               hint='This username is available'
               operationType='create new'
-              onClick={onCreateClick}
+              onClick={handleCreateClick}
               suggestion={suggestionType.name}
+              selectedSuggestion={selectedSuggestion}
             />
           </li>
         </ul>
@@ -83,16 +95,16 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
       return (
         <ul className="suggestions-list">
           <SuggestionItems
-            operationType='connect to existing'
+            operationType='connect'
             array={getSuggestions(connections, actions, WalletSuggestionAction.connect)}
-            suggestionType={suggestionType}
-            onClick={onConnectClick}
+            selectedSuggestion={selectedSuggestion}
+            onClick={handleConnectClick}
           />
           <SuggestionItems
             operationType='create new'
             array={getSuggestions(creations, actions, WalletSuggestionAction.create)}
-            suggestionType={suggestionType}
-            onClick={onCreateClick}
+            selectedSuggestion={selectedSuggestion}
+            onClick={handleCreateClick}
           />
         </ul>
       );

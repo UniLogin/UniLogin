@@ -6,8 +6,8 @@
 
 .universal-login .spinner-small {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 }
 
 .universal-login .spinner-center {
@@ -19,8 +19,8 @@
 
 .universal-login .spinner-small-center {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin: auto;
 }
 
