@@ -24,7 +24,7 @@ export const ConnectAccount = () => {
       />;
     case 'connectionSucceed':
       return <ConnectionSuccess hideModal={() => {history.push('/');}}/>;
-    default:
+    case 'selector':
       return <ConnectSelector setName={setName} setConnectModal={setConnectModal} />;
   }
 };
