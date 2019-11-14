@@ -68,7 +68,7 @@ export const WalletSelector = ({
   };
 
   const onDetectClick = async () => {
-    const result = tryEnablingMetamask && await tryEnablingMetamask();
+    const result = await tryEnablingMetamask?.();
     if (result) {
       setEthAccount(result);
       setAccountStatus('show-account');
