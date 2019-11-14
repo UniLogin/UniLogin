@@ -38,10 +38,19 @@ export default class LoginPage {
   }
 
   async connect(userName: string) {
-    await this.pickUsername(userName, 'connect to existing', 'Connect with another device');
+    await this.pickUsername(userName, 'connect', 'Connect with another device');
   }
 
   async waitForHomeView(balance: string, timeout?: number) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Balance${balance}`), timeout);
+  }
+
+  async waitForCongratulations(timeout?: number) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Congratulations!'), timeout);
+  }
+
+  async goToHomeView() {
+    this.wrapper.find('a.modal-success-btn').simulate('click', {button: 0});
+    await this.waitForHomeView('$1.99');
   }
 }
