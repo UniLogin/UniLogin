@@ -39,6 +39,7 @@ import {ensureSufficientGas} from '../core/utils/validation';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
+import {deprecateSDKMethod} from './deprecate';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -105,18 +106,22 @@ class UniversalLoginSDK {
   }
 
   async addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    deprecateSDKMethod('addKey');
     return this.selfExecute(to, 'addKey', [publicKey], privateKey, executionOptions);
   }
 
   async addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    deprecateSDKMethod('addKeys');
     return this.selfExecute(to, 'addKeys', [publicKeys], privateKey, executionOptions);
   }
 
   async removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    deprecateSDKMethod('removeKey');
     return this.selfExecute(to, 'removeKey', [key], privateKey, executionOptions);
   }
 
   async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    deprecateSDKMethod('setRequiredSignatures');
     return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, executionOptions);
   }
 
@@ -182,6 +187,7 @@ class UniversalLoginSDK {
   }
 
   protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+    deprecateSDKMethod('selfExecute');
     const data = WalletContractInterface.functions[method].encode(args);
     const message: Partial<Message> = {
       ...executionOptions,
@@ -193,11 +199,13 @@ class UniversalLoginSDK {
   }
 
   async keyExist(walletContractAddress: string, key: string) {
+    deprecateSDKMethod('keyExist');
     const walletContract = new Contract(walletContractAddress, WalletContract.interface, this.provider);
     return walletContract.keyExist(key);
   }
 
   async getNonce(walletContractAddress: string) {
+    deprecateSDKMethod('getNonce');
     const contract = new Contract(walletContractAddress, WalletContractInterface, this.provider);
     return contract.lastNonce();
   }
