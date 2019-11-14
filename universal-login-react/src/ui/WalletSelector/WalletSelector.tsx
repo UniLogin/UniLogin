@@ -4,10 +4,11 @@ import {
   SuggestionsService,
   WALLET_SUGGESTION_ALL_ACTIONS,
   WalletSuggestionAction,
+  Suggestions,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
-import {Suggestions} from './Suggestions';
+import {Suggestions as SuggestionsComponent} from './Suggestions';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import Logo from './../assets/logo.svg';
 import ethLogo from '../assets/icons/ethereum-logo.svg';
@@ -46,8 +47,7 @@ export const WalletSelector = ({
     ),
   );
   const [busy, setBusy] = useState(false);
-  const [connections, setConnections] = useState<string[]>([]);
-  const [creations, setCreations] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestions | undefined>(undefined);
   const [ensName, setEnsName] = useState('');
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
@@ -55,15 +55,14 @@ export const WalletSelector = ({
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   const isNameAvailable =
-    creations.length === 0 && isOnlyCreateAction && !!ensName && !busy;
+    suggestions?.creations?.length === 0 && isOnlyCreateAction && !!ensName && !busy;
 
   const update = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value.toLowerCase();
     setEnsName(name);
     setBusy(true);
     debouncedSuggestionsService.getSuggestions(name, suggestions => {
-      setConnections(suggestions.connections);
-      setCreations(suggestions.creations);
+      setSuggestions(suggestions);
       setBusy(false);
     });
   };
@@ -114,10 +113,10 @@ export const WalletSelector = ({
           <p className="ethereum-account-text">{ethAccount}</p>
         </div>
         {suggestionsVisible && !busy &&
-          <Suggestions
+          <SuggestionsComponent
             source={ensName}
-            connections={connections}
-            creations={creations}
+            connections={suggestions?.connections ?? []}
+            creations={suggestions?.creations ?? []}
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             actions={actions}

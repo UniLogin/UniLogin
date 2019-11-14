@@ -22,11 +22,11 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   const [selectedSuggestion, setSelectedSuggestion] = useState('');
   const handleConnectClick = (ensName: string) => {
     setSelectedSuggestion(ensName);
-    onConnectClick(ensName);
+    onConnectClick!(ensName);
   };
   const handleCreateClick = (ensName: string) => {
     setSelectedSuggestion(ensName);
-    onCreateClick(ensName);
+    onCreateClick!(ensName);
   };
 
   const suggestion = getSuggestion(creations, connections, actions, source);
