@@ -4,7 +4,6 @@ import {
   WalletSuggestionAction,
   WALLET_SUGGESTION_ALL_ACTIONS,
   SuggestionsService,
-  ensureNotNull,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
@@ -16,7 +15,6 @@ import ethLogo from '../assets/icons/ethereum-logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
-import {MissingParameter} from '../../core/utils/errors';
 import {useOutsideClick} from '../hooks/useClickOutside';
 
 interface WalletSelector {
@@ -81,20 +79,6 @@ export const WalletSelector = ({
     }
   };
 
-  const renderSuggestions = () => {
-    actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
-    actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
-    return !busy &&
-      <Suggestions
-        source={ensName}
-        connections={connections}
-        creations={creations}
-        onCreateClick={onCreateClick!}
-        onConnectClick={onConnectClick!}
-        actions={actions}
-      />;
-  };
-
   const ref = useRef(null);
   useOutsideClick(ref, () => setSuggestionsVisible(false));
 
@@ -129,7 +113,15 @@ export const WalletSelector = ({
           <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="ethereum-account-text">{ethAccount}</p>
         </div>
-        {suggestionsVisible && renderSuggestions()}
+        {suggestionsVisible && !busy &&
+          <Suggestions
+            source={ensName}
+            connections={connections}
+            creations={creations}
+            onCreateClick={onCreateClick!}
+            onConnectClick={onConnectClick!}
+            actions={actions}
+          />}
       </div>
     </div>
   );

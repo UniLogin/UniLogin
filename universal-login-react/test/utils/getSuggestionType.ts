@@ -3,63 +3,76 @@ import {getSuggestionType} from '../../src/core/utils/getSuggestionType';
 import {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from '@universal-login/commons';
 
 describe('getSuggestionType', () => {
-  const ensName = 'user';
-  const domain1 = 'mylogin.eth';
-  const domain2 = 'mylogin2.eth';
-
-  it('SingleCreation', () => {
-    expect(getSuggestionType([`${ensName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('SingleCreation');
+  it('Creation', () => {
+    expect(getSuggestionType(['user.mylogin.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+      .be.deep.eq({kind: 'Creation', name: 'user.mylogin.eth'});
   });
 
-  it('SingleConnection', () => {
-    expect(getSuggestionType([], [`${ensName}.${domain1}`], [WalletSuggestionAction.connect], ensName)).be.eq('SingleConnection');
+  it('Connection', () => {
+    expect(getSuggestionType([], ['user.mylogin.eth'], [WalletSuggestionAction.connect], 'user'))
+      .be.deep.eq({kind: 'Connection', name: 'user.mylogin.eth'});
   });
 
-  describe('Multiple', () => {
-    it('More than 1 creations, empty connections', () => {
-      expect(getSuggestionType([`${ensName}.${domain1}`, `${ensName}.${domain2}`], [], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('Multiple');
+  describe('Available', () => {
+    it('2 creations, no connections', () => {
+      expect(getSuggestionType(['user.mylogin.eth', 'user.mylogin2.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+        .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Creation', name: 'user.mylogin.eth'}, {kind: 'Creation', name: 'user.mylogin2.eth'}]});
     });
 
-    it('More than 1 connections, empty creations', () => {
-      expect(getSuggestionType([], [`${ensName}.${domain1}`, `${ensName}.${domain2}`], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('Multiple');
+    it('no creations, 2 connections', () => {
+      expect(getSuggestionType([], ['user.mylogin.eth', 'user.mylogin2.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+        .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Connection', name: 'user.mylogin.eth'}, {kind: 'Connection', name: 'user.mylogin2.eth'}]});
     });
 
-    it('1 connections with recover action', () => {
-      expect(getSuggestionType([], [`${ensName}.${domain1}`], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('Multiple');
+    it('no creations, 1 connection', () => {
+      expect(getSuggestionType([], ['user.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+        .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Connection', name: 'user.mylogin.eth'}]});
+    });
+
+    it('Connection and creation', () => {
+      expect(getSuggestionType(['user.mylogin.eth'], ['user.mylogin2.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+        .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Creation', name: 'user.mylogin.eth'}, {kind: 'Connection', name: 'user.mylogin2.eth'}]});
     });
   });
 
   describe('KeepTyping', () => {
     const shortEnsName = 'us';
     it('empty connections, empty creations', () => {
-      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
+      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName))
+        .be.deep.eq({kind: 'KeepTyping'});
     });
 
     it('non-empty connections, empty creations', () => {
-      expect(getSuggestionType([], [`${shortEnsName}.${domain1}`], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
+      expect(getSuggestionType([], ['us.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName))
+        .be.deep.eq({kind: 'KeepTyping'});
     });
 
     it('empty connections, non-empty creations', () => {
-      expect(getSuggestionType([`${shortEnsName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName)).be.eq('KeepTyping');
+      expect(getSuggestionType(['us.mylogin.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS, shortEnsName))
+        .be.deep.eq({kind: 'KeepTyping'});
     });
   });
 
   describe('None', () => {
     const emptyEnsName = '';
     it('empty connections, empty creations', () => {
-      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
+      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName))
+        .be.deep.eq({kind: 'None'});
     });
 
     it('non-empty connections, empty creations', () => {
-      expect(getSuggestionType([], [`${emptyEnsName}.${domain1}`], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
+      expect(getSuggestionType([], ['.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName))
+        .be.deep.eq({kind: 'None'});
     });
 
     it('empty connections, non-empty creations', () => {
-      expect(getSuggestionType([`${emptyEnsName}.${domain1}`], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName)).be.eq('None');
+      expect(getSuggestionType(['.mylogin.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS, emptyEnsName))
+        .be.deep.eq({kind: 'None'});
     });
 
     it('empty connections, empty creations', () => {
-      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, ensName)).be.eq('None');
+      expect(getSuggestionType([], [], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
+        .be.deep.eq({kind: 'None'});
     });
   });
 });

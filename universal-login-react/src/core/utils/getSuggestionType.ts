@@ -1,4 +1,4 @@
-import {SuggestionType} from '../models/SuggestionType';
+import {SuggestionType, SuggestionItem} from '../models/SuggestionType';
 import {WalletSuggestionAction} from '@universal-login/commons';
 
 export const getSuggestionType = (
@@ -8,15 +8,19 @@ export const getSuggestionType = (
   source: string,
 ): SuggestionType => {
   if (source.length > 0 && source.length < 3) {
-    return 'KeepTyping';
+    return {kind: 'KeepTyping'};
   } else if (isNone(creations, connections, source)) {
-    return 'None';
+    return {kind: 'None'};
   } else if (isSingleCreation(creations, connections)) {
-    return 'SingleCreation';
+    return {kind: 'Creation', name: creations[0]};
   } else if (isSingleConnection(creations, connections, actions)) {
-    return 'SingleConnection';
+    return {kind: 'Connection', name: connections[0]};
   } else {
-    return 'Multiple';
+    return {kind: 'Available',
+      suggestions: [
+        ...creations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
+        ...connections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
+      ]};
   }
 };
 
