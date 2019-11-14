@@ -18,7 +18,7 @@ interface SuggestionsProps {
 interface SuggestionItemsProps {
   operationType: string;
   array: string[];
-  selectedSuggestion: string,
+  selectedSuggestion: string;
   onClick: (ensName: string) => Promise<void> | void;
 }
 
