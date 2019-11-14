@@ -88,6 +88,10 @@ class UniversalLoginSDK {
     this.featureFlagsService = new FeatureFlagsService();
   }
 
+  private createDeployedWallet(walletContractAddress: string, privateKey = '') {
+    return new DeployedWallet(walletContractAddress, '', privateKey, this);
+  }
+
   getNotice() {
     return this.sdkConfig.notice;
   }
@@ -189,24 +193,12 @@ class UniversalLoginSDK {
 
   protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('selfExecute');
-    const data = WalletContractInterface.functions[method].encode(args);
-    const message: Partial<Message> = {
-      ...executionOptions,
-      to,
-      from: to,
-      data,
-    };
-    return this.execute(message, privateKey);
+    return this.createDeployedWallet(to, privateKey).selfExecute(method, args, executionOptions);
   }
 
-  async keyExist(walletContractAddress: string, key: string) {
+  keyExist(walletContractAddress: string, key: string): Promise<boolean> {
     deprecateSDKMethod('keyExist');
-    const walletContract = new Contract(walletContractAddress, WalletContract.interface, this.provider);
-    return walletContract.keyExist(key);
-  }
-
-  private createDeployedWallet(walletContractAddress: string) {
-    return new DeployedWallet(walletContractAddress, '', '', this);
+    return this.createDeployedWallet(walletContractAddress).keyExist(key);
   }
 
   async getNonce(walletContractAddress: string) {

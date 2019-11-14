@@ -7,6 +7,7 @@ import {
   MessageStatus,
   ExecutionOptions,
   DEFAULT_GAS_LIMIT,
+  SdkExecutionOptions,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
@@ -85,7 +86,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async keyExist(key: string) {
-    return this.sdk.keyExist(this.contractAddress, key);
+    return this.getContract().keyExist(key);
   }
 
   async getNonce() {
@@ -102,6 +103,17 @@ export class DeployedWallet implements ApplicationWallet {
 
   async getGasModes() {
     return this.sdk.getGasModes();
+  }
+
+  selfExecute(method: string, args: any[], executionOptions: SdkExecutionOptions): Promise<Execution> {
+    const data = WalletContractInterface.functions[method].encode(args);
+    const message: Partial<Message> = {
+      ...executionOptions,
+      to: this.contractAddress,
+      from: this.contractAddress,
+      data,
+    };
+    return this.sdk.execute(message, this.privateKey);
   }
 
   async generateBackupCodes(executionOptions: ExecutionOptions): Promise<BackupCodesWithExecution> {
