@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {
   DebouncedSuggestionsService,
   SuggestionsService,
@@ -57,15 +57,13 @@ export const WalletSelector = ({
   const isNameAvailable =
     suggestions?.creations?.length === 0 && isOnlyCreateAction && !!ensName && !busy;
 
-  const update = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value.toLowerCase();
-    setEnsName(name);
+  useEffect(() => {
     setBusy(true);
-    debouncedSuggestionsService.getSuggestions(name, suggestions => {
+    debouncedSuggestionsService.getSuggestions(ensName, suggestions => {
       setSuggestions(suggestions);
       setBusy(false);
     });
-  };
+  }, [ensName]);
 
   const onDetectClick = async () => {
     const result = await tryEnablingMetamask?.();
@@ -93,7 +91,7 @@ export const WalletSelector = ({
           <Input
             className="wallet-selector"
             id="loginInput"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
+            onChange={(event) => setEnsName(event.target.value.toLowerCase())}
             placeholder={placeholder}
             autoFocus
             checkSpelling={false}
