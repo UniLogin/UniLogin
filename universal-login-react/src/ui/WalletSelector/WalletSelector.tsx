@@ -1,14 +1,13 @@
-import React, {useState, ChangeEvent, useRef} from 'react';
+import React, {ChangeEvent, useRef, useState} from 'react';
 import {
   DebouncedSuggestionsService,
-  WalletSuggestionAction,
-  WALLET_SUGGESTION_ALL_ACTIONS,
   SuggestionsService,
+  WALLET_SUGGESTION_ALL_ACTIONS,
+  WalletSuggestionAction,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
 import {Suggestions} from './Suggestions';
-import {renderBusyIndicator} from './BusyIndicator';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import Logo from './../assets/logo.svg';
 import ethLogo from '../assets/icons/ethereum-logo.svg';
@@ -16,6 +15,7 @@ import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
 import {useOutsideClick} from '../hooks/useClickOutside';
+import {Spinner} from '../..';
 
 interface WalletSelector {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -103,7 +103,7 @@ export const WalletSelector = ({
           {isNameAvailable && (
             <div className="hint">Name is already taken or is invalid</div>
           )}
-          {renderBusyIndicator(busy)}
+          {busy && <Spinner className="spinner-busy-indicator"/>}
         </div>
         <button className="selector-sign-button" onClick={onDetectClick}>
           <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />
