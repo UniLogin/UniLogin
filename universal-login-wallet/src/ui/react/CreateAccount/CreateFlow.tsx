@@ -6,7 +6,7 @@ import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 import Modal from '../Modals/Modal';
 import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
-import {ModalTxnSuccess} from '../Modals/ModalTxnSuccess';
+import {CreationSuccess} from '../Modals/ModalTxnSuccess';
 
 export function CreateFlow() {
   const modalService = useContext(WalletModalContext);
@@ -55,7 +55,7 @@ export function CreateFlow() {
       return (
         <div className="main-bg">
           <ModalWrapper modalClassName="jarvis-modal">
-            <ModalTxnSuccess hideModal={modalService.hideModal}/>
+            <CreationSuccess hideModal={modalService.hideModal}/>
           </ModalWrapper>
         </div>
       );
