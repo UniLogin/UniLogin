@@ -1,16 +1,16 @@
 export type SuggestionType = {
-  kind: 'None'
+  kind: 'None';
 } | {
-  kind: 'KeepTyping'
+  kind: 'KeepTyping';
 } | {
-  kind: 'Available'
-  suggestions: SuggestionItem[]
-} | SuggestionItem
+  kind: 'Available';
+  suggestions: SuggestionItem[];
+} | SuggestionItem;
 
 export type SuggestionItem = {
-  kind: 'Creation'
-  name: string
+  kind: 'Creation';
+  name: string;
 } | {
-  kind: 'Connection'
-  name: string
-}
+  kind: 'Connection';
+  name: string;
+};

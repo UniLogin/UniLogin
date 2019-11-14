@@ -8,7 +8,7 @@ export const getSuggestionType = (
   source: string,
 ): SuggestionType => {
   if (source.length > 0 && source.length < 3) {
-    return {kind:'KeepTyping'};
+    return {kind: 'KeepTyping'};
   } else if (isNone(creations, connections, source)) {
     return {kind: 'None'};
   } else if (isSingleCreation(creations, connections)) {
@@ -16,10 +16,11 @@ export const getSuggestionType = (
   } else if (isSingleConnection(creations, connections, actions)) {
     return {kind: 'Connection', name: connections[0]};
   } else {
-    return {kind: 'Available', suggestions: [
-      ...creations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
-      ...connections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
-    ]};
+    return {kind: 'Available',
+      suggestions: [
+        ...creations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
+        ...connections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
+      ]};
   }
 };
 

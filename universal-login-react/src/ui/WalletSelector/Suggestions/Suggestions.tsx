@@ -48,7 +48,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
 
   const suggestionType = getSuggestionType(creations, connections, actions, source);
-  switch(suggestionType.kind) {
+  switch (suggestionType.kind) {
     case 'None':
       return null;
     case 'KeepTyping':
@@ -65,7 +65,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             />
           </li>
         </ul>
-      )
+      );
     case 'Creation':
       return (
         <ul className="suggestions-list">
@@ -78,7 +78,7 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
             />
           </li>
         </ul>
-      )
+      );
     case 'Available':
       return (
         <ul className="suggestions-list">

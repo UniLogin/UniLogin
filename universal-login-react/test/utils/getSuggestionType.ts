@@ -31,7 +31,7 @@ describe('getSuggestionType', () => {
 
     it('Connection and creation', () => {
       expect(getSuggestionType(['user.mylogin.eth'], ['user.mylogin2.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
-       .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Creation', name: 'user.mylogin.eth'}, {kind: 'Connection', name: 'user.mylogin2.eth'}]});
+        .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Creation', name: 'user.mylogin.eth'}, {kind: 'Connection', name: 'user.mylogin2.eth'}]});
     });
   });
 
