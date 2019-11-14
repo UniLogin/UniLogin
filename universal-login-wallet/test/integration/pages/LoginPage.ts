@@ -44,4 +44,13 @@ export default class LoginPage {
   async waitForHomeView(balance: string, timeout?: number) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Balance${balance}`), timeout);
   }
+
+  async waitForCongratulations(timeout?: number) {
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Congratulations!'), timeout);
+  }
+
+  async goToHomeView() {
+    this.wrapper.find('a.modal-success-btn').simulate('click', {button: 0});
+    await this.waitForHomeView('$1.99');
+  }
 }
