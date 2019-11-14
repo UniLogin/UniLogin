@@ -188,6 +188,9 @@
       font-size: 14px
       color: #6e798e
 
+    .copy-btn
+      outline: none
+
     .copy-btn::before
       position: absolute
       top: 50%
@@ -196,22 +199,12 @@
       background: url('../assets/icons/copy.svg') center no-repeat
 
     .copy-btn-feedback
-      visibility: hidden
-      text-align: center
-      padding: 5px
-      z-index: 1
-      opacity: 0
-      color: green
+      top: -15px
+      color: #FFFFFF
+      background-color: #2ec9f5
 
-    .copy-btn-feedback:before
-      content: '\2713'
-
-    .copy-btn:active .copy-btn-feedback
-      visibility: visible
-      opacity: 1
-
-    .copy-btn:active::before
-      background: none
+    .copy-btn-feedback::after
+      background-color: #2ec9f5
 
     .address-modal-text
       margin-top: 12px
