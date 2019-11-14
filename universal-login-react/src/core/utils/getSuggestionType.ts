@@ -1,4 +1,4 @@
-import {SuggestionType} from '../models/SuggestionType';
+import {SuggestionType, SuggestionItem} from '../models/SuggestionType';
 import {WalletSuggestionAction} from '@universal-login/commons';
 
 export const getSuggestionType = (
@@ -16,7 +16,10 @@ export const getSuggestionType = (
   } else if (isSingleConnection(creations, connections, actions)) {
     return {kind: 'Connection', name: connections[0]};
   } else {
-    return {kind: 'Available', suggestions: []};
+    return {kind: 'Available', suggestions: [
+      ...creations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
+      ...connections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
+    ]};
   }
 };
 
