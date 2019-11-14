@@ -162,3 +162,7 @@
   border: none;
   cursor: pointer;
 }
+
+.universal-login .ens-name {
+  letter-spacing: 0.5px;
+}

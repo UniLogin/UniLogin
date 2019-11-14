@@ -7,5 +7,5 @@ interface EnsNameProps {
 
 export const EnsName = ({value}: EnsNameProps) => {
   const [name, domain] = parseDomain(value);
-  return <p><b>{name}.</b>{domain}</p>;
+  return <p className="ens-name"><b>{name}</b>.{domain}</p>;
 };
