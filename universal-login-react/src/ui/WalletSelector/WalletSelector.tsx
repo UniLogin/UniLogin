@@ -1,10 +1,10 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   DebouncedSuggestionsService,
+  Suggestions,
   SuggestionsService,
   WALLET_SUGGESTION_ALL_ACTIONS,
   WalletSuggestionAction,
-  Suggestions,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {Input} from '../commons/Input';
@@ -29,8 +29,6 @@ interface WalletSelector {
   tryEnablingMetamask?: () => Promise<string | undefined>;
 }
 
-const defaultInputPlaceholder = 'type a name';
-
 export const WalletSelector = ({
   onCreateClick,
   onConnectClick,
@@ -38,7 +36,7 @@ export const WalletSelector = ({
   domains,
   actions = WALLET_SUGGESTION_ALL_ACTIONS,
   className,
-  placeholder = defaultInputPlaceholder,
+  placeholder = 'type a name',
   tryEnablingMetamask,
 }: WalletSelector) => {
   const [debouncedSuggestionsService] = useState(
