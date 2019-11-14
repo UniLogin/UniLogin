@@ -14,17 +14,17 @@ describe('getSuggestionType', () => {
   });
 
   describe('Available', () => {
-    it('More than 1 creations, empty connections', () => {
+    it('2 creations, no connections', () => {
       expect(getSuggestionType(['user.mylogin.eth', 'user.mylogin2.eth'], [], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
         .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Creation', name: 'user.mylogin.eth'}, {kind: 'Creation', name: 'user.mylogin2.eth'}]});
     });
 
-    it('More than 1 connections, empty creations', () => {
+    it('no creations, 2 connections', () => {
       expect(getSuggestionType([], ['user.mylogin.eth', 'user.mylogin2.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
         .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Connection', name: 'user.mylogin.eth'}, {kind: 'Connection', name: 'user.mylogin2.eth'}]});
     });
 
-    xit('1 connections with recover action', () => {
+    it('no creations, 1 connection', () => {
       expect(getSuggestionType([], ['user.mylogin.eth'], WALLET_SUGGESTION_ALL_ACTIONS, 'user'))
         .be.deep.eq({kind: 'Available', suggestions: [{kind: 'Connection', name: 'user.mylogin.eth'}]});
     });
