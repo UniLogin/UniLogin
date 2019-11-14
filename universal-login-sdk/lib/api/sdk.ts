@@ -40,6 +40,7 @@ import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {deprecateSDKMethod} from './deprecate';
+import {DeployedWallet} from './DeployedWallet';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -204,10 +205,13 @@ class UniversalLoginSDK {
     return walletContract.keyExist(key);
   }
 
+  private createDeployedWallet(walletContractAddress: string) {
+    return new DeployedWallet(walletContractAddress, '', '', this);
+  }
+
   async getNonce(walletContractAddress: string) {
     deprecateSDKMethod('getNonce');
-    const contract = new Contract(walletContractAddress, WalletContractInterface, this.provider);
-    return contract.lastNonce();
+    return this.createDeployedWallet(walletContractAddress).getNonce();
   }
 
   async getWalletContractAddress(ensName: string) {

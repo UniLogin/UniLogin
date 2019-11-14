@@ -21,12 +21,22 @@ interface BackupCodesWithExecution {
 }
 
 export class DeployedWallet implements ApplicationWallet {
+
+  private contractInstance?: Contract;
+
   constructor(
     public readonly contractAddress: string,
     public readonly name: string,
     public readonly privateKey: string,
     public readonly sdk: UniversalLoginSDK,
   ) {
+  }
+
+  private getContract(): Contract {
+    if (!this.contractInstance) {
+      this.contractInstance = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
+    }
+    return this.contractInstance;
   }
 
   get publicKey() {
@@ -79,7 +89,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async getNonce() {
-    return this.sdk.getNonce(this.contractAddress);
+    return this.getContract().lastNonce();
   }
 
   async getConnectedDevices() {
@@ -87,8 +97,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async getRequiredSignatures(): Promise<BigNumber> {
-    const walletContract = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
-    return walletContract.requiredSignatures();
+    return this.getContract().requiredSignatures();
   }
 
   async getGasModes() {
