@@ -58,11 +58,6 @@ export const WalletSelector = ({
 
   const busy = suggestions === undefined;
 
-  const isOnlyCreateAction =
-    actions.includes(WalletSuggestionAction.create) && actions.length === 1;
-  const isNameAvailable =
-    suggestions?.creations?.length === 0 && isOnlyCreateAction && !!ensName && !busy;
-
   const onDetectClick = async () => {
     const result = await tryEnablingMetamask?.();
     if (result) {
@@ -96,10 +91,7 @@ export const WalletSelector = ({
             checkSpelling={false}
             onFocus={() => setSuggestionsVisible(true)}
           />
-          {isNameAvailable && (
-            <div className="hint">Name is already taken or is invalid</div>
-          )}
-          {busy && <Spinner className="spinner-busy-indicator"/>}
+          {busy && <Spinner className="spinner-busy-indicator" />}
         </div>
         <button className="selector-sign-button" onClick={onDetectClick}>
           <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />

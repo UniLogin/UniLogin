@@ -11,6 +11,8 @@ export const getSuggestion = (
 
   if (source.length > 0 && source.length < 3) {
     return {kind: 'KeepTyping'};
+  } else if (isTaken(actions, filteredCreations, source)) {
+    return {kind: 'TakenOrInvalid'};
   } else if (isNone(filteredCreations, filteredConnections, source)) {
     return {kind: 'None'};
   } else if (isSingleCreation(filteredCreations, filteredConnections)) {
@@ -18,11 +20,13 @@ export const getSuggestion = (
   } else if (isSingleConnection(filteredCreations, filteredConnections)) {
     return {kind: 'Connection', name: filteredConnections[0]};
   } else {
-    return {kind: 'Available',
+    return {
+      kind: 'Available',
       suggestions: [
         ...filteredCreations.map<SuggestionItem>(name => ({kind: 'Creation', name})),
         ...filteredConnections.map<SuggestionItem>(name => ({kind: 'Connection', name})),
-      ]};
+      ],
+    };
   }
 };
 
@@ -34,3 +38,9 @@ const isSingleConnection = (creations: string[], connections: string[]) =>
 
 const isNone = (creations: string[], connections: string[], source: string) =>
   source.length === 0 || (creations.length === 0 && connections.length === 0);
+
+const isTaken = (actions: WalletSuggestionAction[], creations: string[], source: string) => {
+  const isOnlyCreateAction =
+    actions.includes(WalletSuggestionAction.create) && actions.length === 1;
+  return creations.length === 0 && isOnlyCreateAction && source.length > 0;
+};

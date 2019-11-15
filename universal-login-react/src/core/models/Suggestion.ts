@@ -3,6 +3,8 @@ export type Suggestion = {
 } | {
   kind: 'KeepTyping';
 } | {
+  kind: 'TakenOrInvalid';
+} | {
   kind: 'Available';
   suggestions: SuggestionItem[];
 } | SuggestionItem;

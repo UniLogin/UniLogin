@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, WalletSuggestionAction} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -83,7 +83,8 @@ export const App = () => {
                   onCreateClick={() => {console.log('create');}}
                   onConnectClick={() => {console.log('connect');}}
                   sdk={sdk}
-                  domains={['mylogin.eth', 'myapp.eth']}
+                  domains={['mylogin.eth']}
+                  actions={[WalletSuggestionAction.create]}
                 />
               )}
             />
