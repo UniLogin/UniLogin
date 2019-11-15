@@ -55,7 +55,11 @@ describe('INT: WalletService', () => {
     expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
     expect(storage.save).to.be.calledWith({
       kind: 'Future',
-      wallet: {contractAddress: futureWallet.contractAddress, privateKey: futureWallet.privateKey},
+      wallet: {
+        ensName: futureWallet.ensName,
+        contractAddress: futureWallet.contractAddress,
+        privateKey: futureWallet.privateKey,
+      },
     });
 
     walletService.setDeployed(applicationWallet.name);
