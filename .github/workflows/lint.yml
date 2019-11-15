@@ -6,7 +6,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - run: cd universal-login-commons
       - uses: actions/checkout@v1
+      - run: cd universal-login-commons
       - name: ESLint Action
         uses: hallee/eslint-action@1.0.1
