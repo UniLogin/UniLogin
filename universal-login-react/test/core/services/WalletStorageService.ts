@@ -41,8 +41,8 @@ describe('WalletStorageService', () => {
 
   it('can load future state', () => {
     const {storage, service} = setup();
-    storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', wallet: futureWallet}));
-    expect(service.load()).to.deep.eq({kind: 'Future', wallet: futureWallet});
+    storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet}));
+    expect(service.load()).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
     expect(storage.get).to.be.calledWith(STORAGE_KEY);
   });
 
@@ -76,8 +76,8 @@ describe('WalletStorageService', () => {
 
     expect(service.load()).to.deep.eq({kind: 'None'});
 
-    service.save({kind: 'Future', wallet: futureWallet});
-    expect(service.load()).to.deep.eq({kind: 'Future', wallet: futureWallet});
+    service.save({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
+    expect(service.load()).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
 
     service.save({kind: 'Deployed', wallet: applicationWallet});
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});

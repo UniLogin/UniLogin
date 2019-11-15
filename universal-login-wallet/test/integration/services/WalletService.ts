@@ -19,12 +19,13 @@ describe('INT: WalletService', async () => {
 
   it('create wallet', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    const futureWallet = await walletService.createFutureWallet();
+    const name = 'name.mylogin.eth';
+    const futureWallet = await walletService.createFutureWallet(name);
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
     expect(futureWallet.deploy).to.be.a('function');
     expect(futureWallet.waitForBalance).to.be.a('function');
-    expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
+    expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
   });
 
   after(async () => {
