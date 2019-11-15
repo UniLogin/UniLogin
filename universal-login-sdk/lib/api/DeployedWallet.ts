@@ -7,6 +7,7 @@ import {
   MessageStatus,
   ExecutionOptions,
   DEFAULT_GAS_LIMIT,
+  SdkExecutionOptions,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
@@ -21,12 +22,15 @@ interface BackupCodesWithExecution {
 }
 
 export class DeployedWallet implements ApplicationWallet {
+  private contractInstance: Contract;
+
   constructor(
     public readonly contractAddress: string,
     public readonly name: string,
     public readonly privateKey: string,
     public readonly sdk: UniversalLoginSDK,
   ) {
+    this.contractInstance = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
   }
 
   get publicKey() {
@@ -41,19 +45,19 @@ export class DeployedWallet implements ApplicationWallet {
     };
   }
 
-  async addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.addKey(this.contractAddress, publicKey, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+  addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
+    return this.selfExecute('addKey', [publicKey], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.addKeys(this.contractAddress, publicKeys, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+  addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
+    return this.selfExecute('addKeys', [publicKeys], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.removeKey(this.contractAddress, key, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+  removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
+    return this.selfExecute('removeKey', [key], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async removeCurrentKey(executionOptions: ExecutionOptions): Promise<Execution> {
+  removeCurrentKey(executionOptions: ExecutionOptions): Promise<Execution> {
     const ownKey = utils.computeAddress(this.privateKey);
     return this.removeKey(ownKey, executionOptions);
   }
@@ -62,11 +66,11 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.denyRequests(this.contractAddress, this.privateKey);
   }
 
-  async setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.setRequiredSignatures(this.contractAddress, requiredSignatures, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+  setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
+    return this.selfExecute('setRequiredSignatures', [requiredSignatures], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async execute(message: Partial<Message>): Promise<Execution> {
+  execute(message: Partial<Message>): Promise<Execution> {
     return this.sdk.execute({
       from: this.contractAddress,
       gasLimit: DEFAULT_GAS_LIMIT,
@@ -75,24 +79,34 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async keyExist(key: string) {
-    return this.sdk.keyExist(this.contractAddress, key);
+    return this.contractInstance.keyExist(key);
   }
 
   async getNonce() {
-    return this.sdk.getNonce(this.contractAddress);
+    return this.contractInstance.lastNonce();
   }
 
   async getConnectedDevices() {
     return this.sdk.getConnectedDevices(this.contractAddress, this.privateKey);
   }
 
-  async getRequiredSignatures(): Promise<BigNumber> {
-    const walletContract = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
-    return walletContract.requiredSignatures();
+  getRequiredSignatures(): Promise<BigNumber> {
+    return this.contractInstance.requiredSignatures();
   }
 
   async getGasModes() {
     return this.sdk.getGasModes();
+  }
+
+  selfExecute(method: string, args: any[], executionOptions: SdkExecutionOptions): Promise<Execution> {
+    const data = WalletContractInterface.functions[method].encode(args);
+    const message: Partial<Message> = {
+      ...executionOptions,
+      to: this.contractAddress,
+      from: this.contractAddress,
+      data,
+    };
+    return this.sdk.execute(message, this.privateKey);
   }
 
   async generateBackupCodes(executionOptions: ExecutionOptions): Promise<BackupCodesWithExecution> {
@@ -104,7 +118,7 @@ export class DeployedWallet implements ApplicationWallet {
       addresses.push(address);
     }
 
-    const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    const execution = await this.addKeys(addresses, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
     return {
       waitToBeSuccess: async () => {
         await execution.waitToBeSuccess();
