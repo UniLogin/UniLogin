@@ -22,7 +22,7 @@ describe('WalletSerializer', () => {
     TEST_CONTRACT_ADDRESS,
     'name.mylogin.eth',
     TEST_PRIVATE_KEY,
-    {provider: Wallet.createRandom()} as any
+    {provider: Wallet.createRandom()} as any,
   );
 
   describe('serialize', () => {
@@ -43,43 +43,43 @@ describe('WalletSerializer', () => {
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
-        }
+        },
       });
     });
 
     it('for Deployed returns Deployed', () => {
       expect(walletSerializer.serialize({
         kind: 'Deployed',
-        wallet: TEST_DEPLOYED_WALLET
+        wallet: TEST_DEPLOYED_WALLET,
       })).to.deep.eq({
         kind: 'Deployed',
-        wallet: TEST_APPLICATION_WALLET
-      })
+        wallet: TEST_APPLICATION_WALLET,
+      });
     });
 
     it('for Deploying state return undefined', () => {
       expect(walletSerializer.serialize({
         kind: 'Deploying',
-        wallet: TEST_APPLICATION_WALLET
-      })).to.eq(undefined)
+        wallet: TEST_APPLICATION_WALLET,
+      })).to.eq(undefined);
     });
 
     it('for Connecting state return undefined', () => {
       expect(walletSerializer.serialize({
         kind: 'Connecting',
-        wallet: TEST_APPLICATION_WALLET
-      })).to.eq(undefined)
+        wallet: TEST_APPLICATION_WALLET,
+      })).to.eq(undefined);
     });
   });
 
-  describe('deserialize', () =>  {
+  describe('deserialize', () => {
     const futureWalletFactory = {
       createFromExistingCounterfactual: () => TEST_FUTURE_WALLET,
-    }
+    };
     const sdk = {
       getFutureWalletFactory: () => futureWalletFactory,
       provider: Wallet.createRandom(),
-    }
+    };
     const walletSerializer = new WalletSerializer(sdk as any);
 
     it('for None returns None', async () => {
@@ -93,7 +93,7 @@ describe('WalletSerializer', () => {
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
-        }
+        },
       })).to.deep.eq({
         kind: 'Future',
         name: 'name.mylogin.eth',
@@ -104,11 +104,11 @@ describe('WalletSerializer', () => {
     it('for Deployed returns Deployed', async () => {
       const state = await walletSerializer.deserialize({
         kind: 'Deployed',
-        wallet: TEST_APPLICATION_WALLET
+        wallet: TEST_APPLICATION_WALLET,
       });
 
-      expect(state.kind).to.eq('Deployed')
-      expect((state as any).wallet).to.deep.include(TEST_APPLICATION_WALLET)
+      expect(state.kind).to.eq('Deployed');
+      expect((state as any).wallet).to.deep.include(TEST_APPLICATION_WALLET);
     });
-  })
+  });
 });

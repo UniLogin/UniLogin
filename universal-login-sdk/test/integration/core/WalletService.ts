@@ -59,7 +59,7 @@ describe('INT: WalletService', () => {
   it('roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
-    walletService.setFutureWallet(futureWallet,  'justyna.mylogin.eth');
+    walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
     expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
     expect(storage.save).to.be.calledWith({
       kind: 'Future',
@@ -103,7 +103,7 @@ describe('INT: WalletService', () => {
   it('deployFutureWallet returns deployedWallet', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
-    walletService.setFutureWallet(futureWallet,  'justyna.mylogin.eth');
+    walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
     expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
     expect(await walletService.deployFutureWallet('1', ETHER_NATIVE_TOKEN.address)).to.deep.include(applicationWallet);
   });

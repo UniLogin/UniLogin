@@ -32,7 +32,7 @@ export class WalletService {
   }
 
   getDeployedWallet(): DeployedWallet {
-    ensure(this.state.kind === 'Deployed', Error, 'Invalid state: expected deployed wallet')
+    ensure(this.state.kind === 'Deployed', Error, 'Invalid state: expected deployed wallet');
     return this.state.wallet;
   }
 
@@ -84,7 +84,7 @@ export class WalletService {
   }
 
   setWallet(wallet: ApplicationWallet) {
-    ensure(this.state.kind === 'None' || this.state.kind === 'Connecting', WalletOverridden)
+    ensure(this.state.kind === 'None' || this.state.kind === 'Connecting', WalletOverridden);
     this.stateProperty.set({
       kind: 'Deployed',
       wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
