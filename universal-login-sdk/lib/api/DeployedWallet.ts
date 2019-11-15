@@ -22,7 +22,6 @@ interface BackupCodesWithExecution {
 }
 
 export class DeployedWallet implements ApplicationWallet {
-
   private contractInstance?: Contract;
 
   constructor(
