@@ -14,7 +14,7 @@ import {getSuggestion} from '../../core/utils/getSuggestion';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {useOutsideClick} from '../hooks/useClickOutside';
 
-interface EnsNamePicker {
+export interface EnsNamePicker {
   onCreateClick?(ensName: string): Promise<void> | void;
   onConnectClick?(ensName: string): Promise<void> | void;
   sdk: UniversalLoginSDK;

@@ -11,7 +11,7 @@ import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
 import {EnsNamePicker} from './EnsNamePicker';
 
-interface WalletSelector {
+export interface WalletSelectorProps {
   onCreateClick?(ensName: string): Promise<void> | void;
   onConnectClick?(ensName: string): Promise<void> | void;
   sdk: UniversalLoginSDK;
@@ -31,7 +31,7 @@ export const WalletSelector = ({
   placeholder = 'type a name',
   className,
   tryEnablingMetamask,
-}: WalletSelector) => {
+}: WalletSelectorProps) => {
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
 
