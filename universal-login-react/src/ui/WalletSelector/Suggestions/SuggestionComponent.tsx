@@ -7,7 +7,7 @@ import {SingleSuggestion} from './SingleSuggestion';
 import {MultipleSuggestion} from './MultipleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
 
-interface SuggestionsProps {
+interface SuggestionComponentProps {
   suggestions: Suggestions;
   source: string;
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -15,7 +15,7 @@ interface SuggestionsProps {
   actions: WalletSuggestionAction[];
 }
 
-export const SuggestionsComponent = ({onCreateClick, onConnectClick, actions, source, suggestions}: SuggestionsProps) => {
+export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, source, suggestions}: SuggestionComponentProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
 
@@ -83,4 +83,4 @@ export const SuggestionsComponent = ({onCreateClick, onConnectClick, actions, so
   }
 };
 
-export default SuggestionsComponent;
+export default SuggestionComponent;
