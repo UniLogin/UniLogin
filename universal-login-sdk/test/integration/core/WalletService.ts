@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, walletFromBrain, ApplicationWallet} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY, walletFromBrain, ApplicationWallet, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import sinon from 'sinon';
@@ -19,7 +19,7 @@ describe('INT: WalletService', () => {
 
   before(() => {
     sdk = {provider: Wallet.createRandom()} as any;
-    deployedWallet = new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', '0x29F3EDEE0AD3ABF8E2699402E0E28CD6492C9BE7EAAB00D732A791C33552F779', sdk);
+    deployedWallet = new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk);
     applicationWallet = deployedWallet.asApplicationWallet;
     futureWallet = {
       contractAddress: TEST_ACCOUNT_ADDRESS,
@@ -105,6 +105,6 @@ describe('INT: WalletService', () => {
 
     walletService.setFutureWallet(futureWallet,  'justyna.mylogin.eth');
     expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
-    expect(await walletService.deployFutureWallet('1', ETHER_NATIVE_TOKEN.address)).to.deep.eq(deployedWallet);
+    expect(await walletService.deployFutureWallet('1', ETHER_NATIVE_TOKEN.address)).to.deep.include(applicationWallet);
   });
 });
