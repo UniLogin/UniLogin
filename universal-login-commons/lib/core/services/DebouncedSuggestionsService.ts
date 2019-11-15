@@ -1,10 +1,6 @@
 import {debounce} from '../utils/debounce';
 import {SuggestionsService} from './SuggestionsService';
-
-export interface Suggestions {
-  connections: string[];
-  creations: string[];
-}
+import {Suggestions} from '../models/Suggestions';
 
 type SuggestionsCallback = (suggestions: Suggestions) => void;
 
