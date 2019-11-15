@@ -61,7 +61,6 @@ export const WalletSelector = ({
           <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="selector-sign-text">Sign in with Ethereum</p>
         </button>
-
         <div className="ethereum-account">
           <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="ethereum-account-text">{ethAccount}</p>
