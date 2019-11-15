@@ -11,7 +11,7 @@ export class WalletCreationService {
   }
 
   async initiateCreationFlow(ensName: string) {
-    const {waitForBalance} = await this.walletService.createFutureWallet();
+    const {waitForBalance} = await this.walletService.createFutureWallet(ensName);
     await waitForBalance();
     this.callbackOnBalancePresent && this.callbackOnBalancePresent();
     return this.walletService.deployFutureWallet(

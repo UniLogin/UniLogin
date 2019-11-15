@@ -6,13 +6,11 @@ import {Wallet} from 'ethers';
 
 describe('WalletStorageService', () => {
   const futureWallet: SerializableFutureWallet = {
+    name: 'name.mylogin.eth',
     contractAddress: Wallet.createRandom().address,
     privateKey: Wallet.createRandom().privateKey,
   };
-  const applicationWallet: ApplicationWallet = {
-    name: 'name',
-    ...futureWallet,
-  };
+  const applicationWallet: ApplicationWallet = {...futureWallet};
   const STORAGE_KEY = 'wallet';
 
   const setup = () => {
