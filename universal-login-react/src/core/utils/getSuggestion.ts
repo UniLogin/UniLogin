@@ -15,7 +15,7 @@ export const getSuggestion = (
     return {kind: 'None'};
   } else if (isSingleCreation(filteredCreations, filteredConnections)) {
     return {kind: 'Creation', name: filteredCreations[0]};
-  } else if (isSingleConnection(filteredCreations, filteredConnections, actions)) {
+  } else if (isSingleConnection(filteredCreations, filteredConnections)) {
     return {kind: 'Connection', name: filteredConnections[0]};
   } else {
     return {kind: 'Available',
@@ -29,7 +29,7 @@ export const getSuggestion = (
 const isSingleCreation = (creations: string[], connections: string[]) =>
   creations.length === 1 && connections.length === 0;
 
-const isSingleConnection = (creations: string[], connections: string[], actions: WalletSuggestionAction[]) =>
+const isSingleConnection = (creations: string[], connections: string[]) =>
   creations.length === 0 && connections.length === 1;
 
 const isNone = (creations: string[], connections: string[], source: string) =>
