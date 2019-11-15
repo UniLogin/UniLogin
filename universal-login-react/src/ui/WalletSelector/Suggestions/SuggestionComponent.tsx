@@ -1,40 +1,40 @@
 import React, {useState} from 'react';
 import {ensureNotNull, WalletSuggestionAction} from '@universal-login/commons';
-import {getSuggestion} from '../../../core/utils/getSuggestion';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
 import {MultipleSuggestion} from './MultipleSuggestion';
+import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
+import {Suggestion} from '../../../core/models/Suggestion';
 
-interface SuggestionsProps {
-  connections: string[];
-  creations: string[];
-  source: string;
-  onCreateClick(ensName: string): Promise<void> | void;
-  onConnectClick(ensName: string): Promise<void> | void;
+interface SuggestionComponentProps {
+  suggestion: Suggestion;
+  onCreateClick?(ensName: string): Promise<void> | void;
+  onConnectClick?(ensName: string): Promise<void> | void;
   actions: WalletSuggestionAction[];
 }
 
-export const Suggestions = ({connections, creations, onCreateClick, onConnectClick, actions, source}: SuggestionsProps) => {
+export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, suggestion}: SuggestionComponentProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
 
   const [selectedSuggestion, setSelectedSuggestion] = useState('');
   const handleConnectClick = (ensName: string) => {
     setSelectedSuggestion(ensName);
-    onConnectClick(ensName);
+    onConnectClick!(ensName);
   };
   const handleCreateClick = (ensName: string) => {
     setSelectedSuggestion(ensName);
-    onCreateClick(ensName);
+    onCreateClick!(ensName);
   };
 
-  const suggestion = getSuggestion(creations, connections, actions, source);
   switch (suggestion.kind) {
     case 'None':
       return null;
     case 'KeepTyping':
       return <KeepTypingSuggestion />;
+    case 'TakenOrInvalid':
+      return <TakenOrInvalidSuggestion />;
     case 'Connection':
       return (
         <ul className="suggestions-list">
@@ -81,4 +81,4 @@ export const Suggestions = ({connections, creations, onCreateClick, onConnectCli
   }
 };
 
-export default Suggestions;
+export default SuggestionComponent;

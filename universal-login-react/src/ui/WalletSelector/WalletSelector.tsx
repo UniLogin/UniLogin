@@ -1,23 +1,17 @@
-import React, {useState, ChangeEvent, useRef} from 'react';
+import React, {useState} from 'react';
 import {
-  DebouncedSuggestionsService,
-  WalletSuggestionAction,
   WALLET_SUGGESTION_ALL_ACTIONS,
-  SuggestionsService,
+  WalletSuggestionAction,
 } from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {Input} from '../commons/Input';
-import {Suggestions} from './Suggestions';
-import {renderBusyIndicator} from './BusyIndicator';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import Logo from './../assets/logo.svg';
 import ethLogo from '../assets/icons/ethereum-logo.svg';
 import './../styles/walletSelector.css';
 import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
-import {useOutsideClick} from '../hooks/useClickOutside';
+import {EnsNamePicker} from './EnsNamePicker';
 
-interface WalletSelector {
+export interface WalletSelectorProps {
   onCreateClick?(ensName: string): Promise<void> | void;
   onConnectClick?(ensName: string): Promise<void> | void;
   sdk: UniversalLoginSDK;
@@ -28,48 +22,21 @@ interface WalletSelector {
   tryEnablingMetamask?: () => Promise<string | undefined>;
 }
 
-const defaultInputPlaceholder = 'type a name';
-
 export const WalletSelector = ({
   onCreateClick,
   onConnectClick,
   sdk,
   domains,
   actions = WALLET_SUGGESTION_ALL_ACTIONS,
+  placeholder = 'type a name',
   className,
-  placeholder = defaultInputPlaceholder,
   tryEnablingMetamask,
-}: WalletSelector) => {
-  const [debouncedSuggestionsService] = useState(
-    new DebouncedSuggestionsService(
-      new SuggestionsService(sdk, domains, actions),
-    ),
-  );
-  const [busy, setBusy] = useState(false);
-  const [connections, setConnections] = useState<string[]>([]);
-  const [creations, setCreations] = useState<string[]>([]);
-  const [ensName, setEnsName] = useState('');
+}: WalletSelectorProps) => {
   const [accountStatus, setAccountStatus] = useState(tryEnablingMetamask ? 'show-initial' : 'show-picker');
   const [ethAccount, setEthAccount] = useState('');
-  const [suggestionsVisible, setSuggestionsVisible] = useState(false);
-  const isOnlyCreateAction =
-    actions.includes(WalletSuggestionAction.create) && actions.length === 1;
-  const isNameAvailable =
-    creations.length === 0 && isOnlyCreateAction && !!ensName && !busy;
-
-  const update = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value.toLowerCase();
-    setEnsName(name);
-    setBusy(true);
-    debouncedSuggestionsService.getSuggestions(name, suggestions => {
-      setConnections(suggestions.connections);
-      setCreations(suggestions.creations);
-      setBusy(false);
-    });
-  };
 
   const onDetectClick = async () => {
-    const result = tryEnablingMetamask && await tryEnablingMetamask();
+    const result = await tryEnablingMetamask?.();
     if (result) {
       setEthAccount(result);
       setAccountStatus('show-account');
@@ -79,32 +46,17 @@ export const WalletSelector = ({
     }
   };
 
-  const ref = useRef(null);
-  useOutsideClick(ref, () => setSuggestionsVisible(false));
-
   return (
-    <div ref={ref} className={`universal-login ${accountStatus}`}>
+    <div className={`universal-login ${accountStatus}`}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="selector-input-wrapper">
-          <img
-            src={Logo}
-            alt="Universal login logo"
-            className="selector-input-img"
-          />
-          <Input
-            className="wallet-selector"
-            id="loginInput"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => update(event)}
-            placeholder={placeholder}
-            autoFocus
-            checkSpelling={false}
-            onFocus={() => setSuggestionsVisible(true)}
-          />
-          {isNameAvailable && (
-            <div className="hint">Name is already taken or is invalid</div>
-          )}
-          {renderBusyIndicator(busy)}
-        </div>
+        <EnsNamePicker
+          onCreateClick={onCreateClick}
+          onConnectClick={onConnectClick}
+          sdk={sdk}
+          domains={domains}
+          actions={actions}
+          placeholder={placeholder}
+        />
         <button className="selector-sign-button" onClick={onDetectClick}>
           <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="selector-sign-text">Sign in with Ethereum</p>
@@ -113,15 +65,6 @@ export const WalletSelector = ({
           <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="ethereum-account-text">{ethAccount}</p>
         </div>
-        {suggestionsVisible && !busy &&
-          <Suggestions
-            source={ensName}
-            connections={connections}
-            creations={creations}
-            onCreateClick={onCreateClick!}
-            onConnectClick={onConnectClick!}
-            actions={actions}
-          />}
       </div>
     </div>
   );

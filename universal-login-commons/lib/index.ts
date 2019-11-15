@@ -19,6 +19,7 @@ export {KEY_CODE_ESCAPE, DEFAULT_LOCATION, UNIVERSAL_LOGIN_LOGO_URL} from './cor
 export {ETHER_NATIVE_TOKEN, EMPTY_DATA, ONE_SIGNATURE_GAS_COST} from './core/constants/constants';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {WalletExistenceVerifier, SuggestionsService} from './core/services/SuggestionsService';
+export {Suggestions} from './core/models/Suggestions';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {getEmojiColor, getEmojiNumber, CATEGORIES, getBaseEmojiCode, getEmojiSet, getColoredEmojiCode} from './core/utils/emoji';
 export {generateBackupCode} from './core/utils/generateBackupCode';
