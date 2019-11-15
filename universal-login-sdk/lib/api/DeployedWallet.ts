@@ -57,7 +57,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.addKeys(this.contractAddress, publicKeys, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    return this.selfExecute('addKeys', [publicKeys], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
   async removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
@@ -125,7 +125,7 @@ export class DeployedWallet implements ApplicationWallet {
       addresses.push(address);
     }
 
-    const execution = await this.sdk.addKeys(this.contractAddress, addresses, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    const execution = await this.addKeys(addresses, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
     return {
       waitToBeSuccess: async () => {
         await execution.waitToBeSuccess();
