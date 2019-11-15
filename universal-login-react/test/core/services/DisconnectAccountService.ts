@@ -48,7 +48,7 @@ describe('DisconnectAccountService', () => {
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnection).to.not.be.called;
     expect(onAccountDisconnected).to.not.be.called;
-    expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
+    expect(walletService.getDeployedWallet()).to.deep.include(deployedWallet.asApplicationWallet);
   });
 
   it('dont disconnect account if verifyField are invalid', async () => {
@@ -56,7 +56,7 @@ describe('DisconnectAccountService', () => {
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnection).to.not.be.called;
     expect(onAccountDisconnected).to.not.be.called;
-    expect(walletService.getDeployedWallet()).to.deep.eq(deployedWallet);
+    expect(walletService.getDeployedWallet()).to.deep.include(deployedWallet.asApplicationWallet);
   });
 
   after(async () => {

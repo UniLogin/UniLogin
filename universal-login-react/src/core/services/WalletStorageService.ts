@@ -55,6 +55,7 @@ const asSerializedState = asAnyOf([
   }),
   asObject<SerializedWalletState>({
     kind: asExactly('Future'),
+    name: asString,
     wallet: asSerializableFutureWallet,
   }),
   asObject<SerializedWalletState>({

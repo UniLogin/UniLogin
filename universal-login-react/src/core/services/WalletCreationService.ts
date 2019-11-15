@@ -11,14 +11,10 @@ export class WalletCreationService {
   }
 
   async initiateCreationFlow(ensName: string) {
-    const {waitForBalance} = await this.walletService.createFutureWallet();
+    const {waitForBalance} = await this.walletService.createFutureWallet(ensName);
     await waitForBalance();
     this.callbackOnBalancePresent && this.callbackOnBalancePresent();
-    return this.walletService.deployFutureWallet(
-      ensName,
-      this.gasParameters.gasPrice.toString(),
-      this.gasParameters.gasToken,
-    );
+    return this.walletService.deployFutureWallet(this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
   }
 
   setGasParameters(gasParameters: GasParameters) {
