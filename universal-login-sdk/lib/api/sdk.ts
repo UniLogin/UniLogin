@@ -126,7 +126,7 @@ class UniversalLoginSDK {
 
   async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('setRequiredSignatures');
-    return this.selfExecute(to, 'setRequiredSignatures', [requiredSignatures], privateKey, executionOptions);
+    return this.createDeployedWallet(to, privateKey).setRequiredSignatures(requiredSignatures, executionOptions);
   }
 
   async getMessageStatus(messageHash: string) {

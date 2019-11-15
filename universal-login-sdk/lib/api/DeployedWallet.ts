@@ -74,7 +74,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.setRequiredSignatures(this.contractAddress, requiredSignatures, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    return this.selfExecute('setRequiredSignatures', [requiredSignatures], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
   async execute(message: Partial<Message>): Promise<Execution> {
