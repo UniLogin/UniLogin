@@ -51,16 +51,14 @@ export class WalletService {
     return futureWallet;
   }
 
-  async deployFutureWallet(ensName: string, gasPrice: string, gasToken: string) {
-    if (this.state.kind !== 'Future') {
-      throw new Error('Invalid state: expected future wallet');
-    }
-    const {deploy, contractAddress, privateKey} = this.state.wallet;
+  async deployFutureWallet(gasPrice: string, gasToken: string) {
+    ensure(this.state.kind === 'Future', FutureWalletNotSet);
+    const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
 
-    const applicationWallet = {contractAddress, name: ensName, privateKey};
+    const applicationWallet = {contractAddress, name, privateKey};
     this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet});
 
-    const {waitToBeSuccess, waitForTransactionHash} = await deploy(ensName, gasPrice, gasToken);
+    const {waitToBeSuccess, waitForTransactionHash} = await deploy(name, gasPrice, gasToken);
     const {transactionHash} = await waitForTransactionHash();
     transactionHash && this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet, transactionHash});
 
@@ -78,11 +76,9 @@ export class WalletService {
     this.saveToStorage();
   }
 
-  setDeployed(name: string) {
-    if (this.state.kind !== 'Future') {
-      throw new FutureWalletNotSet();
-    }
-    const {contractAddress, privateKey} = this.state.wallet;
+  setDeployed() {
+    ensure(this.state.kind === 'Future', FutureWalletNotSet);
+    const {name, wallet: {contractAddress, privateKey}} = this.state;
     const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
     this.stateProperty.set({kind: 'Deployed', wallet});
     this.saveToStorage();
