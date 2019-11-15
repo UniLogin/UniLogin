@@ -51,19 +51,19 @@ export class DeployedWallet implements ApplicationWallet {
     };
   }
 
-  async addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
+  addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
     return this.selfExecute('addKey', [publicKey], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
+  addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
     return this.selfExecute('addKeys', [publicKeys], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
+  removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
     return this.selfExecute('removeKey', [key], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async removeCurrentKey(executionOptions: ExecutionOptions): Promise<Execution> {
+  removeCurrentKey(executionOptions: ExecutionOptions): Promise<Execution> {
     const ownKey = utils.computeAddress(this.privateKey);
     return this.removeKey(ownKey, executionOptions);
   }
@@ -72,11 +72,11 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.denyRequests(this.contractAddress, this.privateKey);
   }
 
-  async setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
+  setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
     return this.selfExecute('setRequiredSignatures', [requiredSignatures], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  async execute(message: Partial<Message>): Promise<Execution> {
+  execute(message: Partial<Message>): Promise<Execution> {
     return this.sdk.execute({
       from: this.contractAddress,
       gasLimit: DEFAULT_GAS_LIMIT,
@@ -96,7 +96,7 @@ export class DeployedWallet implements ApplicationWallet {
     return this.sdk.getConnectedDevices(this.contractAddress, this.privateKey);
   }
 
-  async getRequiredSignatures(): Promise<BigNumber> {
+  getRequiredSignatures(): Promise<BigNumber> {
     return this.getContract().requiredSignatures();
   }
 

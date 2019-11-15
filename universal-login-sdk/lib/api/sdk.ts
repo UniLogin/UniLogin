@@ -105,26 +105,26 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!;
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
+  createFutureWallet(): Promise<FutureWallet> {
     return this.getFutureWalletFactory().createFutureWallet();
   }
 
-  async addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+  addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('addKey');
     return this.createDeployedWallet(to, privateKey).addKey(publicKey, executionOptions);
   }
 
-  async addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+  addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('addKeys');
     return this.createDeployedWallet(to, privateKey).addKeys(publicKeys, executionOptions);
   }
 
-  async removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+  removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('removeKey');
     return this.createDeployedWallet(to, privateKey).removeKey(key, executionOptions);
   }
 
-  async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
+  setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('setRequiredSignatures');
     return this.createDeployedWallet(to, privateKey).setRequiredSignatures(requiredSignatures, executionOptions);
   }
