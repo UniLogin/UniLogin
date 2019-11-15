@@ -43,7 +43,7 @@ describe('UNIT: WalletService', () => {
 
   it('succesful recover', async () => {
     await walletService.recover(name, passphrase);
-    expect(walletService.state.kind).to.eq('Deployed')
+    expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.include({
       contractAddress: TEST_CONTRACT_ADDRESS,
       name,

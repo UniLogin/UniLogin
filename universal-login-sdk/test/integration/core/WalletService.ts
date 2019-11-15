@@ -11,7 +11,7 @@ chai.use(sinonChai);
 
 describe('INT: WalletService', () => {
   let walletService: WalletService;
-  let applicationWallet:  ApplicationWallet;
+  let applicationWallet: ApplicationWallet;
   let storage: any;
   let deployedWallet: DeployedWallet;
   let futureWallet: FutureWallet;
