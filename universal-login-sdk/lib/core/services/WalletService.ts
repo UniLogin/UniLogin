@@ -32,16 +32,12 @@ export class WalletService {
   }
 
   getDeployedWallet(): DeployedWallet {
-    if (this.state.kind !== 'Deployed') {
-      throw new Error('Invalid state: expected deployed wallet');
-    }
+    ensure(this.state.kind === 'Deployed', Error, 'Invalid state: expected deployed wallet')
     return this.state.wallet;
   }
 
   getConnectingWallet(): ApplicationWallet {
-    if (this.state.kind !== 'Connecting') {
-      throw new Error('Invalid state: expected connecting wallet');
-    }
+    ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
     return this.state.wallet;
   }
 
@@ -69,9 +65,7 @@ export class WalletService {
   }
 
   setFutureWallet(wallet: FutureWallet, name: string) {
-    if (this.state.kind !== 'None') {
-      throw new WalletOverridden();
-    }
+    ensure(this.state.kind === 'None', WalletOverridden);
     this.stateProperty.set({kind: 'Future', name, wallet});
     this.saveToStorage();
   }
@@ -85,16 +79,12 @@ export class WalletService {
   }
 
   setConnecting(wallet: ApplicationWallet) {
-    if (this.state.kind !== 'None') {
-      throw new WalletOverridden();
-    }
+    ensure(this.state.kind === 'None', WalletOverridden);
     this.stateProperty.set({kind: 'Connecting', wallet});
   }
 
   setWallet(wallet: ApplicationWallet) {
-    if (this.state.kind !== 'None' && this.state.kind !== 'Connecting') {
-      throw new WalletOverridden();
-    }
+    ensure(this.state.kind === 'None' || this.state.kind === 'Connecting', WalletOverridden)
     this.stateProperty.set({
       kind: 'Deployed',
       wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
