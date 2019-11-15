@@ -61,11 +61,11 @@ export class FutureWalletFactory extends MineableFactory {
   }
 
   async createFromExistingCounterfactual(wallet: SerializableFutureWallet): Promise<FutureWallet> {
-    const {ensName, privateKey, contractAddress} = wallet;
+    const {name, privateKey, contractAddress} = wallet;
     const publicKey = utils.computeAddress(privateKey);
 
     return {
-      ensName,
+      name,
       privateKey,
       contractAddress,
       waitForBalance: async () => new Promise<BalanceDetails>(
@@ -94,8 +94,8 @@ export class FutureWalletFactory extends MineableFactory {
     };
   }
 
-  async createFutureWallet(ensName: string): Promise<FutureWallet> {
+  async createFutureWallet(name: string): Promise<FutureWallet> {
     const [privateKey, contractAddress] = await this.blockchainService.createFutureWallet(this.config.factoryAddress);
-    return this.createFromExistingCounterfactual({ensName, privateKey, contractAddress});
+    return this.createFromExistingCounterfactual({name, privateKey, contractAddress});
   }
 }

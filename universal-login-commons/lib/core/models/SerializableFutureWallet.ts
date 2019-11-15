@@ -1,5 +1,5 @@
 export interface SerializableFutureWallet {
-  ensName: string;
+  name: string;
   contractAddress: string;
   privateKey: string;
 }

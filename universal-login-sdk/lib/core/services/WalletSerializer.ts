@@ -15,7 +15,7 @@ export class WalletSerializer {
         return {
           kind: 'Future',
           wallet: {
-            ensName: state.wallet.ensName,
+            name: state.wallet.name,
             contractAddress: state.wallet.contractAddress,
             privateKey: state.wallet.privateKey,
           },

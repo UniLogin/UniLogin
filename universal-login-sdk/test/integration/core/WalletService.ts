@@ -14,7 +14,7 @@ describe('INT: WalletService', () => {
   const deployedWallet: DeployedWallet = new DeployedWallet('0x123', 'justyna.nylogin.eth', '0x29F3EDEE0AD3ABF8E2699402E0E28CD6492C9BE7EAAB00D732A791C33552F779', sdk);
   const applicationWallet = deployedWallet.asApplicationWallet;
   const futureWallet: FutureWallet = {
-    ensName: 'justyna.nylogin.eth',
+    name: 'justyna.nylogin.eth',
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploy: async () => ({
@@ -56,7 +56,7 @@ describe('INT: WalletService', () => {
     expect(storage.save).to.be.calledWith({
       kind: 'Future',
       wallet: {
-        ensName: futureWallet.ensName,
+        name: futureWallet.name,
         contractAddress: futureWallet.contractAddress,
         privateKey: futureWallet.privateKey,
       },
