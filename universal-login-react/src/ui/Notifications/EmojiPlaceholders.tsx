@@ -1,19 +1,19 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
+import {SECURITY_CODE_LENGTH, isCodeSufficientButInvalid} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
-import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
 import range from 'lodash.range';
 
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
-  isEmojiInputValid: boolean;
+  publicKey: string;
   onEmojiClick?: (index: number) => void;
   className?: string;
 }
 
-export const EmojiPlaceholders = ({enteredCode, isEmojiInputValid, onEmojiClick, className}: EmojiPlaceholdersProps) => {
+export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick, className}: EmojiPlaceholdersProps) => {
   const renderEmojis = () =>
     enteredCode.map((code: number, i: number) => (
       <li className="emoji-item" key={i}>
@@ -33,8 +33,6 @@ export const EmojiPlaceholders = ({enteredCode, isEmojiInputValid, onEmojiClick,
     return [...emojis, ...placeholders];
   };
 
-  const isEmojiInputCompleteButInvalid = enteredCode.length === SECURITY_CODE_LENGTH && !isEmojiInputValid;
-
   return (
     <div className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
@@ -42,7 +40,7 @@ export const EmojiPlaceholders = ({enteredCode, isEmojiInputValid, onEmojiClick,
           <ul className="emojis-placeholders-list">
             {renderPlaceholderPanel()}
           </ul>
-          {isEmojiInputCompleteButInvalid && <p className="emoji-input-chosen-invalid">Invalid emoji chosen</p>}
+          {isCodeSufficientButInvalid(enteredCode, publicKey) && <p className="emoji-input-chosen-invalid">Invalid emoji chosen</p>}
         </>
       </div>
     </div>

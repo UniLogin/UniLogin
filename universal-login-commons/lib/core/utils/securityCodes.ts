@@ -32,9 +32,15 @@ export const generateCode = (publicKey: string): number[] => {
 };
 
 export const isValidCode = (code: number[], publicKey: string) => {
-  const expectedCode = generateCode(publicKey);
-  return deepEqual(expectedCode, code);
+  if (publicKey) {
+    const expectedCode = generateCode(publicKey);
+    return deepEqual(expectedCode, code);
+  }
+  return false;
 };
+
+export const isCodeSufficientButInvalid = (code: number[], publicKey: string) =>
+  code.length === SECURITY_CODE_LENGTH && !isValidCode(code, publicKey);
 
 export const filterNotificationByCodePrefix = (notifications: Notification[], codePrefix: number[]) => {
   const codes = notifications.map((notification) => new KeyWithCode(notification.key));

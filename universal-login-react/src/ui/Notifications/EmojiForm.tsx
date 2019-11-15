@@ -3,7 +3,6 @@ import {
   filterNotificationByCodePrefix,
   isValidCode,
   Notification,
-  SECURITY_CODE_LENGTH,
   ensureNotNull,
 } from '@universal-login/commons';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
@@ -19,14 +18,14 @@ export interface EmojiFormProps {
 
 export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
-  const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
+  const [soleAddress, setSoleAddress] = useState<string>('');
 
   useEffect(
     () => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)),
     [notifications, enteredCode],
   );
 
-  const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && soleAddress !== undefined && isValidCode(enteredCode, soleAddress);
+  const isInputValid = isValidCode(enteredCode, soleAddress);
 
   useEffect(() => {
     if (isInputValid) {
@@ -38,7 +37,7 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
 
   const updateSoleAddress = (addresses: string[]) => {
     if (addresses.length > 1) {
-      setSoleAddress(undefined);
+      setSoleAddress('');
     } else if (addresses.length === 1) {
       setSoleAddress(addresses[0]);
     }
@@ -52,7 +51,7 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
             <p className="correct-input-title">Correct!</p>
             <EmojiPlaceholders
               enteredCode={enteredCode}
-              isEmojiInputValid={isInputValid}
+              publicKey={soleAddress}
               className={className}
             />
           </div>
@@ -63,7 +62,6 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
           <EmojiInput
             value={enteredCode}
             onChange={setEnteredCode}
-            isEmojiInputValid={isInputValid}
             publicKey={soleAddress}
             className={className}
           />
