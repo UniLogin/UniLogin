@@ -49,7 +49,6 @@ const HomeScreen = () => {
               <Route path="/backup">
                 <BackupCodes
                   deployedWallet={walletService.getDeployedWallet()}
-                  basePath="/backup"
                   className="jarvis-backup"
                 />
               </Route>
