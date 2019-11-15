@@ -5,6 +5,7 @@ export type WalletState = {
   kind: 'None';
 } | {
   kind: 'Future';
+  name: string;
   wallet: FutureWallet;
 } | {
   kind: 'Connecting';
@@ -22,6 +23,7 @@ export type SerializedWalletState = {
   kind: 'None';
 } | {
   kind: 'Future';
+  name: string;
   wallet: SerializableFutureWallet;
 } | {
   kind: 'Deployed';

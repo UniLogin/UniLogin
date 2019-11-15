@@ -35,9 +35,11 @@ describe('WalletSerializer', () => {
     it('for Future returns Future', () => {
       expect(walletSerializer.serialize({
         kind: 'Future',
-        wallet: TEST_FUTURE_WALLET
+        name: 'name.mylogin.eth',
+        wallet: TEST_FUTURE_WALLET,
       })).to.deep.eq({
         kind: 'Future',
+        name: 'name.mylogin.eth',
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
@@ -87,11 +89,16 @@ describe('WalletSerializer', () => {
     it('for Future returns Future', async () => {
       expect(await walletSerializer.deserialize({
         kind: 'Future',
+        name: 'name.mylogin.eth',
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
         }
-      })).to.deep.eq({kind: 'Future', wallet: TEST_FUTURE_WALLET});
+      })).to.deep.eq({
+        kind: 'Future',
+        name: 'name.mylogin.eth',
+        wallet: TEST_FUTURE_WALLET,
+      });
     });
 
     it('for Deployed returns Deployed', async () => {

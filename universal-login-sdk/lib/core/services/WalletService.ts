@@ -45,9 +45,9 @@ export class WalletService {
     return this.state.wallet;
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
+  async createFutureWallet(name: string): Promise<FutureWallet> {
     const futureWallet = await this.sdk.createFutureWallet();
-    this.setFutureWallet(futureWallet);
+    this.setFutureWallet(futureWallet, name);
     return futureWallet;
   }
 
@@ -70,11 +70,11 @@ export class WalletService {
     return deployedWallet;
   }
 
-  setFutureWallet(wallet: FutureWallet) {
+  setFutureWallet(wallet: FutureWallet, name: string) {
     if (this.state.kind !== 'None') {
       throw new WalletOverridden();
     }
-    this.stateProperty.set({kind: 'Future', wallet});
+    this.stateProperty.set({kind: 'Future', name, wallet});
     this.saveToStorage();
   }
 

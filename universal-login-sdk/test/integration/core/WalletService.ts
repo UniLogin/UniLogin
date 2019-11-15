@@ -59,10 +59,11 @@ describe('INT: WalletService', () => {
   it('roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
-    walletService.setFutureWallet(futureWallet);
-    expect(walletService.state).to.deep.eq({kind: 'Future', wallet: futureWallet});
+    walletService.setFutureWallet(futureWallet,  'name.mylogin.eth');
+    expect(walletService.state).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
     expect(storage.save).to.be.calledWith({
       kind: 'Future',
+      name: 'name.mylogin.eth',
       wallet: {contractAddress: futureWallet.contractAddress, privateKey: futureWallet.privateKey},
     });
 
@@ -90,7 +91,7 @@ describe('INT: WalletService', () => {
 
   it('should throw if wallet is overridden', () => {
     walletService.setWallet(applicationWallet);
-    expect(() => walletService.setFutureWallet(futureWallet)).to.throw('Wallet cannot be overridded');
+    expect(() => walletService.setFutureWallet(futureWallet, 'name.mylogin.eth')).to.throw('Wallet cannot be overridded');
   });
 
   it('should load from storage', async () => {

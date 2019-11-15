@@ -14,6 +14,7 @@ export class WalletSerializer {
       case 'Future':
         return {
           kind: 'Future',
+          name: state.name,
           wallet: {
             contractAddress: state.wallet.contractAddress,
             privateKey: state.wallet.privateKey,
@@ -34,6 +35,7 @@ export class WalletSerializer {
       case 'Future':
         return {
           kind: 'Future',
+          name: state.name,
           wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
         };
       case 'Deployed':
