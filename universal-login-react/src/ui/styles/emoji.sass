@@ -54,9 +54,8 @@
     height: 100%
 
   .emojis-fakes-list
-    margin: 32px 0 0
+    margin: 40px 0 0
     padding: 32px 0 0
-    border-top: 1px solid
 
   .emojis-form-title
     margin: 0 auto 11px
@@ -331,6 +330,12 @@
     background: linear-gradient(90deg, #55fd77 20%, #0fb1ef 100%)
     border: none
 
+  .emoji-input-chosen-invalid
+    position: absolute
+    top: 43%
+    left: 50%
+    transform: translateX(-50%)
+
 .loading-text
   text-align: center
 
@@ -411,6 +416,9 @@
 
     .approve-device-text
       margin: 0 0 35px
+
+    .emoji-input-chosen-invalid
+      top: 35%
 
 @media only screen and (max-width: 500px)
   .universal-login-emojis

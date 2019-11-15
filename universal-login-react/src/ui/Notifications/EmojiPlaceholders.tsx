@@ -8,11 +8,12 @@ import range from 'lodash.range';
 
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
+  isEmojiInputValid: boolean;
   onEmojiClick?: (index: number) => void;
   className?: string;
 }
 
-export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiPlaceholdersProps) => {
+export const EmojiPlaceholders = ({enteredCode, isEmojiInputValid, onEmojiClick, className}: EmojiPlaceholdersProps) => {
   const renderEmojis = () =>
     enteredCode.map((code: number, i: number) => (
       <li className="emoji-item" key={i}>
@@ -32,12 +33,17 @@ export const EmojiPlaceholders = ({enteredCode, onEmojiClick, className}: EmojiP
     return [...emojis, ...placeholders];
   };
 
+  const isEmojiInputCompleteButInvalid = enteredCode.length === SECURITY_CODE_LENGTH && !isEmojiInputValid;
+
   return (
     <div className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
-        <ul className="emojis-placeholders-list">
-          {renderPlaceholderPanel()}
-        </ul>
+        <>
+          <ul className="emojis-placeholders-list">
+            {renderPlaceholderPanel()}
+          </ul>
+          {isEmojiInputCompleteButInvalid && <p className="emoji-input-chosen-invalid">Invalid emoji chosen</p>}
+        </>
       </div>
     </div>
   );
