@@ -1,20 +1,20 @@
 import React, {useState} from 'react';
-import {ensureNotNull, WalletSuggestionAction, Suggestions} from '@universal-login/commons';
-import {getSuggestion} from '../../../core/utils/getSuggestion';
+import {ensureNotNull, WalletSuggestionAction} from '@universal-login/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
 import {MultipleSuggestion} from './MultipleSuggestion';
+import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
+import {Suggestion} from '../../../core/models/Suggestion';
 
-interface SuggestionsProps {
-  suggestions: Suggestions;
-  source: string;
+interface SuggestionComponentProps {
+  suggestion: Suggestion;
   onCreateClick?(ensName: string): Promise<void> | void;
   onConnectClick?(ensName: string): Promise<void> | void;
   actions: WalletSuggestionAction[];
 }
 
-export const SuggestionsComponent = ({onCreateClick, onConnectClick, actions, source, suggestions}: SuggestionsProps) => {
+export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, suggestion}: SuggestionComponentProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
 
@@ -28,12 +28,13 @@ export const SuggestionsComponent = ({onCreateClick, onConnectClick, actions, so
     onCreateClick!(ensName);
   };
 
-  const suggestion = getSuggestion(suggestions, actions, source);
   switch (suggestion.kind) {
     case 'None':
       return null;
     case 'KeepTyping':
       return <KeepTypingSuggestion />;
+    case 'TakenOrInvalid':
+      return <TakenOrInvalidSuggestion />;
     case 'Connection':
       return (
         <ul className="suggestions-list">
@@ -80,4 +81,4 @@ export const SuggestionsComponent = ({onCreateClick, onConnectClick, actions, so
   }
 };
 
-export default SuggestionsComponent;
+export default SuggestionComponent;
