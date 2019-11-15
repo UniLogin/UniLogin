@@ -121,7 +121,7 @@ class UniversalLoginSDK {
 
   async removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('removeKey');
-    return this.selfExecute(to, 'removeKey', [key], privateKey, executionOptions);
+    return this.createDeployedWallet(to, privateKey).removeKey(key, executionOptions);
   }
 
   async setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {

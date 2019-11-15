@@ -61,7 +61,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.removeKey(this.contractAddress, key, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    return this.selfExecute('removeKey', [key], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
   async removeCurrentKey(executionOptions: ExecutionOptions): Promise<Execution> {
