@@ -53,7 +53,7 @@ export class DeployedWallet implements ApplicationWallet {
   }
 
   async addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.sdk.addKey(this.contractAddress, publicKey, this.privateKey, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    return this.selfExecute('addKey', [publicKey], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
   async addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {

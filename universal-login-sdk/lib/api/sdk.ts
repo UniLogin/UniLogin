@@ -111,7 +111,7 @@ class UniversalLoginSDK {
 
   async addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
     deprecateSDKMethod('addKey');
-    return this.selfExecute(to, 'addKey', [publicKey], privateKey, executionOptions);
+    return this.createDeployedWallet(to, privateKey).addKey(publicKey, executionOptions);
   }
 
   async addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
