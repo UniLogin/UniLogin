@@ -5,7 +5,7 @@ import {
   MineableStatus,
   PublicRelayerConfig,
   ensure,
-  isValidEnsName, PaymentOptions,
+  isValidEnsName,
 } from '@universal-login/commons';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
