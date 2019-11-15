@@ -53,7 +53,7 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
                 {connectValues && <div className="universal-login-emojis">
                   <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
                 </div>}
-                <p className="connect-emoji-warning">Do not close this window, until the connection is completed</p>
+                <p className="connect-emoji-warning">Do not close this window, until the connection is completed.</p>
                 <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
               </div>
             </div>
