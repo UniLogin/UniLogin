@@ -1,4 +1,4 @@
-name: workflow
+name: lint
 
 on: [push]
 
@@ -6,6 +6,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - run: cd universal-login-commons
       - uses: actions/checkout@v1
       - name: ESLint Action
         uses: hallee/eslint-action@1.0.1
