@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {WalletService} from '../../../lib/core/services/WalletService';
-import {DeployedWallet} from '../../../lib';
+import {Wallet} from 'ethers';
 
 chai.use(chaiAsPromised);
 
@@ -23,6 +23,7 @@ describe('UNIT: WalletService', () => {
     sdk = {
       getWalletContractAddress: sinon.stub().withArgs(name).returns(TEST_CONTRACT_ADDRESS),
       keyExist,
+      provider: Wallet.createRandom(),
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({
@@ -39,13 +40,14 @@ describe('UNIT: WalletService', () => {
   beforeEach(() => {
     walletService = new WalletService(sdk, walletFromPassphrase);
   });
-  it('succesful recover', async () => {
-    const expectedWallet = new DeployedWallet(TEST_CONTRACT_ADDRESS, name, TEST_PRIVATE_KEY, sdk);
 
+  it('succesful recover', async () => {
     await walletService.recover(name, passphrase);
-    expect(walletService.state).to.deep.eq({
-      kind: 'Deployed',
-      wallet: expectedWallet,
+    expect(walletService.state.kind).to.eq('Deployed')
+    expect((walletService.state as any).wallet).to.include({
+      contractAddress: TEST_CONTRACT_ADDRESS,
+      name,
+      privateKey: TEST_PRIVATE_KEY,
     });
   });
 
