@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
-import {ensureNotNull, WalletSuggestionAction, Suggestions} from '@universal-login/commons';
-import {getSuggestion} from '../../../core/utils/getSuggestion';
+import {ensureNotNull, WalletSuggestionAction} from '@universal-login/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
 import {MultipleSuggestion} from './MultipleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
+import {Suggestion} from '../../../core/models/Suggestion';
 
 interface SuggestionComponentProps {
-  suggestions: Suggestions;
-  source: string;
+  suggestion: Suggestion;
   onCreateClick?(ensName: string): Promise<void> | void;
   onConnectClick?(ensName: string): Promise<void> | void;
   actions: WalletSuggestionAction[];
 }
 
-export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, source, suggestions}: SuggestionComponentProps) => {
+export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, suggestion}: SuggestionComponentProps) => {
   actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
   actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
 
@@ -29,7 +28,6 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sou
     onCreateClick!(ensName);
   };
 
-  const suggestion = getSuggestion(suggestions, actions, source);
   switch (suggestion.kind) {
     case 'None':
       return null;

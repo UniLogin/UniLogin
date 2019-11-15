@@ -17,6 +17,7 @@ import './../styles/walletSelectorDefaults.css';
 import './../styles/hint.css';
 import {useOutsideClick} from '../hooks/useClickOutside';
 import {Spinner} from '../..';
+import {getSuggestion} from '../../core/utils/getSuggestion';
 
 interface WalletSelector {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -103,8 +104,7 @@ export const WalletSelector = ({
         </div>
         {suggestionsVisible && !busy &&
           <SuggestionComponent
-            source={ensName}
-            suggestions={suggestions ?? {creations: [], connections: []}}
+            suggestion={getSuggestion(suggestions ?? {creations: [], connections: []}, actions, ensName)}
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             actions={actions}

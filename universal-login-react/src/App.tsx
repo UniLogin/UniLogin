@@ -83,8 +83,7 @@ export const App = () => {
                   onCreateClick={() => {console.log('create');}}
                   onConnectClick={() => {console.log('connect');}}
                   sdk={sdk}
-                  domains={['mylogin.eth']}
-                  actions={[WalletSuggestionAction.create]}
+                  domains={['mylogin.eth', 'myapp.eth']}
                 />
               )}
             />
