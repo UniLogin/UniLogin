@@ -1,0 +1,18 @@
+name: workflow
+
+on: [push]
+
+jobs:
+  workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '11.15'
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn build
+      - run: cd universal-login-contracts && yarn test:nobuild
+      - run: cd universal-login-commons && yarn test:nobuild
+      - run: cd universal-login-ops && yarn test:nobuild
