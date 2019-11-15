@@ -57,8 +57,6 @@ export const WalletSelector = ({
     debouncedSuggestionsService.getSuggestions(ensName, setSuggestions);
   }, [ensName]);
 
-  const busy = suggestions === undefined;
-
   const onDetectClick = async () => {
     const result = await tryEnablingMetamask?.();
     if (result) {
@@ -92,7 +90,7 @@ export const WalletSelector = ({
             checkSpelling={false}
             onFocus={() => setSuggestionsVisible(true)}
           />
-          {busy && <Spinner className="spinner-busy-indicator" />}
+          {suggestions === undefined && <Spinner className="spinner-busy-indicator" />}
         </div>
         <button className="selector-sign-button" onClick={onDetectClick}>
           <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />
@@ -102,9 +100,9 @@ export const WalletSelector = ({
           <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
           <p className="ethereum-account-text">{ethAccount}</p>
         </div>
-        {suggestionsVisible && !busy &&
+        {suggestionsVisible && suggestions !== undefined &&
           <SuggestionComponent
-            suggestion={getSuggestion(suggestions ?? {creations: [], connections: []}, actions, ensName)}
+            suggestion={getSuggestion(suggestions, actions, ensName)}
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             actions={actions}
