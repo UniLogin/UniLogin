@@ -13,7 +13,7 @@ export const getDeviceInfo = (req: Request, {applicationName, logo, type}: Appli
     applicationName,
     platform,
     city: geoip.lookup(ipAddress) ? geoip.lookup(ipAddress).city : 'unknown',
-    os: (os !== 'unknown' ? os : parse2.getOS().name) || 'unknown',
+    os: (os !== 'unknown' && os ? os : parse2.getOS().name) || 'unknown',
     browser,
     time: moment().format('h:mm'),
     logo,
