@@ -61,7 +61,7 @@ describe('INT: MessageHandler', async () => {
       const signedMessage = messageToSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
+      await waitExpect(async () => expect(await provider.getBalance(msg.to)).to.eq(expectedBalance));
       const {state, transactionHash} = await messageHandler.getStatus(messageHash);
       expect(transactionHash).to.not.be.null;
       expect(state).to.be.eq('Success');
@@ -75,7 +75,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
+      await waitExpect(async () => expect(await walletContract.keyExist(otherWallet.address)).to.be.true);
     });
 
     describe('Collaboration with Authorisation Service', async () => {
