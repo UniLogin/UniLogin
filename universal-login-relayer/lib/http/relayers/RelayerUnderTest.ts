@@ -107,6 +107,7 @@ export async function clearDatabase(knex: Knex) {
   await knex.delete().from('signature_key_pairs');
   await knex.delete().from('messages');
   await knex.delete().from('authorisations');
+  await knex.delete().from('deployments');
 }
 
 export const getContractWhiteList = () => ({
