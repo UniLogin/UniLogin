@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Redirect} from 'react-router';
 import {useServices} from '../../hooks';
 import {CreateAccount} from './CreateAccount';
@@ -12,15 +12,15 @@ export function CreateFlow() {
   const modalService = useContext(WalletModalContext);
   const {sdk, walletService, walletCreationService} = useServices();
 
-  const onCreateClick = async (name: string) => {
-    walletCreationService.onBalancePresent(() => modalService.hideModal());
-    await walletCreationService.initiateCreationFlow(name);
-  };
+  useEffect(() => {
+    walletCreationService.deployWhenReady(() => modalService.hideModal())
+      .catch(console.error);
+  }, []);
 
   const walletState = useProperty(walletService.stateProperty);
   switch (walletState.kind) {
     case 'None':
-      return <CreateAccount onCreateClick={onCreateClick}/>;
+      return <CreateAccount onCreateClick={name => walletCreationService.initiateCreationFlow(name)}/>;
     case 'Future':
       return (
         <div className="main-bg">
