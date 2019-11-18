@@ -36,12 +36,12 @@ export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick, classNa
   return (
     <div className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
-        <>
+        <div className="emoji-placeholders-container">
           <ul className="emojis-placeholders-list">
             {renderPlaceholderPanel()}
           </ul>
           {isCodeSufficientButInvalid(enteredCode, publicKey) && <p className="emoji-input-chosen-invalid">Invalid emoji chosen</p>}
-        </>
+        </div>
       </div>
     </div>
   );
