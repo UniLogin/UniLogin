@@ -8,7 +8,7 @@ import range from 'lodash.range';
 
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
-  publicKey: string;
+  publicKey?: string;
   onEmojiClick?: (index: number) => void;
   className?: string;
 }

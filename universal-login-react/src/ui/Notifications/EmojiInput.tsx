@@ -7,7 +7,7 @@ import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
 export interface EmojiInputProps {
   value: number[];
   onChange: (value: number[]) => void;
-  publicKey: string;
+  publicKey?: string;
   className?: string;
 }
 

@@ -18,7 +18,7 @@ export interface EmojiFormProps {
 
 export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
-  const [soleAddress, setSoleAddress] = useState<string>('');
+  const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
   useEffect(
     () => updateSoleAddress(filterNotificationByCodePrefix(notifications, enteredCode)),
@@ -37,7 +37,7 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
 
   const updateSoleAddress = (addresses: string[]) => {
     if (addresses.length > 1) {
-      setSoleAddress('');
+      setSoleAddress(undefined);
     } else if (addresses.length === 1) {
       setSoleAddress(addresses[0]);
     }
