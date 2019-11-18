@@ -32,6 +32,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
       return (
         <BackupCodesInitial
           generateBackupCodes={generateBackupCodes}
+          isButtonDisabled={!gasParameters}
           deployedWallet={deployedWallet}
           setGasParameters={setGasParameters}
           className={className}

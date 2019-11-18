@@ -16,15 +16,15 @@ describe('UNIT: BackupCodesService', () => {
       waitToBeSuccess,
       waitForTransactionHash,
     }),
-  }
-  let backupCodesService: BackupCodesService
+  };
+  let backupCodesService: BackupCodesService;
 
   before(() => {
-    sinon.replace(console, 'error', () => {})
+    sinon.replace(console, 'error', () => {});
   });
 
   beforeEach(() => {
-    backupCodesService = new BackupCodesService(deployedWallet as any)
+    backupCodesService = new BackupCodesService(deployedWallet as any);
   });
 
   it('initial state', () => {
@@ -36,7 +36,7 @@ describe('UNIT: BackupCodesService', () => {
       await backupCodesService.generate(undefined);
       expect(backupCodesService.state.get()).to.be.deep.eq({
         kind: 'Failure',
-        error: 'Missing gas parameters'
+        error: 'Missing gas parameters',
       });
     });
 
@@ -44,7 +44,7 @@ describe('UNIT: BackupCodesService', () => {
       await backupCodesService.generate(INITIAL_GAS_PARAMETERS);
       expect(backupCodesService.state.get()).to.be.deep.eq({
         kind: 'Generated',
-        codes: [350, 506, 372, 483, 576, 48]
+        codes: [350, 506, 372, 483, 576, 48],
       });
       expect(deployedWallet.generateBackupCodes).calledWithExactly(INITIAL_GAS_PARAMETERS);
       expect(deployedWallet.generateBackupCodes).calledBefore(waitForTransactionHash);
