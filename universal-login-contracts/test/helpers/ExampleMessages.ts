@@ -4,7 +4,7 @@ import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
-import {calculatePaymentOptions, estimateGasDataFromUnsignedMessage} from '../../lib/estimateGas';
+import {calculatePaymentOptions, estimateGasBaseFromUnsignedMessage} from '../../lib/estimateGas';
 
 const {parseEther} = utils;
 
@@ -14,8 +14,8 @@ export const transferMessage = {
   data: [],
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: '7440',
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasBase: '7440',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -25,8 +25,8 @@ export const failedTransferMessage = {
   data: [],
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: '7440',
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasBase: '7440',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -37,8 +37,8 @@ export const callMessage = {
   data: callMeMessageData,
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: '8720',
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasBase: '8720',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -49,8 +49,8 @@ export const failedCallMessage = {
   data: revertingFunctionMessageData,
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasData: '8720',
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasBase: '8720',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -69,12 +69,12 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     nonce: 0,
     gasPrice: 1,
     gasToken: '0x0',
-    gasLimitExecution: utils.bigNumberify('240000'),
-    gasData: 0,
+    gasCall: utils.bigNumberify('240000'),
+    gasBase: 0,
     ...overrides,
   };
-  const gasData = estimateGasDataFromUnsignedMessage(msg);
-  return {...msg, gasData};
+  const gasBase = estimateGasBaseFromUnsignedMessage(msg);
+  return {...msg, gasBase};
 };
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
@@ -95,12 +95,12 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     value: parseEther('0.0'),
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice: DEFAULT_GAS_PRICE,
-    gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
-    gasData: 0,
+    gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
+    gasBase: 0,
     gasToken: '0x0000000000000000000000000000000000000000',
   };
-  const gasData = estimateGasDataFromUnsignedMessage(msg);
-  msg.gasData = gasData;
+  const gasBase = estimateGasBaseFromUnsignedMessage(msg);
+  msg.gasBase = gasBase;
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
 };

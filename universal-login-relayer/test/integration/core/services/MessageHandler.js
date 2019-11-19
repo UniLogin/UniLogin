@@ -48,11 +48,11 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough gas', async () => {
-    const gasLimitExecution = 1;
-    const gasData = 7696;
-    const gasLimit = gasData + gasLimitExecution;
+    const gasCall = 1;
+    const gasBase = 7696;
+    const gasLimit = gasBase + gasCall;
     const signedMessage = messageToSignedMessage({...msg, gasLimit}, wallet.privateKey);
-    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got GasLimitExecution 1 but should greater than ${GAS_BASE}`);
+    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {
