@@ -5,14 +5,14 @@ import cloneDeep from 'lodash.clonedeep';
 
 export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
   const gasData = utils.bigNumberify(estimateGasDataFromUnsignedMessage(unsignedMessage));
-  const gasLimitExecution = calculateGasLimitExecution(gasLimit, gasData);
-  return {gasData, gasLimitExecution};
+  const gasCall = calculategasCall(gasLimit, gasData);
+  return {gasData, gasCall};
 };
 
-export const calculateGasLimitExecution = (gasLimit: utils.BigNumberish, gasData: utils.BigNumberish) => {
-  const gasLimitExecution = utils.bigNumberify(gasLimit).sub(gasData);
-  ensure(gasLimitExecution.gt(0), Error, 'Gas limit too low');
-  return gasLimitExecution;
+export const calculategasCall = (gasLimit: utils.BigNumberish, gasData: utils.BigNumberish) => {
+  const gasCall = utils.bigNumberify(gasLimit).sub(gasData);
+  ensure(gasCall.gt(0), Error, 'Gas limit too low');
+  return gasCall;
 };
 
 export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
@@ -21,13 +21,13 @@ export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMess
 };
 
 export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) => {
-  const copySignedMessage = {...cloneDeep(signedMessage), gasData: utils.bigNumberify('0xFFFFFF'), gasLimitExecution: utils.bigNumberify('0xFFFFFF')};
+  const copySignedMessage = {...cloneDeep(signedMessage), gasData: utils.bigNumberify('0xFFFFFF'), gasCall: utils.bigNumberify('0xFFFFFF')};
   const txdata = encodeDataForExecuteSigned(copySignedMessage);
   return computeGasData(txdata);
 };
 
-export const calculateFinalGasLimit = (gasLimitExecution: utils.BigNumberish, gasData: utils.BigNumberish) =>
-  utils.bigNumberify(gasLimitExecution).add(gasData).add('30000');
+export const calculateFinalGasLimit = (gasCall: utils.BigNumberish, gasData: utils.BigNumberish) =>
+  utils.bigNumberify(gasCall).add(gasData).add('30000');
 
 export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
-  ({gasLimit: calculateFinalGasLimit(msg.gasLimitExecution, msg.gasData)});
+  ({gasLimit: calculateFinalGasLimit(msg.gasCall, msg.gasData)});

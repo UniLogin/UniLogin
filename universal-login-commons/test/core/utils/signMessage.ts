@@ -17,7 +17,7 @@ const expectedMessage = {
   data: EMPTY_DATA,
   nonce: '0',
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT,
+  gasCall: DEFAULT_GAS_LIMIT,
   gasData: '0',
   gasToken: '0x0000000000000000000000000000000000000000',
   signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c',

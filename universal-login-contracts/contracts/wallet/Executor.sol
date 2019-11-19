@@ -46,16 +46,16 @@ contract Executor is ECDSAUtils {
         bytes memory data,
         uint gasPrice,
         address gasToken,
-        uint gasLimitExecution,
+        uint gasCall,
         uint gasData,
         bytes memory signatures) public returns (bytes32)
     {
         uint256 startingGas = gasleft();
-        require(gasLimitExecution <= startingGas, "Relayer set gas limit too low");
-        require(startingGas <= gasLimitExecution.add(gasLimitMargin()), "Relayer set gas limit too high");
+        require(gasCall <= startingGas, "Relayer set gas limit too low");
+        require(startingGas <= gasCall.add(gasLimitMargin()), "Relayer set gas limit too high");
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasCall, gasData);
         require(verifySignatures(signatures, messageHash), "Invalid signature or nonce");
         lastNonce++;
         bytes memory _data;

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage, calculateGasLimitExecution} from '../lib/estimateGas';
+import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage, calculategasCall} from '../lib/estimateGas';
 
 describe('UNIT: estimateGas', () => {
   describe('estimateGasDataFromSignedMessage', () => {
@@ -13,7 +13,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -29,7 +29,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -45,7 +45,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -61,7 +61,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -77,7 +77,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 255,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -93,14 +93,14 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createFullHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
       expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 1280);
     });
 
-    it('gasLimitExecution 1000 - but estimate don\'t chnage since gasLimitExecution already been accounted', () => {
+    it('gasCall 1000 - but estimate don\'t chnage since gasCall already been accounted', () => {
       const message: SignedMessage = {
         from: createFullHexString(20),
         nonce: 1337,
@@ -109,7 +109,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 1000,
+        gasCall: 1000,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -125,7 +125,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 255,
         signature: createZeroedHexString(65),
       };
@@ -141,7 +141,7 @@ describe('UNIT: estimateGas', () => {
         data: createFullHexString(100),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createZeroedHexString(65),
       };
@@ -157,7 +157,7 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
         signature: createFullHexString(65),
       };
@@ -175,31 +175,31 @@ describe('UNIT: estimateGas', () => {
         data: createZeroedHexString(0),
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
-        gasLimitExecution: 0,
+        gasCall: 0,
         gasData: 0,
       };
       expect(estimateGasDataFromUnsignedMessage(message)).to.be.equal(2576 + 65 * 64);
     });
   });
 
-  describe('calculateGasLimitExecution', () => {
+  describe('calculategasCall', () => {
     it('gasData is smaller than gasLimit', () => {
       const gasData = '3000';
       const gasLimit = '10000';
-      const expectedGasLimitExecution = '7000';
-      expect(calculateGasLimitExecution(gasLimit, gasData)).to.eq(expectedGasLimitExecution);
+      const expectedgasCall = '7000';
+      expect(calculategasCall(gasLimit, gasData)).to.eq(expectedgasCall);
     });
 
     it('throw an error if gasData is higher than gasLimit', () => {
       const gasData = '10000';
       const gasLimit = '3000';
-      expect(() => calculateGasLimitExecution(gasLimit, gasData)).to.throw('Gas limit too low');
+      expect(() => calculategasCall(gasLimit, gasData)).to.throw('Gas limit too low');
     });
 
     it('throw an error if gasData and gasLimit are equal', () => {
       const gasData = '10000';
       const gasLimit = '10000';
-      expect(() => calculateGasLimitExecution(gasLimit, gasData)).to.throw('Gas limit too low');
+      expect(() => calculategasCall(gasLimit, gasData)).to.throw('Gas limit too low');
     });
   });
 });

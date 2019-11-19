@@ -45,7 +45,7 @@ export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHan
         to: asEthAddress,
         from: asEthAddress,
         nonce: asString,
-        gasLimitExecution: asBigNumber,
+        gasCall: asBigNumber,
         gasPrice: asBigNumber,
         gasData: asBigNumber,
         data: asArrayish,

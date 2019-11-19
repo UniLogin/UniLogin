@@ -32,7 +32,7 @@ contract ECDSAUtils {
         uint nonce,
         uint gasPrice,
         address gasToken,
-        uint gasLimitExecution,
+        uint gasCall,
         uint gasData) public pure returns (bytes32)
     {
         return keccak256(
@@ -44,7 +44,7 @@ contract ECDSAUtils {
                 nonce,
                 gasPrice,
                 gasToken,
-                gasLimitExecution,
+                gasCall,
                 gasData
         ));
     }

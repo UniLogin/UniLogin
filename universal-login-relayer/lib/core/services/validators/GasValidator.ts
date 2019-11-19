@@ -10,10 +10,10 @@ export class GasValidator implements IMessageValidator {
     const expectedGasData = estimateGasDataFromUnsignedMessage(unsignedMessage);
     const actualGasData = Number(signedMessage.gasData);
     ensure(actualGasData === expectedGasData, InsufficientGas, `Got GasData ${actualGasData} but should be ${expectedGasData}`);
-    ensure(GAS_BASE < signedMessage.gasLimitExecution, InsufficientGas, `Got GasLimitExecution ${signedMessage.gasLimitExecution} but should greater than ${GAS_BASE}`);
+    ensure(GAS_BASE < signedMessage.gasCall, InsufficientGas, `Got gasCall ${signedMessage.gasCall} but should greater than ${GAS_BASE}`);
 
-    const gasLimitExecution = Number(signedMessage.gasLimitExecution);
-    const totalGasLimit = gasLimitExecution + actualGasData;
+    const gasCall = Number(signedMessage.gasCall);
+    const totalGasLimit = gasCall + actualGasData;
     ensure(totalGasLimit <= this.MAX_GAS_LIMIT, GasLimitTooHigh, `Got ${totalGasLimit} but should be less than ${this.MAX_GAS_LIMIT}`);
   }
 }

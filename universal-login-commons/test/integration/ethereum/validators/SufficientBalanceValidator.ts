@@ -23,7 +23,7 @@ describe('INT: SufficientBalanceValidator', () => {
       data: EMPTY_DATA,
       nonce: 0,
       gasPrice: TEST_GAS_PRICE,
-      gasLimitExecution: utils.bigNumberify(190000),
+      gasCall: utils.bigNumberify(190000),
       gasData: utils.bigNumberify(10000),
       gasToken: token.address,
     };
@@ -38,10 +38,10 @@ describe('INT: SufficientBalanceValidator', () => {
   });
 
   it('passes when not enough gas', async () => {
-    await expect(validator.validate({...signedMessage, gasLimitExecution: 100, gasData: 1000})).to.be.eventually.fulfilled;
+    await expect(validator.validate({...signedMessage, gasCall: 100, gasData: 1000})).to.be.eventually.fulfilled;
   });
 
   it('throws when not enough tokens', async () => {
-    await expect(validator.validate({...signedMessage, gasLimitExecution: utils.parseEther('2.0')})).to.be.eventually.rejectedWith('Not enough tokens');
+    await expect(validator.validate({...signedMessage, gasCall: utils.parseEther('2.0')})).to.be.eventually.rejectedWith('Not enough tokens');
   });
 });

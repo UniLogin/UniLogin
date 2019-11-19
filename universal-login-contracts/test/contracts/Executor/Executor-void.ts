@@ -22,7 +22,7 @@ describe('Void Executor', () => {
   it('execute signed fails', async () => {
     signature = [];
     message = {...transferMessage, from: walletContractWithZeroKey.address};
-    const gasLimit = calculateFinalGasLimit(message.gasLimitExecution, estimateGasDataForNoSignature(message));
+    const gasLimit = calculateFinalGasLimit(message.gasCall, estimateGasDataForNoSignature(message));
     await expect(walletContractWithZeroKey.executeSigned(...getExecutionArgs(message), signature, {gasLimit}))
       .to.be.revertedWith('Invalid signatures');
   });

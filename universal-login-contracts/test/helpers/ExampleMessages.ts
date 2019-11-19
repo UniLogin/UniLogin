@@ -14,7 +14,7 @@ export const transferMessage = {
   data: [],
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '7440',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
@@ -25,7 +25,7 @@ export const failedTransferMessage = {
   data: [],
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '7440',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
@@ -37,7 +37,7 @@ export const callMessage = {
   data: callMeMessageData,
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '8720',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
@@ -49,7 +49,7 @@ export const failedCallMessage = {
   data: revertingFunctionMessageData,
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
+  gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
   gasData: '8720',
   gasToken: '0x0000000000000000000000000000000000000000',
 };
@@ -69,7 +69,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     nonce: 0,
     gasPrice: 1,
     gasToken: '0x0',
-    gasLimitExecution: utils.bigNumberify('240000'),
+    gasCall: utils.bigNumberify('240000'),
     gasData: 0,
     ...overrides,
   };
@@ -95,7 +95,7 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     value: parseEther('0.0'),
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice: DEFAULT_GAS_PRICE,
-    gasLimitExecution: DEFAULT_GAS_LIMIT_EXECUTION,
+    gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
     gasData: 0,
     gasToken: '0x0000000000000000000000000000000000000000',
   };

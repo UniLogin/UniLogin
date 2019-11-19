@@ -93,7 +93,7 @@ describe('Contract: ECDSAUtils', async () => {
       msg.nonce,
       msg.gasPrice,
       msg.gasToken,
-      msg.gasLimitExecution,
+      msg.gasCall,
       msg.gasData);
     expect(jsHash).to.eq(solidityHash);
   });
