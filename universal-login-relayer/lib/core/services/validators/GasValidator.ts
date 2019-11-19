@@ -9,7 +9,7 @@ export class GasValidator implements IMessageValidator {
     const {signature, ...unsignedMessage} = signedMessage;
     const expectedGasBase = estimateGasBaseFromUnsignedMessage(unsignedMessage);
     const actualGasBase = Number(signedMessage.gasBase);
-    ensure(actualGasBase === expectedGasBase, InsufficientGas, `Got GasBase ${actualGasBase} but should be ${expectedGasBase}`);
+    ensure(expectedGasBase.eq(actualGasBase), InsufficientGas, `Got GasBase ${actualGasBase} but should be ${expectedGasBase}`);
     ensure(GAS_BASE < signedMessage.gasCall, InsufficientGas, `Got gasCall ${signedMessage.gasCall} but should greater than ${GAS_BASE}`);
 
     const gasCall = Number(signedMessage.gasCall);

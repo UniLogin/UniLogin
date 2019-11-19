@@ -18,6 +18,6 @@ const gasCostFor = (byte: string) => {
   return byte === '00' ? ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
 };
 
-export const GAS_FIXED = '40000';
+export const GAS_FIXED = '35000';
 
 export const computeGasBase = (data: string) => utils.bigNumberify(computeGasData(data)).add(GAS_FIXED);

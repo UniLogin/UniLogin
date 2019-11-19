@@ -1,7 +1,8 @@
 import {expect} from 'chai';
+import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockToken from '@universal-login/contracts/build/MockToken';
-import {calculateMessageHash, waitExpect, GAS_BASE} from '@universal-login/commons';
+import {calculateMessageHash, waitExpect, GAS_BASE, GAS_FIXED} from '@universal-login/commons';
 import {messageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
@@ -55,7 +56,7 @@ describe('INT: MultiSignatureExecute', async () => {
 
     const gasCall = 1;
     const gasBase = 7696;
-    const gasLimit = gasBase + gasCall;
+    const gasLimit = utils.bigNumberify(gasBase + gasCall).add(GAS_FIXED);
     const message1 = {...msg, gasLimit};
     const signedMessage1 = messageToSignedMessage(message1, actionKey);
     await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);
