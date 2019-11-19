@@ -9,7 +9,7 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 describe('UNIT: BackupCodesService', () => {
-  const waitToBeSuccess = sinon.stub().resolves([350, 506, 372, 483, 576, 48]);
+  const waitToBeSuccess = sinon.stub().resolves(['350', '506', '372', '483', '576', '48']);
   const waitForTransactionHash = sinon.stub().resolves(TEST_TRANSACTION_HASH);
   const deployedWallet = {
     generateBackupCodes: sinon.stub().resolves({
@@ -44,7 +44,7 @@ describe('UNIT: BackupCodesService', () => {
       await backupCodesService.generate(INITIAL_GAS_PARAMETERS);
       expect(backupCodesService.state.get()).to.be.deep.eq({
         kind: 'Generated',
-        codes: [350, 506, 372, 483, 576, 48],
+        codes: ['350', '506', '372', '483', '576', '48'],
       });
       expect(deployedWallet.generateBackupCodes).calledWithExactly(INITIAL_GAS_PARAMETERS);
       expect(deployedWallet.generateBackupCodes).calledBefore(waitForTransactionHash);
