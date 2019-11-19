@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage, estimateGasDataFromUnsignedMessage, calculategasCall} from '../lib/estimateGas';
+import {estimateGasBaseFromSignedMessage, estimateGasBaseFromUnsignedMessage, calculateGasCall} from '../lib/estimateGas';
 
 describe('UNIT: estimateGas', () => {
-  describe('estimateGasDataFromSignedMessage', () => {
+  describe('estimateGasBaseFromSignedMessage', () => {
     it('empty message costs 2192 gas', () => {
       const message: SignedMessage = {
         from: createZeroedHexString(20),
@@ -14,13 +14,13 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
     });
 
-    it('from and nonce don\'t count for gasData', () => {
+    it('from and nonce don\'t count for gasBase', () => {
       const message: SignedMessage = {
         from: createFullHexString(20),
         nonce: 1337,
@@ -30,10 +30,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
     });
 
     it('add 0xff...ff \'to\' address', () => {
@@ -46,10 +46,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 1280);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 1280);
     });
 
     it('add value 255 [0xff]', () => {
@@ -62,10 +62,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 64);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 64);
     });
 
     it('add gasPrice 255 [0xff]', () => {
@@ -78,10 +78,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 255,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 64);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 64);
     });
 
     it('add 0xff...ff gasToken address', () => {
@@ -94,10 +94,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createFullHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 1280);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 1280);
     });
 
     it('gasCall 1000 - but estimate don\'t chnage since gasCall already been accounted', () => {
@@ -110,13 +110,13 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 1000,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
     });
 
-    it('gasData 0xff - but estimate don\'t chnage since gasData already been accounted', () => {
+    it('gasBase 0xff - but estimate don\'t chnage since gasBase already been accounted', () => {
       const message: SignedMessage = {
         from: createFullHexString(20),
         nonce: 1337,
@@ -126,10 +126,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 255,
+        gasBase: 255,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
     });
 
     it('add 100bytes of 0xff data', () => {
@@ -142,10 +142,10 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 6400 + 576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 6400 + 576);
     });
 
     it('add signature', () => {
@@ -158,14 +158,14 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
         signature: createFullHexString(65),
       };
-      expect(estimateGasDataFromSignedMessage(message)).to.be.equal(2576 + 65 * 64);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 65 * 64);
     });
   });
 
-  describe('estimateGasDataFromUnsignedMessage', () => {
+  describe('estimateGasBaseFromUnsignedMessage', () => {
     it('add signature', () => {
       const message: UnsignedMessage = {
         from: createFullHexString(20),
@@ -176,30 +176,30 @@ describe('UNIT: estimateGas', () => {
         gasPrice: 0,
         gasToken: createZeroedHexString(20),
         gasCall: 0,
-        gasData: 0,
+        gasBase: 0,
       };
-      expect(estimateGasDataFromUnsignedMessage(message)).to.be.equal(2576 + 65 * 64);
+      expect(estimateGasBaseFromUnsignedMessage(message)).to.be.equal(2576 + 65 * 64);
     });
   });
 
-  describe('calculategasCall', () => {
-    it('gasData is smaller than gasLimit', () => {
-      const gasData = '3000';
+  describe('calculateGasCall', () => {
+    it('gasBase is smaller than gasLimit', () => {
+      const gasBase = '3000';
       const gasLimit = '10000';
       const expectedgasCall = '7000';
-      expect(calculategasCall(gasLimit, gasData)).to.eq(expectedgasCall);
+      expect(calculateGasCall(gasLimit, gasBase)).to.eq(expectedgasCall);
     });
 
-    it('throw an error if gasData is higher than gasLimit', () => {
-      const gasData = '10000';
+    it('throw an error if gasBase is higher than gasLimit', () => {
+      const gasBase = '10000';
       const gasLimit = '3000';
-      expect(() => calculategasCall(gasLimit, gasData)).to.throw('Gas limit too low');
+      expect(() => calculateGasCall(gasLimit, gasBase)).to.throw('Gas limit too low');
     });
 
-    it('throw an error if gasData and gasLimit are equal', () => {
-      const gasData = '10000';
+    it('throw an error if gasBase and gasLimit are equal', () => {
+      const gasBase = '10000';
       const gasLimit = '10000';
-      expect(() => calculategasCall(gasLimit, gasData)).to.throw('Gas limit too low');
+      expect(() => calculateGasCall(gasLimit, gasBase)).to.throw('Gas limit too low');
     });
   });
 });

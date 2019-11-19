@@ -33,7 +33,7 @@ contract ECDSAUtils {
         uint gasPrice,
         address gasToken,
         uint gasCall,
-        uint gasData) public pure returns (bytes32)
+        uint gasBase) public pure returns (bytes32)
     {
         return keccak256(
             abi.encodePacked(
@@ -45,7 +45,7 @@ contract ECDSAUtils {
                 gasPrice,
                 gasToken,
                 gasCall,
-                gasData
+                gasBase
         ));
     }
 }

@@ -24,7 +24,7 @@ describe('INT: SufficientBalanceValidator', () => {
       nonce: 0,
       gasPrice: TEST_GAS_PRICE,
       gasCall: utils.bigNumberify(190000),
-      gasData: utils.bigNumberify(10000),
+      gasBase: utils.bigNumberify(10000),
       gasToken: token.address,
     };
     signedMessage = {
@@ -38,7 +38,7 @@ describe('INT: SufficientBalanceValidator', () => {
   });
 
   it('passes when not enough gas', async () => {
-    await expect(validator.validate({...signedMessage, gasCall: 100, gasData: 1000})).to.be.eventually.fulfilled;
+    await expect(validator.validate({...signedMessage, gasCall: 100, gasBase: 1000})).to.be.eventually.fulfilled;
   });
 
   it('throws when not enough tokens', async () => {

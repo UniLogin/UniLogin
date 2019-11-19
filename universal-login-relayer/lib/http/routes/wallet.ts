@@ -47,7 +47,7 @@ export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHan
         nonce: asString,
         gasCall: asBigNumber,
         gasPrice: asBigNumber,
-        gasData: asBigNumber,
+        gasBase: asBigNumber,
         data: asArrayish,
         value: asBigNumber,
         signature: asString,

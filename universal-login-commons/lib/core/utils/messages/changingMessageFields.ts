@@ -6,7 +6,7 @@ export function stringifySignedMessageFields(signedMessage: SignedMessage) {
     ...signedMessage,
     value: signedMessage.value && signedMessage.value.toString(),
     gasCall: signedMessage.gasCall && signedMessage.gasCall.toString(),
-    gasData: signedMessage.gasData && signedMessage.gasData.toString(),
+    gasBase: signedMessage.gasBase && signedMessage.gasBase.toString(),
     gasPrice: signedMessage.gasPrice && signedMessage.gasPrice.toString(),
     nonce: signedMessage.nonce.toString(),
   };
@@ -18,6 +18,6 @@ export function bignumberifySignedMessageFields(signedMessage: any) {
     value: utils.bigNumberify(signedMessage.value),
     gasCall: utils.bigNumberify(signedMessage.gasCall),
     gasPrice: utils.bigNumberify(signedMessage.gasPrice),
-    gasData: utils.bigNumberify(signedMessage.gasData),
+    gasBase: utils.bigNumberify(signedMessage.gasBase),
   };
 }

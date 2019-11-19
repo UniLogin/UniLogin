@@ -13,7 +13,7 @@ describe('UNIT: ComposeValidator', () => {
     data: '0x5f7b68be00000000000000000000000063fc2ad3d021a4d7e64323529a55a9442c444da0',
     nonce: 0,
     gasPrice: 10000000000,
-    gasData: 11408,
+    gasBase: 11408,
     gasCall: 1000000 - 11408,
     gasToken: '0xFDFEF9D10d929cB3905C71400ce6be1990EA0F34',
     from: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',

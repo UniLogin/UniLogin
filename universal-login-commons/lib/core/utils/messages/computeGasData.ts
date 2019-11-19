@@ -16,3 +16,5 @@ export const computeGasData = (data: string) => {
 const gasCostFor = (byte: string) => {
   return byte === '00' ? ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
 };
+
+export const computeGasBase = computeGasData;

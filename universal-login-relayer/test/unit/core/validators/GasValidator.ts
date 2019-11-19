@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {SignedMessage} from '@universal-login/commons';
-import {estimateGasDataFromSignedMessage} from '@universal-login/contracts';
+import {estimateGasBaseFromSignedMessage} from '@universal-login/contracts';
 import {GasValidator} from '../../../../lib/core/services/validators/GasValidator';
 import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
@@ -17,7 +17,7 @@ describe('UNIT: GasValidator', () => {
       data: '0x5f7b68be00000000000000000000000063fc2ad3d021a4d7e64323529a55a9442c444da0',
       nonce: 0,
       gasPrice: 10000000000,
-      gasData: 11408,
+      gasBase: 11408,
       gasCall: MAX_GAS_LIMIT - 11408,
       gasToken: '0xFDFEF9D10d929cB3905C71400ce6be1990EA0F34',
       from: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',
@@ -30,9 +30,9 @@ describe('UNIT: GasValidator', () => {
   });
 
   it('too less', async () => {
-    (message.gasData as number) -= 1;
-    const actualGasData = estimateGasDataFromSignedMessage(message);
-    await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasData ${message.gasData as number} but should be ${actualGasData}`);
+    (message.gasBase as number) -= 1;
+    const actualGasBase = estimateGasBaseFromSignedMessage(message);
+    await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasBase ${message.gasBase as number} but should be ${actualGasBase}`);
   });
 
   it('gas limit too high', async () => {

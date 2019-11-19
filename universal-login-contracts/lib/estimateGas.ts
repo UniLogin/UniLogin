@@ -1,33 +1,33 @@
 import {utils} from 'ethers';
-import {UnsignedMessage, SignedMessage, computeGasData, createFullHexString, ensure, SignedMessagePaymentOptions} from '@universal-login/commons';
+import {UnsignedMessage, SignedMessage, computeGasBase, createFullHexString, ensure, SignedMessagePaymentOptions} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 import cloneDeep from 'lodash.clonedeep';
 
 export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
-  const gasData = utils.bigNumberify(estimateGasDataFromUnsignedMessage(unsignedMessage));
-  const gasCall = calculategasCall(gasLimit, gasData);
-  return {gasData, gasCall};
+  const gasBase = utils.bigNumberify(estimateGasBaseFromUnsignedMessage(unsignedMessage));
+  const gasCall = calculateGasCall(gasLimit, gasBase);
+  return {gasBase, gasCall};
 };
 
-export const calculategasCall = (gasLimit: utils.BigNumberish, gasData: utils.BigNumberish) => {
-  const gasCall = utils.bigNumberify(gasLimit).sub(gasData);
+export const calculateGasCall = (gasLimit: utils.BigNumberish, gasBase: utils.BigNumberish) => {
+  const gasCall = utils.bigNumberify(gasLimit).sub(gasBase);
   ensure(gasCall.gt(0), Error, 'Gas limit too low');
   return gasCall;
 };
 
-export const estimateGasDataFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
+export const estimateGasBaseFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
   const signature = createFullHexString(65);
-  return estimateGasDataFromSignedMessage({...unsignedMessage, signature});
+  return estimateGasBaseFromSignedMessage({...unsignedMessage, signature});
 };
 
-export const estimateGasDataFromSignedMessage = (signedMessage: SignedMessage) => {
-  const copySignedMessage = {...cloneDeep(signedMessage), gasData: utils.bigNumberify('0xFFFFFF'), gasCall: utils.bigNumberify('0xFFFFFF')};
+export const estimateGasBaseFromSignedMessage = (signedMessage: SignedMessage) => {
+  const copySignedMessage = {...cloneDeep(signedMessage), gasBase: utils.bigNumberify('0xFFFFFF'), gasCall: utils.bigNumberify('0xFFFFFF')};
   const txdata = encodeDataForExecuteSigned(copySignedMessage);
-  return computeGasData(txdata);
+  return computeGasBase(txdata);
 };
 
-export const calculateFinalGasLimit = (gasCall: utils.BigNumberish, gasData: utils.BigNumberish) =>
-  utils.bigNumberify(gasCall).add(gasData).add('30000');
+export const calculateFinalGasLimit = (gasCall: utils.BigNumberish, gasBase: utils.BigNumberish) =>
+  utils.bigNumberify(gasCall).add(gasBase).add('30000');
 
 export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
-  ({gasLimit: calculateFinalGasLimit(msg.gasCall, msg.gasData)});
+  ({gasLimit: calculateFinalGasLimit(msg.gasCall, msg.gasBase)});

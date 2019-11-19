@@ -25,7 +25,7 @@ describe('messageToUnsignedMessage', () => {
       gasPrice: DEFAULT_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
-      gasData: bigNumberify(8976),
+      gasBase: bigNumberify(8976),
       gasCall: bigNumberify(100000 - 8976),
       nonce: 0,
     };
@@ -45,7 +45,7 @@ describe('unsignedMessageToSignedMessage', async () => {
       nonce: '0',
       gasPrice: DEFAULT_GAS_PRICE,
       gasCall: DEFAULT_GAS_LIMIT,
-      gasData: '0',
+      gasBase: '0',
       gasToken: '0x0000000000000000000000000000000000000000',
     };
 
@@ -57,7 +57,7 @@ describe('unsignedMessageToSignedMessage', async () => {
       nonce: '0',
       gasPrice: transferMessage.gasPrice,
       gasCall: transferMessage.gasCall,
-      gasData: '0',
+      gasBase: '0',
       gasToken: '0x0000000000000000000000000000000000000000',
       signature: '0xd632d56c1558e60e59cf2332d8e0e47bb52e34ea92c8dc210bec90b0b60f39204959e832ba6a3efa67be0f6cae082cf7bea3a849dd0091bfe75babc281235f9d1b',
     };
