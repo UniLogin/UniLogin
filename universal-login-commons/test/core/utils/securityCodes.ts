@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
+import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, isCodeSufficientButInvalid, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
 import {Notification} from '../../../lib';
 
 describe('UNIT: security codes', () => {
@@ -102,6 +102,25 @@ describe('UNIT: security codes', () => {
       const wrongCodePickedByUser = codeKeyboard.splice(0, 6);
       const isValid = isValidCode(wrongCodePickedByUser, mockedAddress);
       expect(isValid).to.be.false;
+    });
+  });
+
+  describe('isCodeSufficientButInvalid', () => {
+    it('correct code and valid length', () => {
+      const encodedAddress = generateCode(mockedAddress);
+      expect(isCodeSufficientButInvalid(encodedAddress, mockedAddress)).to.be.false;
+    });
+
+    it('wrong code and valid length', () => {
+      const codeKeyboard = generateCodeWithFakes(mockedAddress);
+      const wrongCodePickedByUser = codeKeyboard.splice(0, 6);
+      expect(isCodeSufficientButInvalid(wrongCodePickedByUser, mockedAddress)).to.be.true;
+    });
+
+    it('wrong code and invalid length', () => {
+      const codeKeyboard = generateCodeWithFakes(mockedAddress);
+      const wrongCodePickedByUser = codeKeyboard.splice(0, 5);
+      expect(isCodeSufficientButInvalid(wrongCodePickedByUser, mockedAddress)).to.be.false;
     });
   });
 

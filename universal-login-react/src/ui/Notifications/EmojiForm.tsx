@@ -3,7 +3,6 @@ import {
   filterNotificationByCodePrefix,
   isValidCode,
   Notification,
-  SECURITY_CODE_LENGTH,
   ensureNotNull,
 } from '@universal-login/commons';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
@@ -26,13 +25,13 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
     [notifications, enteredCode],
   );
 
-  const isInputValid = enteredCode.length === SECURITY_CODE_LENGTH && soleAddress && isValidCode(enteredCode, soleAddress);
+  const isInputValid = isValidCode(enteredCode, soleAddress);
 
   useEffect(() => {
     if (isInputValid) {
       hideHeader && hideHeader();
       ensureNotNull(soleAddress, Error, 'No matching keys');
-      setPublicKey(soleAddress!);
+      setPublicKey(soleAddress);
     }
   }, [isInputValid]);
 
@@ -52,6 +51,7 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
             <p className="correct-input-title">Correct!</p>
             <EmojiPlaceholders
               enteredCode={enteredCode}
+              publicKey={soleAddress}
               className={className}
             />
           </div>
