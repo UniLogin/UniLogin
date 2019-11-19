@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@universal-login/sdk';
 import WalletPresenter from '../../../../src/core/presenters/WalletPresenter';
+import {Wallet} from 'ethers';
 
 describe('WalletFormatter', async () => {
   let walletService: WalletService;
@@ -13,7 +14,7 @@ describe('WalletFormatter', async () => {
   };
 
   beforeEach(() => {
-    walletService = new WalletService({} as UniversalLoginSDK);
+    walletService = new WalletService({provider: Wallet.createRandom()} as any);
     walletPresenter = new WalletPresenter(walletService);
   });
 

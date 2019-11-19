@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils, Contract, Wallet} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
-import {hasEnoughToken} from '../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
+import {hasEnoughToken} from '../../../../lib/integration/ethereum/validators/SufficientBalanceValidator';
 import {TEST_CONTRACT_ADDRESS} from '../../../../lib/core/constants/test';
 import {BalanceChecker} from '../../../../lib/integration/ethereum/BalanceChecker';
 import {ETHER_NATIVE_TOKEN} from '../../../../lib/core/constants/constants.js';

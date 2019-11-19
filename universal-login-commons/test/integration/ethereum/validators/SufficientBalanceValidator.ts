@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {EnoughTokenValidator} from '../../../../lib/integration/ethereum/validators/EnoughTokenValidator';
+import {SufficientBalanceValidator} from '../../../../lib/integration/ethereum/validators/SufficientBalanceValidator';
 import {utils, providers} from 'ethers';
 import {EMPTY_DATA} from '../../../../lib/core/constants/constants';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE} from '../../../../lib/core/constants/test';
@@ -7,9 +7,9 @@ import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
 import {SignedMessage, calculateMessageSignature} from '../../../../lib';
 
-describe('INT: EnoughTokenValidator', () => {
+describe('INT: SufficientBalanceValidator', () => {
   const provider: providers.Provider = createMockProvider();
-  const validator = new EnoughTokenValidator(provider);
+  const validator = new SufficientBalanceValidator(provider);
   let signedMessage: SignedMessage;
 
   before(async () => {

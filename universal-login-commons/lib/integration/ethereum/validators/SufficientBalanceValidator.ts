@@ -7,7 +7,7 @@ export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: PaymentOpti
   return balance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
 };
 
-export class EnoughTokenValidator implements IMessageValidator {
+export class SufficientBalanceValidator implements IMessageValidator {
   private balanceChecker: BalanceChecker;
 
   constructor(private provider: providers.Provider) {

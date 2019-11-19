@@ -9,14 +9,14 @@ export interface ConnectedDeviceViewProps {
 }
 
 export const ConnectedDeviceView = ({deviceInfo, isHighlighted, trashButton}: ConnectedDeviceViewProps) => {
-  const {os, applicationName, type, ipAddress, city, logo} = deviceInfo;
+  const {applicationName, type, city, logo, platform} = deviceInfo;
   return (
     <li className={`connected-devices-item ${isHighlighted ? 'highlighted' : ''}`}>
       <Logo deviceType={type.toLowerCase()} logo={logo} applicationName={applicationName} />
       <div>
-        <p className="connected-devices-type">{applicationName}{os && ` • ${os}`}</p>
+        <p className="connected-devices-type">{applicationName}{platform && ` • ${platform}`}</p>
         <p className="connected-devices-details">
-          {ipAddress && `IP address: ${ipAddress} ${city}`}
+          {city}
         </p>
       </div>
       {trashButton}

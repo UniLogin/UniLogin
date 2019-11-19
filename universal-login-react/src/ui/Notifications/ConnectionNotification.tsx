@@ -31,18 +31,20 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
-    ensureNotNull(gasParameters, TypeError);
-    ensureNotNull(publicKey, Error, 'Invalid key');
-
-    history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash: undefined});
-    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.addKey(publicKey!, gasParameters!);
-
-    const {transactionHash} = await waitForTransactionHash();
-    ensureNotNull(transactionHash, TypeError);
-    history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash});
-
-    await waitToBeSuccess();
-    history.replace(join(devicesBasePath, 'connectionSuccess'));
+    try {
+      ensureNotNull(gasParameters, TypeError);
+      ensureNotNull(publicKey, Error, 'Invalid key');
+      history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash: undefined});
+      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.addKey(publicKey!, gasParameters!);
+      const {transactionHash} = await waitForTransactionHash();
+      ensureNotNull(transactionHash, TypeError);
+      history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash});
+      await waitToBeSuccess();
+      history.replace(join(devicesBasePath, 'connectionSuccess'));
+    } catch (e) {
+      console.error(e);
+      history.replace(join(devicesBasePath, 'connectionFailed'));
+    }
   };
 
   return (

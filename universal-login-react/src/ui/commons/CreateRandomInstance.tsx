@@ -19,13 +19,13 @@ export const CreateRandomInstance = ({walletService}: CreateRandomInstanceProps)
     const randomString = Math.random().toString(36).substring(7);
     const name = `${randomString}.mylogin.eth`;
     setEnsName(name);
-    const {waitForBalance, contractAddress} = await walletService.createFutureWallet();
+    const {waitForBalance, contractAddress} = await walletService.createFutureWallet(name);
     setStatus(`Waiting for intial funds in ${contractAddress}`);
     const wallet = new Wallet(DEV_DEFAULT_PRIVATE_KEY, sdk.provider);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('4')});
     await waitForBalance();
     setStatus('waiting for wallet contract to be deployed');
-    await walletService.deployFutureWallet(name, DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
+    await walletService.deployFutureWallet(DEFAULT_GAS_PRICE.toString(), ETHER_NATIVE_TOKEN.address);
     setStatus(`Wallet contract deployed at ${contractAddress}`);
     setContractAddress(contractAddress);
     setStatus('');
