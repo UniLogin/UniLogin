@@ -9,10 +9,11 @@ interface BackupCodesInitialProps {
   generateBackupCodes: () => void;
   deployedWallet: DeployedWallet;
   setGasParameters: OnGasParametersChanged;
+  isButtonDisabled: boolean;
   className?: string;
 }
 
-export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasParameters, className}: BackupCodesInitialProps) => (
+export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasParameters, className, isButtonDisabled}: BackupCodesInitialProps) => (
   <BackupCodesWrapper className={className}>
     <FooterSection className={className}>
       <GasPrice
@@ -23,6 +24,7 @@ export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasP
         className={className}
       />
       <button
+        disabled={isButtonDisabled}
         className="backup-btn backup-btn-primary generate-code-btn"
         onClick={generateBackupCodes}
       >

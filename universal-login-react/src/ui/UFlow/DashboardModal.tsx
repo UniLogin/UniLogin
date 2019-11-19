@@ -128,7 +128,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
           />
           <Route path="/dashboard/backup">
             <DialogWrapper message={notice} deployedWallet={deployedWallet}>
-              <BackupCodes deployedWallet={deployedWallet} basePath="/dashboard/backup" />
+              <BackupCodes deployedWallet={deployedWallet} />
             </DialogWrapper>
           </Route>
         </Switch>
