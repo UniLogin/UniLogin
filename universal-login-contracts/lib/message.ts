@@ -17,8 +17,8 @@ export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMes
     nonce: message.nonce!,
     gasPrice: message.gasPrice!,
     gasToken: message.gasToken!,
-    gasData: 0,
-    gasLimitExecution: 0,
+    gasBase: 0,
+    gasCall: 0,
   };
 
   return {...messageWithoutGasEstimates, ...computeGasFields(messageWithoutGasEstimates, message.gasLimit!)};

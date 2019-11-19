@@ -5,8 +5,8 @@ import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST} from '@universal-login/commons';
-import {getExecutionArgs, estimateGasDataForNoSignature} from '../../helpers/argumentsEncoding';
-import {calculatePaymentOptions, estimateGasDataFromSignedMessage} from '../../../lib/estimateGas';
+import {getExecutionArgs, estimateGasBaseForNoSignature} from '../../helpers/argumentsEncoding';
+import {calculatePaymentOptions, estimateGasBaseFromSignedMessage} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -129,7 +129,7 @@ describe('CONTRACT: Executor - main', async () => {
 
       describe('Invalid signature', () => {
         it('no signature', async () => {
-          msg = {...msg, gasData: estimateGasDataForNoSignature(msg)};
+          msg = {...msg, gasBase: estimateGasBaseForNoSignature(msg)};
           await expect(walletContract.executeSigned(...getExecutionArgs(msg), [], calculatePaymentOptions(msg)))
             .to.be.revertedWith('Invalid signatures');
           expect(await walletContract.lastNonce()).to.eq(0);
@@ -181,7 +181,7 @@ describe('CONTRACT: Executor - main', async () => {
     describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        msgToCall.gasData = utils.bigNumberify(msgToCall.gasData).add(ONE_SIGNATURE_GAS_COST);
+        msgToCall.gasBase = utils.bigNumberify(msgToCall.gasBase).add(ONE_SIGNATURE_GAS_COST);
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         signatures = concatenateSignatures([signature1, signature2]);
@@ -241,7 +241,7 @@ describe('CONTRACT: Executor - main', async () => {
       });
 
       it('should fail 0 length input in signatures', async () => {
-        msgToCall = {...msgToCall, gasData: estimateGasDataForNoSignature(msgToCall)};
+        msgToCall = {...msgToCall, gasBase: estimateGasBaseForNoSignature(msgToCall)};
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), '0x', calculatePaymentOptions(msgToCall)))
           .to.be.revertedWith('Invalid signatures');
       });
@@ -259,7 +259,7 @@ describe('CONTRACT: Executor - main', async () => {
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         signatures = await concatenateSignatures([signature1, signature2, signature2]);
-        msgToCall = {...msgToCall, gasData: estimateGasDataFromSignedMessage({...msgToCall, signature: signatures} as SignedMessage)};
+        msgToCall = {...msgToCall, gasBase: estimateGasBaseFromSignedMessage({...msgToCall, signature: signatures} as SignedMessage)};
         await walletContract.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), signatures, calculatePaymentOptions(msgToCall)))
@@ -273,7 +273,7 @@ describe('CONTRACT: Executor - main', async () => {
     describe('Successful execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        msgToCall.gasData = utils.bigNumberify(msgToCall.gasData).add(ONE_SIGNATURE_GAS_COST.mul(2));
+        msgToCall.gasBase = utils.bigNumberify(msgToCall.gasBase).add(ONE_SIGNATURE_GAS_COST.mul(2));
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
@@ -314,7 +314,7 @@ describe('CONTRACT: Executor - main', async () => {
 
       it('should fail with not sorted signatures', async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        msgToCall.gasData = utils.bigNumberify(msgToCall.gasData).add(ONE_SIGNATURE_GAS_COST.mul(2));
+        msgToCall.gasBase = utils.bigNumberify(msgToCall.gasBase).add(ONE_SIGNATURE_GAS_COST.mul(2));
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
@@ -327,7 +327,7 @@ describe('CONTRACT: Executor - main', async () => {
     describe('failed execution of call via multi-signature', async () => {
       before(async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        msgToCall.gasData = utils.bigNumberify(msgToCall.gasData).add(ONE_SIGNATURE_GAS_COST);
+        msgToCall.gasBase = utils.bigNumberify(msgToCall.gasBase).add(ONE_SIGNATURE_GAS_COST);
       });
 
       it('should fail with a least an invalid signature', async () => {
@@ -347,7 +347,7 @@ describe('CONTRACT: Executor - main', async () => {
       });
 
       it('should fail with invalid signature size', async () => {
-        msgToCall.gasData = utils.bigNumberify(msgToCall.gasData).sub('4420');
+        msgToCall.gasBase = utils.bigNumberify(msgToCall.gasBase).sub('4420');
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const corruptedSignatures = `${concatenateSignatures([signature1, signature2])}a`;
@@ -356,14 +356,14 @@ describe('CONTRACT: Executor - main', async () => {
       });
 
       it('should fail 0 length input in signatures', async () => {
-        msgToCall.gasData = estimateGasDataForNoSignature(msgToCall);
+        msgToCall.gasBase = estimateGasBaseForNoSignature(msgToCall);
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), '0x', calculatePaymentOptions(msgToCall)))
           .to.be.revertedWith('Invalid signatures');
       });
 
       it('should fail with not sorted signatures', async () => {
         msgToCall = {...callMessage, from: walletContract.address, to: mockContract.address};
-        msgToCall.gasData = utils.bigNumberify(msgToCall.gasData).add(ONE_SIGNATURE_GAS_COST.mul(2));
+        msgToCall.gasBase = utils.bigNumberify(msgToCall.gasBase).add(ONE_SIGNATURE_GAS_COST.mul(2));
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         const signature3 = calculateMessageSignature(sortedKeys[2], msgToCall);
