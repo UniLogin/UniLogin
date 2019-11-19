@@ -25,13 +25,12 @@ describe('messageToUnsignedMessage', () => {
       gasPrice: DEFAULT_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
-      gasBase: bigNumberify(8976),
-      gasCall: bigNumberify(100000 - 8976),
+      gasBase: bigNumberify(48976),
+      gasCall: bigNumberify(100000 - 48976),
       nonce: 0,
     };
 
     const actualUnsginedMessage = messageToUnsignedMessage(incomingMessage);
-
     expect(actualUnsginedMessage).to.deep.equal(expectedUnsignedMessage);
   });
 });

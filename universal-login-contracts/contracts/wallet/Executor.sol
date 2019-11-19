@@ -51,8 +51,6 @@ contract Executor is ECDSAUtils {
         bytes memory signatures) public returns (bytes32)
     {
         uint256 startingGas = gasleft();
-        require(gasCall <= startingGas, "Relayer set gas limit too low");
-        require(startingGas <= gasCall.add(gasLimitMargin()), "Relayer set gas limit too high");
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasCall, gasBase);
@@ -61,6 +59,7 @@ contract Executor is ECDSAUtils {
         bytes memory _data;
         bool success;
         /* solium-disable-next-line security/no-call-value */
+        require(gasleft() > gasCall, "Not enough gas");
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
         uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasBase)).add(refundGas(gasToken));
