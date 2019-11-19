@@ -78,7 +78,7 @@ export class DeployedWallet implements ApplicationWallet {
     }, this.privateKey);
   }
 
-  async keyExist(key: string) {
+  keyExist(key: string): Promise<boolean> {
     return this.contractInstance.keyExist(key);
   }
 
@@ -138,5 +138,14 @@ export class DeployedWallet implements ApplicationWallet {
 
   subscribeToBalances(callback: OnBalanceChange) {
     return this.sdk.subscribeToBalances(this.contractAddress, callback);
+  }
+
+  subscribeDisconnected(onDisconnected: Function) {
+    const subscription = this.sdk.subscribe(
+      'KeyRemoved',
+      {contractAddress: this.contractAddress, key: this.publicKey},
+      onDisconnected,
+    );
+    return () => subscription.remove();
   }
 }

@@ -23,7 +23,9 @@ export const Dashboard = (props: DashboardProps) => {
   const deployedWallet = state.kind === 'Deployed' ? state.wallet : undefined;
 
   const [newNotifications, setNewNotifications] = useState<Notification[]>([]);
-  useEffect(() => deployedWallet && deployedWallet.subscribeAuthorisations(setNewNotifications), [deployedWallet]);
+  useEffect(() => deployedWallet?.subscribeAuthorisations(setNewNotifications), [deployedWallet]);
+
+  useEffect(() => deployedWallet?.subscribeDisconnected(() => walletService.disconnect()), [deployedWallet]);
 
   if (!deployedWallet) {
     return null;
@@ -35,7 +37,7 @@ export const Dashboard = (props: DashboardProps) => {
         className={`udashboard-logo-btn ${newNotifications.length > 0 ? 'new-notifications' : ''}`}
         onClick={() => setDashboardVisibility(true)}
       >
-        <img src={logoIcon} alt="U"/>
+        <img src={logoIcon} alt="U" />
       </button>
 
       <MemoryRouter initialEntries={['/dashboard/funds']} getUserConfirmation={getWindowConfirmation}>

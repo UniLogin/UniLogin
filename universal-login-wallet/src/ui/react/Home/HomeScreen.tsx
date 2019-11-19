@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {Header} from './Header';
@@ -10,8 +10,10 @@ const HomeScreen = () => {
   const {walletService, walletPresenter} = useServices();
   const modalService = useContext(WalletModalContext);
 
-  const {sdk} = walletService.getDeployedWallet();
-  const notice = sdk.getNotice();
+  const deployedWallet = walletService.getDeployedWallet();
+  const notice = deployedWallet.sdk.getNotice();
+
+  useEffect(() => deployedWallet.subscribeDisconnected(() => walletService.disconnect()), []);
 
   const topUpProps: TopUpModalProps = {
     isDeployment: false,
@@ -23,10 +25,10 @@ const HomeScreen = () => {
   return (
     <>
       <div className="dashboard">
-        <Header/>
+        <Header />
         <div className="dashboard-content">
           <div className="dashboard-content-box">
-            <Notice message={notice}/>
+            <Notice message={notice} />
             <p className="dashboard-ens-name">{walletPresenter.getName()}</p>
             <Switch>
               <Route path="/" exact>
@@ -49,7 +51,6 @@ const HomeScreen = () => {
               <Route path="/backup">
                 <BackupCodes
                   deployedWallet={walletService.getDeployedWallet()}
-                  basePath="/backup"
                   className="jarvis-backup"
                 />
               </Route>

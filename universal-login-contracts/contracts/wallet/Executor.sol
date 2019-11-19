@@ -30,8 +30,8 @@ contract Executor is ECDSAUtils {
         return 9000;
     }
 
-    function transactionGasCost(uint gasData) public pure returns(uint) {
-        return gasData.add(21000); // 21000 - cost for initiating transaction
+    function transactionGasCost(uint gasBase) public pure returns(uint) {
+        return gasBase.add(21000); // 21000 - cost for initiating transaction
     }
 
     function computeGasUsedWithFee(uint gasUsed) public pure returns(uint) {
@@ -46,16 +46,16 @@ contract Executor is ECDSAUtils {
         bytes memory data,
         uint gasPrice,
         address gasToken,
-        uint gasLimitExecution,
-        uint gasData,
+        uint gasCall,
+        uint gasBase,
         bytes memory signatures) public returns (bytes32)
     {
         uint256 startingGas = gasleft();
-        require(gasLimitExecution <= startingGas, "Relayer set gas limit too low");
-        require(startingGas <= gasLimitExecution.add(gasLimitMargin()), "Relayer set gas limit too high");
+        require(gasCall <= startingGas, "Relayer set gas limit too low");
+        require(startingGas <= gasCall.add(gasLimitMargin()), "Relayer set gas limit too high");
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
-        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasLimitExecution, gasData);
+        bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasCall, gasBase);
         require(verifySignatures(signatures, messageHash), "Invalid signature or nonce");
         lastNonce++;
         bytes memory _data;
@@ -63,7 +63,7 @@ contract Executor is ECDSAUtils {
         /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasleft().sub(refundGas(gasToken))).value(value)(data);
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
-        uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasData)).add(refundGas(gasToken));
+        uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasBase)).add(refundGas(gasToken));
         refund(gasUsed, gasPrice, gasToken, msg.sender);
         return messageHash;
     }

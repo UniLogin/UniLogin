@@ -96,9 +96,9 @@ describe('E2E: SDK', async () => {
     });
 
     it('when not enough gas', async () => {
-      const gasData = 8720;
+      const gasBase = 8720;
       const notEnoughGasLimit = 100;
-      message = {...message, gasLimit: gasData + notEnoughGasLimit};
+      message = {...message, gasLimit: gasBase + notEnoughGasLimit};
       await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith(`Insufficient Gas. gasLimit should be greater than ${GAS_BASE}`);
     });
 

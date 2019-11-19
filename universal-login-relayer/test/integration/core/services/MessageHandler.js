@@ -48,11 +48,11 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough gas', async () => {
-    const gasLimitExecution = 1;
-    const gasData = 7696;
-    const gasLimit = gasData + gasLimitExecution;
+    const gasCall = 1;
+    const gasBase = 7696;
+    const gasLimit = gasBase + gasCall;
     const signedMessage = messageToSignedMessage({...msg, gasLimit}, wallet.privateKey);
-    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got GasLimitExecution 1 but should greater than ${GAS_BASE}`);
+    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {
@@ -61,7 +61,7 @@ describe('INT: MessageHandler', async () => {
       const signedMessage = messageToSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
+      await waitExpect(async () => expect(await provider.getBalance(msg.to)).to.eq(expectedBalance));
       const {state, transactionHash} = await messageHandler.getStatus(messageHash);
       expect(transactionHash).to.not.be.null;
       expect(state).to.be.eq('Success');
@@ -75,7 +75,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
+      await waitExpect(async () => expect(await walletContract.keyExist(otherWallet.address)).to.be.true);
     });
 
     describe('Collaboration with Authorisation Service', async () => {

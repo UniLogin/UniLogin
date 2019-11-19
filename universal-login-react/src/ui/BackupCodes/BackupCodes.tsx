@@ -1,88 +1,69 @@
 import React, {useState} from 'react';
-import {join} from 'path';
-import {Switch, Route, useHistory, Prompt} from 'react-router';
-import {Location} from 'history';
 import {DeployedWallet} from '@universal-login/sdk';
 import BackupCodesView from './BackupCodesView';
+import {Prompt} from 'react-router-dom';
 import './../styles/backup.sass';
 import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
-import {GasParameters, ensureNotNull} from '@universal-login/commons';
+import {GasParameters} from '@universal-login/commons';
+import {BackupCodesService} from '../../core/services/BackupCodesService';
+import {useProperty} from '../hooks/useProperty';
 
 export interface BackupProps {
   deployedWallet: DeployedWallet;
-  basePath?: string;
   className?: string;
 }
 
-export const BackupCodes = ({deployedWallet, basePath = '', className}: BackupProps) => {
-  const [backupCodes, setBackupCodes] = useState<string[]>([]);
+export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
 
-  const history = useHistory();
   const relayerConfig = deployedWallet.sdk.getRelayerConfig();
 
-  const generateBackupCodes = async () => {
-    try {
-      history.replace(join(basePath, 'waitingForBackupCodes'));
-      ensureNotNull(gasParameters, Error, 'Missing gas parameters');
-      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes(gasParameters!);
-      const {transactionHash} = await waitForTransactionHash();
-      history.replace(join(basePath, 'waitingForBackupCodes'), {transactionHash});
-      const codes = await waitToBeSuccess();
-      setBackupCodes(codes.concat(backupCodes));
-      history.replace(join(basePath, 'backupCodesGenerated'));
-    } catch (e) {
-      console.error(e);
-      history.replace(join(basePath, 'backupCodesFailure'));
-    }
-  };
+  const [backupCodesService] = useState(() => new BackupCodesService(deployedWallet));
 
-  const waitingPromptMessage = (location: Location<any>) => {
-    if (
-      location.pathname.includes('waitingForBackupCodes') ||
-      location.pathname.includes('backupCodesFailure') ||
-      location.pathname.includes('backupCodesGenerated')
-    ) {
-      return true;
-    }
-    return 'Are you sure you want to leave? The backup codes are being generated.';
-  };
+  const generateBackupCodes = async () => backupCodesService.generate(gasParameters);
 
-  return (
-    <Switch>
-      <Route path={`${basePath}/`} exact>
+  const state = useProperty(backupCodesService.state);
+
+  switch (state.kind) {
+    case 'Initial':
+      return (
         <BackupCodesInitial
           generateBackupCodes={generateBackupCodes}
+          isButtonDisabled={!gasParameters}
           deployedWallet={deployedWallet}
           setGasParameters={setGasParameters}
           className={className}
         />
-      </Route>
-      <Route path={join(basePath, 'backupCodesFailure')} exact>
-        <ErrorMessage className={className} />;
-      </Route>
-      <Route path={join(basePath, 'backupCodesGenerated')} exact>
-        <Prompt message="Are you sure you want to leave? The backup codes will not be displayed again." />
-        <BackupCodesView
-          codes={backupCodes}
-          printCodes={window.print}
-          walletContract={deployedWallet.name}
-          className={className}
-        />
-      </Route>
-      <Route path={join(basePath, 'waitingForBackupCodes')} exact>
-        <Prompt message={waitingPromptMessage} />
+      );
+    case 'InProgress':
+      return (<>
+        <Prompt message="Are you sure you want to leave? The backup codes are being generated." />
         <WaitingForTransaction
           action='Generating backup codes'
           relayerConfig={relayerConfig}
           className={className}
+          transactionHash={state.transactionHash}
         />
-      </Route>
-    </Switch>
-  );
+      </>);
+    case 'Generated':
+      return (
+        <>
+          <Prompt message="Are you sure you want to leave? The backup codes will not be displayed again." />
+          <BackupCodesView
+            codes={state.codes}
+            printCodes={window.print}
+            walletContract={deployedWallet.name}
+            className={className}
+          />
+        </>);
+    case 'Failure':
+      return (
+        <ErrorMessage className={className} />
+      );
+  };
 };
 
 export default BackupCodes;

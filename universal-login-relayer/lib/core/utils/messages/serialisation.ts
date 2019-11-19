@@ -28,7 +28,7 @@ const removeLeadingBytes = (n: number, data: string) => {
 export const messageToTransaction = (message: SignedMessage): providers.TransactionRequest =>
   Object({
     gasPrice: message.gasPrice,
-    gasLimit: utils.bigNumberify(message.gasLimitExecution).add(message.gasData).add(GAS_LIMIT_MARGIN),
+    gasLimit: utils.bigNumberify(message.gasCall).add(message.gasBase).add(GAS_LIMIT_MARGIN),
     to: message.from,
     value: 0,
     data: encodeDataForExecuteSigned(message),
@@ -40,8 +40,8 @@ const dataToMessage = (data: any): DecodedMessage => ({
   data: data[2],
   gasPrice: data[3],
   gasToken: data[4],
-  gasLimitExecution: data[5],
-  gasData: data[6],
+  gasCall: data[5],
+  gasBase: data[6],
   signature: data[7],
 });
 
