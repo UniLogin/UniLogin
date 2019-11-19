@@ -28,6 +28,7 @@ export const EmojiInput = ({value, onChange, publicKey, className}: EmojiInputPr
     <>
       <EmojiPlaceholders
         enteredCode={value}
+        publicKey={publicKey}
         onEmojiClick={onEmojiRemove}
         className={className}
       />
