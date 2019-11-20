@@ -18,26 +18,6 @@ contract Executor is ECDSAUtils {
         requiredSignatures = 1;
     }
 
-    function etherRefundCharge() public pure returns(uint) {
-        return 16000;
-    }
-
-    function tokenRefundCharge() public pure returns(uint) {
-        return 21000;
-    }
-
-    function gasLimitMargin() public pure returns(uint) {
-        return 9000;
-    }
-
-    function transactionGasCost(uint gasBase) public pure returns(uint) {
-        return gasBase.add(21000); // 21000 - cost for initiating transaction
-    }
-
-    function computeGasUsedWithFee(uint gasUsed) public pure returns(uint) {
-        return gasUsed.div(5).mul(6); // 20% fee
-    }
-
     function keyExist(address _key) public view returns(bool);
 
     function executeSigned(
@@ -73,14 +53,6 @@ contract Executor is ECDSAUtils {
             token.transfer(beneficiary, gasUsed.mul(gasPrice));
         } else {
             beneficiary.transfer(gasUsed.mul(gasPrice));
-        }
-    }
-
-    function refundGas(address gasToken) private pure returns(uint refundCharge) {
-        if (gasToken == address(0)) {
-            return etherRefundCharge();
-        } else {
-            return tokenRefundCharge();
         }
     }
 
