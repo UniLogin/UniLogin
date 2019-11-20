@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import Modals from '../Modals/Modals';
@@ -41,11 +41,16 @@ export const Onboarding = (props: OnboardingProps) => {
   };
 
   const onCreateClick = async (ensName: string) => {
-    walletCreationService.onBalancePresent(() => modalService.hideModal());
-    const wallet = await walletCreationService.initiateCreationFlow(ensName);
-    modalService.hideModal();
-    props.onCreate && props.onCreate(wallet);
+    await walletCreationService.initiateCreationFlow(ensName);
   };
+
+  useEffect(() => {
+    setImmediate(async () => {
+      const wallet = await walletCreationService.deployWhenReady(() => modalService.hideModal());
+      modalService.hideModal();
+      props.onCreate?.(wallet);
+    });
+  }, []);
 
   return (
     <div className="universal-login">

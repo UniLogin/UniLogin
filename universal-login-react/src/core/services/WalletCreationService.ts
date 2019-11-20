@@ -1,27 +1,31 @@
 import {WalletService} from '@universal-login/sdk';
-import {GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
+import {ensure, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
+import {waitFor} from 'reactive-properties';
 
 export class WalletCreationService {
   private gasParameters: GasParameters = INITIAL_GAS_PARAMETERS;
-  private callbackOnBalancePresent: (() => void) | undefined;
 
   constructor(
     private readonly walletService: WalletService,
   ) {
   }
 
-  async initiateCreationFlow(ensName: string) {
-    const {waitForBalance} = await this.walletService.createFutureWallet(ensName);
-    await waitForBalance();
-    this.callbackOnBalancePresent && this.callbackOnBalancePresent();
+  async deployWhenReady(onBalancePresent?: () => void) {
+    const state = await this.walletService.stateProperty.pipe(
+      waitFor(state => state.kind === 'Future'),
+    );
+    ensure(state.kind === 'Future', Error, 'Invalid state');
+
+    await state.wallet.waitForBalance();
+    onBalancePresent?.();
     return this.walletService.deployFutureWallet(this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
+  }
+
+  async initiateCreationFlow(ensName: string) {
+    await this.walletService.createFutureWallet(ensName);
   }
 
   setGasParameters(gasParameters: GasParameters) {
     this.gasParameters = gasParameters;
-  }
-
-  onBalancePresent(cb: () => void) {
-    this.callbackOnBalancePresent = cb;
   }
 }
