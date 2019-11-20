@@ -8,13 +8,14 @@ import {
   ExecutionOptions,
   DEFAULT_GAS_LIMIT,
   SdkExecutionOptions,
+  CONTRACT_VERSION,
 } from '@universal-login/commons';
 import UniversalLoginSDK from './sdk';
 import {Execution} from '../core/services/ExecutionFactory';
 import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
-import {WalletContractInterface} from '@universal-login/contracts';
+import {WalletContractInterface, WalletProxyInterface} from '@universal-login/contracts';
 
 interface BackupCodesWithExecution {
   waitToBeSuccess: () => Promise<string[]>;
@@ -147,5 +148,12 @@ export class DeployedWallet implements ApplicationWallet {
       onDisconnected,
     );
     return () => subscription.remove();
+  }
+
+  async fetchWalletVersion() {
+    const proxyInstance = new Contract(this.contractAddress, WalletProxyInterface, this.sdk.provider);
+    const walletMasterAddress = await proxyInstance.implementation();
+    const walletMasterBytecode = await this.sdk.provider.getCode(walletMasterAddress);
+    return (CONTRACT_VERSION as any)[utils.keccak256(walletMasterBytecode)];
   }
 }
