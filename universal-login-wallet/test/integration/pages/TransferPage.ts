@@ -26,4 +26,9 @@ export default class TransferPage {
     const addressInput = this.appWrapper.find('input#input-recipient');
     addressInput.simulate('change', {target: {value: address}});
   }
+
+  getErrorMessage() {
+    this.appWrapper.update();
+    return this.appWrapper.find('.error-message').text();
+  }
 }

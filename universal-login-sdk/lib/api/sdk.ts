@@ -135,7 +135,7 @@ class UniversalLoginSDK {
 
   getRelayerConfig(): PublicRelayerConfig {
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
-    return this.relayerConfig!;
+    return this.relayerConfig;
   }
 
   async fetchRelayerConfig() {
@@ -219,8 +219,8 @@ class UniversalLoginSDK {
   }
 
   async resolveName(ensName: string) {
-    const {ensAddress} = this.relayerConfig!.chainSpec;
-    return resolveName(this.provider, ensAddress, ensName);
+    const {chainSpec} = this.getRelayerConfig();
+    return resolveName(this.provider, chainSpec.ensAddress, ensName);
   }
 
   async connect(walletContractAddress: string) {
