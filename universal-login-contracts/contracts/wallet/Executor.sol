@@ -50,7 +50,6 @@ contract Executor is ECDSAUtils {
         uint gasBase,
         bytes memory signatures) public returns (bytes32)
     {
-        uint256 startingGas = gasleft();
         require(signatures.length != 0, "Invalid signatures");
         require(signatures.length >= requiredSignatures * 65, "Not enough signatures");
         bytes32 messageHash = calculateMessageHash(address(this), to, value, data, lastNonce, gasPrice, gasToken, gasCall, gasBase);
@@ -58,21 +57,22 @@ contract Executor is ECDSAUtils {
         lastNonce++;
         bytes memory _data;
         bool success;
+        uint256 startingGas = gasleft();
         /* solium-disable-next-line security/no-call-value */
         require(gasleft() > gasCall, "Not enough gas");
         (success, _data) = to.call.gas(gasCall).value(value)(data);
+        uint256 gasUsed = startingGas.sub(gasleft());
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
-        uint256 gasUsed = startingGas.sub(gasleft()).add(transactionGasCost(gasBase)).add(refundGas(gasToken));
-        refund(gasUsed, gasPrice, gasToken, msg.sender);
+        refund(gasUsed.add(gasBase), gasPrice, gasToken, msg.sender);
         return messageHash;
     }
 
     function refund(uint256 gasUsed, uint gasPrice, address gasToken, address payable beneficiary) internal {
         if (gasToken != address(0)) {
             ERC20 token = ERC20(gasToken);
-            token.transfer(beneficiary, computeGasUsedWithFee(gasUsed).mul(gasPrice));
+            token.transfer(beneficiary, gasUsed.mul(gasPrice));
         } else {
-            beneficiary.transfer(computeGasUsedWithFee(gasUsed).mul(gasPrice));
+            beneficiary.transfer(gasUsed.mul(gasPrice));
         }
     }
 

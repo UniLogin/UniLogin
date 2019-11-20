@@ -25,8 +25,8 @@ describe('messageToUnsignedMessage', () => {
       gasPrice: DEFAULT_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
-      gasBase: bigNumberify(53976),
-      gasCall: bigNumberify(100000 - 53976),
+      gasBase: bigNumberify(58976),
+      gasCall: bigNumberify(100000 - 58976),
       nonce: 0,
     };
 
