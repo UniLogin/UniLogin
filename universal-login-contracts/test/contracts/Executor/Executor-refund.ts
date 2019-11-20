@@ -8,7 +8,7 @@ import {transferMessage} from '../../helpers/ExampleMessages';
 import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../lib/encode';
-import {messageToSignedMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '../../../lib/message';
+import {messageToSignedMessage} from '../../../lib/message';
 import {calculateFinalGasLimit} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
