@@ -18,7 +18,7 @@ export const config: Config = Object.freeze({
   ],
   walletContractAddress: getEnv('WALLET_MASTER_ADDRESS', ''),
   contractWhiteList: {
-    wallet: ['0x0fc2be641158de5ed5cdbc4cec010c762bc74771e51b15432bb458addac3513d'],
+    wallet: ['0x0fc2be641158de5ed5cdbc4cec010c762bc74771e51b15432bb458addac3513d', '0x205a25e1bc40344a686d9e003bc71a0da11d5a8966ca478ebc43dccfe9d8165d'],
     proxy: ['0xb68afa7e9356b755f3d76e981adaa503336f60df29b28c0a8013c17cecb750bb'],
   },
   factoryAddress: getEnv('FACTORY_ADDRESS', ''),
