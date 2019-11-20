@@ -30,10 +30,7 @@ describe('INT: WalletCreationService', () => {
   describe('deployWhenReady', () => {
     it('deploys when wallet is already Future', async () => {
       const futureWallet = await walletService.createFutureWallet('name.mylogin.eth');
-      console.log(futureWallet.contractAddress);
       await otherWallet.sendTransaction({to: futureWallet.contractAddress, value: utils.parseEther('4')});
-
-      console.log(await wallet.provider.getBalance(futureWallet.contractAddress));
 
       walletCreationService.setGasParameters({gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: utils.bigNumberify('1')});
 
