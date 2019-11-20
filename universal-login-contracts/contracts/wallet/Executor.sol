@@ -38,8 +38,8 @@ contract Executor is ECDSAUtils {
         bytes memory _data;
         bool success;
         uint256 startingGas = gasleft();
-        /* solium-disable-next-line security/no-call-value */
         require(gasleft() > gasCall, "Relayer set gas limit too low");
+        /* solium-disable-next-line security/no-call-value */
         (success, _data) = to.call.gas(gasCall).value(value)(data);
         uint256 gasUsed = startingGas.sub(gasleft());
         emit ExecutedSigned(messageHash, lastNonce.sub(1), success);
