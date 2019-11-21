@@ -6,7 +6,7 @@ import {Contract, Wallet} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {walletFromBrain, DEFAULT_GAS_PRICE, getContractHash, CONTRACT_VERSION} from '@universal-login/commons';
-import UniversalLoginSDK, {DeployedWallet} from '../../lib';
+import {DeployedWallet} from '../../lib';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
 chai.use(solidity);
@@ -24,11 +24,10 @@ describe('E2E: DeployedWallet', async () => {
   let deployedWallet: DeployedWallet;
   let walletContract: Contract;
   let ensName: string;
-  let sdk: UniversalLoginSDK;
 
   beforeEach(async () => {
-    const {contractAddress, privateKey, ...rest} = await loadFixture(basicSDK) as any;
-    ({relayer, otherWallet, mockToken, walletContract, ensName, sdk} = rest);
+    const {contractAddress, sdk, privateKey, ...rest} = await loadFixture(basicSDK) as any;
+    ({relayer, otherWallet, mockToken, walletContract, ensName} = rest);
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   });
 
