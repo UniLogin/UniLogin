@@ -154,6 +154,6 @@ export class DeployedWallet implements ApplicationWallet {
     const proxyInstance = new Contract(this.contractAddress, WalletProxyInterface, this.sdk.provider);
     const walletMasterAddress = await proxyInstance.implementation();
     const walletMasterBytecode = await this.sdk.provider.getCode(walletMasterAddress);
-    return (CONTRACT_VERSION as any)[utils.keccak256(walletMasterBytecode)];
+    return CONTRACT_VERSION[utils.keccak256(walletMasterBytecode)];
   }
 }

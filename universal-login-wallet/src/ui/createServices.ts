@@ -5,13 +5,7 @@ import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk'
 import {StorageService, WalletStorageService, WalletCreationService} from '@universal-login/react';
 import UserDropdownService from '../core/app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
-
-interface Config {
-  domains: string[];
-  relayerUrl: string;
-  jsonRpcUrl: string;
-  tokens: string[];
-}
+import {WalletConfig} from '../config/config';
 
 interface Overrides {
   provider?: providers.Provider;
@@ -19,7 +13,7 @@ interface Overrides {
   sdkConfig?: DeepPartial<SdkConfig>;
 }
 
-export const createServices = (config: Config, overrides: Overrides = {}) => {
+export const createServices = (config: WalletConfig, overrides: Overrides = {}) => {
   const sdkConfig = {
     ...overrides.sdkConfig,
     applicationInfo: {
