@@ -1,4 +1,5 @@
 import {utils, Contract, providers} from 'ethers';
+import {AddressZero} from 'ethers/constants';
 import ENS from '../../contracts/ENS.json';
 import PublicResolver from '../../contracts/PublicResolver.json';
 
@@ -10,14 +11,11 @@ export const resolveName = async (
   const node = utils.namehash(ensName);
   const ensContract = new Contract(ensAddress, ENS.interface, provider);
   const resolverAddress = await ensContract.resolver(node);
-  if (isResolved(resolverAddress)) {
+  if (resolverAddress !== AddressZero) {
     const resolverContract = new Contract(resolverAddress, PublicResolver.interface, provider);
     const resolvedAddress = await resolverContract.addr(node);
-    return isResolved(resolvedAddress) && resolvedAddress;
+    return resolvedAddress !== AddressZero && resolvedAddress;
   } else {
     return false;
   }
 };
-
-const isResolved = (address: string) =>
-  address !== '0x0000000000000000000000000000000000000000';
