@@ -15,6 +15,7 @@ import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 import {WalletContractInterface} from '@universal-login/contracts';
+import {fetchWalletVersion} from '../integration/ethereum/fetchWalletVersion';
 
 interface BackupCodesWithExecution {
   waitToBeSuccess: () => Promise<string[]>;
@@ -147,5 +148,9 @@ export class DeployedWallet implements ApplicationWallet {
       onDisconnected,
     );
     return () => subscription.remove();
+  }
+
+  async fetchWalletVersion() {
+    return fetchWalletVersion(this.contractAddress, this.sdk.provider);
   }
 }
