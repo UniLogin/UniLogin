@@ -1,6 +1,6 @@
 import {providers, Wallet} from 'ethers';
 const ENSBuilder = require('ens-builder');
-import {withENS} from '../../lib/integration/ethereum/withENS';
+import {withENS} from '../../lib/integration/ethereum/ens';
 
 export async function deployENS(wallet: Wallet, domain = 'mylogin.eth') {
   const ensBuilder = new ENSBuilder(wallet);
