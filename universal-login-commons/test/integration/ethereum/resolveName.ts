@@ -16,8 +16,8 @@ describe('INT: resolveName', () => {
     ({provider, ensAddress, ensBuilder, publicResolver, registrarAddress} = await loadFixture(basicENS));
   });
 
-  it('false if ensName is not registered', async () => {
-    expect(await resolveName(provider, ensAddress, 'not-existing.mylogin.eth')).to.be.false;
+  it('null if ensName is not registered', async () => {
+    expect(await resolveName(provider, ensAddress, 'not-existing.mylogin.eth')).to.be.null;
   });
 
   it('successfully resolved', async () => {
@@ -26,17 +26,17 @@ describe('INT: resolveName', () => {
     expect(await resolveName(provider, ensAddress, 'alex.mylogin.eth')).to.be.eq(keyPair.publicKey);
   });
 
-  it('false if resolver is not resolved', async () => {
+  it('null if resolver is not resolved', async () => {
     const [newWallet] = getWallets(provider);
     const name = 'name';
     const ensName = `${name}.mylogin.eth`;
     const node = utils.namehash(ensName);
 
     await registerName(name, newWallet, registrarAddress);
-    expect(await resolveName(provider, ensAddress, ensName)).to.be.false;
+    expect(await resolveName(provider, ensAddress, ensName)).to.be.null;
 
     await setResolver(node, newWallet, ensAddress, publicResolver);
-    expect(await resolveName(provider, ensAddress, ensName)).to.be.false;
+    expect(await resolveName(provider, ensAddress, ensName)).to.be.null;
 
     await setAddress(node, newWallet, publicResolver);
     expect(await resolveName(provider, ensAddress, ensName)).to.eq(newWallet.address);
