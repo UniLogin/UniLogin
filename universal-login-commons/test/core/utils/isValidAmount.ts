@@ -1,8 +1,9 @@
 import {expect} from 'chai';
 import {isValidAmount} from '../../../lib/core/utils/isValidAmount';
+import {Nullable} from '../../../lib/core/types/common';
 
 describe('isValidAmount', () => {
-  const itValidatesAmount = (result: boolean, balance: string | null, amount?: string) => {
+  const itValidatesAmount = (result: boolean, balance: Nullable<string>, amount?: string) => {
     it(`returns ${result} for amount: ${amount} and balance: ${balance}`, () => {
       expect(isValidAmount(balance, amount)).to.eq(result);
     });
