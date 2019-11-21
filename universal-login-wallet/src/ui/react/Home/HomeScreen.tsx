@@ -29,7 +29,7 @@ const HomeScreen = () => {
     <>
       <div className="dashboard">
         <Header />
-        {betaVersion === 'beta1' && <OldVersion newVersionLink={''}/>}
+        {betaVersion === 'beta1' && <OldVersion />}
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice} />

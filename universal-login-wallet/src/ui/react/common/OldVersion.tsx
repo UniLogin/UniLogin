@@ -1,13 +1,13 @@
 import React from 'react';
 
-export const OldVersion = ({newVersionLink}: {newVersionLink?: string}) =>
+export const OldVersion = () =>
   <div className="old-version-box">
     <div className="old-version-text">
       <p className="old-version-text">
-        You are using an old Jarvis Wallet version.
+        You are using an old Jarvis Wallet version. Contact us to get your money back!
       </p>
     </div>
-    <a href={newVersionLink} target="_blank" rel="noopener noreferrer" className="btn old-version-btn">
-      Go to the new version
+    <a href='mailto:hello@ethworks.io' target="_blank" rel="noopener noreferrer" className="btn old-version-btn">
+      Contact us
     </a>
   </div>;
