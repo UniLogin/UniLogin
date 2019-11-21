@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {loadFixture, getWallets} from 'ethereum-waffle';
 import {basicENS} from '../../fixtures/basicENS';
 import {Wallet, utils, Contract, providers} from 'ethers';
-import RegistrarContract from '../../../lib/contracts/FIFSRegistrar.json';
+import RegistrarContract from '../../contracts/FIFSRegistrar.json';
 import ENS from '../../../lib/contracts/ENS.json';
 import PublicResolver from '../../../lib/contracts/PublicResolver.json';
 import {resolveName, createKeyPair} from '../../../lib';
