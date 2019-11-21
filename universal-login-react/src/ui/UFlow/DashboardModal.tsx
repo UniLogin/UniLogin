@@ -3,8 +3,6 @@ import React, {useState} from 'react';
 import {asTransferDetails, GasParameters, TransferDetails} from '@universal-login/commons';
 import {Route, Switch} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
-import {TransferAmount} from '../Transfer/Amount/TransferAmount';
-import {TransferRecipient} from '../Transfer/Recipient/TransferRecipient';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import {cast} from '@restless/sanitizers';
@@ -14,6 +12,7 @@ import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
+import {Transfer} from '../Transfer/Transfer';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -84,27 +83,13 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             exact
             render={({history}) => (
               <SubDialogWrapper message={notice} ensName={name}>
-                <TransferAmount
+                <Transfer
                   deployedWallet={deployedWallet}
-                  onSelectRecipientClick={() => history.push('/dashboard/transferRecipient')}
                   updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetails={selectedToken}
-                />
-              </SubDialogWrapper>
-            )}
-          />
-          <Route
-            path="/dashboard/transferRecipient"
-            exact
-            render={({history}) => (
-              <SubDialogWrapper message={notice} ensName={name}>
-                <TransferRecipient
-                  deployedWallet={deployedWallet}
-                  onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-                  symbol={selectedToken.symbol}
-                  onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
                   transferDetails={transferDetails}
+                  onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
                 />
               </SubDialogWrapper>
             )}

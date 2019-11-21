@@ -1,13 +1,12 @@
 import React, {useState, useContext} from 'react';
 import {TransferService} from '@universal-login/sdk';
 import {TransferDetails, GasParameters, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {ModalTransferRecipient, ModalTransferAmount} from '@universal-login/react';
+import {ModalTransfer as Transfer} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
 
 const ModalTransfer = () => {
   const modalService = useContext(WalletModalContext);
-  const [modal, setModal] = useState('transferAmount');
 
   const {walletService, sdk} = useServices();
   const [transferDetails, setTransferDetails] = useState(
@@ -34,31 +33,17 @@ const ModalTransfer = () => {
     setTransferDetails({...transferDetails, ...args});
   };
 
-  if (modal === 'transferAmount') {
-    return (
-      <ModalTransferAmount
-        deployedWallet={deployedWallet}
-        onSelectRecipientClick={() => setModal('transferRecipient')}
-        updateTransferDetailsWith={updateTransferDetailsWith}
-        tokenDetails={selectedToken}
-        transferAmountClassName="jarvis-styles"
-      />
-    );
-  } else if (modal === 'transferRecipient') {
-    return (
-      <ModalTransferRecipient
-        symbol={selectedToken.symbol}
-        onRecipientChange={event => updateTransferDetailsWith({to: event.target.value})}
-        onSendClick={onGenerateClick}
-        onBackClick={() => setModal('transferAmount')}
-        transferDetails={transferDetails}
-        className="jarvis-styles"
-        deployedWallet={walletService.getDeployedWallet()}
-        onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-      />
-    );
-  }
-  return null;
+  return (
+    <Transfer
+      deployedWallet={deployedWallet}
+      updateTransferDetailsWith={updateTransferDetailsWith}
+      tokenDetails={selectedToken}
+      onSendClick={onGenerateClick}
+      transferDetails={transferDetails}
+      onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+      transferAmountClassName="jarvis-styles"
+    />
+  );
 };
 
 export default ModalTransfer;

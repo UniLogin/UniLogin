@@ -101,6 +101,28 @@ describe('UI: Transfer', () => {
       .to.be.eq(utils.parseEther('1'));
   });
 
+  it('Shows error if invalid amount', async () => {
+    appPage.transfer().enterTransferAmount('10');
+    appPage.transfer().enterRecipient(receiverAddress);
+    appPage.transfer().transfer();
+    expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
+  });
+
+  it('Shows error if invalid recipient', async () => {
+    appPage.transfer().enterTransferAmount('1');
+    appPage.transfer().enterRecipient('0x123');
+    appPage.transfer().transfer();
+    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+  });
+
+  it('Shows errors if invalid amount and recipient', async () => {
+    appPage.transfer().enterTransferAmount('10');
+    appPage.transfer().enterRecipient('0x123');
+    appPage.transfer().transfer();
+    expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
+    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+  });
+
   afterEach(async () => {
     appWrapper.unmount();
     await relayer.stop();
