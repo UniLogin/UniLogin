@@ -6,7 +6,6 @@ import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
 import {OldVersion} from '../common/OldVersion';
-import getConfig from '../../../config/getConfig';
 
 const HomeScreen = () => {
   const {walletService, walletPresenter} = useServices();
@@ -30,7 +29,7 @@ const HomeScreen = () => {
     <>
       <div className="dashboard">
         <Header />
-        {betaVersion === 'beta1' && <OldVersion newVersionLink={getConfig().newVersionLink}/>}
+        {betaVersion === 'beta1' && <OldVersion newVersionLink={''}/>}
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice} />

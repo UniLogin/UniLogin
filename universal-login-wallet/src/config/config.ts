@@ -15,7 +15,6 @@ export default Object.freeze({
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address],
-    newVersionLink: 'http://localhost:8080',
   },
 
   production: {
@@ -23,7 +22,6 @@ export default Object.freeze({
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [process.env.TOKEN_CONTRACT_ADDRESS!, ETHER_NATIVE_TOKEN.address],
-    newVersionLink: process.env.NEW_VERSION_LINK,
   },
 });
 
@@ -32,5 +30,4 @@ export interface WalletConfig {
   relayerUrl: string;
   jsonRpcUrl: string;
   tokens: string[];
-  newVersionLink?: string;
 };
