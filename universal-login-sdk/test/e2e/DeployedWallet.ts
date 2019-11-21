@@ -5,9 +5,8 @@ import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, getContractHash, CONTRACT_VERSION} from '@universal-login/commons';
+import {walletFromBrain, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {DeployedWallet} from '../../lib';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -64,12 +63,5 @@ describe('E2E: DeployedWallet', async () => {
       const connectedDevices = await deployedWallet.getConnectedDevices();
       expect(connectedDevices.map(({publicKey}: any) => publicKey)).to.include(address);
     }).timeout(15000);
-  });
-
-  describe('walletVersion', () => {
-    it('returns correct wallet contract version', async () => {
-      const walletMasterBytecodeHash = getContractHash(WalletContract as any);
-      expect(await deployedWallet.fetchWalletVersion()).to.eq((CONTRACT_VERSION as any)[walletMasterBytecodeHash]);
-    });
   });
 });
