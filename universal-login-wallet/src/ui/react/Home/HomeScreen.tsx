@@ -1,12 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
-import {Funds, Devices, BackupCodes, Notice, useAsync} from '@universal-login/react';
+import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
 import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
-import {OldVersion} from '../common/OldVersion';
-import getConfig from '../../../config/getConfig';
 
 const HomeScreen = () => {
   const {walletService, walletPresenter} = useServices();
@@ -24,13 +22,10 @@ const HomeScreen = () => {
 
   const history = useHistory();
 
-  const [betaVersion] = useAsync(async () => deployedWallet.fetchWalletVersion(), []);
-
   return (
     <>
       <div className="dashboard">
         <Header />
-        {betaVersion === 'beta1' && <OldVersion newVersionLink={getConfig().newVersionLink}/>}
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice} />

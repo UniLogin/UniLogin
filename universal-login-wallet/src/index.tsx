@@ -8,6 +8,7 @@ import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
 import './ui/styles/main.sass';
 import Logo from './ui/assets/logo.svg';
+import {OldVersion} from './ui/react/common/OldVersion';
 
 const AppBootstrapper = () => {
   const [services, err] = useAsync(async () => {
@@ -37,6 +38,7 @@ const AppBootstrapper = () => {
   return (
     <ServiceContext.Provider value={services}>
       <BrowserRouter>
+        {getConfig().newVersionLink && <OldVersion newVersionLink={getConfig().newVersionLink}/>}
         <App />
       </BrowserRouter>
     </ServiceContext.Provider>
