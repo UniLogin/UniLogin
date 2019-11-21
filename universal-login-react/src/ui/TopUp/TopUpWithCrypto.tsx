@@ -17,7 +17,7 @@ const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
 const TopUpCryptoInfo = () =>
   <>
     <p className="info-text">All your Ethereum wallets have the same address</p>
-    <p className="info-text">Only send Ethererum tokens to this address</p>
+    <p className="info-text">Only send Ethereum tokens to this address</p>
   </>;
 
 export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: TopUpWithCryptoProps) => {
