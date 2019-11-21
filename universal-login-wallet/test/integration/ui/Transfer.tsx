@@ -28,13 +28,14 @@ describe('UI: Transfer', () => {
     amount: string,
     receiver: string,
   ) => {
-    appPage.dashboard().clickTransferButton();
+    appPage.dashboard().goToTransferPage();
     await appPage.transfer().chooseCurrency(symbol);
     appPage.transfer().enterTransferAmount(amount);
     appPage.transfer().enterRecipient(receiver);
-    await appPage.notifications().waitForGasMode();
-    appPage.notifications().selectGasMode();
+    await appPage.transfer().waitForGasMode();
+    appPage.transfer().selectGasMode();
     appPage.transfer().transfer();
+    return appPage.transfer();
   };
 
   beforeEach(async () => {
