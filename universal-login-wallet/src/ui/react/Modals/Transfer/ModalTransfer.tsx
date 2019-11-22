@@ -36,10 +36,10 @@ const ModalTransfer = () => {
   return (
     <Transfer
       deployedWallet={deployedWallet}
+      transferDetails={transferDetails}
       updateTransferDetailsWith={updateTransferDetailsWith}
       tokenDetails={selectedToken}
       onSendClick={onGenerateClick}
-      transferDetails={transferDetails}
       transferClassName="jarvis-styles"
     />
   );

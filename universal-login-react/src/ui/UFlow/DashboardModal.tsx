@@ -85,8 +85,8 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
                   deployedWallet={deployedWallet}
-                  updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetails={selectedToken}
+                  updateTransferDetailsWith={updateTransferDetailsWith}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
                   transferDetails={transferDetails}
                 />

@@ -9,6 +9,7 @@ import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import {utils} from 'ethers';
 
 export interface TransferProps {
   deployedWallet: DeployedWallet;
@@ -35,8 +36,9 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
   const {amount, to, gasParameters} = transferDetails;
 
   const onClick = () => {
+    const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasParameters!.gasPrice);
     const errorsCalculated = {
-      amountError: !isValidAmount(balance, amount),
+      amountError: !isValidAmount(tokenDetails.address, balance, gasCostInWei, amount),
       recipientError: !isValidRecipient(to),
     };
     setErrors(errorsCalculated);
