@@ -1,6 +1,7 @@
 import {expect} from 'chai';
-import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage} from '@universal-login/commons';
+import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage, GAS_FIXED} from '@universal-login/commons';
 import {estimateGasBaseFromSignedMessage, estimateGasBaseFromUnsignedMessage, calculateGasCall} from '../lib/estimateGas';
+import {utils} from 'ethers';
 
 describe('UNIT: estimateGas', () => {
   describe('estimateGasBaseFromSignedMessage', () => {
@@ -17,7 +18,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
     });
 
     it('from and nonce don\'t count for gasBase', () => {
@@ -33,7 +34,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
     });
 
     it('add 0xff...ff \'to\' address', () => {
@@ -49,7 +50,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 1280);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 1280).add(GAS_FIXED));
     });
 
     it('add value 255 [0xff]', () => {
@@ -65,7 +66,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 64);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 64).add(GAS_FIXED));
     });
 
     it('add gasPrice 255 [0xff]', () => {
@@ -81,7 +82,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 64);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 64).add(GAS_FIXED));
     });
 
     it('add 0xff...ff gasToken address', () => {
@@ -97,7 +98,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 1280);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 1280).add(GAS_FIXED));
     });
 
     it('gasCall 1000 - but estimate don\'t chnage since gasCall already been accounted', () => {
@@ -113,7 +114,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
     });
 
     it('gasBase 0xff - but estimate don\'t chnage since gasBase already been accounted', () => {
@@ -129,7 +130,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 255,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
     });
 
     it('add 100bytes of 0xff data', () => {
@@ -145,7 +146,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createZeroedHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 6400 + 576);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 6400 + 576).add(GAS_FIXED));
     });
 
     it('add signature', () => {
@@ -161,7 +162,7 @@ describe('UNIT: estimateGas', () => {
         gasBase: 0,
         signature: createFullHexString(65),
       };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(2576 + 65 * 64);
+      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 65 * 64).add(GAS_FIXED));
     });
   });
 
@@ -178,7 +179,7 @@ describe('UNIT: estimateGas', () => {
         gasCall: 0,
         gasBase: 0,
       };
-      expect(estimateGasBaseFromUnsignedMessage(message)).to.be.equal(2576 + 65 * 64);
+      expect(estimateGasBaseFromUnsignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 65 * 64).add(GAS_FIXED));
     });
   });
 

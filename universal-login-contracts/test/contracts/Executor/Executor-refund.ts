@@ -24,8 +24,6 @@ describe('CONTRACT: Executor - refund', async () => {
   let infiniteCallMessage: Message;
   let initialBalance: utils.BigNumber;
 
-  const computeFeeFor = (gasUsed: utils.BigNumber) => gasUsed.div(5); // 20% fee
-
   beforeEach(async () => {
     ({provider, walletContract, managementKeyPair, mockToken, wallet} = await loadFixture(basicExecutor));
     loopContract = await deployContract(wallet, Loop);
@@ -41,9 +39,8 @@ describe('CONTRACT: Executor - refund', async () => {
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
-    const balanceAfter = await wallet.getBalance();
-    const gasFee = computeFeeFor(receipt.gasUsed!);
-    expect(balanceAfter).to.be.above(initialBalance.add(gasFee));
+    const expectedBalance = initialBalance.sub(receipt.gasUsed!).add(utils.bigNumberify(signedMessage.gasBase));
+    expect(await wallet.getBalance()).to.be.above(expectedBalance);
   });
 
   describe('Loop Contract - infiniteCallMessage', async () => {
@@ -70,8 +67,11 @@ describe('CONTRACT: Executor - refund', async () => {
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
       const balanceAfter = await wallet.getBalance();
-      const gasFee = computeFeeFor(receipt.gasUsed!);
-      expect(balanceAfter).to.be.above(initialBalance.add(gasFee));
+      const expectedBalance = initialBalance
+        .sub(receipt.gasUsed!)
+        .add(utils.bigNumberify(signedMessage.gasBase))
+        .add(signedMessage.gasCall);
+      expect(balanceAfter).to.be.above(expectedBalance);
     });
 
     it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
@@ -80,12 +80,13 @@ describe('CONTRACT: Executor - refund', async () => {
       const executeData = encodeDataForExecuteSigned(signedMessage);
       const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
 
-      const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
-      const receipt = await provider.getTransactionReceipt(transaction.hash as string);
+      await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
 
-      const gasFee = computeFeeFor(receipt.gasUsed!);
       const balanceAfter = await mockToken.balanceOf(wallet.address);
-      expect(balanceAfter).to.be.above(initialTokenBalance.add(gasFee));
+      const expectedBalance = initialTokenBalance
+        .add(signedMessage.gasBase)
+        .add(signedMessage.gasCall);
+      expect(balanceAfter).to.be.above(expectedBalance);
     });
   });
 });
