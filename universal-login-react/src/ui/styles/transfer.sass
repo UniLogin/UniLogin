@@ -11,15 +11,13 @@
   .transfer-amount
     max-width: 500px
     margin: 0 auto
+    padding-top: 30px
 
     +media(s)
       padding: 50px 15px
 
   .transfer-amount-row
-    display: flex
-    align-items: center
-    justify-content: space-between
-    margin-bottom: 20px
+    margin-bottom: 10px
 
   .transfer-amount-row-item
     width: 50%
@@ -29,13 +27,12 @@
 
   .transfer-amount-input-content
     position: relative
-    margin-bottom: 5px
 
   .transfer-amount-input-wrapper
-    margin-bottom: 58px
+    margin-bottom: 50px
     height: 50px
 
-  .amount-input-hint
+  .transfer-amount-hint
     padding: 10px
     font-size: 13px
 
@@ -73,7 +70,7 @@
 
   .currency-accordion
     position: relative
-    margin-bottom: 100px
+    margin-bottom: 65px
 
     +media(s)
       margin-bottom: 70px
@@ -134,3 +131,42 @@
     transform: translateY(100%)
     z-index: 10
     width: 100%
+
+  .transfer-recipient-row
+    margin-bottom: 10px
+
+  .transfer-recipient
+    min-height: 635px
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding-top: 30px
+
+  .transfer-recipient-input-wrapper
+    height: 50px
+    margin: 0 auto 105px
+
+  .transfer-recipient-input-content
+    position: relative
+
+  .transfer-recipient-input
+    height: 32px
+    width: 100%
+    border: 1px solid #E1E1F0
+    padding-right: 25px
+    padding-left: 13px
+    font-weight: 700
+    font-size: 12px
+
+  .transfer-recipient-text
+    margin: 0 0 35px
+    font-size: 16px
+    font-weight: 600
+    color: #31405E
+    margin: 0 0 5px
+    text-align: center
+    text-transform: uppercase
+
+  .transfer-recipient-hint
+    padding: 10px
+    font-size: 13px

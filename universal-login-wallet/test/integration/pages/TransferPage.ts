@@ -19,10 +19,17 @@ export default class TransferPage {
     this.appWrapper.find('#send-button').first().simulate('click');
   }
 
+  doesAmountErrorExists() {
+    return this.appWrapper.find('.transfer-amount-hint').exists();
+  }
+
+  doesRecipientErrorExists() {
+    return this.appWrapper.find('.transfer-recipient-hint').exists();
+  }
+
   enterTransferAmount(amount: string) {
     const amountInput = this.appWrapper.find('input#amount-eth');
     amountInput.simulate('change', {target: {value: amount}});
-    this.appWrapper.find('#select-recipient').simulate('click');
   }
 
   enterRecipient(address: string) {
