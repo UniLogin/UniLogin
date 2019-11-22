@@ -1,9 +1,12 @@
 import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '../helpers/utils';
+import GasModePage from './GasModePage';
 
 export default class TransferPage {
-  constructor(private appWrapper: ReactWrapper) {
-  }
+  constructor(
+    private appWrapper: ReactWrapper,
+    private gasModePage: GasModePage,
+  ) {}
 
   async chooseCurrency(currency: string) {
     await waitForUI(this.appWrapper, () => this.appWrapper.find('button.currency-accordion-item').length !== 0);
@@ -25,5 +28,18 @@ export default class TransferPage {
   enterRecipient(address: string) {
     const addressInput = this.appWrapper.find('input#input-recipient');
     addressInput.simulate('change', {target: {value: address}});
+  }
+
+  getErrorMessage() {
+    this.appWrapper.update();
+    return this.appWrapper.find('.error-message').text();
+  }
+
+  selectGasMode() {
+    return this.gasModePage.selectGasMode();
+  }
+
+  waitForGasMode() {
+    return this.gasModePage.waitForGasMode();
   }
 }
