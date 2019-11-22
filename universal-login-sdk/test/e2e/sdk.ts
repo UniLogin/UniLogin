@@ -203,7 +203,7 @@ describe('E2E: SDK', async () => {
     });
 
     it('should return null if walletContract doesn`t exist', async () => {
-      expect(await sdk.getWalletContractAddress('no-such-login.mylogin.eth')).to.be.null;
+      await expect(sdk.getWalletContractAddress('no-such-login.mylogin.eth')).to.rejectedWith('Contract not found');
     });
 
     it('should return true if walletContract exist', async () => {
