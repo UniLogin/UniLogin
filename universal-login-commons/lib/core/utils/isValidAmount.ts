@@ -17,7 +17,7 @@ export const isValidAmount = (tokenAddress: string, balance: Nullable<string>, g
 export const isAmountInConstraints = (balance: utils.BigNumber, amount?: string): boolean => {
   if (amount && amount.match(isNumber)) {
     const amountAsBigNumber = utils.parseEther(amount);
-    return amountAsBigNumber.gt(0) && amountAsBigNumber.lt(balance);
+    return amountAsBigNumber.gt(0) && amountAsBigNumber.lte(balance);
   }
   return false;
 };

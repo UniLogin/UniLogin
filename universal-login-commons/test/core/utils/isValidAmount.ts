@@ -12,6 +12,7 @@ describe('isAmountInConstraints', () => {
     });
   };
 
+  itValidatesAmount('2', '2', true);
   itValidatesAmount('1.0', '2', true);
   itValidatesAmount('10', '20', true);
   itValidatesAmount('2', '2.01', true);
@@ -40,6 +41,8 @@ describe('isValidAmount', () => {
 
   const gasCostInWei = utils.parseEther('2');
 
+  itValidatesAmountForEther('3', '5', gasCostInWei, true);
+  itValidatesAmountForToken('5', '5', gasCostInWei, true);
   itValidatesAmountForEther('1', '5', gasCostInWei, true);
   itValidatesAmountForToken('1', '5', gasCostInWei, true);
   itValidatesAmountForEther('1', '2', gasCostInWei, false);
