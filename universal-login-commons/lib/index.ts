@@ -80,3 +80,4 @@ export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
 export {asHexString, asDeploymentHash} from './core/utils/sanitizers/asHexString';
 export {asExactly} from './core/utils/sanitizers/asExactly';
+export {CONTRACT_VERSIONS} from './core/constants/versions';
