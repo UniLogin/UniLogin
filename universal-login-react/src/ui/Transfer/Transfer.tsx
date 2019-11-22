@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {DeployedWallet} from '@universal-login/sdk';
-import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, OnGasParametersChanged, isValidAmount, getBalanceOf, TokenDetailsWithBalance, isValidRecipient} from '@universal-login/commons';
+import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, isValidAmount, getBalanceOf, TokenDetailsWithBalance, isValidRecipient, GasParameters} from '@universal-login/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -16,8 +16,7 @@ export interface TransferProps {
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   tokenDetails: TokenDetails;
   onSendClick: () => Promise<void>;
-  onGasParametersChanged: OnGasParametersChanged;
-  transferAmountClassName?: string;
+  transferClassName?: string;
 }
 
 interface ErrorsProps {
@@ -25,7 +24,7 @@ interface ErrorsProps {
   recipientError: boolean;
 }
 
-export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetails, onSendClick, onGasParametersChanged, transferAmountClassName}: TransferProps) => {
+export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetails, onSendClick, transferClassName}: TransferProps) => {
   const [errors, setErrors] = useState<ErrorsProps>({amountError: false, recipientError: false});
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
@@ -48,7 +47,7 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
 
   return (
     <div className="universal-login-amount">
-      <div className={getStyleForTopLevelComponent(transferAmountClassName)}>
+      <div className={getStyleForTopLevelComponent(transferClassName)}>
         <div className="transfer-amount">
           <TransferAmount
             deployedWallet={deployedWallet}
@@ -57,22 +56,21 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
             tokenDetails={tokenDetails}
             setAmountError={(isAmountInvalid: boolean) => setErrors({...errors, amountError: isAmountInvalid})}
             amountError={errors.amountError}
-            transferAmountClassName={transferAmountClassName}
+            transferAmountClassName={transferClassName}
           />
           <TransferRecipient
             updateTransferDetailsWith={updateTransferDetailsWith}
             recipientError={errors.recipientError}
             setRecipientError={(isRecipientInvalid: boolean) => setErrors({...errors, recipientError: isRecipientInvalid})}
-            transferAmountClassName={transferAmountClassName}
           />
         </div>
-        <FooterSection className={transferAmountClassName}>
+        <FooterSection className={transferClassName}>
           <GasPrice
             isDeployed={true}
             deployedWallet={deployedWallet}
             gasLimit={DEFAULT_GAS_LIMIT}
-            onGasParametersChanged={onGasParametersChanged}
-            className={transferAmountClassName}
+            onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
+            className={transferClassName}
           />
           <div className="footer-buttons-row">
             <button id="send-button" onClick={onClick} className="footer-approve-btn" disabled={!gasParameters}>Send</button>

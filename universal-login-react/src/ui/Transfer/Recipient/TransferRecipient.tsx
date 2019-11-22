@@ -5,7 +5,6 @@ export interface TransferRecipientProps {
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   recipientError: boolean;
   setRecipientError: (isRecipientInvalid: boolean) => void;
-  transferAmountClassName?: string;
 }
 
 export const TransferRecipient = ({updateTransferDetailsWith, recipientError, setRecipientError}: TransferRecipientProps) => {
@@ -14,12 +13,10 @@ export const TransferRecipient = ({updateTransferDetailsWith, recipientError, se
     updateTransferDetailsWith({to: recipient});
   };
 
-  const errorMessage = 'Invalid recipient';
-
   return (
     <>
       <div className="transfer-recipient-row">
-        <label className="transfer-recipient-label" htmlFor="">Recipient</label>
+        <label className="transfer-recipient-label" htmlFor="input-recipient">Recipient</label>
       </div>
       <div className="transfer-recipient-input-wrapper">
         <div className="transfer-recipient-input-content">
@@ -29,7 +26,7 @@ export const TransferRecipient = ({updateTransferDetailsWith, recipientError, se
             onChange={event => onChange(event.target.value)}
           />
         </div>
-        {recipientError && <div className="hint transfer-recipient-hint">{errorMessage}</div>}
+        {recipientError && <div className="hint transfer-recipient-hint">Invalid recipient</div>}
       </div>
     </>
   );

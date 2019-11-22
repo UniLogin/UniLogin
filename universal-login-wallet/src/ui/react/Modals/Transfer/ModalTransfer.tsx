@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {TransferService} from '@universal-login/sdk';
-import {TransferDetails, GasParameters, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TransferDetails, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {ModalTransfer as Transfer} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
@@ -40,8 +40,7 @@ const ModalTransfer = () => {
       tokenDetails={selectedToken}
       onSendClick={onGenerateClick}
       transferDetails={transferDetails}
-      onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
-      transferAmountClassName="jarvis-styles"
+      transferClassName="jarvis-styles"
     />
   );
 };

@@ -1,6 +1,6 @@
 import {TransferService, WalletService} from '@universal-login/sdk';
 import React, {useState} from 'react';
-import {asTransferDetails, GasParameters, TransferDetails} from '@universal-login/commons';
+import {asTransferDetails, TransferDetails} from '@universal-login/commons';
 import {Route, Switch} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
 import {Devices} from './Devices/Devices';
@@ -89,7 +89,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
                   tokenDetails={selectedToken}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
                   transferDetails={transferDetails}
-                  onGasParametersChanged={(gasParameters: GasParameters) => updateTransferDetailsWith({gasParameters})}
                 />
               </SubDialogWrapper>
             )}

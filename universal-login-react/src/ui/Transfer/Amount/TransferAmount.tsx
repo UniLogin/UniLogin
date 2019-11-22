@@ -30,7 +30,7 @@ export const TransferAmount = ({deployedWallet, tokenDetailsWithBalance, updateT
         className={transferAmountClassName}
       />
       <div className="transfer-amount-row">
-        <label className="transfer-amount-label" htmlFor="amount-eth">How much are you sending?</label>
+        <label className="transfer-amount-label" htmlFor="amount-eth">Amount</label>
         <FeatureFlag sdk={deployedWallet.sdk} feature="maxButton">
           <button className="transfer-amount-max">Max</button>
         </FeatureFlag>
@@ -45,7 +45,7 @@ export const TransferAmount = ({deployedWallet, tokenDetailsWithBalance, updateT
           />
           <span className="transfer-amount-code">{tokenDetails.symbol}</span>
         </div>
-        {amountError && <div className="hint transfer-amount-hint">Invalid amount!</div>}
+        {amountError && <div className="hint transfer-amount-hint">Invalid amount</div>}
       </div>
     </>
   );
