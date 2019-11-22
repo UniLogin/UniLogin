@@ -19,13 +19,12 @@ import {
   TokenDetailsService,
   TokensValueConverter,
   ETHER_NATIVE_TOKEN,
-  isContract,
 } from '@universal-login/commons';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, ContractNotFound} from '../core/utils/errors';
+import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
 import {FutureWalletFactory, FutureWallet} from './FutureWalletFactory';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
@@ -208,8 +207,8 @@ class UniversalLoginSDK {
 
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
-    ensureNotNull(walletContractAddress, ContractNotFound);
-    ensureNotNull(await this.blockchainService.getCode(walletContractAddress), ContractNotFound)
+    ensureNotNull(walletContractAddress, InvalidENSRecord, ensName);
+    ensureNotNull(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 

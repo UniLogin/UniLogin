@@ -16,7 +16,7 @@ type ErrorType =
   'WalletOverridden' |
   'FutureWalletNotSet' |
   'InvalidContract' |
-  'ContractNotFound' |
+  'InvalidENSRecord' |
   'NoSet' |
   'UnexpectedError' |
   'InvalidGasLimit';
@@ -72,6 +72,13 @@ export class InvalidAddressOrEnsName extends ValidationFailed {
   constructor(addressOrEnsName: string) {
     super(`${addressOrEnsName} is not valid`, 'InvalidAddressOrEnsName');
     Object.setPrototypeOf(this, InvalidAddressOrEnsName.prototype);
+  }
+}
+
+export class InvalidENSRecord extends ValidationFailed {
+  constructor(ensName: string) {
+    super(`Unable to resolve ENS name: ${ensName}`, 'InvalidENSRecord');
+    Object.setPrototypeOf(this, InvalidENSRecord.prototype);
   }
 }
 
@@ -157,13 +164,6 @@ export class TokenNotFound extends NotFound {
   constructor(tokenAddress: string) {
     super(`Token not found (address = ${tokenAddress})`, 'TokenNotFound');
     Object.setPrototypeOf(this, TokenNotFound.prototype);
-  }
-}
-
-export class ContractNotFound extends NotFound {
-  constructor() {
-    super('Contract not found', 'ContractNotFound');
-    Object.setPrototypeOf(this, ContractNotFound.prototype);
   }
 }
 
