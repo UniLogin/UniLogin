@@ -33,8 +33,8 @@ describe('UI: Creation flow', () => {
     await appPage.login().createNew('super-name');
     appPage.creation().chooseTopUpMethod();
     const address = appPage.creation().getAddress();
-    await appPage.notifications().waitForGasMode();
-    appPage.notifications().selectGasMode();
+    await appPage.creation().waitForGasMode();
+    appPage.creation().selectGasMode();
     expect(address).to.be.an('string');
     const [wallet] = getWallets(provider);
     await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});

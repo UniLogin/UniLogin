@@ -5,6 +5,7 @@ import DashboardPage from '../pages/DashboardPage';
 import NotificationsPage from './Notifications';
 import CreationFlow from './CreationFlow';
 import ConnectionFlow from './ConnectionFlow';
+import GasModePage from './GasModePage';
 
 export class AppPage {
   private loginPage?: LoginPage;
@@ -13,6 +14,7 @@ export class AppPage {
   private notificationsPage?: NotificationsPage;
   private creationFlow?: CreationFlow;
   private connectionFlow?: ConnectionFlow;
+  private gasModePage?: GasModePage;
 
   constructor(private wrapper: ReactWrapper) {
   }
@@ -23,7 +25,7 @@ export class AppPage {
   }
 
   creation(): CreationFlow {
-    this.creationFlow = this.creationFlow || new CreationFlow(this.wrapper);
+    this.creationFlow = this.creationFlow || new CreationFlow(this.wrapper, this.gasMode());
     return this.creationFlow;
   }
 
@@ -33,7 +35,7 @@ export class AppPage {
   }
 
   transfer(): TransferPage {
-    this.transferPage = this.transferPage || new TransferPage(this.wrapper);
+    this.transferPage = this.transferPage || new TransferPage(this.wrapper, this.gasMode());
     return this.transferPage;
   }
 
@@ -43,7 +45,12 @@ export class AppPage {
   }
 
   notifications(): NotificationsPage {
-    this.notificationsPage = this.notificationsPage || new NotificationsPage(this.wrapper);
+    this.notificationsPage = this.notificationsPage || new NotificationsPage(this.wrapper, this.gasMode());
     return this.notificationsPage;
+  }
+
+  private gasMode(): GasModePage {
+    this.gasModePage = this.gasModePage || new GasModePage(this.wrapper);
+    return this.gasModePage;
   }
 }
