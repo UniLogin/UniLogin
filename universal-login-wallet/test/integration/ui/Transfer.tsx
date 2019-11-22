@@ -102,23 +102,22 @@ describe('UI: Transfer', () => {
   });
 
   it('Shows error if invalid amount', async () => {
-    appPage.transfer().enterTransferAmount('10');
-    appPage.transfer().enterRecipient(receiverAddress);
-    appPage.transfer().transfer();
+    await transferFlow(appPage, 'ETH', '10', receiverEnsName);
     expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
   });
 
-  it('Shows error if invalid recipient', async () => {
-    appPage.transfer().enterTransferAmount('1');
-    appPage.transfer().enterRecipient('0x123');
-    appPage.transfer().transfer();
+  it('Shows error if invalid recipient address', async () => {
+    await transferFlow(appPage, 'ETH', '1', '0x123');
+    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+  });
+
+  it('Shows error if invalid recipient ens name', async () => {
+    await transferFlow(appPage, 'ETH', '1', 'test');
     expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
   });
 
   it('Shows errors if invalid amount and recipient', async () => {
-    appPage.transfer().enterTransferAmount('10');
-    appPage.transfer().enterRecipient('0x123');
-    appPage.transfer().transfer();
+    await transferFlow(appPage, 'ETH', '10', '0x123');
     expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
     expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
   });
