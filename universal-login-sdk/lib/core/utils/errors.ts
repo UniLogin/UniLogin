@@ -16,6 +16,7 @@ type ErrorType =
   'WalletOverridden' |
   'FutureWalletNotSet' |
   'InvalidContract' |
+  'ContractNotFound' |
   'NoSet' |
   'UnexpectedError' |
   'InvalidGasLimit';
@@ -156,6 +157,13 @@ export class TokenNotFound extends NotFound {
   constructor(tokenAddress: string) {
     super(`Token not found (address = ${tokenAddress})`, 'TokenNotFound');
     Object.setPrototypeOf(this, TokenNotFound.prototype);
+  }
+}
+
+export class ContractNotFound extends NotFound {
+  constructor() {
+    super('Contract not found', 'ContractNotFound');
+    Object.setPrototypeOf(this, ContractNotFound.prototype);
   }
 }
 

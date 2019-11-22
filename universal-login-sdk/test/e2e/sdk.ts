@@ -186,11 +186,12 @@ describe('E2E: SDK', async () => {
   describe('Proxy Exists', async () => {
     it('should return correct bytecode', async () => {
       const address = await sdk.resolveName('alex.mylogin.eth');
-      expect(Proxy.evm.deployedBytecode.object.slice(0)).to.eq((await provider.getCode(address)).slice(2));
+      expect(address).to.not.be.null;
+      expect(Proxy.evm.deployedBytecode.object.slice(0)).to.eq((await provider.getCode(address!)).slice(2));
     });
 
-    it('should return false if no resolver address', async () => {
-      expect(await sdk.resolveName('no-such-login.mylogin.eth')).to.be.false;
+    it('should return null if no resolver address', async () => {
+      expect(await sdk.resolveName('no-such-login.mylogin.eth')).to.be.null;
     });
 
     it('should get correct address', async () => {
