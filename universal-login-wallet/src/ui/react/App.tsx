@@ -33,7 +33,6 @@ const App = () => {
         <Route
           exact
           path="/privacy"
-          target="_blank"
           render={() => <PrivacyPolicy />}
         />
         <Route
