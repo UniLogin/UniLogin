@@ -4,6 +4,8 @@ import UpgradedWallet from '../build/UpgradedWallet.json';
 import MockWalletMaster from '../build/MockWalletMaster.json';
 import WalletProxyFactory from '../build/WalletProxyFactory.json';
 import IERC20 from '../build/IERC20.json';
+import WalletProxy from '../build/WalletProxy.json';
+
 import FIFSRegistrar from '../build/FIFSRegistrar.json';
 import PublicResolver from '../build/PublicResolver.json';
 import ReverseRegistrar from '../build/ReverseRegistrar.json';
@@ -18,3 +20,4 @@ export const FIFSRegistrarInterface = new utils.Interface(FIFSRegistrar.interfac
 export const ReverseRegistrarInterface = new utils.Interface(ReverseRegistrar.interface);
 export const PublicResolverInterface = new utils.Interface(PublicResolver.interface);
 export const ENSInterface = new utils.Interface(ENS.interface);
+export const WalletProxyInterface = new utils.Interface(WalletProxy.interface);
