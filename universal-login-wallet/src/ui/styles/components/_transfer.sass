@@ -1,20 +1,21 @@
 .jarvis-styles
-  .transfer-amount-label
-    display: block
-    margin: 0
-    font-size: 15px
-    color: #31405E
-    text-transform: initial
-
   .transfer-amount
     max-width: 500px
     margin: 0 auto
+
+    +media(s, 168px)
+      padding: 15px 15px
+
+
+  .transfer-amount-label
+    font-size: 15px
+    color: #31405E
+
 
   .transfer-amount-row
     display: flex
     align-items: center
     justify-content: space-between
-    margin-bottom: 20px
 
   .transfer-amount-row-item
     width: 50%
@@ -35,7 +36,8 @@
     background: #fff
     border: 1px solid #D0D3F6
     padding: 0 50px 0 20px
-    font-size: 16px
+    font-size: 14px
+    color: #31405E
 
   .transfer-amount-code
     position: absolute
@@ -69,7 +71,37 @@
   .transfer-amount-btn span
     color: #FFFFFF
 
-
   .assets-name,
   .assets-balance
     color: #000
+
+  .transfer-recipient
+    +media(s, 168px)
+      height: calc(100vh - 64px)
+
+  .transfer-recipient-input-wrapper
+    position: relative
+    margin-bottom: 150px
+
+    +media(s, 168px)
+      margin-bottom: 40px
+
+  .transfer-recipient-input
+    height: 50px
+    background: #FFFFFF
+    border: 1px solid #D0D3F6
+    font-size: 14px
+    color: #31405E
+    padding: 0 20px
+
+  .transfer-recipient-text
+    margin-bottom: 35px
+    font-size: 16px
+    color: #31405E
+    text-align: center
+
+  .transfer-recipient-label
+    display: block
+    margin-bottom: 7px
+    font-size: 15px
+    color: #31405E

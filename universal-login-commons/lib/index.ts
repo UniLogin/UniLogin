@@ -67,6 +67,7 @@ export {IMessageValidator} from './core/models/IMessageValidator';
 export {normalizeBigNumber} from './core/utils/bigNumbers';
 export {stringToEther} from './integration/ethereum/stringToEther';
 export {isValidAmount} from './core/utils/isValidAmount';
+export {isValidRecipient} from './core/utils/isValidRecipient';
 export {ObservedCurrency, CurrencyToValue, TokensPrices} from './core/models/CurrencyData';
 export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';

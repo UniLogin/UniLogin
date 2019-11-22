@@ -101,6 +101,27 @@ describe('UI: Transfer', () => {
       .to.be.eq(utils.parseEther('1'));
   });
 
+  it('Shows error if invalid amount', async () => {
+    await transferFlow(appPage, 'ETH', '10', receiverEnsName);
+    expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
+  });
+
+  it('Shows error if invalid recipient address', async () => {
+    await transferFlow(appPage, 'ETH', '1', '0x123');
+    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+  });
+
+  it('Shows error if invalid recipient ens name', async () => {
+    await transferFlow(appPage, 'ETH', '1', 'test');
+    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+  });
+
+  it('Shows errors if invalid amount and recipient', async () => {
+    await transferFlow(appPage, 'ETH', '10', '0x123');
+    expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
+    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+  });
+
   afterEach(async () => {
     appWrapper.unmount();
     await relayer.stop();
