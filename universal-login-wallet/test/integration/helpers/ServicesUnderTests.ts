@@ -16,7 +16,10 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
   const sdkConfig = TEST_SDK_CONFIG as SdkConfig;
   const services = createServices(config, {provider, storageService, sdkConfig});
   services.sdk.priceObserver.getCurrentPrices = () => {
-    return Promise.resolve({ETH: {USD: 1, DAI: 1, ETH: 1}});
+    return Promise.resolve({
+      ETH: {USD: 1, DAI: 1, ETH: 1},
+      DAI: {USD: 1, DAI: 1, ETH: 1},
+    });
   };
   await services.sdk.tokensDetailsStore.fetchTokensDetails();
   await services.sdk.fetchRelayerConfig();

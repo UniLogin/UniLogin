@@ -1,8 +1,9 @@
 import {expect} from 'chai';
-import {GAS_BASE, waitExpect} from '@universal-login/commons';
+import {utils} from 'ethers';
+import {deployContract} from 'ethereum-waffle';
+import {GAS_BASE, GAS_FIXED, waitExpect} from '@universal-login/commons';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {deployContract} from 'ethereum-waffle';
 import MockToken from '@universal-login/contracts/build/MockToken';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
@@ -50,7 +51,7 @@ describe('INT: MessageHandler', async () => {
   it('Error when not enough gas', async () => {
     const gasCall = 1;
     const gasBase = 7696;
-    const gasLimit = gasBase + gasCall;
+    const gasLimit = utils.bigNumberify(gasBase + gasCall).add(GAS_FIXED);
     const signedMessage = messageToSignedMessage({...msg, gasLimit}, wallet.privateKey);
     await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);
   });

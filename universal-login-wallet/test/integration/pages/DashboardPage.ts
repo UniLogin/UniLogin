@@ -5,7 +5,7 @@ export default class DashboardPage {
   constructor(private wrapper: ReactWrapper) {
   }
 
-  clickTransferButton() {
+  goToTransferPage() {
     this.wrapper.find('#transferFunds').simulate('click');
     this.wrapper.update();
   }

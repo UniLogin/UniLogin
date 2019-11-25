@@ -1,4 +1,4 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../build/MockContract.json';
@@ -15,7 +15,7 @@ export const transferMessage = {
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: '7440',
+  gasBase: utils.bigNumberify('7440').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -26,7 +26,7 @@ export const failedTransferMessage = {
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: '7440',
+  gasBase: utils.bigNumberify('7440').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -38,7 +38,7 @@ export const callMessage = {
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: '8720',
+  gasBase: utils.bigNumberify('8720').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -50,7 +50,7 @@ export const failedCallMessage = {
   nonce: 0,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: '8720',
+  gasBase: utils.bigNumberify('8720').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -70,7 +70,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasPrice: 1,
     gasToken: '0x0',
     gasCall: utils.bigNumberify('240000'),
-    gasBase: 0,
+    gasBase: utils.bigNumberify(0).add(GAS_FIXED),
     ...overrides,
   };
   const gasBase = estimateGasBaseFromUnsignedMessage(msg);
@@ -96,10 +96,10 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     nonce: await proxyAsWalletContract.lastNonce(),
     gasPrice: DEFAULT_GAS_PRICE,
     gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-    gasBase: 0,
+    gasBase: utils.bigNumberify(0).add(GAS_FIXED),
     gasToken: '0x0000000000000000000000000000000000000000',
   };
-  const gasBase = estimateGasBaseFromUnsignedMessage(msg);
+  const gasBase = utils.bigNumberify(estimateGasBaseFromUnsignedMessage(msg));
   msg.gasBase = gasBase;
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
