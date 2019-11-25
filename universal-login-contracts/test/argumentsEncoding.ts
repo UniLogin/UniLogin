@@ -8,7 +8,6 @@ import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, DEFAULT_GA
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-
 describe('UNIT: argumentsEncoding', async () => {
   describe('concatenateSignatures', () => {
     let signature1: string;
