@@ -1,40 +1,48 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
-import {messageSignature, getExecutionArgs} from './helpers/argumentsEncoding';
+import {getExecutionArgs} from './helpers/argumentsEncoding';
 import {utils, Wallet} from 'ethers';
-import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, computeGasBase, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT_EXECUTION} from '@universal-login/commons';
+import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT_EXECUTION, calculateMessageSignature} from '@universal-login/commons';
+import {estimateGasBaseFromUnsignedMessage} from '../lib';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const gasToken = ETHER_NATIVE_TOKEN.address;
-const gasPrice = DEFAULT_GAS_PRICE;
 const gasCall = DEFAULT_GAS_LIMIT_EXECUTION;
 
 describe('UNIT: argumentsEncoding', async () => {
   const wallet1 = Wallet.createRandom();
   const wallet2 = Wallet.createRandom();
-  const value = utils.parseEther('0.1');
-  const data = utils.hexlify(0);
-  const gasBase = computeGasBase(data);
-  const nonce = 0;
+  const basicMessage = {
+    from: wallet1.address,
+    to: wallet1.address,
+    value: utils.parseEther('0.1'),
+    data: utils.hexlify(0),
+    nonce: 0,
+    gasToken: ETHER_NATIVE_TOKEN.address,
+    gasPrice: DEFAULT_GAS_PRICE,
+    gasCall,
+    gasBase: '100000',
+  };
+  const gasBase = estimateGasBaseFromUnsignedMessage(basicMessage);
+  const message = {...basicMessage, gasBase};
 
   describe('signature utils', () => {
     let signature1: string;
     let signature2: string;
 
     before(async () => {
-      signature1 = await messageSignature(wallet1, wallet1.address, wallet1.address, value, data, nonce, gasToken, gasPrice, gasCall, gasBase);
-      signature2 = await messageSignature(wallet1, wallet1.address, wallet2.address, value, data, nonce, gasToken, gasPrice, gasCall, gasBase);
+      signature1 = await calculateMessageSignature(wallet1.privateKey, message);
+      signature2 = await calculateMessageSignature(wallet2.privateKey, message);
     });
 
     it('Should return correct message signature', async () => {
-      const from = wallet1.address;
-      const message = utils.arrayify(utils.solidityKeccak256(
-        ['address', 'address', 'uint256', 'bytes', 'uint256', 'address', 'uint', 'uint', 'uint'],
-        [wallet1.address, from, value, data, nonce, gasToken, gasPrice, gasCall, gasBase]));
-      expect(utils.verifyMessage(message, signature1)).to.eq(wallet1.address);
+      const dataHash = utils.solidityKeccak256(['bytes'], [message.data]);
+      const messageArray = utils.arrayify(utils.solidityKeccak256(
+        ['address', 'address', 'uint256', 'bytes32', 'uint256', 'uint', 'address', 'uint', 'uint'],
+        [message.from, message.to, message.value, dataHash, message.nonce, message.gasPrice, message.gasToken, gasCall, gasBase]));
+      expect(utils.verifyMessage(messageArray, signature1)).to.eq(wallet1.address);
     });
 
     it('Should concatenate two signatures arrays', async () => {
