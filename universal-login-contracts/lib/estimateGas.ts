@@ -3,12 +3,6 @@ import {UnsignedMessage, SignedMessage, computeGasBase, createFullHexString, ens
 import {encodeDataForExecuteSigned} from './encode';
 import cloneDeep from 'lodash.clonedeep';
 
-export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
-  const gasBase = utils.bigNumberify(estimateGasBaseFromUnsignedMessage(unsignedMessage));
-  const gasCall = calculateGasCall(gasLimit, gasBase);
-  return {gasBase, gasCall};
-};
-
 export const calculateGasCall = (gasLimit: utils.BigNumberish, gasBase: utils.BigNumberish) => {
   const gasCall = utils.bigNumberify(gasLimit).sub(gasBase);
   ensure(gasCall.gt(0), Error, 'Gas limit too low');
