@@ -18,7 +18,6 @@ export function OnboardingSteps({sdk, walletService, walletCreationService, moda
       return (
         <TopUp
           modalClassName={className}
-          showModal={modalService.showModal}
           contractAddress={walletState.wallet.contractAddress}
           onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
           sdk={sdk}

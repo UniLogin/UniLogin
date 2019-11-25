@@ -12,7 +12,6 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
-import {ShowReactModal} from '../../core/models/ReactModalContext';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 interface TopUpProps {
@@ -26,10 +25,9 @@ interface TopUpProps {
   isModal?: boolean;
   logoColor?: LogoColor;
   isDeployment: boolean;
-  showModal?: ShowReactModal;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor, showModal}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 

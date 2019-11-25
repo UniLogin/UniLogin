@@ -3,7 +3,6 @@ import {Redirect} from 'react-router';
 import {useServices} from '../../hooks';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
-import Modal from '../Modals/Modal';
 import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
 import {CreationSuccess} from '../Modals/ModalTxnSuccess';
 import {useHistory} from 'react-router';
@@ -33,12 +32,10 @@ export function CreateFlow() {
               hideTopUpModal(walletService, modalService);
               history.push('/selectDeployName');
             }}
-            showModal={modalService.showModal as any} // FIXME: Types don't match up between react and wallet modals
             modalClassName="topup-modal-wrapper"
             topUpClassName="jarvis-styles"
             logoColor="black"
           />
-          <Modal />
         </div>
       );
     case 'Deploying':
