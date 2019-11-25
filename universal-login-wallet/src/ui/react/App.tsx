@@ -21,26 +21,10 @@ const App = () => {
   return (
     <WalletModalContext.Provider value={modalService}>
       <Switch>
-        <Route
-          exact
-          path="/welcome"
-          render={() => <WelcomeScreen />}
-        />
-        <Route
-          exact
-          path="/terms"
-          render={() => <TermsAndConditionsScreen />}
-        />
-        <Route
-          exact
-          path="/privacy"
-          render={() => <PrivacyPolicy />}
-        />
-        <Route
-          exact
-          path="/create"
-          render={() => <CreateFlow />}
-        />
+        <Route exact path="/welcome" component={WelcomeScreen} />
+        <Route exact path="/terms" component={TermsAndConditionsScreen} />
+        <Route exact path="/privacy" component={PrivacyPolicy} />
+        <Route exact path="/create" component={CreateFlow} />
         <Route
           exact
           path="/selectDeployName"
@@ -52,16 +36,15 @@ const App = () => {
         />
         <Route
           exact
-          path="/connect"
-          render={() =>
-            <div className="main-bg">
-              <div className="box-wrapper">
-                <div className="box">
-                  <ConnectAccount />
-                </div>
+          path="/connect" >
+          <div className="main-bg">
+            <div className="box-wrapper">
+              <div className="box">
+                <ConnectAccount />
               </div>
-            </div>}
-        />
+            </div>
+          </div>
+        </Route>
         <PrivateRoute
           authorized={authorized}
           path="/"

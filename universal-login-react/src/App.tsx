@@ -52,43 +52,31 @@ export const App = () => {
         <div className="playground-content">
           <Switch>
             <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)} />
-            <Route
-              exact
-              path="/logobutton"
-              render={() => (
-                <div>
-                  <button onClick={() => mockNotifications(sdk)}>Create mock notifications</button>
-                  <hr />
-                  <CreateRandomInstance walletService={walletService} />
-                  <hr />
-                  <LogoButton walletService={walletService} />
-                </div>
-              )}
-            />
-            <Route
-              exact
-              path="/onboarding"
-              render={() => (
-                <Onboarding
-                  sdk={sdk}
-                  walletService={walletService}
-                  domains={['mylogin.eth', 'universal-id.eth']}
-                  tryEnablingMetamask={tryEnablingMetamask}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/walletselector"
-              render={() => (
-                <WalletSelector
-                  onCreateClick={() => {console.log('create');}}
-                  onConnectClick={() => {console.log('connect');}}
-                  sdk={sdk}
-                  domains={['mylogin.eth', 'myapp.eth']}
-                />
-              )}
-            />
+            <Route exact path="/logobutton">
+              <div>
+                <button onClick={() => mockNotifications(sdk)}>Create mock notifications</button>
+                <hr />
+                <CreateRandomInstance walletService={walletService} />
+                <hr />
+                <LogoButton walletService={walletService} />
+              </div>
+            </Route>
+            <Route exact path="/onboarding">
+              <Onboarding
+                sdk={sdk}
+                walletService={walletService}
+                domains={['mylogin.eth', 'universal-id.eth']}
+                tryEnablingMetamask={tryEnablingMetamask}
+              />
+            </Route>
+            <Route exact path="/walletselector">
+              <WalletSelector
+                onCreateClick={() => {console.log('create');}}
+                onConnectClick={() => {console.log('connect');}}
+                sdk={sdk}
+                domains={['mylogin.eth', 'myapp.eth']}
+              />
+            </Route>
             <Route
               exact
               path="/keyboard"
@@ -130,11 +118,11 @@ export const App = () => {
             />
             <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
-            <Route exact path="/waiting" render={() =>
+            <Route exact path="/waiting">
               <ModalWrapper>
                 <WaitingForOnRampProvider onRampProviderName={'ramp'} />
-              </ModalWrapper>}
-            />
+              </ModalWrapper>
+            </Route>
             <Route component={() => (<p>not found</p>)} />
           </Switch>
         </div>
