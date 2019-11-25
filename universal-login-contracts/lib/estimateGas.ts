@@ -19,7 +19,7 @@ export const calculateGasBase = (message: Omit<Message, 'gasLimit'>) => {
     ...message,
     gasCall: createFullHexString(3),
     gasBase: createFullHexString(3),
-    signature: createFullHexString(65)
+    signature: createFullHexString(65),
   });
   const gasData = computeGasData(encodedMessage);
   return utils.bigNumberify(gasData).add(GAS_FIXED);

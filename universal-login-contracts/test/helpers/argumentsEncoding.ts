@@ -39,8 +39,8 @@ export const estimateGasBaseForNoSignature = (unsignedMessage: UnsignedMessage) 
     ...unsignedMessage,
     gasCall: createFullHexString(3),
     gasBase: createFullHexString(3),
-    signature: '0x0'
+    signature: '0x0',
   });
   const gasData = computeGasData(encodedMessage);
   return utils.bigNumberify(gasData).add(GAS_FIXED);
-}
+};
