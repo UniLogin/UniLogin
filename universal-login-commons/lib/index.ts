@@ -1,4 +1,4 @@
-export {Omit, PartialRequired, Procedure, Predicate, DeepPartial} from './core/types/common';
+export {Omit, PartialRequired, Procedure, Predicate, DeepPartial, Nullable} from './core/types/common';
 export {ApplicationInfo, DeviceInfo, Notification} from './core/models/notifications';
 export {Device} from './core/models/Device';
 export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, DeploymentStatus, DeploymentState, MessageState, MineableState, MineableStatus, CollectedSignatureKeyPair, SignedMessagePaymentOptions, ExecutionOptions, SdkExecutionOptions} from './core/models/message';

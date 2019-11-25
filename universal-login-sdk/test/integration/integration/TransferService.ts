@@ -28,6 +28,7 @@ describe('INT: TransferService', () => {
   let tokenDetailsService: TokenDetailsService;
   let tokenService: TokensDetailsStore;
   let wallet: Wallet;
+  let balance: string;
 
   before(async () => {
     [wallet] = await getWallets(createMockProvider());
@@ -41,6 +42,7 @@ describe('INT: TransferService', () => {
     await tokenService.fetchTokensDetails();
     sdk.tokensDetailsStore = tokenService;
     transferService = new TransferService(walletService.getDeployedWallet());
+    balance = '5';
   });
 
   it('Should transfer tokens', async () => {
@@ -89,6 +91,31 @@ describe('INT: TransferService', () => {
     const targetENSName = 'not-existing.mylogin.eth';
     const amount = '0.5';
     await expect(transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount})).to.be.rejectedWith(`${targetENSName} is not valid`);
+  });
+
+  it('throw error if invalid amount and ens name', async () => {
+    const targetENSName = 'test';
+    const amount = '0.5';
+    expect(() => transferService.validateInputs({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`${targetENSName} is not valid`);
+  });
+
+  it('throw error if invalid amount', async () => {
+    const targetENSName = 'ether-test.mylogin.eth';
+    await createWallet(targetENSName, sdk, wallet);
+    const amount = '7';
+    expect(() => transferService.validateInputs({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`Amount ${amount} is not valid`);
+  });
+
+  it('throw error if invalid amount and address', async () => {
+    const to = `${TEST_ACCOUNT_ADDRESS}3`;
+    const amount = '7';
+    expect(() => transferService.validateInputs({to, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`Amount ${amount} and recipient ${to} is not valid`);
+  });
+
+  it('throw error if invalid amount and ens name', async () => {
+    const targetENSName = 'test';
+    const amount = '7';
+    expect(() => transferService.validateInputs({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`Amount ${amount} and recipient ${targetENSName} is not valid`);
   });
 
   after(async () => {
