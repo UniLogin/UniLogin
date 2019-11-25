@@ -16,9 +16,10 @@ export class TransferService {
   }
 
   validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
-    const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(transferDetails.gasParameters.gasPrice);
+    const {gasPrice, gasToken} = transferDetails.gasParameters;
+    const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasPrice);
     ensureNotNull(balance, Error, 'Balance is null');
-    const isAmountValid = isValidAmount(transferDetails.transferToken, balance, gasCostInWei, transferDetails.amount);
+    const isAmountValid = isValidAmount(transferDetails.transferToken, balance, gasToken, gasCostInWei, transferDetails.amount);
     const isRecipientValid = isValidRecipient(transferDetails.to);
     ensure(isAmountValid || isRecipientValid, InvalidAmountAndRecipient, transferDetails.amount, transferDetails.to);
     ensure(isAmountValid, InvalidAmount, transferDetails.amount);

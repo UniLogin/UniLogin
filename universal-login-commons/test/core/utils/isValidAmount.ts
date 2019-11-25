@@ -27,32 +27,34 @@ describe('isAmountInConstraints', () => {
 });
 
 describe('isValidAmount', () => {
-  const itValidatesAmountForEther = (amount: string | undefined, balance: Nullable<string>, gasCostInWei: utils.BigNumber, result: boolean) => {
+  const itValidatesAmountForEther = (amount: string | undefined, balance: Nullable<string>, gasToken: string, gasCostInWei: utils.BigNumber, result: boolean) => {
     it(`returns ${result} for amount: ${amount} and balance: ${balance} for ether`, () => {
-      expect(isValidAmount(ETHER_NATIVE_TOKEN.address, balance, gasCostInWei, amount)).to.eq(result);
+      expect(isValidAmount(ETHER_NATIVE_TOKEN.address, balance, gasToken, gasCostInWei, amount)).to.eq(result);
     });
   };
 
-  const itValidatesAmountForToken = (amount: string | undefined, balance: Nullable<string>, gasCostInWei: utils.BigNumber, result: boolean) => {
+  const itValidatesAmountForToken = (amount: string | undefined, balance: Nullable<string>, gasToken: string, gasCostInWei: utils.BigNumber, result: boolean) => {
     it(`returns ${result} for amount: ${amount} and balance: ${balance} for token`, () => {
-      expect(isValidAmount('0x0005abcbb9533cf6f9370505ffef25393e0d2852', balance, gasCostInWei, amount)).to.eq(result);
+      expect(isValidAmount('0x0005abcbb9533cf6f9370505ffef25393e0d2852', balance, gasToken, gasCostInWei, amount)).to.eq(result);
     });
   };
 
   const gasCostInWei = utils.parseEther('2');
+  const etherGasToken = ETHER_NATIVE_TOKEN.address;
+  const daiGasToken = '0x0005abcbb9533cf6f9370505ffef25393e0d2852';
 
-  itValidatesAmountForEther('3', '5', gasCostInWei, true);
-  itValidatesAmountForToken('5', '5', gasCostInWei, true);
-  itValidatesAmountForEther('1', '5', gasCostInWei, true);
-  itValidatesAmountForToken('1', '5', gasCostInWei, true);
-  itValidatesAmountForEther('1', '2', gasCostInWei, false);
-  itValidatesAmountForToken('1', '2', gasCostInWei, true);
-  itValidatesAmountForEther('2', '1', gasCostInWei, false);
-  itValidatesAmountForToken('2', '1', gasCostInWei, false);
-  itValidatesAmountForEther('1', null, gasCostInWei, false);
-  itValidatesAmountForToken('1', null, gasCostInWei, false);
-  itValidatesAmountForEther(undefined, '2', gasCostInWei, false);
-  itValidatesAmountForToken(undefined, '2', gasCostInWei, false);
-  itValidatesAmountForEther(undefined, null, gasCostInWei, false);
-  itValidatesAmountForToken(undefined, null, gasCostInWei, false);
+  itValidatesAmountForEther('3', '5', etherGasToken, gasCostInWei, true);
+  itValidatesAmountForToken('3', '5', daiGasToken, gasCostInWei, true);
+  itValidatesAmountForEther('1', '2', daiGasToken, gasCostInWei, true);
+  itValidatesAmountForToken('1', '2', etherGasToken, gasCostInWei, true);
+  itValidatesAmountForEther('1', '2', etherGasToken, gasCostInWei, false);
+  itValidatesAmountForToken('1', '2', daiGasToken, gasCostInWei, false);
+  itValidatesAmountForEther('2', '1', etherGasToken, gasCostInWei, false);
+  itValidatesAmountForToken('2', '1', daiGasToken, gasCostInWei, false);
+  itValidatesAmountForEther('1', null, etherGasToken, gasCostInWei, false);
+  itValidatesAmountForToken('1', null, daiGasToken, gasCostInWei, false);
+  itValidatesAmountForEther(undefined, '2', etherGasToken, gasCostInWei, false);
+  itValidatesAmountForToken(undefined, '2', daiGasToken, gasCostInWei, false);
+  itValidatesAmountForEther(undefined, null, etherGasToken, gasCostInWei, false);
+  itValidatesAmountForToken(undefined, null, daiGasToken, gasCostInWei, false);
 });

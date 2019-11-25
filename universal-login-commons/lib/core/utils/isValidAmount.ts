@@ -1,17 +1,17 @@
 import {utils} from 'ethers';
 import {Nullable} from '../types/common';
-import {ETHER_NATIVE_TOKEN} from '../constants/constants';
 
 const isNumber = /^[0-9]+(\.[0-9]+)?$/;
 
-export const isValidAmount = (tokenAddress: string, balance: Nullable<string>, gasCostInWei: utils.BigNumber, amount?: string): boolean => {
-  if (balance) {
-    const maxEtherAmount = utils.parseEther(balance).sub(gasCostInWei);
-    return tokenAddress === ETHER_NATIVE_TOKEN.address
-      ? isAmountInConstraints(maxEtherAmount, amount)
-      : isAmountInConstraints(utils.parseEther(balance), amount);
+export const isValidAmount = (tokenAddress: string, balance: Nullable<string>, gasToken: string, gasCostInWei: utils.BigNumber, amount?: string): boolean => {
+  if (!balance) {
+    return false;
   }
-  return false;
+  const maxEtherAmount = utils.parseEther(balance).sub(gasCostInWei);
+  if (tokenAddress === gasToken) {
+    return isAmountInConstraints(maxEtherAmount, amount);
+  }
+  return isAmountInConstraints(utils.parseEther(balance), amount);
 };
 
 export const isAmountInConstraints = (balance: utils.BigNumber, amount?: string): boolean => {
