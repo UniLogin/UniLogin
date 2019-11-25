@@ -11,6 +11,7 @@ import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalPropType, WalletModalType} from '../../core/entities/WalletModalContext';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
 import {CreateFlow} from './CreateAccount/CreateFlow';
+import {CreateAccount} from './CreateAccount/CreateAccount';
 
 const App = () => {
   const modalService = useModalService<WalletModalType, WalletModalPropType>();
@@ -39,6 +40,15 @@ const App = () => {
           exact
           path="/create"
           render={() => <CreateFlow />}
+        />
+        <Route
+          exact
+          path="/selectDeployName"
+          render={({history}) =>
+            <CreateAccount onCreateClick={async (ensName) => {
+              await walletService.createFutureWallet(ensName);
+              history.push('/create');
+            }} />}
         />
         <Route
           exact
