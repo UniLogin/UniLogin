@@ -103,7 +103,6 @@ export class WalletService {
   async connect(name: string, callback: Procedure) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
-
     const applicationWallet: ApplicationWallet = {privateKey, contractAddress, name};
     this.setConnecting(applicationWallet);
 

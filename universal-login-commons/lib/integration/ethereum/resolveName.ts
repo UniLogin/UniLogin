@@ -1,18 +1,22 @@
 import {utils, Contract, providers} from 'ethers';
+import {AddressZero} from 'ethers/constants';
 import ENS from '../../contracts/ENS.json';
 import PublicResolver from '../../contracts/PublicResolver.json';
+import {Nullable} from '../../core/types/common.js';
 
 export const resolveName = async (
   provider: providers.Provider,
   ensAddress: string,
   ensName: string,
-) => {
+): Promise<Nullable<string>> => {
   const node = utils.namehash(ensName);
   const ensContract = new Contract(ensAddress, ENS.interface, provider);
   const resolverAddress = await ensContract.resolver(node);
-  if (resolverAddress !== '0x0000000000000000000000000000000000000000') {
+  if (resolverAddress !== AddressZero) {
     const resolverContract = new Contract(resolverAddress, PublicResolver.interface, provider);
-    return resolverContract.addr(node);
+    const resolvedAddress = await resolverContract.addr(node);
+    return resolvedAddress !== AddressZero ? resolvedAddress : null;
+  } else {
+    return null;
   }
-  return false;
 };
