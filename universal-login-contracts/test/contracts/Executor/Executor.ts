@@ -6,7 +6,7 @@ import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} 
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST} from '@universal-login/commons';
 import {getExecutionArgs, estimateGasBaseForNoSignature} from '../../helpers/argumentsEncoding';
-import {calculatePaymentOptions, estimateGasBaseFromSignedMessage} from '../../../lib/estimateGas';
+import {calculatePaymentOptions, calculateGasBase} from '../../../lib/estimateGas';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -259,7 +259,7 @@ describe('CONTRACT: Executor - main', async () => {
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         signatures = await concatenateSignatures([signature1, signature2, signature2]);
-        msgToCall = {...msgToCall, gasBase: estimateGasBaseFromSignedMessage({...msgToCall, signature: signatures} as SignedMessage)};
+        msgToCall = {...msgToCall, gasBase: calculateGasBase(msgToCall)};
         await walletContract.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), signatures, calculatePaymentOptions(msgToCall)))

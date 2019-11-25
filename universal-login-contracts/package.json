@@ -7,8 +7,7 @@
   "dependencies": {
     "@universal-login/commons": "0.3.56",
     "ens-builder": "^2.0.0",
-    "ethers": "^4.0.39",
-    "lodash.clonedeep": "^4.5.0"
+    "ethers": "^4.0.39"
   },
   "scripts": {
     "prepublishOnly": "rimraf build dist && yarn build",
@@ -33,9 +32,9 @@
     "@typescript-eslint/parser": "^2.3.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "eslint": "^6.5.0",
     "ethereum-waffle": "2.0.15",
     "ethlint": "^1.2.3",
-    "eslint": "^6.5.0",
     "ganache-core": "^2.2.1",
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",

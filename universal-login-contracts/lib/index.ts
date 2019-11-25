@@ -3,6 +3,6 @@ export {deployFactory} from './deployFactory';
 export {createProxyDeployWithENSArgs} from './ProxyUtils';
 export {createFutureDeployment, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, getFutureAddress} from './FutureDeployment';
 export {deployWalletContract} from './deployMaster';
-export {computeGasFields, estimateGasBaseFromSignedMessage, estimateGasBaseFromUnsignedMessage} from './estimateGas';
+export {calculateGasBase} from './estimateGas';
 export {messageToUnsignedMessage, messageToSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from './message';
 export * from './interfaces';
