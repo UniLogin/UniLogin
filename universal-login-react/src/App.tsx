@@ -20,6 +20,8 @@ import {useAsync} from './ui/hooks/useAsync';
 import {ModalsPlayground} from './ui/PlaygroundUtils/ModalsPlayground';
 import {WalletService} from '@universal-login/sdk';
 import {mockNotifications, CONNECTION_REAL_ADDRESS} from './ui/PlaygroundUtils/mockNotifications';
+import {ModalWrapper} from './ui/Modals/ModalWrapper';
+import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 
 export const App = () => {
   const modalService = useModalService<ReactModalType, ReactModalProps>();
@@ -101,7 +103,7 @@ export const App = () => {
                       setPublicKey={() => {}}
                     />
                   </div>
-                ) : <Spinner/>;
+                ) : <Spinner />;
               }}
             />
             <Route
@@ -128,7 +130,11 @@ export const App = () => {
             />
             <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
-            <Route exact path="/waiting" render={() => <ModalsPlayground modalService={modalService} modalNames={['waitingForOnRampProvider']} modalProps={[{onRampProviderName: 'ramp'}]}/>} />
+            <Route exact path="/waiting" render={() =>
+              <ModalWrapper>
+                <WaitingForOnRampProvider onRampProviderName={'ramp'} />
+              </ModalWrapper>}
+            />
             <Route component={() => (<p>not found</p>)} />
           </Switch>
         </div>

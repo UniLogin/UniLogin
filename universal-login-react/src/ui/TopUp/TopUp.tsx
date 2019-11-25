@@ -13,7 +13,7 @@ import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
 import {ShowReactModal} from '../../core/models/ReactModalContext';
-import {OnRampProviderName} from './Fiat/getOnRampProviderLogo';
+import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -52,11 +52,6 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
     />
   );
 
-  const showWaitingFor = (onRampProviderName: OnRampProviderName) => {
-    setModal(TopUpComponentType.choose);
-    showModal && showModal('waitingForOnRampProvider', {onRampProviderName});
-  };
-
   if (!relayerConfig) {
     return <Spinner />;
   } else if (modal === TopUpComponentType.choose) {
@@ -82,9 +77,19 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         amount={stringToEther(amount)}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.ramp}
-        onSuccess={() => showWaitingFor('ramp')}
+        onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
         onCancel={() => setModal(TopUpComponentType.choose)}
       />
+    );
+  } else if (modal === TopUpComponentType.waitForRamp) {
+    return (
+      <ModalWrapper modalClassName={modalClassName}>
+        <WaitingForOnRampProvider
+          className={modalClassName}
+          onRampProviderName={'ramp'}
+          logoColor={logoColor}
+        />
+      </ModalWrapper>
     );
   } else {
     throw new Error(`Unsupported type: ${modal}`);

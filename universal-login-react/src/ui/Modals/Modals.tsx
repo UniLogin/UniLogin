@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import {ModalWrapper} from './ModalWrapper';
 import {WaitingForTransaction, WaitingForTransactionProps} from '../commons/WaitingForTransaction';
-import {WaitingForOnRampProviderProps, WaitingForOnRampProvider} from '../TopUp/Fiat/WaitingForOnRampProvider';
 import {ReactModalContext, TopUpProps, ConnectionFlowProps} from '../../core/models/ReactModalContext';
 import {TopUp} from '../TopUp/TopUp';
 import {ConnectionFlow} from '../ConnectionFlow';
@@ -37,12 +36,6 @@ const Modals = ({modalClassName}: ModalsProps) => {
             onCancel={modalService.hideModal}
             {...modalService.modalProps as ConnectionFlowProps}
           />
-        </ModalWrapper>
-      );
-    case 'waitingForOnRampProvider':
-      return (
-        <ModalWrapper>
-          <WaitingForOnRampProvider {...modalService.modalProps as WaitingForOnRampProviderProps}/>
         </ModalWrapper>
       );
     default:

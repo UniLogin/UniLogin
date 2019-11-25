@@ -51,16 +51,6 @@ const Modal = () => {
           />
         </ModalWrapperWithoutClose>
       );
-    case 'waitingForOnRampProvider':
-      return (
-        <ModalWrapper modalClassName="jarvis-modal">
-          <WaitingForOnRampProvider
-            className="jarvis-modal"
-            logoColor="black"
-            {...modalService.modalProps as WaitingForOnRampProviderProps}
-          />
-        </ModalWrapper>
-      );
     case 'error':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
