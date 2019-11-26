@@ -1,4 +1,4 @@
-import {estimateGasBaseFromUnsignedMessage} from '@universal-login/contracts';
+import {calculateGasBase} from '@universal-login/contracts';
 import {SignedMessage, ensure, GAS_BASE, IMessageValidator} from '@universal-login/commons';
 import {InsufficientGas, GasLimitTooHigh} from '../../utils/errors';
 
@@ -7,7 +7,7 @@ export class GasValidator implements IMessageValidator {
 
   async validate(signedMessage: SignedMessage) {
     const {signature, ...unsignedMessage} = signedMessage;
-    const expectedGasBase = estimateGasBaseFromUnsignedMessage(unsignedMessage);
+    const expectedGasBase = calculateGasBase(unsignedMessage);
     const actualGasBase = Number(signedMessage.gasBase);
     ensure(expectedGasBase.eq(actualGasBase), InsufficientGas, `Got GasBase ${actualGasBase} but should be ${expectedGasBase}`);
     ensure(GAS_BASE < signedMessage.gasCall, InsufficientGas, `Got gasCall ${signedMessage.gasCall} but should greater than ${GAS_BASE}`);

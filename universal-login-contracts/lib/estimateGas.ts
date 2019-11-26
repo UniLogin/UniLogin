@@ -1,13 +1,6 @@
 import {utils} from 'ethers';
-import {UnsignedMessage, SignedMessage, computeGasBase, createFullHexString, ensure, SignedMessagePaymentOptions} from '@universal-login/commons';
+import {createFullHexString, ensure, SignedMessagePaymentOptions, Message, computeGasData, GAS_FIXED} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
-import cloneDeep from 'lodash.clonedeep';
-
-export const computeGasFields = (unsignedMessage: UnsignedMessage, gasLimit: utils.BigNumberish) => {
-  const gasBase = utils.bigNumberify(estimateGasBaseFromUnsignedMessage(unsignedMessage));
-  const gasCall = calculateGasCall(gasLimit, gasBase);
-  return {gasBase, gasCall};
-};
 
 export const calculateGasCall = (gasLimit: utils.BigNumberish, gasBase: utils.BigNumberish) => {
   const gasCall = utils.bigNumberify(gasLimit).sub(gasBase);
@@ -15,19 +8,19 @@ export const calculateGasCall = (gasLimit: utils.BigNumberish, gasBase: utils.Bi
   return gasCall;
 };
 
-export const estimateGasBaseFromUnsignedMessage = (unsignedMessage: UnsignedMessage) => {
-  const signature = createFullHexString(65);
-  return estimateGasBaseFromSignedMessage({...unsignedMessage, signature});
-};
-
-export const estimateGasBaseFromSignedMessage = (signedMessage: SignedMessage) => {
-  const copySignedMessage = {...cloneDeep(signedMessage), gasBase: utils.bigNumberify('0xFFFFFF'), gasCall: utils.bigNumberify('0xFFFFFF')};
-  const txdata = encodeDataForExecuteSigned(copySignedMessage);
-  return computeGasBase(txdata);
-};
-
 export const calculateFinalGasLimit = (gasCall: utils.BigNumberish, gasBase: utils.BigNumberish) =>
   utils.bigNumberify(gasCall).add(gasBase).add('30000');
 
 export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
   ({gasLimit: calculateFinalGasLimit(msg.gasCall, msg.gasBase)});
+
+export const calculateGasBase = (message: Omit<Message, 'gasLimit'>) => {
+  const encodedMessage = encodeDataForExecuteSigned({
+    ...message,
+    gasCall: createFullHexString(3),
+    gasBase: createFullHexString(3),
+    signature: createFullHexString(65),
+  });
+  const gasData = computeGasData(encodedMessage);
+  return utils.bigNumberify(gasData).add(GAS_FIXED);
+};
