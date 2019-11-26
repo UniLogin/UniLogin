@@ -8,6 +8,7 @@ import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
+import {TransferDropdown} from './Amount/TransferDropdown';
 
 export interface TransferProps {
   deployedWallet: DeployedWallet;
@@ -39,17 +40,22 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
   };
 
   return (
-    <div className="universal-login-amount">
+    <div className="universal-login-transfer">
       <div className={getStyleForTopLevelComponent(transferClassName)}>
-        <div className="transfer-amount">
+        <div className="transfer">
+          <TransferDropdown
+            sdk={deployedWallet.sdk}
+            tokenDetailsWithBalance={tokenDetailsWithBalance}
+            tokenDetails={tokenDetails}
+            setToken={(token: TokenDetails) => updateTransferDetailsWith({transferToken: token.address})}
+            className={transferClassName}
+          />
           <TransferAmount
             deployedWallet={deployedWallet}
-            tokenDetailsWithBalance={tokenDetailsWithBalance}
             updateTransferDetailsWith={updateTransferDetailsWith}
             tokenDetails={tokenDetails}
             setAmountError={(isAmountInvalid: boolean) => setErrors({...errors, amountError: isAmountInvalid})}
             amountError={errors.amountError}
-            transferAmountClassName={transferClassName}
           />
           <TransferRecipient
             updateTransferDetailsWith={updateTransferDetailsWith}
