@@ -68,6 +68,10 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
         logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
         rampUrl: 'https://ri-widget-staging.firebaseapp.com/',
       },
+      wyre: {
+        wyreUrl: 'https://pay.sendwyre.com/purchase',
+        paymentMethod: 'apple-pay',
+      },
     },
     database: databaseConfig,
     maxGasLimit: 500000,

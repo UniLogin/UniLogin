@@ -36,6 +36,10 @@ export const config: Config = Object.freeze({
       logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
       rampUrl: 'https://ri-widget-staging.firebaseapp.com/',
     },
+    wyre: {
+      wyreUrl: 'https://pay.sendwyre.com/purchase',
+      paymentMethod: 'apple-pay',
+    },
   },
   database: {
     client: 'postgresql',

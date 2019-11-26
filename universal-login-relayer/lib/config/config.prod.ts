@@ -41,6 +41,10 @@ export const config: Config = Object.freeze({
       logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
       rampUrl: getEnv('RAMP_URL', ''),
     },
+    wyre: {
+      wyreUrl: getEnv('WYRE_URL', ''),
+      paymentMethod: getEnv('PAYMENT_METHOD', ''),
+    },
   },
   database: {
     client: 'postgresql',

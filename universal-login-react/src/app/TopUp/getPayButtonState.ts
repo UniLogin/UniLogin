@@ -14,8 +14,7 @@ export function getPayButtonState(
   }
 
   const isPayButtonDisabled = !paymentMethod ||
-    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0) ||
-    paymentMethod === TopUpProvider.WYRE;
+    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0);
 
   return isPayButtonDisabled ? 'disabled' : 'active';
 }

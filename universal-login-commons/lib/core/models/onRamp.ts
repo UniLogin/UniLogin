@@ -14,3 +14,8 @@ export interface RampConfig {
   logoUrl: string;
   rampUrl: string;
 }
+
+export interface WyreConfig {
+  wyreUrl: string;
+  paymentMethod: string;
+}
