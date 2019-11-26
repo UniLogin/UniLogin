@@ -24,7 +24,7 @@ import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {BlockchainService} from '../integration/ethereum/BlockchainService';
-import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration} from '../core/utils/errors';
+import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
 import {FutureWalletFactory, FutureWallet} from './FutureWalletFactory';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
@@ -205,17 +205,16 @@ class UniversalLoginSDK {
     return this.createDeployedWallet(walletContractAddress).getNonce();
   }
 
-  async getWalletContractAddress(ensName: string) {
+  async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
-    if (walletContractAddress && await this.blockchainService.getCode(walletContractAddress)) {
-      return walletContractAddress;
-    }
-    return null;
+    ensureNotNull(walletContractAddress, InvalidENSRecord, ensName);
+    ensureNotNull(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
+    return walletContractAddress;
   }
 
   async walletContractExist(ensName: string) {
-    const walletContractAddress = await this.getWalletContractAddress(ensName);
-    return walletContractAddress !== null;
+    const walletContractAddress = await this.resolveName(ensName);
+    return !!(walletContractAddress && await this.blockchainService.getCode(walletContractAddress));
   }
 
   async resolveName(ensName: string) {
