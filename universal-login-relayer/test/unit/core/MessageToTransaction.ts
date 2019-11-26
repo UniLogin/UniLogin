@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, computeGasBase} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {messageToTransaction, GAS_LIMIT_MARGIN} from '../../../lib/core/utils/messages/serialisation';
 
@@ -8,7 +8,7 @@ describe('UNIT: MessageToTransaction', () => {
   const gasCall = utils.bigNumberify(23000);
   const gasPrice = utils.bigNumberify(9000000);
   const contractAddress = '0x0000000000000000000000000000000000000002';
-  const gasBase = utils.bigNumberify(computeGasBase('0xbeef'));
+  const gasBase = utils.bigNumberify(120000);
 
   it('should create transaction from transfer message', () => {
     const transferMessage = {
