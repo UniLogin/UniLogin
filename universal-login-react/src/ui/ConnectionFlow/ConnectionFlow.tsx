@@ -31,7 +31,7 @@ export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, c
     case 'recover':
       return (
         <ConnectWithPassphrase
-          name={name!}
+          name={name}
           walletService={walletService}
           onRecover={onSuccess}
           className={className}
@@ -41,7 +41,7 @@ export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, c
     case 'emoji':
       return (
         <ConnectWithEmoji
-          name={name!}
+          name={name}
           sdk={sdk}
           walletService={walletService}
           onConnect={onSuccess}
