@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
 import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
@@ -9,22 +9,19 @@ import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
 import {useServices} from './core/services/useServices';
-import {useModalService} from './core/services/useModalService';
-import {ReactModalProps, ReactModalType, TopUpProps} from './core/models/ReactModalContext';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
 import {DeployedWallet} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
-import {ModalsPlayground} from './ui/PlaygroundUtils/ModalsPlayground';
 import {WalletService} from '@universal-login/sdk';
 import {mockNotifications, CONNECTION_REAL_ADDRESS} from './ui/PlaygroundUtils/mockNotifications';
 import {ModalWrapper} from './ui/Modals/ModalWrapper';
 import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
+import {TopUp} from './ui/TopUp/TopUp';
 
 export const App = () => {
-  const modalService = useModalService<ReactModalType, ReactModalProps>();
   const {sdk} = useServices();
   const [relayerConfig] = useAsync(async () => {
     await sdk.fetchRelayerConfig();
@@ -97,24 +94,45 @@ export const App = () => {
             <Route
               exact
               path="/topup"
+              render={() =>
+                <div>
+                  <Link to="/topUpRegular">Regular</Link><br />
+                  <Link to="/topUpDeployment">Deployment</Link>
+                </div>}
+            />
+            <Route
+              exact
+              path="/topupRegular"
               render={() => {
                 if (!relayerConfig) {
                   return <Spinner />;
                 }
-                const regularTopUpProps: TopUpProps = {
-                  contractAddress: Wallet.createRandom().address,
-                  sdk,
-                  isDeployment: false,
-                };
-                const deploymentTopUpProps: TopUpProps = {
-                  contractAddress: Wallet.createRandom().address,
-                  sdk,
-                  isDeployment: true,
-                  onGasParametersChanged: console.log,
-                };
-                return <ModalsPlayground modalService={modalService} modalNames={['topUpAccount', 'topUpAccount']} modalProps={[regularTopUpProps, deploymentTopUpProps]} />;
-              }
-              }
+                return <TopUp
+                  hideModal={() => history.back()}
+                  contractAddress={Wallet.createRandom().address}
+                  sdk={sdk}
+                  onGasParametersChanged={console.log}
+                  isDeployment={false}
+                  isModal
+                />;
+              }}
+            />
+            <Route
+              exact
+              path="/topupDeployment"
+              render={() => {
+                if (!relayerConfig) {
+                  return <Spinner />;
+                }
+                return <TopUp
+                  hideModal={() => history.back()}
+                  contractAddress={Wallet.createRandom().address}
+                  sdk={sdk}
+                  onGasParametersChanged={console.log}
+                  isDeployment
+                  isModal
+                />;
+              }}
             />
             <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
             <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />

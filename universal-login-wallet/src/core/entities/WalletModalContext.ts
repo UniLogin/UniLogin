@@ -1,5 +1,5 @@
 import React from 'react';
-import {IModalService, WaitingForTransactionProps,} from '@universal-login/react';
+import {IModalService, WaitingForTransactionProps} from '@universal-login/react';
 
 export type WalletModalType =
   | 'error'

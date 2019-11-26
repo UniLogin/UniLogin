@@ -2,8 +2,8 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {TopUp, WaitingForTransaction} from '@universal-login/react';
-import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {WaitingForTransaction} from '@universal-login/react';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import ModalTransfer from './Transfer/ModalTransfer';
 
 const Modal = () => {
