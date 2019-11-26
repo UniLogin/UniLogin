@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
 
 interface ModalTxnSuccessProps {
-  hideModal: () => void;
+  hideModal?: () => void;
   operation: string;
   text: string;
 }
@@ -40,12 +40,11 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
 };
 
 interface CreationSuccessProps {
-  hideModal: () => void;
+  hideModal?: () => void;
 }
 
-export const CreationSuccess = ({hideModal}: CreationSuccessProps) =>
+export const CreationSuccess = () =>
   <ModalTxnSuccess
-    hideModal={hideModal}
     operation="Wallet creation"
     text="You have just created your wallet."
   />;
