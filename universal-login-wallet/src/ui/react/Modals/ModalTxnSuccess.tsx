@@ -22,7 +22,7 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
           className="modal-avatar-succes"
           src={send1x}
           srcSet={send2x}
-          alt="succes"
+          alt="success"
         />
         <div className="created-account">
           <div>
