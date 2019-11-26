@@ -1,6 +1,5 @@
 import {ensure} from '../errors/heplers';
 import {isProperHexString} from '../hexStrings';
-import {utils} from 'ethers';
 
 export const ZERO_BYTE_GAS_COST = 4;
 export const NON_ZERO_BYTE_GAS_COST = 68;
@@ -19,5 +18,3 @@ const gasCostFor = (byte: string) => {
 };
 
 export const GAS_FIXED = '50000';
-
-export const computeGasBase = (data: string) => utils.bigNumberify(computeGasData(data)).add(GAS_FIXED);
