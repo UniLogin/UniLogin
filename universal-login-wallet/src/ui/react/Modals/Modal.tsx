@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {ModalWrapper, TopUp, WaitingForTransaction, WaitingForDeployment} from '@universal-login/react';
+import {TopUp, WaitingForTransaction} from '@universal-login/react';
 import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
 import ModalTransfer from './Transfer/ModalTransfer';
 
@@ -30,16 +30,6 @@ const Modal = () => {
           logoColor="black"
         />
       ) : null;
-    case 'waitingForDeploy':
-      return (
-        <ModalWrapper modalClassName="jarvis-modal">
-          <WaitingForDeployment
-            {...modalService.modalProps}
-            relayerConfig={relayerConfig!}
-            className="jarvis-styles"
-          />
-        </ModalWrapper>
-      );
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>

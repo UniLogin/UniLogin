@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {ModalWrapper} from './ModalWrapper';
-import {WaitingForTransaction, WaitingForTransactionProps} from '../commons/WaitingForTransaction';
 import {ReactModalContext, TopUpProps, ConnectionFlowProps} from '../../core/models/ReactModalContext';
 import {TopUp} from '../TopUp/TopUp';
 import {ConnectionFlow} from '../ConnectionFlow';
@@ -21,12 +20,6 @@ const Modals = ({modalClassName}: ModalsProps) => {
           {...modalService.modalProps as TopUpProps}
           isModal
         />
-      );
-    case 'waitingFor':
-      return (
-        <ModalWrapper>
-          <WaitingForTransaction {...modalService.modalProps as WaitingForTransactionProps}/>
-        </ModalWrapper>
       );
     case 'connectionFlow':
       return (
