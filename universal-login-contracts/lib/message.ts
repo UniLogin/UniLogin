@@ -17,12 +17,10 @@ export const messageToUnsignedMessage = (message: Partial<Message>): UnsignedMes
     nonce: message.nonce!,
     gasPrice: message.gasPrice!,
     gasToken: message.gasToken!,
-    gasLimit: message.gasLimit!,
   };
   const gasBase = calculateGasBase(messageWithoutGasEstimates);
   const gasCall = calculateGasCall(message.gasLimit!, gasBase);
-  const {gasLimit, ...msgWithoutGasLimit} = messageWithoutGasEstimates;
-  return {...msgWithoutGasLimit, gasBase, gasCall};
+  return {...messageWithoutGasEstimates, gasBase, gasCall};
 };
 
 export const emptyMessage = {
