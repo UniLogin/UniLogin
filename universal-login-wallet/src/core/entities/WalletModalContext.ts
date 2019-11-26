@@ -8,7 +8,6 @@ export type WalletModalType =
   | 'topUpAccount'
   | 'waitingForDeploy'
   | 'waitingForTransfer'
-  | 'waitingForOnRampProvider'
   | 'none';
 
 export interface TopUpModalProps {

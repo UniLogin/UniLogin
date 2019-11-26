@@ -12,8 +12,7 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
-import {ShowReactModal} from '../../core/models/ReactModalContext';
-import {OnRampProviderName} from './Fiat/getOnRampProviderLogo';
+import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 interface TopUpProps {
   sdk: UniversalLoginSDK;
@@ -26,10 +25,9 @@ interface TopUpProps {
   isModal?: boolean;
   logoColor?: LogoColor;
   isDeployment: boolean;
-  showModal?: ShowReactModal;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor, showModal}: TopUpProps) => {
+export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -51,11 +49,6 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
       isDeployment={isDeployment}
     />
   );
-
-  const showWaitingFor = (onRampProviderName: OnRampProviderName) => {
-    setModal(TopUpComponentType.choose);
-    showModal && showModal('waitingForOnRampProvider', {onRampProviderName});
-  };
 
   if (!relayerConfig) {
     return <Spinner />;
@@ -82,9 +75,19 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         amount={stringToEther(amount)}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.ramp}
-        onSuccess={() => showWaitingFor('ramp')}
+        onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
         onCancel={() => setModal(TopUpComponentType.choose)}
       />
+    );
+  } else if (modal === TopUpComponentType.waitForRamp) {
+    return (
+      <ModalWrapper modalClassName={modalClassName}>
+        <WaitingForOnRampProvider
+          className={modalClassName}
+          onRampProviderName={'ramp'}
+          logoColor={logoColor}
+        />
+      </ModalWrapper>
     );
   } else {
     throw new Error(`Unsupported type: ${modal}`);

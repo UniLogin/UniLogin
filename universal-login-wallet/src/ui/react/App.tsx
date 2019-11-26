@@ -11,6 +11,7 @@ import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {WalletModalContext, WalletModalPropType, WalletModalType} from '../../core/entities/WalletModalContext';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
 import {CreateFlow} from './CreateAccount/CreateFlow';
+import {CreateAccount} from './CreateAccount/CreateAccount';
 
 const App = () => {
   const modalService = useModalService<WalletModalType, WalletModalPropType>();
@@ -20,39 +21,30 @@ const App = () => {
   return (
     <WalletModalContext.Provider value={modalService}>
       <Switch>
+        <Route exact path="/welcome" component={WelcomeScreen} />
+        <Route exact path="/terms" component={TermsAndConditionsScreen} />
+        <Route exact path="/privacy" component={PrivacyPolicy} />
+        <Route exact path="/create" component={CreateFlow} />
         <Route
           exact
-          path="/welcome"
-          render={() => <WelcomeScreen />}
+          path="/selectDeployName"
+          render={({history}) =>
+            <CreateAccount onCreateClick={async (ensName) => {
+              await walletService.createFutureWallet(ensName);
+              history.push('/create');
+            }} />}
         />
         <Route
           exact
-          path="/terms"
-          render={() => <TermsAndConditionsScreen />}
-        />
-        <Route
-          exact
-          path="/privacy"
-          target="_blank"
-          render={() => <PrivacyPolicy />}
-        />
-        <Route
-          exact
-          path="/create"
-          render={() => <CreateFlow />}
-        />
-        <Route
-          exact
-          path="/connect"
-          render={() =>
-            <div className="main-bg">
-              <div className="box-wrapper">
-                <div className="box">
-                  <ConnectAccount />
-                </div>
+          path="/connect" >
+          <div className="main-bg">
+            <div className="box-wrapper">
+              <div className="box">
+                <ConnectAccount />
               </div>
-            </div>}
-        />
+            </div>
+          </div>
+        </Route>
         <PrivateRoute
           authorized={authorized}
           path="/"

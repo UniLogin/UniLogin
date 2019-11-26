@@ -3,7 +3,6 @@ import {OnGasParametersChanged} from '@universal-login/commons';
 import {IModalService, ShowModal} from '../services/useModalService';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WaitingForTransactionProps} from '../../ui/commons/WaitingForTransaction';
-import {WaitingForOnRampProviderProps} from '../../ui/TopUp/Fiat/WaitingForOnRampProvider';
 
 export type ReactModalType =
   | 'connectionFlow'
@@ -11,10 +10,9 @@ export type ReactModalType =
   | 'topUp'
   | 'address'
   | 'waitingFor'
-  | 'safello'
-  | 'waitingForOnRampProvider';
+  | 'safello';
 
-export type ReactModalProps = TopUpProps | WaitingForTransactionProps | ConnectionFlowProps | WaitingForOnRampProviderProps;
+export type ReactModalProps = TopUpProps | WaitingForTransactionProps | ConnectionFlowProps;
 
 export type ConnectionFlowProps = {
   name: string;
