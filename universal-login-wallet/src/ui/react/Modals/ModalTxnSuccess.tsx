@@ -33,15 +33,11 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
         <p className="congratulation-text">
           Congratulations! {text}
         </p>
-        <Link to="/" onClick={hideModal} className="button-primary modal-success-btn">Go to your wallet</Link>
+        <Link to="/" className="button-primary modal-success-btn">Go to your wallet</Link>
       </div>
     </>
   );
 };
-
-interface CreationSuccessProps {
-  hideModal?: () => void;
-}
 
 export const CreationSuccess = () =>
   <ModalTxnSuccess
@@ -49,9 +45,8 @@ export const CreationSuccess = () =>
     text="You have just created your wallet."
   />;
 
-export const ConnectionSuccess = ({hideModal}: CreationSuccessProps) =>
+export const ConnectionSuccess = () =>
   <ModalTxnSuccess
-    hideModal={hideModal}
     operation="Connecting device succeed!"
     text="You have just connected new device."
   />;
