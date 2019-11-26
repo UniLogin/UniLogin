@@ -1,6 +1,6 @@
 import {UnsignedMessage, createFullHexString, computeGasData, GAS_FIXED} from '@universal-login/commons';
-import {Interface, BigNumberish, Arrayish, arrayify, solidityKeccak256} from 'ethers/utils';
-import {Wallet, utils, Contract} from 'ethers';
+import {Interface} from 'ethers/utils';
+import {utils, Contract} from 'ethers';
 import {WalletProxyInterface} from '../../lib/interfaces';
 import {encodeDataForExecuteSigned} from '../../lib';
 
