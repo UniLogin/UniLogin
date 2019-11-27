@@ -49,7 +49,7 @@ export const App = () => {
         <div className="playground-content">
           <Switch>
             <Route exact path="/" render={() => (<p>Welcome to Universal Login</p>)} />
-            <Route exact path="/logobutton">
+            <Route exact path="/logoButton">
               <div>
                 <button onClick={() => mockNotifications(sdk)}>Create mock notifications</button>
                 <hr />
@@ -66,7 +66,7 @@ export const App = () => {
                 tryEnablingMetamask={tryEnablingMetamask}
               />
             </Route>
-            <Route exact path="/walletselector">
+            <Route exact path="/walletSelector">
               <WalletSelector
                 onCreateClick={() => {console.log('create');}}
                 onConnectClick={() => {console.log('connect');}}
@@ -93,7 +93,7 @@ export const App = () => {
             />
             <Route
               exact
-              path="/topup"
+              path="/topUp"
               render={() =>
                 <div>
                   <Link to="/topUpRegular">Regular</Link><br />
