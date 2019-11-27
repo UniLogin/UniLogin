@@ -82,13 +82,11 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
     );
   } else if (modal === TopUpComponentType.wyre) {
     return (
-      <ModalWrapper modalClassName={modalClassName} hideModal={() => setModal(TopUpComponentType.choose)}>
-        <Wyre
-          address={contractAddress}
-          currency={'ETH'}
-          config={relayerConfig.onRampProviders.wyre}
-        />
-      </ModalWrapper>
+      <Wyre
+        address={contractAddress}
+        currency={'ETH'}
+        config={relayerConfig.onRampProviders.wyre}
+      />
     );
   } else if (modal === TopUpComponentType.waitForRamp) {
     return (
