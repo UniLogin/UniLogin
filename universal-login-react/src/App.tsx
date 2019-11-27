@@ -102,7 +102,7 @@ export const App = () => {
             />
             <Route
               exact
-              path="/topupRegular"
+              path="/topUpRegular"
               render={() => {
                 if (!relayerConfig) {
                   return <Spinner />;
@@ -119,7 +119,7 @@ export const App = () => {
             />
             <Route
               exact
-              path="/topupDeployment"
+              path="/topUpDeployment"
               render={() => {
                 if (!relayerConfig) {
                   return <Spinner />;
