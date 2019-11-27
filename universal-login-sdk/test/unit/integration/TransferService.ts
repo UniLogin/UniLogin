@@ -24,7 +24,8 @@ describe('UNIT: TransferService', () => {
     } as any;
     const walletService = {deployedWallet};
     const transferService = new TransferService(walletService.deployedWallet as any);
-    return {deployedWallet, walletService, transferService};
+    const balance = '300';
+    return {deployedWallet, walletService, transferService, balance};
   }
 
   it('can transfer ether', async () => {
@@ -107,12 +108,42 @@ describe('UNIT: TransferService', () => {
   });
 
   it('throw an error if address is not valid', async () => {
-    const {transferService} = setup();
-    await expect(transferService.transfer({
+    const {transferService, balance} = setup();
+    expect(() => transferService.validateInputs({
       to: '0x',
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
-    })).to.be.rejectedWith('0x is not valid');
+    }, balance)).to.throw('0x is not valid');
+  });
+
+  it('throw an error if ens name is not valid', async () => {
+    const {transferService, balance} = setup();
+    expect(() => transferService.validateInputs({
+      to: 'test',
+      amount: '123',
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters,
+    }, balance)).to.throw('test is not valid');
+  });
+
+  it('throw an error if amount is not valid', async () => {
+    const {transferService, balance} = setup();
+    expect(() => transferService.validateInputs({
+      to: TEST_ACCOUNT_ADDRESS,
+      amount: '350',
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters,
+    }, balance)).to.throw('Amount 350 is not valid');
+  });
+
+  it('throw an error if amount and recipient is not valid', async () => {
+    const {transferService, balance} = setup();
+    expect(() => transferService.validateInputs({
+      to: '0x',
+      amount: '350',
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters,
+    }, balance)).to.throw('Amount 350 and recipient 0x is not ');
   });
 });

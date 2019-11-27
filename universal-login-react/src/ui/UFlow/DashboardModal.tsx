@@ -1,18 +1,17 @@
 import {TransferService, WalletService} from '@universal-login/sdk';
 import React, {useState} from 'react';
-import {asTransferDetails, TransferDetails} from '@universal-login/commons';
+import {TransferDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import {Route, Switch} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
-import {cast} from '@restless/sanitizers';
-import {InvalidTransferDetails} from '../../core/utils/errors';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
 import {DialogWrapper} from './DialogWrappers/DialogWrapper';
 import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -25,9 +24,13 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   const deployedWallet = walletService.getDeployedWallet();
   const {contractAddress, sdk, name} = deployedWallet;
 
-  const [transferDetails, setTransferDetails] = useState<Partial<TransferDetails>>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
+  const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
   const [transactionHash, setTransactionHash] = useState('');
+  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+
+  useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
+  const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
   const notice = sdk.getNotice();
 
@@ -38,9 +41,9 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   const transferService = new TransferService(deployedWallet);
 
   const onTransferSendClick = async (changeContent: (argument: string) => void) => {
-    const sanitizedDetails = sanitizeTransferDetails(transferDetails);
+    transferService.validateInputs(transferDetails, balance);
+    const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
     changeContent('waitingForTransfer');
-    const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(sanitizedDetails);
     const {transactionHash} = await waitForTransactionHash();
     setTransactionHash(transactionHash!);
     await waitToBeSuccess();
@@ -85,8 +88,9 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
                   deployedWallet={deployedWallet}
-                  updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetails={selectedToken}
+                  updateTransferDetailsWith={updateTransferDetailsWith}
+                  tokenDetailsWithBalance={tokenDetailsWithBalance}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
                   transferDetails={transferDetails}
                 />
@@ -117,11 +121,3 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
     </ModalWrapper>
   );
 };
-
-function sanitizeTransferDetails(details: Partial<TransferDetails>) {
-  try {
-    return cast(details, asTransferDetails);
-  } catch (e) {
-    throw new InvalidTransferDetails();
-  }
-}

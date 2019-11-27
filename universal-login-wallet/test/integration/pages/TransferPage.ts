@@ -20,10 +20,12 @@ export default class TransferPage {
   }
 
   doesAmountErrorExists() {
+    this.appWrapper.update();
     return this.appWrapper.find('.transfer-amount-hint').exists();
   }
 
   doesRecipientErrorExists() {
+    this.appWrapper.update();
     return this.appWrapper.find('.transfer-recipient-hint').exists();
   }
 

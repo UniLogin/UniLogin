@@ -5,6 +5,8 @@ type ErrorType =
   'ConcurrentDeployment' |
   'UnsupportedBytecode' |
   'InvalidAddressOrEnsName' |
+  'InvalidAmount' |
+  'InvalidAmountAndRecipient' |
   'MissingConfiguration' |
   'TransactionHashNotFound' |
   'TokenNotFound' |
@@ -79,6 +81,20 @@ export class InvalidENSRecord extends ValidationFailed {
   constructor(ensName: string) {
     super(`Unable to resolve ENS name: ${ensName}`, 'InvalidENSRecord');
     Object.setPrototypeOf(this, InvalidENSRecord.prototype);
+  }
+}
+
+export class InvalidAmount extends ValidationFailed {
+  constructor(amount: string) {
+    super(`Amount ${amount} is not valid`, 'InvalidAmount');
+    Object.setPrototypeOf(this, InvalidAmount.prototype);
+  }
+}
+
+export class InvalidAmountAndRecipient extends ValidationFailed {
+  constructor(amount: string, recipient: string) {
+    super(`Amount ${amount} and recipient ${recipient} is not valid`, 'InvalidAmountAndRecipient');
+    Object.setPrototypeOf(this, InvalidAmountAndRecipient.prototype);
   }
 }
 
