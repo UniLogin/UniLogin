@@ -55,6 +55,7 @@ const HomeScreen = () => {
                   contractAddress={walletService.getDeployedWallet().contractAddress}
                   topUpClassName="jarvis-styles"
                   isDeployment={false}
+                  logoColor="black"
                   hideModal={() => history.push('/')}
                 />
               </Route>
