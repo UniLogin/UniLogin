@@ -48,11 +48,7 @@ export function CreateFlow() {
       );
     case 'Deployed':
       return (
-        <div className="main-bg">
-          <ModalWrapper modalClassName="jarvis-modal">
-            <CreationSuccess />
-          </ModalWrapper>
-        </div>
+        <CreationSuccess />
       );
     default:
       return <Redirect to="/" />;

@@ -3,6 +3,7 @@ import send1x from './../../assets/illustrations/send@1x.png';
 import send2x from './../../assets/illustrations/send@2x.png';
 import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
+import ModalWrapper from './ModalWrapper';
 
 interface ModalTxnSuccessProps {
   hideModal?: () => void;
@@ -40,10 +41,14 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
 };
 
 export const CreationSuccess = () =>
-  <ModalTxnSuccess
-    operation="Wallet creation"
-    text="You have just created your wallet."
-  />;
+  <div className="main-bg">
+    <ModalWrapper>
+      <ModalTxnSuccess
+        operation="Wallet creation"
+        text="You have just created your wallet."
+      />
+    </ModalWrapper>
+  </div>;
 
 export const ConnectionSuccess = () =>
   <div className="main-bg">
