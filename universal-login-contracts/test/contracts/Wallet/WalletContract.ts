@@ -8,8 +8,8 @@ import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST
 import {getExecutionArgs, setupUpdateMessage, estimateGasBaseForNoSignature} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
-import {encodeDataForExecuteSigned, estimateGasBaseFromSignedMessage, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index';
-import {calculateFinalGasLimit, calculatePaymentOptions} from '../../../lib/estimateGas';
+import {encodeDataForExecuteSigned, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index';
+import {calculateFinalGasLimit, calculatePaymentOptions, calculateGasBase} from '../../../lib/estimateGas';
 import {UpgradedWalletInterface, WalletContractInterface} from '../../../lib/interfaces';
 
 chai.use(chaiAsPromised);
@@ -403,7 +403,7 @@ describe('WalletContract', async () => {
     });
 
     it('execute message that has enough gas limit', async () => {
-      const gasBase = estimateGasBaseFromSignedMessage({...msg, signature});
+      const gasBase = calculateGasBase(msg);
       const validGasLimit = calculateFinalGasLimit(msg.gasCall, gasBase);
       await wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: validGasLimit});
       expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));

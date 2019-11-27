@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
 
 interface ModalTxnSuccessProps {
-  hideModal: () => void;
+  hideModal?: () => void;
   operation: string;
   text: string;
 }
@@ -22,7 +22,7 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
           className="modal-avatar-succes"
           src={send1x}
           srcSet={send2x}
-          alt="succes"
+          alt="success"
         />
         <div className="created-account">
           <div>
@@ -33,26 +33,20 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
         <p className="congratulation-text">
           Congratulations! {text}
         </p>
-        <Link to="/" onClick={hideModal} className="button-primary modal-success-btn">Go to your wallet</Link>
+        <Link to="/" className="button-primary modal-success-btn">Go to your wallet</Link>
       </div>
     </>
   );
 };
 
-interface CreationSuccessProps {
-  hideModal: () => void;
-}
-
-export const CreationSuccess = ({hideModal}: CreationSuccessProps) =>
+export const CreationSuccess = () =>
   <ModalTxnSuccess
-    hideModal={hideModal}
     operation="Wallet creation"
     text="You have just created your wallet."
   />;
 
-export const ConnectionSuccess = ({hideModal}: CreationSuccessProps) =>
+export const ConnectionSuccess = () =>
   <ModalTxnSuccess
-    hideModal={hideModal}
     operation="Connecting device succeed!"
     text="You have just connected new device."
   />;

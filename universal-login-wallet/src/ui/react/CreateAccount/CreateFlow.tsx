@@ -1,20 +1,16 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Redirect} from 'react-router';
 import {useServices} from '../../hooks';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
-import {hideTopUpModal} from '../../../core/utils/hideTopUpModal';
 import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
 import {CreationSuccess} from '../Modals/ModalTxnSuccess';
 import {useHistory} from 'react-router';
 
 export function CreateFlow() {
-  const modalService = useContext(WalletModalContext);
   const {sdk, walletService, walletCreationService} = useServices();
   const history = useHistory();
 
   useEffect(() => {
-    walletCreationService.deployWhenReady(() => modalService.hideModal())
-      .catch(console.error);
+    walletCreationService.deployWhenReady().catch(console.error);
   }, []);
 
   const walletState = useProperty(walletService.stateProperty);
@@ -29,7 +25,7 @@ export function CreateFlow() {
             isModal
             onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
             hideModal={() => {
-              hideTopUpModal(walletService, modalService);
+              walletService.disconnect();
               history.push('/selectDeployName');
             }}
             modalClassName="topup-modal-wrapper"
@@ -54,7 +50,7 @@ export function CreateFlow() {
       return (
         <div className="main-bg">
           <ModalWrapper modalClassName="jarvis-modal">
-            <CreationSuccess hideModal={modalService.hideModal} />
+            <CreationSuccess />
           </ModalWrapper>
         </div>
       );
