@@ -29,7 +29,7 @@ const HomeScreen = () => {
               <Route path="/" exact>
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
-                  onTopUpClick={() => history.push('/topup')}
+                  onTopUpClick={() => history.push('/topUp')}
                   onSendClick={() => modalService.showModal('transfer')}
                   onDeviceMessageClick={() => history.push('/devices/approveDevice')}
                   className="jarvis-styles"
@@ -49,7 +49,7 @@ const HomeScreen = () => {
                   className="jarvis-backup"
                 />
               </Route>
-              <Route exact path="/topup">
+              <Route exact path="/topUp">
                 <TopUp
                   sdk={walletService.getDeployedWallet().sdk}
                   contractAddress={walletService.getDeployedWallet().contractAddress}

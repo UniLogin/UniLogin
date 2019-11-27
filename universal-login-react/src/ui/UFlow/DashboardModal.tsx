@@ -61,14 +61,14 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
               <DialogWrapper message={notice} deployedWallet={deployedWallet}>
                 <Funds
                   deployedWallet={deployedWallet}
-                  onTopUpClick={() => history.push('/dashboard/topup')}
+                  onTopUpClick={() => history.push('/dashboard/topUp')}
                   onSendClick={() => history.push('/dashboard/transferAmount')}
                   onDeviceMessageClick={() => history.push('/dashboard/devices/approveDevice')}
                 />
               </DialogWrapper>
             )}
           />
-          <Route path="/dashboard/topup" exact>
+          <Route path="/dashboard/topUp" exact>
             <SubDialogWrapper message={notice} ensName={name}>
               <TopUp
                 sdk={sdk}
