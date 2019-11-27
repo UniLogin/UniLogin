@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {ConnectionFlow} from '@universal-login/react';
 import {ConnectSelector} from './ConnectSelector';
 import {useServices} from '../../hooks';
-import {ConnectionSuccess} from '../Modals/ModalTxnSuccess';
+import {useHistory} from 'react-router';
 
-export type ConnectModal = 'connectionFlow' | 'selector' | 'connectionSucceed';
-
+export type ConnectModal = 'connectionFlow' | 'selector';
 export const ConnectAccount = () => {
   const {sdk, walletService} = useServices();
+  const history = useHistory();
   const [name, setName] = useState<string | undefined>(undefined);
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');
   switch (connectModal) {
@@ -17,11 +17,9 @@ export const ConnectAccount = () => {
         sdk={sdk}
         walletService={walletService}
         onCancel={() => setConnectModal('selector')}
-        onSuccess={() => setConnectModal('connectionSucceed')}
+        onSuccess={() => history.push('/connectionSucceed')}
         className="jarvis-styles"
       />;
-    case 'connectionSucceed':
-      return <ConnectionSuccess />;
     case 'selector':
       return <ConnectSelector setName={setName} setConnectModal={setConnectModal} />;
   }

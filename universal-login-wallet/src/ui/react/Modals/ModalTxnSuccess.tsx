@@ -46,7 +46,13 @@ export const CreationSuccess = () =>
   />;
 
 export const ConnectionSuccess = () =>
-  <ModalTxnSuccess
-    operation="Connecting device succeed!"
-    text="You have just connected new device."
-  />;
+  <div className="main-bg">
+    <div className="box-wrapper">
+      <div className="box">
+        <ModalTxnSuccess
+          operation="Connecting device succeed!"
+          text="You have just connected new device."
+        />
+      </div>
+    </div>
+  </div>;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {useProperty} from '@universal-login/react';
+import {useProperty, ConnectionFlow} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import NotFound from './NotFound';
 import {PrivateRoute} from './PrivateRoute';
@@ -11,6 +11,7 @@ import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
 import {CreateFlow} from './CreateAccount/CreateFlow';
 import {CreateAccount} from './CreateAccount/CreateAccount';
+import {ConnectionSuccess} from './Modals/ModalTxnSuccess';
 
 const App = () => {
   const {walletService} = useServices();
@@ -22,6 +23,7 @@ const App = () => {
       <Route exact path="/terms" component={TermsAndConditionsScreen} />
       <Route exact path="/privacy" component={PrivacyPolicy} />
       <Route exact path="/create" component={CreateFlow} />
+      <Route exact path="/connectionSucceed" component={ConnectionSuccess} />
       <Route
         exact
         path="/selectDeployName"
