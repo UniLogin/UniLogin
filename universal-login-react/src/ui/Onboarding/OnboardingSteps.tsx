@@ -1,17 +1,15 @@
-import {IModalService, ModalWrapper, TopUp, useProperty, WaitingForDeployment, WalletCreationService} from '../..';
+import {ModalWrapper, TopUp, useProperty, WaitingForDeployment, WalletCreationService} from '../..';
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {ReactModalProps, ReactModalType} from '../../core/models/ReactModalContext';
 
 interface OnboardingStepsProps {
   sdk: UniversalLoginSDK;
   walletService: WalletService;
   walletCreationService: WalletCreationService;
-  modalService: IModalService<ReactModalType, ReactModalProps>;
   className?: string;
 }
 
-export function OnboardingSteps({sdk, walletService, walletCreationService, modalService, className}: OnboardingStepsProps) {
+export function OnboardingSteps({sdk, walletService, walletCreationService, className}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);
   switch (walletState.kind) {
     case 'Future':
@@ -22,10 +20,7 @@ export function OnboardingSteps({sdk, walletService, walletCreationService, moda
           onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
           sdk={sdk}
           isDeployment
-          hideModal={() => {
-            walletService.disconnect();
-            modalService.hideModal();
-          }}
+          hideModal={() => walletService.disconnect()}
           isModal
         />
       );
