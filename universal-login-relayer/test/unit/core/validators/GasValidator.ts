@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {utils} from 'ethers';
 import {SignedMessage, GAS_FIXED} from '@universal-login/commons';
-import {estimateGasBaseFromSignedMessage} from '@universal-login/contracts';
+import {calculateGasBase} from '@universal-login/contracts';
 import {GasValidator} from '../../../../lib/core/services/validators/GasValidator';
 import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
@@ -32,8 +32,8 @@ describe('UNIT: GasValidator', () => {
   });
 
   it('too less', async () => {
+    const actualGasBase = calculateGasBase(message);
     message.gasBase = (message.gasBase as utils.BigNumber).sub(1);
-    const actualGasBase = estimateGasBaseFromSignedMessage(message);
     await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasBase ${message.gasBase} but should be ${actualGasBase}`);
   });
 

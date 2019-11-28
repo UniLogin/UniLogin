@@ -1,188 +1,10 @@
 import {expect} from 'chai';
-import {SignedMessage, createZeroedHexString, createFullHexString, UnsignedMessage, GAS_FIXED} from '@universal-login/commons';
-import {estimateGasBaseFromSignedMessage, estimateGasBaseFromUnsignedMessage, calculateGasCall} from '../lib/estimateGas';
+import {createZeroedHexString, createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, computeGasData, Message} from '@universal-login/commons';
+import {calculateGasCall, calculateGasBase} from '../lib/estimateGas';
 import {utils} from 'ethers';
+import {encodeDataForExecuteSigned} from '../lib';
 
 describe('UNIT: estimateGas', () => {
-  describe('estimateGasBaseFromSignedMessage', () => {
-    it('empty message costs 2192 gas', () => {
-      const message: SignedMessage = {
-        from: createZeroedHexString(20),
-        nonce: 0,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
-    });
-
-    it('from and nonce don\'t count for gasBase', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
-    });
-
-    it('add 0xff...ff \'to\' address', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createFullHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 1280).add(GAS_FIXED));
-    });
-
-    it('add value 255 [0xff]', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 255,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 64).add(GAS_FIXED));
-    });
-
-    it('add gasPrice 255 [0xff]', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 255,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 64).add(GAS_FIXED));
-    });
-
-    it('add 0xff...ff gasToken address', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createFullHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 1280).add(GAS_FIXED));
-    });
-
-    it('gasCall 1000 - but estimate don\'t chnage since gasCall already been accounted', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 1000,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
-    });
-
-    it('gasBase 0xff - but estimate don\'t chnage since gasBase already been accounted', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 255,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576).add(GAS_FIXED));
-    });
-
-    it('add 100bytes of 0xff data', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createFullHexString(100),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createZeroedHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 6400 + 576).add(GAS_FIXED));
-    });
-
-    it('add signature', () => {
-      const message: SignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-        signature: createFullHexString(65),
-      };
-      expect(estimateGasBaseFromSignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 65 * 64).add(GAS_FIXED));
-    });
-  });
-
-  describe('estimateGasBaseFromUnsignedMessage', () => {
-    it('add signature', () => {
-      const message: UnsignedMessage = {
-        from: createFullHexString(20),
-        nonce: 1337,
-        to: createZeroedHexString(20),
-        value: 0,
-        data: createZeroedHexString(0),
-        gasPrice: 0,
-        gasToken: createZeroedHexString(20),
-        gasCall: 0,
-        gasBase: 0,
-      };
-      expect(estimateGasBaseFromUnsignedMessage(message)).to.be.equal(utils.bigNumberify(2576 + 65 * 64).add(GAS_FIXED));
-    });
-  });
-
   describe('calculateGasCall', () => {
     it('gasBase is smaller than gasLimit', () => {
       const gasBase = '3000';
@@ -202,5 +24,38 @@ describe('UNIT: estimateGas', () => {
       const gasLimit = '10000';
       expect(() => calculateGasCall(gasLimit, gasBase)).to.throw('Gas limit too low');
     });
+  });
+
+  describe('calculateGasBase', () => {
+    const itCalculatesBase = (messageType: string, message: Omit<Message, 'gasLimit'>) =>
+      it(`calculates gas base as expected for ${messageType}`, () => {
+        const encodedMessage = encodeDataForExecuteSigned({...message, gasCall: createFullHexString(3), gasBase: createFullHexString(3), signature: createFullHexString(65)});
+        const gasData = utils.bigNumberify(computeGasData(encodedMessage));
+        const expectedResult = gasData.add(GAS_FIXED);
+        expect(calculateGasBase(message)).to.eq(expectedResult);
+      });
+
+    const transferMessage = {
+      to: TEST_ACCOUNT_ADDRESS,
+      from: TEST_ACCOUNT_ADDRESS,
+      nonce: '1',
+      data: '0x0',
+      value: '1',
+      gasPrice: DEFAULT_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+    };
+
+    const emptyMessage = {
+      from: createZeroedHexString(20),
+      nonce: 0,
+      to: createZeroedHexString(20),
+      value: 0,
+      data: createZeroedHexString(0),
+      gasPrice: 0,
+      gasToken: createZeroedHexString(20),
+    };
+
+    itCalculatesBase('transfer message', transferMessage);
+    itCalculatesBase('empty message', emptyMessage);
   });
 });

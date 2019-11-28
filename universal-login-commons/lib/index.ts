@@ -1,4 +1,4 @@
-export {Omit, PartialRequired, Procedure, Predicate, DeepPartial} from './core/types/common';
+export {Omit, PartialRequired, Procedure, Predicate, DeepPartial, Nullable} from './core/types/common';
 export {ApplicationInfo, DeviceInfo, Notification} from './core/models/notifications';
 export {Device} from './core/models/Device';
 export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, DeploymentStatus, DeploymentState, MessageState, MineableState, MineableStatus, CollectedSignatureKeyPair, SignedMessagePaymentOptions, ExecutionOptions, SdkExecutionOptions} from './core/models/message';
@@ -73,7 +73,7 @@ export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
 export {convertTenthGweiToWei} from './core/utils/conversion';
-export {computeGasData, computeGasBase, GAS_FIXED} from './core/utils/messages/computeGasData';
+export {computeGasData, GAS_FIXED} from './core/utils/messages/computeGasData';
 export {getEnumKeys} from './core/utils/getEnumsKeys';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';

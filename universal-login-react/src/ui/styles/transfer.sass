@@ -1,6 +1,6 @@
 @import helpers/breakpoints
 
-.universal-login-amount
+.universal-login-transfer
   .transfer-modal .transfer-amount-label
     display: block
     margin: 0
@@ -8,22 +8,13 @@
     color: #31405E
     text-transform: initial
 
-  .transfer-amount
+  .transfer
     max-width: 500px
     margin: 0 auto
     padding-top: 30px
 
     +media(s)
       padding: 50px 15px
-
-  .transfer-amount-row
-    margin-bottom: 10px
-
-  .transfer-amount-row-item
-    width: 50%
-
-  .transfer-amount-row-item + .transfer-amount-row-item
-    margin-left: 30px
 
   .transfer-amount-input-content
     position: relative
@@ -70,6 +61,7 @@
 
   .currency-accordion
     position: relative
+    margin-top: 15px
     margin-bottom: 65px
 
     +media(s)
@@ -146,6 +138,9 @@
     height: 50px
     margin: 0 auto 105px
 
+    +media(s)
+      margin-bottom: 90px
+
   .transfer-recipient-input-content
     position: relative
 
@@ -155,7 +150,6 @@
     border: 1px solid #E1E1F0
     padding-right: 25px
     padding-left: 13px
-    font-weight: 700
     font-size: 12px
 
   .transfer-recipient-text
