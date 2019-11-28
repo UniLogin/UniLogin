@@ -4,7 +4,7 @@ import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
 import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import {TransferService} from '@universal-login/sdk';
-import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect} from '@universal-login/react';
+import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect, ErrorMessage} from '@universal-login/react';
 import {useServices} from '../../../hooks';
 import ModalWrapperClosable from '../ModalWrapperClosable';
 
@@ -76,21 +76,13 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
       <Route
         exact
         path={join(basePath, 'error')}
-        render={({location, history}) => <ModalWrapperClosable hideModal={() => history.replace('/')}>
-          <div className="jarvis-modal">
-            <div className="box-header">
-              <h2 className="box-title">Error</h2>
-            </div>
-            <div className="modal-content">
-              <div className="modal">
-                <div className="error-message">
-                  <div>Something went wrong.. Try again.</div>
-                  <div>{location.state.error}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ModalWrapperClosable>}
+        render={({location, history}) =>
+          <ModalWrapperClosable hideModal={() => history.replace('/')}>
+            <ErrorMessage
+              className="jarvis-styles"
+              message={location.state.error}
+            />
+          </ModalWrapperClosable>}
       />
     </Switch>
   );
