@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {Funds, Devices, BackupCodes, Notice, TopUp} from '@universal-login/react';
 import {Header} from './Header';
-import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
 
@@ -66,7 +65,6 @@ const HomeScreen = () => {
           </div>
         </div>
       </div>
-      <Modal />
     </>
   );
 };

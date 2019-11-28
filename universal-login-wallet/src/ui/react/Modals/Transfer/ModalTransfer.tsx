@@ -1,11 +1,10 @@
 import {join} from 'path';
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
 import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import {TransferService} from '@universal-login/sdk';
 import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect} from '@universal-login/react';
-import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
 import ModalWrapperClosable from '../ModalWrapperClosable';
 
@@ -14,10 +13,8 @@ export interface ModalTransferProps {
 }
 
 const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
-  const modalService = useContext(WalletModalContext);
   const history = useHistory();
 
-  const {walletService} = useServices();
   const [transferDetails, setTransferDetails] = useState(
     {transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails,
   );
@@ -31,7 +28,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
   const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
   const transferService = new TransferService(deployedWallet);
-  const modalService = useContext(WalletModalContext);
   const onGenerateClick = async () => {
     transferService.validateInputs(transferDetails, balance);
     history.push(join(basePath, 'waiting'));
@@ -42,7 +38,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
       await waitToBeSuccess();
       history.replace('/');
     } catch (e) {
-      modalService.showModal('error', `${e.name}: ${e.message}`);
+      history.replace(join(basePath, 'error'), {error: `${e.name}: ${e.message}`});
     }
   };
 
@@ -76,6 +72,25 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
             className="jarvis-styles"
           />
         }
+      />
+      <Route
+        exact
+        path={join(basePath, 'error')}
+        render={({location, history}) => <ModalWrapperClosable hideModal={() => history.replace('/')}>
+          <div className="jarvis-modal">
+            <div className="box-header">
+              <h2 className="box-title">Error</h2>
+            </div>
+            <div className="modal-content">
+              <div className="modal">
+                <div className="error-message">
+                  <div>Something went wrong.. Try again.</div>
+                  <div>{location.state.error}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ModalWrapperClosable>}
       />
     </Switch>
   );
