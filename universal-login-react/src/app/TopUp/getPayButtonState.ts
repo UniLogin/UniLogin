@@ -13,8 +13,10 @@ export function getPayButtonState(
     return 'hidden';
   }
 
-  const isPayButtonDisabled = !paymentMethod ||
-    (topUpProviderSupportService.isInputAmountUsed(paymentMethod) && Number(amount) <= 0);
+  if (!paymentMethod) {
+    return 'disabled';
+  }
 
-  return isPayButtonDisabled ? 'disabled' : 'active';
+  const isPayButtonActive = Number(amount) > 0 || !topUpProviderSupportService.isInputAmountUsed(paymentMethod);
+  return isPayButtonActive ? 'active' : 'disabled';
 }
