@@ -1,11 +1,23 @@
+import {join} from 'path';
 import React, {useState, useContext} from 'react';
-import {TransferService} from '@universal-login/sdk';
+import {useHistory, Switch} from 'react-router';
+import {Route} from 'react-router-dom';
 import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
-import {ModalTransfer as Transfer, useAsyncEffect} from '@universal-login/react';
+import {TransferService} from '@universal-login/sdk';
+import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect} from '@universal-login/react';
 import {WalletModalContext} from '../../../../core/entities/WalletModalContext';
 import {useServices} from '../../../hooks';
+import ModalWrapperClosable from '../ModalWrapperClosable';
 
-const ModalTransfer = () => {
+export interface ModalTransferProps {
+  basePath?: string;
+}
+
+const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
+  const modalService = useContext(WalletModalContext);
+  const history = useHistory();
+
+  const {walletService} = useServices();
   const [transferDetails, setTransferDetails] = useState(
     {transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails,
   );
@@ -22,13 +34,13 @@ const ModalTransfer = () => {
   const modalService = useContext(WalletModalContext);
   const onGenerateClick = async () => {
     transferService.validateInputs(transferDetails, balance);
-    modalService.showModal('waitingForTransfer');
+    history.push(join(basePath, 'waiting'));
     try {
       const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
       const {transactionHash} = await waitForTransactionHash();
-      modalService.showModal('waitingForTransfer', {transactionHash});
+      history.replace(join(basePath, 'waiting'), {transactionHash});
       await waitToBeSuccess();
-      modalService.hideModal();
+      history.replace('/');
     } catch (e) {
       modalService.showModal('error', `${e.name}: ${e.message}`);
     }
@@ -39,15 +51,33 @@ const ModalTransfer = () => {
   };
 
   return (
-    <Transfer
-      deployedWallet={deployedWallet}
-      transferDetails={transferDetails}
-      updateTransferDetailsWith={updateTransferDetailsWith}
-      tokenDetailsWithBalance={tokenDetailsWithBalance}
-      tokenDetails={selectedToken}
-      onSendClick={onGenerateClick}
-      transferClassName="jarvis-styles"
-    />
+    <Switch>
+      <Route path={`${basePath}/`} exact>
+        <ModalWrapperClosable hideModal={() => history.push('/')}>
+          <Transfer
+            deployedWallet={deployedWallet}
+            updateTransferDetailsWith={updateTransferDetailsWith}
+            tokenDetailsWithBalance={tokenDetailsWithBalance}
+            tokenDetails={selectedToken}
+            onSendClick={onGenerateClick}
+            transferDetails={transferDetails}
+            transferClassName="jarvis-styles"
+          />
+        </ModalWrapperClosable>
+      </Route>
+      <Route
+        exact
+        path={join(basePath, 'waiting')}
+        render={({location}) =>
+          <WaitingForTransaction
+            transactionHash={location.state?.transactionHash}
+            action={'Transferring funds'}
+            relayerConfig={walletService.sdk.relayerConfig!}
+            className="jarvis-styles"
+          />
+        }
+      />
+    </Switch>
   );
 };
 

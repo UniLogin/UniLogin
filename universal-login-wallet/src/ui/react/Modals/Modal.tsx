@@ -1,34 +1,15 @@
 import React, {useContext} from 'react';
-import ModalWrapperWithoutClose from './ModalWrapper';
-import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {WaitingForTransaction} from '@universal-login/react';
 import {WalletModalContext} from '../../../core/entities/WalletModalContext';
-import ModalTransfer from './Transfer/ModalTransfer';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {sdk} = useServices();
-  const relayerConfig = sdk.getRelayerConfig();
 
   switch (modalService.modalName) {
     case 'transfer':
-      return (
-        <ModalWrapperClosable hideModal={modalService.hideModal}>
-          <ModalTransfer />
-        </ModalWrapperClosable>
-      );
+      throw Error('Invalid ModalName');
     case 'waitingForTransfer':
-      return (
-        <ModalWrapperWithoutClose>
-          <WaitingForTransaction
-            {...modalService.modalProps}
-            action={'Transferring funds'}
-            relayerConfig={relayerConfig!}
-            className="jarvis-styles"
-          />
-        </ModalWrapperWithoutClose>
-      );
+      throw Error('Invalid ModalName (waitingForTransfer)');
     case 'error':
       return (
         <ModalWrapperClosable hideModal={modalService.hideModal}>
