@@ -54,6 +54,7 @@ describe('UI: Transfer', () => {
     await transferFlow(appPage, 'ETH', '1', 'pascal.mylogin.eth');
     await waitExpect(() => expect(appPage.transfer().getErrorMessage())
       .to.be.eq('Something went wrong.. Try again.Error: pascal.mylogin.eth is not valid'));
+    await appPage.dashboard().closeModal();
     expect(appPage.dashboard().getWalletBalance()).to.eq('$1.99');
   });
 
