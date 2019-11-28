@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
-import Modals from '../Modals/Modals';
 import {ApplicationWallet, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {ReactModalContext, ReactModalProps, ReactModalType} from '../../core/models/ReactModalContext';
-import {useModalService} from '../../core/services/useModalService';
-import {WalletCreationService} from '../..';
+import {WalletCreationService, ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
+import {Route, MemoryRouter} from 'react-router-dom';
+import {Switch} from 'react-router';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -22,21 +21,9 @@ export interface OnboardingProps {
 }
 
 export const Onboarding = (props: OnboardingProps) => {
-  const modalService = useModalService<ReactModalType, ReactModalProps>();
   const [walletCreationService] = useState(() => props.walletCreationService || new WalletCreationService(props.walletService));
 
-  const onConnectClick = (ensName: string) => {
-    const connectionFlowProps = {
-      name: ensName,
-      sdk: props.sdk,
-      walletService: props.walletService,
-      onSuccess,
-    };
-    modalService.showModal('connectionFlow', connectionFlowProps);
-  };
-
   const onSuccess = () => {
-    modalService.hideModal();
     props.onConnect && props.onConnect();
   };
 
@@ -46,8 +33,7 @@ export const Onboarding = (props: OnboardingProps) => {
 
   useEffect(() => {
     setImmediate(async () => {
-      const wallet = await walletCreationService.deployWhenReady(() => modalService.hideModal());
-      modalService.hideModal();
+      const wallet = await walletCreationService.deployWhenReady();
       props.onCreate?.(wallet);
     });
   }, []);
@@ -55,25 +41,47 @@ export const Onboarding = (props: OnboardingProps) => {
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
-        <ReactModalContext.Provider value={modalService}>
-          <div className="perspective">
-            <WalletSelector
-              sdk={props.sdk}
-              onCreateClick={onCreateClick}
-              onConnectClick={onConnectClick}
-              domains={props.domains}
-              tryEnablingMetamask={props.tryEnablingMetamask}
-              actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
+
+        <MemoryRouter initialEntries={['/selector']}>
+          <Switch>
+            <Route
+              exact
+              path="/selector"
+              render={({history}) =>
+                <>
+                  <div className="perspective">
+                    <WalletSelector
+                      sdk={props.sdk}
+                      onCreateClick={onCreateClick}
+                      onConnectClick={(ensName) => history.push('/connectFlow', {ensName})}
+                      domains={props.domains}
+                      tryEnablingMetamask={props.tryEnablingMetamask}
+                      actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
+                    />
+                  </div>
+                  <OnboardingSteps
+                    sdk={props.sdk}
+                    walletService={props.walletService}
+                    walletCreationService={walletCreationService}
+                  />
+                </>}
             />
-          </div>
-          <OnboardingSteps
-            sdk={props.sdk}
-            walletService={props.walletService}
-            walletCreationService={walletCreationService}
-            modalService={modalService}
-          />
-          <Modals modalClassName={props.modalClassName} />
-        </ReactModalContext.Provider>
+            <Route
+              exact
+              path="/connectFlow"
+              render={({history, location}) =>
+                <ModalWrapper hideModal={() => history.goBack()}>
+                  <ConnectionFlow
+                    onCancel={() => history.goBack()}
+                    name={location.state.ensName}
+                    sdk={props.sdk}
+                    walletService={props.walletService}
+                    onSuccess={onSuccess}
+                  />
+                </ModalWrapper>}
+            />
+          </Switch>
+        </MemoryRouter>
       </div>
     </div>
   );
