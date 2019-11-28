@@ -2,13 +2,13 @@ import React, {useContext} from 'react';
 import ModalWrapperWithoutClose from './ModalWrapper';
 import {useServices} from '../../hooks';
 import ModalWrapperClosable from './ModalWrapperClosable';
-import {TopUp, WaitingForTransaction} from '@universal-login/react';
-import {TopUpModalProps, WalletModalContext} from '../../../core/entities/WalletModalContext';
+import {WaitingForTransaction} from '@universal-login/react';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 import ModalTransfer from './Transfer/ModalTransfer';
 
 const Modal = () => {
   const modalService = useContext(WalletModalContext);
-  const {walletPresenter, sdk} = useServices();
+  const {sdk} = useServices();
   const relayerConfig = sdk.getRelayerConfig();
 
   switch (modalService.modalName) {
@@ -18,18 +18,6 @@ const Modal = () => {
           <ModalTransfer />
         </ModalWrapperClosable>
       );
-    case 'topUpAccount':
-      return relayerConfig ? (
-        <TopUp
-          sdk={sdk}
-          {...modalService.modalProps as TopUpModalProps}
-          modalClassName="topup-modal-wrapper"
-          topUpClassName="jarvis-styles"
-          contractAddress={walletPresenter.getContractAddress()}
-          isModal
-          logoColor="black"
-        />
-      ) : null;
     case 'waitingForTransfer':
       return (
         <ModalWrapperWithoutClose>

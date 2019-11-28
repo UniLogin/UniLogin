@@ -9,13 +9,13 @@ export const NavigationColumn = () => (
     <ul>
       E2E flow
       <li><Link to="/onboarding">Onboarding</Link></li>
-      <li><Link to="/logobutton">U</Link></li>
+      <li><Link to="/logoButton">U</Link></li>
     </ul>
     <ul>
       Atomic components
-      <li><Link to="/walletselector">Wallet Selector</Link></li>
+      <li><Link to="/walletSelector">Wallet Selector</Link></li>
       <li><Link to="/keyboard">Keyboard</Link></li>
-      <li><Link to="/topup">Topup</Link></li>
+      <li><Link to="/topUp">Topup</Link></li>
       <li><Link to="/recover">Recover</Link></li>
       <li><Link to="/settings">Settings</Link></li>
       <li><Link to="/waiting">Waiting</Link></li>

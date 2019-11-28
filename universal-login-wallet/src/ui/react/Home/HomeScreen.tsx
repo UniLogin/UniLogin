@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
-import {Funds, Devices, BackupCodes, Notice} from '@universal-login/react';
+import {Funds, Devices, BackupCodes, Notice, TopUp} from '@universal-login/react';
 import {Header} from './Header';
 import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {WalletModalContext, TopUpModalProps} from '../../../core/entities/WalletModalContext';
+import {WalletModalContext} from '../../../core/entities/WalletModalContext';
 
 const HomeScreen = () => {
   const {walletService, walletPresenter} = useServices();
@@ -14,11 +14,6 @@ const HomeScreen = () => {
   const notice = deployedWallet.sdk.getNotice();
 
   useEffect(() => deployedWallet.subscribeDisconnected(() => walletService.disconnect()), []);
-
-  const topUpProps: TopUpModalProps = {
-    isDeployment: false,
-    hideModal: modalService.hideModal,
-  };
 
   const history = useHistory();
 
@@ -34,7 +29,7 @@ const HomeScreen = () => {
               <Route path="/" exact>
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
-                  onTopUpClick={() => modalService.showModal('topUpAccount', topUpProps)}
+                  onTopUpClick={() => history.push('/topUp')}
                   onSendClick={() => modalService.showModal('transfer')}
                   onDeviceMessageClick={() => history.push('/devices/approveDevice')}
                   className="jarvis-styles"
@@ -52,6 +47,16 @@ const HomeScreen = () => {
                 <BackupCodes
                   deployedWallet={walletService.getDeployedWallet()}
                   className="jarvis-backup"
+                />
+              </Route>
+              <Route exact path="/topUp">
+                <TopUp
+                  sdk={walletService.getDeployedWallet().sdk}
+                  contractAddress={walletService.getDeployedWallet().contractAddress}
+                  topUpClassName="jarvis-styles"
+                  isDeployment={false}
+                  logoColor="black"
+                  hideModal={() => history.push('/')}
                 />
               </Route>
             </Switch>
