@@ -42,8 +42,8 @@ export const config: Config = Object.freeze({
       rampUrl: getEnv('RAMP_URL', ''),
     },
     wyre: {
-      wyreUrl: getEnv('WYRE_URL', ''),
-      paymentMethod: getEnv('PAYMENT_METHOD', ''),
+      wyreUrl: 'https://pay.sendwyre.com/purchase',
+      paymentMethod: 'apple-pay',
     },
   },
   database: {
