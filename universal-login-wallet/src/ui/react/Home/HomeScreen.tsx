@@ -1,14 +1,12 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {Funds, Devices, BackupCodes, Notice, TopUp} from '@universal-login/react';
 import {Header} from './Header';
-import Modal from '../Modals/Modal';
 import {useServices} from '../../hooks';
-import {WalletModalContext} from '../../../core/entities/WalletModalContext';
+import ModalTransfer from '../Modals/Transfer/ModalTransfer';
 
 const HomeScreen = () => {
   const {walletService, walletPresenter} = useServices();
-  const modalService = useContext(WalletModalContext);
 
   const deployedWallet = walletService.getDeployedWallet();
   const notice = deployedWallet.sdk.getNotice();
@@ -30,7 +28,7 @@ const HomeScreen = () => {
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
                   onTopUpClick={() => history.push('/topUp')}
-                  onSendClick={() => modalService.showModal('transfer')}
+                  onSendClick={() => history.push('/transfer')}
                   onDeviceMessageClick={() => history.push('/devices/approveDevice')}
                   className="jarvis-styles"
                 />
@@ -49,7 +47,7 @@ const HomeScreen = () => {
                   className="jarvis-backup"
                 />
               </Route>
-              <Route exact path="/topUp">
+              <Route path="/topUp">
                 <TopUp
                   sdk={walletService.getDeployedWallet().sdk}
                   contractAddress={walletService.getDeployedWallet().contractAddress}
@@ -59,11 +57,14 @@ const HomeScreen = () => {
                   hideModal={() => history.push('/')}
                 />
               </Route>
+              <Route
+                path="/transfer"
+                render={() => <ModalTransfer basePath="/transfer" />}
+              />
             </Switch>
           </div>
         </div>
       </div>
-      <Modal />
     </>
   );
 };
