@@ -24,25 +24,25 @@ export const WalletRoute = ({walletState, component, render, ...restProps}: Wall
 );
 
 const mapping = {
-  'None': [
+  None: [
     '/welcome',
     '/privacy',
     '/terms',
     '/connect',
     '/selectDeployName',
   ],
-  'Future': [
+  Future: [
     '/create',
   ],
-  'Deploying': [
+  Deploying: [
     '/create',
   ],
-  'Deployed': [
+  Deployed: [
     '/wallet',
     '/connectionSuccess',
     '/creationSuccess',
   ],
-  'Connecting': [
+  Connecting: [
     '/connect',
-  ]
-}
+  ],
+};

@@ -7,7 +7,7 @@ import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
 
 const HomeScreen = () => {
-  const basePath = '/wallet'
+  const basePath = '/wallet';
   const {walletService, walletPresenter} = useServices();
 
   const deployedWallet = walletService.getDeployedWallet();
@@ -29,7 +29,7 @@ const HomeScreen = () => {
               <Route path={basePath} exact>
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
-                  onTopUpClick={() => history.push(join(basePath,'topUp'))}
+                  onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                   onSendClick={() => history.push(join(basePath, 'transfer'))}
                   onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
                   className="jarvis-styles"

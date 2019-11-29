@@ -1,5 +1,5 @@
 export const getDefaultPathForWalletState = (walletState: any) => {
-  switch(walletState) {
+  switch (walletState) {
     case 'Future':
       return '/create';
     case 'Deployed':
@@ -9,4 +9,4 @@ export const getDefaultPathForWalletState = (walletState: any) => {
     case 'Deploying':
       return '/create';
   }
-}
+};

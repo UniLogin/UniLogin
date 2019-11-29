@@ -12,10 +12,10 @@ export const CreateAccount = () => {
   const walletConfig = useWalletConfig();
   const history = useHistory();
 
-  const onCreateClick= async (ensName: string) => {
+  const onCreateClick = async (ensName: string) => {
     await walletService.createFutureWallet(ensName);
     history.push('/create');
-  }
+  };
   return (
     <div className="main-bg">
       <div className="box-wrapper">
