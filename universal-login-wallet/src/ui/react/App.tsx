@@ -23,8 +23,8 @@ const App = () => {
       <Route exact path="/terms" component={TermsAndConditionsScreen} />
       <Route exact path="/privacy" component={PrivacyPolicy} />
       <Route exact path="/create" component={CreateFlow} />
-      <Route exact path="/connectionSucceed" component={ConnectionSuccess} />
-      <Route exact path="/creationSucceed" component={CreationSuccess} />
+      <Route exact path="/connectionSuccess" component={ConnectionSuccess} />
+      <Route exact path="/creationSuccess" component={CreationSuccess} />
       <Route
         exact
         path="/selectDeployName"

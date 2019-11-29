@@ -9,7 +9,7 @@ export function CreateFlow() {
 
   useEffect(() => {
     walletCreationService.deployWhenReady()
-      .then(() => history.push('/creationSucceed'))
+      .then(() => history.push('/creationSuccess'))
       .catch(console.error);
   }, []);
 
