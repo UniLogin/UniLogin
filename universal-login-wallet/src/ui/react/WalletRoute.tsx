@@ -39,8 +39,8 @@ const mapping = {
   ],
   'Deployed': [
     '/wallet',
-    '/connectionSucceed',
-    '/creationSucceed',
+    '/connectionSuccess',
+    '/creationSuccess',
   ],
   'Connecting': [
     '/connect',
