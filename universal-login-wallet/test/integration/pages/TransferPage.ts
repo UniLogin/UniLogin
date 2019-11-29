@@ -41,7 +41,7 @@ export default class TransferPage {
 
   getErrorMessage() {
     this.appWrapper.update();
-    return this.appWrapper.find('.error-message').text();
+    return this.appWrapper.find('.error-message-text').text();
   }
 
   selectGasMode() {

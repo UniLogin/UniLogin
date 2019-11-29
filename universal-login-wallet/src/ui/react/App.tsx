@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {useModalService, useProperty} from '@universal-login/react';
+import {useProperty} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import NotFound from './NotFound';
 import {PrivateRoute} from './PrivateRoute';
@@ -8,51 +8,47 @@ import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {ConnectAccount} from './ConnectAccount/ConnectAccount';
-import {WalletModalContext, WalletModalPropType, WalletModalType} from '../../core/entities/WalletModalContext';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
 import {CreateFlow} from './CreateAccount/CreateFlow';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 
 const App = () => {
-  const modalService = useModalService<WalletModalType, WalletModalPropType>();
   const {walletService} = useServices();
   const authorized = useProperty(walletService.isAuthorized);
 
   return (
-    <WalletModalContext.Provider value={modalService}>
-      <Switch>
-        <Route exact path="/welcome" component={WelcomeScreen} />
-        <Route exact path="/terms" component={TermsAndConditionsScreen} />
-        <Route exact path="/privacy" component={PrivacyPolicy} />
-        <Route exact path="/create" component={CreateFlow} />
-        <Route
-          exact
-          path="/selectDeployName"
-          render={({history}) =>
-            <CreateAccount onCreateClick={async (ensName) => {
-              await walletService.createFutureWallet(ensName);
-              history.push('/create');
-            }} />}
-        />
-        <Route
-          exact
-          path="/connect" >
-          <div className="main-bg">
-            <div className="box-wrapper">
-              <div className="box">
-                <ConnectAccount />
-              </div>
+    <Switch>
+      <Route exact path="/welcome" component={WelcomeScreen} />
+      <Route exact path="/terms" component={TermsAndConditionsScreen} />
+      <Route exact path="/privacy" component={PrivacyPolicy} />
+      <Route exact path="/create" component={CreateFlow} />
+      <Route
+        exact
+        path="/selectDeployName"
+        render={({history}) =>
+          <CreateAccount onCreateClick={async (ensName) => {
+            await walletService.createFutureWallet(ensName);
+            history.push('/create');
+          }} />}
+      />
+      <Route
+        exact
+        path="/connect" >
+        <div className="main-bg">
+          <div className="box-wrapper">
+            <div className="box">
+              <ConnectAccount />
             </div>
           </div>
-        </Route>
-        <PrivateRoute
-          authorized={authorized}
-          path="/"
-          render={() => <HomeScreen />}
-        />
-        <Route component={NotFound} />
-      </Switch>
-    </WalletModalContext.Provider>
+        </div>
+      </Route>
+      <PrivateRoute
+        authorized={authorized}
+        path="/"
+        render={() => <HomeScreen />}
+      />
+      <Route component={NotFound} />
+    </Switch>
   );
 };
 

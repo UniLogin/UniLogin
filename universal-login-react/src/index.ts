@@ -29,6 +29,7 @@ export {TransferDropdownItem} from './ui/Transfer/Amount/TransferDropdownItem';
 export {TransferDropdown} from './ui/Transfer/Amount/TransferDropdown';
 export {ModalTransfer} from './ui/Transfer/ModalTransfer';
 export {ErrorBoundary} from './ui/commons/ErrorBoundary';
+export {ErrorMessage} from './ui/commons/ErrorMessage';
 export {Asset} from './ui/commons/Asset';
 export {Assets} from './ui/commons/Assets';
 export {GasPrice} from './ui/commons/GasPrice';
