@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Redirect, useHistory} from 'react-router';
+import {useHistory} from 'react-router';
 import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
 import {useServices} from '../../hooks';
 
@@ -47,6 +47,6 @@ export function CreateFlow() {
         </div>
       );
     default:
-      return <Redirect to="/" />;
+      return null;
   }
 }
