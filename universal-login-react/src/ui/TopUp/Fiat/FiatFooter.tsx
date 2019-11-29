@@ -53,7 +53,6 @@ export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
     case TopUpProvider.WYRE:
       return (
         <div className="info-block info-row">
-          <p className="info-text info-text-hint">Available soon</p>
         </div>
       );
 

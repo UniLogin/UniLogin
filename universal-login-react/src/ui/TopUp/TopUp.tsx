@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {OnGasParametersChanged, stringToEther} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
-import {Safello} from '../../integration/Safello';
-import {Ramp} from '../../integration/Ramp';
+import {Safello} from './OnRamp/Safello';
+import {Ramp} from './OnRamp/Ramp';
+import {Wyre} from './OnRamp/Wyre';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
@@ -77,6 +78,14 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
         config={relayerConfig.onRampProviders.ramp}
         onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
         onCancel={() => setModal(TopUpComponentType.choose)}
+      />
+    );
+  } else if (modal === TopUpComponentType.wyre) {
+    return (
+      <Wyre
+        address={contractAddress}
+        currency={'ETH'}
+        config={relayerConfig.onRampProviders.wyre}
       />
     );
   } else if (modal === TopUpComponentType.waitForRamp) {

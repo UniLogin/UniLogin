@@ -4,7 +4,7 @@ export {Device} from './core/models/Device';
 export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, DeploymentStatus, DeploymentState, MessageState, MineableState, MineableStatus, CollectedSignatureKeyPair, SignedMessagePaymentOptions, ExecutionOptions, SdkExecutionOptions} from './core/models/message';
 export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, OnRampConfig, PublicRelayerConfig} from './core/models/relayer';
-export {LocalizationConfig, SafelloConfig, RampConfig} from './core/models/onRamp';
+export {LocalizationConfig, SafelloConfig, RampConfig, WyreConfig} from './core/models/onRamp';
 export {createKeyPair, KeyPair} from './core/models/keyPair';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
