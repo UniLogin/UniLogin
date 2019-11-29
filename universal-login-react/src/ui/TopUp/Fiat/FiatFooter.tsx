@@ -7,6 +7,8 @@ import RevolutLogo from './../../assets/logos/revolut.jpg';
 import RevolutLogo2x from './../../assets/logos/revolut@2x.jpg';
 import Yoti from './../../assets/logos/yoti.jpg';
 import Yoti2x from './../../assets/logos/yoti@2x.jpg';
+import ApplePay from './../../assets/logos/applePay.jpg';
+import ApplePay2x from './../../assets/logos/applePay@2x.jpg';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 
 interface FiatFooterProps {
@@ -53,6 +55,8 @@ export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
     case TopUpProvider.WYRE:
       return (
         <div className="info-block info-row">
+          <p className="info-text info-text-hint">You can pay with Apple Pay</p>
+          <img src={ApplePay} srcSet={ApplePay2x} className="apple-pay-logo" alt="ApplePay" />
         </div>
       );
 
