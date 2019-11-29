@@ -1,9 +1,9 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Switch} from 'react-router-dom';
 import {useProperty} from '@universal-login/react';
 import HomeScreen from './Home/HomeScreen';
 import NotFound from './NotFound';
-import {PrivateRoute} from './PrivateRoute';
+import {WalletRoute} from './WalletRoute';
 import {useServices} from '../hooks';
 import {WelcomeScreen} from './Home/WelcomeScreen';
 import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
@@ -15,42 +15,20 @@ import {ConnectionSuccess, CreationSuccess} from './Modals/ModalTxnSuccess';
 
 const App = () => {
   const {walletService} = useServices();
-  const authorized = useProperty(walletService.isAuthorized);
+  const walletState = useProperty(walletService.stateProperty);
 
   return (
     <Switch>
-      <Route exact path="/welcome" component={WelcomeScreen} />
-      <Route exact path="/terms" component={TermsAndConditionsScreen} />
-      <Route exact path="/privacy" component={PrivacyPolicy} />
-      <Route exact path="/create" component={CreateFlow} />
-      <Route exact path="/connectionSuccess" component={ConnectionSuccess} />
-      <Route exact path="/creationSuccess" component={CreationSuccess} />
-      <Route
-        exact
-        path="/selectDeployName"
-        render={({history}) =>
-          <CreateAccount onCreateClick={async (ensName) => {
-            await walletService.createFutureWallet(ensName);
-            history.push('/create');
-          }} />}
-      />
-      <Route
-        exact
-        path="/connect" >
-        <div className="main-bg">
-          <div className="box-wrapper">
-            <div className="box">
-              <ConnectAccount />
-            </div>
-          </div>
-        </div>
-      </Route>
-      <PrivateRoute
-        authorized={authorized}
-        path="/wallet"
-        render={() => <HomeScreen />}
-      />
-      <Route component={NotFound} />
+      <WalletRoute exact walletState={walletState} path="/welcome" component={WelcomeScreen} />
+      <WalletRoute exact walletState={walletState} path="/terms" component={TermsAndConditionsScreen} />
+      <WalletRoute exact walletState={walletState} path="/privacy" component={PrivacyPolicy} />
+      <WalletRoute exact walletState={walletState} path="/create" component={CreateFlow} />
+      <WalletRoute exact walletState={walletState} path="/connectionSucceed" component={ConnectionSuccess} />
+      <WalletRoute exact walletState={walletState} path="/creationSucceed" component={CreationSuccess} />
+      <WalletRoute exact walletState={walletState} path="/selectDeployName" component={CreateAccount} />
+      <WalletRoute exact walletState={walletState} path="/connect" component={ConnectAccount} />
+      <WalletRoute walletState={walletState} path="/wallet" component={HomeScreen} />
+      <WalletRoute walletState={walletState} component={NotFound} />
     </Switch>
   );
 };
