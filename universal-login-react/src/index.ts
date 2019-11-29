@@ -1,4 +1,4 @@
-export {Safello} from './integration/Safello';
+export {Safello} from './ui/TopUp/OnRamp/Safello';
 export {Input} from './ui/commons/Input';
 export {ProgressBar} from './ui/commons/ProgressBar';
 export {Spinner} from './ui/commons/Spinner';
