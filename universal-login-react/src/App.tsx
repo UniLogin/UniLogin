@@ -64,6 +64,8 @@ export const App = () => {
                 walletService={walletService}
                 domains={['mylogin.eth', 'universal-id.eth']}
                 tryEnablingMetamask={tryEnablingMetamask}
+                onConnect={() => console.log('connected')}
+                onCreate={() => console.log('created')}
               />
             </Route>
             <Route exact path="/walletSelector">
