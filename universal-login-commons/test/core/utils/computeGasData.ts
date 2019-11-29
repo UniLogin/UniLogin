@@ -1,24 +1,26 @@
 import {expect} from 'chai';
-import {computeGasData, computeNewGasData} from '../../../lib/core/utils/messages/computeGasData';
+import {GasComputation} from '../../../lib/core/utils/messages/computeGasData';
 
-describe('UNIT: computeGasData', async () => {
+describe('UNIT: GasComputation', async () => {
   describe('before Istanbul', () => {
+    const gasComputation = new GasComputation('constantinople');
+
     it('0x', async () => {
       const data = '0x';
 
-      expect(computeGasData(data)).to.equal(0);
+      expect(gasComputation.computeGasData(data)).to.equal(0);
     });
 
     it('0xbeef', async () => {
       const data = '0xbeef';
 
-      expect(computeGasData(data)).to.equal(136);
+      expect(gasComputation.computeGasData(data)).to.equal(136);
     });
 
     it('0x00ef', async () => {
       const data = '0x00ef';
 
-      expect(computeGasData(data)).to.equal(72);
+      expect(gasComputation.computeGasData(data)).to.equal(72);
     });
 
     it('long hex', async () => {
@@ -26,25 +28,27 @@ describe('UNIT: computeGasData', async () => {
       const twentyNonZeroBytes = 'f65bc65a5043e6582b38aa2269bafd759fcdfe32';
       const data = `0x${twentyNonZeroBytes}${tenZeroBytes}`;
 
-      expect(computeGasData(data)).to.equal(1400);
+      expect(gasComputation.computeGasData(data)).to.equal(1400);
     });
 
     it('invalid hex', async () => {
       const data = '';
 
-      expect(() => computeGasData(data)).to.throw('Not a valid hex string');
+      expect(() => gasComputation.computeGasData(data)).to.throw('Not a valid hex string');
     });
 
     it('invalid hex layout - odd number of symbols', async () => {
       const data = '0xbee';
 
-      expect(() => computeGasData(data)).to.throw('Not a valid hex string');
+      expect(() => gasComputation.computeGasData(data)).to.throw('Not a valid hex string');
     });
   });
+
   describe('post Istanbul', async () => {
+    const gasComputation = new GasComputation('istanbul');
     const itComputesCostForData = (data: string, expectedResult: number) =>
       it(`${data} costs ${expectedResult}`, async () => {
-        expect(computeNewGasData(data)).to.equal(expectedResult);
+        expect(gasComputation.computeGasData(data)).to.equal(expectedResult);
       });
 
     itComputesCostForData('0x', 0);

@@ -6,24 +6,27 @@ export const NON_ZERO_BYTE_GAS_COST = 68;
 export const NEW_NON_ZERO_BYTE_GAS_COST = 16;
 export const GAS_FIXED = '50000';
 
-const gasCostFor = (istanbul: boolean) => (byte: string) => {
-  return byte === '00' ? ZERO_BYTE_GAS_COST : getNonZeroByteCost(istanbul);
-};
+type ChainVersion = 'istanbul' | 'constantinople'
 
-const getNonZeroByteCost = (istanbul: boolean) => istanbul ? NEW_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
+export class GasComputation {
+  constructor(private chainVersion: ChainVersion) {
+  }
 
-export const computeGasDataBase = (data: string, gasCost: (byte: string) => number) => {
-  ensure(isProperHexString(data), Error, 'Not a valid hex string');
-  return data
-    .match(/.{2}/g)!
-    .slice(1)
-    .reduce((totalGasCost, byte) => totalGasCost + gasCost(byte), 0);
-};
+  getNonZeroByteCost () {
+    return this.chainVersion ==  'istanbul' ? NEW_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
+  }
 
-export const computeGasData = (data: string) => {
-  return computeGasDataBase(data, gasCostFor(false));
-};
+  gasCostFor(byte: string) {
+    return byte === '00' ? ZERO_BYTE_GAS_COST : this.getNonZeroByteCost();
+  }
 
-export const computeNewGasData = (data: string) => {
-  return computeGasDataBase(data, gasCostFor(true));
-};
+  computeGasData(data: string) {
+    ensure(isProperHexString(data), Error, 'Not a valid hex string');
+    return data
+      .match(/.{2}/g)!
+      .slice(1)
+      .reduce((totalGasCost, byte) => totalGasCost + this.gasCostFor(byte), 0);
+  }
+}
+
+export const computeGasData = (data: string) => new GasComputation('constantinople').computeGasData(data)
