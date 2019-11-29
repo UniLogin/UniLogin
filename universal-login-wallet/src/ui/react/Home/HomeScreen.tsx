@@ -24,7 +24,7 @@ const HomeScreen = () => {
             <Notice message={notice} />
             <p className="dashboard-ens-name">{walletPresenter.getName()}</p>
             <Switch>
-              <Route path="/" exact>
+              <Route path="/wallet" exact>
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
                   onTopUpClick={() => history.push('/topUp')}
@@ -54,7 +54,7 @@ const HomeScreen = () => {
                   topUpClassName="jarvis-styles"
                   isDeployment={false}
                   logoColor="black"
-                  hideModal={() => history.push('/')}
+                  hideModal={() => history.push('/wallet')}
                 />
               </Route>
               <Route

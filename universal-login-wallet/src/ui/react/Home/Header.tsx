@@ -16,13 +16,13 @@ export function Header() {
 
   return (
     <div className="header">
-      <Link className="header-logo-link" to="/">
+      <Link className="header-logo-link" to="/wallet">
         <img className="header-logo" src={logo} />
       </Link>
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <NavLink exact to="/" className="header-btn header-funds-btn">Funds</NavLink>
+            <NavLink exact to="/wallet" className="header-btn header-funds-btn">Funds</NavLink>
           </li>
           <li className="header-list-item">
             <NavLink

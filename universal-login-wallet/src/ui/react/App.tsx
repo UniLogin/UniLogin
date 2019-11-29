@@ -47,7 +47,7 @@ const App = () => {
       </Route>
       <PrivateRoute
         authorized={authorized}
-        path="/"
+        path="/wallet"
         render={() => <HomeScreen />}
       />
       <Route component={NotFound} />
