@@ -5,6 +5,7 @@ import {useServices} from '../../hooks';
 import {useHistory} from 'react-router';
 
 export type ConnectModal = 'connectionFlow' | 'selector';
+
 export const ConnectAccount = () => {
   const {sdk, walletService} = useServices();
   const history = useHistory();
