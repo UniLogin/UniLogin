@@ -11,6 +11,7 @@ import {ConnectAccount} from './ConnectAccount/ConnectAccount';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
 import {CreateFlow} from './CreateAccount/CreateFlow';
 import {CreateAccount} from './CreateAccount/CreateAccount';
+import {ConnectionSuccess, CreationSuccess} from './Modals/ModalTxnSuccess';
 
 const App = () => {
   const {walletService} = useServices();
@@ -22,6 +23,8 @@ const App = () => {
       <Route exact path="/terms" component={TermsAndConditionsScreen} />
       <Route exact path="/privacy" component={PrivacyPolicy} />
       <Route exact path="/create" component={CreateFlow} />
+      <Route exact path="/connectionSuccess" component={ConnectionSuccess} />
+      <Route exact path="/creationSuccess" component={CreationSuccess} />
       <Route
         exact
         path="/selectDeployName"

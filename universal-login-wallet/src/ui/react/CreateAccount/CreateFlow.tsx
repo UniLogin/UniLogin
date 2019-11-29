@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import {Redirect} from 'react-router';
-import {useServices} from '../../hooks';
-import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
-import {CreationSuccess} from '../Modals/ModalTxnSuccess';
 import {useHistory} from 'react-router';
+import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '@universal-login/react';
+import {useServices} from '../../hooks';
 
 export function CreateFlow() {
   const {sdk, walletService, walletCreationService} = useServices();
   const history = useHistory();
 
   useEffect(() => {
-    walletCreationService.deployWhenReady().catch(console.error);
+    walletCreationService.deployWhenReady()
+      .then(() => history.push('/creationSuccess'))
+      .catch(console.error);
   }, []);
 
   const walletState = useProperty(walletService.stateProperty);
@@ -46,15 +46,7 @@ export function CreateFlow() {
           </ModalWrapper>
         </div>
       );
-    case 'Deployed':
-      return (
-        <div className="main-bg">
-          <ModalWrapper modalClassName="jarvis-modal">
-            <CreationSuccess />
-          </ModalWrapper>
-        </div>
-      );
     default:
-      return <Redirect to="/" />;
+      return null;
   }
 }
