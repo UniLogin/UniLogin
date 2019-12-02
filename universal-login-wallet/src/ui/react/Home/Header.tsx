@@ -8,9 +8,9 @@ export function Header() {
   const [newNotifications, setNewNotifications] = useState(false);
   const {contractAddress, privateKey} = walletService.getDeployedWallet();
 
-  const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
+  const updateNotifications = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
-  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifictions), []);
+  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifications), []);
 
   const {walletPresenter} = useServices();
 
