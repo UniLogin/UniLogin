@@ -12,11 +12,11 @@ export class GasComputation {
   constructor(private chainVersion: ChainVersion) {
   }
 
-  getNonZeroByteCost () {
+  private getNonZeroByteCost () {
     return this.chainVersion ==  'istanbul' ? NEW_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
   }
 
-  gasCostFor(byte: string) {
+  private gasCostFor(byte: string) {
     return byte === '00' ? ZERO_BYTE_GAS_COST : this.getNonZeroByteCost();
   }
 
