@@ -1,14 +1,14 @@
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import {getDeployedBytecode, ContractJSON, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {BlockchainService} from '../../../lib/integration/ethereum/BlockchainService';
-import {deployWalletContract} from '@universal-login/contracts';
+import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {deployWalletContract} from '../../lib/deployMaster';
+import WalletContract from '../../build/Wallet.json';
+import {BlockchainService} from '../../lib/integration/BlockchainService';
 
 describe('INT: BlockchainService', async () => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
-  const expectedBytecode = `0x${getDeployedBytecode(WalletContract as ContractJSON)}`;
+  const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
   const blockchainService = new BlockchainService(provider);
 
   it('getCode returns 0x if contract does not existing', async () => {

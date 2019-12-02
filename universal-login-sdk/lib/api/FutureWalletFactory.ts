@@ -7,11 +7,10 @@ import {
   ensure,
   isValidEnsName,
 } from '@universal-login/commons';
+import {encodeInitializeWithENSData, BlockchainService} from '@universal-login/contracts';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
-import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
-import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import {DeployedWallet} from './DeployedWallet';
 import UniversalLoginSDK from './sdk';
 import {MineableFactory} from '../core/services/MineableFactory';

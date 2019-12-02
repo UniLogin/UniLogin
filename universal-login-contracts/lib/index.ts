@@ -6,3 +6,4 @@ export {deployWalletContract} from './deployMaster';
 export {calculateGasBase} from './estimateGas';
 export {messageToUnsignedMessage, messageToSignedMessage, unsignedMessageToSignedMessage, emptyMessage} from './message';
 export * from './interfaces';
+export {BlockchainService} from './integration/BlockchainService';
