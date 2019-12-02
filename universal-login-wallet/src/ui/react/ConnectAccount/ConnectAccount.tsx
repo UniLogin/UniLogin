@@ -21,7 +21,7 @@ export const ConnectAccount = () => {
               sdk={sdk}
               walletService={walletService}
               onCancel={() => setConnectModal('selector')}
-              onSuccess={() => history.push('/connectionSucceed')}
+              onSuccess={() => history.push('/connectionSuccess')}
               className="jarvis-styles"
             />
           </div>
