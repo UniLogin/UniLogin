@@ -41,7 +41,7 @@ export {getMessageWithSignatures} from './core/utils/messages/signMessage';
 export {executionComparator, sortSignatureKeyPairsByKey, sign, signHexString, signString} from './core/utils/signatures';
 export {waitToBeMined, waitForContractDeploy, sendAndWaitForTransaction} from './integration/ethereum/wait';
 export {getDeployTransaction, defaultDeployOptions} from './integration/ethereum/transaction';
-export {sleep, waitUntil, waitExpect} from './core/utils/wait';
+export {sleep, waitUntil} from './core/utils/wait';
 export {clamp} from './core/utils/clamp';
 export {parseDomain, isValidEnsName} from './core/utils/ens';
 export {debounce} from './core/utils/debounce';

@@ -4,7 +4,7 @@ import React from 'react';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {DeployedWallet} from '@universal-login/sdk';
 import {Dashboard} from '../../src/ui/UFlow/Dashboard';
-import {waitExpect} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import {Wallet, utils} from 'ethers';
 import {DashboardPage} from '../helpers/pages/DashboardPage';
 import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';

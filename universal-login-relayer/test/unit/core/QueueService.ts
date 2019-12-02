@@ -1,7 +1,8 @@
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {calculateMessageHash, waitExpect, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import ExecutionWorker from '../../../lib/core/services/execution/ExecutionWorker';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import getTestSignedMessage from '../../config/message';

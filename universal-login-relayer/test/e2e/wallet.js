@@ -1,9 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
-import {waitExpect, createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields} from '@universal-login/commons';
-import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
+import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import {messageToSignedMessage} from '@universal-login/contracts';
+import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
 
 chai.use(chaiHttp);
 

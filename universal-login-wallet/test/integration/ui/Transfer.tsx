@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
-import {waitExpect} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
