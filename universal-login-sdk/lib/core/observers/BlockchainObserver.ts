@@ -1,6 +1,5 @@
-import {BlockchainService} from '../../integration/ethereum/BlockchainService';
+import {WalletContractInterface, BlockchainService} from '@universal-login/contracts';
 import ObserverBase from './ObserverBase';
-import {WalletContractInterface} from '@universal-login/contracts';
 
 const eventInterface = WalletContractInterface.events;
 

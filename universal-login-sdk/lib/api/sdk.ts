@@ -20,10 +20,10 @@ import {
   TokensValueConverter,
   ETHER_NATIVE_TOKEN,
 } from '@universal-login/commons';
+import {BlockchainService} from '@universal-login/contracts';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
-import {BlockchainService} from '../integration/ethereum/BlockchainService';
 import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
 import {FutureWalletFactory, FutureWallet} from './FutureWalletFactory';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';

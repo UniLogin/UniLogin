@@ -3,10 +3,10 @@ import chaiHttp from 'chai-http';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO} from '@universal-login/commons';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {BlockchainService} from '@universal-login/contracts';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
+import {RelayerUnderTest} from '@universal-login/relayer';
 import {FutureWalletFactory} from '../../../lib/api/FutureWalletFactory';
-import {BlockchainService} from '../../../lib/integration/ethereum/BlockchainService';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
 
 chai.use(chaiHttp);
